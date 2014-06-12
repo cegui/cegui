@@ -93,7 +93,7 @@ namespace CEGUI
         ~XercesParser(void);
 
         // Implementation of public abstract interface
-        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
+        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool xmlValidationEnabled = true);
 
         // Internal methods
         /*!
@@ -138,6 +138,29 @@ namespace CEGUI
         static const String& getSchemaDefaultResourceGroup()
             { return d_defaultSchemaResourceGroup; }
 
+        /*!
+        \brief 
+            Sets whether xml validation is enabled or not.
+
+        \param isEnabled
+            String containg either 'true' or 'false'.
+
+        \return
+            Nothing.
+        */
+        static void setXmlValidationEnabled(const String& isEnabled)
+            { d_xmlValidationEnabled = isEnabled; }
+
+        /*!
+        \brief
+            Returns whether xml validation is enabled or not.
+
+        \return
+            'true' if enabled otherwise false
+        */
+        static const String& isXmlValidationEnabled()
+            { return d_xmlValidationEnabled; }
+
     protected:
         static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName);
         static XERCES_CPP_NAMESPACE::SAX2XMLReader* createReader(XERCES_CPP_NAMESPACE::DefaultHandler& handler);
@@ -149,9 +172,14 @@ namespace CEGUI
 
         //! holds the default resource group ID for loading schemas.
         static String d_defaultSchemaResourceGroup;
+        //! contains 'true' if xml validation is enabled otherwise 'false'
+        static String d_xmlValidationEnabled;
         //! Property for accessing the default schema resource group ID.
         static XercesParserProperties::SchemaDefaultResourceGroup
             s_schemaDefaultResourceGroupProperty;
+        //! Property for determining if xml validation is enabled or not.
+        static XercesParserProperties::XMLValidationEnabled
+            s_XMLValidationEnabledProperty;
     };
 
 } // End of  CEGUI namespace section

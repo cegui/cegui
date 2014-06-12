@@ -54,7 +54,7 @@ namespace CEGUI
         return d_initialised;
     }
 
-    void XMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    void XMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup, bool /*xmlValidationEnabled*/)
     {
         // Acquire resource using CEGUI ResourceProvider
         RawDataContainer rawXMLData;

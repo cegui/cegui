@@ -33,9 +33,13 @@ namespace CEGUI
 {
 
 namespace XercesParserProperties
-{    
-//----------------------------------------------------------------------------//
+{   
 
+////////////////////////////////////////////////////////////////////////////////
+// SchemaDefaultGroup
+////////////////////////////////////////////////////////////////////////////////
+
+//----------------------------------------------------------------------------//
 String SchemaDefaultResourceGroup::get(const PropertyReceiver* receiver) const
 {
     return static_cast<const XercesParser*>(receiver)->
@@ -55,7 +59,29 @@ Property* SchemaDefaultResourceGroup::clone() const
     return CEGUI_NEW_AO SchemaDefaultResourceGroup(*this);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// XMLValidationEnabled
+////////////////////////////////////////////////////////////////////////////////
+
 //----------------------------------------------------------------------------//
+String XMLValidationEnabled::get(const PropertyReceiver* receiver) const
+{
+    return static_cast<const XercesParser*>(receiver)->
+        isXmlValidationEnabled();
+}
+
+//----------------------------------------------------------------------------//
+void XMLValidationEnabled::set(PropertyReceiver* receiver,
+                               const String& value)
+{
+    static_cast<const XercesParser*>(receiver)->setXmlValidationEnabled(value);
+}
+
+//----------------------------------------------------------------------------//
+Property* XMLValidationEnabled::clone() const
+{
+    return CEGUI_NEW_AO XMLValidationEnabled(*this);
+}
 //
 } // End of XercesParserProperties namespace section
     

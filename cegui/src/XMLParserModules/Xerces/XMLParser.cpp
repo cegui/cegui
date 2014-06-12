@@ -43,9 +43,14 @@ namespace CEGUI
 {
     // Static data definition for default schema resource group name
     String XercesParser::d_defaultSchemaResourceGroup("");
+    // Static data definition for enabling xml validation.
+    String XercesParser::d_xmlValidationEnabled("true");
     // static data defiinition of the SchemaDefaultResourceGroup property.
     XercesParserProperties::SchemaDefaultResourceGroup
         XercesParser::s_schemaDefaultResourceGroupProperty;
+    // static data definition of the XMLValidationEnabled property.
+    XercesParserProperties::XMLValidationEnabled
+        XercesParser::s_XMLValidationEnabledProperty;
 
     ////////////////////////////////////////////////////////////////////////////////
     //
@@ -59,12 +64,13 @@ namespace CEGUI
         d_identifierString = "CEGUI::XercesParser - Official Xerces-C++ based parser module for CEGUI";
         // add property
         addProperty(&s_schemaDefaultResourceGroupProperty);
+        addProperty(&s_XMLValidationEnabledProperty);
     }
 
     XercesParser::~XercesParser(void)
     {}
 
-    void XercesParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void XercesParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool xmlValidationEnabled)
     {
         XERCES_CPP_NAMESPACE_USE;
 
@@ -75,8 +81,17 @@ namespace CEGUI
 
         CEGUI_TRY
         {
+            bool forceXmlValidation;
+
+            // ignore local settings if validation is disabled globally
+            if (isXmlValidationEnabled().compare("false"))
+                forceXmlValidation = false;
+            else
+                forceXmlValidation = xmlValidationEnabled;
+
             // set up schema
-            initialiseSchema(reader, schemaName);
+            if (forceXmlValidation)
+                initialiseSchema(reader, schemaName);
             // do parse
             doParse(reader, source);
         }

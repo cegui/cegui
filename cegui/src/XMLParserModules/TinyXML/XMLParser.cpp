@@ -153,7 +153,7 @@ namespace CEGUI
     TinyXMLParser::~TinyXMLParser(void)
     {}
 
-    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*xmlValidationEnabled*/)
     {
       TinyXMLDocument doc(handler, source, schemaName);
     }
