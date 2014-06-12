@@ -46,7 +46,7 @@ public:
 
 protected:
     Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
-    void renderString(Window* window, RenderedString &rendered_string,
+    void renderString(Window* window, RenderedString& rendered_string,
         Vector2f draw_pos, const Font* font, const Rectf* item_clipper);
 };
 
