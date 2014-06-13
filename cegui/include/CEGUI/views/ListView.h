@@ -65,75 +65,18 @@ public:
     ListView(const String& type, const String& name);
     virtual ~ListView();
 
-    /*!
-    \brief
-        Sets the specified item index's as the currently selected item.
-
-    \param index
-        The index of the item to be selected.
-
-    \return
-        True if the item has been successfully selected, false otherwise.
-    */
-    virtual bool setSelectedItem(const ModelIndex& index);
-
-    /*!
-    \brief
-        Returns the ModelIndex at the specified position.
-
-    \param position
-        The position for which to get the ModelIndex.
-
-    \return
-        The ModelIndex for the position or a default-constructed ModelIndex
-        if nothing was found at that position.
-    */
-    virtual ModelIndex indexAt(const Vector2f& position);
-
-    /*!
-    \brief
-        Sets the selection highlighting brush image.
-
-    \param image
-        Pointer to the Image object to be used for selection highlighting.
-    */
-    void setSelectionBrushImage(const Image* image);
-
-
-    /*!
-    \brief
-        Set the selection highlighting brush image.
-
-    \param name
-        Name of the image to be used.
-    */
-    void setSelectionBrushImage(const String& name);
-
-    /*!
-    \brief
-        Returns the current selection highlighting brush.
-
-    \return
-        Pointer to the Image object currently used for selection highlighting.
-    */
-    const Image* getSelectionBrushImage(void) const;
-
     const std::vector<ListViewItemRenderingState>& getItems() const;
 
     virtual void prepareForRender();
-
+    virtual ModelIndex indexAt(const Vector2f& position);
 protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
-
-    bool isIndexSelected(const ModelIndex& index) const;
-    void addListViewProperties();
 
     // overrides
     virtual bool onChildrenAdded(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);
 
 private:
-    const Image* d_selectionBrush;
     std::vector<ListViewItemRenderingState> d_items;
 
     void computeSelectionStateModelIndices();

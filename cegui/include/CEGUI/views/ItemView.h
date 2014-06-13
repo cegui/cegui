@@ -57,6 +57,7 @@ struct CEGUIEXPORT ModelIndexSelectionState
 
     ModelIndex d_selectedIndex;
 };
+typedef std::vector<ModelIndexSelectionState> SelectionStatesVector;
 
 /*!
 \brief
@@ -71,19 +72,10 @@ public:
 
     static const Colour DefaultTextColour;
 
-    /*!
-    \brief
-        Sets the ItemModel to be used inside this view.
-
-    \param item_model
-        The ItemModel instance to be set.
-    */
+    //!Sets the ItemModel to be used inside this view.
     virtual void setModel(ItemModel* item_model);
 
-    /*!
-    \brief
-        Returns the current ItemModel of this view.
-    */
+    //! Returns the current ItemModel of this view.
     virtual ItemModel* getModel() const;
 
     /*!
@@ -104,14 +96,42 @@ public:
     //! Gets the current state of the indices used for selection.
     const std::vector<ModelIndexSelectionState>& getIndexSelectionStates() const;
 
+    /*!
+    \brief
+        Returns the ModelIndex at the specified position.
+
+    \return
+        The ModelIndex for the position or a default-constructed ModelIndex
+        if nothing was found at that position.
+    */
+    virtual ModelIndex indexAt(const Vector2f& position) = 0;
+
+    /*!
+    \brief
+        Sets the specified item index's as the currently selected item.
+
+    \return
+        True if the item has been successfully selected, false otherwise.
+    */
+    virtual bool setSelectedItem(const ModelIndex& index);
+
+    void setSelectionBrushImage(const Image* image);
+    void setSelectionBrushImage(const String& name);
+    const Image* getSelectionBrushImage(void) const;
+
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
     bool d_isDirty;
     std::vector<ModelIndexSelectionState> d_indexSelectionStates;
+    const Image* d_selectionBrush;
+
+    void addItemViewProperties();
 
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);
+
+    virtual bool isIndexSelected(const ModelIndex& index) const;
 
     virtual bool onChildrenAdded(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);

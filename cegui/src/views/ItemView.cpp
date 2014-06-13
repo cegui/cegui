@@ -28,6 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/views/ItemView.h"
+#include "CEGUI/ImageManager.h"
 
 namespace CEGUI
 {
@@ -43,12 +44,25 @@ ItemView::ItemView(const String& type, const String& name) :
     d_eventChildrenAddedConnection(0),
     d_eventChildrenRemovedConnection(0)
 {
+    addItemViewProperties();
 }
 
 //----------------------------------------------------------------------------//
 ItemView::~ItemView()
 {
     disconnectModelEvents();
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::addItemViewProperties()
+{
+    const String& propertyOrigin = "ItemView";
+
+    CEGUI_DEFINE_PROPERTY(ItemView, Image*,
+        "SelectionBrushImage",
+        "Property to get/set the selection brush image for the list view. Value should be \"set:[imageset name] image:[image name]\".",
+        &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, 0
+        );
 }
 
 //----------------------------------------------------------------------------//
@@ -150,4 +164,63 @@ void ItemView::setIsDirty(bool value)
 {
     d_isDirty = value;
 }
+
+//----------------------------------------------------------------------------//
+bool ItemView::isIndexSelected(const ModelIndex& index) const
+{
+    for (SelectionStatesVector::const_iterator
+        itor = d_indexSelectionStates.begin();
+        itor != d_indexSelectionStates.end(); ++itor)
+    {
+        if (d_itemModel->areIndicesEqual(index, (*itor).d_selectedIndex))
+            return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::setSelectedItem(const ModelIndex& index)
+{
+    if (d_itemModel == 0 ||
+        !d_itemModel->isValidIndex(index))
+        return false;
+
+    if (isIndexSelected(index))
+        return true;
+
+    ModelIndexSelectionState selection_state;
+    selection_state.d_selectedIndex = index;
+    selection_state.d_childId = d_itemModel->getChildId(index);
+    selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
+
+    //TODO: take into account multiple & cumulative selection
+    SelectionStatesVector selection_states;
+    selection_states.push_back(selection_state);
+    d_indexSelectionStates = selection_states;
+
+    invalidateView(false);
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setSelectionBrushImage(const String& name)
+{
+    setSelectionBrushImage(&ImageManager::getSingleton().get(name));
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setSelectionBrushImage(const Image* image)
+{
+    d_selectionBrush = image;
+    invalidateView(false);
+}
+
+//----------------------------------------------------------------------------//
+const Image* ItemView::getSelectionBrushImage(void) const
+{
+    return d_selectionBrush;
+}
+
 }
