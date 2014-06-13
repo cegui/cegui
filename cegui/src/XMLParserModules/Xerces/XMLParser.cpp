@@ -208,37 +208,46 @@ namespace CEGUI
 
     void XercesParser::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName)
     {
-        XERCES_CPP_NAMESPACE_USE;
+        // only load the schema if it's name is passed
+        if (!schemaName.empty())
+        {
+            XERCES_CPP_NAMESPACE_USE;
 
-        // enable schema use and set validation options
-        reader->setFeature(XMLUni::fgXercesSchema, true);
-        reader->setFeature(XMLUni::fgSAX2CoreValidation, true);
-        reader->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
+            // enable schema use and set validation options
+            reader->setFeature(XMLUni::fgXercesSchema, true);
+            reader->setFeature(XMLUni::fgSAX2CoreValidation, true);
+            reader->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
-        // load in the raw schema data
-        RawDataContainer rawSchemaData;
-        // load the schema from the resource group
-        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
+            // load in the raw schema data
+            RawDataContainer rawSchemaData;
+            // load the schema from the resource group
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
+            System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
 
-        // wrap schema data in a xerces MemBufInputSource object
-        MemBufInputSource  schemaData(
-            rawSchemaData.getDataPtr(),
-            static_cast<const unsigned int>(rawSchemaData.getSize()),
-            schemaName.c_str(),
-            false);
-        reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
-        // enable grammar reuse
-        reader->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+            // wrap schema data in a xerces MemBufInputSource object
+            MemBufInputSource  schemaData(
+                rawSchemaData.getDataPtr(),
+                static_cast<const unsigned int>(rawSchemaData.getSize()),
+                schemaName.c_str(),
+                false);
+            reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
+            // enable grammar reuse
+            reader->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
-        // set schema for usage
-        XMLCh* pval = XMLString::transcode(schemaName.c_str());
-        reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-        XMLString::release(&pval);
-        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.");
+            // set schema for usage
+            XMLCh* pval = XMLString::transcode(schemaName.c_str());
+            reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+            XMLString::release(&pval);
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.");
 
-        // use resource provider to release loaded schema data (if it supports this)
-        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawSchemaData);
+            // use resource provider to release loaded schema data (if it supports this)
+            System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawSchemaData);
+        }
+        else
+        {
+            // otherwise ignore the missing schema and proceed
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - No schema specified. Proceeding.");
+        }
     }
 
     XERCES_CPP_NAMESPACE::SAX2XMLReader* XercesParser::createReader(XERCES_CPP_NAMESPACE::DefaultHandler& handler)
