@@ -89,20 +89,6 @@ void ListView::prepareForRender()
 }
 
 //----------------------------------------------------------------------------//
-void ListView::onPointerPressHold(PointerEventArgs& e)
-{
-    Window::onPointerPressHold(e);
-
-    if (e.source != PS_Left)
-        return;
-
-    ModelIndex index = indexAt(e.position);
-    setSelectedItem(index);
-
-    ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
 ModelIndex ListView::indexAt(const Vector2f& position)
 {
     if (d_itemModel == 0)
@@ -135,50 +121,6 @@ ModelIndex ListView::indexAt(const Vector2f& position)
 const std::vector<ListViewItemRenderingState>& ListView::getItems() const
 {
     return d_items;
-}
-
-//----------------------------------------------------------------------------//
-bool ListView::onChildrenAdded(const EventArgs& args)
-{
-    const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
-
-    for (SelectionStatesVector::iterator itor = d_indexSelectionStates.begin();
-        itor != d_indexSelectionStates.end(); ++itor)
-    {
-        ModelIndexSelectionState& state = *itor;
-
-        if (state.d_childId >= model_args.d_startId)
-        {
-            state.d_childId += model_args.d_count;
-            state.d_selectedIndex = d_itemModel->makeIndex(state.d_childId, state.d_parentIndex);
-        }
-    }
-
-    return ItemView::onChildrenAdded(args);
-}
-
-//----------------------------------------------------------------------------//
-bool ListView::onChildrenRemoved(const EventArgs& args)
-{
-    const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
-
-    SelectionStatesVector::iterator itor = d_indexSelectionStates.begin();
-    while (itor != d_indexSelectionStates.end())
-    {
-        ModelIndexSelectionState& state = *itor;
-
-        if (state.d_childId >= model_args.d_startId &&
-            state.d_childId <= model_args.d_startId + model_args.d_count)
-        {
-            itor = d_indexSelectionStates.erase(itor);
-        }
-        else
-        {
-            ++itor;
-        }
-    }
-
-    return ItemView::onChildrenRemoved(args);
 }
 
 }
