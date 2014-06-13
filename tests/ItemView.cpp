@@ -37,6 +37,12 @@ class TestItemView : public ItemView
 {
 public:
     TestItemView(const String& type, const String& name) : ItemView(type, name) {}
+
+    //----------------------------------------------------------------------------//
+    virtual ModelIndex indexAt(const Vector2f& position)
+    {
+        return ModelIndex();
+    }
 };
 
 //----------------------------------------------------------------------------//

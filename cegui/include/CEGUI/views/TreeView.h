@@ -68,13 +68,12 @@ public:
 
     const TreeViewItemRenderingState& getRootItemState() const;
     virtual void prepareForRender();
+    virtual ModelIndex indexAt(const Vector2f& position);
 
 private:
     TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(const ModelIndex& index);
-
-
 };
 
 };

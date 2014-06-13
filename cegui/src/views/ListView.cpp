@@ -28,13 +28,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/views/ListView.h"
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/CoordConverter.h"
 
 
 namespace CEGUI
 {
-typedef std::vector<ModelIndexSelectionState> SelectionStatesVector;
 
 //----------------------------------------------------------------------------//
 const String ListView::EventNamespace("ListView");
@@ -49,24 +47,11 @@ ListViewItemRenderingState::ListViewItemRenderingState() : d_isSelected(false)
 ListView::ListView(const String& type, const String& name) :
     ItemView(type, name)
 {
-    addListViewProperties();
 }
 
 //----------------------------------------------------------------------------//
 ListView::~ListView()
 {
-}
-
-//----------------------------------------------------------------------------//
-void ListView::addListViewProperties()
-{
-    const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(ListView, Image*,
-        "SelectionBrushImage",
-        "Property to get/set the selection brush image for the list view. Value should be \"set:[imageset name] image:[image name]\".",
-        &ListView::setSelectionBrushImage, &ListView::getSelectionBrushImage, 0
-        );
 }
 
 //----------------------------------------------------------------------------//
@@ -144,63 +129,6 @@ ModelIndex ListView::indexAt(const Vector2f& position)
     }
 
     return ModelIndex();
-}
-
-//----------------------------------------------------------------------------//
-bool ListView::setSelectedItem(const ModelIndex& index)
-{
-    if (d_itemModel == 0 ||
-        !d_itemModel->isValidIndex(index))
-        return false;
-
-    if (isIndexSelected(index))
-        return true;
-
-    ModelIndexSelectionState selection_state;
-    selection_state.d_selectedIndex = index;
-    selection_state.d_childId = d_itemModel->getChildId(index);
-    selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
-
-    //TODO: take into account multiple & cumulative selection
-    SelectionStatesVector selection_states;
-    selection_states.push_back(selection_state);
-    d_indexSelectionStates = selection_states;
-
-    invalidateView(false);
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-bool ListView::isIndexSelected(const ModelIndex& index) const
-{
-    for (SelectionStatesVector::const_iterator itor = d_indexSelectionStates.begin();
-        itor != d_indexSelectionStates.end(); ++itor)
-    {
-        if (d_itemModel->areIndicesEqual(index, (*itor).d_selectedIndex))
-            return true;
-    }
-
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-void ListView::setSelectionBrushImage(const String& name)
-{
-    setSelectionBrushImage(&ImageManager::getSingleton().get(name));
-}
-
-//----------------------------------------------------------------------------//
-void ListView::setSelectionBrushImage(const Image* image)
-{
-    d_selectionBrush = image;
-    invalidateView(false);
-}
-
-//----------------------------------------------------------------------------//
-const Image* ListView::getSelectionBrushImage(void) const
-{
-    return d_selectionBrush;
 }
 
 //----------------------------------------------------------------------------//

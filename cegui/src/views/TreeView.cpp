@@ -94,4 +94,9 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(const ModelIn
     return state;
 }
 
+//----------------------------------------------------------------------------//
+ModelIndex TreeView::indexAt(const Vector2f& position)
+{
+    return ModelIndex();
+}
 }
