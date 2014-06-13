@@ -22,6 +22,9 @@ The following have made large, important, or on-going contributions to the syste
 (these people may have made additional contributions than those specifically mentioned):
 - 'Blakharaz':
     - Initial XmlHandlerHelper class and general cleanup of original XML parsing code.
+- Timotei Dolean:
+    - Reworked the input system to allow other devices besides mouse and keyboard.
+    - Support for GUI navigation.
 - Jeff Leigh:
     - Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
 - Eugene Marcotte:
