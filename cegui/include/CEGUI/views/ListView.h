@@ -69,12 +69,6 @@ public:
 
     virtual void prepareForRender();
     virtual ModelIndex indexAt(const Vector2f& position);
-protected:
-    virtual void onPointerPressHold(PointerEventArgs& e);
-
-    // overrides
-    virtual bool onChildrenAdded(const EventArgs& args);
-    virtual bool onChildrenRemoved(const EventArgs& args);
 
 private:
     std::vector<ListViewItemRenderingState> d_items;

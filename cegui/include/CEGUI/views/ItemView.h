@@ -135,6 +135,7 @@ protected:
 
     virtual bool onChildrenAdded(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);
+    virtual void onPointerPressHold(PointerEventArgs& e);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
