@@ -134,7 +134,7 @@ function classClass:output_luadoc()
 	output('-- '..self.lname..'\n')
 	output('-- @type '..cleanseType(self.type)..'\n')
 	if (self.btype ~='') then
-		output('-- @extends '..cleanseType(self.btype)..'\n')
+		output('-- @extends #'..cleanseType(self.btype)..'\n')
 	end
 	output('\n')
 

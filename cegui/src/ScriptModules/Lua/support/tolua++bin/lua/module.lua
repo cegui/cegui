@@ -42,33 +42,11 @@ end
 -- outputs an empty(without documentation) LuaDoc interface 
 -- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
 function classModule:output_luadoc()
-
-	output('---------------------------------------------------------------------------------\n')
-	if (self.parent.name and self.parent.name~='') then
-		output('-- @field [parent=#'..cleanseType(self.parent.name)..'] #'..cleanseType(self.name)..' '..cleanseType(self.name)..'\n')
-	else
-		local name = cleanseType(self.name)
-		output('---------------------------------------------------------------------------------\n')
-		output('-- @module '..name..'\n')
-		output('\n')
-		output('---\n')
-		output('-- @field [parent=#global] #'..name..' '..name..'\n')
-	end
-	
-	output('\n')
-	
-	output('---------------------------------------------------------------------------------\n')
-	output('-- '..self.name..'\n')
-	output('-- @type '..cleanseType(self.name)..'\n')
-	
-	output('\n')
-	
 	local i=1
 	while self[i] do
 		self[i]:output_luadoc()
 		i = i+1
 	end
-
 end
 
 -- Print method
