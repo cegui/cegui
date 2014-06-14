@@ -30,6 +30,7 @@
 #define _FalItemViewRenderer_h_
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
+#include "CEGUI/views/ItemView.h"
 #include "CEGUI/Rect.h"
 
 namespace CEGUI
@@ -46,8 +47,8 @@ public:
 
 protected:
     Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
-    void renderString(Window* window, RenderedString& rendered_string,
-        Vector2f draw_pos, const Font* font, const Rectf* item_clipper);
+    void renderString(ItemView* window, RenderedString& rendered_string,
+        Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);
 };
 
 }

@@ -79,8 +79,8 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
         //TODO: selection
-        renderString(tree_view, rendered_string, item_rect.getPosition(),
-            tree_view->getFont(), &item_clipper);
+        renderString(tree_view, rendered_string, item_rect,
+            tree_view->getFont(), &item_clipper, item.d_isSelected);
 
         item_pos.d_y += size.d_height;
 
