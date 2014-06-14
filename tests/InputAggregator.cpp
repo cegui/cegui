@@ -55,10 +55,14 @@ public:
         for (HandlersMap::const_iterator itor = d_handlersMap.begin();
             itor != d_handlersMap.end(); ++ itor)
         {
-            delete (*itor).second;
+            delete itor->second;
         }
 
-        d_handlersMap.clear();
+        for (HandlersMap::const_iterator itor = d_semanticEventsHandlersMap.begin();
+            itor != d_semanticEventsHandlersMap.end(); ++itor)
+        {
+            delete itor->second;
+        }
     }
 
     bool injectInputEvent(const InputEvent& event)
