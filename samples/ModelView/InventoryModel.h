@@ -60,17 +60,22 @@ public:
     bool operator!=(const InventoryItem& other);
 
     static InventoryItem make(const CEGUI::String& name, float weight);
+
+    friend std::ostream& operator<< (std::ostream& output, const InventoryItem& item);
 };
+
 
 class InventoryModel : public CEGUI::ItemModel
 {
 public:
+    InventoryModel();
+
     // simulate loading the model
     void load();
 
     void clear();
-    void addItem(InventoryItem& new_item, size_t position);
-    void addRandomItem(size_t position);
+    void addItem(CEGUI::ModelIndex& parent, InventoryItem& new_item, size_t position);
+    void addRandomItemWithChild(CEGUI::ModelIndex& parent, size_t position);
     void removeItem(const CEGUI::ModelIndex& index);
 
     // implementation of ItemModel
@@ -82,6 +87,9 @@ public:
     virtual CEGUI::ModelIndex getRootIndex();
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
+
+
+    const InventoryItem& getInventoryRoot() const { return d_inventoryRoot; }
 private:
     InventoryItem d_inventoryRoot;
     int d_randomItemsCount;

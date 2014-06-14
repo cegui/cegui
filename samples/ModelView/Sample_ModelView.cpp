@@ -112,7 +112,7 @@ bool ModelViewDemo::handleAddRandomItem(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
-    d_inventoryModel.addRandomItem(0);
+    d_inventoryModel.addRandomItemWithChild(d_inventoryModel.getRootIndex(), 0);
     return true;
 }
 
