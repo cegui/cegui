@@ -182,9 +182,24 @@ void InventoryModel::clear()
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addItem(InventoryItem& new_item)
+void InventoryModel::addRandomItem(size_t position)
 {
-    d_inventoryRoot.d_items.insert(d_inventoryRoot.d_items.begin(), new_item);
+    InventoryItem new_item = InventoryItem::make(
+        "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount), 0.3f);
+
+    InventoryItem new_subitem = InventoryItem::make(
+        "New sub item #" + PropertyHelper<int>::toString(d_randomItemsCount), 1.3f);
+
+    new_item.d_items.push_back(new_subitem);
+
+    addItem(new_item, position);
+    d_randomItemsCount++;
+}
+
+//----------------------------------------------------------------------------//
+void InventoryModel::addItem(InventoryItem& new_item, size_t position)
+{
+    d_inventoryRoot.d_items.insert(d_inventoryRoot.d_items.begin() + position, new_item);
 
     //TODO: see how we specify that we added items starting *before* or *after* that start index
     notifyChildrenAdded(getRootIndex(), 0, 1);
