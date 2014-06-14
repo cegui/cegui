@@ -265,6 +265,7 @@ protected:
     bool handlePointerLeave(const SemanticInputEvent& event);
     bool handlePointerActivateEvent(const SemanticInputEvent& event);
     bool handlePointerPressHoldEvent(const SemanticInputEvent& event);
+
     Window* d_rootWindow;
     bool d_isDirty;
     PointerIndicator d_pointerIndicator;
