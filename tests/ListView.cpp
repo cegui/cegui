@@ -43,10 +43,12 @@ struct ListViewFixture
     ListViewFixture() : view("TaharezLook/ListView", "lv")
     {
         view.setModel(&model);
+        font_height = view.getFont()->getFontHeight();
     }
 
     ListView view;
     ItemModelStub model;
+    float font_height;
 
 };
 
@@ -65,7 +67,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
 {
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() / 2.0f));
+    ModelIndex index = view.indexAt(Vector2f(0, font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
@@ -81,7 +83,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithOffset_ReturnsCor
 
     ModelIndex index = view.indexAt(Vector2f(
         x_offset + 0,
-        y_offset + view.getFont()->getFontHeight() / 2.0f));
+        y_offset + font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
@@ -92,7 +94,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideSingleObject_ReturnsInvalidIndex)
 {
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() * 2));
+    ModelIndex index = view.indexAt(Vector2f(0, font_height * 2));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -103,7 +105,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
 
-    ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() * 2));
+    ModelIndex index = view.indexAt(Vector2f(0, font_height * 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
