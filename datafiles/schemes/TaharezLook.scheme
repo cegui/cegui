@@ -51,6 +51,6 @@
 
     <!-- Views -->
     <FalagardMapping windowType="TaharezLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="TaharezLook/ListView" />
-    <FalagardMapping windowType="TaharezLook/TreeView" targetType="CEGUI/TreeView" renderer="Core/TreeView" lookNFeel="TaharezLook/Tree" />
+    <FalagardMapping windowType="TaharezLook/TreeView" targetType="CEGUI/TreeView" renderer="Core/TreeView" lookNFeel="TaharezLook/TreeView" />
 </GUIScheme>
 
