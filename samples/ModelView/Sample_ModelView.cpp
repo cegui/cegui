@@ -112,17 +112,7 @@ bool ModelViewDemo::handleAddRandomItem(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
-    InventoryItem new_item = InventoryItem::make(
-        "New random item #" + PropertyHelper<int>::toString(d_newItemsCount), 0.3f);
-
-    InventoryItem new_subitem = InventoryItem::make(
-        "New sub item #" + PropertyHelper<int>::toString(d_newItemsCount), 1.3f);
-
-    new_item.d_items.push_back(new_subitem);
-
-    d_inventoryModel.addItem(new_item);
-
-    d_newItemsCount++;
+    d_inventoryModel.addRandomItem(0);
     return true;
 }
 

@@ -69,7 +69,8 @@ public:
     void load();
 
     void clear();
-    void addItem(InventoryItem& new_item);
+    void addItem(InventoryItem& new_item, size_t position);
+    void addRandomItem(size_t position);
     void removeItem(const CEGUI::ModelIndex& index);
 
     // implementation of ItemModel
@@ -83,6 +84,7 @@ public:
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
 private:
     InventoryItem d_inventoryRoot;
+    int d_randomItemsCount;
 };
 
 #endif
