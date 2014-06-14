@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   Model.cpp
+    filename:   InventoryModel.cpp
     created:    Tue May 27 2014
     author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "Model.h"
+#include "InventoryModel.h"
 #include "CEGUI/PropertyHelper.h"
 #include <iterator>
 #include <algorithm>

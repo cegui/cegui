@@ -29,7 +29,7 @@
 #define _Sample_Model_View_h_
 
 #include "SampleBase.h"
-#include "Model.h"
+#include "InventoryModel.h"
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/views/TreeView.h"
 
