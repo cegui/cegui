@@ -82,19 +82,8 @@ void FalagardListView::render(ListView* list_view)
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
-        ColourRect colour_rect(Colour(0.5f, 0.5f, 0.5f));
-        if (list_view->getSelectionBrushImage() != 0 && item.d_isSelected)
-        {
-            list_view->getSelectionBrushImage()->render(
-                list_view->getGeometryBuffers(),
-                item_rect,
-                &item_clipper,
-                true,
-                colour_rect);
-        }
-
-        renderString(list_view, rendered_string, item_rect.getPosition(),
-            list_view->getFont(), &item_clipper);
+        renderString(list_view, rendered_string, item_rect,
+            list_view->getFont(), &item_clipper, item.d_isSelected);
 
         item_pos.d_y += size.d_height;
     }

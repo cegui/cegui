@@ -74,18 +74,30 @@ Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
 }
 
 //----------------------------------------------------------------------------//
-void ItemViewRenderer::renderString(Window* window, RenderedString& rendered_string,
-    Vector2f draw_pos, const Font* font, const Rectf* item_clipper)
+void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_string,
+    Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected)
 {
+    if (view->getSelectionBrushImage() != 0 && is_selected)
+    {
+        ColourRect selection_rect(Colour(0.5f, 0.5f, 0.5f));
+        view->getSelectionBrushImage()->render(
+            view->getGeometryBuffers(),
+            draw_rect,
+            item_clipper,
+            true,
+            selection_rect);
+    }
+
+    Vector2f draw_pos = draw_rect.getPosition();
     for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
     {
         draw_pos.d_y += CoordConverter::alignToPixels(
             (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
-        rendered_string.draw(window, i, window->getGeometryBuffers(),
+        rendered_string.draw(view, i, view->getGeometryBuffers(),
             draw_pos, 0, item_clipper, 0.0f);
 
-        draw_pos.d_y += rendered_string.getPixelSize(window, i).d_height;
+        draw_pos.d_y += rendered_string.getPixelSize(view, i).d_height;
     }
 }
 }
