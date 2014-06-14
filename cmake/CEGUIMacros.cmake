@@ -439,10 +439,14 @@ endmacro()
 #
 # Define a CEGUI test executable
 #
-macro (cegui_add_test_executable _NAME)
+macro (cegui_add_test_executable _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE_FILES)
     set (CEGUI_TARGET_NAME ${_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
 
     cegui_gather_files()
+
+    # add the extra header/source files
+    set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES})
+    set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
 
     ###########################################################################
     #                     Statically Linked Executable
