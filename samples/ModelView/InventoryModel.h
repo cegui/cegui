@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   Model.h
+    filename:   InventoryModel.h
     created:    Tue May 27 2014
     author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
