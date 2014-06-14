@@ -240,9 +240,8 @@ bool ItemView::setSelectedItem(const ModelIndex& index)
     selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
 
     //TODO: take into account multiple & cumulative selection
-    SelectionStatesVector selection_states;
-    selection_states.push_back(selection_state);
-    d_indexSelectionStates = selection_states;
+    d_indexSelectionStates.clear();
+    d_indexSelectionStates.push_back(selection_state);
 
     invalidateView(false);
 

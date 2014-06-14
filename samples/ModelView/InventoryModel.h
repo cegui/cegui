@@ -89,7 +89,7 @@ public:
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
 
 
-    const InventoryItem& getInventoryRoot() const { return d_inventoryRoot; }
+    InventoryItem& getInventoryRoot() { return d_inventoryRoot; }
 private:
     InventoryItem d_inventoryRoot;
     int d_randomItemsCount;
