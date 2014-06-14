@@ -28,12 +28,22 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/views/TreeView.h"
+#include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
+
+//----------------------------------------------------------------------------//
+TreeViewItemRenderingState::TreeViewItemRenderingState() :
+    d_size(0, 0),
+    d_isSelected(false),
+    d_childId(0)
+{
+
+}
 
 //----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
@@ -61,34 +71,40 @@ void TreeView::prepareForRender()
         return;
 
     ModelIndex root_index = d_itemModel->getRootIndex();
-    d_rootItemState = computeRenderingStateForIndex(root_index);
+    d_rootItemState = computeRenderingStateForIndex(root_index, true);
     setIsDirty(false);
 }
 
 //----------------------------------------------------------------------------//
-TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(const ModelIndex& index)
+TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
+    const ModelIndex& index, bool isRoot)
 {
     if (d_itemModel == 0)
         return TreeViewItemRenderingState();
 
-    size_t child_count = d_itemModel->getChildCount(index);
-    ColourRect text_colour = getTextColourRect();
-
     TreeViewItemRenderingState state;
-    String text = d_itemModel->getData(index);
-    RenderedString rendered_string = getRenderedStringParser().parse(
-        text, getFont(), &d_textColourRect);
-    state.d_string = rendered_string;
-    state.d_size = Sizef(
-        rendered_string.getHorizontalExtent(this),
-        rendered_string.getVerticalExtent(this));
+    if (!isRoot)
+    {
+        String text = d_itemModel->getData(index);
+        RenderedString rendered_string = getRenderedStringParser().parse(
+            text, getFont(), &d_textColourRect);
+        state.d_string = rendered_string;
+        state.d_size = Sizef(
+            rendered_string.getHorizontalExtent(this),
+            rendered_string.getVerticalExtent(this));
 
-    //TODO: move the selection state to ItemView
-    //state.d_isSelected = isIndexSelected(index);
+        state.d_isSelected = isIndexSelected(index);
+    }
+
+    size_t child_count = d_itemModel->getChildCount(index);
     for (size_t child = 0; child < child_count; ++child)
     {
         ModelIndex child_index = d_itemModel->makeIndex(child, index);
-        state.d_children.push_back(computeRenderingStateForIndex(child_index));
+        TreeViewItemRenderingState child_state =
+            computeRenderingStateForIndex(child_index, false);
+        child_state.d_parentIndex = index;
+        child_state.d_childId = child;
+        state.d_children.push_back(child_state);
     }
 
     return state;
@@ -97,6 +113,41 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(const ModelIn
 //----------------------------------------------------------------------------//
 ModelIndex TreeView::indexAt(const Vector2f& position)
 {
+    if (d_itemModel == 0)
+        return ModelIndex();
+
+    //TODO: add prepareForLayout() as a cheaper operation alternative?
+    prepareForRender();
+
+    Vector2f window_position = CoordConverter::screenToWindow(*this, position);
+    float cur_height = 0;
+
+    return indexAtRecursive(d_rootItemState, cur_height, window_position);
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
+    float& cur_height, const Vector2f& window_position)
+{
+    float next_height = cur_height + item.d_size.d_height;
+
+    if (window_position.d_y >= cur_height &&
+        window_position.d_y <= next_height)
+    {
+        return ModelIndex(d_itemModel->makeIndex(item.d_childId, item.d_parentIndex));
+    }
+
+    cur_height = next_height;
+
+    for (size_t i = 0; i < item.d_children.size(); ++i)
+    {
+        ModelIndex index = indexAtRecursive(item.d_children.at(i),
+            cur_height, window_position);
+        if (index.d_modelData != 0)
+            return index;
+    }
+
     return ModelIndex();
 }
+
 }

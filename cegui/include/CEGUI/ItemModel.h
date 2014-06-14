@@ -165,6 +165,11 @@ public:
     /*!
     \brief
         Returns the root ModelIndex of this model.
+
+    \remark
+        This index is not used for any rendering, but only to provide the initial
+        access to the items. For example, in the case of a list this might contain
+        all the items in the list.
     */
     virtual ModelIndex getRootIndex() = 0;
 

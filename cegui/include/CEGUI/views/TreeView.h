@@ -48,6 +48,10 @@ struct CEGUIEXPORT TreeViewItemRenderingState
     RenderedString d_string;
     Sizef d_size;
     bool d_isSelected;
+    ModelIndex d_parentIndex;
+    size_t d_childId;
+
+    TreeViewItemRenderingState();
 };
 
 /*!
@@ -73,7 +77,10 @@ public:
 private:
     TreeViewItemRenderingState d_rootItemState;
 
-    TreeViewItemRenderingState computeRenderingStateForIndex(const ModelIndex& index);
+    TreeViewItemRenderingState computeRenderingStateForIndex(
+        const ModelIndex& index, bool isRoot);
+    ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
+        const Vector2f& window_position);
 };
 
 };
