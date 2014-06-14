@@ -42,6 +42,11 @@ static ModelIndex makeValidIndex(size_t id, std::vector<T>& vector)
 }
 
 //----------------------------------------------------------------------------//
+InventoryModel::InventoryModel() : d_randomItemsCount(0)
+{
+}
+
+//----------------------------------------------------------------------------//
 InventoryItem InventoryItem::make(const CEGUI::String& name, float weight)
 {
     InventoryItem item;
@@ -127,7 +132,7 @@ bool InventoryModel::isValidIndex(const ModelIndex& model_index) const
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_index)
+ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_index)
 {
     if (parent_index.d_modelData == 0)
         return ModelIndex();
@@ -137,7 +142,7 @@ CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& pare
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
+ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 {
     if (model_index.d_modelData == &d_inventoryRoot)
         return ModelIndex();
@@ -146,7 +151,7 @@ CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ModelIndex InventoryModel::getRootIndex()
+ModelIndex InventoryModel::getRootIndex()
 {
     return ModelIndex(&d_inventoryRoot);
 }
@@ -161,7 +166,7 @@ size_t InventoryModel::getChildCount(const ModelIndex& model_index)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::String InventoryModel::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
+String InventoryModel::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
 {
     if (model_index.d_modelData == 0)
         return "";
@@ -182,7 +187,7 @@ void InventoryModel::clear()
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addRandomItem(size_t position)
+void InventoryModel::addRandomItemWithChild(ModelIndex& parent, size_t position)
 {
     InventoryItem new_item = InventoryItem::make(
         "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount), 0.3f);
@@ -192,17 +197,18 @@ void InventoryModel::addRandomItem(size_t position)
 
     new_item.d_items.push_back(new_subitem);
 
-    addItem(new_item, position);
+    addItem(parent, new_item, position);
     d_randomItemsCount++;
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addItem(InventoryItem& new_item, size_t position)
+void InventoryModel::addItem(ModelIndex& parent, InventoryItem& new_item, size_t position)
 {
-    d_inventoryRoot.d_items.insert(d_inventoryRoot.d_items.begin() + position, new_item);
+    InventoryItem* item = static_cast<InventoryItem*>(parent.d_modelData);
+    item->d_items.insert(item->d_items.begin() + position, new_item);
 
     //TODO: see how we specify that we added items starting *before* or *after* that start index
-    notifyChildrenAdded(getRootIndex(), 0, 1);
+    notifyChildrenAdded(makeIndex(position, parent), 0, 1);
 }
 
 //----------------------------------------------------------------------------//
@@ -243,4 +249,10 @@ void InventoryModel::removeItem(const ModelIndex& index)
         parent_item->d_items.erase(itor);
         notifyChildrenRemoved(parent_index, child_id, 1);
     }
+}
+
+//----------------------------------------------------------------------------//
+std::ostream& operator<<(std::ostream& output, const InventoryItem& item)
+{
+    return output << item.d_name << " [" << item.d_weight << "]";
 }
