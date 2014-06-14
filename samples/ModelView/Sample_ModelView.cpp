@@ -63,7 +63,6 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
 
     d_treeView = static_cast<TreeView*>(win_mgr.createWindow("TaharezLook/TreeView", "treeView"));
     d_treeView->setPosition(UVector2(cegui_reldim(0.3f), cegui_reldim(0.1f)));
-    d_treeView->setSize(USize(cegui_reldim(0.3f), cegui_reldim(0.3f)));
     d_treeView->setModel(&d_inventoryModel);
     d_root->addChild(d_treeView);
 
