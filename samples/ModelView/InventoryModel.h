@@ -54,13 +54,14 @@ class InventoryItem
 public:
     float d_weight;
     CEGUI::String d_name;
-    std::vector<InventoryItem> d_items;
+    std::vector<InventoryItem*> d_items;
+    InventoryItem* d_parent;
 
     bool operator==(const InventoryItem& other);
     bool operator!=(const InventoryItem& other);
 
-    static InventoryItem make(const CEGUI::String& name, float weight);
-
+    InventoryItem();
+    static InventoryItem* make(const CEGUI::String& name, float weight, InventoryItem* parent = 0);
     friend std::ostream& operator<< (std::ostream& output, const InventoryItem& item);
 };
 
@@ -69,12 +70,13 @@ class InventoryModel : public CEGUI::ItemModel
 {
 public:
     InventoryModel();
+    ~InventoryModel();
 
     // simulate loading the model
     void load();
 
-    void clear();
-    void addItem(CEGUI::ModelIndex& parent, InventoryItem& new_item, size_t position);
+    void clear(bool notify = true);
+    void addItem(CEGUI::ModelIndex& parent, InventoryItem* new_item, size_t position);
     void addRandomItemWithChild(CEGUI::ModelIndex& parent, size_t position);
     void removeItem(const CEGUI::ModelIndex& index);
 
@@ -88,10 +90,11 @@ public:
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
 
-
-    InventoryItem& getInventoryRoot() { return d_inventoryRoot; }
+    InventoryItem& getInventoryRoot() { return *d_inventoryRoot; }
 private:
-    InventoryItem d_inventoryRoot;
+    void deleteChildren(InventoryItem* item, bool notify);
+
+    InventoryItem* d_inventoryRoot;
     int d_randomItemsCount;
 };
 
