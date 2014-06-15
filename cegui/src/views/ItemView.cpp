@@ -101,7 +101,8 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
     {
         ModelIndexSelectionState& state = *itor;
 
-        if (state.d_childId >= model_args.d_startId)
+        if (state.d_childId >= model_args.d_startId &&
+            d_itemModel->areIndicesEqual(state.d_parentIndex, model_args.d_parentIndex))
         {
             state.d_childId += model_args.d_count;
             state.d_selectedIndex = d_itemModel->makeIndex(state.d_childId, state.d_parentIndex);
