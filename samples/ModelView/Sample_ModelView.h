@@ -42,8 +42,12 @@ public:
 private:
 
     bool handleAddRandomItem(const CEGUI::EventArgs& e);
+    bool handleAddItemInList(const CEGUI::EventArgs& e);
+    bool handleAddItemInTree(const CEGUI::EventArgs& e);
     bool handleRemoveSelectedListItem(const CEGUI::EventArgs& e);
+    bool handleRemoveSelectedTreeItem(const CEGUI::EventArgs& e);
     bool handleClearItems(const CEGUI::EventArgs& e);
+    void removeSelectedItemFromView(CEGUI::ItemView* view);
 
     CEGUI::Window* d_root;
     InventoryModel d_inventoryModel;
