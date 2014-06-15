@@ -31,17 +31,17 @@
 #include <iostream>
 #include <sstream>
 
+using namespace CEGUI;
+
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
+bool ModelViewDemo::initialise(GUIContext* gui_context)
 {
-    using namespace CEGUI;
-
-    d_usedFiles = CEGUI::String(__FILE__);
+    d_usedFiles = String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     gui_context->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
@@ -57,28 +57,33 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
     d_newItemsCount = 0;
 
     d_listView = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
-    d_listView->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim(0.1f)));
     d_listView->setModel(&d_inventoryModel);
-    d_root->addChild(d_listView);
+    d_root->getChild("ListViewHolder")->addChild(d_listView);
 
     d_treeView = static_cast<TreeView*>(win_mgr.createWindow("TaharezLook/TreeView", "treeView"));
-    d_treeView->setPosition(UVector2(cegui_reldim(0.3f), cegui_reldim(0.1f)));
     d_treeView->setModel(&d_inventoryModel);
-    d_root->addChild(d_treeView);
+    d_root->getChild("TreeViewHolder")->addChild(d_treeView);
 
-    Window* btn_add_item = d_root->getChild("btnAddRandomItem");
-    btn_add_item->subscribeEvent(PushButton::EventClicked,
+    d_root->getChild("btnAddRandomItem")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleAddRandomItem, this));
 
-    Window* btn_remove_item = d_root->getChild("btnRemoveSelectedListItem");
-    btn_remove_item->subscribeEvent(PushButton::EventClicked,
+    d_root->getChild("btnAddRandomItemInList")->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleAddItemInList, this));
+
+    d_root->getChild("btnAddRandomItemInTree")->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleAddItemInTree, this));
+
+    d_root->getChild("btnRemoveSelectedListItem")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleRemoveSelectedListItem, this));
 
-    Window* btn_clear_list = d_root->getChild("btnClearItems");
-    btn_clear_list->subscribeEvent(PushButton::EventClicked,
+    d_root->getChild("btnRemoveSelectedTreeItem")->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleRemoveSelectedTreeItem, this));
+
+    d_root->getChild("btnClearAllItems")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleClearItems, this));
 
     return true;
+
 }
 
 /*************************************************************************
@@ -89,30 +94,67 @@ void ModelViewDemo::deinitialise()
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::handleClearItems(const CEGUI::EventArgs& e)
+bool ModelViewDemo::handleClearItems(const EventArgs& e)
 {
     d_inventoryModel.clear();
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::handleRemoveSelectedListItem(const CEGUI::EventArgs& e)
+bool ModelViewDemo::handleRemoveSelectedListItem(const EventArgs& e)
 {
-    const std::vector<CEGUI::ModelIndexSelectionState>& selections = d_listView->getIndexSelectionStates();
-    if (!selections.empty())
-    {
-        d_inventoryModel.removeItem((*selections.begin()).d_selectedIndex);
-    }
+    removeSelectedItemFromView(d_listView);
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::handleAddRandomItem(const CEGUI::EventArgs& e)
+bool ModelViewDemo::handleRemoveSelectedTreeItem(const EventArgs& e)
 {
-    using namespace CEGUI;
+    removeSelectedItemFromView(d_treeView);
+    return true;
+}
 
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleAddRandomItem(const EventArgs& e)
+{
     d_inventoryModel.addRandomItemWithChild(d_inventoryModel.getRootIndex(), 0);
     return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleAddItemInList(const EventArgs& e)
+{
+    const std::vector<ModelIndexSelectionState>& selections = d_listView->getIndexSelectionStates();
+    if (selections.empty())
+        return false;
+
+    const ModelIndexSelectionState& selection = (*selections.begin());
+
+    d_inventoryModel.addRandomItemWithChild(selection.d_parentIndex, selection.d_childId + 1);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleAddItemInTree(const EventArgs& e)
+{
+    const std::vector<ModelIndexSelectionState>& selections = d_treeView->getIndexSelectionStates();
+    if (selections.empty())
+        return false;
+
+    const ModelIndexSelectionState& selection = (*selections.begin());
+
+    d_inventoryModel.addRandomItemWithChild(selection.d_selectedIndex, 0);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void ModelViewDemo::removeSelectedItemFromView(ItemView* view)
+{
+    const std::vector<ModelIndexSelectionState>& selections = view->getIndexSelectionStates();
+    if (!selections.empty())
+    {
+        d_inventoryModel.removeItem((*selections.begin()).d_selectedIndex);
+    }
 }
 
 /*************************************************************************
