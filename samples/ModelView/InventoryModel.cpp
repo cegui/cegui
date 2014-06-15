@@ -36,23 +36,26 @@ template<typename T>
 static ModelIndex makeValidIndex(size_t id, std::vector<T>& vector)
 {
     if (id >= 0 && id < vector.size())
-        return ModelIndex(&vector.at(id));
+        return ModelIndex(vector.at(id));
 
     return ModelIndex();
 }
 
 //----------------------------------------------------------------------------//
-InventoryModel::InventoryModel() : d_randomItemsCount(0)
+InventoryModel::InventoryModel() :
+    d_randomItemsCount(0),
+    d_inventoryRoot(InventoryItem::make("Inventory", 0.0f))
 {
 }
 
 //----------------------------------------------------------------------------//
-InventoryItem InventoryItem::make(const CEGUI::String& name, float weight)
+InventoryItem* InventoryItem::make(const CEGUI::String& name, float weight, InventoryItem* parent)
 {
-    InventoryItem item;
+    InventoryItem* item = new InventoryItem;
 
-    item.d_name = name;
-    item.d_weight = weight;
+    item->d_name = name;
+    item->d_weight = weight;
+    item->d_parent = parent;
 
     return item;
 }
@@ -77,50 +80,52 @@ bool InventoryItem::operator!=(const InventoryItem& other)
 {
     return !(*this == other);
 }
+
+//----------------------------------------------------------------------------//
+InventoryItem::InventoryItem() : d_parent(0)
+{
+}
 //----------------------------------------------------------------------------//
 void InventoryModel::load()
 {
-    d_inventoryRoot = InventoryItem::make("Inventory", 0.0f);
+    InventoryItem* backpack = InventoryItem::make("Trip backpack", 2.0f, d_inventoryRoot);
+    InventoryItem* prev_matryoshka = 0;
 
-    InventoryItem prev_matryoshka;
     // matryoshka D to A
-    bool has_child = false;
     for (char chr = 'D'; chr >= 'A'; --chr)
     {
-        InventoryItem matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f);
+        InventoryItem* matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f, prev_matryoshka);
 
-        if (has_child)
-            matryoshka.d_items.push_back(prev_matryoshka);
+        if (prev_matryoshka != 0)
+            matryoshka->d_items.push_back(prev_matryoshka);
 
         prev_matryoshka = matryoshka;
-        has_child = true;
     }
 
-    InventoryItem beans = InventoryItem::make("Beans!", 0.1f);
-    InventoryItem beans_can = InventoryItem::make("Beans can", 1.0f);
-    beans_can.d_items.push_back(beans);
+    InventoryItem* beans_can = InventoryItem::make("Beans can", 1.0f, backpack);
+    InventoryItem* beans = InventoryItem::make("Beans!", 0.1f, beans_can);
+    beans_can->d_items.push_back(beans);
 
-    InventoryItem backpack = InventoryItem::make("Trip backpack", 2.0f);
-    backpack.d_items.push_back(prev_matryoshka);
-    backpack.d_items.push_back(beans_can);
+    backpack->d_items.push_back(prev_matryoshka);
+    backpack->d_items.push_back(beans_can);
 
-    d_inventoryRoot.d_items.push_back(backpack);
+    d_inventoryRoot->d_items.push_back(backpack);
 
-    InventoryItem bow = InventoryItem::make("Bow", 23.451f);
+    InventoryItem* bow = InventoryItem::make("Bow", 23.451f, d_inventoryRoot);
     for (int i = 0; i < 25; ++i)
     {
-        InventoryItem arrow = InventoryItem::make(
-            "arrow " + PropertyHelper<int>::toString(i), 0.2f);
-        bow.d_items.push_back(arrow);
+        InventoryItem* arrow = InventoryItem::make(
+            "arrow " + PropertyHelper<int>::toString(i), 0.2f, bow);
+        bow->d_items.push_back(arrow);
     }
-    d_inventoryRoot.d_items.push_back(bow);
+    d_inventoryRoot->d_items.push_back(bow);
 
     // generate *many* items :D
     for (int i = 1960; i < 2000; i += 2)
     {
-        InventoryItem almanach = InventoryItem::make(
-            "Almanach " + PropertyHelper<int>::toString(i), 0.34f);
-        d_inventoryRoot.d_items.push_back(almanach);
+        InventoryItem* almanach = InventoryItem::make(
+            "Almanach " + PropertyHelper<int>::toString(i), 0.34f, d_inventoryRoot);
+        d_inventoryRoot->d_items.push_back(almanach);
     }
 }
 
@@ -144,7 +149,7 @@ ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_inde
 //----------------------------------------------------------------------------//
 ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 {
-    if (model_index.d_modelData == &d_inventoryRoot)
+    if (model_index.d_modelData == d_inventoryRoot)
         return ModelIndex();
 
     return getRootIndex();
@@ -153,14 +158,14 @@ ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 //----------------------------------------------------------------------------//
 ModelIndex InventoryModel::getRootIndex()
 {
-    return ModelIndex(&d_inventoryRoot);
+    return ModelIndex(d_inventoryRoot);
 }
 
 //----------------------------------------------------------------------------//
 size_t InventoryModel::getChildCount(const ModelIndex& model_index)
 {
     if (model_index.d_modelData == 0)
-        return d_inventoryRoot.d_items.size();
+        return d_inventoryRoot->d_items.size();
 
     return static_cast<InventoryItem*>(model_index.d_modelData)->d_items.size();
 }
@@ -179,30 +184,30 @@ String InventoryModel::getData(const ModelIndex& model_index, ItemDataRole role 
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::clear()
+void InventoryModel::clear(bool notify)
 {
-    size_t items_count = d_inventoryRoot.d_items.size();
-    d_inventoryRoot.d_items.clear();
-    notifyChildrenRemoved(getRootIndex(), 0, items_count);
+    deleteChildren(d_inventoryRoot, notify);
 }
 
 //----------------------------------------------------------------------------//
 void InventoryModel::addRandomItemWithChild(ModelIndex& parent, size_t position)
 {
-    InventoryItem new_item = InventoryItem::make(
-        "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount), 0.3f);
+    InventoryItem* new_item = InventoryItem::make(
+        "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount),
+        0.3f, static_cast<InventoryItem*>(parent.d_modelData));
 
-    InventoryItem new_subitem = InventoryItem::make(
-        "New sub item #" + PropertyHelper<int>::toString(d_randomItemsCount), 1.3f);
+    InventoryItem* new_subitem = InventoryItem::make(
+        "New sub item #" + PropertyHelper<int>::toString(d_randomItemsCount),
+        1.3f, new_item);
 
-    new_item.d_items.push_back(new_subitem);
+    new_item->d_items.push_back(new_subitem);
 
     addItem(parent, new_item, position);
     d_randomItemsCount++;
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addItem(ModelIndex& parent, InventoryItem& new_item, size_t position)
+void InventoryModel::addItem(ModelIndex& parent, InventoryItem* new_item, size_t position)
 {
     InventoryItem* item = static_cast<InventoryItem*>(parent.d_modelData);
     item->d_items.insert(item->d_items.begin() + position, new_item);
@@ -224,8 +229,8 @@ int InventoryModel::getChildId(const ModelIndex& model_index)
     InventoryItem* parent_item = static_cast<InventoryItem*>(parent_index.d_modelData);
     InventoryItem* child_item = static_cast<InventoryItem*>(model_index.d_modelData);
 
-    std::vector<InventoryItem>::iterator itor = std::find(
-        parent_item->d_items.begin(), parent_item->d_items.end(), *child_item);
+    std::vector<InventoryItem*>::iterator itor = std::find(
+        parent_item->d_items.begin(), parent_item->d_items.end(), child_item);
 
     if (itor == parent_item->d_items.end())
         return -1;
@@ -240,17 +245,49 @@ void InventoryModel::removeItem(const ModelIndex& index)
     InventoryItem* parent_item = static_cast<InventoryItem*>(parent_index.d_modelData);
     InventoryItem* child_item = static_cast<InventoryItem*>(index.d_modelData);
 
-    std::vector<InventoryItem>::iterator itor = std::find(
-        parent_item->d_items.begin(), parent_item->d_items.end(), *child_item);
+    std::vector<InventoryItem*>::iterator itor = std::find(
+        parent_item->d_items.begin(), parent_item->d_items.end(), child_item);
 
     if (itor != parent_item->d_items.end())
     {
         size_t child_id = std::distance(parent_item->d_items.begin(), itor);
+
+        deleteChildren(*itor, true);
+        delete *itor;
         parent_item->d_items.erase(itor);
+
         notifyChildrenRemoved(parent_index, child_id, 1);
     }
 }
 
+//----------------------------------------------------------------------------//
+InventoryModel::~InventoryModel()
+{
+    clear(false);
+    delete d_inventoryRoot;
+}
+
+//----------------------------------------------------------------------------//
+void InventoryModel::deleteChildren(InventoryItem* item, bool notify)
+{
+    if (item == 0)
+        return;
+
+    size_t items_count = item->d_items.size();
+    std::vector<InventoryItem*>::iterator itor = item->d_items.begin();
+
+    while (itor != item->d_items.end())
+    {
+        deleteChildren(*itor, notify);
+        delete *itor;
+        itor = item->d_items.erase(itor);
+    }
+
+    if (notify)
+    {
+        notifyChildrenRemoved(ModelIndex(item), 0, items_count);
+    }
+}
 //----------------------------------------------------------------------------//
 std::ostream& operator<<(std::ostream& output, const InventoryItem& item)
 {

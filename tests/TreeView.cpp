@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        &model.getInventoryRoot().d_items.at(0),
+        model.getInventoryRoot().d_items.at(0),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectViewWithOffset_ReturnsCorrectIn
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        &model.getInventoryRoot().d_items.at(0),
+        model.getInventoryRoot().d_items.at(0),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        &model.getInventoryRoot().d_items.at(1),
+        model.getInventoryRoot().d_items.at(1),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
