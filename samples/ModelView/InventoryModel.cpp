@@ -94,10 +94,13 @@ void InventoryModel::load()
     // matryoshka D to A
     for (char chr = 'D'; chr >= 'A'; --chr)
     {
-        InventoryItem* matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f, prev_matryoshka);
+        InventoryItem* matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f, backpack);
 
         if (prev_matryoshka != 0)
+        {
+            prev_matryoshka->d_parent = matryoshka;
             matryoshka->d_items.push_back(prev_matryoshka);
+        }
 
         prev_matryoshka = matryoshka;
     }
@@ -194,7 +197,7 @@ void InventoryModel::clear(bool notify)
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addRandomItemWithChild(ModelIndex& parent, size_t position)
+void InventoryModel::addRandomItemWithChild(const ModelIndex& parent, size_t position)
 {
     InventoryItem* new_item = InventoryItem::make(
         "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount),
@@ -211,13 +214,12 @@ void InventoryModel::addRandomItemWithChild(ModelIndex& parent, size_t position)
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addItem(ModelIndex& parent, InventoryItem* new_item, size_t position)
+void InventoryModel::addItem(const ModelIndex& parent, InventoryItem* new_item, size_t position)
 {
     InventoryItem* item = static_cast<InventoryItem*>(parent.d_modelData);
     item->d_items.insert(item->d_items.begin() + position, new_item);
 
-    //TODO: see how we specify that we added items starting *before* or *after* that start index
-    notifyChildrenAdded(makeIndex(position, parent), 0, 1);
+    notifyChildrenAdded(parent, position, 1);
 }
 
 //----------------------------------------------------------------------------//
