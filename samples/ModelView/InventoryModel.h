@@ -76,8 +76,8 @@ public:
     void load();
 
     void clear(bool notify = true);
-    void addItem(CEGUI::ModelIndex& parent, InventoryItem* new_item, size_t position);
-    void addRandomItemWithChild(CEGUI::ModelIndex& parent, size_t position);
+    void addItem(const CEGUI::ModelIndex& parent, InventoryItem* new_item, size_t position);
+    void addRandomItemWithChild(const CEGUI::ModelIndex& parent, size_t position);
     void removeItem(const CEGUI::ModelIndex& index);
 
     // implementation of ItemModel
