@@ -152,7 +152,11 @@ ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
     if (model_index.d_modelData == d_inventoryRoot)
         return ModelIndex();
 
-    return getRootIndex();
+    InventoryItem* item = static_cast<InventoryItem*>(model_index.d_modelData);
+    if (item->d_parent == 0)
+        return getRootIndex();
+
+    return ModelIndex(item->d_parent);
 }
 
 //----------------------------------------------------------------------------//

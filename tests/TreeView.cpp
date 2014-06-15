@@ -157,6 +157,24 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 }
 
 //----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
+{
+    model.load();
+    // first child
+    view.setSelectedItem(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
+    view.prepareForRender();
+
+    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    view.prepareForRender();
+
+    BOOST_REQUIRE(!view.getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(!view.getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE(!view.getRootItemState().d_children.at(2).d_isSelected);
+    BOOST_REQUIRE(view.getRootItemState().d_children.at(2).d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(!view.getRootItemState().d_children.at(3).d_isSelected);
+}
+
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
 {
     model.load();
