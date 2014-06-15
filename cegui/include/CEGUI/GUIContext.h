@@ -252,6 +252,7 @@ protected:
 
     // Input event handlers
     void initializeSemanticEventHandlers();
+    void deleteSemanticEventHandlers();
 
     bool handleTextInputEvent(const TextInputEvent& event);
     bool handleSemanticInputEvent(const SemanticInputEvent& event);
