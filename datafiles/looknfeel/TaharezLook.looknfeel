@@ -4267,7 +4267,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ListView">
-        <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="Size" value="{{1, 0}, {1, 0}}" />
         <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
@@ -4394,7 +4394,7 @@
     -->
     <WidgetLook name="TaharezLook/TreeView">
         <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="Size" value="{{1, 0}, {1, 0}}" />
         <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
