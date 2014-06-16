@@ -135,6 +135,27 @@ void register_WidgetLookManager_class(){
                     *\n" );
         
         }
+        { //::CEGUI::WidgetLookManager::getWidgetLookAsString
+        
+            typedef ::CEGUI::String ( ::CEGUI::WidgetLookManager::*getWidgetLookAsString_function_type )( ::CEGUI::String const & ) const;
+            
+            WidgetLookManager_exposer.def( 
+                "getWidgetLookAsString"
+                , getWidgetLookAsString_function_type( &::CEGUI::WidgetLookManager::getWidgetLookAsString )
+                , ( bp::arg("widgetLookName") )
+                , "*!\n\
+                    \n\
+                        Writes a complete WidgetLookFeel to a string. Note that XML file header and\n\
+                        Falagard openingclosing tags will also be written.\n\
+            \n\
+                    @param name\n\
+                        String holding the name of the WidgetLookFeel to be output to the string.\n\
+            \n\
+                    @return\n\
+                        String containing the WidgetLook parsed to XML.\n\
+                    *\n" );
+        
+        }
         { //::CEGUI::WidgetLookManager::getWidgetLookIterator
         
             typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > > > ( ::CEGUI::WidgetLookManager::*getWidgetLookIterator_function_type )(  ) const;
@@ -142,6 +163,27 @@ void register_WidgetLookManager_class(){
             WidgetLookManager_exposer.def( 
                 "getWidgetLookIterator"
                 , getWidgetLookIterator_function_type( &::CEGUI::WidgetLookManager::getWidgetLookIterator ) );
+        
+        }
+        { //::CEGUI::WidgetLookManager::getWidgetLookSetAsString
+        
+            typedef ::CEGUI::String ( ::CEGUI::WidgetLookManager::*getWidgetLookSetAsString_function_type )( ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > const & ) const;
+            
+            WidgetLookManager_exposer.def( 
+                "getWidgetLookSetAsString"
+                , getWidgetLookSetAsString_function_type( &::CEGUI::WidgetLookManager::getWidgetLookSetAsString )
+                , ( bp::arg("widgetLookNameSet") )
+                , "*!\n\
+                    \n\
+                        Writes a set WidgetLookFeels to a string. Note that XML file header and\n\
+                        Falagard openingclosing tags will also be written.\n\
+            \n\
+                    @param widgetLookNameSet\n\
+                        Set of strings containing the WidgetLookFeel names to be output to the string.\n\
+            \n\
+                    @return\n\
+                        String containing the set of WidgetLookFeels parsed to XML.\n\
+                    *\n" );
         
         }
         { //::CEGUI::WidgetLookManager::isWidgetLookAvailable
@@ -255,9 +297,9 @@ void register_WidgetLookManager_class(){
                 , ( bp::arg("prefix"), bp::arg("out_stream") )
                 , "*!\n\
                     \n\
-                        Writes a series of complete Widge Look objects to a stream.  Note that xml file header\
+                        Writes a series of complete WidgetLook objects to a stream. Note that XML file header\
                         and\n\
-                        falagard openingclosing tags will also be written.\n\
+                        Falagard openingclosing tags will also be written.\n\
             \n\
                         The  prefix specifies a name prefix common to all widget looks to be written, you\
                         could\n\
@@ -275,6 +317,33 @@ void register_WidgetLookManager_class(){
                     *\n" );
         
         }
+        { //::CEGUI::WidgetLookManager::writeWidgetLookSetToStream
+        
+            typedef void ( ::CEGUI::WidgetLookManager::*writeWidgetLookSetToStream_function_type )( ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > const &,::CEGUI::OutStream & ) const;
+            
+            WidgetLookManager_exposer.def( 
+                "writeWidgetLookSetToStream"
+                , writeWidgetLookSetToStream_function_type( &::CEGUI::WidgetLookManager::writeWidgetLookSetToStream )
+                , ( bp::arg("widgetLookNameSet"), bp::arg("out_stream") )
+                , "*!\n\
+                    \n\
+                        Writes a series of complete WidgetLook objects to a stream. Note that XML file header\
+                        and\n\
+                        Falagard openingclosing tags will also be written.\n\
+            \n\
+                        The  widgetLookSet specifies a set of strings containing the names of the\
+                        WidgetLookFeels\n\
+                        to be written to the stream.\n\
+            \n\
+                    @param widgetLookNameSet\n\
+                        Set of strings containing the WidgetLookFeel names to be added to be written to the\
+                        stream.\n\
+            \n\
+                    @param out_stream\n\
+                        OutStream where XML data should be sent.\n\
+                    *\n" );
+        
+        }
         { //::CEGUI::WidgetLookManager::writeWidgetLookToStream
         
             typedef void ( ::CEGUI::WidgetLookManager::*writeWidgetLookToStream_function_type )( ::CEGUI::String const &,::CEGUI::OutStream & ) const;
@@ -282,14 +351,14 @@ void register_WidgetLookManager_class(){
             WidgetLookManager_exposer.def( 
                 "writeWidgetLookToStream"
                 , writeWidgetLookToStream_function_type( &::CEGUI::WidgetLookManager::writeWidgetLookToStream )
-                , ( bp::arg("name"), bp::arg("out_stream") )
+                , ( bp::arg("widgetLookName"), bp::arg("out_stream") )
                 , "*!\n\
                     \n\
-                        Writes a complete Widge Look to a stream.  Note that xml file header and\n\
-                        falagard openingclosing tags will also be written.\n\
+                        Writes a complete WidgetLookFeel to a stream. Note that XML file header and\n\
+                        Falagard openingclosing tags will also be written.\n\
             \n\
                     @param name\n\
-                        String holding the name of the widget look to be output to the stream.\n\
+                        String holding the name of the WidgetLookFeel to be output to the stream.\n\
             \n\
                     @param out_stream\n\
                         OutStream where XML data should be sent.\n\
