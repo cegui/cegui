@@ -47,6 +47,7 @@ private:
     bool handleRemoveSelectedListItem(const CEGUI::EventArgs& e);
     bool handleRemoveSelectedTreeItem(const CEGUI::EventArgs& e);
     bool handleClearItems(const CEGUI::EventArgs& e);
+    bool handleUpdateItemName(const CEGUI::EventArgs& e);
     void removeSelectedItemFromView(CEGUI::ItemView* view);
 
     CEGUI::Window* d_root;
@@ -55,6 +56,7 @@ private:
     CEGUI::ListView* d_listView;
     CEGUI::TreeView* d_treeView;
     int d_newItemsCount;
+    CEGUI::Window* d_txtNewItemName;
 };
 
-#endif  // end of guard _Sample_Model_View_h_
+#endif

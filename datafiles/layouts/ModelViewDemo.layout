@@ -51,5 +51,17 @@
             <Property name="Text" value="Tree View" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
+        <Window type="TaharezLook/Editbox" name="txtNewItemName" >
+            <Property name="Area" value="{{0,181},{0,560},{0,367},{0,592}}" />
+        </Window>
+        <Window type="TaharezLook/Label" name="Label" >
+            <Property name="Area" value="{{0,21},{0,561},{0,149},{0,593}}" />
+            <Property name="Text" value="New item name:" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        </Window>
+        <Window type="TaharezLook/Button" name="btnUpdateItemName" >
+            <Property name="Area" value="{{0,19},{0,604},{0,365},{0,636}}" />
+            <Property name="Text" value="Update selected item&apos;s name" />
+        </Window>
     </Window>
 </GUILayout>

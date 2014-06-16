@@ -82,6 +82,11 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     d_root->getChild("btnClearAllItems")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleClearItems, this));
 
+    d_root->getChild("btnUpdateItemName")->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleUpdateItemName, this));
+
+    d_txtNewItemName = d_root->getChild("txtNewItemName");
+
     return true;
 
 }
@@ -144,6 +149,20 @@ bool ModelViewDemo::handleAddItemInTree(const EventArgs& e)
     const ModelIndexSelectionState& selection = (*selections.begin());
 
     d_inventoryModel.addRandomItemWithChild(selection.d_selectedIndex, 0);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleUpdateItemName(const EventArgs& e)
+{
+    const std::vector<ModelIndexSelectionState>& selections = d_treeView->getIndexSelectionStates();
+    if (selections.empty())
+        return false;
+
+    const ModelIndexSelectionState& selection = (*selections.begin());
+
+    d_inventoryModel.updateItemName(selection.d_selectedIndex, d_txtNewItemName->getText());
+
     return true;
 }
 
