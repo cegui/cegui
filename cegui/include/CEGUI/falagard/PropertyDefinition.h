@@ -124,7 +124,7 @@ protected:
     void writeDefinitionXMLAdditionalAttributes(XMLSerializer& xml_stream) const
     {
         if(d_dataType.compare("Generic") != 0)
-            xml_stream.attribute("type", d_dataType);
+            xml_stream.attribute("type", FalagardPropertyBase<T>::d_dataType);
     }
 
 
