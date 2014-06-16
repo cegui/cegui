@@ -208,6 +208,14 @@ namespace CEGUI
         xml.closeTag();
     }
 
+    String WidgetLookManager::getWidgetLookAsString(const String& widgetLookName) const
+    {
+        std::ostringstream str;
+        writeWidgetLookToStream(widgetLookName, str);
+
+        return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
+    }
+
     void WidgetLookManager::writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const
     {
         // start of file
@@ -215,6 +223,8 @@ namespace CEGUI
         XMLSerializer xml(out_stream);
         // output root element
         xml.openTag("Falagard");
+        xml.attribute("version", Falagard_xmlHandler::NativeVersion);
+
         for (WidgetLookList::const_iterator curr = d_widgetLooks.begin(); curr != d_widgetLooks.end(); ++curr)
         {
             if ((*curr).first.compare(0, prefix.length(), prefix) == 0)
@@ -223,6 +233,35 @@ namespace CEGUI
 
         // close the root tags to terminate the file
         xml.closeTag();
+    }
+
+    void WidgetLookManager::writeWidgetLookSetToStream(const WidgetLookNameSet& widgetLookNameSet, OutStream& out_stream) const
+    {
+        // start of file
+        // output xml header
+        XMLSerializer xml(out_stream);
+        // output root element
+        xml.openTag("Falagard");
+        xml.attribute("version", Falagard_xmlHandler::NativeVersion);
+
+        for (WidgetLookNameSet::const_iterator iter = widgetLookNameSet.begin(); iter != widgetLookNameSet.end(); ++iter)
+        {
+            const CEGUI::String& currentWidgetLookName = *iter;
+
+            const WidgetLookFeel& curWidgetLookFeel = this->getWidgetLook(currentWidgetLookName);
+            curWidgetLookFeel.writeXMLToStream(xml);
+        }
+
+        // close the root tags to terminate the file
+        xml.closeTag();
+    }
+
+    String WidgetLookManager::getWidgetLookSetAsString(const WidgetLookNameSet& widgetLookNameSet) const
+    {
+        std::ostringstream str;
+        writeWidgetLookSetToStream(widgetLookNameSet, str);
+
+        return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
     }
 
     WidgetLookManager::WidgetLookIterator
