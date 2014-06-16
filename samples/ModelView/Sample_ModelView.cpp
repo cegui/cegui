@@ -82,8 +82,11 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     d_root->getChild("btnClearAllItems")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleClearItems, this));
 
-    d_root->getChild("btnUpdateItemName")->subscribeEvent(PushButton::EventClicked,
-        Event::Subscriber(&ModelViewDemo::handleUpdateItemName, this));
+    d_root->getChild("btnUpdateListItemName")->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleUpdateListItemName, this));
+
+    d_root->getChild("btnUpdateTreeItemName")->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleUpdateTreeItemName, this));
 
     d_txtNewItemName = d_root->getChild("txtNewItemName");
 
@@ -153,16 +156,16 @@ bool ModelViewDemo::handleAddItemInTree(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::handleUpdateItemName(const EventArgs& e)
+bool ModelViewDemo::handleUpdateListItemName(const EventArgs& e)
 {
-    const std::vector<ModelIndexSelectionState>& selections = d_treeView->getIndexSelectionStates();
-    if (selections.empty())
-        return false;
+    updateSelectedIndexText(d_listView, d_txtNewItemName->getText());
+    return true;
+}
 
-    const ModelIndexSelectionState& selection = (*selections.begin());
-
-    d_inventoryModel.updateItemName(selection.d_selectedIndex, d_txtNewItemName->getText());
-
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleUpdateTreeItemName(const EventArgs& e)
+{
+    updateSelectedIndexText(d_treeView, d_txtNewItemName->getText());
     return true;
 }
 
@@ -176,6 +179,17 @@ void ModelViewDemo::removeSelectedItemFromView(ItemView* view)
     }
 }
 
+//----------------------------------------------------------------------------//
+void ModelViewDemo::updateSelectedIndexText(CEGUI::ItemView* view, const String& text)
+{
+    const std::vector<ModelIndexSelectionState>& selections = view->getIndexSelectionStates();
+    if (selections.empty())
+        return;
+
+    const ModelIndexSelectionState& selection = (*selections.begin());
+
+    d_inventoryModel.updateItemName(selection.d_selectedIndex, text);
+}
 /*************************************************************************
     Define the module function that returns an instance of the sample
 *************************************************************************/

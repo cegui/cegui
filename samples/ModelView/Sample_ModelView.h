@@ -47,7 +47,9 @@ private:
     bool handleRemoveSelectedListItem(const CEGUI::EventArgs& e);
     bool handleRemoveSelectedTreeItem(const CEGUI::EventArgs& e);
     bool handleClearItems(const CEGUI::EventArgs& e);
-    bool handleUpdateItemName(const CEGUI::EventArgs& e);
+    bool handleUpdateListItemName(const CEGUI::EventArgs& e);
+    bool handleUpdateTreeItemName(const CEGUI::EventArgs& e);
+    void updateSelectedIndexText(CEGUI::ItemView* view, const CEGUI::String& text);
     void removeSelectedItemFromView(CEGUI::ItemView* view);
 
     CEGUI::Window* d_root;
