@@ -69,4 +69,10 @@ void ItemModel::notifyChildrenRemoved(ModelIndex parent_index, size_t start_id, 
     fireEvent(EventChildrenRemoved, args);
 }
 
+//----------------------------------------------------------------------------//
+void ItemModel::notifyChildrenDataChanged(ModelIndex parent_index, size_t start_id, size_t count)
+{
+    ModelEventArgs args(this, parent_index, start_id, count);
+    fireEvent(EventChildrenDataChanged, args);
+}
 }
