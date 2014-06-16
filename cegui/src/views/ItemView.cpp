@@ -85,10 +85,15 @@ void ItemView::setModel(ItemModel* item_model)
 //----------------------------------------------------------------------------//
 void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 {
-    d_eventChildrenAddedConnection = d_itemModel->subscribeEvent(ItemModel::EventChildrenAdded,
+    d_eventChildrenAddedConnection = d_itemModel->subscribeEvent(
+        ItemModel::EventChildrenAdded,
         &ItemView::onChildrenAdded, this);
-    d_eventChildrenRemovedConnection = d_itemModel->subscribeEvent(ItemModel::EventChildrenRemoved,
+    d_eventChildrenRemovedConnection = d_itemModel->subscribeEvent(
+        ItemModel::EventChildrenRemoved,
         &ItemView::onChildrenRemoved, this);
+    d_eventChildrenDataChangedConnection = d_itemModel->subscribeEvent(
+        ItemModel::EventChildrenDataChanged,
+        &ItemView::onChildrenDataChanged, this);
 }
 
 //----------------------------------------------------------------------------//
@@ -135,7 +140,15 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
     }
 
     invalidateView(false);
+    return true;
+}
 
+//----------------------------------------------------------------------------//
+bool ItemView::onChildrenDataChanged(const EventArgs& args)
+{
+    const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
+
+    invalidateView(false);
     return true;
 }
 
@@ -161,11 +174,15 @@ void ItemView::disconnectModelEvents()
 
     if (d_eventChildrenRemovedConnection != 0)
         d_eventChildrenRemovedConnection->disconnect();
+
+    if (d_eventChildrenDataChangedConnection != 0)
+        d_eventChildrenDataChangedConnection->disconnect();
 }
 
 //----------------------------------------------------------------------------//
 void ItemView::invalidateView(bool recursive)
 {
+    //TODO: allow invalidation only of certain parts (e.g.: items/indices)
     setIsDirty(true);
     invalidate(recursive);
 }

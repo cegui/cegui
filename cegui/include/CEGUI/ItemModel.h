@@ -213,7 +213,8 @@ public:
         If this method is overridden, it *needs* to call this base method or invoke
         manually the EventChildrenAdded event.
     */
-    virtual void notifyChildrenAdded(ModelIndex parent_index, size_t start_id, size_t count);
+    virtual void notifyChildrenAdded(ModelIndex parent_index,
+        size_t start_id, size_t count);
 
     /*!
     \brief
@@ -233,7 +234,20 @@ public:
         If this method is overridden, it *needs* to call this base method or invoke
         manually the EventChildrenRemoved event.
     */
-    virtual void notifyChildrenRemoved(ModelIndex parent_index, size_t start_id, size_t count);
+    virtual void notifyChildrenRemoved(ModelIndex parent_index,
+        size_t start_id, size_t count);
+
+    /*!
+    \brief
+        Notifies any listeners of the EventChildDataChanged event that existing
+        child has been updated.
+
+    \remark
+        If this method is overridden, it *needs* to call this base method or invoke
+        manually the EventChildDataChanged event.
+    */
+    virtual void notifyChildrenDataChanged(ModelIndex parent_index,
+        size_t start_id, size_t count);
 };
 
 }

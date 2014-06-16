@@ -36,6 +36,7 @@ using namespace CEGUI;
 static const String ITEM1 = "ITEM 1";
 static const String ITEM2 = "ITEM 2";
 static const String ITEM3 = "ITEM 3";
+static const String ITEM_WITH_6LINES = "THIS\nIS\nA\nMULTILINE\nLINE\n";
 
 //----------------------------------------------------------------------------//
 struct ListViewFixture
@@ -175,6 +176,19 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     BOOST_REQUIRE(view.getItems().size() == 2);
     BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
     BOOST_REQUIRE(!view.getItems().at(1).d_isSelected);
+}
+
+BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
+{
+    model.d_items.push_back(ITEM1);
+    view.prepareForRender();
+    BOOST_CHECK_EQUAL(1, view.getItems().at(0).d_string.getLineCount());
+
+    model.d_items.at(0) = ITEM_WITH_6LINES;
+    model.notifyChildrenDataChanged(model.getRootIndex(), 0, 1);
+
+    view.prepareForRender();
+    BOOST_REQUIRE_EQUAL(6, view.getItems().at(0).d_string.getLineCount());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

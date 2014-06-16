@@ -300,6 +300,8 @@ void InventoryModel::updateItemName(const CEGUI::ModelIndex& index, const String
 {
     InventoryItem* item = static_cast<InventoryItem*>(index.d_modelData);
     item->d_name = newName;
+
+    notifyChildrenDataChanged(getParentIndex(index), 0, 1);
 }
 //----------------------------------------------------------------------------//
 std::ostream& operator<<(std::ostream& output, const InventoryItem& item)
