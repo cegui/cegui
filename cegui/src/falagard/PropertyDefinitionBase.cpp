@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/PropertyDefinitionBase.h"
 #include "CEGUI/XMLSerializer.h"
+#include "CEGUI/falagard/XMLHandler.h"
 
 namespace CEGUI
 {
@@ -155,7 +156,7 @@ void PropertyDefinitionBase::writeDefinitionXMLAttributes(
     if (!d_initialValue.empty())
         xml_stream.attribute("initialValue", d_initialValue);
 
-    if (!d_helpString.empty())
+    if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
         xml_stream.attribute("help", d_helpString);
 
     if (d_writeCausesRedraw)
