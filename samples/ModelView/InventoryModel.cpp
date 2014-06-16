@@ -294,6 +294,13 @@ void InventoryModel::deleteChildren(InventoryItem* item, bool notify)
         notifyChildrenRemoved(ModelIndex(item), 0, items_count);
     }
 }
+
+//----------------------------------------------------------------------------//
+void InventoryModel::updateItemName(const CEGUI::ModelIndex& index, const String& newName)
+{
+    InventoryItem* item = static_cast<InventoryItem*>(index.d_modelData);
+    item->d_name = newName;
+}
 //----------------------------------------------------------------------------//
 std::ostream& operator<<(std::ostream& output, const InventoryItem& item)
 {

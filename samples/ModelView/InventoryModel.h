@@ -79,6 +79,8 @@ public:
     void addItem(const CEGUI::ModelIndex& parent, InventoryItem* new_item, size_t position);
     void addRandomItemWithChild(const CEGUI::ModelIndex& parent, size_t position);
     void removeItem(const CEGUI::ModelIndex& index);
+    void updateItemName(const CEGUI::ModelIndex& index, const CEGUI::String& newName);
+
 
     // implementation of ItemModel
     virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
