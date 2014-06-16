@@ -75,6 +75,9 @@ namespace CEGUI
         //! Stores the native version, the only version we are supposed to load
         static const String NativeVersion;
 
+        //! Default value for the "type" attribute of PropertyDefinition elements
+        static const String PropertyDefinitionHelpDefaultValue;
+
     protected:
         /*************************************************************************
             ChainedXMLHandler base class overrides

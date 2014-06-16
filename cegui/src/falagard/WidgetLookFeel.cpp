@@ -767,9 +767,12 @@ WidgetLookFeel::getAnimationNameIterator(bool inherits) const
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("WidgetLook")
-    .attribute("name", d_lookName)
-    .attribute("inherits", d_inheritedLookName);
+    xml_stream.openTag("WidgetLook");
+
+    xml_stream.attribute("name", d_lookName);
+
+    if(!d_inheritedLookName.empty())
+        xml_stream.attribute("inherits", d_inheritedLookName);
 
     // These sub-scopes of the loops avoid the "'curr'-already-initialized"
     // compile error on VC6++

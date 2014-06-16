@@ -143,6 +143,10 @@ namespace CEGUI
     const String Falagard_xmlHandler::ActionAttribute("action");
     const String Falagard_xmlHandler::ComponentAttribute("component");
 
+    // Default values
+    const String Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue("Falagard custom property definition - "
+                                                                         "gets/sets a named user string.");
+
     ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -840,8 +844,7 @@ namespace CEGUI
         const String name(attributes.getValueAsString(NameAttribute));
         const String init(attributes.getValueAsString(InitialValueAttribute));
         const String help(attributes.getValueAsString(HelpStringAttribute,
-                                "Falagard custom property definition - "
-                                "gets/sets a named user string."));
+                                                      PropertyDefinitionHelpDefaultValue));
         const String type(attributes.getValueAsString(TypeAttribute, "Generic"));
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
