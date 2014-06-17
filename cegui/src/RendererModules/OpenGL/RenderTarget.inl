@@ -199,7 +199,7 @@ void OpenGLRenderTarget<T>::updateMatrix() const
     // We need to check if width or height are zero and act accordingly to prevent running into issues
     // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
     // This is mostly important for avoiding asserts
-    bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
+    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
 
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
