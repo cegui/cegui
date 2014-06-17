@@ -33,7 +33,44 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const String& PropertyHelper<ScrollbarDisplayMode>::getDataTypeName()
+{
+    static String type("ScrollbarDisplayMode");
+
+    return type;
+}
+
+//----------------------------------------------------------------------------//
+PropertyHelper<ScrollbarDisplayMode>::return_type
+PropertyHelper<ScrollbarDisplayMode>::fromString(const String& str)
+{
+    if (str == "Shown") return SDM_Shown;
+    if (str == "Hidden") return SDM_Hidden;
+
+    // default
+    return SDM_WhenNeeded;
+}
+
+//----------------------------------------------------------------------------//
+PropertyHelper<ScrollbarDisplayMode>::string_return_type
+PropertyHelper<ScrollbarDisplayMode>::toString(
+    PropertyHelper<ScrollbarDisplayMode>::pass_type val)
+{
+    switch(val)
+    {
+    case SDM_Shown: return "Shown";
+    case SDM_Hidden: return "Hidden";
+    case SDM_WhenNeeded: return "WhenNeeded";
+    default: return "InvalidDisplayMode";
+    }
+}
+
+//----------------------------------------------------------------------------//
 const Colour ItemView::DefaultTextColour = 0xFFFFFFFF;
+const String ItemView::HorzScrollbarName("__auto_hscrollbar__");
+const String ItemView::VertScrollbarName("__auto_vscrollbar__");
+const String ItemView::EventVertScrollbarDisplayModeChanged("VertScrollbarDisplayModeChanged");
+const String ItemView::EventHorzScrollbarDisplayModeChanged("HorzScrollbarDisplayModeChanged");
 
 //----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
@@ -60,9 +97,32 @@ void ItemView::addItemViewProperties()
 
     CEGUI_DEFINE_PROPERTY(ItemView, Image*,
         "SelectionBrushImage",
-        "Property to get/set the selection brush image for the list view. Value should be \"set:[imageset name] image:[image name]\".",
+        "Property to get/set the selection brush image for the item view. Value should be \"set:[imageset name] image:[image name]\".",
         &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, 0
         );
+
+    CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
+        "VertScrollbarDisplayMode",
+        "Property to get/set the display mode of the vertical scroll bar of the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
+        &ItemView::setVertScrollbarDisplayMode,
+        &ItemView::getVertScrollbarDisplayMode, SDM_WhenNeeded
+        );
+
+    CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
+        "HorzScrollbarDisplayMode",
+        "Property to get/set the display mode of the horizontal scroll bar of the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
+        &ItemView::setHorzScrollbarDisplayMode,
+        &ItemView::getHorzScrollbarDisplayMode, SDM_WhenNeeded
+        );
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::initialiseComponents(void)
+{
+    getVertScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
+        Event::Subscriber(&ItemView::onScrollPositionChanged, this));
+    getHorzScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
+        Event::Subscriber(&ItemView::onScrollPositionChanged, this));
 }
 
 //----------------------------------------------------------------------------//
@@ -148,6 +208,13 @@ bool ItemView::onChildrenDataChanged(const EventArgs& args)
 {
     const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
 
+    invalidateView(false);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::onScrollPositionChanged(const EventArgs& args)
+{
     invalidateView(false);
     return true;
 }
@@ -285,4 +352,61 @@ const Image* ItemView::getSelectionBrushImage(void) const
     return d_selectionBrush;
 }
 
+//----------------------------------------------------------------------------//
+Scrollbar* ItemView::getVertScrollbar() const
+{
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
+}
+
+//----------------------------------------------------------------------------//
+Scrollbar* ItemView::getHorzScrollbar() const
+{
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::updateScrollbars()
+{
+
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setVertScrollbarDisplayMode(ScrollbarDisplayMode mode)
+{
+    if (d_vertScrollbarDisplayMode == mode)
+        return;
+
+    d_vertScrollbarDisplayMode = mode;
+
+    updateScrollbars();
+    invalidateView(false);
+    WindowEventArgs args(this);
+    fireEvent(EventVertScrollbarDisplayModeChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::ScrollbarDisplayMode ItemView::getVertScrollbarDisplayMode() const
+{
+    return d_vertScrollbarDisplayMode;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode)
+{
+    if (d_horzScrollbarDisplayMode == mode)
+        return;
+
+    d_horzScrollbarDisplayMode = mode;
+
+    updateScrollbars();
+    invalidateView(false);
+    WindowEventArgs args(this);
+    fireEvent(EventHorzScrollbarDisplayModeChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::ScrollbarDisplayMode ItemView::getHorzScrollbarDisplayMode() const
+{
+    return d_horzScrollbarDisplayMode;
+}
 }

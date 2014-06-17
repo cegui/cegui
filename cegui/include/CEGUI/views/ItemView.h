@@ -35,6 +35,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
+#include "CEGUI/widgets/Scrollbar.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -43,6 +44,29 @@
 
 namespace CEGUI
 {
+
+enum ScrollbarDisplayMode
+{
+    SDM_Shown,
+    SDM_Hidden,
+    //! The scrollbar will be shown only if the underlining view's size is too small to contain its items
+    SDM_WhenNeeded
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<ScrollbarDisplayMode>
+{
+public:
+    typedef ScrollbarDisplayMode return_type;
+    typedef return_type safe_method_return_type;
+    typedef ScrollbarDisplayMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
 
 /*!
 \brief
@@ -71,6 +95,12 @@ public:
     virtual ~ItemView();
 
     static const Colour DefaultTextColour;
+    //!< Widget name for the vertical scrollbar component.
+    static const String VertScrollbarName;
+    //!< Widget name for the horizontal scrollbar component
+    static const String HorzScrollbarName;
+    static const String EventVertScrollbarDisplayModeChanged;
+    static const String EventHorzScrollbarDisplayModeChanged;
 
     //!Sets the ItemModel to be used inside this view.
     virtual void setModel(ItemModel* item_model);
@@ -119,25 +149,60 @@ public:
     void setSelectionBrushImage(const String& name);
     const Image* getSelectionBrushImage(void) const;
 
+    /*!
+    \brief
+        Returns a pointer to the vertical scrollbar component widget for this
+        Listbox.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+    void setVertScrollbarDisplayMode(ScrollbarDisplayMode mode);
+    ScrollbarDisplayMode getVertScrollbarDisplayMode() const;
+
+    /*!
+    \brief
+        Returns a pointer to the horizontal scrollbar component widget for this
+        Listbox.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
+
+    void setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode);
+    ScrollbarDisplayMode getHorzScrollbarDisplayMode() const;
+
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
     bool d_isDirty;
     std::vector<ModelIndexSelectionState> d_indexSelectionStates;
     const Image* d_selectionBrush;
+    ScrollbarDisplayMode d_vertScrollbarDisplayMode;
+    ScrollbarDisplayMode d_horzScrollbarDisplayMode;
+
+    //TODO: move this into the renderer instead?
+    float d_renderedMaxWidth;
+    float d_renderedTotalHeight;
 
     void addItemViewProperties();
+    void updateScrollbars();
 
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);
 
     virtual bool isIndexSelected(const ModelIndex& index) const;
+    virtual void initialiseComponents(void);
+
+    virtual void onPointerPressHold(PointerEventArgs& e);
 
     virtual bool onChildrenAdded(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenDataChanged(const EventArgs& args);
-
-    virtual void onPointerPressHold(PointerEventArgs& e);
+    virtual bool onScrollPositionChanged(const EventArgs& args);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
