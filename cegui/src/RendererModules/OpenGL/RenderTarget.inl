@@ -195,9 +195,15 @@ void OpenGLRenderTarget<T>::updateMatrix() const
 {
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();
-    const float aspect = w / h;
-    const float midx = w * 0.5f;
-    const float midy = h * 0.5f;
+
+    // We need to check if width or height are zero and act accordingly to prevent running into issues
+    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
+    // This is mostly important for avoiding asserts
+    bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
+
+    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
+    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
+    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
     d_viewDistance = midx / (aspect * d_yfov_tan);
 
     glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
