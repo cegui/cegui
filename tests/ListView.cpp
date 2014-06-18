@@ -29,6 +29,7 @@
 
 #include "CEGUI/CEGUI.h"
 #include "ItemModelStub.h"
+#include "CEGUI/widgets/Scrollbar.h"
 
 using namespace CEGUI;
 
@@ -41,13 +42,15 @@ static const String ITEM_WITH_6LINES = "THIS\nIS\nA\nMULTILINE\nLINE\n";
 //----------------------------------------------------------------------------//
 struct ListViewFixture
 {
-    ListViewFixture() : view("TaharezLook/ListView", "lv")
+    ListViewFixture()
     {
-        view.setModel(&model);
-        font_height = view.getFont()->getFontHeight();
+        view = static_cast<ListView*>(WindowManager::getSingleton().createWindow("TaharezLook/ListView", "lv"));
+        view->setWindowRenderer("Core/ListView");
+        view->setModel(&model);
+        font_height = view->getFont()->getFontHeight();
     }
 
-    ListView view;
+    ListView* view;
     ItemModelStub model;
     float font_height;
 
@@ -58,7 +61,7 @@ BOOST_FIXTURE_TEST_SUITE(ListViewTestSuite, ListViewFixture)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
-    ModelIndex index = view.indexAt(Vector2f(0, 0));
+    ModelIndex index = view->indexAt(Vector2f(0, 0));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -68,7 +71,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
 {
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view.indexAt(Vector2f(0, font_height / 2.0f));
+    ModelIndex index = view->indexAt(Vector2f(0, font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
@@ -79,10 +82,10 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithOffset_ReturnsCor
 {
     float x_offset = 500;
     float y_offset = 354;
-    view.setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
+    view->setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view.indexAt(Vector2f(
+    ModelIndex index = view->indexAt(Vector2f(
         x_offset + 0,
         y_offset + font_height / 2.0f));
 
@@ -95,7 +98,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideSingleObject_ReturnsInvalidIndex)
 {
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view.indexAt(Vector2f(0, font_height * 2));
+    ModelIndex index = view->indexAt(Vector2f(0, font_height * 2));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -106,7 +109,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
 
-    ModelIndex index = view.indexAt(Vector2f(0, font_height * 2));
+    ModelIndex index = view->indexAt(Vector2f(0, font_height * 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
@@ -118,11 +121,11 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
 
-    bool selected = view.setSelectedItem(ModelIndex(&model.d_items.at(0)));
-    view.prepareForRender();
+    bool selected = view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(view.getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(view->getItems().at(0).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -130,15 +133,15 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
 {
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
-    view.setSelectedItem(ModelIndex(&model.d_items.at(0)));
-    view.prepareForRender();
+    view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    view->prepareForRender();
 
-    bool selected = view.setSelectedItem(ModelIndex(&model.d_items.at(1)));
-    view.prepareForRender();
+    bool selected = view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(view.getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(view->getItems().at(1).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -146,17 +149,17 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 {
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
-    view.setSelectedItem(ModelIndex(&model.d_items.at(1)));
-    view.prepareForRender();
+    view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view->prepareForRender();
 
     model.d_items.insert(model.d_items.begin() + 1, 1, ITEM3);
     model.notifyChildrenAdded(model.getRootIndex(), 1, 1);
 
-    view.prepareForRender();
+    view->prepareForRender();
 
-    BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getItems().at(1).d_isSelected);
-    BOOST_REQUIRE(view.getItems().at(2).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(view->getItems().at(2).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -165,30 +168,30 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
     model.d_items.push_back(ITEM3);
-    view.setSelectedItem(ModelIndex(&model.d_items.at(1)));
-    view.prepareForRender();
+    view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view->prepareForRender();
 
     model.d_items.erase(model.d_items.begin() + 1);
     model.notifyChildrenRemoved(model.getRootIndex(), 1, 1);
 
-    view.prepareForRender();
+    view->prepareForRender();
 
-    BOOST_REQUIRE(view.getItems().size() == 2);
-    BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(view->getItems().size() == 2);
+    BOOST_REQUIRE(!view->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(1).d_isSelected);
 }
 
 BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
 {
     model.d_items.push_back(ITEM1);
-    view.prepareForRender();
-    BOOST_CHECK_EQUAL(1, view.getItems().at(0).d_string.getLineCount());
+    view->prepareForRender();
+    BOOST_CHECK_EQUAL(1, view->getItems().at(0).d_string.getLineCount());
 
     model.d_items.at(0) = ITEM_WITH_6LINES;
     model.notifyChildrenDataChanged(model.getRootIndex(), 0, 1);
 
-    view.prepareForRender();
-    BOOST_REQUIRE_EQUAL(6, view.getItems().at(0).d_string.getLineCount());
+    view->prepareForRender();
+    BOOST_REQUIRE_EQUAL(6, view->getItems().at(0).d_string.getLineCount());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

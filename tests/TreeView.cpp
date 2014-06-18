@@ -35,13 +35,14 @@ using namespace CEGUI;
 //----------------------------------------------------------------------------//
 struct TreeViewFixture
 {
-    TreeViewFixture() : view("TaharezLook/TreeView", "tv")
+    TreeViewFixture()
     {
-        view.setModel(&model);
-        font_height = view.getFont()->getFontHeight();
+        view = static_cast<TreeView*>(WindowManager::getSingleton().createWindow("TaharezLook/TreeView", "tv"));
+        view->setModel(&model);
+        font_height = view->getFont()->getFontHeight();
     }
 
-    TreeView view;
+    TreeView* view;
     InventoryModel model;
     float font_height;
 };
@@ -51,7 +52,7 @@ BOOST_FIXTURE_TEST_SUITE(TreeViewTestSuite, TreeViewFixture)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
-    ModelIndex index = view.indexAt(Vector2f(0, 0));
+    ModelIndex index = view->indexAt(Vector2f(0, 0));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -64,7 +65,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
     model.getInventoryRoot().d_name = "Root";
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view.indexAt(Vector2f(0, font_height / 2.0f));
+    ModelIndex index = view->indexAt(Vector2f(0, font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
@@ -77,10 +78,10 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectViewWithOffset_ReturnsCorrectIn
 {
     float x_offset = 500;
     float y_offset = 354;
-    view.setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
+    view->setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view.indexAt(Vector2f(
+    ModelIndex index = view->indexAt(Vector2f(
         x_offset + 0,
         y_offset + font_height / 2.0f));
 
@@ -95,7 +96,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideObject_ReturnsInvalidIndex)
 {
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view.indexAt(Vector2f(0, font_height * 3));
+    ModelIndex index = view->indexAt(Vector2f(0, font_height * 3));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -106,7 +107,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view.indexAt(Vector2f(0, font_height * 2 + font_height / 2));
+    ModelIndex index = view->indexAt(Vector2f(0, font_height * 2 + font_height / 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
@@ -119,41 +120,41 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
 {
     model.load();
 
-    bool selected = view.setSelectedItem(model.makeIndex(0, model.getRootIndex()));
-    view.prepareForRender();
+    bool selected = view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(view.getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_children.at(0).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
 {
     model.load();
-    view.setSelectedItem(model.makeIndex(0, model.getRootIndex()));
-    view.prepareForRender();
+    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    view->prepareForRender();
 
-    bool selected = view.setSelectedItem(model.makeIndex(1, model.getRootIndex()));
-    view.prepareForRender();
+    bool selected = view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(view.getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_children.at(1).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 {
     model.load();
-    view.setSelectedItem(model.makeIndex(1, model.getRootIndex()));
-    view.prepareForRender();
+    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->prepareForRender();
 
     model.addRandomItemWithChild(model.getRootIndex(), 0);
-    view.prepareForRender();
+    view->prepareForRender();
 
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(1).d_isSelected);
-    BOOST_REQUIRE(view.getRootItemState().d_children.at(2).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_children.at(2).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -161,17 +162,17 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
 {
     model.load();
     // first child
-    view.setSelectedItem(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
-    view.prepareForRender();
+    view->setSelectedItem(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
+    view->prepareForRender();
 
     model.addRandomItemWithChild(model.getRootIndex(), 0);
-    view.prepareForRender();
+    view->prepareForRender();
 
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(1).d_isSelected);
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(2).d_isSelected);
-    BOOST_REQUIRE(view.getRootItemState().d_children.at(2).d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(3).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(2).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_children.at(2).d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(3).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -179,16 +180,16 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
 {
     model.load();
     size_t initial_size = model.getInventoryRoot().d_items.size();
-    view.setSelectedItem(model.makeIndex(1, model.getRootIndex()));
-    view.prepareForRender();
+    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->prepareForRender();
 
     model.removeItem(model.makeIndex(1, model.getRootIndex()));
 
-    view.prepareForRender();
+    view->prepareForRender();
 
-    BOOST_REQUIRE_EQUAL(initial_size - 1, view.getRootItemState().d_children.size());
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE_EQUAL(initial_size - 1, view->getRootItemState().d_children.size());
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_children.at(1).d_isSelected);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
