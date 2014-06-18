@@ -57,6 +57,7 @@ ListView::~ListView()
 //----------------------------------------------------------------------------//
 void ListView::prepareForRender()
 {
+    ItemView::prepareForRender();
     if (d_itemModel == 0 || !isDirty())
         return;
 
@@ -64,6 +65,7 @@ void ListView::prepareForRender()
     size_t child_count = d_itemModel->getChildCount(root_index);
 
     std::vector<ListViewItemRenderingState> items;
+    float max_width = 0.0f, total_height = 0.0f;
 
     for (size_t child = 0; child < child_count; ++child)
     {
@@ -80,11 +82,19 @@ void ListView::prepareForRender()
             rendered_string.getHorizontalExtent(this),
             rendered_string.getVerticalExtent(this));
 
+        if (item.d_size.d_width > max_width)
+            max_width = item.d_size.d_width;
+
+        total_height += item.d_size.d_height;
+
         item.d_isSelected = isIndexSelected(index);
         items.push_back(item);
     }
 
     d_items = items;
+    d_renderedMaxWidth = max_width;
+    d_renderedTotalHeight = total_height;
+    updateScrollbars();
     setIsDirty(false);
 }
 

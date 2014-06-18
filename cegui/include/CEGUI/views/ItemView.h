@@ -203,6 +203,9 @@ protected:
 
     void addItemViewProperties();
     void updateScrollbars();
+    void updateScrollbar(Scrollbar* scrollbar, float available_area,
+        float rendered_area, ScrollbarDisplayMode display_mode);
+    ItemViewWindowRenderer* getViewRenderer();
 
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);

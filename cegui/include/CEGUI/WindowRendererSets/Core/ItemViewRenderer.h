@@ -51,8 +51,6 @@ protected:
 
     void renderString(ItemView* window, RenderedString& rendered_string,
         Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);
-
-
 };
 
 }
