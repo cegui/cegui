@@ -87,8 +87,7 @@ protected:
     \brief
         Write out the text of the XML element type.  Note that you should
         not write the opening '<' character, nor any other information such
-        as attributes in this function.  The writeExtraAttributes function
-        can be used for writing attributes.
+        as attributes in this function.
 
     \param xml_stream
         XMLSerializer where xml data should be output.
