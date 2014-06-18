@@ -40,15 +40,19 @@ namespace CEGUI
 \brief
     Base class that contains common routines for view renderers.
 */
-class COREWRSET_API ItemViewRenderer : public WindowRenderer
+class COREWRSET_API ItemViewRenderer : public ItemViewWindowRenderer
 {
 public:
     ItemViewRenderer(const String& type);
 
 protected:
-    Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
+    virtual Rectf getViewRenderArea(void) const;
+    Rectf getViewRenderArea(bool hscroll, bool vscroll) const;
+
     void renderString(ItemView* window, RenderedString& rendered_string,
         Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);
+
+
 };
 
 }

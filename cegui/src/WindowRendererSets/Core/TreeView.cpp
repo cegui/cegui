@@ -53,7 +53,7 @@ void FalagardTreeView::render()
     imagery = &wlf.getStateImagery(tree_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
     imagery->render(*tree_view);
 
-    Rectf items_area(getItemRenderingArea(false, false));
+    Rectf items_area(getViewRenderArea());
     Vector2f item_pos(items_area.left(), items_area.top());
     renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState());
 }
