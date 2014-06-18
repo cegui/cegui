@@ -168,7 +168,9 @@ protected:
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
         xml_stream.openTag("PropertyLinkDefinition");
+        writeFalagardXMLAttributes(xml_stream);
         writeDefinitionXMLAdditionalAttributes(xml_stream);
+
     }
     //------------------------------------------------------------------------//
     void writeDefinitionXMLAdditionalAttributes(XMLSerializer& xml_stream) const
