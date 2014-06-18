@@ -67,6 +67,7 @@ const TreeViewItemRenderingState& TreeView::getRootItemState() const
 //----------------------------------------------------------------------------//
 void TreeView::prepareForRender()
 {
+    ItemView::prepareForRender();
     if (d_itemModel == 0 || !isDirty())
         return;
 

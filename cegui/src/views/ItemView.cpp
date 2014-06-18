@@ -374,7 +374,37 @@ Scrollbar* ItemView::getHorzScrollbar() const
 //----------------------------------------------------------------------------//
 void ItemView::updateScrollbars()
 {
+    Rectf render_area = getViewRenderer()->getViewRenderArea();
 
+    updateScrollbar(getVertScrollbar(), render_area.getHeight(),
+        d_renderedTotalHeight, d_vertScrollbarDisplayMode);
+    updateScrollbar(getHorzScrollbar(), render_area.getWidth(),
+        d_renderedMaxWidth, d_horzScrollbarDisplayMode);
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::updateScrollbar(Scrollbar* scrollbar, float available_area,
+    float rendered_area, ScrollbarDisplayMode display_mode)
+{
+    scrollbar->setDocumentSize(rendered_area);
+    scrollbar->setPageSize(available_area);
+    scrollbar->setStepSize(ceguimax(1.0f, rendered_area / 10.0f));
+    scrollbar->setScrollPosition(scrollbar->getScrollPosition());
+
+    if (display_mode == SDM_Hidden)
+    {
+        scrollbar->hide();
+        return;
+    }
+
+    if (display_mode == SDM_Shown ||
+        rendered_area > available_area)
+    {
+        scrollbar->show();
+        return;
+    }
+
+    scrollbar->hide();
 }
 
 //----------------------------------------------------------------------------//
@@ -416,4 +446,17 @@ CEGUI::ScrollbarDisplayMode ItemView::getHorzScrollbarDisplayMode() const
 {
     return d_horzScrollbarDisplayMode;
 }
+
+//----------------------------------------------------------------------------//
+ItemViewWindowRenderer* ItemView::getViewRenderer()
+{
+    if (d_windowRenderer == 0)
+    {
+        CEGUI_THROW(InvalidRequestException(
+            "The view should have a window renderer attached!"));
+    }
+
+    return static_cast<ItemViewWindowRenderer*>(d_windowRenderer);
+}
+
 }
