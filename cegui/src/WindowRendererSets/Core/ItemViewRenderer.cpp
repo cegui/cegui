@@ -35,12 +35,22 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 ItemViewRenderer::ItemViewRenderer(const String& type) :
-    WindowRenderer(type)
+    ItemViewWindowRenderer(type)
 {
 }
 
 //----------------------------------------------------------------------------//
-Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
+Rectf ItemViewRenderer::getViewRenderArea(void) const
+{
+    ItemView* item_view = static_cast<ItemView*>(d_window);
+
+    return getViewRenderArea(
+        item_view->getHorzScrollbar()->isVisible(),
+        item_view->getVertScrollbar()->isVisible());
+}
+
+//----------------------------------------------------------------------------//
+Rectf ItemViewRenderer::getViewRenderArea(bool hscroll, bool vscroll) const
 {
     const WidgetLookFeel& wlf = getLookNFeel();
     String scroll_suffix;

@@ -45,6 +45,19 @@
 namespace CEGUI
 {
 
+class CEGUIEXPORT ItemViewWindowRenderer : public WindowRenderer
+{
+public:
+    ItemViewWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Returns a Rectf object describing, in unclipped pixels, the window
+        relative area that is to be used for rendering the view.
+    */
+    virtual Rectf getViewRenderArea(void) const = 0;
+};
+
 enum ScrollbarDisplayMode
 {
     SDM_Shown,

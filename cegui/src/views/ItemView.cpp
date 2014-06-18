@@ -32,6 +32,13 @@
 
 namespace CEGUI
 {
+
+//----------------------------------------------------------------------------//
+ItemViewWindowRenderer::ItemViewWindowRenderer(const String& name) :
+    WindowRenderer(name, "ItemView")
+{
+}
+
 //----------------------------------------------------------------------------//
 const String& PropertyHelper<ScrollbarDisplayMode>::getDataTypeName()
 {
