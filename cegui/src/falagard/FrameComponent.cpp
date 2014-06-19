@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/FrameComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
@@ -668,7 +669,7 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
 void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // opening tag
-    xml_stream.openTag("FrameComponent");
+    xml_stream.openTag(Falagard_xmlHandler::FrameComponentElement);
     // write out area
     d_area.writeXMLToStream(xml_stream);
 
@@ -678,14 +679,14 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
         if (d_frameImages[i].d_specified)
         {
             if (d_frameImages[i].d_propertyName.empty())
-                xml_stream.openTag("Image")
-                    .attribute("name", d_frameImages[i].d_image->getName())
-                    .attribute("component", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                xml_stream.openTag(Falagard_xmlHandler::ImageElement)
+                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_image->getName())
+                    .attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
                     .closeTag();
             else
-                xml_stream.openTag("ImageProperty")
-                    .attribute("name", d_frameImages[i].d_propertyName)
-                    .attribute("component", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                xml_stream.openTag(Falagard_xmlHandler::ImagePropertyElement)
+                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_propertyName)
+                    .attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
                     .closeTag();
         }
     }
@@ -695,27 +696,27 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 
     d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
     d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "Background").closeTag();
+    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background).closeTag();
 
     d_leftEdgeFormatting.writeXMLTagToStream(xml_stream);
     d_leftEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "LeftEdge").closeTag();
+    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::LeftEdge).closeTag();
 
     d_rightEdgeFormatting.writeXMLTagToStream(xml_stream);
     d_rightEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "RightEdge").closeTag();
+    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::RightEdge).closeTag();
 
     d_backgroundHorzFormatting.writeXMLTagToStream(xml_stream);
     d_backgroundHorzFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "Background").closeTag();
+    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background).closeTag();
 
     d_topEdgeFormatting.writeXMLTagToStream(xml_stream);
     d_topEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "TopEdge").closeTag();
+    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::TopEdge).closeTag();
 
     d_bottomEdgeFormatting.writeXMLTagToStream(xml_stream);
     d_bottomEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "BottomEdge").closeTag();
+    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::BottomEdge).closeTag();
 
     // closing tag
     xml_stream.closeTag();

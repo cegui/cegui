@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/NamedArea.h"
+#include "CEGUI/falagard/XMLHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -57,8 +58,8 @@ namespace CEGUI
 
     void NamedArea::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("NamedArea")
-            .attribute("name", d_name);
+        xml_stream.openTag(Falagard_xmlHandler::NamedAreaElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_name);
         d_area.writeXMLToStream(xml_stream);
         xml_stream.closeTag();
     }

@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/WidgetComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include <iostream>
@@ -235,18 +236,18 @@ namespace CEGUI
     void WidgetComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
         // output opening tag
-        xml_stream.openTag("Child")
-            .attribute("type", d_baseType)
-            .attribute("name", d_name);
+        xml_stream.openTag(Falagard_xmlHandler::ChildElement)
+            .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType)
+            .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name);
 
         if (!d_imageryName.empty())
-            xml_stream.attribute("look", d_imageryName);
+            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_imageryName);
 
         if (!d_rendererType.empty())
-            xml_stream.attribute("renderer", d_rendererType);
+            xml_stream.attribute(Falagard_xmlHandler::RendererAttribute, d_rendererType);
 
         if (!d_autoWindow)
-            xml_stream.attribute("autoWindow", "false");
+            xml_stream.attribute(Falagard_xmlHandler::AutoWindowAttribute, PropertyHelper<bool>::False);
 
         // Output <EventAction> elements
         for (EventActionList::const_iterator i = d_eventActions.begin();
@@ -260,13 +261,13 @@ namespace CEGUI
         d_area.writeXMLToStream(xml_stream);
 
         // output vertical alignment
-        xml_stream.openTag("VertAlignment")
-            .attribute("type", FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign))
+        xml_stream.openTag(Falagard_xmlHandler::VertAlignmentElement)
+            .attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign))
             .closeTag();
 
         // output horizontal alignment
-        xml_stream.openTag("HorzAlignment")
-            .attribute("type", FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign))
+        xml_stream.openTag(Falagard_xmlHandler::HorzAlignmentElement)
+            .attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign))
             .closeTag();
 
         //output property initialisers
