@@ -93,7 +93,7 @@ LibxmlParser::~LibxmlParser(void)
 void LibxmlParser::parseXML(XMLHandler& handler,
                             const RawDataContainer& source,
                             const String& /*schemaName*/,
-                            bool /*xmlValidationEnabled*/)
+                            bool /*allowXmlValidation*/)
 {
     xmlDocPtr doc = xmlParseMemory(
         reinterpret_cast<const char*>(source.getDataPtr()),

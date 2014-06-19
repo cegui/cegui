@@ -95,14 +95,15 @@ namespace CEGUI
             String object holding the name of the XML schema file to use for validating the XML.
             Note that whether this is used or not is dependant upon the XMLParser in use.
 
-        \param xmlValidationEnabled
-            A boolean object allowing xml to be disabled, defaulting to "true" for "enabled", therefore only needed
-            if xml validation should be disabled.
+        \param allowXmlValidation
+            A boolean object used for disallowing xml validation for a single call, 
+            defaulting to "true" to allow validation.
+            Only needed if xml validation should be disallowed once.
 
         \return
             Nothing.
          */
-        virtual void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool xmlValidationEnabled = true) = 0;
+        virtual void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool allowXmlValidation = true) = 0;
 
         /*!
         \brief
@@ -122,14 +123,15 @@ namespace CEGUI
             String object holding the resource group identifier which will be passed to the
             ResourceProvider when loading the XML and schema files.
 
-        \param xmlValidationEnabled
-            A boolean object allowing xml to be disabled, defaulting to "true" for "enabled", therefore only needed
-            if xml validation should be disabled.
+        \param allowXmlValidation
+            A boolean object used for disallowing xml validation for a single call, 
+            defaulting to "true" to allow validation.
+            Only needed if xml validation should be disallowed once.
 
         \return
             Nothing.
          */
-        virtual void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup, bool xmlValidationEnabled = true);
+        virtual void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup, bool allowXmlValidation = true);
 
         /*!
         \brief
@@ -141,14 +143,15 @@ namespace CEGUI
         \param source
             The XML source passed as a String
 
-        \param schemaName
-            String object holding the name of the XML schema file to use for validating the XML.
-            Note that whether this is used or not is dependant upon the XMLParser in use.
+        \param allowXmlValidation
+            A boolean object used for disallowing xml validation for a single call, 
+            defaulting to "true" to allow validation.
+            Only needed if xml validation should be disallowed once.
 
         \return
             Nothing.
          */
-        virtual void parseXMLString(XMLHandler& handler, const String& source, const String& schemaName);
+        virtual void parseXMLString(XMLHandler& handler, const String& source, const String& schemaName, bool allowXmlValidation = true);
 
         /*!
         \brief
