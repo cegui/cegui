@@ -412,15 +412,8 @@ void ItemView::updateScrollbar(Scrollbar* scrollbar, float available_area,
 //----------------------------------------------------------------------------//
 void ItemView::setVertScrollbarDisplayMode(ScrollbarDisplayMode mode)
 {
-    if (d_vertScrollbarDisplayMode == mode)
-        return;
-
-    d_vertScrollbarDisplayMode = mode;
-
-    updateScrollbars();
-    invalidateView(false);
-    WindowEventArgs args(this);
-    fireEvent(EventVertScrollbarDisplayModeChanged, args);
+    updateScrollbarDisplayMode(d_vertScrollbarDisplayMode, mode,
+        EventVertScrollbarDisplayModeChanged);
 }
 
 //----------------------------------------------------------------------------//
@@ -432,15 +425,8 @@ CEGUI::ScrollbarDisplayMode ItemView::getVertScrollbarDisplayMode() const
 //----------------------------------------------------------------------------//
 void ItemView::setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode)
 {
-    if (d_horzScrollbarDisplayMode == mode)
-        return;
-
-    d_horzScrollbarDisplayMode = mode;
-
-    updateScrollbars();
-    invalidateView(false);
-    WindowEventArgs args(this);
-    fireEvent(EventHorzScrollbarDisplayModeChanged, args);
+    updateScrollbarDisplayMode(d_horzScrollbarDisplayMode, mode,
+        EventHorzScrollbarDisplayModeChanged);
 }
 
 //----------------------------------------------------------------------------//
@@ -461,4 +447,18 @@ ItemViewWindowRenderer* ItemView::getViewRenderer()
     return static_cast<ItemViewWindowRenderer*>(d_windowRenderer);
 }
 
+//----------------------------------------------------------------------------//
+void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
+    ScrollbarDisplayMode new_mode, String change_event)
+{
+    if (target_mode == new_mode)
+        return;
+
+    target_mode = new_mode;
+
+    updateScrollbars();
+    invalidateView(false);
+    WindowEventArgs args(this);
+    fireEvent(change_event, args);
+}
 }

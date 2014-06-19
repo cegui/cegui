@@ -206,13 +206,15 @@ protected:
     void updateScrollbar(Scrollbar* scrollbar, float available_area,
         float rendered_area, ScrollbarDisplayMode display_mode);
     ItemViewWindowRenderer* getViewRenderer();
+    void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
+        ScrollbarDisplayMode new_mode, String change_event);
 
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);
 
     virtual bool isIndexSelected(const ModelIndex& index) const;
-    virtual void initialiseComponents(void);
 
+    virtual void initialiseComponents(void);
     virtual void onPointerPressHold(PointerEventArgs& e);
 
     virtual bool onChildrenAdded(const EventArgs& args);
