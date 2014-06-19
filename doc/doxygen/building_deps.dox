@@ -1,0 +1,81 @@
+/**
+@page building_deps Obtaining and Building the Dependencies (Windows and OS X)
+@author Paul D Turner
+@tableofcontents
+
+@section building_deps_intro Introduction
+@note This page contains information regarding dependency libraries specific to
+Microsoft Windows and Apple OS X users -- if you are on a GNU/Linux or similar
+system, you should install dependencies via your distribution's package
+manager as usual.
+
+On Windows and OS X CEGUI uses a source based dependency package. This ensures
+that the dependency libraries and the core cegui libraries can be built with
+the same compiler using the same configuration, which helps to reduce issues
+due to compiler version conflicts and runtime conflicts which are especially
+prevalent when using MSVC++ compilers.
+
+@section building_deps_download Obtaining the Dependency Package
+You may obtain the dependency package either by downloading a released archive
+of the package or by cloning the cegui-dependencies mercurial repository that
+is hosted at bitbucket.org.
+@subsection building_deps_download_archive Downloading an Archive
+Please see the archive download link at @ref dl_deps
+@subsection building_deps_download_clone Cloning from Mercurial
+To obtain a copy of the code from mercurial, you should use the following command
+(or its equivalent, if you use a GUI based mercurial client)
+@verbatim
+hg clone https://bitbucket.org/cegui/cegui-dependencies
+@endverbatim
+
+We do not currently branch this repository like we do with the main cegui
+repository, although we do create a tag when a release archive is issued
+from the repository.
+
+@section building_deps_compilation Compiling the Dependencies Package
+The dependency package uses a unified CMake based build for all the libraries,
+and produces a @p dependencies directory beneath the build location - once the
+build is complete, this directory contains all the relevant library and header
+files for the dependencies that were built, and it is intended that this
+directory be copied or moved to the main cegui source directory.
+@subsection building_deps_compilation_configuring Configuring the build
+You must use CMake to configure the build and generate the appropriate
+build files so that you can actually compile the dependency libraries.
+It is recommended to use the the CMake GUI utility -- at least initially until
+you are familiar with the available options. The steps below reflect this
+choice, if you choose not to use the GUI utility for this, then it is assumed
+you are sufficiently familiar with both CMake and the CEGUI dependencies package
+and therefore do not require additional guidance.
+
+Once you have the CMake GUI utility running:
+- Ensure the source and build directories are correct. It is generally advised
+not to build directly in the source directory – it makes recovering back to
+'pristine' source files more difficult and basically creates a mess!
+- Press the Configure button and select the appropriate build system you
+wish you use.
+- Once the initial configure pass has run, you can then select or modify any
+options that you need to. For the dependencies package, this basically consists
+of choosing which libraries you want built - the choices you make will be
+influenced by the facilities that you want available in your CEGUI build. For
+new users we highly advise that you go with the default options, this will get
+you a working system without large amounts of extraneous files that will not
+be used. When you are done, press the Configure button again.
+- Press the Generate button to generate the build system files appropriate
+for whatever build system you selected above.
+@subsection building_deps_compilation_build Compiling the files
+You should now take the generated build files and build them! This will
+generally involve loading solution or project files into your IDE and pressing
+build buttons (or entering commands -- such as @p msbuild
+or @p xcodebuild -- into a terminal or command window). Once the build is
+complete, you should find the @p dependencies directory mentioned previously
+beneath your build location.
+@note You should remember to build both Release and Debug configurations, this
+is especially important on Microsoft Windows where linking with matching
+configurations is an essential part of a successful project!
+@subsection compiling_build_install Installation
+Installing the dependency build output is not recommended and is not supported,
+so please do not do that -- you will save yourself so much hassle by instead
+following the instructions as regards to moving the @p dependencies
+directory into place so that the main CEGUI build will find them.
+
+*/
