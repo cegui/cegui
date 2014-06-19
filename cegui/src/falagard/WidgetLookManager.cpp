@@ -191,8 +191,8 @@ namespace CEGUI
         // output xml header
         XMLSerializer xml(out_stream);
         // output root element
-        xml.openTag("Falagard");
-        xml.attribute("version", Falagard_xmlHandler::NativeVersion);
+        xml.openTag(Falagard_xmlHandler::FalagardElement);
+        xml.attribute(Falagard_xmlHandler::VersionAttribute, Falagard_xmlHandler::NativeVersion);
         
         CEGUI_TRY
         {
@@ -222,8 +222,8 @@ namespace CEGUI
         // output xml header
         XMLSerializer xml(out_stream);
         // output root element
-        xml.openTag("Falagard");
-        xml.attribute("version", Falagard_xmlHandler::NativeVersion);
+        xml.openTag(Falagard_xmlHandler::FalagardElement);
+        xml.attribute(Falagard_xmlHandler::VersionAttribute, Falagard_xmlHandler::NativeVersion);
 
         for (WidgetLookList::const_iterator curr = d_widgetLooks.begin(); curr != d_widgetLooks.end(); ++curr)
         {
@@ -241,8 +241,8 @@ namespace CEGUI
         // output xml header
         XMLSerializer xml(out_stream);
         // output root element
-        xml.openTag("Falagard");
-        xml.attribute("version", Falagard_xmlHandler::NativeVersion);
+        xml.openTag(Falagard_xmlHandler::FalagardElement);
+        xml.attribute(Falagard_xmlHandler::VersionAttribute, Falagard_xmlHandler::NativeVersion);
 
         for (WidgetLookNameSet::const_iterator iter = widgetLookNameSet.begin(); iter != widgetLookNameSet.end(); ++iter)
         {

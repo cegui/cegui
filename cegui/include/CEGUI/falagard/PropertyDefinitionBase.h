@@ -81,6 +81,9 @@ public:
     */
     virtual void writeDefinitionXMLToStream(XMLSerializer& xml_stream) const;
 
+    //! The PropertyDefinition's user string name suffix, which is appended to each #d_userStringName
+    static const String UserStringNameSuffix;
+
 protected:
 
     /*!

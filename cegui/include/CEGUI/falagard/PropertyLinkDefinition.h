@@ -29,6 +29,7 @@
 #define _CEGUIFalPropertyLinkDefinition_h_
 
 #include "CEGUI/falagard/FalagardPropertyBase.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/IteratorBase.h"
 #include <vector>
 
@@ -39,7 +40,6 @@
 
 namespace CEGUI
 {
-extern const String S_parentIdentifier;
 
 /*!
 \brief
@@ -60,10 +60,7 @@ public:
                            bool redrawOnWrite, bool layoutOnWrite,
                            const String& fireEvent, const String& eventNamespace) :
         FalagardPropertyBase<T>(propertyName,
-                                "Falagard property link definition - links a "
-                                "property on this window to properties "
-                                "defined on one or more child windows, or "
-                                "the parent window.",
+                                Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue,
                                 initialValue, origin,
                                 redrawOnWrite, layoutOnWrite,
                                 fireEvent, eventNamespace)
@@ -167,23 +164,24 @@ protected:
     //------------------------------------------------------------------------//
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("PropertyLinkDefinition");
+        xml_stream.openTag(Falagard_xmlHandler::PropertyLinkDefinitionElement);
         writeFalagardXMLAttributes(xml_stream);
         writeDefinitionXMLAdditionalAttributes(xml_stream);
-
     }
+
     //------------------------------------------------------------------------//
     void writeDefinitionXMLAdditionalAttributes(XMLSerializer& xml_stream) const
     {
-        if(FalagardPropertyBase<T>::d_dataType.compare("Generic") != 0)
-            xml_stream.attribute("type", FalagardPropertyBase<T>::d_dataType);
+        if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
+
+        if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
     }
 
     //------------------------------------------------------------------------//
     void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
     {
-        PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
-
         // HACK: Here we abuse some intimate knowledge in that we know it's
         // safe to write our sub-elements out although the function is named
         // for writing attributes.  The alternative was to repeat code from the
@@ -195,23 +193,23 @@ protected:
         if (d_targets.size() == 1)
         {
             if (!i->first.empty())
-                xml_stream.attribute("widget", i->first);
+                xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, i->first);
 
             if (!i->second.empty())
-                xml_stream.attribute("targetProperty", i->second);
+                xml_stream.attribute(Falagard_xmlHandler::TargetPropertyAttribute, i->second);
         }
         // we have multiple targets, so write them as PropertyLinkTarget tags
         else
         {
             for ( ; i != d_targets.end(); ++i)
             {
-                xml_stream.openTag("PropertyLinkTarget");
+                xml_stream.openTag(Falagard_xmlHandler::PropertyLinkTargetElement);
 
                 if (!i->first.empty())
-                    xml_stream.attribute("widget", i->first);
+                    xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, i->first);
 
                 if (!i->second.empty())
-                    xml_stream.attribute("property", i->second);
+                    xml_stream.attribute(Falagard_xmlHandler::PropertyAttribute, i->second);
 
                 xml_stream.closeTag();
             }
@@ -227,7 +225,7 @@ protected:
             return static_cast<const Window*>(receiver);
 
         // handle link back to parent.  Return receiver if no parent.
-        if (name== S_parentIdentifier)
+        if (name == Falagard_xmlHandler::ParentIdentifier)
             return static_cast<const Window*>(receiver)->getParent();
 
         return static_cast<const Window*>(receiver)->getChild(name);

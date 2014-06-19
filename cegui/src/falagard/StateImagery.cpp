@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/StateImagery.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
@@ -89,11 +90,11 @@ namespace CEGUI
 
     void StateImagery::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("StateImagery")
-            .attribute("name", d_stateName);
+        xml_stream.openTag(Falagard_xmlHandler::StateImageryElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_stateName);
 
         if (d_clipToDisplay)
-            xml_stream.attribute("clipped", "false");
+            xml_stream.attribute(Falagard_xmlHandler::ClippedAttribute, PropertyHelper<bool>::False);
 
         // output all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)

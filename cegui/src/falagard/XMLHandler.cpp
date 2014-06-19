@@ -105,6 +105,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::NamedAreaSourceElement("NamedAreaSource");
     const String Falagard_xmlHandler::EventActionElement("EventAction");
     // attribute names
+    const String Falagard_xmlHandler::VersionAttribute("version");
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
     const String Falagard_xmlHandler::BottomLeftAttribute("bottomLeft");
@@ -146,6 +147,14 @@ namespace CEGUI
     // Default values
     const String Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue("Falagard custom property definition - "
                                                                          "gets/sets a named user string.");
+    const String Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue("Falagard property link definition - links a "
+                                                                             "property on this window to properties "
+                                                                             "defined on one or more child windows, or "
+                                                                             "the parent window.");
+    
+    // Specific attribute values
+    const String Falagard_xmlHandler::GenericDataType("Generic");
+    const String Falagard_xmlHandler::ParentIdentifier("__parent__");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -367,7 +376,7 @@ namespace CEGUI
     {
         Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
         
-        const String version = attributes.getValueAsString("version", "unknown");
+        const String version = attributes.getValueAsString(VersionAttribute, "unknown");
 
         if (version != NativeVersion)
         {
@@ -845,7 +854,7 @@ namespace CEGUI
         const String init(attributes.getValueAsString(InitialValueAttribute));
         const String help(attributes.getValueAsString(HelpStringAttribute,
                                                       PropertyDefinitionHelpDefaultValue));
-        const String type(attributes.getValueAsString(TypeAttribute, "Generic"));
+        const String type(attributes.getValueAsString(TypeAttribute, GenericDataType));
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
         const String eventName(attributes.getValueAsString(FireEventAttribute, ""));
@@ -921,7 +930,7 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<Range>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else
         {
-            if (type != "Generic" && type != "String")
+            if (type != GenericDataType && type != "String")
             {
                 // type was specified but wasn't recognised
                 Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", Warnings);
@@ -947,7 +956,7 @@ namespace CEGUI
         const String target(attributes.getValueAsString(TargetPropertyAttribute));
         const String name(attributes.getValueAsString(NameAttribute));
         const String init(attributes.getValueAsString(InitialValueAttribute));
-        const String type(attributes.getValueAsString(TypeAttribute, "Generic"));
+        const String type(attributes.getValueAsString(TypeAttribute, GenericDataType));
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
         const String eventName(attributes.getValueAsString(FireEventAttribute, ""));
@@ -1070,7 +1079,7 @@ namespace CEGUI
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else
         {
-            if (type != "Generic" && type != "String")
+            if (type != GenericDataType && type != "String")
             {
                 // type was specified but wasn't recognised
                 Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", Warnings);

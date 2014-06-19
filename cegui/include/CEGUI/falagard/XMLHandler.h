@@ -78,29 +78,18 @@ namespace CEGUI
         //! Default value for the "type" attribute of PropertyDefinition elements
         static const String PropertyDefinitionHelpDefaultValue;
 
-    protected:
-        /*************************************************************************
-            ChainedXMLHandler base class overrides
-        *************************************************************************/
-        void elementStartLocal(const String& element,
-                               const XMLAttributes& attributes);
-        void elementEndLocal(const String& element);
+        //! Default value for the "type" attribute of PropertyLinkDefinition elements
+        static const String PropertyLinkDefinitionHelpDefaultValue;
 
-    private:
-        /*************************************************************************
-            Typedefs
-        *************************************************************************/
-        //! Type for handlers of an opening xml element.
-        typedef void (Falagard_xmlHandler::*ElementStartHandler)(const XMLAttributes& attributes);
-        //! Type for handlers of a closing xml element.
-        typedef void (Falagard_xmlHandler::*ElementEndHandler)();
-        //! Map of handlers for opening xml elements.
-        typedef std::map<String, ElementStartHandler, StringFastLessCompare> ElementStartHandlerMap;
-        //! Map of handlers for closing xml elements.
-        typedef std::map<String, ElementEndHandler, StringFastLessCompare> ElementEndHandlerMap;
+        //! Default or unspecified value for the "dataType" attribute
+        static const String GenericDataType;
+
+
+        //! String value representing a parent link identifier
+        static const String ParentIdentifier;
 
         /*************************************************************************
-            Implementation Constants
+            XML element and attribute name constants
         *************************************************************************/
         // element names
         static const String FalagardElement;            //!< Tag name for root Falagard elements.
@@ -151,6 +140,7 @@ namespace CEGUI
         //! Tag name for specifying event / action responses for Child components
         static const String EventActionElement;
         // attribute names
+        static const String VersionAttribute;           //!< Attribute name that stores the version number of the Falagard element containing the WidgetLookFeels.
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
         static const String BottomLeftAttribute;        //!< Attribute name that stores colour for bottom-left corner.
@@ -180,7 +170,7 @@ namespace CEGUI
         static const String ColourAttribute;            //!< Attribute name that stores colour for all corners.
         static const String PropertyAttribute;          //!< Attribute name that stores the name of a property.
         static const String ControlValueAttribute;      //!< Attribute name that stores a test value to control rendering of a section.
-        static const String ControlWidgetAttribute;   //!< Attribute name that stores a widget identifier used to control rendering of a section.
+        static const String ControlWidgetAttribute;     //!< Attribute name that stores a widget identifier used to control rendering of a section.
         //! Attribute name that stores a help string.
         static const String HelpStringAttribute;
         //! Attribute name that stores an Event name string.
@@ -195,6 +185,27 @@ namespace CEGUI
         static const String ActionAttribute;
         //! Attribute name that stores some component enum value
         static const String ComponentAttribute;
+
+    protected:
+        /*************************************************************************
+            ChainedXMLHandler base class overrides
+        *************************************************************************/
+        void elementStartLocal(const String& element,
+                               const XMLAttributes& attributes);
+        void elementEndLocal(const String& element);
+
+    private:
+        /*************************************************************************
+            Typedefs
+        *************************************************************************/
+        //! Type for handlers of an opening xml element.
+        typedef void (Falagard_xmlHandler::*ElementStartHandler)(const XMLAttributes& attributes);
+        //! Type for handlers of a closing xml element.
+        typedef void (Falagard_xmlHandler::*ElementEndHandler)();
+        //! Map of handlers for opening xml elements.
+        typedef std::map<String, ElementStartHandler, StringFastLessCompare> ElementStartHandlerMap;
+        //! Map of handlers for closing xml elements.
+        typedef std::map<String, ElementEndHandler, StringFastLessCompare> ElementEndHandlerMap;
 
         /*************************************************************************
             helper methods
