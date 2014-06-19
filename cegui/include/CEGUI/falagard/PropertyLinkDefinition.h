@@ -175,7 +175,7 @@ protected:
         if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
             xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
 
-        if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
+        if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
             xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
     }
 
