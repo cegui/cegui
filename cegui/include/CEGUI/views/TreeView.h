@@ -78,7 +78,8 @@ private:
     TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(
-        const ModelIndex& index, bool isRoot);
+        const ModelIndex& index, bool isRoot, float& rendered_max_width,
+        float& rendered_total_height);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
         const Vector2f& window_position);
 };

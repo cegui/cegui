@@ -72,13 +72,20 @@ void TreeView::prepareForRender()
         return;
 
     ModelIndex root_index = d_itemModel->getRootIndex();
-    d_rootItemState = computeRenderingStateForIndex(root_index, true);
+    d_renderedMaxWidth = 0;
+    d_renderedTotalHeight = 0;
+
+    d_rootItemState = computeRenderingStateForIndex(root_index, true,
+        d_renderedMaxWidth, d_renderedTotalHeight);
+
+    updateScrollbars();
     setIsDirty(false);
 }
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
-    const ModelIndex& index, bool isRoot)
+    const ModelIndex& index, bool isRoot, float& rendered_max_width,
+    float& rendered_total_height)
 {
     if (d_itemModel == 0)
         return TreeViewItemRenderingState();
@@ -94,6 +101,9 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
             rendered_string.getHorizontalExtent(this),
             rendered_string.getVerticalExtent(this));
 
+        rendered_max_width = ceguimax(rendered_max_width, state.d_size.d_width);
+        rendered_total_height += state.d_size.d_height;
+
         state.d_isSelected = isIndexSelected(index);
     }
 
@@ -102,7 +112,8 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
     {
         ModelIndex child_index = d_itemModel->makeIndex(child, index);
         TreeViewItemRenderingState child_state =
-            computeRenderingStateForIndex(child_index, false);
+            computeRenderingStateForIndex(child_index, false, rendered_max_width,
+                rendered_total_height);
         child_state.d_parentIndex = index;
         child_state.d_childId = child;
         state.d_children.push_back(child_state);
@@ -121,7 +132,11 @@ ModelIndex TreeView::indexAt(const Vector2f& position)
     prepareForRender();
 
     Vector2f window_position = CoordConverter::screenToWindow(*this, position);
-    float cur_height = 0;
+    Rectf render_area(getViewRenderer()->getViewRenderArea());
+    if (!render_area.isPointInRect(window_position))
+        return ModelIndex();
+
+    float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
 
     return indexAtRecursive(d_rootItemState, cur_height, window_position);
 }

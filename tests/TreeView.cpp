@@ -52,7 +52,7 @@ BOOST_FIXTURE_TEST_SUITE(TreeViewTestSuite, TreeViewFixture)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
-    ModelIndex index = view->indexAt(Vector2f(0, 0));
+    ModelIndex index = view->indexAt(Vector2f(1, 0));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
     model.getInventoryRoot().d_name = "Root";
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view->indexAt(Vector2f(0, font_height / 2.0f));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectViewWithOffset_ReturnsCorrectIndex)
+BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectTreeWithOffset_ReturnsCorrectIndex)
 {
     float x_offset = 500;
     float y_offset = 354;
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectViewWithOffset_ReturnsCorrectIn
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(Vector2f(
-        x_offset + 0,
+        x_offset + 1,
         y_offset + font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
@@ -92,11 +92,29 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectViewWithOffset_ReturnsCorrectIn
 }
 
 //----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectTreeWithScrollbar_ReturnsCorrectIndex)
+{
+    for (int i = 0; i < 50; ++i)
+        model.addRandomItemWithChild(model.getRootIndex(), 0);
+
+    view->setSize(USize(cegui_absdim(200), cegui_absdim(font_height * 10)));
+    view->prepareForRender();
+    view->getVertScrollbar()->setUnitIntervalScrollPosition(1.0f);
+
+    ModelIndex index = view->indexAt(Vector2f(50, 9 * font_height + font_height / 2.0f));
+
+    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE_EQUAL(
+        model.getInventoryRoot().d_items.at(49)->d_items.at(0),
+        static_cast<InventoryItem*>(index.d_modelData));
+}
+
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideObject_ReturnsInvalidIndex)
 {
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view->indexAt(Vector2f(0, font_height * 3));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height * 3));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -107,7 +125,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view->indexAt(Vector2f(0, font_height * 2 + font_height / 2));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height * 2 + font_height / 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
