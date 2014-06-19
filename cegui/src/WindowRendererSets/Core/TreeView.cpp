@@ -54,7 +54,7 @@ void FalagardTreeView::render()
     imagery->render(*tree_view);
 
     Rectf items_area(getViewRenderArea());
-    Vector2f item_pos(items_area.left(), items_area.top());
+    Vector2f item_pos(getItemRenderStartPosition(items_area));
     renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState());
 }
 
