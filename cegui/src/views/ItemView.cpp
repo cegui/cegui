@@ -130,6 +130,8 @@ void ItemView::initialiseComponents(void)
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
     getHorzScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
+
+    performChildWindowLayout();
 }
 
 //----------------------------------------------------------------------------//
