@@ -37,14 +37,19 @@
 
 namespace CEGUI
 {
+
+//! Default values
+const HorizontalFormatting FrameComponent::HorizontalFormattingDefault(HF_STRETCHED);
+const VerticalFormatting FrameComponent::VerticalFormattingDefault(VF_STRETCHED);
+
 //----------------------------------------------------------------------------//
 FrameComponent::FrameComponent() :
-    d_leftEdgeFormatting(VF_STRETCHED),
-    d_rightEdgeFormatting(VF_STRETCHED),
-    d_topEdgeFormatting(HF_STRETCHED),
-    d_bottomEdgeFormatting(HF_STRETCHED),
-    d_backgroundVertFormatting(VF_STRETCHED),
-    d_backgroundHorzFormatting(HF_STRETCHED)
+    d_leftEdgeFormatting(VerticalFormattingDefault),
+    d_rightEdgeFormatting(VerticalFormattingDefault),
+    d_topEdgeFormatting(HorizontalFormattingDefault),
+    d_bottomEdgeFormatting(HorizontalFormattingDefault),
+    d_backgroundVertFormatting(VerticalFormattingDefault),
+    d_backgroundHorzFormatting(HorizontalFormattingDefault)
 {
 }
 
@@ -680,13 +685,13 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
         {
             if (d_frameImages[i].d_propertyName.empty())
                 xml_stream.openTag(Falagard_xmlHandler::ImageElement)
-                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_image->getName())
                     .attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_image->getName())
                     .closeTag();
             else
                 xml_stream.openTag(Falagard_xmlHandler::ImagePropertyElement)
-                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_propertyName)
                     .attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_propertyName)
                     .closeTag();
         }
     }
@@ -694,29 +699,53 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     // get base class to write colours
     writeColoursXML(xml_stream);
 
-    d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
-    d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background).closeTag();
+    if(d_backgroundVertFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background);
+        d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_leftEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_leftEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::LeftEdge).closeTag();
+    if(d_leftEdgeFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_leftEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::LeftEdge);
+        d_leftEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_rightEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_rightEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::RightEdge).closeTag();
+    if(d_rightEdgeFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_rightEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::RightEdge);
+        d_rightEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_backgroundHorzFormatting.writeXMLTagToStream(xml_stream);
-    d_backgroundHorzFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background).closeTag();
+    if(d_backgroundHorzFormatting.getValue() != HorizontalFormattingDefault)
+    {
+        d_backgroundHorzFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background);
+        d_backgroundHorzFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_topEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_topEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::TopEdge).closeTag();
+    if(d_topEdgeFormatting.getValue() != HorizontalFormattingDefault)
+    {
+        d_topEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::TopEdge);
+        d_topEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_bottomEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_bottomEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::BottomEdge).closeTag();
+    if(d_bottomEdgeFormatting.getValue() != HorizontalFormattingDefault)
+    {
+        d_bottomEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::BottomEdge);
+        d_bottomEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
     // closing tag
     xml_stream.closeTag();
