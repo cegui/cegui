@@ -93,7 +93,7 @@ namespace CEGUI
         ~XercesParser(void);
 
         // Implementation of public abstract interface
-        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool xmlValidationEnabled = true);
+        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool allowXmlValidation = true);
 
         // Internal methods
         /*!
@@ -140,7 +140,10 @@ namespace CEGUI
 
         /*!
         \brief 
-            Sets whether xml validation is enabled or not.
+            Sets whether xml validation is allowed or not.
+            If it's 'false' it will not allow any xml validation.
+            If it's 'true' the validation behaviour is dependending
+            on what is passed to parseXML.
 
         \param isEnabled
             String containg either 'true' or 'false'.
@@ -153,10 +156,10 @@ namespace CEGUI
 
         /*!
         \brief
-            Returns whether xml validation is enabled or not.
+            Returns whether xml validation is allowed or not.
 
         \return
-            'true' if enabled otherwise false
+            'true' if enabled otherwise 'false'
         */
         static const String& isXmlValidationEnabled()
             { return d_xmlValidationEnabled; }

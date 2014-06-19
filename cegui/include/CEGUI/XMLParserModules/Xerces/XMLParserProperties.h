@@ -66,8 +66,10 @@ class XMLValidationEnabled : public Property
 public:
     XMLValidationEnabled() : Property(
         "XMLValidationEnabled",
-        "Property to get/set if XML validation is enabled or disabled globally."
-        "Value is a string of 'true' or 'false'.",
+        "Property to get/set if XML validation is enabled or disabled globally. "
+        "If it's disabled it will not allow any xml validation. "
+        "If it's enabled the validation behaviour is dependending on what is "
+        "passed to parseXML.",
         "true")
     {}
 

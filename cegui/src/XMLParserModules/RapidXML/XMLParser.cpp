@@ -179,7 +179,7 @@ RapidXMLParser::~RapidXMLParser(void)
 void RapidXMLParser::parseXML(XMLHandler& handler,
                               const RawDataContainer& source,
                               const String& schemaName,
-							  bool /*xmlValidationEnabled*/)
+							  bool /*allowXmlValidation*/)
 {
     RapidXMLDocument doc(handler, source, schemaName);
 }
