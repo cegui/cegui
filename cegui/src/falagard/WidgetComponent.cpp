@@ -237,8 +237,8 @@ namespace CEGUI
     {
         // output opening tag
         xml_stream.openTag(Falagard_xmlHandler::ChildElement)
-            .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType)
-            .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name);
+            .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name)
+            .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType);
 
         if (!d_imageryName.empty())
             xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_imageryName);
