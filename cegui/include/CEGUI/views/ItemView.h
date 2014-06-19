@@ -221,12 +221,14 @@ protected:
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenDataChanged(const EventArgs& args);
     virtual bool onScrollPositionChanged(const EventArgs& args);
+    virtual void onScroll(PointerEventArgs& e);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
     Event::Connection d_eventChildrenDataChangedConnection;
     void connectToModelEvents(ItemModel* d_itemModel);
     void disconnectModelEvents();
+    void handleOnScroll(Scrollbar* scrollbar, float scroll);
 };
 
 }

@@ -461,4 +461,25 @@ void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
     WindowEventArgs args(this);
     fireEvent(change_event, args);
 }
+
+//----------------------------------------------------------------------------//
+void ItemView::onScroll(PointerEventArgs& e)
+{
+    handleOnScroll(getVertScrollbar(), e.scroll);
+    handleOnScroll(getHorzScrollbar(), e.scroll);
+
+    ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::handleOnScroll(Scrollbar* scrollbar, float scroll)
+{
+    if (scrollbar->isEffectiveVisible() &&
+        scrollbar->getDocumentSize() > scrollbar->getPageSize())
+    {
+        scrollbar->setScrollPosition(
+            scrollbar->getScrollPosition() + scrollbar->getStepSize() * -scroll
+            );
+    }
+}
 }
