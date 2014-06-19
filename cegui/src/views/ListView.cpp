@@ -108,9 +108,14 @@ ModelIndex ListView::indexAt(const Vector2f& position)
     prepareForRender();
 
     Vector2f window_position = CoordConverter::screenToWindow(*this, position);
-    size_t index;
-    float cur_height = 0;
-    for (index = 0; index < d_items.size(); ++index)
+    Rectf render_area(getViewRenderer()->getViewRenderArea());
+
+    if (!render_area.isPointInRect(window_position))
+        return ModelIndex();
+
+    float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
+    //TODO: start only on the visible area
+    for (size_t index = 0; index < d_items.size(); ++index)
     {
         Sizef size = d_items.at(index).d_size;
         float next_height = cur_height + size.d_height;

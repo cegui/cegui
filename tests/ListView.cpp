@@ -61,7 +61,7 @@ BOOST_FIXTURE_TEST_SUITE(ListViewTestSuite, ListViewFixture)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
-    ModelIndex index = view->indexAt(Vector2f(0, 0));
+    ModelIndex index = view->indexAt(Vector2f(1, 0));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
 {
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view->indexAt(Vector2f(0, font_height / 2.0f));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
@@ -86,8 +86,24 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithOffset_ReturnsCor
     model.d_items.push_back(ITEM1);
 
     ModelIndex index = view->indexAt(Vector2f(
-        x_offset + 0,
+        x_offset + 1,
         y_offset + font_height / 2.0f));
+
+    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithScrollbar_ReturnsCorrectIndex)
+{
+    for (int i = 0; i < 100; ++i)
+        model.d_items.push_back(" item .." + PropertyHelper<int>::toString(i));
+    model.d_items.push_back(ITEM1);
+    view->setSize(USize(cegui_absdim(100), cegui_absdim(font_height * 10)));
+    view->prepareForRender();
+    view->getVertScrollbar()->setUnitIntervalScrollPosition(1.0f);
+
+    ModelIndex index = view->indexAt(Vector2f(1, 9 * font_height + font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
@@ -98,7 +114,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideSingleObject_ReturnsInvalidIndex)
 {
     model.d_items.push_back(ITEM1);
 
-    ModelIndex index = view->indexAt(Vector2f(0, font_height * 2));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height * 2));
 
     BOOST_REQUIRE(index.d_modelData == 0);
 }
@@ -109,7 +125,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
 
-    ModelIndex index = view->indexAt(Vector2f(0, font_height * 2));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height * 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
