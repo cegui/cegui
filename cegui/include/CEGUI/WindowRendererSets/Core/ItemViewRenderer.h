@@ -48,6 +48,7 @@ public:
 protected:
     virtual Rectf getViewRenderArea(void) const;
     Rectf getViewRenderArea(bool hscroll, bool vscroll) const;
+    Vector2f getItemRenderStartPosition(const Rectf& items_area) const;
 
     void renderString(ItemView* window, RenderedString& rendered_string,
         Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);

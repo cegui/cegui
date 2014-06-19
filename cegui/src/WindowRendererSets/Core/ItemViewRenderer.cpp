@@ -110,4 +110,16 @@ void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_str
         draw_pos.d_y += rendered_string.getPixelSize(view, i).d_height;
     }
 }
+
+//----------------------------------------------------------------------------//
+CEGUI::Vector2f ItemViewRenderer::getItemRenderStartPosition(const Rectf& items_area) const
+{
+    ItemView* item_view = static_cast<ItemView*>(d_window);
+
+    return Vector2f(
+        items_area.left() - item_view->getHorzScrollbar()->getScrollPosition(),
+        items_area.top() - item_view->getVertScrollbar()->getScrollPosition()
+        );
+
+}
 }

@@ -65,11 +65,7 @@ void FalagardListView::render()
 void FalagardListView::render(ListView* list_view)
 {
     Rectf items_area(getViewRenderArea());
-
-    Vector3f item_pos;
-    item_pos.d_x = items_area.left() - list_view->getHorzScrollbar()->getScrollPosition();
-    item_pos.d_y = items_area.top() - list_view->getVertScrollbar()->getScrollPosition();
-    item_pos.d_z = 0;
+    Vector2f item_pos(getItemRenderStartPosition(items_area));
 
     for (size_t i = 0; i < list_view->getItems().size(); ++i)
     {
