@@ -136,6 +136,10 @@ void ItemView::addItemViewProperties()
         &ItemView::setItemTooltipsEnabled, &ItemView::isItemTooltipsEnabled, false
         );
 
+    CEGUI_DEFINE_PROPERTY(ItemView, bool,
+        "MultiSelect", "Property to get/set the multi-select setting of the item view. Value is either \"True\" or \"False\".",
+        &ItemView::setMultiSelectEnabled, &ItemView::isMultiSelectEnabled, false
+        );
 }
 
 //----------------------------------------------------------------------------//
@@ -340,39 +344,54 @@ void ItemView::setIsDirty(bool value)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::isIndexSelected(const ModelIndex& index) const
+int ItemView::getSelectedIndexPosition(const ModelIndex& index) const
 {
     if (d_itemModel == 0)
         return false;
 
-    for (SelectionStatesVector::const_iterator
-        itor = d_indexSelectionStates.begin();
-        itor != d_indexSelectionStates.end(); ++itor)
+    for (size_t i = 0; i < d_indexSelectionStates.size(); ++i)
     {
-        if (d_itemModel->areIndicesEqual(index, (*itor).d_selectedIndex))
-            return true;
+        if (d_itemModel->areIndicesEqual(index, d_indexSelectionStates.at(i).d_selectedIndex))
+            return i;
     }
 
-    return false;
+    return -1;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::isIndexSelected(const ModelIndex& index) const
+{
+    return getSelectedIndexPosition(index) != -1;
 }
 
 //----------------------------------------------------------------------------//
 bool ItemView::setSelectedItem(const ModelIndex& index)
 {
+    return setItemSelectionState(index, true);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::setItemSelectionState(const ModelIndex& index, bool selected)
+{
     if (d_itemModel == 0 ||
         !d_itemModel->isValidIndex(index))
         return false;
 
-    if (isIndexSelected(index))
+    int index_position = getSelectedIndexPosition(index);
+    if (index_position != -1)
+    {
+        if (!selected)
+            d_indexSelectionStates.erase(d_indexSelectionStates.begin() + index_position);
         return true;
+    }
 
     ModelIndexSelectionState selection_state;
     selection_state.d_selectedIndex = index;
     selection_state.d_childId = d_itemModel->getChildId(index);
     selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
 
-    //TODO: take into account multiple & cumulative selection
-    d_indexSelectionStates.clear();
+    if (!d_isMultiSelectEnabled)
+        d_indexSelectionStates.clear();
     d_indexSelectionStates.push_back(selection_state);
 
     onSelectionChanged(WindowEventArgs(this));
@@ -559,6 +578,18 @@ void ItemView::setupTooltip(Vector2f position)
         tooltip->setTargetWindow(this);
     else
         tooltip->positionSelf();
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::isMultiSelectEnabled() const
+{
+    return d_isMultiSelectEnabled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setMultiSelectEnabled(bool enabled)
+{
+    d_isMultiSelectEnabled = enabled;
 }
 
 }

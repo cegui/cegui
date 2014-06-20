@@ -159,6 +159,7 @@ public:
         True if the item has been successfully selected, false otherwise.
     */
     virtual bool setSelectedItem(const ModelIndex& index);
+    virtual bool setItemSelectionState(const ModelIndex& index, bool selected);
 
     virtual bool isIndexSelected(const ModelIndex& index) const;
 
@@ -196,6 +197,9 @@ public:
     bool isItemTooltipsEnabled() const;
     void setItemTooltipsEnabled(bool enabled);
 
+    bool isMultiSelectEnabled() const;
+    void setMultiSelectEnabled(bool enabled);
+
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
@@ -205,6 +209,7 @@ protected:
     ScrollbarDisplayMode d_vertScrollbarDisplayMode;
     ScrollbarDisplayMode d_horzScrollbarDisplayMode;
     bool d_isItemTooltipsEnabled;
+    bool d_isMultiSelectEnabled;
 
     //TODO: move this into the renderer instead?
     float d_renderedMaxWidth;
@@ -241,6 +246,7 @@ protected:
 
     void handleOnScroll(Scrollbar* scrollbar, float scroll);
     void setupTooltip(Vector2f position);
+    int getSelectedIndexPosition(const ModelIndex& index) const;
 };
 
 }
