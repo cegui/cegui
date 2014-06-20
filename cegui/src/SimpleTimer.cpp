@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/SimpleTimer.h"
 
-#if (defined(__WIN32__) || defined(_WIN32)) && (not defined __MINGW32__)
+#if (defined(__WIN32__) || defined(_WIN32) ) && (!defined __MINGW32__)
 #include <windows.h>
 double CEGUI::SimpleTimer::currentTime()
 {
