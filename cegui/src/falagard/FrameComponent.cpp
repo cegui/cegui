@@ -446,7 +446,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;;
+        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -699,14 +699,6 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     // get base class to write colours
     writeColoursXML(xml_stream);
 
-    if(d_backgroundVertFormatting.getValue() != VerticalFormattingDefault)
-    {
-        d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
-        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background);
-        d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
-        xml_stream.closeTag();
-    }
-
     if(d_leftEdgeFormatting.getValue() != VerticalFormattingDefault)
     {
         d_leftEdgeFormatting.writeXMLTagToStream(xml_stream);
@@ -744,6 +736,14 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
         d_bottomEdgeFormatting.writeXMLTagToStream(xml_stream);
         xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::BottomEdge);
         d_bottomEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
+
+    if(d_backgroundVertFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background);
+        d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
         xml_stream.closeTag();
     }
 

@@ -703,6 +703,8 @@ void FontDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 void FontDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
+    xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<FontMetricType>::toString(d_metric));
+
     if (!d_childName.empty())
         xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_childName);
 
@@ -714,8 +716,6 @@ void FontDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 
     if (d_padding != 0)
         xml_stream.attribute(Falagard_xmlHandler::PaddingAttribute, PropertyHelper<float>::toString(d_padding));
-
-    xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<FontMetricType>::toString(d_metric));
 }
 
 //----------------------------------------------------------------------------//
@@ -1030,13 +1030,13 @@ void UnifiedDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 void UnifiedDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
+        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<DimensionType>::toString(d_what));
+
     if (d_value.d_scale != 0)
         xml_stream.attribute(Falagard_xmlHandler::ScaleAttribute, PropertyHelper<float>::toString(d_value.d_scale));
 
     if (d_value.d_offset != 0)
         xml_stream.attribute(Falagard_xmlHandler::OffsetAttribute, PropertyHelper<float>::toString(d_value.d_offset));
-
-    xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<DimensionType>::toString(d_what));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
