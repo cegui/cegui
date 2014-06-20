@@ -35,6 +35,11 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    //! Default values
+    const HorizontalAlignment WidgetComponent::HorizontalAlignmentDefault(HA_LEFT);
+    const VerticalAlignment WidgetComponent::VerticalAlignmentDefault(VA_TOP);
+
+
     WidgetComponent::WidgetComponent(const String& type,
                                      const String& look,
                                      const String& suffix,
@@ -45,8 +50,8 @@ namespace CEGUI
         d_name(suffix),
         d_rendererType(renderer),
         d_autoWindow(autoWindow),
-        d_vertAlign(VA_TOP),
-        d_horzAlign(HA_LEFT)
+        d_vertAlign(VerticalAlignmentDefault),
+        d_horzAlign(HorizontalAlignmentDefault)
     {}
 
     void WidgetComponent::create(Window& parent) const
@@ -260,15 +265,21 @@ namespace CEGUI
         // output target area
         d_area.writeXMLToStream(xml_stream);
 
-        // output vertical alignment
-        xml_stream.openTag(Falagard_xmlHandler::VertAlignmentElement)
-            .attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign))
-            .closeTag();
+        // output vertical alignment if not-default
+        if(d_vertAlign != VerticalAlignmentDefault)
+        {
+            xml_stream.openTag(Falagard_xmlHandler::VertAlignmentElement);
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign));
+            xml_stream.closeTag();
+        }
 
-        // output horizontal alignment
-        xml_stream.openTag(Falagard_xmlHandler::HorzAlignmentElement)
-            .attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign))
-            .closeTag();
+        // output horizontal alignment if not-default
+        if(d_horzAlign != HorizontalAlignmentDefault)
+        {
+            xml_stream.openTag(Falagard_xmlHandler::HorzAlignmentElement);
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign));
+            xml_stream.closeTag();
+        }
 
         //output property initialisers
         for (PropertiesList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
