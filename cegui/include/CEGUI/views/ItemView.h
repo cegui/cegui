@@ -188,6 +188,10 @@ public:
     void setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode);
     ScrollbarDisplayMode getHorzScrollbarDisplayMode() const;
 
+    //! Specifies whether this view has separate tooltips for each item or not.
+    bool isItemTooltipsEnabled() const;
+    void setItemTooltipsEnabled(bool enabled);
+
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
@@ -196,6 +200,7 @@ protected:
     const Image* d_selectionBrush;
     ScrollbarDisplayMode d_vertScrollbarDisplayMode;
     ScrollbarDisplayMode d_horzScrollbarDisplayMode;
+    bool d_isItemTooltipsEnabled;
 
     //TODO: move this into the renderer instead?
     float d_renderedMaxWidth;
@@ -215,20 +220,23 @@ protected:
     virtual bool isIndexSelected(const ModelIndex& index) const;
 
     virtual void initialiseComponents(void);
-    virtual void onPointerPressHold(PointerEventArgs& e);
 
     virtual bool onChildrenAdded(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenDataChanged(const EventArgs& args);
     virtual bool onScrollPositionChanged(const EventArgs& args);
     virtual void onScroll(PointerEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
+    virtual void onPointerMove(PointerEventArgs& e);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
     Event::Connection d_eventChildrenDataChangedConnection;
     void connectToModelEvents(ItemModel* d_itemModel);
     void disconnectModelEvents();
+
     void handleOnScroll(Scrollbar* scrollbar, float scroll);
+    void setupTooltip(Vector2f position);
 };
 
 }

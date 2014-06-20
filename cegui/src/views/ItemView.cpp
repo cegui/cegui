@@ -29,6 +29,7 @@
 ***************************************************************************/
 #include "CEGUI/views/ItemView.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/widgets/Tooltip.h"
 
 namespace CEGUI
 {
@@ -121,6 +122,12 @@ void ItemView::addItemViewProperties()
         &ItemView::setHorzScrollbarDisplayMode,
         &ItemView::getHorzScrollbarDisplayMode, SDM_WhenNeeded
         );
+
+    CEGUI_DEFINE_PROPERTY(ItemView, bool,
+        "ItemTooltips", "Property to access the show item tooltips setting of the item view. Value is either \"True\" or \"False\".",
+        &ItemView::setItemTooltipsEnabled, &ItemView::isItemTooltipsEnabled, false
+        );
+
 }
 
 //----------------------------------------------------------------------------//
@@ -243,6 +250,15 @@ void ItemView::onPointerPressHold(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void ItemView::onPointerMove(PointerEventArgs& e)
+{
+    if (d_isItemTooltipsEnabled)
+        setupTooltip(e.position);
+
+    Window::onPointerMove(e);
+}
+
+//----------------------------------------------------------------------------//
 void ItemView::disconnectModelEvents()
 {
     if (d_eventChildrenAddedConnection != 0)
@@ -307,6 +323,9 @@ void ItemView::setIsDirty(bool value)
 //----------------------------------------------------------------------------//
 bool ItemView::isIndexSelected(const ModelIndex& index) const
 {
+    if (d_itemModel == 0)
+        return false;
+
     for (SelectionStatesVector::const_iterator
         itor = d_indexSelectionStates.begin();
         itor != d_indexSelectionStates.end(); ++itor)
@@ -478,8 +497,49 @@ void ItemView::handleOnScroll(Scrollbar* scrollbar, float scroll)
         scrollbar->getDocumentSize() > scrollbar->getPageSize())
     {
         scrollbar->setScrollPosition(
-            scrollbar->getScrollPosition() + scrollbar->getStepSize() * -scroll
-            );
+            scrollbar->getScrollPosition() + scrollbar->getStepSize() * -scroll);
     }
 }
+
+//----------------------------------------------------------------------------//
+bool ItemView::isItemTooltipsEnabled() const
+{
+    return d_isItemTooltipsEnabled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setItemTooltipsEnabled(bool enabled)
+{
+    d_isItemTooltipsEnabled = enabled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setupTooltip(Vector2f position)
+{
+    if (d_itemModel == 0)
+        return;
+
+    static ModelIndex last_model_index;
+
+    ModelIndex index = indexAt(position);
+    if (d_itemModel->areIndicesEqual(index, last_model_index))
+        return;
+
+    last_model_index = index;
+
+    if (!d_itemModel->isValidIndex(index))
+        setTooltipText("");
+    else
+        setTooltipText(d_itemModel->getData(index, IDR_Tooltip));
+
+    Tooltip* tooltip = getTooltip();
+    if (tooltip == 0)
+        return;
+
+    if (tooltip->getTargetWindow() != this)
+        tooltip->setTargetWindow(this);
+    else
+        tooltip->positionSelf();
+}
+
 }
