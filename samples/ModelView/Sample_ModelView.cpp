@@ -52,16 +52,19 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
     gui_context->setRootWindow(d_root);
+    gui_context->setDefaultTooltipType("TaharezLook/Tooltip");
 
     d_inventoryModel.load();
     d_newItemsCount = 0;
 
     d_listView = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
     d_listView->setModel(&d_inventoryModel);
+    d_listView->setItemTooltipsEnabled(true);
     d_root->getChild("ListViewHolder")->addChild(d_listView);
 
     d_treeView = static_cast<TreeView*>(win_mgr.createWindow("TaharezLook/TreeView", "treeView"));
     d_treeView->setModel(&d_inventoryModel);
+    d_treeView->setItemTooltipsEnabled(true);
     d_root->getChild("TreeViewHolder")->addChild(d_treeView);
 
     d_root->getChild("btnAddRandomItem")->subscribeEvent(PushButton::EventClicked,

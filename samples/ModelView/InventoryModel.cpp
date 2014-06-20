@@ -187,6 +187,9 @@ String InventoryModel::getData(const ModelIndex& model_index, ItemDataRole role 
     if (role == CEGUI::IDR_Text)
         return item->d_name;
 
+    if (role == CEGUI::IDR_Tooltip)
+        return "Tooltip for: " + item->d_name;
+
     return "";
 }
 
