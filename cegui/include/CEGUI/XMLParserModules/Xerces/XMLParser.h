@@ -146,12 +146,12 @@ namespace CEGUI
             on what is passed to parseXML.
 
         \param isEnabled
-            String containg either 'true' or 'false'.
+            Boolean, either true or false.
 
         \return
             Nothing.
         */
-        static void setXmlValidationEnabled(const String& isEnabled)
+        void setXmlValidationEnabled(const bool isEnabled)
             { d_xmlValidationEnabled = isEnabled; }
 
         /*!
@@ -161,7 +161,7 @@ namespace CEGUI
         \return
             'true' if enabled otherwise 'false'
         */
-        static const String& isXmlValidationEnabled()
+        bool isXmlValidationEnabled(void) const
             { return d_xmlValidationEnabled; }
 
     protected:
@@ -175,14 +175,11 @@ namespace CEGUI
 
         //! holds the default resource group ID for loading schemas.
         static String d_defaultSchemaResourceGroup;
-        //! contains 'true' if xml validation is enabled otherwise 'false'
-        static String d_xmlValidationEnabled;
+        //! holds whether xml validation is allowed or not.
+        bool d_xmlValidationEnabled;
         //! Property for accessing the default schema resource group ID.
         static XercesParserProperties::SchemaDefaultResourceGroup
             s_schemaDefaultResourceGroupProperty;
-        //! Property for determining if xml validation is enabled or not.
-        static XercesParserProperties::XMLValidationEnabled
-            s_XMLValidationEnabledProperty;
     };
 
 } // End of  CEGUI namespace section

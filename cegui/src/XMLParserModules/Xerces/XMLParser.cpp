@@ -43,14 +43,9 @@ namespace CEGUI
 {
     // Static data definition for default schema resource group name
     String XercesParser::d_defaultSchemaResourceGroup("");
-    // Static data definition for enabling xml validation.
-    String XercesParser::d_xmlValidationEnabled("true");
     // static data defiinition of the SchemaDefaultResourceGroup property.
     XercesParserProperties::SchemaDefaultResourceGroup
         XercesParser::s_schemaDefaultResourceGroupProperty;
-    // static data definition of the XMLValidationEnabled property.
-    XercesParserProperties::XMLValidationEnabled
-        XercesParser::s_XMLValidationEnabledProperty;
 
     ////////////////////////////////////////////////////////////////////////////////
     //
@@ -64,7 +59,16 @@ namespace CEGUI
         d_identifierString = "CEGUI::XercesParser - Official Xerces-C++ based parser module for CEGUI";
         // add property
         addProperty(&s_schemaDefaultResourceGroupProperty);
-        addProperty(&s_XMLValidationEnabledProperty);
+
+        String propertyOrigin("XercesParser");
+        CEGUI_DEFINE_PROPERTY(XercesParser, bool, "isXmlValidationEnabled",
+                              "Property to get/set if XML validation is enabled or disabled globally. "
+                              "If it's disabled it will not allow any xml validation. "
+                              "If it's enabled the validation behaviour is dependending on what is "
+                              "passed to parseXML.",
+                              &XercesParser::setXmlValidationEnabled,
+                              &XercesParser::isXmlValidationEnabled,
+                              true);
     }
 
     XercesParser::~XercesParser(void)
@@ -84,7 +88,7 @@ namespace CEGUI
             bool forceXmlValidation;
 
             // ignore local settings if validation is disabled globally
-            if (isXmlValidationEnabled().compare("false"))
+            if (!isXmlValidationEnabled())
                 forceXmlValidation = false;
             else
                 forceXmlValidation = xmlValidationEnabled;
