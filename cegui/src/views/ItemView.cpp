@@ -79,6 +79,7 @@ const String ItemView::HorzScrollbarName("__auto_hscrollbar__");
 const String ItemView::VertScrollbarName("__auto_vscrollbar__");
 const String ItemView::EventVertScrollbarDisplayModeChanged("VertScrollbarDisplayModeChanged");
 const String ItemView::EventHorzScrollbarDisplayModeChanged("HorzScrollbarDisplayModeChanged");
+const String ItemView::EventSelectionChanged("SelectionChanged");
 
 //----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
@@ -86,6 +87,13 @@ ItemView::ItemView(const String& type, const String& name) :
     d_itemModel(0),
     d_textColourRect(ColourRect(DefaultTextColour)),
     d_isDirty(true),
+    d_selectionBrush(0),
+    d_vertScrollbarDisplayMode(SDM_WhenNeeded),
+    d_horzScrollbarDisplayMode(SDM_WhenNeeded),
+    d_isItemTooltipsEnabled(false),
+    d_isMultiSelectEnabled(false),
+    d_renderedMaxWidth(0),
+    d_renderedTotalHeight(0),
     d_eventChildrenAddedConnection(0),
     d_eventChildrenRemovedConnection(0)
 {
@@ -155,12 +163,16 @@ void ItemView::setModel(ItemModel* item_model)
     d_itemModel = item_model;
 
     connectToModelEvents(d_itemModel);
-    invalidateView(true);
+    d_indexSelectionStates.clear();
+    onSelectionChanged(WindowEventArgs(this));
 }
 
 //----------------------------------------------------------------------------//
 void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 {
+    if (d_itemModel == 0)
+        return;
+
     d_eventChildrenAddedConnection = d_itemModel->subscribeEvent(
         ItemModel::EventChildrenAdded,
         &ItemView::onChildrenAdded, this);
@@ -215,7 +227,7 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
         }
     }
 
-    invalidateView(false);
+    onSelectionChanged(WindowEventArgs(this));
     return true;
 }
 
@@ -226,6 +238,13 @@ bool ItemView::onChildrenDataChanged(const EventArgs& args)
 
     invalidateView(false);
     return true;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::onSelectionChanged(WindowEventArgs& args)
+{
+    invalidateView(false);
+    fireEvent(EventSelectionChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -356,7 +375,7 @@ bool ItemView::setSelectedItem(const ModelIndex& index)
     d_indexSelectionStates.clear();
     d_indexSelectionStates.push_back(selection_state);
 
-    invalidateView(false);
+    onSelectionChanged(WindowEventArgs(this));
 
     return true;
 }

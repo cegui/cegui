@@ -124,4 +124,19 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
     BOOST_CHECK(!test_item_view.isDirty());
 }
 
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
+{
+    ItemModelStub stub1, stub2;
+    TestItemView test_item_view("DefaultWindow", "id0");
+    stub1.d_items.push_back("item");
+    test_item_view.setModel(&stub1);
+    test_item_view.setSelectedItem(stub1.makeIndex(0, stub1.getRootIndex()));
+
+    BOOST_CHECK_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+
+    test_item_view.setModel(&stub2);
+    BOOST_REQUIRE_EQUAL(0, test_item_view.getIndexSelectionStates().size());
+}
+
 BOOST_AUTO_TEST_SUITE_END()

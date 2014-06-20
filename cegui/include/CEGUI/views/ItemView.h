@@ -31,10 +31,11 @@
 #define _CEGUIItemView_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/ItemModel.h"
-#include "CEGUI/Window.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
+#include "CEGUI/InputEvent.h"
+#include "CEGUI/ItemModel.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
 #if defined (_MSC_VER)
@@ -114,6 +115,7 @@ public:
     static const String HorzScrollbarName;
     static const String EventVertScrollbarDisplayModeChanged;
     static const String EventHorzScrollbarDisplayModeChanged;
+    static const String EventSelectionChanged;
 
     //!Sets the ItemModel to be used inside this view.
     virtual void setModel(ItemModel* item_model);
@@ -157,6 +159,8 @@ public:
         True if the item has been successfully selected, false otherwise.
     */
     virtual bool setSelectedItem(const ModelIndex& index);
+
+    virtual bool isIndexSelected(const ModelIndex& index) const;
 
     void setSelectionBrushImage(const Image* image);
     void setSelectionBrushImage(const String& name);
@@ -217,14 +221,14 @@ protected:
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);
 
-    virtual bool isIndexSelected(const ModelIndex& index) const;
-
     virtual void initialiseComponents(void);
 
     virtual bool onChildrenAdded(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenDataChanged(const EventArgs& args);
     virtual bool onScrollPositionChanged(const EventArgs& args);
+    virtual void onSelectionChanged(WindowEventArgs& args);
+
     virtual void onScroll(PointerEventArgs& e);
     virtual void onPointerPressHold(PointerEventArgs& e);
     virtual void onPointerMove(PointerEventArgs& e);
