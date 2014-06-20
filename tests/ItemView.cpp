@@ -139,4 +139,50 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
     BOOST_REQUIRE_EQUAL(0, test_item_view.getIndexSelectionStates().size());
 }
 
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetSelectedItem_NoMultiSelect_ReplacesSelection)
+{
+    ItemModelStub stub;
+    TestItemView test_item_view("DefaultWindow", "id0");
+    stub.d_items.push_back("item1");
+    stub.d_items.push_back("item2");
+    test_item_view.setModel(&stub);
+
+    test_item_view.setSelectedItem(stub.makeIndex(0, stub.getRootIndex()));
+    BOOST_CHECK_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+
+    test_item_view.setSelectedItem(stub.makeIndex(1, stub.getRootIndex()));
+    BOOST_REQUIRE_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+    BOOST_REQUIRE_EQUAL("item2",
+        *(static_cast<String*>(
+            test_item_view.getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetSelectedItem_MultiSelectEnabled_ModifiesSelectionAccordingly)
+{
+    ItemModelStub stub;
+    TestItemView test_item_view("DefaultWindow", "id0");
+    stub.d_items.push_back("item1");
+    stub.d_items.push_back("item2");
+    test_item_view.setModel(&stub);
+    test_item_view.setMultiSelectEnabled(true);
+
+    test_item_view.setSelectedItem(stub.makeIndex(0, stub.getRootIndex()));
+    test_item_view.setSelectedItem(stub.makeIndex(1, stub.getRootIndex()));
+
+    BOOST_REQUIRE_EQUAL(2, test_item_view.getIndexSelectionStates().size());
+    BOOST_REQUIRE_EQUAL("item2",
+        *(static_cast<String*>(
+            test_item_view.getIndexSelectionStates().at(1).d_selectedIndex.d_modelData)));
+
+    // unselect
+    test_item_view.setItemSelectionState(stub.makeIndex(0, stub.getRootIndex()), false);
+    BOOST_REQUIRE_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+    BOOST_REQUIRE_EQUAL("item2",
+        *(static_cast<String*>(
+            test_item_view.getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()

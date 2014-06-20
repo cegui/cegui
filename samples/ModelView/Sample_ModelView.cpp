@@ -77,10 +77,10 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
         Event::Subscriber(&ModelViewDemo::handleAddItemInTree, this));
 
     d_root->getChild("btnRemoveSelectedListItem")->subscribeEvent(PushButton::EventClicked,
-        Event::Subscriber(&ModelViewDemo::handleRemoveSelectedListItem, this));
+        Event::Subscriber(&ModelViewDemo::handleRemoveSelectedListItems, this));
 
     d_root->getChild("btnRemoveSelectedTreeItem")->subscribeEvent(PushButton::EventClicked,
-        Event::Subscriber(&ModelViewDemo::handleRemoveSelectedTreeItem, this));
+        Event::Subscriber(&ModelViewDemo::handleRemoveSelectedTreeItems, this));
 
     d_root->getChild("btnClearAllItems")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleClearItems, this));
@@ -90,6 +90,10 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
 
     d_root->getChild("btnUpdateTreeItemName")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleUpdateTreeItemName, this));
+
+    d_root->getChild("chkMultiSelectEnabled")->subscribeEvent(
+        ToggleButton::EventSelectStateChanged,
+        Event::Subscriber(&ModelViewDemo::toggleMultiSelect, this));
 
     d_txtNewItemName = d_root->getChild("txtNewItemName");
 
@@ -112,16 +116,16 @@ bool ModelViewDemo::handleClearItems(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::handleRemoveSelectedListItem(const EventArgs& e)
+bool ModelViewDemo::handleRemoveSelectedListItems(const EventArgs& e)
 {
-    removeSelectedItemFromView(d_listView);
+    removeSelectedItemsFromView(d_listView);
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::handleRemoveSelectedTreeItem(const EventArgs& e)
+bool ModelViewDemo::handleRemoveSelectedTreeItems(const EventArgs& e)
 {
-    removeSelectedItemFromView(d_treeView);
+    removeSelectedItemsFromView(d_treeView);
     return true;
 }
 
@@ -173,12 +177,13 @@ bool ModelViewDemo::handleUpdateTreeItemName(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ModelViewDemo::removeSelectedItemFromView(ItemView* view)
+void ModelViewDemo::removeSelectedItemsFromView(ItemView* view)
 {
-    const std::vector<ModelIndexSelectionState>& selections = view->getIndexSelectionStates();
-    if (!selections.empty())
+    std::vector<ModelIndexSelectionState> selections = view->getIndexSelectionStates();
+    for (std::vector<ModelIndexSelectionState>::iterator itor = selections.begin();
+        itor != selections.end(); ++itor)
     {
-        d_inventoryModel.removeItem((*selections.begin()).d_selectedIndex);
+        d_inventoryModel.removeItem((*itor).d_selectedIndex);
     }
 }
 
@@ -192,6 +197,17 @@ void ModelViewDemo::updateSelectedIndexText(CEGUI::ItemView* view, const String&
     const ModelIndexSelectionState& selection = (*selections.begin());
 
     d_inventoryModel.updateItemName(selection.d_selectedIndex, text);
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::toggleMultiSelect(const CEGUI::EventArgs& e)
+{
+    bool enabled = d_listView->isMultiSelectEnabled();
+
+    d_listView->setMultiSelectEnabled(!enabled);
+    d_treeView->setMultiSelectEnabled(!enabled);
+
+    return true;
 }
 /*************************************************************************
     Define the module function that returns an instance of the sample

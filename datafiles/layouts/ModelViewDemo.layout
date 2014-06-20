@@ -10,7 +10,7 @@
         </Window>
         <Window type="TaharezLook/Button" name="btnRemoveSelectedListItem" >
             <Property name="Area" value="{{-0.759375,992},{0.416667,175},{-0.664063,1215},{0.416667,207}}" />
-            <Property name="Text" value="Remove selected list item" />
+            <Property name="Text" value="Remove selected list item(s)" />
         </Window>
         <Window type="TaharezLook/Button" name="btnClearAllItems" >
             <Property name="Area" value="{{-0.367188,990},{-0.275,218},{-0.367188,1214},{-0.275,250}}" />
@@ -31,7 +31,7 @@
         </Window>
         <Window type="TaharezLook/Button" name="btnRemoveSelectedTreeItem" >
             <Property name="Area" value="{{-0.458594,992},{0.416667,175},{-0.363281,1215},{0.416667,207}}" />
-            <Property name="Text" value="Remove selected tree item" />
+            <Property name="Text" value="Remove selected tree item(s)" />
         </Window>
         <Window type="TaharezLook/Button" name="btnAddRandomItemInTree" >
             <Property name="Area" value="{{-0.459375,993},{0.530556,133},{-0.363281,1215},{0.530556,165}}" />
@@ -66,6 +66,10 @@
         <Window type="TaharezLook/Button" name="btnUpdateTreeItemName" >
             <Property name="Area" value="{{0,404},{0,603},{0,750},{0,635}}" />
             <Property name="Text" value="Update selected tree item&apos;s name" />
+        </Window>
+        <Window type="TaharezLook/Checkbox" name="chkMultiSelectEnabled" >
+            <Property name="Area" value="{{0,766},{0,19},{0,993},{0,51}}" />
+            <Property name="Text" value="Multi-selection enabled" />
         </Window>
     </Window>
 </GUILayout>
