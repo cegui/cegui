@@ -650,16 +650,6 @@ void register_GUIContext_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
-        { //::CEGUI::GUIContext::getMouseCursor
-        
-            typedef ::CEGUI::MouseCursor const & ( ::CEGUI::GUIContext::*getMouseCursor_function_type )(  ) const;
-            
-            GUIContext_exposer.def( 
-                "getMouseCursor"
-                , getMouseCursor_function_type( &::CEGUI::GUIContext::getMouseCursor )
-                , bp::return_value_policy< bp::copy_const_reference >() );
-        
-        }
         { //::CEGUI::GUIContext::getMouseMoveScalingFactor
         
             typedef float ( ::CEGUI::GUIContext::*getMouseMoveScalingFactor_function_type )(  ) const;

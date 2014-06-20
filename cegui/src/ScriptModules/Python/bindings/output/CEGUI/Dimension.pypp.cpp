@@ -10,14 +10,7 @@ void register_Dimension_class(){
 
     { //::CEGUI::Dimension
         typedef bp::class_< CEGUI::Dimension > Dimension_exposer_t;
-        Dimension_exposer_t Dimension_exposer = Dimension_exposer_t( "Dimension", "*!\n\
-        \n\
-            Class representing some kind of dimension.\n\
-        \n\
-            The key thing to understand about Dimension is that it contains not just a\n\
-            dimensional value, but also a record of what the dimension value is supposed\n\
-            to represent. (e.g. a co-ordinate on the x axis, or the height of something).\n\
-        *\n", bp::init< >() );
+        Dimension_exposer_t Dimension_exposer = Dimension_exposer_t( "Dimension", bp::init< >() );
         bp::scope Dimension_scope( Dimension_exposer );
         Dimension_exposer.def( bp::init< CEGUI::Dimension const & >(( bp::arg("other") )) );
         Dimension_exposer.def( bp::init< CEGUI::BaseDim const &, CEGUI::DimensionType >(( bp::arg("dim"), bp::arg("type") ), "*!\n\

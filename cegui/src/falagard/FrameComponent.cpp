@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/FrameComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
@@ -36,14 +37,19 @@
 
 namespace CEGUI
 {
+
+//! Default values
+const HorizontalFormatting FrameComponent::HorizontalFormattingDefault(HF_STRETCHED);
+const VerticalFormatting FrameComponent::VerticalFormattingDefault(VF_STRETCHED);
+
 //----------------------------------------------------------------------------//
 FrameComponent::FrameComponent() :
-    d_leftEdgeFormatting(VF_STRETCHED),
-    d_rightEdgeFormatting(VF_STRETCHED),
-    d_topEdgeFormatting(HF_STRETCHED),
-    d_bottomEdgeFormatting(HF_STRETCHED),
-    d_backgroundVertFormatting(VF_STRETCHED),
-    d_backgroundHorzFormatting(HF_STRETCHED)
+    d_leftEdgeFormatting(VerticalFormattingDefault),
+    d_rightEdgeFormatting(VerticalFormattingDefault),
+    d_topEdgeFormatting(HorizontalFormattingDefault),
+    d_bottomEdgeFormatting(HorizontalFormattingDefault),
+    d_backgroundVertFormatting(VerticalFormattingDefault),
+    d_backgroundHorzFormatting(HorizontalFormattingDefault)
 {
 }
 
@@ -440,7 +446,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;;
+        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -668,7 +674,7 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
 void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // opening tag
-    xml_stream.openTag("FrameComponent");
+    xml_stream.openTag(Falagard_xmlHandler::FrameComponentElement);
     // write out area
     d_area.writeXMLToStream(xml_stream);
 
@@ -678,14 +684,14 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
         if (d_frameImages[i].d_specified)
         {
             if (d_frameImages[i].d_propertyName.empty())
-                xml_stream.openTag("Image")
-                    .attribute("name", d_frameImages[i].d_image->getName())
-                    .attribute("component", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                xml_stream.openTag(Falagard_xmlHandler::ImageElement)
+                    .attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_image->getName())
                     .closeTag();
             else
-                xml_stream.openTag("ImageProperty")
-                    .attribute("name", d_frameImages[i].d_propertyName)
-                    .attribute("component", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                xml_stream.openTag(Falagard_xmlHandler::ImagePropertyElement)
+                    .attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                    .attribute(Falagard_xmlHandler::NameAttribute, d_frameImages[i].d_propertyName)
                     .closeTag();
         }
     }
@@ -693,29 +699,53 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     // get base class to write colours
     writeColoursXML(xml_stream);
 
-    d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
-    d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "Background").closeTag();
+    if(d_leftEdgeFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_leftEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::LeftEdge);
+        d_leftEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_leftEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_leftEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "LeftEdge").closeTag();
+    if(d_rightEdgeFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_rightEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::RightEdge);
+        d_rightEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_rightEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_rightEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "RightEdge").closeTag();
+    if(d_backgroundHorzFormatting.getValue() != HorizontalFormattingDefault)
+    {
+        d_backgroundHorzFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background);
+        d_backgroundHorzFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_backgroundHorzFormatting.writeXMLTagToStream(xml_stream);
-    d_backgroundHorzFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "Background").closeTag();
+    if(d_topEdgeFormatting.getValue() != HorizontalFormattingDefault)
+    {
+        d_topEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::TopEdge);
+        d_topEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_topEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_topEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "TopEdge").closeTag();
+    if(d_bottomEdgeFormatting.getValue() != HorizontalFormattingDefault)
+    {
+        d_bottomEdgeFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::BottomEdge);
+        d_bottomEdgeFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
-    d_bottomEdgeFormatting.writeXMLTagToStream(xml_stream);
-    d_bottomEdgeFormatting.writeXMLAttributesToStream(xml_stream);
-    xml_stream.attribute("component", "BottomEdge").closeTag();
+    if(d_backgroundVertFormatting.getValue() != VerticalFormattingDefault)
+    {
+        d_backgroundVertFormatting.writeXMLTagToStream(xml_stream);
+        xml_stream.attribute(Falagard_xmlHandler::ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background);
+        d_backgroundVertFormatting.writeXMLAttributesToStream(xml_stream);
+        xml_stream.closeTag();
+    }
 
     // closing tag
     xml_stream.closeTag();

@@ -28,8 +28,6 @@
 
 #include "AnimationNameIterator.pypp.hpp"
 
-#include "BannedXMLPropertySet.pypp.hpp"
-
 #include "BaseDim.pypp.hpp"
 
 #include "BasicImage.pypp.hpp"
@@ -72,11 +70,17 @@
 
 #include "ConstBaseIterator_6318b664b630c5a4e45127a69c6748cb.pypp.hpp"
 
+#include "ConstBaseIterator_663c592fa58613dab4f9509d04eb6cc1.pypp.hpp"
+
 #include "ConstBaseIterator_6cea82a17f94b95b10c333412f843a6d.pypp.hpp"
 
 #include "ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174.pypp.hpp"
 
+#include "ConstBaseIterator_6e18222775ccb39f7ec1f5c112d444ec.pypp.hpp"
+
 #include "ConstBaseIterator_78cd23dcc51d261e1f508a899854e1a9.pypp.hpp"
+
+#include "ConstBaseIterator_7f0012c4899354432f095ef9bb577046.pypp.hpp"
 
 #include "ConstBaseIterator_92b3f0ef60bba0b7bc1aa08b6f3304d6.pypp.hpp"
 
@@ -91,6 +95,8 @@
 #include "ConstBaseIterator_a74f832b0a98ff325f0d295bba46f58b.pypp.hpp"
 
 #include "ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364.pypp.hpp"
+
+#include "ConstBaseIterator_ccf46e19ae28e4742a13388873833720.pypp.hpp"
 
 #include "ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd.pypp.hpp"
 
@@ -135,6 +141,8 @@
 #include "EventIterator.pypp.hpp"
 
 #include "EventLinkDefinition.pypp.hpp"
+
+#include "EventLinkDefinitionIterator.pypp.hpp"
 
 #include "EventSet.pypp.hpp"
 
@@ -284,11 +292,15 @@
 
 #include "PropertyDefinitionBase.pypp.hpp"
 
+#include "PropertyDefinitionIterator.pypp.hpp"
+
 #include "PropertyDim.pypp.hpp"
 
 #include "PropertyHelper.pypp.hpp"
 
 #include "PropertyInitialiser.pypp.hpp"
+
+#include "PropertyInitialiserIterator.pypp.hpp"
 
 #include "PropertyInitialiserVector.pypp.hpp"
 
@@ -418,6 +430,8 @@
 
 #include "StdPairFloatFloat.pypp.hpp"
 
+#include "StringSet.pypp.hpp"
+
 #include "Subscriber.pypp.hpp"
 
 #include "System.pypp.hpp"
@@ -479,6 +493,8 @@
 #include "VerticalLayoutContainer.pypp.hpp"
 
 #include "WidgetComponent.pypp.hpp"
+
+#include "WidgetComponentIterator.pypp.hpp"
 
 #include "WidgetDim.pypp.hpp"
 
@@ -630,7 +646,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_LineList_class();
 
-    register_BannedXMLPropertySet_class();
+    register_StringSet_class();
 
     register_BaseDim_class();
 
@@ -700,6 +716,14 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ComponentArea_class();
 
+    register_ConstBaseIterator_7f0012c4899354432f095ef9bb577046_class();
+
+    register_ConstBaseIterator_6e18222775ccb39f7ec1f5c112d444ec_class();
+
+    register_ConstBaseIterator_663c592fa58613dab4f9509d04eb6cc1_class();
+
+    register_ConstBaseIterator_ccf46e19ae28e4742a13388873833720_class();
+
     register_ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_class();
 
     register_ConstBaseIterator_47ddd968107e89ff0051bf3212fbb472_class();
@@ -767,6 +791,14 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_FalagardMappingIterator_class();
 
     register_ImageIterator_class();
+
+    register_EventLinkDefinitionIterator_class();
+
+    register_PropertyDefinitionIterator_class();
+
+    register_PropertyInitialiserIterator_class();
+
+    register_WidgetComponentIterator_class();
 
     register_LayerIterator_class();
 

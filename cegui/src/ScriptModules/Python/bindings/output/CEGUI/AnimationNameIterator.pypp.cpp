@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_set_less_CEGUI_scope_String_comma__CE
         
     }
 
+    ConstVectorIterator_less__std_scope_set_less_CEGUI_scope_String_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_CEGUI_scope_String_greater___greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::String getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_AnimationNameIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_set_less_CEGUI_scope_String_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_CEGUI_scope_String_greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> >, CEGUI::String > > > AnimationNameIterator_exposer_t;
         AnimationNameIterator_exposer_t AnimationNameIterator_exposer = AnimationNameIterator_exposer_t( "AnimationNameIterator", bp::no_init );
         bp::scope AnimationNameIterator_scope( AnimationNameIterator_exposer );
+        AnimationNameIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > > exported_class_t;
