@@ -61,24 +61,6 @@ public:
     Property* clone() const;
 };
 
-class XMLValidationEnabled : public Property
-{
-public:
-    XMLValidationEnabled() : Property(
-        "XMLValidationEnabled",
-        "Property to get/set if XML validation is enabled or disabled globally. "
-        "If it's disabled it will not allow any xml validation. "
-        "If it's enabled the validation behaviour is dependending on what is "
-        "passed to parseXML.",
-        "true")
-    {}
-
-    // implement property interface
-    String get(const PropertyReceiver* receiver) const;
-    void set(PropertyReceiver* receiver, const String& value);
-    Property* clone() const;
-};
-
 } // End of XercesParserProperties namespace section
     
 } // End of  CEGUI namespace section
