@@ -15,6 +15,13 @@ struct ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI
         
     }
 
+    ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WidgetLookFeel_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WidgetLookFeel_greater___greater___greater___greater__wrapper( )
+    : CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > > >( )
+      , bp::wrapper< CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::WidgetLookFeel getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_WidgetLookIterator_class(){
         typedef bp::class_< ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WidgetLookFeel_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WidgetLookFeel_greater___greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > >, CEGUI::WidgetLookFeel > > > WidgetLookIterator_exposer_t;
         WidgetLookIterator_exposer_t WidgetLookIterator_exposer = WidgetLookIterator_exposer_t( "WidgetLookIterator", bp::no_init );
         bp::scope WidgetLookIterator_scope( WidgetLookIterator_exposer );
+        WidgetLookIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > > >::getCurrentKey
         
             typedef CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > > > exported_class_t;

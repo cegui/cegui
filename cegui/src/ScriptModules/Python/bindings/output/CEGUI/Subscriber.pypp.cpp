@@ -10,15 +10,7 @@ void register_Subscriber_class(){
 
     { //::CEGUI::SubscriberSlot
         typedef bp::class_< CEGUI::SubscriberSlot > Subscriber_exposer_t;
-        Subscriber_exposer_t Subscriber_exposer = Subscriber_exposer_t( "Subscriber", "*!\n\
-        \n\
-            SubscriberSlot class which is used when subscribing to events.\n\
-        \n\
-            For many uses, the construction of the SubscriberSlot may be implicit, so\n\
-            you do not have to specify Subscriber in your subscription calls. Notable\n\
-            exceptions are for subscribing member functions and references to functor\n\
-            objects.\n\
-        *\n", bp::init< >("*!\n\
+        Subscriber_exposer_t Subscriber_exposer = Subscriber_exposer_t( "Subscriber", bp::init< >("*!\n\
         \n\
             Default constructor.  Creates a SubscriberSlot with no bound slot.\n\
         *\n") );

@@ -10,15 +10,7 @@ void register_ComponentArea_class(){
 
     { //::CEGUI::ComponentArea
         typedef bp::class_< CEGUI::ComponentArea > ComponentArea_exposer_t;
-        ComponentArea_exposer_t ComponentArea_exposer = ComponentArea_exposer_t( "ComponentArea", "*!\n\
-        \n\
-            Class that represents a target area for a widget or imagery component.\n\
-        \n\
-            This is essentially a Rect built out of Dimension objects.  Of note is that\n\
-            what would normally be the 'right' and 'bottom' edges may alternatively\n\
-            represent width and height depending upon what the assigned Dimension(s)\n\
-            represent.\n\
-        *\n", bp::init< >() );
+        ComponentArea_exposer_t ComponentArea_exposer = ComponentArea_exposer_t( "ComponentArea", bp::init< >() );
         bp::scope ComponentArea_scope( ComponentArea_exposer );
         { //::CEGUI::ComponentArea::getAreaPropertySource
         

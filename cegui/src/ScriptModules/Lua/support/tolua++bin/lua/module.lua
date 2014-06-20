@@ -36,6 +36,19 @@ function classModule:register (pre)
 	pop()
 end
 
+
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classModule:output_luadoc()
+	local i=1
+	while self[i] do
+		self[i]:output_luadoc()
+		i = i+1
+	end
+end
+
 -- Print method
 function classModule:print (ident,close)
  print(ident.."Module{")

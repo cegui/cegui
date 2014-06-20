@@ -34,6 +34,39 @@ function classNamespace:print (ident,close)
  print(ident.."}"..close)
 end
 
+
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classNamespace:output_luadoc()
+
+	output('---------------------------------------------------------------------------------\n')
+	if ( not self.name and not self.name~='') then
+		output('-- @field [parent=#'..cleanseType(self.parent.name)..'] #'..cleanseType(self.name)..' '..cleanseType(self.name)..'\n')
+	else
+		local name = cleanseType(self.name)
+		output('---------------------------------------------------------------------------------\n')
+		output('-- @module '..name..'\n')
+		output('\n')
+		output('---\n')
+		output('-- @field [parent=#global] #'..name..' '..name..'\n')
+	end
+	
+	output('\n')
+	
+	output('---------------------------------------------------------------------------------\n')
+	output('-- '..self.name..'\n')
+	output('-- @type '..cleanseType(self.name)..'\n')
+	
+	output('\n')
+		local i=1
+	while self[i] do
+		self[i]:output_luadoc()
+		i = i+1
+	end
+end
+
 -- Internal constructor
 function _Namespace (t)
  setmetatable(t,classNamespace)

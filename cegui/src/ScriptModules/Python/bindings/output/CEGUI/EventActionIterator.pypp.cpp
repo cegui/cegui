@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_EventAction_
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_EventAction__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::EventAction, std::allocator<CEGUI::EventAction> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::EventAction > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::EventAction getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_EventActionIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_EventAction__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::EventAction >, CEGUI::EventAction > > > EventActionIterator_exposer_t;
         EventActionIterator_exposer_t EventActionIterator_exposer = EventActionIterator_exposer_t( "EventActionIterator", bp::no_init );
         bp::scope EventActionIterator_scope( EventActionIterator_exposer );
+        EventActionIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::EventAction > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::EventAction > > exported_class_t;

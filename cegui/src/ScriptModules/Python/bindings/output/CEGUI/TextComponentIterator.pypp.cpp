@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_TextComponen
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_TextComponent__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::TextComponent, std::allocator<CEGUI::TextComponent> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::TextComponent > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::TextComponent getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_TextComponentIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_TextComponent__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::TextComponent >, CEGUI::TextComponent > > > TextComponentIterator_exposer_t;
         TextComponentIterator_exposer_t TextComponentIterator_exposer = TextComponentIterator_exposer_t( "TextComponentIterator", bp::no_init );
         bp::scope TextComponentIterator_scope( TextComponentIterator_exposer );
+        TextComponentIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::TextComponent > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::TextComponent > > exported_class_t;

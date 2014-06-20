@@ -10,7 +10,7 @@ void register_SimpleTimer_class(){
 
     { //::CEGUI::SimpleTimer
         typedef bp::class_< CEGUI::SimpleTimer > SimpleTimer_exposer_t;
-        SimpleTimer_exposer_t SimpleTimer_exposer = SimpleTimer_exposer_t( "SimpleTimer", "! Simple timer class.\n", bp::init< >() );
+        SimpleTimer_exposer_t SimpleTimer_exposer = SimpleTimer_exposer_t( "SimpleTimer", bp::init< >() );
         bp::scope SimpleTimer_scope( SimpleTimer_exposer );
         { //::CEGUI::SimpleTimer::currentTime
         
