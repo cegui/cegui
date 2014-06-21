@@ -1,5 +1,5 @@
 # Crazy Eddie's GUI System Mk-2
-![CEGUI logo](https://bitbucket.org/cegui/cegui-promo/raw/default/logo/ceguilogo.png)
+[![CEGUI logo](https://bitbucket.org/cegui/cegui-promo/raw/default/logo/ceguilogo.png)](http://www.cegui.org.uk)
 http://www.cegui.org.uk
 
 Copyright ©2004 - 2014 CEGUI Team & Contributing Authors
