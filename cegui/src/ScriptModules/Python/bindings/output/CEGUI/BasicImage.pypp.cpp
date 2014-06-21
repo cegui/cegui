@@ -36,16 +36,16 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
     
     }
 
-    virtual void notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
+    virtual void notifyDisplaySizeChanged( ::CEGUI::Sizef const & renderer_display_size ) {
         if( bp::override func_notifyDisplaySizeChanged = this->get_override( "notifyDisplaySizeChanged" ) )
-            func_notifyDisplaySizeChanged( boost::ref(size) );
+            func_notifyDisplaySizeChanged( boost::ref(renderer_display_size) );
         else{
-            this->CEGUI::BasicImage::notifyDisplaySizeChanged( boost::ref(size) );
+            this->CEGUI::BasicImage::notifyDisplaySizeChanged( boost::ref(renderer_display_size) );
         }
     }
     
-    void default_notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
-        CEGUI::BasicImage::notifyDisplaySizeChanged( boost::ref(size) );
+    void default_notifyDisplaySizeChanged( ::CEGUI::Sizef const & renderer_display_size ) {
+        CEGUI::BasicImage::notifyDisplaySizeChanged( boost::ref(renderer_display_size) );
     }
 
     virtual void render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & dest_area, ::CEGUI::Rectf const * clip_area, ::CEGUI::ColourRect const & colours ) const  {
@@ -58,6 +58,18 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
     
     void default_render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & dest_area, ::CEGUI::Rectf const * clip_area, ::CEGUI::ColourRect const & colours ) const  {
         CEGUI::BasicImage::render( boost::ref(buffer), boost::ref(dest_area), boost::python::ptr(clip_area), boost::ref(colours) );
+    }
+
+    void updateScaledOffset( ::CEGUI::Sizef const & renderer_display_size ){
+        CEGUI::BasicImage::updateScaledOffset( boost::ref(renderer_display_size) );
+    }
+
+    void updateScaledSize( ::CEGUI::Sizef const & renderer_display_size ){
+        CEGUI::BasicImage::updateScaledSize( boost::ref(renderer_display_size) );
+    }
+
+    void updateScaledSizeAndOffset( ::CEGUI::Sizef const & renderer_display_size ){
+        CEGUI::BasicImage::updateScaledSizeAndOffset( boost::ref(renderer_display_size) );
     }
 
     virtual void elementEndLocal( ::CEGUI::String const & element ){
@@ -147,7 +159,7 @@ void register_BasicImage_class(){
                 "notifyDisplaySizeChanged"
                 , notifyDisplaySizeChanged_function_type(&::CEGUI::BasicImage::notifyDisplaySizeChanged)
                 , default_notifyDisplaySizeChanged_function_type(&BasicImage_wrapper::default_notifyDisplaySizeChanged)
-                , ( bp::arg("size") ) );
+                , ( bp::arg("renderer_display_size") ) );
         
         }
         { //::CEGUI::BasicImage::render
@@ -210,6 +222,41 @@ void register_BasicImage_class(){
                 "setTexture"
                 , setTexture_function_type( &::CEGUI::BasicImage::setTexture )
                 , ( bp::arg("texture") ) );
+        
+        }
+        { //::CEGUI::BasicImage::updateScaledOffset
+        
+            typedef void ( BasicImage_wrapper::*updateScaledOffset_function_type )( ::CEGUI::Sizef const & ) ;
+            
+            BasicImage_exposer.def( 
+                "updateScaledOffset"
+                , updateScaledOffset_function_type( &BasicImage_wrapper::updateScaledOffset )
+                , ( bp::arg("renderer_display_size") )
+                , "! Updates only the scaled size values according to the new display size of the renderer \n\
+            ! Updates only the scaled offset values according to the new display size of the renderer \n" );
+        
+        }
+        { //::CEGUI::BasicImage::updateScaledSize
+        
+            typedef void ( BasicImage_wrapper::*updateScaledSize_function_type )( ::CEGUI::Sizef const & ) ;
+            
+            BasicImage_exposer.def( 
+                "updateScaledSize"
+                , updateScaledSize_function_type( &BasicImage_wrapper::updateScaledSize )
+                , ( bp::arg("renderer_display_size") )
+                , "! Updates the scaled size and offset values according to the new display size of the renderer \n\
+            ! Updates only the scaled size values according to the new display size of the renderer \n" );
+        
+        }
+        { //::CEGUI::BasicImage::updateScaledSizeAndOffset
+        
+            typedef void ( BasicImage_wrapper::*updateScaledSizeAndOffset_function_type )( ::CEGUI::Sizef const & ) ;
+            
+            BasicImage_exposer.def( 
+                "updateScaledSizeAndOffset"
+                , updateScaledSizeAndOffset_function_type( &BasicImage_wrapper::updateScaledSizeAndOffset )
+                , ( bp::arg("renderer_display_size") )
+                , "! Updates the scaled size and offset values according to the new display size of the renderer \n" );
         
         }
         { //::CEGUI::Image::elementEndLocal

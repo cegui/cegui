@@ -28,6 +28,9 @@ end
 function classFeature:register (pre)
 end
 
+function classFeature:output_luadoc()
+end
+
 -- translate verbatim
 function classFeature:preamble ()
 end

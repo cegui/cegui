@@ -35,7 +35,7 @@
 
 // this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
-#ifdef CEGUI_SAMPLES_USE_OGRE
+#ifdef CEGUI_BUILD_RENDERER_OGRE
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"

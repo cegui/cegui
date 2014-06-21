@@ -30,6 +30,23 @@ function classDefine:register (pre)
  output(pre..'tolua_constant(tolua_S,"'..self.lname..'",'..self.name..');')
 end
 
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classDefine:output_luadoc()
+	if not self:check_public_access() then
+		return
+	end
+	if (self.parent~=nil) then
+		output('---\n')
+		output('-- @field [parent=#'..cleanseType(self.parent.name)..'] #string '..self.lname..'\n')
+	else
+		output('---\n')
+		output('-- @field [parent=#global] #string '..self.lname..'\n')
+	end
+end
+
 -- Print method
 function classDefine:print (ident,close)
  print(ident.."Define{")

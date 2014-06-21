@@ -15,6 +15,13 @@ struct ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI
         
     }
 
+    ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_ImagerySection_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_ImagerySection_greater___greater___greater___greater__wrapper( )
+    : CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection> > > >( )
+      , bp::wrapper< CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection> > > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::ImagerySection getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_ImageryIterator_class(){
         typedef bp::class_< ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_ImagerySection_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_ImagerySection_greater___greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection> > >, CEGUI::ImagerySection > > > ImageryIterator_exposer_t;
         ImageryIterator_exposer_t ImageryIterator_exposer = ImageryIterator_exposer_t( "ImageryIterator", bp::no_init );
         bp::scope ImageryIterator_scope( ImageryIterator_exposer );
+        ImageryIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection> > > >::getCurrentKey
         
             typedef CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection> > > > exported_class_t;

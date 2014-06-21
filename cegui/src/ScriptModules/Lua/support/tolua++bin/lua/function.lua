@@ -517,6 +517,69 @@ function classFunction:register (pre)
   end
 end
 
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classFunction:output_luadoc()
+	if not self:check_public_access() then
+		return
+	end
+
+	if self.name == 'new' and self.parent.flags.pure_virtual then
+		-- no constructor for classes with pure virtual methods
+		return
+	end
+	output('---\n')
+	output('-- '..self.lname..'\n')
+	output('-- @function [parent=#'..cleanseType(self.parent.name)..'] '..self.lname..'\n')
+	output('-- @param self'..'\n')
+	local i=1
+	while self.args[i] do
+
+		local pType = cleanseType(self.args[i].type)
+
+		if (pType~=nil) then
+			output('-- @param #'..pType..' '..self.args[i].name..'\n')
+		end
+		
+		i = i+1
+	end
+
+	local rType = cleanseType(self.type)
+
+	if (rType~=nil) then
+		output('-- @return #'..rType..'\n')
+	end
+
+	if self.name == 'new' then
+		output('\n---\n')
+		output('-- new_local \n')
+		output('-- @function [parent=#'..cleanseType(self.parent.name)..'] new_local\n')
+		output('-- @param self'..'\n')
+		local i=1
+		while self.args[i] do
+			local pType = cleanseType(self.args[i].type)
+
+			if (pType~=nil) then
+				output('-- @param #'..pType..' '..self.args[i].name..'\n')
+			end
+
+			i = i+1
+		end
+		output('-- @return #'..cleanseType(self.parent.name)..'\n')
+		output('\n')
+		output('---\n')
+		output('-- .call\n')
+		output('-- Construct on the Lua Memory.\n')
+		output('-- @callof #'..cleanseType(self.parent.name)..'\n')
+		output('-- @param self'..'\n')
+		output('-- @return #'..cleanseType(self.parent.name)..'\n')
+	end
+	output('\n')
+
+end
+
 -- Print method
 function classFunction:print (ident,close)
  print(ident.."Function{")
