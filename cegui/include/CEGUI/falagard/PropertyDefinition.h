@@ -119,18 +119,18 @@ protected:
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
         xml_stream.openTag(Falagard_xmlHandler::PropertyDefinitionElement);
-        writeDefinitionXMLAdditionalAttributes(xml_stream);
     }
     //------------------------------------------------------------------------//
-    void writeDefinitionXMLAdditionalAttributes(XMLSerializer& xml_stream) const
+    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
     {
+        PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
+
         if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
             xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
 
         if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
             xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
     }
-
 
     //------------------------------------------------------------------------//
 
