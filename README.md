@@ -72,24 +72,25 @@ cd build/bin/
 CEGUI_SAMPLE_DATAFILES=../../datafiles ./CEGUISampleFramework-0 ../datafiles/samples/samples.xml
 ```
 
-## Common Issues / Complaints
+## In the following we want to clear up some common misconceptions about CEGUI upfront
 
-Please do not tell us about these. We are quite tired of them :-)
+### "CEGUI causes a "DLL hell" (Oh no, so many dll files!)"
+First off, the term "DLL hell" is used wrongly by users in this context. It does not mean "I see many DLL files, this must be hell!". Dynamically linking the CEGUI library is the best way to have things working as they are supposed to and guaranteeing good compatibility and a low chance of issues arising with dependencies. On Windows we heavily recommend to never use static linking with CEGUI and past experience has proven us right. A short summary of static vs dynamic linking can be found here: http://stackoverflow.com/questions/1993390/static-linking-vs-dynamic-linking
 
-### DLL hell
-Is not what you are claiming it to be, research it! It does not mean "I see many DLL files, this must be hell!".
+### "CEGUI has weird version suffixes in the dlls and executables"
+This numbering system does actually serve a very important purpose! Please let us keep them. It allows Linux distributions (and others) to install multiple CEGUI API versions alongside which eases migration and speeds up adoption of new CEGUI versions. On Windows this will allow us to provide you with precompiled CEGUI dependencies using Nuget in the future.
 
-### The version suffixes
-These were called stupid numbering but they do actually serve a purpose! Please let us keep them. It allows Linux distributions (and others) to install multiple CEGUI API versions alongside which eases migration and speeds up adoption of new CEGUI versions.
+### "CEGUI has a killion dependencies"
+CEGUI has relatively few **required** dependencies (currently only glm) and many optional dependencies. The fact that it supports many different rendering libraries and engines, many different image loaders/codecs (with pass through options) and many different xml parsers is a good thing and only an uninformed person would tell you otherwise.
 
-### CEGUI has zillion dependencies
-CEGUI has **very few** required dependencies (IIRC it's just glm), many optional dependencies. The fact that it supports many different rendering situations, many different image loaders (with pass through options) and many different xml parsers is a good thing and only an uninformed person would tell you otherwise.
+### "CMake tells me something was not found"
+If CMake tells you that **something** was not found, you **shall not panic** ;) ! Most probably it's a harmless message. You should only worry if not a single dependency was found. On Windows and Mac OS X, you should however make sure you placed the dependency folder correctly before running Cmake.
 
-If cmake tells you that something was not found you **shall not panic**! Most probably it's a harmless message. It could even be that the dependency makes no sense on your platform!
+### "CEGUI is slow ... in Debug configuration ... "
+Whenever users complained in the forums about speed it was usually either the case that they ran in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage. 
 
-### CEGUI is slow because ...
-Obsession with speed is common, especially with newcomers. They have the impression that they want the fastest framework available so that their hyper AAA game can run with high FPS. If somebody on the internetz claims that something is 5% faster, they want it, they want it now! While we agree that there are areas in the CEGUI codebase that could be optimised, in practice this is rarely an issue.
+While we agree that **some** areas of the CEGUI codebase are not as optimised as they could be yet, most of our code-base is very fast. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations on the CPU as well as the rendering speed on the GPU. It even runs optimally still if hudreds of windows are opened and rendered at the same time. 
 
-People run CEGUI in bigger proprietary games and it displays hundreds of widgets for them in complex hierarchies. CEGUI is definitely not *too slow to use*. It could be too slow if you are doing something wrong - like loading layout files every frame.
+The best proof that CEGUI is fast is that big proprietary games, which displays hundreds of widgets and use complex hierarchies, have been made using CEGUI (Torchlight 1, Torchlight 2, Venetica, etc.). CEGUI is definitely not *too slow to use*. It could be too slow if you are doing something wrong - like loading layout files every frame or causing unnecessary updates and events. In this case it is best to do a forum search and - if you do not find anything helpful - to describe your setup in detail and what issues you have.
 
-And please give me a break with benchmarks comparing one toolkit to another. Such benchmarks can be tailored to make any of the toolkits win.
+We expect CEGUI to perform very well, and in a lot of cases faster than other libraries. This is epecially true for GUI libraries and toolkits that depend on Flash or similar techniques for rendering and do not access OpenGL or Direct3D directly. Most of our samples, if started in Release mode, will render at speeds above 3000 frames per second on a modern CPU and GPU. As an additional note for people who like to cite or look at benchmarks, we want you to keep in mind that benchmarks are often very situation-dependent and could easily misrepresent a library's actual speed by wrong or unusual usage.
