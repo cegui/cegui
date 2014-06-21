@@ -165,27 +165,18 @@ protected:
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
         xml_stream.openTag(Falagard_xmlHandler::PropertyLinkDefinitionElement);
-        writeFalagardXMLAttributes(xml_stream);
-        writeDefinitionXMLAdditionalAttributes(xml_stream);
     }
 
     //------------------------------------------------------------------------//
-    void writeDefinitionXMLAdditionalAttributes(XMLSerializer& xml_stream) const
+    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
     {
+        PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
+
         if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
             xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
 
         if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
             xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
-    }
-
-    //------------------------------------------------------------------------//
-    void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
-    {
-        // HACK: Here we abuse some intimate knowledge in that we know it's
-        // safe to write our sub-elements out although the function is named
-        // for writing attributes.  The alternative was to repeat code from the
-        // base class, also demonstrating intimate knowledge ;)
 
         LinkTargetCollection::const_iterator i(d_targets.begin());
 
