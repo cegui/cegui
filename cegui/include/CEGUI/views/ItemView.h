@@ -205,6 +205,7 @@ protected:
     ColourRect d_textColourRect;
     bool d_isDirty;
     std::vector<ModelIndexSelectionState> d_indexSelectionStates;
+    ModelIndex d_lastSelectedIndex;
     const Image* d_selectionBrush;
     ScrollbarDisplayMode d_vertScrollbarDisplayMode;
     ScrollbarDisplayMode d_horzScrollbarDisplayMode;
@@ -237,6 +238,7 @@ protected:
     virtual void onScroll(PointerEventArgs& e);
     virtual void onPointerPressHold(PointerEventArgs& e);
     virtual void onPointerMove(PointerEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
@@ -247,6 +249,10 @@ protected:
     void handleOnScroll(Scrollbar* scrollbar, float scroll);
     void setupTooltip(Vector2f position);
     int getSelectedIndexPosition(const ModelIndex& index) const;
+    virtual bool handleSelection(const Vector2f& position, bool should_select,
+        bool is_cumulative, bool is_range);
+    virtual bool handleSelection(const ModelIndex& index, bool should_select,
+        bool is_cumulative, bool is_range);
 };
 
 }

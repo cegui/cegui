@@ -87,6 +87,7 @@ ItemView::ItemView(const String& type, const String& name) :
     d_itemModel(0),
     d_textColourRect(ColourRect(DefaultTextColour)),
     d_isDirty(true),
+    d_lastSelectedIndex(0),
     d_selectionBrush(0),
     d_vertScrollbarDisplayMode(SDM_WhenNeeded),
     d_horzScrollbarDisplayMode(SDM_WhenNeeded),
@@ -162,6 +163,7 @@ void ItemView::setModel(ItemModel* item_model)
     if (d_itemModel != 0)
     {
         disconnectModelEvents();
+        d_lastSelectedIndex = ModelIndex(0);
     }
 
     d_itemModel = item_model;
@@ -213,6 +215,9 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
 //----------------------------------------------------------------------------//
 bool ItemView::onChildrenRemoved(const EventArgs& args)
 {
+    if (d_itemModel == 0)
+        return false;
+
     const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
 
     SelectionStatesVector::iterator itor = d_indexSelectionStates.begin();
@@ -223,6 +228,9 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
         if (state.d_childId >= model_args.d_startId &&
             state.d_childId <= model_args.d_startId + model_args.d_count)
         {
+            if (d_itemModel->areIndicesEqual(d_lastSelectedIndex, state.d_selectedIndex))
+                d_lastSelectedIndex = ModelIndex(0);
+
             itor = d_indexSelectionStates.erase(itor);
         }
         else
@@ -261,8 +269,6 @@ bool ItemView::onScrollPositionChanged(const EventArgs& args)
 //----------------------------------------------------------------------------//
 void ItemView::onPointerPressHold(PointerEventArgs& e)
 {
-    Window::onPointerPressHold(e);
-
     if (e.source != PS_Left)
         return;
 
@@ -270,6 +276,7 @@ void ItemView::onPointerPressHold(PointerEventArgs& e)
     setSelectedItem(index);
 
     ++e.handled;
+    Window::onPointerPressHold(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -278,6 +285,7 @@ void ItemView::onPointerMove(PointerEventArgs& e)
     if (d_isItemTooltipsEnabled)
         setupTooltip(e.position);
 
+    ++e.handled;
     Window::onPointerMove(e);
 }
 
@@ -367,36 +375,14 @@ bool ItemView::isIndexSelected(const ModelIndex& index) const
 //----------------------------------------------------------------------------//
 bool ItemView::setSelectedItem(const ModelIndex& index)
 {
-    return setItemSelectionState(index, true);
+    // simple calls of this method shouldn't do cumulative selection
+    return handleSelection(index, true, false, false);
 }
 
 //----------------------------------------------------------------------------//
 bool ItemView::setItemSelectionState(const ModelIndex& index, bool selected)
 {
-    if (d_itemModel == 0 ||
-        !d_itemModel->isValidIndex(index))
-        return false;
-
-    int index_position = getSelectedIndexPosition(index);
-    if (index_position != -1)
-    {
-        if (!selected)
-            d_indexSelectionStates.erase(d_indexSelectionStates.begin() + index_position);
-        return true;
-    }
-
-    ModelIndexSelectionState selection_state;
-    selection_state.d_selectedIndex = index;
-    selection_state.d_childId = d_itemModel->getChildId(index);
-    selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
-
-    if (!d_isMultiSelectEnabled)
-        d_indexSelectionStates.clear();
-    d_indexSelectionStates.push_back(selection_state);
-
-    onSelectionChanged(WindowEventArgs(this));
-
-    return true;
+    return handleSelection(index, selected, d_isMultiSelectEnabled, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -526,6 +512,7 @@ void ItemView::onScroll(PointerEventArgs& e)
     handleOnScroll(getHorzScrollbar(), e.scroll);
 
     ++e.handled;
+    Window::onScroll(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -592,4 +579,76 @@ void ItemView::setMultiSelectEnabled(bool enabled)
     d_isMultiSelectEnabled = enabled;
 }
 
+//----------------------------------------------------------------------------//
+void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (e.d_semanticValue == SV_SelectRange ||
+        e.d_semanticValue == SV_SelectCumulative)
+    {
+        handleSelection(
+            getGUIContext().getPointerIndicator().getPosition(),
+            true, d_isMultiSelectEnabled, e.d_semanticValue == SV_SelectRange);
+    }
+
+    ++e.handled;
+    Window::onSemanticInputEvent(e);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::handleSelection(const Vector2f& position, bool should_select,
+    bool is_cumulative, bool is_range)
+{
+    return handleSelection(indexAt(position), should_select, is_cumulative, is_range);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
+    bool is_cumulative, bool is_range)
+{
+    if (d_itemModel == 0 ||
+        !d_itemModel->isValidIndex(index))
+        return false;
+
+    int index_position = getSelectedIndexPosition(index);
+    if (index_position != -1)
+    {
+        if (!should_select)
+        {
+            d_indexSelectionStates.erase(d_indexSelectionStates.begin() + index_position);
+            onSelectionChanged(WindowEventArgs(this));
+            return true;
+        }
+
+        // if we select the node again, and we don't cumulate selection, we need
+        // to make just that one be selected now
+        if (is_cumulative)
+            return true;
+    }
+
+    if (!is_cumulative)
+        d_indexSelectionStates.clear();
+
+    ModelIndex parent_index = d_itemModel->getParentIndex(index);
+    size_t end_child_id = d_itemModel->getChildId(index);
+    size_t start_child_id = end_child_id;
+    if (is_range && is_cumulative && d_lastSelectedIndex.d_modelData != 0)
+    {
+        start_child_id = d_itemModel->getChildId(d_lastSelectedIndex);
+    }
+
+    for (size_t id = start_child_id; id <= end_child_id; ++id)
+    {
+        ModelIndexSelectionState selection_state;
+        selection_state.d_selectedIndex = d_itemModel->makeIndex(id, parent_index);
+        selection_state.d_childId = id;
+        selection_state.d_parentIndex = parent_index;
+
+        d_indexSelectionStates.push_back(selection_state);
+    }
+
+    d_lastSelectedIndex = index;
+
+    onSelectionChanged(WindowEventArgs(this));
+    return true;
+}
 }
