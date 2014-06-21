@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(SetSelectedItem_NoMultiSelect_ReplacesSelection)
+BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 {
     ItemModelStub stub;
     TestItemView test_item_view("DefaultWindow", "id0");
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_NoMultiSelect_ReplacesSelection)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(SetSelectedItem_MultiSelectEnabled_ModifiesSelectionAccordingly)
+BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectEnabled_ModifiesSelectionAccordingly)
 {
     ItemModelStub stub;
     TestItemView test_item_view("DefaultWindow", "id0");
@@ -168,8 +168,8 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_MultiSelectEnabled_ModifiesSelectionAccordi
     test_item_view.setModel(&stub);
     test_item_view.setMultiSelectEnabled(true);
 
-    test_item_view.setSelectedItem(stub.makeIndex(0, stub.getRootIndex()));
-    test_item_view.setSelectedItem(stub.makeIndex(1, stub.getRootIndex()));
+    test_item_view.setItemSelectionState(stub.makeIndex(0, stub.getRootIndex()), true);
+    test_item_view.setItemSelectionState(stub.makeIndex(1, stub.getRootIndex()), true);
 
     BOOST_REQUIRE_EQUAL(2, test_item_view.getIndexSelectionStates().size());
     BOOST_REQUIRE_EQUAL("item2",

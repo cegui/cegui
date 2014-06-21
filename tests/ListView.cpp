@@ -26,6 +26,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include <boost/test/unit_test.hpp>
+// Yup. We need this in order to easily inject/call event handlers without having
+// to go through GUIContext, or inherit from widgets in order to test them.
+#define protected public
 
 #include "CEGUI/CEGUI.h"
 #include "ItemModelStub.h"
@@ -208,6 +211,28 @@ BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
 
     view->prepareForRender();
     BOOST_REQUIRE_EQUAL(6, view->getItems().at(0).d_string.getLineCount());
+}
+
+void triggerSelectRangeEvent(Vector2f position, ItemView* view)
+{
+    SemanticEventArgs args(view);
+    args.d_semanticValue = SV_SelectRange;
+    view->getGUIContext().getPointerIndicator().setPosition(position);
+    view->onSemanticInputEvent(args);
+}
+
+BOOST_AUTO_TEST_CASE(SelectRange)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+    model.d_items.push_back(ITEM3);
+    view->prepareForRender();
+
+    view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
+
+    triggerSelectRangeEvent(Vector2f(1, font_height * 2.0f + font_height / 2.0f), view);
+
+    BOOST_REQUIRE_EQUAL(3, view->getIndexSelectionStates().size());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
