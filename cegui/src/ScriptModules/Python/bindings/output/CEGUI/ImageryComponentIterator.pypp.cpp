@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_ImageryCompo
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_ImageryComponent__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::ImageryComponent, std::allocator<CEGUI::ImageryComponent> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::ImageryComponent > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::ImageryComponent getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_ImageryComponentIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_ImageryComponent__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::ImageryComponent >, CEGUI::ImageryComponent > > > ImageryComponentIterator_exposer_t;
         ImageryComponentIterator_exposer_t ImageryComponentIterator_exposer = ImageryComponentIterator_exposer_t( "ImageryComponentIterator", bp::no_init );
         bp::scope ImageryComponentIterator_scope( ImageryComponentIterator_exposer );
+        ImageryComponentIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::ImageryComponent > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::ImageryComponent > > exported_class_t;

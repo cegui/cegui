@@ -9,4 +9,4 @@ Name: CEGUI-@CEGUI_VERSION_MAJOR@
 Description: The free GUI library for games and multi-media development.
 Version: @CEGUI_VERSION@
 Libs: -L${libdir} -l@CEGUI_BASE_LIBNAME@
-Cflags: -I${includedir} -I${includedir}/@CMAKE_PROJECT_NAME@
+Cflags: -I${includedir} -I${prefix}/@CEGUI_INCLUDE_INSTALL_DIR@

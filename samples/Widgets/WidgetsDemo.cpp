@@ -933,6 +933,11 @@ void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRo
     while(iter != propertyList.end())
     {
         const CEGUI::Property* curProperty = *iter;
+        
+        // We have to call this function to update the MCL because the items have changed their properties meanwhile and thus are eventually not sorted anymore
+        // When the order in the vector is not correct anymore this will result in an assert when adding a row. The following call will sort the list again and thus
+        // it will be ensured everything will be sorted before adding a new row.
+        d_widgetPropertiesDisplayWindow->handleUpdatedItemData();
 
         // Add an empty row to the MultiColumnList
         if(i >= d_widgetPropertiesDisplayWindow->getRowCount())

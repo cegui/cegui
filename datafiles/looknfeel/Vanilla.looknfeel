@@ -141,7 +141,7 @@
         </ImagerySection>
     </WidgetLook>
     <WidgetLook name="Vanilla/Titlebar">
-        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
+        <PropertyDefinition redrawOnWrite="True" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
         <Property name="NonClient" value="True"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="caption">

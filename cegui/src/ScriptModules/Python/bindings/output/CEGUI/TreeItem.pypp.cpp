@@ -76,20 +76,7 @@ void register_TreeItem_class(){
 
     { //::CEGUI::TreeItem
         typedef bp::class_< TreeItem_wrapper > TreeItem_exposer_t;
-        TreeItem_exposer_t TreeItem_exposer = TreeItem_exposer_t( "TreeItem", "*!\n\
-         \n\
-            Base class for tree items\n\
-        \n\
-          deprecated\n\
-            The CEGUI.Tree, CEGUI.TreeItem and any other associated classes are\n\
-            deprecated and thier use should be minimised - preferably eliminated -\n\
-            where possible.  It is extremely unfortunate that this widget was ever added\n\
-            to CEGUI since its design and implementation are poor and do not meet\n\
-            established standards for the CEGUI project.\n\
-            \n\
-            While no alternative currently exists, a superior, replacement tree widget\n\
-            will be provided prior to the final removal of the current implementation.\n\
-         *\n", bp::init< CEGUI::String const &, bp::optional< CEGUI::uint, void *, bool, bool > >(( bp::arg("text"), bp::arg("item_id")=(::CEGUI::uint)(0), bp::arg("item_data")=bp::object(), bp::arg("disabled")=(bool)(false), bp::arg("auto_delete")=(bool)(true) ), "*************************************************************************\n\
+        TreeItem_exposer_t TreeItem_exposer = TreeItem_exposer_t( "TreeItem", bp::init< CEGUI::String const &, bp::optional< CEGUI::uint, void *, bool, bool > >(( bp::arg("text"), bp::arg("item_id")=(::CEGUI::uint)(0), bp::arg("item_data")=bp::object(), bp::arg("disabled")=(bool)(false), bp::arg("auto_delete")=(bool)(true) ), "*************************************************************************\n\
             Construction and Destruction\n\
          *************************************************************************\n\
         *!\n\

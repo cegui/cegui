@@ -43,7 +43,10 @@ static const Ogre::LayerBlendModeEx S_colourBlendMode =
     Ogre::LBT_COLOUR,
     Ogre::LBX_MODULATE,
     Ogre::LBS_TEXTURE,
-    Ogre::LBS_DIFFUSE
+    Ogre::LBS_DIFFUSE,
+    Ogre::ColourValue(0, 0, 0, 0),
+    Ogre::ColourValue(0, 0, 0, 0),
+    0, 0, 0
 };
 
 //----------------------------------------------------------------------------//
@@ -52,7 +55,10 @@ static const Ogre::LayerBlendModeEx S_alphaBlendMode =
     Ogre::LBT_ALPHA,
     Ogre::LBX_MODULATE,
     Ogre::LBS_TEXTURE,
-    Ogre::LBS_DIFFUSE
+    Ogre::LBS_DIFFUSE,
+    Ogre::ColourValue(0, 0, 0, 0),
+    Ogre::ColourValue(0, 0, 0, 0),
+    0, 0, 0
 };
 
 //----------------------------------------------------------------------------//

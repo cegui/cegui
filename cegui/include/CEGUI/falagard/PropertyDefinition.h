@@ -29,6 +29,7 @@
 #define _CEGUIFalPropertyDefinition_h_
 
 #include "CEGUI/falagard/FalagardPropertyBase.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Logger.h"
 
 namespace CEGUI
@@ -47,7 +48,7 @@ public:
         FalagardPropertyBase<T>(name, help, initialValue, origin,
                                 redrawOnWrite, layoutOnWrite,
                                 fireEvent, eventNamespace),
-        d_userStringName(name + "_fal_auto_prop__")
+        d_userStringName(name + UserStringNameSuffix)
     {
     }
 
@@ -117,7 +118,18 @@ protected:
     //------------------------------------------------------------------------//
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("PropertyDefinition");
+        xml_stream.openTag(Falagard_xmlHandler::PropertyDefinitionElement);
+    }
+    //------------------------------------------------------------------------//
+    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
+    {
+        PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
+
+        if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
+
+        if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
     }
 
     //------------------------------------------------------------------------//

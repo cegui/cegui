@@ -14,7 +14,7 @@
 function parse_extra()
 
 	for k,v in ipairs(_extra_parameters or {}) do
-		
+
 		local b,e,name,value = string.find(v, "^([^=])=(.*)$")
 		if b then
 			_extra_parameters[name] = value
@@ -67,6 +67,12 @@ function doit ()
 	p:decltype()
 	if flags.P then
 		p:print()
+	elseif flags.k then
+		output('-----------------------------------------------\n')
+		output('-- LuaDoc generated with tolua++\n')
+		output("\n")
+		p:output_luadoc()
+		output("return nil")
 	else
 		p:preamble()
 		p:supcode()
