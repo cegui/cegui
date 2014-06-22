@@ -67,7 +67,10 @@ class Direct3D11Texture;
 class Direct3D11ShaderWrapper;
 
 
-//! Renderer implementation using Direct3D 10.
+/*!
+The CEGUI Direct3D11 Renderer. It is fully backwards compatible to Direct3D9 (down to D3D_FEATURE_LEVEL_9_1) and Direct3D10.
+Be sure to specify the right Feature Level when you create your Direct3D11 Device. For more information on how to do this, please look at the function CEGuiD3D11BaseApplication::initialiseDirect3D() in the SampleFramework.
+*/
 class D3D11_GUIRENDERER_API Direct3D11Renderer : public Renderer
 {
 public:
