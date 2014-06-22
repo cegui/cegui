@@ -272,8 +272,7 @@ void ItemView::onPointerPressHold(PointerEventArgs& e)
     if (e.source != PS_Left)
         return;
 
-    ModelIndex index = indexAt(e.position);
-    setSelectedItem(index);
+    handleSelection(e.position, true, false, false);
 
     ++e.handled;
     Window::onPointerPressHold(e);
