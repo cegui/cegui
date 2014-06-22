@@ -43,13 +43,17 @@ namespace CEGUI
 
 struct CEGUIEXPORT TreeViewItemRenderingState
 {
-    std::vector<TreeViewItemRenderingState> d_children;
+    std::vector<TreeViewItemRenderingState> d_renderedChildren;
+    //! This represents the total children count this item has, even if not rendered yet.
+    //! This is the case when this node has not been opened/expanded yet.
+    size_t d_totalChildCount;
 
     RenderedString d_string;
     Sizef d_size;
     bool d_isSelected;
     ModelIndex d_parentIndex;
     size_t d_childId;
+    bool d_subtreeIsOpen;
 
     TreeViewItemRenderingState();
 };
@@ -78,7 +82,7 @@ private:
     TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(
-        const ModelIndex& index, bool isRoot, float& rendered_max_width,
+        const ModelIndex& index, bool is_root, float& rendered_max_width,
         float& rendered_total_height);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
         const Vector2f& window_position);
