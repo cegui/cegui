@@ -72,22 +72,22 @@ cd build/bin/
 CEGUI_SAMPLE_DATAFILES=../../datafiles ./CEGUISampleFramework-0 ../datafiles/samples/samples.xml
 ```
 
-## In the following we want to clear up some common misconceptions about CEGUI upfront
+## We want to clarify some common misconceptions about CEGUI:
 
-### "CEGUI causes a "DLL hell" (Oh no, so many dll files!)"
+### "It causes a DLL hell" or "Oh no, so many dll files!"
 First off, the term "DLL hell" is used wrongly by users in this context. It does not mean "I see many DLL files, this must be hell!". Dynamically linking the CEGUI library is the best way to have things working as they are supposed to and guaranteeing good compatibility and a low chance of issues arising with dependencies. On Windows we heavily recommend to never use static linking with CEGUI and past experience has proven us right. A short summary of static vs dynamic linking can be found here: http://stackoverflow.com/questions/1993390/static-linking-vs-dynamic-linking
 
-### "CEGUI has weird version suffixes in the dlls and executables"
+### "It has useless version numbers in the dlls and executables"
 This numbering system does actually serve a very important purpose! Please let us keep them. It allows Linux distributions (and others) to install multiple CEGUI API versions alongside which eases migration and speeds up adoption of new CEGUI versions. On Windows this will allow us to provide you with precompiled CEGUI dependencies using Nuget in the future.
 
-### "CEGUI has a killion dependencies"
+### "It has a killion dependencies"
 CEGUI has relatively few **required** dependencies (currently only glm) and many optional dependencies. The fact that it supports many different rendering libraries and engines, many different image loaders/codecs (with pass through options) and many different xml parsers is a good thing and only an uninformed person would tell you otherwise.
 
 ### "CMake tells me something was not found"
 If CMake tells you that **something** was not found, you **shall not panic** ;) ! Most probably it's a harmless message. You should only worry if not a single dependency was found. On Windows and Mac OS X, you should however make sure you placed the dependency folder correctly before running Cmake.
 
-### "CEGUI is slow ... in Debug configuration ... "
-Whenever users complained in the forums about speed it was usually either the case that they ran in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage. 
+### "It is slow"
+Whenever users complained in the forums about CEGUI's speed it turned out to be that they either ran the application in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage. 
 
 While we agree that **some** areas of the CEGUI codebase are not as optimised as they could be yet, most of our code-base is very fast. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations on the CPU as well as the rendering speed on the GPU. It even runs optimally still if hudreds of windows are opened and rendered at the same time. 
 
