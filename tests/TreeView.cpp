@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(view->getRootItemState().d_children.at(0).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -156,8 +156,8 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(view->getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -170,9 +170,9 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     view->prepareForRender();
 
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(1).d_isSelected);
-    BOOST_REQUIRE(view->getRootItemState().d_children.at(2).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(2).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -186,11 +186,11 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     view->prepareForRender();
 
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(1).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(2).d_isSelected);
-    BOOST_REQUIRE(view->getRootItemState().d_children.at(2).d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(3).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(2).d_isSelected);
+    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(2).d_renderedChildren.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(3).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -205,9 +205,11 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
 
     view->prepareForRender();
 
-    BOOST_REQUIRE_EQUAL(initial_size - 1, view->getRootItemState().d_children.size());
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_children.at(1).d_isSelected);
+    BOOST_REQUIRE_EQUAL(initial_size - 1, view->getRootItemState().d_renderedChildren.size());
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
+    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
 }
+
+
 
 BOOST_AUTO_TEST_SUITE_END()

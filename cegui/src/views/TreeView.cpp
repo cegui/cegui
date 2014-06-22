@@ -38,11 +38,12 @@ const String TreeView::WidgetTypeName("CEGUI/TreeView");
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState::TreeViewItemRenderingState() :
+    d_totalChildCount(0),
     d_size(0, 0),
     d_isSelected(false),
-    d_childId(0)
+    d_childId(0),
+    d_subtreeIsOpen(false)
 {
-
 }
 
 //----------------------------------------------------------------------------//
@@ -84,14 +85,14 @@ void TreeView::prepareForRender()
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
-    const ModelIndex& index, bool isRoot, float& rendered_max_width,
+    const ModelIndex& index, bool is_root, float& rendered_max_width,
     float& rendered_total_height)
 {
     if (d_itemModel == 0)
         return TreeViewItemRenderingState();
 
     TreeViewItemRenderingState state;
-    if (!isRoot)
+    if (!is_root)
     {
         String text = d_itemModel->getData(index);
         RenderedString rendered_string = getRenderedStringParser().parse(
@@ -108,15 +109,22 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
     }
 
     size_t child_count = d_itemModel->getChildCount(index);
-    for (size_t child = 0; child < child_count; ++child)
+    state.d_totalChildCount = child_count;
+
+    if (state.d_subtreeIsOpen ||
+        // we always draw items for root
+        is_root)
     {
-        ModelIndex child_index = d_itemModel->makeIndex(child, index);
-        TreeViewItemRenderingState child_state =
-            computeRenderingStateForIndex(child_index, false, rendered_max_width,
+        for (size_t child = 0; child < child_count; ++child)
+        {
+            ModelIndex child_index = d_itemModel->makeIndex(child, index);
+            TreeViewItemRenderingState child_state =
+                computeRenderingStateForIndex(child_index, false, rendered_max_width,
                 rendered_total_height);
-        child_state.d_parentIndex = index;
-        child_state.d_childId = child;
-        state.d_children.push_back(child_state);
+            child_state.d_parentIndex = index;
+            child_state.d_childId = child;
+            state.d_renderedChildren.push_back(child_state);
+        }
     }
 
     return state;
@@ -155,9 +163,9 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
 
     cur_height = next_height;
 
-    for (size_t i = 0; i < item.d_children.size(); ++i)
+    for (size_t i = 0; i < item.d_renderedChildren.size(); ++i)
     {
-        ModelIndex index = indexAtRecursive(item.d_children.at(i),
+        ModelIndex index = indexAtRecursive(item.d_renderedChildren.at(i),
             cur_height, window_position);
         if (index.d_modelData != 0)
             return index;
