@@ -68,8 +68,33 @@ class Direct3D11ShaderWrapper;
 
 
 /*!
-The CEGUI Direct3D11 Renderer. It is fully backwards compatible to Direct3D9 (down to D3D_FEATURE_LEVEL_9_1) and Direct3D10.
-Be sure to specify the right Feature Level when you create your Direct3D11 Device. For more information on how to do this, please look at the function CEGuiD3D11BaseApplication::initialiseDirect3D() in the SampleFramework.
+The CEGUI Direct3D11 Renderer
+========================
+This Renderer is fully backwards compatible to Direct3D9 (down to D3D_FEATURE_LEVEL_9_1)
+and Direct3D10. When you creating your Direct3D11 Device be sure to specify the
+Feature Level(s) you can and want to support to create a device of the correct Direct3D
+version. The order of submitted Feature Levels determines in which order the creation is
+attempted, e.g.:
+
+    const D3D_FEATURE_LEVEL featureLevels[] =
+    {
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0,
+        D3D_FEATURE_LEVEL_9_3,
+        D3D_FEATURE_LEVEL_9_2,
+        D3D_FEATURE_LEVEL_9_1,
+    };
+
+    // initialise main parts of D3D
+    HRESULT result = D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE,
+                                                    0, creationFlags, featureLevels,
+                                                    6, D3D11_SDK_VERSION,
+                                                    pSwapChainDesc, ppSwapChain,
+                                                    ppDevice, pFeatureLevel,
+                                                    ppImmediateContext);
+                                                    
+[Click this link for more info about the Direct3D11 device creation](http://msdn.microsoft.com/en-us/library/windows/desktop/ff476083%28v=vs.85%29.aspx)
 */
 class D3D11_GUIRENDERER_API Direct3D11Renderer : public Renderer
 {
