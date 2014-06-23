@@ -71,7 +71,6 @@ class COREWRSET_API FalagardTreeView : public ItemViewRenderer
 public:
     //! Type name for this widget.
     static const String TypeName;
-
     /*!
     \brief
         Constructor for the TreeView Falagard class.
@@ -83,10 +82,16 @@ public:
 
     void render();
 
+protected:
+    virtual void onLookNFeelAssigned();
+
 private:
     void renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-        Vector2f& item_pos, const TreeViewItemRenderingState& item_state,
-        const ImagerySection& open_tree_imagery, const ImagerySection& close_tree_imagery);
+        Vector2f& item_pos, const TreeViewItemRenderingState& item_state);
+
+    const ImagerySection* d_openTreeImagery;
+    const ImagerySection* d_closeTreeImagery;
+    Sizef d_openCloseImagerySize;
 };
 
 }
