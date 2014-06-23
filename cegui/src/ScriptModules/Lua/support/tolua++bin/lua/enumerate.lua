@@ -42,6 +42,28 @@ function classEnumerate:print (ident,close)
  print(ident.."}"..close)
 end
 
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classEnumerate:output_luadoc()
+	if not self:check_public_access() then
+		return
+	end
+
+	local i=1
+	while self[i] do
+		if self.lnames[i] and self.lnames[i] ~= "" then
+
+			output('---\n')
+			output('-- '..self.lnames[i]..'\n')
+			output('-- @field [parent=#'..cleanseType(self.parent.name)..'] #number '..self.lnames[i]..'\n')
+			output('\n')
+		end
+		i = i+1
+	end
+end
+
 -- Internal constructor
 function _Enumerate (t,varname)
  setmetatable(t,classEnumerate)

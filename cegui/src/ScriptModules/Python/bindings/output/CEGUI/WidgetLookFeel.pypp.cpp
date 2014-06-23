@@ -388,7 +388,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getEventLinkDefinitionIterator
         
-            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, const CEGUI::EventLinkDefinition* > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::EventLinkDefinition const* > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getEventLinkDefinitionIterator"
@@ -554,7 +554,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyInitialiserIterator
         
-            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, const CEGUI::PropertyInitialiser* > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::PropertyInitialiser const* > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyInitialiserIterator"
@@ -648,7 +648,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getWidgetComponentIterator
         
-            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, const CEGUI::WidgetComponent* > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::WidgetComponent const* > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getWidgetComponentIterator"

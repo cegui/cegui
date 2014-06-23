@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_multiset_less__CEGUI_scope_LayerSpeci
         
     }
 
+    ConstVectorIterator_less__std_scope_multiset_less__CEGUI_scope_LayerSpecification__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::multiset<CEGUI::LayerSpecification, std::less<CEGUI::LayerSpecification>, std::allocator<CEGUI::LayerSpecification> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::multiset< CEGUI::LayerSpecification > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::LayerSpecification getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_LayerIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_multiset_less__CEGUI_scope_LayerSpecification__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::multiset< CEGUI::LayerSpecification >, CEGUI::LayerSpecification > > > LayerIterator_exposer_t;
         LayerIterator_exposer_t LayerIterator_exposer = LayerIterator_exposer_t( "LayerIterator", bp::no_init );
         bp::scope LayerIterator_scope( LayerIterator_exposer );
+        LayerIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::multiset< CEGUI::LayerSpecification > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::multiset< CEGUI::LayerSpecification > > exported_class_t;

@@ -1317,14 +1317,14 @@ void
 Window_setUserData ( ::CEGUI::Window & me, PyObject * data ) {
     me.setUserData ( data );
     }
-    
+
 PyObject *
 Window_getUserData ( ::CEGUI::Window & me) {
     void *  data = me.getUserData (  );
     Py_INCREF( (PyObject *) data );     // I'm passing a reference to this object so better inc the ref :)
     return  (PyObject *) data;
     }
-    
+
 typedef bool ( ::CEGUI::Window::*isChild_string_function_type )( const ::CEGUI::String& ) const;
 typedef bool ( ::CEGUI::Window::*isChild_ptr_function_type )( const ::CEGUI::Element* ) const;
 
@@ -2005,7 +2005,21 @@ void register_Window_class(){
                 "getChildAtIdx"
                 , getChildAtIdx_function_type( &::CEGUI::Window::getChildAtIdx )
                 , ( bp::arg("idx") )
-                , bp::return_value_policy< bp::reference_existing_object >() );
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    returns a pointer to the child window at the specified index. Idx is the\n\
+                    index of the window in the child window list. It is based on the order\n\
+                    in which the children were added and is stable.\n\
+            \n\
+                @param idx\n\
+                    Index of the child window list position of the window that should be\n\
+                    returned.This value is not bounds checked, client code should ensure that\n\
+                    this is less than the value returned by getChildCount().\n\
+            \n\
+                @return\n\
+                    Pointer to the child window currently attached at index position  idx\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::getChildAtPosition

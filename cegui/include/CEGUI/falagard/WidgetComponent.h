@@ -133,6 +133,11 @@ namespace CEGUI
         //! perform any processing required due to the given font having changed.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
+        //! Default value for the HorzAlignment elements of the WidgetComponent
+        static const HorizontalAlignment HorizontalAlignmentDefault;
+        //! Default value for the VertAlignment elements of the WidgetComponent
+        static const VerticalAlignment VerticalAlignmentDefault;
+
     private:
         typedef std::vector<PropertyInitialiser
             CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;

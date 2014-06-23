@@ -121,6 +121,39 @@ function classClass:print (ident,close)
  print(ident.."}"..close)
 end
 
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classClass:output_luadoc()
+
+	if not self:check_public_access() then
+		return
+	end
+	output('---------------------------------------------------------------------------------\n')
+	output('-- '..self.lname..'\n')
+	output('-- @type '..cleanseType(self.type)..'\n')
+	if (self.btype ~='') then
+		output('-- @extends #'..cleanseType(self.btype)..'\n')
+	end
+	output('\n')
+
+	if (self.parent~=nil) then
+		output('---\n')
+		output('-- @field [parent=#'..cleanseType(self.parent.name)..'] #'..cleanseType(self.type)..' '..self.lname..'\n')
+	else
+		output('---\n')
+		output('-- @field [parent=#global] #'..cleanseType(self.type)..' '..self.lname..'\n')
+	end
+	output('\n')
+	local i=1
+	while self[i] do
+		self[i]:output_luadoc()
+		i = i+1
+	end
+	output('\n')
+end
+
 function classClass:set_protected_destructor(p)
 	self.flags.protected_destructor = self.flags.protected_destructor or p
 end

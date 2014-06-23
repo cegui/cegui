@@ -96,13 +96,13 @@ namespace CEGUI
             &FalagardStaticText::setHorizontalScrollbarEnabled, &FalagardStaticText::isHorizontalScrollbarEnabled,
             false);
 
-        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(FalagardStaticText, float,
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, float,
             "HorzExtent", "Property to get the current horizontal extent of the formatted text string."
             "  Value is a float indicating the pixel extent.",
             0, &FalagardStaticText::getHorizontalTextExtent,
             0);
 
-        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(FalagardStaticText, float,
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, float,
             "VertExtent", "Property to get the current vertical extent of the formatted text string."
             "  Value is a float indicating the pixel extent.",
             0, &FalagardStaticText::getVerticalTextExtent,

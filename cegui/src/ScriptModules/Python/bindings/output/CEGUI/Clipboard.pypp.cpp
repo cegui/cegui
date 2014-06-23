@@ -10,24 +10,7 @@ void register_Clipboard_class(){
 
     { //::CEGUI::Clipboard
         typedef bp::class_< CEGUI::Clipboard > Clipboard_exposer_t;
-        Clipboard_exposer_t Clipboard_exposer = Clipboard_exposer_t( "Clipboard", "*!\n\
-        \n\
-            Defines a clipboard handling class\n\
-        \n\
-        \n\
-            Usually, there is just one instance of this class, owned by CEGUI.System,\n\
-            it contains internal CEGUI clipboard that may be (optionally) synchronised\n\
-            with native clipboard if user sets NativeClipboardProvider with:\n\
-            .\n\
-            CEGUI.System.getSingleton().getClipboard().setNativeProvider(customProvider)\n\
-            \n\n\
-            Where customProvider is of course user implemented clipboard provider.\n\
-            \n\
-         internal\n\
-            We may provide native clipboard providers automatically for some platforms\n\
-            in the future, however for X11 this is really hard and would introduce\n\
-            dependency -lX11 to CEGUIBase which is something we would really hate.\n\
-        *\n", bp::init< >("*!\n\
+        Clipboard_exposer_t Clipboard_exposer = Clipboard_exposer_t( "Clipboard", bp::init< >("*!\n\
          constructor\n\
         *\n") );
         bp::scope Clipboard_scope( Clipboard_exposer );

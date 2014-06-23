@@ -106,6 +106,9 @@ public:
         const_iterator(const const_iterator& iter) :
             d_iter(iter.d_iter) {}
 
+        const_iterator()
+        {}
+
         const V& operator*() const
         { return d_iter->second; }
 

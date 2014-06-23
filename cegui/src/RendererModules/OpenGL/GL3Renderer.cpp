@@ -183,6 +183,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
     CEGUI_DELETE_AO d_shaderManager;
 
     delete d_shaderWrapperTextured;
+    delete d_shaderWrapperSolid;
 }
 
 //----------------------------------------------------------------------------//

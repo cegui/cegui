@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__std_scope_pair_less_CEGU
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__std_scope_pair_less_CEGUI_scope_String_comma__CEGUI_scope_String_greater___greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<std::pair<CEGUI::String, CEGUI::String>, std::allocator<std::pair<CEGUI::String, CEGUI::String> > > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< std::pair<CEGUI::String, CEGUI::String> > > >(){
+        // null constructor
+    
+    }
+
     virtual ::std::pair< CEGUI::String, CEGUI::String > getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_LinkTargetIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__std_scope_pair_less_CEGUI_scope_String_comma__CEGUI_scope_String_greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< std::pair<CEGUI::String, CEGUI::String> >, std::pair< CEGUI::String, CEGUI::String > > > > LinkTargetIterator_exposer_t;
         LinkTargetIterator_exposer_t LinkTargetIterator_exposer = LinkTargetIterator_exposer_t( "LinkTargetIterator", bp::no_init );
         bp::scope LinkTargetIterator_scope( LinkTargetIterator_exposer );
+        LinkTargetIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< std::pair<CEGUI::String, CEGUI::String> > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< std::pair<CEGUI::String, CEGUI::String> > > exported_class_t;

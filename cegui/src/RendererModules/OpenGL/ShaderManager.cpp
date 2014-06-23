@@ -79,8 +79,8 @@ void OpenGL3ShaderManager::initialiseShaders()
         loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
         loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
 
-        if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully(),
-            !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully())
+        if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
+           !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
         {
             const CEGUI::String errorString("Critical Error - One or multiple shader programs weren't created successfully");
             CEGUI_THROW(RendererException(errorString));
