@@ -60,6 +60,8 @@ void register_Sizef_class(){
         }
         Sizef_exposer.def( bp::self != bp::self );
         Sizef_exposer.def( bp::self * bp::other< float >() );
+        Sizef_exposer.def( bp::self * bp::self );
+        Sizef_exposer.def( bp::self * bp::other< CEGUI::Vector2< float > >() );
         Sizef_exposer.def( bp::self + bp::self );
         Sizef_exposer.def( bp::self - bp::self );
         Sizef_exposer.def( bp::self == bp::self );

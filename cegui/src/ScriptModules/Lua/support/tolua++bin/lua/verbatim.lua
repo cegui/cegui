@@ -44,6 +44,10 @@ function classVerbatim:register (pre)
  end
 end
 
+function classVerbatim:output_luadoc()
+
+end
+
 
 -- Print method
 function classVerbatim:print (ident,close)

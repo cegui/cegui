@@ -19,10 +19,6 @@ Please see @subpage pcre_lic for additional licensing information.
 - This software can be compiled to use the Freetype2 library to provide most of
 the font loading and rendering support.  Freetype2 is a free, high-quality, and
 portable font engine; see http://www.freetype.org for more information.
-- The Spinner widget contains some modified parts of the stringencoders library
-(http://code.google.com/p/stringencoders).  Please see
-@subpage stringencoders_lic for additional licensing that may apply to the use
-of this component.
 - This software can be compiled to optionally include an embedded copy of the
 minibidi software from the Arabeyes project (http://www.arabeyes.org/).
 minibidi was written by Ahmad Khalifa and is licensed under the MIT license.

@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_Window_ptr__
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_Window_ptr___greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::Window*, std::allocator<CEGUI::Window*> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::Window* > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::Window * getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_WindowIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_Window_ptr___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::Window* >, CEGUI::Window* > > > WindowIterator_exposer_t;
         WindowIterator_exposer_t WindowIterator_exposer = WindowIterator_exposer_t( "WindowIterator", bp::no_init );
         bp::scope WindowIterator_scope( WindowIterator_exposer );
+        WindowIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::Window* > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::Window* > > exported_class_t;

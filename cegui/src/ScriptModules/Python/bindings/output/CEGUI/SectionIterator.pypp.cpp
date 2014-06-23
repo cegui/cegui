@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_SectionSpeci
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_SectionSpecification__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::SectionSpecification, std::allocator<CEGUI::SectionSpecification> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::SectionSpecification > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::SectionSpecification getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_SectionIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_SectionSpecification__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::SectionSpecification >, CEGUI::SectionSpecification > > > SectionIterator_exposer_t;
         SectionIterator_exposer_t SectionIterator_exposer = SectionIterator_exposer_t( "SectionIterator", bp::no_init );
         bp::scope SectionIterator_scope( SectionIterator_exposer );
+        SectionIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::SectionSpecification > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::SectionSpecification > > exported_class_t;

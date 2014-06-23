@@ -74,20 +74,20 @@ public:
     PythonEventSubscription(PyObject* callable):
         d_callable(boost::python::incref(callable))
     {}
-    
+
     PythonEventSubscription(const PythonEventSubscription& other):
         d_callable(boost::python::incref(other.d_callable))
     {}
-    
+
     ~PythonEventSubscription()
     {
         boost::python::decref(d_callable);
-    } 
-    
+    }
+
     bool operator() (const CEGUI::EventArgs& args) const
     {
         // FIXME: We have to cast, otherwise only base class gets to python!
-        
+
         // I don't understand why this is happening, I think boost::python should use typeid(args).name() and deduce that it's a
         // derived class, not CEGUI::EventArgs base class
         // However this is not happening so I have to go through all EventArgs classes and try casting one after another
@@ -96,9 +96,94 @@ public:
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::AnimationEventArgs&>(args));
 }
 
+if (dynamic_cast<const CEGUI::RenderQueueEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderQueueEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseCursorEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::NamedElementEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::NamedElementEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::ResourceEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ResourceEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::RenderTargetEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderTargetEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ActivationEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::RegexMatchStateEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RegexMatchStateEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DragDropEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::HeaderSequenceEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::HeaderSequenceEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::UpdateEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::UpdateEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::WindowEventArgs&>(args));
+}
+
 if (dynamic_cast<const CEGUI::FontEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::FontEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::ElementEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ElementEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::DisplayEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DisplayEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::LinkedEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::LinkedEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::GUIContextRenderTargetEventArgs*>(&args))
@@ -109,91 +194,6 @@ if (dynamic_cast<const CEGUI::GUIContextRenderTargetEventArgs*>(&args))
 if (dynamic_cast<const CEGUI::GUIContextEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::GUIContextEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::LinkedEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::LinkedEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::DisplayEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DisplayEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ActivationEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::HeaderSequenceEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::HeaderSequenceEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::RegexMatchStateEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RegexMatchStateEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DragDropEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::UpdateEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::UpdateEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::WindowEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::ResourceEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ResourceEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::NamedElementEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::NamedElementEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::ElementEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ElementEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseCursorEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::RenderQueueEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderQueueEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::RenderTargetEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderTargetEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::EventArgs*>(&args))
@@ -217,16 +217,16 @@ public:
     PythonEventConnection(const CEGUI::Event::Connection& connection):
         d_connection(connection)
     {}
-    
+
     PythonEventConnection(const PythonEventConnection& v):
         d_connection(v.d_connection)
     {}
-    
+
     bool connected()
     {
         return d_connection.isValid() ? d_connection->connected() : false;
     }
-    
+
     void disconnect()
     {
         // TODO: Throw on invalid disconnects?
@@ -235,7 +235,7 @@ public:
             d_connection->disconnect();
         }
     }
-    
+
 private:
     CEGUI::Event::Connection d_connection;
 };
@@ -533,27 +533,27 @@ void register_EventSet_class(){
         
         }
         EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEvent);
-                                
+        
             {   // PythonEventConnection
-            
+        
                 typedef bp::class_< PythonEventConnection > PythonEventConnection_exposer_t;
                 PythonEventConnection_exposer_t PythonEventConnection_exposer = PythonEventConnection_exposer_t( "PythonEventConnection" );
                 bp::scope PythonEventConnection_scope( PythonEventConnection_exposer );
                 PythonEventConnection_exposer.def( bp::init<>() );
                 {
-                
+        
                     typedef bool ( PythonEventConnection::*connected_function_type )(  ) ;
-                    
-                    PythonEventConnection_exposer.def( 
+        
+                    PythonEventConnection_exposer.def(
                         "connected"
                         , connected_function_type( &PythonEventConnection::connected ) );
-                
+        
                 }
                 {
-                
+        
                     typedef void ( PythonEventConnection::*disconnect_function_type )(  ) ;
-                    
-                    PythonEventConnection_exposer.def( 
+        
+                    PythonEventConnection_exposer.def(
                         "disconnect"
                         , disconnect_function_type( &PythonEventConnection::disconnect ) );
                 }

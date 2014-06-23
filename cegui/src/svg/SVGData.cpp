@@ -127,7 +127,7 @@ void SVGData::loadFromFile(const String& file_name,
 {
     System::getSingleton().getXMLParser()->parseXMLFile(
             *this, file_name,
-            "", resource_group);
+            "", resource_group, false);
 }
 
 //----------------------------------------------------------------------------//

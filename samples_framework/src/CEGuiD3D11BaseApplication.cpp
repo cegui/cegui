@@ -211,7 +211,8 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
 
     // initialise main parts of D3D
     res = D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE,
-                                        0, creationFlags, featureLevels, 6, D3D11_SDK_VERSION,
+                                        0, creationFlags, featureLevels,
+                                        6, D3D11_SDK_VERSION,
                                         &scd, &pimpl->d_swapChain,
                                         &pimpl->d_device, &pimpl->d_featureLevel,
                                         &pimpl->d_context);

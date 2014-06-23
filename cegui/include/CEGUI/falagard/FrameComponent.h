@@ -335,6 +335,12 @@ public:
 
     bool operator==(const FrameComponent& rhs) const;
 
+
+    //! Default value for the HorzFormat elements of the FrameComponent
+    static const HorizontalFormatting HorizontalFormattingDefault;
+    //! Default value for the VertFormat elements of the FrameComponent
+    static const VerticalFormatting VerticalFormattingDefault;
+
 protected:
     struct FrameImageSource
     {
