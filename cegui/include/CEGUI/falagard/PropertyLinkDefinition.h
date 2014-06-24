@@ -146,7 +146,7 @@ protected:
     }
 
     //------------------------------------------------------------------------//
-    void updateLinkTargets(PropertyReceiver* receiver, 
+    void updateLinkTargets(PropertyReceiver* receiver,
                            typename Helper::pass_type value) const
     {
         LinkTargetCollection::const_iterator i = d_targets.begin();
@@ -175,8 +175,8 @@ protected:
         if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
             xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
 
-        if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
-            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
+        if (!PropertyDefinitionBase::d_helpString.empty() && PropertyDefinitionBase::d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, PropertyDefinitionBase::d_helpString);
 
         LinkTargetCollection::const_iterator i(d_targets.begin());
 
