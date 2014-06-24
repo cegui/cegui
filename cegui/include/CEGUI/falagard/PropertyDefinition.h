@@ -48,7 +48,7 @@ public:
         FalagardPropertyBase<T>(name, help, initialValue, origin,
                                 redrawOnWrite, layoutOnWrite,
                                 fireEvent, eventNamespace),
-        d_userStringName(name + UserStringNameSuffix)
+                                d_userStringName(name + PropertyDefinitionBase::UserStringNameSuffix)
     {
     }
 
@@ -69,7 +69,7 @@ public:
 
 protected:
     //------------------------------------------------------------------------//
-    typename Helper::safe_method_return_type 
+    typename Helper::safe_method_return_type
     getNative_impl(const PropertyReceiver* receiver) const
     {
         const Window* const wnd = static_cast<const Window*>(receiver);
@@ -127,8 +127,8 @@ protected:
         if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
             xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
 
-        if (!d_helpString.empty() && d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
-            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, d_helpString);
+        if (!PropertyDefinitionBase::d_helpString.empty() && PropertyDefinitionBase::d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, PropertyDefinitionBase::d_helpString);
     }
 
 
