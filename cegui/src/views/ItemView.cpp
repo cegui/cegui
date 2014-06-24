@@ -248,8 +248,6 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
 //----------------------------------------------------------------------------//
 bool ItemView::onChildrenDataChanged(const EventArgs& args)
 {
-    const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
-
     invalidateView(false);
     return true;
 }
@@ -643,6 +641,11 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
     {
         ModelIndexSelectionState selection_state;
         selection_state.d_selectedIndex = d_itemModel->makeIndex(id, parent_index);
+
+        // ignore already selected indices
+        if (getSelectedIndexPosition(selection_state.d_selectedIndex) != -1)
+            continue;
+
         selection_state.d_childId = id;
         selection_state.d_parentIndex = parent_index;
 

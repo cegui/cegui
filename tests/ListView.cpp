@@ -227,6 +227,7 @@ BOOST_AUTO_TEST_CASE(SelectRange)
     model.d_items.push_back(ITEM2);
     model.d_items.push_back(ITEM3);
     view->prepareForRender();
+    view->setMultiSelectEnabled(true);
 
     view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
 
