@@ -170,7 +170,8 @@ void ItemView::setModel(ItemModel* item_model)
 
     connectToModelEvents(d_itemModel);
     d_indexSelectionStates.clear();
-    onSelectionChanged(WindowEventArgs(this));
+    WindowEventArgs args(this);
+    onSelectionChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -239,7 +240,8 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
         }
     }
 
-    onSelectionChanged(WindowEventArgs(this));
+    WindowEventArgs wargs(this);
+    onSelectionChanged(wargs);
     return true;
 }
 
@@ -614,7 +616,9 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
         if (!should_select)
         {
             d_indexSelectionStates.erase(d_indexSelectionStates.begin() + index_position);
-            onSelectionChanged(WindowEventArgs(this));
+
+            WindowEventArgs args(this);
+            onSelectionChanged(args);
             return true;
         }
 
@@ -647,7 +651,8 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
 
     d_lastSelectedIndex = index;
 
-    onSelectionChanged(WindowEventArgs(this));
+    WindowEventArgs args(this);
+    onSelectionChanged(args);
     return true;
 }
 }
