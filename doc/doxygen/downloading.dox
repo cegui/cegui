@@ -23,11 +23,9 @@ main download page here: http://www.cegui.org.uk/wiki/index.php/Downloads
 Source code from the stable mercurial branch is released at various points in
 time and made available as source code packages.
 
-The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.8/cegui-0.8.2.tar.gz/download">cegui-0.8.2.tar.gz</a>
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.8/cegui-0.8.2.zip/download">cegui-0.8.2.zip</a>
+The current and previous releases are available here: <a href="http://cegui.org.uk/download">http://cegui.org.uk/download</a>
 
-The content of these archives is identical, multiple archive types are provided
+The content of these archives (.zip, .tar.gz) is identical, multiple archive types are provided
 merely as a convenience.
 
 <br>
