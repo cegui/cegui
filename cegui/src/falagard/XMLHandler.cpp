@@ -56,7 +56,7 @@ namespace CEGUI
 {
     // note: The assets' versions aren't usually the same as CEGUI version, they are versioned from version 1 onwards!
     const String Falagard_xmlHandler::NativeVersion("7");
-    
+
     ////////////////////////////////////////////////////////////////////////////////
     // element names
     const String Falagard_xmlHandler::FalagardElement("Falagard");
@@ -151,7 +151,7 @@ namespace CEGUI
                                                                              "property on this window to properties "
                                                                              "defined on one or more child windows, or "
                                                                              "the parent window.");
-    
+
     // Specific attribute values
     const String Falagard_xmlHandler::GenericDataType("Generic");
     const String Falagard_xmlHandler::ParentIdentifier("__parent__");
@@ -375,7 +375,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementFalagardStart(const XMLAttributes& attributes)
     {
         Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
-        
+
         const String version = attributes.getValueAsString(VersionAttribute, "unknown");
 
         if (version != NativeVersion)
@@ -414,7 +414,7 @@ namespace CEGUI
             attributes.getValueAsBool(AutoWindowAttribute, true));
 
         CEGUI_LOGINSANE("-----> Start of definition for child widget."
-            " Type: " + d_childcomponent->getBaseWidgetType() + 
+            " Type: " + d_childcomponent->getBaseWidgetType() +
             " Name: " + d_childcomponent->getWidgetName() +
             " Look: " + d_childcomponent->getWidgetLookName() +
             " Auto: " + (d_childcomponent->isAutoWindow() ? "Yes" : "No"));
@@ -1462,7 +1462,7 @@ namespace CEGUI
             if (!d_dimStack.empty())
             {
                 if (OperatorDim* op = dynamic_cast<OperatorDim*>(d_dimStack.back()))
-                   op->setNextOperand(currDim); 
+                   op->setNextOperand(currDim);
             }
             else
             {
@@ -1491,7 +1491,7 @@ namespace CEGUI
 
         const String w(attributes.getValueAsString(WidgetAttribute));
         const String p(attributes.getValueAsString(PropertyAttribute));
-        
+
         if (!w.empty() || !p.empty())
         {
             const String type(dynamic_cast<Property*>(d_propertyLink)->getDataType());
@@ -1566,7 +1566,7 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<VerticalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<HorizontalFormatting>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<HorizontalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<std::pair<float,float>>::getDataTypeName())
+            else if(type == PropertyHelper<std::pair<float,float> >::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Range>* >(d_propertyLink)->addLinkTarget(w, p);
             else
                 dynamic_cast<PropertyLinkDefinition<String>* >(d_propertyLink)->addLinkTarget(w, p);
@@ -1667,7 +1667,7 @@ namespace CEGUI
         d_area->setNamedAreaSouce(look.empty() ? d_widgetlook->getName() : look,
                                   attributes.getValueAsString(NameAttribute));
     }
-        
+
     void Falagard_xmlHandler::elementEventActionStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent != 0);
