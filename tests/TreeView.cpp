@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectTreeWithScrollbar_Returns
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        model.getInventoryRoot().d_items.at(49)->d_items.at(0),
+        model.getInventoryRoot().d_items.at(49),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     model.addRandomItemWithChild(model.getRootIndex(), 0);
 
-    ModelIndex index = view->indexAt(Vector2f(1, font_height * 2 + font_height / 2));
+    ModelIndex index = view->indexAt(Vector2f(1, font_height  + font_height / 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
@@ -156,8 +156,10 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
-    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
+
+    const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
+    BOOST_REQUIRE(!children.at(0).d_isSelected);
+    BOOST_REQUIRE(children.at(1).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -170,9 +172,10 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     view->prepareForRender();
 
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
-    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(2).d_isSelected);
+    const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
+    BOOST_REQUIRE(!children.at(0).d_isSelected);
+    BOOST_REQUIRE(!children.at(1).d_isSelected);
+    BOOST_REQUIRE(children.at(2).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -186,11 +189,12 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
     model.addRandomItemWithChild(model.getRootIndex(), 0);
     view->prepareForRender();
 
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(2).d_isSelected);
-    BOOST_REQUIRE(view->getRootItemState().d_renderedChildren.at(2).d_renderedChildren.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(3).d_isSelected);
+    const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
+    BOOST_REQUIRE(!children.at(0).d_isSelected);
+    BOOST_REQUIRE(!children.at(1).d_isSelected);
+    BOOST_REQUIRE(!children.at(2).d_isSelected);
+    BOOST_REQUIRE(children.at(2).d_renderedChildren.at(0).d_isSelected);
+    BOOST_REQUIRE(!children.at(3).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -205,11 +209,26 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
 
     view->prepareForRender();
 
+    const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
     BOOST_REQUIRE_EQUAL(initial_size - 1, view->getRootItemState().d_renderedChildren.size());
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getRootItemState().d_renderedChildren.at(1).d_isSelected);
+    BOOST_REQUIRE(!children.at(0).d_isSelected);
+    BOOST_REQUIRE(!children.at(1).d_isSelected);
 }
 
+
+BOOST_AUTO_TEST_CASE(InitialState_NoSubtreesOpenedAndCountIsComputedRight)
+{
+    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    view->prepareForRender();
+
+    const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
+    BOOST_REQUIRE(!children.at(0).d_subtreeIsOpen);
+    BOOST_REQUIRE(children.at(0).d_totalChildCount == 1);
+    BOOST_REQUIRE(!children.at(1).d_subtreeIsOpen);
+    BOOST_REQUIRE(children.at(1).d_totalChildCount == 1);
+
+}
 
 
 BOOST_AUTO_TEST_SUITE_END()
