@@ -200,17 +200,21 @@ void InventoryModel::clear(bool notify)
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::addRandomItemWithChild(const ModelIndex& parent, size_t position)
+void InventoryModel::addRandomItemWithChildren(const ModelIndex& parent, size_t position,
+    size_t child_count)
 {
     InventoryItem* new_item = InventoryItem::make(
         "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount),
         0.3f, static_cast<InventoryItem*>(parent.d_modelData));
 
-    InventoryItem* new_subitem = InventoryItem::make(
-        "New sub item #" + PropertyHelper<int>::toString(d_randomItemsCount),
-        1.3f, new_item);
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        InventoryItem* new_subitem = InventoryItem::make(
+            "New sub item #" + PropertyHelper<int>::toString(d_randomItemsCount),
+            1.3f, new_item);
 
-    new_item->d_items.push_back(new_subitem);
+        new_item->d_items.push_back(new_subitem);
+    }
 
     addItem(parent, new_item, position);
     d_randomItemsCount++;
