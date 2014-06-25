@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
     // we do this on purpose: we need to skip the root from selection & related.
     // if it has a name then we need not to render it.
     model.getInventoryRoot().d_name = "Root";
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(Vector2f(1, font_height / 2.0f));
 
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectTreeWithOffset_ReturnsCorrectIn
     float x_offset = 500;
     float y_offset = 354;
     view->setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(Vector2f(
         x_offset + 1,
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectTreeWithOffset_ReturnsCorrectIn
 BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectTreeWithScrollbar_ReturnsCorrectIndex)
 {
     for (int i = 0; i < 50; ++i)
-        model.addRandomItemWithChild(model.getRootIndex(), 0);
+        model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     view->setSize(USize(cegui_absdim(200), cegui_absdim(font_height * 10)));
     view->prepareForRender();
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectTreeWithScrollbar_Returns
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideObject_ReturnsInvalidIndex)
 {
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(Vector2f(1, font_height * 3));
 
@@ -122,8 +122,8 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideObject_ReturnsInvalidIndex)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
 {
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(Vector2f(1, font_height  + font_height / 2));
 
@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
     view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
     view->prepareForRender();
 
     const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
     view->setSelectedItem(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
     view->prepareForRender();
 
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
     view->prepareForRender();
 
     const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
@@ -215,11 +215,11 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     BOOST_REQUIRE(!children.at(1).d_isSelected);
 }
 
-
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(InitialState_NoSubtreesOpenedAndCountIsComputedRight)
 {
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
-    model.addRandomItemWithChild(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
     view->prepareForRender();
 
     const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
@@ -227,7 +227,6 @@ BOOST_AUTO_TEST_CASE(InitialState_NoSubtreesOpenedAndCountIsComputedRight)
     BOOST_REQUIRE(children.at(0).d_totalChildCount == 1);
     BOOST_REQUIRE(!children.at(1).d_subtreeIsOpen);
     BOOST_REQUIRE(children.at(1).d_totalChildCount == 1);
-
 }
 
 

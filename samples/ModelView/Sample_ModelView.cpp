@@ -132,7 +132,7 @@ bool ModelViewDemo::handleRemoveSelectedTreeItems(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool ModelViewDemo::handleAddRandomItem(const EventArgs& e)
 {
-    d_inventoryModel.addRandomItemWithChild(d_inventoryModel.getRootIndex(), 0);
+    d_inventoryModel.addRandomItemWithChildren(d_inventoryModel.getRootIndex(), 0);
     return true;
 }
 
@@ -145,7 +145,7 @@ bool ModelViewDemo::handleAddItemInList(const EventArgs& e)
 
     const ModelIndexSelectionState& selection = (*selections.begin());
 
-    d_inventoryModel.addRandomItemWithChild(selection.d_parentIndex, selection.d_childId + 1);
+    d_inventoryModel.addRandomItemWithChildren(selection.d_parentIndex, selection.d_childId + 1);
     return true;
 }
 
@@ -158,7 +158,7 @@ bool ModelViewDemo::handleAddItemInTree(const EventArgs& e)
 
     const ModelIndexSelectionState& selection = (*selections.begin());
 
-    d_inventoryModel.addRandomItemWithChild(selection.d_selectedIndex, 0);
+    d_inventoryModel.addRandomItemWithChildren(selection.d_selectedIndex, 0);
     return true;
 }
 
