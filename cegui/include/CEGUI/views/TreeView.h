@@ -41,6 +41,19 @@
 namespace CEGUI
 {
 
+class CEGUIEXPORT TreeViewWindowRenderer : public ItemViewWindowRenderer
+{
+public:
+    TreeViewWindowRenderer(const String& type);
+
+    /*!
+    \brief
+        Returns a Size object describing, in unclipped pixels, the size of the
+        expander that opens (expands) or closes a subtree.
+    */
+    virtual Sizef getSubtreeExpanderSize(void) const = 0;
+};
+
 struct CEGUIEXPORT TreeViewItemRenderingState
 {
     std::vector<TreeViewItemRenderingState> d_renderedChildren;
@@ -78,6 +91,12 @@ public:
     virtual void prepareForRender();
     virtual ModelIndex indexAt(const Vector2f& position);
 
+protected:
+    virtual bool handleSelection(const Vector2f& position, bool should_select,
+        bool is_cumulative, bool is_range);
+
+    virtual TreeViewWindowRenderer* getViewRenderer();
+
 private:
     TreeViewItemRenderingState d_rootItemState;
 
@@ -85,7 +104,7 @@ private:
         const ModelIndex& index, bool is_root, float& rendered_max_width,
         float& rendered_total_height);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
-        const Vector2f& window_position);
+        const Vector2f& window_position, bool& handled);
 };
 
 };

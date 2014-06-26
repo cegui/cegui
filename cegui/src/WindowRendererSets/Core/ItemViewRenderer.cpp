@@ -34,25 +34,20 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-ItemViewRenderer::ItemViewRenderer(const String& type) :
-    ItemViewWindowRenderer(type)
+Rectf ItemViewRenderer::getViewRenderArea(const ItemViewWindowRenderer* renderer) const
 {
-}
-
-//----------------------------------------------------------------------------//
-Rectf ItemViewRenderer::getViewRenderArea(void) const
-{
-    ItemView* item_view = static_cast<ItemView*>(d_window);
-
+    const ItemView* item_view = static_cast<ItemView*>(renderer->getWindow());
     return getViewRenderArea(
+        renderer,
         item_view->getHorzScrollbar()->isVisible(),
         item_view->getVertScrollbar()->isVisible());
 }
 
 //----------------------------------------------------------------------------//
-Rectf ItemViewRenderer::getViewRenderArea(bool hscroll, bool vscroll) const
+Rectf ItemViewRenderer::getViewRenderArea(const ItemViewWindowRenderer* renderer,
+    bool hscroll, bool vscroll) const
 {
-    const WidgetLookFeel& wlf = getLookNFeel();
+    const WidgetLookFeel& wlf = renderer->getLookNFeel();
     String scroll_suffix;
 
     if (vscroll)
@@ -76,7 +71,8 @@ Rectf ItemViewRenderer::getViewRenderArea(bool hscroll, bool vscroll) const
             const String full_area_name(area_names[area_id] + suffix);
 
             if (wlf.isNamedAreaDefined(full_area_name))
-                return wlf.getNamedArea(full_area_name).getArea().getPixelRect(*d_window);
+                return wlf.getNamedArea(full_area_name).getArea().
+                    getPixelRect(*renderer->getWindow());
         }
     }
 
@@ -112,13 +108,12 @@ void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_str
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::Vector2f ItemViewRenderer::getItemRenderStartPosition(const Rectf& items_area) const
+CEGUI::Vector2f ItemViewRenderer::getItemRenderStartPosition(ItemView* view,
+    const Rectf& items_area) const
 {
-    ItemView* item_view = static_cast<ItemView*>(d_window);
-
     return Vector2f(
-        items_area.left() - item_view->getHorzScrollbar()->getScrollPosition(),
-        items_area.top() - item_view->getVertScrollbar()->getScrollPosition()
+        items_area.left() - view->getHorzScrollbar()->getScrollPosition(),
+        items_area.top() - view->getVertScrollbar()->getScrollPosition()
         );
 
 }

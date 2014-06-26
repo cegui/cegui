@@ -38,7 +38,7 @@ const String FalagardTreeView::TypeName("Core/TreeView");
 
 //----------------------------------------------------------------------------//
 FalagardTreeView::FalagardTreeView(const String& type) :
-    ItemViewRenderer(type),
+    TreeViewWindowRenderer(type),
     d_subtreeExpanderImagery(0),
     d_subtreeCollapserImagery(0),
     d_subtreeExpanderImagerySize(0, 0)
@@ -58,7 +58,7 @@ void FalagardTreeView::render()
     imagery->render(*tree_view);
 
     Rectf items_area(getViewRenderArea());
-    Vector2f item_pos(getItemRenderStartPosition(items_area));
+    Vector2f item_pos(getItemRenderStartPosition(tree_view, items_area));
     renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState());
 }
 
@@ -137,4 +137,15 @@ void FalagardTreeView::onLookNFeelAssigned()
 
 }
 
+//----------------------------------------------------------------------------//
+Sizef FalagardTreeView::getSubtreeExpanderSize(void) const
+{
+    return d_subtreeExpanderImagerySize;
+}
+
+//----------------------------------------------------------------------------//
+Rectf FalagardTreeView::getViewRenderArea(void) const
+{
+    return ItemViewRenderer::getViewRenderArea(this);
+}
 }

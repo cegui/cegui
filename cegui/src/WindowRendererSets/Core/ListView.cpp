@@ -42,7 +42,7 @@ const String FalagardListView::TypeName("Core/ListView");
 
 //----------------------------------------------------------------------------//
 FalagardListView::FalagardListView(const String& type) :
-    ItemViewRenderer(type)
+    ItemViewWindowRenderer(type)
 {
 }
 
@@ -65,7 +65,7 @@ void FalagardListView::render()
 void FalagardListView::render(ListView* list_view)
 {
     Rectf items_area(getViewRenderArea());
-    Vector2f item_pos(getItemRenderStartPosition(items_area));
+    Vector2f item_pos(getItemRenderStartPosition(list_view, items_area));
 
     for (size_t i = 0; i < list_view->getItems().size(); ++i)
     {
@@ -87,5 +87,11 @@ void FalagardListView::render(ListView* list_view)
 
         item_pos.d_y += size.d_height;
     }
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::Rectf FalagardListView::getViewRenderArea(void) const
+{
+    return ItemViewRenderer::getViewRenderArea(this);
 }
 }

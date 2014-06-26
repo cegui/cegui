@@ -66,7 +66,9 @@ namespace CEGUI
         Scrollbar based widget with name suffix "__auto_vscrollbar__"
         Scrollbar based widget with name suffix "__auto_hscrollbar__"
 */
-class COREWRSET_API FalagardTreeView : public ItemViewRenderer
+class COREWRSET_API FalagardTreeView :
+    public TreeViewWindowRenderer,
+    public ItemViewRenderer
 {
 public:
     //! Type name for this widget.
@@ -82,13 +84,15 @@ public:
 
     void render();
 
+    virtual Sizef getSubtreeExpanderSize(void) const;
+    virtual Rectf getViewRenderArea(void) const;
+
 protected:
     virtual void onLookNFeelAssigned();
 
 private:
     void renderTreeItem(TreeView* tree_view, const Rectf& items_area,
         Vector2f& item_pos, const TreeViewItemRenderingState& item_state);
-
 
     const ImagerySection* d_subtreeExpanderImagery;
     const ImagerySection* d_subtreeCollapserImagery;

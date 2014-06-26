@@ -220,7 +220,7 @@ protected:
     void updateScrollbars();
     void updateScrollbar(Scrollbar* scrollbar, float available_area,
         float rendered_area, ScrollbarDisplayMode display_mode);
-    ItemViewWindowRenderer* getViewRenderer();
+    virtual ItemViewWindowRenderer* getViewRenderer();
     void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
         ScrollbarDisplayMode new_mode, String change_event);
 

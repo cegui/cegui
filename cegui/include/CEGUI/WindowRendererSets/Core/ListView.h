@@ -62,7 +62,9 @@ namespace CEGUI
         Scrollbar based widget with name suffix "__auto_vscrollbar__"
         Scrollbar based widget with name suffix "__auto_hscrollbar__"
 */
-class COREWRSET_API FalagardListView : public ItemViewRenderer
+class COREWRSET_API FalagardListView :
+    public ItemViewWindowRenderer,
+    public ItemViewRenderer
 {
 public:
     //! Type name for this widget.
@@ -79,7 +81,7 @@ public:
 
     void render();
 
-
+    virtual Rectf getViewRenderArea(void) const;
 private:
     void render(ListView* list_view);
 };
