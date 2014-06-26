@@ -64,21 +64,20 @@ void FalagardTreeView::render()
 
 //----------------------------------------------------------------------------//
 void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-    Vector2f& item_pos, const TreeViewItemRenderingState& item_state)
+    Vector2f& item_pos, const TreeViewItemRenderingState& item_to_render)
 {
     const float SUBTREE_IDENT = d_subtreeExpanderImagerySize.d_width;
     const float OPEN_CLOSE_BUTTON_MARGIN = 5.0f;
-    for (size_t i = 0; i < item_state.d_renderedChildren.size(); ++i)
+    for (size_t i = 0; i < item_to_render.d_renderedChildren.size(); ++i)
     {
-        TreeViewItemRenderingState item = item_state.d_renderedChildren.at(i);
+        TreeViewItemRenderingState item = item_to_render.d_renderedChildren.at(i);
         RenderedString& rendered_string = item.d_string;
         Sizef size(item.d_size);
 
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
-
         if (item.d_totalChildCount > 0)
         {
-            const ImagerySection* section = item_state.d_subtreeIsExpanded
+            const ImagerySection* section = item.d_subtreeIsExpanded
                 ? d_subtreeExpanderImagery : d_subtreeCollapserImagery;
 
             Rectf button_rect;
@@ -106,7 +105,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
         item_pos.d_x += SUBTREE_IDENT;
 
-        if (item_state.d_subtreeIsExpanded)
+        if (item.d_subtreeIsExpanded)
         {
             renderTreeItem(tree_view, items_area, item_pos, item);
         }
