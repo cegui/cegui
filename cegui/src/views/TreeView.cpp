@@ -33,6 +33,12 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+TreeViewWindowRenderer::TreeViewWindowRenderer(const String& type) :
+    ItemViewWindowRenderer(type)
+{
+}
+
+//----------------------------------------------------------------------------//
 const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
 
@@ -44,6 +50,12 @@ TreeViewItemRenderingState::TreeViewItemRenderingState() :
     d_childId(0),
     d_subtreeIsExpanded(false)
 {
+}
+
+//----------------------------------------------------------------------------//
+void TreeViewItemRenderingState::toggleSubtreeExpandedState()
+{
+    d_subtreeIsExpanded = !d_subtreeIsExpanded;
 }
 
 //----------------------------------------------------------------------------//
@@ -172,6 +184,20 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     }
 
     return ModelIndex();
+}
+
+//----------------------------------------------------------------------------//
+bool TreeView::handleSelection(const Vector2f& position, bool should_select,
+    bool is_cumulative, bool is_range)
+{
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+TreeViewWindowRenderer* TreeView::getViewRenderer()
+{
+    return static_cast<TreeViewWindowRenderer*>(ItemView::getViewRenderer());
 }
 
 }
