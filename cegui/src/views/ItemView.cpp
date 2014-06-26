@@ -584,8 +584,7 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
     if (e.d_semanticValue == SV_SelectRange ||
         e.d_semanticValue == SV_SelectCumulative)
     {
-        handleSelection(
-            getGUIContext().getPointerIndicator().getPosition(),
+        handleSelection(getGUIContext().getPointerIndicator().getPosition(),
             true, d_isMultiSelectEnabled, e.d_semanticValue == SV_SelectRange);
     }
 

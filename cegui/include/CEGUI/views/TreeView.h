@@ -90,11 +90,16 @@ public:
     const TreeViewItemRenderingState& getRootItemState() const;
     virtual void prepareForRender();
     virtual ModelIndex indexAt(const Vector2f& position);
-
 protected:
     virtual TreeViewWindowRenderer* getViewRenderer();
-
+    virtual bool handleSelection(const Vector2f& position, bool should_select,
+        bool is_cumulative, bool is_range);
+    virtual bool handleSelection(const ModelIndex& index, bool should_select,
+        bool is_cumulative, bool is_range);
 private:
+    typedef void (TreeView::*TreeViewItemAction)(
+        TreeViewItemRenderingState& item, bool toggles_expander);
+
     TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(
@@ -103,8 +108,14 @@ private:
     void computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
         const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
 
+    ModelIndex indexAtWithAction(const Vector2f& position, TreeViewItemAction action);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
-        const Vector2f& window_position, bool& handled);
+        const Vector2f& window_position, bool& handled, TreeViewItemAction action);
+    void toggleSubtree(TreeViewItemRenderingState& item);
+    void clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight);
+    void handleSelectionAction(TreeViewItemRenderingState& item, bool toggles_expander);
+
+    void noopAction(TreeViewItemRenderingState& item, bool toggles_expander) {}
 };
 
 };

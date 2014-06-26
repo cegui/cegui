@@ -53,22 +53,14 @@ TreeViewItemRenderingState::TreeViewItemRenderingState() :
 }
 
 //----------------------------------------------------------------------------//
-void TreeViewItemRenderingState::toggleSubtreeExpandedState()
-{
-    d_subtreeIsExpanded = !d_subtreeIsExpanded;
-}
-
-//----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
     ItemView(type, name)
 {
-
 }
 
 //----------------------------------------------------------------------------//
 TreeView::~TreeView()
 {
-
 }
 
 //----------------------------------------------------------------------------//
@@ -96,6 +88,22 @@ void TreeView::prepareForRender()
 
     updateScrollbars();
     setIsDirty(false);
+}
+
+//----------------------------------------------------------------------------//
+bool TreeView::handleSelection(const Vector2f& position, bool should_select,
+    bool is_cumulative, bool is_range)
+{
+    return handleSelection(
+        indexAtWithAction(position, &TreeView::handleSelectionAction),
+        should_select, is_cumulative, is_range);
+}
+
+//----------------------------------------------------------------------------//
+bool TreeView::handleSelection(const ModelIndex& index, bool should_select,
+    bool is_cumulative, bool is_range)
+{
+    return ItemView::handleSelection(index, should_select, is_cumulative, is_range);
 }
 
 //----------------------------------------------------------------------------//
@@ -129,6 +137,13 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
 //----------------------------------------------------------------------------//
 ModelIndex TreeView::indexAt(const Vector2f& position)
 {
+    return indexAtWithAction(position, &TreeView::noopAction);
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::ModelIndex TreeView::indexAtWithAction(const Vector2f& position,
+    TreeViewItemAction action)
+{
     if (d_itemModel == 0)
         return ModelIndex();
 
@@ -142,12 +157,14 @@ ModelIndex TreeView::indexAt(const Vector2f& position)
 
     float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
     bool handled = false;
-    return indexAtRecursive(d_rootItemState, cur_height, window_position, handled);
+    return indexAtRecursive(d_rootItemState, cur_height, window_position,
+        handled, action);
 }
 
 //----------------------------------------------------------------------------//
 ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
-    float& cur_height, const Vector2f& window_position, bool& handled)
+    float& cur_height, const Vector2f& window_position, bool& handled,
+    TreeViewItemAction action)
 {
     float next_height = cur_height + item.d_size.d_height;
 
@@ -156,6 +173,14 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     {
         handled = true;
 
+        float subtree_expander_width = getViewRenderer()->getSubtreeExpanderSize().d_width;
+        if (window_position.d_x >= 0 && window_position.d_x <= subtree_expander_width)
+        {
+            (this->*action)(item, true);
+            return ModelIndex();
+        }
+
+        (this->*action)(item, false);
         return ModelIndex(d_itemModel->makeIndex(item.d_childId, item.d_parentIndex));
     }
 
@@ -164,7 +189,7 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     for (size_t i = 0; i < item.d_renderedChildren.size(); ++i)
     {
         ModelIndex index = indexAtRecursive(item.d_renderedChildren.at(i),
-            cur_height, window_position, handled);
+            cur_height, window_position, handled, action);
         if (handled)
             return index;
     }
@@ -178,6 +203,25 @@ TreeViewWindowRenderer* TreeView::getViewRenderer()
     return static_cast<TreeViewWindowRenderer*>(ItemView::getViewRenderer());
 }
 
+//----------------------------------------------------------------------------//
+void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
+{
+    item.d_subtreeIsExpanded = !item.d_subtreeIsExpanded;
+    std::cout << "Toggled. " << item.d_text << std::endl;
+
+    if (item.d_subtreeIsExpanded)
+    {
+        computeRenderedChildrenForItem(item,
+            d_itemModel->makeIndex(item.d_childId, item.d_parentIndex),
+            d_renderedMaxWidth, d_renderedTotalHeight);
+    }
+    else
+    {
+        clearItemRenderedChildren(item, d_renderedTotalHeight);
+    }
+
+    updateScrollbars();
+    invalidate(false);
 }
 
 //----------------------------------------------------------------------------//
@@ -203,5 +247,30 @@ void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
         child_state.d_childId = child;
         item.d_renderedChildren.push_back(child_state);
     }
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::clearItemRenderedChildren(TreeViewItemRenderingState& item,
+    float& renderedTotalHeight)
+{
+    std::vector<TreeViewItemRenderingState>::iterator itor =
+        item.d_renderedChildren.begin();
+
+    while (itor != item.d_renderedChildren.end())
+    {
+        clearItemRenderedChildren(*itor, renderedTotalHeight);
+
+        d_renderedTotalHeight -= item.d_size.d_height;
+        itor = item.d_renderedChildren.erase(itor);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::handleSelectionAction(TreeViewItemRenderingState& item, bool toggles_expander)
+{
+    if (!toggles_expander)
+        return;
+
+    toggleSubtree(item);
 }
 }
