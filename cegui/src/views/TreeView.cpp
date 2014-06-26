@@ -42,7 +42,7 @@ TreeViewItemRenderingState::TreeViewItemRenderingState() :
     d_size(0, 0),
     d_isSelected(false),
     d_childId(0),
-    d_subtreeIsOpen(false)
+    d_subtreeIsExpanded(false)
 {
 }
 
@@ -111,7 +111,7 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
     size_t child_count = d_itemModel->getChildCount(index);
     state.d_totalChildCount = child_count;
 
-    if (state.d_subtreeIsOpen ||
+    if (state.d_subtreeIsExpanded ||
         // we always draw items for root
         is_root)
     {

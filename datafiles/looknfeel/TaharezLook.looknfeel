@@ -4432,14 +4432,14 @@
             </Area>
             <HorzAlignment type="RightAligned" />
         </Child>
-        <ImagerySection name="OpenTreeButton">
+        <ImagerySection name="SubtreeExpander">
             <ImageryComponent>
                 <Image name="TaharezLook/TreeListClosed" />
               <!--  <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" /> -->
             </ImageryComponent>
         </ImagerySection>
-        <ImagerySection name="CloseTreeButton">
+        <ImagerySection name="SubtreeCollapser">
             <ImageryComponent>
                 <Image name="TaharezLook/TreeListOpened" />
                 <VertFormat type="Stretched" />

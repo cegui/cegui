@@ -59,8 +59,8 @@ namespace CEGUI
         - ItemRenderAreaHVScroll
 
     Imagery sections:
-        - OpenTreeButton
-        - CloseTreeButton
+        - SubtreeExpander (shown when the subtree is collapsed)
+        - SubtreeCollapser (shown when the subtree is expanded)
 
     Child Widgets:
         Scrollbar based widget with name suffix "__auto_vscrollbar__"
@@ -89,9 +89,10 @@ private:
     void renderTreeItem(TreeView* tree_view, const Rectf& items_area,
         Vector2f& item_pos, const TreeViewItemRenderingState& item_state);
 
-    const ImagerySection* d_openTreeImagery;
-    const ImagerySection* d_closeTreeImagery;
-    Sizef d_openCloseImagerySize;
+
+    const ImagerySection* d_subtreeExpanderImagery;
+    const ImagerySection* d_subtreeCollapserImagery;
+    Sizef d_subtreeExpanderImagerySize;
 };
 
 }
