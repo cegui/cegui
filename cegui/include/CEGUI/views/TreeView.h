@@ -92,17 +92,17 @@ public:
     virtual ModelIndex indexAt(const Vector2f& position);
 
 protected:
-    virtual bool handleSelection(const Vector2f& position, bool should_select,
-        bool is_cumulative, bool is_range);
-
     virtual TreeViewWindowRenderer* getViewRenderer();
 
 private:
     TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(
-        const ModelIndex& index, bool is_root, float& rendered_max_width,
-        float& rendered_total_height);
+        const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
+
+    void computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
+        const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
+
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
         const Vector2f& window_position, bool& handled);
 };
