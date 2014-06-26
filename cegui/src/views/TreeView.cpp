@@ -88,7 +88,10 @@ void TreeView::prepareForRender()
     d_renderedMaxWidth = 0;
     d_renderedTotalHeight = 0;
 
-    d_rootItemState = computeRenderingStateForIndex(root_index, true,
+    d_rootItemState = TreeViewItemRenderingState();
+    d_rootItemState.d_subtreeIsExpanded = true;
+
+    computeRenderedChildrenForItem(d_rootItemState, root_index,
         d_renderedMaxWidth, d_renderedTotalHeight);
 
     updateScrollbars();
@@ -97,47 +100,28 @@ void TreeView::prepareForRender()
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
-    const ModelIndex& index, bool is_root, float& rendered_max_width,
+    const ModelIndex& index, float& rendered_max_width,
     float& rendered_total_height)
 {
     if (d_itemModel == 0)
         return TreeViewItemRenderingState();
 
     TreeViewItemRenderingState state;
-    if (!is_root)
-    {
-        String text = d_itemModel->getData(index);
-        RenderedString rendered_string = getRenderedStringParser().parse(
-            text, getFont(), &d_textColourRect);
-        state.d_string = rendered_string;
-        state.d_size = Sizef(
-            rendered_string.getHorizontalExtent(this),
-            rendered_string.getVerticalExtent(this));
+    String text = d_itemModel->getData(index);
+    RenderedString rendered_string = getRenderedStringParser().parse(
+        text, getFont(), &d_textColourRect);
+    state.d_string = rendered_string;
+    state.d_size = Sizef(
+        rendered_string.getHorizontalExtent(this),
+        rendered_string.getVerticalExtent(this));
 
-        rendered_max_width = ceguimax(rendered_max_width, state.d_size.d_width);
-        rendered_total_height += state.d_size.d_height;
+    rendered_max_width = ceguimax(rendered_max_width, state.d_size.d_width);
+    rendered_total_height += state.d_size.d_height;
 
-        state.d_isSelected = isIndexSelected(index);
-    }
+    state.d_isSelected = isIndexSelected(index);
 
-    size_t child_count = d_itemModel->getChildCount(index);
-    state.d_totalChildCount = child_count;
-
-    if (state.d_subtreeIsExpanded ||
-        // we always draw items for root
-        is_root)
-    {
-        for (size_t child = 0; child < child_count; ++child)
-        {
-            ModelIndex child_index = d_itemModel->makeIndex(child, index);
-            TreeViewItemRenderingState child_state =
-                computeRenderingStateForIndex(child_index, false, rendered_max_width,
-                rendered_total_height);
-            child_state.d_parentIndex = index;
-            child_state.d_childId = child;
-            state.d_renderedChildren.push_back(child_state);
-        }
-    }
+    computeRenderedChildrenForItem(state, index, rendered_max_width,
+        rendered_total_height);
 
     return state;
 }
@@ -157,19 +141,21 @@ ModelIndex TreeView::indexAt(const Vector2f& position)
         return ModelIndex();
 
     float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
-
-    return indexAtRecursive(d_rootItemState, cur_height, window_position);
+    bool handled = false;
+    return indexAtRecursive(d_rootItemState, cur_height, window_position, handled);
 }
 
 //----------------------------------------------------------------------------//
 ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
-    float& cur_height, const Vector2f& window_position)
+    float& cur_height, const Vector2f& window_position, bool& handled)
 {
     float next_height = cur_height + item.d_size.d_height;
 
     if (window_position.d_y >= cur_height &&
         window_position.d_y <= next_height)
     {
+        handled = true;
+
         return ModelIndex(d_itemModel->makeIndex(item.d_childId, item.d_parentIndex));
     }
 
@@ -178,20 +164,12 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     for (size_t i = 0; i < item.d_renderedChildren.size(); ++i)
     {
         ModelIndex index = indexAtRecursive(item.d_renderedChildren.at(i),
-            cur_height, window_position);
-        if (index.d_modelData != 0)
+            cur_height, window_position, handled);
+        if (handled)
             return index;
     }
 
     return ModelIndex();
-}
-
-//----------------------------------------------------------------------------//
-bool TreeView::handleSelection(const Vector2f& position, bool should_select,
-    bool is_cumulative, bool is_range)
-{
-
-    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -200,4 +178,30 @@ TreeViewWindowRenderer* TreeView::getViewRenderer()
     return static_cast<TreeViewWindowRenderer*>(ItemView::getViewRenderer());
 }
 
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
+    const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
+{
+    if (d_itemModel == 0)
+        return;
+
+    size_t child_count = d_itemModel->getChildCount(index);
+    item.d_totalChildCount = child_count;
+
+    if (!item.d_subtreeIsExpanded)
+        return;
+
+    for (size_t child = 0; child < child_count; ++child)
+    {
+        ModelIndex child_index = d_itemModel->makeIndex(child, index);
+        TreeViewItemRenderingState child_state =
+            computeRenderingStateForIndex(child_index, rendered_max_width,
+                rendered_total_height);
+        child_state.d_parentIndex = index;
+        child_state.d_childId = child;
+        item.d_renderedChildren.push_back(child_state);
+    }
+}
 }
