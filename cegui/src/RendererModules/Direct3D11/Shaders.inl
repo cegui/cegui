@@ -26,6 +26,53 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
+namespace CEGUI
+{
+
+//! A string containing an HLSL vertex shader for solid colouring of a polygon
+const char VertexShaderColoured[] = ""
+"float4x4 modelViewPerspMatrix;\n"
+"\n"
+"struct VertOut\n"
+"{\n"
+"	float4 pos : SV_Position;\n"
+"	float4 colour : COLOR;\n"
+"};\n"
+"\n"
+"VertOut VSMain(float3 inPos : POSITION, float4 inColour : COLOR)\n"
+"{\n"
+"	VertOut output;\n"
+"\n"
+"   output.pos = mul(modelViewPerspMatrix, float4(inPos, 1.0));\n"
+"	output.colour = inColour;\n"
+"\n"
+"	return output;\n"
+"}\n"
+;
+
+//! A string containing an HLSL fragment shader for solid colouring of a polygon
+const char PixelShaderColoured[] = ""
+"Texture2D texture0;\n"
+"\n"
+"struct VertOut\n"
+"{\n"
+"	float4 pos : SV_Position;\n"
+"	float4 colour : COLOR;\n"
+"};\n"
+"\n"
+"float4 PSMain(VertOut input) : SV_Target\n"
+"{\n"
+"	return input.colour;\n"
+"}\n"
+"\n"
+;
+
+
+/*!
+A string containing an HLSL vertex shader for polygons that should be coloured
+based on a texture. The fetched texture colour will be multiplicated by a colour
+supplied to the shader, resulting in the final colour.
+*/
 const char VertexShaderTextured[] = ""
 "float4x4 modelViewPerspMatrix;\n"
 "\n"
@@ -49,6 +96,11 @@ const char VertexShaderTextured[] = ""
 "}\n"
 ;
 
+/*!
+A string containing an HLSL fragment shader for polygons that should be coloured
+based on a texture. The fetched texture colour will be multiplicated by a colour
+supplied to the shader, resulting in the final colour.
+*/
 const char PixelShaderTextured[] = ""
 "Texture2D texture0;\n"
 "SamplerState textureSamplerState;\n"
@@ -67,38 +119,4 @@ const char PixelShaderTextured[] = ""
 "\n"
 ;
 
-const char VertexShaderColoured[] = ""
-"float4x4 modelViewPerspMatrix;\n"
-"\n"
-"struct VertOut\n"
-"{\n"
-"	float4 pos : SV_Position;\n"
-"	float4 colour : COLOR;\n"
-"};\n"
-"\n"
-"VertOut VSMain(float3 inPos : POSITION, float4 inColour : COLOR)\n"
-"{\n"
-"	VertOut output;\n"
-"\n"
-"   output.pos = mul(modelViewPerspMatrix, float4(inPos, 1.0));\n"
-"	output.colour = inColour;\n"
-"\n"
-"	return output;\n"
-"}\n"
-;
-
-const char PixelShaderColoured[] = ""
-"Texture2D texture0;\n"
-"\n"
-"struct VertOut\n"
-"{\n"
-"	float4 pos : SV_Position;\n"
-"	float4 colour : COLOR;\n"
-"};\n"
-"\n"
-"float4 PSMain(VertOut input) : SV_Target\n"
-"{\n"
-"	return input.colour;\n"
-"}\n"
-"\n"
-;
+}
