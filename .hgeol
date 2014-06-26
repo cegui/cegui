@@ -1,6 +1,7 @@
 [patterns]
 **.h = native
 **.cpp = native
+**.inl = native
 
 **.txt = native
 **.xml = native
@@ -10,6 +11,7 @@
 **.imageset = native
 **.font = native
 **.scheme = native
+**.anims = native
 
 **.xsd = native
 **.dox = native
