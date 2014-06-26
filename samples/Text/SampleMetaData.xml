@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUISample_Text"
+    type      = "C++ Module"
+    summary         = "The text sample contains text editing widgets and offers possibilities to change the text formatting or enter text to play around with the options"
+    description     = "The text formatting and scrollbar visibility are adjusted using the properties of the windows"
+    credits         = "CEGUI team"
+/>
