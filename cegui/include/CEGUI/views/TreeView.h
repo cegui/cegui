@@ -53,7 +53,7 @@ struct CEGUIEXPORT TreeViewItemRenderingState
     bool d_isSelected;
     ModelIndex d_parentIndex;
     size_t d_childId;
-    bool d_subtreeIsOpen;
+    bool d_subtreeIsExpanded;
 
     TreeViewItemRenderingState();
 };

@@ -39,8 +39,9 @@ const String FalagardTreeView::TypeName("Core/TreeView");
 //----------------------------------------------------------------------------//
 FalagardTreeView::FalagardTreeView(const String& type) :
     ItemViewRenderer(type),
-    d_openTreeImagery(0),
-    d_closeTreeImagery(0)
+    d_subtreeExpanderImagery(0),
+    d_subtreeCollapserImagery(0),
+    d_subtreeExpanderImagerySize(0, 0)
 {
 }
 
@@ -65,7 +66,7 @@ void FalagardTreeView::render()
 void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
     Vector2f& item_pos, const TreeViewItemRenderingState& item_state)
 {
-    const float SUBTREE_IDENT = d_openCloseImagerySize.d_width;
+    const float SUBTREE_IDENT = d_subtreeExpanderImagerySize.d_width;
     const float OPEN_CLOSE_BUTTON_MARGIN = 5.0f;
     for (size_t i = 0; i < item_state.d_renderedChildren.size(); ++i)
     {
@@ -77,20 +78,20 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
         if (item.d_totalChildCount > 0)
         {
-            const ImagerySection* section = item_state.d_subtreeIsOpen
-                ? d_openTreeImagery : d_closeTreeImagery;
+            const ImagerySection* section = item_state.d_subtreeIsExpanded
+                ? d_subtreeExpanderImagery : d_subtreeCollapserImagery;
 
             Rectf button_rect;
             button_rect.left(item_pos.d_x + OPEN_CLOSE_BUTTON_MARGIN);
             button_rect.top(item_pos.d_y + OPEN_CLOSE_BUTTON_MARGIN);
-            button_rect.setSize(d_openCloseImagerySize);
+            button_rect.setSize(d_subtreeExpanderImagerySize);
 
             Rectf button_clipper(button_rect.getIntersection(items_area));
             section->render(*tree_view, button_rect, 0, &button_clipper);
         }
 
         Rectf item_rect;
-        item_rect.left(item_pos.d_x + d_openCloseImagerySize.d_width + 2 * OPEN_CLOSE_BUTTON_MARGIN);
+        item_rect.left(item_pos.d_x + d_subtreeExpanderImagerySize.d_width + 2 * OPEN_CLOSE_BUTTON_MARGIN);
         item_rect.top(item_pos.d_y);
         item_rect.setSize(size);
 
@@ -105,7 +106,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
         item_pos.d_x += SUBTREE_IDENT;
 
-        if (item_state.d_subtreeIsOpen)
+        if (item_state.d_subtreeIsExpanded)
         {
             renderTreeItem(tree_view, items_area, item_pos, item);
         }
@@ -125,12 +126,12 @@ static Sizef getImagerySize(const ImagerySection* section)
 void FalagardTreeView::onLookNFeelAssigned()
 {
     const WidgetLookFeel& wlf = getLookNFeel();
-    d_openTreeImagery = &wlf.getImagerySection("OpenTreeButton");
-    d_closeTreeImagery = &wlf.getImagerySection("CloseTreeButton");
+    d_subtreeExpanderImagery = &wlf.getImagerySection("SubtreeExpander");
+    d_subtreeCollapserImagery = &wlf.getImagerySection("SubtreeCollapser");
 
-    Sizef open_size = getImagerySize(d_openTreeImagery);
-    Sizef close_size = getImagerySize(d_closeTreeImagery);
-    d_openCloseImagerySize = Sizef(
+    Sizef open_size = getImagerySize(d_subtreeExpanderImagery);
+    Sizef close_size = getImagerySize(d_subtreeCollapserImagery);
+    d_subtreeExpanderImagerySize = Sizef(
         ceguimax(open_size.d_width, close_size.d_width),
         ceguimax(open_size.d_height, close_size.d_height));
 

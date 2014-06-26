@@ -223,10 +223,10 @@ BOOST_AUTO_TEST_CASE(InitialState_NoSubtreesOpenedAndCountIsComputedRight)
     view->prepareForRender();
 
     const std::vector<TreeViewItemRenderingState>& children = view->getRootItemState().d_renderedChildren;
-    BOOST_REQUIRE(!children.at(0).d_subtreeIsOpen);
-    BOOST_REQUIRE(children.at(0).d_totalChildCount == 1);
-    BOOST_REQUIRE(!children.at(1).d_subtreeIsOpen);
-    BOOST_REQUIRE(children.at(1).d_totalChildCount == 1);
+    BOOST_REQUIRE(!children.at(0).d_subtreeIsExpanded);
+    BOOST_REQUIRE_EQUAL(1, children.at(0).d_totalChildCount);
+    BOOST_REQUIRE(!children.at(1).d_subtreeIsExpanded);
+    BOOST_REQUIRE_EQUAL(1, children.at(1).d_totalChildCount);
 }
 
 
