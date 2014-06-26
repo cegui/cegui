@@ -70,7 +70,7 @@ const char PixelShaderColoured[] = ""
 
 /*!
 A string containing an HLSL vertex shader for polygons that should be coloured
-based on a texture. The fetched texture colour will be multiplicated by a colour
+based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 const char VertexShaderTextured[] = ""
@@ -98,7 +98,7 @@ const char VertexShaderTextured[] = ""
 
 /*!
 A string containing an HLSL fragment shader for polygons that should be coloured
-based on a texture. The fetched texture colour will be multiplicated by a colour
+based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 const char PixelShaderTextured[] = ""

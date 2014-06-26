@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
- 
+
 namespace CEGUI
 {
 
@@ -63,7 +63,7 @@ const char StandardShaderSolidFrag[] =
 
 /*!
 A string containing an OpenGL3 vertex shader for polygons that should be coloured
-based on a texture. The fetched texture colour will be multiplicated by a colour
+based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 const char StandardShaderTexturedVert[] = 
@@ -89,7 +89,7 @@ const char StandardShaderTexturedVert[] =
 
 /*!
 A string containing an OpenGL3 fragment shader for polygons that should be coloured
-based on a texture. The fetched texture colour will be multiplicated by a colour
+based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 const char StandardShaderTexturedFrag[] = 
