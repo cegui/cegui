@@ -76,7 +76,7 @@ Feature Level(s) you can and want to support to create a device of the correct D
 version. The order of submitted Feature Levels determines in which order the creation is
 attempted, e.g.:
 
-@code 
+@code{.cpp}
 const D3D_FEATURE_LEVEL featureLevels[] =
 {
     D3D_FEATURE_LEVEL_11_0,
