@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFribidiVisualMapping.cpp
     created:    Wed Aug 5 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

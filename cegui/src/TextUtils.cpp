@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUITextUtils.cpp
     created:    30/5/2004
     author:     Paul D Turner
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPropertyLinkDefinition.h
     created:    Sat Oct 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

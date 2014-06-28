@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLTextureTarget.cpp
     created:    Thu Oct 15 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUILayoutCell.cpp
     created:    22/2/2011
     author:     Martin Preisler
 

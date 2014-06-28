@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIMemoryOgreAllocator.h
 	created:	18/10/2010
 	author:		Martin Preisler
 

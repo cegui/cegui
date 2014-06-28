@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIColourPicker.cpp
     created:    29/12/2010
     author:     Lukas E Meindl
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIScheme_xmlHandler.cpp
     created:    Mon Jul 20 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

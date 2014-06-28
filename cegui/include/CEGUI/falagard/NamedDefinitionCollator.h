@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   NamedDefinitionCollator.h
     created:    Mon Jun 11 2012
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalPropertyInitialiser.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIPropertyHelper.h
 	created:	21/11/2010
 	author:		Martin Preisler (reworked from code by Paul D Turner)
 	

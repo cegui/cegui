@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIDirectFBRenderer.h
     created:    Tue Mar 10 2009
     author:     Paul D Turner (parts based on code by Keith Mok)
 *************************************************************************/

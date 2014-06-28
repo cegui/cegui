@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIAffector.cpp
     created:    7/8/2010
     author:     Martin Preisler
 

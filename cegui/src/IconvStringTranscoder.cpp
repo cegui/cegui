@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   IconvStringTranscoder.cpp
     created:    Thu May 31 2012
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

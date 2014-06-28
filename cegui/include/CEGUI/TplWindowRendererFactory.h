@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUITplWindowRendererFactory.h
     created:    Thu Mar 19 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
