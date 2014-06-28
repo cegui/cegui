@@ -44,6 +44,8 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     d_usedFiles = String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
+
     gui_context->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();

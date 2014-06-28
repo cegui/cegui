@@ -61,6 +61,7 @@ struct CEGUIEXPORT TreeViewItemRenderingState
     //! This is the case when this node has not been opened/expanded yet.
     size_t d_totalChildCount;
 
+    String d_text;
     RenderedString d_string;
     Sizef d_size;
     bool d_isSelected;
@@ -96,9 +97,13 @@ protected:
         bool is_cumulative, bool is_range);
     virtual bool handleSelection(const ModelIndex& index, bool should_select,
         bool is_cumulative, bool is_range);
+
+    virtual bool onChildrenRemoved(const EventArgs& args);
+
 private:
     typedef void (TreeView::*TreeViewItemAction)(
         TreeViewItemRenderingState& item, bool toggles_expander);
+    typedef std::vector<TreeViewItemRenderingState> ItemStateVector;
 
     TreeViewItemRenderingState d_rootItemState;
 
@@ -108,9 +113,15 @@ private:
     void computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
         const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
 
+    void updateRenderingStateForItem(TreeViewItemRenderingState& item,
+        float& rendered_max_width, float& rendered_total_height);
+
+    void fillRenderingState(TreeViewItemRenderingState& state, const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
+
     ModelIndex indexAtWithAction(const Vector2f& position, TreeViewItemAction action);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
         const Vector2f& window_position, bool& handled, TreeViewItemAction action);
+
     void toggleSubtree(TreeViewItemRenderingState& item);
     void clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight);
     void handleSelectionAction(TreeViewItemRenderingState& item, bool toggles_expander);

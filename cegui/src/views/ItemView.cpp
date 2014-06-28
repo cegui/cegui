@@ -87,6 +87,7 @@ ItemView::ItemView(const String& type, const String& name) :
     d_itemModel(0),
     d_textColourRect(ColourRect(DefaultTextColour)),
     d_isDirty(true),
+    d_needsFullRender(true),
     d_lastSelectedIndex(0),
     d_selectionBrush(0),
     d_vertScrollbarDisplayMode(SDM_WhenNeeded),
@@ -170,6 +171,8 @@ void ItemView::setModel(ItemModel* item_model)
 
     connectToModelEvents(d_itemModel);
     d_indexSelectionStates.clear();
+    d_needsFullRender = true;
+
     WindowEventArgs args(this);
     onSelectionChanged(args);
 }
