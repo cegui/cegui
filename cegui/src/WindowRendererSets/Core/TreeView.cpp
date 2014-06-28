@@ -116,7 +116,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
 static Sizef getImagerySize(const ImagerySection* section)
 {
-    ImageryComponent& component = section->getImageryComponentIterator().getCurrentValue();
+    const ImageryComponent& component = section->getImageryComponentIterator().getCurrentValue();
     const Image* img = component.getImage();
     return img->getRenderedSize();
 }
