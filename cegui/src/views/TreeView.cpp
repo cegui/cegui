@@ -73,21 +73,31 @@ const TreeViewItemRenderingState& TreeView::getRootItemState() const
 void TreeView::prepareForRender()
 {
     ItemView::prepareForRender();
+    //TODO: better way of ignoring the null item model? E.g.: warn? Throw an exception?
     if (d_itemModel == 0 || !isDirty())
         return;
 
-    ModelIndex root_index = d_itemModel->getRootIndex();
-    d_renderedMaxWidth = 0;
-    d_renderedTotalHeight = 0;
+    if (d_needsFullRender)
+    {
+        ModelIndex root_index = d_itemModel->getRootIndex();
+        d_renderedMaxWidth = 0;
+        d_renderedTotalHeight = 0;
 
-    d_rootItemState = TreeViewItemRenderingState();
-    d_rootItemState.d_subtreeIsExpanded = true;
+        d_rootItemState = TreeViewItemRenderingState();
+        d_rootItemState.d_subtreeIsExpanded = true;
 
-    computeRenderedChildrenForItem(d_rootItemState, root_index,
-        d_renderedMaxWidth, d_renderedTotalHeight);
+        computeRenderedChildrenForItem(d_rootItemState, root_index,
+            d_renderedMaxWidth, d_renderedTotalHeight);
+    }
+    else
+    {
+        updateRenderingStateForItem(d_rootItemState,
+            d_renderedMaxWidth, d_renderedTotalHeight);
+    }
 
     updateScrollbars();
     setIsDirty(false);
+    d_needsFullRender = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -111,27 +121,73 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
     const ModelIndex& index, float& rendered_max_width,
     float& rendered_total_height)
 {
-    if (d_itemModel == 0)
-        return TreeViewItemRenderingState();
-
     TreeViewItemRenderingState state;
-    String text = d_itemModel->getData(index);
-    RenderedString rendered_string = getRenderedStringParser().parse(
-        text, getFont(), &d_textColourRect);
-    state.d_string = rendered_string;
-    state.d_size = Sizef(
-        rendered_string.getHorizontalExtent(this),
-        rendered_string.getVerticalExtent(this));
-
-    rendered_max_width = ceguimax(rendered_max_width, state.d_size.d_width);
-    rendered_total_height += state.d_size.d_height;
-
-    state.d_isSelected = isIndexSelected(index);
+    fillRenderingState(state, index, rendered_max_width, rendered_total_height);
 
     computeRenderedChildrenForItem(state, index, rendered_max_width,
         rendered_total_height);
 
     return state;
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
+    const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
+{
+    size_t child_count = d_itemModel->getChildCount(index);
+    item.d_totalChildCount = child_count;
+
+    if (!item.d_subtreeIsExpanded)
+        return;
+
+    for (size_t child = 0; child < child_count; ++child)
+    {
+        ModelIndex child_index = d_itemModel->makeIndex(child, index);
+        TreeViewItemRenderingState child_state =
+            computeRenderingStateForIndex(child_index, rendered_max_width,
+            rendered_total_height);
+        child_state.d_parentIndex = index;
+        child_state.d_childId = child;
+        item.d_renderedChildren.push_back(child_state);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::updateRenderingStateForItem(TreeViewItemRenderingState& item,
+    float& rendered_max_width, float& rendered_total_height)
+{
+    // subtract the previous height
+    rendered_total_height -= item.d_size.d_height;
+
+    fillRenderingState(item,
+        d_itemModel->makeIndex(item.d_childId, item.d_parentIndex),
+        rendered_max_width, rendered_total_height);
+
+    for (ItemStateVector::iterator itor = item.d_renderedChildren.begin();
+        itor != item.d_renderedChildren.end(); ++itor)
+    {
+        updateRenderingStateForItem(*itor, rendered_max_width, rendered_total_height);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
+    const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
+{
+    String text = d_itemModel->getData(index);
+    RenderedString rendered_string = getRenderedStringParser().parse(
+        text, getFont(), &d_textColourRect);
+    item.d_string = rendered_string;
+    item.d_text = text;
+
+    item.d_size = Sizef(
+        rendered_string.getHorizontalExtent(this),
+        rendered_string.getVerticalExtent(this));
+
+    rendered_max_width = ceguimax(rendered_max_width, item.d_size.d_width);
+    rendered_total_height += item.d_size.d_height;
+
+    item.d_isSelected = isIndexSelected(index);
 }
 
 //----------------------------------------------------------------------------//
@@ -206,6 +262,9 @@ TreeViewWindowRenderer* TreeView::getViewRenderer()
 //----------------------------------------------------------------------------//
 void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 {
+    if (d_itemModel == 0)
+        return;
+
     item.d_subtreeIsExpanded = !item.d_subtreeIsExpanded;
 
     if (item.d_subtreeIsExpanded)
@@ -221,31 +280,6 @@ void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 
     updateScrollbars();
     invalidate(false);
-}
-
-//----------------------------------------------------------------------------//
-void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
-    const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
-{
-    if (d_itemModel == 0)
-        return;
-
-    size_t child_count = d_itemModel->getChildCount(index);
-    item.d_totalChildCount = child_count;
-
-    if (!item.d_subtreeIsExpanded)
-        return;
-
-    for (size_t child = 0; child < child_count; ++child)
-    {
-        ModelIndex child_index = d_itemModel->makeIndex(child, index);
-        TreeViewItemRenderingState child_state =
-            computeRenderingStateForIndex(child_index, rendered_max_width,
-                rendered_total_height);
-        child_state.d_parentIndex = index;
-        child_state.d_childId = child;
-        item.d_renderedChildren.push_back(child_state);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -272,4 +306,13 @@ void TreeView::handleSelectionAction(TreeViewItemRenderingState& item, bool togg
 
     toggleSubtree(item);
 }
+
+//----------------------------------------------------------------------------//
+bool TreeView::onChildrenRemoved(const EventArgs& args)
+{
+    ItemView::onChildrenRemoved(args);
+
+    return true;
+}
+
 }

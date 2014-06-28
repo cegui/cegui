@@ -204,6 +204,7 @@ protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
     bool d_isDirty;
+    bool d_needsFullRender;
     std::vector<ModelIndexSelectionState> d_indexSelectionStates;
     ModelIndex d_lastSelectedIndex;
     const Image* d_selectionBrush;
