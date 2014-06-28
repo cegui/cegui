@@ -370,8 +370,8 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onScroll(PointerEventArgs& e);
 
 
 	/*************************************************************************

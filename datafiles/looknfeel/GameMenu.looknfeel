@@ -14,7 +14,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="GameMenuImages/MouseTextBar"/>
+        <Property name="PointerIndicatorImage" value="GameMenuImages/MouseTextBar"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>

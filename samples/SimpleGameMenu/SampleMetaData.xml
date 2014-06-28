@@ -1,0 +1,6 @@
+<SampleDefinition
+    name      = "CEGUISample_SimpleGameMenu"
+    type      = "C++ Module"
+    summary   = "A demo that shows a simple game menu with navigation."
+    credits   = "Timotei Dolean"
+/>

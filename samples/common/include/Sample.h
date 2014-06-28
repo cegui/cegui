@@ -36,6 +36,8 @@ author:     Lukas E Meindl
 class Sample
 {
 public:
+    Sample() : d_inputAggregator(0) {}
+
     virtual bool initialise(CEGUI::GUIContext* guiContext) = 0;
     virtual void deinitialise() = 0;
 
@@ -43,9 +45,12 @@ public:
     virtual void update(float timeSinceLastUpdate) {}
 
     const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
+    //! Get an explicit instance of input aggregator to be used with this sample
+    CEGUI::InputAggregator* getInputAggregator() { return d_inputAggregator; }
 
 protected:
     CEGUI::String d_usedFiles;
+    CEGUI::InputAggregator* d_inputAggregator;
 };
 
 #endif

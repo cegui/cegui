@@ -36,7 +36,7 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ScriptModule.h"
@@ -56,8 +56,12 @@
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
+#include "CEGUI/svg/SVGDataManager.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
+#endif
+#if defined(__WIN32__) || defined(_WIN32)
+#	include "CEGUI/Win32ClipboardProvider.h"
 #endif
 #include <ctime>
 #include <clocale>
@@ -121,6 +125,7 @@ System::System(Renderer& renderer,
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_clipboard(CEGUI_NEW_AO Clipboard()),
+  d_nativeClipboardProvider(0),
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
   d_ourXmlParser(false),
@@ -145,6 +150,12 @@ System::System(Renderer& renderer,
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     if (d_ourLogger)
         CEGUI_NEW_AO DefaultLogger();
+#endif
+
+#if defined(__WIN32__) || defined(_WIN32)
+    d_nativeClipboardProvider = new Win32ClipboardProvider;
+    // set the default win 32 clipboard provider
+    d_clipboard->setNativeProvider(d_nativeClipboardProvider);
 #endif
 
     Logger& logger(Logger::getSingleton());
@@ -224,7 +235,7 @@ System::System(Renderer& renderer,
 
     // set up defaults
     config.initialiseDefaultFont();
-    config.initialiseDefaultMouseCursor();
+    config.initialiseDefaultPointerIndicator();
     config.initialiseDefaulTooltip();
 
     // scripting available?
@@ -254,6 +265,9 @@ System::~System(void)
 		CEGUI_CATCH (...) {}  // catch all exceptions and continue system shutdown
 
 	}
+
+    if (d_nativeClipboardProvider != 0)
+        delete d_nativeClipboardProvider;
 
     cleanupImageCodec();
 
@@ -677,6 +691,7 @@ void System::createSingletons()
     CEGUI_NEW_AO WidgetLookManager();
     CEGUI_NEW_AO WindowRendererManager();
     CEGUI_NEW_AO RenderEffectManager();
+    CEGUI_NEW_AO SVGDataManager();
 }
 
 void System::destroySingletons()
@@ -691,6 +706,7 @@ void System::destroySingletons()
     CEGUI_DELETE_AO FontManager::getSingletonPtr();
     CEGUI_DELETE_AO ImageManager::getSingletonPtr();
     CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
+    CEGUI_DELETE_AO SVGDataManager::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -929,7 +945,7 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
 void System::invalidateAllCachedRendering()
 {
     invalidateAllWindows();
-    //MouseCursor::getSingleton().invalidate();
+    //PointerIndicator::getSingleton().invalidate();
 }
 
 //----------------------------------------------------------------------------//
