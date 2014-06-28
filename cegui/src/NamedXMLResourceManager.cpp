@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUINamedXMLResourceManager.cpp
     created:    Tue Jul 21 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

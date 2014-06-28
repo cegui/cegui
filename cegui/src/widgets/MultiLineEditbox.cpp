@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIMultiLineEditbox.cpp
 	created:	30/6/2004
 	author:		Paul D Turner
 

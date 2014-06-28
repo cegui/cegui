@@ -1,5 +1,4 @@
 /***********************************************************************
-filename: 	CEGUIFreeImageImageCodec.cpp
 created:	Sun Jun 18th 2006
 author:		Andrzej Krzysztof Haczewski (aka guyver6)
 

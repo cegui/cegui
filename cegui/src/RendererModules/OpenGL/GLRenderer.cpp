@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLRenderer.cpp
     created:    Sun Jan 11 2009
     authors:    Paul D Turner <paul@cegui.org.uk>
                 Lukas E Meindl

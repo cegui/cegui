@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIClipboard.cpp
     created:    28/5/2011
     author:     Martin Preisler
 

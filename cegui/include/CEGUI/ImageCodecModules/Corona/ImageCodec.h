@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUICoronaImageCodec.h
 	created:	07/06/2006
 	author:		Olivier Delannoy 
 	

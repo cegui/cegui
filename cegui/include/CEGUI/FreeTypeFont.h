@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIFreeTypeFont.h
 	created:	3/6/2006
 	author:		Andrew Zabolotny
 

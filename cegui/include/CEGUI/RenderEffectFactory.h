@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIRenderEffectFactory.h
     created:    Sat Dec 26 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

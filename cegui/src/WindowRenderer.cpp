@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIWindowRenderer.cpp
     created:    Jan 11 2006
     author:     Tomas Lindquist Olsen
 

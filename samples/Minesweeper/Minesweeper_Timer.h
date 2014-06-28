@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   Minesweeper_Timer.h
     created:    08/08/2006
     author:     Olivier Delannoy
 

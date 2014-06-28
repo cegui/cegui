@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   TplWindowFactoryRegisterer.h
     created:    Fri Oct 07 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

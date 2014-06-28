@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D10Renderer.cpp
     created:    Sat Mar 7 2009
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
