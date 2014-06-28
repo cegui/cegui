@@ -78,7 +78,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         if (item.d_totalChildCount > 0)
         {
             const ImagerySection* section = item.d_subtreeIsExpanded
-                ? d_subtreeExpanderImagery : d_subtreeCollapserImagery;
+                ? d_subtreeCollapserImagery : d_subtreeExpanderImagery;
 
             Rectf button_rect;
             button_rect.left(item_pos.d_x + OPEN_CLOSE_BUTTON_MARGIN);
