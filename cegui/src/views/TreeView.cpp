@@ -207,7 +207,6 @@ TreeViewWindowRenderer* TreeView::getViewRenderer()
 void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 {
     item.d_subtreeIsExpanded = !item.d_subtreeIsExpanded;
-    std::cout << "Toggled. " << item.d_text << std::endl;
 
     if (item.d_subtreeIsExpanded)
     {
