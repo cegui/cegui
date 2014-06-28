@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIRect.cpp
 	created:	8/3/2004
 	author:		Paul D Turner
 	

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIJustifiedRenderedString.cpp
     created:    Mon Jul 6 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

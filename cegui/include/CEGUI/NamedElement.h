@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUI/NamedElement.h
     created:    30/10/2011
     author:     Martin Preisler
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUITitlebar.cpp
 	created:	25/4/2004
 	author:		Paul D Turner
 	

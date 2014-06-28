@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIConfig_xmlHandler.cpp
     created:    Sat Jul 25 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

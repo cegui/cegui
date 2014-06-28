@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUITypedProperty.h
     created:    24/11/2010
     author:     Martin Preisler
     

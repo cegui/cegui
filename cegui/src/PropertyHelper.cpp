@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPropertyHelper.cpp
     created:    6/7/2004
     author:     Paul D Turner
 

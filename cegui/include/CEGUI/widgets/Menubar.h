@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIMenubar.h
 	created:	27/3/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
 	

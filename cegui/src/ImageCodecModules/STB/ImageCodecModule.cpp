@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUISTBImageCodecModule.cpp
 	created:	Fri Apr 30 2010
 	author:		Tobias Schlegel
 	

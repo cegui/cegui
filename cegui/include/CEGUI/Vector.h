@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIVector.h
 	created:	13/2/2011
 	author:		Martin Preisler (reworked from code by Paul D Turner)
 	

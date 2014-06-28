@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIDefaultWindow.h
     created:    5/6/2004
     author:     Paul D Turner
 

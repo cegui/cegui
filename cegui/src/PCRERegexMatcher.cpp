@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPCRERegexMatcher.cpp
     created:    Mon Jul 27 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIRect.h
 	created:	14/2/2011
 	author:		Martin Preisler (reworked from code by Paul D Turner)
 	

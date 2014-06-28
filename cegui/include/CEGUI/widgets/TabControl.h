@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUITabControl.h
 	created:	08/08/2004
 	author:		Steve Streeting
 

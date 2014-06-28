@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIDataContainer.cpp
 	created:	Sun May 21 2006
 	author:		Tomas Lindquist Olsen <tomas@famolsen.dk>
 

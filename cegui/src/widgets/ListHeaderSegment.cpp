@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIListHeaderSegment.cpp
 	created:	15/6/2004
 	author:		Paul D Turner
 	
