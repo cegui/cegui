@@ -30,10 +30,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 
-#include "CEGUI/RendererModules/OpenGL/StandardShaderTexturedVert.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderTexturedFrag.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderSolidVert.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderSolidFrag.h"
+#include "Shaders.inl"
 
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
