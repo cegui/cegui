@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	InputEventReceiver.h
 	created:	10/7/2013
 	author:		Timotei Dolean <timotei21@gmail.com>
 
