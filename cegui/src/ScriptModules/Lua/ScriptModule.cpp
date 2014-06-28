@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: CEGUILua.cpp
 	created:  16/3/2005
 	author:   Tomas Lindquist Olsen
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUISillyImageCodec.cpp
 	created:	Thu Jun 15 2006
 	author:		Tomas Lindquist Olsen
 

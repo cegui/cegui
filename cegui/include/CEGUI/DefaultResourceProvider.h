@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIDefaultResourceProvider.h
 	created:	8/7/2004
 	author:		James '_mental_' O'Sullivan
 	

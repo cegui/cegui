@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalComponentBase.cpp
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

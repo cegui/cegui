@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIChainedXMLHandler.cpp
     created:    Wed Aug 11 2010
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

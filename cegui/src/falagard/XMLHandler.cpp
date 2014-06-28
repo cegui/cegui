@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalagard_xmlHandler.cpp
     created:    Fri Jun 17 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

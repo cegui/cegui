@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D10GeometryBuffer.cpp
     created:    Sat Mar 7 2010
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/

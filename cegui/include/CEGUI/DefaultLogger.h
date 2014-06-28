@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIDefaultLogger.h
     created:    25/1/2006
     author:     Andrew Zabolotny
     

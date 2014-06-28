@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUITGAImageCodec.h
 	created:	03/06/2006
 	author:		Olivier Delannoy 
 	

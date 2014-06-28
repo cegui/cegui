@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename: CEGUIRenderer.h
     created:  20/2/2004
     author:   Paul D Turner
 

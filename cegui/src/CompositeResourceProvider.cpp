@@ -1,5 +1,4 @@
 /***********************************************************************
-  filename:   CEGUICompositeResourceProvider.cpp
   created:  14.07.2011
   Author:   Hans Mackowiak (Hanmac) hanmac@gmx.de
 *************************************************************************/
