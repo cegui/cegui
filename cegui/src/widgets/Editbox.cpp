@@ -32,6 +32,8 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/UndoHandler.h"
+
 #include <string.h>
 
 // Start of CEGUI namespace section
@@ -86,6 +88,8 @@ Editbox::Editbox(const String& type, const String& name) :
     // set copy of validation string to ".*" so getter returns something valid.
     else
         d_validationString = ".*";
+
+    d_undoHandler = new UndoHandler(this);
 }
 
 //----------------------------------------------------------------------------//
@@ -93,6 +97,8 @@ Editbox::~Editbox(void)
 {
     if (d_weOwnValidator && d_validator)
         System::getSingleton().destroyRegexMatcher(d_validator);
+
+    delete d_undoHandler;
 }
 
 //----------------------------------------------------------------------------//
@@ -303,6 +309,12 @@ void Editbox::eraseSelectedText(bool modify_text)
         if (modify_text)
         {
             String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = getSelectionStartIndex();
+            undo.d_text = newText.substr(getSelectionStartIndex(), getSelectionLength());
+            d_undoHandler->addUndoHistory(undo);
+
             newText.erase(getSelectionStartIndex(), getSelectionLength());
             setText(newText);
 
@@ -357,10 +369,10 @@ bool Editbox::performCut(Clipboard& clipboard)
 {
     if (isReadOnly())
         return false;
-    
+
     if (!performCopy(clipboard))
         return false;
-    
+
     handleDelete();
     return true;
 }
@@ -399,13 +411,24 @@ bool Editbox::performPaste(Clipboard& clipboard)
     
     // backup current text
     String tmp(getText());
+
+    UndoHandler::UndoAction undoSelection;
+    undoSelection.d_type = UndoHandler::UAT_DELETE;
+    undoSelection.d_startIdx = getSelectionStartIndex();
+    undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
     tmp.erase(getSelectionStartIndex(), getSelectionLength());
     
     // if there is room
     if (tmp.length() < d_maxTextLen)
     {
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UAT_INSERT;
+        undo.d_startIdx = getCaretIndex();
+        undo.d_text = clipboardText;
+
         tmp.insert(getSelectionStartIndex(), clipboardText);
-        
+
         if (handleValidityChangeForString(tmp))
         {
             // erase selection using mode that does not modify getText()
@@ -418,7 +441,10 @@ bool Editbox::performPaste(Clipboard& clipboard)
             
             // set text to the newly modified string
             setText(tmp);
-            
+            d_undoHandler->addUndoHistory(undo);
+            if (getSelectionLength() > 0)
+                d_undoHandler->addUndoHistory(undoSelection);
+
             return true;
         }
     }
@@ -427,17 +453,17 @@ bool Editbox::performPaste(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseButtonDown(MouseEventArgs& e)
+void Editbox::onPointerPressHold(PointerEventArgs& e)
 {
     // base class handling
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         // grab inputs
         if (captureInput())
         {
-            // handle mouse down
+            // handle pointer press
             clearSelection();
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
@@ -451,75 +477,26 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
 
         ++e.handled;
     }
-
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseButtonUp(MouseEventArgs& e)
+void Editbox::onPointerActivate(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         releaseInput();
         ++e.handled;
     }
-
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseDoubleClicked(MouseEventArgs& e)
+void Editbox::onPointerMove(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseDoubleClicked(e);
-
-    if (e.button == LeftButton)
-    {
-        // if masked, set up to select all
-        if (isTextMasked())
-        {
-            d_dragAnchorIdx = 0;
-            setCaretIndex(getText().length());
-        }
-        // not masked, so select the word that was double-clicked.
-        else
-        {
-            d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
-                (d_caretPos == getText().length()) ? d_caretPos :
-                                                     d_caretPos + 1);
-            d_caretPos = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
-        }
-
-        // perform actual selection operation.
-        setSelection(d_dragAnchorIdx, d_caretPos);
-
-        ++e.handled;
-    }
-
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onMouseTripleClicked(MouseEventArgs& e)
-{
-    // base class processing
-    Window::onMouseTripleClicked(e);
-
-    if (e.button == LeftButton)
-    {
-        d_dragAnchorIdx = 0;
-        setCaretIndex(getText().length());
-        setSelection(d_dragAnchorIdx, d_caretPos);
-        ++e.handled;
-    }
-
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onMouseMove(MouseEventArgs& e)
-{
-    // base class processing
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
 
     if (d_dragging)
     {
@@ -548,11 +525,11 @@ void Editbox::onCaptureLost(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onCharacter(KeyEventArgs& e)
+void Editbox::onCharacter(TextEventArgs& e)
 {
-    // NB: We are not calling the base class handler here because it propogates
-    // inputs back up the window hierarchy, whereas, as a consumer of key
-    // events, we want such propogation to cease with us regardless of whether
+    // NB: We are not calling the base class handler here because it propagates
+    // inputs back up the window hierarchy, whereas, as a consumer of input
+    // events, we want such propagation to cease with us regardless of whether
     // we actually handle the event.
 
     // fire event.
@@ -560,16 +537,27 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
     // only need to take notice if we have focus
     if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.codepoint))
+        getFont()->isCodepointAvailable(e.character))
     {
         // backup current text
         String tmp(getText());
+
+        UndoHandler::UndoAction undoSelection;
+        undoSelection.d_type = UndoHandler::UAT_DELETE;
+        undoSelection.d_startIdx = getSelectionStartIndex();
+        undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
         tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
         // if there is room
         if (tmp.length() < d_maxTextLen)
         {
-            tmp.insert(getSelectionStartIndex(), 1, e.codepoint);
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_startIdx = getSelectionStartIndex();
+            undo.d_text = e.character;
+
+            tmp.insert(getSelectionStartIndex(), 1, e.character);
 
             if (handleValidityChangeForString(tmp))
             {
@@ -586,6 +574,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
                 // char was accepted into the Editbox - mark event as handled.
                 ++e.handled;
+                d_undoHandler->addUndoHistory(undo);
+                if (getSelectionLength() > 0)
+                    d_undoHandler->addUndoHistory(undoSelection);
             }
         }
         else
@@ -601,76 +592,6 @@ void Editbox::onCharacter(KeyEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onKeyDown(KeyEventArgs& e)
-{
-    // fire event.
-    fireEvent(EventKeyDown, e, Window::EventNamespace);
-
-    if (e.handled == 0 && hasInputFocus())
-    {
-        if (isReadOnly())
-        {
-            Window::onKeyDown(e);
-            return;
-        }
-
-        WindowEventArgs args(this);
-        switch (e.scancode)
-        {
-        case Key::LeftShift:
-        case Key::RightShift:
-            if (getSelectionLength() == 0)
-                d_dragAnchorIdx = d_caretPos;
-            break;
-
-        case Key::Backspace:
-            handleBackspace();
-            break;
-
-        case Key::Delete:
-            handleDelete();
-            break;
-
-        case Key::Tab:
-        case Key::Return:
-        case Key::NumpadEnter:
-            // Fire 'input accepted' event
-            onTextAcceptedEvent(args);
-            break;
-
-        case Key::ArrowLeft:
-            if (e.sysKeys & Control)
-                handleWordLeft(e.sysKeys);
-            else
-                handleCharLeft(e.sysKeys);
-            break;
-
-        case Key::ArrowRight:
-            if (e.sysKeys & Control)
-                handleWordRight(e.sysKeys);
-            else
-                handleCharRight(e.sysKeys);
-            break;
-
-        case Key::Home:
-            handleHome(e.sysKeys);
-            break;
-
-        case Key::End:
-            handleEnd(e.sysKeys);
-            break;
-
-        default:
-            Window::onKeyDown(e);
-            return;
-        }
-
-        ++e.handled;
-    }
-
-}
-
-//----------------------------------------------------------------------------//
 void Editbox::handleBackspace(void)
 {
     if (!isReadOnly())
@@ -679,6 +600,11 @@ void Editbox::handleBackspace(void)
 
         if (getSelectionLength() != 0)
         {
+            UndoHandler::UndoAction undoSelection;
+            undoSelection.d_type = UndoHandler::UAT_DELETE;
+            undoSelection.d_startIdx = getSelectionStartIndex();
+            undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
             if (handleValidityChangeForString(tmp))
@@ -689,10 +615,16 @@ void Editbox::handleBackspace(void)
 
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undoSelection);
             }
         }
         else if (getCaretIndex() > 0)
         {
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = d_caretPos - 1;
+            undo.d_text = tmp.substr(d_caretPos - 1, 1);
+
             tmp.erase(d_caretPos - 1, 1);
 
             if (handleValidityChangeForString(tmp))
@@ -701,6 +633,7 @@ void Editbox::handleBackspace(void)
 
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undo);
             }
         }
 
@@ -717,6 +650,11 @@ void Editbox::handleDelete(void)
 
         if (getSelectionLength() != 0)
         {
+            UndoHandler::UndoAction undoSelection;
+            undoSelection.d_type = UndoHandler::UAT_DELETE;
+            undoSelection.d_startIdx = getSelectionStartIndex();
+            undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
             if (handleValidityChangeForString(tmp))
@@ -727,16 +665,23 @@ void Editbox::handleDelete(void)
 
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undoSelection);
             }
         }
         else if (getCaretIndex() < tmp.length())
         {
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = d_caretPos;
+            undo.d_text = tmp.substr(d_caretPos, 1);
+
             tmp.erase(d_caretPos, 1);
 
             if (handleValidityChangeForString(tmp))
             {
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undo);
             }
         }
 
@@ -745,72 +690,72 @@ void Editbox::handleDelete(void)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleCharLeft(uint sysKeys)
+void Editbox::handleCharLeft(bool select)
 {
     if (d_caretPos > 0)
         setCaretIndex(d_caretPos - 1);
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleWordLeft(uint sysKeys)
+void Editbox::handleWordLeft(bool select)
 {
     if (d_caretPos > 0)
         setCaretIndex(TextUtils::getWordStartIdx(getText(), d_caretPos));
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleCharRight(uint sysKeys)
+void Editbox::handleCharRight(bool select)
 {
     if (d_caretPos < getText().length())
         setCaretIndex(d_caretPos + 1);
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleWordRight(uint sysKeys)
+void Editbox::handleWordRight(bool select)
 {
     if (d_caretPos < getText().length())
         setCaretIndex(TextUtils::getNextWordStartIdx(getText(), d_caretPos));
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleHome(uint sysKeys)
+void Editbox::handleHome(bool select)
 {
     if (d_caretPos > 0)
         setCaretIndex(0);
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleEnd(uint sysKeys)
+void Editbox::handleEnd(bool select)
 {
     if (d_caretPos < getText().length())
         setCaretIndex(getText().length());
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
@@ -981,5 +926,160 @@ size_t Editbox::getCaretIndex(void) const
 }
 
 //----------------------------------------------------------------------------//
+void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (isDisabled())
+        return;
+
+    if (e.d_semanticValue == SV_SelectAll &&
+        e.d_payload.source == PS_Left)
+    {
+        d_dragAnchorIdx = 0;
+        setCaretIndex(getText().length());
+        setSelection(d_dragAnchorIdx, d_caretPos);
+        ++e.handled;
+    }
+    else if (e.d_semanticValue == SV_SelectWord && 
+        e.d_payload.source == PS_Left)
+    {
+        // if masked, set up to select all
+        if (isTextMasked())
+        {
+            d_dragAnchorIdx = 0;
+            setCaretIndex(getText().length());
+        }
+        // not masked, so select the word that was double-clicked.
+        else
+        {
+            d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
+                (d_caretPos == getText().length()) ? d_caretPos :
+                d_caretPos + 1);
+            d_caretPos = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
+        }
+
+        // perform actual selection operation.
+        setSelection(d_dragAnchorIdx, d_caretPos);
+
+        ++e.handled;
+    }
+
+    // TODO: migrate common logic with MultiLineEditbox in a base class
+    if (e.handled == 0 && hasInputFocus())
+    {
+        if (isReadOnly())
+        {
+            Window::onSemanticInputEvent(e);
+            return;
+        }
+
+        if (getSelectionLength() == 0 && isSelectionSemanticValue(e.d_semanticValue))
+            d_dragAnchorIdx = d_caretPos;
+
+        WindowEventArgs args(this);
+        switch (e.d_semanticValue)
+        {
+        case SV_DeletePreviousCharacter:
+            handleBackspace();
+            break;
+
+        case SV_DeleteNextCharacter:
+            handleDelete();
+            break;
+
+        case SV_Confirm:
+            // Fire 'input accepted' event
+            onTextAcceptedEvent(args);
+            break;
+
+        case SV_GoToPreviousCharacter:
+            handleCharLeft(false);
+            break;
+
+        case SV_GoToNextCharacter:
+            handleCharRight(false);
+            break;
+
+        case SV_SelectPreviousCharacter:
+            handleCharLeft(true);
+            break;
+
+        case SV_SelectNextCharacter:
+            handleCharRight(true);
+            break;
+
+        case SV_GoToPreviousWord:
+            handleWordLeft(false);
+            break;
+
+        case SV_GoToNextWord:
+            handleWordRight(false);
+            break;
+
+        case SV_SelectPreviousWord:
+            handleWordLeft(true);
+            break;
+
+        case SV_SelectNextWord:
+            handleWordRight(true);
+            break;
+
+        case SV_GoToStartOfLine:
+            handleHome(false);
+            break;
+
+        case SV_GoToEndOfLine:
+            handleEnd(false);
+            break;
+
+        case SV_SelectToStartOfLine:
+            handleHome(true);
+            break;
+
+        case SV_SelectToEndOfLine:
+            handleEnd(true);
+            break;
+
+        default:
+            Window::onSemanticInputEvent(e);
+            return;
+        }
+
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+
+/*************************************************************************
+    Undo/redo
+*************************************************************************/
+bool Editbox::performUndo()
+{
+    bool result = false;
+    if (!isReadOnly())
+    {
+        clearSelection();
+        result = d_undoHandler->undo(d_caretPos);
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+
+    return result;
+}
+
+//----------------------------------------------------------------------------//
+bool Editbox::performRedo()
+{
+    bool result = false;
+    if (!isReadOnly())
+    {
+        clearSelection();
+        result = d_undoHandler->redo(d_caretPos);
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+
+    return result;
+}
 
 } // End of  CEGUI namespace section

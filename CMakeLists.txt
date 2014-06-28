@@ -31,8 +31,8 @@ project(cegui)
 ################################################################################
 # Set up version information
 ################################################################################
-set( CEGUI_VERSION_MAJOR 0)
-set( CEGUI_VERSION_MINOR 9999)
+set( CEGUI_VERSION_MAJOR 9999)
+set( CEGUI_VERSION_MINOR 0)
 set( CEGUI_VERSION_PATCH 0)
 set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION_PATCH} )
 
@@ -81,10 +81,9 @@ endif()
 
 find_package(OpenGL)
 find_package(GLEW)
-find_package(GLM)
+find_package(GLM REQUIRED)
 find_package(GLFW)
 find_package(DirectXSDK)
-find_package(D3DX11Effects)
 find_package(Irrlicht)
 find_package(Ogre)
 find_package(OIS)
@@ -162,14 +161,12 @@ option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based Ima
 option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" FALSE )
 option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" ${PVRTOOLS_FOUND} )
 
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND")
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLEW_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" "OPENGL_FOUND;GLEW_FOUND")
 option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" ${OGRE_FOUND} )
 option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" ${IRRLICHT_FOUND} )
 option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module (not supported!)" FALSE )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to build the Direct3D 9 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 9" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
 option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
 
@@ -206,7 +203,7 @@ if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
 endif()
 
 # If we use a Renderer then our samples should be ON by default
-if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3 OR CEGUI_BUILD_RENDERER_OGRE OR CEGUI_BUILD_RENDERER_IRRLICHT OR CEGUI_BUILD_RENDERER_DIRECT3D9 OR CEGUI_BUILD_RENDERER_DIRECT3D10 OR CEGUI_BUILD_RENDERER_DIRECT3D11 OR CEGUI_BUILD_RENDERER_DIRECTFB)
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3 OR CEGUI_BUILD_RENDERER_OGRE OR CEGUI_BUILD_RENDERER_IRRLICHT OR CEGUI_BUILD_RENDERER_DIRECT3D11 OR CEGUI_BUILD_RENDERER_DIRECTFB)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
@@ -267,8 +264,6 @@ cegui_set_library_name( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
 cegui_set_library_name( CEGUI_OPENGL3_RENDERER_LIBNAME CEGUIOpenGL3Renderer )
 cegui_set_library_name( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
 cegui_set_library_name( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
-cegui_set_library_name( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
-cegui_set_library_name( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
 cegui_set_library_name( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
 cegui_set_library_name( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
 cegui_set_library_name( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
@@ -399,6 +394,12 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/cegui/include
 )
 
+################################################################################
+# Add GLM header locations (global dependency, required)
+################################################################################
+include_directories(
+    ${GLM_H_PATH}
+)
 
 ################################################################################
 # Adjust configuration based on option settings
