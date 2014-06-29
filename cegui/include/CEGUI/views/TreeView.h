@@ -49,9 +49,20 @@ public:
     /*!
     \brief
         Returns a Size object describing, in unclipped pixels, the size of the
-        expander that opens (expands) or closes a subtree.
+        expander that opens (expands) or closes a subtree. This includes
+        any potential padding around it.
     */
-    virtual Sizef getSubtreeExpanderSize(void) const = 0;
+    virtual Sizef getSubtreeExpanderSize() const = 0;
+
+    /*!
+    \brief
+        Returns the horizontal (X-axis) indentation size for the subtree expander.
+        The indent specifies the X-coordinate where the expander is positioned.
+
+    \param depth
+        The depth of the item for which to compute the actual indentation.
+    */
+    virtual float getSubtreeExpanderXIndent(int depth) const = 0;
 };
 
 struct CEGUIEXPORT TreeViewItemRenderingState
@@ -125,7 +136,8 @@ private:
 
     ModelIndex indexAtWithAction(const Vector2f& position, TreeViewItemAction action);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
-        const Vector2f& window_position, bool& handled, TreeViewItemAction action);
+        const Vector2f& window_position, bool& handled, TreeViewItemAction action,
+        int depth);
 
     void toggleSubtree(TreeViewItemRenderingState& item);
     void clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight);

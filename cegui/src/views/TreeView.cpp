@@ -213,14 +213,15 @@ CEGUI::ModelIndex TreeView::indexAtWithAction(const Vector2f& position,
 
     float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
     bool handled = false;
+    // root is actually depth = -1, since its a dummy tree item.
     return indexAtRecursive(d_rootItemState, cur_height, window_position,
-        handled, action);
+        handled, action, -1);
 }
 
 //----------------------------------------------------------------------------//
 ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     float& cur_height, const Vector2f& window_position, bool& handled,
-    TreeViewItemAction action)
+    TreeViewItemAction action, int depth)
 {
     float next_height = cur_height + item.d_size.d_height;
 
@@ -229,8 +230,11 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     {
         handled = true;
 
-        float subtree_expander_width = getViewRenderer()->getSubtreeExpanderSize().d_width;
-        if (window_position.d_x >= 0 && window_position.d_x <= subtree_expander_width)
+        float expander_width = getViewRenderer()->getSubtreeExpanderSize().d_width;
+        float base_x = getViewRenderer()->getSubtreeExpanderXIndent(depth);
+        base_x -= getHorzScrollbar()->getScrollPosition();
+        if (window_position.d_x >= base_x &&
+            window_position.d_x <= base_x + expander_width)
         {
             (this->*action)(item, true);
             return ModelIndex();
@@ -245,7 +249,7 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     for (size_t i = 0; i < item.d_renderedChildren.size(); ++i)
     {
         ModelIndex index = indexAtRecursive(item.d_renderedChildren.at(i),
-            cur_height, window_position, handled, action);
+            cur_height, window_position, handled, action, depth + 1);
         if (handled)
             return index;
     }

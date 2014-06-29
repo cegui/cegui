@@ -35,6 +35,7 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 const String FalagardTreeView::TypeName("Core/TreeView");
+const float SUBTREE_EXPANDER_MARGIN = 5.0f;
 
 //----------------------------------------------------------------------------//
 FalagardTreeView::FalagardTreeView(const String& type) :
@@ -59,15 +60,14 @@ void FalagardTreeView::render()
 
     Rectf items_area(getViewRenderArea());
     Vector2f item_pos(getItemRenderStartPosition(tree_view, items_area));
-    renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState());
+    renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState(), 0);
 }
 
 //----------------------------------------------------------------------------//
 void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-    Vector2f& item_pos, const TreeViewItemRenderingState& item_to_render)
+    Vector2f& item_pos, const TreeViewItemRenderingState& item_to_render,
+    size_t depth)
 {
-    const float SUBTREE_IDENT = d_subtreeExpanderImagerySize.d_width;
-    const float OPEN_CLOSE_BUTTON_MARGIN = 5.0f;
     for (size_t i = 0; i < item_to_render.d_renderedChildren.size(); ++i)
     {
         TreeViewItemRenderingState item = item_to_render.d_renderedChildren.at(i);
@@ -81,16 +81,17 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
                 ? d_subtreeCollapserImagery : d_subtreeExpanderImagery;
 
             Rectf button_rect;
-            button_rect.left(item_pos.d_x + OPEN_CLOSE_BUTTON_MARGIN);
-            button_rect.top(item_pos.d_y + OPEN_CLOSE_BUTTON_MARGIN);
+            button_rect.left(item_pos.d_x + SUBTREE_EXPANDER_MARGIN);
+            button_rect.top(item_pos.d_y + SUBTREE_EXPANDER_MARGIN);
             button_rect.setSize(d_subtreeExpanderImagerySize);
+            button_rect.right(button_rect.right() - SUBTREE_EXPANDER_MARGIN);
 
             Rectf button_clipper(button_rect.getIntersection(items_area));
             section->render(*tree_view, button_rect, 0, &button_clipper);
         }
 
         Rectf item_rect;
-        item_rect.left(item_pos.d_x + d_subtreeExpanderImagerySize.d_width + 2 * OPEN_CLOSE_BUTTON_MARGIN);
+        item_rect.left(item_pos.d_x + d_subtreeExpanderImagerySize.d_width);
         item_rect.top(item_pos.d_y);
         item_rect.setSize(size);
 
@@ -103,14 +104,14 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         if (item.d_renderedChildren.empty())
             continue;
 
-        item_pos.d_x += SUBTREE_IDENT;
+        item_pos.d_x += d_subtreeExpanderImagerySize.d_width;
 
         if (item.d_subtreeIsExpanded)
         {
-            renderTreeItem(tree_view, items_area, item_pos, item);
+            renderTreeItem(tree_view, items_area, item_pos, item, depth + 1);
         }
 
-        item_pos.d_x -= SUBTREE_IDENT;
+        item_pos.d_x -= d_subtreeExpanderImagerySize.d_width;
     }
 }
 
@@ -131,9 +132,12 @@ void FalagardTreeView::onLookNFeelAssigned()
     Sizef open_size = getImagerySize(d_subtreeExpanderImagery);
     Sizef close_size = getImagerySize(d_subtreeCollapserImagery);
     d_subtreeExpanderImagerySize = Sizef(
-        ceguimax(open_size.d_width, close_size.d_width),
-        ceguimax(open_size.d_height, close_size.d_height));
-
+        ceguimin(
+            open_size.d_width + SUBTREE_EXPANDER_MARGIN,
+            close_size.d_width + SUBTREE_EXPANDER_MARGIN),
+        ceguimin(
+            open_size.d_height + SUBTREE_EXPANDER_MARGIN,
+            close_size.d_height + SUBTREE_EXPANDER_MARGIN));
 }
 
 //----------------------------------------------------------------------------//
@@ -146,5 +150,11 @@ Sizef FalagardTreeView::getSubtreeExpanderSize(void) const
 Rectf FalagardTreeView::getViewRenderArea(void) const
 {
     return ItemViewRenderer::getViewRenderArea(this);
+}
+
+//----------------------------------------------------------------------------//
+float FalagardTreeView::getSubtreeExpanderXIndent(int depth) const
+{
+    return depth * d_subtreeExpanderImagerySize.d_width;
 }
 }

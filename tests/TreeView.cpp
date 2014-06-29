@@ -318,6 +318,28 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseScenario)
     BOOST_REQUIRE_EQUAL(0, children.at(0).d_renderedChildren.size());
 }
 
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(PointerPressed_ExpandChild)
+{
+    model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
+    model.addRandomItemWithChildren(model.makeIndex(0, model.getRootIndex()), 0, 3);
+    view->prepareForRender();
+
+    view->onPointerPressHold(
+        createPointerEventArgs(Vector2f(expander_width / 2, font_height / 2), view));
+    view->onPointerPressHold(
+        createPointerEventArgs(Vector2f(
+        view->getViewRenderer()->getSubtreeExpanderXIndent(1) + expander_width / 2,
+        font_height + font_height / 2), view));
+    view->prepareForRender();
+
+    const std::vector<TreeViewItemRenderingState>& children =
+        view->getRootItemState().d_renderedChildren;
+    BOOST_REQUIRE(children.at(0).d_subtreeIsExpanded);
+    BOOST_REQUIRE_EQUAL(4, children.at(0).d_renderedChildren.size());
+    BOOST_REQUIRE(children.at(0).d_renderedChildren.at(0).d_subtreeIsExpanded);
+}
+
 BOOST_AUTO_TEST_CASE(SubtreeExpanded_SelectionChanges_DoesNotChangeExpandedState)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
