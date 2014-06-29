@@ -512,7 +512,6 @@ void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
 void ItemView::onScroll(PointerEventArgs& e)
 {
     handleOnScroll(getVertScrollbar(), e.scroll);
-    handleOnScroll(getHorzScrollbar(), e.scroll);
 
     ++e.handled;
     Window::onScroll(e);
