@@ -218,7 +218,7 @@ protected:
     float d_renderedTotalHeight;
 
     void addItemViewProperties();
-    void updateScrollbars();
+    virtual void updateScrollbars();
     void updateScrollbar(Scrollbar* scrollbar, float available_area,
         float rendered_area, ScrollbarDisplayMode display_mode);
     virtual ItemViewWindowRenderer* getViewRenderer();

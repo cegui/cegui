@@ -33,15 +33,30 @@
 using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
+class TestItemViewWindowRenderer : public ItemViewWindowRenderer
+{
+public:
+    TestItemViewWindowRenderer() : ItemViewWindowRenderer("DefaultWindow") { }
+    virtual Rectf getViewRenderArea(void) const { return Rectf(0, 0, 0, 0); }
+    virtual void render() { }
+};
+
+//----------------------------------------------------------------------------//
 class TestItemView : public ItemView
 {
 public:
-    TestItemView(const String& type, const String& name) : ItemView(type, name) {}
-
-    //----------------------------------------------------------------------------//
-    virtual ModelIndex indexAt(const Vector2f& position)
+    TestItemView() : ItemView("DefaultWindow", "id0")
     {
-        return ModelIndex();
+        d_windowRenderer = new TestItemViewWindowRenderer();
+    }
+
+    ~TestItemView() { delete d_windowRenderer;  }
+
+    virtual ModelIndex indexAt(const Vector2f& position) { return ModelIndex(); }
+
+    virtual void updateScrollbars()
+    {
+        // do nothing on purpose - we don't want to add all those scrollbars as children
     }
 };
 
@@ -52,7 +67,7 @@ BOOST_AUTO_TEST_SUITE(ItemViewTestSuite)
 BOOST_AUTO_TEST_CASE(SetModel_SetsTheModel)
 {
     ItemModelStub stub;
-    TestItemView testItemView("DefaultWindow", "id01");
+    TestItemView testItemView;
 
     testItemView.setModel(&stub);
 
@@ -63,7 +78,7 @@ BOOST_AUTO_TEST_CASE(SetModel_SetsTheModel)
 BOOST_AUTO_TEST_CASE(SetModel_SameModel_DoesNotSetDirtyState)
 {
     ItemModelStub stub;
-    TestItemView testItemView("DefaultWindow", "id01");
+    TestItemView testItemView;
     testItemView.setModel(&stub);
     testItemView.setIsDirty(false);
 
@@ -76,7 +91,7 @@ BOOST_AUTO_TEST_CASE(SetModel_SameModel_DoesNotSetDirtyState)
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_SetsDirtyState)
 {
     ItemModelStub stub, stub2;
-    TestItemView testItemView("DefaultWindow", "id01");
+    TestItemView testItemView;
     testItemView.setModel(&stub);
     testItemView.setIsDirty(false);
 
@@ -89,7 +104,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_SetsDirtyState)
 BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
 {
     ItemModelStub stub;
-    TestItemView test_item_view("DefaultWindow", "id01");
+    TestItemView test_item_view;
     stub.d_items.push_back("item");
     test_item_view.setModel(&stub);
 
@@ -112,7 +127,7 @@ BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
 {
     ItemModelStub stub1, stub2;
-    TestItemView test_item_view("DefaultWindow", "id01");
+    TestItemView test_item_view;
     stub1.d_items.push_back("item");
     test_item_view.setModel(&stub1);
 
@@ -128,7 +143,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
 {
     ItemModelStub stub1, stub2;
-    TestItemView test_item_view("DefaultWindow", "id0");
+    TestItemView test_item_view;
     stub1.d_items.push_back("item");
     test_item_view.setModel(&stub1);
     test_item_view.setSelectedItem(stub1.makeIndex(0, stub1.getRootIndex()));
@@ -143,7 +158,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
 BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 {
     ItemModelStub stub;
-    TestItemView test_item_view("DefaultWindow", "id0");
+    TestItemView test_item_view;
     stub.d_items.push_back("item1");
     stub.d_items.push_back("item2");
     test_item_view.setModel(&stub);
@@ -162,7 +177,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectEnabled_ModifiesSelectionAccordingly)
 {
     ItemModelStub stub;
-    TestItemView test_item_view("DefaultWindow", "id0");
+    TestItemView test_item_view;
     stub.d_items.push_back("item1");
     stub.d_items.push_back("item2");
     test_item_view.setModel(&stub);
