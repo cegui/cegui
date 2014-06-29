@@ -85,6 +85,7 @@ public:
     void render();
 
     virtual Sizef getSubtreeExpanderSize(void) const;
+    virtual float getSubtreeExpanderXIndent(int depth) const;
     virtual Rectf getViewRenderArea(void) const;
 
 protected:
@@ -92,7 +93,8 @@ protected:
 
 private:
     void renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-        Vector2f& item_pos, const TreeViewItemRenderingState& item_state);
+        Vector2f& item_pos, const TreeViewItemRenderingState& item_to_render,
+        size_t depth);
 
     const ImagerySection* d_subtreeExpanderImagery;
     const ImagerySection* d_subtreeCollapserImagery;
