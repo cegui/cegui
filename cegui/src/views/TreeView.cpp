@@ -118,14 +118,18 @@ bool TreeView::handleSelection(const ModelIndex& index, bool should_select,
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
-    const ModelIndex& index, float& rendered_max_width,
+    const ModelIndex& parent_index, size_t child_id, float& rendered_max_width,
     float& rendered_total_height)
 {
+    ModelIndex& index = d_itemModel->makeIndex(child_id, parent_index);
     TreeViewItemRenderingState state;
     fillRenderingState(state, index, rendered_max_width, rendered_total_height);
 
     computeRenderedChildrenForItem(state, index, rendered_max_width,
         rendered_total_height);
+
+    state.d_parentIndex = parent_index;
+    state.d_childId = child_id;
 
     return state;
 }
@@ -142,13 +146,9 @@ void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
 
     for (size_t child = 0; child < child_count; ++child)
     {
-        ModelIndex child_index = d_itemModel->makeIndex(child, index);
-        TreeViewItemRenderingState child_state =
-            computeRenderingStateForIndex(child_index, rendered_max_width,
-            rendered_total_height);
-        child_state.d_parentIndex = index;
-        child_state.d_childId = child;
-        item.d_renderedChildren.push_back(child_state);
+        item.d_renderedChildren.push_back(
+            computeRenderingStateForIndex(index, child, rendered_max_width,
+            rendered_total_height));
     }
 }
 
@@ -350,13 +350,8 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     std::vector<TreeViewItemRenderingState> states;
     for (size_t id = margs.d_startId; id < margs.d_startId + margs.d_count; ++id)
     {
-        ModelIndex index = d_itemModel->makeIndex(id, margs.d_parentIndex);
-        TreeViewItemRenderingState child = computeRenderingStateForIndex(index,
-            d_renderedMaxWidth, d_renderedTotalHeight);
-        child.d_childId = id;
-        child.d_parentIndex = margs.d_parentIndex;
-
-        states.push_back(child);
+        states.push_back(computeRenderingStateForIndex(margs.d_parentIndex, id,
+            d_renderedMaxWidth, d_renderedTotalHeight));
     }
 
     // update existing child ids
