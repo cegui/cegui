@@ -308,6 +308,7 @@ void ItemView::disconnectModelEvents()
 void ItemView::invalidateView(bool recursive)
 {
     //TODO: allow invalidation only of certain parts (e.g.: items/indices)
+    updateScrollbars();
     setIsDirty(true);
     invalidate(recursive);
 }
