@@ -112,7 +112,8 @@ private:
     TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(
-        const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
+        const ModelIndex& parent_index, size_t child_id,
+        float& rendered_max_width, float& rendered_total_height);
 
     void computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
         const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
