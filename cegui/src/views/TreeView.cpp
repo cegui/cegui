@@ -335,6 +335,7 @@ bool TreeView::onChildrenRemoved(const EventArgs& args)
     item->d_renderedChildren.erase(
         item->d_renderedChildren.begin() + margs.d_startId,
         item->d_renderedChildren.begin() + margs.d_startId + margs.d_count);
+    item->d_totalChildCount -= margs.d_count;
 
     invalidateView(false);
     return true;
@@ -369,6 +370,7 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     item->d_renderedChildren.insert(
         item->d_renderedChildren.begin() + margs.d_startId,
         states.begin(), states.end());
+    item->d_totalChildCount += margs.d_count;
 
     invalidateView(false);
     return true;

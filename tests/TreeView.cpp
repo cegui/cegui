@@ -243,6 +243,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_InExpandedSubtree_IsRendered)
     model.addRandomItemWithChildren(child_index, 0);
     view->prepareForRender();
     BOOST_REQUIRE_EQUAL(2, children.at(0).d_renderedChildren.size());
+    BOOST_REQUIRE_EQUAL(2, children.at(0).d_totalChildCount);
 }
 
 //----------------------------------------------------------------------------//
@@ -260,6 +261,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     const std::vector<TreeViewItemRenderingState>& children =
         view->getRootItemState().d_renderedChildren;
     BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_renderedChildren.size());
+    BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_totalChildCount);
     BOOST_REQUIRE(!children.at(0).d_isSelected);
 }
 
