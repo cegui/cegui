@@ -132,12 +132,8 @@ void FalagardTreeView::onLookNFeelAssigned()
     Sizef open_size = getImagerySize(d_subtreeExpanderImagery);
     Sizef close_size = getImagerySize(d_subtreeCollapserImagery);
     d_subtreeExpanderImagerySize = Sizef(
-        ceguimin(
-            open_size.d_width + SUBTREE_EXPANDER_MARGIN,
-            close_size.d_width + SUBTREE_EXPANDER_MARGIN),
-        ceguimin(
-            open_size.d_height + SUBTREE_EXPANDER_MARGIN,
-            close_size.d_height + SUBTREE_EXPANDER_MARGIN));
+        (open_size.d_width + close_size.d_width) / 2.0f + SUBTREE_EXPANDER_MARGIN,
+        (open_size.d_height + close_size.d_height) / 2.0f + SUBTREE_EXPANDER_MARGIN);
 }
 
 //----------------------------------------------------------------------------//
