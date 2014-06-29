@@ -121,7 +121,7 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
     const ModelIndex& parent_index, size_t child_id, float& rendered_max_width,
     float& rendered_total_height)
 {
-    ModelIndex& index = d_itemModel->makeIndex(child_id, parent_index);
+    ModelIndex index = d_itemModel->makeIndex(child_id, parent_index);
     TreeViewItemRenderingState state;
     fillRenderingState(state, index, rendered_max_width, rendered_total_height);
 
