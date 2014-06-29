@@ -91,8 +91,8 @@ void InventoryModel::load()
     InventoryItem* backpack = InventoryItem::make("Trip backpack", 2.0f, d_inventoryRoot);
     InventoryItem* prev_matryoshka = 0;
 
-    // matryoshka D to A
-    for (char chr = 'D'; chr >= 'A'; --chr)
+    // matryoshka Z to A
+    for (char chr = 'Z'; chr >= 'A'; --chr)
     {
         InventoryItem* matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f, backpack);
 
@@ -104,6 +104,11 @@ void InventoryModel::load()
 
         prev_matryoshka = matryoshka;
     }
+
+    backpack->d_items.push_back(InventoryItem::make("Gepäckaufbewahrungsschein: Wiener Neustadt", 1.0f, backpack));
+    backpack->d_items.push_back(InventoryItem::make("Gepäckaufbewahrungsschein: Frankfurt am Main", 1.0f, backpack));
+    backpack->d_items.push_back(InventoryItem::make("Gepäckaufbewahrungsschein: Sankt Johann im Pongau", 1.0f, backpack));
+    backpack->d_items.push_back(InventoryItem::make("Gepäckaufbewahrungsschein: Seekirchen am Wallersee", 1.0f, backpack));
 
     InventoryItem* beans_can = InventoryItem::make("Beans can", 1.0f, backpack);
     InventoryItem* beans = InventoryItem::make("Beans!", 0.1f, beans_can);
@@ -123,13 +128,13 @@ void InventoryModel::load()
     }
     d_inventoryRoot->d_items.push_back(bow);
 
-    //// generate *many* items :D
-    //for (int i = 1960; i < 2000; i += 2)
-    //{
-    //    InventoryItem* almanach = InventoryItem::make(
-    //        "Almanach " + PropertyHelper<int>::toString(i), 0.34f, d_inventoryRoot);
-    //    d_inventoryRoot->d_items.push_back(almanach);
-    //}
+    // generate *many* items :D
+    for (int i = 1960; i < 2000; i += 2)
+    {
+        InventoryItem* almanach = InventoryItem::make(
+            "Almanach " + PropertyHelper<int>::toString(i), 0.34f, d_inventoryRoot);
+        d_inventoryRoot->d_items.push_back(almanach);
+    }
 }
 
 //----------------------------------------------------------------------------//
