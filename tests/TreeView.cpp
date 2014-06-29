@@ -186,7 +186,8 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 {
-    model.load();
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
     view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
@@ -219,7 +220,29 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
     BOOST_REQUIRE(!children.at(1).d_isSelected);
     BOOST_REQUIRE(!children.at(2).d_isSelected);
     BOOST_REQUIRE(children.at(2).d_renderedChildren.at(0).d_isSelected);
-    BOOST_REQUIRE(!children.at(3).d_isSelected);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(ItemAdded_InExpandedSubtree_IsRendered)
+{
+    ModelIndex root_index = model.getRootIndex();
+    model.addRandomItemWithChildren(root_index, 0, 0);
+
+    ModelIndex child_index = model.makeIndex(0, root_index);
+    model.addRandomItemWithChildren(child_index, 0);
+    view->prepareForRender();
+
+    view->onPointerPressHold(
+        createPointerEventArgs(Vector2f(expander_width / 2, font_height / 2), view));
+    view->prepareForRender();
+
+    const std::vector<TreeViewItemRenderingState>& children =
+        view->getRootItemState().d_renderedChildren;
+    BOOST_REQUIRE_EQUAL(1, children.at(0).d_renderedChildren.size());
+
+    model.addRandomItemWithChildren(child_index, 0);
+    view->prepareForRender();
+    BOOST_REQUIRE_EQUAL(2, children.at(0).d_renderedChildren.size());
 }
 
 //----------------------------------------------------------------------------//
@@ -238,7 +261,6 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
         view->getRootItemState().d_renderedChildren;
     BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_renderedChildren.size());
     BOOST_REQUIRE(!children.at(0).d_isSelected);
-    BOOST_REQUIRE(!children.at(1).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -334,6 +356,48 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ChildInExpandedSubtree_SelectsChild)
 
     BOOST_REQUIRE(children.at(0).d_subtreeIsExpanded);
     BOOST_REQUIRE(children.at(0).d_renderedChildren.at(0).d_isSelected);
+}
+
+BOOST_AUTO_TEST_CASE(GetTreeViewItemForIndex)
+{
+    ModelIndex root_index = model.getRootIndex();
+
+    /*
+    ROOT
+        Index0
+            Index0_Child
+                A
+            B
+        C
+        D
+    */
+    model.addRandomItemWithChildren(root_index, 0);
+    model.addRandomItemWithChildren(root_index, 0);
+    model.addRandomItemWithChildren(root_index, 0);
+
+    ModelIndex index0 = model.makeIndex(0, root_index);
+    model.addRandomItemWithChildren(index0, 0);
+    model.addRandomItemWithChildren(index0, 0);
+
+    ModelIndex index0_child = model.makeIndex(0, index0);
+    model.addRandomItemWithChildren(index0_child, 0);
+    view->prepareForRender();
+
+    const std::vector<TreeViewItemRenderingState>& children =
+        view->getRootItemState().d_renderedChildren;
+
+    BOOST_REQUIRE_EQUAL(&view->getRootItemState(), view->getTreeViewItemForIndex(root_index));
+    BOOST_REQUIRE_EQUAL(&children.at(0), view->getTreeViewItemForIndex(index0));
+    BOOST_REQUIRE_EQUAL(&children.at(1), view->getTreeViewItemForIndex(model.makeIndex(1, root_index)));
+
+    // subtree not opened now.
+    BOOST_REQUIRE_EQUAL((TreeViewItemRenderingState*)0, view->getTreeViewItemForIndex(index0_child));
+    view->onPointerPressHold(
+        createPointerEventArgs(Vector2f(expander_width / 2, font_height / 2), view));
+    view->prepareForRender();
+
+    BOOST_REQUIRE_EQUAL(&children.at(0).d_renderedChildren.at(0),
+        view->getTreeViewItemForIndex(index0_child));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -91,6 +91,9 @@ public:
     const TreeViewItemRenderingState& getRootItemState() const;
     virtual void prepareForRender();
     virtual ModelIndex indexAt(const Vector2f& position);
+
+    TreeViewItemRenderingState* getTreeViewItemForIndex(const ModelIndex& index);
+
 protected:
     virtual TreeViewWindowRenderer* getViewRenderer();
     virtual bool handleSelection(const Vector2f& position, bool should_select,
@@ -99,6 +102,7 @@ protected:
         bool is_cumulative, bool is_range);
 
     virtual bool onChildrenRemoved(const EventArgs& args);
+    virtual bool onChildrenAdded(const EventArgs& args);
 
 private:
     typedef void (TreeView::*TreeViewItemAction)(

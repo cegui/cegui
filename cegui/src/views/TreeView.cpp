@@ -279,6 +279,8 @@ void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
     }
 
     updateScrollbars();
+    // we need just a simple invalidation. No need to redo the render state
+    // as we modified it ourself directly.
     invalidate(false);
 }
 
@@ -312,7 +314,99 @@ bool TreeView::onChildrenRemoved(const EventArgs& args)
 {
     ItemView::onChildrenRemoved(args);
 
+    const ModelEventArgs& margs = static_cast<const ModelEventArgs&>(args);
+    TreeViewItemRenderingState* item = getTreeViewItemForIndex(margs.d_parentIndex);
+
+    if (item == 0)
+        return true;
+
+    // update existing child ids
+    for (ItemStateVector::iterator
+        itor = item->d_renderedChildren.begin() + margs.d_startId;
+        itor != item->d_renderedChildren.end(); ++itor)
+    {
+        (*itor).d_childId -= margs.d_count;
+    }
+
+    item->d_renderedChildren.erase(
+        item->d_renderedChildren.begin() + margs.d_startId,
+        item->d_renderedChildren.begin() + margs.d_startId + margs.d_count);
+
+    invalidateView(false);
     return true;
 }
 
+//----------------------------------------------------------------------------//
+bool TreeView::onChildrenAdded(const EventArgs& args)
+{
+    ItemView::onChildrenAdded(args);
+
+    const ModelEventArgs& margs = static_cast<const ModelEventArgs&>(args);
+    TreeViewItemRenderingState* item = getTreeViewItemForIndex(margs.d_parentIndex);
+
+    if (item == 0)
+        return true;
+
+    std::vector<TreeViewItemRenderingState> states;
+    for (size_t id = margs.d_startId; id < margs.d_startId + margs.d_count; ++id)
+    {
+        ModelIndex index = d_itemModel->makeIndex(id, margs.d_parentIndex);
+        TreeViewItemRenderingState child = computeRenderingStateForIndex(index,
+            d_renderedMaxWidth, d_renderedTotalHeight);
+        child.d_childId = id;
+        child.d_parentIndex = margs.d_parentIndex;
+
+        states.push_back(child);
+    }
+
+    // update existing child ids
+    for (ItemStateVector::iterator
+        itor = item->d_renderedChildren.begin() + margs.d_startId;
+        itor != item->d_renderedChildren.end(); ++itor)
+    {
+        (*itor).d_childId += margs.d_count;
+    }
+
+    item->d_renderedChildren.insert(
+        item->d_renderedChildren.begin() + margs.d_startId,
+        states.begin(), states.end());
+
+    invalidateView(false);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& index)
+{
+    std::vector<int> ids_stack;
+    ModelIndex root_index = d_itemModel->getRootIndex();
+    ModelIndex temp_index = index;
+
+    // we create a stack of child ids which will allow us to drill back
+    // in the right hierarchy.
+    do
+    {
+        int id = d_itemModel->getChildId(temp_index);
+        if (id == -1)
+            break;
+
+        ids_stack.push_back(id);
+        temp_index = d_itemModel->getParentIndex(temp_index);
+    } while (d_itemModel->isValidIndex(temp_index) &&
+        !d_itemModel->areIndicesEqual(temp_index, root_index));
+
+    TreeViewItemRenderingState* item = &d_rootItemState;
+    while(!ids_stack.empty())
+    {
+        int child_id = ids_stack.back();
+        ids_stack.pop_back();
+
+        if (static_cast<size_t>(child_id) >= item->d_renderedChildren.size())
+            return 0;
+
+        item = &item->d_renderedChildren.at(child_id);
+    }
+
+    return item;
+}
 }

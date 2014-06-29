@@ -239,6 +239,9 @@ bool InventoryModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex&
 int InventoryModel::getChildId(const ModelIndex& model_index)
 {
     ModelIndex parent_index = getParentIndex(model_index);
+    if (!isValidIndex(parent_index))
+        return -1;
+
     InventoryItem* parent_item = static_cast<InventoryItem*>(parent_index.d_modelData);
     InventoryItem* child_item = static_cast<InventoryItem*>(model_index.d_modelData);
 
