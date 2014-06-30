@@ -235,7 +235,6 @@ if (CEGUI_BUILD_RENDERER_IRRLICHT)
 endif()
 
 if (CEGUI_BUILD_RENDERER_DIRECT3D11)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} dxerr)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME} d3d11)
 endif()
 
