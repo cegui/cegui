@@ -219,10 +219,10 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
     if (SUCCEEDED(res))
     {
          //Debugging stuff
-         ID3D11Debug *d3dDebug = nullptr;
+         ID3D11Debug* d3dDebug = 0;
          if( SUCCEEDED( pimpl->d_device->QueryInterface( __uuidof(ID3D11Debug), (void**)&d3dDebug ) ) )
          {
-             ID3D11InfoQueue *d3dInfoQueue = nullptr;
+             ID3D11InfoQueue* d3dInfoQueue = 0;
              if( SUCCEEDED( d3dDebug->QueryInterface( __uuidof(ID3D11InfoQueue), (void**)&d3dInfoQueue ) ) )
              {
                  #if defined(DEBUG) || defined (_DEBUG)
