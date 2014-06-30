@@ -234,9 +234,9 @@ void Direct3D11ShaderWrapper::createPerObjectBuffer(ShaderType shaderType)
         bufferDescription.ByteWidth      = shaderBufferDesc.Size;
     
         if (shaderType == ST_VERTEX)
-            d_device->CreateBuffer(&bufferDescription, nullptr, &d_perObjectUniformVarBufferVert);
+            d_device->CreateBuffer(&bufferDescription, 0, &d_perObjectUniformVarBufferVert);
         else if (shaderType == ST_PIXEL)
-            d_device->CreateBuffer(&bufferDescription, nullptr, &d_perObjectUniformVarBufferPixel);
+            d_device->CreateBuffer(&bufferDescription, 0, &d_perObjectUniformVarBufferPixel);
     }
 }
 
