@@ -186,9 +186,7 @@ endif ()
 ###########################################################################
 #                      LIBRARY LINK SETUP
 ###########################################################################
-cegui_target_link_libraries(${CEGUI_TARGET_NAME}
-    ${CEGUI_BASE_LIBNAME}
-)
+cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
     target_link_libraries(${CEGUI_TARGET_NAME}_Static
@@ -198,6 +196,18 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
     )
 endif()
 
+##
+
+
+##
+
+add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
+                                      CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
+                                      CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC})
+                                      
+if (CEGUI_SAMPLES_ENABLE_COMMON_DIALOGS)
+    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
+endif()
 ###########################################################################
 #                           INSTALLATION
 ###########################################################################
@@ -217,6 +227,7 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
 )
 endif()
 
+
 if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
@@ -235,7 +246,7 @@ if (CEGUI_BUILD_RENDERER_IRRLICHT)
 endif()
 
 if (CEGUI_BUILD_RENDERER_DIRECT3D11)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME} d3d11)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME})
 endif()
 
 if (CEGUI_BUILD_RENDERER_DIRECTFB)
