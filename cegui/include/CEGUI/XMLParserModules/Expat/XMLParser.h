@@ -54,7 +54,7 @@ public:
     ~ExpatParser(void);
 
     // Implementation of public abstract interface
-    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
+    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/);
 
 protected:
     // Implementation of protected abstract interface.

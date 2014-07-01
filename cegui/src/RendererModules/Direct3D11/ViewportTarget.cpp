@@ -1,8 +1,9 @@
 /***********************************************************************
-    created:    Wed May 5 2010
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,7 +37,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
     // initialise renderer size
     D3D11_VIEWPORT vp;
     UINT vp_count = 1;
-    d_device.d_context->RSGetViewports(&vp_count, &vp);
+    d_deviceContext.RSGetViewports(&vp_count, &vp);
     if (vp_count != 1)
         CEGUI_THROW(RendererException(
             "Unable to access required view port information from "

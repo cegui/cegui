@@ -192,7 +192,6 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
@@ -710,7 +709,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/VerticalScrollbarThumb">
         <Property name="VertFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
@@ -752,7 +751,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
