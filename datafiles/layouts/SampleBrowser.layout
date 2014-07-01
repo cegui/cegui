@@ -40,7 +40,7 @@
                     <Property name="HorizontalAlignment" value="Centre" />
                     <Property name="AutoRenderingSurface" value="True" />
                     <AutoWindow namePath="__auto_container__" >
-                        <Property name="MouseInputPropagationEnabled" value="True" />
+                        <Property name="PointerInputPropagationEnabled" value="True" />
                     </AutoWindow>
                     <AutoWindow namePath="__auto_hscrollbar__" >
                         <Property name="AlwaysOnTop" value="True" />

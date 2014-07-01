@@ -94,20 +94,6 @@ if (CEGUI_BUILD_RENDERER_IRRLICHT)
     )
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D9)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiD3D9BaseApplication.cpp
-        ./src/DeviceReset_Direct3D9.cpp
-    )
-endif()
-
-if (CEGUI_BUILD_RENDERER_DIRECT3D10)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiD3D10BaseApplication.cpp
-        ./src/DeviceReset_Direct3D10.cpp
-    )
-endif()
-
 if (CEGUI_BUILD_RENDERER_DIRECT3D11)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiD3D11BaseApplication.cpp
@@ -121,7 +107,7 @@ if (CEGUI_BUILD_RENDERER_DIRECTFB)
     )
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D9 OR CEGUI_BUILD_RENDERER_DIRECT3D10 OR CEGUI_BUILD_RENDERER_DIRECT3D11)
+if (CEGUI_BUILD_RENDERER_DIRECT3D11)
     include_directories(${DIRECTXSDK_INCLUDE_DIR})
     link_directories(${DIRECTXSDK_LIBRARY_DIR})
 endif()
@@ -218,7 +204,7 @@ add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
                                       CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
                                       CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC})
                                       
-if (CEGUI_SAMPLES_ENABLE_COMMON_DIALOGUES_DEMO)
+if (CEGUI_SAMPLES_ENABLE_COMMON_DIALOGS)
     add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
 endif()
 
@@ -241,6 +227,7 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
 )
 endif()
 
+
 if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
@@ -258,21 +245,8 @@ if (CEGUI_BUILD_RENDERER_IRRLICHT)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_IRRLICHT_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D9 OR CEGUI_BUILD_RENDERER_DIRECT3D10 OR CEGUI_BUILD_RENDERER_DIRECT3D11)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} dxerr)
-
-    if (CEGUI_BUILD_RENDERER_DIRECT3D9)
-        cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D9_RENDERER_LIBNAME} d3d9)
-    endif()
-
-    if (CEGUI_BUILD_RENDERER_DIRECT3D10)
-        cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D10_RENDERER_LIBNAME} d3d10)
-    endif()
-
-    if (CEGUI_BUILD_RENDERER_DIRECT3D11)
-        cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME} d3d11)
-    endif()
-
+if (CEGUI_BUILD_RENDERER_DIRECT3D11)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME})
 endif()
 
 if (CEGUI_BUILD_RENDERER_DIRECTFB)

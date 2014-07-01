@@ -112,6 +112,18 @@
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
         </ImagerySection>
+        <ImagerySection name="focused">
+            <FrameComponent>
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftFocused" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightFocused" />
+                <Image component="Background" name="TaharezLook/ButtonMiddleFocused" />
+            </FrameComponent>
+            <ImageryComponent>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -151,6 +163,14 @@
                 </Section>
                 <Section section="label">
                     <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Focused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -307,6 +327,13 @@
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
         </ImagerySection>
+        <ImagerySection name="focused">
+            <ImageryComponent>
+                <Image name="TaharezLook/CheckboxFocused" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="LeftAligned" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -364,6 +391,23 @@
                 </Section>
             </Layer>
         </StateImagery>
+        <StateImagery name="SelectedFocused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="select_mark" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Focused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
     </WidgetLook>
 
     <!--
@@ -376,7 +420,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="PointerIndicatorImage" value="TaharezLook/MouseTextBar" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -424,7 +468,17 @@
                 <Section section="container_normal" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
@@ -1192,7 +1246,7 @@
     -->
     <WidgetLook name="TaharezLook/SliderThumb">
         <Property name="VertFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Image name="TaharezLook/VertSliderThumbNormal" />
@@ -1238,8 +1292,7 @@
     -->
     <WidgetLook name="TaharezLook/Slider">
         <Property name="VerticalSlider" value="True" />
-        <Property name="MouseAutoRepeatEnabled" value="True" />
-        <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="PointerAutoRepeatEnabled" value="True" />
         <Property name="Size" value="{{0, 16}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea" />
         <Child  type="TaharezLook/SliderThumb" nameSuffix="__auto_thumb__">
@@ -1263,6 +1316,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -1279,7 +1337,7 @@
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <Property name="Size" value="{{0, 48}, {0, 16}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1381,6 +1439,13 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF0FD538" topRight="FF0FD538" bottomLeft="FF0FD538" bottomRight="FF0FD538" />
+                </Section>
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -1397,7 +1462,7 @@
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <Property name="Size" value="{{0, 16}, {0, 48}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1498,6 +1563,13 @@
         <StateImagery name="Enabled">
             <Layer>
                 <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF0FD538" topRight="FF0FD538" bottomLeft="FF0FD538" bottomRight="FF0FD538" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Disabled">
@@ -1616,6 +1688,11 @@
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
             <Layer>
                 <Section section="main" />
             </Layer>
@@ -1759,7 +1836,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="PointerIndicatorImage" value="TaharezLook/MouseTextBar" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -2243,7 +2320,7 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="TaharezLook/MouseMoveCursor" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <Property name="Size" value="{{0, 192}, {0, 32}}" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
@@ -2405,7 +2482,7 @@
     -->
     <WidgetLook name="TaharezLook/ListHeader">
         <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -2535,6 +2612,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -2554,7 +2636,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="PointerIndicatorImage" value="TaharezLook/MouseTextBar" />
         <Property name="SelectionBrushImage" value="TaharezLook/MultiLineEditboxSelectionBrush" />
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
@@ -2671,7 +2753,17 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="main" />
             </Layer>
@@ -2944,6 +3036,22 @@
             </Layer>
         </StateImagery>
         <StateImagery name="BottomNormal">
+            <Layer>
+                <Section section="bot_normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="TopFocused">
+            <Layer>
+                <Section section="top_normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="BottomFocused">
             <Layer>
                 <Section section="bot_normal" />
                 <Section section="label">
@@ -3270,7 +3378,6 @@
         <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="WantsMultiClickEvents" value="False" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
@@ -3625,7 +3732,7 @@
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <Property name="Size" value="{{0, 10}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -3992,6 +4099,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main" />
@@ -4011,7 +4123,7 @@
         <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Selectable" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="PointerInputPropagationEnabled" value="True" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>

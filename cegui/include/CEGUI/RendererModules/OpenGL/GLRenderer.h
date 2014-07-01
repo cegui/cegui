@@ -32,6 +32,7 @@
 
 namespace CEGUI
 {
+    class OpenGLShaderWrapper;
 /*!
 \brief
     Renderer class to interface with OpenGL
@@ -173,10 +174,11 @@ public:
     bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
-    void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
+    void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
 protected:
-    OpenGLGeometryBufferBase* createGeometryBuffer_impl();
+    OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     TextureTarget* createTextureTarget_impl();
 
     //! set up renderer id string.
@@ -205,6 +207,8 @@ protected:
     */
     OpenGLRenderer(const Sizef& display_size, const TextureTargetType tt_type);
 
+    void initialiseShaderWrappers();
+
     /*!
     \brief
         Destructor for OpenGLRenderer objects
@@ -224,6 +228,12 @@ protected:
 
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
+
+    //! Shaderwrapper for textured & coloured vertices
+    OpenGLShaderWrapper* d_shaderWrapperTextured;
+
+    //! Shaderwrapper for coloured vertices
+    OpenGLShaderWrapper* d_shaderWrapperSolid;
 };
 
 }
