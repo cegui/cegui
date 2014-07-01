@@ -115,9 +115,9 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
     }
 }
 
-static Sizef getImagerySize(const ImagerySection* section)
+static Sizef getImagerySize(const ImagerySection& section)
 {
-    const ImageryComponent& component = section->getImageryComponentIterator().getCurrentValue();
+    const ImageryComponent& component = section.getImageryComponentIterator().getCurrentValue();
     const Image* img = component.getImage();
     return img->getRenderedSize();
 }
@@ -129,8 +129,8 @@ void FalagardTreeView::onLookNFeelAssigned()
     d_subtreeExpanderImagery = &wlf.getImagerySection("SubtreeExpander");
     d_subtreeCollapserImagery = &wlf.getImagerySection("SubtreeCollapser");
 
-    Sizef open_size = getImagerySize(d_subtreeExpanderImagery);
-    Sizef close_size = getImagerySize(d_subtreeCollapserImagery);
+    Sizef open_size = getImagerySize(*d_subtreeExpanderImagery);
+    Sizef close_size = getImagerySize(*d_subtreeCollapserImagery);
     d_subtreeExpanderImagerySize = Sizef(
         (open_size.d_width + close_size.d_width) / 2.0f + SUBTREE_EXPANDER_MARGIN,
         (open_size.d_height + close_size.d_height) / 2.0f + SUBTREE_EXPANDER_MARGIN);
