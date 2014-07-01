@@ -43,12 +43,12 @@ namespace CEGUI
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardProgressBar,bool,
         "VerticalProgress", "Property to get/set whether the ProgressBar operates in the vertical direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &FalagardProgressBar::setVertical,&FalagardProgressBar::isVertical,
         false);
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardProgressBar,bool,
         "ReversedProgress", "Property to get/set whether the ProgressBar operates in reversed direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &FalagardProgressBar::setReversed,&FalagardProgressBar::isReversed,
         false);
     }

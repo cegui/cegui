@@ -332,7 +332,7 @@ void Scrollbar::addScrollbarProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Scrollbar, bool,
         "EndLockEnabled", "Property to get/set the 'end lock' mode setting for the Scrollbar. "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Scrollbar::setEndLockEnabled, &Scrollbar::isEndLockEnabled, false
         );
 }

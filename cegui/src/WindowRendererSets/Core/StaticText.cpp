@@ -85,13 +85,13 @@ namespace CEGUI
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
             "VertScrollbar", "Property to get/set the setting for the vertical scroll bar."
-            "  Value is either \"True\" or \"False\".",
+            "  Value is either \"true\" or \"false\".",
             &FalagardStaticText::setVerticalScrollbarEnabled, &FalagardStaticText::isVerticalScrollbarEnabled,
             false);
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
             "HorzScrollbar", "Property to get/set the setting for the horizontal scroll bar."
-            "  Value is either \"True\" or \"False\".",
+            "  Value is either \"true\" or \"false\".",
             &FalagardStaticText::setHorizontalScrollbarEnabled, &FalagardStaticText::isHorizontalScrollbarEnabled,
             false);
 

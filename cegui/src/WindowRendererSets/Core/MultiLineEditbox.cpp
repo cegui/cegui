@@ -55,7 +55,7 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
 
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox,bool,
         "BlinkCaret", "Property to get/set whether the Editbox caret should blink.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &FalagardMultiLineEditbox::setCaretBlinkEnabled,&FalagardMultiLineEditbox::isCaretBlinkEnabled,
         false);
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox,float,
