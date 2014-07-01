@@ -95,7 +95,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFe5ffb2" type="ColourRect" name="CaptionColour"/>
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
-        <Property name="NonClient" value="True"/>
+        <Property name="NonClient" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -168,7 +168,7 @@
         <Property name="EWSizingCursorImage" value="OgreTrayImages/MouseArrow"/>
         <Property name="NWSESizingCursorImage" value="OgreTrayImages/MouseArrow"/>
         <Property name="NESWSizingCursorImage" value="OgreTrayImages/MouseArrow"/>
-        <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="AutoRenderingSurface" value="true"/>
         <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -297,7 +297,7 @@
                     <FontDim padding="8" type="LineSpacing"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="False"/>
+            <Property name="AlwaysOnTop" value="false"/>
         </Child>
         <!-- here we basically nullify the close button, for now at least -->
         <Child nameSuffix="__auto_closebutton__" type="DefaultWindow">
@@ -315,7 +315,7 @@
                     <UnifiedDim scale="0" type="Height"/>
                 </Dim>
             </Area>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <ImagerySection name="frame">
             <FrameComponent>
@@ -473,8 +473,8 @@
 :::: Vertical Scrollbar
 -->
     <WidgetLook name="OgreTray/VerticalScrollbar">
-        <Property name="VerticalScrollbar" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalScrollbar" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -507,7 +507,7 @@
                     <UnifiedDim scale="0" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <Child nameSuffix="__auto_decbtn__" type="DefaultWindow">
             <Area>
@@ -524,7 +524,7 @@
                     <UnifiedDim scale="0" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <Child nameSuffix="__auto_thumb__" type="OgreTray/Thumb">
             <Area>
@@ -541,7 +541,7 @@
                     <UnifiedDim scale="1" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="VertFree" value="True"/>
+            <Property name="VertFree" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -582,8 +582,8 @@
 :::: Horizontal Scrollbar
 -->
     <WidgetLook name="OgreTray/HorizontalScrollbar">
-        <Property name="VerticalScrollbar" value="False"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalScrollbar" value="false"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -616,7 +616,7 @@
                     <UnifiedDim scale="0" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <Child nameSuffix="__auto_decbtn__" type="DefaultWindow">
             <Area>
@@ -633,7 +633,7 @@
                     <UnifiedDim scale="0" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <Child nameSuffix="__auto_thumb__" type="OgreTray/Thumb">
             <Area>
@@ -650,7 +650,7 @@
                     <UnifiedDim scale="1" type="Height"/>
                 </Dim>
             </Area>
-            <Property name="HorzFree" value="True"/>
+            <Property name="HorzFree" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -776,8 +776,8 @@
         <PropertyLinkDefinition targetProperty="ScrollPosition" widget="__auto_vscrollbar__" type="float" name="VertScrollPosition"/>
         <PropertyLinkDefinition targetProperty="PageSize" widget="__auto_vscrollbar__" type="float" name="VertScrollPageSize"/>
         <PropertyLinkDefinition targetProperty="DocumentSize" widget="__auto_vscrollbar__" type="float" name="VertScrollDocumentSize"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
         <Property name="HorzFormatting" value="WordWrapLeftAligned"/>
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
@@ -994,7 +994,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -1018,7 +1018,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
@@ -1063,8 +1063,8 @@
         <PropertyLinkDefinition targetProperty="TextColour" widget="__auto_caption__" initialValue="FF000000" type="ColourRect" name="CaptionColour"/>
         <PropertyLinkDefinition targetProperty="Font" widget="__auto_caption__" type="Font" name="CaptionFont"/>
         <PropertyLinkDefinition targetProperty="Text" widget="__auto_caption__" type="String" name="CaptionText"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
         <Property name="HorzFormatting" value="WordWrapLeftAligned"/>
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
@@ -1286,7 +1286,7 @@
                     </OperatorDim>
                 </Dim>
             </Area>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_hscrollbar__" type="OgreTray/HorizontalScrollbar">
             <Area>
@@ -1313,7 +1313,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -1340,7 +1340,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
@@ -1975,7 +1975,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -1999,7 +1999,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -2197,7 +2197,7 @@
             </Area>
             <VertAlignment type="BottomAligned"/>
             <Property name="Size" value="{{1, 0}, {0, 32}}" />
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -2221,7 +2221,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -2302,7 +2302,7 @@
                     <UnifiedDim scale="1" type="BottomEdge"/>
                 </Dim>
             </Area>
-            <Property name="ClippedByParent" value="False"/>
+            <Property name="ClippedByParent" value="false"/>
         </Child>
         <Child nameSuffix="__auto_button__" type="OgreTray/Button">
             <Area>
@@ -2331,8 +2331,8 @@
     <WidgetLook name="OgreTray/DropDownMenu">
         <PropertyLinkDefinition targetProperty="NormalTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="NormalEditTextColour"/>
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="SelectedEditTextColour"/>
-        <Property name="ReadOnly" value="True"/>
-        <Property name="SingleClickMode" value="True"/>
+        <Property name="ReadOnly" value="true"/>
+        <Property name="SingleClickMode" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="OgreTray/Editbox">
             <Area>
@@ -2365,7 +2365,7 @@
                     <UnifiedDim scale="1" type="BottomEdge"/>
                 </Dim>
             </Area>
-            <Property name="ClippedByParent" value="False"/>
+            <Property name="ClippedByParent" value="false"/>
         </Child>
         <Child nameSuffix="__auto_button__" type="OgreTray/Button">
             <Area>
@@ -2382,7 +2382,7 @@
                     <AbsoluteDim value="0"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
@@ -2796,9 +2796,9 @@
 :::: Horizontal Slider
 -->
     <WidgetLook name="OgreTray/Slider">
-        <Property name="VerticalSlider" value="False"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalSlider" value="false"/>
+        <Property name="MouseAutoRepeatEnabled" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -2831,7 +2831,7 @@
                     <UnifiedDim scale="0" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <Child nameSuffix="__auto_decbtn__" type="DefaultWindow">
             <Area>
@@ -2848,7 +2848,7 @@
                     <UnifiedDim scale="0" type="Width"/>
                 </Dim>
             </Area>
-            <Property name="Visible" value="False"/>
+            <Property name="Visible" value="false"/>
         </Child>
         <Child nameSuffix="__auto_thumb__" type="OgreTray/Thumb">
             <Area>
@@ -2865,7 +2865,7 @@
                     <UnifiedDim scale="1" type="Height"/>
                 </Dim>
             </Area>
-            <Property name="HorzFree" value="True"/>
+            <Property name="HorzFree" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -2909,8 +2909,8 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ImageColours"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
@@ -3012,7 +3012,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ImageColours"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="True" type="bool" name="FrameEnabled"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="true" type="bool" name="FrameEnabled"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="Image"/>
         <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image">
@@ -3315,7 +3315,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -3339,7 +3339,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -3385,7 +3385,7 @@
     <WidgetLook name="OgreTray/ListboxItem">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="TextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
-        <Property name="Selectable" value="True"/>
+        <Property name="Selectable" value="true"/>
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -3717,7 +3717,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -3741,7 +3741,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
@@ -4106,7 +4106,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
             <Area>
@@ -4130,7 +4130,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -4323,7 +4323,7 @@
     <WidgetLook name="OgreTray/MenuItem">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="TextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF779977" type="ColourRect" name="PushedOffColour"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
@@ -5019,7 +5019,7 @@
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="BottomEdge"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True"/>
+            <Property name="AlwaysOnTop" value="true"/>
             <Property name="Text" value="&lt;&lt;"/>
         </Child>
         <Child nameSuffix="__auto_TabPane__ScrollRight" type="OgreTray/Button">
@@ -5046,7 +5046,7 @@
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True"/>
+            <Property name="AlwaysOnTop" value="true"/>
             <Property name="Text" value="&gt;&gt;"/>
         </Child>
         <StateImagery name="Enabled"/>
