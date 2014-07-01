@@ -200,9 +200,7 @@ endif ()
 ###########################################################################
 #                      LIBRARY LINK SETUP
 ###########################################################################
-cegui_target_link_libraries(${CEGUI_TARGET_NAME}
-    ${CEGUI_BASE_LIBNAME}
-)
+cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
     target_link_libraries(${CEGUI_TARGET_NAME}_Static
@@ -210,6 +208,18 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
         ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
         ${CEGUI_CORE_WR_LIBNAME}_Static
     )
+endif()
+
+###########################################################################
+#  BUILD DEPENDENCIES FOR THE SHARED LIBRARIES USED BY THE SAMPLEBROWSER
+###########################################################################
+
+add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
+                                      CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
+                                      CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC})
+                                      
+if (CEGUI_SAMPLES_ENABLE_COMMON_DIALOGUES_DEMO)
+    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
 endif()
 
 ###########################################################################
