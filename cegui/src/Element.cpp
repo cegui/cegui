@@ -472,7 +472,7 @@ void Element::addElementProperties()
 
     CEGUI_DEFINE_PROPERTY(Element, bool,
         "PixelAligned", "Property to get/set whether the Element's size and position should be pixel aligned. "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Element::setPixelAligned, &Element::isPixelAligned, true
     );
 
@@ -485,7 +485,7 @@ void Element::addElementProperties()
 
     CEGUI_DEFINE_PROPERTY(Element, bool,
         "NonClient", "Property to get/set whether the Element is 'non-client'. "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Element::setNonClient, &Element::isNonClient, false
     );
 }

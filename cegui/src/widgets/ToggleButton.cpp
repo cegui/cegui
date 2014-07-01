@@ -49,7 +49,7 @@ void ToggleButton::addToggleButtonProperties()
     CEGUI_DEFINE_PROPERTY(ToggleButton, bool,
         "Selected",
         "Property to access the selected state of the ToggleButton. "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &ToggleButton::setSelected, &ToggleButton::isSelected, false
     );
 }

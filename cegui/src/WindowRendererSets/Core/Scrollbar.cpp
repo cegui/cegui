@@ -44,7 +44,7 @@ namespace CEGUI
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardScrollbar, bool,
         "VerticalScrollbar", "Property to get/set whether the Scrollbar operates in the vertical direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &FalagardScrollbar::setVertical, &FalagardScrollbar::isVertical,
         false);
     }
