@@ -2,8 +2,8 @@
 <Falagard version="7">
     <WidgetLook name="Vanilla/VerticalImageSliderThumb">
         <PropertyDefinition initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ScrollThumbColours"/>
-        <Property name="VertFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="VertFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -54,9 +54,9 @@
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="TopEndColours"/>
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="BottomEndColours"/>
         <PropertyLinkDefinition widget="__auto_thumb__" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" name="ScrollThumbColours" redrawOnWrite="true" targetProperty="ScrollThumbColours" type="ColourRect"/>
-        <Property name="VerticalSlider" value="True"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalSlider" value="true"/>
+        <Property name="MouseAutoRepeatEnabled" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -223,8 +223,8 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/HorizontalImageSliderThumb">
         <PropertyDefinition initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ScrollThumbColours"/>
-        <Property name="HorzFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="HorzFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -275,9 +275,9 @@
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="TopEndColours"/>
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="BottomEndColours"/>
         <PropertyLinkDefinition widget="__auto_thumb__" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" name="ScrollThumbColours" redrawOnWrite="true" targetProperty="ScrollThumbColours" type="ColourRect"/>
-        <Property name="VerticalSlider" value="False"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalSlider" value="false"/>
+        <Property name="MouseAutoRepeatEnabled" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -485,7 +485,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/ColourPicker">
         <PropertyDefinition initialValue="Vanilla/ColourPickerControls" type="String" name="ColourPickerControlsStyle"/>
-        <PropertyDefinition initialValue="True" type="bool" name="ShareColourPickerControlsWidget"/>
+        <PropertyDefinition initialValue="true" type="bool" name="ShareColourPickerControlsWidget"/>
         <PropertyLinkDefinition widget="__auto_colourrect__" initialValue="tl:FFFF0000 tr:FFFF0000 bl:FFFF0000 br:FFFF0000" name="Colour" redrawOnWrite="true" targetProperty="Colour" type="ColourRect"/>
         <Child nameSuffix="__auto_colourrect__" type="Vanilla/FrameColourRect">
             <Area>
@@ -578,7 +578,7 @@
             <PropertyLinkTarget widget="__auto_Labradiobuttona__" property="PushedTextColour"/>
             <PropertyLinkTarget widget="__auto_Labradiobuttonb__" property="PushedTextColour"/>
         </PropertyLinkDefinition>
-        <Property name="AlwaysOnTop" value="True"/>
+        <Property name="AlwaysOnTop" value="true"/>
         <Property name="Size" value="{{0,460},{0,460}}"/>
         <Property name="HorizontalAlignment" value="Centre"/>
         <Property name="VerticalAlignment" value="Centre"/>
@@ -720,8 +720,8 @@
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="Previous"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="CentreAligned"/>
         </Child>
         <Child nameSuffix="__auto_oldcolourdescription__" type="Vanilla/StaticText">
@@ -754,8 +754,8 @@
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="Current"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="CentreAligned"/>
         </Child>
         <!--
@@ -783,8 +783,8 @@
             </Area>
             <VertAlignment type="TopAligned"/>
             <HorzAlignment type="LeftAligned"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
         </Child>
         <Child nameSuffix="__auto_colourpickerimageslider__" type="Vanilla/VerticalImageSlider">
             <Area>
@@ -833,8 +833,8 @@
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="B"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="LeftAligned"/>
         </Child>
         <Child nameSuffix="__auto_coloureditboxB__" type="Vanilla/Editbox">
@@ -883,8 +883,8 @@
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="G"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="LeftAligned"/>
         </Child>
         <Child nameSuffix="__auto_coloureditboxG__" type="Vanilla/Editbox">
@@ -933,8 +933,8 @@
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="R"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="LeftAligned"/>
         </Child>
         <Child nameSuffix="__auto_coloureditboxR__" type="Vanilla/Editbox">
@@ -1010,8 +1010,8 @@
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="Hexadecimal:"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="CentreAligned"/>
         </Child>
         <!--
@@ -1435,8 +1435,8 @@
             <VertAlignment type="TopAligned"/>
             <HorzAlignment type="LeftAligned"/>
             <Property name="Text" value="Alpha:"/>
-            <Property name="FrameEnabled" value="False"/>
-            <Property name="BackgroundEnabled" value="False"/>
+            <Property name="FrameEnabled" value="false"/>
+            <Property name="BackgroundEnabled" value="false"/>
             <Property name="HorzFormatting" value="CentreAligned"/>
         </Child>
         <!--

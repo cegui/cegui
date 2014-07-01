@@ -468,8 +468,8 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="NormalImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="HoverImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
-        <Property name="NonClient" value="True"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="NonClient" value="true"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -924,7 +924,7 @@
         <Property name="NWSESizingCursorImage" value="WindowsLook/MouseNwSeCursor"/>
         <Property name="NESWSizingCursorImage" value="WindowsLook/MouseNeSwCursor"/>
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}"/>
-        <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="AutoRenderingSurface" value="true"/>
         <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -1020,7 +1020,7 @@
                     </OperatorDim>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="False"/>
+            <Property name="AlwaysOnTop" value="false"/>
         </Child>
         <Child nameSuffix="__auto_closebutton__" type="WindowsLook/SystemButton">
             <Area>
@@ -1055,7 +1055,7 @@
                     <ImageDim name="WindowsLook/CloseButtonNormal" dimension="Height"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True"/>
+            <Property name="AlwaysOnTop" value="true"/>
             <Property name="NormalImage" value="WindowsLook/CloseButtonNormal"/>
             <Property name="HoverImage" value="WindowsLook/CloseButtonHover"/>
             <Property name="PushedImage" value="WindowsLook/CloseButtonPushed"/>
@@ -1296,7 +1296,7 @@
     <WidgetLook name="WindowsLook/IconButton">
         <PropertyDefinition redrawOnWrite="true" type="Image" name="IconImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="IconColours"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <ImagerySection name="icon">
             <ImageryComponent>
                 <Area>
@@ -1599,7 +1599,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="WindowsLook/VerticalScrollbar">
             <Area>
@@ -1617,7 +1617,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -1667,8 +1667,8 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="WindowsLook/Background" type="Image" name="SelectionBrush"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF3030FF" type="ColourRect" name="SelectionColour"/>
-        <Property name="Selectable" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Selectable" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -1850,7 +1850,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF87A7DF" type="ColourRect" name="PushedColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="7F87A7DF" type="ColourRect" name="PushedOffColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFEFEFEF" type="ColourRect" name="OpenedColour"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -2121,7 +2121,7 @@
     <WidgetLook name="WindowsLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="WindowsLook/MouseEsWeCursor"/>
         <Property name="MovingCursorImage" value="WindowsLook/MouseMoveCursor"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <ImagerySection name="segment">
             <ImageryComponent>
                 <Area>
@@ -2312,7 +2312,7 @@
     -->
     <WidgetLook name="WindowsLook/ListHeader">
         <Property name="SegmentWidgetType" value="WindowsLook/ListHeaderSegment"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
     </WidgetLook>
@@ -3110,7 +3110,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="WindowsLook/VerticalScrollbar">
             <Area>
@@ -3128,7 +3128,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
@@ -3139,9 +3139,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/VerticalScrollbarThumb">
-        <Property name="VertFree" value="True"/>
+        <Property name="VertFree" value="true"/>
         <Property name="MinSize" value="{{0,0},{0,16}}"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3357,8 +3357,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/VerticalScrollbar">
-        <Property name="VerticalScrollbar" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalScrollbar" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -3487,9 +3487,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/HorizontalScrollbarThumb">
-        <Property name="HorzFree" value="True"/>
+        <Property name="HorzFree" value="true"/>
         <Property name="MinSize" value="{{0,16},{0,0}}"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3706,7 +3706,7 @@
     -->
     <WidgetLook name="WindowsLook/HorizontalScrollbar">
         <Property name="Size" value="{{1, 0}, {0, 32}}" />
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3831,8 +3831,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/SliderThumb">
-        <Property name="HorzFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="HorzFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -3904,9 +3904,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Slider">
-        <Property name="VerticalSlider" value="True"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="VerticalSlider" value="true"/>
+        <Property name="MouseAutoRepeatEnabled" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -4148,8 +4148,8 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="0" type="float" name="TextPadding"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="LeftAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <ImagerySection name="label">
             <TextComponent>
@@ -4238,8 +4238,8 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" type="ColourRect" name="BackgroundColours"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
@@ -4356,8 +4356,8 @@
         <PropertyLinkDefinition targetProperty="ScrollPosition" widget="__auto_vscrollbar__" type="float" name="VertScrollPosition"/>
         <PropertyLinkDefinition targetProperty="PageSize" widget="__auto_vscrollbar__" type="float" name="VertScrollPageSize"/>
         <PropertyLinkDefinition targetProperty="DocumentSize" widget="__auto_vscrollbar__" type="float" name="VertScrollDocumentSize"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
@@ -4997,7 +4997,7 @@
                     <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Height"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True"/>
+            <Property name="AlwaysOnTop" value="true"/>
             <Property name="NormalImage" value="WindowsLook/TabButtonScrollLeftNormal"/>
             <Property name="HoverImage" value="WindowsLook/TabButtonScrollLeftHover"/>
             <Property name="PushedImage" value="WindowsLook/TabButtonScrollLeftHover"/>
@@ -5038,7 +5038,7 @@
                     <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Height"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True"/>
+            <Property name="AlwaysOnTop" value="true"/>
             <Property name="NormalImage" value="WindowsLook/TabButtonScrollRightNormal"/>
             <Property name="HoverImage" value="WindowsLook/TabButtonScrollRightHover"/>
             <Property name="PushedImage" value="WindowsLook/TabButtonScrollRightHover"/>
@@ -5053,7 +5053,7 @@
     -->
     <WidgetLook name="WindowsLook/Titlebar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="CaptionColour"/>
-        <Property name="NonClient" value="True"/>
+        <Property name="NonClient" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>

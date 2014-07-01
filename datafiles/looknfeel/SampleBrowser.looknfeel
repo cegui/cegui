@@ -113,14 +113,14 @@
         <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="UseStandardImagery" initialValue="True" redrawOnWrite="true" type="bool"/>
+        <PropertyDefinition name="UseStandardImagery" initialValue="true" redrawOnWrite="true" type="bool"/>
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
 
-        <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="WantsMultiClickEvents" value="false" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -222,7 +222,7 @@
         <PropertyDefinition name="ForegroundFadeColours" initialValue="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
 
-        <Property name="AutoRenderingSurface" value="True" />
+        <Property name="AutoRenderingSurface" value="true" />
 
 
         <NamedArea name="InnerArea">
@@ -402,7 +402,7 @@
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
 
-        <Property name="NonClient" value="True" />
+        <Property name="NonClient" value="true" />
 
         <ImagerySection name="normal">
             <FrameComponent>
@@ -461,7 +461,7 @@
         <Property name="EWSizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
         <Property name="NWSESizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
         <Property name="NESWSizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
-        <Property name="AutoRenderingSurface" value="True" />
+        <Property name="AutoRenderingSurface" value="true" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -516,7 +516,7 @@
                 </Dim>
                 <Dim type="Height" ><FontDim type="LineSpacing" padding="8" /></Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="False" />
+            <Property name="AlwaysOnTop" value="false" />
         </Child>
         <!-- here we basically nullify the close button, for now at least -->
         <Child type="DefaultWindow" nameSuffix="__auto_closebutton__">
@@ -526,7 +526,7 @@
                 <Dim type="Width" ><UnifiedDim scale="0" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="0" type="Height" /></Dim>
             </Area>
-            <Property name="NonClient" value="True" />
+            <Property name="NonClient" value="true" />
         </Child>
         <ImagerySection name="frame">
             <FrameComponent>
@@ -610,8 +610,8 @@
         <PropertyLinkDefinition targetProperty="ScrollPosition" widget="__auto_vscrollbar__" type="float" name="VertScrollPosition"/>
         <PropertyLinkDefinition targetProperty="PageSize" widget="__auto_vscrollbar__" type="float" name="VertScrollPageSize"/>
         <PropertyLinkDefinition targetProperty="DocumentSize" widget="__auto_vscrollbar__" type="float" name="VertScrollDocumentSize"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
         <Property name="HorzFormatting" value="WordWrapLeftAligned"/>
         <NamedArea name="WithFrameTextRenderArea">
@@ -827,7 +827,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="SampleBrowserSkin/VerticalScrollbar">
             <Area>
@@ -851,7 +851,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
@@ -893,8 +893,8 @@
     Vertical Scrollbar
 -->
     <WidgetLook name="SampleBrowserSkin/VerticalScrollbar">
-        <Property name="VerticalScrollbar" value="True" />
-        <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="VerticalScrollbar" value="true" />
+        <Property name="WantsMultiClickEvents" value="false" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -910,7 +910,7 @@
                 <Dim type="Width" ><UnifiedDim scale="0" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="0" type="Width" /></Dim>
             </Area>
-            <Property name="Visible" value="False" />
+            <Property name="Visible" value="false" />
         </Child>
         <Child  type="DefaultWindow" nameSuffix="__auto_decbtn__">
             <Area>
@@ -919,7 +919,7 @@
                 <Dim type="Width" ><UnifiedDim scale="0" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="0" type="Width" /></Dim>
             </Area>
-            <Property name="Visible" value="False" />
+            <Property name="Visible" value="false" />
         </Child>
         <Child  type="SampleBrowserSkin/Thumb" nameSuffix="__auto_thumb__">
             <Area>
@@ -928,7 +928,7 @@
                 <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" type="Width" /></Dim>
             </Area>
-            <Property name="VertFree" value="True" />
+            <Property name="VertFree" value="true" />
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -960,8 +960,8 @@
     Horizontal Scrollbar
 -->
     <WidgetLook name="SampleBrowserSkin/HorizontalScrollbar">
-        <Property name="VerticalScrollbar" value="False" />
-        <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="VerticalScrollbar" value="false" />
+        <Property name="WantsMultiClickEvents" value="false" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -977,7 +977,7 @@
                 <Dim type="Width" ><UnifiedDim scale="0" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="0" type="Width" /></Dim>
             </Area>
-            <Property name="Visible" value="False" />
+            <Property name="Visible" value="false" />
         </Child>
         <Child  type="DefaultWindow" nameSuffix="__auto_decbtn__">
             <Area>
@@ -986,7 +986,7 @@
                 <Dim type="Width" ><UnifiedDim scale="0" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="0" type="Width" /></Dim>
             </Area>
-            <Property name="Visible" value="False" />
+            <Property name="Visible" value="false" />
         </Child>
         <Child  type="SampleBrowserSkin/Thumb" nameSuffix="__auto_thumb__">
             <Area>
@@ -995,7 +995,7 @@
                 <Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
-            <Property name="HorzFree" value="True" />
+            <Property name="HorzFree" value="true" />
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -1182,7 +1182,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="SampleBrowserSkin/VerticalScrollbar">
             <Area>
@@ -1206,7 +1206,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
+            <Property name="NonClient" value="true"/>
         </Child>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>

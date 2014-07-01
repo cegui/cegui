@@ -459,7 +459,7 @@
     -->
     <WidgetLook name="TaharezLook/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="NonClient" value="True" />
+        <Property name="NonClient" value="true" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="main">
             <ImageryComponent>
@@ -569,7 +569,7 @@
         <Property name="NWSESizingCursorImage" value="TaharezLook/MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="TaharezLook/MouseNeSwCursor" />
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}" />
-        <Property name="AutoRenderingSurface" value="True" />
+        <Property name="AutoRenderingSurface" value="true" />
         <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -621,7 +621,7 @@
                 <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                 <Dim type="Height" ><FontDim type="LineSpacing" padding="8" /></Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="False" />
+            <Property name="AlwaysOnTop" value="false" />
         </Child>
         <Child type="TaharezLook/ImageButton" nameSuffix="__auto_closebutton__">
             <Area>
@@ -646,11 +646,11 @@
                 <Dim type="Width" ><ImageDim name="TaharezLook/NewCloseButtonNormal" dimension="Width" /></Dim>
                 <Dim type="Height" ><ImageDim name="TaharezLook/NewCloseButtonNormal" dimension="Width" /></Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True" />
+            <Property name="AlwaysOnTop" value="true" />
             <Property name="NormalImage" value="TaharezLook/NewCloseButtonNormal" />
             <Property name="HoverImage" value="TaharezLook/NewCloseButtonHover" />
             <Property name="PushedImage" value="TaharezLook/NewCloseButtonPressed" />
-            <Property name="NonClient" value="True" />
+            <Property name="NonClient" value="true" />
         </Child>
         <ImagerySection name="withtitle_frame">
             <FrameComponent>
@@ -1132,7 +1132,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/VUMeter">
-        <Property name="VerticalProgress" value="True" />
+        <Property name="VerticalProgress" value="true" />
         <Property name="Size" value="{{0, 16}, {0, 256}}" />
         <NamedArea name="ProgressArea" />
         <ImagerySection name="progress_lights" >
@@ -1191,8 +1191,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/SliderThumb">
-        <Property name="VertFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="VertFree" value="true" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Image name="TaharezLook/VertSliderThumbNormal" />
@@ -1237,9 +1237,9 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Slider">
-        <Property name="VerticalSlider" value="True" />
-        <Property name="MouseAutoRepeatEnabled" value="True" />
-        <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="VerticalSlider" value="true" />
+        <Property name="MouseAutoRepeatEnabled" value="true" />
+        <Property name="WantsMultiClickEvents" value="false" />
         <Property name="Size" value="{{0, 16}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea" />
         <Child  type="TaharezLook/SliderThumb" nameSuffix="__auto_thumb__">
@@ -1278,8 +1278,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
-        <Property name="HorzFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="HorzFree" value="true" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 48}, {0, 16}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1396,8 +1396,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
-        <Property name="VertFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="VertFree" value="true" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 16}, {0, 48}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1443,7 +1443,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbar">
-        <Property name="VerticalScrollbar" value="True" />
+        <Property name="VerticalScrollbar" value="true" />
         <Property name="Size" value="{{0, 16}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -1979,8 +1979,8 @@
         <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
         <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
-        <Property name="BackgroundEnabled" value="True" />
-        <Property name="FrameEnabled" value="True" />
+        <Property name="BackgroundEnabled" value="true" />
+        <Property name="FrameEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
@@ -2075,8 +2075,8 @@
         <PropertyLinkDefinition name="VertScrollPageSize" widget="__auto_vscrollbar__" targetProperty="PageSize" type="float" />
         <PropertyLinkDefinition name="VertScrollDocumentSize" widget="__auto_vscrollbar__" targetProperty="DocumentSize" type="float" />
 
-        <Property name="FrameEnabled" value="True" />
-        <Property name="BackgroundEnabled" value="True" />
+        <Property name="FrameEnabled" value="true" />
+        <Property name="BackgroundEnabled" value="true" />
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
@@ -2243,7 +2243,7 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="TaharezLook/MouseMoveCursor" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 192}, {0, 32}}" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
@@ -2405,7 +2405,7 @@
     -->
     <WidgetLook name="TaharezLook/ListHeader">
         <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -2832,7 +2832,7 @@
                 <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
-            <Property name="NonClient" value="True" />
+            <Property name="NonClient" value="true" />
         </Child>
         <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
             <Area>
@@ -2840,7 +2840,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="NonClient" value="True" />
+            <Property name="NonClient" value="true" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -3221,7 +3221,7 @@
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="BottomEdge" />
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True" />
+            <Property name="AlwaysOnTop" value="true" />
             <Property name="NormalImage" value="TaharezLook/TabButtonScrollLeftNormal" />
             <Property name="HoverImage" value="TaharezLook/TabButtonScrollLeftHover" />
             <Property name="PushedImage" value="TaharezLook/TabButtonScrollLeftHover" />
@@ -3250,7 +3250,7 @@
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height" />
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="True" />
+            <Property name="AlwaysOnTop" value="true" />
             <Property name="NormalImage" value="TaharezLook/TabButtonScrollRightNormal" />
             <Property name="HoverImage" value="TaharezLook/TabButtonScrollRightHover" />
             <Property name="PushedImage" value="TaharezLook/TabButtonScrollRightHover" />
@@ -3270,7 +3270,7 @@
         <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="WantsMultiClickEvents" value="false" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
@@ -3624,8 +3624,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbarThumb">
-        <Property name="VertFree" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="VertFree" value="true" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 10}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -3671,7 +3671,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbar">
-        <Property name="VerticalScrollbar" value="True" />
+        <Property name="VerticalScrollbar" value="true" />
         <Property name="Size" value="{{0, 16}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -3964,7 +3964,7 @@
                 <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
-            <Property name="NonClient" value="True" />
+            <Property name="NonClient" value="true" />
         </Child>
         <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
             <Area>
@@ -3972,7 +3972,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="NonClient" value="True" />
+            <Property name="NonClient" value="true" />
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -4010,8 +4010,8 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="Selectable" value="True" />
-        <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="Selectable" value="true" />
+        <Property name="MouseInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
