@@ -912,12 +912,12 @@ void Editbox::addEditboxProperties(void)
     const String& propertyOrigin = WidgetTypeName;
     
     CEGUI_DEFINE_PROPERTY(Editbox, bool,
-          "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
+          "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
           &Editbox::setReadOnly, &Editbox::isReadOnly, false
     );
     
     CEGUI_DEFINE_PROPERTY(Editbox, bool,
-          "MaskText","Property to get/set the mask text setting for the Editbox.  Value is either \"True\" or \"False\".",
+          "MaskText","Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
           &Editbox::setTextMasked, &Editbox::isTextMasked, false /* TODO: Inconsistency */
     );
     

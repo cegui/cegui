@@ -1049,17 +1049,17 @@ void ListHeader::addHeaderProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
-        "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".",
+        "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"true\" or \"false\".",
         &ListHeader::setSortingEnabled, &ListHeader::isSortingEnabled, true /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
-        "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
+        "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"true\" or \"false\".",
         &ListHeader::setColumnSizingEnabled, &ListHeader::isColumnSizingEnabled, true /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
-        "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
+        "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"true\" or \"false\".",
         &ListHeader::setColumnDraggingEnabled, &ListHeader::isColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
     

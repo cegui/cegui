@@ -59,7 +59,7 @@ namespace CEGUI
 
             - ReversedProgress - boolean property.
               Determines whether the progress grows in the opposite direction to
-              what is considered 'usual'.  Set to "True" to have progress grow
+              what is considered 'usual'.  Set to "true" to have progress grow
               towards the left or bottom of the progress area.  Optional.
     */
     class COREWRSET_API FalagardProgressBar : public WindowRenderer

@@ -435,11 +435,11 @@ void ItemListBase::addItemListBaseProperties(void)
     const String propertyOrigin("ItemListBase");
 
         CEGUI_DEFINE_PROPERTY(ItemListBase, bool,
-            "AutoResizeEnabled", "Property to get/set the state of the auto resizing enabled setting for the ItemListBase.  Value is either \"True\" or \"False\".",
+            "AutoResizeEnabled", "Property to get/set the state of the auto resizing enabled setting for the ItemListBase.  Value is either \"true\" or \"false\".",
             &ItemListBase::setAutoResizeEnabled, &ItemListBase::isAutoResizeEnabled, false
         );
         CEGUI_DEFINE_PROPERTY(ItemListBase, bool,
-            "SortEnabled", "Property to get/set the state of the sorting enabled setting for the ItemListBase.  Value is either \"True\" or \"False\".",
+            "SortEnabled", "Property to get/set the state of the sorting enabled setting for the ItemListBase.  Value is either \"true\" or \"false\".",
             &ItemListBase::setSortEnabled, &ItemListBase::isSortEnabled, false
         );
         CEGUI_DEFINE_PROPERTY(ItemListBase, ItemListBase::SortMode,
