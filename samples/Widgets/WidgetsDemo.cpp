@@ -400,7 +400,7 @@ void WidgetDemo::initialiseWidgetsEventsLog()
     d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.25f)));
     d_widgetsEventsLog->setFont("DejaVuSans-12");
 
-    d_widgetsEventsLog->setProperty("VertScrollbar", "True"); 
+    d_widgetsEventsLog->setProperty("VertScrollbar", "true"); 
 
     d_widgetsEventsLog->setProperty("HorzFormatting", "WordWrapLeftAligned");
 
@@ -606,7 +606,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
     if(widgetType.compare("StaticText") == 0)
     {
         if(widgetWindow->isPropertyPresent("VertScrollbar"))
-            widgetWindow->setProperty("VertScrollbar", "True"); 
+            widgetWindow->setProperty("VertScrollbar", "true"); 
 
         if(widgetWindow->isPropertyPresent("HorzFormatting"))
             widgetWindow->setProperty("HorzFormatting", "WordWrapLeftAligned");
