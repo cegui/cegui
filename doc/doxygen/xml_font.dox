@@ -1,0 +1,137 @@
+/**
+@page xml_font Font XML files.
+@author Paul D Turner
+
+Font files can define one of two types of font:
+- A FreeType font, which is based upon standard font files - such as .ttf
+  files - where glyphs get dynamically rendered to an internal cache as needed.
+- A Pixmap font, which is based on an Imageset that contains the predrawn bitmap
+  representations of the character glyphs the font will render.
+
+<br>
+@section xml_font_overview Overview
+The reference for each element is arranged into sections, as described below:
+- Purpose:
+    - This section describes what the elements general purpose is within the
+      specifications.
+
+- Attributes:
+    - This section describes available attributes for the elements, and whether
+      they are required or optional.
+
+- Usage:
+    - Describes where the element may appear, whether the element may have
+      sub-elements, and other important usage information.
+
+- Examples:
+    - For many elements, this section will contain brief examples showing the
+      element used in context.
+
+<br>
+@section xml_font_font \<Font\> Element
+- Purpose:
+    - The \<Font\> element is the root element in XML font definition files.
+
+- Attributes:
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI font version is: 3
+    - @c type: Specifies the type of font being defined.  This should be one of
+      the following values:
+        - @c FreeType: Indicates a font based upon a standard font file (such as
+          a true-type '.ttf' font).
+        - @c Pixmap: Indicates a font based upon an Imageset which defines
+          Images for the font glyphs.
+    - @c name: Specifies the name that will be used to identify the Font within
+      the CEGUI system.  Required attribute.
+    - @c filename: Specifies the path to the associated resource for the font.
+      Required attribute.
+        - For FreeType type fonts this should reference a standard font file
+          loadable by the freetype2 library (such as a .ttf file, or similar).
+        - For Pixmap type fonts this should reference an an Imageset.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file given in the @c Filename attribute.
+      For Pixmap type fonts, this may be the special value @c "*" to indicate
+      the Imagseset specified in @c Filename is actually the name of an already
+      loaded Imagesest rather than the name of an Imageset XMl file to be
+      loaded.  Optional attribute.
+    - @c size: Specifies the point size for a FreeType type font.  This is
+      ignored for Pixmap type fonts.  Optional attribute, default is 12.
+    - @c antiAlias: Boolean attribute that states whether the font should be
+      rendered anti-aliased.  This setting only affects FreeType type fonts.
+      Optional attribute, default is true.
+    - @c autoScaled: Property that specifies how to scale glyphs in relation to
+      the specified native resolution. The native resolution values are intended
+      to indicate the resolution that would result in a one-to-one
+      (i.e. unscaled) mapping from source to destination. At display resolutions
+      higher than the native, the glyphs will be scaled @e up to
+      take up more space, and at display resolutions lower than the native,
+      glyphs will be scaled @e down to take up less space.
+      Possible values for this attribute are as follows:
+        - vertical - glyphs are auto scaled depending on the native resolution
+          height and the current resolution height. Horizontal scaling is
+          computed appropriately to maintain aspect ratio.
+        - horizontal - glyphs are auto scaled depending on the native resolution
+          width and the current resolution width. Vertical scaling is
+          computed appropriately to maintain aspect ratio.
+        - min - Vertical and horizontal scaling factors are calculated as above
+          and glyphs are auto scaled according to the smaller of the two scaling
+          factors. Aspect ratio is maintained.
+        - max - Vertical and horizontal scaling factors are calculated as above
+          and glyphs are auto scaled according to the larger of the two scaling
+          factors. Aspect ratio is maintained.
+        - true - Vertical and horizontal scaling factors are calculated as above
+          and glyph height and width are scaled independently.
+          Aspect ratio is @em not maintained.
+        - false - no auto scaling of glyphs will be performed.
+      Optional attribute, default is false.
+    - @c nativeHorzRes: When AutoScaled is enabled, specifies the horizontal
+      screen resolution that will result in an unscaled, one-to-one mapping of
+      pixels from the source image to the destination surface.
+      Optional attribute, default is 640.
+    - @c nativeVertRes: When AutoScaled is enabled, specifies the vertical
+      screen resolution that will result in an unscaled, one-to-one mapping of
+      pixels from the source image to the destination surface.
+      Optional attribute, default is 480.
+    - @c lineSpacing: Specifies a line spacing value to be used in preference
+      to what is extracted from the underlying font file (useful if the font
+      file is made with a bad line spacing value).  If set to zero, the value
+      from the underlying font file is used instead.  This setting only affects
+      FreeType type fonts.
+      Optional attribute, default is 0.
+
+- Usage:
+    - The \<Font> element is the root element for font files.
+    - The \<Font> element may contain any number of \<Mapping> elements.
+    - No element may contain a \<Font> element as a sub-element.
+
+- Examples:
+
+<br>
+@section xml_font_mapping \<Mapping\> Element
+- Purpose:
+    - The \<Mapping\> element is used only with Pixmap type fonts and defines a
+      mapping between a UTF32 codepoint value and an Image defined on the
+      associated Imageset.  A Mapping must be supplied for each codepoint that
+      the font is to have available for rendering.
+
+- Attributes:
+    - @c codepoint: Specifies the Unicode codepoint to produce a mapping for.
+      Required attribute.
+    - @c image: Specifies the name of the image to map to the codepoint
+      specified in @c Codepoint.  This named image must be defined for the
+      Imageset identified in the @c Filename attribute of the containing
+      \<Font\> element.
+    - @c horzAdvance: Specifies a number of pixels to advance the 'pen' position
+      after rendering the image specified in this mapping.  A value of -1 will
+      cause an appropriate value to be auto-calculated.
+      Optional attribute, default is -1.
+
+- Usage:
+    - The \<Mapping\> element may only appear as a sub-element of the \<Font>
+      element.
+    - The \<Mapping\> element may not contain any sub-elements.
+
+- Examples:
+
+
+*/

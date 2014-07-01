@@ -1,0 +1,78 @@
+/**
+@page licensing CEGUI License (and other licensing considerations)
+@author Paul D Turner
+
+@section licensing_sec_1 CEGUI library licensing
+The current version of CEGUI is licensed under the MIT License:
+@verbinclude COPYING
+
+Note that this license generally only covers the CEGUI code - either compiled
+or in source code form.  For licensing information regarding the data and media
+files that accompany CEGUI (under the datafiles directory), please see
+@subpage datafile_licensing for additional information.
+
+<br>
+@section licensing_sec_3 Dependency licensing
+- This sofware can be compiled to use the PCRE library by Philip Hazel.
+PCRE is Copyright (c) 1997-2009 University of Cambridge, All rights reserved.
+Please see @subpage pcre_lic for additional licensing information.
+- This software can be compiled to use the Freetype2 library to provide most of
+the font loading and rendering support.  Freetype2 is a free, high-quality, and
+portable font engine; see http://www.freetype.org for more information.
+- This software can be compiled to optionally include an embedded copy of the
+minibidi software from the Arabeyes project (http://www.arabeyes.org/).
+minibidi was written by Ahmad Khalifa and is licensed under the MIT license.
+- This software can be compiled to contain an embedded version of the
+stb_image.c code, which has been released into the public domain by it's author
+Sean Barrett (http://nothings.org/).
+- The OpenGLES Renderer module contains portions of code that is
+Copyright (C)1991-2000 Silicon Graphics, Inc. All Rights Reserved.
+See : http://oss.sgi.com/projects/FreeB/
+
+<br>
+@section licensing_sec_4 Licensing 101: What it all means!
+While CEGUI itself is licensed under the MIT license, it is important that users
+understand that you're probably not only using the CEGUI code, but also that of
+certain other libraries that CEGUI is built on top of - this means that you may
+have to additionally comply with the licensing of those other libraries and
+components as well.
+
+First I want to state that I'm not a 'license lawyer'; what follows is my
+personal interpretaion of the licensing situation.  If you're in any doubt at
+all, you should either directly contact the authors / license owners of the
+specific components you have concerns about, or - if you have cash to
+burn - consult a legal professional.
+
+The exact way that you determine which of the external licenses you need to give
+consideration to will largely depend upon the choices you make as regards to the
+various options you have when building CEGUI.
+
+At the very minimum you will need to consider CEGUI's MIT license and the BSD
+license of the string encoders library (unless you do not compile the Spinner
+widget code, in which case it's just CEGUI's MIT license).
+
+The next two libraries that are nearly always used are PCRE and FreeType2.  With
+MSVC++ builds using our provided dependency packages these libraries are always
+linked in statically; while on the Mac using Xcode our provided dependency
+packages use dynamic linking, although those component frameworks will generally
+be distributed as part of your application.  This means that on both of these
+systems you must comply with the license conditions for PCRE and FreeType2
+(again, this only applies if you have not explicitly disabled the use of these
+libraries).
+
+If you enabled bi-directional text support using the integrated copy of the
+minibidi code, then you need to consider the MIT license used for that code.
+
+Beyond these items, the other libraries that you will consider will depend upon
+your choices for renderering library, image codec library, XML parser and
+scripting module.  Basically this means if you're not using - and therefore not
+distributing - a particular module you do not need to worry about the licensing
+any of the dependency libraries that module may use.
+
+Generally the option modules use only the underlying library suggested in the
+name of the module; for example, the XercesParser module only uses the
+Xerces-C++ library and the FreeImageImageCodec uses FreeImage.  The only two
+potential "gotchas" exist with the Lua based scripting module that can use an
+embedded copy of the tolua++ code, and the OpenGL renderer module that can
+contain a copy of the OpenGL extension wrangler library (GLEW).
+*/

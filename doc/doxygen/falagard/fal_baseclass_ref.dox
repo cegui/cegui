@@ -1,0 +1,431 @@
+/**
+@page fal_baseclass_ref CEGUI Widget Base Type Requirements
+The following is a reference to the required elements in a WidgetLook as dictated by the widget base classes available within CEGUI.  We also state the recommended window renderer to be mapped from the FalagardWRBase module, though you are free to use a custom window renderer as your needs dictate.
+
+@section fal_baseclass_ref_sec_0 Section Contents
+@ref fal_baseclass_ref_sec_1 <br>
+@ref fal_baseclass_ref_sec_2 <br>
+@ref fal_baseclass_ref_sec_3 <br>
+@ref fal_baseclass_ref_sec_4 <br>
+@ref fal_baseclass_ref_sec_5 <br>
+@ref fal_baseclass_ref_sec_6 <br>
+@ref fal_baseclass_ref_sec_7 <br>
+@ref fal_baseclass_ref_sec_8 <br>
+@ref fal_baseclass_ref_sec_9 <br>
+@ref fal_baseclass_ref_sec_10 <br>
+@ref fal_baseclass_ref_sec_11 <br>
+@ref fal_baseclass_ref_sec_12 <br>
+@ref fal_baseclass_ref_sec_13 <br>
+@ref fal_baseclass_ref_sec_14 <br>
+@ref fal_baseclass_ref_sec_15 <br>
+@ref fal_baseclass_ref_sec_16 <br>
+@ref fal_baseclass_ref_sec_17 <br>
+@ref fal_baseclass_ref_sec_18 <br>
+@ref fal_baseclass_ref_sec_19 <br>
+@ref fal_baseclass_ref_sec_20 <br>
+@ref fal_baseclass_ref_sec_21 <br>
+@ref fal_baseclass_ref_sec_22 <br>
+@ref fal_baseclass_ref_sec_23 <br>
+@ref fal_baseclass_ref_sec_24 <br>
+@ref fal_baseclass_ref_sec_25 <br>
+@ref fal_baseclass_ref_sec_26 <br>
+@ref fal_baseclass_ref_sec_27 <br>
+@ref fal_baseclass_ref_sec_28 <br>
+@ref fal_baseclass_ref_sec_29 <br>
+@ref fal_baseclass_ref_sec_30 <br>
+
+
+@section fal_baseclass_ref_sec_1 DefaultWindow
+Base class intended to be used as a simple, generic container window.  The logic for this class does nothing.
+
+You should use a "Core/Default" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_2 CEGUI/Checkbox
+Base class providing logic for Checkbox / toggle button widgets.
+
+You should use a "Core/ToggleButton" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_3 CEGUI/ComboDropList
+Base class providing logic for the combo box drop down list sub-widget.  This is a specialisation of the "CEGUI/Listbox" class.
+
+You should use a "Core/Listbox" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+    </ul>
+</ul>
+
+@section fal_baseclass_ref_sec_4 CEGUI/Combobox
+Base class providing logic for the combo box widget.
+
+You should use a "Core/Default" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Editbox based widget with name suffix "__auto_editbox__"</li>
+        <li>ComboDropList based widget with name suffix "__auto_droplist__"</li>
+        <li>PushButton based widget with name suffix "__auto_button__"</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_5 CEGUI/DragContainer
+Base class providing logic for a generic container that supports drag and drop.
+
+You should use a "Core/Default" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_6 CEGUI/Editbox
+Base class providing logic for a basic, single line, editbox / textbox widget.
+
+You should use a "Core/Editbox" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_7 CEGUI/FrameWindow
+Base class providing logic for a window that is movable, sizable, and has a title-bar, frame, and a close button.
+
+You should use a "Core/FrameWindow" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Titlebar based widget with name suffix "__auto_titlebar__".  This widget will be used as the title bar for the frame window.</li>
+        <li>PushButton based widget with name suffix "__auto_closebutton__".  This widget will be used as the close button for the frame window.</li>
+    </ul>
+</ul>
+
+@section fal_baseclass_ref_sec_8 CEGUI/ItemEntry
+
+Base class providing logic for entries in supporting list widgets such as ItemListbox.
+
+You should use a "Core/ItemEntry" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_9 CEGUI/ItemListbox
+Base class providing logic for a listbox widget that is able to use ItemEntry based windows as items in the list.
+
+You should use a "Core/ItemListbox" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_10 CEGUI/ListHeader
+Base class providing logic for a multi columned header widget - intended for use on the multi column list.
+
+You should use a "Core/ListHeader" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_11 CEGUI/ListHeaderSegment
+Base class providing logic for a widget representing single segment / column of the ListHeader widget.
+
+You should use a "Core/ListHeaderSegment" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_12 CEGUI/Listbox
+Base class providing logic for a simple single column list widget.
+
+You should use a "Core/Listbox" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_13 CEGUI/MenuItem
+Base class providing logic for a MenuItem - intended for attaching to Menubar and PopupMenu based widgets.
+
+You should use a "Core/MenuItem" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_14 CEGUI/Menubar
+Base class providing logic for a menu bar.
+
+You should use a "Core/Menubar" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_15 CEGUI/MultiColumnList
+Base class providing logic for a multi-column list / grid widget supporting simple items based on non-window class ListboxItem.
+
+You should use a "Core/MultiColumnList" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+        <li>ListHeader based widget with name suffix "__auto_listheader__".  This widget will be used for the header (though technically, you can place it anywhere).</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_16 CEGUI/MultiLineEditbox
+Base class providing logic for a more advanced editbox / text box with support for multiple lines of text, word-wrapping, and so on.
+
+You should use a "Core/MultiLineEditbox" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+    </ul>
+
+    <li>Property initialiser definitions:</li>
+    <ul>
+        <li>SelectionBrushImage - defines name of image that will be painted for the text selection (this is applied on a per-line basis).</li>
+    </ul>
+</ul>
+
+@section fal_baseclass_ref_sec_17 CEGUI/PopupMenu
+Base class providing logic for a pop-up menu.
+
+You should use a "Core/PopupMenu" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_18 CEGUI/ProgressBar
+Base class providing logic for progress bar widgets.
+
+You should use a "Core/ProgressBar" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_19 CEGUI/PushButton
+Base class providing logic for a simple push button type widget.
+
+You should use a "Core/Button" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_20 CEGUI/RadioButton
+Base class providing logic for radio button style widgets.
+
+You should use a "Core/ToggleButton" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_21 CEGUI/ScrollablePane
+Base class providing logic for a widget that can scroll the content attached to it - which may cover an area much larger than the viewable area.
+
+You should use a "Core/ScrollablePane" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_22 CEGUI/Scrollbar
+Base class providing logic for a scrollbar type widget with a movable thumb and increase / decrease buttons.
+
+You should use a "Core/Scrollbar" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Thumb based widget with name suffix "__auto_thumb__".  This widget will be used for the scrollbar thumb.</li>
+        <li>PushButton based widget with name suffix "__auto_incbtn__".  This widget will be used as the increase button.</li>
+        <li>PushButton based widget with name suffix "__auto_decbtn__".  This widget will be used as the decrease button.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_23 CEGUI/Slider
+Base class providing logic for a simple slider widget with a movable thumb.
+
+You should use a "Core/Slider" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Thumb based widget with name suffix "__auto_thumb__".  This widget will be used for the slider thumb.</li>
+    </ul>
+</ul>
+
+@section fal_baseclass_ref_sec_24 CEGUI/Spinner
+Base class providing logic for a numerical spinner widget, with a text entry box and increase / decrease buttons.
+
+You should use a "Core/Default" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Editbox based widget with name suffix "__auto_editbox__".  This widget will be used as the text box / display portion of the widget.</li>
+        <li>PushButton based widget with name suffix "__auto_incbtn__".  This widget will be used as the increase button.</li>
+        <li>PushButton based widget with name suffix "__auto_decbtn__".  This widget will be used as the decrease button.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_25 CEGUI/TabButton
+Base class providing logic for the tabs within a TabControl widget.
+
+You should use a "Core/TabButton" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_26 CEGUI/TabControl
+Base class providing logic for a widget supporting multiple tabbed content pages.
+
+You should use a "Core/TabControl" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>TabPane based widget with name suffix "__auto_TabPane__".  This widget will be used as the content viewing pane.</li>
+        <li>DefaultWindow based widget with name suffix "__auto_TabPane__Buttons".  This widget will be used as a container for the tab buttons. Optional.</li>
+        <li>PushButton based widget with name suffix "__auto_TabPane__ScrollLeft".  This widget is used to scroll the tab bar buttons left. Optional.</li>
+        <li>PushButton based widget with name suffix "__auto_TabPane__ScrollRight".  This widget is used to scroll the tab bar buttons right. Optional.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_27 CEGUI/Thumb
+Base class providing logic for a movable 'tumb' button; for use as a component in other widgets such as scrollbars and sliders.
+
+You should use a "Core/Button" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_28 CEGUI/Titlebar
+Base class providing logic for a title / caption bar. This should only be used as a component of the FrameWindow widget.
+
+You should use a "Core/Titlebar" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+
+@section fal_baseclass_ref_sec_29 CEGUI/Tooltip
+Base class providing logic for a simple tooltip type widget.
+
+You should use a "Core/Tooltip" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>This class currently has no WidgetLook requirements.</li>
+</ul>
+
+@section fal_baseclass_ref_sec_30 CEGUI/Tree
+Base class providing logic for a basic Tree type widget.
+
+You should use a "Core/Tree" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+    </ul>
+    
+    <li>Imagery section definitions:</li>
+    <ul>
+        <li>ImagerySection named "OpenTreeButton".  This imagery is diplayed for the root of a subtree that is closed / collapsed to indicate that the subtree may be opened / expanded.</li>
+        <li>ImagerySection named "CloseTreeButton".  This imagery is diplayed for the root of a subtree that is opened / expanded to indicate that the subtree may be closed / collapsed.</li>
+    </ul>
+</ul>
+
+*/
