@@ -37,7 +37,7 @@ TreeViewWindowRenderer::TreeViewWindowRenderer(const String& type) :
     ItemViewWindowRenderer(type)
 {
 }
-
+static const float DefaultSubtreeExpanderMargin = 5.0f;
 //----------------------------------------------------------------------------//
 const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
@@ -54,8 +54,22 @@ TreeViewItemRenderingState::TreeViewItemRenderingState() :
 
 //----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
-    ItemView(type, name)
+    ItemView(type, name),
+    d_subtreeExpanderMargin(DefaultSubtreeExpanderMargin)
 {
+    addTreeViewProperties();
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::addTreeViewProperties()
+{
+    const String& propertyOrigin = "TreeView";
+
+    CEGUI_DEFINE_PROPERTY(TreeView, float,
+        "SubtreeExpanderMargin", "Property to access the margin around the subtree expander. Value is a float. Default is 5.0f",
+        &TreeView::setSubtreeExpanderMargin, &TreeView::getSubtreeExpanderMargin,
+        DefaultSubtreeExpanderMargin
+        );
 }
 
 //----------------------------------------------------------------------------//
@@ -67,6 +81,18 @@ TreeView::~TreeView()
 const TreeViewItemRenderingState& TreeView::getRootItemState() const
 {
     return d_rootItemState;
+}
+
+//----------------------------------------------------------------------------//
+float TreeView::getSubtreeExpanderMargin() const
+{
+    return d_subtreeExpanderMargin;
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::setSubtreeExpanderMargin(float value)
+{
+    d_subtreeExpanderMargin = value;
 }
 
 //----------------------------------------------------------------------------//
@@ -419,4 +445,5 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
 
     return item;
 }
+
 }

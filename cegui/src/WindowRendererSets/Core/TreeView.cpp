@@ -35,7 +35,6 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 const String FalagardTreeView::TypeName("Core/TreeView");
-const float SUBTREE_EXPANDER_MARGIN = 5.0f;
 
 //----------------------------------------------------------------------------//
 FalagardTreeView::FalagardTreeView(const String& type) :
@@ -68,6 +67,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
     Vector2f& item_pos, const TreeViewItemRenderingState& item_to_render,
     size_t depth)
 {
+    float expander_margin = tree_view->getSubtreeExpanderMargin();
     for (size_t i = 0; i < item_to_render.d_renderedChildren.size(); ++i)
     {
         TreeViewItemRenderingState item = item_to_render.d_renderedChildren.at(i);
@@ -75,23 +75,25 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         Sizef size(item.d_size);
 
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
+        float indent = d_subtreeExpanderImagerySize.d_width;
         if (item.d_totalChildCount > 0)
         {
             const ImagerySection* section = item.d_subtreeIsExpanded
                 ? d_subtreeCollapserImagery : d_subtreeExpanderImagery;
 
             Rectf button_rect;
-            button_rect.left(item_pos.d_x + SUBTREE_EXPANDER_MARGIN);
-            button_rect.top(item_pos.d_y + SUBTREE_EXPANDER_MARGIN);
+            button_rect.left(item_pos.d_x + expander_margin);
+            button_rect.top(item_pos.d_y + expander_margin);
             button_rect.setSize(d_subtreeExpanderImagerySize);
-            button_rect.right(button_rect.right() - SUBTREE_EXPANDER_MARGIN);
 
             Rectf button_clipper(button_rect.getIntersection(items_area));
             section->render(*tree_view, button_rect, 0, &button_clipper);
+
+            indent = button_rect.getWidth() + expander_margin;
         }
 
         Rectf item_rect;
-        item_rect.left(item_pos.d_x + d_subtreeExpanderImagerySize.d_width);
+        item_rect.left(item_pos.d_x + indent);
         item_rect.top(item_pos.d_y);
         item_rect.setSize(size);
 
@@ -104,14 +106,14 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         if (item.d_renderedChildren.empty())
             continue;
 
-        item_pos.d_x += d_subtreeExpanderImagerySize.d_width;
+        item_pos.d_x += indent;
 
         if (item.d_subtreeIsExpanded)
         {
             renderTreeItem(tree_view, items_area, item_pos, item, depth + 1);
         }
 
-        item_pos.d_x -= d_subtreeExpanderImagerySize.d_width;
+        item_pos.d_x -= indent;
     }
 }
 
@@ -125,6 +127,7 @@ static Sizef getImagerySize(const ImagerySection& section)
 //----------------------------------------------------------------------------//
 void FalagardTreeView::onLookNFeelAssigned()
 {
+    TreeView* tree_view = static_cast<TreeView*>(d_window);
     const WidgetLookFeel& wlf = getLookNFeel();
     d_subtreeExpanderImagery = &wlf.getImagerySection("SubtreeExpander");
     d_subtreeCollapserImagery = &wlf.getImagerySection("SubtreeCollapser");
@@ -132,8 +135,8 @@ void FalagardTreeView::onLookNFeelAssigned()
     Sizef open_size = getImagerySize(*d_subtreeExpanderImagery);
     Sizef close_size = getImagerySize(*d_subtreeCollapserImagery);
     d_subtreeExpanderImagerySize = Sizef(
-        (open_size.d_width + close_size.d_width) / 2.0f + SUBTREE_EXPANDER_MARGIN,
-        (open_size.d_height + close_size.d_height) / 2.0f + SUBTREE_EXPANDER_MARGIN);
+        (open_size.d_width + close_size.d_width) / 2.0f + tree_view->getSubtreeExpanderMargin(),
+        (open_size.d_height + close_size.d_height) / 2.0f + tree_view->getSubtreeExpanderMargin());
 }
 
 //----------------------------------------------------------------------------//
@@ -151,6 +154,8 @@ Rectf FalagardTreeView::getViewRenderArea(void) const
 //----------------------------------------------------------------------------//
 float FalagardTreeView::getSubtreeExpanderXIndent(int depth) const
 {
-    return depth * d_subtreeExpanderImagerySize.d_width;
+    return depth * (
+        d_subtreeExpanderImagerySize.d_width +
+        static_cast<TreeView*>(d_window)->getSubtreeExpanderMargin());
 }
 }

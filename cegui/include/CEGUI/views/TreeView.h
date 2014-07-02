@@ -103,6 +103,9 @@ public:
     virtual void prepareForRender();
     virtual ModelIndex indexAt(const Vector2f& position);
 
+    float getSubtreeExpanderMargin() const;
+    void setSubtreeExpanderMargin(float value);
+
     TreeViewItemRenderingState* getTreeViewItemForIndex(const ModelIndex& index);
 
 protected:
@@ -121,10 +124,13 @@ private:
     typedef std::vector<TreeViewItemRenderingState> ItemStateVector;
 
     TreeViewItemRenderingState d_rootItemState;
-
     TreeViewItemRenderingState computeRenderingStateForIndex(
         const ModelIndex& parent_index, size_t child_id,
         float& rendered_max_width, float& rendered_total_height);
+
+    float d_subtreeExpanderMargin;
+
+    void addTreeViewProperties();
 
     void computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
         const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
