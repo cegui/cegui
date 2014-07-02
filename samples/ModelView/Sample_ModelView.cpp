@@ -181,11 +181,9 @@ bool ModelViewDemo::handleUpdateTreeItemName(const EventArgs& e)
 //----------------------------------------------------------------------------//
 void ModelViewDemo::removeSelectedItemsFromView(ItemView* view)
 {
-    std::vector<ModelIndexSelectionState> selections = view->getIndexSelectionStates();
-    for (std::vector<ModelIndexSelectionState>::iterator itor = selections.begin();
-        itor != selections.end(); ++itor)
+    while(!view->getIndexSelectionStates().empty())
     {
-        d_inventoryModel.removeItem((*itor).d_selectedIndex);
+        d_inventoryModel.removeItem(view->getIndexSelectionStates().back().d_selectedIndex);
     }
 }
 

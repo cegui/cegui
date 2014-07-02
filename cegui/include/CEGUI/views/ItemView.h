@@ -139,7 +139,23 @@ public:
     //! Specifies whether this view requires processing before being able to render it.
     void setIsDirty(bool value);
 
-    //! Gets the current state of the indices used for selection.
+    /*!
+    \brief
+       Gets the current state of the indices used for selection.
+
+    \remark
+        This vector's iterator might get invalidated in the case when items are
+        removed from the underlying ItemModel while iterating over this vector.
+
+        In the following example you can see a way of using the selection states.
+        \code
+            while(!view->getIndexSelectionStates().empty())
+            {
+                ModelIndexSelectionState& state = view->getIndexSelectionStates().back();
+                // use selection state
+            }
+        \endcode
+    */
     const std::vector<ModelIndexSelectionState>& getIndexSelectionStates() const;
 
     /*!
