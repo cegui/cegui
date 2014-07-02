@@ -116,6 +116,7 @@ public:
     static const String EventVertScrollbarDisplayModeChanged;
     static const String EventHorzScrollbarDisplayModeChanged;
     static const String EventSelectionChanged;
+    static const String EventSortModeChanged;
 
     //!Sets the ItemModel to be used inside this view.
     virtual void setModel(ItemModel* item_model);
@@ -200,6 +201,11 @@ public:
     bool isMultiSelectEnabled() const;
     void setMultiSelectEnabled(bool enabled);
 
+    bool isSortEnabled() const;
+    void setSortEnabled(bool enabled);
+
+    virtual void resortView() = 0;
+
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
@@ -212,6 +218,7 @@ protected:
     ScrollbarDisplayMode d_horzScrollbarDisplayMode;
     bool d_isItemTooltipsEnabled;
     bool d_isMultiSelectEnabled;
+    bool d_isSortEnabled;
 
     //TODO: move this into the renderer instead?
     float d_renderedMaxWidth;
@@ -254,6 +261,7 @@ protected:
         bool is_cumulative, bool is_range);
     virtual bool handleSelection(const ModelIndex& index, bool should_select,
         bool is_cumulative, bool is_range);
+    void onSortModeChanged(WindowEventArgs& args);
 };
 
 }

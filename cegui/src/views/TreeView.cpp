@@ -446,4 +446,8 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
     return item;
 }
 
+//----------------------------------------------------------------------------//
+void TreeView::resortView()
+{
+}
 }

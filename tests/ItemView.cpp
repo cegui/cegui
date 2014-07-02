@@ -58,6 +58,8 @@ public:
     {
         // do nothing on purpose - we don't want to add all those scrollbars as children
     }
+
+    virtual void resortView() { }
 };
 
 //----------------------------------------------------------------------------//

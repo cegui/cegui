@@ -74,6 +74,8 @@ private:
     std::vector<ListViewItemRenderingState> d_items;
 
     void computeSelectionStateModelIndices();
+
+    virtual void resortView();
 };
 
 }
