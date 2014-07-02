@@ -138,4 +138,8 @@ const std::vector<ListViewItemRenderingState>& ListView::getItems() const
     return d_items;
 }
 
+//----------------------------------------------------------------------------//
+void ListView::resortView()
+{
+}
 }

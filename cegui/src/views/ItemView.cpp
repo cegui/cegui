@@ -80,6 +80,7 @@ const String ItemView::VertScrollbarName("__auto_vscrollbar__");
 const String ItemView::EventVertScrollbarDisplayModeChanged("VertScrollbarDisplayModeChanged");
 const String ItemView::EventHorzScrollbarDisplayModeChanged("HorzScrollbarDisplayModeChanged");
 const String ItemView::EventSelectionChanged("SelectionChanged");
+const String ItemView::EventSortModeChanged("SortModeChanged");
 
 //----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
@@ -94,6 +95,7 @@ ItemView::ItemView(const String& type, const String& name) :
     d_horzScrollbarDisplayMode(SDM_WhenNeeded),
     d_isItemTooltipsEnabled(false),
     d_isMultiSelectEnabled(false),
+    d_isSortEnabled(false),
     d_renderedMaxWidth(0),
     d_renderedTotalHeight(0),
     d_eventChildrenAddedConnection(0),
@@ -141,6 +143,11 @@ void ItemView::addItemViewProperties()
     CEGUI_DEFINE_PROPERTY(ItemView, bool,
         "MultiSelect", "Property to get/set the multi-select setting of the item view. Value is either \"True\" or \"False\".",
         &ItemView::setMultiSelectEnabled, &ItemView::isMultiSelectEnabled, false
+        );
+
+    CEGUI_DEFINE_PROPERTY(ItemView, bool,
+        "Sort", "Property to get/set if the item view is sorting its items. Value is either \"True\" or \"False\".",
+        &ItemView::setSortEnabled, &ItemView::isSortEnabled, false
         );
 }
 
@@ -659,5 +666,34 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
     WindowEventArgs args(this);
     onSelectionChanged(args);
     return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::isSortEnabled() const
+{
+    return d_isSortEnabled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setSortEnabled(bool enabled)
+{
+    if (d_isSortEnabled == enabled)
+        return;
+
+    d_isSortEnabled = enabled;
+
+    if (enabled)
+        resortView();
+
+    WindowEventArgs args(this);
+    onSortModeChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::onSortModeChanged(WindowEventArgs& args)
+{
+    invalidateView(false);
+    //TODO: make all events be triggered on view's event namespace.
+    fireEvent(EventSortModeChanged, args);
 }
 }
