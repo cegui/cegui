@@ -55,9 +55,6 @@ void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
     d_viewportValid = false;
 
     initRenderTarget(target);
-
-
-
 }
 
 //----------------------------------------------------------------------------//

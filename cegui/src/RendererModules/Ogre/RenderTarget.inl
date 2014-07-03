@@ -128,11 +128,11 @@ const Rectf& OgreRenderTarget<T>::getArea() const
 template <typename T>
 void OgreRenderTarget<T>::activate()
 {
-    if (!d_matrixValid)
-        updateMatrix();
+	if (!d_matrixValid)
+		updateMatrix();
 
-    if (!d_viewportValid)
-        updateViewport();
+	if (!d_viewportValid)
+		updateViewport();
 
 	d_renderSystem._setViewport(d_viewport);
 
