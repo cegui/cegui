@@ -39,11 +39,13 @@ public:
     virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
     virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& model_index);
     virtual bool areIndicesEqual(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2);
+    virtual int compareIndices(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2);
     virtual CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index);
     virtual int getChildId(const CEGUI::ModelIndex& model_index);
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
     virtual CEGUI::ModelIndex getRootIndex();
+
 
 
     std::vector<CEGUI::String> d_items;
