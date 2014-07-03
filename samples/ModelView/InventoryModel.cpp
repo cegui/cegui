@@ -241,6 +241,18 @@ bool InventoryModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex&
 }
 
 //----------------------------------------------------------------------------//
+int InventoryModel::compareIndices(const ModelIndex& index1, const ModelIndex& index2)
+{
+    if (areIndicesEqual(index1, index2))
+        return 0;
+
+    InventoryItem* item1 = static_cast<InventoryItem*>(index1.d_modelData);
+    InventoryItem* item2 = static_cast<InventoryItem*>(index2.d_modelData);
+
+    return item1->d_name.compare(item2->d_name);
+}
+
+//----------------------------------------------------------------------------//
 int InventoryModel::getChildId(const ModelIndex& model_index)
 {
     ModelIndex parent_index = getParentIndex(model_index);
@@ -318,6 +330,7 @@ void InventoryModel::updateItemName(const CEGUI::ModelIndex& index, const String
 
     notifyChildrenDataChanged(getParentIndex(index), 0, 1);
 }
+
 //----------------------------------------------------------------------------//
 std::ostream& operator<<(std::ostream& output, const InventoryItem& item)
 {

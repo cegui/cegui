@@ -151,6 +151,15 @@ public:
 
     /*!
     \brief
+        Compares semantically the contents of the specified two indices and returns:
+        - 0 if they are equal.
+        - -1 if first index is less than second index.
+        - 1 if the first index is bigger than the second index.
+    */
+    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) = 0;
+
+    /*!
+    \brief
         Returns the ModelIndex which is parent for the specified ModelIndex.
     */
     virtual ModelIndex getParentIndex(const ModelIndex& model_index) = 0;

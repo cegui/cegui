@@ -87,6 +87,7 @@ public:
     virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
     virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& parent_index);
     virtual bool areIndicesEqual(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2);
+    virtual int compareIndices(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2);
     virtual CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index);
     virtual int getChildId(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::ModelIndex getRootIndex();
@@ -96,6 +97,7 @@ public:
     InventoryItem& getInventoryRoot() { return *d_inventoryRoot; }
 private:
     void deleteChildren(InventoryItem* item, bool notify);
+
 
     InventoryItem* d_inventoryRoot;
     int d_randomItemsCount;

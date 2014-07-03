@@ -76,6 +76,12 @@ bool ItemModelStub::areIndicesEqual(const ModelIndex& index1, const ModelIndex& 
 }
 
 //----------------------------------------------------------------------------//
+int ItemModelStub::compareIndices(const ModelIndex& index1, const ModelIndex& index2)
+{
+    throw std::exception("The method or operation is not implemented.");
+}
+
+//----------------------------------------------------------------------------//
 int ItemModelStub::getChildId(const ModelIndex& model_index)
 {
     String* str = static_cast<String*>(model_index.d_modelData);
