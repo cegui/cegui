@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIComboDropList.h
 	created:	13/6/2004
 	author:		Paul D Turner
 

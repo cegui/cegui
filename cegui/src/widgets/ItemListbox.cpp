@@ -1,5 +1,4 @@
 /************************************************************************
-    filename:   CEGUIItemListbox.h
     created:    Tue Sep 27 2005
     author:     Tomas Lindquist Olsen
 *************************************************************************/
@@ -296,7 +295,7 @@ void ItemListbox::addItemListboxProperties()
 {
     const String propertyOrigin("ItemListbox");
     CEGUI_DEFINE_PROPERTY(ItemListbox, bool,
-        "MultiSelect","Property to get/set the state of the multiselect enabled setting for the ItemListbox.  Value is either \"True\" or \"False\".",
+        "MultiSelect","Property to get/set the state of the multiselect enabled setting for the ItemListbox.  Value is either \"true\" or \"false\".",
         &ItemListbox::setMultiSelectEnabled, &ItemListbox::isMultiSelectEnabled, false
     );
 }

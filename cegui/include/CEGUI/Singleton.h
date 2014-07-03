@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUISingleton.h
 	created:	22/2/2004
 	author:		Paul D Turner
 

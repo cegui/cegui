@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIFrameWindow.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
 	
@@ -744,37 +743,37 @@ void FrameWindow::addFrameWindowProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "SizingEnabled", "Property to get/set the state of the sizable setting for the FrameWindow. Value is either \"True\" or \"False\".",
+        "SizingEnabled", "Property to get/set the state of the sizable setting for the FrameWindow. Value is either \"true\" or \"false\".",
         &FrameWindow::setSizingEnabled, &FrameWindow::isSizingEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "FrameEnabled", "Property to get/set the setting for whether the window frame will be displayed. Value is either \"True\" or \"False\".",
+        "FrameEnabled", "Property to get/set the setting for whether the window frame will be displayed. Value is either \"true\" or \"false\".",
         &FrameWindow::setFrameEnabled, &FrameWindow::isFrameEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "TitlebarEnabled", "Property to get/set the setting for whether the window title-bar will be enabled (or displayed depending upon choice of final widget type). Value is either \"True\" or \"False\".",
+        "TitlebarEnabled", "Property to get/set the setting for whether the window title-bar will be enabled (or displayed depending upon choice of final widget type). Value is either \"true\" or \"false\".",
         &FrameWindow::setTitleBarEnabled, &FrameWindow::isTitleBarEnabled, true
     ); // TODO: Inconsistency between Titlebar and TitleBar
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "CloseButtonEnabled", "Property to get/set the setting for whether the window close button will be enabled (or displayed depending upon choice of final widget type). Value is either \"True\" or \"False\".",
+        "CloseButtonEnabled", "Property to get/set the setting for whether the window close button will be enabled (or displayed depending upon choice of final widget type). Value is either \"true\" or \"false\".",
         &FrameWindow::setCloseButtonEnabled, &FrameWindow::isCloseButtonEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "RollUpEnabled", "Property to get/set the setting for whether the user is able to roll-up / shade the window. Value is either \"True\" or \"False\".",
+        "RollUpEnabled", "Property to get/set the setting for whether the user is able to roll-up / shade the window. Value is either \"true\" or \"false\".",
         &FrameWindow::setRollupEnabled, &FrameWindow::isRollupEnabled, true
     ); // TODO: Inconsistency between RollUp and Rollup
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "RollUpState", "Property to get/set the roll-up / shade state of the window.  Value is either \"True\" or \"False\".",
+        "RollUpState", "Property to get/set the roll-up / shade state of the window.  Value is either \"true\" or \"false\".",
         &FrameWindow::setRolledup, &FrameWindow::isRolledup, false /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
-        "DragMovingEnabled", "Property to get/set the setting for whether the user may drag the window around by its title bar. Value is either \"True\" or \"False\".",
+        "DragMovingEnabled", "Property to get/set the setting for whether the user may drag the window around by its title bar. Value is either \"true\" or \"false\".",
         &FrameWindow::setDragMovingEnabled, &FrameWindow::isDragMovingEnabled, true
     );
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIWidgetComponent.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -132,6 +131,11 @@ namespace CEGUI
 
         //! perform any processing required due to the given font having changed.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+
+        //! Default value for the HorzAlignment elements of the WidgetComponent
+        static const HorizontalAlignment HorizontalAlignmentDefault;
+        //! Default value for the VertAlignment elements of the WidgetComponent
+        static const VerticalAlignment VerticalAlignmentDefault;
 
     private:
         typedef std::vector<PropertyInitialiser

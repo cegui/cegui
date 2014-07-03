@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   PropertyDefinitionBase.h
     created:    Sat Jun 16 2012
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -81,14 +80,16 @@ public:
     */
     virtual void writeDefinitionXMLToStream(XMLSerializer& xml_stream) const;
 
+    //! The PropertyDefinition's user string name suffix, which is appended to each #d_userStringName
+    static const String UserStringNameSuffix;
+
 protected:
 
     /*!
     \brief
         Write out the text of the XML element type.  Note that you should
         not write the opening '<' character, nor any other information such
-        as attributes in this function.  The writeExtraAttributes function
-        can be used for writing attributes.
+        as attributes in this function.
 
     \param xml_stream
         XMLSerializer where xml data should be output.

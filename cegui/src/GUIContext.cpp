@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   GUIContext.cpp
     created:    Mon Jan 12 2009
     author:     Paul D Turner
 *************************************************************************/
@@ -83,6 +82,7 @@ void GUIContext::resetWindowContainingPointer()
 GUIContext::~GUIContext()
 {
     destroyDefaultTooltipWindowInstance();
+    deleteSemanticEventHandlers();
 
     if (d_rootWindow)
         d_rootWindow->setGUIContext(0);
@@ -716,6 +716,17 @@ void GUIContext::initializeSemanticEventHandlers()
             &GUIContext::handlePointerMoveEvent, this)));
 }
 
+//----------------------------------------------------------------------------//
+void GUIContext::deleteSemanticEventHandlers()
+{
+    for (std::map<int, SlotFunctorBase<InputEvent>*>::iterator itor = d_semanticEventHandlers.begin();
+        itor != d_semanticEventHandlers.end(); ++itor)
+    {
+        delete itor->second;
+    }
+}
+
+//----------------------------------------------------------------------------//
 bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
@@ -751,7 +762,7 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
     // make pointer position sane for this target window
     if (pa.window)
         pa.position = pa.window->getUnprojectedPosition(pa.position);
-    
+
     if (d_windowNavigator != 0)
         d_windowNavigator->setCurrentFocusedWindow(pa.window);
 

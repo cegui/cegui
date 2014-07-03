@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIExpatParser.cpp
     created:    Mon Mar 6 2006
     author:     Paul D Turner <paul@cegui.org.uk> (based on Dalfy's code)
 *************************************************************************/
@@ -47,7 +46,7 @@ ExpatParser::~ExpatParser(void)
 {
 }
 
-void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/)
+void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/, bool /*allowXmlValidation*/)
 {
     // All stuff goes here
     XML_Parser parser = XML_ParserCreate(0); // Create a parser

@@ -1,5 +1,4 @@
 /***********************************************************************
- *    filename:   PropertySet.cpp
  *    created:    11/6/2011
  *    author:     Martin Preisler
  *************************************************************************/
@@ -63,6 +62,7 @@ BOOST_AUTO_TEST_CASE(InternalClipboard)
     BOOST_CHECK_EQUAL(MIME_TYPE, retrievedMimeType);
     BOOST_CHECK_EQUAL(BUFFER_SIZE, retrievedBufferSize);
     BOOST_CHECK(memcmp(buffer, retrievedBuffer, BUFFER_SIZE) == 0); // 0 indicates that both blocks of memory are equal
+    delete[] buffer;
 }
 
 static CEGUI::String g_MimeType = "";
@@ -71,18 +71,25 @@ static size_t g_ClipboardSize = 0;
 
 class TestNativeClipboardProvider : public CEGUI::NativeClipboardProvider
 {
+private:
+    std::vector<void*> d_allocatedMemory;
 public:
     virtual ~TestNativeClipboardProvider()
-    {}
+    {
+        for (std::vector<void*>::iterator itor = d_allocatedMemory.begin();
+            itor != d_allocatedMemory.end(); ++itor)
+        {
+            delete[] *itor;
+        }
+    }
 
     virtual void sendToClipboard(const CEGUI::String& mimeType, void* buffer, size_t size)
     {
-        delete g_ClipboardBuffer;
-
         g_MimeType = mimeType;
         g_ClipboardSize = size;
         g_ClipboardBuffer = new CEGUI::uint8[size];
         memcpy(g_ClipboardBuffer, buffer, size);
+        d_allocatedMemory.push_back(g_ClipboardBuffer);
     }
 
     virtual void retrieveFromClipboard(CEGUI::String& mimeType, void*& buffer, size_t& size)
@@ -93,6 +100,7 @@ public:
         // we have to allocate buffer for the user of the native clipboard provider!
         buffer = new CEGUI::uint8[g_ClipboardSize];
         memcpy(buffer, g_ClipboardBuffer, g_ClipboardSize);
+        d_allocatedMemory.push_back(buffer);
     }
 };
 

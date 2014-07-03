@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   SemanticInputEvent.h
     created:    18/7/2013
     author:     Timotei Dolean <timotei21@gmail.com>
 

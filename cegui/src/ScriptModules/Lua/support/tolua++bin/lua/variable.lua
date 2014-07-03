@@ -279,6 +279,33 @@ function classVariable:register (pre)
  end
 end
 
+--- 
+-- LuaDoc Patch
+-- outputs an empty(without documentation) LuaDoc interface 
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function classVariable:output_luadoc()
+	if not self:check_public_access() then
+		return
+	end
+	local parent = self:inmodule() or self:innamespace() or self:inclass()
+	if not parent then
+		if classVariable._warning==nil then
+			warning("Mapping variable to global may degrade performance")
+			classVariable._warning = 1
+		end
+	end
+	local pType = cleanseType(self.type)
+	if (self.parent~=nil) then
+		output('---\n')
+		output('-- @field [parent=#'..cleanseType(self.parent.name)..'] #'..pType..' '..self.lname..'\n')
+	else
+		output('---\n')
+		output('-- @field [parent=#global] #'..pType..' '..self.lname..'\n')
+	end
+	output('\n')
+end
+
+
 -- Internal constructor
 function _Variable (t)
  setmetatable(t,classVariable)

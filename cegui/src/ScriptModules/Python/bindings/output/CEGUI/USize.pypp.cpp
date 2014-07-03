@@ -49,6 +49,8 @@ void register_USize_class(){
         }
         USize_exposer.def( bp::self != bp::self );
         USize_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
+        USize_exposer.def( bp::self * bp::self );
+        USize_exposer.def( bp::self * bp::other< CEGUI::Vector2< float > >() );
         USize_exposer.def( bp::self + bp::self );
         USize_exposer.def( bp::self - bp::self );
         USize_exposer.def( bp::self == bp::self );

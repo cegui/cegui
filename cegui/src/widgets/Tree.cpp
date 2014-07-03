@@ -1,5 +1,4 @@
 /***********************************************************************
-     filename:  CEGUITree.cpp
      created:   5-13-07
      author:    Jonathan Welch (Based on Code by David Durant)
  *************************************************************************/
@@ -1240,31 +1239,31 @@ void Tree::addTreeProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Tree, bool,
         "Sort", "Property to get/set the sort setting of the tree.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Tree::setSortingEnabled, &Tree::isSortEnabled, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Tree, bool,
         "MultiSelect", "Property to get/set the multi-select setting of the tree.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Tree::setMultiselectEnabled, &Tree::isMultiselectEnabled, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Tree, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
-        "bar of the tree.  Value is either \"True\" or \"False\".",
+        "bar of the tree.  Value is either \"true\" or \"false\".",
         &Tree::setShowVertScrollbar, &Tree::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Tree, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
-        "scroll bar of the tree.  Value is either \"True\" or \"False\".",
+        "scroll bar of the tree.  Value is either \"true\" or \"false\".",
         &Tree::setShowHorzScrollbar, &Tree::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Tree, bool,
         "ItemTooltips", "Property to access the show item tooltips setting of the tree.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Tree::setItemTooltipsEnabled, &Tree::isItemTooltipsEnabled, false /* TODO: Inconsistency */
     );
 }

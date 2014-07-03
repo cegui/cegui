@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUISequentialLayoutContainer.cpp
     created:    02/8/2010
     author:     Martin Preisler
 

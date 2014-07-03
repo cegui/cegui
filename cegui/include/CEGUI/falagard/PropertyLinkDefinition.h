@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPropertyLinkDefinition.h
     created:    Sat Oct 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -29,6 +28,7 @@
 #define _CEGUIFalPropertyLinkDefinition_h_
 
 #include "CEGUI/falagard/FalagardPropertyBase.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/IteratorBase.h"
 #include <vector>
 
@@ -39,7 +39,6 @@
 
 namespace CEGUI
 {
-extern const String S_parentIdentifier;
 
 /*!
 \brief
@@ -60,10 +59,7 @@ public:
                            bool redrawOnWrite, bool layoutOnWrite,
                            const String& fireEvent, const String& eventNamespace) :
         FalagardPropertyBase<T>(propertyName,
-                                "Falagard property link definition - links a "
-                                "property on this window to properties "
-                                "defined on one or more child windows, or "
-                                "the parent window.",
+                                Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue,
                                 initialValue, origin,
                                 redrawOnWrite, layoutOnWrite,
                                 fireEvent, eventNamespace)
@@ -149,7 +145,7 @@ protected:
     }
 
     //------------------------------------------------------------------------//
-    void updateLinkTargets(PropertyReceiver* receiver, 
+    void updateLinkTargets(PropertyReceiver* receiver,
                            typename Helper::pass_type value) const
     {
         LinkTargetCollection::const_iterator i = d_targets.begin();
@@ -167,18 +163,19 @@ protected:
     //------------------------------------------------------------------------//
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("PropertyLinkDefinition");
+        xml_stream.openTag(Falagard_xmlHandler::PropertyLinkDefinitionElement);
     }
 
     //------------------------------------------------------------------------//
-    void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
+    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
     {
         PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
 
-        // HACK: Here we abuse some intimate knowledge in that we know it's
-        // safe to write our sub-elements out although the function is named
-        // for writing attributes.  The alternative was to repeat code from the
-        // base class, also demonstrating intimate knowledge ;)
+        if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
+
+        if (!PropertyDefinitionBase::d_helpString.empty() && PropertyDefinitionBase::d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, PropertyDefinitionBase::d_helpString);
 
         LinkTargetCollection::const_iterator i(d_targets.begin());
 
@@ -186,23 +183,23 @@ protected:
         if (d_targets.size() == 1)
         {
             if (!i->first.empty())
-                xml_stream.attribute("widget", i->first);
+                xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, i->first);
 
             if (!i->second.empty())
-                xml_stream.attribute("targetProperty", i->second);
+                xml_stream.attribute(Falagard_xmlHandler::TargetPropertyAttribute, i->second);
         }
         // we have multiple targets, so write them as PropertyLinkTarget tags
         else
         {
             for ( ; i != d_targets.end(); ++i)
             {
-                xml_stream.openTag("PropertyLinkTarget");
+                xml_stream.openTag(Falagard_xmlHandler::PropertyLinkTargetElement);
 
                 if (!i->first.empty())
-                    xml_stream.attribute("widget", i->first);
+                    xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, i->first);
 
                 if (!i->second.empty())
-                    xml_stream.attribute("property", i->second);
+                    xml_stream.attribute(Falagard_xmlHandler::PropertyAttribute, i->second);
 
                 xml_stream.closeTag();
             }
@@ -218,7 +215,7 @@ protected:
             return static_cast<const Window*>(receiver);
 
         // handle link back to parent.  Return receiver if no parent.
-        if (name== S_parentIdentifier)
+        if (name == Falagard_xmlHandler::ParentIdentifier)
             return static_cast<const Window*>(receiver)->getParent();
 
         return static_cast<const Window*>(receiver)->getChild(name);

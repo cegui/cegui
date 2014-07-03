@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalComponentBase.cpp
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -26,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/ComponentBase.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Colour.h"
@@ -130,21 +130,21 @@ bool FalagardComponentBase::writeColoursXML(XMLSerializer& xml_stream) const
 
     if (!d_colourPropertyName.empty())
     {
-        xml_stream.openTag("ColourRectProperty");
-        xml_stream.attribute("name", d_colourPropertyName)
+        xml_stream.openTag(Falagard_xmlHandler::ColourRectPropertyElement);
+        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_colourPropertyName)
             .closeTag();
     }
     else if (!d_colours.isMonochromatic() ||
               d_colours.d_top_left != Colour(1,1,1,1))
     {
-        xml_stream.openTag("Colours")
-            .attribute("topLeft",
+        xml_stream.openTag(Falagard_xmlHandler::ColoursElement)
+            .attribute(Falagard_xmlHandler::TopLeftAttribute,
                 PropertyHelper<Colour>::toString(d_colours.d_top_left))
-            .attribute("topRight",
+            .attribute(Falagard_xmlHandler::TopRightAttribute,
                 PropertyHelper<Colour>::toString(d_colours.d_top_right))
-            .attribute("bottomLeft",
+            .attribute(Falagard_xmlHandler::BottomLeftAttribute,
                 PropertyHelper<Colour>::toString(d_colours.d_bottom_left))
-            .attribute("bottomRight",
+            .attribute(Falagard_xmlHandler::BottomRightAttribute,
                 PropertyHelper<Colour>::toString(d_colours.d_bottom_right))
             .closeTag();
     }

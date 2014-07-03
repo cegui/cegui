@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGuiDirectFBBaseApplication.cpp
     created:    4/10/2008
     author:     Keith Mok
 *************************************************************************/
@@ -30,7 +29,7 @@
 #endif
 
 #include "CEGUISamplesConfig.h"
-#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+#ifdef CEGUI_BUILD_RENDERER_DIRECTFB
 
 #include "CEGuiDirectFBBaseApplication.h"
 #include "CEGUI/RendererModules/DirectFB/Renderer.h"

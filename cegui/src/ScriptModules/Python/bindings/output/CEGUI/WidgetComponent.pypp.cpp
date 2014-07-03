@@ -10,13 +10,7 @@ void register_WidgetComponent_class(){
 
     { //::CEGUI::WidgetComponent
         typedef bp::class_< CEGUI::WidgetComponent > WidgetComponent_exposer_t;
-        WidgetComponent_exposer_t WidgetComponent_exposer = WidgetComponent_exposer_t( "WidgetComponent", "*!\n\
-            \n\
-                Class that encapsulates information regarding a sub-widget required for a widget.\n\
-        \n\
-            @todo \n\
-                This is not finished in the slightest!  There will be many changes here...\n\
-            *\n", bp::init< >() );
+        WidgetComponent_exposer_t WidgetComponent_exposer = WidgetComponent_exposer_t( "WidgetComponent", bp::init< >() );
         bp::scope WidgetComponent_scope( WidgetComponent_exposer );
         WidgetComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool >(( bp::arg("type"), bp::arg("look"), bp::arg("suffix"), bp::arg("renderer"), bp::arg("autoWindow") )) );
         { //::CEGUI::WidgetComponent::addEventAction

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalStaticText.cpp
     created:    Tue Jul 5 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -86,23 +85,23 @@ namespace CEGUI
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
             "VertScrollbar", "Property to get/set the setting for the vertical scroll bar."
-            "  Value is either \"True\" or \"False\".",
+            "  Value is either \"true\" or \"false\".",
             &FalagardStaticText::setVerticalScrollbarEnabled, &FalagardStaticText::isVerticalScrollbarEnabled,
             false);
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
             "HorzScrollbar", "Property to get/set the setting for the horizontal scroll bar."
-            "  Value is either \"True\" or \"False\".",
+            "  Value is either \"true\" or \"false\".",
             &FalagardStaticText::setHorizontalScrollbarEnabled, &FalagardStaticText::isHorizontalScrollbarEnabled,
             false);
 
-        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(FalagardStaticText, float,
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, float,
             "HorzExtent", "Property to get the current horizontal extent of the formatted text string."
             "  Value is a float indicating the pixel extent.",
             0, &FalagardStaticText::getHorizontalTextExtent,
             0);
 
-        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(FalagardStaticText, float,
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, float,
             "VertExtent", "Property to get the current vertical extent of the formatted text string."
             "  Value is a float indicating the pixel extent.",
             0, &FalagardStaticText::getVerticalTextExtent,

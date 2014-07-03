@@ -1,5 +1,4 @@
 /***********************************************************************
-filename:   WidgetDemo.cpp
 created:    12/7/2012
 author:     Lukas E Meindl
 *************************************************************************/
@@ -400,7 +399,7 @@ void WidgetDemo::initialiseWidgetsEventsLog()
     d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.25f)));
     d_widgetsEventsLog->setFont("DejaVuSans-12");
 
-    d_widgetsEventsLog->setProperty("VertScrollbar", "True"); 
+    d_widgetsEventsLog->setProperty("VertScrollbar", "true"); 
 
     d_widgetsEventsLog->setProperty("HorzFormatting", "WordWrapLeftAligned");
 
@@ -606,7 +605,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
     if(widgetType.compare("StaticText") == 0)
     {
         if(widgetWindow->isPropertyPresent("VertScrollbar"))
-            widgetWindow->setProperty("VertScrollbar", "True"); 
+            widgetWindow->setProperty("VertScrollbar", "true"); 
 
         if(widgetWindow->isPropertyPresent("HorzFormatting"))
             widgetWindow->setProperty("HorzFormatting", "WordWrapLeftAligned");
@@ -933,6 +932,11 @@ void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRo
     while(iter != propertyList.end())
     {
         const CEGUI::Property* curProperty = *iter;
+        
+        // We have to call this function to update the MCL because the items have changed their properties meanwhile and thus are eventually not sorted anymore
+        // When the order in the vector is not correct anymore this will result in an assert when adding a row. The following call will sort the list again and thus
+        // it will be ensured everything will be sorted before adding a new row.
+        d_widgetPropertiesDisplayWindow->handleUpdatedItemData();
 
         // Add an empty row to the MultiColumnList
         if(i >= d_widgetPropertiesDisplayWindow->getRowCount())

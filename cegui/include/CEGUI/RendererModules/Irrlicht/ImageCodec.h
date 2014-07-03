@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIIrrlichtImageCodec.h
     created:    Tue Aug 18 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

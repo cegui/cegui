@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUILibxmlParser.h
     created:    Mon Mar 6 2006
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -54,7 +53,7 @@ public:
     ~LibxmlParser(void);
 
     // implementation of abstract members of base class
-    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
+    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/);
 
 protected:
     // implementation of abstract members of base class

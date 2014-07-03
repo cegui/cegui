@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   PropertyDefinitionBase.cpp
     created:    Sat Jun 16 2012
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,9 +26,13 @@
  ***************************************************************************/
 #include "CEGUI/falagard/PropertyDefinitionBase.h"
 #include "CEGUI/XMLSerializer.h"
+#include "CEGUI/falagard/XMLHandler.h"
 
 namespace CEGUI
 {
+
+const String PropertyDefinitionBase::UserStringNameSuffix("_fal_auto_prop__");
+
 //----------------------------------------------------------------------------//
 PropertyDefinitionBase::PropertyDefinitionBase(const String& name,
                                                const String& help,
@@ -150,22 +153,19 @@ void PropertyDefinitionBase::writeDefinitionXMLToStream(
 void PropertyDefinitionBase::writeDefinitionXMLAttributes(
                                             XMLSerializer& xml_stream) const
 {
-    xml_stream.attribute("name", d_propertyName);
+    xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertyName);
 
     if (!d_initialValue.empty())
-        xml_stream.attribute("initialValue", d_initialValue);
-
-    if (!d_helpString.empty())
-        xml_stream.attribute("help", d_helpString);
+        xml_stream.attribute(Falagard_xmlHandler::InitialValueAttribute, d_initialValue);
 
     if (d_writeCausesRedraw)
-        xml_stream.attribute("redrawOnWrite", "true");
+        xml_stream.attribute(Falagard_xmlHandler::RedrawOnWriteAttribute, PropertyHelper<bool>::True);
 
     if (d_writeCausesLayout)
-        xml_stream.attribute("layoutOnWrite", "true");
+        xml_stream.attribute(Falagard_xmlHandler::LayoutOnWriteAttribute, PropertyHelper<bool>::True);
 
     if (!d_eventFiredOnWrite.empty())
-        xml_stream.attribute("fireEvent", d_eventFiredOnWrite);
+        xml_stream.attribute(Falagard_xmlHandler::FireEventAttribute, d_eventFiredOnWrite);
 }
 
 //----------------------------------------------------------------------------//

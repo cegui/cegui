@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIRenderEffectManager.h
     created:    Wed Dec 23 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

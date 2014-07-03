@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFrameComponent.h
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -334,6 +333,12 @@ public:
     void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     bool operator==(const FrameComponent& rhs) const;
+
+
+    //! Default value for the HorzFormat elements of the FrameComponent
+    static const HorizontalFormatting HorizontalFormattingDefault;
+    //! Default value for the VertFormat elements of the FrameComponent
+    static const VerticalFormatting VerticalFormattingDefault;
 
 protected:
     struct FrameImageSource

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPropertyHelper.cpp
     created:    6/7/2004
     author:     Paul D Turner
 
@@ -41,9 +40,16 @@
 #define snprintf _snprintf
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
+//! Definitions of static constants
+const CEGUI::String PropertyHelper<bool>::True("true");
+const CEGUI::String PropertyHelper<bool>::False("false");
+
+const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
+const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");
+const CEGUI::String PropertyHelper<AspectMode>::Ignore("Ignore");
 
 //----------------------------------------------------------------------------//
 PropertyHelper<Image*>::return_type
@@ -109,4 +115,4 @@ PropertyHelper<Font*>::string_return_type PropertyHelper<Font*>::toString(
 
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
+}

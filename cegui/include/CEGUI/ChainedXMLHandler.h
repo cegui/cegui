@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIChainedXMLHandler.h
     created:    Wed Aug 11 2010
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -64,7 +63,7 @@ protected:
     //! is the chained handler completed.
     bool d_completed;
     //! should the chained handler be deleted by us?
-    bool d_deleteChaniedHandler;
+    bool d_deleteChainedHandler;
 };
 
 

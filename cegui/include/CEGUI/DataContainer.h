@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIDataContainer.h
 	created:	10/8/2004
 	author:		James '_mental_' O'Sullivan
 	

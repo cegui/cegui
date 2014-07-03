@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPropertyDefinition.h
     created:    Sun Jun 26 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -29,6 +28,7 @@
 #define _CEGUIFalPropertyDefinition_h_
 
 #include "CEGUI/falagard/FalagardPropertyBase.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Logger.h"
 
 namespace CEGUI
@@ -47,7 +47,7 @@ public:
         FalagardPropertyBase<T>(name, help, initialValue, origin,
                                 redrawOnWrite, layoutOnWrite,
                                 fireEvent, eventNamespace),
-        d_userStringName(name + "_fal_auto_prop__")
+                                d_userStringName(name + PropertyDefinitionBase::UserStringNameSuffix)
     {
     }
 
@@ -68,7 +68,7 @@ public:
 
 protected:
     //------------------------------------------------------------------------//
-    typename Helper::safe_method_return_type 
+    typename Helper::safe_method_return_type
     getNative_impl(const PropertyReceiver* receiver) const
     {
         const Window* const wnd = static_cast<const Window*>(receiver);
@@ -117,7 +117,18 @@ protected:
     //------------------------------------------------------------------------//
     void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("PropertyDefinition");
+        xml_stream.openTag(Falagard_xmlHandler::PropertyDefinitionElement);
+    }
+    //------------------------------------------------------------------------//
+    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
+    {
+        PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
+
+        if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
+
+        if (!PropertyDefinitionBase::d_helpString.empty() && PropertyDefinitionBase::d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, PropertyDefinitionBase::d_helpString);
     }
 
     //------------------------------------------------------------------------//

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLTexture.cpp
     created:    Sun Jan 11 2009
     author:     Paul D Turner
 *************************************************************************/
@@ -407,8 +406,8 @@ void OpenGLTexture::blitToMemory(void* targetData)
 void OpenGLTexture::updateCachedScaleValues()
 {
     //Update the scale of a texel based on the absolute size
-    d_texelScaling.d_x = 1.0f / d_size.d_width;
-    d_texelScaling.d_y = 1.0f / d_size.d_height;
+    d_texelScaling.d_x = (d_size.d_width != 0.0f) ? (1.0f / d_size.d_width) : 0.0f;
+    d_texelScaling.d_y = (d_size.d_height != 0.0f) ? (1.0f / d_size.d_height) : 0.0f;
 }
 
 //----------------------------------------------------------------------------//

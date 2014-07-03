@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLFBOTextureTarget.h
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/

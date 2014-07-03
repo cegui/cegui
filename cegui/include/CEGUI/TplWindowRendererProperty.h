@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   TplWindowRendererProperty.h
     created:    27/08/2011
     author:     Hans Mackowiak
 

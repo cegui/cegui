@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalEventLinkDefinition.cpp
     created:    Sun Nov 21 2010
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -26,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/EventLinkDefinition.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/LinkedEvent.h"
@@ -33,9 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-// Static string holding parent link identifier
-static const String S_parentIdentifier("__parent__");
+
 
 //----------------------------------------------------------------------------//
 EventLinkDefinition::EventLinkDefinition(const String& event_name) :
@@ -101,7 +99,7 @@ Window* EventLinkDefinition::getTargetWindow(Window& start_wnd,
     if (name.empty())
         return &start_wnd;
 
-    if (name== S_parentIdentifier)
+    if (name == Falagard_xmlHandler::ParentIdentifier)
         return start_wnd.getParent();
 
     return start_wnd.getChild(name);

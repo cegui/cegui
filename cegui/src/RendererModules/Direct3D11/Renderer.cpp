@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   Renderer.cpp
     created:    Sun, 6th April 2014
     author:     Lukas E Meindl
 *************************************************************************/
@@ -92,6 +91,9 @@ Direct3D11Renderer::~Direct3D11Renderer()
     d_blendStatePreMultiplied->Release();
 
     delete d_defaultTarget;
+
+    delete d_shaderWrapperTextured;
+    delete d_shaderWrapperSolid;
 }
 
 //----------------------------------------------------------------------------//

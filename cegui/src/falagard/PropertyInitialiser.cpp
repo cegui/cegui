@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalPropertyInitialiser.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -26,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/PropertyInitialiser.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include <iostream>
 
@@ -69,9 +69,9 @@ namespace CEGUI
 
     void PropertyInitialiser::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("Property")
-            .attribute("name", d_propertyName)
-            .attribute("value", d_propertyValue)
+        xml_stream.openTag(Falagard_xmlHandler::PropertyElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_propertyName)
+            .attribute(Falagard_xmlHandler::ValueAttribute, d_propertyValue)
             .closeTag();
     }
 

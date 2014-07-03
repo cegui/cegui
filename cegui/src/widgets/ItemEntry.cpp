@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIItemEntry.cpp
 	created:	31/3/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
 
@@ -133,12 +132,12 @@ void ItemEntry::addItemEntryProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
-            "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"True\" or \"False\".",
+            "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"true\" or \"false\".",
             &ItemEntry::setSelectable, &ItemEntry::isSelectable, false
     );
 
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
-            "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"True\" or \"False\".",
+            "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"true\" or \"false\".",
             &ItemEntry::setSelected, &ItemEntry::isSelected, false
     );
 }

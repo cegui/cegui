@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   GeometryBufferBase.cpp
     created:    Tue Apr 30 2013
     authors:    Paul D Turner <paul@cegui.org.uk>
                 Lukas E Meindl

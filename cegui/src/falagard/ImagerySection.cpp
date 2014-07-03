@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalImagerySection.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -26,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/ImagerySection.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/PropertyHelper.h"
 #include <iostream>
 #include <limits>
@@ -292,23 +292,23 @@ namespace CEGUI
     void ImagerySection::writeXMLToStream(XMLSerializer& xml_stream) const
     {
         // output opening tag
-        xml_stream.openTag("ImagerySection")
-            .attribute("name", d_name);
+        xml_stream.openTag(Falagard_xmlHandler::ImagerySectionElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_name);
 
         // output modulative colours for this section
         if (!d_colourPropertyName.empty())
         {
-            xml_stream.openTag("ColourRectProperty");
-            xml_stream.attribute("name", d_colourPropertyName)
+            xml_stream.openTag(Falagard_xmlHandler::ColourRectPropertyElement);
+            xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_colourPropertyName)
                 .closeTag();
         }
         else if (!d_masterColours.isMonochromatic() || d_masterColours.d_top_left != Colour(1,1,1,1))
         {
-            xml_stream.openTag("Colours")
-                .attribute("topLeft", PropertyHelper<Colour>::toString(d_masterColours.d_top_left))
-                .attribute("topRight", PropertyHelper<Colour>::toString(d_masterColours.d_top_right))
-                .attribute("bottomLeft", PropertyHelper<Colour>::toString(d_masterColours.d_bottom_left))
-                .attribute("bottomRight", PropertyHelper<Colour>::toString(d_masterColours.d_bottom_right))
+            xml_stream.openTag(Falagard_xmlHandler::ColoursElement)
+                .attribute(Falagard_xmlHandler::TopLeftAttribute, PropertyHelper<Colour>::toString(d_masterColours.d_top_left))
+                .attribute(Falagard_xmlHandler::TopRightAttribute, PropertyHelper<Colour>::toString(d_masterColours.d_top_right))
+                .attribute(Falagard_xmlHandler::BottomLeftAttribute, PropertyHelper<Colour>::toString(d_masterColours.d_bottom_left))
+                .attribute(Falagard_xmlHandler::BottomRightAttribute, PropertyHelper<Colour>::toString(d_masterColours.d_bottom_right))
                 .closeTag();
         }
 

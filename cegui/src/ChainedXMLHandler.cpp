@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIChainedXMLHandler.cpp
     created:    Wed Aug 11 2010
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -34,7 +33,7 @@ namespace CEGUI
 ChainedXMLHandler::ChainedXMLHandler() :
     d_chainedHandler(0),
     d_completed(false),
-    d_deleteChaniedHandler(true)
+    d_deleteChainedHandler(true)
 {
 }
 
@@ -100,7 +99,7 @@ bool ChainedXMLHandler::completed() const
 //----------------------------------------------------------------------------//
 void ChainedXMLHandler::cleanupChainedHandler()
 {
-    if (d_deleteChaniedHandler)
+    if (d_deleteChainedHandler)
         CEGUI_DELETE_AO d_chainedHandler;
 
     d_chainedHandler = 0;
