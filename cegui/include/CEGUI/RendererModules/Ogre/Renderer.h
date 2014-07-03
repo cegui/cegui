@@ -33,6 +33,7 @@
 #include "CEGUI/Config.h"
 
 #include <vector>
+#include "glm/core/type.hpp"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOGRERENDERER_EXPORTS
@@ -391,6 +392,10 @@ public:
     const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
+
+    glm::mat4 getViewProjectionMatrix();
+
+    void bindBlendMode(BlendMode blend);
 
 protected:
     //! default constructor.

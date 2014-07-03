@@ -1276,6 +1276,26 @@ void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
     d_pimpl->d_combinedMatrixValid = false;
 }
 
+glm::mat4 OgreRenderer::getViewProjectionMatrix(){
+    throw std::exception("The method or operation is not implemented.");
+}
+
+void OgreRenderer::bindBlendMode(BlendMode blend){
+    using namespace Ogre;
+
+    if (blend == BM_NORMAL)
+    {
+        d_renderSystem->_setSceneBlending(SBF_SOURCE_ALPHA, 
+            SBF_ONE_MINUS_SOURCE_ALPHA, SBO_ADD);
+    }
+
+    if (blend == BM_RTT_PREMULTIPLIED)
+    {
+        d_renderSystem->_setSceneBlending(SBF_ONE, 
+            SBF_ONE_MINUS_SOURCE_ALPHA, SBO_ADD);
+    }
+}
+
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) :
