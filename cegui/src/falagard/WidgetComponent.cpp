@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalWidgetComponent.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/WidgetComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include <iostream>
@@ -34,6 +34,11 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    //! Default values
+    const HorizontalAlignment WidgetComponent::HorizontalAlignmentDefault(HA_LEFT);
+    const VerticalAlignment WidgetComponent::VerticalAlignmentDefault(VA_TOP);
+
+
     WidgetComponent::WidgetComponent(const String& type,
                                      const String& look,
                                      const String& suffix,
@@ -44,8 +49,8 @@ namespace CEGUI
         d_name(suffix),
         d_rendererType(renderer),
         d_autoWindow(autoWindow),
-        d_vertAlign(VA_TOP),
-        d_horzAlign(HA_LEFT)
+        d_vertAlign(VerticalAlignmentDefault),
+        d_horzAlign(HorizontalAlignmentDefault)
     {}
 
     void WidgetComponent::create(Window& parent) const
@@ -235,18 +240,18 @@ namespace CEGUI
     void WidgetComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
         // output opening tag
-        xml_stream.openTag("Child")
-            .attribute("type", d_baseType)
-            .attribute("name", d_name);
+        xml_stream.openTag(Falagard_xmlHandler::ChildElement)
+            .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name)
+            .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType);
 
         if (!d_imageryName.empty())
-            xml_stream.attribute("look", d_imageryName);
+            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_imageryName);
 
         if (!d_rendererType.empty())
-            xml_stream.attribute("renderer", d_rendererType);
+            xml_stream.attribute(Falagard_xmlHandler::RendererAttribute, d_rendererType);
 
         if (!d_autoWindow)
-            xml_stream.attribute("autoWindow", "false");
+            xml_stream.attribute(Falagard_xmlHandler::AutoWindowAttribute, PropertyHelper<bool>::False);
 
         // Output <EventAction> elements
         for (EventActionList::const_iterator i = d_eventActions.begin();
@@ -259,15 +264,21 @@ namespace CEGUI
         // output target area
         d_area.writeXMLToStream(xml_stream);
 
-        // output vertical alignment
-        xml_stream.openTag("VertAlignment")
-            .attribute("type", FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign))
-            .closeTag();
+        // output vertical alignment if not-default
+        if(d_vertAlign != VerticalAlignmentDefault)
+        {
+            xml_stream.openTag(Falagard_xmlHandler::VertAlignmentElement);
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign));
+            xml_stream.closeTag();
+        }
 
-        // output horizontal alignment
-        xml_stream.openTag("HorzAlignment")
-            .attribute("type", FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign))
-            .closeTag();
+        // output horizontal alignment if not-default
+        if(d_horzAlign != HorizontalAlignmentDefault)
+        {
+            xml_stream.openTag(Falagard_xmlHandler::HorzAlignmentElement);
+            xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign));
+            xml_stream.closeTag();
+        }
 
         //output property initialisers
         for (PropertiesList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)

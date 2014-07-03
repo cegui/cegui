@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIMemoryAllocation.h
 	created:	14/10/2010
 	author:		Martin Preisler (inspired by Ogre3D)
 

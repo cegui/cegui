@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIXercesParser.cpp
     created:    Sat Mar 12 2005
     author:     Paul D Turner
 *************************************************************************/
@@ -43,7 +42,7 @@ namespace CEGUI
 {
     // Static data definition for default schema resource group name
     String XercesParser::d_defaultSchemaResourceGroup("");
-    // static data defiinition of the SchemaDefaultResourceGroup property.
+    // static data definition of the SchemaDefaultResourceGroup property.
     XercesParserProperties::SchemaDefaultResourceGroup
         XercesParser::s_schemaDefaultResourceGroupProperty;
 
@@ -59,12 +58,22 @@ namespace CEGUI
         d_identifierString = "CEGUI::XercesParser - Official Xerces-C++ based parser module for CEGUI";
         // add property
         addProperty(&s_schemaDefaultResourceGroupProperty);
+
+        String propertyOrigin("XercesParser");
+        CEGUI_DEFINE_PROPERTY(XercesParser, bool, "isXmlValidationEnabled",
+                              "Property to get/set if XML validation is enabled or disabled globally. "
+                              "If it's disabled it will not allow any xml validation. "
+                              "If it's enabled the validation behaviour is dependending on what is "
+                              "passed to parseXML.",
+                              &XercesParser::setXmlValidationEnabled,
+                              &XercesParser::isXmlValidationEnabled,
+                              true);
     }
 
     XercesParser::~XercesParser(void)
     {}
 
-    void XercesParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void XercesParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool xmlValidationEnabled)
     {
         XERCES_CPP_NAMESPACE_USE;
 
@@ -75,8 +84,17 @@ namespace CEGUI
 
         CEGUI_TRY
         {
+            bool forceXmlValidation;
+
+            // ignore local settings if validation is disabled globally
+            if (!isXmlValidationEnabled())
+                forceXmlValidation = false;
+            else
+                forceXmlValidation = xmlValidationEnabled;
+
             // set up schema
-            initialiseSchema(reader, schemaName);
+            if (forceXmlValidation)
+                initialiseSchema(reader, schemaName);
             // do parse
             doParse(reader, source);
         }
@@ -208,37 +226,46 @@ namespace CEGUI
 
     void XercesParser::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName)
     {
-        XERCES_CPP_NAMESPACE_USE;
+        // only load the schema if it's name is passed
+        if (!schemaName.empty())
+        {
+            XERCES_CPP_NAMESPACE_USE;
 
-        // enable schema use and set validation options
-        reader->setFeature(XMLUni::fgXercesSchema, true);
-        reader->setFeature(XMLUni::fgSAX2CoreValidation, true);
-        reader->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
+            // enable schema use and set validation options
+            reader->setFeature(XMLUni::fgXercesSchema, true);
+            reader->setFeature(XMLUni::fgSAX2CoreValidation, true);
+            reader->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
-        // load in the raw schema data
-        RawDataContainer rawSchemaData;
-        // load the schema from the resource group
-        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
+            // load in the raw schema data
+            RawDataContainer rawSchemaData;
+            // load the schema from the resource group
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
+            System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
 
-        // wrap schema data in a xerces MemBufInputSource object
-        MemBufInputSource  schemaData(
-            rawSchemaData.getDataPtr(),
-            static_cast<const unsigned int>(rawSchemaData.getSize()),
-            schemaName.c_str(),
-            false);
-        reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
-        // enable grammar reuse
-        reader->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+            // wrap schema data in a xerces MemBufInputSource object
+            MemBufInputSource  schemaData(
+                rawSchemaData.getDataPtr(),
+                static_cast<const unsigned int>(rawSchemaData.getSize()),
+                schemaName.c_str(),
+                false);
+            reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
+            // enable grammar reuse
+            reader->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
-        // set schema for usage
-        XMLCh* pval = XMLString::transcode(schemaName.c_str());
-        reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-        XMLString::release(&pval);
-        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.");
+            // set schema for usage
+            XMLCh* pval = XMLString::transcode(schemaName.c_str());
+            reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+            XMLString::release(&pval);
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.");
 
-        // use resource provider to release loaded schema data (if it supports this)
-        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawSchemaData);
+            // use resource provider to release loaded schema data (if it supports this)
+            System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawSchemaData);
+        }
+        else
+        {
+            // otherwise ignore the missing schema and proceed
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - No schema specified. Proceeding.");
+        }
     }
 
     XERCES_CPP_NAMESPACE::SAX2XMLReader* XercesParser::createReader(XERCES_CPP_NAMESPACE::DefaultHandler& handler)

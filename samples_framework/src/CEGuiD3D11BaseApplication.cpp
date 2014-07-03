@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGuiD3D11BaseApplication.cpp
     created:    Tue May 29 2012
     author:     Paul D Turner
 *************************************************************************/
@@ -211,7 +210,8 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
 
     // initialise main parts of D3D
     res = D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE,
-                                        0, creationFlags, featureLevels, 6, D3D11_SDK_VERSION,
+                                        0, creationFlags, featureLevels,
+                                        6, D3D11_SDK_VERSION,
                                         &scd, &pimpl->d_swapChain,
                                         &pimpl->d_device, &pimpl->d_featureLevel,
                                         &pimpl->d_context);
@@ -219,10 +219,10 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
     if (SUCCEEDED(res))
     {
          //Debugging stuff
-         ID3D11Debug *d3dDebug = nullptr;
+         ID3D11Debug* d3dDebug = 0;
          if( SUCCEEDED( pimpl->d_device->QueryInterface( __uuidof(ID3D11Debug), (void**)&d3dDebug ) ) )
          {
-             ID3D11InfoQueue *d3dInfoQueue = nullptr;
+             ID3D11InfoQueue* d3dInfoQueue = 0;
              if( SUCCEEDED( d3dDebug->QueryInterface( __uuidof(ID3D11InfoQueue), (void**)&d3dInfoQueue ) ) )
              {
                  #if defined(DEBUG) || defined (_DEBUG)

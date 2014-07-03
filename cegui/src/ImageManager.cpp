@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIImageManager.cpp
     created:    Wed Feb 16 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -493,7 +492,7 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
         rw_attrs.add(ImagesetNativeVertResAttribute,
                      PropertyHelper<float>::toString(s_nativeResolution.d_height));
 
-    d_deleteChaniedHandler = false;
+    d_deleteChainedHandler = false;
     d_chainedHandler = &create(rw_attrs);
 }
 

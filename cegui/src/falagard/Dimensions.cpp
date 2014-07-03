@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalDimensions.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,6 +27,7 @@
 #include "CEGUI/falagard/Dimensions.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/WindowManager.h"
@@ -223,14 +223,14 @@ void OperatorDim::writeXMLToStream(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 void OperatorDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("OperatorDim");
+    xml_stream.openTag(Falagard_xmlHandler::OperatorDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void OperatorDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
     xml_stream.attribute(
-        "op", FalagardXMLHelper<DimensionOperator>::toString(d_op));
+        Falagard_xmlHandler::OperatorAttribute, FalagardXMLHelper<DimensionOperator>::toString(d_op));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -273,13 +273,13 @@ BaseDim* AbsoluteDim::clone() const
 //----------------------------------------------------------------------------//
 void AbsoluteDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("AbsoluteDim");
+    xml_stream.openTag(Falagard_xmlHandler::AbsoluteDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void AbsoluteDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.attribute("value", PropertyHelper<float>::toString(d_val));
+    xml_stream.attribute(Falagard_xmlHandler::ValueAttribute, PropertyHelper<float>::toString(d_val));
 }
 
 
@@ -328,26 +328,6 @@ float ImageDimBase::getValue(const Window& wnd) const
             return img->getRenderedOffset().d_y;
             break;
 
-/*            // these other options will not be particularly useful for most people since they return the edges of the
-        // image on the source texture.
-        case DT_LEFT_EDGE:
-        case DT_X_POSITION:
-            return img->getSourceTextureArea().d_left;
-            break;
-
-        case DT_TOP_EDGE:
-        case DT_Y_POSITION:
-            return img->getSourceTextureArea().d_top;
-            break;
-
-        case DT_RIGHT_EDGE:
-            return img->getSourceTextureArea().d_right;
-            break;
-
-        case DT_BOTTOM_EDGE:
-            return img->getSourceTextureArea().d_bottom;
-            break;
-*/
         default:
             CEGUI_THROW(InvalidRequestException(
                 "unknown or unsupported DimensionType encountered."));
@@ -365,7 +345,7 @@ float ImageDimBase::getValue(const Window& wnd, const Rectf&) const
 //----------------------------------------------------------------------------//
 void ImageDimBase::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.attribute("dimension",
+    xml_stream.attribute(Falagard_xmlHandler::DimensionAttribute,
                          FalagardXMLHelper<DimensionType>::toString(d_what));
 }
 
@@ -405,14 +385,14 @@ BaseDim* ImageDim::clone() const
 //----------------------------------------------------------------------------//
 void ImageDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("ImageDim");
+    xml_stream.openTag(Falagard_xmlHandler::ImageDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void ImageDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
     ImageDimBase::writeXMLElementAttributes_impl(xml_stream);
-    xml_stream.attribute("name", d_imageName);
+    xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_imageName);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -453,14 +433,14 @@ BaseDim* ImagePropertyDim::clone() const
 //----------------------------------------------------------------------------//
 void ImagePropertyDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("ImagePropertyDim");
+    xml_stream.openTag(Falagard_xmlHandler::ImagePropertyDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void ImagePropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
     ImageDimBase::writeXMLElementAttributes_impl(xml_stream);
-    xml_stream.attribute("name", d_propertyName);
+    xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertyName);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -575,16 +555,16 @@ BaseDim* WidgetDim::clone() const
 //----------------------------------------------------------------------------//
 void WidgetDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("WidgetDim");
+    xml_stream.openTag(Falagard_xmlHandler::WidgetDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void WidgetDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
     if (!d_widgetName.empty())
-        xml_stream.attribute("widget", d_widgetName);
+        xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_widgetName);
 
-    xml_stream.attribute("dimension", FalagardXMLHelper<DimensionType>::toString(d_what));
+    xml_stream.attribute(Falagard_xmlHandler::DimensionAttribute, FalagardXMLHelper<DimensionType>::toString(d_what));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -716,25 +696,25 @@ BaseDim* FontDim::clone() const
 //----------------------------------------------------------------------------//
 void FontDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("FontDim");
+    xml_stream.openTag(Falagard_xmlHandler::FontDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void FontDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
+    xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<FontMetricType>::toString(d_metric));
+
     if (!d_childName.empty())
-        xml_stream.attribute("widget", d_childName);
+        xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_childName);
 
     if (!d_font.empty())
-        xml_stream.attribute("font", d_font);
+        xml_stream.attribute(Falagard_xmlHandler::FontAttribute, d_font);
 
     if (!d_text.empty())
-        xml_stream.attribute("string", d_text);
+        xml_stream.attribute(Falagard_xmlHandler::StringAttribute, d_text);
 
     if (d_padding != 0)
-        xml_stream.attribute("padding", PropertyHelper<float>::toString(d_padding));
-
-    xml_stream.attribute("type", FalagardXMLHelper<FontMetricType>::toString(d_metric));
+        xml_stream.attribute(Falagard_xmlHandler::PaddingAttribute, PropertyHelper<float>::toString(d_padding));
 }
 
 //----------------------------------------------------------------------------//
@@ -801,7 +781,7 @@ float PropertyDim::getValue(const Window& wnd) const
     {
         // check property data type and convert to float if necessary
         Property* pi = sourceWindow.getPropertyInstance(d_property);
-        if (pi->getDataType() == "bool")
+        if (pi->getDataType() == PropertyHelper<bool>::getDataTypeName())
             return sourceWindow.getProperty<bool>(d_property) ? 1.0f : 0.0f;
 
         // return float property value.
@@ -840,17 +820,17 @@ BaseDim* PropertyDim::clone() const
 //----------------------------------------------------------------------------//
 void PropertyDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("PropertyDim");
+    xml_stream.openTag(Falagard_xmlHandler::PropertyDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
     if (!d_childName.empty())
-        xml_stream.attribute("widget", d_childName);
-    xml_stream.attribute("name", d_property);
+        xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_childName);
+    xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_property);
     if (d_type != DT_INVALID)
-        xml_stream.attribute("type", FalagardXMLHelper<DimensionType>::toString(d_type));
+        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<DimensionType>::toString(d_type));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -928,8 +908,8 @@ void Dimension::setDimensionType(DimensionType type)
 //----------------------------------------------------------------------------//
 void Dimension::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("Dim")
-        .attribute("type", FalagardXMLHelper<DimensionType>::toString(d_type));
+    xml_stream.openTag(Falagard_xmlHandler::DimElement)
+        .attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<DimensionType>::toString(d_type));
 
     if (d_value)
         d_value->writeXMLToStream(xml_stream);
@@ -1043,19 +1023,19 @@ BaseDim* UnifiedDim::clone() const
 //----------------------------------------------------------------------------//
 void UnifiedDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("UnifiedDim");
+    xml_stream.openTag(Falagard_xmlHandler::UnifiedDimElement);
 }
 
 //----------------------------------------------------------------------------//
 void UnifiedDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 {
+        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<DimensionType>::toString(d_what));
+
     if (d_value.d_scale != 0)
-        xml_stream.attribute("scale", PropertyHelper<float>::toString(d_value.d_scale));
+        xml_stream.attribute(Falagard_xmlHandler::ScaleAttribute, PropertyHelper<float>::toString(d_value.d_scale));
 
     if (d_value.d_offset != 0)
-        xml_stream.attribute("offset", PropertyHelper<float>::toString(d_value.d_offset));
-
-    xml_stream.attribute("type", FalagardXMLHelper<DimensionType>::toString(d_what));
+        xml_stream.attribute(Falagard_xmlHandler::OffsetAttribute, PropertyHelper<float>::toString(d_value.d_offset));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1161,20 +1141,20 @@ Rectf ComponentArea::getPixelRect(const Window& wnd, const Rectf& container) con
 //----------------------------------------------------------------------------//
 void ComponentArea::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("Area");
+    xml_stream.openTag(Falagard_xmlHandler::AreaElement);
 
     // see if we should write an AreaProperty element
     if (isAreaFetchedFromProperty())
     {
-        xml_stream.openTag("AreaProperty")
-            .attribute("name", d_namedSource)
+        xml_stream.openTag(Falagard_xmlHandler::AreaPropertyElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_namedSource)
             .closeTag();
     }
     else if (isAreaFetchedFromNamedArea())
     {
-        xml_stream.openTag("NamedAreaSource")
-            .attribute("look", d_namedAreaSourceLook)
-            .attribute("name", d_namedSource)
+        xml_stream.openTag(Falagard_xmlHandler::NamedAreaSourceElement)
+            .attribute(Falagard_xmlHandler::LookAttribute, d_namedAreaSourceLook)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_namedSource)
             .closeTag();
     }
     // not a property, write out individual dimensions explicitly.

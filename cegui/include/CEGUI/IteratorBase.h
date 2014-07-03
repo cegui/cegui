@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIIteratorBase.h
 	created:	26/7/2004
 	author:		Paul D Turner
 	
@@ -276,6 +275,11 @@ public:
         return tmp;
     }
 
+protected:
+    /*************************************************************************
+		No default construction available
+	*************************************************************************/
+    ConstMapIterator(void) {}
 };
 
 //! iterator for vectors
@@ -352,6 +356,12 @@ public:
 
         return tmp;
     }
+
+protected:
+    /*************************************************************************
+		No default construction available
+	*************************************************************************/
+    ConstVectorIterator(void) {}
 };
 
 } // End of  CEGUI namespace section

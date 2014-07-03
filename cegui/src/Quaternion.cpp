@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIQuaternion.cpp
     created:    3/1/2011
     author:     Martin Preisler
 

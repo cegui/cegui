@@ -142,7 +142,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/Titlebar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
-        <Property name="NonClient" value="True"/>
+        <Property name="NonClient" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="caption">
             <TextComponent>
@@ -186,7 +186,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF888888" type="ColourRect" name="DisabledTextColour"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="True" type="bool" name="UseStandardImagery"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="true" type="bool" name="UseStandardImagery"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="NormalImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="HoverImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
@@ -330,9 +330,9 @@
         <Property name="EWSizingCursorImage" value="Vanilla-Images/MouseArrow"/>
         <Property name="NWSESizingCursorImage" value="Vanilla-Images/MouseArrow"/>
         <Property name="NESWSizingCursorImage" value="Vanilla-Images/MouseArrow"/>
-        <Property name="RollUpEnabled" value="False"/>
+        <Property name="RollUpEnabled" value="false"/>
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}"/>
-        <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="AutoRenderingSurface" value="true"/>
         <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -413,7 +413,7 @@
                     <FontDim padding="14" type="LineSpacing"/>
                 </Dim>
             </Area>
-            <Property name="AlwaysOnTop" value="False"/>
+            <Property name="AlwaysOnTop" value="false"/>
         </Child>
         <Child nameSuffix="__auto_closebutton__" type="Vanilla/Button">
             <Area>
@@ -431,8 +431,8 @@
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="True"/>
-            <Property name="AlwaysOnTop" value="True"/>
+            <Property name="NonClient" value="true"/>
+            <Property name="AlwaysOnTop" value="true"/>
         </Child>
         <ImagerySection name="withtitle_frame">
             <FrameComponent>
@@ -708,8 +708,8 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="Vanilla/VerticalScrollbarThumb">
-        <Property name="VertFree" value="True"/>
-        <Property name="PointerInputPropagationEnabled" value="True"/>
+        <Property name="VertFree" value="true"/>
+        <Property name="PointerInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
@@ -750,8 +750,8 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="Vanilla/HorizontalScrollbarThumb">
-        <Property name="HorzFree" value="True"/>
-        <Property name="PointerInputPropagationEnabled" value="True"/>
+        <Property name="HorzFree" value="true"/>
+        <Property name="PointerInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
@@ -829,7 +829,7 @@
             </Area>
             <VertAlignment type="CentreAligned"/>
             <HorzAlignment type="RightAligned"/>
-            <Property name="UseStandardImagery" value="False"/>
+            <Property name="UseStandardImagery" value="false"/>
             <Property name="NormalImage" value="Vanilla-Images/ScrollRightArrow"/>
             <Property name="HoverImage" value="Vanilla-Images/ScrollRightArrow"/>
             <Property name="PushedImage" value="Vanilla-Images/ScrollRightArrow"/>
@@ -850,7 +850,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="CentreAligned"/>
-            <Property name="UseStandardImagery" value="False"/>
+            <Property name="UseStandardImagery" value="false"/>
             <Property name="NormalImage" value="Vanilla-Images/ScrollLeftArrow"/>
             <Property name="HoverImage" value="Vanilla-Images/ScrollLeftArrow"/>
             <Property name="PushedImage" value="Vanilla-Images/ScrollLeftArrow"/>
@@ -907,7 +907,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="Vanilla/VerticalScrollbar">
-        <Property name="VerticalScrollbar" value="True"/>
+        <Property name="VerticalScrollbar" value="true"/>
         <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -945,7 +945,7 @@
             </Area>
             <VertAlignment type="BottomAligned"/>
             <HorzAlignment type="CentreAligned"/>
-            <Property name="UseStandardImagery" value="False"/>
+            <Property name="UseStandardImagery" value="false"/>
             <Property name="NormalImage" value="Vanilla-Images/ScrollDownArrow"/>
             <Property name="HoverImage" value="Vanilla-Images/ScrollDownArrow"/>
             <Property name="PushedImage" value="Vanilla-Images/ScrollDownArrow"/>
@@ -966,7 +966,7 @@
                 </Dim>
             </Area>
             <HorzAlignment type="CentreAligned"/>
-            <Property name="UseStandardImagery" value="False"/>
+            <Property name="UseStandardImagery" value="false"/>
             <Property name="NormalImage" value="Vanilla-Images/ScrollUpArrow"/>
             <Property name="HoverImage" value="Vanilla-Images/ScrollUpArrow"/>
             <Property name="PushedImage" value="Vanilla-Images/ScrollUpArrow"/>
@@ -1026,8 +1026,8 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ImageColours"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
@@ -1141,8 +1141,8 @@
         <PropertyLinkDefinition targetProperty="ScrollPosition" widget="__auto_vscrollbar__" type="float" name="VertScrollPosition"/>
         <PropertyLinkDefinition targetProperty="PageSize" widget="__auto_vscrollbar__" type="float" name="VertScrollPageSize"/>
         <PropertyLinkDefinition targetProperty="DocumentSize" widget="__auto_vscrollbar__" type="float" name="VertScrollDocumentSize"/>
-        <Property name="BackgroundEnabled" value="True"/>
-        <Property name="FrameEnabled" value="True"/>
+        <Property name="BackgroundEnabled" value="true"/>
+        <Property name="FrameEnabled" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
@@ -1364,7 +1364,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="Vanilla/Listbox">
-        <Property name="ForceVertScrollbar" value="True"/>
+        <Property name="ForceVertScrollbar" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
@@ -1681,7 +1681,7 @@
         <StateImagery name="Disabled"/>
     </WidgetLook>
     <WidgetLook name="Vanilla/ComboDropList">
-        <Property name="ForceVertScrollbar" value="True"/>
+        <Property name="ForceVertScrollbar" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>

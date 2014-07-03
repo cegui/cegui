@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   Static.h
     created:    Sat Sep 17 2005
     author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
 *************************************************************************/

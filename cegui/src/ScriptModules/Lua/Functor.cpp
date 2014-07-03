@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename: CEGUILuaFunctor.cpp
     created:  Thu Jan 26 2006
     author:   Tomas Lindquist Olsen <tomas@famolsen.dk>
 

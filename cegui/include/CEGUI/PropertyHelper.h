@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIPropertyHelper.h
 	created:	21/11/2010
 	author:		Martin Preisler (reworked from code by Paul D Turner)
 	
@@ -53,14 +52,13 @@
 #define snprintf _snprintf
 #endif
 
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 
-
 /*!
 \brief
-	Helper class used to convert various data types to and from the format expected in Propery strings
+	Helper class used to convert various data types to and from the format expected in Property strings
 
 \par
     Usage:
@@ -404,8 +402,8 @@ public:
     }
 };
 
-template<>
-class PropertyHelper<bool>
+template<> 
+class CEGUIEXPORT PropertyHelper<bool>
 {
 public:
     typedef bool return_type;
@@ -422,22 +420,23 @@ public:
 
     static return_type fromString(const String& str)
     {
-        return (str == "True" || str == "true");
+        return (str == True || str == "True");
     }
 
     static string_return_type toString(pass_type val)
     {
-        // yeah I am that awesome ;-D
-        
-        static String True("True");
-        static String False("False");
-        
         return val ? True : False;
     }
+
+    //! Definitions of the possible values represented as Strings
+    static const CEGUI::String True;
+    static const CEGUI::String False;
 };
 
-template<>
-class PropertyHelper<AspectMode>
+
+
+template<> 
+class CEGUIEXPORT PropertyHelper<AspectMode>
 {
 public:
     typedef AspectMode return_type;
@@ -454,11 +453,11 @@ public:
 
     static return_type fromString(const String& str)
     {
-        if (str == "Shrink")
+        if (str == Shrink)
         {
             return AM_SHRINK;
         }
-        else if (str == "Expand")
+        else if (str == Expand)
         {
             return AM_EXPAND;
         }
@@ -472,22 +471,27 @@ public:
     {
         if (val == AM_IGNORE)
         {
-            return "Ignore";
+            return Ignore;
         }
         else if (val == AM_SHRINK)
         {
-            return "Shrink";
+            return Shrink;
         }
         else if (val == AM_EXPAND)
         {
-            return "Expand";
+            return Expand;
         }
         else
         {
             assert(false && "Invalid aspect mode");
-            return "Ignore";
+            return Ignore;
         }
     }
+
+    //! Definitions of the possible values represented as Strings
+    static const CEGUI::String Shrink;
+    static const CEGUI::String Expand;
+    static const CEGUI::String Ignore;
 };
 
 template<>
@@ -973,10 +977,10 @@ public:
     static string_return_type toString(pass_type val);
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIPropertyHelper_h_
+#endif

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIScrolledContainer.cpp
     created:    1/3/2005
     author:     Paul D Turner
 *************************************************************************/
@@ -135,11 +134,10 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
             CoordConverter::asAbsolute(wnd->getPosition(), d_pixelSize),
             wnd->getPixelSize());
 
-        if(wnd->getHorizontalAlignment() == HA_CENTRE)
-            area.setPosition( area.getPosition() - CEGUI::Vector2f( area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f ) );
-        if(wnd->getHorizontalAlignment() == VA_CENTRE)
-            area.setPosition( area.getPosition() - CEGUI::Vector2f( 0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f ) );
-
+        if (wnd->getHorizontalAlignment() == HA_CENTRE)
+            area.setPosition(area.getPosition() - CEGUI::Vector2f(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
+        if (wnd->getVerticalAlignment() == VA_CENTRE)
+            area.setPosition(area.getPosition() - CEGUI::Vector2f(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
 
         if (area.d_min.d_x < extents.d_min.d_x)
             extents.d_min.d_x = area.d_min.d_x;
@@ -302,7 +300,7 @@ void ScrolledContainer::addScrolledContainerProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, bool,
         "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &ScrolledContainer::setContentPaneAutoSized, &ScrolledContainer::isContentPaneAutoSized, true
     );
     

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUILibxmlParser.cpp
     created:    Mon Mar 6 2006
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -92,7 +91,8 @@ LibxmlParser::~LibxmlParser(void)
 
 void LibxmlParser::parseXML(XMLHandler& handler,
                             const RawDataContainer& source,
-                            const String& /*schemaName*/)
+                            const String& /*schemaName*/,
+                            bool /*allowXmlValidation*/)
 {
     xmlDocPtr doc = xmlParseMemory(
         reinterpret_cast<const char*>(source.getDataPtr()),

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUITinyXMLParser.cpp
     created:    Sun Mar 13 2005
     author:     Paul D Turner
 *************************************************************************/
@@ -153,7 +152,7 @@ namespace CEGUI
     TinyXMLParser::~TinyXMLParser(void)
     {}
 
-    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/)
     {
       TinyXMLDocument doc(handler, source, schemaName);
     }

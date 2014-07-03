@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalSectionSpecification.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -29,6 +28,7 @@
 #include "CEGUI/falagard/ImagerySection.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/WindowManager.h"
@@ -38,8 +38,6 @@
 namespace CEGUI
 {
 
-    // Static string holding parent link identifier
-    const String S_parentIdentifier("__parent__");
     SectionSpecification::SectionSpecification() :
         d_usingColourOverride(false)
     {}
@@ -221,37 +219,37 @@ namespace CEGUI
 
     void SectionSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("Section");
+        xml_stream.openTag(Falagard_xmlHandler::SectionElement);
 
         if (!d_owner.empty())
-            xml_stream.attribute("look", d_owner);
+            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_owner);
 
-        xml_stream.attribute("section", d_sectionName);
+        xml_stream.attribute(Falagard_xmlHandler::SectionNameAttribute, d_sectionName);
 
         // render controlling property name if needed
         if (!d_renderControlProperty.empty())
-            xml_stream.attribute("controlProperty", d_renderControlProperty);
+            xml_stream.attribute(Falagard_xmlHandler::ControlPropertyAttribute, d_renderControlProperty);
         if (!d_renderControlValue.empty())
-            xml_stream.attribute("controlValue", d_renderControlValue);
+            xml_stream.attribute(Falagard_xmlHandler::ControlValueAttribute, d_renderControlValue);
         if (!d_renderControlWidget.empty())
-            xml_stream.attribute("controlWidget", d_renderControlWidget);
+            xml_stream.attribute(Falagard_xmlHandler::ControlWidgetAttribute, d_renderControlWidget);
 
         if (d_usingColourOverride)
         {
             // output modulative colours for this section
             if (!d_colourPropertyName.empty())
             {
-                xml_stream.openTag("ColourRectProperty");
-                xml_stream.attribute("name", d_colourPropertyName)
+                xml_stream.openTag(Falagard_xmlHandler::ColourRectPropertyElement);
+                xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_colourPropertyName)
                     .closeTag();
             }
             else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != Colour(1,1,1,1))
             {
-                xml_stream.openTag("Colours")
-                    .attribute("topLeft", PropertyHelper<Colour>::toString(d_coloursOverride.d_top_left))
-                    .attribute("topRight", PropertyHelper<Colour>::toString(d_coloursOverride.d_top_right))
-                    .attribute("bottomLeft", PropertyHelper<Colour>::toString(d_coloursOverride.d_bottom_left))
-                    .attribute("bottomRight", PropertyHelper<Colour>::toString(d_coloursOverride.d_bottom_right))
+                xml_stream.openTag(Falagard_xmlHandler::ColoursElement)
+                    .attribute(Falagard_xmlHandler::TopLeftAttribute, PropertyHelper<Colour>::toString(d_coloursOverride.d_top_left))
+                    .attribute(Falagard_xmlHandler::TopRightAttribute, PropertyHelper<Colour>::toString(d_coloursOverride.d_top_right))
+                    .attribute(Falagard_xmlHandler::BottomLeftAttribute, PropertyHelper<Colour>::toString(d_coloursOverride.d_bottom_left))
+                    .attribute(Falagard_xmlHandler::BottomRightAttribute, PropertyHelper<Colour>::toString(d_coloursOverride.d_bottom_right))
                     .closeTag();
             }
 
@@ -272,7 +270,7 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
     // work out which window the property should be accessed for.
     if (d_renderControlWidget.empty())
         property_source = &wnd;
-    else if (d_renderControlWidget == S_parentIdentifier)
+    else if (d_renderControlWidget == Falagard_xmlHandler::ParentIdentifier)
         property_source = wnd.getParent();
     else
         property_source = wnd.getChild(d_renderControlWidget);

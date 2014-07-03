@@ -1,5 +1,4 @@
 /************************************************************************
-    filename:   CEGUIScrolledItemListBase.cpp
     created:    Sat Oct 29 2005
     author:     Tomas Lindquist Olsen
 *************************************************************************/
@@ -283,12 +282,12 @@ void ScrolledItemListBase::addScrolledItemListBaseProperties()
     const String propertyOrigin = "CEGUI/ScrolledItemListBase";
 
     CEGUI_DEFINE_PROPERTY(ScrolledItemListBase, bool,
-        "ForceVertScrollbar", "Property to get/set the state of the force vertical scrollbar setting for the ScrolledItemListBase.  Value is either \"True\" or \"False\".",
+        "ForceVertScrollbar", "Property to get/set the state of the force vertical scrollbar setting for the ScrolledItemListBase.  Value is either \"true\" or \"false\".",
         &ScrolledItemListBase::setShowVertScrollbar, &ScrolledItemListBase::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ScrolledItemListBase, bool,
-        "ForceHorzScrollbar", "Property to get/set the state of the force horizontal scrollbar setting for the ScrolledItemListBase.  Value is either \"True\" or \"False\".",
+        "ForceHorzScrollbar", "Property to get/set the state of the force horizontal scrollbar setting for the ScrolledItemListBase.  Value is either \"true\" or \"false\".",
         &ScrolledItemListBase::setShowHorzScrollbar, &ScrolledItemListBase::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 }

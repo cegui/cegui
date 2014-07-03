@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalLayerSpecification.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -26,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/LayerSpecification.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include <iostream>
 #include "CEGUI/PropertyHelper.h"
 // Start of CEGUI namespace section
@@ -79,10 +79,10 @@ namespace CEGUI
 
     void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        xml_stream.openTag("Layer");
+        xml_stream.openTag(Falagard_xmlHandler::LayerElement);
 
         if (d_layerPriority != 0)
-            xml_stream.attribute("priority", PropertyHelper<uint>::toString(d_layerPriority));
+            xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<uint>::toString(d_layerPriority));
 
         // ouput all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)

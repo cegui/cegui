@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalWidgetLookFeel.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/WindowManager.h"
@@ -767,9 +767,12 @@ WidgetLookFeel::getAnimationNameIterator(bool inherits) const
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("WidgetLook")
-    .attribute("name", d_lookName)
-    .attribute("inherits", d_inheritedLookName);
+    xml_stream.openTag(Falagard_xmlHandler::WidgetLookElement);
+
+    xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_lookName);
+
+    if(!d_inheritedLookName.empty())
+        xml_stream.attribute(Falagard_xmlHandler::InheritsAttribute, d_inheritedLookName);
 
     // These sub-scopes of the loops avoid the "'curr'-already-initialized"
     // compile error on VC6++

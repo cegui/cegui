@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   OpenGL3ShaderManager.cpp
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -30,10 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 
-#include "CEGUI/RendererModules/OpenGL/StandardShaderTexturedVert.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderTexturedFrag.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderSolidVert.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderSolidFrag.h"
+#include "Shaders.inl"
 
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
@@ -79,8 +75,8 @@ void OpenGL3ShaderManager::initialiseShaders()
         loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
         loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
 
-        if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully(),
-            !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully())
+        if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
+           !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
         {
             const CEGUI::String errorString("Critical Error - One or multiple shader programs weren't created successfully");
             CEGUI_THROW(RendererException(errorString));

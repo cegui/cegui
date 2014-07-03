@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIWindow.cpp
     created:    21/2/2004
     author:     Paul D Turner
 
@@ -429,7 +428,7 @@ const Window* Window::getActiveChild(void) const
         // don't need full backward scan for activeness as we already know
         // 'this' is active.  NB: This uses the draw-ordered child list, as that
         // should be quicker in most cases.
-        
+
         const Window* wnd = *it;
         if (wnd->d_active)
             return wnd->getActiveChild();
@@ -983,7 +982,15 @@ void Window::setRestoreOldCapture(bool setting)
 void Window::setAlpha(const float alpha)
 {
     // clamp this to the valid range [0.0, 1.0]
-    d_alpha = ceguimax(ceguimin(alpha, 1.0f), 0.0f);
+    float clampedAlpha = ceguimax(ceguimin(alpha, 1.0f), 0.0f);
+
+    // Ensure that the new alpha value is actually different from the currently set one
+    // to avoid unnecessary invalidating and re-caching of textures and children
+    if (d_alpha == clampedAlpha)
+        return;
+
+    d_alpha = clampedAlpha;
+
     WindowEventArgs args(this);
     onAlphaChanged(args);
 }
@@ -1048,7 +1055,7 @@ void Window::render()
     // don't do anything if window is not visible
     if (!isEffectiveVisible())
         return;
-    
+
     // get rendering context
     RenderingContext ctx;
     getRenderingContext(ctx);
@@ -1167,16 +1174,16 @@ void Window::cleanupChildren(void)
 void Window::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ")."));
-    
+
     // if the element is already a child of this Window, this is a NOOP
     if (isChild(element))
         return;
-        
+
     NamedElement::addChild_impl(wnd);
 
     addWindowToDrawList(*wnd);
@@ -1200,7 +1207,7 @@ void Window::removeChild_impl(Element* element)
     removeWindowFromDrawList(*wnd);
 
     Element::removeChild_impl(wnd);
-    
+
     // find this window in the child list
     const ChildList::iterator position =
         std::find(d_children.begin(), d_children.end(), wnd);
@@ -1211,7 +1218,7 @@ void Window::removeChild_impl(Element* element)
         // unban properties window could write as a root window
         wnd->unbanPropertyFromXML("RestoreOldCapture");
     }
-    
+
     wnd->onZChange_impl();
 }
 
@@ -1310,22 +1317,22 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window. Value is either \"True\" or \"False\".",
+        "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window. Value is either \"True\" or \"False\".",
+        "ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setClippedByParent, &Window::isClippedByParent, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window. Value is either \"True\" or \"False\".",
+        "DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setDestroyedByParent, &Window::isDestroyedByParent, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
+        "Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"true\" or \"false\".",
         &Window::setDisabled, &Window::isDisabled, false
     );
 
@@ -1340,7 +1347,7 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window. Value is either \"True\" or \"False\".",
+        "InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setInheritsAlpha, &Window::inheritsAlpha, true
     );
 
@@ -1350,12 +1357,12 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "Visible", "Property to get/set the 'visible state' setting for the Window. Value is either \"True\" or \"False\".",
+        "Visible", "Property to get/set the 'visible state' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setVisible, &Window::isVisible, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window. Value is either \"True\" or \"False\".",
+        "RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setRestoreOldCapture, &Window::restoresOldCapture, false
     );
 
@@ -1365,12 +1372,12 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "ZOrderingEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window. Value is either \"True\" or \"False\".",
+        "ZOrderingEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "PointerAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat pointer press events. Value is either \"True\" or \"False\".",
+        "PointerAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat pointer press events. Value is either \"true\" or \"false\".",
         &Window::setPointerAutoRepeatEnabled, &Window::isPointerAutoRepeatEnabled, false
     );
 
@@ -1385,7 +1392,7 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "DistributeCapturedInputs", "Property to get/set whether captured inputs are passed to child windows. Value is either \"True\" or \"False\".",
+        "DistributeCapturedInputs", "Property to get/set whether captured inputs are passed to child windows. Value is either \"true\" or \"false\".",
         &Window::setDistributesCapturedInputs, &Window::distributesCapturedInputs, false
     );
 
@@ -1400,25 +1407,25 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "InheritsTooltipText", "Property to get/set whether the window inherits its parents tooltip text when it has none of its own. Value is either \"True\" or \"False\".",
+        "InheritsTooltipText", "Property to get/set whether the window inherits its parents tooltip text when it has none of its own. Value is either \"true\" or \"false\".",
         &Window::setInheritsTooltipText, &Window::inheritsTooltipText, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "RiseOnClickEnabled", "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"True\" or \"False\".",
+        "RiseOnClickEnabled", "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"true\" or \"false\".",
         &Window::setRiseOnClickEnabled, &Window::isRiseOnPointerActivationEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "PointerPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"True\" or \"False\".",
+        "PointerPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
         &Window::setPointerPassThroughEnabled, &Window::isPointerPassThroughEnabled, false
     );
-    
+
     addProperty(&d_windowRendererProperty);
     addProperty(&d_lookNFeelProperty);
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "DragDropTarget", "Property to get/set whether the Window will receive drag and drop related notifications.  Value is either \"True\" or \"False\".",
+        "DragDropTarget", "Property to get/set whether the Window will receive drag and drop related notifications.  Value is either \"true\" or \"false\".",
         &Window::setDragDropTarget, &Window::isDragDropTarget, true
     );
 
@@ -1428,22 +1435,22 @@ void Window::addWindowProperties(void)
         "renderer).  Here, full imagery caching usually will mean caching a "
         "window's representation onto a texture (although no such "
         "implementation requirement is specified.)"
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false /* TODO: Inconsistency*/
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "TextParsingEnabled", "Property to get/set the text parsing setting for the Window.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Window::setTextParsingEnabled, &Window::isTextParsingEnabled, true
     );
-   
+
     CEGUI_DEFINE_PROPERTY(Window, UBox,
         "Margin", "Property to get/set margin for the Window. Value format:"
         "{top:{[tops],[topo]},left:{[lefts],[lefto]},bottom:{[bottoms],[bottomo]},right:{[rights],[righto]}}.",
         &Window::setMargin, &Window::getMargin, UBox(UDim(0, 0))
     );
-   
+
     CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
         "UpdateMode", "Property to get/set the window update mode setting.  "
         "Value is one of \"Always\", \"Never\" or \"Visible\".",
@@ -1453,7 +1460,7 @@ void Window::addWindowProperties(void)
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "PointerInputPropagationEnabled", "Property to get/set whether unhandled pointer inputs should be "
         "propagated back to the Window's parent.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Window::setPointerInputPropagationEnabled, &Window::isPointerInputPropagationEnabled, false
     );
 
@@ -1461,7 +1468,7 @@ void Window::addWindowProperties(void)
         "AutoWindow",
         "Property to access whether the system considers this window to be an "
         "automatically created sub-component window."
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &Window::setAutoWindow, &Window::isAutoWindow, false
     );
 }
@@ -1530,7 +1537,7 @@ void Window::setAutoRepeatRate(float rate)
 
 //----------------------------------------------------------------------------//
 void Window::update(float elapsed)
-{       
+{
     // perform update for 'this' Window
     updateSelf(elapsed);
 
@@ -1735,7 +1742,7 @@ bool Window::isUsingDefaultTooltip(void) const
 //----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip(void) const
 {
-    return isUsingDefaultTooltip() ? 
+    return isUsingDefaultTooltip() ?
         getGUIContext().getDefaultTooltipObject(): d_customTip;
 }
 
@@ -2201,7 +2208,7 @@ void Window::onSized(ElementEventArgs& e)
 void Window::onMoved(ElementEventArgs& e)
 {
     Element::onMoved(e);
-    
+
     // handle invalidation of surfaces and trigger needed redraws
     if (d_parent)
     {
@@ -2454,7 +2461,7 @@ void Window::onChildAdded(ElementEventArgs& e)
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
     getGUIContext().markAsDirty();
-    
+
     Element::onChildAdded(e);
 }
 
@@ -2466,7 +2473,7 @@ void Window::onChildRemoved(ElementEventArgs& e)
     getGUIContext().markAsDirty();
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
-    
+
     Element::onChildRemoved(e);
 }
 
@@ -3244,7 +3251,7 @@ void Window::initialiseClippers(const RenderingContext& ctx)
 void Window::onRotated(ElementEventArgs& e)
 {
     Element::onRotated(e);
-    
+
     // if we have no surface set, enable the auto surface
     if (!d_surface)
     {
@@ -3287,9 +3294,8 @@ const RenderedString& Window::getRenderedString() const
 {
     if (!d_renderedStringValid)
     {
-		// FIXME: Evil const cast!
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), const_cast<Font*>(getFont()), 0);
+            getTextVisual(), getFont(), 0);
         d_renderedStringValid = true;
     }
 
@@ -3530,7 +3536,7 @@ void Window::clonePropertiesTo(Window& target) const
 {
     for (PropertySet::PropertyIterator propertyIt = getPropertyIterator();
          !propertyIt.isAtEnd();
-         ++propertyIt) 
+         ++propertyIt)
     {
         const String& propertyName = propertyIt.getCurrentKey();
         const String propertyValue = getProperty(propertyName);
@@ -3659,7 +3665,7 @@ const Font* Window::property_getFont() const
     // for this window but we don't return name of the default font when
     // no font is set. This is IMO more practical. User can always use
     // getFont() directly to get 0.7 behaviour.
-    
+
     return getFont(false);
 }
 

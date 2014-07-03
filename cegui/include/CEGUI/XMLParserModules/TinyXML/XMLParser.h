@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUITinyXMLParser.h
     created:    Sun Mar 13 2005
     author:     Paul D Turner
 *************************************************************************/
@@ -54,7 +53,7 @@ namespace CEGUI
         ~TinyXMLParser(void);
 
         // Implementation of public abstract interface
-        void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName);
+        void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName, bool /*allowXmlValidation*/);
 
     protected:
         // Implementation of abstract interface.

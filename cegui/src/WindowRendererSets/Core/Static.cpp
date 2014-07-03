@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalStatic.cpp
     created:    Sat Sep 17 2005
     author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
 *************************************************************************/
@@ -43,12 +42,12 @@ namespace CEGUI
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStatic, bool,
             "FrameEnabled", "Property to get/set the state of the frame enabled setting for the FalagardStatic widget."
-            "  Value is either \"True\" or \"False\".",
+            "  Value is either \"true\" or \"false\".",
             &FalagardStatic::setFrameEnabled, &FalagardStatic::isFrameEnabled,
             true);
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStatic, bool,
             "BackgroundEnabled", "Property to get/set the state of the frame background setting for the FalagardStatic widget."
-            "  Value is either \"True\" or \"False\".",
+            "  Value is either \"true\" or \"false\".",
             &FalagardStatic::setBackgroundEnabled, &FalagardStatic::isBackgroundEnabled,
             true);
     }

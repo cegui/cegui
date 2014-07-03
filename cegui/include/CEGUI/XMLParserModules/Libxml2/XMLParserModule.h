@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUILibxmlParserModule.h
     created:    Tue Mar 7 2006
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIListbox.h
 	created:	13/4/2004
 	author:		Paul D Turner
 

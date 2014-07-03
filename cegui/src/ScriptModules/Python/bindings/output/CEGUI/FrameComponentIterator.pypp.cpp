@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_FrameCompone
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_FrameComponent__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::FrameComponent, std::allocator<CEGUI::FrameComponent> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::FrameComponent > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::FrameComponent getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_FrameComponentIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_FrameComponent__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::FrameComponent >, CEGUI::FrameComponent > > > FrameComponentIterator_exposer_t;
         FrameComponentIterator_exposer_t FrameComponentIterator_exposer = FrameComponentIterator_exposer_t( "FrameComponentIterator", bp::no_init );
         bp::scope FrameComponentIterator_scope( FrameComponentIterator_exposer );
+        FrameComponentIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::FrameComponent > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::FrameComponent > > exported_class_t;

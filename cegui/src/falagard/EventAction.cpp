@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   EventAction.cpp
     created:    Fri Mar 02 2012
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/EventAction.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Logger.h"
 
@@ -135,9 +135,9 @@ void EventAction::cleanupWidget(Window& widget) const
 //----------------------------------------------------------------------------//
 void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    xml_stream.openTag("EventAction")
-        .attribute("event", d_eventName)
-        .attribute("action", FalagardXMLHelper<ChildEventAction>::toString(d_action))
+    xml_stream.openTag(Falagard_xmlHandler::EventActionElement)
+        .attribute(Falagard_xmlHandler::EventAttribute, d_eventName)
+        .attribute(Falagard_xmlHandler::ActionAttribute, FalagardXMLHelper<ChildEventAction>::toString(d_action))
         .closeTag();
 }
 

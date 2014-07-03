@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIInputEvent.h
 	created:	30/5/2004
 	author:		Paul D Turner
 

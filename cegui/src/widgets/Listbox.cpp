@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIListbox.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
 
@@ -1044,27 +1043,27 @@ void Listbox::addListboxProperties(void)
     const String& propertyOrigin = WidgetTypeName;
     
     CEGUI_DEFINE_PROPERTY(Listbox, bool,
-        "Sort","Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
+        "Sort","Property to get/set the sort setting of the list box.  Value is either \"true\" or \"false\".",
         &Listbox::setSortingEnabled, &Listbox::isSortEnabled, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Listbox, bool,
-        "MultiSelect","Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".",
+        "MultiSelect","Property to get/set the multi-select setting of the list box.  Value is either \"true\" or \"false\".",
         &Listbox::setMultiselectEnabled, &Listbox::isMultiselectEnabled, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Listbox, bool,
-        "ForceVertScrollbar","Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+        "ForceVertScrollbar","Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"true\" or \"false\".",
         &Listbox::setShowVertScrollbar, &Listbox::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Listbox, bool,
-        "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
+        "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"true\" or \"false\".",
         &Listbox::setShowHorzScrollbar, &Listbox::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(Listbox, bool,
-        "ItemTooltips","Property to access the show item tooltips setting of the list box.  Value is either \"True\" or \"False\".",
+        "ItemTooltips","Property to access the show item tooltips setting of the list box.  Value is either \"true\" or \"false\".",
         &Listbox::setItemTooltipsEnabled, &Listbox::isItemTooltipsEnabled, false /* TODO: Inconsistency */
     );
 }

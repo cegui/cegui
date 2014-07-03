@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUITabButton.h
 	created:	8/8/2004
 	author:		Steve Streeting
 	

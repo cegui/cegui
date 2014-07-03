@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIBase.h
 	created:	20/2/2004
 	author:		Paul D Turner
 
@@ -33,13 +32,14 @@
 #ifndef _CEGUIBase_h_
 #define _CEGUIBase_h_
 
-#include <cassert>
-
 // bring in configuration options
 #include "CEGUI/Config.h"
 
 // add CEGUI version defines
 #include "CEGUI/Version.h"
+
+#include <cassert>
+#include <algorithm>
 
 /*************************************************************************
 	Dynamic Library import / export control conditional
@@ -92,11 +92,6 @@
 #   if !defined(_STLPORT_VERSION)
 #       undef _STLP_DEBUG
 #   endif
-#endif
-
-// min/max is defined in <algorithm> in VS2013+
-#if (_MSC_VER >= 1800)
-#   include <algorithm>
 #endif
 
 // The following defines macros used within CEGUI for std::min/std::max

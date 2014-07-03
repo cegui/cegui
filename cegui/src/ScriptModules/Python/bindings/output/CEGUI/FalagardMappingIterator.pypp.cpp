@@ -15,6 +15,13 @@ struct ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI
         
     }
 
+    ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_greater___greater___greater___greater__wrapper( )
+    : CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > > >( )
+      , bp::wrapper< CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::WindowFactoryManager::FalagardWindowMapping getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_FalagardMappingIterator_class(){
         typedef bp::class_< ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_greater___greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping > > > FalagardMappingIterator_exposer_t;
         FalagardMappingIterator_exposer_t FalagardMappingIterator_exposer = FalagardMappingIterator_exposer_t( "FalagardMappingIterator", bp::no_init );
         bp::scope FalagardMappingIterator_scope( FalagardMappingIterator_exposer );
+        FalagardMappingIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > > >::getCurrentKey
         
             typedef CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > > > exported_class_t;

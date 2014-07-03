@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   GUIContext.h
     created:    Mon Jan 12 2009
     author:     Paul D Turner
 *************************************************************************/
@@ -252,6 +251,7 @@ protected:
 
     // Input event handlers
     void initializeSemanticEventHandlers();
+    void deleteSemanticEventHandlers();
 
     bool handleTextInputEvent(const TextInputEvent& event);
     bool handleSemanticInputEvent(const SemanticInputEvent& event);

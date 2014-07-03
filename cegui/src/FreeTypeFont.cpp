@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFont.cpp
     created:    21/2/2004
     author:     Paul D Turner
 
@@ -520,7 +519,7 @@ void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
     xml_stream.attribute(Font_xmlHandler::FontSizeAttribute,
                          PropertyHelper<float>::toString(d_ptSize));
     if (!d_antiAliased)
-        xml_stream.attribute(Font_xmlHandler::FontAntiAliasedAttribute, "False");
+        xml_stream.attribute(Font_xmlHandler::FontAntiAliasedAttribute, "false");
 
     if (d_specificLineSpacing > 0.0f)
         xml_stream.attribute(Font_xmlHandler::FontLineSpacingAttribute,

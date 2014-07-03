@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalTextComponent.cpp
     created:    Sun Jun 19 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/TextComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/PropertyHelper.h"
@@ -321,34 +321,34 @@ namespace CEGUI
     void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
         // opening tag
-        xml_stream.openTag("TextComponent");
+        xml_stream.openTag(Falagard_xmlHandler::TextComponentElement);
         // write out area
         d_area.writeXMLToStream(xml_stream);
 
         // write text element
         if (!d_font.empty() && !getText().empty())
         {
-            xml_stream.openTag("Text");
+            xml_stream.openTag(Falagard_xmlHandler::TextElement);
             if (!d_font.empty())
-                xml_stream.attribute("font", d_font);
+                xml_stream.attribute(Falagard_xmlHandler::FontAttribute, d_font);
             if (!getText().empty())
-                xml_stream.attribute("string", getText());
+                xml_stream.attribute(Falagard_xmlHandler::StringAttribute, getText());
             xml_stream.closeTag();
         }
 
         // write text property element
         if (!d_textPropertyName.empty())
         {
-            xml_stream.openTag("TextProperty")
-                .attribute("name", d_textPropertyName)
+            xml_stream.openTag(Falagard_xmlHandler::TextPropertyElement)
+                .attribute(Falagard_xmlHandler::NameAttribute, d_textPropertyName)
                 .closeTag();
         }
 
         // write font property element
         if (!d_fontPropertyName.empty())
         {
-            xml_stream.openTag("FontProperty")
-                .attribute("name", d_fontPropertyName)
+            xml_stream.openTag(Falagard_xmlHandler::FontPropertyElement)
+                .attribute(Falagard_xmlHandler::NameAttribute, d_fontPropertyName)
                 .closeTag();
         }
 

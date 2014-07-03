@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalListHeaderSegment.cpp
     created:    Tue Jul 5 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

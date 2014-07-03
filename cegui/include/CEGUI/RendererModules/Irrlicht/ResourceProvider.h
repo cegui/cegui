@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIIrrlichtResourceProvider.h
     created:    12/22/2004
     author:     Thomas Suter
 

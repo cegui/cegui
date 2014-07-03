@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalImageryComponent.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/ImageryComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
@@ -235,18 +235,18 @@ namespace CEGUI
     void ImageryComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
         // opening tag
-        xml_stream.openTag("ImageryComponent");
+        xml_stream.openTag(Falagard_xmlHandler::ImageryComponentElement);
         // write out area
         d_area.writeXMLToStream(xml_stream);
 
         // write image
         if (isImageFetchedFromProperty())
-            xml_stream.openTag("ImageProperty")
-                .attribute("name", d_imagePropertyName)
+            xml_stream.openTag(Falagard_xmlHandler::ImagePropertyElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_imagePropertyName)
                 .closeTag();
         else
-            xml_stream.openTag("Image")
-                .attribute("name", d_image->getName())
+            xml_stream.openTag(Falagard_xmlHandler::ImageElement)
+                .attribute(Falagard_xmlHandler::NameAttribute, d_image->getName())
                 .closeTag();
 
         // get base class to write colours
