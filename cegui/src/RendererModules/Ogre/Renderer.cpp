@@ -152,16 +152,16 @@ static Ogre::String S_glsl_core_ps_source(
 class OgreGUIRenderQueueListener : public Ogre::CompositorWorkspaceListener
 {
 public:
-	OgreGUIRenderQueueListener(OgreRenderer* owner);
+    OgreGUIRenderQueueListener(OgreRenderer* owner);
 
-	void setCEGUIRenderEnabled(bool enabled);
-	bool isCEGUIRenderEnabled() const;
+    void setCEGUIRenderEnabled(bool enabled);
+    bool isCEGUIRenderEnabled() const;
 
-	virtual void passPreExecute(Ogre::CompositorPass *pass);
+    virtual void passPreExecute(Ogre::CompositorPass *pass);
 
 private:
-	bool d_enabled;
-	OgreRenderer* d_owner;
+    bool d_enabled;
+    OgreRenderer* d_owner;
 
 };
 
@@ -302,22 +302,22 @@ bool OgreRenderer_impl::s_compositorResourcesInitialized = false;
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
-	System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-	if (System::getSingletonPtr())
-		CEGUI_THROW(InvalidRequestException(
-		"CEGUI::System object is already initialised."));
+    if (System::getSingletonPtr())
+        CEGUI_THROW(InvalidRequestException(
+        "CEGUI::System object is already initialised."));
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-	createOgreCompositorResources();
+    createOgreCompositorResources();
 #endif
 
-	OgreRenderer& renderer = create();
-	OgreResourceProvider& rp = createOgreResourceProvider();
-	OgreImageCodec& ic = createOgreImageCodec();
-	System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
+    OgreRenderer& renderer = create();
+    OgreResourceProvider& rp = createOgreResourceProvider();
+    OgreImageCodec& ic = createOgreImageCodec();
+    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
-	return renderer;
+    return renderer;
 }
 
 //----------------------------------------------------------------------------//
@@ -331,7 +331,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
             "CEGUI::System object is already initialised."));
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-	createOgreCompositorResources();
+    createOgreCompositorResources();
 #endif
 
     OgreRenderer& renderer = OgreRenderer::create(target);
@@ -1299,7 +1299,7 @@ bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
 void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
 {
     
-	if (d_enabled && pass->getType() == Ogre::PASS_SCENE)
+    if (d_enabled && pass->getType() == Ogre::PASS_SCENE)
     {
         // We should only render contexts that are on this render target
         System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
