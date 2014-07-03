@@ -280,10 +280,10 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
             // get cursor position to restore afterwards
             glfwGetMousePos(&d_oldMousePosX, &d_oldMousePosY);
 
-            // we need to inject the previous cursor position
-            // because glfw moves the cursor to the centre of
-            // the render window if it is disabled. therefore 
-            // notify the next call of the "mouse disabled" event.
+            // we need to inject the previous cursor position because
+            // glfw moves the cursor to the centre of the render 
+            // window if it gets disabled. therefore notify the 
+            // next MousePosCallback invocation of the "mouse disabled" event.
             d_mouseDisableCalled = true;
 
             // disable cursor
