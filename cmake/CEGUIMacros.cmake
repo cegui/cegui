@@ -195,6 +195,9 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         add_library(${_LIB_NAME}_Static STATIC ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
         set_property(TARGET ${_LIB_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
+        if (CEGUI_BUILD_STATIC_FACTORY_MODULE)
+            set_property(TARGET ${_LIB_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_BUILD_STATIC_FACTORY_MODULE)
+        endif()
     endif()
 
     ###########################################################################
