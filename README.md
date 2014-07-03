@@ -12,6 +12,9 @@ What follows is just a quick-start guide, go to our doxygen docs for more detail
 
 We are happiest with **clean pull requests** containing conscise commits with **proper commit messages**. We also accept **plain patches** but making it easier for us to just accept your contribution with one click greatly speeds up the review process.
 
+Here is an explanation on how to fork from our repository, commit changes to your fork, and create a pull request targeting the right branch:
+https://confluence.atlassian.com/display/BITBUCKET/Fork+a+Repo,+Compare+Code,+and+Create+a+Pull+Request
+
 - Make sure you target the appropriate branch! If in doubt, ask us on IRC.
   - `default` if your change **breaks API**
   - *API branch* (e.g.: `v0`) if it is a minor change that **doesn't break API but does break ABI**
