@@ -33,7 +33,7 @@
 #include "CEGUI/Config.h"
 
 #include <vector>
-#include "glm/core/type.hpp"
+#include <glm/glm.hpp>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOGRERENDERER_EXPORTS
@@ -88,7 +88,7 @@ public:
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
-        then initialises the CEGUI system with them.
+        then initializes the CEGUI system with them.
 
         The created Renderer will use the default Ogre rendering window as the
         default output surface.
@@ -115,7 +115,7 @@ public:
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
-        then initialises the CEGUI system with them.
+        then initializes the CEGUI system with them.
 
         The create Renderer will use the specified Ogre::RenderTarget as the
         default output surface.
@@ -177,7 +177,7 @@ public:
     static OgreRenderer& create(Ogre::RenderTarget& target,
                                 const int abi = CEGUI_VERSION_ABI);
 
-    //! destory an OgreRenderer object.
+    //! destroy an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);
 
     //! function to create a CEGUI::OgreResourceProvider object
@@ -213,7 +213,7 @@ public:
         Create a CEGUI::Texture that wraps an existing Ogre texture.
 
     \param name
-        The name for tne new texture being created.
+        The name for the new texture being created.
 
     \param tex
         Ogre::TexturePtr for the texture that will be used by the created
@@ -291,57 +291,6 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
-    /*!
-    \brief
-        Returns whether the OgreRenderer is currently set to use shaders when
-        doing its rendering operations.
-
-    \return
-        - true if rendering is being done using shaders.
-        - false if rendering is being done using the fixed function pipeline
-    */
-    bool isUsingShaders() const;
-
-    /*!
-    \brief
-        Set whether the OgreRenderer shound use shaders when performing its
-        rendering operations.
-
-    \param use_shaders
-        - true if rendering shaders should be used to perform rendering.
-        - false if the fixed function pipeline should be used to perform
-          rendering.
-
-    \note
-        When compiled against Ogre 1.8 or later, shaders will automatically
-        be enabled if the render sytem does not support the fixed function
-        pipeline (such as with Direct3D 11). If you are compiling against
-        earlier releases of Ogre, you must explicity enable the use of
-        shaders by calling this function - if you are unsure what you'll be
-        compiling against, it is safe to call this function anyway.
-    */
-    void setUsingShaders(const bool use_shaders);
-
-    /*!
-    \brief
-        Perform required operations to bind shaders (or unbind them) depending
-        on whether shader based rendering is currently enabled.
-
-        Normally you would not need to call this function directly, although
-        that might be required if you are using RenderEffect objects that
-        also use shaders.
-    */
-    void bindShaders();
-
-    /*!
-    \brief
-        Updates the shader constant parameters (i.e. uniforms).
-
-        You do not normally need to call this function directly. Some may need
-        to call this function if you're doing non-standard or advanced things.
-    */
-    void updateShaderParams() const;
-
     //! Set the current world matrix to the given matrix.
     void setWorldMatrix(const Ogre::Matrix4& m);
     //! Set the current view matrix to the given matrix.
@@ -365,37 +314,47 @@ public:
         according to whether the current Ogre::RenderTarget requires textures
         to be flipped (i.e it does the right thing for both D3D and OpenGL).
     */
-    const Ogre::Matrix4& getWorldViewProjMatrix() const;
+    const glm::mat4& getWorldViewProjMatrix() const;
+
+
+    void bindBlendMode(BlendMode blend);
 
     // implement CEGUI::Renderer interface
     RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
+
+    RefCounted<RenderMaterial> createRenderMaterial(
+        const DefaultShaderType shaderType) const;
+    GeometryBuffer& createGeometryBufferColoured(
+        CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    GeometryBuffer& createGeometryBufferTextured(
+        CEGUI::RefCounted<RenderMaterial> renderMaterial);
+
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
+
     Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name,
-                           const String& filename,
-                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const String& filename,
+        const String& resourceGroup);
     Texture& createTexture(const String& name, const Sizef& size);
+
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
     void destroyAllTextures();
+
     Texture& getTexture(const String& name) const;
     bool isTextureDefined(const String& name) const;
+
     void beginRendering();
     void endRendering();
+
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;
     const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-
-    glm::mat4 getViewProjectionMatrix();
-
-    void bindBlendMode(BlendMode blend);
 
 protected:
     //! default constructor.
@@ -405,7 +364,7 @@ protected:
     //! destructor.
     virtual ~OgreRenderer();
 
-    //! checks Ogre initialisation.  throws exceptions if an issue is detected.
+    //! checks Ogre initialization.  throws exceptions if an issue is detected.
     void checkOgreInitialised();
     //! helper to throw exception if name is already used.
     void throwIfNameExists(const String& name) const;

@@ -116,9 +116,10 @@ void OgreGeometryBuffer::draw() const
 
 
     // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix()*
+    glm::mat4 glmmat = d_owner.getWorldViewProjMatrix()*
         d_matrix;
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
+
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", glmmat);
 
 
     d_owner.bindBlendMode(d_blendMode);
@@ -132,7 +133,6 @@ void OgreGeometryBuffer::draw() const
 
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
-        //d_renderSystem._setTexture(0, true, name);
 
 
         // draw the geometry
@@ -261,7 +261,7 @@ void OgreGeometryBuffer::finaliseVertexAttributes()
     size_t vd_offset = 0;
 
 
-    //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
+    // Update the format according to our vertex attributes
     const size_t attribute_count = d_vertexAttributes.size();
     for (size_t i = 0; i < attribute_count; ++i)
     {
