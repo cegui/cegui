@@ -170,7 +170,13 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     );
 
     // matrices used for projecting and unprojecting points
-    const Ogre::Matrix4 proj(gb.getMatrix() * d_matrix * vpmat);
+    Ogre::Matrix4 converted_buffermat;
+
+    OgreRenderer::convertGLMMatrixToOgreMatrix(gb.getMatrix(), 
+        converted_buffermat);
+
+
+    const Ogre::Matrix4 proj(converted_buffermat * d_matrix * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
 
     Ogre::Vector3 in;
