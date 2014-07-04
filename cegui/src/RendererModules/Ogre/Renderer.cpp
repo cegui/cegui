@@ -139,7 +139,7 @@ struct OgreRenderer_impl :
         d_worldMatrix(Ogre::Matrix4::IDENTITY),
         d_viewMatrix(Ogre::Matrix4::IDENTITY),
         d_projectionMatrix(Ogre::Matrix4::IDENTITY),
-        d_worldViewProjMatrix(Ogre::Matrix4::IDENTITY),
+        d_worldViewProjMatrix(),
         d_combinedMatrixValid(true),
         d_useGLSL(false),
         d_useGLSLCore(false),
@@ -215,7 +215,11 @@ struct OgreRenderer_impl :
 
 //----------------------------------------------------------------------------//
 String OgreRenderer_impl::d_rendererID(
-"CEGUI::OgreRenderer - Official OGRE based 2nd generation renderer module.");
+"CEGUI::OgreRenderer - OGRE based 3rd generation renderer module"
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+" with Ogre::Compositor2 enabled"
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+".");
 
 int OgreRenderer_impl::s_createdSceneNumber = 0;
 bool OgreRenderer_impl::s_compositorResourcesInitialized = false;
@@ -420,22 +424,31 @@ RenderTarget& OgreRenderer::getDefaultRenderTarget()
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 {
-    GeometryBufferList::iterator i = std::find(d_pimpl->d_geometryBuffers.begin(),
-                                               d_pimpl->d_geometryBuffers.end(),
-                                               &buffer);
+    // The find function that was here before would no longer compile for some reason
 
-    if (d_pimpl->d_geometryBuffers.end() != i)
+    // Manually search the container for a matching pointer
+    auto end = d_pimpl->d_geometryBuffers.end();
+    for (auto iter = d_pimpl->d_geometryBuffers.begin(); iter != end; ++iter)
     {
-        d_pimpl->d_geometryBuffers.erase(i);
-        CEGUI_DELETE_AO &buffer;
+        if ((*iter) == &buffer)
+        {
+            d_pimpl->d_geometryBuffers.erase(iter);
+            CEGUI_DELETE_AO &buffer;
+            return;
+        }
     }
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyAllGeometryBuffers()
 {
-    while (!d_pimpl->d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_pimpl->d_geometryBuffers.begin());
+    // Perhaps a faster function for destroying many buffers
+    for (size_t i = 0; i < d_pimpl->d_geometryBuffers.size(); i++)
+    {
+        CEGUI_DELETE_AO d_pimpl->d_geometryBuffers[i];
+    }
+
+    d_pimpl->d_geometryBuffers.clear();
 }
 
 //----------------------------------------------------------------------------//
@@ -1102,23 +1115,8 @@ const glm::mat4& OgreRenderer::getWorldViewProjMatrix() const
         Ogre::Matrix4 final_result =
             final_prj * d_pimpl->d_viewMatrix * d_pimpl->d_worldMatrix;
 
-        // This size getting here might be wrong, but this should work with
-        // matrices that have double elements
-        size_t target_single_size = 
-#if(defined(GLM_PRECISION_HIGHP_FLOAT))
-        sizeof(glm::highp_float);
-#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
-        sizeof(glm::mediump_float);
-#elif(defined(GLM_PRECISION_LOWP_FLOAT))
-        sizeof(glm::lowp_float);
-#else
-        sizeof(glm::mediump_float);
-#endif//GLM_PRECISION
-            
-
-        // There might be a better way to do this conversion
-        memcpy_s(&d_pimpl->d_worldViewProjMatrix[0], 16*target_single_size, 
-            &final_result[0][0], 16*sizeof(Ogre::Real));
+        convertOgreMatrixToGLMMatrix(final_result, 
+            d_pimpl->d_worldViewProjMatrix);
 
 
         d_pimpl->d_combinedMatrixValid = true;
@@ -1229,6 +1227,48 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::convertGLMMatrixToOgreMatrix(const glm::mat4& source, 
+    Ogre::Matrix4& target)
+{
+    size_t target_single_size = 
+#if(defined(GLM_PRECISION_HIGHP_FLOAT))
+        sizeof(glm::highp_float);
+#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
+        sizeof(glm::mediump_float);
+#elif(defined(GLM_PRECISION_LOWP_FLOAT))
+        sizeof(glm::lowp_float);
+#else
+        sizeof(glm::mediump_float);
+#endif//GLM_PRECISION
+
+
+    // There might be a better way to do this conversion
+    memcpy_s(&target[0][0], 16*sizeof(Ogre::Real), 
+        &source[0][0], 16*target_single_size);
+
+}
+
+void OgreRenderer::convertOgreMatrixToGLMMatrix(const Ogre::Matrix4& source, 
+    glm::mat4& target)
+{
+    size_t target_single_size = 
+#if(defined(GLM_PRECISION_HIGHP_FLOAT))
+        sizeof(glm::highp_float);
+#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
+        sizeof(glm::mediump_float);
+#elif(defined(GLM_PRECISION_LOWP_FLOAT))
+        sizeof(glm::lowp_float);
+#else
+        sizeof(glm::mediump_float);
+#endif//GLM_PRECISION
+
+
+    // There might be a better way to do this conversion
+    memcpy_s(&target[0][0], 16*target_single_size, 
+        &source[0][0], 16*sizeof(Ogre::Real));
 }
 
 //----------------------------------------------------------------------------//
