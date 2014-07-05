@@ -1108,10 +1108,8 @@ void OgreRenderer::initialiseRenderStateSettings()
     // set alpha blending to known state
     setupRenderingBlendMode(BM_NORMAL, true);
 
-    // Set texture states
     d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, TEXCALC_NONE);
     d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
-    d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
     d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
     d_pimpl->d_renderSystem->_setTextureMatrix(0, Matrix4::IDENTITY);
     d_pimpl->d_renderSystem->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);

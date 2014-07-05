@@ -94,6 +94,8 @@ protected:
 
     void setVertexBuffer();
 
+    void setTextureStates() const;
+
     void cleanUpVertexAttributes();
 
     //! Renderer object that owns this GeometryBuffer
