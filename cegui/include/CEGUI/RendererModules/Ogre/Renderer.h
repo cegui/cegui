@@ -55,6 +55,7 @@ namespace Ogre
 class Root;
 class RenderSystem;
 class RenderTarget;
+class SceneManager;
 #if (CEGUI_OGRE_VERSION < ((1 << 16) | (9 << 8) | 0))
 class TexturePtr;
 #else
@@ -339,6 +340,9 @@ public:
     Texture& createTexture(const String& name, const String& filename,
         const String& resourceGroup);
     Texture& createTexture(const String& name, const Sizef& size);
+
+
+    Ogre::SceneManager& getDummyScene() const;
 
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
