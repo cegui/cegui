@@ -1,6 +1,6 @@
 /***********************************************************************
     created:    Tue Feb 17 2009
-    author:     Paul D Turner, Henri I Hyyryl‰inen
+    author:     Paul D Turner, Henri I Hyyryl√§inen
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
