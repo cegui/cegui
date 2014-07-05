@@ -113,11 +113,11 @@ void OgreGeometryBuffer::draw() const
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
-        //initialiseTextureStates();
+        setTextureStates();
 
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
-        
+
 
         // draw the geometry
         d_renderSystem._render(*d_renderOp);
@@ -307,12 +307,14 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
     d_owner.getDummyScene().destroyManualObject(d_vertexHolder);
     d_vertexHolder = 0;
 }
+
 // ------------------------------------ //
 void OgreGeometryBuffer::setScissorRects() const
 {
     d_renderSystem.setScissorTest(true, d_clipRect.left(), 
         d_clipRect.top(), d_clipRect.right(), d_clipRect.bottom());
 }
+
 // ------------------------------------ //
 void OgreGeometryBuffer::reset()
 {
@@ -323,7 +325,12 @@ void OgreGeometryBuffer::reset()
     d_renderOp = 0;
 }
 
-
+// ------------------------------------ //
+void OgreGeometryBuffer::setTextureStates() const{
+    using namespace Ogre;
+    // Set texture states
+    d_renderSystem._setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_NONE);
+}
 
 
 } // End of  CEGUI namespace section
