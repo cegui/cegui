@@ -77,6 +77,11 @@ protected:
     static bool d_windowSized;
     static int d_newWindowWidth;
     static int d_newWindowHeight;
+
+    static bool d_mouseLeftWindow;
+    static bool d_mouseDisableCalled;
+    static int d_oldMousePosX;
+    static int d_oldMousePosY;
 };
 
 
