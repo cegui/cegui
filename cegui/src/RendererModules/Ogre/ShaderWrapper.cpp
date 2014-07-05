@@ -116,12 +116,12 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
 
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
-
+            
             // The cast is here to prevent VERY long error messages about not
             // matching any signatures if the d_parameterValue's type 
             // changes in the future
-            d_pixelParameters->setNamedConstant("modelViewPerspMatrix", 
-                const_cast<const float*>(&mat->d_parameterValue[0][0]), 16);
+            d_vertexParameters->setNamedConstant("worldViewProjMatrix", 
+                const_cast<const float*>(&mat->d_parameterValue[0][0]), 4);
 
         } 
         else

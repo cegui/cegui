@@ -755,12 +755,12 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_displaySize.d_width  = target.getWidth();
     d_pimpl->d_displaySize.d_height = target.getHeight();
 
-    d_pimpl->d_useGLSLCore = ( d_pimpl->d_renderSystem->getName().compare(0, 8, "OpenGL 3") == 0 ) ;
-    
-    if (!d_pimpl->d_useGLSLCore)
+    // Now properly checks for the openGL version
+    if (d_pimpl->d_renderSystem->getName().find("OpenGL") != Ogre::String::npos)
     {
+        if (d_pimpl->d_renderSystem->getDriverVersion().major >= 3)
+            d_pimpl->d_useGLSLCore = true;
 
-        d_pimpl->d_useGLSLCore = (d_pimpl->d_renderSystem->getName().compare(0, 8, "OpenGL 4") == 0 );
     }
 
 
@@ -894,6 +894,8 @@ void OgreRenderer::initialiseShaders()
     texture_ps->setParameter("entry_point", "main");
     colour_vs->setParameter("entry_point", "main");
     colour_ps->setParameter("entry_point", "main");
+
+    // TODO: make sure that the legacy OpenGL shaders bind parameters properly
 
     // If we use GLSL
     if (d_pimpl->d_useGLSL)
