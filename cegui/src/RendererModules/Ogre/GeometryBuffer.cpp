@@ -105,11 +105,14 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::draw() const
 {
-    if (d_vertexData.empty() || !d_renderOp)
+    if (d_vertexData.empty())
         return;
 
     if (d_dataAppended)
         syncManualObject();
+
+    if (!d_renderOp)
+        return;
 
     // setup clip region
     if (d_clippingActive)
@@ -142,12 +145,9 @@ void OgreGeometryBuffer::draw() const
         shader_parameter_bindings = shaderParameterBindings->
         getShaderParameterBindings();
 
-    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator iter = 
-        shader_parameter_bindings.begin();
-    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end = 
-        shader_parameter_bindings.end();
+    auto end = shader_parameter_bindings.end();
 
-    while(iter != end)
+    for (auto iter = shader_parameter_bindings.begin(); iter != end; ++iter)
     {
         const CEGUI::ShaderParameter* parameter = iter->second;
         const ShaderParamType parameterType = parameter->getType();
@@ -242,7 +242,7 @@ void OgreGeometryBuffer::syncManualObject() const
     {
         for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_TEXTURED)
         {
-            assert(i+FLOATS_PER_TEXTURED < d_vertexData.size() && 
+            assert(i+FLOATS_PER_TEXTURED <= d_vertexData.size() && 
                 "invalid vertex data passed to OgreGeometryBuffer");
 
             // First the position
@@ -263,7 +263,7 @@ void OgreGeometryBuffer::syncManualObject() const
 
         for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_COLOURED)
         {
-            assert(i+FLOATS_PER_COLOURED < d_vertexData.size() && 
+            assert(i+FLOATS_PER_COLOURED <= d_vertexData.size() && 
                 "invalid vertex data passed to OgreGeometryBuffer");
 
             // First the position
