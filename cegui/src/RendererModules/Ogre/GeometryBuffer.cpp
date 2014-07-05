@@ -40,7 +40,7 @@
 #include "OgreSceneManager.h"
 
 
-#define INITIAL_BUFFER_SIZE     16
+#define INITIAL_BUFFER_SIZE     24
 
 #define FLOATS_PER_TEXTURED     9
 #define FLOATS_PER_COLOURED     7
