@@ -41,13 +41,18 @@
 namespace CEGUI
 {
 
+class ListView;
+
 struct CEGUIEXPORT ListViewItemRenderingState
 {
     RenderedString d_string;
     Sizef d_size;
     bool d_isSelected;
+    ModelIndex d_index;
+    ListView* d_attachedListView;
 
-    ListViewItemRenderingState();
+    ListViewItemRenderingState(ListView* list_view);
+    bool operator< (const ListViewItemRenderingState& other) const;
 };
 
 /*!
@@ -68,14 +73,19 @@ public:
     const std::vector<ListViewItemRenderingState>& getItems() const;
 
     virtual void prepareForRender();
+
     virtual ModelIndex indexAt(const Vector2f& position);
+
+protected:
+    virtual bool onChildrenAdded(const EventArgs& args);
+    virtual bool onChildrenRemoved(const EventArgs& args);
 
 private:
     std::vector<ListViewItemRenderingState> d_items;
 
-    void computeSelectionStateModelIndices();
-
     virtual void resortView();
+    void updateItem(ListViewItemRenderingState& item, ModelIndex index,
+        float& max_width, float& total_height);
 };
 
 }
