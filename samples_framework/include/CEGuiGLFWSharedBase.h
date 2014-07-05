@@ -61,6 +61,7 @@ protected:
     static void GLFWCALL glfwMouseWheelCallback(int position);
     static void GLFWCALL glfwMousePosCallback(int x, int y );
 
+    static int GLFWCALL glfwWindowCloseCallback(void);
     static void GLFWCALL glfwWindowResizeCallback(int width, int height);
 
     static CEGUI::Key::Scan GlfwToCeguiKey(int glfwKey);

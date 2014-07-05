@@ -72,6 +72,7 @@ void CEGuiGLFWSharedBase::run()
     glfwSetMousePosCallback(glfwMousePosCallback);
 
     //Window callbacks
+    glfwSetWindowCloseCallback(glfwWindowCloseCallback);
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
     d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -123,6 +124,13 @@ void CEGuiGLFWSharedBase::drawFrame()
     d_frameTime = time_now;
 
     d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
+}
+
+//----------------------------------------------------------------------------//
+int CEGuiGLFWSharedBase::glfwWindowCloseCallback(void)
+{
+    d_sampleApp->setQuitting(true);
+    return GL_TRUE;
 }
 
 //----------------------------------------------------------------------------//
