@@ -127,8 +127,6 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
             {
                 d_previousMatrix = *mat->d_parameterValue;
 
-                //d_vertexParameters->setNamedConstant("worldViewProjMatrix", 
-                //    d_previousMatrix);
                 d_vertexParameters->_writeRawConstants(d_physicalIndex, 
                     &d_previousMatrix[0][0], 4);
 
@@ -140,8 +138,6 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
 
                 d_vertexParameters->_writeRawConstants(d_physicalIndex+12, 
                     &d_previousMatrix[3][0], 4);
-
-                //d_vertexParameters->setConstant(0, d_previousMatrix);
             }
         } 
         else

@@ -105,8 +105,6 @@ protected:
 
     //! model matrix cache
     mutable Ogre::Matrix4 d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
 
     mutable bool d_dataAppended;
 
