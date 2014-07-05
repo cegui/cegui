@@ -33,7 +33,6 @@
 #include "CEGUI/Config.h"
 
 #include <vector>
-#include <glm/glm.hpp>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOGRERENDERER_EXPORTS
@@ -359,15 +358,6 @@ public:
     const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-    
-
-    //! \brief Converts a glm::mat4 to Ogre::Matrix4
-    static void convertGLMMatrixToOgreMatrix(const glm::mat4& source, 
-        Ogre::Matrix4& target);
-
-    //! \brief Converts an Ogre::Matrix4 to a glm::mat4
-    static void convertOgreMatrixToGLMMatrix(const Ogre::Matrix4& source, 
-        glm::mat4& target);
 
 
 protected:
