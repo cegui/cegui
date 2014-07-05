@@ -34,11 +34,16 @@
 #include <OgreHardwareBufferManager.h>
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ShaderParameterBindings.h"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/quaternion.hpp"
+
+#include "OgreManualObject.h"
+#include "OgreRenderOperation.h"
+#include "OgreSceneManager.h"
 
 
 #define INITIAL_BUFFER_SIZE     64
+
+#define FLOATS_PER_TEXTURED     9
+#define FLOATS_PER_COLOURED     7
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -83,9 +88,12 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_renderSystem(rs),
     d_clipRect(0, 0, 0, 0),
     d_matrixValid(false),
-    d_sync(false),
-    d_vertexDefBytes(0)
+    d_vertexHolder(0),
+    d_expectedData(MANUALOBJECT_TYPE_INVALID),
+    d_renderOp(0),
+    d_dataAppended(false)
 {
+    
 }
 
 //----------------------------------------------------------------------------//
@@ -97,11 +105,11 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::draw() const
 {
-    if (!d_sync)
-        syncHardwareBuffer();
-
-    if (d_vertexData.empty())
+    if (d_vertexData.empty() || !d_renderOp)
         return;
+
+    if (d_dataAppended)
+        syncManualObject();
 
     // setup clip region
     if (d_clippingActive)
@@ -127,6 +135,47 @@ void OgreGeometryBuffer::draw() const
 
     d_owner.bindBlendMode(d_blendMode);
 
+    bool found_texture = false;
+
+    // Not sure if this is needed here
+    const ShaderParameterBindings::ShaderParameterBindingsMap& 
+        shader_parameter_bindings = shaderParameterBindings->
+        getShaderParameterBindings();
+
+    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator iter = 
+        shader_parameter_bindings.begin();
+    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end = 
+        shader_parameter_bindings.end();
+
+    while(iter != end)
+    {
+        const CEGUI::ShaderParameter* parameter = iter->second;
+        const ShaderParamType parameterType = parameter->getType();
+
+
+        if (iter->first == "texture0")
+        {
+
+            const CEGUI::ShaderParameterTexture* parameterTexture = 
+                static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
+
+            const CEGUI::OgreTexture* texture = static_cast<const 
+                CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
+
+            d_vertexHolder->setMaterialName(0, 
+                texture->getOgreTexture()->getName());
+
+            found_texture = true;
+            break;
+        }
+    }
+
+    if (!found_texture)
+    {
+        // Reset the material
+        d_vertexHolder->setMaterialName(0, "BaseWhiteNoLighting");
+    }
+
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
     {
@@ -138,13 +187,10 @@ void OgreGeometryBuffer::draw() const
 
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
-
+        
 
         // draw the geometry
-        d_renderOp.vertexData->vertexStart = 0;
-        d_renderOp.vertexData->vertexCount = d_vertexCount;
-        
-        d_renderSystem._render(d_renderOp);
+        d_renderSystem._render(*d_renderOp);
     }
 
     // clean up RenderEffect
@@ -164,15 +210,78 @@ void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
 {
-
     d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), 
         vertex_data.end());
 
-    // Calculate the new vertex count
-    d_vertexCount = (d_vertexData.size()*sizeof(float))/d_vertexDefBytes;
+    d_dataAppended = true;
+
+    size_t float_per_element;
+
+    switch(d_expectedData){
+    case MANUALOBJECT_TYPE_COLOURED: float_per_element = FLOATS_PER_COLOURED; break;
+    case MANUALOBJECT_TYPE_TEXTURED: float_per_element = FLOATS_PER_TEXTURED; break;
+    }
+
+    d_vertexCount = d_vertexData.size()/float_per_element;
+}
+
+void OgreGeometryBuffer::syncManualObject() const
+{
+    if (!d_dataAppended)
+        return;
+
+    // All the data is in the vector so it's safe to clear
+    d_vertexHolder->clear();
+
+    // Blank material initially
+    d_vertexHolder->begin("BaseWhiteNoLighting", 
+        Ogre::RenderOperation::OT_TRIANGLE_LIST);
+
+    // Append the data to the manual object
+    if (d_expectedData == MANUALOBJECT_TYPE_TEXTURED)
+    {
+        for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_TEXTURED)
+        {
+            assert(i+FLOATS_PER_TEXTURED < d_vertexData.size() && 
+                "invalid vertex data passed to OgreGeometryBuffer");
+
+            // First the position
+            d_vertexHolder->position(d_vertexData[i], d_vertexData[i+1], 
+                d_vertexData[i+2]);
+
+            // And then the colour
+            d_vertexHolder->colour(d_vertexData[i+3], d_vertexData[i+4], 
+                d_vertexData[i+5], d_vertexData[i+6]);
 
 
-    d_sync = false;
+            // And finally texture coordinate
+            d_vertexHolder->textureCoord(d_vertexData[i+7], d_vertexData[i+8]);
+        }
+    }
+    else if (d_expectedData == MANUALOBJECT_TYPE_COLOURED)
+    {
+
+        for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_COLOURED)
+        {
+            assert(i+FLOATS_PER_COLOURED < d_vertexData.size() && 
+                "invalid vertex data passed to OgreGeometryBuffer");
+
+            // First the position
+            d_vertexHolder->position(d_vertexData[i], d_vertexData[i+1], 
+                d_vertexData[i+2]);
+
+            // And then the colour
+            d_vertexHolder->colour(d_vertexData[i+3], d_vertexData[i+4], 
+                d_vertexData[i+5], d_vertexData[i+6]);
+        }
+    }
+
+
+    auto section = d_vertexHolder->end();
+
+    d_renderOp = section->getRenderOperation();
+
+    d_dataAppended = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -204,35 +313,6 @@ void OgreGeometryBuffer::updateMatrix() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::syncHardwareBuffer() const
-{
-    // Reallocate h/w buffer as required
-    size_t size = d_hwBuffer->getNumVertices();
-    const size_t required_size = d_vertexCount;
-    if(size < required_size)
-    {
-        // calculate new size to use
-        while(size < required_size)
-            size *= 2;
-
-        // Reallocate the buffer
-        d_hwBuffer.setNull();
-        setVertexBuffer(size);
-    }
-
-    // copy vertex data into hw buffer
-    if (required_size > 0)
-    {
-        std::memcpy(d_hwBuffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD),
-                    &d_vertexData[0], sizeof(float) * d_vertexData.size());
-
-        d_hwBuffer->unlock();
-    }
-
-    d_sync = true;
-}
-
-//----------------------------------------------------------------------------//
 const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const{
     if (!d_matrixValid)
         updateMatrix();
@@ -256,88 +336,42 @@ void OgreGeometryBuffer::initialiseTextureStates() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::finaliseVertexAttributes()
+void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 {
-    using namespace Ogre;
+    d_expectedData = type;
 
-    // basic initialization of render op
-    d_renderOp.vertexData = OGRE_NEW Ogre::VertexData();
-    d_renderOp.operationType = RenderOperation::OT_TRIANGLE_LIST;
-    d_renderOp.useIndexes = false;
-
-    // setup vertex declaration for format we will use
-    VertexDeclaration* vd = d_renderOp.vertexData->vertexDeclaration;
-    size_t vd_offset = 0;
-
-
-    // Update the format according to our vertex attributes
-    const size_t attribute_count = d_vertexAttributes.size();
-    for (size_t i = 0; i < attribute_count; ++i)
+    if (d_expectedData >= MANUALOBJECT_TYPE_INVALID)
     {
-        switch(d_vertexAttributes.at(i))
-        {
-        case VAT_POSITION0:
-            {
-                vd->addElement(0, vd_offset, VET_FLOAT3, VES_POSITION);
-                vd_offset += VertexElement::getTypeSize(VET_FLOAT3);
-            }
-            break;
-        case VAT_COLOUR0:
-            {
-                vd->addElement(0, vd_offset, VET_COLOUR, VES_DIFFUSE);
-                vd_offset += VertexElement::getTypeSize(VET_COLOUR);
-            }
-            break;
-        case VAT_TEXCOORD0:
-            {
-                vd->addElement(0, vd_offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
-                vd_offset += VertexElement::getTypeSize(VET_FLOAT2);
-            }
-            break;
-        default:
-            CEGUI_THROW(RendererException(
-                "Unknown vertex atribute."));
-            break;
-        }
-    }
-
-    if(vd->getElementCount() == 0)
         CEGUI_THROW(RendererException(
-        "The empty vertex layout is invalid because it is empty."));
-
-
-    d_vertexDefBytes = vd_offset;
-
+            "Unknown d_expectedData type."));
+    }
 
     setVertexBuffer(INITIAL_BUFFER_SIZE);
 }
 
-void OgreGeometryBuffer::setVertexBuffer(size_t size) const
+void OgreGeometryBuffer::setVertexBuffer(size_t size)
 {
-    using namespace Ogre;
+    // create the vertex container
+    d_vertexHolder = d_owner.getDummyScene().createManualObject(
+        Ogre::SCENE_STATIC);
 
-    // create hardware vertex buffer
-    d_hwBuffer = HardwareBufferManager::getSingleton().createVertexBuffer(
-        d_renderOp.vertexData->vertexDeclaration->getVertexSize(0), 
-        size,
-        HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
-        false);
-
-    if (!d_hwBuffer.get())
+    if (!d_vertexHolder)
     {
         CEGUI_THROW(RendererException("Failed to create Ogre vertex buffer, "
             "probably because the vertex layout is invalid."));
     }
 
-    // bind vertex buffer
-    d_renderOp.vertexData->vertexBufferBinding->setBinding(0, d_hwBuffer);
+
+    d_vertexHolder->setDynamic(false);
+    d_vertexHolder->estimateVertexCount(size);
 }
 
 void OgreGeometryBuffer::cleanUpVertexAttributes()
 {
-    OGRE_DELETE d_renderOp.vertexData;
-    d_renderOp.vertexData = 0;
-    d_hwBuffer.setNull();
+    d_renderOp = 0;
+
+    d_owner.getDummyScene().destroyManualObject(d_vertexHolder);
+    d_vertexHolder = 0;
 }
 
 void OgreGeometryBuffer::setScissorRects() const
@@ -345,8 +379,6 @@ void OgreGeometryBuffer::setScissorRects() const
     d_renderSystem.setScissorTest(true, d_clipRect.left(), 
         d_clipRect.top(), d_clipRect.right(), d_clipRect.bottom());
 }
-
-
 
 
 

@@ -1205,7 +1205,8 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
 
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
-    geom_buffer->finaliseVertexAttributes();
+    geom_buffer->finaliseVertexAttributes(
+        OgreGeometryBuffer::MANUALOBJECT_TYPE_COLOURED);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -1220,7 +1221,8 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
     geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
-    geom_buffer->finaliseVertexAttributes();
+    geom_buffer->finaliseVertexAttributes(
+        OgreGeometryBuffer::MANUALOBJECT_TYPE_TEXTURED);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -1275,6 +1277,10 @@ void OgreRenderer::convertOgreMatrixToGLMMatrix(const Ogre::Matrix4& source,
     target[3][1] = source[3][1];
     target[3][2] = source[3][2];
     target[3][3] = source[3][3];
+}
+
+Ogre::SceneManager& OgreRenderer::getDummyScene() const{
+    return *d_pimpl->d_dummyScene;
 }
 
 //----------------------------------------------------------------------------//

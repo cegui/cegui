@@ -53,6 +53,13 @@ namespace CEGUI
 class OGRE_GUIRENDERER_API OgreGeometryBuffer : public GeometryBuffer
 {
 public:
+
+    enum MANUALOBJECT_TYPE {
+        MANUALOBJECT_TYPE_COLOURED, 
+        MANUALOBJECT_TYPE_TEXTURED,
+        MANUALOBJECT_TYPE_INVALID
+    };
+
     //! Constructor
     OgreGeometryBuffer(OgreRenderer& owner, Ogre::RenderSystem& rs, 
         CEGUI::RefCounted<RenderMaterial> renderMaterial);
@@ -70,21 +77,21 @@ public:
     void setClippingRegion(const Rectf& region);
 
 
-    void finaliseVertexAttributes();
+    void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
 
 
 protected:
 
     //! update cached matrix
     void updateMatrix() const;
-    //! Synchronize data in the hardware buffer with what's been added
-    void syncHardwareBuffer() const;
     //! set up texture related states
     void initialiseTextureStates() const;
     //! Sets the current scissor rect active
     void setScissorRects() const;
 
-    void setVertexBuffer(size_t size) const;
+    void syncManualObject() const;
+
+    void setVertexBuffer(size_t size);
 
     void cleanUpVertexAttributes();
 
@@ -95,19 +102,22 @@ protected:
     //! rectangular clip region
     Rectf d_clipRect;
 
-    //! Stored value for the current size of a single vertex element
-    size_t d_vertexDefBytes;
-
     //! model matrix cache
     mutable Ogre::Matrix4 d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
-    //! Render operation for this buffer.
-    mutable Ogre::RenderOperation d_renderOp;
-    //! H/W buffer where the vertices are rendered from.
-    mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;
-    //! whether the h/w buffer is in sync with the added geometry
-    mutable bool d_sync;
+
+    mutable bool d_dataAppended;
+
+    //! Render operation pointing to the first section's render operation 
+    //! of the ManualObject
+    mutable Ogre::RenderOperation* d_renderOp;
+
+    //! The container for all vertex data
+    mutable Ogre::ManualObject* d_vertexHolder;
+
+    //! The type of vertex data we expect
+    MANUALOBJECT_TYPE d_expectedData;
 };
 
 
