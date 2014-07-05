@@ -136,6 +136,17 @@ public:
     void markAsDirty();
     bool isDirty() const;
 
+    /*!
+    \brief
+        Retrieves MouseCursor used in this GUIContext
+
+    \note
+        Please note that each GUIContext has exactly one MouseCursor. The MouseCursor
+        class holds position, as well as other properties. If you want to modify
+        the MouseCursor (for example change its default image), you can retrieve
+        a reference via this method and call a method on the reference
+        (in our example that's setDefaultImage).
+    */
     MouseCursor& getMouseCursor();
     const MouseCursor& getMouseCursor() const;
 
