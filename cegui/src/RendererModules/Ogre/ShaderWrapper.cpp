@@ -49,6 +49,11 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
 {
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
+
+    auto target = d_vertexShader->getConstantDefinitions().map.
+        find("modelViewPerspMatrix");
+
+    d_physicalIndex = target->second.physicalIndex;
 }
 
 //----------------------------------------------------------------------------//
@@ -124,8 +129,19 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
 
                 //d_vertexParameters->setNamedConstant("worldViewProjMatrix", 
                 //    d_previousMatrix);
+                d_vertexParameters->_writeRawConstants(d_physicalIndex, 
+                    &d_previousMatrix[0][0], 4);
 
-                d_vertexParameters->setConstant(0, d_previousMatrix);
+                d_vertexParameters->_writeRawConstants(d_physicalIndex+4, 
+                    &d_previousMatrix[1][0], 4);
+
+                d_vertexParameters->_writeRawConstants(d_physicalIndex+8, 
+                    &d_previousMatrix[2][0], 4);
+
+                d_vertexParameters->_writeRawConstants(d_physicalIndex+12, 
+                    &d_previousMatrix[3][0], 4);
+
+                //d_vertexParameters->setConstant(0, d_previousMatrix);
             }
         } 
         else

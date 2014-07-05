@@ -81,6 +81,10 @@ protected:
 
     //! The currently active matrix
     Ogre::Matrix4 d_previousMatrix;
+
+    //! The physical index to which the matrix will be written
+    size_t d_physicalIndex;
+
 };
 
 
