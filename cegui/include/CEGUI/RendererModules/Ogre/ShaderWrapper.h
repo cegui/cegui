@@ -32,6 +32,7 @@
 #include "Renderer.h"
 #include "CEGUI/ShaderWrapper.h"
 #include "OgreHighLevelGpuProgram.h"
+#include "OgreMatrix4.h"
 
 
 #if defined(_MSC_VER)
@@ -77,6 +78,9 @@ protected:
 
     //! Parameters for pixel shader
     Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
+
+    //! The currently active matrix
+    Ogre::Matrix4 d_previousMatrix;
 };
 
 

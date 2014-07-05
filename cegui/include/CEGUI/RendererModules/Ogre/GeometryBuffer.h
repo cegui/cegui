@@ -74,7 +74,10 @@ public:
     // implement CEGUI::GeometryBuffer interface.
     virtual void draw() const;
     void appendGeometry(const std::vector<float>& vertex_data);
+
     void setClippingRegion(const Rectf& region);
+
+    void reset();
 
 
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
@@ -84,14 +87,12 @@ protected:
 
     //! update cached matrix
     void updateMatrix() const;
-    //! set up texture related states
-    void initialiseTextureStates() const;
     //! Sets the current scissor rect active
     void setScissorRects() const;
 
     void syncManualObject() const;
 
-    void setVertexBuffer(size_t size);
+    void setVertexBuffer();
 
     void cleanUpVertexAttributes();
 
@@ -108,6 +109,9 @@ protected:
     mutable bool d_matrixValid;
 
     mutable bool d_dataAppended;
+
+
+    mutable bool d_firstMOUpdate;
 
     //! Render operation pointing to the first section's render operation 
     //! of the ManualObject
