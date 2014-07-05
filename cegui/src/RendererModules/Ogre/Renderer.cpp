@@ -209,7 +209,7 @@ struct OgreRenderer_impl :
     Ogre::Matrix4 d_worldMatrix;
     Ogre::Matrix4 d_viewMatrix;
     Ogre::Matrix4 d_projectionMatrix;
-    glm::mat4 d_worldViewProjMatrix;
+    Ogre::Matrix4 d_worldViewProjMatrix;
     bool d_combinedMatrixValid;
 };
 
@@ -1099,8 +1099,7 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OgreRenderer::getWorldViewProjMatrix() const
-{
+const Ogre::Matrix4& OgreRenderer::getWorldViewProjMatrix() const{
     if (!d_pimpl->d_combinedMatrixValid)
     {
         Ogre::Matrix4 final_prj(d_pimpl->d_projectionMatrix);
@@ -1114,12 +1113,8 @@ const glm::mat4& OgreRenderer::getWorldViewProjMatrix() const
             final_prj[1][3] = -final_prj[1][3];
         }
 
-        Ogre::Matrix4 final_result =
+        d_pimpl->d_worldViewProjMatrix =
             final_prj * d_pimpl->d_viewMatrix * d_pimpl->d_worldMatrix;
-
-        convertOgreMatrixToGLMMatrix(final_result, 
-            d_pimpl->d_worldViewProjMatrix);
-
 
         d_pimpl->d_combinedMatrixValid = true;
     }
@@ -1235,42 +1230,51 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
 void OgreRenderer::convertGLMMatrixToOgreMatrix(const glm::mat4& source, 
     Ogre::Matrix4& target)
 {
-    size_t target_single_size = 
-#if(defined(GLM_PRECISION_HIGHP_FLOAT))
-        sizeof(glm::highp_float);
-#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
-        sizeof(glm::mediump_float);
-#elif(defined(GLM_PRECISION_LOWP_FLOAT))
-        sizeof(glm::lowp_float);
-#else
-        sizeof(glm::mediump_float);
-#endif//GLM_PRECISION
+    // TODO find a better way to do this
+    target[0][0] = source[0][0];
+    target[0][1] = source[0][1];
+    target[0][2] = source[0][2];
+    target[0][3] = source[0][3];
 
+    target[1][0] = source[1][0];
+    target[1][1] = source[1][1];
+    target[1][2] = source[1][2];
+    target[1][3] = source[1][3];
 
-    // There might be a better way to do this conversion
-    memcpy_s(&target[0][0], 16*sizeof(Ogre::Real), 
-        &source[0][0], 16*target_single_size);
+    target[2][0] = source[2][0];
+    target[2][1] = source[2][1];
+    target[2][2] = source[2][2];
+    target[2][3] = source[2][3];
 
+    target[3][0] = source[3][0];
+    target[3][1] = source[3][1];
+    target[3][2] = source[3][2];
+    target[3][3] = source[3][3];
 }
 
 void OgreRenderer::convertOgreMatrixToGLMMatrix(const Ogre::Matrix4& source, 
     glm::mat4& target)
 {
-    size_t target_single_size = 
-#if(defined(GLM_PRECISION_HIGHP_FLOAT))
-        sizeof(glm::highp_float);
-#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
-        sizeof(glm::mediump_float);
-#elif(defined(GLM_PRECISION_LOWP_FLOAT))
-        sizeof(glm::lowp_float);
-#else
-        sizeof(glm::mediump_float);
-#endif//GLM_PRECISION
+    // TODO find a better way to do this
+    target[0][0] = source[0][0];
+    target[0][1] = source[0][1];
+    target[0][2] = source[0][2];
+    target[0][3] = source[0][3];
 
+    target[1][0] = source[1][0];
+    target[1][1] = source[1][1];
+    target[1][2] = source[1][2];
+    target[1][3] = source[1][3];
 
-    // There might be a better way to do this conversion
-    memcpy_s(&target[0][0], 16*target_single_size, 
-        &source[0][0], 16*sizeof(Ogre::Real));
+    target[2][0] = source[2][0];
+    target[2][1] = source[2][1];
+    target[2][2] = source[2][2];
+    target[2][3] = source[2][3];
+
+    target[3][0] = source[3][0];
+    target[3][1] = source[3][1];
+    target[3][2] = source[3][2];
+    target[3][3] = source[3][3];
 }
 
 //----------------------------------------------------------------------------//
