@@ -102,6 +102,10 @@ void OgreGeometryBuffer::draw() const
     shaderParameterBindings->setParameter("modelViewPerspMatrix", &omat);
 
 
+    // activate the desired blending mode
+    d_owner.bindBlendMode(d_blendMode);
+
+
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
     {
