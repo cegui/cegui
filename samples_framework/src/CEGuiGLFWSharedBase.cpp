@@ -41,8 +41,12 @@ CEGuiGLFWSharedBase* CEGuiGLFWSharedBase::d_appInstance = 0;
 double  CEGuiGLFWSharedBase::d_frameTime = 0;
 int CEGuiGLFWSharedBase::d_modifiers = 0;
 bool CEGuiGLFWSharedBase::d_windowSized = false;
-int CEGuiGLFWSharedBase::d_newWindowWidth;
-int CEGuiGLFWSharedBase::d_newWindowHeight;
+int CEGuiGLFWSharedBase::d_newWindowWidth = CEGuiGLFWSharedBase::s_defaultWindowWidth;
+int CEGuiGLFWSharedBase::d_newWindowHeight = CEGuiGLFWSharedBase::s_defaultWindowWidth;
+bool CEGuiGLFWSharedBase::d_mouseLeftWindow = false;
+bool CEGuiGLFWSharedBase::d_mouseDisableCalled = false;
+int CEGuiGLFWSharedBase::d_oldMousePosX = 0;
+int CEGuiGLFWSharedBase::d_oldMousePosY = 0;
 
 //----------------------------------------------------------------------------//
 CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
@@ -72,6 +76,7 @@ void CEGuiGLFWSharedBase::run()
     glfwSetMousePosCallback(glfwMousePosCallback);
 
     //Window callbacks
+    glfwSetWindowCloseCallback(glfwWindowCloseCallback);
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
     d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -123,6 +128,13 @@ void CEGuiGLFWSharedBase::drawFrame()
     d_frameTime = time_now;
 
     d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
+}
+
+//----------------------------------------------------------------------------//
+int CEGuiGLFWSharedBase::glfwWindowCloseCallback(void)
+{
+    d_sampleApp->setQuitting(true);
+    return GL_TRUE;
 }
 
 //----------------------------------------------------------------------------//
@@ -232,7 +244,56 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
 //----------------------------------------------------------------------------//
 void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
 {
-    d_sampleApp->injectMousePosition(static_cast<float>(x), static_cast<float>(y));
+    if (!d_mouseDisableCalled)
+    {
+        // if cursor didn't leave the window nothing changes
+        d_sampleApp->injectMousePosition(static_cast<float>(x), static_cast<float>(y));
+    }
+    else
+    {
+        // if the cursor left the window, we need to use the saved position
+        // because glfw beams the cursor to the middle of the window if 
+        // the cursor is disabled
+        d_sampleApp->injectMousePosition(static_cast<float>(d_oldMousePosX), static_cast<float>(d_oldMousePosY));
+        glfwSetMousePos(d_oldMousePosX, d_oldMousePosY);
+        d_mouseDisableCalled = false;
+    }
+
+#ifndef DEBUG
+    if (x < 0 || y < 0
+        || x > d_newWindowWidth
+        || y > d_newWindowHeight)
+    {
+        // show cursor
+        glfwEnable(GLFW_MOUSE_CURSOR);
+
+        // move the cursor to the position where it left the window
+        glfwSetMousePos(x, y);
+        
+        // "note down" that the cursor left the window
+        d_mouseLeftWindow = true;
+    }
+    else
+    {
+        if (d_mouseLeftWindow)
+        {
+            // get cursor position to restore afterwards
+            glfwGetMousePos(&d_oldMousePosX, &d_oldMousePosY);
+
+            // we need to inject the previous cursor position because
+            // glfw moves the cursor to the centre of the render 
+            // window if it gets disabled. therefore notify the 
+            // next MousePosCallback invocation of the "mouse disabled" event.
+            d_mouseDisableCalled = true;
+
+            // disable cursor
+            glfwDisable(GLFW_MOUSE_CURSOR);
+
+            // "note down" that the cursor is back in the render window
+            d_mouseLeftWindow = false;
+        }
+    }
+#endif
 }
 
 //----------------------------------------------------------------------------//
