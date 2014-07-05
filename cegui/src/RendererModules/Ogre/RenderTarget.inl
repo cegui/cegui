@@ -170,13 +170,9 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     );
 
     // matrices used for projecting and unprojecting points
-    Ogre::Matrix4 converted_buffermat;
-
-    OgreRenderer::convertGLMMatrixToOgreMatrix(gb.getMatrix(), 
-        converted_buffermat);
 
 
-    const Ogre::Matrix4 proj(converted_buffermat * d_matrix * vpmat);
+    const Ogre::Matrix4 proj(gb.getMatrix() * d_matrix * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
 
     Ogre::Vector3 in;
@@ -225,10 +221,20 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void OgreRenderTarget<T>::updateMatrix() const
 {
+    // Now with updated code from OpenGL renderer
+
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();
-    const float aspect = w / h;
-    const float midx = w * 0.5f;
+
+    // We need to check if width or height are zero and act accordingly to prevent running into issues
+    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
+    // This is mostly important for avoiding asserts
+    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
+
+
+    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
+    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
+    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
     d_viewDistance = midx / (aspect * 0.267949192431123f);
 
     const float nearZ = d_viewDistance * 0.5f;
@@ -243,6 +249,7 @@ void OgreRenderTarget<T>::updateMatrix() const
     tmp[2][2] = -((farZ + nearZ) / nr_sub_far);
     tmp[3][2] = 1.0f;
     tmp[3][3] = d_viewDistance;
+
     d_renderSystem._convertProjectionMatrix(tmp, d_matrix);
 
     d_matrixValid = true;

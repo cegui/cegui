@@ -314,7 +314,7 @@ public:
         according to whether the current Ogre::RenderTarget requires textures
         to be flipped (i.e it does the right thing for both D3D and OpenGL).
     */
-    const glm::mat4& getWorldViewProjMatrix() const;
+    const Ogre::Matrix4& getWorldViewProjMatrix() const;
 
 
     void bindBlendMode(BlendMode blend);

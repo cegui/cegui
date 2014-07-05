@@ -100,11 +100,11 @@ void OgreGeometryBuffer::draw() const
     if (!d_sync)
         syncHardwareBuffer();
 
-    if(d_vertexData.empty())
+    if (d_vertexData.empty())
         return;
 
     // setup clip region
-    if(d_clippingActive)
+    if (d_clippingActive)
         setScissorRects();
 
     // Update the model matrix if necessary
@@ -116,8 +116,11 @@ void OgreGeometryBuffer::draw() const
 
 
     // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 glmmat = d_owner.getWorldViewProjMatrix()*
-        d_matrix;
+    Ogre::Matrix4 omat = d_owner.getWorldViewProjMatrix()*d_matrix;
+
+    glm::mat4 glmmat;
+
+    OgreRenderer::convertOgreMatrixToGLMMatrix(omat, glmmat);
 
     shaderParameterBindings->setParameter("modelViewPerspMatrix", glmmat);
 
@@ -175,22 +178,27 @@ void OgreGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::updateMatrix() const
 {
-    const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
+    // translation to position geometry and offset to pivot point
+    Ogre::Matrix4 trans;
+
+    trans.makeTrans(d_translation.d_x + d_pivot.d_x,
         d_translation.d_y + d_pivot.d_y,
         d_translation.d_z + d_pivot.d_z);
 
-    d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
 
-    glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
-    glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
+    // rotation
+    Ogre::Matrix4 rot(Ogre::Quaternion(
+        d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
 
-    glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
 
-    d_matrix *= rotation_matrix * scale_matrix;
+    // translation to remove rotation pivot offset
+    Ogre::Matrix4 inv_pivot_trans;
+    inv_pivot_trans.makeTrans(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
 
-    glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-    glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
-    d_matrix *=  translMatrix * d_customTransform;
+
+    // calculate final matrix
+    d_matrix = trans * rot * inv_pivot_trans;
+
 
     d_matrixValid = true;
 }
@@ -225,7 +233,7 @@ void OgreGeometryBuffer::syncHardwareBuffer() const
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OgreGeometryBuffer::getMatrix() const{
+const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const{
     if (!d_matrixValid)
         updateMatrix();
 
@@ -296,9 +304,6 @@ void OgreGeometryBuffer::finaliseVertexAttributes()
     if(vd->getElementCount() == 0)
         CEGUI_THROW(RendererException(
         "The empty vertex layout is invalid because it is empty."));
-
-    // TODO do something with this
-    d_renderMaterial->getShaderWrapper();
 
 
     d_vertexDefBytes = vd_offset;

@@ -61,7 +61,7 @@ public:
     virtual ~OgreGeometryBuffer();
 
     //! return the transformation matrix used for this buffer.
-    const glm::mat4& getMatrix() const;
+    const Ogre::Matrix4& getMatrix() const;
 
 
     // implement CEGUI::GeometryBuffer interface.
@@ -99,7 +99,7 @@ protected:
     size_t d_vertexDefBytes;
 
     //! model matrix cache
-    mutable glm::mat4 d_matrix;
+    mutable Ogre::Matrix4 d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
     //! Render operation for this buffer.

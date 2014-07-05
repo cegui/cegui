@@ -120,8 +120,13 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
             // The cast is here to prevent VERY long error messages about not
             // matching any signatures if the d_parameterValue's type 
             // changes in the future
+            Ogre::Matrix4 backconverted;
+
+            OgreRenderer::convertGLMMatrixToOgreMatrix(mat->d_parameterValue,
+                backconverted);
+
             d_vertexParameters->setNamedConstant("worldViewProjMatrix", 
-                const_cast<const float*>(&mat->d_parameterValue[0][0]), 4);
+                backconverted);
 
         } 
         else
