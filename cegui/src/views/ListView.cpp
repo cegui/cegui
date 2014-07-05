@@ -29,7 +29,7 @@
 ***************************************************************************/
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/CoordConverter.h"
-
+#include <algorithm>
 
 namespace CEGUI
 {
@@ -39,8 +39,15 @@ const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderingState::ListViewItemRenderingState() : d_isSelected(false)
+ListViewItemRenderingState::ListViewItemRenderingState(ListView* list_view) :
+    d_isSelected(false),
+    d_attachedListView(list_view)
 {
+}
+
+bool ListViewItemRenderingState::operator<(ListViewItemRenderingState const& other) const
+{
+    return d_attachedListView->getModel()->compareIndices(d_index, other.d_index) < 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -61,41 +68,37 @@ void ListView::prepareForRender()
     if (d_itemModel == 0 || !isDirty())
         return;
 
+    if (d_needsFullRender)
+    {
+        d_renderedMaxWidth = d_renderedTotalHeight = 0;
+        d_items.clear();
+    }
+
     ModelIndex root_index = d_itemModel->getRootIndex();
     size_t child_count = d_itemModel->getChildCount(root_index);
 
-    std::vector<ListViewItemRenderingState> items;
-    float max_width = 0.0f, total_height = 0.0f;
-
     for (size_t child = 0; child < child_count; ++child)
     {
-        ListViewItemRenderingState item;
         ModelIndex index = d_itemModel->makeIndex(child, root_index);
 
-        String text = d_itemModel->getData(index);
+        if (d_needsFullRender)
+        {
+            ListViewItemRenderingState state = ListViewItemRenderingState(this);
+            updateItem(state, index, d_renderedMaxWidth, d_renderedTotalHeight);
+            d_items.push_back(state);
+        }
+        else
+        {
+            ListViewItemRenderingState& item = d_items.at(child);
+            d_renderedTotalHeight -= item.d_size.d_height;
 
-        RenderedString rendered_string =
-            getRenderedStringParser().parse(text, getFont(), &d_textColourRect);
-        item.d_string = rendered_string;
-
-        item.d_size = Sizef(
-            rendered_string.getHorizontalExtent(this),
-            rendered_string.getVerticalExtent(this));
-
-        if (item.d_size.d_width > max_width)
-            max_width = item.d_size.d_width;
-
-        total_height += item.d_size.d_height;
-
-        item.d_isSelected = isIndexSelected(index);
-        items.push_back(item);
+            updateItem(item, index, d_renderedMaxWidth, d_renderedTotalHeight);
+        }
     }
 
-    d_items = items;
-    d_renderedMaxWidth = max_width;
-    d_renderedTotalHeight = total_height;
     updateScrollbars();
     setIsDirty(false);
+    d_needsFullRender = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -141,5 +144,72 @@ const std::vector<ListViewItemRenderingState>& ListView::getItems() const
 //----------------------------------------------------------------------------//
 void ListView::resortView()
 {
+    sort(d_items.begin(), d_items.end());
+}
+
+//----------------------------------------------------------------------------//
+void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
+    float& max_width, float& total_height)
+{
+    String text = d_itemModel->getData(index);
+
+    RenderedString rendered_string =
+        getRenderedStringParser().parse(text, getFont(), &d_textColourRect);
+    item.d_string = rendered_string;
+    item.d_index = index;
+
+    item.d_size = Sizef(
+        rendered_string.getHorizontalExtent(this),
+        rendered_string.getVerticalExtent(this));
+
+    max_width = ceguimax(item.d_size.d_width, max_width);
+
+    total_height += item.d_size.d_height;
+
+    item.d_isSelected = isIndexSelected(index);
+}
+
+//----------------------------------------------------------------------------//
+bool ListView::onChildrenAdded(const EventArgs& args)
+{
+    ItemView::onChildrenAdded(args);
+    const ModelEventArgs& margs = static_cast<const ModelEventArgs&>(args);
+
+    if (!d_itemModel->areIndicesEqual(margs.d_parentIndex, d_itemModel->getRootIndex()))
+        return true;
+
+    std::vector<ListViewItemRenderingState> items;
+    for (size_t i = 0; i < margs.d_count; ++i)
+    {
+        ListViewItemRenderingState item(this);
+
+        updateItem(item,
+            d_itemModel->makeIndex(margs.d_startId + i, margs.d_parentIndex),
+            d_renderedMaxWidth, d_renderedTotalHeight);
+
+        items.push_back(item);
+    }
+
+    d_items.insert(d_items.begin() + margs.d_startId, items.begin(), items.end());
+
+    invalidateView(false);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ListView::onChildrenRemoved(const EventArgs& args)
+{
+    ItemView::onChildrenRemoved(args);
+    const ModelEventArgs& margs = static_cast<const ModelEventArgs&>(args);
+
+    if (!d_itemModel->areIndicesEqual(margs.d_parentIndex, d_itemModel->getRootIndex()))
+        return true;
+
+    d_items.erase(
+        d_items.begin() + margs.d_startId,
+        d_items.begin() + margs.d_startId + margs.d_count);
+
+    invalidateView(false);
+    return true;
 }
 }
