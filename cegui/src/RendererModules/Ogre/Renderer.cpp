@@ -1271,61 +1271,6 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::convertGLMMatrixToOgreMatrix(const glm::mat4& source, 
-    Ogre::Matrix4& target)
-{
-    static const size_t glm_single_size = 
-#if(defined(GLM_PRECISION_HIGHP_FLOAT))
-        sizeof(glm::highp_float);
-#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
-        sizeof(glm::mediump_float);
-#elif(defined(GLM_PRECISION_LOWP_FLOAT))
-        sizeof(glm::lowp_float);
-#else
-        sizeof(glm::mediump_float);
-#endif//GLM_PRECISION
-
-    memcpy_s(&target[0][0], sizeof(Ogre::Real)*4, &source[0][0], 
-        glm_single_size*4);
-
-    memcpy_s(&target[1][0], sizeof(Ogre::Real)*4, &source[1][0], 
-        glm_single_size*4);
-
-    memcpy_s(&target[2][0], sizeof(Ogre::Real)*4, &source[2][0], 
-        glm_single_size*4);
-
-    memcpy_s(&target[3][0], sizeof(Ogre::Real)*4, &source[3][0], 
-        glm_single_size*4);
-}
-
-void OgreRenderer::convertOgreMatrixToGLMMatrix(const Ogre::Matrix4& source, 
-    glm::mat4& target)
-{
-    // This might be as efficient as it gets
-    static const size_t glm_single_size = 
-#if(defined(GLM_PRECISION_HIGHP_FLOAT))
-        sizeof(glm::highp_float);
-#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
-        sizeof(glm::mediump_float);
-#elif(defined(GLM_PRECISION_LOWP_FLOAT))
-        sizeof(glm::lowp_float);
-#else
-        sizeof(glm::mediump_float);
-#endif//GLM_PRECISION
-
-    memcpy_s(&target[0][0], glm_single_size*4, &source[0][0], 
-        sizeof(Ogre::Real)*4);
-
-    memcpy_s(&target[1][0], glm_single_size*4, &source[1][0], 
-        sizeof(Ogre::Real)*4);
-
-    memcpy_s(&target[2][0], glm_single_size*4, &source[2][0], 
-        sizeof(Ogre::Real)*4);
-
-    memcpy_s(&target[3][0], glm_single_size*4, &source[3][0], 
-        sizeof(Ogre::Real)*4);
-}
-
 Ogre::SceneManager& OgreRenderer::getDummyScene() const{
     return *d_pimpl->d_dummyScene;
 }
