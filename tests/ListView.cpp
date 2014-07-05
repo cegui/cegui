@@ -56,7 +56,6 @@ struct ListViewFixture
     ListView* view;
     ItemModelStub model;
     float font_height;
-
 };
 
 BOOST_FIXTURE_TEST_SUITE(ListViewTestSuite, ListViewFixture)
@@ -144,7 +143,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(view->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(view->getItems().at(0)->d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -159,8 +158,8 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view->getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(view->getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(0)->d_isSelected);
+    BOOST_REQUIRE(view->getItems().at(1)->d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -176,9 +175,9 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 
     view->prepareForRender();
 
-    BOOST_REQUIRE(!view->getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getItems().at(1).d_isSelected);
-    BOOST_REQUIRE(view->getItems().at(2).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(0)->d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(1)->d_isSelected);
+    BOOST_REQUIRE(view->getItems().at(2)->d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -196,21 +195,21 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     view->prepareForRender();
 
     BOOST_REQUIRE(view->getItems().size() == 2);
-    BOOST_REQUIRE(!view->getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(!view->getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(0)->d_isSelected);
+    BOOST_REQUIRE(!view->getItems().at(1)->d_isSelected);
 }
 
 BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
 {
     model.d_items.push_back(ITEM1);
     view->prepareForRender();
-    BOOST_CHECK_EQUAL(1, view->getItems().at(0).d_string.getLineCount());
+    BOOST_CHECK_EQUAL(1, view->getItems().at(0)->d_string.getLineCount());
 
     model.d_items.at(0) = ITEM_WITH_6LINES;
     model.notifyChildrenDataChanged(model.getRootIndex(), 0, 1);
 
     view->prepareForRender();
-    BOOST_REQUIRE_EQUAL(6, view->getItems().at(0).d_string.getLineCount());
+    BOOST_REQUIRE_EQUAL(6, view->getItems().at(0)->d_string.getLineCount());
 }
 
 void triggerSelectRangeEvent(Vector2f position, ItemView* view)
@@ -234,6 +233,20 @@ BOOST_AUTO_TEST_CASE(SelectRange)
     triggerSelectRangeEvent(Vector2f(1, font_height * 2.0f + font_height / 2.0f), view);
 
     BOOST_REQUIRE_EQUAL(3, view->getIndexSelectionStates().size());
+}
+
+BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_ListIsSorted)
+{
+    model.d_items.push_back(ITEM3);
+    model.d_items.push_back(ITEM2);
+    model.d_items.push_back(ITEM1);
+    view->prepareForRender();
+
+    view->setSortEnabled(true);
+    view->prepareForRender();
+
+    ModelIndex index = view->indexAt(Vector2f(1, font_height * 2.0f + font_height / 2.0f));
+    BOOST_REQUIRE_EQUAL(ITEM3, *(static_cast<String*>(index.d_modelData)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

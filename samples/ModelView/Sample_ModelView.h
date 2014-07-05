@@ -50,6 +50,7 @@ private:
     bool handleUpdateListItemName(const CEGUI::EventArgs& e);
     bool handleUpdateTreeItemName(const CEGUI::EventArgs& e);
     bool toggleMultiSelect(const CEGUI::EventArgs& e);
+    bool toggleSorting(const CEGUI::EventArgs& e);
 
     void updateSelectedIndexText(CEGUI::ItemView* view, const CEGUI::String& text);
     void removeSelectedItemsFromView(CEGUI::ItemView* view);

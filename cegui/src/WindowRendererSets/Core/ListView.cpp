@@ -69,9 +69,9 @@ void FalagardListView::render(ListView* list_view)
 
     for (size_t i = 0; i < list_view->getItems().size(); ++i)
     {
-        ListViewItemRenderingState item = list_view->getItems().at(i);
-        RenderedString& rendered_string = item.d_string;
-        Sizef size(item.d_size);
+        ListViewItemRenderingState* item = list_view->getItems().at(i);
+        RenderedString& rendered_string = item->d_string;
+        Sizef size(item->d_size);
 
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
 
@@ -83,7 +83,7 @@ void FalagardListView::render(ListView* list_view)
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
         renderString(list_view, rendered_string, item_rect,
-            list_view->getFont(), &item_clipper, item.d_isSelected);
+            list_view->getFont(), &item_clipper, item->d_isSelected);
 
         item_pos.d_y += size.d_height;
     }

@@ -49,6 +49,7 @@ struct CEGUIEXPORT ListViewItemRenderingState
     Sizef d_size;
     bool d_isSelected;
     ModelIndex d_index;
+    String d_text;
     ListView* d_attachedListView;
 
     ListViewItemRenderingState(ListView* list_view);
@@ -70,7 +71,7 @@ public:
     ListView(const String& type, const String& name);
     virtual ~ListView();
 
-    const std::vector<ListViewItemRenderingState>& getItems() const;
+    const std::vector<ListViewItemRenderingState*>& getItems() const;
 
     virtual void prepareForRender();
 
@@ -82,8 +83,12 @@ protected:
 
 private:
     std::vector<ListViewItemRenderingState> d_items;
+    std::vector<ListViewItemRenderingState*> d_sortedItems;
 
+    //! if reinint = true, it will re-created the sorted items vector
+    void resortListView(bool reinit = false);
     virtual void resortView();
+
     void updateItem(ListViewItemRenderingState& item, ModelIndex index,
         float& max_width, float& total_height);
 };
