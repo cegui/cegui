@@ -68,8 +68,12 @@
             <Property name="Text" value="Update selected tree item&apos;s name" />
         </Window>
         <Window type="TaharezLook/Checkbox" name="chkMultiSelectEnabled" >
-            <Property name="Area" value="{{0.600586,0},{0.175781,0},{0.695313,128},{0.175781,32}}" />
+            <Property name="Area" value="{{0.600586,0},{0.175781,0},{0.900586,0},{0.205781,0}}" />
             <Property name="Text" value="Multi-selection enabled" />
+        </Window>
+        <Window type="TaharezLook/Checkbox" name="chkSortEnabled" >
+            <Property name="Area" value="{{0.601563,0},{0.315278,0},{0.901563,0},{0.345278,0}}" />
+            <Property name="Text" value="Sort enabled" />
         </Window>
     </Window>
 </GUILayout>

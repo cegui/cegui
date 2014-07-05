@@ -97,6 +97,10 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
         ToggleButton::EventSelectStateChanged,
         Event::Subscriber(&ModelViewDemo::toggleMultiSelect, this));
 
+    d_root->getChild("chkSortEnabled")->subscribeEvent(
+        ToggleButton::EventSelectStateChanged,
+        Event::Subscriber(&ModelViewDemo::toggleSorting, this));
+
     d_txtNewItemName = d_root->getChild("txtNewItemName");
 
     return true;
@@ -188,7 +192,7 @@ void ModelViewDemo::removeSelectedItemsFromView(ItemView* view)
 }
 
 //----------------------------------------------------------------------------//
-void ModelViewDemo::updateSelectedIndexText(CEGUI::ItemView* view, const String& text)
+void ModelViewDemo::updateSelectedIndexText(ItemView* view, const String& text)
 {
     const std::vector<ModelIndexSelectionState>& selections = view->getIndexSelectionStates();
     if (selections.empty())
@@ -200,7 +204,7 @@ void ModelViewDemo::updateSelectedIndexText(CEGUI::ItemView* view, const String&
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewDemo::toggleMultiSelect(const CEGUI::EventArgs& e)
+bool ModelViewDemo::toggleMultiSelect(const EventArgs& e)
 {
     bool enabled = d_listView->isMultiSelectEnabled();
 
@@ -209,6 +213,17 @@ bool ModelViewDemo::toggleMultiSelect(const CEGUI::EventArgs& e)
 
     return true;
 }
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::toggleSorting(const EventArgs& e)
+{
+    bool enabled = d_listView->isSortEnabled();
+
+    d_listView->setSortEnabled(!enabled);
+
+    return true;
+}
+
 /*************************************************************************
     Define the module function that returns an instance of the sample
 *************************************************************************/

@@ -129,7 +129,7 @@ void InventoryModel::load()
     d_inventoryRoot->d_items.push_back(bow);
 
     // generate *many* items :D
-    for (int i = 1960; i < 2000; i += 2)
+    for (int i = 2000; i >= 1960; i -= 2)
     {
         InventoryItem* almanach = InventoryItem::make(
             "Almanach " + PropertyHelper<int>::toString(i), 0.34f, d_inventoryRoot);

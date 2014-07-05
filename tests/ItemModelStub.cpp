@@ -78,7 +78,8 @@ bool ItemModelStub::areIndicesEqual(const ModelIndex& index1, const ModelIndex& 
 //----------------------------------------------------------------------------//
 int ItemModelStub::compareIndices(const ModelIndex& index1, const ModelIndex& index2)
 {
-    throw std::exception("The method or operation is not implemented.");
+    return (*static_cast<String*>(index1.d_modelData)).compare(
+        *static_cast<String*>(index2.d_modelData));
 }
 
 //----------------------------------------------------------------------------//

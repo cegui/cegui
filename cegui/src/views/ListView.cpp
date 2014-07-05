@@ -35,6 +35,14 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+static bool listViewItemPointerLess(
+    const ListViewItemRenderingState* item1,
+    const ListViewItemRenderingState* item2)
+{
+    return *item1 < *item2;
+}
+
+//----------------------------------------------------------------------------//
 const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
@@ -98,6 +106,7 @@ void ListView::prepareForRender()
 
     updateScrollbars();
     setIsDirty(false);
+    resortListView(true);
     d_needsFullRender = false;
 }
 
@@ -118,15 +127,16 @@ ModelIndex ListView::indexAt(const Vector2f& position)
 
     float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
     //TODO: start only on the visible area
-    for (size_t index = 0; index < d_items.size(); ++index)
+    for (size_t index = 0; index < d_sortedItems.size(); ++index)
     {
-        Sizef size = d_items.at(index).d_size;
+        ListViewItemRenderingState* item = d_sortedItems.at(index);
+        Sizef size = item->d_size;
         float next_height = cur_height + size.d_height;
 
         if (window_position.d_y >= cur_height &&
             window_position.d_y <= next_height)
         {
-            return ModelIndex(d_itemModel->makeIndex(index, d_itemModel->getRootIndex()));
+            return item->d_index;
         }
 
         cur_height = next_height;
@@ -136,15 +146,35 @@ ModelIndex ListView::indexAt(const Vector2f& position)
 }
 
 //----------------------------------------------------------------------------//
-const std::vector<ListViewItemRenderingState>& ListView::getItems() const
+const std::vector<ListViewItemRenderingState*>& ListView::getItems() const
 {
-    return d_items;
+    return d_sortedItems;
+}
+
+//----------------------------------------------------------------------------//
+void ListView::resortListView(bool reinit)
+{
+    if (reinit)
+    {
+        d_sortedItems.clear();
+
+        for (std::vector<ListViewItemRenderingState>::iterator itor = d_items.begin();
+            itor != d_items.end(); ++itor)
+        {
+            d_sortedItems.push_back(&(*itor));
+        }
+    }
+
+    if (!d_isSortEnabled)
+        return;
+
+    sort(d_sortedItems.begin(), d_sortedItems.end(), &listViewItemPointerLess);
 }
 
 //----------------------------------------------------------------------------//
 void ListView::resortView()
 {
-    sort(d_items.begin(), d_items.end());
+    resortListView(false);
 }
 
 //----------------------------------------------------------------------------//
@@ -157,6 +187,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
         getRenderedStringParser().parse(text, getFont(), &d_textColourRect);
     item.d_string = rendered_string;
     item.d_index = index;
+    item.d_text = text;
 
     item.d_size = Sizef(
         rendered_string.getHorizontalExtent(this),
@@ -192,6 +223,7 @@ bool ListView::onChildrenAdded(const EventArgs& args)
 
     d_items.insert(d_items.begin() + margs.d_startId, items.begin(), items.end());
 
+    resortListView(true);
     invalidateView(false);
     return true;
 }
@@ -209,7 +241,9 @@ bool ListView::onChildrenRemoved(const EventArgs& args)
         d_items.begin() + margs.d_startId,
         d_items.begin() + margs.d_startId + margs.d_count);
 
+    resortListView(true);
     invalidateView(false);
     return true;
 }
+
 }
