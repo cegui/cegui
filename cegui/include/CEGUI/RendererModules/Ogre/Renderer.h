@@ -374,7 +374,7 @@ protected:
     //! destructor.
     virtual ~OgreRenderer();
 
-    //! checks Ogre initialization.  throws exceptions if an issue is detected.
+    //! checks Ogre initialisation.  throws exceptions if an issue is detected.
     void checkOgreInitialised();
     //! helper to throw exception if name is already used.
     void throwIfNameExists(const String& name) const;
