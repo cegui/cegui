@@ -88,7 +88,7 @@ public:
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
-        then initializes the CEGUI system with them.
+        then initialises the CEGUI system with them.
 
         The created Renderer will use the default Ogre rendering window as the
         default output surface.
@@ -115,7 +115,7 @@ public:
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
-        then initializes the CEGUI system with them.
+        then initialises the CEGUI system with them.
 
         The create Renderer will use the specified Ogre::RenderTarget as the
         default output surface.

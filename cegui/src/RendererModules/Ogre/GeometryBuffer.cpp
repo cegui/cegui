@@ -1,6 +1,6 @@
 /***********************************************************************
     created:    Tue Feb 17 2009
-    author:     Paul D Turner
+    author:     Henri I Hyyryläinen (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
@@ -131,6 +131,8 @@ void OgreGeometryBuffer::draw() const
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
+        initialiseTextureStates();
+
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
 
@@ -139,7 +141,6 @@ void OgreGeometryBuffer::draw() const
         d_renderOp.vertexData->vertexStart = 0;
         d_renderOp.vertexData->vertexCount = d_vertexCount;
         
-        initialiseTextureStates();
         d_renderSystem._render(d_renderOp);
     }
 
@@ -165,7 +166,7 @@ void OgreGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
         vertex_data.end());
 
     // Calculate the new vertex count
-    d_vertexCount = d_vertexData.size()/d_vertexDefBytes;
+    d_vertexCount = (d_vertexData.size()*sizeof(float))/d_vertexDefBytes;
 
 
     d_sync = false;

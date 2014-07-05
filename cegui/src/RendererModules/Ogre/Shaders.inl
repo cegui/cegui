@@ -1,6 +1,6 @@
 /***********************************************************************
     created:    Fri, 4th July 2014
-    author:     Henri Hyyryl‰inen
+    author:     Henri I Hyyryl√§inen
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
@@ -124,7 +124,7 @@ static Ogre::String VertexShaderTextured_GLSL_Compat(""
     "{"
     "    gl_TexCoord[0] = gl_MultiTexCoord0;"
     "    gl_FrontColor = gl_Color;"
-    "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;"
+    "    gl_Position = gl_worldViewProjMatrix * gl_Vertex;"
     "}"
 );
 
@@ -144,7 +144,7 @@ static Ogre::String VertexShaderColoured_GLSL_Compat(""
     "void main(void)"
     "{"
     "    gl_FrontColor = gl_Color;"
-    "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;"
+    "    gl_Position = gl_worldViewProjMatrix * gl_Vertex;"
     "}"
 );
 
@@ -208,7 +208,7 @@ static Ogre::String VertexShaderTextured_GLSL(""
     "out vec2 exTexCoord;\n"
     "out vec4 exColour;\n"
 
-    "void main(void)\n"
+    "void main()\n"
     "{\n"
     "   exTexCoord = uv0;\n"
     "   exColour = colour;\n"
