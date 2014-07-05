@@ -44,7 +44,8 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     : d_vertexShader(vs),
     d_pixelShader(ps),
     d_owner(owner),
-    d_renderSystem(rs)
+    d_renderSystem(rs),
+    d_previousMatrix(Ogre::Matrix4::ZERO)
 {
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
@@ -116,18 +117,16 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
 
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
-            
-            // The cast is here to prevent VERY long error messages about not
-            // matching any signatures if the d_parameterValue's type 
-            // changes in the future
-            Ogre::Matrix4 backconverted;
 
-            OgreRenderer::convertGLMMatrixToOgreMatrix(mat->d_parameterValue,
-                backconverted);
+            if (d_previousMatrix != *mat->d_parameterValue)
+            {
+                d_previousMatrix = *mat->d_parameterValue;
 
-            d_vertexParameters->setNamedConstant("worldViewProjMatrix", 
-                backconverted);
+                //d_vertexParameters->setNamedConstant("worldViewProjMatrix", 
+                //    d_previousMatrix);
 
+                d_vertexParameters->setConstant(0, d_previousMatrix);
+            }
         } 
         else
         {
@@ -135,12 +134,6 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
                 iter->first + "\"";
             CEGUI_THROW(RendererException(errorMessage));
         }
-
-        // TODO add support for all types
-        //SPT_INT
-        //SPT_FLOAT
-        //SPT_MATRIX_4X4
-        //SPT_TEXTURE
 
         ++iter; 
     }

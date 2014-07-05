@@ -40,7 +40,7 @@
 #include "OgreSceneManager.h"
 
 
-#define INITIAL_BUFFER_SIZE     64
+#define INITIAL_BUFFER_SIZE     16
 
 #define FLOATS_PER_TEXTURED     9
 #define FLOATS_PER_COLOURED     7
@@ -48,39 +48,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-static const Ogre::LayerBlendModeEx S_colourBlendMode =
-{
-    Ogre::LBT_COLOUR,
-    Ogre::LBX_MODULATE,
-    Ogre::LBS_TEXTURE,
-    Ogre::LBS_DIFFUSE,
-    Ogre::ColourValue(0, 0, 0, 0),
-    Ogre::ColourValue(0, 0, 0, 0),
-    0, 0, 0
-};
 
-//----------------------------------------------------------------------------//
-static const Ogre::LayerBlendModeEx S_alphaBlendMode =
-{
-    Ogre::LBT_ALPHA,
-    Ogre::LBX_MODULATE,
-    Ogre::LBS_TEXTURE,
-    Ogre::LBS_DIFFUSE,
-    Ogre::ColourValue(0, 0, 0, 0),
-    Ogre::ColourValue(0, 0, 0, 0),
-    0, 0, 0
-};
-
-//----------------------------------------------------------------------------//
-static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
-{
-    Ogre::TextureUnitState::TAM_CLAMP,
-    Ogre::TextureUnitState::TAM_CLAMP,
-    Ogre::TextureUnitState::TAM_CLAMP
-};
-
-//----------------------------------------------------------------------------//
 OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner, 
     Ogre::RenderSystem& rs, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
     GeometryBuffer(renderMaterial),
@@ -91,7 +59,8 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_vertexHolder(0),
     d_expectedData(MANUALOBJECT_TYPE_INVALID),
     d_renderOp(0),
-    d_dataAppended(false)
+    d_dataAppended(false),
+    d_firstMOUpdate(true)
 {
     
 }
@@ -116,7 +85,9 @@ void OgreGeometryBuffer::draw() const
 
     // setup clip region
     if (d_clippingActive)
+    {
         setScissorRects();
+    }
 
     // Update the model matrix if necessary
     if (!d_matrixValid)
@@ -129,52 +100,8 @@ void OgreGeometryBuffer::draw() const
     // Set the ModelViewProjection matrix in the bindings
     Ogre::Matrix4 omat = d_owner.getWorldViewProjMatrix()*d_matrix;
 
-    glm::mat4 glmmat;
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", &omat);
 
-    OgreRenderer::convertOgreMatrixToGLMMatrix(omat, glmmat);
-
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", glmmat);
-
-
-    d_owner.bindBlendMode(d_blendMode);
-
-    bool found_texture = false;
-
-    // Not sure if this is needed here
-    const ShaderParameterBindings::ShaderParameterBindingsMap& 
-        shader_parameter_bindings = shaderParameterBindings->
-        getShaderParameterBindings();
-
-    auto end = shader_parameter_bindings.end();
-
-    for (auto iter = shader_parameter_bindings.begin(); iter != end; ++iter)
-    {
-        const CEGUI::ShaderParameter* parameter = iter->second;
-        const ShaderParamType parameterType = parameter->getType();
-
-
-        if (iter->first == "texture0")
-        {
-
-            const CEGUI::ShaderParameterTexture* parameterTexture = 
-                static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
-
-            const CEGUI::OgreTexture* texture = static_cast<const 
-                CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
-
-            d_vertexHolder->setMaterialName(0, 
-                texture->getOgreTexture()->getName());
-
-            found_texture = true;
-            break;
-        }
-    }
-
-    if (!found_texture)
-    {
-        // Reset the material
-        d_vertexHolder->setMaterialName(0, "BaseWhiteNoLighting");
-    }
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
@@ -183,7 +110,7 @@ void OgreGeometryBuffer::draw() const
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
-        initialiseTextureStates();
+        //initialiseTextureStates();
 
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
@@ -196,6 +123,12 @@ void OgreGeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+
+    // Disable clipping after rendering
+    if (d_clippingActive)
+    {
+        d_renderSystem.setScissorTest(false);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -230,12 +163,27 @@ void OgreGeometryBuffer::syncManualObject() const
     if (!d_dataAppended)
         return;
 
-    // All the data is in the vector so it's safe to clear
-    d_vertexHolder->clear();
+    // First update needs to create the section that subsequent calls can update
+    if (d_firstMOUpdate)
+    {
 
-    // Blank material initially
-    d_vertexHolder->begin("BaseWhiteNoLighting", 
-        Ogre::RenderOperation::OT_TRIANGLE_LIST);
+        // Blank material initially
+        d_vertexHolder->begin("BaseWhiteNoLighting", 
+            Ogre::RenderOperation::OT_TRIANGLE_LIST);
+
+        d_vertexHolder->estimateVertexCount(d_vertexCount > INITIAL_BUFFER_SIZE 
+            ? d_vertexCount: INITIAL_BUFFER_SIZE);
+
+        d_firstMOUpdate = false;
+    }
+    else
+    {
+        // Only the first section is ever used
+        d_vertexHolder->beginUpdate(0);
+
+        d_vertexHolder->estimateVertexCount(d_vertexCount);
+
+    }
 
     // Append the data to the manual object
     if (d_expectedData == MANUALOBJECT_TYPE_TEXTURED)
@@ -321,21 +269,6 @@ const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const{
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::initialiseTextureStates() const
-{
-    using namespace Ogre;
-    d_renderSystem._setTextureCoordCalculation(0, TEXCALC_NONE);
-    d_renderSystem._setTextureCoordSet(0, 0);
-    d_renderSystem._setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
-    d_renderSystem._setTextureAddressingMode(0, S_textureAddressMode);
-    d_renderSystem._setTextureMatrix(0, Matrix4::IDENTITY);
-    d_renderSystem._setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);
-    d_renderSystem._setTextureBlendMode(0, S_colourBlendMode);
-    d_renderSystem._setTextureBlendMode(0, S_alphaBlendMode);
-    d_renderSystem._disableTextureUnitsFrom(1);
-}
-
-//----------------------------------------------------------------------------//
 void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 {
     d_expectedData = type;
@@ -346,11 +279,10 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
             "Unknown d_expectedData type."));
     }
 
-    setVertexBuffer(INITIAL_BUFFER_SIZE);
+    setVertexBuffer();
 }
 
-void OgreGeometryBuffer::setVertexBuffer(size_t size)
-{
+void OgreGeometryBuffer::setVertexBuffer(){
     // create the vertex container
     d_vertexHolder = d_owner.getDummyScene().createManualObject(
         Ogre::SCENE_STATIC);
@@ -362,8 +294,7 @@ void OgreGeometryBuffer::setVertexBuffer(size_t size)
     }
 
 
-    d_vertexHolder->setDynamic(false);
-    d_vertexHolder->estimateVertexCount(size);
+    d_vertexHolder->setDynamic(true);
 }
 
 void OgreGeometryBuffer::cleanUpVertexAttributes()
@@ -373,11 +304,20 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
     d_owner.getDummyScene().destroyManualObject(d_vertexHolder);
     d_vertexHolder = 0;
 }
-
+// ------------------------------------ //
 void OgreGeometryBuffer::setScissorRects() const
 {
     d_renderSystem.setScissorTest(true, d_clipRect.left(), 
         d_clipRect.top(), d_clipRect.right(), d_clipRect.bottom());
+}
+// ------------------------------------ //
+void OgreGeometryBuffer::reset()
+{
+    d_vertexData.clear();
+    d_clippingActive = true;
+    d_vertexHolder->clear();
+    d_firstMOUpdate = true;
+    d_renderOp = 0;
 }
 
 

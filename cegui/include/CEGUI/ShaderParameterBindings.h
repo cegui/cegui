@@ -29,7 +29,15 @@
 
 #include "CEGUI/Base.h"
 
+#include "CEGUI/ModuleConfig.h"
 #include "glm/glm.hpp"
+
+#ifdef CEGUI_BUILD_RENDERER_OGRE
+namespace Ogre{
+
+    class Matrix4;
+}
+#endif
 
 #include <map>
 #include <string>
@@ -201,9 +209,16 @@ public:
 class ShaderParameterMatrix : public ShaderParameter
 {
 public:
+#ifdef CEGUI_BUILD_RENDERER_OGRE
+    ShaderParameterMatrix(const Ogre::Matrix4* parameterValue)
+        : d_parameterValue(parameterValue)
+    {}
+#else
     ShaderParameterMatrix(const glm::mat4& parameterValue)
         : d_parameterValue(parameterValue)
     {}
+#endif //CEGUI_BUILD_RENDERER_OGRE
+
 
     //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
@@ -213,8 +228,11 @@ public:
     bool equal(const ShaderParameter* other_parameter) const;
     void takeOverParameterValue(const ShaderParameter* other_parameter);
 
-    //! The float parameter value
+#ifdef CEGUI_BUILD_RENDERER_OGRE
+    const Ogre::Matrix4* d_parameterValue;
+#else
     glm::mat4 d_parameterValue;
+#endif //CEGUI_BUILD_RENDERER_OGRE
 };
 
 /*!
@@ -240,7 +258,12 @@ public:
     \param matrix
         The pointer to the matrix
     */
+#ifdef CEGUI_BUILD_RENDERER_OGRE
+    void setParameter(const std::string& parameter_name, const Ogre::Matrix4* matrix);
+#else
     void setParameter(const std::string& parameter_name, const glm::mat4& matrix);
+#endif //CEGUI_BUILD_RENDERER_OGRE
+
 
     /*!
     \brief

@@ -1058,6 +1058,38 @@ bool OgreRenderer::isFrameControlExecutionEnabled() const
 }
 
 //----------------------------------------------------------------------------//
+static const Ogre::LayerBlendModeEx S_colourBlendMode =
+{
+    Ogre::LBT_COLOUR,
+    Ogre::LBX_MODULATE,
+    Ogre::LBS_TEXTURE,
+    Ogre::LBS_DIFFUSE,
+    Ogre::ColourValue(0, 0, 0, 0),
+    Ogre::ColourValue(0, 0, 0, 0),
+    0, 0, 0
+};
+
+//----------------------------------------------------------------------------//
+static const Ogre::LayerBlendModeEx S_alphaBlendMode =
+{
+    Ogre::LBT_ALPHA,
+    Ogre::LBX_MODULATE,
+    Ogre::LBS_TEXTURE,
+    Ogre::LBS_DIFFUSE,
+    Ogre::ColourValue(0, 0, 0, 0),
+    Ogre::ColourValue(0, 0, 0, 0),
+    0, 0, 0
+};
+
+//----------------------------------------------------------------------------//
+static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
+{
+    Ogre::TextureUnitState::TAM_CLAMP,
+    Ogre::TextureUnitState::TAM_CLAMP,
+    Ogre::TextureUnitState::TAM_CLAMP
+};
+
+//----------------------------------------------------------------------------//
 void OgreRenderer::initialiseRenderStateSettings()
 {
     using namespace Ogre;
@@ -1071,9 +1103,21 @@ void OgreRenderer::initialiseRenderStateSettings()
     d_pimpl->d_renderSystem->_setColourBufferWriteEnabled(true, true, true, true);
     d_pimpl->d_renderSystem->setShadingType(SO_GOURAUD);
     d_pimpl->d_renderSystem->_setPolygonMode(PM_SOLID);
+    d_pimpl->d_renderSystem->setScissorTest(false);
 
     // set alpha blending to known state
     setupRenderingBlendMode(BM_NORMAL, true);
+
+    // Set texture states
+    d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, TEXCALC_NONE);
+    d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
+    d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
+    d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
+    d_pimpl->d_renderSystem->_setTextureMatrix(0, Matrix4::IDENTITY);
+    d_pimpl->d_renderSystem->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);
+    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
+    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
+    d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
 }
 
 //----------------------------------------------------------------------------//
@@ -1232,51 +1276,56 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
 void OgreRenderer::convertGLMMatrixToOgreMatrix(const glm::mat4& source, 
     Ogre::Matrix4& target)
 {
-    // TODO find a better way to do this
-    target[0][0] = source[0][0];
-    target[0][1] = source[0][1];
-    target[0][2] = source[0][2];
-    target[0][3] = source[0][3];
+    static const size_t glm_single_size = 
+#if(defined(GLM_PRECISION_HIGHP_FLOAT))
+        sizeof(glm::highp_float);
+#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
+        sizeof(glm::mediump_float);
+#elif(defined(GLM_PRECISION_LOWP_FLOAT))
+        sizeof(glm::lowp_float);
+#else
+        sizeof(glm::mediump_float);
+#endif//GLM_PRECISION
 
-    target[1][0] = source[1][0];
-    target[1][1] = source[1][1];
-    target[1][2] = source[1][2];
-    target[1][3] = source[1][3];
+    memcpy_s(&target[0][0], sizeof(Ogre::Real)*4, &source[0][0], 
+        glm_single_size*4);
 
-    target[2][0] = source[2][0];
-    target[2][1] = source[2][1];
-    target[2][2] = source[2][2];
-    target[2][3] = source[2][3];
+    memcpy_s(&target[1][0], sizeof(Ogre::Real)*4, &source[1][0], 
+        glm_single_size*4);
 
-    target[3][0] = source[3][0];
-    target[3][1] = source[3][1];
-    target[3][2] = source[3][2];
-    target[3][3] = source[3][3];
+    memcpy_s(&target[2][0], sizeof(Ogre::Real)*4, &source[2][0], 
+        glm_single_size*4);
+
+    memcpy_s(&target[3][0], sizeof(Ogre::Real)*4, &source[3][0], 
+        glm_single_size*4);
 }
 
 void OgreRenderer::convertOgreMatrixToGLMMatrix(const Ogre::Matrix4& source, 
     glm::mat4& target)
 {
-    // TODO find a better way to do this
-    target[0][0] = source[0][0];
-    target[0][1] = source[0][1];
-    target[0][2] = source[0][2];
-    target[0][3] = source[0][3];
+    // This might be as efficient as it gets
+    static const size_t glm_single_size = 
+#if(defined(GLM_PRECISION_HIGHP_FLOAT))
+        sizeof(glm::highp_float);
+#elif(defined(GLM_PRECISION_MEDIUMP_FLOAT))
+        sizeof(glm::mediump_float);
+#elif(defined(GLM_PRECISION_LOWP_FLOAT))
+        sizeof(glm::lowp_float);
+#else
+        sizeof(glm::mediump_float);
+#endif//GLM_PRECISION
 
-    target[1][0] = source[1][0];
-    target[1][1] = source[1][1];
-    target[1][2] = source[1][2];
-    target[1][3] = source[1][3];
+    memcpy_s(&target[0][0], glm_single_size*4, &source[0][0], 
+        sizeof(Ogre::Real)*4);
 
-    target[2][0] = source[2][0];
-    target[2][1] = source[2][1];
-    target[2][2] = source[2][2];
-    target[2][3] = source[2][3];
+    memcpy_s(&target[1][0], glm_single_size*4, &source[1][0], 
+        sizeof(Ogre::Real)*4);
 
-    target[3][0] = source[3][0];
-    target[3][1] = source[3][1];
-    target[3][2] = source[3][2];
-    target[3][3] = source[3][3];
+    memcpy_s(&target[2][0], glm_single_size*4, &source[2][0], 
+        sizeof(Ogre::Real)*4);
+
+    memcpy_s(&target[3][0], glm_single_size*4, &source[3][0], 
+        sizeof(Ogre::Real)*4);
 }
 
 Ogre::SceneManager& OgreRenderer::getDummyScene() const{
