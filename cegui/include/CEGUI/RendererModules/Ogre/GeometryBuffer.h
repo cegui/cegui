@@ -90,13 +90,15 @@ protected:
     //! Sets the current scissor rect active
     void setScissorRects() const;
 
-    void syncManualObject() const;
+    void syncVertexData() const;
 
-    void setVertexBuffer();
+    void setVertexBuffer(size_t count) const;
 
     void setTextureStates() const;
 
     void cleanUpVertexAttributes();
+
+    inline size_t getFloatsPerVertex() const;
 
     //! Renderer object that owns this GeometryBuffer
     OgreRenderer& d_owner;
@@ -108,20 +110,20 @@ protected:
     //! model matrix cache
     mutable Ogre::Matrix4 d_matrix;
 
-    mutable bool d_dataAppended;
-
-
-    mutable bool d_firstMOUpdate;
-
-    //! Render operation pointing to the first section's render operation 
-    //! of the ManualObject
-    mutable Ogre::RenderOperation* d_renderOp;
-
-    //! The container for all vertex data
-    mutable Ogre::ManualObject* d_vertexHolder;
-
     //! The type of vertex data we expect
     MANUALOBJECT_TYPE d_expectedData;
+
+
+    //! Render operation for this buffer.
+    mutable Ogre::RenderOperation d_renderOp;
+
+
+    //! H/W buffer where the vertices are rendered from.
+    mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;
+
+
+    mutable bool d_dataAppended;
+
 };
 
 
