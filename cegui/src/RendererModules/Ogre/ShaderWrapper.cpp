@@ -50,8 +50,8 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
 
-    auto target = d_vertexShader->getConstantDefinitions().map.
-        find("modelViewPerspMatrix");
+    Ogre::GpuConstantDefinitionMap::const_iterator target = 
+        d_vertexShader->getConstantDefinitions().map.find("modelViewPerspMatrix");
 
     d_physicalIndex = target->second.physicalIndex;
 }
