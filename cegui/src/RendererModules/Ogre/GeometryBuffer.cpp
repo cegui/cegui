@@ -170,12 +170,13 @@ void OgreGeometryBuffer::syncManualObject() const
     if (d_firstMOUpdate)
     {
 
+        d_vertexHolder->estimateVertexCount(d_vertexCount > INITIAL_BUFFER_SIZE 
+            ? d_vertexCount: INITIAL_BUFFER_SIZE);
+
         // Blank material initially
         d_vertexHolder->begin("BaseWhiteNoLighting", 
             Ogre::RenderOperation::OT_TRIANGLE_LIST);
 
-        d_vertexHolder->estimateVertexCount(d_vertexCount > INITIAL_BUFFER_SIZE 
-            ? d_vertexCount: INITIAL_BUFFER_SIZE);
 
         d_firstMOUpdate = false;
     }
@@ -183,8 +184,6 @@ void OgreGeometryBuffer::syncManualObject() const
     {
         // Only the first section is ever used
         d_vertexHolder->beginUpdate(0);
-
-        d_vertexHolder->estimateVertexCount(d_vertexCount);
 
     }
 
@@ -199,6 +198,7 @@ void OgreGeometryBuffer::syncManualObject() const
             // First the position
             d_vertexHolder->position(d_vertexData[i], d_vertexData[i+1], 
                 d_vertexData[i+2]);
+
 
             // And then the colour
             d_vertexHolder->colour(d_vertexData[i+3], d_vertexData[i+4], 
@@ -288,7 +288,7 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 void OgreGeometryBuffer::setVertexBuffer(){
     // create the vertex container
     d_vertexHolder = d_owner.getDummyScene().createManualObject(
-        Ogre::SCENE_STATIC);
+        Ogre::SCENE_DYNAMIC);
 
     if (!d_vertexHolder)
     {
@@ -298,6 +298,7 @@ void OgreGeometryBuffer::setVertexBuffer(){
 
 
     d_vertexHolder->setDynamic(true);
+    d_vertexHolder->setKeepDeclarationOrder(true);
 }
 
 void OgreGeometryBuffer::cleanUpVertexAttributes()
