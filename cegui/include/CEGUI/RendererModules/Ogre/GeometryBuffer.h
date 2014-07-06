@@ -55,9 +55,9 @@ class OGRE_GUIRENDERER_API OgreGeometryBuffer : public GeometryBuffer
 public:
 
     enum MANUALOBJECT_TYPE {
-        MANUALOBJECT_TYPE_COLOURED, 
-        MANUALOBJECT_TYPE_TEXTURED,
-        MANUALOBJECT_TYPE_INVALID
+        MT_COLOURED,
+        MT_TEXTURED,
+        MT_INVALID
     };
 
     //! Constructor

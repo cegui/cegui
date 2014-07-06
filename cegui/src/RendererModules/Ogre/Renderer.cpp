@@ -332,10 +332,12 @@ void OgreRenderer::createOgreCompositorResources()
         "you must call Ogre::Root::initialiseCompositor() after "
         "creating at least one window."));
 
-    auto templatedworkspace = manager->addWorkspaceDefinition("CEGUI_workspace");
+    Ogre::CompositorWorkspaceDef* templatedworkspace = 
+        manager->addWorkspaceDefinition("CEGUI_workspace");
 
     // Create a node for rendering on top of everything
-    auto rendernode = manager->addNodeDefinition("CEGUIRenderNode");
+    Ogre::CompositorNodeDef* rendernode = 
+        manager->addNodeDefinition("CEGUIRenderNode");
 
     // Use the render target passed from the workspace for rendering on top of
     // everything
@@ -345,7 +347,8 @@ void OgreRenderer::createOgreCompositorResources()
     rendernode->setNumTargetPass(1);
 
     // Pass for it
-    auto targetpasses = rendernode->addTargetPass("renderwindow");
+    Ogre::CompositorTargetDef* targetpasses = 
+        rendernode->addTargetPass("renderwindow");
     targetpasses->setNumPasses(2);
 
     Ogre::CompositorPassClearDef* clearpass =
@@ -427,8 +430,11 @@ void OgreRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
     // The find function that was here before would no longer compile for some reason
 
     // Manually search the container for a matching pointer
-    auto end = d_pimpl->d_geometryBuffers.end();
-    for (auto iter = d_pimpl->d_geometryBuffers.begin(); iter != end; ++iter)
+    CEGUI::GeometryBufferList::const_iterator end = 
+        d_pimpl->d_geometryBuffers.end();
+
+    for (CEGUI::GeometryBufferList::iterator iter = 
+        d_pimpl->d_geometryBuffers.begin(); iter != end; ++iter)
     {
         if ((*iter) == &buffer)
         {
@@ -1248,7 +1254,7 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
     geom_buffer->finaliseVertexAttributes(
-        OgreGeometryBuffer::MANUALOBJECT_TYPE_COLOURED);
+        OgreGeometryBuffer::MT_COLOURED);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -1264,7 +1270,7 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
     geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
     geom_buffer->finaliseVertexAttributes(
-        OgreGeometryBuffer::MANUALOBJECT_TYPE_TEXTURED);
+        OgreGeometryBuffer::MT_TEXTURED);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;

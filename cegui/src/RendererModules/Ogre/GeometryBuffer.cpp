@@ -56,7 +56,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_renderSystem(rs),
     d_clipRect(0, 0, 0, 0),
     d_vertexHolder(0),
-    d_expectedData(MANUALOBJECT_TYPE_INVALID),
+    d_expectedData(MT_INVALID),
     d_renderOp(0),
     d_dataAppended(false),
     d_firstMOUpdate(true)
@@ -154,8 +154,8 @@ void OgreGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
     size_t float_per_element;
 
     switch(d_expectedData){
-    case MANUALOBJECT_TYPE_COLOURED: float_per_element = FLOATS_PER_COLOURED; break;
-    case MANUALOBJECT_TYPE_TEXTURED: float_per_element = FLOATS_PER_TEXTURED; break;
+    case MT_COLOURED: float_per_element = FLOATS_PER_COLOURED; break;
+    case MT_TEXTURED: float_per_element = FLOATS_PER_TEXTURED; break;
     }
 
     d_vertexCount = d_vertexData.size()/float_per_element;
@@ -189,7 +189,7 @@ void OgreGeometryBuffer::syncManualObject() const
     }
 
     // Append the data to the manual object
-    if (d_expectedData == MANUALOBJECT_TYPE_TEXTURED)
+    if (d_expectedData == MT_TEXTURED)
     {
         for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_TEXTURED)
         {
@@ -209,7 +209,7 @@ void OgreGeometryBuffer::syncManualObject() const
             d_vertexHolder->textureCoord(d_vertexData[i+7], d_vertexData[i+8]);
         }
     }
-    else if (d_expectedData == MANUALOBJECT_TYPE_COLOURED)
+    else if (d_expectedData == MT_COLOURED)
     {
 
         for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_COLOURED)
@@ -228,7 +228,7 @@ void OgreGeometryBuffer::syncManualObject() const
     }
 
 
-    auto section = d_vertexHolder->end();
+    Ogre::ManualObject::ManualObjectSection* section = d_vertexHolder->end();
 
     d_renderOp = section->getRenderOperation();
 
@@ -276,7 +276,7 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 {
     d_expectedData = type;
 
-    if (d_expectedData >= MANUALOBJECT_TYPE_INVALID)
+    if (d_expectedData >= MT_INVALID)
     {
         CEGUI_THROW(RendererException(
             "Unknown d_expectedData type."));
