@@ -45,6 +45,7 @@
 #define FLOATS_PER_TEXTURED     9
 #define FLOATS_PER_COLOURED     7
 
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -55,11 +56,8 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_owner(owner),
     d_renderSystem(rs),
     d_clipRect(0, 0, 0, 0),
-    d_vertexHolder(0),
     d_expectedData(MT_INVALID),
-    d_renderOp(0),
-    d_dataAppended(false),
-    d_firstMOUpdate(true)
+    d_dataAppended(false)
 {
     
 }
@@ -76,11 +74,11 @@ void OgreGeometryBuffer::draw() const
     if (d_vertexData.empty())
         return;
 
-    if (d_dataAppended)
-        syncManualObject();
+    if (d_hwBuffer.isNull())
+        setVertexBuffer(INITIAL_BUFFER_SIZE);
 
-    if (!d_renderOp)
-        return;
+    if (d_dataAppended)
+        syncVertexData();
 
     // setup clip region
     if (d_clippingActive)
@@ -120,7 +118,7 @@ void OgreGeometryBuffer::draw() const
 
 
         // draw the geometry
-        d_renderSystem._render(*d_renderOp);
+        d_renderSystem._render(d_renderOp);
     }
 
     // clean up RenderEffect
@@ -151,86 +149,50 @@ void OgreGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
 
     d_dataAppended = true;
 
-    size_t float_per_element;
-
-    switch(d_expectedData){
-    case MT_COLOURED: float_per_element = FLOATS_PER_COLOURED; break;
-    case MT_TEXTURED: float_per_element = FLOATS_PER_TEXTURED; break;
-    }
+    size_t float_per_element = getFloatsPerVertex();
 
     d_vertexCount = d_vertexData.size()/float_per_element;
 }
 
-void OgreGeometryBuffer::syncManualObject() const
+void OgreGeometryBuffer::syncVertexData() const
 {
     if (!d_dataAppended)
         return;
 
-    // First update needs to create the section that subsequent calls can update
-    if (d_firstMOUpdate)
+    // Make sure that our vertex buffer is large enough
+    size_t current_size = d_hwBuffer->getNumVertices();
+
+    if (current_size < d_vertexCount)
     {
+        size_t new_size = current_size;
 
-        d_vertexHolder->estimateVertexCount(d_vertexCount > INITIAL_BUFFER_SIZE 
-            ? d_vertexCount: INITIAL_BUFFER_SIZE);
-
-        // Blank material initially
-        d_vertexHolder->begin("BaseWhiteNoLighting", 
-            Ogre::RenderOperation::OT_TRIANGLE_LIST);
+        // Reallocate the buffer to be large enough
+        while(new_size < d_vertexCount)
+            new_size *= 2;
 
 
-        d_firstMOUpdate = false;
-    }
-    else
-    {
-        // Only the first section is ever used
-        d_vertexHolder->beginUpdate(0);
-
+        setVertexBuffer(new_size);
     }
 
-    // Append the data to the manual object
-    if (d_expectedData == MT_TEXTURED)
+    // copy vertex data into the Ogre hardware buffer
+    if (d_vertexCount > 0)
     {
-        for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_TEXTURED)
-        {
-            assert(i+FLOATS_PER_TEXTURED <= d_vertexData.size() && 
-                "invalid vertex data passed to OgreGeometryBuffer");
+        void* copy_target = d_hwBuffer->lock(
+            Ogre::HardwareVertexBuffer::HBL_DISCARD);
 
-            // First the position
-            d_vertexHolder->position(d_vertexData[i], d_vertexData[i+1], 
-                d_vertexData[i+2]);
+        assert(copy_target && "Ogre vertex buffer is invalid");
 
+        std::memcpy(copy_target, &d_vertexData[0], sizeof(float)*
+            d_vertexData.size());
 
-            // And then the colour
-            d_vertexHolder->colour(d_vertexData[i+3], d_vertexData[i+4], 
-                d_vertexData[i+5], d_vertexData[i+6]);
-
-
-            // And finally texture coordinate
-            d_vertexHolder->textureCoord(d_vertexData[i+7], d_vertexData[i+8]);
-        }
-    }
-    else if (d_expectedData == MT_COLOURED)
-    {
-
-        for (size_t i = 0; i < d_vertexData.size(); i += FLOATS_PER_COLOURED)
-        {
-            assert(i+FLOATS_PER_COLOURED <= d_vertexData.size() && 
-                "invalid vertex data passed to OgreGeometryBuffer");
-
-            // First the position
-            d_vertexHolder->position(d_vertexData[i], d_vertexData[i+1], 
-                d_vertexData[i+2]);
-
-            // And then the colour
-            d_vertexHolder->colour(d_vertexData[i+3], d_vertexData[i+4], 
-                d_vertexData[i+5], d_vertexData[i+6]);
-        }
+        d_hwBuffer->unlock();
     }
 
 
-    Ogre::ManualObject::ManualObjectSection* section = d_vertexHolder->end();
+    // Update rendering for the new vertices
+    d_renderOp.vertexData->vertexStart = 0;
+    d_renderOp.vertexData->vertexCount = d_vertexCount;
 
-    d_renderOp = section->getRenderOperation();
 
     d_dataAppended = false;
 }
@@ -276,37 +238,68 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 {
     d_expectedData = type;
 
-    if (d_expectedData >= MT_INVALID)
-    {
+
+    // basic initialisation of render op
+    d_renderOp.vertexData = OGRE_NEW Ogre::VertexData();
+    d_renderOp.operationType = Ogre::RenderOperation::OT_TRIANGLE_LIST;
+    d_renderOp.useIndexes = false;
+
+    // Setup our render operation to match the type
+    Ogre::VertexDeclaration* vd = d_renderOp.vertexData->vertexDeclaration;
+
+    switch(d_expectedData){
+    case MT_COLOURED: 
+        {
+            vd->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
+
+            vd->addElement(0, sizeof(float)*3, Ogre::VET_COLOUR, 
+                Ogre::VES_DIFFUSE);
+            break;
+        }
+    case MT_TEXTURED: 
+        {
+            vd->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
+
+            vd->addElement(0, sizeof(float)*3, Ogre::VET_FLOAT4, 
+                Ogre::VES_DIFFUSE);
+
+            vd->addElement(0, sizeof(float)*(3+4), Ogre::VET_FLOAT2, 
+                Ogre::VES_TEXTURE_COORDINATES);
+            break;
+        }
+    default:
         CEGUI_THROW(RendererException(
             "Unknown d_expectedData type."));
     }
 
-    setVertexBuffer();
+    setVertexBuffer(INITIAL_BUFFER_SIZE);
 }
 
-void OgreGeometryBuffer::setVertexBuffer(){
+void OgreGeometryBuffer::setVertexBuffer(size_t count) const
+{
     // create the vertex container
-    d_vertexHolder = d_owner.getDummyScene().createManualObject(
-        Ogre::SCENE_DYNAMIC);
+    d_hwBuffer = Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(
+        getFloatsPerVertex()*sizeof(float), count,
+        Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
+        false);
 
-    if (!d_vertexHolder)
+    if (d_hwBuffer.isNull())
     {
         CEGUI_THROW(RendererException("Failed to create Ogre vertex buffer, "
             "probably because the vertex layout is invalid."));
     }
 
-
-    d_vertexHolder->setDynamic(true);
-    d_vertexHolder->setKeepDeclarationOrder(true);
+    
+    // bind the vertex buffer for rendering
+    d_renderOp.vertexData->vertexBufferBinding->setBinding(0, d_hwBuffer);
 }
 
 void OgreGeometryBuffer::cleanUpVertexAttributes()
 {
-    d_renderOp = 0;
+    OGRE_DELETE d_renderOp.vertexData;
+    d_renderOp.vertexData = 0;
 
-    d_owner.getDummyScene().destroyManualObject(d_vertexHolder);
-    d_vertexHolder = 0;
+    d_hwBuffer.setNull();
 }
 
 // ------------------------------------ //
@@ -321,16 +314,26 @@ void OgreGeometryBuffer::reset()
 {
     d_vertexData.clear();
     d_clippingActive = true;
-    d_vertexHolder->clear();
-    d_firstMOUpdate = true;
-    d_renderOp = 0;
+    d_hwBuffer.setNull();
 }
 
 // ------------------------------------ //
-void OgreGeometryBuffer::setTextureStates() const{
+void OgreGeometryBuffer::setTextureStates() const
+{
     using namespace Ogre;
     // Set texture states
     d_renderSystem._setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_NONE);
+}
+
+// ------------------------------------ //
+size_t OgreGeometryBuffer::getFloatsPerVertex() const
+{
+    
+    switch(d_expectedData){
+    case MT_COLOURED: return FLOATS_PER_COLOURED;
+    case MT_TEXTURED: return FLOATS_PER_TEXTURED;
+    default: return 0;
+    }
 }
 
 
