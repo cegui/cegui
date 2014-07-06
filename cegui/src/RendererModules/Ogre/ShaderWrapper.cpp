@@ -33,6 +33,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "OgreRenderSystem.h"
 
+//! Used to abort setting parameters when they don't make any sense
+//! Even this value would cause errors but the value we are checking for is VERY
+//! large
+#define LAST_SANE_HW_INDEX          100000
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -50,8 +56,25 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
 
+    const Ogre::GpuConstantDefinitionMap& map = 
+        d_vertexShader->getConstantDefinitions().map;
+
     Ogre::GpuConstantDefinitionMap::const_iterator target = 
-        d_vertexShader->getConstantDefinitions().map.find("modelViewPerspMatrix");
+        map.find("worldViewProjMatrix");
+
+    // This will only be true when the shaders/parameter names are invalid
+    if (target == map.end())
+    {
+        // This should map to almost SIZE_T_MAX
+        d_physicalIndex = -1;
+
+        CEGUI_THROW(RendererException("Ogre renderer couldn't find an index for"
+            " the shader data."));
+
+        // Don't want to fall through, ever
+        return;
+    }
+
 
     d_physicalIndex = target->second.physicalIndex;
 }
@@ -123,7 +146,11 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
 
-            if (d_previousMatrix != *mat->d_parameterValue)
+            // The other check is to make sure that even invalid operations 
+            // don't assert the program
+            // TODO: throw when invalid physical index?
+            if (d_previousMatrix != *mat->d_parameterValue && d_physicalIndex <
+                LAST_SANE_HW_INDEX)
             {
                 d_previousMatrix = *mat->d_parameterValue;
 
