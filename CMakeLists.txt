@@ -552,7 +552,6 @@ set(CPACK_SOURCE_IGNORE_FILES
 # repository history should not be in source tarballs
 "\\\\.hg.*"
 # most likely not needed in the tarball
-"promo/"
 "cppcheck-output"
 "perform-cppcheck"
 
