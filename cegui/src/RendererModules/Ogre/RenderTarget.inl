@@ -41,15 +41,15 @@ template <typename T>
 OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
                                       Ogre::RenderSystem& rs) :
     d_owner(owner),
-	d_renderSystem(rs),
-	d_area(0, 0, 0, 0),
-	d_renderTarget(0),
-	d_viewport(0),
-	d_ogreViewportDimensions(0, 0, 0, 0),
-	d_matrix(Ogre::Matrix3::ZERO),
-	d_matrixValid(false),
-	d_viewportValid(false),
-	d_viewDistance(0)
+    d_renderSystem(rs),
+    d_area(0, 0, 0, 0),
+    d_renderTarget(0),
+    d_viewport(0),
+    d_ogreViewportDimensions(0, 0, 0, 0),
+    d_matrix(Ogre::Matrix3::ZERO),
+    d_matrixValid(false),
+    d_viewportValid(false),
+    d_viewDistance(0)
 {
 }
 
@@ -78,13 +78,13 @@ void OgreRenderTarget<T>::draw(const RenderQueue& queue)
 template <typename T>
 void OgreRenderTarget<T>::setArea(const Rectf& area)
 {
-	d_area = area;
-	setOgreViewportDimensions(area);
+    d_area = area;
+    setOgreViewportDimensions(area);
 
-	d_matrixValid = false;
+    d_matrixValid = false;
 
-	RenderTargetEventArgs args(this);
-	T::fireEvent(RenderTarget::EventAreaChanged, args);
+    RenderTargetEventArgs args(this);
+    T::fireEvent(RenderTarget::EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -93,12 +93,10 @@ void OgreRenderTarget<T>::setOgreViewportDimensions(const Rectf& area)
 {
     d_ogreViewportDimensions = area;
 
-	if (d_viewport)
-		updateOgreViewportDimensions(d_viewport->getTarget());
+    if (d_viewport)
+        updateOgreViewportDimensions(d_viewport->getTarget());
 
-
-
-	d_viewportValid = false;
+    d_viewportValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -128,16 +126,16 @@ const Rectf& OgreRenderTarget<T>::getArea() const
 template <typename T>
 void OgreRenderTarget<T>::activate()
 {
-	if (!d_matrixValid)
-		updateMatrix();
+    if (!d_matrixValid)
+        updateMatrix();
 
-	if (!d_viewportValid)
-		updateViewport();
+    if (!d_viewportValid)
+        updateViewport();
 
-	d_renderSystem._setViewport(d_viewport);
+    d_renderSystem._setViewport(d_viewport);
 
-	d_owner.setProjectionMatrix(d_matrix);
-	d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
+    d_owner.setProjectionMatrix(d_matrix);
+    d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
 }
 
 //----------------------------------------------------------------------------//
@@ -170,7 +168,6 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     );
 
     // matrices used for projecting and unprojecting points
-
 
     const Ogre::Matrix4 proj(gb.getMatrix() * d_matrix * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
@@ -231,7 +228,6 @@ void OgreRenderTarget<T>::updateMatrix() const
     // This is mostly important for avoiding asserts
     const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
 
-
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
@@ -272,7 +268,6 @@ void OgreRenderTarget<T>::updateViewport()
     }
 
     d_viewport->_updateDimensions();
-
 
     d_viewportValid = true;
 }

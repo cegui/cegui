@@ -29,7 +29,6 @@ namespace CEGUI
 {
 // Shaders for Ogre renderer adapted from OpenGL and Direct3D11 shaders
 
-
 //! A string containing an HLSL vertex shader for solid colouring of a polygon
 static Ogre::String VertexShaderColoured_HLSL(""
 "uniform float4x4 worldViewProjMatrix;\n"
@@ -67,7 +66,6 @@ static Ogre::String PixelShaderColoured_HLSL(""
 "}\n"
 "\n"
 );
-
 
 /*!
 A string containing an HLSL vertex shader for polygons that should be coloured
@@ -137,8 +135,6 @@ static Ogre::String PixelShaderTextured_GLSL_Compat(""
     "}"
 );
 
-
-
 //! Shader for older OpenGL versions < 3
 static Ogre::String VertexShaderColoured_GLSL_Compat(""
     "void main(void)"
@@ -155,8 +151,6 @@ static Ogre::String PixelShaderColoured_GLSL_Compat(""
     "    gl_FragColor = gl_Color;"
     "}"
 );
-
-
 
 //! A string containing an OpenGL3 vertex shader for solid colouring of a polygon
 static Ogre::String VertexShaderColoured_GLSL(""
@@ -237,7 +231,6 @@ static Ogre::String PixelShaderTextured_GLSL(""
     "   fragColour = texture(texture0, exTexCoord) * exColour;\n"
     "}"
 );
-
 
 }
 

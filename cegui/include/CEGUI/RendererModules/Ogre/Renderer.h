@@ -201,7 +201,6 @@ public:
 
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
-
     //! set whether CEGUI rendering will occur
     void setRenderingEnabled(const bool enabled);
 
@@ -316,7 +315,7 @@ public:
     */
     const Ogre::Matrix4& getWorldViewProjMatrix() const;
 
-
+    //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
 
     // implement CEGUI::Renderer interface
@@ -340,7 +339,6 @@ public:
         const String& resourceGroup);
     Texture& createTexture(const String& name, const Sizef& size);
 
-
     Ogre::SceneManager& getDummyScene() const;
 
     void destroyTexture(Texture& texture);
@@ -358,7 +356,6 @@ public:
     const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-
 
 protected:
     //! default constructor.
@@ -387,7 +384,6 @@ protected:
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
 };
-
 
 } // End of  CEGUI namespace section
 

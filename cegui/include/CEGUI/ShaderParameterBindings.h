@@ -33,8 +33,8 @@
 #include "glm/glm.hpp"
 
 #ifdef CEGUI_BUILD_RENDERER_OGRE
-namespace Ogre{
-
+namespace Ogre
+{
     class Matrix4;
 }
 #endif
@@ -46,7 +46,6 @@ namespace Ogre{
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
-
 
 namespace CEGUI
 {
@@ -219,7 +218,6 @@ public:
     {}
 #endif //CEGUI_BUILD_RENDERER_OGRE
 
-
     //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
     { return SPT_MATRIX_4X4; }
@@ -247,7 +245,6 @@ public:
     ShaderParameterBindings();
     ~ShaderParameterBindings();
 
-
     /*!
     \brief
         Adds a matrix shader parameter to the parameter bindings
@@ -259,11 +256,12 @@ public:
         The pointer to the matrix
     */
 #ifdef CEGUI_BUILD_RENDERER_OGRE
-    void setParameter(const std::string& parameter_name, const Ogre::Matrix4* matrix);
+    void setParameter(const std::string& parameter_name, 
+        const Ogre::Matrix4* matrix);
 #else
-    void setParameter(const std::string& parameter_name, const glm::mat4& matrix);
+    void setParameter(const std::string& parameter_name, 
+        const glm::mat4& matrix);
 #endif //CEGUI_BUILD_RENDERER_OGRE
-
 
     /*!
     \brief
@@ -275,9 +273,8 @@ public:
     \param texture
         The pointer to the CEGUI::Texture
     */
-    void setParameter(const std::string& parameter_name, const CEGUI::Texture* texture);
-
-
+    void setParameter(const std::string& parameter_name, 
+        const CEGUI::Texture* texture);
 
     /*!
     \brief
@@ -327,6 +324,5 @@ protected:
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
-
 
 #endif

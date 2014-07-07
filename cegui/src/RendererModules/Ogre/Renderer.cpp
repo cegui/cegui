@@ -59,7 +59,6 @@
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 
-
 #include "Shaders.inl"
 
 // Start of CEGUI namespace section
@@ -85,7 +84,6 @@ private:
     OgreRenderer* d_owner;
 
 };
-
 
 #else // Use the old method
 // Internal Ogre::FrameListener based class.  This is how we noew hook into the
@@ -358,7 +356,6 @@ void OgreRenderer::createOgreCompositorResources()
     // Only clear depth and stencil since we are rendering on top
     // of an existing image
     clearpass->mClearBufferFlags = Ogre::FBT_DEPTH | Ogre::FBT_STENCIL;
-
 
     // Now the render scene pass during which the render queue listener
     // should render the GUI
@@ -730,7 +727,6 @@ OgreRenderer::~OgreRenderer()
 
     cleanupShaders();
 
-
     CEGUI_DELETE_AO d_pimpl->d_frameListener;
 
     destroyAllGeometryBuffers();
@@ -768,7 +764,6 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
             d_pimpl->d_useGLSLCore = true;
 
     }
-
 
     // create default target & rendering root (surface) that uses it
     d_pimpl->d_defaultTarget =
@@ -825,7 +820,6 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // We will get notified when the workspace is drawn
     d_pimpl->d_frameListener = CEGUI_NEW_AO OgreGUIRenderQueueListener(this);
 
-
     // Create the workspace for rendering
     Ogre::CompositorManager2* manager = d_pimpl->d_ogreRoot->
         getCompositorManager2();
@@ -836,11 +830,9 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 
     d_pimpl->d_workspace->setListener(d_pimpl->d_frameListener);
 
-
 #else
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
-
 
     initialiseShaders();
 
@@ -855,7 +847,6 @@ void OgreRenderer::initialiseShaders()
 
     Ogre::HighLevelGpuProgramPtr colour_vs;
     Ogre::HighLevelGpuProgramPtr colour_ps;
-
 
     d_pimpl->d_useGLSL = Ogre::HighLevelGpuProgramManager::getSingleton().
         isLanguageSupported("glsl");
@@ -892,8 +883,6 @@ void OgreRenderer::initialiseShaders()
         createProgram("__cegui_internal_colour_ps__",
         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         shaderLanguage, Ogre::GPT_FRAGMENT_PROGRAM);
-
-
 
     // We always enter through the main function
     texture_vs->setParameter("entry_point", "main");
@@ -993,7 +982,6 @@ void OgreRenderer::initialiseShaders()
     colour_vs->load();
     colour_ps->load();
 
-
     d_pimpl->d_texturedShaderWrapper = CEGUI_NEW_AO OgreShaderWrapper(*this, 
         *d_pimpl->d_renderSystem, texture_vs, texture_ps);
 
@@ -1044,7 +1032,6 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
                                       SBF_ONE_MINUS_DEST_ALPHA,
                                       SBF_ONE);
 }
-
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::setFrameControlExecutionEnabled(const bool enabled)
@@ -1147,7 +1134,8 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getWorldViewProjMatrix() const{
+const Ogre::Matrix4& OgreRenderer::getWorldViewProjMatrix() const
+{
     if (!d_pimpl->d_combinedMatrixValid)
     {
         Ogre::Matrix4 final_prj(d_pimpl->d_projectionMatrix);
@@ -1215,7 +1203,8 @@ void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
     d_pimpl->d_combinedMatrixValid = false;
 }
 
-void OgreRenderer::bindBlendMode(BlendMode blend){
+void OgreRenderer::bindBlendMode(BlendMode blend)
+{
 
     setupRenderingBlendMode(blend, false);
 }

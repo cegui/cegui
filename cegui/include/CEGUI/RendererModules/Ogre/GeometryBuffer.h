@@ -54,7 +54,8 @@ class OGRE_GUIRENDERER_API OgreGeometryBuffer : public GeometryBuffer
 {
 public:
 
-    enum MANUALOBJECT_TYPE {
+    enum MANUALOBJECT_TYPE
+    {
         MT_COLOURED,
         MT_TEXTURED,
         MT_INVALID
@@ -70,7 +71,6 @@ public:
     //! return the transformation matrix used for this buffer.
     const Ogre::Matrix4& getMatrix() const;
 
-
     // implement CEGUI::GeometryBuffer interface.
     virtual void draw() const;
     void appendGeometry(const std::vector<float>& vertex_data);
@@ -79,9 +79,7 @@ public:
 
     void reset();
 
-
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
-
 
 protected:
 
@@ -113,19 +111,15 @@ protected:
     //! The type of vertex data we expect
     MANUALOBJECT_TYPE d_expectedData;
 
-
     //! Render operation for this buffer.
     mutable Ogre::RenderOperation d_renderOp;
-
 
     //! H/W buffer where the vertices are rendered from.
     mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;
 
-
+    //! Marks the d_hwBuffer as being out of date
     mutable bool d_dataAppended;
-
 };
-
 
 } // End of  CEGUI namespace section
 

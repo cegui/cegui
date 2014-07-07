@@ -27,13 +27,11 @@
 #ifndef _CEGUIOgreShaderWrapper_h_
 #define _CEGUIOgreShaderWrapper_h_
 
-
 #include <string>
 #include "Renderer.h"
 #include "CEGUI/ShaderWrapper.h"
 #include "OgreHighLevelGpuProgram.h"
 #include "OgreMatrix4.h"
-
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -58,14 +56,12 @@ public:
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
-
 protected:
 
     //! Renderer object that owns this GeometryBuffer
     OgreRenderer& d_owner;
     //! Ogre render system we're to use.
     Ogre::RenderSystem& d_renderSystem;
-
 
     //! The GPU program that is our vertex shader
     Ogre::HighLevelGpuProgramPtr d_vertexShader;
@@ -84,9 +80,7 @@ protected:
 
     //! The physical index to which the matrix will be written
     size_t d_physicalIndex;
-
 };
-
 
 }
 

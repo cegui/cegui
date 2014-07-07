@@ -39,12 +39,8 @@
 #include "OgreRenderOperation.h"
 #include "OgreSceneManager.h"
 
-
-#define INITIAL_BUFFER_SIZE     24
-
 #define FLOATS_PER_TEXTURED     9
 #define FLOATS_PER_COLOURED     7
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -74,11 +70,11 @@ void OgreGeometryBuffer::draw() const
     if (d_vertexData.empty())
         return;
 
-    if (d_hwBuffer.isNull())
-        setVertexBuffer(INITIAL_BUFFER_SIZE);
-
     if (d_dataAppended)
         syncVertexData();
+
+    if (d_hwBuffer.isNull())
+        return;
 
     // setup clip region
     if (d_clippingActive)
@@ -93,16 +89,13 @@ void OgreGeometryBuffer::draw() const
     CEGUI::ShaderParameterBindings* shaderParameterBindings = 
         (*d_renderMaterial).getShaderParamBindings();
 
-
     // Set the ModelViewProjection matrix in the bindings
     Ogre::Matrix4 omat = d_owner.getWorldViewProjMatrix()*d_matrix;
 
     shaderParameterBindings->setParameter("modelViewPerspMatrix", &omat);
 
-
     // activate the desired blending mode
     d_owner.bindBlendMode(d_blendMode);
-
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
@@ -115,7 +108,6 @@ void OgreGeometryBuffer::draw() const
 
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
-
 
         // draw the geometry
         d_renderSystem._render(d_renderOp);
@@ -170,13 +162,18 @@ void OgreGeometryBuffer::syncVertexData() const
         while(new_size < d_vertexCount)
             new_size *= 2;
 
-
         setVertexBuffer(new_size);
     }
 
     // copy vertex data into the Ogre hardware buffer
     if (d_vertexCount > 0)
     {
+        if (d_hwBuffer.isNull())
+        {
+
+            setVertexBuffer(d_vertexCount);
+        }
+
         void* copy_target = d_hwBuffer->lock(
             Ogre::HardwareVertexBuffer::HBL_DISCARD);
 
@@ -188,11 +185,9 @@ void OgreGeometryBuffer::syncVertexData() const
         d_hwBuffer->unlock();
     }
 
-
     // Update rendering for the new vertices
     d_renderOp.vertexData->vertexStart = 0;
     d_renderOp.vertexData->vertexCount = d_vertexCount;
-
 
     d_dataAppended = false;
 }
@@ -207,26 +202,23 @@ void OgreGeometryBuffer::updateMatrix() const
         d_translation.d_y + d_pivot.d_y,
         d_translation.d_z + d_pivot.d_z);
 
-
     // rotation
     Ogre::Matrix4 rot(Ogre::Quaternion(
         d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
-
 
     // translation to remove rotation pivot offset
     Ogre::Matrix4 inv_pivot_trans;
     inv_pivot_trans.makeTrans(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
 
-
     // calculate final matrix
     d_matrix = trans * rot * inv_pivot_trans;
-
 
     d_matrixValid = true;
 }
 
 //----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const{
+const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const
+{
     if (!d_matrixValid)
         updateMatrix();
 
@@ -238,7 +230,6 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 {
     d_expectedData = type;
 
-
     // basic initialisation of render op
     d_renderOp.vertexData = OGRE_NEW Ogre::VertexData();
     d_renderOp.operationType = Ogre::RenderOperation::OT_TRIANGLE_LIST;
@@ -247,32 +238,32 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
     // Setup our render operation to match the type
     Ogre::VertexDeclaration* vd = d_renderOp.vertexData->vertexDeclaration;
 
-    switch(d_expectedData){
+    switch(d_expectedData)
+    {
     case MT_COLOURED: 
-        {
-            vd->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
+    {
+        vd->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
 
-            vd->addElement(0, sizeof(float)*3, Ogre::VET_COLOUR, 
-                Ogre::VES_DIFFUSE);
-            break;
-        }
+        vd->addElement(0, sizeof(float)*3, Ogre::VET_COLOUR, 
+            Ogre::VES_DIFFUSE);
+        break;
+    }
     case MT_TEXTURED: 
-        {
-            vd->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
+    {
+        vd->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
 
-            vd->addElement(0, sizeof(float)*3, Ogre::VET_FLOAT4, 
-                Ogre::VES_DIFFUSE);
+        vd->addElement(0, sizeof(float)*3, Ogre::VET_FLOAT4, 
+            Ogre::VES_DIFFUSE);
 
-            vd->addElement(0, sizeof(float)*(3+4), Ogre::VET_FLOAT2, 
-                Ogre::VES_TEXTURE_COORDINATES);
-            break;
-        }
+        vd->addElement(0, sizeof(float)*(3+4), Ogre::VET_FLOAT2, 
+            Ogre::VES_TEXTURE_COORDINATES);
+        break;
+    }
     default:
         CEGUI_THROW(RendererException(
             "Unknown d_expectedData type."));
     }
 
-    setVertexBuffer(INITIAL_BUFFER_SIZE);
 }
 
 void OgreGeometryBuffer::setVertexBuffer(size_t count) const
@@ -314,7 +305,6 @@ void OgreGeometryBuffer::reset()
 {
     d_vertexData.clear();
     d_clippingActive = true;
-    d_hwBuffer.setNull();
 }
 
 // ------------------------------------ //
@@ -335,6 +325,5 @@ size_t OgreGeometryBuffer::getFloatsPerVertex() const
     default: return 0;
     }
 }
-
 
 } // End of  CEGUI namespace section

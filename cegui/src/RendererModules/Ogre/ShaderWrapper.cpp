@@ -32,12 +32,12 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include "OgreRenderSystem.h"
+#include "CEGUI/Logger.h"
 
 //! Used to abort setting parameters when they don't make any sense
 //! Even this value would cause errors but the value we are checking for is VERY
 //! large
 #define LAST_SANE_HW_INDEX          100000
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -75,7 +75,6 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
         return;
     }
 
-
     d_physicalIndex = target->second.physicalIndex;
 }
 
@@ -91,13 +90,11 @@ OgreShaderWrapper::~OgreShaderWrapper()
 //----------------------------------------------------------------------------//
 void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
 {
-
     Ogre::GpuProgram* vs = d_vertexShader->_getBindingDelegate();
     d_renderSystem.bindGpuProgram(vs);
 
     Ogre::GpuProgram* ps = d_pixelShader->_getBindingDelegate();
     d_renderSystem.bindGpuProgram(ps);
-
 
     const ShaderParameterBindings::ShaderParameterBindingsMap& 
         shader_parameter_bindings = shaderParameterBindings->
@@ -108,11 +105,12 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
     ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end = 
         shader_parameter_bindings.end();
 
+    bool texture_set = false;
+
     while(iter != end)
     {
         const CEGUI::ShaderParameter* parameter = iter->second;
         const ShaderParamType parameterType = parameter->getType();
-
 
         if (iter->first == "texture0")
         {
@@ -129,8 +127,16 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
             const CEGUI::OgreTexture* texture = static_cast<const 
                 CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
 
+            Ogre::TexturePtr actual_texture = texture->getOgreTexture();
 
-            d_renderSystem._setTexture(0, true, texture->getOgreTexture());
+            if (actual_texture.isNull())
+            {
+                CEGUI_THROW(RendererException("Ogre texture ptr is empty"));
+            }
+
+            d_renderSystem._setTexture(0, true, actual_texture);
+
+            texture_set = true;
 
         } 
         else if (iter->first == "modelViewPerspMatrix")
@@ -177,6 +183,11 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
         ++iter; 
     }
 
+    if (!texture_set)
+    {
+
+        Logger::getSingleton().logEvent("The texture isn't actually set");
+    }
 
     // Pass the finalized parameters to Ogre
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM, 
