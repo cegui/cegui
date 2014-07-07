@@ -25,7 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+    #include "config.h"
 #endif
 
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
@@ -42,6 +42,7 @@
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
 #include <Compositor/OgreCompositorManager2.h>
 #include <Compositor/OgreCompositorCommon.h>
 #include <Compositor/OgreCompositorWorkspaceDef.h>
@@ -49,7 +50,8 @@
 #include <Compositor/OgreCompositorNodeDef.h>
 #include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
 #include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
-#include "Compositor/OgreTextureDefinition.h"
+#include <Compositor/OgreTextureDefinition.h>
+#endif //CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
@@ -127,7 +129,6 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // Set the same colour as in below
         clearpass->mColourValue = ColourValue(0.f, 0.f, 0.f, 0.f);
         // Other clear value defaults should be fine
-
 
         // Not sure if the samples want anything in their scenes so every group
         // will be rendered
@@ -261,7 +262,6 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     rgm.createResourceGroup("schemas");
     rgm.createResourceGroup("samples");
 
-
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
 
@@ -360,7 +360,6 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
         }
     }
 }
-
 
 //----------------------------------------------------------------------------//
 
@@ -487,7 +486,6 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
     return true;
 }
 
-
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
 {
@@ -559,7 +557,6 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
         CEGUI::Sizef(static_cast<float>(rw->getWidth()),
         static_cast<float>(rw->getHeight())));
 
-
     const OIS::MouseState& mouseState = d_mouse->getMouseState();
     mouseState.width = rw->getWidth();
     mouseState.height = rw->getHeight();
@@ -568,6 +565,4 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 //----------------------------------------------------------------------------//
 
 #endif
-
-
 

@@ -93,7 +93,6 @@ protected:
     //! holds set Ogre viewport dimensions
     Rectf d_ogreViewportDimensions;
 
-
     //! projection / view matrix cache
     mutable Ogre::Matrix4 d_matrix;
     //! true when d_matrix is valid and up to date
