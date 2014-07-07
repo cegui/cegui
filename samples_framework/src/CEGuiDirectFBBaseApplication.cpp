@@ -29,7 +29,7 @@
 #endif
 
 #include "CEGUISamplesConfig.h"
-#ifdef CEGUI_BUILD_RENDERER_DIRECTFB
+#ifdef CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE
 
 #include "CEGuiDirectFBBaseApplication.h"
 #include "CEGUI/RendererModules/DirectFB/Renderer.h"

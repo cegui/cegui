@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_BUILD_RENDERER_DIRECT3D9
+#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
 
 #include "CEGuiD3D9BaseApplication.h"
 
