@@ -181,7 +181,7 @@ if (OGRE_FOUND)
         endif()
     endif()
 
-    # look for required Ogre dependencies in case of static build and/or threading
+    # look for required Ogre dependencies in case of static build 
     if (OGRE_STATIC)
         set(OGRE_DEPS_FOUND TRUE)
         find_package(FreeImage QUIET)
