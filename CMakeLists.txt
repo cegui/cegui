@@ -125,6 +125,11 @@ be mindful of which C/C++ runtime setting has been used to compile the various
 components - they must all match or you will get crashes, heap corruption and/or
 other issues." FALSE "WIN32 OR APPLE" FALSE)
 option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
+option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindoFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
+# sanity check on static build option for factory method
+if (CEGUI_BUILD_STATIC_FACTORY_MODULE AND NOT CEGUI_BUILD_STATIC_CONFIGURATION)
+  message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
+endif()
 option( CEGUI_CUSTOM_ALLOCATORS "If checked, CEGUI can use custom allocation. (for experienced developers only!)" FALSE )
 cmake_dependent_option( CEGUI_CUSTOM_ALLOCATORS_DEBUG "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" FALSE "CEGUI_CUSTOM_ALLOCATORS" FALSE )
 set( CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUI/MemoryStdAllocator.h" CACHE STRING "Which include file contains memory allocators and allocation configuration. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)
@@ -191,38 +196,50 @@ if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
     if (NOT Boost_VERSION LESS 105000 AND "${OGRE_THREAD_PROVIDER}" STREQUAL "1") #Check additionally if we use boost as thread provider at all
         if (Boost_SYSTEM_FOUND)
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS ${Boost_SYSTEM_LIBRARY})
-            set (CEGUI_OGRE_SAMPLES_AVAILABLE TRUE)
+            set (CEGUI_OGRE_DEPS_AVAILABLE TRUE)
         else()
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
-            set (CEGUI_OGRE_SAMPLES_AVAILABLE FALSE)
+            set (CEGUI_OGRE_DEPS_AVAILABLE FALSE)
         endif()
     else()
         set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
-        set (CEGUI_OGRE_SAMPLES_AVAILABLE TRUE)
+        set (CEGUI_OGRE_DEPS_AVAILABLE TRUE)
+    endif()
+endif()
+
+# Activates Renderers in the SampleBrowser. By default all the Renderers that are built are activated. Some of them might require extra dependencies to run in the SampleBrowser and thus will be disabled if the deps are not given
+if(CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+    set (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE TRUE)
+else()
+    set (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE FALSE)
+endif()
+set (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE ${CEGUI_BUILD_RENDERER_OGRE})
+set (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE ${CEGUI_BUILD_RENDERER_IRRLICHT})
+set (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D11})
+set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
+
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the SampleBrowser won't support the respective Renderers and the option to choose them won't show up
+if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
+    if (NOT OIS_FOUND)
+        message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (OIS not found). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
+    else()
+        message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (boost libraries). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
+    endif()
+    set (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE FALSE)
+endif()
+
+if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
+    if(NOT GLFW_FOUND)
+        set (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE FALSE)
+        message(STATUS "Info: The OpenGL- and/or OpenGL3 Renderers are disabled in the SampleBrowser because of missing dependencies (GLFW library).  Please add the GFLW dependency and run 'Configure' in CMake again, in case you want to run the SampleBrowser using the OpenGL or OpenGL3 Renderers.")
     endif()
 endif()
 
 # If we use a Renderer then our samples should be ON by default
-if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3 OR CEGUI_BUILD_RENDERER_OGRE OR CEGUI_BUILD_RENDERER_IRRLICHT OR CEGUI_BUILD_RENDERER_DIRECT3D11 OR CEGUI_BUILD_RENDERER_DIRECTFB)
+if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE OR CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
-endif()
-
-# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
-if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
-    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
-    if (NOT OIS_FOUND)
-        message(STATUS "The SampleFramework is deactivated due to missing Ogre dependencies (OIS not found)")
-    else()
-        message(STATUS "The SampleFramework is deactivated due to missing Ogre dependencies (boost libraries)")
-    endif()
-endif()
-if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
-    if(NOT GLFW_FOUND)
-        set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
-        message(STATUS "The SampleFramework is deactivated due to missing OpenGL dependencies (GLFW library)")
-    endif()
 endif()
 
 # We set the Samples to the default value
@@ -548,7 +565,6 @@ set(CPACK_SOURCE_IGNORE_FILES
 # repository history should not be in source tarballs
 "\\\\.hg.*"
 # most likely not needed in the tarball
-"promo/"
 "cppcheck-output"
 "perform-cppcheck"
 

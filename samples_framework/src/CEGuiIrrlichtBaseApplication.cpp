@@ -34,7 +34,7 @@ author:     Paul D Turner
 
 // this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
-#ifdef CEGUI_BUILD_RENDERER_IRRLICHT
+#ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
 
 #include "CEGuiIrrlichtBaseApplication.h"
 #include "SamplesFrameworkBase.h"
