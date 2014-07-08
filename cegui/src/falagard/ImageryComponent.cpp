@@ -73,6 +73,11 @@ namespace CEGUI
         return d_vertFormatting.get(wnd);
     }
 
+    VerticalFormatting ImageryComponent::getVerticalFormattingFromComponent() const
+    {
+        return d_vertFormatting.getValue();
+    }
+
     void ImageryComponent::setVerticalFormatting(VerticalFormatting fmt)
     {
         d_vertFormatting.set(fmt);
@@ -83,15 +88,30 @@ namespace CEGUI
         return d_horzFormatting.get(wnd);
     }
 
+    HorizontalFormatting ImageryComponent::getHorizontalFormattingFromComponent() const
+    {
+        return d_horzFormatting.getValue();
+    }
+
     void ImageryComponent::setHorizontalFormatting(HorizontalFormatting fmt)
     {
         d_horzFormatting.set(fmt);
     }
-    
+
+    const String& ImageryComponent::getHorizontalFormattingPropertySource() const
+    {
+        return d_horzFormatting.getPropertySource();
+    }
+
     void ImageryComponent::setHorizontalFormattingPropertySource(
                                                 const String& property_name)
     {
         d_horzFormatting.setPropertySource(property_name);
+    }
+
+    const String& ImageryComponent::getVerticalFormattingPropertySource() const
+    {
+        return d_vertFormatting.getPropertySource();
     }
 
     void ImageryComponent::setVerticalFormattingPropertySource(

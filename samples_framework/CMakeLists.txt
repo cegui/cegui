@@ -1,15 +1,3 @@
-# We check if the required dependencies are available for the sample framework
-
-if(CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
-    message(SEND_ERROR "The Samples and the OgreRenderer are enabled, but Ogre dependencies are missing (boost). Please add the dependencies and run 'Configure' in CMake again.")
-endif()
-if(CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
-    if(NOT GLFW_FOUND)
-        message(SEND_ERROR "The Samples and the OpenGL or OpenGL3+ Renderer are enabled - GLFW is required for this configuration but was not found. Please add GFLW to your dependencies and run 'Configure' in CMake again.")
-    endif()
-endif()
-
-
 set( CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME} )
 
 set( CORE_SOURCE_FILES
@@ -61,25 +49,27 @@ else()
 endif()
 
 
-if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
+    # Append OpenGL and OpenGL3 files
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiGLFWSharedBase.cpp
     )
+
+    if (CEGUI_BUILD_RENDERER_OPENGL)
+        list (APPEND CORE_SOURCE_FILES
+            ./src/CEGuiOpenGLBaseApplication.cpp
+        )
+    endif()
+
+    if (CEGUI_BUILD_RENDERER_OPENGL3)
+        list (APPEND CORE_SOURCE_FILES
+            ./src/CEGuiOpenGL3BaseApplication.cpp
+        )
+    endif()
+
 endif()
 
-if (CEGUI_BUILD_RENDERER_OPENGL)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiOpenGLBaseApplication.cpp
-    )
-endif()
-
-if (CEGUI_BUILD_RENDERER_OPENGL3)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiOpenGL3BaseApplication.cpp
-    )
-endif()
-
-if (CEGUI_OGRE_SAMPLES_AVAILABLE)
+if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     # this prevents the boost auto-link dis-feature
     add_definitions(-DBOOST_ALL_NO_LIB)
 
@@ -88,26 +78,26 @@ if (CEGUI_OGRE_SAMPLES_AVAILABLE)
     )
 endif()
 
-if (CEGUI_BUILD_RENDERER_IRRLICHT)
+if (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiIrrlichtBaseApplication.cpp
     )
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D11)
+if (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiD3D11BaseApplication.cpp
         ./src/DeviceReset_Direct3D11.cpp
     )
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECTFB)
+if (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiDirectFBBaseApplication.cpp
     )
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D11)
+if (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
     include_directories(${DIRECTXSDK_INCLUDE_DIR})
     link_directories(${DIRECTXSDK_LIBRARY_DIR})
 endif()
@@ -227,29 +217,29 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
 )
 endif()
 
-
-if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_BUILD_RENDERER_OGRE)
+if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OIS)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS})
 endif()
 
-if (CEGUI_BUILD_RENDERER_IRRLICHT)
+if (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} IRRLICHT)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_IRRLICHT_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D11)
+if (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
+
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECTFB)
+if (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} DIRECTFB)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECTFB_RENDERER_LIBNAME})
 endif()
@@ -261,7 +251,7 @@ endif()
 if (APPLE)
     set (CEGUI_EXTRA_FRAMEWORKS "-framework Cocoa")
 
-    if (CEGUI_BUILD_RENDERER_OGRE)
+    if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
         set (CEGUI_EXTRA_FRAMEWORKS "${CEGUI_EXTRA_FRAMEWORKS} -framework IOKit -framework Carbon")
     endif()
 
