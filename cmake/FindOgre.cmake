@@ -111,7 +111,6 @@ if (OGRE_H_BUILD_SETTINGS_PATH)
     determine_ogre_static(OGRE_CONFIG_STATIC ${OGRE_H_BUILD_SETTINGS_PATH}/OgreBuildSettings.h)
     determine_ogre_freeimage(OGRE_CONFIG_FREEIMAGE ${OGRE_H_BUILD_SETTINGS_PATH}/OgreBuildSettings.h)
     set(OGRE_STATIC ${OGRE_CONFIG_STATIC})
-    message(status " OGRE_CONFIG_FREEIMAGE : ${OGRE_CONFIG_FREEIMAGE}")
 endif ()
 
 if (OGRE_STATIC)
@@ -181,7 +180,7 @@ if (OGRE_FOUND)
         endif()
     endif()
 
-    # look for required Ogre dependencies in case of static build 
+    # look for required Ogre dependencies in case of static build
     if (OGRE_STATIC)
         set(OGRE_DEPS_FOUND TRUE)
         find_package(FreeImage QUIET)
