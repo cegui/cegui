@@ -43,6 +43,40 @@ function(determine_ogre_thread_provider _tp_var _file)
   endif()
 endfunction()
 
+# Determine if OGRE is static configured in the header file.
+#   - _tp_var: Output parameter. The variable in which to store the OGRE_STATIC_LIB read from the OGRE config.
+#   - _file: The name and path of the file to search into. This should typically be the "OgreBuildSettings.h" file.
+# similar functionality for consistentcy with existing "determine_ogre_thread_providier" function
+function(determine_ogre_static _tp_var _file)
+  if(EXISTS ${_file})
+    file(READ ${_file} _file_content)
+    string(REGEX MATCH "#define OGRE_STATIC_LIB" _match ${_file_content})
+    if(_match)
+      set(${_tp_var} TRUE PARENT_SCOPE)
+    else()
+      set(${_tp_var} FALSE PARENT_SCOPE)
+    endif()
+  endif()
+endfunction()
+
+# Determine if OGRE is configured with freeimage in the header file.
+#   - _tp_var: Output parameter. The variable in which to store the OGRE_NO_FREEIMAGE read from the OGRE config.
+#   - _file: The name and path of the file to search into. This should typically be the "OgreBuildSettings.h" file.
+# similar functionality for consistentcy with existing "determine_ogre_thread_providier" function
+# the regex matching is taken from Ogre's PreprocessorUtil.cmake 
+function(determine_ogre_freeimage _tp_var _file)
+    set(KEYWORD "OGRE_NO_FREEIMAGE")
+    if(EXISTS ${_file})
+        file(READ ${_file} _file_content)
+        string(REGEX MATCH "# *define +${KEYWORD} +((\"([^\n]*)\")|([^ \n]*))" PREPROC_TEMP_VAR ${_file_content})
+        if (CMAKE_MATCH_3)
+            set(${_tp_var} ${CMAKE_MATCH_3} PARENT_SCOPE)
+        else ()
+            set(${_tp_var} ${CMAKE_MATCH_4} PARENT_SCOPE)
+        endif ()
+    endif()
+endfunction()
+
 set(ENV_OGRE_HOME $ENV{OGRE_HOME})
 if (ENV_OGRE_HOME)
     string( REGEX REPLACE "\\\\" "/" ENV_OGRE_HOME ${ENV_OGRE_HOME} )
@@ -73,12 +107,30 @@ find_path(OGRE_H_BUILD_SETTINGS_PATH
           PATHS ${OGRE_PREFIX_PATH}
           PATH_SUFFIXES ${OGRE_PATH_SUFFIXES})
 
+if (OGRE_H_BUILD_SETTINGS_PATH)
+    determine_ogre_static(OGRE_CONFIG_STATIC ${OGRE_H_BUILD_SETTINGS_PATH}/OgreBuildSettings.h)
+    determine_ogre_freeimage(OGRE_CONFIG_FREEIMAGE ${OGRE_H_BUILD_SETTINGS_PATH}/OgreBuildSettings.h)
+    set(OGRE_STATIC ${OGRE_CONFIG_STATIC})
+    message(status " OGRE_CONFIG_FREEIMAGE : ${OGRE_CONFIG_FREEIMAGE}")
+endif ()
+
+if (OGRE_STATIC)
+    set(OGRE_LIB_SUFFIX "Static")
+else ()
+    set(OGRE_LIB_SUFFIX "")
+endif ()
+if(APPLE AND NOT OGRE_STATIC)
+    set(OGRE_LIBRARY_NAMES "Ogre${OGRE_LIB_SUFFIX}")
+else()
+    set(OGRE_LIBRARY_NAMES "OgreMain${OGRE_LIB_SUFFIX}")
+endif()
+
 # Find the release and debug libraries.
-find_library(OGRE_LIB NAMES OgreMain
+find_library(OGRE_LIB NAMES ${OGRE_LIBRARY_NAMES}
              PATHS ${OGRE_PREFIX_PATH}
              PATH_SUFFIXES Release lib/Release)
              
-find_library(OGRE_LIB_DBG NAMES OgreMain_d
+find_library(OGRE_LIB_DBG NAMES ${OGRE_LIBRARY_NAMES}_d
              PATHS ${OGRE_PREFIX_PATH}
              PATH_SUFFIXES Debug lib/Debug)
              
@@ -127,6 +179,44 @@ if (OGRE_FOUND)
         if (OGRE_LIBRARIES_DBG)
           set (OGRE_LIBRARIES_DBG ${OGRE_LIBRARIES_DBG};${Boost_THREAD_LIBRARY_DEBUG};${Boost_SYSTEM_LIBRARY_DEBUG})
         endif()
+    endif()
+
+    # look for required Ogre dependencies in case of static build and/or threading
+    if (OGRE_STATIC)
+        set(OGRE_DEPS_FOUND TRUE)
+        find_package(FreeImage QUIET)
+        find_package(Freetype QUIET)
+        find_package(ZLIB QUIET)
+        find_package(ZZip QUIET)
+        if (UNIX AND NOT APPLE)
+            find_package(X11 QUIET)
+            find_library(XAW_LIBRARY NAMES Xaw Xaw7 PATHS ${DEP_LIB_SEARCH_DIR} ${X11_LIB_SEARCH_PATH})
+            if (NOT XAW_LIBRARY OR NOT X11_Xt_FOUND)
+                set(X11_FOUND FALSE)
+            endif ()
+        endif ()
+        set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${ZZIP_LIBRARIES} ${ZLIB_LIBRARIES} ${FREEIMAGE_LIBRARIES} ${FREETYPE_LIBRARIES})
+        if (APPLE)
+            set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${X11_LIBRARIES} ${X11_Xt_LIBRARIES} ${XAW_LIBRARY} ${X11_Xrandr_LIB} ${Carbon_LIBRARIES} ${Cocoa_LIBRARIES})
+        endif()
+        if (NOT ZLIB_FOUND OR NOT ZZIP_FOUND)
+            set(OGRE_DEPS_FOUND FALSE)
+        endif ()
+        if (NOT FREEIMAGE_FOUND AND NOT OGRE_CONFIG_FREEIMAGE)
+            set(OGRE_DEPS_FOUND FALSE)
+        endif ()
+        if (NOT FREETYPE_FOUND)
+            set(OGRE_DEPS_FOUND FALSE)
+        endif ()
+        if (UNIX AND NOT APPLE)
+            if (NOT X11_FOUND)
+                set(OGRE_DEPS_FOUND FALSE)
+            endif ()
+        endif ()
+        if (NOT OGRE_DEPS_FOUND)
+            pkg_message(OGRE "Could not find all required dependencies for the Ogre package.")
+            set(OGRE_FOUND FALSE)
+        endif ()
     endif()
 
     file (STRINGS "${OGRE_H_PATH}/OgrePrerequisites.h" _CEGUIOGREVERSIONDEFINES REGEX ".*#define OGRE_VERSION_.*[0-9]+")
