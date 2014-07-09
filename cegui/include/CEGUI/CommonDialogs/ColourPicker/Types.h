@@ -41,14 +41,6 @@
 namespace CEGUI
 {
 
-//! DEPRECATED
-enum ColourPickerSliderMode
-{
-    ColourPickerSliderMode_L,
-    ColourPickerSliderMode_A,
-    ColourPickerSliderMode_B
-};
-
 class CEGUI_COMMONDIALOGS_API Lab_Colour;
 class CEGUI_COMMONDIALOGS_API RGB_Colour;
 class CEGUI_COMMONDIALOGS_API HSV_Colour;
