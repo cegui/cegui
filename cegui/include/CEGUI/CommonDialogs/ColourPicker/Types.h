@@ -41,6 +41,7 @@
 namespace CEGUI
 {
 
+//! DEPRECATED
 enum ColourPickerSliderMode
 {
     ColourPickerSliderMode_L,
@@ -52,6 +53,7 @@ class CEGUI_COMMONDIALOGS_API Lab_Colour;
 class CEGUI_COMMONDIALOGS_API RGB_Colour;
 class CEGUI_COMMONDIALOGS_API HSV_Colour;
 
+//! Class representing an RGB colour using unsigned chars
 class CEGUI_COMMONDIALOGS_API RGB_Colour :
     public AllocatedObject<RGB_Colour>
 {
@@ -76,6 +78,7 @@ public:
     RGB_Colour operator+(const RGB_Colour& colour) const;
 };
 
+//! Class representing a Colour according to the L*a*b* standard
 class CEGUI_COMMONDIALOGS_API Lab_Colour :
     public AllocatedObject<Lab_Colour>
 {
@@ -98,6 +101,7 @@ public:
     float b;
 };
 
+//! Class representing an HSV (hue, saturation and value) colour using floats.
 class CEGUI_COMMONDIALOGS_API HSV_Colour :
     public AllocatedObject<HSV_Colour>
 {

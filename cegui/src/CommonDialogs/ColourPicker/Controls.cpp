@@ -242,8 +242,8 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
 //----------------------------------------------------------------------------//
 Vector2f ColourPickerControls::getColourPickingColourPosition()
 {
-    float x;
-    float y;
+    float x = 0.0f;
+    float y = 0.0f;
 
     switch (d_sliderMode)
     {
@@ -1467,7 +1467,7 @@ void ColourPickerControls::refreshColourSliderPosition()
     }
 
     float value = PropertyHelper<float>::fromString(editboxText);
-    float sliderValue;
+    float sliderValue = 0.0f;
 
     switch (d_sliderMode)
     {
