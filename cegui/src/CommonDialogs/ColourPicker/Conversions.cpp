@@ -270,7 +270,9 @@ void ColourPickerConversions::clampInterpolationValue(float& interPolBalance)
 //----------------------------------------------------------------------------//
 RGB_Colour ColourPickerConversions::toRGB(const HSV_Colour& colour)
 {
-    float r, g, b;
+    float r = 0.0f;
+    float g = 0.0f;
+    float b = 0.0f;
 
     int i = (int)(colour.H * 6.0f);
     float f = colour.H * 6 - i;
@@ -343,7 +345,21 @@ HSV_Colour ColourPickerConversions::toHSV(RGB_Colour colour)
     float g = colour.g / 255.0f;
     float b = colour.b / 255.0f;
 
-    float max_comp = ceguimax(ceguimax(r, g), b);
+    bool maxCompRed = false;
+    bool maxCompGreen = false;
+    float max_comp = b;
+
+    if(r > g && r > b)
+    {
+        maxCompRed = true;
+        max_comp = r;
+    }
+    else if(g > b)
+    {
+        maxCompGreen = true;
+        max_comp = g;
+    }
+
     float min_comp = ceguimin(ceguimin(r, g), b);
     float h;
     float s;
@@ -358,13 +374,13 @@ HSV_Colour ColourPickerConversions::toHSV(RGB_Colour colour)
     }
     else
     {
-        if (max_comp == r)
+        if (maxCompRed)
             h = (g - b) / diff + (g < b ? 6.0f : 0.0f);
 
-        if (max_comp == g)
+        if (maxCompGreen)
             h = (b - r) / diff + 2.0f;
 
-        if (max_comp == b)
+        else
             h = (r - g) / diff + 4.0f;
 
         h /= 6.0f;
