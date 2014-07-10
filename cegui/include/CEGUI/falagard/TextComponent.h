@@ -212,10 +212,30 @@ namespace CEGUI
 
         /*!
         \brief
+            Returns the name of the property that will be used to obtain the horizontal
+            formatting to use for this ImageryComponent or an empty string if none is set.
+
+        \return
+            A String containing the name of the property
+        */
+        const String& getHorizontalFormattingPropertySource() const;
+
+        /*!
+        \brief
             Set the name of a property that will be used to obtain the horizontal
             formatting to use for this ImageryComponent.
         */
         void setHorizontalFormattingPropertySource(const String& property_name);
+
+        /*!
+        \brief
+            Returns the name of the property that will be used to obtain the vertical
+            formatting to use for this ImageryComponent or an empty string if none is set.
+
+        \return
+            A String containing the name of the property
+        */
+        const String& getVerticalFormattingPropertySource() const;
 
         /*!
         \brief
