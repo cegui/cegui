@@ -31,7 +31,8 @@
 #include "Renderer.h"
 #include "CEGUI/ShaderWrapper.h"
 #include "OgreHighLevelGpuProgram.h"
-#include "OgreMatrix4.h"
+
+#include "glm/glm.hpp"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -76,12 +77,17 @@ protected:
     Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
 
     //! The currently active matrix
-    Ogre::Matrix4 d_previousMatrix;
+    glm::mat4 d_previousMatrix;
+
+    //! The current alpha value
+    float d_previousAlpha;
 
     //! The physical index to which the matrix will be written
     size_t d_physicalIndex;
 
-    std::map<ShaderParamType, size_t> d_paramTypeToIndex;
+    //! Stores the index where a given type of parameter is bound
+    //! \note Could be using ShaderParamType but the include is avoided by using an int instead
+    std::map<int, size_t> d_paramTypeToIndex;
 };
 
 }

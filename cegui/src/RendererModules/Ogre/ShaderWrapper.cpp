@@ -34,11 +34,6 @@
 #include "OgreRenderSystem.h"
 #include "CEGUI/Logger.h"
 
-//! Used to abort setting parameters when they don't make any sense
-//! Even this value would cause errors but the value we are checking for is VERY
-//! large
-#define LAST_SANE_HW_INDEX          100000
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -51,7 +46,8 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     d_pixelShader(ps),
     d_owner(owner),
     d_renderSystem(rs),
-    d_previousMatrix(Ogre::Matrix4::ZERO)
+    d_previousMatrix(),
+    d_previousAlpha(-1.f)
 {
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
@@ -62,12 +58,12 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     Ogre::GpuConstantDefinitionMap::const_iterator target = 
         map.find("worldViewProjMatrix");
 
-    // This will only be true when the shaders/parameter names are invalid
-    if (target == map.end())
-    {
-        // This should map to almost SIZE_T_MAX
-        d_physicalIndex = -1;
+    Ogre::GpuConstantDefinitionMap::const_iterator target2 = 
+        map.find("alphaPercentage");
 
+    // This will only be true when the shaders/parameter names are invalid
+    if (target == map.end() || target2 == map.end())
+    {
         CEGUI_THROW(RendererException("Ogre renderer couldn't find an index for"
             " the shader data."));
 
@@ -75,7 +71,9 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
         return;
     }
 
-    d_physicalIndex = target->second.physicalIndex;
+    d_paramTypeToIndex[SPT_MATRIX_4X4] = target->second.physicalIndex;
+    d_paramTypeToIndex[SPT_FLOAT] = target2->second.physicalIndex;
+    d_paramTypeToIndex[SPT_TEXTURE] = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -88,7 +86,8 @@ OgreShaderWrapper::~OgreShaderWrapper()
 }
 
 //----------------------------------------------------------------------------//
-void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
+void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* 
+    shaderParameterBindings)
 {
     Ogre::GpuProgram* vs = d_vertexShader->_getBindingDelegate();
     d_renderSystem.bindGpuProgram(vs);
@@ -105,20 +104,27 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
     ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end = 
         shader_parameter_bindings.end();
     
-    while(iter != end)
+    for (; iter != end; ++iter)
     {
         const CEGUI::ShaderParameter* parameter = iter->second;
         const ShaderParamType parameterType = parameter->getType();
 
-        if (iter->first == "texture0")
+        std::map<int, size_t>::const_iterator find_iter = d_paramTypeToIndex.
+            find(parameterType);
+
+        if (find_iter == d_paramTypeToIndex.end())
         {
-            // Texture always goes to the pixel shader
+            std::string errorMessage = std::string("Unknown variable name: \"")+
+            iter->first + "\"";
+            CEGUI_THROW(RendererException(errorMessage));
+        }
 
-            if (parameterType != SPT_TEXTURE)
-            {
-                CEGUI_THROW(RendererException("Invalid parameter type"));
-            }
+        size_t target_index = find_iter->second;
 
+        switch (parameterType)
+        {
+        case SPT_TEXTURE:
+        {
             const CEGUI::ShaderParameterTexture* parameterTexture = 
                 static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
 
@@ -134,49 +140,56 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
 
             d_renderSystem._setTexture(0, true, actual_texture);
 
-        } 
-        else if (iter->first == "modelViewPerspMatrix")
+            break;
+        }
+        case SPT_MATRIX_4X4:
         {
-            // Transform matrix goes to the vertex shader
-
-            if (parameterType != SPT_MATRIX_4X4)
-            {
-
-                CEGUI_THROW(RendererException("Invalid parameter type"));
-            }
-
+            // This is the "modelViewPerspMatrix"
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
 
-            // The other check is to make sure that even invalid operations 
-            // don't assert the program
-            // TODO: throw when invalid physical index?
-            if (d_previousMatrix != *mat->d_parameterValue && d_physicalIndex <
-                LAST_SANE_HW_INDEX)
+            if (d_previousMatrix != mat->d_parameterValue)
             {
-                d_previousMatrix = *mat->d_parameterValue;
+                d_previousMatrix = mat->d_parameterValue;
 
-                d_vertexParameters->_writeRawConstants(d_physicalIndex, 
+                d_vertexParameters->_writeRawConstants(target_index, 
                     &d_previousMatrix[0][0], 4);
 
-                d_vertexParameters->_writeRawConstants(d_physicalIndex+4, 
+                d_vertexParameters->_writeRawConstants(target_index+4, 
                     &d_previousMatrix[1][0], 4);
 
-                d_vertexParameters->_writeRawConstants(d_physicalIndex+8, 
+                d_vertexParameters->_writeRawConstants(target_index+8, 
                     &d_previousMatrix[2][0], 4);
 
-                d_vertexParameters->_writeRawConstants(d_physicalIndex+12, 
+                d_vertexParameters->_writeRawConstants(target_index+12, 
                     &d_previousMatrix[3][0], 4);
             }
-        } 
-        else
+            break;
+        }
+        case SPT_FLOAT:
         {
-            std::string errorMessage = std::string("Unknown variable name: \"")+
-                iter->first + "\"";
-            CEGUI_THROW(RendererException(errorMessage));
+            // This is the alpha value
+            
+
+            const CEGUI::ShaderParameterFloat* new_alpha = static_cast<const 
+                CEGUI::ShaderParameterFloat*>(parameter);
+
+
+            if (d_previousAlpha != new_alpha->d_parameterValue)
+            {
+                d_previousAlpha = new_alpha->d_parameterValue;
+
+                d_vertexParameters->_writeRawConstants(target_index, 
+                    &d_previousAlpha, 1);
+            }
+            
+            break;
+        }
+        default:
+            CEGUI_THROW(RendererException("Invalid parameter type"));
         }
 
-        ++iter; 
+
     }
     
     // Pass the finalized parameters to Ogre
