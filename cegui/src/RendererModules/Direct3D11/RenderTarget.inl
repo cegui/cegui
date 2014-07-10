@@ -96,7 +96,7 @@ void Direct3D11RenderTarget<T>::activate()
     setupViewport(vp);
     d_deviceContext.RSSetViewports(1, &vp);
 
-    d_owner.setViewProjectionMatrix(d_projViewMatrix);
+    d_owner.setViewProjectionMatrix(d_matrix);
 }
 
 //----------------------------------------------------------------------------//
@@ -127,7 +127,7 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     double in_x, in_y, in_z;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
-    const glm::mat4& projMatrix = d_projViewMatrix;
+    const glm::mat4& projMatrix = d_matrix;
     const glm::mat4& modelMatrix = gb.getMatrix();
 
     // unproject the ends of the ray
@@ -185,23 +185,31 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
 {
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();
-    const float aspect = w / h;
-    const float midx = w * 0.5f;
-    const float midy = h * 0.5f;
+
+    // We need to check if width or height are zero and act accordingly to prevent running into issues
+    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
+    // This is mostly important for avoiding asserts
+    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
+
+    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
+    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
+    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
     d_viewDistance = midx / (aspect * d_yfov_tan);
 
     glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
     glm::vec3 center = glm::vec3(midx, midy, 1);
     glm::vec3 up = glm::vec3(0, -1, 0);
 
+
+    // We need to have a projection matrix with its depth in clip space ranging from 0 to 1 for nearclip to farclip.
+    // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which the following
+    // manually filled matrix should fix:
     const float fovy = 30.f;
     const float zNear = static_cast<float>(d_viewDistance * 0.5f);
     const float zFar = static_cast<float>(d_viewDistance * 2.0f);
     const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
     const float Q = zFar / (zNear - zFar);
 
-    // We need to have a projection matrix with its depth in clip space ranging from 0 to 1 for nearclip to farclip.
-    // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which this matrix should fix:
     float projectionMatrixFloat[16] =
     {
         f/aspect,           0.0f,               0.0f,           0.0f,
@@ -215,7 +223,7 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
-    d_projViewMatrix = projectionMatrix * viewMatrix;
+    d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
 }
