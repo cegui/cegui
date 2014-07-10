@@ -144,17 +144,6 @@ void ShaderParameterBindings::setNewParameter(const std::string& parameter_name,
 }
 
 //----------------------------------------------------------------------------//
-#ifdef CEGUI_BUILD_RENDERER_OGRE
-void ShaderParameterBindings::setParameter(const std::string& parameter_name, 
-    const Ogre::Matrix4* matrix)
-{
-    ShaderParameter* shader_param = getParameter(parameter_name);
-    if (shader_param && ( shader_param->getType() == SPT_MATRIX_4X4 ) )
-        static_cast<ShaderParameterMatrix*>(shader_param)->d_parameterValue = matrix;
-    else
-        setNewParameter(parameter_name, new ShaderParameterMatrix(matrix));
-}
-#else
 void ShaderParameterBindings::setParameter(const std::string& parameter_name, 
     const glm::mat4& matrix)
 {
@@ -164,7 +153,6 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name,
     else
         setNewParameter(parameter_name, new ShaderParameterMatrix(matrix));
 }
-#endif //CEGUI_BUILD_RENDERER_OGRE
 
 
 //----------------------------------------------------------------------------//

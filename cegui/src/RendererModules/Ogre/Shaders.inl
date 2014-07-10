@@ -52,7 +52,7 @@ static Ogre::String VertexShaderColoured_HLSL(""
 
 //! A string containing an HLSL fragment shader for solid colouring of a polygon
 static Ogre::String PixelShaderColoured_HLSL(""
-"//Texture2D texture0;\n"
+"uniform float alphaPercentage;\n"
 "\n"
 "struct VS_OUT\n"
 "{\n"
@@ -62,7 +62,9 @@ static Ogre::String PixelShaderColoured_HLSL(""
 "\n"
 "float4 main(VS_OUT input) : COLOR\n"
 "{\n"
-"	return input.colour;\n"
+"   float4 colour = input.colour;\n"
+"   colour.a *= alphaPercentage;\n"
+"	return colour;\n"
 "}\n"
 "\n"
 );
@@ -101,6 +103,7 @@ based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 static Ogre::String PixelShaderTextured_HLSL(""
+"uniform float alphaPercentage;\n"
 "struct VS_OUT\n"
 "{\n"
 "	float4 position : POSITION;\n"
@@ -111,7 +114,9 @@ static Ogre::String PixelShaderTextured_HLSL(""
 "float4 main(float4 colour : COLOR, float2 uv : TEXCOORD0, "
 "               uniform sampler2D texture0 : TEXUNIT0) : COLOR\n"
 "{\n"
-"	return tex2D(texture0, uv) * colour;\n"
+"   colour = tex2D(texture0, uv) * colour;\n"
+"   colour.a *= alphaPercentage;\n"
+"	return colour;\n"
 "}\n"
 "\n"
 );
@@ -129,9 +134,11 @@ static Ogre::String VertexShaderTextured_GLSL_Compat(""
 //! Shader for older OpenGL versions < 3
 static Ogre::String PixelShaderTextured_GLSL_Compat(""
     "uniform sampler2D texture0;"
+    "uniform float alphaPercentage;\n"
     "void main(void)"
     "{"
     "    gl_FragColor = texture2D(texture0, gl_TexCoord[0].st) * gl_Color;"
+    "    gl_FragColor.a *= alphaPercentage;\n"
     "}"
 );
 
@@ -146,9 +153,11 @@ static Ogre::String VertexShaderColoured_GLSL_Compat(""
 
 //! Shader for older OpenGL versions < 3
 static Ogre::String PixelShaderColoured_GLSL_Compat(""
-    "void main(void)"
+    "uniform float alphaPercentage;\n"
+    "void main(void)\n"
     "{"
     "    gl_FragColor = gl_Color;"
+    "    gl_FragColor.a *= alphaPercentage;\n"
     "}"
 );
 
@@ -179,9 +188,12 @@ static Ogre::String PixelShaderColoured_GLSL(""
 
     "out vec4 fragColour;\n"
 
+    "uniform float alphaPercentage;\n"
+
     "void main(void)\n"
     "{\n"
-    "fragColour = exColour;\n"
+    "   fragColour = exColour;\n"
+    "   fragColour.a *= alphaPercentage;\n"
     "}"
 );
 
@@ -220,6 +232,8 @@ static Ogre::String PixelShaderTextured_GLSL(""
     "#version 150 core\n"
 
     "uniform sampler2D texture0;\n"
+    "uniform float alphaPercentage;\n"
+
 
     "in vec2 exTexCoord;\n"
     "in vec4 exColour;\n"
@@ -229,6 +243,7 @@ static Ogre::String PixelShaderTextured_GLSL(""
     "void main(void)\n"
     "{\n"
     "   fragColour = texture(texture0, exTexCoord) * exColour;\n"
+    "   fragColour.a *= alphaPercentage;\n"
     "}"
 );
 

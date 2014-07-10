@@ -53,7 +53,9 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_renderSystem(rs),
     d_clipRect(0, 0, 0, 0),
     d_expectedData(MT_INVALID),
-    d_dataAppended(false)
+    d_dataAppended(false),
+    d_previousFinalMatrix(Ogre::Matrix4::IDENTITY),
+    d_previousAlphaValue(-1.f)
 {
     
 }
@@ -92,7 +94,32 @@ void OgreGeometryBuffer::draw() const
     // Set the ModelViewProjection matrix in the bindings
     Ogre::Matrix4 omat = d_owner.getWorldViewProjMatrix()*d_matrix;
 
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", &omat);
+    if (omat != d_previousFinalMatrix)
+    {
+        d_previousFinalMatrix = omat;
+
+        glm::mat4 converted_mat;
+
+        memcpy(&converted_mat[0][0], &d_previousFinalMatrix[0][0], 
+            sizeof(float)*4);
+        memcpy(&converted_mat[1][0], &d_previousFinalMatrix[1][0], 
+            sizeof(float)*4);
+        memcpy(&converted_mat[2][0], &d_previousFinalMatrix[2][0], 
+            sizeof(float)*4);
+        memcpy(&converted_mat[3][0], &d_previousFinalMatrix[3][0], 
+            sizeof(float)*4);
+
+        shaderParameterBindings->setParameter("modelViewPerspMatrix", 
+            converted_mat);
+    }
+
+    if (d_alpha != d_previousAlphaValue)
+    {
+        d_previousAlphaValue = d_alpha;
+
+        shaderParameterBindings->setParameter("alphaPercentage", 
+            d_previousAlphaValue);
+    }
 
     // activate the desired blending mode
     d_owner.bindBlendMode(d_blendMode);
@@ -154,7 +181,8 @@ void OgreGeometryBuffer::syncVertexData() const
     // Make sure that our vertex buffer is large enough
     size_t current_size;
 
-    if (!d_hwBuffer.isNull() && (current_size = d_hwBuffer->getNumVertices()) < d_vertexCount)
+    if (!d_hwBuffer.isNull() && 
+        (current_size = d_hwBuffer->getNumVertices()) < d_vertexCount)
     {
         size_t new_size = current_size;
 

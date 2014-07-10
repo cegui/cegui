@@ -32,10 +32,10 @@
 #include "CEGUI/Rect.h"
 #include "CEGUI/Quaternion.h"
 
-#include <OgreMatrix4.h>
 #include <OgreColourValue.h>
 #include <OgreRenderOperation.h>
 #include <OgreTexture.h>
+#include <OgreMatrix4.h>
 
 #include <utility>
 #include <vector>
@@ -119,6 +119,12 @@ protected:
 
     //! Marks the d_hwBuffer as being out of date
     mutable bool d_dataAppended;
+
+    //! The old matrix cached for performance
+    mutable Ogre::Matrix4 d_previousFinalMatrix;
+
+    //! The old alpha value
+    mutable float d_previousAlphaValue;
 };
 
 } // End of  CEGUI namespace section
