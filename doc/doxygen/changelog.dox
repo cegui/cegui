@@ -10,6 +10,104 @@ this change log. If you're looking for a 100% complete record of all changes
 please consult the commit logs!
 
 
+<b>Release 0.8.4 (taken from commit logs, since there were no mantis entries)</b>
+- Package 'promo' dir, people might want to use logo in their products.
+- FIX: Static linking issues. See new CEGUI_BUILD_STATIC_FACTORY_MODULE option.
+- FIX: I broke the CMake before by omitting an endif()
+- MOD: docu was a bit unclear
+- MOD/ADD: if samples browser is compiled in debug mode, the mouse can now leave the window. if it comes back into the render window, its position will be set properly and won't be set to the centre of the window.
+- MOD: Fixing ouput message for Ogre if OIS wasnt found - fix by Henri Hyyryläinen
+- MOD: SamplesBrowser can now be closed by clicking the 'X' on windows when using OGL(3) renderer
+- Added a note about changing default image to getMouseCursor
+- Fixed issue #1031
+- MOD/FIX: Changing the mentions of "True" and "False" to the xsd:boolean conform
+- MOD: Adding if-cases to prevent divisions by zero from occuring and handling it
+- FIX: Making looknfeel files xsd::boolean conform by replacing True by true
+- MOD: Adding top-level target dependencies for the samplebrowser
+- MOD: Removing the "filename:" info from all license headers
+- REM: Removing some ultra-vintaged empty files
+- MOD: Fixing the docu
+- MOD: Extending the hgeol file
+- MOD: Fixing the doxygen docu for releases, linking to our website now instead
+- Fix compilation on MinGW
+- MOD: Removing redundant xml ban that used to cause a warning about HorzExtent
+- MOD: Adding <algorithm> as include for all compilers and modifying include order
+- Moved readme to ./README.md where bitbucket will pick it up
+- DirectFB is not supported, let us say so in the cmake option description
+- FIX: Fixed an issue in the Samples that is only popping up when using VS2008
+- MOD: Replacing last strings in the XMLHandler to replace them with static getter
+- MOD: Changing serialisation order of elements to make it more intuitive to read
+- MOD: Adding widgetComponent default and adjusting serialisation
+- FIX: Fixed directive in merged pull request
+- MOD: Fixed order of serialised output
+- MOD: Fixing the default value comparison
+- MOD: Added a getter to FormattingSetting, added default values
+- ADD/MOD: Broad refactoring and general fixes of Falagard serialisation
+- FIX: Fixing comments, calling write attribute function correctly
+- MOD: Changing local variable to const
+- MOD: Fixing assert issues on MSVC in glm when a 0-sized window is used
+- MOD: Fixing qualifiers for GCC and other compilers - this time for real!
+- MOD: Fixing qualifier for GCC and other compilers
+- MOD: Fixing serialisation output in an ABI-compatible way for v0-8
+- MOD: Default value for "help" attribute in Fal
+- MOD: Changed the serialisation of attribute "inherits" if not inheriting
+- MOD: Added a const default value string for the help value to replace the hard
+- MOD: Added helper functions for WidgetLook XML serialisation to be used in CEED
+- Fixed up CEGUI.pc - include dir is /usr/include/cegui-0
+- FIX: switch to 'if test' syntax from 'if [' for shell commands (cmake issues)
+- Fixed Bug when not registering Root Namespace
+- Added LuaDoc export to tolua++ bin
+- Changes required to expose Falagard related iterators in PyCEGUI
+- Hidden "getMouseCursor() const" from GUIContext in PyCEGUI
+- Tweak the perform-cppcheck script
+- Enhance perform-cppcheck script
+- Fixed FSF address in datafiles/fonts/LicenseGPL.txt
+- We need to install PyCEGUI into the platform specific python site-packages
+- Use utf-8 in doc/README
+- MOD: Fixed broken SampleBrowser build for several Renderers
+- Fixed a copy-paste error in ScrolledContainer
+- Complete initialization of Ogre::LayerBlendModeEx objects.
+- FindLua51: Also look for lua.h in the "lua-5.1" directory.
+- Fix build with >=freetype-2.5.1 wrt #1007
+- REMOVE: StringEncoder license stuff
+- MOD: Fixed samplebrowser crash on exit during load-phase and minimal refactoring
+- MOD: CMAKE - Added .inl files to the projects, formerly they werent added
+- FIX: DirectFB default off in CMAKE
+- FIX: Fixing the content area calculation in the case of Center aligned windows
+- MOD: Fixing Spinner window text update on value change
+- MOD: Default options in CMake changed to the actual default values we agreed on
+- MOD: Moving CMake Sample dependency check
+- MOD: Added SampleBrowser dependency checks and default Sample on/off checks
+- MOD: Adapting code files for CMAKE CEGUI_SAMPLES_USES* changes
+- MOD: Preparing CMAKE for CEGUI_SAMPLES_USE_* removal
+- MOD: case sensitivity related bug in cmake
+- FIX: Adding includes required for deletion of instances and using OGRE_DELETE
+- MOD: OgreRenderer modified to support the latest Ogre default branch
+- FIX: Ogre getFixedPipelineEnabled() not defined without RTS, removed build issue
+- Solved compile error with Python bindings, due to some Ogre classes declaration (v0-8, 4-space-tabs).
+- FIX: Undeclared function would be called in case of no RTS built for Ogre
+- A) fixed new CMAKE policy CMP0045 issue in CMakeLists.txt. This feature was introduced recently in this commit: https://gitorious.org/cmake/cmake/commit/73e93400e2efab2096618ff58a5ad68236cd04aa ... Bb) fixed CMAKE problem with cmake/CEGUIMacros.cmake when including the project with ExternalProject_Add() CMAKE feature in a project. I had to escape the '[' and ']' characters because in this way CMAKE was not recognizing those characters. CMAKE version: 2.8.12.
+- MOD: Fixed VS2013 compile error - thanks to JKnife
+- Backed out 209e31f: MOD: Changing DefaultWindow maximum size
+- Fixed Console.wnd, previously it was an invalid layout (a mix between 0.8 layout and 0.7 layout)
+- MOD: Changing DefaultWindow maximum size
+- ADD: Added visual studio templates that are used for proj settings of samples
+- Fix the CMP0022 policy on CMake 2.8.12+
+- FIX: Fixed a typo that caused a compile error, good job me! good job.
+- MOD: Tiny change to Ogre thread provider effects on cmake and comment to it
+- FIX: Fixing ogre cmake for the case that no threading provider is used
+- MOD: Fixing messed up warning message, fixing default window size in Ogre D3D
+- MOD: Forgot to add declarations for OgreTexture changes
+- MOD: Forgot header for OgreBaseRenderer changes
+- MOD: Changed blitting behaviour of texture and minor fixes
+- MOD: Fixed shader related issues, added OGL3.2+ glsl shaders, made it GL3 ready
+- MOD: Added default config options for Ogre Samples and visible mouse in debug
+- Fixed a build error in falagard/TextComponent when BIDI support is enabled
+- MOD: Fixed a bug that made OgreRenderer link to the Ogre release lib always
+- MOD: Added the possibility to find OIS if stored as Ogre dependency
+- Fixed minor typo in docs neglecting CEGUI namespace.
+
+
 <b>Release 0.8.3 (taken from commit logs, since there were no mantis entries)</b>
 - Fix for "Checkbox" to "ToggleButton" transition in Lua.
 - Fixed official tutorial to have version attribute in <GUILayout> root element
