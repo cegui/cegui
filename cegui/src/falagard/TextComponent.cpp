@@ -168,10 +168,20 @@ namespace CEGUI
         d_horzFormatting.set(fmt);
     }
 
+    const String& TextComponent::getHorizontalFormattingPropertySource() const
+    {
+        return d_horzFormatting.getPropertySource();
+    }
+
     void TextComponent::setHorizontalFormattingPropertySource(
                                                 const String& property_name)
     {
         d_horzFormatting.setPropertySource(property_name);
+    }
+
+    const String& TextComponent::getVerticalFormattingPropertySource() const
+    {
+        return d_vertFormatting.getPropertySource();
     }
 
     void TextComponent::setVerticalFormattingPropertySource(
