@@ -86,7 +86,7 @@ public:
         Calculates and returns the saturation value based on the Colour
 
     \return
-        The hue as a float value.
+        The saturation as a float value.
     */
 	float	getSaturation(void) const;
 
@@ -95,7 +95,7 @@ public:
         Calculates and returns the lumination value based on the Colour
 
     \return
-        The hue as a float value.
+        The lumination as a float value.
     */
 	float	getLumination(void) const;
 
