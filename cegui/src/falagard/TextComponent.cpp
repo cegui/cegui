@@ -143,6 +143,11 @@ namespace CEGUI
         return d_vertFormatting.get(wnd);
     }
 
+    VerticalTextFormatting TextComponent::getVerticalFormattingFromComponent() const
+    {
+        return d_vertFormatting.getValue();
+    }
+
     void TextComponent::setVerticalFormatting(VerticalTextFormatting fmt)
     {
         d_vertFormatting.set(fmt);
@@ -151,6 +156,11 @@ namespace CEGUI
     HorizontalTextFormatting TextComponent::getHorizontalFormatting(const Window& wnd) const
     {
         return d_horzFormatting.get(wnd);
+    }
+
+    HorizontalTextFormatting TextComponent::getHorizontalFormattingFromComponent() const
+    {
+        return d_horzFormatting.getValue();
     }
 
     void TextComponent::setHorizontalFormatting(HorizontalTextFormatting fmt)
