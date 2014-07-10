@@ -104,9 +104,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
         shader_parameter_bindings.begin();
     ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end = 
         shader_parameter_bindings.end();
-
-    bool texture_set = false;
-
+    
     while(iter != end)
     {
         const CEGUI::ShaderParameter* parameter = iter->second;
@@ -135,8 +133,6 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
             }
 
             d_renderSystem._setTexture(0, true, actual_texture);
-
-            texture_set = true;
 
         } 
         else if (iter->first == "modelViewPerspMatrix")
@@ -182,13 +178,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* shade
 
         ++iter; 
     }
-
-    if (!texture_set)
-    {
-
-        Logger::getSingleton().logEvent("The texture isn't actually set");
-    }
-
+    
     // Pass the finalized parameters to Ogre
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM, 
         d_vertexParameters, Ogre::GPV_ALL);
