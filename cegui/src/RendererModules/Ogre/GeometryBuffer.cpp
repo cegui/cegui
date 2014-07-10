@@ -152,9 +152,9 @@ void OgreGeometryBuffer::syncVertexData() const
         return;
 
     // Make sure that our vertex buffer is large enough
-    size_t current_size = d_hwBuffer->getNumVertices();
+    size_t current_size;
 
-    if (current_size < d_vertexCount)
+    if (!d_hwBuffer.isNull() && (current_size = d_hwBuffer->getNumVertices()) < d_vertexCount)
     {
         size_t new_size = current_size;
 

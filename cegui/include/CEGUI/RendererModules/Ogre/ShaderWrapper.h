@@ -80,6 +80,8 @@ protected:
 
     //! The physical index to which the matrix will be written
     size_t d_physicalIndex;
+
+    std::map<ShaderParamType, size_t> d_paramTypeToIndex;
 };
 
 }
