@@ -114,8 +114,20 @@ public:
     void markAsDirty();
     bool isDirty() const;
 
+    /*!
+    \brief
+        Retrieves PointerIndicator used in this GUIContext
+
+    \note
+        Please note that each GUIContext has exactly one PointerIndicator. The PointerIndicator
+        class holds position, as well as other properties. If you want to modify
+        the PointerIndicator (for example change its default image), you can retrieve
+        a reference via this method and call a method on the reference
+        (in our example that's setDefaultImage).
+    */
     PointerIndicator& getPointerIndicator();
     const PointerIndicator& getPointerIndicator() const;
+
 
     //! Tell the context to reconsider which window it thinks the pointer is in.
     void updateWindowContainingPointer();
