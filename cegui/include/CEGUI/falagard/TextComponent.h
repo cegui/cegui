@@ -161,6 +161,15 @@ namespace CEGUI
 
         /*!
         \brief
+            Directly returns the vertical formatting which was set for the ImageryComponent.
+
+        \return
+            The VerticalTextFormatting enum.
+        */
+        VerticalTextFormatting getVerticalFormattingFromComponent() const;
+
+        /*!
+        \brief
             Set the vertical formatting setting for this TextComponent.
 
         \param fmt
@@ -179,6 +188,15 @@ namespace CEGUI
             One of the HorizontalTextFormatting enumerated values.
         */
         HorizontalTextFormatting getHorizontalFormatting(const Window& wnd) const;
+
+        /*!
+        \brief
+            Directly returns the horizontal formatting which was set for the ImageryComponent.
+
+        \return
+            The HorizontalTextFormatting enum.
+        */
+        HorizontalTextFormatting getHorizontalFormattingFromComponent() const;
 
         /*!
         \brief
