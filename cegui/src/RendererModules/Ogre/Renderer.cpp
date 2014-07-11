@@ -46,6 +46,7 @@
 #include <OgreFrameListener.h>
 #include <OgreViewport.h>
 #include <OgreCamera.h>
+#include <OgreHardwareVertexBuffer.h>
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 #include <Compositor/OgreCompositorManager2.h>
@@ -60,6 +61,8 @@
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 
 #include "Shaders.inl"
+
+#define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           20
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -200,6 +203,9 @@ struct OgreRenderer_impl :
     bool d_useGLSL;
     //! Whether we use the ARB glsl shaders or the OpenGL 3.2 Core shader profile (140 core)
     bool d_useGLSLCore;
+
+    //! Vector containing vertex buffers that can be reused
+    std::vector<Ogre::HardwareVertexBufferSharedPtr> d_vbPool;
 
     OgreShaderWrapper* d_texturedShaderWrapper;
     OgreShaderWrapper* d_colouredShaderWrapper;
@@ -732,6 +738,7 @@ OgreRenderer::~OgreRenderer()
     destroyAllGeometryBuffers();
     destroyAllTextureTargets();
     destroyAllTextures();
+    clearVertexBufferPool();
 
     CEGUI_DELETE_AO d_pimpl->d_defaultTarget;
     CEGUI_DELETE_AO d_pimpl;
@@ -1268,6 +1275,98 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
 //----------------------------------------------------------------------------//
 Ogre::SceneManager& OgreRenderer::getDummyScene() const{
     return *d_pimpl->d_dummyScene;
+}
+
+//----------------------------------------------------------------------------//
+Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t 
+    min_size)
+{
+
+    size_t best_found = 0;
+    size_t best_over = -1;
+
+    Ogre::HardwareVertexBufferSharedPtr result;
+
+
+    for (size_t i = 0; i < d_pimpl->d_vbPool.size(); i++)
+    {
+        size_t current_over = d_pimpl->d_vbPool[i]->getNumVertices();
+
+        // Perfect match stops searching instantly
+        if (current_over == 0)
+        {
+
+            best_found = i;
+            break;
+        }
+
+        if (current_over <= best_over)
+        {
+
+            best_over = current_over;
+            best_found = i;
+        }
+
+    }
+
+    // If the smallest buffer is too large then none is found
+    // This will also be true if all buffers are too small
+    if (best_over > min_size*1.5f)
+    {
+
+        // Clear if there are too many buffers
+        int over_size = d_pimpl->d_vbPool.size()-
+            VERTEXBUFFER_POOL_SIZE_STARTCLEAR;
+
+        if (over_size > 2)
+            cleanLargestVertexBufferPool(over_size);
+
+
+    } else {
+
+        result = d_pimpl->d_vbPool[best_found];
+
+        d_pimpl->d_vbPool.erase(d_pimpl->d_vbPool.begin()+best_found);
+    }
+
+
+    return result;
+}
+
+void OgreRenderer::returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr 
+    buffer)
+{
+    d_pimpl->d_vbPool.push_back(buffer);
+}
+
+void OgreRenderer::clearVertexBufferPool()
+{
+    d_pimpl->d_vbPool.clear();
+}
+
+bool hardwareBufferSizeLess(const Ogre::HardwareVertexBufferSharedPtr &first,
+    const Ogre::HardwareVertexBufferSharedPtr &second)
+{
+    return first->getNumVertices() < second->getNumVertices();
+}
+
+void OgreRenderer::cleanLargestVertexBufferPool(size_t count)
+{
+    // The easiest way might be to sort the vector and delete the last count
+    // elements
+    std::sort(d_pimpl->d_vbPool.begin(), d_pimpl->d_vbPool.end(), 
+        &hardwareBufferSizeLess);
+
+    // Adjust the count if there aren't enough elements to delete to avoid
+    // asserting
+    if (count > d_pimpl->d_vbPool.size())
+        count = d_pimpl->d_vbPool.size();
+
+    for (size_t i = 0; i < count; i++)
+    {
+
+        d_pimpl->d_vbPool.pop_back();
+    }
 }
 
 //----------------------------------------------------------------------------//
