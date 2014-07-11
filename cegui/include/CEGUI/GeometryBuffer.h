@@ -435,6 +435,19 @@ public:
     */
     void setRenderMaterial(RefCounted<RenderMaterial> render_material);
 
+    /*
+    \brief
+        Sets the alpha for this window
+    \param alpha The new alpha value in the range 0.f-1.f
+    */
+    void setAlpha(float alpha);
+
+    /*
+    \brief 
+        Gets the current alpha value
+    */
+    float getAlpha() const;
+
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
@@ -479,6 +492,8 @@ protected:
     RenderEffect*   d_effect;
     //! True if clipping will be active for the current batch
     bool            d_clippingActive;
+    //! The alpha value which will be applied to the whole buffer when rendering
+    float           d_alpha;
 };
 
 }

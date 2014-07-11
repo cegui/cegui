@@ -207,8 +207,8 @@ void OgreGeometryBuffer::syncVertexData() const
 
         assert(copy_target && "Ogre vertex buffer is invalid");
 
-        std::memcpy(copy_target, &d_vertexData[0], sizeof(float)*
-            d_vertexData.size());
+        std::memcpy(copy_target, &d_vertexData[0], d_vertexData.size()*
+            sizeof(float));
 
         d_hwBuffer->unlock();
     }
