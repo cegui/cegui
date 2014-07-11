@@ -52,17 +52,20 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
 
-    const Ogre::GpuConstantDefinitionMap& map = 
+    const Ogre::GpuConstantDefinitionMap& vertex_map = 
         d_vertexShader->getConstantDefinitions().map;
 
     Ogre::GpuConstantDefinitionMap::const_iterator target = 
-        map.find("worldViewProjMatrix");
+        vertex_map.find("worldViewProjMatrix");
+
+    const Ogre::GpuConstantDefinitionMap& pixel_map = 
+        d_pixelShader->getConstantDefinitions().map;
 
     Ogre::GpuConstantDefinitionMap::const_iterator target2 = 
-        map.find("alphaPercentage");
+        pixel_map.find("alphaPercentage");
 
     // This will only be true when the shaders/parameter names are invalid
-    if (target == map.end() || target2 == map.end())
+    if (target == vertex_map.end() || target2 == pixel_map.end())
     {
         CEGUI_THROW(RendererException("Ogre renderer couldn't find an index for"
             " the shader data."));
@@ -169,17 +172,14 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         case SPT_FLOAT:
         {
             // This is the alpha value
-            
-
             const CEGUI::ShaderParameterFloat* new_alpha = static_cast<const 
                 CEGUI::ShaderParameterFloat*>(parameter);
-
 
             if (d_previousAlpha != new_alpha->d_parameterValue)
             {
                 d_previousAlpha = new_alpha->d_parameterValue;
 
-                d_vertexParameters->_writeRawConstants(target_index, 
+                d_pixelParameters->_writeRawConstants(target_index, 
                     &d_previousAlpha, 1);
             }
             

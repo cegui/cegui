@@ -1112,6 +1112,8 @@ void Window::bufferGeometry(const RenderingContext&)
 
         updateGeometryBuffersTranslationAndClipping();
 
+        updateGeometryBuffersAlpha();
+
         // signal rendering ended
         args.handled = 0;
         onRenderingEnded(args);
@@ -2254,7 +2256,7 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 
     }
 
-    invalidate();
+    updateGeometryBuffersAlpha();
     fireEvent(EventAlphaChanged, e, EventNamespace);
 }
 
@@ -3802,6 +3804,16 @@ void Window::updateGeometryBuffersTranslationAndClipping()
         CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
         currentBuffer->setTranslation(d_translation);
         currentBuffer->setClippingRegion(d_clippingRegion);
+    }
+}
+
+void Window::updateGeometryBuffersAlpha()
+{
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+        currentBuffer->setAlpha(d_alpha);
     }
 }
 

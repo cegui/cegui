@@ -45,6 +45,7 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
     , d_renderMaterial(renderMaterial)
     , d_polygonFillRule(PFR_NONE)
     , d_postStencilVertexCount(0)
+    , d_alpha(1.f)
 {
 }
 
@@ -344,5 +345,15 @@ void GeometryBuffer::setTexture(const std::string& parameterName, const Texture*
 }
 
 //---------------------------------------------------------------------------//
+void GeometryBuffer::setAlpha(float alpha)
+{
+    d_alpha = alpha;
+}
+
+float GeometryBuffer::getAlpha() const
+{
+    return d_alpha;
+}
+
 }
 
