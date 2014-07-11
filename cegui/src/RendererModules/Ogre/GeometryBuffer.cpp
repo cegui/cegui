@@ -296,7 +296,19 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 
 void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 {
-    // create the vertex container
+    // We first check if some other buffer has already allocated a suited buffer
+    // for us
+    Ogre::HardwareVertexBufferSharedPtr already_created = 
+        d_owner.getVertexBuffer(count);
+
+    if (!already_created.isNull())
+    {
+
+        d_hwBuffer = already_created;
+        return;
+    }
+
+    // Create the a new vertex buffer
     d_hwBuffer = Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(
         getFloatsPerVertex()*sizeof(float), count,
         Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
@@ -317,6 +329,9 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
 {
     OGRE_DELETE d_renderOp.vertexData;
     d_renderOp.vertexData = 0;
+
+    // Store the hardware buffer so that other instances can use it later
+    d_owner.returnVertexBuffer(d_hwBuffer);
 
     d_hwBuffer.setNull();
 }

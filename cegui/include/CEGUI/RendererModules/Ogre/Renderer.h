@@ -61,6 +61,7 @@ class TexturePtr;
 template<typename T> class SharedPtr;
 class Texture;
 typedef SharedPtr<Texture> TexturePtr;
+class HardwareVertexBufferSharedPtr;
 #endif
 class Matrix4;
 }
@@ -318,6 +319,21 @@ public:
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
 
+    /*!
+    \brief 
+        Returns a vertex buffer larger than size if any exist
+
+        This function also cleans the pool and discards large buffers that 
+        aren't used
+    */
+    Ogre::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
+
+    //! \brief Puts a vertex buffer back in to the pool
+    void returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr buffer);
+
+    //! \brief Clears vertex buffer pool
+    void clearVertexBufferPool();
+
     // implement CEGUI::Renderer interface
     RenderTarget& getDefaultRenderTarget();
 
@@ -380,6 +396,9 @@ protected:
     void initialiseShaders();
     //! helper to clean up shaders
     void cleanupShaders();
+
+    //! Deletes count number of largest vertex buffers
+    void cleanLargestVertexBufferPool(size_t count);
 
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
