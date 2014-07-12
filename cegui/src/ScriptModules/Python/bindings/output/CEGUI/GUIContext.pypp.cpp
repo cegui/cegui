@@ -647,7 +647,18 @@ void register_GUIContext_class(){
             GUIContext_exposer.def( 
                 "getMouseCursor"
                 , getMouseCursor_function_type( &::CEGUI::GUIContext::getMouseCursor )
-                , bp::return_value_policy< bp::reference_existing_object >() );
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Retrieves MouseCursor used in this GUIContext\n\
+            \n\
+                \note\n\
+                    Please note that each GUIContext has exactly one MouseCursor. The MouseCursor\n\
+                    class holds position, as well as other properties. If you want to modify\n\
+                    the MouseCursor (for example change its default image), you can retrieve\n\
+                    a reference via this method and call a method on the reference\n\
+                    (in our example that's setDefaultImage).\n\
+                *\n" );
         
         }
         { //::CEGUI::GUIContext::getMouseMoveScalingFactor
