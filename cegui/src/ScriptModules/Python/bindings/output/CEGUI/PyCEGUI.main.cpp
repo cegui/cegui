@@ -152,7 +152,33 @@
 
 #include "FalagardMappingIterator.pypp.hpp"
 
+#include "FalagardPropertyBaseBool.pypp.hpp"
+
+#include "FalagardPropertyBaseColour.pypp.hpp"
+
+#include "FalagardPropertyBaseColourRect.pypp.hpp"
+
+#include "FalagardPropertyBaseColourUBox.pypp.hpp"
+
+#include "FalagardPropertyBaseColourUDim.pypp.hpp"
+
+#include "FalagardPropertyBaseColourURect.pypp.hpp"
+
+#include "FalagardPropertyBaseColourUVector2.pypp.hpp"
+
+#include "FalagardPropertyBaseFloat.pypp.hpp"
+
+#include "FalagardPropertyBaseImage.pypp.hpp"
+
+#include "FalagardPropertyBaseRectf.pypp.hpp"
+
+#include "FalagardPropertyBaseSizef.pypp.hpp"
+
 #include "FalagardPropertyBaseString.pypp.hpp"
+
+#include "FalagardPropertyBaseUint.pypp.hpp"
+
+#include "FalagardPropertyBaseVector2f.pypp.hpp"
 
 #include "FalagardXMLHelper.pypp.hpp"
 
@@ -294,9 +320,35 @@
 
 #include "PropertyDefinitionBase.pypp.hpp"
 
+#include "PropertyDefinitionBool.pypp.hpp"
+
+#include "PropertyDefinitionColour.pypp.hpp"
+
+#include "PropertyDefinitionColourRect.pypp.hpp"
+
+#include "PropertyDefinitionColourUBox.pypp.hpp"
+
+#include "PropertyDefinitionColourUDim.pypp.hpp"
+
+#include "PropertyDefinitionColourURect.pypp.hpp"
+
+#include "PropertyDefinitionColourUVector2.pypp.hpp"
+
+#include "PropertyDefinitionFloat.pypp.hpp"
+
+#include "PropertyDefinitionImage.pypp.hpp"
+
 #include "PropertyDefinitionIterator.pypp.hpp"
 
+#include "PropertyDefinitionRectf.pypp.hpp"
+
+#include "PropertyDefinitionSizef.pypp.hpp"
+
 #include "PropertyDefinitionString.pypp.hpp"
+
+#include "PropertyDefinitionUint.pypp.hpp"
+
+#include "PropertyDefinitionVector2f.pypp.hpp"
 
 #include "PropertyDim.pypp.hpp"
 
@@ -310,7 +362,33 @@
 
 #include "PropertyIterator.pypp.hpp"
 
+#include "PropertyLinkDefinitionBool.pypp.hpp"
+
+#include "PropertyLinkDefinitionColour.pypp.hpp"
+
+#include "PropertyLinkDefinitionColourRect.pypp.hpp"
+
+#include "PropertyLinkDefinitionColourUBox.pypp.hpp"
+
+#include "PropertyLinkDefinitionColourUDim.pypp.hpp"
+
+#include "PropertyLinkDefinitionColourURect.pypp.hpp"
+
+#include "PropertyLinkDefinitionColourUVector2.pypp.hpp"
+
+#include "PropertyLinkDefinitionFloat.pypp.hpp"
+
+#include "PropertyLinkDefinitionImage.pypp.hpp"
+
+#include "PropertyLinkDefinitionRectf.pypp.hpp"
+
+#include "PropertyLinkDefinitionSizef.pypp.hpp"
+
 #include "PropertyLinkDefinitionString.pypp.hpp"
+
+#include "PropertyLinkDefinitionUint.pypp.hpp"
+
+#include "PropertyLinkDefinitionVector2f.pypp.hpp"
 
 #include "PropertyReceiver.pypp.hpp"
 
@@ -476,7 +554,33 @@
 
 #include "TypeAliasIterator.pypp.hpp"
 
+#include "TypedPropertyBool.pypp.hpp"
+
+#include "TypedPropertyColour.pypp.hpp"
+
+#include "TypedPropertyColourRect.pypp.hpp"
+
+#include "TypedPropertyColourUBox.pypp.hpp"
+
+#include "TypedPropertyColourUDim.pypp.hpp"
+
+#include "TypedPropertyColourURect.pypp.hpp"
+
+#include "TypedPropertyColourUVector2.pypp.hpp"
+
+#include "TypedPropertyFloat.pypp.hpp"
+
+#include "TypedPropertyImage.pypp.hpp"
+
+#include "TypedPropertyRectf.pypp.hpp"
+
+#include "TypedPropertySizef.pypp.hpp"
+
 #include "TypedPropertyString.pypp.hpp"
+
+#include "TypedPropertyUint.pypp.hpp"
+
+#include "TypedPropertyVector2f.pypp.hpp"
 
 #include "UBox.pypp.hpp"
 
@@ -870,9 +974,73 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_Property_class();
 
+    register_TypedPropertyColour_class();
+
+    register_FalagardPropertyBaseColour_class();
+
+    register_TypedPropertyColourRect_class();
+
+    register_FalagardPropertyBaseColourRect_class();
+
+    register_TypedPropertyImage_class();
+
+    register_FalagardPropertyBaseImage_class();
+
+    register_URect_class();
+
+    register_TypedPropertyColourURect_class();
+
+    register_FalagardPropertyBaseColourURect_class();
+
+    register_TypedPropertyRectf_class();
+
+    register_FalagardPropertyBaseRectf_class();
+
+    register_Sizef_class();
+
+    register_TypedPropertySizef_class();
+
+    register_FalagardPropertyBaseSizef_class();
+
     register_TypedPropertyString_class();
 
     register_FalagardPropertyBaseString_class();
+
+    register_UBox_class();
+
+    register_TypedPropertyColourUBox_class();
+
+    register_FalagardPropertyBaseColourUBox_class();
+
+    register_UDim_class();
+
+    register_TypedPropertyColourUDim_class();
+
+    register_FalagardPropertyBaseColourUDim_class();
+
+    register_UVector2_class();
+
+    register_TypedPropertyColourUVector2_class();
+
+    register_FalagardPropertyBaseColourUVector2_class();
+
+    register_Vector2f_class();
+
+    register_TypedPropertyVector2f_class();
+
+    register_FalagardPropertyBaseVector2f_class();
+
+    register_TypedPropertyBool_class();
+
+    register_FalagardPropertyBaseBool_class();
+
+    register_TypedPropertyFloat_class();
+
+    register_FalagardPropertyBaseFloat_class();
+
+    register_TypedPropertyUint_class();
+
+    register_FalagardPropertyBaseUint_class();
 
     register_FalagardXMLHelper_class();
 
@@ -889,8 +1057,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_NamedXMLResourceManagerFont_class();
 
     register_SingletonFontManager_class();
-
-    register_Sizef_class();
 
     register_FontManager_class();
 
@@ -994,7 +1160,33 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ProgressBar_class();
 
+    register_PropertyDefinitionColour_class();
+
+    register_PropertyDefinitionColourRect_class();
+
+    register_PropertyDefinitionImage_class();
+
+    register_PropertyDefinitionColourURect_class();
+
+    register_PropertyDefinitionRectf_class();
+
+    register_PropertyDefinitionSizef_class();
+
     register_PropertyDefinitionString_class();
+
+    register_PropertyDefinitionColourUBox_class();
+
+    register_PropertyDefinitionColourUDim_class();
+
+    register_PropertyDefinitionColourUVector2_class();
+
+    register_PropertyDefinitionVector2f_class();
+
+    register_PropertyDefinitionBool_class();
+
+    register_PropertyDefinitionFloat_class();
+
+    register_PropertyDefinitionUint_class();
 
     register_PropertyDim_class();
 
@@ -1002,7 +1194,33 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertyInitialiser_class();
 
+    register_PropertyLinkDefinitionColour_class();
+
+    register_PropertyLinkDefinitionColourRect_class();
+
+    register_PropertyLinkDefinitionImage_class();
+
+    register_PropertyLinkDefinitionColourURect_class();
+
+    register_PropertyLinkDefinitionRectf_class();
+
+    register_PropertyLinkDefinitionSizef_class();
+
     register_PropertyLinkDefinitionString_class();
+
+    register_PropertyLinkDefinitionColourUBox_class();
+
+    register_PropertyLinkDefinitionColourUDim_class();
+
+    register_PropertyLinkDefinitionColourUVector2_class();
+
+    register_PropertyLinkDefinitionVector2f_class();
+
+    register_PropertyLinkDefinitionBool_class();
+
+    register_PropertyLinkDefinitionFloat_class();
+
+    register_PropertyLinkDefinitionUint_class();
 
     register_PushButton_class();
 
@@ -1013,8 +1231,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_RadioButton_class();
 
     register_RawDataContainer_class();
-
-    register_URect_class();
 
     register_RegexMatcher_class();
 
@@ -1122,17 +1338,9 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_TreeItem_class();
 
-    register_UBox_class();
-
-    register_UDim_class();
-
     register_UnifiedDim_class();
 
     register_UpdateEventArgs_class();
-
-    register_UVector2_class();
-
-    register_Vector2f_class();
 
     register_Vector3f_class();
 
