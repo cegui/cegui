@@ -1153,6 +1153,12 @@ void Iterator_previous(::CEGUI::%s& t)
             if tplName.startswith(desired_class):
                 cls.include()
 
+                if tplName.startswith("TypedProperty"):
+                    # gccxml has issues with the T() default arg in the ctor
+                    # since users are unlikely to construct TypedProperty from
+                    # Python we can just exclude the ctors
+                    cls.constructors().exclude()
+
     # falagard/FalPropertyDefinitionBase.h
     propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
     propertyDefinitionBase.include()

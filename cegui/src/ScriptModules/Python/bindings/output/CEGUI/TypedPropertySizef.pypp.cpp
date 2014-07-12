@@ -2,37 +2,37 @@
 
 #include "boost/python.hpp"
 #include "generators/include/python_CEGUI.h"
-#include "TypedPropertyString.pypp.hpp"
+#include "TypedPropertySizef.pypp.hpp"
 
 namespace bp = boost::python;
 
-struct TypedProperty_less__CEGUI_scope_String__greater__wrapper : CEGUI::TypedProperty< CEGUI::String >, bp::wrapper< CEGUI::TypedProperty< CEGUI::String > > {
+struct TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper : CEGUI::TypedProperty< CEGUI::Size< float > >, bp::wrapper< CEGUI::TypedProperty< CEGUI::Size< float > > > {
 
     virtual ::CEGUI::String get( ::CEGUI::PropertyReceiver const * receiver ) const  {
         if( bp::override func_get = this->get_override( "get" ) )
             return func_get( boost::python::ptr(receiver) );
         else{
-            return this->CEGUI::TypedProperty< CEGUI::String >::get( boost::python::ptr(receiver) );
+            return this->CEGUI::TypedProperty< CEGUI::Size< float > >::get( boost::python::ptr(receiver) );
         }
     }
     
     ::CEGUI::String default_get( ::CEGUI::PropertyReceiver const * receiver ) const  {
-        return CEGUI::TypedProperty< CEGUI::String >::get( boost::python::ptr(receiver) );
+        return CEGUI::TypedProperty< CEGUI::Size< float > >::get( boost::python::ptr(receiver) );
     }
 
-    virtual ::CEGUI::String getNative( ::CEGUI::PropertyReceiver const * receiver ) const  {
+    virtual ::CEGUI::Sizef getNative( ::CEGUI::PropertyReceiver const * receiver ) const  {
         if( bp::override func_getNative = this->get_override( "getNative" ) )
             return func_getNative( boost::python::ptr(receiver) );
         else{
-            return this->CEGUI::TypedProperty< CEGUI::String >::getNative( boost::python::ptr(receiver) );
+            return this->CEGUI::TypedProperty< CEGUI::Size< float > >::getNative( boost::python::ptr(receiver) );
         }
     }
     
-    ::CEGUI::String default_getNative( ::CEGUI::PropertyReceiver const * receiver ) const  {
-        return CEGUI::TypedProperty< CEGUI::String >::getNative( boost::python::ptr(receiver) );
+    ::CEGUI::Sizef default_getNative( ::CEGUI::PropertyReceiver const * receiver ) const  {
+        return CEGUI::TypedProperty< CEGUI::Size< float > >::getNative( boost::python::ptr(receiver) );
     }
 
-    virtual ::CEGUI::String getNative_impl( ::CEGUI::PropertyReceiver const * receiver ) const {
+    virtual ::CEGUI::Sizef getNative_impl( ::CEGUI::PropertyReceiver const * receiver ) const {
         bp::override func_getNative_impl = this->get_override( "getNative_impl" );
         return func_getNative_impl( boost::python::ptr(receiver) );
     }
@@ -41,27 +41,27 @@ struct TypedProperty_less__CEGUI_scope_String__greater__wrapper : CEGUI::TypedPr
         if( bp::override func_set = this->get_override( "set" ) )
             func_set( boost::python::ptr(receiver), boost::ref(value) );
         else{
-            this->CEGUI::TypedProperty< CEGUI::String >::set( boost::python::ptr(receiver), boost::ref(value) );
+            this->CEGUI::TypedProperty< CEGUI::Size< float > >::set( boost::python::ptr(receiver), boost::ref(value) );
         }
     }
     
     void default_set( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ) {
-        CEGUI::TypedProperty< CEGUI::String >::set( boost::python::ptr(receiver), boost::ref(value) );
+        CEGUI::TypedProperty< CEGUI::Size< float > >::set( boost::python::ptr(receiver), boost::ref(value) );
     }
 
-    virtual void setNative( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ) {
+    virtual void setNative( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::Sizef const & value ) {
         if( bp::override func_setNative = this->get_override( "setNative" ) )
             func_setNative( boost::python::ptr(receiver), boost::ref(value) );
         else{
-            this->CEGUI::TypedProperty< CEGUI::String >::setNative( boost::python::ptr(receiver), boost::ref(value) );
+            this->CEGUI::TypedProperty< CEGUI::Size< float > >::setNative( boost::python::ptr(receiver), boost::ref(value) );
         }
     }
     
-    void default_setNative( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ) {
-        CEGUI::TypedProperty< CEGUI::String >::setNative( boost::python::ptr(receiver), boost::ref(value) );
+    void default_setNative( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::Sizef const & value ) {
+        CEGUI::TypedProperty< CEGUI::Size< float > >::setNative( boost::python::ptr(receiver), boost::ref(value) );
     }
 
-    virtual void setNative_impl( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ){
+    virtual void setNative_impl( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::Sizef const & value ){
         bp::override func_setNative_impl = this->get_override( "setNative_impl" );
         func_setNative_impl( boost::python::ptr(receiver), boost::ref(value) );
     }
@@ -157,83 +157,83 @@ struct TypedProperty_less__CEGUI_scope_String__greater__wrapper : CEGUI::TypedPr
 
 };
 
-void register_TypedPropertyString_class(){
+void register_TypedPropertySizef_class(){
 
-    { //::CEGUI::TypedProperty< CEGUI::String >
-        typedef bp::class_< TypedProperty_less__CEGUI_scope_String__greater__wrapper, bp::bases< CEGUI::Property >, boost::noncopyable > TypedPropertyString_exposer_t;
-        TypedPropertyString_exposer_t TypedPropertyString_exposer = TypedPropertyString_exposer_t( "TypedPropertyString", bp::no_init );
-        bp::scope TypedPropertyString_scope( TypedPropertyString_exposer );
-        { //::CEGUI::TypedProperty< CEGUI::String >::get
+    { //::CEGUI::TypedProperty< CEGUI::Size< float > >
+        typedef bp::class_< TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper, bp::bases< CEGUI::Property >, boost::noncopyable > TypedPropertySizef_exposer_t;
+        TypedPropertySizef_exposer_t TypedPropertySizef_exposer = TypedPropertySizef_exposer_t( "TypedPropertySizef", bp::no_init );
+        bp::scope TypedPropertySizef_scope( TypedPropertySizef_exposer );
+        { //::CEGUI::TypedProperty< CEGUI::Size< float > >::get
         
-            typedef CEGUI::TypedProperty< CEGUI::String > exported_class_t;
+            typedef CEGUI::TypedProperty< CEGUI::Size< float > > exported_class_t;
             typedef ::CEGUI::String ( exported_class_t::*get_function_type )( ::CEGUI::PropertyReceiver const * ) const;
-            typedef ::CEGUI::String ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_get_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            typedef ::CEGUI::String ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_get_function_type )( ::CEGUI::PropertyReceiver const * ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "get"
-                , get_function_type(&::CEGUI::TypedProperty< CEGUI::String >::get)
-                , default_get_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_get)
+                , get_function_type(&::CEGUI::TypedProperty< CEGUI::Size< float > >::get)
+                , default_get_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_get)
                 , ( bp::arg("receiver") ) );
         
         }
-        { //::CEGUI::TypedProperty< CEGUI::String >::getNative
+        { //::CEGUI::TypedProperty< CEGUI::Size< float > >::getNative
         
-            typedef CEGUI::TypedProperty< CEGUI::String > exported_class_t;
-            typedef ::CEGUI::String ( exported_class_t::*getNative_function_type )( ::CEGUI::PropertyReceiver const * ) const;
-            typedef ::CEGUI::String ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_getNative_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            typedef CEGUI::TypedProperty< CEGUI::Size< float > > exported_class_t;
+            typedef ::CEGUI::Sizef ( exported_class_t::*getNative_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            typedef ::CEGUI::Sizef ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_getNative_function_type )( ::CEGUI::PropertyReceiver const * ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "getNative"
-                , getNative_function_type(&::CEGUI::TypedProperty< CEGUI::String >::getNative)
-                , default_getNative_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_getNative)
+                , getNative_function_type(&::CEGUI::TypedProperty< CEGUI::Size< float > >::getNative)
+                , default_getNative_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_getNative)
                 , ( bp::arg("receiver") ) );
         
         }
-        { //::CEGUI::TypedProperty< CEGUI::String >::getNative_impl
+        { //::CEGUI::TypedProperty< CEGUI::Size< float > >::getNative_impl
         
-            typedef CEGUI::TypedProperty< CEGUI::String > exported_class_t;
-            typedef ::CEGUI::String ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*getNative_impl_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            typedef CEGUI::TypedProperty< CEGUI::Size< float > > exported_class_t;
+            typedef ::CEGUI::Sizef ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*getNative_impl_function_type )( ::CEGUI::PropertyReceiver const * ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "getNative_impl"
-                , getNative_impl_function_type( &TypedProperty_less__CEGUI_scope_String__greater__wrapper::getNative_impl )
+                , getNative_impl_function_type( &TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::getNative_impl )
                 , ( bp::arg("receiver") ) );
         
         }
-        { //::CEGUI::TypedProperty< CEGUI::String >::set
+        { //::CEGUI::TypedProperty< CEGUI::Size< float > >::set
         
-            typedef CEGUI::TypedProperty< CEGUI::String > exported_class_t;
+            typedef CEGUI::TypedProperty< CEGUI::Size< float > > exported_class_t;
             typedef void ( exported_class_t::*set_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
-            typedef void ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_set_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
+            typedef void ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_set_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "set"
-                , set_function_type(&::CEGUI::TypedProperty< CEGUI::String >::set)
-                , default_set_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_set)
+                , set_function_type(&::CEGUI::TypedProperty< CEGUI::Size< float > >::set)
+                , default_set_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_set)
                 , ( bp::arg("receiver"), bp::arg("value") ) );
         
         }
-        { //::CEGUI::TypedProperty< CEGUI::String >::setNative
+        { //::CEGUI::TypedProperty< CEGUI::Size< float > >::setNative
         
-            typedef CEGUI::TypedProperty< CEGUI::String > exported_class_t;
-            typedef void ( exported_class_t::*setNative_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
-            typedef void ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_setNative_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
+            typedef CEGUI::TypedProperty< CEGUI::Size< float > > exported_class_t;
+            typedef void ( exported_class_t::*setNative_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::Sizef const & ) ;
+            typedef void ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_setNative_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::Sizef const & ) ;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "setNative"
-                , setNative_function_type(&::CEGUI::TypedProperty< CEGUI::String >::setNative)
-                , default_setNative_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_setNative)
+                , setNative_function_type(&::CEGUI::TypedProperty< CEGUI::Size< float > >::setNative)
+                , default_setNative_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_setNative)
                 , ( bp::arg("receiver"), bp::arg("value") ) );
         
         }
-        { //::CEGUI::TypedProperty< CEGUI::String >::setNative_impl
+        { //::CEGUI::TypedProperty< CEGUI::Size< float > >::setNative_impl
         
-            typedef CEGUI::TypedProperty< CEGUI::String > exported_class_t;
-            typedef void ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*setNative_impl_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
+            typedef CEGUI::TypedProperty< CEGUI::Size< float > > exported_class_t;
+            typedef void ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*setNative_impl_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::Sizef const & ) ;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "setNative_impl"
-                , setNative_impl_function_type( &TypedProperty_less__CEGUI_scope_String__greater__wrapper::setNative_impl )
+                , setNative_impl_function_type( &TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::setNative_impl )
                 , ( bp::arg("receiver"), bp::arg("value") ) );
         
         }
@@ -241,7 +241,7 @@ void register_TypedPropertyString_class(){
         
             typedef ::CEGUI::Property * ( ::CEGUI::Property::*clone_function_type )(  ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "clone"
                 , bp::pure_virtual( clone_function_type(&::CEGUI::Property::clone) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
@@ -250,81 +250,81 @@ void register_TypedPropertyString_class(){
         { //::CEGUI::Property::doesWriteXML
         
             typedef bool ( ::CEGUI::Property::*doesWriteXML_function_type )(  ) const;
-            typedef bool ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_doesWriteXML_function_type )(  ) const;
+            typedef bool ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_doesWriteXML_function_type )(  ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "doesWriteXML"
                 , doesWriteXML_function_type(&::CEGUI::Property::doesWriteXML)
-                , default_doesWriteXML_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_doesWriteXML) );
+                , default_doesWriteXML_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_doesWriteXML) );
         
         }
         { //::CEGUI::Property::getDefault
         
             typedef ::CEGUI::String ( ::CEGUI::Property::*getDefault_function_type )( ::CEGUI::PropertyReceiver const * ) const;
-            typedef ::CEGUI::String ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_getDefault_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            typedef ::CEGUI::String ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_getDefault_function_type )( ::CEGUI::PropertyReceiver const * ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "getDefault"
                 , getDefault_function_type(&::CEGUI::Property::getDefault)
-                , default_getDefault_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_getDefault)
+                , default_getDefault_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_getDefault)
                 , ( bp::arg("receiver") ) );
         
         }
         { //::CEGUI::Property::initialisePropertyReceiver
         
             typedef void ( ::CEGUI::Property::*initialisePropertyReceiver_function_type )( ::CEGUI::PropertyReceiver * ) const;
-            typedef void ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_initialisePropertyReceiver_function_type )( ::CEGUI::PropertyReceiver * ) const;
+            typedef void ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_initialisePropertyReceiver_function_type )( ::CEGUI::PropertyReceiver * ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "initialisePropertyReceiver"
                 , initialisePropertyReceiver_function_type(&::CEGUI::Property::initialisePropertyReceiver)
-                , default_initialisePropertyReceiver_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_initialisePropertyReceiver)
+                , default_initialisePropertyReceiver_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_initialisePropertyReceiver)
                 , ( bp::arg("arg0") ) );
         
         }
         { //::CEGUI::Property::isDefault
         
             typedef bool ( ::CEGUI::Property::*isDefault_function_type )( ::CEGUI::PropertyReceiver const * ) const;
-            typedef bool ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_isDefault_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            typedef bool ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_isDefault_function_type )( ::CEGUI::PropertyReceiver const * ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "isDefault"
                 , isDefault_function_type(&::CEGUI::Property::isDefault)
-                , default_isDefault_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_isDefault)
+                , default_isDefault_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_isDefault)
                 , ( bp::arg("receiver") ) );
         
         }
         { //::CEGUI::Property::isReadable
         
             typedef bool ( ::CEGUI::Property::*isReadable_function_type )(  ) const;
-            typedef bool ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_isReadable_function_type )(  ) const;
+            typedef bool ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_isReadable_function_type )(  ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "isReadable"
                 , isReadable_function_type(&::CEGUI::Property::isReadable)
-                , default_isReadable_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_isReadable) );
+                , default_isReadable_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_isReadable) );
         
         }
         { //::CEGUI::Property::isWritable
         
             typedef bool ( ::CEGUI::Property::*isWritable_function_type )(  ) const;
-            typedef bool ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_isWritable_function_type )(  ) const;
+            typedef bool ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_isWritable_function_type )(  ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "isWritable"
                 , isWritable_function_type(&::CEGUI::Property::isWritable)
-                , default_isWritable_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_isWritable) );
+                , default_isWritable_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_isWritable) );
         
         }
         { //::CEGUI::Property::writeXMLToStream
         
             typedef void ( ::CEGUI::Property::*writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
-            typedef void ( TypedProperty_less__CEGUI_scope_String__greater__wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
+            typedef void ( TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
             
-            TypedPropertyString_exposer.def( 
+            TypedPropertySizef_exposer.def( 
                 "writeXMLToStream"
                 , writeXMLToStream_function_type(&::CEGUI::Property::writeXMLToStream)
-                , default_writeXMLToStream_function_type(&TypedProperty_less__CEGUI_scope_String__greater__wrapper::default_writeXMLToStream)
+                , default_writeXMLToStream_function_type(&TypedProperty_less__CEGUI_scope_Size_less__float__greater___greater__wrapper::default_writeXMLToStream)
                 , ( bp::arg("receiver"), bp::arg("xml_stream") ) );
         
         }
