@@ -868,7 +868,7 @@ public:
     \return
         A string containing the name of the look.
     */
-    const String& ComponentArea::getNamedAreaSourceLook() const;
+    const String& getNamedAreaSourceLook() const;
 
     //! Set the named area source of the ComponentArea.
     void setNamedAreaSouce(const String& widget_look, const String& area_name);

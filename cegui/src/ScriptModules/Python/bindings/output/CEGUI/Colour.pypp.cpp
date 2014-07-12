@@ -65,7 +65,14 @@ void register_Colour_class(){
             
             Colour_exposer.def( 
                 "getHue"
-                , getHue_function_type( &::CEGUI::Colour::getHue ) );
+                , getHue_function_type( &::CEGUI::Colour::getHue )
+                , "*!\n\
+                \n\
+                    Calculates and returns the hue value based on the Colour\n\
+            \n\
+                @return\n\
+                    The hue as a float value.\n\
+                *\n" );
         
         }
         { //::CEGUI::Colour::getLumination
@@ -74,7 +81,14 @@ void register_Colour_class(){
             
             Colour_exposer.def( 
                 "getLumination"
-                , getLumination_function_type( &::CEGUI::Colour::getLumination ) );
+                , getLumination_function_type( &::CEGUI::Colour::getLumination )
+                , "*!\n\
+                \n\
+                    Calculates and returns the lumination value based on the Colour\n\
+            \n\
+                @return\n\
+                    The lumination as a float value.\n\
+                *\n" );
         
         }
         { //::CEGUI::Colour::getRed
@@ -92,7 +106,14 @@ void register_Colour_class(){
             
             Colour_exposer.def( 
                 "getSaturation"
-                , getSaturation_function_type( &::CEGUI::Colour::getSaturation ) );
+                , getSaturation_function_type( &::CEGUI::Colour::getSaturation )
+                , "*!\n\
+                \n\
+                    Calculates and returns the saturation value based on the Colour\n\
+            \n\
+                @return\n\
+                    The saturation as a float value.\n\
+                *\n" );
         
         }
         { //::CEGUI::Colour::invertColour

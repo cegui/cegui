@@ -152,6 +152,8 @@
 
 #include "FalagardMappingIterator.pypp.hpp"
 
+#include "FalagardPropertyBaseString.pypp.hpp"
+
 #include "FalagardXMLHelper.pypp.hpp"
 
 #include "Font.pypp.hpp"
@@ -294,6 +296,8 @@
 
 #include "PropertyDefinitionIterator.pypp.hpp"
 
+#include "PropertyDefinitionString.pypp.hpp"
+
 #include "PropertyDim.pypp.hpp"
 
 #include "PropertyHelper.pypp.hpp"
@@ -305,6 +309,8 @@
 #include "PropertyInitialiserVector.pypp.hpp"
 
 #include "PropertyIterator.pypp.hpp"
+
+#include "PropertyLinkDefinitionString.pypp.hpp"
 
 #include "PropertyReceiver.pypp.hpp"
 
@@ -469,6 +475,8 @@
 #include "TreeItem.pypp.hpp"
 
 #include "TypeAliasIterator.pypp.hpp"
+
+#include "TypedPropertyString.pypp.hpp"
 
 #include "UBox.pypp.hpp"
 
@@ -858,6 +866,14 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_FalagardComponentBase_class();
 
+    register_PropertyDefinitionBase_class();
+
+    register_Property_class();
+
+    register_TypedPropertyString_class();
+
+    register_FalagardPropertyBaseString_class();
+
     register_FalagardXMLHelper_class();
 
     register_Font_class();
@@ -978,15 +994,15 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ProgressBar_class();
 
-    register_Property_class();
-
-    register_PropertyDefinitionBase_class();
+    register_PropertyDefinitionString_class();
 
     register_PropertyDim_class();
 
     register_PropertyHelper_class();
 
     register_PropertyInitialiser_class();
+
+    register_PropertyLinkDefinitionString_class();
 
     register_PushButton_class();
 
