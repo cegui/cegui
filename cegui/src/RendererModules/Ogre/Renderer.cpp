@@ -62,7 +62,7 @@
 
 #include "Shaders.inl"
 
-#define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           20
+#define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           60
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -1281,23 +1281,28 @@ Ogre::SceneManager& OgreRenderer::getDummyScene() const{
 Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t 
     min_size)
 {
-    Ogre::HardwareVertexBufferSharedPtr result;
+    Ogre::HardwareVertexBufferSharedPtr result(0);
 
     if (d_pimpl->d_vbPool.empty())
         return result;
 
-    size_t best_found = 0;
+    size_t best_found = -1;
     size_t best_over = -1;
 
-    for (size_t i = 0; i < d_pimpl->d_vbPool.size(); i++)
+    // The vector is searched in reverse to find exact matches from the end
+    // which will allow popping the last element which is faster then removing
+    // the first one
+
+    for (size_t i = d_pimpl->d_vbPool.size(); --i > 0;)
     {
-        size_t current_over = d_pimpl->d_vbPool[i]->getNumVertices();
+        size_t current_over = d_pimpl->d_vbPool[i]->getNumVertices()-min_size;
 
         // Perfect match stops searching instantly
         if (current_over == 0)
         {
 
             best_found = i;
+            best_over = 0;
             break;
         }
 
@@ -1311,7 +1316,7 @@ Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t
 
     // If the smallest buffer is too large then none is found
     // This will also be true if all buffers are too small
-    if (best_over > min_size*1.5f)
+    if (best_over > min_size*1.5f || best_found >= d_pimpl->d_vbPool.size())
     {
         // Clear if there are too many buffers
         int over_size = d_pimpl->d_vbPool.size()-
@@ -1325,6 +1330,14 @@ Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t
         result = d_pimpl->d_vbPool[best_found];
 
         d_pimpl->d_vbPool.erase(d_pimpl->d_vbPool.begin()+best_found);
+
+        // We want to avoid using too much memory
+        // even if matches are always found
+        int over_size = d_pimpl->d_vbPool.size()-
+            (VERTEXBUFFER_POOL_SIZE_STARTCLEAR*5);
+
+        if (over_size > 5)
+            cleanLargestVertexBufferPool(over_size/2);
     }
 
     return result;
@@ -1356,8 +1369,11 @@ void OgreRenderer::cleanLargestVertexBufferPool(size_t count)
 
     // Adjust the count if there aren't enough elements to delete to avoid
     // asserting
-    if (count > d_pimpl->d_vbPool.size())
-        count = d_pimpl->d_vbPool.size();
+    if (count >= d_pimpl->d_vbPool.size())
+    {
+
+        d_pimpl->d_vbPool.clear();
+    }
 
     for (size_t i = 0; i < count; i++)
     {
