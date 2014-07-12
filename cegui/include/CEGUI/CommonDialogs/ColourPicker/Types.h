@@ -41,7 +41,13 @@
 namespace CEGUI
 {
 
-//! DEPRECATED
+/*!
+\brief
+    Enum defining the ColourPicker Slider mode
+
+\deprecated
+    This enum is deprecated and has been marked for removal.
+*/
 enum ColourPickerSliderMode
 {
     ColourPickerSliderMode_L,
