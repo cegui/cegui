@@ -5,6 +5,8 @@
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/PropertyDefinition.h"
+#include "CEGUI/falagard/PropertyLinkDefinition.h"
 
 namespace boost
 {
@@ -337,6 +339,11 @@ namespace pyplusplus
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowRendererFactory*)> WR_Registry;
         typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)> AttributeMap;
+
+        typedef CEGUI::TypedProperty<CEGUI::String> TypedPropertyString;
+        typedef CEGUI::FalagardPropertyBase<CEGUI::String> FalagardPropertyBaseString;
+        typedef CEGUI::PropertyDefinition<CEGUI::String> PropertyDefinitionString;
+        typedef CEGUI::PropertyLinkDefinition<CEGUI::String> PropertyLinkDefinitionString;
     }
 }
 
@@ -405,6 +412,11 @@ namespace python_CEGUI
             sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare  CEGUI_MAP_ALLOC(const CEGUI::String, CEGUI::StateImagery) > > );
             sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::SectionSpecification  CEGUI_VECTOR_ALLOC(CEGUI::SectionSpecification) > > );
             sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::TextComponent  CEGUI_VECTOR_ALLOC(CEGUI::TextComponent) > > );
+
+            sizeof( CEGUI::TypedProperty<CEGUI::String> );
+            sizeof( CEGUI::FalagardPropertyBase<CEGUI::String> );
+            sizeof( CEGUI::PropertyDefinition<CEGUI::String> );
+            sizeof( CEGUI::PropertyLinkDefinition<CEGUI::String> );
         }
     }
 }

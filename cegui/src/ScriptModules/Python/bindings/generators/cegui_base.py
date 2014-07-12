@@ -1138,10 +1138,20 @@ void Iterator_previous(::CEGUI::%s& t)
     namedArea = CEGUI_ns.class_("NamedArea")
     namedArea.include()
 
+    # TypedProperty.h
     # falagard/FalPropertyDefinition.h
-    # FIXME: This is now a template and CE did not know what to do!
-    #propertyDefinition = CEGUI_ns.class_("PropertyDefinition")
-    #propertyDefinition.include()
+    # falagard/FalPropertyLinkDefinition.h
+    for cls in CEGUI_ns.classes():
+        if not declarations.templates.is_instantiation(cls.name):
+            continue
+
+        tplName = declarations.templates.name(cls.name)
+
+        desired_classes = ["TypedProperty", "FalagardPropertyBase", "PropertyDefinition", "PropertyLinkDefinition"]
+
+        for desired_class in desired_classes:
+            if tplName.startswith(desired_class):
+                cls.include()
 
     # falagard/FalPropertyDefinitionBase.h
     propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
@@ -1150,11 +1160,6 @@ void Iterator_previous(::CEGUI::%s& t)
     # falagard/FalPropertyInitialiser.h
     propertyInitialiser = CEGUI_ns.class_("PropertyInitialiser")
     propertyInitialiser.include()
-
-    # falagard/FalPropertyLinkDefinition.h
-    # FIXME: This is now a template and CE did not know what to do!
-    #propertyLinkDefinition = CEGUI_ns.class_("PropertyLinkDefinition")
-    #propertyLinkDefinition.include()
 
     # falagard/FalSectionSpecification.h
     sectionSpecification = CEGUI_ns.class_("SectionSpecification")
