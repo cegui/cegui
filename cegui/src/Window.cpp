@@ -2257,6 +2257,9 @@ void Window::onAlphaChanged(WindowEventArgs& e)
     }
 
     updateGeometryBuffersAlpha();
+    invalidateRenderingSurface();
+    getGUIContext().markAsDirty();
+
     fireEvent(EventAlphaChanged, e, EventNamespace);
 }
 
