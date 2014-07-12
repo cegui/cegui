@@ -298,21 +298,22 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 {
     // We first check if some other buffer has already allocated a suited buffer
     // for us
-    //Ogre::HardwareVertexBufferSharedPtr already_created = 
-    //    d_owner.getVertexBuffer(count);
+    Ogre::HardwareVertexBufferSharedPtr already_created = 
+        d_owner.getVertexBuffer(count);
 
-    //if (!already_created.isNull())
-    //{
+    if (!already_created.isNull())
+    {
 
-    //    d_hwBuffer = already_created;
-    //    return;
-    //}
+        d_hwBuffer = already_created;
 
-    // Create the a new vertex buffer
-    d_hwBuffer = Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(
-        getFloatsPerVertex()*sizeof(float), count,
-        Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
-        false);
+    } else {
+
+        // Create the a new vertex buffer
+        d_hwBuffer = Ogre::HardwareBufferManager::getSingleton().
+            createVertexBuffer(getFloatsPerVertex()*sizeof(float), count,
+            Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
+            false);
+    }
 
     if (d_hwBuffer.isNull())
     {
@@ -320,7 +321,6 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
             "probably because the vertex layout is invalid."));
     }
 
-    
     // bind the vertex buffer for rendering
     d_renderOp.vertexData->vertexBufferBinding->setBinding(0, d_hwBuffer);
 }
@@ -331,7 +331,7 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
     d_renderOp.vertexData = 0;
 
     // Store the hardware buffer so that other instances can use it later
-    //d_owner.returnVertexBuffer(d_hwBuffer);
+    d_owner.returnVertexBuffer(d_hwBuffer);
 
     d_hwBuffer.setNull();
 }
