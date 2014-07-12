@@ -435,14 +435,14 @@ public:
     */
     void setRenderMaterial(RefCounted<RenderMaterial> render_material);
 
-    /*
+    /*!
     \brief
         Sets the alpha for this window
     \param alpha The new alpha value in the range 0.f-1.f
     */
     void setAlpha(float alpha);
 
-    /*
+    /*!
     \brief 
         Gets the current alpha value
     */

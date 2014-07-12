@@ -188,8 +188,6 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         default:
             CEGUI_THROW(RendererException("Invalid parameter type"));
         }
-
-
     }
     
     // Pass the finalized parameters to Ogre
