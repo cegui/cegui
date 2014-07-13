@@ -192,7 +192,6 @@ namespace CEGUI
 
         // calculate final colours
         ColourRect final_cols(d_textCols);
-        final_cols.modulateAlpha(d_window->getEffectiveAlpha());
         // cache the text for rendering.
         d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffers(),
                                         absarea.getPosition(),
