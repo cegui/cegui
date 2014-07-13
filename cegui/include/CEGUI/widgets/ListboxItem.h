@@ -438,14 +438,6 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Return a ColourRect object describing the colours in \a cols after having their alpha
-        component modulated by the value \a alpha.
-    */
-    ColourRect getModulateAlphaColourRect(const ColourRect& cols, float alpha) const;
-
-
-    /*!
-    \brief
         Return a colour value describing the colour specified by \a col after having its alpha
         component modulated by the value \a alpha.
     */
