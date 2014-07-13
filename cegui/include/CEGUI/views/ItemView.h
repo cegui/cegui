@@ -147,12 +147,12 @@ public:
         This vector's iterator might get invalidated in the case when items are
         removed from the underlying ItemModel while iterating over this vector.
 
-        In the following example you can see a way of using the selection states.
+        In the following example you can see a way of removing the selecting items:
         \code
             while(!view->getIndexSelectionStates().empty())
             {
                 ModelIndexSelectionState& state = view->getIndexSelectionStates().back();
-                // use selection state
+                // remove item from model
             }
         \endcode
     */
