@@ -194,6 +194,7 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
         buffer.setClippingRegion(*render_settings.d_clipArea);
     buffer.setTexture("texture0", d_texture);
     buffer.appendGeometry(vbuffer, 6);
+    buffer.setAlpha(render_settings.d_alpha);
 }
 
 

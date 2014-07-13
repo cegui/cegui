@@ -178,11 +178,13 @@ public:
         ImageRenderSettings(const Rectf& dest_area,
                             const Rectf* clip_area,
                             bool clipping_enabled,
-                            const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF)) :
+                            const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
+                            float alpha = 1.0f) :
             d_destArea(dest_area),
             d_clipArea(clip_area),
             d_clippingEnabled(clipping_enabled),
-            d_multiplyColours(multiplication_colours)
+            d_multiplyColours(multiplication_colours),
+            d_alpha(alpha)
         {
         }
 
@@ -190,7 +192,8 @@ public:
             d_destArea(source.d_destArea),
             d_clipArea(source.d_clipArea),
             d_clippingEnabled(source.d_clippingEnabled),
-            d_multiplyColours(source.d_multiplyColours)
+            d_multiplyColours(source.d_multiplyColours),
+            d_alpha(source.d_alpha)
         {
         }
 
@@ -204,6 +207,9 @@ public:
         //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
         //! If this will be used depends on the underlying image.
         ColourRect d_multiplyColours;
+        //! The alpha value for this image, should be set as the GeometryBuffer's
+        //! alpha by the underlying image class
+        float d_alpha;
     };
 
 
@@ -312,9 +318,11 @@ public:
                 const Rectf& dest_area,
                 const Rectf* clip_area,
                 bool clipping_enabled,
-                const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF)) const
+                const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
+                float alpha = 1.0f) const
     {
-        ImageRenderSettings render_settings(dest_area, clip_area, clipping_enabled, multiplication_colours);
+        ImageRenderSettings render_settings(dest_area, clip_area, clipping_enabled, 
+            multiplication_colours, alpha);
         render(geometry_buffers, render_settings);
     }
 
@@ -331,9 +339,11 @@ public:
                 const Vector2f& position,
                 const Rectf* clip_area,
                 const bool clipping_enabled,
-                const ColourRect& colours) const
+                const ColourRect& colours,
+                float alpha = 1.0f) const
     {
-        ImageRenderSettings render_settings(Rectf(position, getRenderedSize()), clip_area, clipping_enabled, colours);
+        ImageRenderSettings render_settings(Rectf(position, getRenderedSize()), 
+            clip_area, clipping_enabled, colours, alpha);
         render(geometry_buffers, render_settings);
     }
 
@@ -353,9 +363,11 @@ public:
                 const Sizef& size,
                 const Rectf* clip_area,
                 const bool clipping_enabled,
-                const ColourRect& colours) const
+                const ColourRect& colours, 
+                float alpha = 1.0f) const
     {
-        ImageRenderSettings render_settings(Rectf(position, size), clip_area, clipping_enabled, colours);
+        ImageRenderSettings render_settings(Rectf(position, size), clip_area, 
+            clipping_enabled, colours, alpha);
         render(geometry_buffers, render_settings);
     }
 

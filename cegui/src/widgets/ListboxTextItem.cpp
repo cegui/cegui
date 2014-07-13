@@ -138,7 +138,7 @@ void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const
     if (d_selected && d_selectBrush != 0)
     {
         d_selectBrush->render(geometry_buffers, targetRect, clipper, true,
-                            getModulateAlphaColourRect(d_selectCols, alpha));
+                            d_selectCols, alpha);
     }
 
     const Font* font = getFont();
@@ -154,8 +154,7 @@ void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const
     if (!d_renderedStringValid)
         parseTextString();
 
-    const ColourRect final_colours(
-        getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
+    const ColourRect final_colours(ColourRect(0xFFFFFFFF));
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
