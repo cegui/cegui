@@ -200,17 +200,13 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
     {
         // calculate final colours to use.
         ColourRect colours;
-        const float alpha = w->getEffectiveAlpha();
         ColourRect normalTextCol;
         setColourRectToUnselectedTextColour(normalTextCol);
-        normalTextCol.modulateAlpha(alpha);
         ColourRect selectTextCol;
         setColourRectToSelectedTextColour(selectTextCol);
-        selectTextCol.modulateAlpha(alpha);
         ColourRect selectBrushCol;
         w->hasInputFocus() ? setColourRectToActiveSelectionColour(selectBrushCol) :
                              setColourRectToInactiveSelectionColour(selectBrushCol);
-        selectBrushCol.modulateAlpha(alpha);
 
         const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
         const size_t numLines = d_lines.size();

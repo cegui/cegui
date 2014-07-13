@@ -189,7 +189,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             CEGUI_THROW(RendererException("Invalid parameter type"));
         }
     }
-    
+
     // Pass the finalized parameters to Ogre
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM, 
         d_vertexParameters, Ogre::GPV_ALL);
