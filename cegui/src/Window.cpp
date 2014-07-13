@@ -3812,14 +3812,14 @@ void Window::updateGeometryBuffersTranslationAndClipping()
 
 void Window::updateGeometryBuffersAlpha()
 {
-	float final_alpha = getEffectiveAlpha();
+    float final_alpha = getEffectiveAlpha();
 
-	const size_t geom_buffer_count = d_geometryBuffers.size();
-	for (size_t i = 0; i < geom_buffer_count; ++i)
-	{
-		CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-		currentBuffer->setAlpha(final_alpha);
-	}
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+        currentBuffer->setAlpha(final_alpha);
+    }
 }
 
 //----------------------------------------------------------------------------//
