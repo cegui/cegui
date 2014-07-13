@@ -178,6 +178,9 @@ public:
     virtual bool setSelectedItem(const ModelIndex& index);
     virtual bool setItemSelectionState(const ModelIndex& index, bool selected);
 
+    //! Clears all selected items
+    void clearSelections();
+
     virtual bool isIndexSelected(const ModelIndex& index) const;
 
     void setSelectionBrushImage(const Image* image);

@@ -696,4 +696,10 @@ void ItemView::onSortModeChanged(WindowEventArgs& args)
     //TODO: make all events be triggered on view's event namespace.
     fireEvent(EventSortModeChanged, args);
 }
+
+//----------------------------------------------------------------------------//
+void ItemView::clearSelections()
+{
+    d_indexSelectionStates.clear();
+}
 }
