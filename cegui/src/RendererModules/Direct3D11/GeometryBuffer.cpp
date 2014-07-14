@@ -81,6 +81,8 @@ void Direct3D11GeometryBuffer::draw() const
     glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_matrix;
     shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
+    shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
+
     // set our buffer as the vertex source.
     const UINT stride = getVertexAttributeElementCount() * sizeof(float);
     const UINT offset = 0;

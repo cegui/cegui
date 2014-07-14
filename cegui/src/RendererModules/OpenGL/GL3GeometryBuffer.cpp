@@ -88,6 +88,8 @@ void OpenGL3GeometryBuffer::draw() const
     glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_matrix;
     shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
+    shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
+
     // activate desired blending mode
     d_owner.setupRenderingBlendMode(d_blendMode);
 
