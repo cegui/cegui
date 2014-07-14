@@ -1,6 +1,7 @@
 /***********************************************************************
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
+                edited by Lukas E Meindl in Jul 2014
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
@@ -44,13 +45,11 @@
 #endif
 
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-    Class that encapsulates look & feel information for a particular widget
-    type.
+    Class that encapsulates Look N' Feel information for a widget.
 */
 class CEGUIEXPORT WidgetLookFeel :
     public AllocatedObject<WidgetLookFeel>
@@ -102,6 +101,8 @@ public:
         Nothing.
     */
     void addImagerySection(const ImagerySection& section);
+
+    //! \deprecated This function is deprecated in marked for deletion
     void renameImagerySection(const String& oldName, const String& newName);
 
     /*!
@@ -248,7 +249,9 @@ public:
     */
     const NamedArea& getNamedArea(const String& name) const;
 
+    //! \deprecated This function is deprecated and marked for deletion
     void renameNamedArea(const String& oldName, const String& newName);
+
     /*!
     \brief
         return whether a NamedArea object with the specified name exists for
@@ -362,26 +365,165 @@ public:
     /*!
     \brief
         Takes the name for a widget component and returns a pointer to
-        it if it exists or 0 if it does'nt.
+        it if it exists or Null if it doesn't.
 
     \param name
         The name of the Child component to look for.
+
+    \deprecated
+        This function will be replaced by getWidgetComponent in the next version.
     */
     const WidgetComponent* findWidgetComponent(const String& name) const;
 
+
+    /*!
+    \brief
+        Takes the name for a WidgetComponent and returns a pointer to
+        it if it exists or Null if it doesn't.
+
+    \param name
+        The name of the WidgetComponent to look for.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A pointer to the WidgetComponent.
+
+    \deprecated
+        This function will be replaced by getWidgetComponent in the next version.
+    */
+    WidgetComponent* retrieveWidgetComponentFromList(const String& name, bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Takes the name for a Property (PropertyInitialiser) and returns a pointer to
+        it if it exists or 0 if it doesn't.
+
+    \param name
+        The name of the Property (PropertyInitialiser) to look for.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A pointer to the Property (PropertyInitialiser).
+
+    \deprecated
+        This function will be replaced by getPropertyInitialiser in the next version.
+    */
+    PropertyInitialiser* retrievePropertyInitialiserFromList(const String& name, bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Takes the name for a PropertyDefinition and returns a pointer to
+        it if it exists or 0 if it doesn't.
+
+    \param name
+        The name of the PropertyDefinition (PropertyDefinitionBase) to look for.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A pointer to the PropertyDefinition (PropertyDefinitionBase).
+
+    \deprecated
+        This function will be replaced by getPropertyDefinition in the next version.
+    */
+    PropertyDefinitionBase* retrievePropertyDefinitionFromList(const String& name, bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Takes the name for a PropertyLinkDefinition and returns a pointer to
+        it if it exists or 0 if it doesn't.
+
+    \param name
+        The name of the PropertyLinkDefinition (PropertyDefinitionBase) to look for.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A pointer to the PropertyLinkDefinition (PropertyDefinitionBase).
+
+    \deprecated
+        This function will be replaced by getPropertyLinkDefinition in the next version.
+    */
+    PropertyDefinitionBase* retrievePropertyLinkDefinitionFromList(const String& name, bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Takes the name for a EventLinkDefinition and returns a pointer to
+        it if it exists or 0 if it doesn't.
+
+    \param name
+        The name of the EventLinkDefinition to look for.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A pointer to the EventLinkDefinition.
+
+    \deprecated
+        This function will be replaced by getEventLinkDefinition in the next version.
+    */
+    EventLinkDefinition* retrieveEventLinkDefinitionFromList(const String& name, bool includeInheritedElements = false);
+    
+
+    typedef std::set<String, StringFastLessCompare
+        CEGUI_SET_ALLOC(String)> StringSet;
+
+    /** Typedefs for maps of Falagard elements this WidgetLookFeel owns. */
+    //! Map of Strings to StateImagery pointers
+    typedef std::map<String, StateImagery*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, StateImagery*)> StateImageryPointerMap;
+    //! Map of Strings to ImagerySection pointers
+    typedef std::map<String, ImagerySection*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, ImagerySection*)> ImagerySectionPointerMap;
+    //! Map of Strings to NamedArea pointers
+    typedef std::map<String, NamedArea*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, NamedArea*)> NamedAreaPointerMap;
+    //! Map of Strings to WidgetComponent pointers
+    typedef std::map<String, WidgetComponent*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, WidgetComponent*)> WidgetComponentPointerMap;
+    //! Map of Strings to AnimationInstance pointers
+    typedef std::map<String, AnimationInstance*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, AnimationInstance*)> AnimationInstancePointerMap;
+    //! Map of Strings to EventLinkDefinition pointers
+    typedef std::map<String, EventLinkDefinition*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, EventLinkDefinition*)> EventLinkDefinitionPointerMap;
+
+    /** Typedefs for maps of property related elements this WidgetLookFeel owns. */
+    //! Map of Strings to PropertyInitialiser pointers
+    typedef std::map<String, PropertyInitialiser*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, PropertyInitialiser*)> PropertyInitialiserPointerMap;
+    //! Map of Strings to PropertyDefinitionBase pointers
+    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, PropertyDefinitionBase*)> PropertyDefinitionBasePointerMap;
+
+
+
     /** Typedefs for property related lists. */
+    //! \deprecated This type is deprecated and will be moved into the private section and changed into a map in the next version
     typedef std::vector<PropertyInitialiser
         CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertyList;
+    //! \deprecated This type is deprecated and will be moved into the private section and changed into a map in the next version
     typedef std::vector<PropertyDefinitionBase*
         CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyDefinitionList;
+    //! \deprecated This type is deprecated and will be moved into the private section and changed into a map in the next version
     typedef std::vector<PropertyDefinitionBase*
         CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyLinkDefinitionList;
+
+
 
     /** Obtains list of properties definitions.
      * @access public
      * @return CEGUI::WidgetLookFeel::PropertyDefinitionList List of properties
      * definitions
      */
+    //! \deprecated This function is deprecated and will be removed in the next version
     const PropertyDefinitionList& getPropertyDefinitions() const
     {
         return d_propertyDefinitions;
@@ -392,6 +534,7 @@ public:
      * @return CEGUI::WidgetLookFeel::PropertyLinkDefinitionList List of
      * properties link definitions
      */
+    //! \deprecated This function is deprecated and will be removed in the next version
     const PropertyLinkDefinitionList& getPropertyLinkDefinitions() const
     {
         return d_propertyLinkDefinitions;
@@ -401,6 +544,7 @@ public:
      * @access public
      * @return CEGUI::WidgetLookFeel::PropertyList List of properties
      */
+    //! \deprecated This function is deprecated and will be removed in the next version
     const PropertyList& getProperties() const
     {
         return d_properties;
@@ -409,17 +553,148 @@ public:
     //! perform any processing required due to the given font having changed.
     bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
+
+
+        /*!
+    \brief
+        Returns a map of names to pointers for all StateImagery elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to StateImagery pointers.
+    */
+    StateImageryPointerMap getStateImageryMap(bool includeInheritedElements = false);
+    
+    /*!
+    \brief
+        Returns a map of names to pointers for all ImagerySection elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to ImagerySection pointers.
+    */
+    ImagerySectionPointerMap getImagerySectionMap(bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Returns a map of names to pointers for all NamedArea elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to NamedArea pointers.
+    */
+    NamedAreaPointerMap getNamedAreaMap(bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Returns a map of names to pointers for all WidgetComponent elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to WidgetComponent pointers.
+    */
+    WidgetComponentPointerMap getWidgetComponentMap(bool includeInheritedElements = false);
+  
+    /*!
+    \brief
+        Returns a map of names to pointers for all PropertyInitialiser elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to PropertyInitialiser pointers.
+    */
+    PropertyInitialiserPointerMap getPropertyInitialiserMap(bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Returns a map of names to pointers for all PropertyDefinition elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to PropertyDefinition pointers.
+    */
+    PropertyDefinitionBasePointerMap getPropertyDefinitionMap(bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Returns a map of names to pointers for all PropertyLinkDefinition elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to PropertyLinkDefinition pointers.
+    */
+    PropertyDefinitionBasePointerMap getPropertyLinkDefinitionMap(bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Returns a map of names to pointers for all EventLinkDefinition elements this WidgetLookFeel owns.
+
+    \param includeInheritedElements
+        If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        A map of names to EventLinkDefinition pointers.
+    */
+    EventLinkDefinitionPointerMap getEventLinkDefinitionMap(bool includeInheritedElements = false);
+
+    /*!
+    \brief
+        Returns a String containing the name of the inherited WidgetLookFeel.
+
+    \return
+        A String containing the name of the inherited WidgetLookFeel.
+    */
+    const CEGUI::String& getInheritedWidgetLookName() const;
+
+
+    StringSet getStateNames(bool inherits = false) const;
+    StringSet getImageryNames(bool inherits = false) const;
+    StringSet getNamedAreaNames(bool inherits = false) const;
+    StringSet getWidgetNames(bool inherits = false) const;
+    StringSet getPropertyInitialiserNames(bool inherits = false) const;
+    StringSet getPropertyDefinitionNames(bool inherits = false) const;
+    StringSet getPropertyLinkDefinitionNames(bool inherits = false) const;
+    StringSet getEventLinkDefinitionNames(bool inherits = false) const;
+    StringSet getAnimationNames(bool inherits = false) const;
+
 private:
+
+    /*!
+    \brief
+        Returns a pointer to the inherited WidgetLookFeel. If this WidgetLookFeel does not inherit from another, the function returns 0.
+
+    \return
+        A pointer to the inherited WidgetLookFeel.
+    */
+    WidgetLookFeel* getInheritedWidgetLookFeel();
+
+
     typedef std::map<String, StateImagery, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, StateImagery)> StateList;
     typedef std::map<String, ImagerySection, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, ImagerySection)> ImageryList;
     typedef std::map<String, NamedArea, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, NamedArea)> NamedAreaList;
+
     typedef std::vector<WidgetComponent
         CEGUI_VECTOR_ALLOC(WidgetComponent)> WidgetList;
     typedef std::vector<String
         CEGUI_VECTOR_ALLOC(String)> AnimationList;
+    //! The type is more or less deprecated, as it will be changed to have the correct allocator in the next version
     typedef std::multimap<Window*, AnimationInstance*
         /*CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)*/> AnimationInstanceMap;
     typedef std::vector<EventLinkDefinition
@@ -475,47 +750,114 @@ public:
     /*************************************************************************
         Iterator stuff
     *************************************************************************/
-    typedef std::set<String, StringFastLessCompare
-            CEGUI_SET_ALLOC(String)> StringSet;
 
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstMapIterator<StateList> StateIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstMapIterator<ImageryList> ImageryIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstMapIterator<NamedAreaList> NamedAreaIterator;
+
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstVectorIterator<WidgetComponentCollator> WidgetComponentIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstVectorIterator<PropertyDefinitionCollator> PropertyDefinitionIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstVectorIterator<PropertyLinkDefinitionCollator> PropertyLinkDefinitionIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstVectorIterator<PropertyInitialiserCollator> PropertyInitialiserIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstVectorIterator<EventLinkDefinitionCollator> EventLinkDefinitionIterator;
+    //! \deprecated This typedef is deprecated and has been marked for removal.
     typedef ConstVectorIterator<AnimationNameSet> AnimationNameIterator;
 
-    StringSet getStateNames(bool inherits = false) const;
-    StringSet getImageryNames(bool inherits = false) const;
-    StringSet getNamedAreaNames(bool inherits = false) const;
+    /*!
+    \brief
+        Returns an iterator for the StateImageries of this WidgetLookFeel.
 
-    StringSet getWidgetNames(bool inherits = false) const;
-    StringSet getPropertyDefinitionNames(bool inherits = false) const;
-    StringSet getPropertyLinkDefinitionNames(bool inherits = false) const;
-    StringSet getPropertyInitialiserNames(bool inherits = false) const;
-    StringSet getEventLinkDefinitionNames(bool inherits = false) const;
-    StringSet getAnimationNames(bool inherits = false) const;
-
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     StateIterator getStateIterator(bool inherits = false) const;
+    /*!
+    \brief
+        Returns an iterator for the ImagerySections of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     ImageryIterator getImageryIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the NamedAreas of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     NamedAreaIterator getNamedAreaIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the WidgetComponents of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     WidgetComponentIterator getWidgetComponentIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the PropertyDefinitions of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     PropertyDefinitionIterator getPropertyDefinitionIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the PropertyLinkDefinitions of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     PropertyLinkDefinitionIterator getPropertyLinkDefinitionIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the PropertyInitialisers of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     PropertyInitialiserIterator getPropertyInitialiserIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the EventLinkDefinitions of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     EventLinkDefinitionIterator getEventLinkDefinitionIterator(bool inherits = false) const;
+
+    /*!
+    \brief
+        Returns an iterator for the AnimationNames of this WidgetLookFeel.
+
+    \deprecated
+        This function is deprecated and has been marked for removal.
+    */
     AnimationNameIterator getAnimationNameIterator(bool inherits = false) const;
 };
 
-} // End of  CEGUI namespace section
+}
 
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIFalWidgetLookFeel_h_
+#endif
 
