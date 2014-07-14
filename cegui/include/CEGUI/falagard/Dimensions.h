@@ -853,7 +853,7 @@ public:
         area for this ComponentArea.
 
     \note
-        Calling this will replace any existing souce, such as a named area.
+        Calling this will replace any existing source, such as a named area.
 
     \param property
         String object holding the name of a Propery.  The property should access
@@ -871,7 +871,7 @@ public:
     const String& ComponentArea::getNamedAreaSourceLook() const;
 
     //! Set the named area source of the ComponentArea.
-    void setNamedAreaSouce(const String& widget_look, const String& area_name);
+    void setNamedAreaSource(const String& widget_look, const String& area_name);
 
     /*!
     \brief

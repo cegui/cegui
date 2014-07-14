@@ -1663,7 +1663,7 @@ namespace CEGUI
 
         const String look(attributes.getValueAsString(LookAttribute));
 
-        d_area->setNamedAreaSouce(look.empty() ? d_widgetlook->getName() : look,
+        d_area->setNamedAreaSource(look.empty() ? d_widgetlook->getName() : look,
                                   attributes.getValueAsString(NameAttribute));
     }
 
