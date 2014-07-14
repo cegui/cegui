@@ -168,6 +168,12 @@
 
 #include "FalagardPropertyBaseFloat.pypp.hpp"
 
+#include "FalagardPropertyBaseFont.pypp.hpp"
+
+#include "FalagardPropertyBaseHorizontalFormatting.pypp.hpp"
+
+#include "FalagardPropertyBaseHorizontalTextFormatting.pypp.hpp"
+
 #include "FalagardPropertyBaseImage.pypp.hpp"
 
 #include "FalagardPropertyBaseRectf.pypp.hpp"
@@ -179,6 +185,10 @@
 #include "FalagardPropertyBaseUint.pypp.hpp"
 
 #include "FalagardPropertyBaseVector2f.pypp.hpp"
+
+#include "FalagardPropertyBaseVerticalFormatting.pypp.hpp"
+
+#include "FalagardPropertyBaseVerticalTextFormatting.pypp.hpp"
 
 #include "FalagardXMLHelper.pypp.hpp"
 
@@ -336,6 +346,12 @@
 
 #include "PropertyDefinitionFloat.pypp.hpp"
 
+#include "PropertyDefinitionFont.pypp.hpp"
+
+#include "PropertyDefinitionHorizontalFormatting.pypp.hpp"
+
+#include "PropertyDefinitionHorizontalTextFormatting.pypp.hpp"
+
 #include "PropertyDefinitionImage.pypp.hpp"
 
 #include "PropertyDefinitionIterator.pypp.hpp"
@@ -349,6 +365,10 @@
 #include "PropertyDefinitionUint.pypp.hpp"
 
 #include "PropertyDefinitionVector2f.pypp.hpp"
+
+#include "PropertyDefinitionVerticalFormatting.pypp.hpp"
+
+#include "PropertyDefinitionVerticalTextFormatting.pypp.hpp"
 
 #include "PropertyDim.pypp.hpp"
 
@@ -378,6 +398,12 @@
 
 #include "PropertyLinkDefinitionFloat.pypp.hpp"
 
+#include "PropertyLinkDefinitionFont.pypp.hpp"
+
+#include "PropertyLinkDefinitionHorizontalFormatting.pypp.hpp"
+
+#include "PropertyLinkDefinitionHorizontalTextFormatting.pypp.hpp"
+
 #include "PropertyLinkDefinitionImage.pypp.hpp"
 
 #include "PropertyLinkDefinitionRectf.pypp.hpp"
@@ -389,6 +415,10 @@
 #include "PropertyLinkDefinitionUint.pypp.hpp"
 
 #include "PropertyLinkDefinitionVector2f.pypp.hpp"
+
+#include "PropertyLinkDefinitionVerticalFormatting.pypp.hpp"
+
+#include "PropertyLinkDefinitionVerticalTextFormatting.pypp.hpp"
 
 #include "PropertyReceiver.pypp.hpp"
 
@@ -570,6 +600,12 @@
 
 #include "TypedPropertyFloat.pypp.hpp"
 
+#include "TypedPropertyFont.pypp.hpp"
+
+#include "TypedPropertyHorizontalFormatting.pypp.hpp"
+
+#include "TypedPropertyHorizontalTextFormatting.pypp.hpp"
+
 #include "TypedPropertyImage.pypp.hpp"
 
 #include "TypedPropertyRectf.pypp.hpp"
@@ -581,6 +617,10 @@
 #include "TypedPropertyUint.pypp.hpp"
 
 #include "TypedPropertyVector2f.pypp.hpp"
+
+#include "TypedPropertyVerticalFormatting.pypp.hpp"
+
+#include "TypedPropertyVerticalTextFormatting.pypp.hpp"
 
 #include "UBox.pypp.hpp"
 
@@ -982,6 +1022,20 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_FalagardPropertyBaseColourRect_class();
 
+    register_Font_class();
+
+    register_TypedPropertyFont_class();
+
+    register_FalagardPropertyBaseFont_class();
+
+    register_TypedPropertyHorizontalFormatting_class();
+
+    register_FalagardPropertyBaseHorizontalFormatting_class();
+
+    register_TypedPropertyHorizontalTextFormatting_class();
+
+    register_FalagardPropertyBaseHorizontalTextFormatting_class();
+
     register_TypedPropertyImage_class();
 
     register_FalagardPropertyBaseImage_class();
@@ -1030,6 +1084,14 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_FalagardPropertyBaseVector2f_class();
 
+    register_TypedPropertyVerticalFormatting_class();
+
+    register_FalagardPropertyBaseVerticalFormatting_class();
+
+    register_TypedPropertyVerticalTextFormatting_class();
+
+    register_FalagardPropertyBaseVerticalTextFormatting_class();
+
     register_TypedPropertyBool_class();
 
     register_FalagardPropertyBaseBool_class();
@@ -1043,8 +1105,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_FalagardPropertyBaseUint_class();
 
     register_FalagardXMLHelper_class();
-
-    register_Font_class();
 
     register_FontDim_class();
 
@@ -1164,6 +1224,12 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertyDefinitionColourRect_class();
 
+    register_PropertyDefinitionFont_class();
+
+    register_PropertyDefinitionHorizontalFormatting_class();
+
+    register_PropertyDefinitionHorizontalTextFormatting_class();
+
     register_PropertyDefinitionImage_class();
 
     register_PropertyDefinitionColourURect_class();
@@ -1182,6 +1248,10 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertyDefinitionVector2f_class();
 
+    register_PropertyDefinitionVerticalFormatting_class();
+
+    register_PropertyDefinitionVerticalTextFormatting_class();
+
     register_PropertyDefinitionBool_class();
 
     register_PropertyDefinitionFloat_class();
@@ -1197,6 +1267,12 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_PropertyLinkDefinitionColour_class();
 
     register_PropertyLinkDefinitionColourRect_class();
+
+    register_PropertyLinkDefinitionFont_class();
+
+    register_PropertyLinkDefinitionHorizontalFormatting_class();
+
+    register_PropertyLinkDefinitionHorizontalTextFormatting_class();
 
     register_PropertyLinkDefinitionImage_class();
 
@@ -1215,6 +1291,10 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_PropertyLinkDefinitionColourUVector2_class();
 
     register_PropertyLinkDefinitionVector2f_class();
+
+    register_PropertyLinkDefinitionVerticalFormatting_class();
+
+    register_PropertyLinkDefinitionVerticalTextFormatting_class();
 
     register_PropertyLinkDefinitionBool_class();
 

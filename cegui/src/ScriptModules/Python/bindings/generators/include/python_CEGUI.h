@@ -90,6 +90,26 @@ public:
     {
         return PropertyHelper<UBox>::fromString(str);
     }
+    static VerticalTextFormatting stringToVerticalTextFormatting(const String& str)
+    {
+        return PropertyHelper<VerticalTextFormatting>::fromString(str);
+    }
+    static HorizontalTextFormatting stringToHorizontalTextFormatting(const String& str)
+    {
+        return PropertyHelper<HorizontalTextFormatting>::fromString(str);
+    }
+    static VerticalFormatting stringToVerticalFormatting(const String& str)
+    {
+        return PropertyHelper<VerticalFormatting>::fromString(str);
+    }
+    static HorizontalFormatting stringToHorizontalFormatting(const String& str)
+    {
+        return PropertyHelper<HorizontalFormatting>::fromString(str);
+    }
+    static const Font* stringToFont(const String& str)
+    {
+        return PropertyHelper<Font*>::fromString(str);
+    }
 
     static String floatToString(float val)
     {
@@ -142,6 +162,26 @@ public:
     static String uboxToString(const UBox& val)
     {
         return PropertyHelper<UBox>::toString(val);
+    }
+    static String verticalTextFormattingToString(VerticalTextFormatting val)
+    {
+        return PropertyHelper<VerticalTextFormatting>::toString(val);
+    }
+    static String horizontalTextFormattingToString(HorizontalTextFormatting val)
+    {
+        return PropertyHelper<HorizontalTextFormatting>::toString(val);
+    }
+    static String verticalFormattingToString(VerticalFormatting val)
+    {
+        return PropertyHelper<VerticalFormatting>::toString(val);
+    }
+    static String horizontalFormattingToString(HorizontalFormatting val)
+    {
+        return PropertyHelper<HorizontalFormatting>::toString(val);
+    }
+    static String fontToString(const Font* val)
+    {
+        return PropertyHelper<Font*>::toString(val);
     }
 };
 
@@ -410,6 +450,31 @@ namespace pyplusplus
         typedef CEGUI::FalagardPropertyBase<CEGUI::String> FalagardPropertyBaseString;
         typedef CEGUI::PropertyDefinition<CEGUI::String> PropertyDefinitionString;
         typedef CEGUI::PropertyLinkDefinition<CEGUI::String> PropertyLinkDefinitionString;
+
+        typedef CEGUI::TypedProperty<CEGUI::VerticalTextFormatting> TypedPropertyVerticalTextFormatting;
+        typedef CEGUI::FalagardPropertyBase<CEGUI::VerticalTextFormatting> FalagardPropertyBaseVerticalTextFormatting;
+        typedef CEGUI::PropertyDefinition<CEGUI::VerticalTextFormatting> PropertyDefinitionVerticalTextFormatting;
+        typedef CEGUI::PropertyLinkDefinition<CEGUI::VerticalTextFormatting> PropertyLinkDefinitionVerticalTextFormatting;
+
+        typedef CEGUI::TypedProperty<CEGUI::HorizontalTextFormatting> TypedPropertyHorizontalTextFormatting;
+        typedef CEGUI::FalagardPropertyBase<CEGUI::HorizontalTextFormatting> FalagardPropertyBaseHorizontalTextFormatting;
+        typedef CEGUI::PropertyDefinition<CEGUI::HorizontalTextFormatting> PropertyDefinitionHorizontalTextFormatting;
+        typedef CEGUI::PropertyLinkDefinition<CEGUI::HorizontalTextFormatting> PropertyLinkDefinitionHorizontalTextFormatting;
+
+        typedef CEGUI::TypedProperty<CEGUI::VerticalFormatting> TypedPropertyVerticalFormatting;
+        typedef CEGUI::FalagardPropertyBase<CEGUI::VerticalFormatting> FalagardPropertyBaseVerticalFormatting;
+        typedef CEGUI::PropertyDefinition<CEGUI::VerticalFormatting> PropertyDefinitionVerticalFormatting;
+        typedef CEGUI::PropertyLinkDefinition<CEGUI::VerticalFormatting> PropertyLinkDefinitionVerticalFormatting;
+
+        typedef CEGUI::TypedProperty<CEGUI::HorizontalFormatting> TypedPropertyHorizontalFormatting;
+        typedef CEGUI::FalagardPropertyBase<CEGUI::HorizontalFormatting> FalagardPropertyBaseHorizontalFormatting;
+        typedef CEGUI::PropertyDefinition<CEGUI::HorizontalFormatting> PropertyDefinitionHorizontalFormatting;
+        typedef CEGUI::PropertyLinkDefinition<CEGUI::HorizontalFormatting> PropertyLinkDefinitionHorizontalFormatting;
+
+        typedef CEGUI::TypedProperty<CEGUI::Font*> TypedPropertyFont;
+        typedef CEGUI::FalagardPropertyBase<CEGUI::Font*> FalagardPropertyBaseFont;
+        typedef CEGUI::PropertyDefinition<CEGUI::Font*> PropertyDefinitionFont;
+        typedef CEGUI::PropertyLinkDefinition<CEGUI::Font*> PropertyLinkDefinitionFont;
     }
 }
 
@@ -548,6 +613,31 @@ namespace python_CEGUI
             sizeof( CEGUI::FalagardPropertyBase<CEGUI::String> );
             sizeof( CEGUI::PropertyDefinition<CEGUI::String> );
             sizeof( CEGUI::PropertyLinkDefinition<CEGUI::String> );
+
+            sizeof( CEGUI::TypedProperty<CEGUI::VerticalTextFormatting> );
+            sizeof( CEGUI::FalagardPropertyBase<CEGUI::VerticalTextFormatting> );
+            sizeof( CEGUI::PropertyDefinition<CEGUI::VerticalTextFormatting> );
+            sizeof( CEGUI::PropertyLinkDefinition<CEGUI::VerticalTextFormatting> );
+
+            sizeof( CEGUI::TypedProperty<CEGUI::HorizontalTextFormatting> );
+            sizeof( CEGUI::FalagardPropertyBase<CEGUI::HorizontalTextFormatting> );
+            sizeof( CEGUI::PropertyDefinition<CEGUI::HorizontalTextFormatting> );
+            sizeof( CEGUI::PropertyLinkDefinition<CEGUI::HorizontalTextFormatting> );
+
+            sizeof( CEGUI::TypedProperty<CEGUI::VerticalFormatting> );
+            sizeof( CEGUI::FalagardPropertyBase<CEGUI::VerticalFormatting> );
+            sizeof( CEGUI::PropertyDefinition<CEGUI::VerticalFormatting> );
+            sizeof( CEGUI::PropertyLinkDefinition<CEGUI::VerticalFormatting> );
+
+            sizeof( CEGUI::TypedProperty<CEGUI::HorizontalFormatting> );
+            sizeof( CEGUI::FalagardPropertyBase<CEGUI::HorizontalFormatting> );
+            sizeof( CEGUI::PropertyDefinition<CEGUI::HorizontalFormatting> );
+            sizeof( CEGUI::PropertyLinkDefinition<CEGUI::HorizontalFormatting> );
+
+            sizeof( CEGUI::TypedProperty<CEGUI::Font*> );
+            sizeof( CEGUI::FalagardPropertyBase<CEGUI::Font*> );
+            sizeof( CEGUI::PropertyDefinition<CEGUI::Font*> );
+            sizeof( CEGUI::PropertyLinkDefinition<CEGUI::Font*> );
         }
     }
 }
