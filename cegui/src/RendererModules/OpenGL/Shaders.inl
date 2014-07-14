@@ -55,9 +55,12 @@ const char StandardShaderSolidFrag[] =
 
 "out vec4 out0;\n"
 
+"uniform float alphaPercentage;\n"
+
 "void main(void)\n"
 "{\n"
     "out0 = exColour;\n"
+    "out0.a *= alphaPercentage;\n"
 "}"
 ;
 
@@ -102,9 +105,12 @@ const char StandardShaderTexturedFrag[] =
 
 "out vec4 out0;\n"
 
+"uniform float alphaPercentage;\n"
+
 "void main(void)\n"
 "{\n"
     "out0 = texture(texture0, exTexCoord) * exColour;\n"
+    "out0.a *= alphaPercentage;\n"
 "}"
 ;
 

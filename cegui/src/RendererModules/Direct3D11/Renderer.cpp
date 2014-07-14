@@ -481,6 +481,8 @@ void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
     d_shaderWrapperTextured->addUniformVariable("texture0", ST_PIXEL, SPT_TEXTURE);
 
     d_shaderWrapperTextured->addUniformVariable("modelViewPerspMatrix", ST_VERTEX, SPT_MATRIX_4X4);
+    d_shaderWrapperTextured->addUniformVariable("alphaPercentage", ST_PIXEL, 
+        SPT_FLOAT);
 }
 
 //----------------------------------------------------------------------------//
@@ -490,6 +492,8 @@ void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
     d_shaderWrapperSolid = CEGUI_NEW_AO Direct3D11ShaderWrapper(*shader_standard_solid, this);
 
     d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix", ST_VERTEX, SPT_MATRIX_4X4);
+    d_shaderWrapperSolid->addUniformVariable("alphaPercentage", ST_PIXEL, 
+        SPT_FLOAT);
 }
 
 //----------------------------------------------------------------------------//
