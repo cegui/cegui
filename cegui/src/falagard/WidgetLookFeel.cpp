@@ -850,8 +850,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
 }
 
 //---------------------------------------------------------------------------//
-const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(
-                                            const String& propertyName) const
+const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(const String& propertyName) const
 {
     PropertyInitialiserCollator pic;
     appendPropertyInitialisers(pic);
@@ -865,8 +864,7 @@ const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(
 }
 
 //---------------------------------------------------------------------------//
-const WidgetComponent* WidgetLookFeel::findWidgetComponent(
-                                            const String& name) const
+const WidgetComponent* WidgetLookFeel::findWidgetComponent(const String& name) const
 {
     WidgetComponentCollator wcc;
     appendChildWidgetComponents(wcc);
@@ -878,6 +876,133 @@ const WidgetComponent* WidgetLookFeel::findWidgetComponent(
 
     return *wci;
 }
+
+//---------------------------------------------------------------------------//
+WidgetComponent* WidgetLookFeel::retrieveWidgetComponentFromList(const String& name, bool includeInheritedElements)
+{
+    WidgetList::iterator iter = d_childWidgets.begin();
+    WidgetList::iterator iterEnd = d_childWidgets.end();
+
+    while(iter != iterEnd)
+    {
+        if(iter->getWidgetName().compare(name) == 0)
+            return &(*iter);
+
+        ++iter;
+    }
+    
+    if(includeInheritedElements)
+    {
+        WidgetLookFeel* inheritedWidgetLook = getInheritedWidgetLookFeel();
+        if(inheritedWidgetLook != 0)
+            return inheritedWidgetLook->retrieveWidgetComponentFromList(name, true);
+    }
+
+    return 0;
+}
+
+//---------------------------------------------------------------------------//
+PropertyInitialiser* WidgetLookFeel::retrievePropertyInitialiserFromList(const String& name, bool includeInheritedElements)
+{
+    PropertyList::iterator iter = d_properties.begin();
+    PropertyList::iterator iterEnd = d_properties.end();
+
+    while(iter != iterEnd)
+    {
+        PropertyInitialiser& propInit = *iter;
+        if(propInit.getTargetPropertyName().compare(name) == 0)
+            return &propInit;
+
+        ++iter;
+    }
+
+    if(includeInheritedElements)
+    {
+        WidgetLookFeel* inheritedWidgetLook = getInheritedWidgetLookFeel();
+        if(inheritedWidgetLook != 0)
+            return inheritedWidgetLook->retrievePropertyInitialiserFromList(name, true);
+    }
+
+    return 0;
+}
+
+//---------------------------------------------------------------------------//
+PropertyDefinitionBase* WidgetLookFeel::retrievePropertyDefinitionFromList(const String& name, bool includeInheritedElements)
+{
+    PropertyDefinitionList::iterator iter = d_propertyDefinitions.begin();
+    PropertyDefinitionList::iterator iterEnd = d_propertyDefinitions.end();
+
+    while(iter != iterEnd)
+    {
+        PropertyDefinitionBase* propDefBase = *iter;
+        if(propDefBase->getPropertyName().compare(name) == 0)
+            return propDefBase;
+
+        ++iter;
+    }
+
+
+    if(includeInheritedElements)
+    {
+        WidgetLookFeel* inheritedWidgetLook = getInheritedWidgetLookFeel();
+        if(inheritedWidgetLook != 0)
+            return inheritedWidgetLook->retrievePropertyDefinitionFromList(name, true);
+    }
+
+    return 0;
+}
+
+
+//---------------------------------------------------------------------------//
+PropertyDefinitionBase* WidgetLookFeel::retrievePropertyLinkDefinitionFromList(const String& name, bool includeInheritedElements)
+{
+    PropertyLinkDefinitionList::iterator iter = d_propertyLinkDefinitions.begin();
+    PropertyLinkDefinitionList::iterator iterEnd = d_propertyLinkDefinitions.end();
+
+    while(iter != iterEnd)
+    {
+        PropertyDefinitionBase* propDefBase = *iter;
+        if(propDefBase->getPropertyName().compare(name) == 0)
+            return propDefBase;
+
+        ++iter;
+    }
+
+    if(includeInheritedElements)
+    {
+        WidgetLookFeel* inheritedWidgetLook = getInheritedWidgetLookFeel();
+        if(inheritedWidgetLook != 0)
+            return inheritedWidgetLook->retrievePropertyLinkDefinitionFromList(name, true);
+    }
+
+    return 0;
+}
+
+//---------------------------------------------------------------------------//
+EventLinkDefinition* WidgetLookFeel::retrieveEventLinkDefinitionFromList(const String& name, bool includeInheritedElements)
+{
+    EventLinkDefinitionList::iterator iter = d_eventLinkDefinitions.begin();
+    EventLinkDefinitionList::iterator iterEnd = d_eventLinkDefinitions.end();
+
+    while(iter != iterEnd)
+    {
+        EventLinkDefinition& eventLinkDef = *iter;
+        if(eventLinkDef.getName().compare(name) == 0)
+            return &eventLinkDef;
+
+        ++iter;
+    }
+
+    if(includeInheritedElements)
+    {
+        WidgetLookFeel* inheritedWidgetLook = getInheritedWidgetLookFeel();
+        if(inheritedWidgetLook != 0)
+            return inheritedWidgetLook->retrieveEventLinkDefinitionFromList(name, true);
+    }
+
+    return 0;
+}
+
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::addAnimationName(const String& anim_name)
@@ -1021,6 +1146,263 @@ bool WidgetLookFeel::handleFontRenderSizeChange(Window& window,
                 handleFontRenderSizeChange(window, font);
 
     return result;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::StateImageryPointerMap WidgetLookFeel::getStateImageryMap(bool includeInheritedElements)
+{
+    StateImageryPointerMap pointerMap;
+    StringSet nameSet = getStateNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        StateList::iterator stateImageryIter = d_stateImagery.find(currentElementName);
+
+        if(stateImageryIter == d_stateImagery.end())
+        {
+            CEGUI_THROW(UnknownObjectException("Error: StateImagery with name: \"" + currentElementName
+                + "\" exists in the list of names but a StateImagery with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            StateImagery* stateImagery = &stateImageryIter->second;
+            pointerMap.insert(std::make_pair(currentElementName, stateImagery));
+        }
+    }
+
+    return pointerMap;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bool includeInheritedElements)
+{
+    ImagerySectionPointerMap pointerMap;
+    StringSet nameSet = getImageryNames(includeInheritedElements);
+    
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        ImageryList::iterator imagerySectionIter = d_imagerySections.find(currentElementName);
+
+        if(imagerySectionIter == d_imagerySections.end())
+        {
+            CEGUI_THROW(UnknownObjectException("Error: ImagerySection with name: \"" + currentElementName
+                                               + "\" exists in the list of names but a ImagerySection with this name"
+                                               + "could not be found in the map"));
+        }
+        else
+        {        
+            ImagerySection* imagerySection = &imagerySectionIter->second;
+            pointerMap.insert(std::make_pair(currentElementName, imagerySection));
+        }
+    }
+
+    return pointerMap;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::NamedAreaPointerMap WidgetLookFeel::getNamedAreaMap(bool includeInheritedElements)
+{
+    NamedAreaPointerMap pointerMap;
+    StringSet nameSet = getNamedAreaNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        NamedAreaList::iterator namedAreaIter = d_namedAreas.find(currentElementName);
+
+        if(namedAreaIter == d_namedAreas.end())
+        {
+            CEGUI_THROW(UnknownObjectException("Error: NamedArea with name: \"" + currentElementName
+                + "\" exists in the list of names but a NamedArea with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            NamedArea* namedArea = &namedAreaIter->second;
+            pointerMap.insert(std::make_pair(currentElementName, namedArea));
+        }
+    }
+
+    return pointerMap;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::WidgetComponentPointerMap WidgetLookFeel::getWidgetComponentMap(bool includeInheritedElements)
+{
+    WidgetComponentPointerMap pointerMap;
+    StringSet nameSet = getWidgetNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        // This is deprecated in the next version, instead we will directly access the WidgetComponent map, which will be added.
+        WidgetComponent* widgetComponent = retrieveWidgetComponentFromList(currentElementName, includeInheritedElements);
+
+        if(widgetComponent == 0)
+        {
+            CEGUI_THROW(UnknownObjectException("Error: WidgetComponent with name: \"" + currentElementName
+                + "\" exists in the list of names but a WidgetComponent with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            pointerMap.insert(std::make_pair(currentElementName, widgetComponent));
+        }
+    }
+
+    return pointerMap;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::PropertyInitialiserPointerMap WidgetLookFeel::getPropertyInitialiserMap(bool includeInheritedElements)
+{
+    PropertyInitialiserPointerMap pointerMap;
+    StringSet nameSet = getPropertyInitialiserNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        PropertyInitialiser* propertyInitialiser = retrievePropertyInitialiserFromList(currentElementName, includeInheritedElements);
+
+        if(propertyInitialiser == 0)
+        {
+            CEGUI_THROW(UnknownObjectException("Error: PropertyInitialiser with name: \"" + currentElementName
+                + "\" exists in the list of names but a PropertyInitialiser with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            pointerMap.insert(std::make_pair(currentElementName, propertyInitialiser));
+        }
+    }
+
+    return pointerMap;
+}
+
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefinitionMap(bool includeInheritedElements)
+{
+    PropertyDefinitionBasePointerMap pointerMap;
+    StringSet nameSet = getPropertyDefinitionNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        PropertyDefinitionBase* propertyDefinition = retrievePropertyDefinitionFromList(currentElementName, includeInheritedElements);
+
+        if(propertyDefinition == 0)
+        {
+            CEGUI_THROW(UnknownObjectException("Error: PropertyDefinition with name: \"" + currentElementName
+                + "\" exists in the list of names but a PropertyDefinition with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            pointerMap.insert(std::make_pair(currentElementName, propertyDefinition));
+        }
+    }
+
+    return pointerMap;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLinkDefinitionMap(bool includeInheritedElements)
+{
+    PropertyDefinitionBasePointerMap pointerMap;
+    StringSet nameSet = getPropertyLinkDefinitionNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        PropertyDefinitionBase* propertyLinkDefinition = retrievePropertyLinkDefinitionFromList(currentElementName, includeInheritedElements);
+
+        if(propertyLinkDefinition == 0)
+        {
+            CEGUI_THROW(UnknownObjectException("Error: PropertyLinkDefinition with name: \"" + currentElementName
+                + "\" exists in the list of names but a PropertyLinkDefinition with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            pointerMap.insert(std::make_pair(currentElementName, propertyLinkDefinition));
+        }
+    }
+
+    return pointerMap;
+}
+
+ 
+//---------------------------------------------------------------------------//
+WidgetLookFeel::EventLinkDefinitionPointerMap WidgetLookFeel::getEventLinkDefinitionMap(bool includeInheritedElements)
+{
+    EventLinkDefinitionPointerMap pointerMap;
+    StringSet nameSet = getEventLinkDefinitionNames(includeInheritedElements);
+
+    StringSet::iterator iter = nameSet.begin();
+    StringSet::iterator iterEnd = nameSet.end();
+    while(iter != iterEnd)
+    {
+        const CEGUI::String& currentElementName = *iter;
+        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        EventLinkDefinition* eventLinkDef = retrieveEventLinkDefinitionFromList(currentElementName, includeInheritedElements);
+
+        if(eventLinkDef == 0)
+        {
+            CEGUI_THROW(UnknownObjectException("Error: EventLinkDefinition with name: \"" + currentElementName
+                + "\" exists in the list of names but a EventLinkDefinition with this name"
+                + "could not be found in the map"));
+        }
+        else
+        {        
+            pointerMap.insert(std::make_pair(currentElementName, eventLinkDef));
+        }
+    }
+
+    return pointerMap;
+}
+
+
+//---------------------------------------------------------------------------//
+const CEGUI::String& WidgetLookFeel::getInheritedWidgetLookName() const
+{
+    return d_inheritedLookName;
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel* WidgetLookFeel::getInheritedWidgetLookFeel()
+{
+    if(d_inheritedLookName.empty())
+        return 0;
+
+    WidgetLookManager::WidgetLookPointerMap pointerMap = WidgetLookManager::getSingleton().getWidgetLookMap();
+    WidgetLookManager::WidgetLookPointerMap::iterator foundIter = pointerMap.find(d_inheritedLookName);
+
+    if(foundIter == pointerMap.end())
+        CEGUI_THROW(UnknownObjectException("Error: Inherited WidgetLook with name: \"" + d_inheritedLookName
+                                           + "\" cannot be found in the WidgetLookManager's map"));
+
+    return foundIter->second;
 }
 
 //---------------------------------------------------------------------------//
