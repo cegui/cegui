@@ -175,6 +175,7 @@ void ListView::resortListView(bool reinit)
 void ListView::resortView()
 {
     resortListView(false);
+    invalidateView(false);
 }
 
 //----------------------------------------------------------------------------//

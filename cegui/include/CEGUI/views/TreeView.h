@@ -65,9 +65,15 @@ public:
     virtual float getSubtreeExpanderXIndent(int depth) const = 0;
 };
 
-struct CEGUIEXPORT TreeViewItemRenderingState
+class TreeView;
+
+class CEGUIEXPORT TreeViewItemRenderingState
 {
-    std::vector<TreeViewItemRenderingState> d_renderedChildren;
+public:
+    //! These children are rendered via the renderer. If sorting is enabled,
+    //! this vector will be sorted.
+    std::vector<TreeViewItemRenderingState*> d_renderedChildren;
+
     //! This represents the total children count this item has, even if not rendered yet.
     //! This is the case when this node has not been opened/expanded yet.
     size_t d_totalChildCount;
@@ -80,7 +86,18 @@ struct CEGUIEXPORT TreeViewItemRenderingState
     size_t d_childId;
     bool d_subtreeIsExpanded;
 
-    TreeViewItemRenderingState();
+    TreeView* d_attachedTreeView;
+
+    TreeViewItemRenderingState(TreeView* attached_tree_view);
+    bool operator< (const TreeViewItemRenderingState& other) const;
+
+protected:
+    //! Holds the unsorted children on which all tree operations are done.
+    std::vector<TreeViewItemRenderingState> d_children;
+
+    void sortChildren();
+
+    friend class TreeView;
 };
 
 /*!
