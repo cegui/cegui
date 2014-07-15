@@ -450,4 +450,27 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
 void TreeView::resortView()
 {
 }
+
+//----------------------------------------------------------------------------//
+void TreeView::expandAllSubtrees()
+{
+    expandSubtreeRecursive(d_rootItemState);
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
+{
+    if (!item.d_subtreeIsExpanded)
+        toggleSubtree(item);
+
+    if (item.d_totalChildCount == 0)
+        return;
+
+    for (std::vector<TreeViewItemRenderingState>::iterator
+        itor = item.d_renderedChildren.begin();
+        itor != item.d_renderedChildren.end(); ++itor)
+    {
+        expandSubtreeRecursive(*itor);
+    }
+}
 }

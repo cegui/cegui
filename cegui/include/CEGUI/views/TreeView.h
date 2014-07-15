@@ -108,6 +108,10 @@ public:
 
     TreeViewItemRenderingState* getTreeViewItemForIndex(const ModelIndex& index);
 
+    void expandAllSubtrees();
+    void expandSubtreeRecursive(TreeViewItemRenderingState& item);
+    void toggleSubtree(TreeViewItemRenderingState& item);
+
 protected:
     virtual TreeViewWindowRenderer* getViewRenderer();
     virtual bool handleSelection(const Vector2f& position, bool should_select,
@@ -145,7 +149,6 @@ private:
         const Vector2f& window_position, bool& handled, TreeViewItemAction action,
         int depth);
 
-    void toggleSubtree(TreeViewItemRenderingState& item);
     void clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight);
     void handleSelectionAction(TreeViewItemRenderingState& item, bool toggles_expander);
 
