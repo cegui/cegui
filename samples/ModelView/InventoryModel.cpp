@@ -120,7 +120,7 @@ void InventoryModel::load()
     d_inventoryRoot->d_items.push_back(backpack);
 
     InventoryItem* bow = InventoryItem::make("Bow", 23.451f, d_inventoryRoot);
-    for (int i = 0; i < 25; ++i)
+    for (int i = 25; i >= 0; --i)
     {
         InventoryItem* arrow = InventoryItem::make(
             "arrow " + PropertyHelper<int>::toString(i), 0.2f, bow);

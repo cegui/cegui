@@ -220,6 +220,7 @@ bool ModelViewDemo::toggleSorting(const EventArgs& e)
     bool enabled = d_listView->isSortEnabled();
 
     d_listView->setSortEnabled(!enabled);
+    d_treeView->setSortEnabled(!enabled);
 
     return true;
 }

@@ -223,7 +223,6 @@ public:
     bool isSortEnabled() const;
     void setSortEnabled(bool enabled);
 
-    virtual void resortView() = 0;
 
 protected:
     ItemModel* d_itemModel;
@@ -280,6 +279,8 @@ protected:
         bool is_cumulative, bool is_range);
     virtual bool handleSelection(const ModelIndex& index, bool should_select,
         bool is_cumulative, bool is_range);
+
+    virtual void resortView() = 0;
     void onSortModeChanged(WindowEventArgs& args);
 };
 

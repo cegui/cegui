@@ -59,26 +59,26 @@ void FalagardTreeView::render()
 
     Rectf items_area(getViewRenderArea());
     Vector2f item_pos(getItemRenderStartPosition(tree_view, items_area));
-    renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState(), 0);
+    renderTreeItem(tree_view, items_area, item_pos, &tree_view->getRootItemState(), 0);
 }
 
 //----------------------------------------------------------------------------//
 void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-    Vector2f& item_pos, const TreeViewItemRenderingState& item_to_render,
+    Vector2f& item_pos, const TreeViewItemRenderingState* item_to_render,
     size_t depth)
 {
     float expander_margin = tree_view->getSubtreeExpanderMargin();
-    for (size_t i = 0; i < item_to_render.d_renderedChildren.size(); ++i)
+    for (size_t i = 0; i < item_to_render->d_renderedChildren.size(); ++i)
     {
-        TreeViewItemRenderingState item = item_to_render.d_renderedChildren.at(i);
-        RenderedString& rendered_string = item.d_string;
-        Sizef size(item.d_size);
+        TreeViewItemRenderingState* item = item_to_render->d_renderedChildren.at(i);
+        RenderedString& rendered_string = item->d_string;
+        Sizef size(item->d_size);
 
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
         float indent = d_subtreeExpanderImagerySize.d_width;
-        if (item.d_totalChildCount > 0)
+        if (item->d_totalChildCount > 0)
         {
-            const ImagerySection* section = item.d_subtreeIsExpanded
+            const ImagerySection* section = item->d_subtreeIsExpanded
                 ? d_subtreeCollapserImagery : d_subtreeExpanderImagery;
 
             Rectf button_rect;
@@ -99,16 +99,16 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
         renderString(tree_view, rendered_string, item_rect,
-            tree_view->getFont(), &item_clipper, item.d_isSelected);
+            tree_view->getFont(), &item_clipper, item->d_isSelected);
 
         item_pos.d_y += size.d_height;
 
-        if (item.d_renderedChildren.empty())
+        if (item->d_renderedChildren.empty())
             continue;
 
         item_pos.d_x += indent;
 
-        if (item.d_subtreeIsExpanded)
+        if (item->d_subtreeIsExpanded)
         {
             renderTreeItem(tree_view, items_area, item_pos, item, depth + 1);
         }

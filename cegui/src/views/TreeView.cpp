@@ -33,6 +33,14 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+static bool treeViewItemPointerLess(
+    const TreeViewItemRenderingState* item1,
+    const TreeViewItemRenderingState* item2)
+{
+    return *item1 < *item2;
+}
+
+//----------------------------------------------------------------------------//
 TreeViewWindowRenderer::TreeViewWindowRenderer(const String& type) :
     ItemViewWindowRenderer(type)
 {
@@ -43,19 +51,52 @@ const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
 
 //----------------------------------------------------------------------------//
-TreeViewItemRenderingState::TreeViewItemRenderingState() :
+TreeViewItemRenderingState::TreeViewItemRenderingState(TreeView* attached_tree_view) :
     d_totalChildCount(0),
     d_size(0, 0),
     d_isSelected(false),
     d_childId(0),
-    d_subtreeIsExpanded(false)
+    d_subtreeIsExpanded(false),
+    d_attachedTreeView(attached_tree_view)
 {
+}
+
+//----------------------------------------------------------------------------//
+void TreeViewItemRenderingState::sortChildren()
+{
+    d_renderedChildren.clear();
+
+    for (std::vector<TreeViewItemRenderingState>::iterator itor = d_children.begin();
+        itor != d_children.end(); ++itor)
+    {
+        d_renderedChildren.push_back(&(*itor));
+
+        (*itor).sortChildren();
+    }
+
+    if (!d_attachedTreeView->isSortEnabled())
+        return;
+
+    sort(d_renderedChildren.begin(), d_renderedChildren.end(),
+        &treeViewItemPointerLess);
+}
+
+//----------------------------------------------------------------------------//
+bool TreeViewItemRenderingState::operator<(const TreeViewItemRenderingState& other) const
+{
+    ItemModel* model = d_attachedTreeView->getModel();
+
+    return model->compareIndices(
+        model->makeIndex(d_childId, d_parentIndex),
+        model->makeIndex(other.d_childId, other.d_parentIndex)
+        ) < 0;
 }
 
 //----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
     ItemView(type, name),
-    d_subtreeExpanderMargin(DefaultSubtreeExpanderMargin)
+    d_subtreeExpanderMargin(DefaultSubtreeExpanderMargin),
+    d_rootItemState(this)
 {
     addTreeViewProperties();
 }
@@ -69,7 +110,7 @@ void TreeView::addTreeViewProperties()
         "SubtreeExpanderMargin", "Property to access the margin around the subtree expander. Value is a float. Default is 5.0f",
         &TreeView::setSubtreeExpanderMargin, &TreeView::getSubtreeExpanderMargin,
         DefaultSubtreeExpanderMargin
-        );
+        )
 }
 
 //----------------------------------------------------------------------------//
@@ -109,7 +150,7 @@ void TreeView::prepareForRender()
         d_renderedMaxWidth = 0;
         d_renderedTotalHeight = 0;
 
-        d_rootItemState = TreeViewItemRenderingState();
+        d_rootItemState = TreeViewItemRenderingState(this);
         d_rootItemState.d_subtreeIsExpanded = true;
 
         computeRenderedChildrenForItem(d_rootItemState, root_index,
@@ -148,7 +189,7 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
     float& rendered_total_height)
 {
     ModelIndex index = d_itemModel->makeIndex(child_id, parent_index);
-    TreeViewItemRenderingState state;
+    TreeViewItemRenderingState state(this);
     fillRenderingState(state, index, rendered_max_width, rendered_total_height);
 
     computeRenderedChildrenForItem(state, index, rendered_max_width,
@@ -172,10 +213,12 @@ void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
 
     for (size_t child = 0; child < child_count; ++child)
     {
-        item.d_renderedChildren.push_back(
+        item.d_children.push_back(
             computeRenderingStateForIndex(index, child, rendered_max_width,
             rendered_total_height));
     }
+
+    item.sortChildren();
 }
 
 //----------------------------------------------------------------------------//
@@ -189,8 +232,8 @@ void TreeView::updateRenderingStateForItem(TreeViewItemRenderingState& item,
         d_itemModel->makeIndex(item.d_childId, item.d_parentIndex),
         rendered_max_width, rendered_total_height);
 
-    for (ItemStateVector::iterator itor = item.d_renderedChildren.begin();
-        itor != item.d_renderedChildren.end(); ++itor)
+    for (ItemStateVector::iterator itor = item.d_children.begin();
+        itor != item.d_children.end(); ++itor)
     {
         updateRenderingStateForItem(*itor, rendered_max_width, rendered_total_height);
     }
@@ -223,7 +266,7 @@ ModelIndex TreeView::indexAt(const Vector2f& position)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ModelIndex TreeView::indexAtWithAction(const Vector2f& position,
+ModelIndex TreeView::indexAtWithAction(const Vector2f& position,
     TreeViewItemAction action)
 {
     if (d_itemModel == 0)
@@ -274,7 +317,7 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
 
     for (size_t i = 0; i < item.d_renderedChildren.size(); ++i)
     {
-        ModelIndex index = indexAtRecursive(item.d_renderedChildren.at(i),
+        ModelIndex index = indexAtRecursive(*item.d_renderedChildren.at(i),
             cur_height, window_position, handled, action, depth + 1);
         if (handled)
             return index;
@@ -319,15 +362,17 @@ void TreeView::clearItemRenderedChildren(TreeViewItemRenderingState& item,
     float& renderedTotalHeight)
 {
     std::vector<TreeViewItemRenderingState>::iterator itor =
-        item.d_renderedChildren.begin();
+        item.d_children.begin();
 
-    while (itor != item.d_renderedChildren.end())
+    while (itor != item.d_children.end())
     {
         clearItemRenderedChildren(*itor, renderedTotalHeight);
 
         d_renderedTotalHeight -= item.d_size.d_height;
-        itor = item.d_renderedChildren.erase(itor);
+        itor = item.d_children.erase(itor);
     }
+
+    item.sortChildren();
 }
 
 //----------------------------------------------------------------------------//
@@ -358,16 +403,17 @@ bool TreeView::onChildrenRemoved(const EventArgs& args)
 
     // update existing child ids
     for (ItemStateVector::iterator
-        itor = item->d_renderedChildren.begin() + margs.d_startId;
-        itor != item->d_renderedChildren.end(); ++itor)
+        itor = item->d_children.begin() + margs.d_startId;
+        itor != item->d_children.end(); ++itor)
     {
         (*itor).d_childId -= margs.d_count;
     }
 
-    item->d_renderedChildren.erase(
-        item->d_renderedChildren.begin() + margs.d_startId,
-        item->d_renderedChildren.begin() + margs.d_startId + margs.d_count);
+    item->d_children.erase(
+        item->d_children.begin() + margs.d_startId,
+        item->d_children.begin() + margs.d_startId + margs.d_count);
 
+    item->sortChildren();
     invalidateView(false);
     return true;
 }
@@ -397,16 +443,17 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
 
     // update existing child ids
     for (ItemStateVector::iterator
-        itor = item->d_renderedChildren.begin() + margs.d_startId;
-        itor != item->d_renderedChildren.end(); ++itor)
+        itor = item->d_children.begin() + margs.d_startId;
+        itor != item->d_children.end(); ++itor)
     {
         (*itor).d_childId += margs.d_count;
     }
 
-    item->d_renderedChildren.insert(
-        item->d_renderedChildren.begin() + margs.d_startId,
+    item->d_children.insert(
+        item->d_children.begin() + margs.d_startId,
         states.begin(), states.end());
 
+    item->sortChildren();
     invalidateView(false);
     return true;
 }
@@ -437,10 +484,10 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
         int child_id = ids_stack.back();
         ids_stack.pop_back();
 
-        if (static_cast<size_t>(child_id) >= item->d_renderedChildren.size())
+        if (static_cast<size_t>(child_id) >= item->d_children.size())
             return 0;
 
-        item = &item->d_renderedChildren.at(child_id);
+        item = &item->d_children.at(child_id);
     }
 
     return item;
@@ -449,6 +496,8 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
 //----------------------------------------------------------------------------//
 void TreeView::resortView()
 {
+    d_rootItemState.sortChildren();
+    invalidate(false);
 }
 
 //----------------------------------------------------------------------------//
@@ -467,8 +516,8 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
         return;
 
     for (std::vector<TreeViewItemRenderingState>::iterator
-        itor = item.d_renderedChildren.begin();
-        itor != item.d_renderedChildren.end(); ++itor)
+        itor = item.d_children.begin();
+        itor != item.d_children.end(); ++itor)
     {
         expandSubtreeRecursive(*itor);
     }
