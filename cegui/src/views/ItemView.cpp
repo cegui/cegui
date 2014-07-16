@@ -61,8 +61,7 @@ PropertyHelper<ScrollbarDisplayMode>::fromString(const String& str)
 
 //----------------------------------------------------------------------------//
 PropertyHelper<ScrollbarDisplayMode>::string_return_type
-PropertyHelper<ScrollbarDisplayMode>::toString(
-    PropertyHelper<ScrollbarDisplayMode>::pass_type val)
+PropertyHelper<ScrollbarDisplayMode>::toString(pass_type val)
 {
     switch(val)
     {
@@ -70,6 +69,37 @@ PropertyHelper<ScrollbarDisplayMode>::toString(
     case SDM_Hidden: return "Hidden";
     case SDM_WhenNeeded: return "WhenNeeded";
     default: return "InvalidDisplayMode";
+    }
+}
+
+//----------------------------------------------------------------------------//
+const String& PropertyHelper<ViewSortMode>::getDataTypeName()
+{
+    static String type("ViewSortMode");
+
+    return type;
+}
+
+//----------------------------------------------------------------------------//
+PropertyHelper<ViewSortMode>::return_type
+PropertyHelper<ViewSortMode>::fromString(const String& str)
+{
+    if (str == "Ascending") return VSM_Ascending;
+    if (str == "Descending") return VSM_Descending;
+
+    // default
+    return VSM_None;
+}
+
+//----------------------------------------------------------------------------//
+PropertyHelper<ViewSortMode>::string_return_type
+PropertyHelper<ViewSortMode>::toString(pass_type val)
+{
+    switch (val)
+    {
+    case VSM_Ascending: return "Ascending";
+    case VSM_Descending: return "Descending";
+    default: return "None";
     }
 }
 
@@ -95,7 +125,7 @@ ItemView::ItemView(const String& type, const String& name) :
     d_horzScrollbarDisplayMode(SDM_WhenNeeded),
     d_isItemTooltipsEnabled(false),
     d_isMultiSelectEnabled(false),
-    d_isSortEnabled(false),
+    d_sortMode(VSM_None),
     d_renderedMaxWidth(0),
     d_renderedTotalHeight(0),
     d_eventChildrenAddedConnection(0),
@@ -119,36 +149,36 @@ void ItemView::addItemViewProperties()
         "SelectionBrushImage",
         "Property to get/set the selection brush image for the item view. Value should be \"set:[imageset name] image:[image name]\".",
         &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, 0
-        );
+        )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
         "VertScrollbarDisplayMode",
         "Property to get/set the display mode of the vertical scroll bar of the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
         &ItemView::setVertScrollbarDisplayMode,
         &ItemView::getVertScrollbarDisplayMode, SDM_WhenNeeded
-        );
+        )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
         "HorzScrollbarDisplayMode",
         "Property to get/set the display mode of the horizontal scroll bar of the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
         &ItemView::setHorzScrollbarDisplayMode,
         &ItemView::getHorzScrollbarDisplayMode, SDM_WhenNeeded
-        );
+        )
 
     CEGUI_DEFINE_PROPERTY(ItemView, bool,
         "ItemTooltips", "Property to access the show item tooltips setting of the item view. Value is either \"True\" or \"False\".",
         &ItemView::setItemTooltipsEnabled, &ItemView::isItemTooltipsEnabled, false
-        );
+        )
 
     CEGUI_DEFINE_PROPERTY(ItemView, bool,
         "MultiSelect", "Property to get/set the multi-select setting of the item view. Value is either \"True\" or \"False\".",
         &ItemView::setMultiSelectEnabled, &ItemView::isMultiSelectEnabled, false
-        );
+        )
 
-    CEGUI_DEFINE_PROPERTY(ItemView, bool,
-        "Sort", "Property to get/set if the item view is sorting its items. Value is either \"True\" or \"False\".",
-        &ItemView::setSortEnabled, &ItemView::isSortEnabled, false
-        );
+    CEGUI_DEFINE_PROPERTY(ItemView, ViewSortMode,
+        "SortMode", "Property to get/set how the itemview is sorting its items. Value is either \"None\", \"Ascending\" or \"Descending\".",
+        &ItemView::setSortMode, &ItemView::getSortMode, VSM_None
+        )
 }
 
 //----------------------------------------------------------------------------//
@@ -470,7 +500,7 @@ void ItemView::setVertScrollbarDisplayMode(ScrollbarDisplayMode mode)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ScrollbarDisplayMode ItemView::getVertScrollbarDisplayMode() const
+ScrollbarDisplayMode ItemView::getVertScrollbarDisplayMode() const
 {
     return d_vertScrollbarDisplayMode;
 }
@@ -483,7 +513,7 @@ void ItemView::setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ScrollbarDisplayMode ItemView::getHorzScrollbarDisplayMode() const
+ScrollbarDisplayMode ItemView::getHorzScrollbarDisplayMode() const
 {
     return d_horzScrollbarDisplayMode;
 }
@@ -669,21 +699,20 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::isSortEnabled() const
+ViewSortMode ItemView::getSortMode() const
 {
-    return d_isSortEnabled;
+    return d_sortMode;
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::setSortEnabled(bool enabled)
+void ItemView::setSortMode(ViewSortMode sort_mode)
 {
-    if (d_isSortEnabled == enabled)
+    if (d_sortMode == sort_mode)
         return;
 
-    d_isSortEnabled = enabled;
+    d_sortMode = sort_mode;
 
-    if (enabled)
-        resortView();
+    resortView();
 
     WindowEventArgs args(this);
     onSortModeChanged(args);

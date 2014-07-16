@@ -71,9 +71,9 @@
             <Property name="Area" value="{{0.600586,0},{0.175781,0},{0.900586,0},{0.205781,0}}" />
             <Property name="Text" value="Multi-selection enabled" />
         </Window>
-        <Window type="TaharezLook/Checkbox" name="chkSortEnabled" >
+        <Window type="TaharezLook/Button" name="btnSwitchSortingMode" >
             <Property name="Area" value="{{0.601563,0},{0.315278,0},{0.901563,0},{0.345278,0}}" />
-            <Property name="Text" value="Sort enabled" />
+            <Property name="Text" value="Switch sorting mode. Current: None" />
         </Window>
     </Window>
 </GUILayout>

@@ -54,6 +54,7 @@ struct CEGUIEXPORT ListViewItemRenderingState
 
     ListViewItemRenderingState(ListView* list_view);
     bool operator< (const ListViewItemRenderingState& other) const;
+    bool operator> (const ListViewItemRenderingState& other) const;
 };
 
 /*!
@@ -85,8 +86,7 @@ private:
     std::vector<ListViewItemRenderingState> d_items;
     std::vector<ListViewItemRenderingState*> d_sortedItems;
 
-    //! if reinint = true, it will re-created the sorted items vector
-    void resortListView(bool reinit = false);
+    void resortListView();
     virtual void resortView();
 
     void updateItem(ListViewItemRenderingState& item, ModelIndex index,

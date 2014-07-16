@@ -90,6 +90,7 @@ public:
 
     TreeViewItemRenderingState(TreeView* attached_tree_view);
     bool operator< (const TreeViewItemRenderingState& other) const;
+    bool operator> (const TreeViewItemRenderingState& other) const;
 
 protected:
     //! Holds the unsorted children on which all tree operations are done.

@@ -484,7 +484,7 @@ BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_TreeIsSorted)
     model.getInventoryRoot().d_items.push_back(i3);
     view->prepareForRender();
 
-    view->setSortEnabled(true);
+    view->setSortMode(VSM_Ascending);
     view->prepareForRender();
     view->expandAllSubtrees();
 
