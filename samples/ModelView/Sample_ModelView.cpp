@@ -97,8 +97,8 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
         ToggleButton::EventSelectStateChanged,
         Event::Subscriber(&ModelViewDemo::toggleMultiSelect, this));
 
-    d_root->getChild("chkSortEnabled")->subscribeEvent(
-        ToggleButton::EventSelectStateChanged,
+    d_root->getChild("btnSwitchSortingMode")->subscribeEvent(
+        PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::toggleSorting, this));
 
     d_txtNewItemName = d_root->getChild("txtNewItemName");
@@ -217,10 +217,16 @@ bool ModelViewDemo::toggleMultiSelect(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool ModelViewDemo::toggleSorting(const EventArgs& e)
 {
-    bool enabled = d_listView->isSortEnabled();
+    Window* switch_button = d_root->getChild("btnSwitchSortingMode");
+    ViewSortMode sort_mode = d_listView->getSortMode();
 
-    d_listView->setSortEnabled(!enabled);
-    d_treeView->setSortEnabled(!enabled);
+    ViewSortMode next_sort_mode = static_cast<ViewSortMode>((sort_mode + 1) % 3);
+
+    d_listView->setSortMode(next_sort_mode);
+    d_treeView->setSortMode(next_sort_mode);
+
+    switch_button->setText(
+        "Current sort mode: " + PropertyHelper<ViewSortMode>::toString(next_sort_mode));
 
     return true;
 }

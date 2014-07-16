@@ -67,6 +67,14 @@ enum ScrollbarDisplayMode
     SDM_WhenNeeded
 };
 
+enum ViewSortMode
+{
+    //! Items are not sorted, but shown in the same order as they are provided by the model
+    VSM_None,
+    VSM_Ascending,
+    VSM_Descending
+};
+
 template<>
 class CEGUIEXPORT PropertyHelper<ScrollbarDisplayMode>
 {
@@ -74,6 +82,21 @@ public:
     typedef ScrollbarDisplayMode return_type;
     typedef return_type safe_method_return_type;
     typedef ScrollbarDisplayMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<ViewSortMode>
+{
+public:
+    typedef ViewSortMode return_type;
+    typedef return_type safe_method_return_type;
+    typedef ViewSortMode pass_type;
     typedef String string_return_type;
 
     static const String& getDataTypeName();
@@ -220,8 +243,8 @@ public:
     bool isMultiSelectEnabled() const;
     void setMultiSelectEnabled(bool enabled);
 
-    bool isSortEnabled() const;
-    void setSortEnabled(bool enabled);
+    ViewSortMode getSortMode() const;
+    void setSortMode(ViewSortMode sort_mode);
 
 
 protected:
@@ -236,7 +259,7 @@ protected:
     ScrollbarDisplayMode d_horzScrollbarDisplayMode;
     bool d_isItemTooltipsEnabled;
     bool d_isMultiSelectEnabled;
-    bool d_isSortEnabled;
+    ViewSortMode d_sortMode;
 
     //TODO: move this into the renderer instead?
     float d_renderedMaxWidth;

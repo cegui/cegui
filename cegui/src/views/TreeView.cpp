@@ -41,6 +41,14 @@ static bool treeViewItemPointerLess(
 }
 
 //----------------------------------------------------------------------------//
+static bool treeViewItemPointerGreater(
+    const TreeViewItemRenderingState* item1,
+    const TreeViewItemRenderingState* item2)
+{
+    return *item1 > *item2;
+}
+
+//----------------------------------------------------------------------------//
 TreeViewWindowRenderer::TreeViewWindowRenderer(const String& type) :
     ItemViewWindowRenderer(type)
 {
@@ -74,11 +82,12 @@ void TreeViewItemRenderingState::sortChildren()
         (*itor).sortChildren();
     }
 
-    if (!d_attachedTreeView->isSortEnabled())
+    if (d_attachedTreeView->getSortMode() == VSM_None)
         return;
 
     sort(d_renderedChildren.begin(), d_renderedChildren.end(),
-        &treeViewItemPointerLess);
+        d_attachedTreeView->getSortMode() == VSM_Ascending
+        ? &treeViewItemPointerLess : &treeViewItemPointerGreater);
 }
 
 //----------------------------------------------------------------------------//
@@ -90,6 +99,17 @@ bool TreeViewItemRenderingState::operator<(const TreeViewItemRenderingState& oth
         model->makeIndex(d_childId, d_parentIndex),
         model->makeIndex(other.d_childId, other.d_parentIndex)
         ) < 0;
+}
+
+//----------------------------------------------------------------------------//
+bool TreeViewItemRenderingState::operator>(const TreeViewItemRenderingState& other) const
+{
+    ItemModel* model = d_attachedTreeView->getModel();
+
+    return model->compareIndices(
+        model->makeIndex(d_childId, d_parentIndex),
+        model->makeIndex(other.d_childId, other.d_parentIndex)
+        ) > 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -497,7 +517,7 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
 void TreeView::resortView()
 {
     d_rootItemState.sortChildren();
-    invalidate(false);
+    invalidateView(false);
 }
 
 //----------------------------------------------------------------------------//

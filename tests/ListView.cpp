@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_ListIsSorted)
     model.d_items.push_back(ITEM1);
     view->prepareForRender();
 
-    view->setSortEnabled(true);
+    view->setSortMode(VSM_Ascending);
     view->prepareForRender();
 
     ModelIndex index = view->indexAt(Vector2f(1, font_height * 2.0f + font_height / 2.0f));
