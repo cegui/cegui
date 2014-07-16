@@ -115,8 +115,8 @@ bool TreeViewItemRenderingState::operator>(const TreeViewItemRenderingState& oth
 //----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
     ItemView(type, name),
-    d_subtreeExpanderMargin(DefaultSubtreeExpanderMargin),
-    d_rootItemState(this)
+    d_rootItemState(this),
+    d_subtreeExpanderMargin(DefaultSubtreeExpanderMargin)
 {
     addTreeViewProperties();
 }
