@@ -43,8 +43,8 @@ static ModelIndex makeValidIndex(size_t id, std::vector<T>& vector)
 
 //----------------------------------------------------------------------------//
 InventoryModel::InventoryModel() :
-    d_randomItemsCount(0),
-    d_inventoryRoot(InventoryItem::make("Inventory", 0.0f))
+    d_inventoryRoot(InventoryItem::make("Inventory", 0.0f)),
+    d_randomItemsCount(0)
 {
 }
 
