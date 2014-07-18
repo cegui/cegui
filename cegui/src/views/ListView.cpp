@@ -33,6 +33,7 @@
 
 namespace CEGUI
 {
+typedef std::vector<ListViewItemRenderingState> ViewItemsVector;
 
 //----------------------------------------------------------------------------//
 static bool listViewItemPointerLess(
@@ -170,7 +171,7 @@ void ListView::resortListView()
 {
     d_sortedItems.clear();
 
-    for (std::vector<ListViewItemRenderingState>::iterator itor = d_items.begin();
+    for (ViewItemsVector::iterator itor = d_items.begin();
         itor != d_items.end(); ++itor)
     {
         d_sortedItems.push_back(&(*itor));
@@ -222,7 +223,7 @@ bool ListView::onChildrenAdded(const EventArgs& args)
     if (!d_itemModel->areIndicesEqual(margs.d_parentIndex, d_itemModel->getRootIndex()))
         return true;
 
-    std::vector<ListViewItemRenderingState> items;
+    ViewItemsVector items;
     for (size_t i = 0; i < margs.d_count; ++i)
     {
         ListViewItemRenderingState item(this);
@@ -250,9 +251,15 @@ bool ListView::onChildrenRemoved(const EventArgs& args)
     if (!d_itemModel->areIndicesEqual(margs.d_parentIndex, d_itemModel->getRootIndex()))
         return true;
 
-    d_items.erase(
-        d_items.begin() + margs.d_startId,
-        d_items.begin() + margs.d_startId + margs.d_count);
+    ViewItemsVector::iterator begin = d_items.begin() + margs.d_startId;
+    ViewItemsVector::iterator end = begin + margs.d_count;
+
+    for (ViewItemsVector::iterator itor = begin; itor < end; ++itor)
+    {
+        d_renderedTotalHeight -= (*itor).d_size.d_height;
+    }
+
+    d_items.erase(begin, end);
 
     resortListView();
     invalidateView(false);

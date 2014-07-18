@@ -32,6 +32,8 @@
 
 namespace CEGUI
 {
+typedef std::vector<TreeViewItemRenderingState> ViewItemsVector;
+
 //----------------------------------------------------------------------------//
 static bool treeViewItemPointerLess(
     const TreeViewItemRenderingState* item1,
@@ -74,7 +76,7 @@ void TreeViewItemRenderingState::sortChildren()
 {
     d_renderedChildren.clear();
 
-    for (std::vector<TreeViewItemRenderingState>::iterator itor = d_children.begin();
+    for (ViewItemsVector::iterator itor = d_children.begin();
         itor != d_children.end(); ++itor)
     {
         d_renderedChildren.push_back(&(*itor));
@@ -381,7 +383,7 @@ void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 void TreeView::clearItemRenderedChildren(TreeViewItemRenderingState& item,
     float& renderedTotalHeight)
 {
-    std::vector<TreeViewItemRenderingState>::iterator itor =
+    ViewItemsVector::iterator itor =
         item.d_children.begin();
 
     while (itor != item.d_children.end())
@@ -389,9 +391,10 @@ void TreeView::clearItemRenderedChildren(TreeViewItemRenderingState& item,
         clearItemRenderedChildren(*itor, renderedTotalHeight);
 
         d_renderedTotalHeight -= item.d_size.d_height;
-        itor = item.d_children.erase(itor);
+        ++itor;
     }
 
+    item.d_children.clear();
     item.sortChildren();
 }
 
@@ -417,21 +420,22 @@ bool TreeView::onChildrenRemoved(const EventArgs& args)
 
     item->d_totalChildCount -= margs.d_count;
 
-
     if (!item->d_subtreeIsExpanded)
         return true;
 
+    ViewItemsVector::iterator begin = item->d_children.begin() + margs.d_startId;
+    ViewItemsVector::iterator end = begin + margs.d_count;
+
     // update existing child ids
-    for (ItemStateVector::iterator
-        itor = item->d_children.begin() + margs.d_startId;
-        itor != item->d_children.end(); ++itor)
+    for (ItemStateVector::iterator itor = begin; itor != item->d_children.end(); ++itor)
     {
         (*itor).d_childId -= margs.d_count;
+
+        if (itor < end)
+            d_renderedTotalHeight -= (*itor).d_size.d_height;
     }
 
-    item->d_children.erase(
-        item->d_children.begin() + margs.d_startId,
-        item->d_children.begin() + margs.d_startId + margs.d_count);
+    item->d_children.erase(begin, end);
 
     item->sortChildren();
     invalidateView(false);
@@ -454,7 +458,7 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     if (!item->d_subtreeIsExpanded)
         return true;
 
-    std::vector<TreeViewItemRenderingState> states;
+    ViewItemsVector states;
     for (size_t id = margs.d_startId; id < margs.d_startId + margs.d_count; ++id)
     {
         states.push_back(computeRenderingStateForIndex(margs.d_parentIndex, id,
@@ -535,7 +539,7 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
     if (item.d_totalChildCount == 0)
         return;
 
-    for (std::vector<TreeViewItemRenderingState>::iterator
+    for (ViewItemsVector::iterator
         itor = item.d_children.begin();
         itor != item.d_children.end(); ++itor)
     {
