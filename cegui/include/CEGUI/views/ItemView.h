@@ -246,7 +246,6 @@ public:
     ViewSortMode getSortMode() const;
     void setSortMode(ViewSortMode sort_mode);
 
-
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;

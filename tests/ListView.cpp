@@ -181,13 +181,31 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
+BOOST_AUTO_TEST_CASE(ItemRemoved_RenderingHeightIsUpdated)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+    model.d_items.push_back(ITEM3);
+    view->prepareForRender();
+
+    model.d_items.clear();
+    model.notifyChildrenRemoved(model.getRootIndex(), 0, 3);
+
+    view->prepareForRender();
+
+    BOOST_REQUIRE(view->d_renderedTotalHeight <= 0.01f);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
 {
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
     model.d_items.push_back(ITEM3);
     view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
     view->prepareForRender();
+
+    float itemSize = view->d_renderedTotalHeight / 3;
 
     model.d_items.erase(model.d_items.begin() + 1);
     model.notifyChildrenRemoved(model.getRootIndex(), 1, 1);
@@ -197,6 +215,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     BOOST_REQUIRE(view->getItems().size() == 2);
     BOOST_REQUIRE(!view->getItems().at(0)->d_isSelected);
     BOOST_REQUIRE(!view->getItems().at(1)->d_isSelected);
+    BOOST_REQUIRE(view->d_renderedTotalHeight <= (itemSize * 2 + 0.01f));
 }
 
 BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)

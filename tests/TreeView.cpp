@@ -249,12 +249,14 @@ BOOST_AUTO_TEST_CASE(ItemAdded_InExpandedSubtree_IsRendered)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
+BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 0);
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 0);
     view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
+
+    float itemSize = view->d_renderedTotalHeight / 2;
 
     model.removeItem(model.makeIndex(1, model.getRootIndex()));
 
@@ -265,6 +267,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
     BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_renderedChildren.size());
     BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_totalChildCount);
     BOOST_REQUIRE(!children.at(0)->d_isSelected);
+    BOOST_REQUIRE(view->d_renderedTotalHeight <= (itemSize + 0.01f));
 }
 
 //----------------------------------------------------------------------------//
