@@ -589,13 +589,6 @@ void ItemView::setupTooltip(Vector2f position)
     if (d_itemModel->areIndicesEqual(index, last_model_index))
         return;
 
-    last_model_index = index;
-
-    if (!d_itemModel->isValidIndex(index))
-        setTooltipText("");
-    else
-        setTooltipText(d_itemModel->getData(index, IDR_Tooltip));
-
     Tooltip* tooltip = getTooltip();
     if (tooltip == 0)
         return;
@@ -604,6 +597,13 @@ void ItemView::setupTooltip(Vector2f position)
         tooltip->setTargetWindow(this);
     else
         tooltip->positionSelf();
+
+    last_model_index = index;
+
+    if (!d_itemModel->isValidIndex(index))
+        setTooltipText("");
+    else
+        setTooltipText(d_itemModel->getData(index, IDR_Tooltip));
 }
 
 //----------------------------------------------------------------------------//
