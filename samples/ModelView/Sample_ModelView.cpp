@@ -68,6 +68,10 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     d_treeView->setItemTooltipsEnabled(true);
     d_root->getChild("TreeViewHolder")->addChild(d_treeView);
 
+
+    ListWidget* list_widget = static_cast<ListWidget*>(win_mgr.createWindow("TaharezLook/ListWidget", "listWidget"));
+    d_root->getChild("ListWidgetHolder")->addChild(list_widget);
+
     d_root->getChild("btnAddRandomItem")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleAddRandomItem, this));
 

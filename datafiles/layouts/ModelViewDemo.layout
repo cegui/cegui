@@ -9,7 +9,7 @@
             <Property name="Text" value="Add random item (to root)" />
         </Window>
         <Window type="TaharezLook/Button" name="btnRemoveSelectedListItem" >
-            <Property name="Area" value="{{0.0146484,0},{0.611979,0},{0.287694,0},{0.651041,0}}" />
+            <Property name="Area" value="{{0.0146484,0},{0.520312,0},{0.287694,0},{0.559374,0}}" />
             <Property name="Text" value="Remove selected list item(s)" />
         </Window>
         <Window type="TaharezLook/Button" name="btnClearAllItems" >
@@ -17,11 +17,11 @@
             <Property name="Text" value="Clear all items" />
         </Window>
         <Window type="DefaultWindow" name="ListViewHolder" >
-            <Property name="Area" value="{{0.015625,0},{0.152778,0},{0.265625,0},{0.552778,0}}" />
+            <Property name="Area" value="{{0.015625,0},{0.0611113,0},{0.265625,0},{0.461111,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
         <Window type="DefaultWindow" name="TreeViewHolder" >
-            <Property name="Area" value="{{0.317383,0},{0.15625,0},{0.567383,0},{0.55625,0}}" />
+            <Property name="Area" value="{{0.317383,0},{0.0645833,0},{0.567383,0},{0.464583,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
         <Window type="TaharezLook/Label" name="lblGeneralCommands" >
@@ -30,41 +30,41 @@
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
         <Window type="TaharezLook/Button" name="btnRemoveSelectedTreeItem" >
-            <Property name="Area" value="{{0.317383,0},{0.611979,0},{0.595313,0},{0.651041,0}}" />
+            <Property name="Area" value="{{0.317383,0},{0.520312,0},{0.595313,0},{0.559374,0}}" />
             <Property name="Text" value="Remove selected tree item(s)" />
         </Window>
         <Window type="TaharezLook/Button" name="btnAddRandomItemInTree" >
-            <Property name="Area" value="{{0.317383,0},{0.566406,0},{0.596094,0},{0.605468,0}}" />
+            <Property name="Area" value="{{0.317383,0},{0.474739,0},{0.596094,0},{0.513801,0}}" />
             <Property name="Text" value="Add random item in tree" />
         </Window>
         <Window type="TaharezLook/Button" name="btnAddRandomItemInList" >
-            <Property name="Area" value="{{0.0146484,0},{0.566406,0},{0.288476,0},{0.605468,0}}" />
+            <Property name="Area" value="{{0.0146484,0},{0.474739,0},{0.288476,0},{0.513801,0}}" />
             <Property name="Text" value="Add random item in list" />
         </Window>
         <Window type="TaharezLook/Label" name="lblListViewTitle" >
-            <Property name="Area" value="{{0.102539,0},{0.104167,0},{0.182422,0},{0.149739,0}}" />
+            <Property name="Area" value="{{0.102539,0},{0.0125003,0},{0.182422,0},{0.0580723,0}}" />
             <Property name="Text" value="List View" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
         <Window type="TaharezLook/Label" name="lblTreeViewTitle" >
-            <Property name="Area" value="{{0.385742,0},{0.110677,0},{0.483398,0},{0.149739,0}}" />
+            <Property name="Area" value="{{0.385742,0},{0.0190103,0},{0.483398,0},{0.0580723,0}}" />
             <Property name="Text" value="Tree View" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
         <Window type="TaharezLook/Editbox" name="txtNewItemName" >
-            <Property name="Area" value="{{0.268555,0},{0.735677,0},{0.517578,0},{0.781302,0}}" />
+            <Property name="Area" value="{{0.268555,0},{0.64401,0},{0.517578,0},{0.689635,0}}" />
         </Window>
         <Window type="TaharezLook/Label" name="lblNewItemname" >
-            <Property name="Area" value="{{0.12207,0},{0.735677,0},{0.258789,0},{0.735677,32}}" />
+            <Property name="Area" value="{{0.12207,0},{0.64401,0},{0.258789,0},{0.64401,32}}" />
             <Property name="Text" value="New item name:" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
         <Window type="TaharezLook/Button" name="btnUpdateListItemName" >
-            <Property name="Area" value="{{0.0146484,0},{0.657552,0},{0.288086,0},{0.696614,0}}" />
+            <Property name="Area" value="{{0.0146484,0},{0.565885,0},{0.288086,0},{0.604947,0}}" />
             <Property name="Text" value="Update selected list item&apos;s name" />
         </Window>
         <Window type="TaharezLook/Button" name="btnUpdateTreeItemName" >
-            <Property name="Area" value="{{0.317383,0},{0.657552,0},{0.595704,0},{0.696614,0}}" />
+            <Property name="Area" value="{{0.317383,0},{0.565885,0},{0.595704,0},{0.604947,0}}" />
             <Property name="Text" value="Update selected tree item&apos;s name" />
         </Window>
         <Window type="TaharezLook/Checkbox" name="chkMultiSelectEnabled" >
@@ -74,6 +74,10 @@
         <Window type="TaharezLook/Button" name="btnSwitchSortingMode" >
             <Property name="Area" value="{{0.601563,0},{0.315278,0},{0.901563,0},{0.345278,0}}" />
             <Property name="Text" value="Switch sorting mode. Current: None" />
+        </Window>
+        <Window type="DefaultWindow" name="ListWidgetHolder" >
+            <Property name="Area" value="{{0.014844,0},{0.731945,0},{0.267188,0},{0.979166,0}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
         </Window>
     </Window>
 </GUILayout>

@@ -654,6 +654,7 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Listbox>();
     WindowFactoryManager::addWindowType<ListHeader>();
     WindowFactoryManager::addWindowType<ListHeaderSegment>();
+    WindowFactoryManager::addWindowType<ListWidget>();
     WindowFactoryManager::addWindowType<Menubar>();
     WindowFactoryManager::addWindowType<PopupMenu>();
     WindowFactoryManager::addWindowType<MenuItem>();
