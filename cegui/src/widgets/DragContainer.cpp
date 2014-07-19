@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIDragContainer.cpp
 	created:	14/2/2005
 	author:		Paul D Turner
 *************************************************************************/
@@ -153,7 +152,7 @@ namespace CEGUI
         const String& propertyOrigin = WidgetTypeName;
 
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
-            "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the DragContainer.  Value is either \"True\" or \"False\".",
+            "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the DragContainer.  Value is either \"true\" or \"false\".",
             &DragContainer::setDraggingEnabled, &DragContainer::isDraggingEnabled, true
         );
         
@@ -174,7 +173,7 @@ namespace CEGUI
         
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "StickyMode", "Property to get/set the state of the sticky mode setting for the "
-                "DragContainer.  Value is either \"True\" or \"False\".",
+                "DragContainer.  Value is either \"true\" or \"false\".",
             &DragContainer::setStickyModeEnabled, &DragContainer::isStickyModeEnabled, true /* TODO: Inconsistency */
         );
         
@@ -188,7 +187,7 @@ namespace CEGUI
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "UseFixedDragOffset", "Property to get/set the setting that control whether the fixed "
                 "dragging offset will be used.  "
-                "Value is either \"True\" or \"False\".",
+                "Value is either \"true\" or \"false\".",
             &DragContainer::setUsingFixedDragOffset, &DragContainer::isUsingFixedDragOffset, false /* TODO: Inconsistency */
         );
     }

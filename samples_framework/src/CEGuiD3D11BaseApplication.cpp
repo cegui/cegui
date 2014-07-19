@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGuiD3D11BaseApplication.cpp
     created:    Tue May 29 2012
     author:     Paul D Turner
 *************************************************************************/
@@ -27,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_BUILD_RENDERER_DIRECT3D11
+#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
 
 #include "CEGuiD3D11BaseApplication.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
@@ -220,10 +219,10 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
     if (SUCCEEDED(res))
     {
          //Debugging stuff
-         ID3D11Debug *d3dDebug = nullptr;
+         ID3D11Debug* d3dDebug = 0;
          if( SUCCEEDED( pimpl->d_device->QueryInterface( __uuidof(ID3D11Debug), (void**)&d3dDebug ) ) )
          {
-             ID3D11InfoQueue *d3dInfoQueue = nullptr;
+             ID3D11InfoQueue* d3dInfoQueue = 0;
              if( SUCCEEDED( d3dDebug->QueryInterface( __uuidof(ID3D11InfoQueue), (void**)&d3dInfoQueue ) ) )
              {
                  #if defined(DEBUG) || defined (_DEBUG)

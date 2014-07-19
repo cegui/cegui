@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIGridLayoutContainer.h
     created:    01/8/2010
     author:     Martin Preisler
 

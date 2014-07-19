@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIGUILayout_xmlHandler.cpp
     created:    5/7/2004
     author:     Paul D Turner
 

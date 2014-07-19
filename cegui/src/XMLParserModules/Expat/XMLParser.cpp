@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIExpatParser.cpp
     created:    Mon Mar 6 2006
     author:     Paul D Turner <paul@cegui.org.uk> (based on Dalfy's code)
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   WindowNavigator.h
     created:    12/08/2013
     author:     Timotei Dolean
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIMenuBase.cpp
     created:    5/4/2005
     author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
 
@@ -124,12 +123,12 @@ void MenuBase::addMenuBaseProperties(void)
     );
     
     CEGUI_DEFINE_PROPERTY(MenuBase, bool,
-        "AllowMultiplePopups", "Property to get/set the state of the allow multiple popups setting for the menu.  Value is either \"True\" or \"False\".",
+        "AllowMultiplePopups", "Property to get/set the state of the allow multiple popups setting for the menu.  Value is either \"true\" or \"false\".",
         &MenuBase::setAllowMultiplePopups, &MenuBase::isMultiplePopupsAllowed, false /* TODO: Inconsistency and awful English */
     );
     
     CEGUI_DEFINE_PROPERTY(MenuBase, bool,
-        "AutoCloseNestedPopups", "Property to set if the menu should close all its open child popups, when it gets hidden. Value is either \"True\" or \"False\".",
+        "AutoCloseNestedPopups", "Property to set if the menu should close all its open child popups, when it gets hidden. Value is either \"true\" or \"false\".",
         &MenuBase::setAutoCloseNestedPopups, &MenuBase::getAutoCloseNestedPopups, false
     );
 }

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIIteratorBase.h
 	created:	26/7/2004
 	author:		Paul D Turner
 	

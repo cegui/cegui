@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIMultiColumnList.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
 
@@ -2235,18 +2234,18 @@ void MultiColumnList::addMultiColumnListProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
-        "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
+        "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"true\" or \"false\".",
         &MultiColumnList::setUserColumnSizingEnabled, &MultiColumnList::isUserColumnSizingEnabled, true /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
-        "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
+        "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"true\" or \"false\".",
         &MultiColumnList::setUserColumnDraggingEnabled, &MultiColumnList::isUserColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &MultiColumnList::setUserSortControlEnabled, &MultiColumnList::isUserSortControlEnabled, true /* TODO: Inconsistency */
     );
 
@@ -2258,13 +2257,13 @@ void MultiColumnList::addMultiColumnListProperties(void)
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &MultiColumnList::setShowVertScrollbar, &MultiColumnList::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal scroll bar of the list box."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &MultiColumnList::setShowHorzScrollbar, &MultiColumnList::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 
@@ -2291,7 +2290,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "AutoSizeColumnUsesHeader", "Property to get/set the 'use header size' flag when auto-sizing a column."
-        " Value is either \"True\" or \"False\".",
+        " Value is either \"true\" or \"false\".",
         &MultiColumnList::setAutoSizeColumnUsesHeader, &MultiColumnList::getAutoSizeColumnUsesHeader, false
     );
 

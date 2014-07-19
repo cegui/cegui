@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUI/Element.h
     created:    18/8/2011
     author:     Martin Preisler
 

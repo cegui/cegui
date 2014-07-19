@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalEditbox.cpp
     created:    Sat Jun 25 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -59,7 +58,7 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 {
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, bool,
         "BlinkCaret", "Property to get/set whether the Editbox caret should blink.  "
-        "Value is either \"True\" or \"False\".",
+        "Value is either \"true\" or \"false\".",
         &FalagardEditbox::setCaretBlinkEnabled, &FalagardEditbox::isCaretBlinkEnabled,
         false);
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, float,

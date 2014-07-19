@@ -1,5 +1,4 @@
 /************************************************************************
-    filename:   CEGUIGroupBox.h
     created:    03/23/2007
     author:     Lars 'Levia' Wesselius (Content Pane based on Tomas Lindquist Olsen's code)
 

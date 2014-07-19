@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIListHeaderSegment.cpp
 	created:	15/6/2004
 	author:		Paul D Turner
 	
@@ -604,17 +603,17 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
-        "Sizable", "Property to get/set the sizable setting of the header segment.  Value is either \"True\" or \"False\".",
+        "Sizable", "Property to get/set the sizable setting of the header segment.  Value is either \"true\" or \"false\".",
         &ListHeaderSegment::setSizingEnabled, &ListHeaderSegment::isSizingEnabled, true /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
-        "Clickable", "Property to get/set the click-able setting of the header segment.  Value is either \"True\" or \"False\".",
+        "Clickable", "Property to get/set the click-able setting of the header segment.  Value is either \"true\" or \"false\".",
         &ListHeaderSegment::setClickable, &ListHeaderSegment::isClickable, true
     );
     
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
-        "Dragable", "Property to get/set the drag-able setting of the header segment.  Value is either \"True\" or \"False\".",
+        "Dragable", "Property to get/set the drag-able setting of the header segment.  Value is either \"true\" or \"false\".",
         &ListHeaderSegment::setDragMovingEnabled, &ListHeaderSegment::isDragMovingEnabled, true /* TODO: Inconsistency */
     );
     

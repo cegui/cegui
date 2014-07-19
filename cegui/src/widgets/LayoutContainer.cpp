@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUILayoutContainer.cpp
     created:    29/7/2010
     author:     Martin Preisler
 

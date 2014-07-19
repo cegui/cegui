@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIWindowFactoryManager.cpp
 	created:	22/2/2004
 	author:		Paul D Turner
 

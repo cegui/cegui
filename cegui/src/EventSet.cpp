@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIEventSet.cpp
     created:    21/2/2004
     author:     Paul D Turner
 

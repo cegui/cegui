@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIMinizipResourceProvider.cpp
     created:    19/3/2010
     author:     Jeff A. Marr
 

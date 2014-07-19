@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIPropertyHelper.h
 	created:	21/11/2010
 	author:		Martin Preisler (reworked from code by Paul D Turner)
 	
@@ -421,7 +420,7 @@ public:
 
     static return_type fromString(const String& str)
     {
-        return (str == True || str == "true");
+        return (str == True || str == "True");
     }
 
     static string_return_type toString(pass_type val)

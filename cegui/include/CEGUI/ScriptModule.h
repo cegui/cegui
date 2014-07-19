@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIScriptModule.h
 	created:	16/7/2004
 	author:		Paul D Turner
 

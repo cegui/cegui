@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   Win32ClipboardProvider.h
     created:    19/09/2013
     author:     Alexander Gladis
 

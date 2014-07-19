@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalToggleButton.cpp
     created:    Sat Jan 14 2006
     author:     Tomas Lindquist Olsen <tomas@famolsen.dk>
 *************************************************************************/

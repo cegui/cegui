@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIMemoryStdAllocator.h
 	created:	14/10/2010
 	author:		Martin Preisler
 

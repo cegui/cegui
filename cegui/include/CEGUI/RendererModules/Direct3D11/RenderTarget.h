@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   RenderTarget.h
     created:    Sun, 6th April 2014
     author:     Lukas E Meindl
 *************************************************************************/
@@ -77,7 +76,7 @@ protected:
     //! tangent of the y FOV half-angle; used to calculate viewing distance.
     static const double d_yfov_tan;
     //! View projection matrix cache
-    mutable glm::mat4 d_projViewMatrix;
+    mutable glm::mat4 d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)

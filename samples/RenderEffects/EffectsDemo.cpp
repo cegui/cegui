@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   EffectsDemo.cpp
     created:    9/7/2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -655,8 +654,8 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // Image window setup
     aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    aliasingWnd->setProperty("FrameEnabled", "False");
-    aliasingWnd->setProperty("BackgroundEnabled", "False");
+    aliasingWnd->setProperty("FrameEnabled", "false");
+    aliasingWnd->setProperty("BackgroundEnabled", "false");
     aliasingWnd->setProperty("Image", "AliasingTestImage");
 
     // success!

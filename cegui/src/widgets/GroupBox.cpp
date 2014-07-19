@@ -1,5 +1,4 @@
 /************************************************************************
-    filename:   CEGUIGroupBox.cpp
     created:    03/23/2004
     author:     Lars 'Levia' Wesselius (Content Pane based on Tomas Lindquist Olsen's code)
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIIrrlichtRendererDef.h
     created:    20/7/2004
     author:     Thomas Suter
 

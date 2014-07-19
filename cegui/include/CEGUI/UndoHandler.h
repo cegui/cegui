@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	UndoHandler.h
 	created:	15/07/2013
 	author:		Erihel <erihel@gmail.com>
 	

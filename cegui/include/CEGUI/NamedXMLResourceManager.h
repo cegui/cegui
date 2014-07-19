@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUINamedXMLResourceManager.h
     created:    Fri Jul 17 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

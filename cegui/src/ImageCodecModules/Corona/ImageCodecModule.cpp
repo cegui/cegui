@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUICoronaImageCodecModule.cpp
 	created:	28/07/2006
 	author:		Olivier Delannoy 
 	

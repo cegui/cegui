@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalComponentBase.cpp
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -98,6 +97,12 @@ const ColourRect& FalagardComponentBase::getColours() const
 void FalagardComponentBase::setColours(const ColourRect& cols)
 {
     d_colours = cols;
+}
+
+//----------------------------------------------------------------------------//
+const String& FalagardComponentBase::getColoursPropertySource() const
+{
+    return d_colourPropertyName;
 }
 
 //----------------------------------------------------------------------------//

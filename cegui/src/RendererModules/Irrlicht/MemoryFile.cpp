@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIIrrlichtMemoryFile.cpp
     created:    Sun Feb 19 2006
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

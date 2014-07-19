@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIOpenGL3Renderer.cpp
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/

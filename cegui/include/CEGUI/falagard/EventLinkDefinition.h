@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIEventLinkDefinition.h
     created:    Sun Nov 21 2010
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIThumb.cpp
 	created:	25/4/2004
 	author:		Paul D Turner
 	
@@ -315,7 +314,7 @@ void Thumb::addThumbProperties(void)
     
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HotTracked", "Property to get/set the state of the state of the 'hot-tracked' setting for the thumb."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &Thumb::setHotTracked, &Thumb::isHotTracked, true
     );
     
@@ -332,12 +331,12 @@ void Thumb::addThumbProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
-        "VertFree", "Property to get/set the state the setting to free the thumb vertically.  Value is either \"True\" or \"False\".",
+        "VertFree", "Property to get/set the state the setting to free the thumb vertically.  Value is either \"true\" or \"false\".",
         &Thumb::setVertFree, &Thumb::isVertFree, false
     );
     
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
-        "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"True\" or \"False\".",
+        "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"true\" or \"false\".",
         &Thumb::setHorzFree, &Thumb::isHorzFree, false
     );
 }
