@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   ItemView.h
     created:    Sat May 24 2014
     author:     Timotei Dolean <timotei21@gmail.com>
 

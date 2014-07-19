@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   ItemModel.h
     created:    Tue May 20 2014
     author:     Timotei Dolean <timotei21@gmail.com>
 
