@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   Controls.h
     created:    20th February 2010
     author:     Lukas E Meindl
 

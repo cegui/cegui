@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUITitlebar.cpp
 	created:	25/4/2004
 	author:		Paul D Turner
 	
@@ -246,7 +245,7 @@ void Titlebar::addTitlebarProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(Titlebar, bool,
-        "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the Titlebar.  Value is either \"True\" or \"False\".",
+        "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the Titlebar.  Value is either \"true\" or \"false\".",
         &Titlebar::setDraggingEnabled, &Titlebar::isDraggingEnabled, true
     );
 }

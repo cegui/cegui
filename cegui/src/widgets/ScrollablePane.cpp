@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIScrollablePane.cpp
     created:    1/3/2005
     author:     Paul D Turner
  *************************************************************************/
@@ -517,13 +516,13 @@ void ScrollablePane::addScrollablePaneProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
-        "bar of the tree.  Value is either \"True\" or \"False\".",
+        "bar of the tree.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
-        "scroll bar of the tree.  Value is either \"True\" or \"False\".",
+        "scroll bar of the tree.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 
@@ -558,7 +557,7 @@ void ScrollablePane::addScrollablePaneProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
-        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself.  Value is either \"True\" or \"False\".",
+        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setContentPaneAutoSized, &ScrollablePane::isContentPaneAutoSized, true
     );
 

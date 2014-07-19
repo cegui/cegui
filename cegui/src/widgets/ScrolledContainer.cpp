@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIScrolledContainer.cpp
     created:    1/3/2005
     author:     Paul D Turner
 *************************************************************************/
@@ -301,7 +300,7 @@ void ScrolledContainer::addScrolledContainerProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, bool,
         "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &ScrolledContainer::setContentPaneAutoSized, &ScrolledContainer::isContentPaneAutoSized, true
     );
     

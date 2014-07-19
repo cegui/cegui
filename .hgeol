@@ -5,6 +5,7 @@
 
 **.txt = native
 **.xml = native
+**.svg = native
 
 **.layout = native
 **.looknfeel = native

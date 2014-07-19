@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIKeyFrame.h
     created:    7/8/2010
     author:     Martin Preisler
 

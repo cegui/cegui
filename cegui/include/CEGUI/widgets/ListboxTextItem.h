@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIListboxTextItem.h
 	created:	12/6/2004
 	author:		Paul D Turner
 	

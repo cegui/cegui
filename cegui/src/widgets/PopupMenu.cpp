@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUIPopupMenu.cpp
 	created:	1/4/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
 	

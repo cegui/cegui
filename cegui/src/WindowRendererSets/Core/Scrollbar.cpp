@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalScrollbar.cpp
     created:    Mon Jul 4 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -45,7 +44,7 @@ namespace CEGUI
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardScrollbar, bool,
         "VerticalScrollbar", "Property to get/set whether the Scrollbar operates in the vertical direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &FalagardScrollbar::setVertical, &FalagardScrollbar::isVertical,
         false);
     }
@@ -81,17 +80,33 @@ namespace CEGUI
 
         if (d_vertical)
         {
-            slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            theThumb->setVertRange(area.top() / w->getPixelSize().d_height, (area.top() + slideExtent) / w->getPixelSize().d_height);
-            theThumb->setPosition(UVector2(cegui_absdim(area.left()),
-                                                 cegui_reldim((area.top() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_height)));
+            if(w->getPixelSize().d_height != 0.0f && posExtent != 0.0f)
+            {
+                slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
+                theThumb->setVertRange(area.top() / w->getPixelSize().d_height, (area.top() + slideExtent) / w->getPixelSize().d_height);
+                theThumb->setPosition(UVector2(cegui_absdim(area.left()),
+                    cegui_reldim((area.top() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_height)));
+            }
+            else
+            {
+                theThumb->setVertRange(0.0f, 0.0f);
+                theThumb->setPosition(UVector2(cegui_absdim(area.left()), cegui_reldim(0.0f)));
+            }
         }
         else
         {
-            slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            theThumb->setHorzRange(area.left() / w->getPixelSize().d_width, (area.left() + slideExtent)  / w->getPixelSize().d_width);
-            theThumb->setPosition(UVector2(cegui_reldim((area.left() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
-                                                 cegui_absdim(area.top())));
+            if(w->getPixelSize().d_width != 0.0f && posExtent != 0.0f)
+            {
+                slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
+                theThumb->setHorzRange(area.left() / w->getPixelSize().d_width, (area.left() + slideExtent)  / w->getPixelSize().d_width);
+                theThumb->setPosition(UVector2(cegui_reldim((area.left() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
+                                                     cegui_absdim(area.top())));
+            }
+            else
+            {
+                theThumb->setHorzRange(0.0f, 0.0f);
+                theThumb->setPosition(UVector2(cegui_reldim(0.0f), cegui_absdim(area.top())));
+            }
         }
     }
 

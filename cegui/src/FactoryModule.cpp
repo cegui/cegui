@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FactoryModule.cpp
     created:    Fri Oct 07 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -87,6 +86,18 @@ uint FactoryModule::unregisterAllFactories()
 
     return static_cast<uint>(d_registry.size());
 }
+
+//----------------------------------------------------------------------------//
+#if defined(CEGUI_STATIC) && defined(CEGUI_BUILD_STATIC_FACTORY_MODULE)
+extern "C"
+{
+    CEGUI::FactoryModule& getWindowFactoryModule() 
+    {
+        static CEGUI::FactoryModule mod;
+        return mod;
+    }
+}
+#endif
 
 //----------------------------------------------------------------------------//
 

@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   DeviceReset_Direct3D11.cpp
     created:    Tue May 29 2012
     author:     Paul D Turner
 *************************************************************************/
@@ -27,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_BUILD_RENDERER_DIRECT3D11
+#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"

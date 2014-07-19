@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   InventoryItemRenderer.cpp
     created:    Fri Apr 22 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

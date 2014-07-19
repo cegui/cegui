@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FormattingSetting.h
     created:    Fri Jun 15 2012
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -75,6 +74,12 @@ public:
     T getValue() const
     {
         return d_value;
+    }
+
+    //------------------------------------------------------------------------//
+    const String& getPropertySource() const
+    {
+        return d_propertySource;
     }
 
     //------------------------------------------------------------------------//

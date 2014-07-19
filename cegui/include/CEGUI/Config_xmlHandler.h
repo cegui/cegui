@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIConfig_xmlHandler.h
     created:    Sat Jul 25 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -192,7 +191,7 @@ private:
     String d_scriptingInitScript;
     //! name of the termination script.
     String d_scriptingTerminateScript;
-    //! Collection of resouce group directories to be set.
+    //! Collection of resource group directories to be set.
     ResourceDirVector d_resourceDirectories;
     //! Collection of default resource groups to be set.
     DefaultGroupVector d_defaultResourceGroups;

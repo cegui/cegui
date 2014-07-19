@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIDimensions.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -854,7 +853,7 @@ public:
         area for this ComponentArea.
 
     \note
-        Calling this will replace any existing souce, such as a named area.
+        Calling this will replace any existing source, such as a named area.
 
     \param property
         String object holding the name of a Propery.  The property should access
@@ -862,8 +861,17 @@ public:
     */
     void setAreaPropertySource(const String& property);
 
+    /*!
+    \brief
+        Return the name of the look to which the NamedArea, which is defined as source, belongs to.
+
+    \return
+        A string containing the name of the look.
+    */
+    const String& ComponentArea::getNamedAreaSourceLook() const;
+
     //! Set the named area source of the ComponentArea.
-    void setNamedAreaSouce(const String& widget_look, const String& area_name);
+    void setNamedAreaSource(const String& widget_look, const String& area_name);
 
     /*!
     \brief

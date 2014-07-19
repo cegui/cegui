@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalDimensions.cpp
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -1189,7 +1188,13 @@ void ComponentArea::setAreaPropertySource(const String& property)
 }
 
 //----------------------------------------------------------------------------//
-void ComponentArea::setNamedAreaSouce(const String& widget_look,
+const String& ComponentArea::getNamedAreaSourceLook() const
+{
+    return d_namedAreaSourceLook;
+}
+
+//----------------------------------------------------------------------------//
+void ComponentArea::setNamedAreaSource(const String& widget_look,
                                       const String& area_name)
 {
     d_namedSource = area_name;

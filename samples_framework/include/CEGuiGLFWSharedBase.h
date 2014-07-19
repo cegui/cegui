@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGuiGLFWSharedBase.h
     created:    12/2/2012
     author:     Paul D Turner
 *************************************************************************/
@@ -62,6 +61,7 @@ protected:
     static void GLFWCALL glfwMouseWheelCallback(int position);
     static void GLFWCALL glfwMousePosCallback(int x, int y );
 
+    static int GLFWCALL glfwWindowCloseCallback(void);
     static void GLFWCALL glfwWindowResizeCallback(int width, int height);
 
     static CEGUI::Key::Scan GlfwToCeguiKey(int glfwKey);
@@ -77,6 +77,11 @@ protected:
     static bool d_windowSized;
     static int d_newWindowWidth;
     static int d_newWindowHeight;
+
+    static bool d_mouseLeftWindow;
+    static bool d_mouseDisableCalled;
+    static int d_oldMousePosX;
+    static int d_oldMousePosY;
 };
 
 

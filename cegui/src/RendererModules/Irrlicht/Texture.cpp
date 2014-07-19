@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIIrrlichtTexture.cpp
     created:    Tue Mar 3 2009
     author:     Paul D Turner (based on original code by Thomas Suter)
 *************************************************************************/

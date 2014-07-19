@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   FalSlider.cpp
     created:    Sun Jul 3 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -46,12 +45,12 @@ namespace CEGUI
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardSlider,bool,
         "VerticalSlider", "Property to get/set whether the Slider operates in the vertical direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &FalagardSlider::setVertical,&FalagardSlider::isVertical,
         false);
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardSlider,bool,
         "ReversedDirection", "Property to get/set whether the Slider operates in reversed direction."
-        "  Value is either \"True\" or \"False\".",
+        "  Value is either \"true\" or \"false\".",
         &FalagardSlider::setReversedDirection,&FalagardSlider::isReversedDirection,
         false);
     }

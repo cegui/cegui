@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIPropertyHelper.cpp
     created:    6/7/2004
     author:     Paul D Turner
 
@@ -45,8 +44,8 @@ namespace CEGUI
 {
 
 //! Definitions of static constants
-const CEGUI::String PropertyHelper<bool>::True("True");
-const CEGUI::String PropertyHelper<bool>::False("False");
+const CEGUI::String PropertyHelper<bool>::True("true");
+const CEGUI::String PropertyHelper<bool>::False("false");
 
 const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
 const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");

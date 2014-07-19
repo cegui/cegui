@@ -1,5 +1,4 @@
 /***********************************************************************
-	filename: 	CEGUICombobox.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
 
@@ -860,7 +859,7 @@ void Combobox::addComboboxProperties(void)
     const String& propertyOrigin = WidgetTypeName;
     
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
+          "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
           &Combobox::setReadOnly, &Combobox::isReadOnly, false
     );
     CEGUI_DEFINE_PROPERTY(Combobox, String,
@@ -884,26 +883,26 @@ void Combobox::addComboboxProperties(void)
           &Combobox::setMaxTextLength, &Combobox::getMaxTextLength, String().max_size()
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "SortList","Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
+          "SortList","Property to get/set the sort setting of the list box.  Value is either \"true\" or \"false\".",
           &Combobox::setSortingEnabled, &Combobox::isSortEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+          "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"true\" or \"false\".",
           &Combobox::setShowVertScrollbar, &Combobox::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
+          "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"true\" or \"false\".",
           &Combobox::setShowHorzScrollbar, &Combobox::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "SinglePointerActivationMode","Property to get/set the 'single activation mode' setting for the combo box.  Value is either \"True\" or \"False\".",
+          "SinglePointerActivationMode","Property to get/set the 'single activation mode' setting for the combo box.  Value is either \"true\" or \"false\".",
           &Combobox::setSinglePointerActivationEnabled, &Combobox::getSinglePointerActivationEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "AutoSizeListHeight",
           "Property to get/set whether the drop down list will vertically "
           "auto-size itself to fit it's content. "
-          "Value is either \"True\" or \"False\".",
+          "Value is either \"true\" or \"false\".",
           &Combobox::setAutoSizeListHeightToContent,
           &Combobox::getAutoSizeListHeightToContent, false
     );
@@ -911,7 +910,7 @@ void Combobox::addComboboxProperties(void)
           "AutoSizeListWidth",
           "Property to get/set whether the drop down list will horizontally "
           "auto-size itself to fit it's content. "
-          "Value is either \"True\" or \"False\".",
+          "Value is either \"true\" or \"false\".",
           &Combobox::setAutoSizeListWidthToContent,
           &Combobox::getAutoSizeListWidthToContent, false
     );

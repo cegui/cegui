@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGuiOgreBaseApplication.cpp
     created:    9/3/2004
     author:     Paul D Turner
 *************************************************************************/
@@ -35,7 +34,7 @@
 
 // this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
-#ifdef CEGUI_BUILD_RENDERER_OGRE
+#ifdef CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"

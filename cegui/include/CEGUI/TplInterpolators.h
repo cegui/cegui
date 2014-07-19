@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUITplInterpolators.h
     created:    23/11/2010
     author:     Martin Preisler
 

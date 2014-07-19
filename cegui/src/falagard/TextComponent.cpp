@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalTextComponent.cpp
     created:    Sun Jun 19 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/

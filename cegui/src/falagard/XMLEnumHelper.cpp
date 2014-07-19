@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   XMLEnumHelper.cpp
     created:    19th June 2014
     author:     Lukas E Meindl
 

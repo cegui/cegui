@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIFalagard_xmlHandler.cpp
     created:    Fri Jun 17 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -1664,7 +1663,7 @@ namespace CEGUI
 
         const String look(attributes.getValueAsString(LookAttribute));
 
-        d_area->setNamedAreaSouce(look.empty() ? d_widgetlook->getName() : look,
+        d_area->setNamedAreaSource(look.empty() ? d_widgetlook->getName() : look,
                                   attributes.getValueAsString(NameAttribute));
     }
 

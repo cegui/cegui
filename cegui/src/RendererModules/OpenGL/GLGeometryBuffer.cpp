@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLGeometryBuffer.cpp
     created:    Thu Jan 8 2009
     authors:    Paul D Turner <paul@cegui.org.uk>
                 Lukas E Meindl
