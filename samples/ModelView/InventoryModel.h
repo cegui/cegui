@@ -27,7 +27,7 @@
 #ifndef _Sample_Model_View_Model_h_
 #define _Sample_Model_View_Model_h_
 
-#include "CEGUI/ItemModel.h"
+#include "CEGUI/views/ItemModel.h"
 #include "CEGUI/String.h"
 #include <vector>
 

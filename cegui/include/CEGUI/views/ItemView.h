@@ -33,7 +33,7 @@
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/ItemModel.h"
+#include "CEGUI/views/ItemModel.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
