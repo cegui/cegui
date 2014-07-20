@@ -1,5 +1,4 @@
 /***********************************************************************
-    filename:   ItemViewRenderer.h
     created:    Mon Jun 02 2014
     author:     Timotei Dolean <timotei21@gmail.com>
     purpose:    Contains common rendering-related routines
