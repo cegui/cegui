@@ -146,7 +146,7 @@ public:
     \brief
         Compares two indices and returns true if they are equal, false otherwise.
     */
-    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) = 0;
+    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const = 0;
 
     /*!
     \brief
@@ -155,20 +155,20 @@ public:
         - -1 if first index is less than second index.
         - 1 if the first index is bigger than the second index.
     */
-    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) = 0;
+    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const = 0;
 
     /*!
     \brief
         Returns the ModelIndex which is parent for the specified ModelIndex.
     */
-    virtual ModelIndex getParentIndex(const ModelIndex& model_index) = 0;
+    virtual ModelIndex getParentIndex(const ModelIndex& model_index) const = 0;
 
     /*!
     \brief
         Returns the child id (between 0 and getChildrenCount(getParentIndex(model_index)))
         or -1 if no such child exists, for the given ModelIndex.
     */
-    virtual int getChildId(const ModelIndex& model_index) = 0;
+    virtual int getChildId(const ModelIndex& model_index) const = 0;
 
     /*!
     \brief
@@ -179,7 +179,7 @@ public:
         access to the items. For example, in the case of a list this might contain
         all the items in the list.
     */
-    virtual ModelIndex getRootIndex() = 0;
+    virtual ModelIndex getRootIndex() const = 0;
 
     /*!
     \brief
@@ -188,7 +188,7 @@ public:
     \param model_index
         The ModelIndex for which to compute the number of children.
     */
-    virtual size_t getChildCount(const ModelIndex& model_index) = 0;
+    virtual size_t getChildCount(const ModelIndex& model_index) const = 0;
 
     /*!
     \brief

@@ -44,19 +44,19 @@ ModelIndex ItemModelStub::makeIndex(size_t child, const ModelIndex& model_index)
 }
 
 //----------------------------------------------------------------------------//
-size_t ItemModelStub::getChildCount(const ModelIndex& model_index)
+size_t ItemModelStub::getChildCount(const ModelIndex& model_index) const
 {
     return d_items.size();
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex ItemModelStub::getParentIndex(const ModelIndex& model_index)
+ModelIndex ItemModelStub::getParentIndex(const ModelIndex& model_index) const
 {
     return ModelIndex();
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex ItemModelStub::getRootIndex()
+ModelIndex ItemModelStub::getRootIndex() const
 {
     return ModelIndex();
 }
@@ -69,23 +69,23 @@ String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole role /
 }
 
 //----------------------------------------------------------------------------//
-bool ItemModelStub::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2)
+bool ItemModelStub::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const
 {
     return index1.d_modelData == index2.d_modelData;
 }
 
 //----------------------------------------------------------------------------//
-int ItemModelStub::compareIndices(const ModelIndex& index1, const ModelIndex& index2)
+int ItemModelStub::compareIndices(const ModelIndex& index1, const ModelIndex& index2) const
 {
     return (*static_cast<String*>(index1.d_modelData)).compare(
         *static_cast<String*>(index2.d_modelData));
 }
 
 //----------------------------------------------------------------------------//
-int ItemModelStub::getChildId(const ModelIndex& model_index)
+int ItemModelStub::getChildId(const ModelIndex& model_index) const
 {
     String* str = static_cast<String*>(model_index.d_modelData);
-    std::vector<String>::iterator itor = std::find(d_items.begin(), d_items.end(), *str);
+    std::vector<String>::const_iterator itor = std::find(d_items.begin(), d_items.end(), *str);
     if (itor == d_items.end())
         return -1;
 
