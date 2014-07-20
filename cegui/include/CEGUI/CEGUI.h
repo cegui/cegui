@@ -129,7 +129,7 @@
 #include "CEGUI/XMLSerializer.h"
 
 // Model-view
-#include "CEGUI/ItemModel.h"
+#include "CEGUI/views/ItemModel.h"
 #include "CEGUI/views/All.h"
 
 // Falagard core system include
