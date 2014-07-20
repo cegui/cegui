@@ -154,7 +154,7 @@ ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_inde
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
+ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index) const
 {
     if (model_index.d_modelData == d_inventoryRoot)
         return ModelIndex();
@@ -167,13 +167,13 @@ ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex InventoryModel::getRootIndex()
+ModelIndex InventoryModel::getRootIndex() const
 {
     return ModelIndex(d_inventoryRoot);
 }
 
 //----------------------------------------------------------------------------//
-size_t InventoryModel::getChildCount(const ModelIndex& model_index)
+size_t InventoryModel::getChildCount(const ModelIndex& model_index) const
 {
     if (model_index.d_modelData == 0)
         return d_inventoryRoot->d_items.size();
@@ -234,13 +234,13 @@ void InventoryModel::addItem(const ModelIndex& parent, InventoryItem* new_item, 
 }
 
 //----------------------------------------------------------------------------//
-bool InventoryModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2)
+bool InventoryModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const
 {
     return index1.d_modelData == index2.d_modelData;
 }
 
 //----------------------------------------------------------------------------//
-int InventoryModel::compareIndices(const ModelIndex& index1, const ModelIndex& index2)
+int InventoryModel::compareIndices(const ModelIndex& index1, const ModelIndex& index2) const
 {
     if (areIndicesEqual(index1, index2))
         return 0;
@@ -252,7 +252,7 @@ int InventoryModel::compareIndices(const ModelIndex& index1, const ModelIndex& i
 }
 
 //----------------------------------------------------------------------------//
-int InventoryModel::getChildId(const ModelIndex& model_index)
+int InventoryModel::getChildId(const ModelIndex& model_index) const
 {
     ModelIndex parent_index = getParentIndex(model_index);
     if (!isValidIndex(parent_index))
@@ -322,7 +322,7 @@ void InventoryModel::deleteChildren(InventoryItem* item, bool notify)
 }
 
 //----------------------------------------------------------------------------//
-void InventoryModel::updateItemName(const CEGUI::ModelIndex& index, const String& newName)
+void InventoryModel::updateItemName(const ModelIndex& index, const String& newName)
 {
     InventoryItem* item = static_cast<InventoryItem*>(index.d_modelData);
     item->d_name = newName;
