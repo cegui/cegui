@@ -6,7 +6,7 @@ Copyright ©2004 - 2014 Paul D Turner, The CEGUI Development Team and Contributi
 
 The majority of the auxiliary files for CEGUI, that used to be plain text, are now kept in a "doxygenised" format within the doc/doxygen directory - please see those files, or generate the documentation for a more friendly format. Alternativelly, visit http://static.cegui.org.uk/docs for all your documentation needs!
 
-What follows is just a quick-start guide, go to our doxygen docs for more detailed documentation. 
+What follows is just a quick-start guide, go to our doxygen docs for more detailed documentation.
 
 ## Contributing
 
@@ -72,7 +72,7 @@ If you have no installed system-wide, it's a bit more involved and complicated.
 ```bash
 cd $cegui_folder
 cd build/bin/
-CEGUI_SAMPLE_DATAFILES=../../datafiles ./CEGUISampleFramework-0 ../datafiles/samples/samples.xml
+CEGUI_SAMPLE_DATAPATH=../../datafiles ./CEGUISampleFramework-0 ../datafiles/samples/samples.xml
 ```
 
 ## We want to clarify some common misconceptions about CEGUI:
@@ -90,9 +90,9 @@ CEGUI has relatively few **required** dependencies (currently only glm) and many
 If CMake tells you that **something** was not found, you **shall not panic** ;) ! Most probably it's a harmless message. You should only worry if not a single dependency was found. On Windows and Mac OS X, you should however make sure you placed the dependency folder correctly before running Cmake.
 
 ### "It is slow"
-Whenever users complained in the forums about CEGUI's speed it turned out to be that they either ran the application in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage. 
+Whenever users complained in the forums about CEGUI's speed it turned out to be that they either ran the application in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage.
 
-While we agree that **some** areas of the CEGUI codebase are not as optimised as they could be yet, most of our code-base is very fast. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations on the CPU as well as the rendering speed on the GPU. It even runs optimally still if hudreds of windows are opened and rendered at the same time. 
+While we agree that **some** areas of the CEGUI codebase are not as optimised as they could be yet, most of our code-base is very fast. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations on the CPU as well as the rendering speed on the GPU. It even runs optimally still if hudreds of windows are opened and rendered at the same time.
 
 The best proof that CEGUI is fast is that big proprietary games, which displays hundreds of widgets and use complex hierarchies, have been made using CEGUI (Torchlight 1, Torchlight 2, Venetica, etc.). CEGUI is definitely not *too slow to use*. It could be too slow if you are doing something wrong - like loading layout files every frame or causing unnecessary updates and events. In this case it is best to do a forum search and - if you do not find anything helpful - to describe your setup in detail and what issues you have.
 
