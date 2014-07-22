@@ -103,18 +103,18 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         
 
         // Define the workspace first
-        auto templatedworkspace = manager->addWorkspaceDefinition(
+        Ogre::CompositorWorkspaceDef* templatedworkspace = manager->addWorkspaceDefinition(
             "Sample_workspace");
 
         // Create a node for rendering on top of everything
-        auto rendernode = manager->addNodeDefinition("SampleCleaner");
+        Ogre::CompositorNodeDef* rendernode = manager->addNodeDefinition("SampleCleaner");
         
         rendernode->addTextureSourceName("renderwindow", 0,
             Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
         rendernode->setNumTargetPass(1);
         // Pass for it
-        auto targetpasses = rendernode->addTargetPass("renderwindow");
+        Ogre::CompositorTargetDef* targetpasses = rendernode->addTargetPass("renderwindow");
         targetpasses->setNumPasses(2);
 
         Ogre::CompositorPassClearDef* clearpass =
