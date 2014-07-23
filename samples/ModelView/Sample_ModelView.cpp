@@ -68,9 +68,9 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     d_treeView->setItemTooltipsEnabled(true);
     d_root->getChild("TreeViewHolder")->addChild(d_treeView);
 
-
     ListWidget* list_widget = static_cast<ListWidget*>(win_mgr.createWindow("TaharezLook/ListWidget", "listWidget"));
     d_root->getChild("ListWidgetHolder")->addChild(list_widget);
+    initListWidgetItems(list_widget);
 
     d_root->getChild("btnAddRandomItem")->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleAddRandomItem, this));
@@ -232,6 +232,17 @@ bool ModelViewDemo::toggleSorting(const EventArgs& e)
         "Current sort mode: " + PropertyHelper<ViewSortMode>::toString(next_sort_mode));
 
     return true;
+}
+
+//----------------------------------------------------------------------------//
+void ModelViewDemo::initListWidgetItems(ListWidget* list_widget)
+{
+    ImageManager::ImageIterator itor = ImageManager::getSingleton().getIterator();
+    while (!itor.isAtEnd())
+    {
+        list_widget->addItem(itor.getCurrentKey());
+        ++itor;
+    }
 }
 
 /*************************************************************************

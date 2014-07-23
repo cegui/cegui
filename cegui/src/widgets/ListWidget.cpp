@@ -28,6 +28,13 @@
 
 namespace CEGUI
 {
+
+//----------------------------------------------------------------------------//
+ListWidgetItem& indexToWidgetItem(const ModelIndex& index)
+{
+    return *(static_cast<ListWidgetItem*>(index.d_modelData));
+}
+
 //----------------------------------------------------------------------------//
 const String ListWidget::EventNamespace("ListWidget");
 const String ListWidget::WidgetTypeName("CEGUI/ListWidget");
@@ -43,4 +50,118 @@ ListWidget::~ListWidget()
 {
 }
 
+//----------------------------------------------------------------------------//
+ListWidgetItem::ListWidgetItem()
+{
+
+}
+
+//----------------------------------------------------------------------------//
+ListWidgetItem::~ListWidgetItem()
+{
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidgetItem::operator==(const ListWidgetItem& other) const
+{
+    return getText() == other.getText();
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidgetItem::operator<(const ListWidgetItem& other) const
+{
+    return getText() < other.getText();
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidget::isValidIndex(const ModelIndex& model_index) const
+{
+    return model_index.d_modelData != 0 && getChildId(model_index) != -1;
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex ListWidget::makeIndex(size_t child, const ModelIndex& parent_index)
+{
+    if (child >= d_widgetItems.size())
+        return ModelIndex();
+
+    return ModelIndex(&d_widgetItems[child]);
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidget::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const
+{
+    return compareIndices(index1, index2) == 0;
+}
+
+//----------------------------------------------------------------------------//
+int ListWidget::compareIndices(const ModelIndex& index1, const ModelIndex& index2) const
+{
+    if (!isValidIndex(index1) || !isValidIndex(index2))
+        return false;
+
+    return indexToWidgetItem(index1) < indexToWidgetItem(index2);
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex ListWidget::getParentIndex(const ModelIndex& model_index) const
+{
+    return getRootIndex();
+}
+
+//----------------------------------------------------------------------------//
+int ListWidget::getChildId(const ModelIndex& model_index) const
+{
+    std::vector<ListWidgetItem>::const_iterator itor =
+        std::find(d_widgetItems.begin(), d_widgetItems.end(), indexToWidgetItem(model_index));
+
+    if (itor == d_widgetItems.end())
+        return -1;
+
+    return std::distance(d_widgetItems.begin(), itor);
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex ListWidget::getRootIndex() const
+{
+    return ModelIndex();
+}
+
+//----------------------------------------------------------------------------//
+size_t ListWidget::getChildCount(const ModelIndex& model_index) const
+{
+    return d_widgetItems.size();
+}
+
+//----------------------------------------------------------------------------//
+String ListWidget::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
+{
+    if (!isValidIndex(model_index))
+        return "";
+
+    return indexToWidgetItem(model_index).getText();
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::addItem(String text)
+{
+    ListWidgetItem item;
+    item.setText(text);
+
+    addItem(item);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::addItem(const ListWidgetItem& item)
+{
+    d_widgetItems.push_back(item);
+    notifyChildrenAdded(getRootIndex(), d_widgetItems.size() - 1, 1);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::initialiseComponents()
+{
+    ListView::initialiseComponents();
+    setModel(this);
+}
 }
