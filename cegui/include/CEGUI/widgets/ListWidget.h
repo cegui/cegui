@@ -32,7 +32,32 @@
 namespace CEGUI
 {
 
-class CEGUIEXPORT ListWidget : public ListView
+/*!
+\brief
+    This class is used as an item in the ListWidget. I
+*/
+class CEGUIEXPORT ListWidgetItem
+{
+public:
+    ListWidgetItem();
+    virtual ~ListWidgetItem();
+
+    String getText() const { return d_text; }
+    void setText(String val) { d_text = val; }
+
+    bool operator== (const ListWidgetItem& other) const;
+    bool operator< (const ListWidgetItem& other) const;
+
+protected:
+    String d_text;
+};
+
+/*!
+\brief
+    This is a convenience widget as an alternative to the new list view, for
+    simple scenarios that don't require a custom ItemModel implementation.
+*/
+class CEGUIEXPORT ListWidget : public ListView, public ItemModel
 {
 public:
     //! Window factory name
@@ -42,6 +67,25 @@ public:
 
     ListWidget(const String& type, const String& name);
     virtual ~ListWidget();
+
+    virtual void addItem(String text);
+    virtual void addItem(const ListWidgetItem& item);
+
+    virtual bool isValidIndex(const ModelIndex& model_index) const;
+    virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);
+    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const;
+    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const;
+    virtual ModelIndex getParentIndex(const ModelIndex& model_index) const;
+    virtual int getChildId(const ModelIndex& model_index) const;
+    virtual ModelIndex getRootIndex() const;
+    virtual size_t getChildCount(const ModelIndex& model_index) const;
+    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text);
+
+protected:
+    virtual void initialiseComponents();
+
+private:
+    std::vector<ListWidgetItem> d_widgetItems;
 };
 
 }

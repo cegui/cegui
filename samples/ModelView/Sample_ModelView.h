@@ -31,6 +31,7 @@
 #include "InventoryModel.h"
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/views/TreeView.h"
+#include "CEGUI/widgets/ListWidget.h"
 
 class ModelViewDemo : public Sample
 {
@@ -53,7 +54,7 @@ private:
 
     void updateSelectedIndexText(CEGUI::ItemView* view, const CEGUI::String& text);
     void removeSelectedItemsFromView(CEGUI::ItemView* view);
-
+    void initListWidgetItems(CEGUI::ListWidget* list_widget);
     CEGUI::Window* d_root;
     InventoryModel d_inventoryModel;
 
