@@ -1,5 +1,5 @@
 /***********************************************************************
-    created:    Sat Jul 19 2014
+    created:    Wed May 23 2014
     author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
 /***************************************************************************
@@ -23,35 +23,52 @@
  *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
-***************************************************************************/
-#ifndef _CEGUIListWidget_h_
-#define _CEGUIListWidget_h_
+ ***************************************************************************/
+#ifndef _CEGUIStandardItemModel_h_
+#define _CEGUIStandardItemModel_h_
 
-#include "CEGUI/views/ListView.h"
-#include "CEGUI/views/StandardItemModel.h"
+#include "CEGUI/views/ItemModel.h"
+#include <vector>
 
 namespace CEGUI
 {
 
-/*!
-\brief
-    This is a convenience widget as an alternative to the new list view, for
-    simple scenarios that don't require a custom ItemModel implementation.
-*/
-class CEGUIEXPORT ListWidget : public ListView, public StandardItemModel
+class CEGUIEXPORT StandardItem
 {
 public:
-    //! Window factory name
-    static const String WidgetTypeName;
-    //! Namespace for global events
-    static const String EventNamespace;
+    StandardItem();
+    virtual ~StandardItem();
 
-    ListWidget(const String& type, const String& name);
-    virtual ~ListWidget();
+    String getText() const { return d_text; }
+    void setText(String val) { d_text = val; }
+
+    bool operator== (const StandardItem& other) const;
+    bool operator< (const StandardItem& other) const;
 
 protected:
-    virtual void initialiseComponents();
+    String d_text;
+};
+
+class CEGUIEXPORT StandardItemModel : public ItemModel
+{
+public:
+    virtual void addItem(String text);
+    virtual void addItem(const StandardItem& item);
+
+    virtual bool isValidIndex(const ModelIndex& model_index) const;
+    virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);
+    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const;
+    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const;
+    virtual ModelIndex getParentIndex(const ModelIndex& model_index) const;
+    virtual int getChildId(const ModelIndex& model_index) const;
+    virtual ModelIndex getRootIndex() const;
+    virtual size_t getChildCount(const ModelIndex& model_index) const;
+    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text);
+
+protected:
+    std::vector<StandardItem> d_items;
 };
 
 }
+
 #endif
