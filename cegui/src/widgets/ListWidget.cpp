@@ -100,7 +100,10 @@ int ListWidget::compareIndices(const ModelIndex& index1, const ModelIndex& index
     if (!isValidIndex(index1) || !isValidIndex(index2))
         return false;
 
-    return indexToWidgetItem(index1) < indexToWidgetItem(index2);
+    if (indexToWidgetItem(index1) < indexToWidgetItem(index2))
+        return -1;
+
+    return indexToWidgetItem(index1) == indexToWidgetItem(index2) ? 0 : 1;
 }
 
 //----------------------------------------------------------------------------//
