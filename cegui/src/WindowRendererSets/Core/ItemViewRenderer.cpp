@@ -84,13 +84,12 @@ void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_str
 {
     if (view->getSelectionBrushImage() != 0 && is_selected)
     {
-        ColourRect selection_rect(Colour(0.5f, 0.5f, 0.5f));
         view->getSelectionBrushImage()->render(
             view->getGeometryBuffers(),
             draw_rect,
             item_clipper,
             true,
-            selection_rect);
+            view->getSelectionColourRect());
     }
 
     Vector2f draw_pos = draw_rect.getPosition();
