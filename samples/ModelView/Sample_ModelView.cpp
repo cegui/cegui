@@ -61,6 +61,7 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     d_listView = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
     d_listView->setModel(&d_inventoryModel);
     d_listView->setItemTooltipsEnabled(true);
+    d_listView->setSelectionColourRect(ColourRect(Colour(1.0f, 0, 0, 1)));
     d_root->getChild("ListViewHolder")->addChild(d_listView);
 
     d_treeView = static_cast<TreeView*>(win_mgr.createWindow("TaharezLook/TreeView", "treeView"));

@@ -131,6 +131,7 @@ public:
     virtual ~ItemView();
 
     static const Colour DefaultTextColour;
+    static const Colour DefaultSelectionColour;
     //!< Widget name for the vertical scrollbar component.
     static const String VertScrollbarName;
     //!< Widget name for the horizontal scrollbar component
@@ -154,8 +155,15 @@ public:
     */
     virtual void prepareForRender();
 
+    //! Gets the colour used for rendering the text.
     const ColourRect& getTextColourRect() const;
+    //! Sets the colour used for rendering the text.
     void setTextColourRect(const ColourRect& colour_rect);
+
+    //! Gets the colour used for higlighting the selection.
+    const ColourRect& getSelectionColourRect() const;
+    //! Sets the colour used for highlighting the selection.
+    void setSelectionColourRect(const ColourRect& colour_rect);
 
     bool isDirty() const;
     //! Specifies whether this view requires processing before being able to render it.
@@ -248,6 +256,7 @@ public:
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
+    ColourRect d_selectionColourRect;
     bool d_isDirty;
     bool d_needsFullRender;
     std::vector<ModelIndexSelectionState> d_indexSelectionStates;

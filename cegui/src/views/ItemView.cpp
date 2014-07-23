@@ -104,6 +104,7 @@ PropertyHelper<ViewSortMode>::toString(pass_type val)
 
 //----------------------------------------------------------------------------//
 const Colour ItemView::DefaultTextColour = 0xFFFFFFFF;
+const Colour ItemView::DefaultSelectionColour = Colour(0.5f, 0.5f, 0.5f, 1.0f);
 const String ItemView::HorzScrollbarName("__auto_hscrollbar__");
 const String ItemView::VertScrollbarName("__auto_vscrollbar__");
 const String ItemView::EventVertScrollbarDisplayModeChanged("VertScrollbarDisplayModeChanged");
@@ -116,6 +117,7 @@ ItemView::ItemView(const String& type, const String& name) :
     Window(type, name),
     d_itemModel(0),
     d_textColourRect(ColourRect(DefaultTextColour)),
+    d_selectionColourRect(ColourRect(DefaultSelectionColour)),
     d_isDirty(true),
     d_needsFullRender(true),
     d_lastSelectedIndex(0),
@@ -370,6 +372,18 @@ const ColourRect& ItemView::getTextColourRect() const
 void ItemView::setTextColourRect(const ColourRect& colour_rect)
 {
     d_textColourRect = colour_rect;
+}
+
+//----------------------------------------------------------------------------//
+const ColourRect& ItemView::getSelectionColourRect() const
+{
+    return d_selectionColourRect;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setSelectionColourRect(const ColourRect& colour_rect)
+{
+    d_selectionColourRect = colour_rect;
 }
 
 //----------------------------------------------------------------------------//
@@ -730,4 +744,5 @@ void ItemView::clearSelections()
 {
     d_indexSelectionStates.clear();
 }
+
 }
