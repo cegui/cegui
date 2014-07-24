@@ -641,6 +641,8 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
             true, d_isMultiSelectEnabled, e.d_semanticValue == SV_SelectRange);
     }
 
+    handleSelectionNavigation(e);
+
     ++e.handled;
     Window::onSemanticInputEvent(e);
 }
@@ -745,4 +747,40 @@ void ItemView::clearSelections()
     d_indexSelectionStates.clear();
 }
 
+//----------------------------------------------------------------------------//
+void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
+{
+    ModelIndex parent_index = d_itemModel->getRootIndex();
+    int last_selected_child_id = -1;
+    if (!d_indexSelectionStates.empty())
+    {
+        ModelIndexSelectionState last_selection = d_indexSelectionStates.back();
+        last_selected_child_id = last_selection.d_childId;
+        parent_index = last_selection.d_parentIndex;
+    }
+
+    size_t children_count = d_itemModel->getChildCount(parent_index);
+    if (children_count == 0)
+        return;
+
+    int next_selected_child_id = last_selected_child_id;
+    if (e.d_semanticValue == SV_GoDown)
+    {
+        next_selected_child_id = std::min(
+            next_selected_child_id + 1,
+            static_cast<int>(children_count)-1
+            );
+    }
+    else if (e.d_semanticValue == SV_GoUp)
+    {
+        next_selected_child_id = std::max(0, next_selected_child_id - 1);
+    }
+
+    if (next_selected_child_id == -1 ||
+        next_selected_child_id == last_selected_child_id)
+        return;
+
+    setSelectedItem(d_itemModel->makeIndex(
+        static_cast<size_t>(next_selected_child_id), parent_index));
+}
 }

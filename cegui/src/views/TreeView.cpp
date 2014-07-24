@@ -29,6 +29,8 @@
 #include "CEGUI/views/TreeView.h"
 #include "CEGUI/CoordConverter.h"
 
+//TODO: handle semantic event for up/down and left/right (open/close subtree)
+
 namespace CEGUI
 {
 typedef std::vector<TreeViewItemRenderingState> ViewItemsVector;
