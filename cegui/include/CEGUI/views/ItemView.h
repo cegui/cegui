@@ -312,6 +312,7 @@ protected:
 
     virtual void resortView() = 0;
     void onSortModeChanged(WindowEventArgs& args);
+    void handleSelectionNavigation(SemanticEventArgs& e);
 };
 
 }
