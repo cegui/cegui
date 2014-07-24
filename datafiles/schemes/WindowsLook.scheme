@@ -47,6 +47,6 @@
 -->
 
     <!-- Views -->
-    <FalagardMapping windowType="WindowsLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" LookNFeel="WindowsLook/Listbox" />
+    <FalagardMapping windowType="WindowsLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="WindowsLook/ListView" />
 </GUIScheme>
 
