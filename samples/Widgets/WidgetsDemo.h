@@ -34,6 +34,8 @@ author:     Lukas E Meindl
 
 
 #include "CEGUI/ForwardRefs.h"
+#include "CEGUI/views/ItemView.h"
+#include "CEGUI/views/StandardItemModel.h"
 
 class EventHandlerObject;
 class MyListItem;
@@ -89,13 +91,14 @@ protected:
     void initMenubar(CEGUI::Menubar* menuBar);
     void initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow);
     void initListbox(CEGUI::Listbox* listbox);
+    void initListView(CEGUI::ListView* item_view);
     void initItemListbox(CEGUI::ItemListbox* itemListbox);
     void initCombobox(CEGUI::Combobox* combobox);
     void initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList);
     void subscribeToAllEvents(CEGUI::Window* widgetWindow);
     void addEventHandlerObjectToMap(CEGUI::String eventName);
 
-    
+
     void logFiredEvent(const CEGUI::String& logMessage);
 
     void destroyWidgetWindows();
@@ -105,7 +108,6 @@ protected:
     bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
 
     void saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow);
-
     static const CEGUI::String s_widgetDemoWindowPrefix;
 
     CEGUI::GUIContext* d_guiContext;
@@ -127,6 +129,8 @@ protected:
     std::map<CEGUI::String, CEGUI::Window*> d_widgetsMap;
     std::map<CEGUI::String, EventHandlerObject*> d_eventHandlerObjectsMap;
     std::map<const CEGUI::Window*, WidgetPropertiesObject> d_widgetPropertiesMap;
+
+    CEGUI::StandardItemModel d_listItemModel;
 };
 
 #endif
