@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Forward declares all core system classes
 *************************************************************************/
 /***************************************************************************
@@ -160,6 +160,7 @@ class ListboxItem;
 class ListboxTextItem;
 class ListHeader;
 class ListHeaderSegment;
+class ListWidget;
 class Menubar;
 class MenuBase;
 class MenuItem;
@@ -185,6 +186,9 @@ class Tooltip;
 class Tree;
 class TreeItem;
 class VerticalLayoutContainer;
+
+class ListView;
+class TreeView;
 
 /*************************************************************************
     Forward declare EventArg based classes.
