@@ -55,7 +55,7 @@ struct WidgetPropertiesObject
 {
     std::vector<const CEGUI::Property*> d_propertyList;
     const CEGUI::Window* d_widget;
-}; 
+};
 
 //----------------------------------------------------------------------------//
 // Helper class to deal with the different event names, used to output the name
@@ -63,7 +63,7 @@ struct WidgetPropertiesObject
 //----------------------------------------------------------------------------//
 class EventHandlerObject
 {
-public: 
+public:
     EventHandlerObject(CEGUI::String eventName, WidgetDemo* owner);
     bool handleEvent(const CEGUI::EventArgs& args);
 private:
@@ -155,7 +155,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     initialiseEventHandlerObjects();
 
     d_currentlyDisplayedWidgetRoot = 0;
-    //Create windows and initialise them 
+    //Create windows and initialise them
     createLayout();
 
     d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetDemo::handleRenderingEnded, this));
@@ -170,6 +170,11 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     {
         d_widgetSelectorListbox->setItemSelectState(widgetItem, true);
     }
+
+    d_listItemModel.addItem("item 1");
+    d_listItemModel.addItem("item 2");
+    d_listItemModel.addItem("item 3");
+    d_listItemModel.addItem("item 4");
 
     // success!
     return true;
@@ -378,7 +383,7 @@ void WidgetDemo::initialiseWidgetSelectorListbox()
     d_widgetSelectorListbox->setShowVertScrollbar(false);
     d_widgetSelectorListbox->setSortingEnabled(true);
 
-    d_widgetSelectorListbox->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&WidgetDemo::handleWidgetSelectionChanged, this));   
+    d_widgetSelectorListbox->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&WidgetDemo::handleWidgetSelectionChanged, this));
 }
 
 void WidgetDemo::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer)
@@ -399,7 +404,7 @@ void WidgetDemo::initialiseWidgetsEventsLog()
     d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.25f)));
     d_widgetsEventsLog->setFont("DejaVuSans-12");
 
-    d_widgetsEventsLog->setProperty("VertScrollbar", "true"); 
+    d_widgetsEventsLog->setProperty("VertScrollbar", "true");
 
     d_widgetsEventsLog->setProperty("HorzFormatting", "WordWrapLeftAligned");
 
@@ -439,7 +444,7 @@ CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, cons
     subscribeToAllEvents(widgetWindow);
 
     //Set a default text - for Spinners we set no text so it won't cause an exception
-    CEGUI::Spinner* spinner = dynamic_cast<CEGUI::Spinner*>(widgetWindow); 
+    CEGUI::Spinner* spinner = dynamic_cast<CEGUI::Spinner*>(widgetWindow);
     if(!spinner)
         widgetWindow->setText(widgetType);
 
@@ -605,7 +610,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
     if(widgetType.compare("StaticText") == 0)
     {
         if(widgetWindow->isPropertyPresent("VertScrollbar"))
-            widgetWindow->setProperty("VertScrollbar", "true"); 
+            widgetWindow->setProperty("VertScrollbar", "true");
 
         if(widgetWindow->isPropertyPresent("HorzFormatting"))
             widgetWindow->setProperty("HorzFormatting", "WordWrapLeftAligned");
@@ -620,6 +625,12 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
     if(listbox)
     {
         initListbox(listbox);
+    }
+
+    ListView* list_view = dynamic_cast<ListView*>(widgetWindow);
+    if (list_view)
+    {
+        initListView(list_view);
     }
 
     CEGUI::ComboDropList* combodroplist = dynamic_cast<CEGUI::ComboDropList*>(widgetWindow);
@@ -648,7 +659,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
 
     CEGUI::Menubar* menuBar = dynamic_cast<CEGUI::Menubar*>(widgetWindow);
     if(menuBar)
-    {     
+    {
         initMenubar(menuBar);
 
     }
@@ -932,7 +943,7 @@ void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRo
     while(iter != propertyList.end())
     {
         const CEGUI::Property* curProperty = *iter;
-        
+
         // We have to call this function to update the MCL because the items have changed their properties meanwhile and thus are eventually not sorted anymore
         // When the order in the vector is not correct anymore this will result in an assert when adding a row. The following call will sort the list again and thus
         // it will be ensured everything will be sorted before adding a new row.
@@ -983,7 +994,7 @@ void WidgetDemo::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widgetPr
     d_widgetPropertiesDisplayWindow->addColumn("Name", 0, cegui_reldim(0.45f));
     d_widgetPropertiesDisplayWindow->addColumn("Type ", 1, cegui_reldim(0.25f));
     d_widgetPropertiesDisplayWindow->addColumn("Value", 2, cegui_reldim(0.8f));
-   
+
     d_widgetPropertiesDisplayWindow->setShowHorzScrollbar(false);
     d_widgetPropertiesDisplayWindow->setUserColumnDraggingEnabled(false);
     d_widgetPropertiesDisplayWindow->setUserColumnSizingEnabled(true);
@@ -999,11 +1010,11 @@ void WidgetDemo::initMenubar(CEGUI::Menubar* menuBar)
     CEGUI::String menuItemMapping = skin + "/MenuItem";
     CEGUI::String popupMenuMapping = skin + "/PopupMenu";
 
-    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton(); 
+    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
     CEGUI::MenuItem* fileMenuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "FileMenuItem"));
     fileMenuItem->setText("File");
     menuBar->addChild(fileMenuItem);
- 
+
     CEGUI::PopupMenu* filePopupMenu = static_cast<CEGUI::PopupMenu*>(windowManager.createWindow(popupMenuMapping, "FilePopupMenu"));
     fileMenuItem->addChild(filePopupMenu);
 
@@ -1032,6 +1043,13 @@ void WidgetDemo::initMenubar(CEGUI::Menubar* menuBar)
     menuItem->setText("Midgets");
     viewPopupMenu->addItem(menuItem);
 }
+
+//----------------------------------------------------------------------------//
+void WidgetDemo::initListView(ListView* list_view)
+{
+    list_view->setModel(&d_listItemModel);
+}
+
 /*************************************************************************
 Define the module function that returns an instance of the sample
 *************************************************************************/
