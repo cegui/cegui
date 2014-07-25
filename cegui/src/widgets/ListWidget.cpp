@@ -47,6 +47,47 @@ ListWidget::~ListWidget()
 void ListWidget::initialiseComponents()
 {
     ListView::initialiseComponents();
-    setModel(this);
+    setModel(&d_itemModel);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::setSelectedItem(size_t item_index, bool state)
+{
+    if (item_index > d_itemModel.getChildCount(d_itemModel.getRootIndex()))
+    {
+        CEGUI_THROW(InvalidRequestException(
+            "the value passed in the 'item_index' parameter is out of range for this ListWidget."));
+    }
+
+    setItemSelectionState(
+        d_itemModel.makeIndex(item_index, d_itemModel.getRootIndex()), state);
+}
+
+//----------------------------------------------------------------------------//
+StandardItem* ListWidget::getFirstSelectedItem()
+{
+    if (d_indexSelectionStates.empty())
+        return 0;
+
+    return d_itemModel.getItemForIndex(d_indexSelectionStates.front().d_selectedIndex);
+}
+
+//----------------------------------------------------------------------------//
+StandardItemModel* ListWidget::getModel()
+{
+    return static_cast<StandardItemModel*>(&d_itemModel);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::addItem(const String& text)
+{
+    StandardItem item(text);
+    addItem(item);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::addItem(const StandardItem& item)
+{
+    d_itemModel.addItem(item);
 }
 }
