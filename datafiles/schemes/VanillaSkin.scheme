@@ -26,5 +26,6 @@
 
     <!-- Views -->
     <FalagardMapping windowType="Vanilla/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="Vanilla/Listbox" />
+    <FalagardMapping windowType="Vanilla/ListWidget" targetType="CEGUI/ListWidget" renderer="Core/ListView" lookNFeel="Vanilla/Listbox" />
 </GUIScheme>
 
