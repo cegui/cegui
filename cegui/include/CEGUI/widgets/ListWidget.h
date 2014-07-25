@@ -49,13 +49,15 @@ public:
     ListWidget(const String& type, const String& name);
     virtual ~ListWidget();
 
-    void setSelectedItem(size_t index, bool state);
+    void setItemSelectionState(size_t item_index, bool state);
     StandardItem* getFirstSelectedItem();
+    StandardItem* getItemAtIndex(size_t index);
+    size_t getItemCount();
 
     virtual StandardItemModel* getModel();
 
     void addItem(const String& text);
-    void addItem(const StandardItem& item);
+    void addItem(StandardItem* item);
 
 protected:
     virtual void initialiseComponents();

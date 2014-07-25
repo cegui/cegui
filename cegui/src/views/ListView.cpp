@@ -236,6 +236,7 @@ bool ListView::onChildrenAdded(const EventArgs& args)
 
     d_items.insert(d_items.begin() + margs.d_startId, items.begin(), items.end());
 
+    //TODO: insert in the right place directly!
     resortListView();
     invalidateView(false);
     return true;

@@ -51,15 +51,15 @@ void ListWidget::initialiseComponents()
 }
 
 //----------------------------------------------------------------------------//
-void ListWidget::setSelectedItem(size_t item_index, bool state)
+void ListWidget::setItemSelectionState(size_t item_index, bool state)
 {
-    if (item_index > d_itemModel.getChildCount(d_itemModel.getRootIndex()))
+    if (item_index > getItemCount())
     {
         CEGUI_THROW(InvalidRequestException(
             "the value passed in the 'item_index' parameter is out of range for this ListWidget."));
     }
 
-    setItemSelectionState(
+    ListView::setItemSelectionState(
         d_itemModel.makeIndex(item_index, d_itemModel.getRootIndex()), state);
 }
 
@@ -81,13 +81,25 @@ StandardItemModel* ListWidget::getModel()
 //----------------------------------------------------------------------------//
 void ListWidget::addItem(const String& text)
 {
-    StandardItem item(text);
-    addItem(item);
+    d_itemModel.addItem(text);
 }
 
 //----------------------------------------------------------------------------//
-void ListWidget::addItem(const StandardItem& item)
+void ListWidget::addItem(StandardItem* item)
 {
     d_itemModel.addItem(item);
+}
+
+//----------------------------------------------------------------------------//
+size_t ListWidget::getItemCount()
+{
+    return d_itemModel.getChildCount(d_itemModel.getRootIndex());
+}
+
+//----------------------------------------------------------------------------//
+StandardItem* ListWidget::getItemAtIndex(size_t index)
+{
+    return d_itemModel.getItemForIndex(
+        d_itemModel.makeIndex(index, d_itemModel.getRootIndex()));
 }
 }

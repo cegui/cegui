@@ -55,11 +55,16 @@ protected:
     uint d_id;
 };
 
+/*!
+\brief
+    A simple listed item model that contains StandardItem s.
+*/
 class CEGUIEXPORT StandardItemModel : public ItemModel
 {
 public:
     virtual void addItem(String text);
-    virtual void addItem(const StandardItem& item);
+    //! Adds the item and takes ownership of it.
+    virtual void addItem(StandardItem* item);
 
     virtual bool isValidIndex(const ModelIndex& model_index) const;
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);
@@ -73,7 +78,7 @@ public:
 
     inline virtual StandardItem* getItemForIndex(const ModelIndex& index) const;
 protected:
-    std::vector<StandardItem> d_items;
+    std::vector<StandardItem*> d_items;
 };
 
 }

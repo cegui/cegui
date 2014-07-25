@@ -104,7 +104,7 @@ PropertyHelper<ViewSortMode>::toString(pass_type val)
 
 //----------------------------------------------------------------------------//
 const Colour ItemView::DefaultTextColour = 0xFFFFFFFF;
-const Colour ItemView::DefaultSelectionColour = Colour(0.5f, 0.5f, 0.5f, 1.0f);
+const Colour ItemView::DefaultSelectionColour = Colour(0xFF4444AA);
 const String ItemView::HorzScrollbarName("__auto_hscrollbar__");
 const String ItemView::VertScrollbarName("__auto_vscrollbar__");
 const String ItemView::EventVertScrollbarDisplayModeChanged("VertScrollbarDisplayModeChanged");
