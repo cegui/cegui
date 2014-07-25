@@ -37,16 +37,22 @@ class CEGUIEXPORT StandardItem
 {
 public:
     StandardItem();
+    explicit StandardItem(String text, uint id = 0);
     virtual ~StandardItem();
 
     String getText() const { return d_text; }
     void setText(String val) { d_text = val; }
+
+    //! Id of this item
+    uint getId() const { return d_id; }
+    void setId(uint val) { d_id = val; }
 
     bool operator== (const StandardItem& other) const;
     bool operator< (const StandardItem& other) const;
 
 protected:
     String d_text;
+    uint d_id;
 };
 
 class CEGUIEXPORT StandardItemModel : public ItemModel
@@ -65,6 +71,7 @@ public:
     virtual size_t getChildCount(const ModelIndex& model_index) const;
     virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text);
 
+    inline virtual StandardItem* getItemForIndex(const ModelIndex& index) const;
 protected:
     std::vector<StandardItem> d_items;
 };
