@@ -38,7 +38,7 @@ namespace CEGUI
     This is a convenience widget as an alternative to the new list view, for
     simple scenarios that don't require a custom ItemModel implementation.
 */
-class CEGUIEXPORT ListWidget : public ListView, public StandardItemModel
+class CEGUIEXPORT ListWidget : public ListView
 {
 public:
     //! Window factory name
@@ -49,8 +49,17 @@ public:
     ListWidget(const String& type, const String& name);
     virtual ~ListWidget();
 
+    void setSelectedItem(size_t index, bool state);
+    StandardItem* getFirstSelectedItem();
+
+    virtual StandardItemModel* getModel();
+
+    void addItem(const String& text);
+    void addItem(const StandardItem& item);
+
 protected:
     virtual void initialiseComponents();
+    StandardItemModel d_itemModel;
 };
 
 }
