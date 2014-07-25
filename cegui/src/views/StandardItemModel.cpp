@@ -29,7 +29,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem() : d_id(0)
+StandardItem::StandardItem() : d_text(""), d_id(0)
 {
 }
 
@@ -66,7 +66,7 @@ ModelIndex StandardItemModel::makeIndex(size_t child, const ModelIndex& parent_i
     if (child >= d_items.size())
         return ModelIndex();
 
-    return ModelIndex(&d_items[child]);
+    return ModelIndex(d_items[child]);
 }
 
 //----------------------------------------------------------------------------//
@@ -96,8 +96,8 @@ ModelIndex StandardItemModel::getParentIndex(const ModelIndex& model_index) cons
 //----------------------------------------------------------------------------//
 int StandardItemModel::getChildId(const ModelIndex& model_index) const
 {
-    std::vector<StandardItem>::const_iterator itor =
-        std::find(d_items.begin(), d_items.end(), *getItemForIndex(model_index));
+    std::vector<StandardItem*>::const_iterator itor =
+        std::find(d_items.begin(), d_items.end(), getItemForIndex(model_index));
 
     if (itor == d_items.end())
         return -1;
@@ -129,14 +129,11 @@ String StandardItemModel::getData(const ModelIndex& model_index, ItemDataRole ro
 //----------------------------------------------------------------------------//
 void StandardItemModel::addItem(String text)
 {
-    StandardItem item;
-    item.setText(text);
-
-    addItem(item);
+    addItem(new StandardItem(text));
 }
 
 //----------------------------------------------------------------------------//
-void StandardItemModel::addItem(const StandardItem& item)
+void StandardItemModel::addItem(StandardItem* item)
 {
     d_items.push_back(item);
     notifyChildrenAdded(getRootIndex(), d_items.size() - 1, 1);
@@ -150,4 +147,5 @@ StandardItem* StandardItemModel::getItemForIndex(const ModelIndex& index) const
 
     return static_cast<StandardItem*>(index.d_modelData);
 }
+
 }
