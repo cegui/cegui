@@ -29,16 +29,14 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-StandardItem& indexToItem(const ModelIndex& index)
+StandardItem::StandardItem() : d_id(0)
 {
-    return *(static_cast<StandardItem*>(index.d_modelData));
 }
 
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem()
+StandardItem::StandardItem(String text, uint id) : d_text(text), d_id(id)
 {
 }
-
 //----------------------------------------------------------------------------//
 StandardItem::~StandardItem()
 {
@@ -83,10 +81,10 @@ int StandardItemModel::compareIndices(const ModelIndex& index1, const ModelIndex
     if (!isValidIndex(index1) || !isValidIndex(index2))
         return false;
 
-    if (indexToItem(index1) < indexToItem(index2))
+    if (*getItemForIndex(index1) < *getItemForIndex(index2))
         return -1;
 
-    return indexToItem(index1) == indexToItem(index2) ? 0 : 1;
+    return *getItemForIndex(index1) == *getItemForIndex(index2) ? 0 : 1;
 }
 
 //----------------------------------------------------------------------------//
@@ -99,7 +97,7 @@ ModelIndex StandardItemModel::getParentIndex(const ModelIndex& model_index) cons
 int StandardItemModel::getChildId(const ModelIndex& model_index) const
 {
     std::vector<StandardItem>::const_iterator itor =
-        std::find(d_items.begin(), d_items.end(), indexToItem(model_index));
+        std::find(d_items.begin(), d_items.end(), *getItemForIndex(model_index));
 
     if (itor == d_items.end())
         return -1;
@@ -125,7 +123,7 @@ String StandardItemModel::getData(const ModelIndex& model_index, ItemDataRole ro
     if (!isValidIndex(model_index))
         return "";
 
-    return indexToItem(model_index).getText();
+    return getItemForIndex(model_index)->getText();
 }
 
 //----------------------------------------------------------------------------//
@@ -144,4 +142,12 @@ void StandardItemModel::addItem(const StandardItem& item)
     notifyChildrenAdded(getRootIndex(), d_items.size() - 1, 1);
 }
 
+//----------------------------------------------------------------------------//
+StandardItem* StandardItemModel::getItemForIndex(const ModelIndex& index) const
+{
+    if (index.d_modelData == 0)
+        return 0;
+
+    return static_cast<StandardItem*>(index.d_modelData);
+}
 }
