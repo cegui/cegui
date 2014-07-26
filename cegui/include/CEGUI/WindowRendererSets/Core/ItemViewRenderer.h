@@ -41,6 +41,9 @@ namespace CEGUI
 */
 class COREWRSET_API ItemViewRenderer
 {
+public:
+    virtual ~ItemViewRenderer();
+
 protected:
     virtual Rectf getViewRenderArea(const ItemView* renderer) const;
     Rectf getViewRenderArea(const ItemView* renderer,
@@ -48,6 +51,7 @@ protected:
     Vector2f getItemRenderStartPosition(ItemView* view, const Rectf& items_area) const;
     void renderString(ItemView* view, RenderedString& rendered_string,
         Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);
+    void resizeViewToContent(ItemView* view, bool fit_width, bool fit_height) const;
 };
 
 }

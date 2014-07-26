@@ -31,6 +31,10 @@
 
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+ItemViewRenderer::~ItemViewRenderer()
+{
+}
 
 //----------------------------------------------------------------------------//
 Rectf ItemViewRenderer::getViewRenderArea(const ItemView* item_view) const
@@ -113,6 +117,53 @@ CEGUI::Vector2f ItemViewRenderer::getItemRenderStartPosition(ItemView* view,
         items_area.left() - view->getHorzScrollbar()->getScrollPosition(),
         items_area.top() - view->getVertScrollbar()->getScrollPosition()
         );
+}
 
+//----------------------------------------------------------------------------//
+void ItemViewRenderer::resizeViewToContent(ItemView* view, bool fit_width,
+    bool fit_height) const
+{
+    const Rectf totalArea(view->getUnclippedOuterRect().get());
+    const Rectf contentArea(getViewRenderArea(view,
+        fit_width ? false : view->getHorzScrollbar()->isVisible(),
+        fit_height ? false : view->getVertScrollbar()->isVisible()));
+    const Rectf withScrollContentArea(getViewRenderArea(view, true, true));
+
+    const Sizef frameSize(totalArea.getSize() - contentArea.getSize());
+    const Sizef withScrollFrameSize(totalArea.getSize() -
+        withScrollContentArea.getSize());
+    const Sizef contentSize(view->getRenderedMaxWidth(),
+        view->getRenderedTotalHeight());
+
+    const Sizef parentSize(view->getParentPixelSize());
+    const Sizef maxSize(
+        parentSize.d_width -
+        CoordConverter::asAbsolute(view->getXPosition(), parentSize.d_width),
+        parentSize.d_height -
+        CoordConverter::asAbsolute(view->getYPosition(), parentSize.d_height));
+
+    Sizef requiredSize(frameSize + contentSize + Sizef(1, 1));
+
+    if (fit_height && requiredSize.d_height > maxSize.d_height)
+    {
+        requiredSize.d_height = maxSize.d_height;
+        requiredSize.d_width = ceguimin(
+            maxSize.d_width,
+            requiredSize.d_width - frameSize.d_width + withScrollFrameSize.d_width);
+    }
+
+    if (fit_width && requiredSize.d_width > maxSize.d_width)
+    {
+        requiredSize.d_width = maxSize.d_width;
+        requiredSize.d_height = ceguimin(
+            maxSize.d_height,
+            requiredSize.d_height - frameSize.d_height + withScrollFrameSize.d_height);
+    }
+
+    if (fit_height)
+        view->setHeight(UDim(0, requiredSize.d_height));
+
+    if (fit_width)
+        view->setWidth(UDim(0, requiredSize.d_width));
 }
 }

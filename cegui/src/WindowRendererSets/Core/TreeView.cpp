@@ -162,4 +162,10 @@ TreeView* FalagardTreeView::getView() const
 {
     return static_cast<TreeView*>(d_window);
 }
+
+//----------------------------------------------------------------------------//
+void FalagardTreeView::resizeViewToContent(bool fit_width, bool fit_height) const
+{
+    ItemViewRenderer::resizeViewToContent(getView(), fit_width, fit_height);
+}
 }

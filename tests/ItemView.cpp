@@ -37,6 +37,7 @@ class TestItemViewWindowRenderer : public ItemViewWindowRenderer
 public:
     TestItemViewWindowRenderer() : ItemViewWindowRenderer("DefaultWindow") { }
     virtual Rectf getViewRenderArea(void) const { return Rectf(0, 0, 0, 0); }
+    virtual void resizeViewToContent(bool fit_width, bool fit_height) const { }
     virtual void render() { }
 };
 
