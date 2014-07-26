@@ -25,7 +25,7 @@
     <FalagardMapping windowType="Vanilla/Tooltip" targetType="CEGUI/Tooltip" renderer="Core/Tooltip" lookNFeel="Vanilla/Tooltip" />
 
     <!-- Views -->
-    <FalagardMapping windowType="Vanilla/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="Vanilla/Listbox" />
-    <FalagardMapping windowType="Vanilla/ListWidget" targetType="CEGUI/ListWidget" renderer="Core/ListView" lookNFeel="Vanilla/Listbox" />
+    <FalagardMapping windowType="Vanilla/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="Vanilla/ListView" />
+    <FalagardMapping windowType="Vanilla/ListWidget" targetType="CEGUI/ListWidget" renderer="Core/ListView" lookNFeel="Vanilla/ListView" />
 </GUIScheme>
 
