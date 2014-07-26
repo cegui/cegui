@@ -33,18 +33,6 @@
 using namespace CEGUI;
 using namespace NavigationStrategiesPayloads;
 
-// Sample sub-class for ListboxTextItem that auto-sets the selection brush
-// image.  This saves doing it manually every time in the code.
-class MyListItem : public CEGUI::ListboxTextItem
-{
-public:
-    MyListItem(const CEGUI::String& text, CEGUI::uint item_id = 0) :
-      ListboxTextItem(text, item_id)
-      {
-          setSelectionBrushImage("TaharezLook/GenericBrush");
-      }
-};
-
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
 

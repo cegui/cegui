@@ -167,7 +167,6 @@ public:
       }
 };
 
-
 bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     d_usedFiles = CEGUI::String(__FILE__);

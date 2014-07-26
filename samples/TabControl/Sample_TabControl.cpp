@@ -51,17 +51,6 @@ static const char* PageText [] =
     "And, finally, sixteen. Congrats, you found the last page!",
 };
 
-// Sample sub-class for ListboxTextItem that auto-sets the selection brush
-// image.  This saves doing it manually every time in the code.
-class MyListItem : public ListboxTextItem
-{
-public:
-    MyListItem(const String& text) : ListboxTextItem(text)
-    {
-        setSelectionBrushImage(SKIN "/MultiListSelectionBrush");
-    }
-};
-
 // Sample class
 class TabControlDemo : public Sample
 {
