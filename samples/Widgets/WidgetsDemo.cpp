@@ -1050,6 +1050,12 @@ void WidgetDemo::initMenubar(CEGUI::Menubar* menuBar)
 void WidgetDemo::initListView(ListView* list_view)
 {
     list_view->setModel(&d_listItemModel);
+
+    if (list_view->getType().find("WindowsLook/List") == 0)
+    {
+        ColourRect colour_rect = ColourRect(Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        list_view->setTextColourRect(colour_rect);
+    }
 }
 
 /*************************************************************************
