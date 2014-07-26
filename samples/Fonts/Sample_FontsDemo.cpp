@@ -245,7 +245,7 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     initialiseTextSelector();
 
     //Subscribe font selection event
-    d_fontSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsDemo::handleFontSelectionChanged, this));
+    d_fontSelector->subscribeEvent(ListView::EventSelectionChanged, Event::Subscriber(&FontsDemo::handleFontSelectionChanged, this));
 
     d_textSelector->setItemSelectionState(0, true);
 
