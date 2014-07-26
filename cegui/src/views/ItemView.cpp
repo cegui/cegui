@@ -40,6 +40,12 @@ ItemViewWindowRenderer::ItemViewWindowRenderer(const String& name) :
 }
 
 //----------------------------------------------------------------------------//
+ItemView* ItemViewWindowRenderer::getView() const
+{
+    return static_cast<ItemView*>(d_window);
+}
+
+//----------------------------------------------------------------------------//
 const String& PropertyHelper<ScrollbarDisplayMode>::getDataTypeName()
 {
     static String type("ScrollbarDisplayMode");
@@ -782,5 +788,17 @@ void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
 
     setSelectedItem(d_itemModel->makeIndex(
         static_cast<size_t>(next_selected_child_id), parent_index));
+}
+
+//----------------------------------------------------------------------------//
+float ItemView::getRenderedMaxWidth() const
+{
+    return d_renderedMaxWidth;
+}
+
+//----------------------------------------------------------------------------//
+float ItemView::getRenderedTotalHeight() const
+{
+    return d_renderedTotalHeight;
 }
 }

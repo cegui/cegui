@@ -50,7 +50,7 @@ void FalagardListView::render()
 {
     const StateImagery* imagery;
     const WidgetLookFeel& wlf = getLookNFeel();
-    ListView* list_view = getView();
+    ListView* list_view = static_cast<ListView*>(d_window);
 
     list_view->prepareForRender();
 
@@ -89,14 +89,14 @@ void FalagardListView::render(ListView* list_view)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::Rectf FalagardListView::getViewRenderArea(void) const
+Rectf FalagardListView::getViewRenderArea(void) const
 {
     return ItemViewRenderer::getViewRenderArea(getView());
 }
 
 //----------------------------------------------------------------------------//
-ListView* FalagardListView::getView() const
+void FalagardListView::resizeViewToContent(bool fit_width, bool fit_height) const
 {
-    return static_cast<ListView*>(d_window);
+    ItemViewRenderer::resizeViewToContent(getView(), fit_width, fit_height);
 }
 }

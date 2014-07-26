@@ -44,6 +44,7 @@
 
 namespace CEGUI
 {
+class ItemView;
 
 class CEGUIEXPORT ItemViewWindowRenderer : public WindowRenderer
 {
@@ -56,6 +57,16 @@ public:
         relative area that is to be used for rendering the view.
     */
     virtual Rectf getViewRenderArea(void) const = 0;
+
+    /*!
+    \brief
+        Resize the view such that its content can be displayed without needing
+        scrollbars if there is enough space, otherwise make the view as
+        large as possible (without moving it).
+    */
+    virtual void resizeViewToContent(bool fit_width, bool fit_height) const = 0;
+
+    inline virtual ItemView* getView() const;
 };
 
 enum ScrollbarDisplayMode
@@ -252,6 +263,11 @@ public:
 
     ViewSortMode getSortMode() const;
     void setSortMode(ViewSortMode sort_mode);
+
+    //! Returns the width of the rendered contents.
+    float getRenderedMaxWidth() const;
+    //! Returns the height of the rendered contents.
+    float getRenderedTotalHeight() const;
 
 protected:
     ItemModel* d_itemModel;

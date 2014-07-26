@@ -81,7 +81,7 @@ public:
     void render();
 
     virtual Rectf getViewRenderArea(void) const;
-    inline ListView* getView() const;
+    virtual void resizeViewToContent(bool fit_width, bool fit_height) const;
 
 private:
     void render(ListView* list_view);
