@@ -50,7 +50,7 @@ void FalagardListView::render()
 {
     const StateImagery* imagery;
     const WidgetLookFeel& wlf = getLookNFeel();
-    ListView* list_view = static_cast<ListView*>(d_window);
+    ListView* list_view = getView();
 
     list_view->prepareForRender();
 
@@ -91,6 +91,12 @@ void FalagardListView::render(ListView* list_view)
 //----------------------------------------------------------------------------//
 CEGUI::Rectf FalagardListView::getViewRenderArea(void) const
 {
-    return ItemViewRenderer::getViewRenderArea(this);
+    return ItemViewRenderer::getViewRenderArea(getView());
+}
+
+//----------------------------------------------------------------------------//
+ListView* FalagardListView::getView() const
+{
+    return static_cast<ListView*>(d_window);
 }
 }

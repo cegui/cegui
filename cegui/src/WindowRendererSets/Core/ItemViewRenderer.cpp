@@ -33,20 +33,20 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-Rectf ItemViewRenderer::getViewRenderArea(const ItemViewWindowRenderer* renderer) const
+Rectf ItemViewRenderer::getViewRenderArea(const ItemView* item_view) const
 {
-    const ItemView* item_view = static_cast<ItemView*>(renderer->getWindow());
     return getViewRenderArea(
-        renderer,
+        item_view,
         item_view->getHorzScrollbar()->isVisible(),
         item_view->getVertScrollbar()->isVisible());
 }
 
 //----------------------------------------------------------------------------//
-Rectf ItemViewRenderer::getViewRenderArea(const ItemViewWindowRenderer* renderer,
+Rectf ItemViewRenderer::getViewRenderArea(const ItemView* item_view,
     bool hscroll, bool vscroll) const
 {
-    const WidgetLookFeel& wlf = renderer->getLookNFeel();
+    const WidgetLookFeel& wlf =
+        WidgetLookManager::getSingleton().getWidgetLook(item_view->getLookNFeel());
     String scroll_suffix;
 
     if (vscroll)
@@ -71,7 +71,7 @@ Rectf ItemViewRenderer::getViewRenderArea(const ItemViewWindowRenderer* renderer
 
             if (wlf.isNamedAreaDefined(full_area_name))
                 return wlf.getNamedArea(full_area_name).getArea().
-                    getPixelRect(*renderer->getWindow());
+                    getPixelRect(*item_view);
         }
     }
 

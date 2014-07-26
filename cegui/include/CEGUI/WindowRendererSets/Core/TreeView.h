@@ -86,6 +86,7 @@ public:
     virtual Sizef getSubtreeExpanderSize(void) const;
     virtual float getSubtreeExpanderXIndent(int depth) const;
     virtual Rectf getViewRenderArea(void) const;
+    inline TreeView* getView() const;
 
 protected:
     virtual void onLookNFeelAssigned();
