@@ -102,4 +102,10 @@ StandardItem* ListWidget::getItemAtIndex(size_t index)
     return d_itemModel.getItemForIndex(
         d_itemModel.makeIndex(index, d_itemModel.getRootIndex()));
 }
+
+//----------------------------------------------------------------------------//
+void ListWidget::clearList()
+{
+    d_itemModel.clear(true);
+}
 }

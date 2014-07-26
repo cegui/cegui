@@ -182,16 +182,16 @@ public:
     {
         Window* root = d_guiContext->getRootWindow();
         // Check if the windows exists
-        Listbox* lbox = getPageListBox(root);
+        ListWidget* list_widget = getPageListWidget(root);
         TabControl* tc = getTabControl(root);
 
-        if (lbox && tc)
+        if (list_widget && tc)
         {
-            lbox->resetList();
+            list_widget->clearList();
 
             for (size_t i = 0; i < tc->getTabCount(); i++)
             {
-                lbox->addItem(new MyListItem(
+                list_widget->addItem(new StandardItem(
                                   tc->getTabContentsAtIndex(i)->getName()));
             }
         }
@@ -318,16 +318,16 @@ public:
     {
         Window* root = d_guiContext->getRootWindow();
         // Check if the windows exist
-        Listbox* lbox = getPageListBox(root);
+        ListWidget* list_widget = getPageListWidget(root);
         TabControl* tc = getTabControl(root);
 
-        if (lbox && tc)
+        if (list_widget && tc)
         {
-            ListboxItem* lbi = lbox->getFirstSelectedItem();
+            StandardItem* item = list_widget->getFirstSelectedItem();
 
-            if (lbi)
+            if (item)
             {
-                tc->setSelectedTab(lbi->getText());
+                tc->setSelectedTab(item->getText());
             }
         }
 
@@ -338,16 +338,16 @@ public:
     {
         Window* root = d_guiContext->getRootWindow();
         // Check if the windows exist
-        Listbox* lbox = getPageListBox(root);
+        ListWidget* list_widget = getPageListWidget(root);
         TabControl* tc = getTabControl(root);
 
-        if (lbox && tc)
+        if (list_widget && tc)
         {
-            ListboxItem* lbi = lbox->getFirstSelectedItem();
+            StandardItem* item = list_widget->getFirstSelectedItem();
 
-            if (lbi)
+            if (item)
             {
-                tc->makeTabVisible(lbi->getText());
+                tc->makeTabVisible(item->getText());
             }
         }
 
@@ -358,17 +358,17 @@ public:
     {
         Window* root = d_guiContext->getRootWindow();
         // Check if the windows exist
-        Listbox* lbox = getPageListBox(root);
+        ListWidget* list_widget = getPageListWidget(root);
         TabControl* tc = getTabControl(root);
 
-        if (lbox && tc)
+        if (list_widget && tc)
         {
-            ListboxItem* lbi = lbox->getFirstSelectedItem();
+            StandardItem* item = list_widget->getFirstSelectedItem();
 
-            if (lbi)
+            if (item)
             {
-                Window* content = tc->getTabContents(lbi->getText());
-                tc->removeTab(lbi->getText());
+                Window* content = tc->getTabContents(item->getText());
+                tc->removeTab(item->getText());
                 // Remove the actual window from CEGUI
                 WindowManager::getSingleton().destroyWindow(content);
 
@@ -389,12 +389,12 @@ public:
         return 0;
     }
 
-    Listbox* getPageListBox(Window* root)
+    ListWidget* getPageListWidget(Window* root)
     {
         String page_list_id("Frame/TabControl/Page1/PageList");
         if (root->isChild(page_list_id))
         {
-            return static_cast<Listbox*>(root->getChild(page_list_id));
+            return static_cast<ListWidget*>(root->getChild(page_list_id));
         }
         return 0;
     }
