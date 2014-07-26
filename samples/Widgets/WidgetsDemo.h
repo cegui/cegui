@@ -68,7 +68,7 @@ protected:
     void initialiseWidgetDisplayWindow();
     void initialiseEventLights(CEGUI::Window* container);
     void initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer);
-    void initialiseWidgetSelectorListbox();
+    void initialiseWidgetSelectorListWidget();
     void initialiseBackgroundWindow(CEGUI::Window* background);
     void initialiseSkinCombobox(CEGUI::Window* container);
     void initialiseWidgetsEventsLog();
@@ -112,7 +112,7 @@ protected:
 
     CEGUI::GUIContext* d_guiContext;
 
-    CEGUI::Listbox* d_widgetSelectorListbox;
+    CEGUI::ListWidget* d_widgetSelectorListWidget;
     CEGUI::Combobox* d_skinSelectionCombobox;
     CEGUI::Window* d_widgetDisplayWindow;
     CEGUI::Window* d_widgetDisplayWindowInnerWindow;

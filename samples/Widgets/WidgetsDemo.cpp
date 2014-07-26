@@ -166,9 +166,9 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
         d_skinSelectionCombobox->setItemSelectState(skinItem, true);
         handleSkinSelectionAccepted(CEGUI::WindowEventArgs(d_skinSelectionCombobox));
     }
-    if(CEGUI::ListboxItem* widgetItem = d_widgetSelectorListbox->getListboxItemFromIndex(0))
+    if(d_widgetSelectorListWidget->getItemCount() > 0)
     {
-        d_widgetSelectorListbox->setItemSelectState(widgetItem, true);
+        d_widgetSelectorListWidget->setItemSelectionState(0, true);
     }
 
     d_listItemModel.addItem("item 1");
@@ -202,12 +202,13 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 
     WidgetListType& widgetsList = d_skinListItemsMap[schemeName];
 
-    d_widgetSelectorListbox->resetList();
+    d_widgetSelectorListWidget->clearList();
 
     for(unsigned int i = 0; i < widgetsList.size(); ++i)
     {
         MyListItem* item = widgetsList[i];
-        d_widgetSelectorListbox->addItem(item);
+        d_widgetSelectorListWidget->addItem(
+            new StandardItem(item->getText(), item->getID()));
     }
 
     // event was handled
@@ -373,17 +374,18 @@ void WidgetDemo::initialiseBackgroundWindow(CEGUI::Window* background)
     background->setProperty("Image", "SpaceBackgroundImage");
 }
 
-void WidgetDemo::initialiseWidgetSelectorListbox()
+void WidgetDemo::initialiseWidgetSelectorListWidget()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    d_widgetSelectorListbox = static_cast<CEGUI::Listbox*>(winMgr.createWindow("Vanilla/Listbox", "WidgetSelectorListbox"));
-    d_widgetSelectorListbox->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.075f)));
-    d_widgetSelectorListbox->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.925f)));
-    d_widgetSelectorListbox->setShowVertScrollbar(false);
-    d_widgetSelectorListbox->setSortingEnabled(true);
+    d_widgetSelectorListWidget = static_cast<ListWidget*>(winMgr.createWindow("Vanilla/ListWidget", "WidgetSelectorListWidget"));
+    d_widgetSelectorListWidget->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.075f)));
+    d_widgetSelectorListWidget->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.925f)));
+    d_widgetSelectorListWidget->setVertScrollbarDisplayMode(SDM_WhenNeeded);
+    d_widgetSelectorListWidget->setSortMode(VSM_Ascending);
 
-    d_widgetSelectorListbox->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&WidgetDemo::handleWidgetSelectionChanged, this));
+    d_widgetSelectorListWidget->subscribeEvent(ListWidget::EventSelectionChanged,
+        Event::Subscriber(&WidgetDemo::handleWidgetSelectionChanged, this));
 }
 
 void WidgetDemo::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer)
@@ -490,13 +492,13 @@ void WidgetDemo::deinitWidgetListItems()
         {
             MyListItem* item = widgetsList.back();
 
-            d_widgetSelectorListbox->removeItem(item);
             delete item;
             widgetsList.pop_back();
         }
 
         ++iter;
     }
+    d_widgetSelectorListWidget->clearList();
 }
 
 void WidgetDemo::destroyWidgetWindows()
@@ -549,7 +551,7 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
 
 void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)
 {
-    ListboxItem* item = d_widgetSelectorListbox->getFirstSelectedItem();
+    StandardItem* item = d_widgetSelectorListWidget->getFirstSelectedItem();
     if(!item)
         return;
 
@@ -838,8 +840,8 @@ void WidgetDemo::initialiseWidgetSelector(CEGUI::Window* container)
     initialiseWidgetSelectorContainer(widgetSelectorContainer);
     container->addChild(widgetSelectorContainer);
 
-    initialiseWidgetSelectorListbox();
-    widgetSelectorContainer->addChild(d_widgetSelectorListbox);
+    initialiseWidgetSelectorListWidget();
+    widgetSelectorContainer->addChild(d_widgetSelectorListWidget);
 }
 
 void WidgetDemo::initialiseWidgetInspector(CEGUI::Window* container)
@@ -879,14 +881,14 @@ void WidgetDemo::initialiseWidgetInspector(CEGUI::Window* container)
 bool WidgetDemo::getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetTypeString)
 {
     //Retrieving the Strings for the selections
-    CEGUI::ListboxItem* widgetListboxItem = d_widgetSelectorListbox->getFirstSelectedItem();
-    CEGUI::ListboxItem* skinListboxItem = d_skinSelectionCombobox->getSelectedItem();
+    StandardItem* widget_item = d_widgetSelectorListWidget->getFirstSelectedItem();
+    ListboxItem* skinListboxItem = d_skinSelectionCombobox->getSelectedItem();
 
-    if(!skinListboxItem || !widgetListboxItem)
+    if(!skinListboxItem || !widget_item)
         return false;
 
     //Recreate the widget's type as String
-    widgetName = widgetListboxItem->getText();
+    widgetName = widget_item->getText();
 
     if(skinListboxItem->getText().compare("No Skin") != 0)
         widgetTypeString= skinListboxItem->getText() + "/";
