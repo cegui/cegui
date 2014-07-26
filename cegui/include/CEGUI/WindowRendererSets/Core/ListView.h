@@ -81,6 +81,8 @@ public:
     void render();
 
     virtual Rectf getViewRenderArea(void) const;
+    inline ListView* getView() const;
+
 private:
     void render(ListView* list_view);
 };

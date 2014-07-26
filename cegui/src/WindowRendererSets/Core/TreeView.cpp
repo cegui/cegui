@@ -48,7 +48,7 @@ FalagardTreeView::FalagardTreeView(const String& type) :
 void FalagardTreeView::render()
 {
     const WidgetLookFeel& wlf = getLookNFeel();
-    TreeView* tree_view = static_cast<TreeView*>(d_window);
+    TreeView* tree_view = getView();
 
     tree_view->prepareForRender();
 
@@ -126,7 +126,6 @@ static Sizef getImagerySize(const ImagerySection& section)
 //----------------------------------------------------------------------------//
 void FalagardTreeView::onLookNFeelAssigned()
 {
-    TreeView* tree_view = static_cast<TreeView*>(d_window);
     const WidgetLookFeel& wlf = getLookNFeel();
     d_subtreeExpanderImagery = &wlf.getImagerySection("SubtreeExpander");
     d_subtreeCollapserImagery = &wlf.getImagerySection("SubtreeCollapser");
@@ -134,8 +133,8 @@ void FalagardTreeView::onLookNFeelAssigned()
     Sizef open_size = getImagerySize(*d_subtreeExpanderImagery);
     Sizef close_size = getImagerySize(*d_subtreeCollapserImagery);
     d_subtreeExpanderImagerySize = Sizef(
-        (open_size.d_width + close_size.d_width) / 2.0f + tree_view->getSubtreeExpanderMargin(),
-        (open_size.d_height + close_size.d_height) / 2.0f + tree_view->getSubtreeExpanderMargin());
+        (open_size.d_width + close_size.d_width) / 2.0f + getView()->getSubtreeExpanderMargin(),
+        (open_size.d_height + close_size.d_height) / 2.0f + getView()->getSubtreeExpanderMargin());
 }
 
 //----------------------------------------------------------------------------//
@@ -147,7 +146,7 @@ Sizef FalagardTreeView::getSubtreeExpanderSize(void) const
 //----------------------------------------------------------------------------//
 Rectf FalagardTreeView::getViewRenderArea(void) const
 {
-    return ItemViewRenderer::getViewRenderArea(this);
+    return ItemViewRenderer::getViewRenderArea(getView());
 }
 
 //----------------------------------------------------------------------------//
@@ -155,6 +154,12 @@ float FalagardTreeView::getSubtreeExpanderXIndent(int depth) const
 {
     return depth * (
         d_subtreeExpanderImagerySize.d_width +
-        static_cast<TreeView*>(d_window)->getSubtreeExpanderMargin());
+        getView()->getSubtreeExpanderMargin());
+}
+
+//----------------------------------------------------------------------------//
+TreeView* FalagardTreeView::getView() const
+{
+    return static_cast<TreeView*>(d_window);
 }
 }

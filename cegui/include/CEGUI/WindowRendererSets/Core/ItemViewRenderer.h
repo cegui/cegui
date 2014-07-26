@@ -42,8 +42,8 @@ namespace CEGUI
 class COREWRSET_API ItemViewRenderer
 {
 protected:
-    virtual Rectf getViewRenderArea(const ItemViewWindowRenderer* renderer) const;
-    Rectf getViewRenderArea(const ItemViewWindowRenderer* renderer,
+    virtual Rectf getViewRenderArea(const ItemView* renderer) const;
+    Rectf getViewRenderArea(const ItemView* renderer,
         bool hscroll, bool vscroll) const;
     Vector2f getItemRenderStartPosition(ItemView* view, const Rectf& items_area) const;
     void renderString(ItemView* view, RenderedString& rendered_string,
