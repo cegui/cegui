@@ -47,8 +47,6 @@ setting CMake options and regenerating, rather than editing directly.
 #cmakedefine CEGUI_BUILD_RENDERER_OPENGL3
 #cmakedefine CEGUI_BUILD_RENDERER_OGRE
 #cmakedefine CEGUI_BUILD_RENDERER_IRRLICHT
-#cmakedefine CEGUI_BUILD_RENDERER_DIRECT3D9
-#cmakedefine CEGUI_BUILD_RENDERER_DIRECT3D10
 #cmakedefine CEGUI_BUILD_RENDERER_DIRECT3D11
 #cmakedefine CEGUI_BUILD_RENDERER_DIRECTFB
 #cmakedefine CEGUI_BUILD_RENDERER_OPENGLES
