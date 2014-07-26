@@ -62,9 +62,19 @@ protected:
 class CEGUIEXPORT StandardItemModel : public ItemModel
 {
 public:
+    virtual ~StandardItemModel();
+
     virtual void addItem(String text);
     //! Adds the item and takes ownership of it.
     virtual void addItem(StandardItem* item);
+    /*!
+    \brief
+        Clears the items from this ItemModel, deleting them.
+
+    \param notify
+        If true, it will raise notifyChildrenRemoved after deleting the items.
+    */
+    void clear(bool notify);
 
     virtual bool isValidIndex(const ModelIndex& model_index) const;
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);

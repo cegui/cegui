@@ -55,6 +55,12 @@ bool StandardItem::operator<(const StandardItem& other) const
 }
 
 //----------------------------------------------------------------------------//
+StandardItemModel::~StandardItemModel()
+{
+    clear(false);
+}
+
+//----------------------------------------------------------------------------//
 bool StandardItemModel::isValidIndex(const ModelIndex& model_index) const
 {
     return model_index.d_modelData != 0 && getChildId(model_index) != -1;
@@ -148,4 +154,20 @@ StandardItem* StandardItemModel::getItemForIndex(const ModelIndex& index) const
     return static_cast<StandardItem*>(index.d_modelData);
 }
 
+//----------------------------------------------------------------------------//
+void StandardItemModel::clear(bool notify)
+{
+    size_t item_count = d_items.size();
+    while (!d_items.empty())
+    {
+        StandardItem* item = d_items.back();
+        d_items.pop_back();
+        delete item;
+    }
+
+    if (notify)
+    {
+        notifyChildrenRemoved(getRootIndex(), 0, item_count);
+    }
+}
 }
