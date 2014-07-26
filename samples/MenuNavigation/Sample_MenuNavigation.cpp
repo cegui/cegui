@@ -45,7 +45,7 @@ public:
       }
 };
 
-/** This sample uses most of the code from the 'HelloWorld' sample. 
+/** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
 
 /*************************************************************************ech
@@ -106,16 +106,16 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     d_logWidget2->setText("OK");
 
     Window* selectButton = page2Window->getChild("SelectButton");
-    selectButton->subscribeEvent(PushButton::EventClicked, 
+    selectButton->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&MenuNavigationDemo::handleSelectButtonClicked, this));
 
     tabControl->addTab(page2Window);
 
-    d_classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
-    d_classesListBox->setMultiselectEnabled(true);
-    initialiseClasses(d_classesListBox);
+    d_classesList = static_cast<ListWidget*>(page2Window->getChild("ClassesList"));
+    d_classesList->setMultiSelectEnabled(true);
+    initialiseClasses(d_classesList);
 
-    d_linearNavigatorStrategy->d_windows.push_back(d_classesListBox);
+    d_linearNavigatorStrategy->d_windows.push_back(d_classesList);
     d_linearNavigatorStrategy->d_windows.push_back(selectButton);
 
     return true;
@@ -128,10 +128,10 @@ void MenuNavigationDemo::deinitialise()
 {
 }
 
-void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
+void MenuNavigationDemo::initialiseClasses(ListWidget* classes_list_view)
 {
     static const int classes_list_size = 5;
-    static const char* classes_list[] = 
+    static const char* classes_list[] =
     {
         "Druid",
         "Shaman",
@@ -139,10 +139,10 @@ void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
         "Priest",
         "Death Knight"
     };
-   
+
     for(int i = 0; i < classes_list_size; ++i)
     {
-        classesListBox->addItem(new MyListItem(classes_list[i]));
+        classes_list_view->addItem(new StandardItem(classes_list[i]));
     }
 }
 
@@ -150,7 +150,7 @@ bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
-    ListboxItem* item = d_classesListBox->getFirstSelectedItem();
+    StandardItem* item = d_classesList->getFirstSelectedItem();
     if (item != 0)
     {
         d_logWidget2->setText("Selected " + item->getText() + "\n");
@@ -161,8 +161,8 @@ bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
 
 bool MenuNavigationDemo::handleNumberButtonClicked(const CEGUI::EventArgs& e)
 {
-    d_logWidget1->setText("Button " + 
-        static_cast<const CEGUI::WindowEventArgs&>(e).window->getText() + 
+    d_logWidget1->setText("Button " +
+        static_cast<const WindowEventArgs&>(e).window->getText() +
         " pressed\n");
 
     return true;
