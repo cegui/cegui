@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#if defined(CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE) || defined(CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE) || defined(CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
+#if defined(CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
 
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
@@ -60,8 +60,6 @@ SamplesFrameworkBase* Win32AppHelper::s_samplesFramework(0);
     we othereise would need multiple versions of the D3D headers included
     which is obviously a big no-no.
 *************************************************************************/
-void DeviceReset_Direct3D9(HWND window, CEGUI::Renderer* renderer);
-void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer);
 void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer);
 
 /*************************************************************************
@@ -181,14 +179,6 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
                 CEGUI::String id(renderer->getIdentifierString());
 
                 // invoke correct function based on the renderer we have ID'd
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
-                if (id.find("Official Direct3D 9") != id.npos)
-                    DeviceReset_Direct3D9(hWnd, renderer);
-#endif
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE
-                if (id.find("Official Direct3D 10") != id.npos)
-                    DeviceReset_Direct3D10(hWnd, renderer);
-#endif
 #ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
                 if (id.find("Official Direct3D 11") != id.npos)
                     DeviceReset_Direct3D11(hWnd, renderer);
