@@ -182,20 +182,8 @@ public:
     {
         Window* root = d_guiContext->getRootWindow();
         // Check if the windows exists
-        Listbox* lbox = 0;
-        TabControl* tc = 0;
-
-        if (root->isChild("Frame/TabControl/Page1/PageList"))
-        {
-            lbox = static_cast<Listbox*>(root->getChild(
-                                             "Frame/TabControl/Page1/PageList"));
-        }
-
-        if (root->isChild("Frame/TabControl"))
-        {
-            tc = static_cast<TabControl*>(root->getChild(
-                                              "Frame/TabControl"));
-        }
+        Listbox* lbox = getPageListBox(root);
+        TabControl* tc = getTabControl(root);
 
         if (lbox && tc)
         {
@@ -252,7 +240,7 @@ public:
                                              UDim(0, sb->getScrollPosition()));
         }
 
-        // The return value mainly sais that we handled it, not if something failed.
+        // The return value mainly says that we handled it, not if something failed.
         return true;
     }
 
@@ -329,21 +317,9 @@ public:
     bool handleGoto(const EventArgs&)
     {
         Window* root = d_guiContext->getRootWindow();
-        // Check if the windows exists
-        Listbox* lbox = 0;
-        TabControl* tc = 0;
-
-        if (root->isChild("Frame/TabControl/Page1/PageList"))
-        {
-            lbox = static_cast<Listbox*>(root->getChild(
-                                             "Frame/TabControl/Page1/PageList"));
-        }
-
-        if (root->isChild("Frame/TabControl"))
-        {
-            tc = static_cast<TabControl*>(root->getChild(
-                                              "Frame/TabControl"));
-        }
+        // Check if the windows exist
+        Listbox* lbox = getPageListBox(root);
+        TabControl* tc = getTabControl(root);
 
         if (lbox && tc)
         {
@@ -361,21 +337,9 @@ public:
     bool handleShow(const EventArgs&)
     {
         Window* root = d_guiContext->getRootWindow();
-        // Check if the windows exists
-        Listbox* lbox = 0;
-        TabControl* tc = 0;
-
-        if (root->isChild("Frame/TabControl/Page1/PageList"))
-        {
-            lbox = static_cast<Listbox*>(root->getChild(
-                                             "Frame/TabControl/Page1/PageList"));
-        }
-
-        if (root->isChild("Frame/TabControl"))
-        {
-            tc = static_cast<TabControl*>(root->getChild(
-                                              "Frame/TabControl"));
-        }
+        // Check if the windows exist
+        Listbox* lbox = getPageListBox(root);
+        TabControl* tc = getTabControl(root);
 
         if (lbox && tc)
         {
@@ -393,21 +357,9 @@ public:
     bool handleDel(const EventArgs&)
     {
         Window* root = d_guiContext->getRootWindow();
-        // Check if the windows exists
-        Listbox* lbox = 0;
-        TabControl* tc = 0;
-
-        if (root->isChild("Frame/TabControl/Page1/PageList"))
-        {
-            lbox = static_cast<Listbox*>(root->getChild(
-                                             "Frame/TabControl/Page1/PageList"));
-        }
-
-        if (root->isChild("Frame/TabControl"))
-        {
-            tc = static_cast<TabControl*>(root->getChild(
-                                              "Frame/TabControl"));
-        }
+        // Check if the windows exist
+        Listbox* lbox = getPageListBox(root);
+        TabControl* tc = getTabControl(root);
 
         if (lbox && tc)
         {
@@ -417,7 +369,7 @@ public:
             {
                 Window* content = tc->getTabContents(lbi->getText());
                 tc->removeTab(lbi->getText());
-                // Remove the actual window from Cegui
+                // Remove the actual window from CEGUI
                 WindowManager::getSingleton().destroyWindow(content);
 
                 refreshPageList();
@@ -427,6 +379,25 @@ public:
         return true;
     }
 
+    TabControl* getTabControl(Window* root)
+    {
+        String control_id("Frame/TabControl");
+        if (root->isChild(control_id))
+        {
+            return static_cast<TabControl*>(root->getChild(control_id));
+        }
+        return 0;
+    }
+
+    Listbox* getPageListBox(Window* root)
+    {
+        String page_list_id("Frame/TabControl/Page1/PageList");
+        if (root->isChild(page_list_id))
+        {
+            return static_cast<Listbox*>(root->getChild(page_list_id));
+        }
+        return 0;
+    }
 
     protected:
         CEGUI::GUIContext* d_guiContext;
