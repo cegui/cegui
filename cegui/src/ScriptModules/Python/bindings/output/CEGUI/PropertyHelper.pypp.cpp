@@ -52,6 +52,36 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("val") ) );
         
         }
+        { //::CEGUI::PropertyHelper_wrapper::fontToString
+        
+            typedef ::CEGUI::String ( *fontToString_function_type )( ::CEGUI::Font const * );
+            
+            PropertyHelper_exposer.def( 
+                "fontToString"
+                , fontToString_function_type( &::CEGUI::PropertyHelper_wrapper::fontToString )
+                , ( bp::arg("val") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::horizontalFormattingToString
+        
+            typedef ::CEGUI::String ( *horizontalFormattingToString_function_type )( ::CEGUI::HorizontalFormatting );
+            
+            PropertyHelper_exposer.def( 
+                "horizontalFormattingToString"
+                , horizontalFormattingToString_function_type( &::CEGUI::PropertyHelper_wrapper::horizontalFormattingToString )
+                , ( bp::arg("val") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::horizontalTextFormattingToString
+        
+            typedef ::CEGUI::String ( *horizontalTextFormattingToString_function_type )( ::CEGUI::HorizontalTextFormatting );
+            
+            PropertyHelper_exposer.def( 
+                "horizontalTextFormattingToString"
+                , horizontalTextFormattingToString_function_type( &::CEGUI::PropertyHelper_wrapper::horizontalTextFormattingToString )
+                , ( bp::arg("val") ) );
+        
+        }
         { //::CEGUI::PropertyHelper_wrapper::imageToString
         
             typedef ::CEGUI::String ( *imageToString_function_type )( ::CEGUI::Image const * );
@@ -119,6 +149,37 @@ void register_PropertyHelper_class(){
             PropertyHelper_exposer.def( 
                 "stringToFloat"
                 , stringToFloat_function_type( &::CEGUI::PropertyHelper_wrapper::stringToFloat )
+                , ( bp::arg("str") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::stringToFont
+        
+            typedef ::CEGUI::Font const * ( *stringToFont_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToFont"
+                , stringToFont_function_type( &::CEGUI::PropertyHelper_wrapper::stringToFont )
+                , ( bp::arg("str") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::stringToHorizontalFormatting
+        
+            typedef ::CEGUI::HorizontalFormatting ( *stringToHorizontalFormatting_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToHorizontalFormatting"
+                , stringToHorizontalFormatting_function_type( &::CEGUI::PropertyHelper_wrapper::stringToHorizontalFormatting )
+                , ( bp::arg("str") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::stringToHorizontalTextFormatting
+        
+            typedef ::CEGUI::HorizontalTextFormatting ( *stringToHorizontalTextFormatting_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToHorizontalTextFormatting"
+                , stringToHorizontalTextFormatting_function_type( &::CEGUI::PropertyHelper_wrapper::stringToHorizontalTextFormatting )
                 , ( bp::arg("str") ) );
         
         }
@@ -213,6 +274,26 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("str") ) );
         
         }
+        { //::CEGUI::PropertyHelper_wrapper::stringToVerticalFormatting
+        
+            typedef ::CEGUI::VerticalFormatting ( *stringToVerticalFormatting_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToVerticalFormatting"
+                , stringToVerticalFormatting_function_type( &::CEGUI::PropertyHelper_wrapper::stringToVerticalFormatting )
+                , ( bp::arg("str") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::stringToVerticalTextFormatting
+        
+            typedef ::CEGUI::VerticalTextFormatting ( *stringToVerticalTextFormatting_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToVerticalTextFormatting"
+                , stringToVerticalTextFormatting_function_type( &::CEGUI::PropertyHelper_wrapper::stringToVerticalTextFormatting )
+                , ( bp::arg("str") ) );
+        
+        }
         { //::CEGUI::PropertyHelper_wrapper::uboxToString
         
             typedef ::CEGUI::String ( *uboxToString_function_type )( ::CEGUI::UBox const & );
@@ -273,10 +354,33 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("val") ) );
         
         }
+        { //::CEGUI::PropertyHelper_wrapper::verticalFormattingToString
+        
+            typedef ::CEGUI::String ( *verticalFormattingToString_function_type )( ::CEGUI::VerticalFormatting );
+            
+            PropertyHelper_exposer.def( 
+                "verticalFormattingToString"
+                , verticalFormattingToString_function_type( &::CEGUI::PropertyHelper_wrapper::verticalFormattingToString )
+                , ( bp::arg("val") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::verticalTextFormattingToString
+        
+            typedef ::CEGUI::String ( *verticalTextFormattingToString_function_type )( ::CEGUI::VerticalTextFormatting );
+            
+            PropertyHelper_exposer.def( 
+                "verticalTextFormattingToString"
+                , verticalTextFormattingToString_function_type( &::CEGUI::PropertyHelper_wrapper::verticalTextFormattingToString )
+                , ( bp::arg("val") ) );
+        
+        }
         PropertyHelper_exposer.staticmethod( "boolToString" );
         PropertyHelper_exposer.staticmethod( "colourRectToString" );
         PropertyHelper_exposer.staticmethod( "colourToString" );
         PropertyHelper_exposer.staticmethod( "floatToString" );
+        PropertyHelper_exposer.staticmethod( "fontToString" );
+        PropertyHelper_exposer.staticmethod( "horizontalFormattingToString" );
+        PropertyHelper_exposer.staticmethod( "horizontalTextFormattingToString" );
         PropertyHelper_exposer.staticmethod( "imageToString" );
         PropertyHelper_exposer.staticmethod( "rectToString" );
         PropertyHelper_exposer.staticmethod( "sizeToString" );
@@ -284,6 +388,9 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "stringToColour" );
         PropertyHelper_exposer.staticmethod( "stringToColourRect" );
         PropertyHelper_exposer.staticmethod( "stringToFloat" );
+        PropertyHelper_exposer.staticmethod( "stringToFont" );
+        PropertyHelper_exposer.staticmethod( "stringToHorizontalFormatting" );
+        PropertyHelper_exposer.staticmethod( "stringToHorizontalTextFormatting" );
         PropertyHelper_exposer.staticmethod( "stringToImage" );
         PropertyHelper_exposer.staticmethod( "stringToRect" );
         PropertyHelper_exposer.staticmethod( "stringToSize" );
@@ -293,12 +400,16 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "stringToUVector2" );
         PropertyHelper_exposer.staticmethod( "stringToUint" );
         PropertyHelper_exposer.staticmethod( "stringToVector2" );
+        PropertyHelper_exposer.staticmethod( "stringToVerticalFormatting" );
+        PropertyHelper_exposer.staticmethod( "stringToVerticalTextFormatting" );
         PropertyHelper_exposer.staticmethod( "uboxToString" );
         PropertyHelper_exposer.staticmethod( "udimToString" );
         PropertyHelper_exposer.staticmethod( "uintToString" );
         PropertyHelper_exposer.staticmethod( "urectToString" );
         PropertyHelper_exposer.staticmethod( "uvector2ToString" );
         PropertyHelper_exposer.staticmethod( "vector2ToString" );
+        PropertyHelper_exposer.staticmethod( "verticalFormattingToString" );
+        PropertyHelper_exposer.staticmethod( "verticalTextFormattingToString" );
     }
 
 }

@@ -85,6 +85,40 @@ void register_ImageryComponent_class(){
                     *\n" );
         
         }
+        { //::CEGUI::ImageryComponent::getHorizontalFormattingFromComponent
+        
+            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::ImageryComponent::*getHorizontalFormattingFromComponent_function_type )(  ) const;
+            
+            ImageryComponent_exposer.def( 
+                "getHorizontalFormattingFromComponent"
+                , getHorizontalFormattingFromComponent_function_type( &::CEGUI::ImageryComponent::getHorizontalFormattingFromComponent )
+                , "*!\n\
+                    \n\
+                        Directly returns the horizontal formatting which was set for the ImageryComponent.\n\
+            \n\
+                    @return\n\
+                        The HorizontalFormatting enum.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImageryComponent::getHorizontalFormattingPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ImageryComponent::*getHorizontalFormattingPropertySource_function_type )(  ) const;
+            
+            ImageryComponent_exposer.def( 
+                "getHorizontalFormattingPropertySource"
+                , getHorizontalFormattingPropertySource_function_type( &::CEGUI::ImageryComponent::getHorizontalFormattingPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Returns the name of the property that will be used to obtain the horizontal\n\
+                        formatting to use for this ImageryComponent or an empty string if none is set.\n\
+            \n\
+                    @return\n\
+                        A String containing the name of the property\n\
+                    *\n" );
+        
+        }
         { //::CEGUI::ImageryComponent::getImage
         
             typedef ::CEGUI::Image const * ( ::CEGUI::ImageryComponent::*getImage_function_type )(  ) const;
@@ -133,7 +167,41 @@ void register_ImageryComponent_class(){
                         Return the current vertical formatting setting for this ImageryComponent.\n\
             \n\
                     @return\n\
-                        One of the VerticalFormatting enumerated values.\n\
+                        The VerticalFormatting enum.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImageryComponent::getVerticalFormattingFromComponent
+        
+            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::ImageryComponent::*getVerticalFormattingFromComponent_function_type )(  ) const;
+            
+            ImageryComponent_exposer.def( 
+                "getVerticalFormattingFromComponent"
+                , getVerticalFormattingFromComponent_function_type( &::CEGUI::ImageryComponent::getVerticalFormattingFromComponent )
+                , "*!\n\
+                    \n\
+                        Directly returns the vertical formatting which was set for the ImageryComponent.\n\
+            \n\
+                    @return\n\
+                        The VerticalFormatting enum.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImageryComponent::getVerticalFormattingPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ImageryComponent::*getVerticalFormattingPropertySource_function_type )(  ) const;
+            
+            ImageryComponent_exposer.def( 
+                "getVerticalFormattingPropertySource"
+                , getVerticalFormattingPropertySource_function_type( &::CEGUI::ImageryComponent::getVerticalFormattingPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Returns the name of the property that will be used to obtain the vertical\n\
+                        formatting to use for this ImageryComponent or an empty string if none is set.\n\
+            \n\
+                    @return\n\
+                        A String containing the name of the property\n\
                     *\n" );
         
         }
