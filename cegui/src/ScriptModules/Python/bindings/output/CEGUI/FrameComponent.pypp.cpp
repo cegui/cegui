@@ -584,6 +584,9 @@ void register_FrameComponent_class(){
                 *\n" );
         
         }
+        FrameComponent_exposer.def_readonly( "HorizontalFormattingDefault", CEGUI::FrameComponent::HorizontalFormattingDefault, "! Default value for the HorzFormat elements of the FrameComponent\n" );
+        FrameComponent_exposer.def_readonly( "VerticalFormattingDefault", CEGUI::FrameComponent::VerticalFormattingDefault, "! Default value for the HorzFormat elements of the FrameComponent\n\
+        ! Default value for the VertFormat elements of the FrameComponent\n" );
         { //::CEGUI::FalagardComponentBase::handleFontRenderSizeChange
         
             typedef bool ( ::CEGUI::FalagardComponentBase::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;

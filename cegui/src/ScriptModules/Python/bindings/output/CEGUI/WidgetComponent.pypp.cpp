@@ -336,6 +336,9 @@ void register_WidgetComponent_class(){
                     *\n" );
         
         }
+        WidgetComponent_exposer.def_readonly( "HorizontalAlignmentDefault", CEGUI::WidgetComponent::HorizontalAlignmentDefault, "! Default value for the HorzAlignment elements of the WidgetComponent\n" );
+        WidgetComponent_exposer.def_readonly( "VerticalAlignmentDefault", CEGUI::WidgetComponent::VerticalAlignmentDefault, "! Default value for the HorzAlignment elements of the WidgetComponent\n\
+        ! Default value for the VertAlignment elements of the WidgetComponent\n" );
     }
 
 }

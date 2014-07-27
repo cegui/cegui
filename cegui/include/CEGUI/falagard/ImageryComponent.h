@@ -96,7 +96,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the vertical formatting which was set for the ImageryComponent.
+            Directly returns the vertical formatting which was set for the ImageryComponent.
 
         \return
             The VerticalFormatting enum.
@@ -126,7 +126,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the horizontal formatting which was set for the ImageryComponent.
+            Directly returns the horizontal formatting which was set for the ImageryComponent.
 
         \return
             The HorizontalFormatting enum.
