@@ -32,6 +32,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 const String ListWidget::EventNamespace("ListWidget");
 const String ListWidget::WidgetTypeName("CEGUI/ListWidget");
+const String ListWidget::EventListContentsChanged("ListContentsChanged");
 
 //----------------------------------------------------------------------------//
 ListWidget::ListWidget(const String& type, const String& name) :
@@ -107,5 +108,34 @@ StandardItem* ListWidget::getItemAtIndex(size_t index)
 void ListWidget::clearList()
 {
     d_itemModel.clear(true);
+
+    WindowEventArgs args(this);
+    onListContentsChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::onListContentsChanged(WindowEventArgs& args)
+{
+    fireEvent(EventListContentsChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidget::onChildrenAdded(const EventArgs& args)
+{
+    ListView::onChildrenAdded(args);
+
+    WindowEventArgs evt_args(this);
+    onListContentsChanged(evt_args);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidget::onChildrenRemoved(const EventArgs& args)
+{
+    ListView::onChildrenRemoved(args);
+
+    WindowEventArgs evt_args(this);
+    onListContentsChanged(evt_args);
+    return true;
 }
 }

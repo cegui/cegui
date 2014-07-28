@@ -45,6 +45,8 @@ public:
     static const String WidgetTypeName;
     //! Namespace for global events
     static const String EventNamespace;
+    //! Triggered when items are added, removed or when the list is cleared.
+    static const String EventListContentsChanged;
 
     ListWidget(const String& type, const String& name);
     virtual ~ListWidget();
@@ -63,6 +65,10 @@ public:
 
 protected:
     virtual void initialiseComponents();
+    virtual void onListContentsChanged(WindowEventArgs& args);
+    virtual bool onChildrenAdded(const EventArgs& args);
+    virtual bool onChildrenRemoved(const EventArgs& args);
+
     StandardItemModel d_itemModel;
 };
 
