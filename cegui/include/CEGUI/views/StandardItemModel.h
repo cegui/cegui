@@ -87,6 +87,9 @@ public:
     virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text);
 
     inline virtual StandardItem* getItemForIndex(const ModelIndex& index) const;
+    virtual int getChildId(const StandardItem* item) const;
+    virtual ModelIndex getIndexForItem(const StandardItem* item) const;
+
 protected:
     std::vector<StandardItem*> d_items;
 };
