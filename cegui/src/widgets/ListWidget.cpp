@@ -102,7 +102,7 @@ void ListWidget::addItem(StandardItem* item)
 }
 
 //----------------------------------------------------------------------------//
-size_t ListWidget::getItemCount()
+size_t ListWidget::getItemCount() const
 {
     return d_itemModel.getChildCount(d_itemModel.getRootIndex());
 }
@@ -112,6 +112,26 @@ StandardItem* ListWidget::getItemAtIndex(size_t index)
 {
     return d_itemModel.getItemForIndex(
         d_itemModel.makeIndex(index, d_itemModel.getRootIndex()));
+}
+
+//----------------------------------------------------------------------------//
+StandardItem* ListWidget::findItemWithText(const String& text, const StandardItem* start_item)
+{
+    // if start_item is NULL begin search at beginning, else start at item after start_item
+    size_t index = (start_item == 0) ? 0 : (d_itemModel.getChildId(start_item) + 1);
+    size_t list_size = getChildCount();
+
+    while (index < list_size)
+    {
+        if (getItemAtIndex(index)->getText() == text)
+        {
+            return getItemAtIndex(index);
+        }
+
+        index++;
+    }
+
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -148,4 +168,41 @@ bool ListWidget::onChildrenRemoved(const EventArgs& args)
     onListContentsChanged(evt_args);
     return true;
 }
+
+//----------------------------------------------------------------------------//
+bool ListWidget::isItemInList(const StandardItem* item)
+{
+    size_t child_count = d_itemModel.getChildCount(d_itemModel.getRootIndex());
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        if (item == d_itemModel.getItemForIndex(
+                d_itemModel.makeIndex(i, d_itemModel.getRootIndex())))
+            return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidget::isItemSelected(const StandardItem* item)
+{
+    for (SelectionStatesVector::const_iterator itor = getIndexSelectionStates().begin();
+        itor != getIndexSelectionStates().end(); ++itor)
+    {
+        if (item == d_itemModel.getItemForIndex(itor->d_selectedIndex))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool ListWidget::isIndexSelected(size_t index)
+{
+    //TODO: make a macro/inline function for lists that makes an index - since Root is always the parent
+    return ListView::isIndexSelected(d_itemModel.makeIndex(index, d_itemModel.getRootIndex()));
+}
+
 }

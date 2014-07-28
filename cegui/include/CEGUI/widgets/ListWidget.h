@@ -56,7 +56,13 @@ public:
 
     StandardItem* getFirstSelectedItem();
     StandardItem* getItemAtIndex(size_t index);
-    size_t getItemCount();
+    StandardItem* findItemWithText(const String& text, const StandardItem* start_item);
+
+    bool isItemInList(const StandardItem* item);
+    bool isItemSelected(const StandardItem* item);
+    bool isIndexSelected(size_t index);
+
+    size_t getItemCount() const;
 
     virtual StandardItemModel* getModel();
 
