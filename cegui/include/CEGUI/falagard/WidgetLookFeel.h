@@ -102,7 +102,7 @@ public:
     */
     void addImagerySection(const ImagerySection& section);
 
-    //! \deprecated This function is deprecated in marked for deletion
+    //! \deprecated This function is to be replaced by a new renameImagerySection function in the new version, which considers inheritance and accepts more appropriate parameters.
     void renameImagerySection(const String& oldName, const String& newName);
 
     /*!
@@ -249,7 +249,7 @@ public:
     */
     const NamedArea& getNamedArea(const String& name) const;
 
-    //! \deprecated This function is deprecated and marked for deletion
+    //! \deprecated This function is to be replaced by a new renameNamedArea function in the new version, which considers inheritance and accepts more appropriate parameters.
     void renameNamedArea(const String& oldName, const String& newName);
 
     /*!
@@ -506,13 +506,13 @@ public:
 
 
     /** Typedefs for property related lists. */
-    //! \deprecated This type is deprecated and will be moved into the private section and changed into a map in the next version
+    //! \deprecated This type is deprecated because it will be moved into the private section and changed into a map in the next version.
     typedef std::vector<PropertyInitialiser
         CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertyList;
-    //! \deprecated This type is deprecated and will be moved into the private section and changed into a map in the next version
+    //! \deprecated This type is deprecated because it will be moved into the private section and changed into a map in the next version.
     typedef std::vector<PropertyDefinitionBase*
         CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyDefinitionList;
-    //! \deprecated This type is deprecated and will be moved into the private section and changed into a map in the next version
+    //! \deprecated This type is deprecated because it will be moved into the private section and changed into a map in the next version.
     typedef std::vector<PropertyDefinitionBase*
         CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyLinkDefinitionList;
 
@@ -523,7 +523,11 @@ public:
      * @return CEGUI::WidgetLookFeel::PropertyDefinitionList List of properties
      * definitions
      */
-    //! \deprecated This function is deprecated and will be removed in the next version
+    /*!
+        \deprecated
+            This function is deprecated because the return type is to be replaced by a map, a bool parameter for WLF-inheritance added.
+            The function will be replaced by getPropertyDefinitionMap in the next version.
+    */
     const PropertyDefinitionList& getPropertyDefinitions() const
     {
         return d_propertyDefinitions;
@@ -534,7 +538,11 @@ public:
      * @return CEGUI::WidgetLookFeel::PropertyLinkDefinitionList List of
      * properties link definitions
      */
-    //! \deprecated This function is deprecated and will be removed in the next version
+    /*!
+        \deprecated
+            This function is deprecated because the return type is to be replaced by a map, a bool parameter for WLF-inheritance added.
+            The function will be replaced by getPropertyLinkDefinitionMap in the next version.
+    */
     const PropertyLinkDefinitionList& getPropertyLinkDefinitions() const
     {
         return d_propertyLinkDefinitions;
@@ -544,7 +552,11 @@ public:
      * @access public
      * @return CEGUI::WidgetLookFeel::PropertyList List of properties
      */
-    //! \deprecated This function is deprecated and will be removed in the next version
+    /*!
+        \deprecated
+            This function is deprecated because the return type is to be replaced by a map, a bool parameter for WLF-inheritance added.
+            The function will be replaced by getPropertyMap in the next version.
+    */
     const PropertyList& getProperties() const
     {
         return d_properties;
@@ -555,7 +567,7 @@ public:
 
 
 
-        /*!
+    /*!
     \brief
         Returns a map of names to pointers for all StateImagery elements this WidgetLookFeel owns.
 
@@ -694,7 +706,7 @@ private:
         CEGUI_VECTOR_ALLOC(WidgetComponent)> WidgetList;
     typedef std::vector<String
         CEGUI_VECTOR_ALLOC(String)> AnimationList;
-    //! The type is more or less deprecated, as it will be changed to have the correct allocator in the next version
+    //! The type is deprecated, as it will be changed to have the correct CEGUI allocator used starting in the next version
     typedef std::multimap<Window*, AnimationInstance*
         /*CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)*/> AnimationInstanceMap;
     typedef std::vector<EventLinkDefinition
@@ -751,24 +763,24 @@ public:
         Iterator stuff
     *************************************************************************/
 
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getStateImageryMap function instead to access the container.
     typedef ConstMapIterator<StateList> StateIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getImagerySectionMap function instead to access the container.
     typedef ConstMapIterator<ImageryList> ImageryIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getNamedAreaMap function instead to access the container.
     typedef ConstMapIterator<NamedAreaList> NamedAreaIterator;
 
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getWidgetComponentMap function instead to access the container.
     typedef ConstVectorIterator<WidgetComponentCollator> WidgetComponentIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getPropertyDefinitionMap function instead to access the container.
     typedef ConstVectorIterator<PropertyDefinitionCollator> PropertyDefinitionIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getPropertyLinkDefinitionMap function instead to access the container.
     typedef ConstVectorIterator<PropertyLinkDefinitionCollator> PropertyLinkDefinitionIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getPropertyInitialiserMap function instead to access the container.
     typedef ConstVectorIterator<PropertyInitialiserCollator> PropertyInitialiserIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getEventLinkDefinitionMap function instead to access the container.
     typedef ConstVectorIterator<EventLinkDefinitionCollator> EventLinkDefinitionIterator;
-    //! \deprecated This typedef is deprecated and has been marked for removal.
+    //! \deprecated This typedef is deprecated because all iterator getter functions will be removed. Please use the getAnimationNames function instead to access the container.
     typedef ConstVectorIterator<AnimationNameSet> AnimationNameIterator;
 
     /*!
@@ -776,7 +788,7 @@ public:
         Returns an iterator for the StateImageries of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getStateImageryMap function instead to access the container.
     */
     StateIterator getStateIterator(bool inherits = false) const;
     /*!
@@ -784,7 +796,7 @@ public:
         Returns an iterator for the ImagerySections of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getImagerySectionMap function instead to access the container.
     */
     ImageryIterator getImageryIterator(bool inherits = false) const;
 
@@ -793,7 +805,7 @@ public:
         Returns an iterator for the NamedAreas of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getNamedAreaMap function instead to access the container.
     */
     NamedAreaIterator getNamedAreaIterator(bool inherits = false) const;
 
@@ -802,7 +814,7 @@ public:
         Returns an iterator for the WidgetComponents of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getWidgetComponentMap function instead to access the container.
     */
     WidgetComponentIterator getWidgetComponentIterator(bool inherits = false) const;
 
@@ -811,7 +823,7 @@ public:
         Returns an iterator for the PropertyDefinitions of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getPropertyDefinitionMap function instead to access the container.
     */
     PropertyDefinitionIterator getPropertyDefinitionIterator(bool inherits = false) const;
 
@@ -820,7 +832,7 @@ public:
         Returns an iterator for the PropertyLinkDefinitions of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getPropertyLinkDefinitionMap function instead to access the container.
     */
     PropertyLinkDefinitionIterator getPropertyLinkDefinitionIterator(bool inherits = false) const;
 
@@ -829,7 +841,7 @@ public:
         Returns an iterator for the PropertyInitialisers of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getPropertyInitialiserMap function instead to access the container.
     */
     PropertyInitialiserIterator getPropertyInitialiserIterator(bool inherits = false) const;
 
@@ -838,7 +850,7 @@ public:
         Returns an iterator for the EventLinkDefinitions of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getEventLinkDefinitionMap function instead to access the container.
     */
     EventLinkDefinitionIterator getEventLinkDefinitionIterator(bool inherits = false) const;
 
@@ -847,7 +859,7 @@ public:
         Returns an iterator for the AnimationNames of this WidgetLookFeel.
 
     \deprecated
-        This function is deprecated and has been marked for removal.
+        This function is deprecated because all iterator getter functions will be removed. Please use the getAnimationNames function instead to access the container.
     */
     AnimationNameIterator getAnimationNameIterator(bool inherits = false) const;
 };
