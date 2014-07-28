@@ -152,6 +152,19 @@ void StandardItemModel::addItem(StandardItem* item)
 }
 
 //----------------------------------------------------------------------------//
+void StandardItemModel::removeItem(StandardItem* item)
+{
+    int child_id = getChildId(item);
+    if (child_id != -1)
+    {
+        std::vector<StandardItem*>::iterator itor = d_items.begin() + child_id;
+        StandardItem* item = *itor;
+        d_items.erase(itor);
+        delete item;
+    }
+}
+
+//----------------------------------------------------------------------------//
 StandardItem* StandardItemModel::getItemForIndex(const ModelIndex& index) const
 {
     if (index.d_modelData == 0)
@@ -184,4 +197,5 @@ CEGUI::ModelIndex StandardItemModel::getIndexForItem(const StandardItem* item) c
 
     return ModelIndex(child_id == -1 ? 0 : d_items.at(child_id));
 }
+
 }
