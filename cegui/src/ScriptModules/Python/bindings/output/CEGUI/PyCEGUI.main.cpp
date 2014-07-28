@@ -10,6 +10,8 @@
 
 #include "indexing_suite/set.hpp"
 
+#include "indexing_suite/map.hpp"
+
 #include "generators/include/python_CEGUI.h"
 
 #include "AbsoluteDim.pypp.hpp"
@@ -144,6 +146,8 @@
 
 #include "EventLinkDefinitionIterator.pypp.hpp"
 
+#include "EventLinkDefinitionMap.pypp.hpp"
+
 #include "EventSet.pypp.hpp"
 
 #include "Exception.pypp.hpp"
@@ -248,6 +252,8 @@
 
 #include "ImagerySection.pypp.hpp"
 
+#include "ImagerySectionMap.pypp.hpp"
+
 #include "Interpolator.pypp.hpp"
 
 #include "ItemEntry.pypp.hpp"
@@ -312,6 +318,8 @@
 
 #include "NamedAreaIterator.pypp.hpp"
 
+#include "NamedAreaMap.pypp.hpp"
+
 #include "NamedElement.pypp.hpp"
 
 #include "NamedElementEventArgs.pypp.hpp"
@@ -329,6 +337,8 @@
 #include "Property.pypp.hpp"
 
 #include "PropertyDefinitionBase.pypp.hpp"
+
+#include "PropertyDefinitionBaseMap.pypp.hpp"
 
 #include "PropertyDefinitionBool.pypp.hpp"
 
@@ -377,6 +387,8 @@
 #include "PropertyInitialiser.pypp.hpp"
 
 #include "PropertyInitialiserIterator.pypp.hpp"
+
+#include "PropertyInitialiserMap.pypp.hpp"
 
 #include "PropertyInitialiserVector.pypp.hpp"
 
@@ -536,6 +548,8 @@
 
 #include "StateImagery.pypp.hpp"
 
+#include "StateImageryMap.pypp.hpp"
+
 #include "StateIterator.pypp.hpp"
 
 #include "StdPairCEGUIImageImageFactory.pypp.hpp"
@@ -648,9 +662,13 @@
 
 #include "WidgetComponentIterator.pypp.hpp"
 
+#include "WidgetComponentMap.pypp.hpp"
+
 #include "WidgetDim.pypp.hpp"
 
 #include "WidgetLookFeel.pypp.hpp"
+
+#include "WidgetLookFeelMap.pypp.hpp"
 
 #include "WidgetLookIterator.pypp.hpp"
 
@@ -799,6 +817,22 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_LineList_class();
 
     register_StringSet_class();
+
+    register_WidgetLookFeelMap_class();
+
+    register_WidgetComponentMap_class();
+
+    register_StateImageryMap_class();
+
+    register_PropertyInitialiserMap_class();
+
+    register_PropertyDefinitionBaseMap_class();
+
+    register_NamedAreaMap_class();
+
+    register_ImagerySectionMap_class();
+
+    register_EventLinkDefinitionMap_class();
 
     register_BaseDim_class();
 
