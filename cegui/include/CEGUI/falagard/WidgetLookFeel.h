@@ -364,8 +364,8 @@ public:
 
     /*!
     \brief
-        Takes the name for a widget component and returns a pointer to
-        it if it exists or Null if it doesn't.
+        Takes the name for a WidgetComponent and returns a pointer to
+        it if it exists or a null pointer if it doesn't.
 
     \param name
         The name of the Child component to look for.
@@ -379,7 +379,7 @@ public:
     /*!
     \brief
         Takes the name for a WidgetComponent and returns a pointer to
-        it if it exists or Null if it doesn't.
+        it if it exists or null pointer if it doesn't.
 
     \param name
         The name of the WidgetComponent to look for.
