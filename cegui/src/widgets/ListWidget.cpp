@@ -65,6 +65,16 @@ void ListWidget::setItemSelectionState(size_t item_index, bool state)
 }
 
 //----------------------------------------------------------------------------//
+void ListWidget::setItemSelectionState(StandardItem* item, bool state)
+{
+    if (item == 0)
+    {
+        CEGUI_THROW(InvalidRequestException("the item passed was null."));
+    }
+
+    ListView::setSelectedItem(d_itemModel.getIndexForItem(item));
+}
+//----------------------------------------------------------------------------//
 StandardItem* ListWidget::getFirstSelectedItem()
 {
     if (d_indexSelectionStates.empty())

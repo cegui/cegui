@@ -52,6 +52,8 @@ public:
     virtual ~ListWidget();
 
     void setItemSelectionState(size_t item_index, bool state);
+    void setItemSelectionState(StandardItem* item, bool state);
+
     StandardItem* getFirstSelectedItem();
     StandardItem* getItemAtIndex(size_t index);
     size_t getItemCount();
