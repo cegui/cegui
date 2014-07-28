@@ -102,8 +102,14 @@ ModelIndex StandardItemModel::getParentIndex(const ModelIndex& model_index) cons
 //----------------------------------------------------------------------------//
 int StandardItemModel::getChildId(const ModelIndex& model_index) const
 {
+    return getChildId(getItemForIndex(model_index));
+}
+
+//----------------------------------------------------------------------------//
+int StandardItemModel::getChildId(const StandardItem* item) const
+{
     std::vector<StandardItem*>::const_iterator itor =
-        std::find(d_items.begin(), d_items.end(), getItemForIndex(model_index));
+        std::find(d_items.begin(), d_items.end(), item);
 
     if (itor == d_items.end())
         return -1;
@@ -169,5 +175,13 @@ void StandardItemModel::clear(bool notify)
     {
         notifyChildrenRemoved(getRootIndex(), 0, item_count);
     }
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::ModelIndex StandardItemModel::getIndexForItem(const StandardItem* item) const
+{
+    int child_id = getChildId(item);
+
+    return ModelIndex(child_id == -1 ? 0 : d_items.at(child_id));
 }
 }
