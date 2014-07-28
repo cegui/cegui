@@ -67,6 +67,8 @@ public:
     virtual void addItem(String text);
     //! Adds the item and takes ownership of it.
     virtual void addItem(StandardItem* item);
+    virtual void removeItem(StandardItem* item);
+
     /*!
     \brief
         Clears the items from this ItemModel, deleting them.
@@ -89,7 +91,6 @@ public:
     inline virtual StandardItem* getItemForIndex(const ModelIndex& index) const;
     virtual int getChildId(const StandardItem* item) const;
     virtual ModelIndex getIndexForItem(const StandardItem* item) const;
-
 protected:
     std::vector<StandardItem*> d_items;
 };
