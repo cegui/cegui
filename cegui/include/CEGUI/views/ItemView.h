@@ -182,6 +182,13 @@ public:
 
     /*!
     \brief
+       Invalidates this view by marking the rendering state as dirty.
+       This also calls the base Window invalidate
+    */
+    virtual void invalidateView(bool recursive);
+
+    /*!
+    \brief
        Gets the current state of the indices used for selection.
 
     \remark
@@ -296,8 +303,6 @@ protected:
     void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
         ScrollbarDisplayMode new_mode, String change_event);
 
-    //! Invalidates this view by marking the rendering state as dirty and calling the base
-    virtual void invalidateView(bool recursive);
 
     virtual void initialiseComponents(void);
 
