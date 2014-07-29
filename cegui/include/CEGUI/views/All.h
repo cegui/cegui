@@ -27,8 +27,10 @@
 #ifndef _CEGUIAllViews_h_
 #define _CEGUIAllViews_h_
 
+#include "./ItemModel.h"
 #include "./ItemView.h"
 #include "./ListView.h"
+#include "./StandardItemModel.h"
 #include "./TreeView.h"
 
 #endif
