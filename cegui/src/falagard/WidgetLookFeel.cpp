@@ -1172,6 +1172,8 @@ WidgetLookFeel::StateImageryPointerMap WidgetLookFeel::getStateImageryMap(bool i
             StateImagery* stateImagery = &stateImageryIter->second;
             pointerMap.insert(std::make_pair(currentElementName, stateImagery));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1201,6 +1203,8 @@ WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bo
             ImagerySection* imagerySection = &imagerySectionIter->second;
             pointerMap.insert(std::make_pair(currentElementName, imagerySection));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1230,6 +1234,8 @@ WidgetLookFeel::NamedAreaPointerMap WidgetLookFeel::getNamedAreaMap(bool include
             NamedArea* namedArea = &namedAreaIter->second;
             pointerMap.insert(std::make_pair(currentElementName, namedArea));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1259,6 +1265,8 @@ WidgetLookFeel::WidgetComponentPointerMap WidgetLookFeel::getWidgetComponentMap(
         {        
             pointerMap.insert(std::make_pair(currentElementName, widgetComponent));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1288,6 +1296,8 @@ WidgetLookFeel::PropertyInitialiserPointerMap WidgetLookFeel::getPropertyInitial
         {        
             pointerMap.insert(std::make_pair(currentElementName, propertyInitialiser));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1318,6 +1328,8 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefi
         {        
             pointerMap.insert(std::make_pair(currentElementName, propertyDefinition));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1347,6 +1359,8 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLink
         {        
             pointerMap.insert(std::make_pair(currentElementName, propertyLinkDefinition));
         }
+
+        ++iter;
     }
 
     return pointerMap;
@@ -1377,6 +1391,8 @@ WidgetLookFeel::EventLinkDefinitionPointerMap WidgetLookFeel::getEventLinkDefini
         {        
             pointerMap.insert(std::make_pair(currentElementName, eventLinkDef));
         }
+
+        ++iter;
     }
 
     return pointerMap;
