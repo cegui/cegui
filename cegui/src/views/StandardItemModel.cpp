@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/views/StandardItemModel.h"
+#include "CEGUI/Exceptions.h"
 
 namespace CEGUI
 {
@@ -147,8 +148,25 @@ void StandardItemModel::addItem(String text)
 //----------------------------------------------------------------------------//
 void StandardItemModel::addItem(StandardItem* item)
 {
-    d_items.push_back(item);
-    notifyChildrenAdded(getRootIndex(), d_items.size() - 1, 1);
+    addItemAtPosition(item, d_items.empty() ? 0 : d_items.size() - 1);
+}
+
+//----------------------------------------------------------------------------//
+void StandardItemModel::addItemAtPosition(StandardItem* item, size_t pos)
+{
+    if (pos > d_items.size())
+        CEGUI_THROW(InvalidRequestException("The specified position is out of range."));
+
+    d_items.insert(d_items.begin() + pos, item);
+    notifyChildrenAdded(getRootIndex(), pos, 1);
+}
+
+//----------------------------------------------------------------------------//
+void StandardItemModel::insertItem(StandardItem* item, const StandardItem* position)
+{
+    int child_id = getChildId(position);
+
+    addItemAtPosition(item, child_id == -1 ? 0 : static_cast<size_t>(child_id));
 }
 
 //----------------------------------------------------------------------------//
@@ -191,7 +209,7 @@ void StandardItemModel::clear(bool notify)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::ModelIndex StandardItemModel::getIndexForItem(const StandardItem* item) const
+ModelIndex StandardItemModel::getIndexForItem(const StandardItem* item) const
 {
     int child_id = getChildId(item);
 

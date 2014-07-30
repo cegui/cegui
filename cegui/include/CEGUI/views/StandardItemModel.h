@@ -67,6 +67,13 @@ public:
     virtual void addItem(String text);
     //! Adds the item and takes ownership of it.
     virtual void addItem(StandardItem* item);
+
+    /*!
+    \brief
+        Inserts the specified before the specified position item. If position
+        is NULL the new item will be added at the beginning.
+    */
+    virtual void insertItem(StandardItem* item, const StandardItem* position);
     virtual void removeItem(const StandardItem* item);
 
     /*!
@@ -91,7 +98,10 @@ public:
     inline virtual StandardItem* getItemForIndex(const ModelIndex& index) const;
     virtual int getChildId(const StandardItem* item) const;
     virtual ModelIndex getIndexForItem(const StandardItem* item) const;
+
 protected:
+    void addItemAtPosition(StandardItem* item, size_t pos);
+
     std::vector<StandardItem*> d_items;
 };
 
