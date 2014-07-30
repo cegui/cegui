@@ -102,6 +102,18 @@ void ListWidget::addItem(StandardItem* item)
 }
 
 //----------------------------------------------------------------------------//
+void ListWidget::insertItem(StandardItem* item, const StandardItem* position)
+{
+    d_itemModel.insertItem(item, position);
+}
+
+//----------------------------------------------------------------------------//
+void ListWidget::removeItem(const StandardItem* item)
+{
+    d_itemModel.removeItem(item);
+}
+
+//----------------------------------------------------------------------------//
 size_t ListWidget::getItemCount() const
 {
     return d_itemModel.getChildCount(d_itemModel.getRootIndex());
