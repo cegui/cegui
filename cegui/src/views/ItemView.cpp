@@ -381,6 +381,13 @@ void ItemView::setTextColourRect(const ColourRect& colour_rect)
 }
 
 //----------------------------------------------------------------------------//
+void ItemView::setTextColour(Colour colour)
+{
+    ColourRect rect(colour);
+    setTextColourRect(rect);
+}
+
+//----------------------------------------------------------------------------//
 const ColourRect& ItemView::getSelectionColourRect() const
 {
     return d_selectionColourRect;
