@@ -67,7 +67,7 @@ public:
     virtual void addItem(String text);
     //! Adds the item and takes ownership of it.
     virtual void addItem(StandardItem* item);
-    virtual void removeItem(StandardItem* item);
+    virtual void removeItem(const StandardItem* item);
 
     /*!
     \brief

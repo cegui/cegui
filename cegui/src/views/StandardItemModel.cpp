@@ -152,7 +152,7 @@ void StandardItemModel::addItem(StandardItem* item)
 }
 
 //----------------------------------------------------------------------------//
-void StandardItemModel::removeItem(StandardItem* item)
+void StandardItemModel::removeItem(const StandardItem* item)
 {
     int child_id = getChildId(item);
     if (child_id != -1)
