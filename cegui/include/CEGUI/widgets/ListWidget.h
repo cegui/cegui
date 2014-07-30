@@ -68,6 +68,9 @@ public:
 
     void addItem(const String& text);
     void addItem(StandardItem* item);
+    void insertItem(StandardItem* item, const StandardItem* position);
+
+    void removeItem(const StandardItem* item);
     //! Clears the items in this list and deletes all associated items.
     void clearList();
 
