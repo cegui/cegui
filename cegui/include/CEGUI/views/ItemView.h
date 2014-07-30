@@ -170,6 +170,7 @@ public:
     const ColourRect& getTextColourRect() const;
     //! Sets the colour used for rendering the text.
     void setTextColourRect(const ColourRect& colour_rect);
+    void setTextColour(Colour colour);
 
     //! Gets the colour used for higlighting the selection.
     const ColourRect& getSelectionColourRect() const;
