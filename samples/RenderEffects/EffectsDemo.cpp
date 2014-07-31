@@ -320,7 +320,7 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 {
     using namespace CEGUI;
-    
+
     // initialise ourself upon the first update call.
     if (!initialised)
     {
@@ -606,7 +606,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load the windows for the EffectsDemo from the layout file.
     Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
- 
+
     // Get the combobox created from within the layout
     CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(sheet->getChild("EffectsFrameWindow/EffectsCombobox"));
 
@@ -617,7 +617,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // Initialise the items and subscribe the event for the combobox
     initialiseEffectsCombobox(effectsCombobox);
-    
+
     // We can switch the automatic effects mapping off now
     WindowFactoryManager::getSingleton().removeWindowTypeAlias(
         "Vanilla/FrameWindow",  // alias name - can shadow existing types
@@ -675,11 +675,10 @@ Initialises the effects ListItems for the Combobox.
 *************************************************************************/
 void EffectsDemo::initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox)
 {
-    d_listItemEffectWobblyNew = new MyListItem("Wobbly Window Effect");
-    d_listItemEffectElastic = new MyListItem("Elastic Window Effect");
-    d_listItemEffectWobblyOld = new MyListItem("Old Wobbly Window Effect");
-    d_listItemEffectNone = new MyListItem("None");
-
+    d_listItemEffectWobblyNew = new CEGUI::StandardItem("Wobbly Window Effect");
+    d_listItemEffectElastic = new CEGUI::StandardItem("Elastic Window Effect");
+    d_listItemEffectWobblyOld = new CEGUI::StandardItem("Old Wobbly Window Effect");
+    d_listItemEffectNone = new CEGUI::StandardItem("None");
 
     effectsCombobox->addItem(d_listItemEffectWobblyNew);
     effectsCombobox->addItem(d_listItemEffectElastic);
@@ -698,7 +697,7 @@ bool EffectsDemo::handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& 
     const CEGUI::WindowEventArgs& winArgs(static_cast<const CEGUI::WindowEventArgs&>(args));
 
     CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(winArgs.window);
-    CEGUI::ListboxItem* selectionItem = effectsCombobox->getSelectedItem();
+    CEGUI::StandardItem* selectionItem = effectsCombobox->getSelectedItem();
 
     CEGUI::FrameWindow* effectsWindow = static_cast<CEGUI::FrameWindow*>(effectsCombobox->getParent());
     CEGUI::RenderingWindow* effectsWindowRenderingWnd = static_cast<CEGUI::RenderingWindow*>(effectsWindow->getRenderingSurface());
@@ -719,7 +718,6 @@ bool EffectsDemo::handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& 
     {
         effectsWindowRenderingWnd->setRenderEffect(0);
     }
-
 
     return true;
 }
