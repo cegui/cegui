@@ -29,23 +29,22 @@
 #ifndef _CEGUIComboDropList_h_
 #define _CEGUIComboDropList_h_
 
-#include "./Listbox.h"
-
+#include "CEGUI/widgets/ListWidget.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
 
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-	Base class for the combo box drop down list.  This is a specialisation of the Listbox class.
+    Base class for the combo box drop down list.
+    This is a specialisation of the ListWidget class.
 */
-class CEGUIEXPORT ComboDropList : public Listbox
+class CEGUIEXPORT ComboDropList : public ListWidget
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -173,7 +172,6 @@ protected:
     virtual void    onPointerPressHold(PointerEventArgs& e);
     virtual void    onPointerActivate(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onActivated(ActivationEventArgs& e);
     virtual void    onListContentsChanged(WindowEventArgs& e);
     virtual void    onSelectionChanged(WindowEventArgs& e);
 
@@ -182,7 +180,7 @@ protected:
 	*************************************************************************/
 	bool	d_autoArm;		//!< true if the box auto-arms when the pointer enters it.
 	bool	d_armed;		//!< true when item selection has been armed.
-    ListboxItem* d_lastClickSelected; //!< Item last accepted by user.
+    StandardItem* d_lastItemSelected; //!< Item last accepted by user.
 };
 
 } // End of  CEGUI namespace section

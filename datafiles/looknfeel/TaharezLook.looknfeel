@@ -56,7 +56,7 @@
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
-        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />  
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
@@ -1713,6 +1713,7 @@
     -->
     <WidgetLook name="TaharezLook/ComboDropList">
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
@@ -2851,16 +2852,16 @@
                 <Section section="label" />
             </Layer>
         </StateImagery>
-        
+
         <AnimationDefinition name="FadeIn" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="1" progression="linear" />
             </Affector>
-            
+
             <Subscription event="TooltipActive" action="Start" />
         </AnimationDefinition>
-        
+
         <AnimationDefinition name="FadeOut" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
@@ -2870,7 +2871,7 @@
                 <KeyFrame position="0" sourceProperty="Visible" />
                 <KeyFrame position="0.33" value="false" progression="discrete" />
             </Affector>
-            
+
             <Subscription event="TooltipInactive" action="Start" />
         </AnimationDefinition>
     </WidgetLook>
