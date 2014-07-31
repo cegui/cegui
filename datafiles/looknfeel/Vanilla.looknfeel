@@ -1683,6 +1683,7 @@
     <WidgetLook name="Vanilla/ComboDropList">
         <Property name="ForceVertScrollbar" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="Vanilla-Images/GenericBrush"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">

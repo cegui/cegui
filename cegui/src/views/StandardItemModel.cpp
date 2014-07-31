@@ -148,6 +148,9 @@ void StandardItemModel::addItem(String text)
 //----------------------------------------------------------------------------//
 void StandardItemModel::addItem(StandardItem* item)
 {
+    if (item == 0)
+        return;
+
     addItemAtPosition(item, d_items.empty() ? 0 : d_items.size() - 1);
 }
 

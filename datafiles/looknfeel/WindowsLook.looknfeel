@@ -563,6 +563,7 @@
     -->
     <WidgetLook name="WindowsLook/ComboDropList">
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -5233,7 +5234,7 @@
             <Subscription action="Start" event="TooltipInactive"/>
         </AnimationDefinition>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         WindowsLook/ListView

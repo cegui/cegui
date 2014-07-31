@@ -30,7 +30,7 @@
 	<FalagardMapping windowType="TaharezLook/TabControl" targetType="CEGUI/TabControl" renderer="Core/TabControl" lookNFeel="TaharezLook/TabControl" />
 	<FalagardMapping windowType="TaharezLook/TabContentPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="TaharezLook/TabContentPane" />
 	<FalagardMapping windowType="TaharezLook/TabButtonPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="TaharezLook/TabButtonPane" />
-	<FalagardMapping windowType="TaharezLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/Listbox" lookNFeel="TaharezLook/ComboDropList" />
+	<FalagardMapping windowType="TaharezLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/ListView" lookNFeel="TaharezLook/ComboDropList" />
 	<FalagardMapping windowType="TaharezLook/ComboEditbox"  targetType="CEGUI/Editbox"	 renderer="Core/Editbox" lookNFeel="TaharezLook/ComboEditbox" />
 	<FalagardMapping windowType="TaharezLook/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="TaharezLook/Combobox" />
 	<FalagardMapping windowType="TaharezLook/Listbox"           targetType="CEGUI/Listbox"           renderer="Core/Listbox"           lookNFeel="TaharezLook/Listbox" />

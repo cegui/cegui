@@ -26,7 +26,7 @@
 	<FalagardMapping windowType="WindowsLook/TabControl" targetType="CEGUI/TabControl" renderer="Core/TabControl" lookNFeel="WindowsLook/TabControl" />
 	<FalagardMapping windowType="WindowsLook/TabContentPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="WindowsLook/TabContentPane" />
 	<FalagardMapping windowType="WindowsLook/TabButtonPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="WindowsLook/TabButtonPane" />
-	<FalagardMapping windowType="WindowsLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/Listbox" lookNFeel="WindowsLook/ComboDropList" />
+	<FalagardMapping windowType="WindowsLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/ListView" lookNFeel="WindowsLook/ComboDropList" />
 	<FalagardMapping windowType="WindowsLook/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="WindowsLook/Combobox" />
 	<FalagardMapping windowType="WindowsLook/Listbox"           targetType="CEGUI/Listbox"           renderer="Core/Listbox"           lookNFeel="WindowsLook/Listbox" />
 	<FalagardMapping windowType="WindowsLook/ListHeader"        targetType="CEGUI/ListHeader"        renderer="Core/ListHeader"        lookNFeel="WindowsLook/ListHeader" />
