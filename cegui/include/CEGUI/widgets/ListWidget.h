@@ -74,6 +74,8 @@ public:
     //! Clears the items in this list and deletes all associated items.
     void clearList();
 
+    virtual void ensureItemIsVisible(const StandardItem* item);
+
 protected:
     virtual void initialiseComponents();
     virtual void onListContentsChanged(WindowEventArgs& args);

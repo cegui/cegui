@@ -172,6 +172,8 @@ private:
     void noopAction(TreeViewItemRenderingState& item, bool toggles_expander) {}
 
     virtual void resortView();
+
+    virtual Rectf getIndexRect(const ModelIndex& index);
 };
 
 };

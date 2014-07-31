@@ -26,8 +26,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/views/TreeView.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/views/TreeView.h"
 
 //TODO: handle semantic event for up/down and left/right (open/close subtree)
 
@@ -546,5 +547,12 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
     {
         expandSubtreeRecursive(*itor);
     }
+}
+
+//----------------------------------------------------------------------------//
+Rectf TreeView::getIndexRect(const ModelIndex& index)
+{
+    //TODO: implement for tree view. What do we do for indices in closed subtrees?
+    CEGUI_THROW(InvalidRequestException("Not implemented for tree view yet."));
 }
 }

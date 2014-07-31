@@ -60,6 +60,7 @@ public:
     }
 
     virtual void resortView() { }
+    virtual Rectf getIndexRect(const ModelIndex& index) { return Rectf(0, 0, 0, 0);  }
 };
 
 //----------------------------------------------------------------------------//

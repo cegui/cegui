@@ -90,6 +90,8 @@ private:
 
     void updateItem(ListViewItemRenderingState& item, ModelIndex index,
         float& max_width, float& total_height);
+
+    virtual Rectf getIndexRect(const ModelIndex& index);
 };
 
 }

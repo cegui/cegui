@@ -131,7 +131,7 @@ StandardItem* ListWidget::findItemWithText(const String& text, const StandardIte
 {
     // if start_item is NULL begin search at beginning, else start at item after start_item
     size_t index = (start_item == 0) ? 0 : (d_itemModel.getChildId(start_item) + 1);
-    size_t list_size = getChildCount();
+    size_t list_size = getItemCount();
 
     while (index < list_size)
     {
@@ -217,4 +217,9 @@ bool ListWidget::isIndexSelected(size_t index)
     return ListView::isIndexSelected(d_itemModel.makeIndex(index, d_itemModel.getRootIndex()));
 }
 
+//----------------------------------------------------------------------------//
+void ListWidget::ensureItemIsVisible(const StandardItem* item)
+{
+    ListView::ensureItemIsVisible(d_itemModel.getIndexForItem(item));
+}
 }
