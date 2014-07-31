@@ -161,14 +161,14 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetDemo::handleRenderingEnded, this));
     d_guiContext->getRootWindow()->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&WidgetDemo::handleRootWindowUpdate, this));
 
-    if(CEGUI::ListboxItem* skinItem = d_skinSelectionCombobox->getListboxItemFromIndex(0))
+    if(CEGUI::StandardItem* skinItem = d_skinSelectionCombobox->getItemFromIndex(0))
     {
         d_skinSelectionCombobox->setItemSelectState(skinItem, true);
         handleSkinSelectionAccepted(CEGUI::WindowEventArgs(d_skinSelectionCombobox));
     }
     if(d_widgetSelectorListWidget->getItemCount() > 0)
     {
-        d_widgetSelectorListWidget->setItemSelectionState(0, true);
+        d_widgetSelectorListWidget->setItemSelectionState(static_cast<size_t>(0), true);
     }
 
     d_listItemModel.addItem("item 1");
@@ -356,7 +356,7 @@ void WidgetDemo::initialiseSkinCombobox(CEGUI::Window* container)
     std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
     while(iter != d_skinListItemsMap.end())
     {
-        d_skinSelectionCombobox->addItem(new MyListItem(iter->first));
+        d_skinSelectionCombobox->addItem(new StandardItem(iter->first));
 
         ++iter;
     }
@@ -638,7 +638,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
     CEGUI::ComboDropList* combodroplist = dynamic_cast<CEGUI::ComboDropList*>(widgetWindow);
     if(combodroplist)
     {
-        initListbox(combodroplist);
+        initListWidget(combodroplist);
     }
 
     CEGUI::ItemListbox* itemListbox = dynamic_cast<CEGUI::ItemListbox*>(widgetWindow);
@@ -710,30 +710,22 @@ void WidgetDemo::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList
     multilineColumnList->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
 }
 
-void WidgetDemo::initCombobox(CEGUI::Combobox* combobox)
+void WidgetDemo::initCombobox(Combobox* combobox)
 {
-    MyListItem* item1 = new MyListItem("Combobox Item 1");
-    combobox->addItem(item1);
-    MyListItem* item2 = new MyListItem("Combobox Item 2");
-    combobox->addItem(item2);
+    combobox->getDropList()->setSelectionColourRect(Colour(0.3f, 0.7f, 1.0f, 1.0f));
 
-    MyListItem* item3 = new MyListItem("Combobox Item 3");
-    item3->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.0f));
-    combobox->addItem(item3);
+    //TODO: implement per-item selection color in ItemModel?
+    combobox->addItem(new StandardItem("Combobox Item 1"));
+    combobox->addItem(new StandardItem("Combobox Item 2"));
 
-    MyListItem* item4 = new MyListItem("Combobox Item 4");
-    item4->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.0f));
-    combobox->addItem(item4);
+    combobox->addItem(new StandardItem("Combobox Item 3"));
+    combobox->addItem(new StandardItem("Combobox Item 4"));
 
-    if(combobox->getType().compare("WindowsLook/Combobox") == 0)
+    if (combobox->getType().compare("WindowsLook/Combobox") == 0)
     {
-        item1->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        item2->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        item3->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        item4->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        combobox->getDropList()->setTextColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }
 }
-
 
 void WidgetDemo::saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow)
 {
@@ -771,6 +763,20 @@ void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
         item2->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
         item3->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
         item4->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+    }
+}
+
+//----------------------------------------------------------------------------//
+void WidgetDemo::initListWidget(ListWidget* list_widget)
+{
+    list_widget->addItem("ListWidget Item 1");
+    list_widget->addItem("ListWidget Item 2");
+    list_widget->addItem("ListWidget Item 3");
+    list_widget->addItem("ListWidget Item 4");
+
+    if (list_widget->getType().compare("WindowsLook/Listbox") == 0)
+    {
+        list_widget->setTextColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }
 }
 
@@ -882,16 +888,16 @@ bool WidgetDemo::getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetT
 {
     //Retrieving the Strings for the selections
     StandardItem* widget_item = d_widgetSelectorListWidget->getFirstSelectedItem();
-    ListboxItem* skinListboxItem = d_skinSelectionCombobox->getSelectedItem();
+    StandardItem* skin_item = d_skinSelectionCombobox->getSelectedItem();
 
-    if(!skinListboxItem || !widget_item)
+    if(!skin_item || !widget_item)
         return false;
 
     //Recreate the widget's type as String
     widgetName = widget_item->getText();
 
-    if(skinListboxItem->getText().compare("No Skin") != 0)
-        widgetTypeString= skinListboxItem->getText() + "/";
+    if(skin_item->getText().compare("No Skin") != 0)
+        widgetTypeString= skin_item->getText() + "/";
 
     widgetTypeString += widgetName;
 
@@ -1053,8 +1059,7 @@ void WidgetDemo::initListView(ListView* list_view)
 
     if (list_view->getType().find("WindowsLook/List") == 0)
     {
-        ColourRect colour_rect = ColourRect(Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        list_view->setTextColourRect(colour_rect);
+        list_view->setTextColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }
 }
 

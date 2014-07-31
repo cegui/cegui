@@ -155,18 +155,6 @@ static struct
                                 }
 };
 
-// Sample sub-class for ListboxTextItem that auto-sets the selection brush
-// image.  This saves doing it manually every time in the code.
-class MyListItem : public ListboxTextItem
-{
-public:
-    MyListItem(const String& text, CEGUI::uint item_id = 0) :
-      ListboxTextItem(text, item_id)
-      {
-          setSelectionBrushImage("Vanilla-Images/GenericBrush");
-      }
-};
-
 bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     d_usedFiles = CEGUI::String(__FILE__);
@@ -246,7 +234,7 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     //Subscribe font selection event
     d_fontSelector->subscribeEvent(ListView::EventSelectionChanged, Event::Subscriber(&FontsDemo::handleFontSelectionChanged, this));
 
-    d_textSelector->setItemSelectionState(0, true);
+    d_textSelector->setItemSelectionState(static_cast<size_t>(0), true);
 
     return true;
 }
@@ -489,11 +477,11 @@ void FontsDemo::initialiseFontFileNameCombobox()
         {
             const CEGUI::String& fileName(d_fontFileNameOptions[i]);
 
-            d_fontFileNameSelector->addItem(new MyListItem(fileName, i));
+            d_fontFileNameSelector->addItem(new StandardItem(fileName, i));
         }
 
-        d_fontFileNameSelector->getListboxItemFromIndex(0)->setSelected(true);
-        d_fontFileNameSelector->getEditbox()->setText(d_fontFileNameSelector->getListboxItemFromIndex(0)->getText());
+        d_fontFileNameSelector->getDropList()->setItemSelectionState(static_cast<size_t>(0), true);
+        d_fontFileNameSelector->getEditbox()->setText(d_fontFileNameSelector->getItemFromIndex(0)->getText());
     }
 }
 
@@ -588,7 +576,7 @@ void FontsDemo::initialiseAutoScaleCombobox()
    for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
     {
         CEGUI::String itemText = d_autoScaleOptionsArray.at(i);
-        d_fontAutoScaleCombobox->addItem(new MyListItem(itemText, i));
+        d_fontAutoScaleCombobox->addItem(new StandardItem(itemText, i));
     }
 }
 
