@@ -33,8 +33,9 @@
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/views/ItemModel.h"
+#include "CEGUI/Rect.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/views/ItemModel.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
 #if defined (_MSC_VER)
@@ -227,6 +228,13 @@ public:
     virtual bool setSelectedItem(const ModelIndex& index);
     virtual bool setItemSelectionState(const ModelIndex& index, bool selected);
 
+    /*!
+    \brief
+        Ensures that the item specified by the \a index is visible by setting
+        the proper the vertical scrollbar's position.
+    */
+    virtual void ensureItemIsVisible(const ModelIndex& index);
+
     //! Clears all selected items
     void clearSelections();
 
@@ -238,8 +246,7 @@ public:
 
     /*!
     \brief
-        Returns a pointer to the vertical scrollbar component widget for this
-        Listbox.
+        Returns a pointer to the vertical scrollbar component widget for this view.
 
     \exception UnknownObjectException
         Thrown if the vertical Scrollbar component does not exist.
@@ -251,8 +258,7 @@ public:
 
     /*!
     \brief
-        Returns a pointer to the horizontal scrollbar component widget for this
-        Listbox.
+        Returns a pointer to the horizontal scrollbar component widget for this view.
 
     \exception UnknownObjectException
         Thrown if the horizontal Scrollbar component does not exist.
@@ -304,7 +310,6 @@ protected:
     void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
         ScrollbarDisplayMode new_mode, String change_event);
 
-
     virtual void initialiseComponents(void);
 
     virtual bool onChildrenAdded(const EventArgs& args);
@@ -335,6 +340,9 @@ protected:
     virtual void resortView() = 0;
     void onSortModeChanged(WindowEventArgs& args);
     void handleSelectionNavigation(SemanticEventArgs& e);
+
+    //! Returns the Rectf that contains the specified \a index.
+    virtual Rectf getIndexRect(const ModelIndex& index) = 0;
 };
 
 }

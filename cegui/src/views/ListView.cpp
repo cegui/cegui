@@ -266,4 +266,22 @@ bool ListView::onChildrenRemoved(const EventArgs& args)
     return true;
 }
 
+//----------------------------------------------------------------------------//
+Rectf ListView::getIndexRect(const ModelIndex& index)
+{
+    int child_id = d_itemModel->getChildId(index);
+    if (child_id == -1)
+    {
+        return Rectf(0, 0, 0, 0);
+    }
+
+    Vector2f pos(0, 0);
+
+    for (size_t i = 0; i < static_cast<size_t>(child_id); ++i)
+    {
+        pos.d_y += d_items.at(i).d_size.d_height;
+    }
+
+    return Rectf(pos, d_items.at(static_cast<size_t>(child_id)).d_size);
+}
 }

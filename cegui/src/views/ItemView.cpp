@@ -808,4 +808,34 @@ float ItemView::getRenderedTotalHeight() const
 {
     return d_renderedTotalHeight;
 }
+
+//----------------------------------------------------------------------------//
+void ItemView::ensureItemIsVisible(const ModelIndex& index)
+{
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    float view_height = getViewRenderer()->getViewRenderArea().getHeight();
+
+    Rectf rect = getIndexRect(index);
+    float bottom = rect.bottom();
+    float top = rect.top();
+
+    // account for current scrollbar value
+    float currPos = vertScrollbar->getScrollPosition();
+    top -= currPos;
+    bottom -= currPos;
+
+    // if top is above the view area, or if item is too big to fit
+    if ((top < 0.0f) || ((bottom - top) > view_height))
+    {
+        // scroll top of item to top of box.
+        vertScrollbar->setScrollPosition(currPos + top);
+    }
+    // if bottom is below the view area
+    else if (bottom >= view_height)
+    {
+        // position bottom of item at the bottom of the list
+        vertScrollbar->setScrollPosition(currPos + bottom - view_height);
+    }
+}
+
 }
