@@ -90,9 +90,18 @@ namespace CEGUI
             Return the current vertical formatting setting for this ImageryComponent.
 
         \return
-            One of the VerticalFormatting enumerated values.
+            The VerticalFormatting enum.
         */
         VerticalFormatting getVerticalFormatting(const Window& wnd) const;
+
+        /*!
+        \brief
+            Directly returns the vertical formatting which was set for the ImageryComponent.
+
+        \return
+            The VerticalFormatting enum.
+        */
+        VerticalFormatting getVerticalFormattingFromComponent() const;
 
         /*!
         \brief
@@ -117,6 +126,15 @@ namespace CEGUI
 
         /*!
         \brief
+            Directly returns the horizontal formatting which was set for the ImageryComponent.
+
+        \return
+            The HorizontalFormatting enum.
+        */
+        HorizontalFormatting getHorizontalFormattingFromComponent() const;
+
+        /*!
+        \brief
             Set the horizontal formatting setting for this ImageryComponent.
 
         \param fmt
@@ -126,6 +144,16 @@ namespace CEGUI
             Nothing.
         */
         void setHorizontalFormatting(HorizontalFormatting fmt);
+        
+        /*!
+        \brief
+            Returns the name of the property that will be used to obtain the horizontal
+            formatting to use for this ImageryComponent or an empty string if none is set.
+
+        \return
+            A String containing the name of the property
+        */
+        const String& getHorizontalFormattingPropertySource() const;
 
         /*!
         \brief
@@ -133,6 +161,16 @@ namespace CEGUI
             formatting to use for this ImageryComponent.
         */
         void setHorizontalFormattingPropertySource(const String& property_name);
+
+        /*!
+        \brief
+            Returns the name of the property that will be used to obtain the vertical
+            formatting to use for this ImageryComponent or an empty string if none is set.
+
+        \return
+            A String containing the name of the property
+        */
+        const String& getVerticalFormattingPropertySource() const;
 
         /*!
         \brief

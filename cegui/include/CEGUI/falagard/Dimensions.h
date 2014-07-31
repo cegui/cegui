@@ -861,6 +861,15 @@ public:
     */
     void setAreaPropertySource(const String& property);
 
+    /*!
+    \brief
+        Return the name of the look to which the NamedArea, which is defined as source, belongs to.
+
+    \return
+        A string containing the name of the look.
+    */
+    const String& getNamedAreaSourceLook() const;
+
     //! Set the named area source of the ComponentArea.
     void setNamedAreaSouce(const String& widget_look, const String& area_name);
 

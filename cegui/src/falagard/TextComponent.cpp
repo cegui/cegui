@@ -143,6 +143,11 @@ namespace CEGUI
         return d_vertFormatting.get(wnd);
     }
 
+    VerticalTextFormatting TextComponent::getVerticalFormattingFromComponent() const
+    {
+        return d_vertFormatting.getValue();
+    }
+
     void TextComponent::setVerticalFormatting(VerticalTextFormatting fmt)
     {
         d_vertFormatting.set(fmt);
@@ -153,15 +158,30 @@ namespace CEGUI
         return d_horzFormatting.get(wnd);
     }
 
+    HorizontalTextFormatting TextComponent::getHorizontalFormattingFromComponent() const
+    {
+        return d_horzFormatting.getValue();
+    }
+
     void TextComponent::setHorizontalFormatting(HorizontalTextFormatting fmt)
     {
         d_horzFormatting.set(fmt);
+    }
+
+    const String& TextComponent::getHorizontalFormattingPropertySource() const
+    {
+        return d_horzFormatting.getPropertySource();
     }
 
     void TextComponent::setHorizontalFormattingPropertySource(
                                                 const String& property_name)
     {
         d_horzFormatting.setPropertySource(property_name);
+    }
+
+    const String& TextComponent::getVerticalFormattingPropertySource() const
+    {
+        return d_vertFormatting.getPropertySource();
     }
 
     void TextComponent::setVerticalFormattingPropertySource(
