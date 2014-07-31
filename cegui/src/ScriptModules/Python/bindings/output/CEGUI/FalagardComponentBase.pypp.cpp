@@ -66,6 +66,23 @@ void register_FalagardComponentBase_class(){
                 *\n" );
         
         }
+        { //::CEGUI::FalagardComponentBase::getColoursPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::FalagardComponentBase::*getColoursPropertySource_function_type )(  ) const;
+            
+            FalagardComponentBase_exposer.def( 
+                "getColoursPropertySource"
+                , getColoursPropertySource_function_type( &::CEGUI::FalagardComponentBase::getColoursPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Returns the name of the property from which the colour values will be obtained, if set.\n\
+            \n\
+                @return\n\
+                    String object holding the name of the property.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::FalagardComponentBase::getComponentArea
         
             typedef ::CEGUI::ComponentArea const & ( ::CEGUI::FalagardComponentBase::*getComponentArea_function_type )(  ) const;
@@ -176,7 +193,7 @@ void register_FalagardComponentBase_class(){
                 , ( bp::arg("property") )
                 , "*!\n\
                 \n\
-                    Set the name of the property where colour values can be obtained.\n\
+                    Set the name of the property where colour values will be obtained, if set.\n\
             \n\
                 @param property\n\
                     String containing the name of the property.\n\

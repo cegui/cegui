@@ -227,8 +227,7 @@ void register_PropertyDefinitionBase_class(){
                 \n\
                     Write out the text of the XML element type.  Note that you should\n\
                     not write the opening '<' character, nor any other information such\n\
-                    as attributes in this function.  The writeExtraAttributes function\n\
-                    can be used for writing attributes.\n\
+                    as attributes in this function.\n\
             \n\
                 @param xml_stream\n\
                     XMLSerializer where xml data should be output.\n\
@@ -247,6 +246,9 @@ void register_PropertyDefinitionBase_class(){
                 , ( bp::arg("xml_stream") ) );
         
         }
+        PropertyDefinitionBase_exposer.add_static_property( "UserStringNameSuffix"
+                        , bp::make_getter( &CEGUI::PropertyDefinitionBase::UserStringNameSuffix
+                                , bp::return_value_policy< bp::return_by_value >() ) );
     }
 
 }

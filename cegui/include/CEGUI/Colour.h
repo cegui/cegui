@@ -72,8 +72,31 @@ public:
 	float	getGreen(void) const	{return d_green;}
 	float	getBlue(void) const		{return d_blue;}
 
-	float	getHue(void) const;
+    /*!
+    \brief
+        Calculates and returns the hue value based on the Colour
+
+    \return
+        The hue as a float value.
+    */
+    float	getHue(void) const;
+
+    /*!
+    \brief
+        Calculates and returns the saturation value based on the Colour
+
+    \return
+        The saturation as a float value.
+    */
 	float	getSaturation(void) const;
+
+    /*!
+    \brief
+        Calculates and returns the lumination value based on the Colour
+
+    \return
+        The lumination as a float value.
+    */
 	float	getLumination(void) const;
 
 
