@@ -623,12 +623,6 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
         widgetWindow->setProperty("Image", "SpaceBackgroundImage");
     }
 
-    CEGUI::Listbox* listbox = dynamic_cast<CEGUI::Listbox*>(widgetWindow);
-    if(listbox)
-    {
-        initListbox(listbox);
-    }
-
     ListView* list_view = dynamic_cast<ListView*>(widgetWindow);
     if (list_view)
     {
@@ -742,30 +736,6 @@ void WidgetDemo::saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, cons
     }
 }
 
-void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
-{
-    MyListItem* item1 = new MyListItem("Listbox Item 1");
-    listbox->addItem(item1);
-    MyListItem* item2 = new MyListItem("Listbox Item 2");
-    listbox->addItem(item2);
-
-    MyListItem* item3 = new MyListItem("Listbox Item 3");
-    item3->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.0f));
-    listbox->addItem(item3);
-
-    MyListItem* item4 = new MyListItem("Listbox Item 4");
-    item4->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.0f));
-    listbox->addItem(item4);
-
-    if(listbox->getType().compare("WindowsLook/Listbox") == 0)
-    {
-        item1->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        item2->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        item3->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-        item4->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
-    }
-}
-
 //----------------------------------------------------------------------------//
 void WidgetDemo::initListWidget(ListWidget* list_widget)
 {
@@ -774,7 +744,7 @@ void WidgetDemo::initListWidget(ListWidget* list_widget)
     list_widget->addItem("ListWidget Item 3");
     list_widget->addItem("ListWidget Item 4");
 
-    if (list_widget->getType().compare("WindowsLook/Listbox") == 0)
+    if (list_widget->getType().compare("WindowsLook/ListWidget") == 0)
     {
         list_widget->setTextColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }

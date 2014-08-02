@@ -651,7 +651,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Editbox>();
     WindowFactoryManager::addWindowType<FrameWindow>();
     WindowFactoryManager::addWindowType<ItemEntry>();
-    WindowFactoryManager::addWindowType<Listbox>();
     WindowFactoryManager::addWindowType<ListHeader>();
     WindowFactoryManager::addWindowType<ListHeaderSegment>();
     WindowFactoryManager::addWindowType<ListWidget>();

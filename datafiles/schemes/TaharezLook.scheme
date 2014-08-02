@@ -33,7 +33,6 @@
 	<FalagardMapping windowType="TaharezLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/ListView" lookNFeel="TaharezLook/ComboDropList" />
 	<FalagardMapping windowType="TaharezLook/ComboEditbox"  targetType="CEGUI/Editbox"	 renderer="Core/Editbox" lookNFeel="TaharezLook/ComboEditbox" />
 	<FalagardMapping windowType="TaharezLook/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="TaharezLook/Combobox" />
-	<FalagardMapping windowType="TaharezLook/Listbox"           targetType="CEGUI/Listbox"           renderer="Core/Listbox"           lookNFeel="TaharezLook/Listbox" />
 	<FalagardMapping windowType="TaharezLook/ListHeader"        targetType="CEGUI/ListHeader"        renderer="Core/ListHeader"        lookNFeel="TaharezLook/ListHeader" />
 	<FalagardMapping windowType="TaharezLook/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="TaharezLook/ListHeaderSegment" />
 	<FalagardMapping windowType="TaharezLook/MultiColumnList"   targetType="CEGUI/MultiColumnList"   renderer="Core/MultiColumnList"   lookNFeel="TaharezLook/MultiColumnList" />

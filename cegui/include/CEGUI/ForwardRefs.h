@@ -155,7 +155,6 @@ class ItemEntry;
 class ItemListBase;
 class ItemListbox;
 class LayoutContainer;
-class Listbox;
 class ListboxItem;
 class ListboxTextItem;
 class ListHeader;

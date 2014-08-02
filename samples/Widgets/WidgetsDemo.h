@@ -90,7 +90,6 @@ protected:
 
     void initMenubar(CEGUI::Menubar* menuBar);
     void initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow);
-    void initListbox(CEGUI::Listbox* listbox);
     void initListWidget(CEGUI::ListWidget* list_widget);
     void initListView(CEGUI::ListView* item_view);
     void initItemListbox(CEGUI::ItemListbox* itemListbox);
