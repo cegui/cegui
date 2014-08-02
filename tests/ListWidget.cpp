@@ -102,4 +102,21 @@ BOOST_AUTO_TEST_CASE(GetNextSelectedItem_HappyFlow_ReturnsExpectedItem)
     BOOST_REQUIRE_EQUAL(view->getItemAtIndex(2),
         view->getNextSelectedItem(view->getItemAtIndex(1)));
 }
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(RemoveItem_IsRemoved)
+{
+    view->addItem("item1");
+    view->addItem("item2");
+
+    view->prepareForRender();
+
+    BOOST_REQUIRE_EQUAL(2, view->getItems().size());
+
+    view->removeItem(view->getItemAtIndex(0));
+    view->prepareForRender();
+
+    BOOST_REQUIRE_EQUAL(1, view->getItems().size());
+    BOOST_REQUIRE_EQUAL("item2", view->getItems().at(0)->d_text);
+}
 BOOST_AUTO_TEST_SUITE_END()

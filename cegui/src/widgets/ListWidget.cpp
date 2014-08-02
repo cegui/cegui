@@ -215,6 +215,7 @@ bool ListWidget::onChildrenRemoved(const EventArgs& args)
 //----------------------------------------------------------------------------//
 bool ListWidget::isItemInList(const StandardItem* item)
 {
+    //TODO: move this logic to the model?
     size_t child_count = d_itemModel.getChildCount(d_itemModel.getRootIndex());
     for (size_t i = 0; i < child_count; ++i)
     {
