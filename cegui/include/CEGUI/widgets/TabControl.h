@@ -324,7 +324,7 @@ public:
 
 	/*!
 	\brief
-		Destructor for Listbox base class.
+		Destructor for TabControl base class.
 	*/
 	virtual ~TabControl(void);
 
@@ -494,7 +494,7 @@ protected:
 
     void    addChild_impl(Element* element);
     void    removeChild_impl(Element* element);
-    
+
     //! \copydoc Window::getChildByNamePath_impl
     virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
 

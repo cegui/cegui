@@ -109,12 +109,12 @@ namespace CEGUI
         \exception InvalidRequestException     thrown if an invalid filename was provided.
         */
         void parseLookNFeelSpecificationFromContainer(const RawDataContainer& source);
-        
+
         /*!
         \see WidgetLookManager::parseLookNFeelSpecificationFromContainer
         */
         void parseLookNFeelSpecificationFromFile(const String& filename, const String& resourceGroup = "");
-        
+
         /*!
         \see WidgetLookManager::parseLookNFeelSpecificationFromContainer
         */
@@ -209,7 +209,7 @@ namespace CEGUI
             String containing the WidgetLook parsed to XML.
         */
         String getWidgetLookAsString(const String& widgetLookName) const;
- 
+
         /*!
         \brief
             Writes a set WidgetLookFeels to a string. Note that XML file header and
@@ -230,7 +230,7 @@ namespace CEGUI
 
             The \a prefix specifies a name prefix common to all widget looks to be written, you could
             specify this as "TaharezLook/" and then any defined widget look starting with that prefix, such
-            as "TaharezLook/Button" and "TaharezLook/Listbox" will be written to the stream.
+            as "TaharezLook/Button" and "TaharezLook/ListWidget" will be written to the stream.
 
         \param prefix
             String holding the widget look name prefix, which will be used when searching for the widget looks

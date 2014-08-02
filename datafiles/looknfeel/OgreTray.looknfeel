@@ -4,7 +4,7 @@
 
     This looknfeel specifies a set of WidgetLook definitions that are intended
     to recreate the overall look of Ogre's new SDK tray system within CEGUI.
-    
+
     This looknfeel has been made for use in some upcoming recreations of the
     Ogre samples, that use CEGUI instead of the new Ogre SDK tray system.  This
     is being done mostly for fun, though also to demonstrate the use of CEGUI
@@ -2065,10 +2065,11 @@
         </StateImagery>
     </WidgetLook>
     <!--
-:::: Listbox
+:::: ListView
 -->
-    <WidgetLook name="OgreTray/Listbox">
+    <WidgetLook name="OgreTray/ListView">
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="OgreTrayImages/MiniTextBoxOverM"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">

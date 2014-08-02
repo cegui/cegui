@@ -28,7 +28,6 @@
 	<FalagardMapping windowType="WindowsLook/TabButtonPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="WindowsLook/TabButtonPane" />
 	<FalagardMapping windowType="WindowsLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/ListView" lookNFeel="WindowsLook/ComboDropList" />
 	<FalagardMapping windowType="WindowsLook/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="WindowsLook/Combobox" />
-	<FalagardMapping windowType="WindowsLook/Listbox"           targetType="CEGUI/Listbox"           renderer="Core/Listbox"           lookNFeel="WindowsLook/Listbox" />
 	<FalagardMapping windowType="WindowsLook/ListHeader"        targetType="CEGUI/ListHeader"        renderer="Core/ListHeader"        lookNFeel="WindowsLook/ListHeader" />
 	<FalagardMapping windowType="WindowsLook/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="WindowsLook/ListHeaderSegment" />
 	<FalagardMapping windowType="WindowsLook/MultiColumnList"   targetType="CEGUI/MultiColumnList"   renderer="Core/MultiColumnList"   lookNFeel="WindowsLook/MultiColumnList" />
@@ -48,5 +47,6 @@
 
     <!-- Views -->
     <FalagardMapping windowType="WindowsLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="WindowsLook/ListView" />
+    <FalagardMapping windowType="WindowsLook/ListWidget" targetType="CEGUI/ListWidget" renderer="Core/ListView" lookNFeel="WindowsLook/ListView" />
 </GUIScheme>
 

@@ -78,7 +78,7 @@ enum ItemDataRole
     IDR_ImageDecoration,
     IDR_Tooltip,
 
-    //!< This marks the beginning of the user-defined item data roles
+    //! This marks the beginning of the user-defined item data roles
     IDR_UserDefinedItemDataRole = 0x1000
 };
 
