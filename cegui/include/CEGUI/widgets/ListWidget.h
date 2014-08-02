@@ -55,6 +55,15 @@ public:
     void setItemSelectionState(StandardItem* item, bool state);
 
     StandardItem* getFirstSelectedItem();
+    /*!
+    \brief
+        Returns the next selected item after the specified \a start_item
+
+    \param start_item
+        The item to start the search after. If this is NULL the search will
+        begin at the beginning of the list.
+    */
+    StandardItem* getNextSelectedItem(const StandardItem* start_item);
     StandardItem* getItemAtIndex(size_t index);
     StandardItem* findItemWithText(const String& text, const StandardItem* start_item);
 
@@ -63,6 +72,7 @@ public:
     bool isIndexSelected(size_t index);
 
     size_t getItemCount() const;
+    size_t getSelectedItemsCount() const;
 
     virtual StandardItemModel* getModel();
 

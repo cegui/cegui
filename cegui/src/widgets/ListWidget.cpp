@@ -77,10 +77,31 @@ void ListWidget::setItemSelectionState(StandardItem* item, bool state)
 //----------------------------------------------------------------------------//
 StandardItem* ListWidget::getFirstSelectedItem()
 {
+    return getNextSelectedItem(0);
+}
+
+//----------------------------------------------------------------------------//
+StandardItem* ListWidget::getNextSelectedItem(const StandardItem* start_item)
+{
     if (d_indexSelectionStates.empty())
         return 0;
 
-    return d_itemModel.getItemForIndex(d_indexSelectionStates.front().d_selectedIndex);
+    int child_id = d_itemModel.getChildId(start_item);
+    if (start_item != 0 && child_id == -1)
+        return 0;
+
+    size_t index = start_item == 0 ? 0 : (static_cast<size_t>(child_id) + 1);
+    size_t list_size = getItemCount();
+
+    for (; index < list_size; ++index)
+    {
+        if (isIndexSelected(index))
+        {
+            return getItemAtIndex(index);
+        }
+    }
+
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -120,6 +141,12 @@ size_t ListWidget::getItemCount() const
 }
 
 //----------------------------------------------------------------------------//
+size_t ListWidget::getSelectedItemsCount() const
+{
+    return d_indexSelectionStates.size();
+}
+
+//----------------------------------------------------------------------------//
 StandardItem* ListWidget::getItemAtIndex(size_t index)
 {
     return d_itemModel.getItemForIndex(
@@ -129,8 +156,12 @@ StandardItem* ListWidget::getItemAtIndex(size_t index)
 //----------------------------------------------------------------------------//
 StandardItem* ListWidget::findItemWithText(const String& text, const StandardItem* start_item)
 {
+    int child_id = d_itemModel.getChildId(start_item);
+    if (start_item != 0 && child_id == -1)
+        return 0;
+
     // if start_item is NULL begin search at beginning, else start at item after start_item
-    size_t index = (start_item == 0) ? 0 : (d_itemModel.getChildId(start_item) + 1);
+    size_t index = start_item == 0 ? 0 : (static_cast<size_t>(child_id) + 1);
     size_t list_size = getItemCount();
 
     while (index < list_size)
