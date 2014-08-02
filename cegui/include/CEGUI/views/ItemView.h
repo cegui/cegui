@@ -144,13 +144,14 @@ public:
 
     static const Colour DefaultTextColour;
     static const Colour DefaultSelectionColour;
-    //!< Widget name for the vertical scrollbar component.
+    //! Widget name for the vertical scrollbar component.
     static const String VertScrollbarName;
-    //!< Widget name for the horizontal scrollbar component
+    //! Widget name for the horizontal scrollbar component
     static const String HorzScrollbarName;
     static const String EventVertScrollbarDisplayModeChanged;
     static const String EventHorzScrollbarDisplayModeChanged;
     static const String EventSelectionChanged;
+    static const String EventMultiselectModeChanged;
     static const String EventSortModeChanged;
 
     //!Sets the ItemModel to be used inside this view.
@@ -317,6 +318,8 @@ protected:
     virtual bool onChildrenDataChanged(const EventArgs& args);
     virtual bool onScrollPositionChanged(const EventArgs& args);
     virtual void onSelectionChanged(WindowEventArgs& args);
+    virtual void onMultiselectModeChanged(WindowEventArgs& args);
+    virtual void onSortModeChanged(WindowEventArgs& args);
 
     virtual void onScroll(PointerEventArgs& e);
     virtual void onPointerPressHold(PointerEventArgs& e);
@@ -338,7 +341,6 @@ protected:
         bool is_cumulative, bool is_range);
 
     virtual void resortView() = 0;
-    void onSortModeChanged(WindowEventArgs& args);
     void handleSelectionNavigation(SemanticEventArgs& e);
 
     //! Returns the Rectf that contains the specified \a index.
