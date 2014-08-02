@@ -151,7 +151,7 @@ void StandardItemModel::addItem(StandardItem* item)
     if (item == 0)
         return;
 
-    addItemAtPosition(item, d_items.empty() ? 0 : d_items.size() - 1);
+    addItemAtPosition(item, d_items.empty() ? 0 : d_items.size());
 }
 
 //----------------------------------------------------------------------------//
@@ -176,13 +176,15 @@ void StandardItemModel::insertItem(StandardItem* item, const StandardItem* posit
 void StandardItemModel::removeItem(const StandardItem* item)
 {
     int child_id = getChildId(item);
-    if (child_id != -1)
-    {
-        std::vector<StandardItem*>::iterator itor = d_items.begin() + child_id;
-        StandardItem* item = *itor;
-        d_items.erase(itor);
-        delete item;
-    }
+    if (child_id == -1)
+        return;
+
+    std::vector<StandardItem*>::iterator itor = d_items.begin() + child_id;
+    d_items.erase(itor);
+    //TODO: use CEGUI_DELETE_AO? If so, we need to specify in the doc that CEGUI_NEW should be used
+    delete item;
+
+    notifyChildrenRemoved(getRootIndex(), static_cast<size_t>(child_id), 1);
 }
 
 //----------------------------------------------------------------------------//
