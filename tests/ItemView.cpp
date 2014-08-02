@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectEnabled_ModifiesSelectionAccordingly)
+BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectToggled_ModifiesSelectionAccordingly)
 {
     ItemModelStub stub;
     TestItemView test_item_view;
@@ -207,13 +207,11 @@ BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectEnabled_ModifiesSelectionA
         *(static_cast<String*>(
             test_item_view.getIndexSelectionStates().at(1).d_selectedIndex.d_modelData)));
 
-    // unselect
-    test_item_view.setItemSelectionState(stub.makeIndex(0, stub.getRootIndex()), false);
+    test_item_view.setMultiSelectEnabled(false);
     BOOST_REQUIRE_EQUAL(1, test_item_view.getIndexSelectionStates().size());
-    BOOST_REQUIRE_EQUAL("item2",
+    BOOST_REQUIRE_EQUAL("item1",
         *(static_cast<String*>(
             test_item_view.getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

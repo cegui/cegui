@@ -116,6 +116,7 @@ const String ItemView::VertScrollbarName("__auto_vscrollbar__");
 const String ItemView::EventVertScrollbarDisplayModeChanged("VertScrollbarDisplayModeChanged");
 const String ItemView::EventHorzScrollbarDisplayModeChanged("HorzScrollbarDisplayModeChanged");
 const String ItemView::EventSelectionChanged("SelectionChanged");
+const String ItemView::EventMultiselectModeChanged("MultiselectModeChanged");
 const String ItemView::EventSortModeChanged("SortModeChanged");
 
 //----------------------------------------------------------------------------//
@@ -641,7 +642,27 @@ bool ItemView::isMultiSelectEnabled() const
 //----------------------------------------------------------------------------//
 void ItemView::setMultiSelectEnabled(bool enabled)
 {
+    if (d_isMultiSelectEnabled == enabled)
+    {
+        return;
+    }
+
     d_isMultiSelectEnabled = enabled;
+
+    // deselect others
+    if (!d_isItemTooltipsEnabled && d_indexSelectionStates.size() > 1)
+    {
+        setItemSelectionState(d_indexSelectionStates.front().d_selectedIndex, true);
+    }
+
+    WindowEventArgs args(this);
+    onMultiselectModeChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::onMultiselectModeChanged(WindowEventArgs& args)
+{
+    fireEvent(EventMultiselectModeChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
