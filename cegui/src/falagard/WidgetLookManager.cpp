@@ -269,5 +269,20 @@ namespace CEGUI
         return WidgetLookIterator(d_widgetLooks.begin(),d_widgetLooks.end());
     }
 
+    WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookMap()
+    {
+        WidgetLookPointerMap pointerMap;
+
+        WidgetLookList::iterator iter = d_widgetLooks.begin();
+        WidgetLookList::iterator iterEnd = d_widgetLooks.end();
+        while(iter != iterEnd)
+        {
+            pointerMap.insert(std::make_pair(iter->first, &(iter->second)));
+            ++iter;
+        }
+
+        return pointerMap;
+    }
+
 
 } // End of  CEGUI namespace section
