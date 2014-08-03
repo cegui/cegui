@@ -702,13 +702,17 @@ private:
     typedef std::map<String, NamedArea, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, NamedArea)> NamedAreaList;
 
+    //! \deprecated The type is deprecated, as it will be changed to a map in the next CEGUI version, in accordance with the existing StateImagery/ImagerySection/NamedArea container types
     typedef std::vector<WidgetComponent
         CEGUI_VECTOR_ALLOC(WidgetComponent)> WidgetList;
+
     typedef std::vector<String
         CEGUI_VECTOR_ALLOC(String)> AnimationList;
     //! The type is deprecated, as it will be changed to have the correct CEGUI allocator used starting in the next version
     typedef std::multimap<Window*, AnimationInstance*
         /*CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)*/> AnimationInstanceMap;
+
+    //! \deprecated The type is deprecated, as it will be changed to a map in the next CEGUI version, in accordance with the existing StateImagery/ImagerySection/NamedArea container types
     typedef std::vector<EventLinkDefinition
         CEGUI_VECTOR_ALLOC(EventLinkDefinition)> EventLinkDefinitionList;
 

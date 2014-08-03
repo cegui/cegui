@@ -33,25 +33,25 @@ namespace CEGUI
 {
 
     //! Definitions of static constants
+    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::TopAligned("TopAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::CentreAligned("CentreAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::BottomAligned("BottomAligned");
     const CEGUI::String FalagardXMLHelper<VerticalFormatting>::Stretched("Stretched");
     const CEGUI::String FalagardXMLHelper<VerticalFormatting>::Tiled("Tiled");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::TopAligned("TopAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::BottomAligned("BottomAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::CentreAligned("CentreAligned");
 
+    const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::LeftAligned("LeftAligned");
+    const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::CentreAligned("CentreAligned");
+    const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::RightAligned("RightAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::Stretched("Stretched");
     const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::Tiled("Tiled");
-    const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::LeftAligned("LeftAligned");
-    const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::RightAligned("RightAligned");
-    const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::CentreAligned("CentreAligned");
 
     const CEGUI::String FalagardXMLHelper<VerticalAlignment>::TopAligned("TopAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalAlignment>::BottomAligned("BottomAligned");
     const CEGUI::String FalagardXMLHelper<VerticalAlignment>::CentreAligned("CentreAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalAlignment>::BottomAligned("BottomAligned");
 
     const CEGUI::String FalagardXMLHelper<HorizontalAlignment>::LeftAligned("LeftAligned");
-    const CEGUI::String FalagardXMLHelper<HorizontalAlignment>::RightAligned("RightAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalAlignment>::CentreAligned("CentreAligned");
+    const CEGUI::String FalagardXMLHelper<HorizontalAlignment>::RightAligned("RightAligned");
 
     const CEGUI::String FalagardXMLHelper<DimensionType>::LeftEdge("LeftEdge");
     const CEGUI::String FalagardXMLHelper<DimensionType>::RightEdge("RightEdge");
@@ -66,16 +66,16 @@ namespace CEGUI
     const CEGUI::String FalagardXMLHelper<DimensionType>::Invalid("Invalid");
 
     const CEGUI::String FalagardXMLHelper<VerticalTextFormatting>::TopAligned("TopAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalTextFormatting>::BottomAligned("BottomAligned");
     const CEGUI::String FalagardXMLHelper<VerticalTextFormatting>::CentreAligned("CentreAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalTextFormatting>::BottomAligned("BottomAligned");
 
+    const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::LeftAligned("LeftAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::CentreAligned("CentreAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::RightAligned("RightAligned");
-    const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::LeftAligned("LeftAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::Justified("Justified");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapLeftAligned("WordWrapLeftAligned");
-    const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapCentreAligned("WordWrapCentreAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapRightAligned("WordWrapRightAligned");
+    const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapCentreAligned("WordWrapCentreAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapJustified("WordWrapJustified");
 
     const CEGUI::String FalagardXMLHelper<FontMetricType>::LineSpacing("LineSpacing");
