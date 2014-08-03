@@ -39,7 +39,6 @@
 	<FalagardMapping windowType="AlfiskoSkin/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="AlfiskoSkin/Combobox" />
 
 	<FalagardMapping windowType="AlfiskoSkin/ListboxItem" targetType="CEGUI/ItemEntry" renderer="Core/ItemEntry" lookNFeel="AlfiskoSkin/ListboxItem" />
-	<FalagardMapping windowType="AlfiskoSkin/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Core/ItemListbox" lookNFeel="AlfiskoSkin/ItemListbox" />
 
 	<FalagardMapping windowType="AlfiskoSkin/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="AlfiskoSkin/ListHeaderSegment" />
 	<FalagardMapping windowType="AlfiskoSkin/ListHeader" targetType="CEGUI/ListHeader" renderer="Core/ListHeader" lookNFeel="AlfiskoSkin/ListHeader" />

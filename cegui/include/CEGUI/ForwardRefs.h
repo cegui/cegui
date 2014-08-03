@@ -153,7 +153,6 @@ class GridLayoutContainer;
 class HorizontalLayoutContainer;
 class ItemEntry;
 class ItemListBase;
-class ItemListbox;
 class LayoutContainer;
 class ListboxItem;
 class ListboxTextItem;

@@ -92,7 +92,6 @@ protected:
     void initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow);
     void initListWidget(CEGUI::ListWidget* list_widget);
     void initListView(CEGUI::ListView* item_view);
-    void initItemListbox(CEGUI::ItemListbox* itemListbox);
     void initCombobox(CEGUI::Combobox* combobox);
     void initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList);
     void subscribeToAllEvents(CEGUI::Window* widgetWindow);

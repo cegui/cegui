@@ -635,12 +635,6 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
         initListWidget(combodroplist);
     }
 
-    CEGUI::ItemListbox* itemListbox = dynamic_cast<CEGUI::ItemListbox*>(widgetWindow);
-    if(itemListbox)
-    {
-        initItemListbox(itemListbox);
-    }
-
     CEGUI::Combobox* combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow);
     if(combobox)
     {
@@ -748,29 +742,6 @@ void WidgetDemo::initListWidget(ListWidget* list_widget)
     {
         list_widget->setTextColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }
-}
-
-void WidgetDemo::initItemListbox(CEGUI::ItemListbox* itemListbox)
-{
-    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
-
-    CEGUI::ItemEntry* itemListboxItem;
-
-    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem1"));
-    itemListbox->addItem(itemListboxItem);
-    itemListbox->setText("Item 1");
-
-    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem2"));
-    itemListbox->addItem(itemListboxItem);
-    itemListbox->setText("Item 2");
-
-    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem3"));
-    itemListbox->addItem(itemListboxItem);
-    itemListbox->setText("Item 3");
-
-    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem4"));
-    itemListbox->addItem(itemListboxItem);
-    itemListbox->setText("Item 4");
 }
 
 void WidgetDemo::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow)
