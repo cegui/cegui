@@ -269,6 +269,12 @@ public:
     void setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode);
     ScrollbarDisplayMode getHorzScrollbarDisplayMode() const;
 
+    void setAutoResizeHeightEnabled(bool enabled);
+    bool isAutoResizeHeightEnabled() const;
+
+    void setAutoResizeWidthEnabled(bool enabled);
+    bool isAutoResizeWidthEnabled() const;
+
     //! Specifies whether this view has separate tooltips for each item or not.
     bool isItemTooltipsEnabled() const;
     void setItemTooltipsEnabled(bool enabled);
@@ -298,6 +304,8 @@ protected:
     bool d_isItemTooltipsEnabled;
     bool d_isMultiSelectEnabled;
     ViewSortMode d_sortMode;
+    bool d_isAutoResizeHeightEnabled;
+    bool d_isAutoResizeWidthEnabled;
 
     //TODO: move this into the renderer instead?
     float d_renderedMaxWidth;
@@ -325,6 +333,7 @@ protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
     virtual void onPointerMove(PointerEventArgs& e);
     virtual void onSemanticInputEvent(SemanticEventArgs& e);
+    virtual void onParentSized(ElementEventArgs& e);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
@@ -345,6 +354,9 @@ protected:
 
     //! Returns the Rectf that contains the specified \a index.
     virtual Rectf getIndexRect(const ModelIndex& index) = 0;
+
+    void updateAutoResizeFlag(bool& flag, bool enabled);
+    void resizeToContent();
 };
 
 }

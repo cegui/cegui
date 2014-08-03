@@ -134,6 +134,8 @@ ItemView::ItemView(const String& type, const String& name) :
     d_isItemTooltipsEnabled(false),
     d_isMultiSelectEnabled(false),
     d_sortMode(VSM_None),
+    d_isAutoResizeHeightEnabled(false),
+    d_isAutoResizeWidthEnabled(false),
     d_renderedMaxWidth(0),
     d_renderedTotalHeight(0),
     d_eventChildrenAddedConnection(0),
@@ -155,37 +157,63 @@ void ItemView::addItemViewProperties()
 
     CEGUI_DEFINE_PROPERTY(ItemView, Image*,
         "SelectionBrushImage",
-        "Property to get/set the selection brush image for the item view. Value should be \"set:[imageset name] image:[image name]\".",
+        "Property to get/set the selection brush image for the item view. "
+        "Value should be \"set:[imageset name] image:[image name]\".",
         &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, 0
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
         "VertScrollbarDisplayMode",
-        "Property to get/set the display mode of the vertical scroll bar of the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
+        "Property to get/set the display mode of the vertical scroll bar of the "
+        "item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
         &ItemView::setVertScrollbarDisplayMode,
         &ItemView::getVertScrollbarDisplayMode, SDM_WhenNeeded
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
         "HorzScrollbarDisplayMode",
-        "Property to get/set the display mode of the horizontal scroll bar of the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
+        "Property to get/set the display mode of the horizontal scroll bar of "
+        "the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
         &ItemView::setHorzScrollbarDisplayMode,
         &ItemView::getHorzScrollbarDisplayMode, SDM_WhenNeeded
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, bool,
-        "ItemTooltips", "Property to access the show item tooltips setting of the item view. Value is either \"True\" or \"False\".",
+        "ItemTooltips",
+        "Property to access the show item tooltips setting of the item view. "
+        "Value is either \"True\" or \"False\".",
         &ItemView::setItemTooltipsEnabled, &ItemView::isItemTooltipsEnabled, false
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, bool,
-        "MultiSelect", "Property to get/set the multi-select setting of the item view. Value is either \"True\" or \"False\".",
+        "MultiSelect",
+        "Property to get/set the multi-select setting of the item view. "
+        "Value is either \"True\" or \"False\".",
         &ItemView::setMultiSelectEnabled, &ItemView::isMultiSelectEnabled, false
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ViewSortMode,
-        "SortMode", "Property to get/set how the itemview is sorting its items. Value is either \"None\", \"Ascending\" or \"Descending\".",
+        "SortMode",
+        "Property to get/set how the item view is sorting its items. "
+        "Value is either \"None\", \"Ascending\" or \"Descending\".",
         &ItemView::setSortMode, &ItemView::getSortMode, VSM_None
+        )
+
+
+    CEGUI_DEFINE_PROPERTY(ItemView, bool,
+        "AutoSizeHeight",
+        "Property to get/set whether the item view will vertically auto-size "
+        "itself to fit its content. Value is either \"true\" or \"false\".",
+        &ItemView::setAutoResizeHeightEnabled,
+        &ItemView::isAutoResizeHeightEnabled, false
+        )
+
+    CEGUI_DEFINE_PROPERTY(ItemView, bool,
+        "AutoSizeWidth",
+        "Property to get/set whether the item view will vertically auto-size "
+        "itself to fit its content. Value is either \"true\" or \"false\".",
+        &ItemView::setAutoResizeWidthEnabled,
+        &ItemView::isAutoResizeWidthEnabled, false
         )
 }
 
@@ -354,6 +382,7 @@ void ItemView::invalidateView(bool recursive)
 {
     //TODO: allow invalidation only of certain parts (e.g.: items/indices)
     updateScrollbars();
+    resizeToContent();
     setIsDirty(true);
     invalidate(recursive);
 }
@@ -682,6 +711,12 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void ItemView::onParentSized(ElementEventArgs& e)
+{
+    resizeToContent();
+}
+
+//----------------------------------------------------------------------------//
 bool ItemView::handleSelection(const Vector2f& position, bool should_select,
     bool is_cumulative, bool is_range)
 {
@@ -857,6 +892,53 @@ void ItemView::ensureItemIsVisible(const ModelIndex& index)
         // position bottom of item at the bottom of the list
         vertScrollbar->setScrollPosition(currPos + bottom - view_height);
     }
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setAutoResizeHeightEnabled(bool enabled)
+{
+    updateAutoResizeFlag(d_isAutoResizeHeightEnabled, enabled);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::isAutoResizeHeightEnabled() const
+{
+    return d_isAutoResizeHeightEnabled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setAutoResizeWidthEnabled(bool enabled)
+{
+    updateAutoResizeFlag(d_isAutoResizeWidthEnabled, enabled);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::isAutoResizeWidthEnabled() const
+{
+    return d_isAutoResizeWidthEnabled;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::updateAutoResizeFlag(bool& flag, bool enabled)
+{
+    if (flag != enabled)
+    {
+        return;
+    }
+
+    flag = enabled;
+    resizeToContent();
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::resizeToContent()
+{
+    if (!d_initialising ||
+        !(d_isAutoResizeWidthEnabled || d_isAutoResizeHeightEnabled))
+        return;
+
+    getViewRenderer()->resizeViewToContent(
+        d_isAutoResizeWidthEnabled, d_isAutoResizeHeightEnabled);
 }
 
 }
