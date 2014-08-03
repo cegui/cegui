@@ -52,8 +52,11 @@ void FalagardTreeView::render()
 
     tree_view->prepareForRender();
 
+    bool has_focused_state =
+        tree_view->isFocused() && wlf.isStateImageryPresent("EnabledFocused");
     const StateImagery* imagery = &wlf.getStateImagery(
-        tree_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
+        tree_view->isEffectiveDisabled() ? "Disabled" :
+            (has_focused_state ? "EnabledFocused" : "Enabled"));
     imagery->render(*tree_view);
 
     Rectf items_area(getViewRenderArea());
