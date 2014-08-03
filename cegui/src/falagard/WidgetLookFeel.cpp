@@ -1315,7 +1315,7 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefi
     while(iter != iterEnd)
     {
         const CEGUI::String& currentElementName = *iter;
-        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        // This is deprecated in the next version, instead we will directly access the PropertyDefinition map, which will be added.
         PropertyDefinitionBase* propertyDefinition = retrievePropertyDefinitionFromList(currentElementName, includeInheritedElements);
 
         if(propertyDefinition == 0)
@@ -1346,7 +1346,7 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLink
     while(iter != iterEnd)
     {
         const CEGUI::String& currentElementName = *iter;
-        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        // This is deprecated in the next version, instead we will directly access the PropertyLinkDefinition map, which will be added.
         PropertyDefinitionBase* propertyLinkDefinition = retrievePropertyLinkDefinitionFromList(currentElementName, includeInheritedElements);
 
         if(propertyLinkDefinition == 0)
@@ -1378,7 +1378,7 @@ WidgetLookFeel::EventLinkDefinitionPointerMap WidgetLookFeel::getEventLinkDefini
     while(iter != iterEnd)
     {
         const CEGUI::String& currentElementName = *iter;
-        // This is deprecated in the next version, instead we will directly access the PropertyInitialiser map, which will be added.
+        // This is deprecated in the next version, instead we will directly access the EventLinkDefinition map, which will be added.
         EventLinkDefinition* eventLinkDef = retrieveEventLinkDefinitionFromList(currentElementName, includeInheritedElements);
 
         if(eventLinkDef == 0)

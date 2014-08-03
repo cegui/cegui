@@ -83,11 +83,11 @@ public:
     }
 
     //! Definitions of the possible values represented as Strings
+    static const CEGUI::String TopAligned;
+    static const CEGUI::String CentreAligned;
+    static const CEGUI::String BottomAligned;
     static const CEGUI::String Stretched;
     static const CEGUI::String Tiled;
-    static const CEGUI::String TopAligned;
-    static const CEGUI::String BottomAligned;
-    static const CEGUI::String CentreAligned;
 };
 
 template<>
@@ -137,11 +137,11 @@ public:
     }
 
     //! Definitions of the possible values represented as Strings
+    static const CEGUI::String LeftAligned;
+    static const CEGUI::String CentreAligned;
+    static const CEGUI::String RightAligned;
     static const CEGUI::String Stretched;
     static const CEGUI::String Tiled;
-    static const CEGUI::String LeftAligned;
-    static const CEGUI::String RightAligned;
-    static const CEGUI::String CentreAligned;
 };
 
 template<>
@@ -180,8 +180,8 @@ public:
 
     //! Definitions of the possible values represented as Strings
     static const CEGUI::String TopAligned;
-    static const CEGUI::String BottomAligned;
     static const CEGUI::String CentreAligned;
+    static const CEGUI::String BottomAligned;
 };
 
 template<>
@@ -220,8 +220,8 @@ public:
 
     //! Definitions of the possible values represented as Strings
     static const CEGUI::String LeftAligned;
-    static const CEGUI::String RightAligned;
     static const CEGUI::String CentreAligned;
+    static const CEGUI::String RightAligned;
 };
 
 template<>
@@ -356,8 +356,8 @@ public:
 
     //! Definitions of the possible values represented as Strings
     static const CEGUI::String TopAligned;
-    static const CEGUI::String BottomAligned;
     static const CEGUI::String CentreAligned;
+    static const CEGUI::String BottomAligned;
 };
 
 template<>
@@ -425,13 +425,13 @@ public:
     }
 
     //! Definitions of the possible values represented as Strings
+    static const CEGUI::String LeftAligned;
     static const CEGUI::String CentreAligned;
     static const CEGUI::String RightAligned;
-    static const CEGUI::String LeftAligned;
     static const CEGUI::String Justified;
     static const CEGUI::String WordWrapLeftAligned;
-    static const CEGUI::String WordWrapCentreAligned;
     static const CEGUI::String WordWrapRightAligned;
+    static const CEGUI::String WordWrapCentreAligned;
     static const CEGUI::String WordWrapJustified;
 };
 
