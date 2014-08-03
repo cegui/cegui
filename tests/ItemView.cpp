@@ -32,186 +32,146 @@
 using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
-class TestItemViewWindowRenderer : public ItemViewWindowRenderer
+struct ItemViewFixture
 {
-public:
-    TestItemViewWindowRenderer() : ItemViewWindowRenderer("DefaultWindow") { }
-    virtual Rectf getViewRenderArea(void) const { return Rectf(0, 0, 0, 0); }
-    virtual void resizeViewToContent(bool fit_width, bool fit_height) const { }
-    virtual void render() { }
-};
-
-//----------------------------------------------------------------------------//
-class TestItemView : public ItemView
-{
-public:
-    TestItemView() : ItemView("DefaultWindow", "id0")
+    ItemViewFixture()
     {
-        d_windowRenderer = new TestItemViewWindowRenderer();
+        view = static_cast<ListView*>(WindowManager::getSingleton().createWindow("TaharezLook/ListView", "lv"));
+        view->setWindowRenderer("Core/ListView");
+        view->setModel(&model);
     }
 
-    ~TestItemView() { delete d_windowRenderer;  }
-
-    virtual ModelIndex indexAt(const Vector2f& position) { return ModelIndex(); }
-
-    virtual void updateScrollbars()
-    {
-        // do nothing on purpose - we don't want to add all those scrollbars as children
-    }
-
-    virtual void resortView() { }
-    virtual Rectf getIndexRect(const ModelIndex& index) { return Rectf(0, 0, 0, 0);  }
+    ItemModelStub model;
+    ItemView* view;
 };
 
-//----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_SUITE(ItemViewTestSuite)
+BOOST_FIXTURE_TEST_SUITE(ItemViewTestSuite, ItemViewFixture)
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_SetsTheModel)
 {
-    ItemModelStub stub;
-    TestItemView testItemView;
-
-    testItemView.setModel(&stub);
-
-    BOOST_CHECK_EQUAL(&stub, testItemView.getModel());
+    BOOST_CHECK_EQUAL(&model, view->getModel());
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_SameModel_DoesNotSetDirtyState)
 {
-    ItemModelStub stub;
-    TestItemView testItemView;
-    testItemView.setModel(&stub);
-    testItemView.setIsDirty(false);
+    view->setIsDirty(false);
 
-    testItemView.setModel(&stub);
+    view->setModel(&model);
 
-    BOOST_CHECK(!testItemView.isDirty());
+    BOOST_CHECK(!view->isDirty());
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_SetsDirtyState)
 {
-    ItemModelStub stub, stub2;
-    TestItemView testItemView;
-    testItemView.setModel(&stub);
-    testItemView.setIsDirty(false);
+    ItemModelStub model2;
+    view->setIsDirty(false);
 
-    testItemView.setModel(&stub2);
+    view->setModel(&model2);
 
-    BOOST_CHECK(testItemView.isDirty());
+    BOOST_CHECK(view->isDirty());
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
 {
-    ItemModelStub stub;
-    TestItemView test_item_view;
-    stub.d_items.push_back("item");
-    test_item_view.setModel(&stub);
+    model.d_items.push_back("item");
 
     {
-        test_item_view.setIsDirty(false);
-        stub.notifyChildrenAdded(stub.getRootIndex(), 0, 1);
+        view->setIsDirty(false);
+        model.notifyChildrenAdded(model.getRootIndex(), 0, 1);
 
-        BOOST_CHECK(test_item_view.isDirty());
+        BOOST_CHECK(view->isDirty());
     }
 
     {
-        test_item_view.setIsDirty(false);
-        stub.notifyChildrenRemoved(stub.getRootIndex(), 0, 1);
+        view->setIsDirty(false);
+        model.notifyChildrenRemoved(model.getRootIndex(), 0, 1);
 
-        BOOST_CHECK(test_item_view.isDirty());
+        BOOST_CHECK(view->isDirty());
     }
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
 {
-    ItemModelStub stub1, stub2;
-    TestItemView test_item_view;
-    stub1.d_items.push_back("item");
-    test_item_view.setModel(&stub1);
+    model.d_items.push_back("item");
 
-    test_item_view.setModel(&stub2);
+    ItemModelStub model2;
+    view->setModel(&model2);
 
-    test_item_view.setIsDirty(false);
-    stub1.notifyChildrenAdded(stub1.getRootIndex(), 0, 1);
+    view->setIsDirty(false);
+    model.notifyChildrenAdded(model.getRootIndex(), 0, 1);
 
-    BOOST_CHECK(!test_item_view.isDirty());
-}
-
-BOOST_AUTO_TEST_CASE(ClearSelection)
-{
-    ItemModelStub stub1;
-    TestItemView test_item_view;
-    stub1.d_items.push_back("item");
-    test_item_view.setModel(&stub1);
-    test_item_view.setSelectedItem(stub1.makeIndex(0, stub1.getRootIndex()));
-
-    test_item_view.clearSelections();
-
-    BOOST_REQUIRE_EQUAL(0, test_item_view.getIndexSelectionStates().size());
+    BOOST_CHECK(!view->isDirty());
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
 {
-    ItemModelStub stub1, stub2;
-    TestItemView test_item_view;
-    stub1.d_items.push_back("item");
-    test_item_view.setModel(&stub1);
-    test_item_view.setSelectedItem(stub1.makeIndex(0, stub1.getRootIndex()));
+    model.d_items.push_back("item");
+    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
 
-    BOOST_CHECK_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+    BOOST_CHECK_EQUAL(1, view->getIndexSelectionStates().size());
 
-    test_item_view.setModel(&stub2);
-    BOOST_REQUIRE_EQUAL(0, test_item_view.getIndexSelectionStates().size());
+    ItemModelStub model2;
+    view->setModel(&model2);
+    BOOST_REQUIRE_EQUAL(0, view->getIndexSelectionStates().size());
+}
+
+BOOST_AUTO_TEST_CASE(ClearSelection)
+{
+    model.d_items.push_back("item");
+
+    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+
+    view->clearSelections();
+
+    BOOST_REQUIRE_EQUAL(0, view->getIndexSelectionStates().size());
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 {
     ItemModelStub stub;
-    TestItemView test_item_view;
-    stub.d_items.push_back("item1");
-    stub.d_items.push_back("item2");
-    test_item_view.setModel(&stub);
+    model.d_items.push_back("item1");
+    model.d_items.push_back("item2");
+    view->setModel(&model);
 
-    test_item_view.setSelectedItem(stub.makeIndex(0, stub.getRootIndex()));
-    BOOST_CHECK_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    BOOST_CHECK_EQUAL(1, view->getIndexSelectionStates().size());
 
-    test_item_view.setSelectedItem(stub.makeIndex(1, stub.getRootIndex()));
-    BOOST_REQUIRE_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    BOOST_REQUIRE_EQUAL(1, view->getIndexSelectionStates().size());
     BOOST_REQUIRE_EQUAL("item2",
         *(static_cast<String*>(
-            test_item_view.getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
+            view->getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
 }
 
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectToggled_ModifiesSelectionAccordingly)
 {
     ItemModelStub stub;
-    TestItemView test_item_view;
-    stub.d_items.push_back("item1");
-    stub.d_items.push_back("item2");
-    test_item_view.setModel(&stub);
-    test_item_view.setMultiSelectEnabled(true);
+    model.d_items.push_back("item1");
+    model.d_items.push_back("item2");
+    view->setModel(&model);
+    view->setMultiSelectEnabled(true);
 
-    test_item_view.setItemSelectionState(stub.makeIndex(0, stub.getRootIndex()), true);
-    test_item_view.setItemSelectionState(stub.makeIndex(1, stub.getRootIndex()), true);
+    view->setItemSelectionState(model.makeIndex(0, model.getRootIndex()), true);
+    view->setItemSelectionState(model.makeIndex(1, model.getRootIndex()), true);
 
-    BOOST_REQUIRE_EQUAL(2, test_item_view.getIndexSelectionStates().size());
+    BOOST_REQUIRE_EQUAL(2, view->getIndexSelectionStates().size());
     BOOST_REQUIRE_EQUAL("item2",
         *(static_cast<String*>(
-            test_item_view.getIndexSelectionStates().at(1).d_selectedIndex.d_modelData)));
+            view->getIndexSelectionStates().at(1).d_selectedIndex.d_modelData)));
 
-    test_item_view.setMultiSelectEnabled(false);
-    BOOST_REQUIRE_EQUAL(1, test_item_view.getIndexSelectionStates().size());
+    view->setMultiSelectEnabled(false);
+    BOOST_REQUIRE_EQUAL(1, view->getIndexSelectionStates().size());
     BOOST_REQUIRE_EQUAL("item1",
         *(static_cast<String*>(
-            test_item_view.getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
+            view->getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
