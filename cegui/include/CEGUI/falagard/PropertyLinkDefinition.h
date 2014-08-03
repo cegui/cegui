@@ -174,8 +174,17 @@ protected:
         if(FalagardPropertyBase<T>::d_dataType.compare(Falagard_xmlHandler::GenericDataType) != 0)
             xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardPropertyBase<T>::d_dataType);
 
-        if (!PropertyDefinitionBase::d_helpString.empty() && PropertyDefinitionBase::d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
-            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, PropertyDefinitionBase::d_helpString);
+        if (!FalagardPropertyBase<T>::d_helpString.empty() && FalagardPropertyBase<T>::d_helpString.compare(CEGUI::Falagard_xmlHandler::PropertyLinkDefinitionHelpDefaultValue) != 0)
+            xml_stream.attribute(Falagard_xmlHandler::HelpStringAttribute, FalagardPropertyBase<T>::d_helpString);
+    }
+
+    //------------------------------------------------------------------------//
+    void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
+    {
+        // HACK: Here we abuse some intimate knowledge in that we know it's
+        // safe to write our sub-elements out although the function is named
+        // for writing attributes.  The alternative was to repeat code from the
+        // base class, also demonstrating intimate knowledge ;)
 
         LinkTargetCollection::const_iterator i(d_targets.begin());
 

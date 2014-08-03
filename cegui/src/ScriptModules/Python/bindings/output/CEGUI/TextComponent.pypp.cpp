@@ -193,6 +193,40 @@ void register_TextComponent_class(){
                     *\n" );
         
         }
+        { //::CEGUI::TextComponent::getHorizontalFormattingFromComponent
+        
+            typedef ::CEGUI::HorizontalTextFormatting ( ::CEGUI::TextComponent::*getHorizontalFormattingFromComponent_function_type )(  ) const;
+            
+            TextComponent_exposer.def( 
+                "getHorizontalFormattingFromComponent"
+                , getHorizontalFormattingFromComponent_function_type( &::CEGUI::TextComponent::getHorizontalFormattingFromComponent )
+                , "*!\n\
+                    \n\
+                        Directly returns the horizontal formatting which was set for the ImageryComponent.\n\
+            \n\
+                    @return\n\
+                        The HorizontalTextFormatting enum.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getHorizontalFormattingPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::TextComponent::*getHorizontalFormattingPropertySource_function_type )(  ) const;
+            
+            TextComponent_exposer.def( 
+                "getHorizontalFormattingPropertySource"
+                , getHorizontalFormattingPropertySource_function_type( &::CEGUI::TextComponent::getHorizontalFormattingPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Returns the name of the property that will be used to obtain the horizontal\n\
+                        formatting to use for this ImageryComponent or an empty string if none is set.\n\
+            \n\
+                    @return\n\
+                        A String containing the name of the property\n\
+                    *\n" );
+        
+        }
         { //::CEGUI::TextComponent::getHorizontalTextExtent
         
             typedef float ( ::CEGUI::TextComponent::*getHorizontalTextExtent_function_type )( ::CEGUI::Window const & ) const;
@@ -281,6 +315,40 @@ void register_TextComponent_class(){
             \n\
                     @return\n\
                         One of the VerticalTextFormatting enumerated values.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getVerticalFormattingFromComponent
+        
+            typedef ::CEGUI::VerticalTextFormatting ( ::CEGUI::TextComponent::*getVerticalFormattingFromComponent_function_type )(  ) const;
+            
+            TextComponent_exposer.def( 
+                "getVerticalFormattingFromComponent"
+                , getVerticalFormattingFromComponent_function_type( &::CEGUI::TextComponent::getVerticalFormattingFromComponent )
+                , "*!\n\
+                    \n\
+                        Directly returns the vertical formatting which was set for the ImageryComponent.\n\
+            \n\
+                    @return\n\
+                        The VerticalTextFormatting enum.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getVerticalFormattingPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::TextComponent::*getVerticalFormattingPropertySource_function_type )(  ) const;
+            
+            TextComponent_exposer.def( 
+                "getVerticalFormattingPropertySource"
+                , getVerticalFormattingPropertySource_function_type( &::CEGUI::TextComponent::getVerticalFormattingPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Returns the name of the property that will be used to obtain the vertical\n\
+                        formatting to use for this ImageryComponent or an empty string if none is set.\n\
+            \n\
+                    @return\n\
+                        A String containing the name of the property\n\
                     *\n" );
         
         }
