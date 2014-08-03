@@ -54,7 +54,6 @@
 #include "CEGUI/WindowRendererSets/Core/Titlebar.h"
 #include "CEGUI/WindowRendererSets/Core/ToggleButton.h"
 #include "CEGUI/WindowRendererSets/Core/Tooltip.h"
-#include "CEGUI/WindowRendererSets/Core/ItemListbox.h"
 #include "CEGUI/WindowRendererSets/Core/Tree.h"
 #include "CEGUI/WindowRendererSets/Core/TreeView.h"
 
@@ -96,7 +95,6 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTitlebar>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardToggleButton>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTooltip>());
-    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardItemListbox>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTree>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTreeView>());
 }

@@ -670,7 +670,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Titlebar>();
     WindowFactoryManager::addWindowType<ToggleButton>();
     WindowFactoryManager::addWindowType<Tooltip>();
-    WindowFactoryManager::addWindowType<ItemListbox>();
     WindowFactoryManager::addWindowType<GroupBox>();
     WindowFactoryManager::addWindowType<Tree>();
     WindowFactoryManager::addWindowType<LayoutCell>();
