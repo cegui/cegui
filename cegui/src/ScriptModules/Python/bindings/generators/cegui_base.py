@@ -172,7 +172,7 @@ def filterDeclarations(mb):
     # we use depth first to make sure classes "deep in the hierarchy" gets their casts tried first
     def collectEventArgsDerived(node):
         ret = []
-        for derived in node.derived:
+        for derived in sorted(node.derived):
             ret.extend(collectEventArgsDerived(derived.related_class))
 
         ret.append(node)
@@ -181,10 +181,10 @@ def filterDeclarations(mb):
 
     eventArgsCastCode = ""
     for derived in collectEventArgsDerived(CEGUI_ns.class_("EventArgs")):
-        eventArgsCastCode += "if (dynamic_cast<const CEGUI::%s*>(&args))\n" % (derived.name)
-        eventArgsCastCode += "{\n"
-        eventArgsCastCode += "    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::%s&>(args));\n" % (derived.name)
-        eventArgsCastCode += "}\n\n"
+        eventArgsCastCode += "        if (dynamic_cast<const CEGUI::%s*>(&args))\n" % (derived.name)
+        eventArgsCastCode += "        {\n"
+        eventArgsCastCode += "            return boost::python::call<bool>(d_callable, static_cast<const CEGUI::%s&>(args));\n" % (derived.name)
+        eventArgsCastCode += "        }\n\n"
 
     eventSet.add_declaration_code(
 """
@@ -211,7 +211,10 @@ public:
         // I don't understand why this is happening, I think boost::python should use typeid(args).name() and deduce that it's a
         // derived class, not CEGUI::EventArgs base class
         // However this is not happening so I have to go through all EventArgs classes and try casting one after another
-        """ + eventArgsCastCode + """
+""" + eventArgsCastCode + """
+
+        // We could not cast to anything!
+        return false;
     }
 
     PyObject* d_callable;
@@ -1138,10 +1141,26 @@ void Iterator_previous(::CEGUI::%s& t)
     namedArea = CEGUI_ns.class_("NamedArea")
     namedArea.include()
 
+    # TypedProperty.h
     # falagard/FalPropertyDefinition.h
-    # FIXME: This is now a template and CE did not know what to do!
-    #propertyDefinition = CEGUI_ns.class_("PropertyDefinition")
-    #propertyDefinition.include()
+    # falagard/FalPropertyLinkDefinition.h
+    for cls in CEGUI_ns.classes():
+        if not declarations.templates.is_instantiation(cls.name):
+            continue
+
+        tplName = declarations.templates.name(cls.name)
+
+        desired_classes = ["TypedProperty", "FalagardPropertyBase", "PropertyDefinition", "PropertyLinkDefinition"]
+
+        for desired_class in desired_classes:
+            if tplName.startswith(desired_class):
+                cls.include()
+
+                if tplName.startswith("TypedProperty"):
+                    # gccxml has issues with the T() default arg in the ctor
+                    # since users are unlikely to construct TypedProperty from
+                    # Python we can just exclude the ctors
+                    cls.constructors().exclude()
 
     # falagard/FalPropertyDefinitionBase.h
     propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
@@ -1150,11 +1169,6 @@ void Iterator_previous(::CEGUI::%s& t)
     # falagard/FalPropertyInitialiser.h
     propertyInitialiser = CEGUI_ns.class_("PropertyInitialiser")
     propertyInitialiser.include()
-
-    # falagard/FalPropertyLinkDefinition.h
-    # FIXME: This is now a template and CE did not know what to do!
-    #propertyLinkDefinition = CEGUI_ns.class_("PropertyLinkDefinition")
-    #propertyLinkDefinition.include()
 
     # falagard/FalSectionSpecification.h
     sectionSpecification = CEGUI_ns.class_("SectionSpecification")

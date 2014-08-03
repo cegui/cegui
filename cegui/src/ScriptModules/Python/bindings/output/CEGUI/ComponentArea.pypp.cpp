@@ -30,6 +30,24 @@ void register_ComponentArea_class(){
                 *\n" );
         
         }
+        { //::CEGUI::ComponentArea::getNamedAreaSourceLook
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ComponentArea::*getNamedAreaSourceLook_function_type )(  ) const;
+            
+            ComponentArea_exposer.def( 
+                "getNamedAreaSourceLook"
+                , getNamedAreaSourceLook_function_type( &::CEGUI::ComponentArea::getNamedAreaSourceLook )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Return the name of the look to which the NamedArea, which is defined as source, belongs\
+                    to.\n\
+            \n\
+                @return\n\
+                    A string containing the name of the look.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::ComponentArea::getPixelRect
         
             typedef ::CEGUI::Rectf ( ::CEGUI::ComponentArea::*getPixelRect_function_type )( ::CEGUI::Window const & ) const;
