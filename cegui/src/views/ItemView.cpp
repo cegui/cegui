@@ -868,15 +868,18 @@ float ItemView::getRenderedTotalHeight() const
 //----------------------------------------------------------------------------//
 void ItemView::ensureItemIsVisible(const ModelIndex& index)
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    float view_height = getViewRenderer()->getViewRenderArea().getHeight();
+    Scrollbar* vert_scroll = getVertScrollbar();
+    Scrollbar* horz_scroll = getHorzScrollbar();
+    Rectf render_area = getViewRenderer()->getViewRenderArea();
+    float view_height = render_area.getHeight();
+    float view_width = render_area.getWidth();
 
     Rectf rect = getIndexRect(index);
     float bottom = rect.bottom();
     float top = rect.top();
 
     // account for current scrollbar value
-    float currPos = vertScrollbar->getScrollPosition();
+    float currPos = vert_scroll->getScrollPosition();
     top -= currPos;
     bottom -= currPos;
 
@@ -884,13 +887,29 @@ void ItemView::ensureItemIsVisible(const ModelIndex& index)
     if ((top < 0.0f) || ((bottom - top) > view_height))
     {
         // scroll top of item to top of box.
-        vertScrollbar->setScrollPosition(currPos + top);
+        vert_scroll->setScrollPosition(currPos + top);
     }
     // if bottom is below the view area
     else if (bottom >= view_height)
     {
         // position bottom of item at the bottom of the list
-        vertScrollbar->setScrollPosition(currPos + bottom - view_height);
+        vert_scroll->setScrollPosition(currPos + bottom - view_height);
+    }
+
+    const float left = rect.left() - currPos;
+    const float right = left + rect.getWidth();
+
+    // if left is left of the view area, or if item too big
+    if ((left < render_area.d_min.d_x) || ((right - left) > render_area.getWidth()))
+    {
+        // scroll item to left
+        horz_scroll->setScrollPosition(currPos + left);
+    }
+    // if right is right of the view area
+    else if (right >= render_area.d_max.d_x)
+    {
+        // scroll item to right of list
+        horz_scroll->setScrollPosition(currPos + right - render_area.getWidth());
     }
 }
 

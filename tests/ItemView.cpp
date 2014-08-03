@@ -135,7 +135,6 @@ BOOST_AUTO_TEST_CASE(ClearSelection)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 {
-    ItemModelStub stub;
     model.d_items.push_back("item1");
     model.d_items.push_back("item2");
     view->setModel(&model);
@@ -153,7 +152,6 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectToggled_ModifiesSelectionAccordingly)
 {
-    ItemModelStub stub;
     model.d_items.push_back("item1");
     model.d_items.push_back("item2");
     view->setModel(&model);
@@ -172,6 +170,25 @@ BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectToggled_ModifiesSelectionA
     BOOST_REQUIRE_EQUAL("item1",
         *(static_cast<String*>(
             view->getIndexSelectionStates().at(0).d_selectedIndex.d_modelData)));
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(EnsureItemIsVisible_ScrollsHorizontallyAndVertically)
+{
+    for (int i = 0; i < 10; ++i)
+        model.d_items.push_back("1");
+    model.d_items.push_back(String(100, 'x'));
+
+    view->setSize(USize(cegui_absdim(10), cegui_absdim(10)));
+    view->prepareForRender();
+
+    view->getVertScrollbar()->setScrollPosition(view->getRenderedTotalHeight());
+    view->getHorzScrollbar()->setScrollPosition(view->getRenderedMaxWidth());
+
+    view->ensureItemIsVisible(model.makeIndex(0, model.getRootIndex()));
+
+    BOOST_REQUIRE_CLOSE(0, view->getVertScrollbar()->getScrollPosition(), 1);
+    BOOST_REQUIRE_CLOSE(0, view->getHorzScrollbar()->getScrollPosition(), 1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
