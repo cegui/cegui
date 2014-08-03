@@ -54,7 +54,11 @@ void FalagardListView::render()
 
     list_view->prepareForRender();
 
-    imagery = &wlf.getStateImagery(list_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
+    bool has_focused_state =
+        list_view->isFocused() && wlf.isStateImageryPresent("EnabledFocused");
+    imagery = &wlf.getStateImagery(
+        list_view->isEffectiveDisabled() ? "Disabled" :
+            (has_focused_state ? "EnabledFocused" : "Enabled"));
     imagery->render(*list_view);
 
     render(list_view);
