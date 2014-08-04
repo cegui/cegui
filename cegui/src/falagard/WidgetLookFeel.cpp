@@ -879,20 +879,6 @@ const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(const String&
 }
 
 //---------------------------------------------------------------------------//
-const WidgetComponent* WidgetLookFeel::findWidgetComponent(const String& name) const
-{
-    WidgetComponentCollator wcc;
-    appendChildWidgetComponents(wcc);
-
-    WidgetComponentCollator::const_iterator wci = wcc.find(name);
-
-    if (wci == wcc.end())
-        return 0;
-
-    return *wci;
-}
-
-//---------------------------------------------------------------------------//
 void WidgetLookFeel::addAnimationName(const String& anim_name)
 {
     AnimationList::iterator it = std::find(d_animations.begin(),

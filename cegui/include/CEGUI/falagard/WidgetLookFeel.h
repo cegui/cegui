@@ -276,9 +276,6 @@ public:
 
     \param widget
         Window based object to be initialised.
-
-    \return
-        Nothing.
     */
     void initialiseWidget(Window& widget) const;
 
@@ -289,9 +286,6 @@ public:
 
     \param widget
         Window based object to be cleaned up.
-
-    \return
-        Nothing.
     */
     void cleanUpWidget(Window& widget) const;
 
@@ -314,18 +308,12 @@ public:
 
     \param area
         NamedArea to be added.
-
-    \return
-        Nothing.
     */
     void addNamedArea(const NamedArea& area);
 
     /*!
     \brief
         Clear all defined named areas from the WidgetLookFeel
-
-    \return
-        Nothing.
     */
     void clearNamedAreas();
 
@@ -334,7 +322,7 @@ public:
 
     /*!
     \brief
-        return whether a NamedArea object with the specified name exists for
+        Returns whether a NamedArea object with the specified name exists for
         this WidgetLookFeel.
 
     \param name
@@ -342,7 +330,7 @@ public:
 
     \return
         - true if a named area with the requested name is defined for this
-          WidgetLookFeel.
+        WidgetLookFeel.
         - false if no such named area is defined for this WidgetLookFeel.
     */
     bool isNamedAreaDefined(const String& name) const;
@@ -354,9 +342,6 @@ public:
 
     \param owner
         Window object that has the child widgets that require laying out.
-
-    \return
-        Nothing.
     */
     void layoutChildWidgets(const Window& owner) const;
 
@@ -401,9 +386,6 @@ public:
 
     \param xml_stream
         Stream where xml data should be output.
-
-    \return
-        Nothing.
     */
     void writeXMLToStream(XMLSerializer& xml_stream) const;
 
@@ -417,21 +399,6 @@ public:
         The name of the property to look for.
     */
     const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
-
-    /*!
-    \brief
-        Takes the name for a WidgetComponent and returns a pointer to
-        it if it exists or a null pointer if it doesn't.
-
-    \param name
-        The name of the Child component to look for.
-
-    \deprecated
-        This function will be replaced by getWidgetComponent in the next version.
-    */
-    const WidgetComponent* findWidgetComponent(const String& name) const;
-
-
 
     typedef std::set<String, StringFastLessCompare
         CEGUI_SET_ALLOC(String)> StringSet;
