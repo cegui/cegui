@@ -26,7 +26,8 @@
 ***************************************************************************/
 #include <boost/test/unit_test.hpp>
 
-#include "CEGUI/CEGUI.h"
+#include "CEGUI/views/ListView.h"
+#include "CEGUI/WindowManager.h"
 #include "ItemModelStub.h"
 
 using namespace CEGUI;
