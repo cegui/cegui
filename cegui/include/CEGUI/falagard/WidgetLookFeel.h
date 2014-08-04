@@ -213,6 +213,9 @@ public:
     \return
         - true if imagery exists for the specified state,
         - false if no imagery exists for the specified state.
+
+    \deprecated This function is deprecated because it does not consider WidgetLook inheritance. It will be removed in the next major version.
+                The getStateImageryNames function should be used instead to subsequently check for the name.
     */
     bool isStateImageryPresent(const String& state) const;
 
@@ -264,6 +267,9 @@ public:
         - true if a named area with the requested name is defined for this
           WidgetLookFeel.
         - false if no such named area is defined for this WidgetLookFeel.
+
+    \deprecated This function is deprecated because it does not consider WidgetLook inheritance. It will be removed in the next major version.
+                The getNamedAreaNames function should be used instead to subsequently check for the name.
     */
     bool isNamedAreaDefined(const String& name) const;
 
