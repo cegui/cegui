@@ -77,7 +77,7 @@ public:
     \exception UnknownObjectException
         Thrown if a StateImagery with the given name could not be found.
     */
-    const StateImagery& getStateImagery(const CEGUI::String& stateName, bool includeInheritedLook = false) const;
+    const StateImagery& getStateImagery(const CEGUI::String& stateName, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -93,7 +93,7 @@ public:
     \exception UnknownObjectException
         Thrown if a ImagerySection with the given name could not be found.
     */
-    const ImagerySection& getImagerySection(const CEGUI::String& sectionName, bool includeInheritedLook = false) const;
+    const ImagerySection& getImagerySection(const CEGUI::String& sectionName, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -108,7 +108,7 @@ public:
     \exception UnknownObjectException
         Thrown if a NamedArea with the given name could not be found.
     */
-    const NamedArea& getNamedArea(const String& name, bool includeInheritedLook = false) const;
+    const NamedArea& getNamedArea(const String& name, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -123,7 +123,7 @@ public:
     \exception UnknownObjectException
         Thrown if a PropertyInitialiser with the given name could not be found.
     */
-    const PropertyInitialiser& getPropertyInitialiser(const String& name, bool includeInheritedLook = false) const;
+    const PropertyInitialiser& getPropertyInitialiser(const String& name, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -138,7 +138,7 @@ public:
     \exception UnknownObjectException
         Thrown if a PropertyDefinition with the given name could not be found.
     */
-    const PropertyDefinitionBase& getPropertyDefinition(const String& name, bool includeInheritedLook = false) const;
+    const PropertyDefinitionBase& getPropertyDefinition(const String& name, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -153,7 +153,7 @@ public:
     \exception UnknownObjectException
         Thrown if a PropertyLinkDefinition with the given name could not be found.
     */
-    const PropertyDefinitionBase& getPropertyLinkDefinition(const String& name, bool includeInheritedLook = false) const;
+    const PropertyDefinitionBase& getPropertyLinkDefinition(const String& name, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -168,7 +168,7 @@ public:
     \exception UnknownObjectException
         Thrown if a WidgetComponent with the given name could not be found.
     */
-    const WidgetComponent& getWidgetComponent(const String& name, bool includeInheritedLook = false) const;
+    const WidgetComponent& getWidgetComponent(const String& name, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -183,7 +183,7 @@ public:
     \exception UnknownObjectException
         Thrown if a EventLinkDefinition with the given name could not be found.
     */
-    const EventLinkDefinition& getEventLinkDefinition(const String& name, bool includeInheritedLook = false) const;
+    const EventLinkDefinition& getEventLinkDefinition(const String& name, bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -547,7 +547,7 @@ public:
     \return
         A map of names to StateImagery pointers.
     */
-    StateImageryPointerMap getStateImageryMap(bool includeInheritedLook = false);
+    StateImageryPointerMap getStateImageryMap(bool includeInheritedLook = true);
     
     /*!
     \brief
@@ -559,7 +559,7 @@ public:
     \return
         A map of names to ImagerySection pointers.
     */
-    ImagerySectionPointerMap getImagerySectionMap(bool includeInheritedLook = false);
+    ImagerySectionPointerMap getImagerySectionMap(bool includeInheritedLook = true);
 
     /*!
     \brief
@@ -571,7 +571,7 @@ public:
     \return
         A map of names to NamedArea pointers.
     */
-    NamedAreaPointerMap getNamedAreaMap(bool includeInheritedLook = false);
+    NamedAreaPointerMap getNamedAreaMap(bool includeInheritedLook = true);
 
     /*!
     \brief
@@ -583,7 +583,7 @@ public:
     \return
         A map of names to WidgetComponent pointers.
     */
-    WidgetComponentPointerMap getWidgetComponentMap(bool includeInheritedLook = false);
+    WidgetComponentPointerMap getWidgetComponentMap(bool includeInheritedLook = true);
   
     /*!
     \brief
@@ -595,7 +595,7 @@ public:
     \return
         A map of names to PropertyInitialiser pointers.
     */
-    PropertyInitialiserPointerMap getPropertyInitialiserMap(bool includeInheritedLook = false);
+    PropertyInitialiserPointerMap getPropertyInitialiserMap(bool includeInheritedLook = true);
 
     /*!
     \brief
@@ -607,7 +607,7 @@ public:
     \return
         A map of names to PropertyDefinition pointers.
     */
-    PropertyDefinitionBasePointerMap getPropertyDefinitionMap(bool includeInheritedLook = false);
+    PropertyDefinitionBasePointerMap getPropertyDefinitionMap(bool includeInheritedLook = true);
 
     /*!
     \brief
@@ -619,7 +619,7 @@ public:
     \return
         A map of names to PropertyLinkDefinition pointers.
     */
-    PropertyDefinitionBasePointerMap getPropertyLinkDefinitionMap(bool includeInheritedLook = false);
+    PropertyDefinitionBasePointerMap getPropertyLinkDefinitionMap(bool includeInheritedLook = true);
 
     /*!
     \brief
@@ -631,7 +631,7 @@ public:
     \return
         A map of names to EventLinkDefinition pointers.
     */
-    EventLinkDefinitionPointerMap getEventLinkDefinitionMap(bool includeInheritedLook = false);
+    EventLinkDefinitionPointerMap getEventLinkDefinitionMap(bool includeInheritedLook = true);
 
     /*!
     \brief
@@ -652,7 +652,7 @@ public:
     \return
         A StringSet containing the StateImagery names.
     */
-    StringSet getStateImageryNames(bool includeInheritedLook = false) const;
+    StringSet getStateImageryNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -664,7 +664,7 @@ public:
     \return
         A StringSet containing the ImagerySection names.
     */
-    StringSet getImagerySectionNames(bool includeInheritedLook = false) const;
+    StringSet getImagerySectionNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -676,7 +676,7 @@ public:
     \return
         A StringSet containing the NamedArea names.
     */
-    StringSet getNamedAreaNames(bool includeInheritedLook = false) const;
+    StringSet getNamedAreaNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -688,7 +688,7 @@ public:
     \return
         A StringSet containing the WidgetComponent (Child Widget) names.
     */
-    StringSet getWidgetComponentNames(bool includeInheritedLook = false) const;
+    StringSet getWidgetComponentNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -700,7 +700,7 @@ public:
     \return
         A StringSet containing the PropertyInitialiser (Property) names.
     */
-    StringSet getPropertyInitialiserNames(bool includeInheritedLook = false) const;
+    StringSet getPropertyInitialiserNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -712,7 +712,7 @@ public:
     \return
         A StringSet containing the PropertyDefinition names.
     */
-    StringSet getPropertyDefinitionNames(bool includeInheritedLook = false) const;
+    StringSet getPropertyDefinitionNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -724,7 +724,7 @@ public:
     \return
         A StringSet containing the PropertyLinkDefinition names.
     */
-    StringSet getPropertyLinkDefinitionNames(bool includeInheritedLook = false) const;
+    StringSet getPropertyLinkDefinitionNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -736,7 +736,7 @@ public:
     \return
         A StringSet containing the EventLinkDefinition names.
     */
-    StringSet getEventLinkDefinitionNames(bool includeInheritedLook = false) const;
+    StringSet getEventLinkDefinitionNames(bool includeInheritedLook = true) const;
 
     /*!
     \brief
@@ -748,7 +748,7 @@ public:
     \return
         A StringSet containing the Animation names.
     */
-    StringSet getAnimationNames(bool includeInheritedLook = false) const;
+    StringSet getAnimationNames(bool includeInheritedLook = true) const;
 
 private:
 
