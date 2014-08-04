@@ -14,12 +14,6 @@
             <Property name="Text" value="New Node" />
             <Property name="CloseButtonEnabled" value="False" />
 
-            <Window name="Listbox" type="Vanilla/Listbox">
-                <Property name="MaxSize" value="{{1.0,0},{1.0,0}}" />
-                <Property name="Position" value="{{0,7},{0,7}}" />
-                <Property name="Size" value="{{1,-14},{1,-80}}" />
-            </Window>
-
             <Window name="label1" type="Vanilla/StaticText">
                 <Property name="BackgroundEnabled" value="False" />
                 <Property name="FrameEnabled" value="False" />
@@ -70,13 +64,6 @@
                 <Property name="MaxSize" value="{{1.0,0},{1.0,0}}" />
                 <Property name="Position" value="{{0,7},{0,7}}" />
                 <Property name="Size" value="{{1,-14},{0,93}}" />
-            </Window>
-
-            <Window name="area2" type="Vanilla/Listbox">
-                <Property name="VerticalAlignment" value="Bottom" />
-                <Property name="MaxSize" value="{{1.0,0},{1.0,0}}" />
-                <Property name="Position" value="{{0,7},{0,-7}}" />
-                <Property name="Size" value="{{1,-14},{1,-110}}" />
             </Window>
         </Window>
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for Combobox widget
 *************************************************************************/
 /***************************************************************************
@@ -32,6 +32,8 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/RegexMatcher.h"
+#include "CEGUI/views/ItemView.h"
+#include "CEGUI/views/StandardItemModel.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -118,7 +120,7 @@ public:
      */
 	static const String EventTextAccepted;
 
-	// event names from list box
+    // event names from list widget
     /** Event fired when the contents of the list is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Combobox whose list content has
@@ -193,9 +195,9 @@ public:
 		returns the mode of operation for the combo box.
 
 	\return
-        - true if the user can show the list and select an item with a single 
+        - true if the user can show the list and select an item with a single
         pointer activation.
-        - false if the user must activate the pointer to show the list and then 
+        - false if the user must activate the pointer to show the list and then
         activate the pointer again to select an item.
 	*/
 	bool	getSinglePointerActivationEnabled(void) const;
@@ -340,7 +342,7 @@ public:
 	*/
 	size_t	getSelectionEndIndex(void) const;
 
-	
+
 	/*!
 	\brief
 		return the length of the current selection (in code points / characters).
@@ -370,23 +372,23 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		Return number of items attached to the list box
+        Return number of items attached to the list widget.
 
 	\return
-		the number of items currently attached to this list box.
+        the number of items currently attached to this list widget.
 	*/
 	size_t	getItemCount(void) const;
 
-	
+
 	/*!
 	\brief
 		Return a pointer to the currently selected item.
 
 	\return
-		Pointer to a ListboxItem based object that is the selected item in the list.  will return NULL if
-		no item is selected.
+        Pointer to a StandardItem based object that is the selected item in the list.
+        Will return NULL if no item is selected.
 	*/
-	ListboxItem*	getSelectedItem(void) const;
+    StandardItem*   getSelectedItem(void) const;
 
 
 	/*!
@@ -397,26 +399,24 @@ public:
 		Zero based index of the item to be returned.
 
 	\return
-		Pointer to the ListboxItem at index position \a index in the list box.
+        Pointer to the StandardItem at index position \a index in the list widget.
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-	ListboxItem*	getListboxItemFromIndex(size_t index) const;
+    StandardItem*   getItemFromIndex(size_t index) const;
 
 
 	/*!
 	\brief
-		Return the index of ListboxItem \a item
+        Return the index of StandardItem \a item
 
 	\param item
-		Pointer to a ListboxItem whos zero based index is to be returned.
+        Pointer to a StandardItem who's zero based index is to be returned.
 
 	\return
-		Zero based index indicating the position of ListboxItem \a item in the list box.
-
-	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
+        Zero based index indicating the position of StandardItem \a item in the list widget.
 	*/
-	size_t	getItemIndex(const ListboxItem* item) const;
+    size_t  getItemIndex(const StandardItem* item) const;
 
 
 	/*!
@@ -452,26 +452,26 @@ public:
 		String object containing the text to be searched for.
 
 	\param start_item
-		ListboxItem where the search is to begin, the search will not include \a item.  If \a item is
-		NULL, the search will begin from the first item in the list.
+        StandardItem where the search is to begin, the search will not
+        include \a item.  If \a item is NULL, the search will begin from the
+        first item in the list.
 
 	\return
-		Pointer to the first ListboxItem in the list after \a item that has text matching \a text.  If
-		no item matches the criteria NULL is returned.
-
-	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
+        Pointer to the first StandardItem in the list after \a item that has
+        text matching \a text. If no item matches the criteria NULL is returned.
 	*/
-	ListboxItem*	findItemWithText(const String& text, const ListboxItem* start_item);
+    StandardItem*   findItemWithText(const String& text, const StandardItem* start_item);
 
 
 	/*!
 	\brief
-		Return whether the specified ListboxItem is in the List
+        Return whether the specified StandardItem is in the List
 
 	\return
-		true if ListboxItem \a item is in the list, false if ListboxItem \a item is not in the list.
+       true if StandardItem \a item is in the list, false ifStandardItem
+       \a item is not in the list.
 	*/
-	bool	isListboxItemInList(const ListboxItem* item) const;
+    bool    isItemInList(const StandardItem* item) const;
 
 
 	/*!
@@ -537,9 +537,9 @@ public:
 		Set the mode of operation for the combo box.
 
 	\param setting
-        - true if the user should be able to show the list and select an item 
+        - true if the user should be able to show the list and select an item
         with a single pointer activation.
-        - false if the user must activate the pointer to show the list and then 
+        - false if the user must activate the pointer to show the list and then
         activate the pointer again to select an item.
 
 	\return
@@ -697,50 +697,43 @@ public:
 
 	/*!
 	\brief
-		Add the given ListboxItem to the list.
+        Add the given StandardItem to the list.
 
 	\param item
-		Pointer to the ListboxItem to be added to the list.  Note that it is the passed object that is added to the
-		list, a copy is not made.  If this parameter is NULL, nothing happens.
-
-	\return
-		Nothing.
+        Pointer to the StandardItem to be added to the list. Note that it is
+        the passed object that is added to the list, a copy is not made.
+        If this parameter is NULL, nothing happens.
 	*/
-	void	addItem(ListboxItem* item);
+    void    addItem(StandardItem* item);
 
 
 	/*!
 	\brief
-		Insert an item into the list box after a specified item already in the list.
+        Insert an item into the list after a specified item already in the list.
 
 		Note that if the list is sorted, the item may not end up in the requested position.
 
 	\param item
-		Pointer to the ListboxItem to be inserted.  Note that it is the passed object that is added to the
-		list, a copy is not made.  If this parameter is NULL, nothing happens.
+        Pointer to the StandardItem to be inserted. Note that it is the passed
+        object that is added to the list, a copy is not made.
+        If this parameter is NULL, nothing happens.
 
 	\param position
-		Pointer to a ListboxItem that \a item is to be inserted after.  If this parameter is NULL, the item is
-		inserted at the start of the list.
-
-	\return
-		Nothing.
+        Pointer to a StandardItem that \a item is to be inserted after. If this
+        parameter is NULL, the item is inserted at the start of the list.
 	*/
-	void	insertItem(ListboxItem* item, const ListboxItem* position);
+   void    insertItem(StandardItem* item, const StandardItem* position);
 
 
 	/*!
 	\brief
-		Removes the given item from the list box.
+		Removes the given item from the list widget.
 
 	\param item
-		Pointer to the ListboxItem that is to be removed.  If \a item is not attached to this list box then nothing
-		will happen.
-
-	\return
-		Nothing.
+        Pointer to the StandardItem that is to be removed.
+        If \a item is not attached to this list widget then nothing will happen.
 	*/
-	void	removeItem(const ListboxItem* item);
+    void    removeItem(const StandardItem* item);
 
 
 	/*!
@@ -765,7 +758,6 @@ public:
 	*/
 	void	setSortingEnabled(bool setting);
 
-	
 	/*!
 	\brief
 		Set whether the vertical scroll bar should always be shown.
@@ -793,62 +785,44 @@ public:
 	*/
 	void	setShowHorzScrollbar(bool setting);
 
+    /*!
+    \brief
+        Set the select state of an attached StandardItem.
 
-	/*!
-	\brief
-		Set the select state of an attached ListboxItem.
+    \param item
+        The StandardItem to be affected.
 
-		This is the recommended way of selecting and deselecting items attached to a list box as it respects the
-		multi-select mode setting.  It is possible to modify the setting on ListboxItems directly, but that approach
-		does not respect the settings of the list box.
-
-	\param item
-		The ListboxItem to be affected.  This item must be attached to the list box.
-
-	\param state
-		true to select the item, false to de-select the item.
-
-	\return
-		Nothing.
-	
-	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
-	*/
-	void	setItemSelectState(ListboxItem* item, bool state);
+    \param state
+        true to select the item, false to de-select the item.
+    */
+    void    setItemSelectState(StandardItem* item, bool state);
 
 
 	/*!
 	\brief
-		Set the select state of an attached ListboxItem.
-
-		This is the recommended way of selecting and deselecting items attached to a list box as it respects the
-		multi-select mode setting.  It is possible to modify the setting on ListboxItems directly, but that approach
-		does not respect the settings of the list box.
+        Set the select state of an attached StandardItem.
 
 	\param item_index
-		The zero based index of the ListboxItem to be affected.  This must be a valid index (0 <= index < getItemCount())
+        The zero based index of the StandardItem to be affected.
+        This must be a valid index (0 <= index < getItemCount())
 
 	\param state
 		true to select the item, false to de-select the item.
 
-	\return
-		Nothing.
-	
-	\exception	InvalidRequestException	thrown if \a item_index is out of range for the list box
+    \exception  InvalidRequestException thrown if \a item_index is out of range for the list widget
 	*/
 	void	setItemSelectState(size_t item_index, bool state);
 
 
 	/*!
 	\brief
-		Causes the list box to update it's internal state after changes have been made to one or more
-		attached ListboxItem objects.
+        Causes the list widget to update it's internal state after changes have
+        been made to one or more attached StandardItem objects.
 
-		Client code must call this whenever it has made any changes to ListboxItem objects already attached to the
-		list box.  If you are just adding items, or removed items to update them prior to re-adding them, there is
-		no need to call this method.
-
-	\return
-		Nothing.
+        Client code must call this whenever it has made any changes to
+        StandardItem objects already attached to the list widget. If you are
+        just adding items, or removed items to update them prior to re-adding
+        them, there is no need to call this method.
 	*/
 	void	handleUpdatedListItemData(void);
 
@@ -906,7 +880,7 @@ protected:
         Update the Combobox text to reflect programmatically made changes to
         selected list item.
     */
-    void itemSelectChangeTextUpdate(const ListboxItem* const item,
+    void itemSelectChangeTextUpdate(const StandardItem* const item,
                                     bool new_state, bool old_state);
 
 	/*************************************************************************
@@ -921,13 +895,13 @@ protected:
 	bool editbox_EditboxFullEventHandler(const EventArgs& e);
 	bool editbox_TextAcceptedEventHandler(const EventArgs& e);
 	bool editbox_TextChangedEventHandler(const EventArgs& e);
-	bool listbox_ListContentsChangedHandler(const EventArgs& e);
-	bool listbox_ListSelectionChangedHandler(const EventArgs& e);
-	bool listbox_SortModeChangedHandler(const EventArgs& e);
-	bool listbox_VertScrollModeChangedHandler(const EventArgs& e);
-	bool listbox_HorzScrollModeChangedHandler(const EventArgs& e);
+    bool listwidget_ListContentsChangedHandler(const EventArgs& e);
+    bool listwidget_ListSelectionChangedHandler(const EventArgs& e);
+    bool listwidget_SortModeChangedHandler(const EventArgs& e);
+    bool listwidget_VertScrollModeChangedHandler(const EventArgs& e);
+    bool listwidget_HorzScrollModeChangedHandler(const EventArgs& e);
 
-	
+
 	/*************************************************************************
 		New Events for Combobox
 	*************************************************************************/

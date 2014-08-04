@@ -14,13 +14,12 @@
             </AutoWindow>
             <Window type="Vanilla/MultiLineEditbox" name="MultiLineTextWindow" >
                 <Property name="Area" value="{{0.015677,0},{0.0415294,0},{0.631001,0},{0.990059,0}}" />
-                <Property name="Text" >
-</Property>
+                <Property name="Text" />
             </Window>
-            <Window type="Vanilla/Listbox" name="TextSelector" >
+            <Window type="Vanilla/ListWidget" name="TextSelector" >
                 <Property name="Area" value="{{0.65,0},{0.0415294,0},{0.97,0},{0.281529,0}}" />
             </Window>
-            <Window type="Vanilla/Listbox" name="FontSelector" >
+            <Window type="Vanilla/ListWidget" name="FontSelector" >
                 <Property name="Area" value="{{0.65,0},{0.33,0},{0.97,0},{0.57,0}}" />
             </Window>
             <Window type="Vanilla/Label" name="TextSelectorLabel" >

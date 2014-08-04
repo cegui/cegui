@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUISample_ModelView"
+    type      = "C++ Module"
+    summary         = "A demo that shows the usage of the new Model-View widgets."
+    description     = "The demo uses the WindowManager to create from code a window with a listview, treeview and GridView. "
+    credits         = "Timotei Dolean"
+/>
