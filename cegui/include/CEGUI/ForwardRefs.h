@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Forward declares all core system classes
 *************************************************************************/
 /***************************************************************************
@@ -153,13 +153,12 @@ class GridLayoutContainer;
 class HorizontalLayoutContainer;
 class ItemEntry;
 class ItemListBase;
-class ItemListbox;
 class LayoutContainer;
-class Listbox;
 class ListboxItem;
 class ListboxTextItem;
 class ListHeader;
 class ListHeaderSegment;
+class ListWidget;
 class Menubar;
 class MenuBase;
 class MenuItem;
@@ -172,7 +171,6 @@ class RadioButton;
 class ScrollablePane;
 class Scrollbar;
 class ScrolledContainer;
-class ScrolledItemListBase;
 class SequentialLayoutContainer;
 class Slider;
 class Spinner;
@@ -185,6 +183,9 @@ class Tooltip;
 class Tree;
 class TreeItem;
 class VerticalLayoutContainer;
+
+class ListView;
+class TreeView;
 
 /*************************************************************************
     Forward declare EventArg based classes.
