@@ -713,6 +713,8 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 //----------------------------------------------------------------------------//
 void ItemView::onParentSized(ElementEventArgs& e)
 {
+    Window::onParentSized(e);
+
     resizeToContent();
 }
 
@@ -952,7 +954,7 @@ void ItemView::updateAutoResizeFlag(bool& flag, bool enabled)
 //----------------------------------------------------------------------------//
 void ItemView::resizeToContent()
 {
-    if (!d_initialising ||
+    if (d_initialising ||
         !(d_isAutoResizeWidthEnabled || d_isAutoResizeHeightEnabled))
         return;
 
