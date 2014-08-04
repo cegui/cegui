@@ -38,7 +38,7 @@ namespace CEGUI
     member function.
 */
 template<typename T>
-class MemberFunctionSlot : public SlotFunctorBase
+class MemberFunctionSlot : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Member function slot type.
