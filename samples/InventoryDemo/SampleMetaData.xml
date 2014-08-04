@@ -1,7 +1,0 @@
-<SampleDefinition
-    name      = "CEGUIInventoryDemo"
-    type      = "C++ Module"
-    summary         = "The demo contains an RPG style inventory that allows dragging shaped items from one inventory window to another. Red and green colours display if the item can be dropped at the current position."
-    description     = "To achieve this the custom windows &quot;TaharezLook/InventoryReceiver&quot; and &quot;TaharezLook/InventoryItem&quot; were added via the &quot;InventoryComponents.looknfeel&quot; file. For handling the mechanics of allowing or refusing items to be dropped at set position, the InventoryReceiver class provides extra functionality in the C++ code. Event handlers are used to react to drag n' drop events for this purpose. "
-    credits         = "CrazyEddie"
-/>
