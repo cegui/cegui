@@ -218,14 +218,14 @@ set (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE ${CEGUI_BUILD_RENDERER_IRRLICHT})
 set (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D11})
 set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
 
-# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the SampleBrowser won't support the respective Renderers and the option to choose them won't show up
-if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
+if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
     if (NOT OIS_FOUND)
-        message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (OIS not found). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
+        message(STATUS "The SampleFramework is deactivated due to missing Ogre dependencies (OIS not found)")
     else()
-        message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (boost libraries). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
+        message(STATUS "The SampleFramework is deactivated due to missing Ogre dependencies (boost libraries)")
     endif()
-    set (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE FALSE)
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)

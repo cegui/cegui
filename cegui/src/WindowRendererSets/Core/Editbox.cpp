@@ -247,7 +247,6 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
-    const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
     ColourRect unselectedColours;
     setColourRectToUnselectedTextColour(unselectedColours);
@@ -277,7 +276,6 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     // draw pre-highlight text
     String sect = text.substr(0, w->getSelectionStartIndex());
     colours = unselectedColours;
-    colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
         font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                        &text_area, true, colours);
@@ -285,7 +283,6 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     // draw highlight text
     sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
-    colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
         font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                        &text_area, true, colours);
@@ -293,7 +290,6 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
     colours = unselectedColours;
-    colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                    &text_area, true, colours);
 }
@@ -315,7 +311,6 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
-    const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
     ColourRect unselectedColour;
     setColourRectToUnselectedTextColour(unselectedColour);
@@ -327,7 +322,6 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     {
         // no highlighted text - we can draw the whole thing
         colours = unselectedColour;
-        colours.modulateAlpha(alpha_comp);
         text_part_rect.d_min.d_x =
             font->drawText(w->getGeometryBuffers(), text,
                            text_part_rect.getPosition(), &text_area, colours);
@@ -361,7 +355,6 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             if (highlighted)
             {
                 setColourRectToSelectedTextColour(colours);
-                colours.modulateAlpha(alpha_comp);
 
                 {
 
@@ -380,7 +373,6 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             else
             {
                 colours = unselectedColour;
-                colours.modulateAlpha(alpha_comp);
             }
             font->drawText(w->getGeometryBuffers(), currChar,
                            text_part_rect.getPosition(), &text_area, colours);

@@ -1112,6 +1112,8 @@ void Window::bufferGeometry(const RenderingContext&)
 
         updateGeometryBuffersTranslationAndClipping();
 
+        updateGeometryBuffersAlpha();
+
         // signal rendering ended
         args.handled = 0;
         onRenderingEnded(args);
@@ -2254,7 +2256,10 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 
     }
 
-    invalidate();
+    updateGeometryBuffersAlpha();
+    invalidateRenderingSurface();
+    getGUIContext().markAsDirty();
+
     fireEvent(EventAlphaChanged, e, EventNamespace);
 }
 
@@ -2841,16 +2846,10 @@ bool Window::isPropertyAtDefault(const Property* property) const
                 WidgetLookManager::getSingleton().
                     getWidgetLook(getParent()->getLookNFeel());
 
-            // if this property is a target of a PropertyLink, we always report
-            // as being at default.  NB: This check is only performed on the
-            // immediate parent.
-            const WidgetLookFeel::PropertyLinkDefinitionList& pldl(wlf.getPropertyLinkDefinitions());
-            WidgetLookFeel::PropertyLinkDefinitionList::const_iterator i = pldl.begin();
-            for (; i != pldl.end(); ++i)
-            {
-                if ((*i)->getPropertyName() == property->getName())
-                    return true;
-            }
+            // If this property is a target of a PropertyLink, we always report it as being at default.
+            WidgetLookFeel::StringSet propDefNames = wlf.getPropertyDefinitionNames(true);
+            if(propDefNames.find(property->getName()) != propDefNames.end())
+                return true;
 
             // for an auto-window see if the property is is set via a Property
             // tag within the WidgetComponent that defines it.
@@ -3802,6 +3801,18 @@ void Window::updateGeometryBuffersTranslationAndClipping()
         CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
         currentBuffer->setTranslation(d_translation);
         currentBuffer->setClippingRegion(d_clippingRegion);
+    }
+}
+
+void Window::updateGeometryBuffersAlpha()
+{
+    float final_alpha = getEffectiveAlpha();
+
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+        currentBuffer->setAlpha(final_alpha);
     }
 }
 

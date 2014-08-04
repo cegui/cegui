@@ -227,9 +227,18 @@ public:
     */
     void renderAllGUIContexts();
 
+    /*!
+    \brief
+        Renders the contexts associated with the renderer
+    \todo
+        This needs to be actually made to check if context matches the renderer
+        and for that to work all the contexts need to know their renderer
+    \see renderAllGUIContexts
+    */
+    void renderAllGUIContextsOnTarget(Renderer* contained_in);
 
-	/*!
-	\brief
+    /*!
+    \brief
 		Return a pointer to the ScriptModule being used for scripting within the GUI system.
 
 	\return
@@ -606,8 +615,8 @@ protected:
 
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
-
-	/*************************************************************************
+    
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor

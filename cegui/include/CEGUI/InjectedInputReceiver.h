@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 
-//! Input injection interface to be inplemented by classes that take raw inputs
+//! Input injection interface to be implemented by classes that take raw inputs
 class CEGUIEXPORT InjectedInputReceiver
 {
 public:

@@ -162,7 +162,27 @@ void register_WidgetLookManager_class(){
             
             WidgetLookManager_exposer.def( 
                 "getWidgetLookIterator"
-                , getWidgetLookIterator_function_type( &::CEGUI::WidgetLookManager::getWidgetLookIterator ) );
+                , getWidgetLookIterator_function_type( &::CEGUI::WidgetLookManager::getWidgetLookIterator )
+                , "!  deprecated Marked for removal in the next version.\n\
+            !  deprecated Marked for removal in the next version.\n" );
+        
+        }
+        { //::CEGUI::WidgetLookManager::getWidgetLookMap
+        
+            typedef ::std::map<CEGUI::String,CEGUI::WidgetLookFeel*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetLookFeel*> > > ( ::CEGUI::WidgetLookManager::*getWidgetLookMap_function_type )(  ) ;
+            
+            WidgetLookManager_exposer.def( 
+                "getWidgetLookMap"
+                , getWidgetLookMap_function_type( &::CEGUI::WidgetLookManager::getWidgetLookMap )
+                , "*!\n\
+                    \n\
+                        Returns a map containing Strings to WidgetLookFeel pointers. The map contains pointers\
+                        to the WidgetLookFeels\n\
+                        that were added to this Manager.\n\
+            \n\
+                    @return\n\
+                        A map of Strings to WidgetLookFeel pointers.\n\
+                    *\n" );
         
         }
         { //::CEGUI::WidgetLookManager::getWidgetLookSetAsString

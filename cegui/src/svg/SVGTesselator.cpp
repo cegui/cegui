@@ -1915,6 +1915,7 @@ void SVGTesselator::setupGeometryBufferSettings(CEGUI::GeometryBuffer* geometry_
 
     geometry_buffer->setScale(CEGUI::Vector2f(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y));
     geometry_buffer->setCustomTransform(cegui_transformation_matrix);
+    geometry_buffer->setAlpha(render_settings.d_alpha);
 }
 
 //----------------------------------------------------------------------------//

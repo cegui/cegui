@@ -1318,7 +1318,7 @@ namespace CEGUI
         if (d_stateimagery)
         {
             CEGUI_LOGINSANE("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.");
-            d_widgetlook->addStateSpecification(*d_stateimagery);
+            d_widgetlook->addStateImagery(*d_stateimagery);
             CEGUI_DELETE_AO d_stateimagery;
             d_stateimagery = 0;
         }

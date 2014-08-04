@@ -84,8 +84,10 @@ namespace CEGUI
 
 
         /** Typedef for a set of WidgetLookFeel names. */
-        typedef std::set<String, StringFastLessCompare
-          CEGUI_SET_ALLOC(String)> WidgetLookNameSet;
+        typedef std::set<String, StringFastLessCompare CEGUI_SET_ALLOC(String)> WidgetLookNameSet;
+
+        //! Typedef for a map of Strings to WidgetLookFeel objects
+        typedef std::map<String, WidgetLookFeel*, StringFastLessCompare CEGUI_MAP_ALLOC(String, WidgetLookFeel*)> WidgetLookPointerMap;
 
         /*!
         \brief
@@ -281,18 +283,35 @@ namespace CEGUI
         static void setDefaultResourceGroup(const String& resourceGroup)
             { d_defaultResourceGroup = resourceGroup; }
 
+        /*!
+        \brief
+            Returns a map containing Strings to WidgetLookFeel pointers. The map contains pointers to the WidgetLookFeels
+            that were added to this Manager.
+
+        \return
+            A map of Strings to WidgetLookFeel pointers.
+        */
+        WidgetLookPointerMap getWidgetLookMap();
 
     private:
-        static const String FalagardSchemaName;     //!< Name of schema file used for XML validation.
+        //! Name of schema file used for XML validation.
+        static const String FalagardSchemaName; 
+        //! holds default resource group
+        static String d_defaultResourceGroup;
 
+
+        //! Typedef for a map of Strings to WidgetLookFeel objects
         typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
-        WidgetLookList  d_widgetLooks;
+        // deprecated: Will use the correct allocator in the next version
 
-        static String d_defaultResourceGroup;   //!< holds default resource group
+        //! List of WidgetLookFeels added to this Manager
+        WidgetLookList  d_widgetLooks;  
+
     public:
+        //! \deprecated Marked for removal in the next version.
         typedef ConstMapIterator<WidgetLookList> WidgetLookIterator;
+        //! \deprecated Marked for removal in the next version.
         WidgetLookIterator getWidgetLookIterator() const;
-
     };
 
 } // End of  CEGUI namespace section
