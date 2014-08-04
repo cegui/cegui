@@ -756,7 +756,7 @@ protected:
     bool handleFontRenderSizeChange(const EventArgs& args);
  
      void drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
-                       Vector2f& itemPos, GeometryBuffer& geometry, float alpha);
+                       Vector2f& itemPos, std::vector<GeometryBuffer*>& geometryBuffers, float alpha);
     
     /*************************************************************************
         New event handlers
@@ -816,9 +816,10 @@ protected:
         Overridden Event handlers
      *************************************************************************/
     virtual void onSized(ElementEventArgs& e);
-    virtual void onMouseButtonDown(MouseEventArgs& e);
-    virtual	void onMouseWheel(MouseEventArgs& e);
-    virtual void onMouseMove(MouseEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
+    virtual void onScroll(PointerEventArgs& e);
+    virtual void onPointerMove(PointerEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*************************************************************************
         Implementation Data
@@ -849,6 +850,8 @@ private:
         Private methods
      *************************************************************************/
     void addTreeProperties(void);
+    void handleSelection(Vector2f local_pos, bool cumulative, bool range);
+
     Rectf d_itemArea;
 };
 

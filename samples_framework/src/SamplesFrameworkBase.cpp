@@ -63,12 +63,6 @@
 #   include "CEGuiDirectFBBaseApplication.h"
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
-#       include "CEGuiD3D9BaseApplication.h"
-#   endif
-#   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE
-#       include "CEGuiD3D10BaseApplication.h"
-#   endif
 #   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
 #       include "CEGuiD3D11BaseApplication.h"
 #   endif
@@ -79,6 +73,7 @@
 #include "CEGuiBaseApplication.h"
 
 #include "CEGUI/CEGUI.h"
+#include "CEGuiRendererSelector.h"
 
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -159,12 +154,7 @@ bool SamplesFrameworkBase::runApplication()
     d_rendererSelector = new Win32CEGuiRendererSelector;
 
     // enable renderer types supported for Win32
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
-    d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
-#endif
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE
-    d_rendererSelector->setRendererAvailability(Direct3D10GuiRendererType);
-#endif
+
 #ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
     d_rendererSelector->setRendererAvailability(Direct3D11GuiRendererType);
 #endif
@@ -219,16 +209,6 @@ bool SamplesFrameworkBase::runApplication()
             break;
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
-        case Direct3D9GuiRendererType:
-            d_baseApp = new CEGuiD3D9BaseApplication();
-            break;
-#endif // DX9
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE
-        case Direct3D10GuiRendererType:
-            d_baseApp = new CEGuiD3D10BaseApplication();
-            break;
-#endif // DX10
 #ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
         case Direct3D11GuiRendererType:
             d_baseApp = new CEGuiD3D11BaseApplication();
