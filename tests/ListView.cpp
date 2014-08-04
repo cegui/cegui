@@ -29,9 +29,11 @@
 // to go through GUIContext, or inherit from widgets in order to test them.
 #define protected public
 
-#include "CEGUI/CEGUI.h"
-#include "ItemModelStub.h"
+#include "CEGUI/views/ListView.h"
 #include "CEGUI/widgets/Scrollbar.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/WindowManager.h"
+#include "ItemModelStub.h"
 
 using namespace CEGUI;
 

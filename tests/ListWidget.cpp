@@ -26,7 +26,8 @@
 ***************************************************************************/
 #include <boost/test/unit_test.hpp>
 
-#include "CEGUI/CEGUI.h"
+#include "CEGUI/widgets/ListWidget.h"
+#include "CEGUI/WindowManager.h"
 
 using namespace CEGUI;
 

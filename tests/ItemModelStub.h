@@ -27,7 +27,7 @@
 #ifndef _CEGUITestsItemModelStub_h_
 #define _CEGUITestsItemModelStub_h_
 
-#include "CEGUI/CEGUI.h"
+#include "CEGUI/views/ItemModel.h"
 #include <vector>
 
 // TODO: see if we can migrate basic logic from this to an abstract base

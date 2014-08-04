@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include <boost/test/unit_test.hpp>
 
-#include "CEGUI/CEGUI.h"
+#include "CEGUI/views/StandardItemModel.h"
 
 using namespace CEGUI;
 

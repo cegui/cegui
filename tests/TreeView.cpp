@@ -27,7 +27,9 @@
 #include <boost/test/unit_test.hpp>
 
 #define protected public
-#include "CEGUI/CEGUI.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/views/TreeView.h"
 #include "InventoryModel.h"
 
 using namespace CEGUI;
