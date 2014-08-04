@@ -87,7 +87,7 @@ SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
 //----------------------------------------------------------------------------//
 SamplesFramework::~SamplesFramework()
 {
-    if(d_metaDataWinMgr)
+    if (d_metaDataWinMgr)
         delete d_metaDataWinMgr;
 }
 

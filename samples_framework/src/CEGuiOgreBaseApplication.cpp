@@ -25,11 +25,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #ifdef HAVE_CONFIG_H
-#   include "config.h"
+    #include "config.h"
 #endif
 
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 // this controls conditional compile of file for Apple
@@ -41,6 +41,17 @@
 #include "SamplesFrameworkBase.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+#include <Compositor/OgreCompositorManager2.h>
+#include <Compositor/OgreCompositorCommon.h>
+#include <Compositor/OgreCompositorWorkspaceDef.h>
+#include <Compositor/OgreCompositorWorkspace.h>
+#include <Compositor/OgreCompositorNodeDef.h>
+#include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
+#include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
+#include <Compositor/OgreTextureDefinition.h>
+#endif //CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
@@ -68,18 +79,85 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create the scene manager
         SceneManager* sm = d_ogreRoot->
-            createSceneManager(ST_GENERIC, "SampleSceneMgr");
+            createSceneManager(ST_GENERIC, 2, INSTANCING_CULLING_SINGLETHREAD,
+            "SampleSceneMgr");
+
         // Create and initialise the camera
         d_camera = sm->createCamera("SampleCam");
         d_camera->setPosition(Vector3(0,0,500));
         d_camera->lookAt(Vector3(0,0,-300));
         d_camera->setNearClipDistance(5);
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+
+        Ogre::CompositorManager2* manager = d_ogreRoot->getCompositorManager2();
+
+        // The compositor has to be initialized
+        if (!manager)
+        {
+            d_ogreRoot->initialiseCompositor();
+            manager = d_ogreRoot->getCompositorManager2();
+        }
+
+        // Create a full screen workspace that just clears the screen
+        
+
+        // Define the workspace first
+        Ogre::CompositorWorkspaceDef* templatedworkspace = manager->addWorkspaceDefinition(
+            "Sample_workspace");
+
+        // Create a node for rendering on top of everything
+        Ogre::CompositorNodeDef* rendernode = manager->addNodeDefinition("SampleCleaner");
+        
+        rendernode->addTextureSourceName("renderwindow", 0,
+            Ogre::TextureDefinitionBase::TEXTURE_INPUT);
+
+        rendernode->setNumTargetPass(1);
+        // Pass for it
+        Ogre::CompositorTargetDef* targetpasses = rendernode->addTargetPass("renderwindow");
+        targetpasses->setNumPasses(2);
+
+        Ogre::CompositorPassClearDef* clearpass =
+            static_cast<Ogre::CompositorPassClearDef*>(targetpasses->
+            addPass(Ogre::PASS_CLEAR));
+
+        // Only clear depth and stencil since we are rendering on top
+        // of an existing image
+        clearpass->mClearBufferFlags = Ogre::FBT_COLOUR | Ogre::FBT_DEPTH |
+            Ogre::FBT_STENCIL;
+
+        // Set the same colour as in below
+        clearpass->mColourValue = ColourValue(0.f, 0.f, 0.f, 0.f);
+        // Other clear value defaults should be fine
+
+        // Not sure if the samples want anything in their scenes so every group
+        // will be rendered
+        Ogre::CompositorPassSceneDef* scenepass =
+            static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
+            addPass(Ogre::PASS_SCENE));
+
+        // Just render the overlay group since it is the only one used
+        scenepass->mFirstRQ = Ogre::RENDER_QUEUE_BACKGROUND;
+        scenepass->mLastRQ = Ogre::RENDER_QUEUE_MAX;
+
+        // Connect the main render target to the node
+        templatedworkspace->connectOutput("SampleCleaner", 0);
+
+        // Create the workspace for rendering
+
+        // This needs to be rendered first...
+        manager->addWorkspace(sm, d_window, d_camera, "Sample_workspace",
+            true, 0);
+
+#else
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
         vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+        
 
         // create ogre renderer, image codec and resource provider.
         CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create();
@@ -184,7 +262,6 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     rgm.createResourceGroup("schemas");
     rgm.createResourceGroup("samples");
 
-
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
 
@@ -236,10 +313,10 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
     // Check if the config exists
     bool success = d_ogreRoot->restoreConfig();
 
-    if(!success)
+    if (!success)
     {
         // If not we set our default values for all renderers if possible
-        const Ogre::RenderSystemList& renderSystems = d_ogreRoot->getAvailableRenderers(); 
+        const Ogre::RenderSystemList& renderSystems = d_ogreRoot->getAvailableRenderers();
 
         size_t renderSystemCount = renderSystems.size();
         for(size_t i = 0; i < renderSystemCount; ++i)
@@ -249,31 +326,31 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
             Ogre::ConfigOptionMap::iterator foundConfigIter;
 
             foundConfigIter = configOptions.find("Full Screen");
-            if(foundConfigIter != configOptions.end())
-                currentRenderSys->setConfigOption("Full Screen","No");  
+            if (foundConfigIter != configOptions.end())
+                currentRenderSys->setConfigOption("Full Screen","No");
 
             foundConfigIter = configOptions.find("Video Mode");
-            if(foundConfigIter != configOptions.end())
+            if (foundConfigIter != configOptions.end())
             {
                 Ogre::StringVector::iterator optionsIterCur = foundConfigIter->second.possibleValues.begin();
                 Ogre::StringVector::iterator optionsIterEnd = foundConfigIter->second.possibleValues.end();
                 while(optionsIterCur != optionsIterEnd)
                 {
-                    if(optionsIterCur->compare("1280 x 768 @ 32-bit colour") == 0)
+                    if (optionsIterCur->compare("1280 x 768 @ 32-bit colour") == 0)
                     {
                         currentRenderSys->setConfigOption("Video Mode", *optionsIterCur);
                         break;
                     }
                     ++optionsIterCur;
                 }
-                if(optionsIterCur == optionsIterEnd)
+                if (optionsIterCur == optionsIterEnd)
                 {
                     optionsIterCur = foundConfigIter->second.possibleValues.begin();
                     while(optionsIterCur != optionsIterEnd)
                     {
-                        if(optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
+                        if (optionsIterCur->compare(0, 10, "1280 x 768") == 0)
                         {
-                            currentRenderSys->setConfigOption("Video Mode", *optionsIterCur); 
+                            currentRenderSys->setConfigOption("Video Mode", *optionsIterCur);
                             break;
                         }
                         ++optionsIterCur;
@@ -283,7 +360,6 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
         }
     }
 }
-
 
 //----------------------------------------------------------------------------//
 
@@ -371,7 +447,7 @@ CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 {
-    if(d_window->isClosed() || d_sampleApp->isQuitting())
+    if (d_window->isClosed() || d_sampleApp->isQuitting())
         return false;
 
     static_cast<CEGuiOgreBaseApplication*>(d_baseApp)->
@@ -409,7 +485,6 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 
     return true;
 }
-
 
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
@@ -482,7 +557,6 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
         CEGUI::Sizef(static_cast<float>(rw->getWidth()),
         static_cast<float>(rw->getHeight())));
 
-
     const OIS::MouseState& mouseState = d_mouse->getMouseState();
     mouseState.width = rw->getWidth();
     mouseState.height = rw->getHeight();
@@ -491,6 +565,4 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 //----------------------------------------------------------------------------//
 
 #endif
-
-
 

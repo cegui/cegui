@@ -3252,6 +3252,12 @@ protected:
 
     /*!
     \brief
+        Updates this Window's geometry buffers alpha value
+    */
+    void updateGeometryBuffersAlpha();
+
+    /*!
+    \brief
     */
     void generateAutoRepeatEvent(PointerSource source);
 

@@ -29,7 +29,15 @@
 
 #include "CEGUI/Base.h"
 
+#include "CEGUI/ModuleConfig.h"
 #include "glm/glm.hpp"
+
+#ifdef CEGUI_BUILD_RENDERER_OGRE
+namespace Ogre
+{
+    class Matrix4;
+}
+#endif
 
 #include <map>
 #include <string>
@@ -38,7 +46,6 @@
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
-
 
 namespace CEGUI
 {
@@ -213,7 +220,6 @@ public:
     bool equal(const ShaderParameter* other_parameter) const;
     void takeOverParameterValue(const ShaderParameter* other_parameter);
 
-    //! The float parameter value
     glm::mat4 d_parameterValue;
 };
 
@@ -229,7 +235,6 @@ public:
     ShaderParameterBindings();
     ~ShaderParameterBindings();
 
-
     /*!
     \brief
         Adds a matrix shader parameter to the parameter bindings
@@ -240,7 +245,8 @@ public:
     \param matrix
         The pointer to the matrix
     */
-    void setParameter(const std::string& parameter_name, const glm::mat4& matrix);
+    void setParameter(const std::string& parameter_name, 
+        const glm::mat4& matrix);
 
     /*!
     \brief
@@ -252,9 +258,21 @@ public:
     \param texture
         The pointer to the CEGUI::Texture
     */
-    void setParameter(const std::string& parameter_name, const CEGUI::Texture* texture);
+    void setParameter(const std::string& parameter_name, 
+        const CEGUI::Texture* texture);
 
+    /*!
+    \brief
+        Adds a float shader parameter to the parameter bindings
 
+    \param parameter_name
+        The name of the parameter as used by the shader
+
+    \param fvalue
+        The value of the float parameter
+    */
+    void setParameter(const std::string& parameter_name, 
+        const float fvalue);
 
     /*!
     \brief
@@ -304,6 +322,5 @@ protected:
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
-
 
 #endif

@@ -381,6 +381,26 @@ namespace pyplusplus
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)> AttributeMap;
 
 
+        typedef std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::EventLinkDefinition*)> EventLinkDefinitionMap;
+        typedef std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::ImagerySection*)> ImagerySectionMap;
+        typedef std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::NamedArea*)> NamedAreaMap;
+        typedef std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::PropertyDefinitionBase*)> PropertyDefinitionBaseMap;
+        typedef std::map<CEGUI::String, CEGUI::PropertyInitialiser*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::PropertyInitialiser*)> PropertyInitialiserMap;
+        typedef std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::StateImagery*)> StateImageryMap;
+        typedef std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WidgetComponent*)> WidgetComponentMap;
+        typedef std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WidgetLookFeel*)> WidgetLookFeelMap;
+
+        typedef CEGUI::ConstVectorIterator<std::vector<CEGUI::PropertyInitialiser
+           CEGUI_VECTOR_ALLOC(CEGUI::PropertyInitialiser)> > PropertyInitialiserVectorIterator;
+
         typedef CEGUI::TypedProperty<float> TypedPropertyFloat;
         typedef CEGUI::FalagardPropertyBase<float> FalagardPropertyBaseFloat;
         typedef CEGUI::PropertyDefinition<float> PropertyDefinitionFloat;
