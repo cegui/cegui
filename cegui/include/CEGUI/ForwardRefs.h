@@ -171,7 +171,6 @@ class RadioButton;
 class ScrollablePane;
 class Scrollbar;
 class ScrolledContainer;
-class ScrolledItemListBase;
 class SequentialLayoutContainer;
 class Slider;
 class Spinner;
