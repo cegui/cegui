@@ -2846,16 +2846,10 @@ bool Window::isPropertyAtDefault(const Property* property) const
                 WidgetLookManager::getSingleton().
                     getWidgetLook(getParent()->getLookNFeel());
 
-            // if this property is a target of a PropertyLink, we always report
-            // as being at default.  NB: This check is only performed on the
-            // immediate parent.
-            const WidgetLookFeel::PropertyLinkDefinitionList& pldl(wlf.getPropertyLinkDefinitions());
-            WidgetLookFeel::PropertyLinkDefinitionList::const_iterator i = pldl.begin();
-            for (; i != pldl.end(); ++i)
-            {
-                if ((*i)->getPropertyName() == property->getName())
-                    return true;
-            }
+            // If this property is a target of a PropertyLink, we always report it as being at default.
+            WidgetLookFeel::StringSet propDefNames = wlf.getPropertyDefinitionNames(true);
+            if(propDefNames.find(property->getName()) != propDefNames.end())
+                return true;
 
             // for an auto-window see if the property is is set via a Property
             // tag within the WidgetComponent that defines it.
