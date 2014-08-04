@@ -447,18 +447,115 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
 }
 
 //---------------------------------------------------------------------------//
-bool WidgetLookFeel::isStateImageryPresent(const String& state) const
+bool WidgetLookFeel::isStateImageryPresent(const String& name, bool includeInheritedLook) const
 {
-    StateImageryMap::const_iterator i = d_stateImageryMap.find(state);
+    StateImageryMap::const_iterator i = d_stateImageryMap.find(name);
     
     if (i != d_stateImageryMap.end())
         return true;
 
-    if (d_inheritedLookName.empty())
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
         return false;
  
-    return WidgetLookManager::getSingleton().
-        getWidgetLook(d_inheritedLookName).isStateImageryPresent(state);
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isStateImageryPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isImagerySectionPresent(const String& name, bool includeInheritedLook) const
+{
+    ImagerySectionMap::const_iterator i = d_imagerySectionMap.find(name);
+    
+    if (i != d_imagerySectionMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+ 
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isImagerySectionPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isNamedAreaPresent(const String& name, bool includeInheritedLook) const
+{
+    NamedAreaMap::const_iterator area = d_namedAreaMap.find(name);
+
+    if (area != d_namedAreaMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isNamedAreaPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isWidgetComponentPresent(const String& name, bool includeInheritedLook) const
+{
+    WidgetComponentMap::const_iterator widgetComponentIter = d_widgetComponentMap.find(name);
+
+    if (widgetComponentIter != d_widgetComponentMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isWidgetComponentPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isPropertyInitialiserPresent(const String& name, bool includeInheritedLook) const
+{
+    PropertyInitialiserMap::const_iterator propInitialiserIter = d_propertyInitialiserMap.find(name);
+
+    if (propInitialiserIter != d_propertyInitialiserMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isPropertyInitialiserPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isPropertyDefinitionPresent(const String& name, bool includeInheritedLook) const
+{
+    PropertyDefinitionMap::const_iterator propDefIter = d_propertyDefinitionMap.find(name);
+
+    if (propDefIter != d_propertyDefinitionMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isPropertyDefinitionPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isPropertyLinkDefinitionPresent(const String& name, bool includeInheritedLook) const
+{
+    PropertyLinkDefinitionMap::const_iterator propLinkDefIter = d_propertyLinkDefinitionMap.find(name);
+
+    if (propLinkDefIter != d_propertyLinkDefinitionMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isPropertyLinkDefinitionPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isEventLinkDefinitionPresent(const String& name, bool includeInheritedLook) const
+{
+    EventLinkDefinitionMap::const_iterator eventLinkDefIter = d_eventLinkDefinitionMap.find(name);
+
+    if (eventLinkDefIter != d_eventLinkDefinitionMap.end())
+        return true;
+
+    if (d_inheritedLookName.empty() || !includeInheritedLook)
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isEventLinkDefinitionPresent(name, true);
 }
 
 //---------------------------------------------------------------------------//
@@ -499,21 +596,6 @@ void WidgetLookFeel::renameNamedArea(const String& oldName, const String& newNam
 void WidgetLookFeel::clearNamedAreas()
 {
     d_namedAreaMap.clear();
-}
-
-//---------------------------------------------------------------------------//
-bool WidgetLookFeel::isNamedAreaDefined(const String& name) const
-{
-    NamedAreaMap::const_iterator area = d_namedAreaMap.find(name);
-
-    if (area != d_namedAreaMap.end())
-        return true;
-
-    if (d_inheritedLookName.empty())
-        return false;
-
-    return WidgetLookManager::getSingleton().
-        getWidgetLook(d_inheritedLookName).isNamedAreaDefined(name);
 }
 
 //---------------------------------------------------------------------------//
@@ -635,7 +717,6 @@ WidgetLookFeel::StringSet WidgetLookFeel::getImagerySectionNames(bool includeInh
 
     return result;
 }
-
 
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet WidgetLookFeel::getNamedAreaNames(bool includeInheritedLook) const
@@ -1033,10 +1114,10 @@ bool WidgetLookFeel::handleFontRenderSizeChange(Window& window,
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::StateImageryPointerMap WidgetLookFeel::getStateImageryMap(bool includeInheritedElements)
+WidgetLookFeel::StateImageryPointerMap WidgetLookFeel::getStateImageryMap(bool includeInheritedLook)
 {
     StateImageryPointerMap pointerMap;
-    StringSet nameSet = getStateImageryNames(includeInheritedElements);
+    StringSet nameSet = getStateImageryNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1064,10 +1145,10 @@ WidgetLookFeel::StateImageryPointerMap WidgetLookFeel::getStateImageryMap(bool i
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bool includeInheritedElements)
+WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bool includeInheritedLook)
 {
     ImagerySectionPointerMap pointerMap;
-    StringSet nameSet = getImagerySectionNames(includeInheritedElements);
+    StringSet nameSet = getImagerySectionNames(includeInheritedLook);
     
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1095,10 +1176,10 @@ WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bo
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::NamedAreaPointerMap WidgetLookFeel::getNamedAreaMap(bool includeInheritedElements)
+WidgetLookFeel::NamedAreaPointerMap WidgetLookFeel::getNamedAreaMap(bool includeInheritedLook)
 {
     NamedAreaPointerMap pointerMap;
-    StringSet nameSet = getNamedAreaNames(includeInheritedElements);
+    StringSet nameSet = getNamedAreaNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1126,10 +1207,10 @@ WidgetLookFeel::NamedAreaPointerMap WidgetLookFeel::getNamedAreaMap(bool include
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::WidgetComponentPointerMap WidgetLookFeel::getWidgetComponentMap(bool includeInheritedElements)
+WidgetLookFeel::WidgetComponentPointerMap WidgetLookFeel::getWidgetComponentMap(bool includeInheritedLook)
 {
     WidgetComponentPointerMap pointerMap;
-    StringSet nameSet = getWidgetComponentNames(includeInheritedElements);
+    StringSet nameSet = getWidgetComponentNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1157,10 +1238,10 @@ WidgetLookFeel::WidgetComponentPointerMap WidgetLookFeel::getWidgetComponentMap(
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::PropertyInitialiserPointerMap WidgetLookFeel::getPropertyInitialiserMap(bool includeInheritedElements)
+WidgetLookFeel::PropertyInitialiserPointerMap WidgetLookFeel::getPropertyInitialiserMap(bool includeInheritedLook)
 {
     PropertyInitialiserPointerMap pointerMap;
-    StringSet nameSet = getPropertyInitialiserNames(includeInheritedElements);
+    StringSet nameSet = getPropertyInitialiserNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1189,10 +1270,10 @@ WidgetLookFeel::PropertyInitialiserPointerMap WidgetLookFeel::getPropertyInitial
 
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefinitionMap(bool includeInheritedElements)
+WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefinitionMap(bool includeInheritedLook)
 {
     PropertyDefinitionBasePointerMap pointerMap;
-    StringSet nameSet = getPropertyDefinitionNames(includeInheritedElements);
+    StringSet nameSet = getPropertyDefinitionNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1220,10 +1301,10 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefi
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLinkDefinitionMap(bool includeInheritedElements)
+WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLinkDefinitionMap(bool includeInheritedLook)
 {
     PropertyDefinitionBasePointerMap pointerMap;
-    StringSet nameSet = getPropertyLinkDefinitionNames(includeInheritedElements);
+    StringSet nameSet = getPropertyLinkDefinitionNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();
@@ -1252,10 +1333,10 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLink
 
  
 //---------------------------------------------------------------------------//
-WidgetLookFeel::EventLinkDefinitionPointerMap WidgetLookFeel::getEventLinkDefinitionMap(bool includeInheritedElements)
+WidgetLookFeel::EventLinkDefinitionPointerMap WidgetLookFeel::getEventLinkDefinitionMap(bool includeInheritedLook)
 {
     EventLinkDefinitionPointerMap pointerMap;
-    StringSet nameSet = getEventLinkDefinitionNames(includeInheritedElements);
+    StringSet nameSet = getEventLinkDefinitionNames(includeInheritedLook);
 
     StringSet::iterator iter = nameSet.begin();
     StringSet::iterator iterEnd = nameSet.end();

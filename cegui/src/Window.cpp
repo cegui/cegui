@@ -2855,16 +2855,15 @@ bool Window::isPropertyAtDefault(const Property* property) const
             // tag within the WidgetComponent that defines it.
             if (d_autoWindow)
             {
-                // find the widget component if possible
-                const WidgetComponent* const wc = wlf.findWidgetComponent(getName());
-                if (wc)
+                // Check if a widget component with the name was added to the look
+                if(wlf.isWidgetComponentPresent(getName()))
                 {
-                    const PropertyInitialiser* const propinit =
-                        wc->findPropertyInitialiser(property->getName());
+                    const WidgetComponent& widgetComp = wlf.getWidgetComponent(getName());
 
-                    if (propinit)
-                        return (getProperty(property->getName()) ==
-                                propinit->getInitialiserValue());
+                    const PropertyInitialiser* const propInitialiser = widgetComp.findPropertyInitialiser(property->getName());
+
+                    if (propInitialiser)
+                        return (getProperty(property->getName()) == propInitialiser->getInitialiserValue());
                 }
             }
         }
