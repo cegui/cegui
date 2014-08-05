@@ -172,7 +172,7 @@ protected:
     virtual void    onPointerPressHold(PointerEventArgs& e);
     virtual void    onPointerActivate(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-    virtual void    onListContentsChanged(WindowEventArgs& e);
+    virtual void    onViewContentsChanged(WindowEventArgs& e);
     virtual void    onSelectionChanged(WindowEventArgs& e);
 
 	/*************************************************************************

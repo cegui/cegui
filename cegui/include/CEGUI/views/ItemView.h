@@ -153,6 +153,8 @@ public:
     static const String EventSelectionChanged;
     static const String EventMultiselectModeChanged;
     static const String EventSortModeChanged;
+    //! Triggered when items are added, removed or when the view's item are cleared.
+    static const String EventViewContentsChanged;
 
     //!Sets the ItemModel to be used inside this view.
     virtual void setModel(ItemModel* item_model);
@@ -328,6 +330,7 @@ protected:
     virtual void onSelectionChanged(WindowEventArgs& args);
     virtual void onMultiselectModeChanged(WindowEventArgs& args);
     virtual void onSortModeChanged(WindowEventArgs& args);
+    virtual void onViewContentsChanged(WindowEventArgs& args);
 
     virtual void onScroll(PointerEventArgs& e);
     virtual void onPointerPressHold(PointerEventArgs& e);
