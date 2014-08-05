@@ -131,7 +131,7 @@ void Combobox::initialiseComponents(void)
 	editbox->subscribeEvent(Editbox::EventEditboxFull, Event::Subscriber(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this));
 	editbox->subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&CEGUI::Combobox::editbox_TextAcceptedEventHandler, this));
 	editbox->subscribeEvent(Editbox::EventTextChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextChangedEventHandler, this));
-    droplist->subscribeEvent(ListWidget::EventListContentsChanged,
+    droplist->subscribeEvent(ListWidget::EventViewContentsChanged,
         Event::Subscriber(&Combobox::listwidget_ListContentsChangedHandler, this));
     droplist->subscribeEvent(ListWidget::EventSelectionChanged,
         Event::Subscriber(&Combobox::listwidget_ListSelectionChangedHandler, this));

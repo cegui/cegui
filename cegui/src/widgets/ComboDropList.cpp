@@ -109,14 +109,14 @@ void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 /*************************************************************************
     Handler for when list content has changed
 *************************************************************************/
-void ComboDropList::onListContentsChanged(WindowEventArgs& e)
+void ComboDropList::onViewContentsChanged(WindowEventArgs& e)
 {
     // basically see if our 'sticky' selection was removed
     if ((d_lastItemSelected) && !isItemInList(d_lastItemSelected))
         d_lastItemSelected = 0;
 
     // base class processing
-    ListWidget::onListContentsChanged(e);
+    ListWidget::onViewContentsChanged(e);
 }
 
 /*************************************************************************

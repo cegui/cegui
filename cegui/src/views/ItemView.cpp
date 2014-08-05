@@ -118,6 +118,7 @@ const String ItemView::EventHorzScrollbarDisplayModeChanged("HorzScrollbarDispla
 const String ItemView::EventSelectionChanged("SelectionChanged");
 const String ItemView::EventMultiselectModeChanged("MultiselectModeChanged");
 const String ItemView::EventSortModeChanged("SortModeChanged");
+const String ItemView::EventViewContentsChanged("ViewContentsChanged");
 
 //----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
@@ -286,6 +287,8 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
     }
 
     invalidateView(false);
+    WindowEventArgs evt_args(this);
+    onViewContentsChanged(evt_args);
     return true;
 }
 
@@ -318,6 +321,9 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
 
     WindowEventArgs wargs(this);
     onSelectionChanged(wargs);
+
+    WindowEventArgs evt_args(this);
+    onViewContentsChanged(evt_args);
     return true;
 }
 
@@ -810,6 +816,12 @@ void ItemView::onSortModeChanged(WindowEventArgs& args)
     invalidateView(false);
     //TODO: make all events be triggered on view's event namespace.
     fireEvent(EventSortModeChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::onViewContentsChanged(WindowEventArgs& args)
+{
+    fireEvent(EventViewContentsChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
