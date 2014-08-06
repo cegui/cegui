@@ -188,8 +188,8 @@ BOOST_AUTO_TEST_CASE(EnsureItemIsVisible_ScrollsHorizontallyAndVertically)
 
     view->ensureItemIsVisible(model.makeIndex(0, model.getRootIndex()));
 
-    BOOST_REQUIRE_CLOSE(0, view->getVertScrollbar()->getScrollPosition(), 1);
-    BOOST_REQUIRE_CLOSE(0, view->getHorzScrollbar()->getScrollPosition(), 1);
+    BOOST_REQUIRE_CLOSE(0.0f, view->getVertScrollbar()->getScrollPosition(), 1.0f);
+    BOOST_REQUIRE_CLOSE(0.0f, view->getHorzScrollbar()->getScrollPosition(), 1.0f);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

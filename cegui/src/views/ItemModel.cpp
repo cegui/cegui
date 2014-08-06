@@ -50,6 +50,12 @@ ModelIndex::ModelIndex(void* model_data /*= 0*/) :
 }
 
 //----------------------------------------------------------------------------//
+bool ModelIndex::operator==(const ModelIndex& other) const
+{
+    return d_modelData == other.d_modelData;
+}
+
+//----------------------------------------------------------------------------//
 ItemModel::~ItemModel()
 {
 }

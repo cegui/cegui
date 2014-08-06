@@ -33,6 +33,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/EventSet.h"
+#include "CEGUI/ForwardRefs.h"
 #include "CEGUI/String.h"
 
 namespace CEGUI
@@ -63,6 +64,14 @@ public:
         to be able to manage its data and logic.
     */
     void* d_modelData;
+
+    bool operator==(const ModelIndex& other) const;
+
+    inline friend std::ostream& operator<<(std::ostream& os, const ModelIndex& arg)
+    {
+        os << "CEGUI::ModelIndex(" << arg.d_modelData << ")";
+        return os;
+    }
 };
 
 /*!
@@ -81,8 +90,6 @@ enum ItemDataRole
     //! This marks the beginning of the user-defined item data roles
     IDR_UserDefinedItemDataRole = 0x1000
 };
-
-class ItemModel;
 
 /*!
 \brief

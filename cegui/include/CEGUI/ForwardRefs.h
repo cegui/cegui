@@ -184,7 +184,15 @@ class Tree;
 class TreeItem;
 class VerticalLayoutContainer;
 
+/*************************************************************************
+    Forward declare model-view classes.
+*************************************************************************/
+class ItemModel;
 class ListView;
+class ListWidget;
+class ModelIndex;
+class StandardItemModel;
+class StandardItem;
 class TreeView;
 
 /*************************************************************************
@@ -197,12 +205,14 @@ class FontEventArgs;
 class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
 class KeyEventArgs;
+class ModelEventARgs;
 class PointerIndicatorEventArgs;
 class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;
 class ResourceEventArgs;
 class TreeEventArgs;
+class TreeViewEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
 

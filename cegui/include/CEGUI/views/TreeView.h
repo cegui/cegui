@@ -29,6 +29,9 @@
 #ifndef _CEGUITreeView_h_
 #define _CEGUITreeView_h_
 
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/InputEvent.h"
+#include "CEGUI/ForwardRefs.h"
 #include "CEGUI/views/ItemView.h"
 #include <vector>
 
@@ -64,7 +67,14 @@ public:
     virtual float getSubtreeExpanderXIndent(int depth) const = 0;
 };
 
-class TreeView;
+class CEGUIEXPORT TreeViewEventArgs : public WindowEventArgs
+{
+public:
+    TreeViewEventArgs(TreeView* wnd, ModelIndex index);
+
+    //! The index affected by the event.
+    ModelIndex d_index;
+};
 
 class CEGUIEXPORT TreeViewItemRenderingState
 {
@@ -111,6 +121,8 @@ public:
     static const String WidgetTypeName;
     //! Namespace for global events
     static const String EventNamespace;
+    static const String EventSubtreeExpanded;
+    static const String EventSubtreeCollapsed;
 
     TreeView(const String& type, const String& name);
 
@@ -138,6 +150,9 @@ protected:
 
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenAdded(const EventArgs& args);
+
+    virtual void onSubtreeExpanded(TreeViewEventArgs& args);
+    virtual void onSubtreeCollapsed(TreeViewEventArgs& args);
 
 private:
     typedef void (TreeView::*TreeViewItemAction)(
