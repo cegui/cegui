@@ -28,6 +28,7 @@
 
 #define protected public
 #include "CEGUI/Font.h"
+#include "CEGUI/Event.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/views/TreeView.h"
 #include "InventoryModel.h"
@@ -45,12 +46,35 @@ struct TreeViewFixture
         view->setItemTooltipsEnabled(true);
         font_height = view->getFont()->getFontHeight();
         expander_width = view->getViewRenderer()->getSubtreeExpanderSize().d_width;
+
+        view->subscribeEvent(TreeView::EventSubtreeExpanded,
+            Event::Subscriber(&TreeViewFixture::onSubtreeExpanded, this));
+        view->subscribeEvent(TreeView::EventSubtreeCollapsed,
+            Event::Subscriber(&TreeViewFixture::onSubtreeCollapsed, this));
     }
+
+    bool onSubtreeExpanded(const EventArgs& args)
+    {
+        expanded_nodes.push_back(
+            static_cast<const TreeViewEventArgs&>(args).d_index);
+        return true;
+    }
+
+    bool onSubtreeCollapsed(const EventArgs& args)
+    {
+        collapsed_nodes.push_back(
+            static_cast<const TreeViewEventArgs&>(args).d_index);
+        return true;
+    }
+
 
     TreeView* view;
     InventoryModel model;
     float font_height;
     float expander_width;
+
+    std::vector<ModelIndex> expanded_nodes;
+    std::vector<ModelIndex> collapsed_nodes;
 };
 
 //----------------------------------------------------------------------------//
@@ -303,7 +327,7 @@ BOOST_AUTO_TEST_CASE(PointerMoved_OverSubtreeExpander_DoesNotTriggerExpanding)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseScenario)
+BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseEventsFired)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
@@ -313,7 +337,10 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseScenario)
 
     PointerEventArgs args =
         createPointerEventArgs(expander_width / 2, font_height / 2, view);
+    ModelIndex target_node = model.makeIndex(0, model.getRootIndex());
     view->onPointerPressHold(args);
+    BOOST_REQUIRE_EQUAL(target_node, expanded_nodes.at(0));
+    BOOST_REQUIRE(collapsed_nodes.empty());
     view->prepareForRender();
 
     const std::vector<TreeViewItemRenderingState*>& children =
@@ -323,6 +350,8 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseScenario)
 
     // collapse
     view->onPointerPressHold(args);
+    BOOST_REQUIRE_EQUAL(target_node, expanded_nodes.at(0));
+    BOOST_REQUIRE_EQUAL(target_node, collapsed_nodes.at(0));
     BOOST_REQUIRE(!children.at(0)->d_subtreeIsExpanded);
     BOOST_REQUIRE_EQUAL(0, children.at(0)->d_renderedChildren.size());
 }
@@ -341,6 +370,11 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandChild)
         view->getViewRenderer()->getSubtreeExpanderXIndent(1) + expander_width / 2,
         font_height + font_height / 2, view);
     view->onPointerPressHold(args);
+    ModelIndex first_node = model.makeIndex(0, model.getRootIndex());
+    BOOST_REQUIRE_EQUAL(first_node, expanded_nodes.at(0));
+    BOOST_REQUIRE_EQUAL(model.makeIndex(0, first_node), expanded_nodes.at(1));
+    BOOST_REQUIRE(collapsed_nodes.empty());
+
     view->prepareForRender();
 
     const std::vector<TreeViewItemRenderingState*>& children =

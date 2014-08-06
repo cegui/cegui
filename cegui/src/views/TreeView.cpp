@@ -61,6 +61,15 @@ static const float DefaultSubtreeExpanderMargin = 5.0f;
 //----------------------------------------------------------------------------//
 const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
+const String TreeView::EventSubtreeExpanded("SubtreeExpanded");
+const String TreeView::EventSubtreeCollapsed("SubtreeCollapsed");
+
+//----------------------------------------------------------------------------//
+TreeViewEventArgs::TreeViewEventArgs(TreeView* wnd, ModelIndex index) :
+    WindowEventArgs(wnd),
+    d_index(index)
+{
+}
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState::TreeViewItemRenderingState(TreeView* attached_tree_view) :
@@ -364,15 +373,20 @@ void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 
     item.d_subtreeIsExpanded = !item.d_subtreeIsExpanded;
 
+    TreeViewEventArgs args(this,
+        d_itemModel->makeIndex(item.d_childId, item.d_parentIndex));
+
     if (item.d_subtreeIsExpanded)
     {
         computeRenderedChildrenForItem(item,
             d_itemModel->makeIndex(item.d_childId, item.d_parentIndex),
             d_renderedMaxWidth, d_renderedTotalHeight);
+        onSubtreeExpanded(args);
     }
     else
     {
         clearItemRenderedChildren(item, d_renderedTotalHeight);
+        onSubtreeCollapsed(args);
     }
 
     updateScrollbars();
@@ -482,6 +496,18 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     item->sortChildren();
     invalidateView(false);
     return true;
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::onSubtreeExpanded(TreeViewEventArgs& args)
+{
+    fireEvent(EventSubtreeExpanded, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::onSubtreeCollapsed(TreeViewEventArgs& args)
+{
+    fireEvent(EventSubtreeCollapsed, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
