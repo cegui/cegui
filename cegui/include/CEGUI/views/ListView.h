@@ -45,6 +45,8 @@ class ListView;
 struct CEGUIEXPORT ListViewItemRenderingState
 {
     RenderedString d_string;
+    //! The name of the image that represents the icon
+    String d_icon;
     Sizef d_size;
     bool d_isSelected;
     ModelIndex d_index;

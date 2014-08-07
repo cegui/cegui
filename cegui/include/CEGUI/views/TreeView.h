@@ -88,6 +88,8 @@ public:
     size_t d_totalChildCount;
 
     String d_text;
+    //! The name of the image that represents the icon
+    String d_icon;
     RenderedString d_string;
     Sizef d_size;
     bool d_isSelected;

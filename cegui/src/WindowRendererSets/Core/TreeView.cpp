@@ -28,12 +28,14 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/ImageManager.h"
 
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
 const String FalagardTreeView::TypeName("Core/TreeView");
+static ColourRect ICON_COLOUR_RECT(Colour(1, 1, 1, 1));
 
 //----------------------------------------------------------------------------//
 FalagardTreeView::FalagardTreeView(const String& type) :
@@ -102,6 +104,21 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         item_rect.left(item_pos.d_x + indent);
         item_rect.top(item_pos.d_y + (half_diff < 0 ? -half_diff : 0));
         item_rect.setSize(size);
+
+        if (!item->d_icon.empty())
+        {
+            Image& img = ImageManager::getSingleton().get(item->d_icon);
+
+            Rectf icon_rect(item_rect);
+            icon_rect.setWidth(size.d_height);
+            icon_rect.setHeight(size.d_height);
+
+            Rectf icon_clipper(icon_rect.getIntersection(items_area));
+            img.render(tree_view->getGeometryBuffers(), icon_rect, &icon_clipper,
+                true, ICON_COLOUR_RECT, 1.0f);
+
+            item_rect.left(item_rect.left() + icon_rect.getWidth());
+        }
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
         renderString(tree_view, rendered_string, item_rect,
