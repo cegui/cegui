@@ -40,7 +40,6 @@ ModelEventArgs::ModelEventArgs(ItemModel* item_model, ModelIndex parent_index, s
     d_startId(start_id),
     d_count(count)
 {
-
 }
 
 //----------------------------------------------------------------------------//
@@ -80,4 +79,5 @@ void ItemModel::notifyChildrenDataChanged(ModelIndex parent_index, size_t start_
     ModelEventArgs args(this, parent_index, start_id, count);
     fireEvent(EventChildrenDataChanged, args);
 }
+
 }

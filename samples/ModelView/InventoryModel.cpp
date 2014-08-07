@@ -48,7 +48,7 @@ InventoryModel::InventoryModel() :
 }
 
 //----------------------------------------------------------------------------//
-InventoryItem* InventoryItem::make(const CEGUI::String& name, float weight, InventoryItem* parent)
+InventoryItem* InventoryItem::make(const String& name, float weight, InventoryItem* parent)
 {
     InventoryItem* item = new InventoryItem;
 
@@ -95,6 +95,8 @@ void InventoryModel::load()
     {
         InventoryItem* matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f, backpack);
 
+        matryoshka->d_icon = "DriveIcons/DriveStack";
+
         if (prev_matryoshka != 0)
         {
             prev_matryoshka->d_parent = matryoshka;
@@ -110,6 +112,7 @@ void InventoryModel::load()
     backpack->d_items.push_back(InventoryItem::make("Gepäckaufbewahrungsschein: Seekirchen am Wallersee", 1.0f, backpack));
 
     InventoryItem* beans_can = InventoryItem::make("Beans can", 1.0f, backpack);
+    beans_can->d_icon = "DriveIcons/GlobalDrive";
     InventoryItem* beans = InventoryItem::make("Beans!", 0.1f, beans_can);
     beans_can->d_items.push_back(beans);
 
@@ -132,6 +135,10 @@ void InventoryModel::load()
     {
         InventoryItem* almanach = InventoryItem::make(
             "Almanach " + PropertyHelper<int>::toString(i), 0.34f, d_inventoryRoot);
+
+        if (i % 2 == 0)
+            almanach->d_icon = "DriveIcons/Lime";
+
         d_inventoryRoot->d_items.push_back(almanach);
     }
 }
@@ -188,11 +195,14 @@ String InventoryModel::getData(const ModelIndex& model_index, ItemDataRole role 
         return "";
 
     InventoryItem* item = static_cast<InventoryItem*>(model_index.d_modelData);
-    if (role == CEGUI::IDR_Text)
+    if (role == IDR_Text)
         return item->d_name;
 
-    if (role == CEGUI::IDR_Tooltip)
+    if (role == IDR_Tooltip)
         return "Tooltip for: " + item->d_name;
+
+    if (role == IDR_Icon)
+        return item->d_icon;
 
     return "";
 }
