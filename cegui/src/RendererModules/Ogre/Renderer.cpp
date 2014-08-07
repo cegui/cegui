@@ -225,8 +225,10 @@ String OgreRenderer_impl::d_rendererID(
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 ".");
 
+#if defined(CEGUI_USE_OGRE_COMPOSITOR2)
 int OgreRenderer_impl::s_createdSceneNumber = 0;
 bool OgreRenderer_impl::s_compositorResourcesInitialized = false;
+#endif
 
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
@@ -397,7 +399,7 @@ OgreImageCodec& OgreRenderer::createOgreImageCodec()
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 {
-    CEGUI_DELETE_AO &ic;
+    CEGUI_DELETE_AO ⁣
 }
 
 //----------------------------------------------------------------------------//
@@ -733,7 +735,9 @@ OgreRenderer::~OgreRenderer()
 
     cleanupShaders();
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
     CEGUI_DELETE_AO d_pimpl->d_frameListener;
+#endif
 
     destroyAllGeometryBuffers();
     destroyAllTextureTargets();
@@ -1273,9 +1277,11 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
 Ogre::SceneManager& OgreRenderer::getDummyScene() const{
     return *d_pimpl->d_dummyScene;
 }
+#endif
 
 //----------------------------------------------------------------------------//
 Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t 
