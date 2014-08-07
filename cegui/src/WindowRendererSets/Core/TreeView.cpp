@@ -76,8 +76,11 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         RenderedString& rendered_string = item->d_string;
         Sizef size(item->d_size);
 
+        // center the expander compared to the item's height
+        float half_diff = (size.d_height - d_subtreeExpanderImagerySize.d_height) / 2.0f;
+
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
-        float indent = d_subtreeExpanderImagerySize.d_width;
+        float indent = d_subtreeExpanderImagerySize.d_width + expander_margin * 2;
         if (item->d_totalChildCount > 0)
         {
             const ImagerySection* section = item->d_subtreeIsExpanded
@@ -85,25 +88,26 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
             Rectf button_rect;
             button_rect.left(item_pos.d_x + expander_margin);
-            button_rect.top(item_pos.d_y + expander_margin);
+            button_rect.top(item_pos.d_y +
+                (half_diff > 0 ? half_diff : 0));
             button_rect.setSize(d_subtreeExpanderImagerySize);
 
             Rectf button_clipper(button_rect.getIntersection(items_area));
             section->render(*tree_view, button_rect, 0, &button_clipper);
 
-            indent = button_rect.getWidth() + expander_margin;
+            indent = button_rect.getWidth() + expander_margin * 2;
         }
 
         Rectf item_rect;
         item_rect.left(item_pos.d_x + indent);
-        item_rect.top(item_pos.d_y);
+        item_rect.top(item_pos.d_y + (half_diff < 0 ? -half_diff : 0));
         item_rect.setSize(size);
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
         renderString(tree_view, rendered_string, item_rect,
             tree_view->getFont(), &item_clipper, item->d_isSelected);
 
-        item_pos.d_y += size.d_height;
+        item_pos.d_y += ceguimax(size.d_height, d_subtreeExpanderImagerySize.d_height);
 
         if (item->d_renderedChildren.empty())
             continue;
@@ -157,7 +161,7 @@ float FalagardTreeView::getSubtreeExpanderXIndent(int depth) const
 {
     return depth * (
         d_subtreeExpanderImagerySize.d_width +
-        getView()->getSubtreeExpanderMargin());
+        getView()->getSubtreeExpanderMargin() * 2);
 }
 
 //----------------------------------------------------------------------------//
