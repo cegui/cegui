@@ -29,15 +29,17 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 
 #include "CEGUI/Colour.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Font.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Vector.h"
 
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
 const String FalagardListView::TypeName("Core/ListView");
+static ColourRect ICON_COLOUR_RECT(Colour(1, 1, 1, 1));
 
 //----------------------------------------------------------------------------//
 FalagardListView::FalagardListView(const String& type) :
@@ -82,6 +84,21 @@ void FalagardListView::render(ListView* list_view)
         item_rect.left(item_pos.d_x);
         item_rect.top(item_pos.d_y);
         item_rect.setSize(size);
+
+        if (!item->d_icon.empty())
+        {
+            Image& img = ImageManager::getSingleton().get(item->d_icon);
+
+            Rectf icon_rect(item_rect);
+            icon_rect.setWidth(size.d_height);
+            icon_rect.setHeight(size.d_height);
+
+            Rectf icon_clipper(icon_rect.getIntersection(items_area));
+            img.render(list_view->getGeometryBuffers(), icon_rect, &icon_clipper,
+                true, ICON_COLOUR_RECT, 1.0f);
+
+            item_rect.left(item_rect.left() + icon_rect.getWidth());
+        }
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
