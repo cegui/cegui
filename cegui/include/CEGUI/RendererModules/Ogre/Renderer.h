@@ -354,9 +354,9 @@ public:
     Texture& createTexture(const String& name, const String& filename,
         const String& resourceGroup);
     Texture& createTexture(const String& name, const Sizef& size);
-
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
     Ogre::SceneManager& getDummyScene() const;
-
+#endif
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
     void destroyAllTextures();
