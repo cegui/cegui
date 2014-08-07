@@ -399,7 +399,7 @@ OgreImageCodec& OgreRenderer::createOgreImageCodec()
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 {
-    CEGUI_DELETE_AO ⁣&ic;
+    CEGUI_DELETE_AO &ic;
 }
 
 //----------------------------------------------------------------------------//
