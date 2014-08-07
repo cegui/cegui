@@ -53,6 +53,7 @@ class InventoryItem
 public:
     float d_weight;
     CEGUI::String d_name;
+    CEGUI::String d_icon;
     std::vector<InventoryItem*> d_items;
     InventoryItem* d_parent;
 
@@ -63,7 +64,6 @@ public:
     static InventoryItem* make(const CEGUI::String& name, float weight, InventoryItem* parent = 0);
     friend std::ostream& operator<< (std::ostream& output, const InventoryItem& item);
 };
-
 
 class InventoryModel : public CEGUI::ItemModel
 {

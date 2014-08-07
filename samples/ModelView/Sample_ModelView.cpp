@@ -50,6 +50,8 @@ bool ModelViewDemo::initialise(GUIContext* gui_context)
     WindowManager& win_mgr = WindowManager::getSingleton();
     d_root = win_mgr.loadLayoutFromFile("ModelViewDemo.layout");
 
+    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
+
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
     gui_context->setRootWindow(d_root);

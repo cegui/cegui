@@ -83,7 +83,7 @@ public:
 enum ItemDataRole
 {
     IDR_Text,
-    IDR_ImageDecoration,
+    IDR_Icon,
     IDR_Tooltip,
 
     //! This marks the beginning of the user-defined item data roles
