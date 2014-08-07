@@ -310,7 +310,7 @@ namespace CEGUI
         // not dragging
         else
         {
-            // if pointer is heled pressed (but we're not yet being dragged)
+            // if pointer is held pressed (but we're not yet being dragged)
             if (d_leftPointerHeld)
             {
                 if (isDraggingThresholdExceeded(localPointerPos))
