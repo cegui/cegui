@@ -67,10 +67,9 @@ public:
 
     bool operator==(const ModelIndex& other) const;
 
-    inline friend std::ostream& operator<<(std::ostream& os, const ModelIndex& arg)
+    inline friend std::ostream& operator<< (std::ostream& os, const ModelIndex& arg)
     {
-        os << "CEGUI::ModelIndex(" << arg.d_modelData << ")";
-        return os;
+        return os << "CEGUI::ModelIndex(" << arg.d_modelData << ")";
     }
 };
 
