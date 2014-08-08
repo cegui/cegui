@@ -181,7 +181,9 @@ WindowFactory* WindowFactoryManager::getFactory(const String& type) const
         {
             CEGUI_THROW(UnknownObjectException(
                 "A WindowFactory object, an alias, or mapping for '" + type +
-                "' Window objects is not registered with the system."));
+                "' Window objects is not registered with the system.\n\n"
+                "Have you forgotten to load a scheme using "
+                "CEGUI::SchemeManager::createFromFile(..)?"));
         }
     }
 }
