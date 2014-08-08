@@ -383,7 +383,9 @@ const String& System::getVerboseVersion()
         ret += "10.0";
 #elif _MSC_VER == 1700
         ret += "11.0";
-#elif _MSC_VER > 1700
+#elif _MSC_VER == 1800
+        ret += "12.0";
+#elif _MSC_VER > 1800
         ret += "Great Scott!";
 #endif
 
