@@ -30,195 +30,24 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem() : d_text(""), d_id(0)
+StandardItem::StandardItem() : AbstractItem()
 {
 }
 
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem(String text, uint id) : d_text(text), d_id(id)
-{
-}
-//----------------------------------------------------------------------------//
-StandardItem::~StandardItem()
+StandardItem::StandardItem(const String& text, uint id) : AbstractItem(text), d_id(id)
 {
 }
 
 //----------------------------------------------------------------------------//
-bool StandardItem::operator==(const StandardItem& other) const
+StandardItem::StandardItem(const String& text, const String& icon, uint id /*= 0*/) :
+AbstractItem(text, icon), d_id(id)
 {
-    return getText() == other.getText();
 }
 
 //----------------------------------------------------------------------------//
-bool StandardItem::operator<(const StandardItem& other) const
+StandardItemModel::StandardItemModel() :
+AbstractItemModel<StandardItem>(CEGUI_NEW_AO StandardItem)
 {
-    return getText() < other.getText();
 }
-
-//----------------------------------------------------------------------------//
-StandardItemModel::~StandardItemModel()
-{
-    clear(false);
-}
-
-//----------------------------------------------------------------------------//
-bool StandardItemModel::isValidIndex(const ModelIndex& model_index) const
-{
-    return model_index.d_modelData != 0 && getChildId(model_index) != -1;
-}
-
-//----------------------------------------------------------------------------//
-ModelIndex StandardItemModel::makeIndex(size_t child, const ModelIndex& parent_index)
-{
-    if (child >= d_items.size())
-        return ModelIndex();
-
-    return ModelIndex(d_items[child]);
-}
-
-//----------------------------------------------------------------------------//
-bool StandardItemModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const
-{
-    return compareIndices(index1, index2) == 0;
-}
-
-//----------------------------------------------------------------------------//
-int StandardItemModel::compareIndices(const ModelIndex& index1, const ModelIndex& index2) const
-{
-    if (!isValidIndex(index1) || !isValidIndex(index2))
-        return false;
-
-    if (*getItemForIndex(index1) < *getItemForIndex(index2))
-        return -1;
-
-    return *getItemForIndex(index1) == *getItemForIndex(index2) ? 0 : 1;
-}
-
-//----------------------------------------------------------------------------//
-ModelIndex StandardItemModel::getParentIndex(const ModelIndex& model_index) const
-{
-    return getRootIndex();
-}
-
-//----------------------------------------------------------------------------//
-int StandardItemModel::getChildId(const ModelIndex& model_index) const
-{
-    return getChildId(getItemForIndex(model_index));
-}
-
-//----------------------------------------------------------------------------//
-int StandardItemModel::getChildId(const StandardItem* item) const
-{
-    std::vector<StandardItem*>::const_iterator itor =
-        std::find(d_items.begin(), d_items.end(), item);
-
-    if (itor == d_items.end())
-        return -1;
-
-    return std::distance(d_items.begin(), itor);
-}
-
-//----------------------------------------------------------------------------//
-ModelIndex StandardItemModel::getRootIndex() const
-{
-    return ModelIndex();
-}
-
-//----------------------------------------------------------------------------//
-size_t StandardItemModel::getChildCount(const ModelIndex& model_index) const
-{
-    return d_items.size();
-}
-
-//----------------------------------------------------------------------------//
-String StandardItemModel::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
-{
-    if (!isValidIndex(model_index))
-        return "";
-
-    return getItemForIndex(model_index)->getText();
-}
-
-//----------------------------------------------------------------------------//
-void StandardItemModel::addItem(String text)
-{
-    addItem(new StandardItem(text));
-}
-
-//----------------------------------------------------------------------------//
-void StandardItemModel::addItem(StandardItem* item)
-{
-    if (item == 0)
-        return;
-
-    addItemAtPosition(item, d_items.empty() ? 0 : d_items.size());
-}
-
-//----------------------------------------------------------------------------//
-void StandardItemModel::addItemAtPosition(StandardItem* item, size_t pos)
-{
-    if (pos > d_items.size())
-        CEGUI_THROW(InvalidRequestException("The specified position is out of range."));
-
-    d_items.insert(d_items.begin() + pos, item);
-    notifyChildrenAdded(getRootIndex(), pos, 1);
-}
-
-//----------------------------------------------------------------------------//
-void StandardItemModel::insertItem(StandardItem* item, const StandardItem* position)
-{
-    int child_id = getChildId(position);
-
-    addItemAtPosition(item, child_id == -1 ? 0 : static_cast<size_t>(child_id));
-}
-
-//----------------------------------------------------------------------------//
-void StandardItemModel::removeItem(const StandardItem* item)
-{
-    int child_id = getChildId(item);
-    if (child_id == -1)
-        return;
-
-    std::vector<StandardItem*>::iterator itor = d_items.begin() + child_id;
-    d_items.erase(itor);
-    //TODO: use CEGUI_DELETE_AO? If so, we need to specify in the doc that CEGUI_NEW should be used
-    delete item;
-
-    notifyChildrenRemoved(getRootIndex(), static_cast<size_t>(child_id), 1);
-}
-
-//----------------------------------------------------------------------------//
-StandardItem* StandardItemModel::getItemForIndex(const ModelIndex& index) const
-{
-    if (index.d_modelData == 0)
-        return 0;
-
-    return static_cast<StandardItem*>(index.d_modelData);
-}
-
-//----------------------------------------------------------------------------//
-void StandardItemModel::clear(bool notify)
-{
-    size_t item_count = d_items.size();
-    while (!d_items.empty())
-    {
-        StandardItem* item = d_items.back();
-        d_items.pop_back();
-        delete item;
-    }
-
-    if (notify)
-    {
-        notifyChildrenRemoved(getRootIndex(), 0, item_count);
-    }
-}
-
-//----------------------------------------------------------------------------//
-ModelIndex StandardItemModel::getIndexForItem(const StandardItem* item) const
-{
-    int child_id = getChildId(item);
-
-    return ModelIndex(child_id == -1 ? 0 : d_items.at(child_id));
-}
-
 }

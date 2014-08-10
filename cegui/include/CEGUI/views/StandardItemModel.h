@@ -28,81 +28,35 @@
 #define _CEGUIStandardItemModel_h_
 
 #include "CEGUI/views/ItemModel.h"
+#include "CEGUI/views/AbstractItemModel.h"
 #include <vector>
 
 namespace CEGUI
 {
 
-class CEGUIEXPORT StandardItem
+class CEGUIEXPORT StandardItem : public AbstractItem
 {
 public:
     StandardItem();
-    explicit StandardItem(String text, uint id = 0);
-    virtual ~StandardItem();
-
-    String getText() const { return d_text; }
-    void setText(String val) { d_text = val; }
+    explicit StandardItem(const String& text, uint id = 0);
+    StandardItem(const String& text, const String& icon, uint id = 0);
 
     //! Id of this item
     uint getId() const { return d_id; }
     void setId(uint val) { d_id = val; }
 
-    bool operator== (const StandardItem& other) const;
-    bool operator< (const StandardItem& other) const;
-
 protected:
-    String d_text;
     uint d_id;
 };
 
 /*!
 \brief
-    A simple listed item model that contains StandardItem s.
+    A simple item model that contains StandardItem%s.
 */
-class CEGUIEXPORT StandardItemModel : public ItemModel
+class CEGUIEXPORT StandardItemModel : public AbstractItemModel<StandardItem>
 {
 public:
-    virtual ~StandardItemModel();
-
-    virtual void addItem(String text);
-    //! Adds the item and takes ownership of it.
-    virtual void addItem(StandardItem* item);
-
-    /*!
-    \brief
-        Inserts the specified before the specified position item. If position
-        is NULL the new item will be added at the beginning.
-    */
-    virtual void insertItem(StandardItem* item, const StandardItem* position);
-    virtual void removeItem(const StandardItem* item);
-
-    /*!
-    \brief
-        Clears the items from this ItemModel, deleting them.
-
-    \param notify
-        If true, it will raise notifyChildrenRemoved after deleting the items.
-    */
-    void clear(bool notify);
-
-    virtual bool isValidIndex(const ModelIndex& model_index) const;
-    virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);
-    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const;
-    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const;
-    virtual ModelIndex getParentIndex(const ModelIndex& model_index) const;
-    virtual int getChildId(const ModelIndex& model_index) const;
-    virtual ModelIndex getRootIndex() const;
-    virtual size_t getChildCount(const ModelIndex& model_index) const;
-    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text);
-
-    inline virtual StandardItem* getItemForIndex(const ModelIndex& index) const;
-    virtual int getChildId(const StandardItem* item) const;
-    virtual ModelIndex getIndexForItem(const StandardItem* item) const;
-
-protected:
-    void addItemAtPosition(StandardItem* item, size_t pos);
-
-    std::vector<StandardItem*> d_items;
+    explicit StandardItemModel();
 };
 
 }
