@@ -442,7 +442,7 @@ void CEGUI::AbstractItemModel<TAbstractItem>::deleteChildren(AbstractItem* item,
     bool notify)
 {
     if (item == 0)
-        CEGUI_THROW(InvalidRequestException("Cannot delete children of a NULL item!"));;
+        CEGUI_THROW(InvalidRequestException("Cannot delete children of a NULL item!"));
 
     size_t items_count = item->getChildren().size();
     std::vector<AbstractItem*>::iterator itor = item->getChildren().begin();
