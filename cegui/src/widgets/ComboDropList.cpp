@@ -122,7 +122,7 @@ void ComboDropList::onViewContentsChanged(WindowEventArgs& e)
 /*************************************************************************
     Handler for when list selection has changed
 *************************************************************************/
-void ComboDropList::onSelectionChanged(WindowEventArgs& e)
+void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
 {
     if (!isActive())
         d_lastItemSelected = getFirstSelectedItem();

@@ -131,6 +131,15 @@ struct CEGUIEXPORT ModelIndexSelectionState
 };
 typedef std::vector<ModelIndexSelectionState> SelectionStatesVector;
 
+class CEGUIEXPORT ItemViewEventArgs : public WindowEventArgs
+{
+public:
+    ItemViewEventArgs(ItemView* wnd, ModelIndex index = ModelIndex());
+
+    //! The index affected by the event.
+    ModelIndex d_index;
+};
+
 /*!
 \brief
     Abstract base class for all view classes based on ItemModel
@@ -327,7 +336,7 @@ protected:
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenDataChanged(const EventArgs& args);
     virtual bool onScrollPositionChanged(const EventArgs& args);
-    virtual void onSelectionChanged(WindowEventArgs& args);
+    virtual void onSelectionChanged(ItemViewEventArgs& args);
     virtual void onMultiselectModeChanged(WindowEventArgs& args);
     virtual void onSortModeChanged(WindowEventArgs& args);
     virtual void onViewContentsChanged(WindowEventArgs& args);
