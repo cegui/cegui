@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Thu Mar 19 2009
-    author:     Paul D Turner
+    created:    Wed Aug 07 2014
+    author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,47 +24,42 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIAllWidgets_h_
-#define _CEGUIAllWidgets_h_
+#include "CEGUI/widgets/TreeWidget.h"
 
-#include "./ClippedContainer.h"
-#include "./Combobox.h"
-#include "./ComboDropList.h"
-#include "./DefaultWindow.h"
-#include "./DragContainer.h"
-#include "./Editbox.h"
-#include "./FrameWindow.h"
-#include "./GridLayoutContainer.h"
-#include "./GroupBox.h"
-#include "./HorizontalLayoutContainer.h"
-#include "./ItemEntry.h"
-#include "./LayoutCell.h"
-#include "./ListboxItem.h"
-#include "./ListboxTextItem.h"
-#include "./ListHeader.h"
-#include "./ListWidget.h"
-#include "./Menubar.h"
-#include "./MenuItem.h"
-#include "./MultiColumnList.h"
-#include "./MultiLineEditbox.h"
-#include "./PopupMenu.h"
-#include "./ProgressBar.h"
-#include "./PushButton.h"
-#include "./RadioButton.h"
-#include "./ScrollablePane.h"
-#include "./Scrollbar.h"
-#include "./ScrolledContainer.h"
-#include "./Slider.h"
-#include "./Spinner.h"
-#include "./TabButton.h"
-#include "./TabControl.h"
-#include "./Thumb.h"
-#include "./Titlebar.h"
-#include "./ToggleButton.h"
-#include "./Tooltip.h"
-#include "./Tree.h"
-#include "./TreeItem.h"
-#include "./TreeWidget.h"
-#include "./VerticalLayoutContainer.h"
+namespace CEGUI
+{
 
-#endif // End of guard _CEGUIAllWidgets_h_
+//----------------------------------------------------------------------------//
+const String TreeWidget::EventNamespace("TreeWidget");
+const String TreeWidget::WidgetTypeName("CEGUI/TreeWidget");
+
+//----------------------------------------------------------------------------//
+TreeWidget::TreeWidget(const String& type, const String& name) :
+    TreeView(type, name)
+{
+}
+
+//----------------------------------------------------------------------------//
+TreeWidget::~TreeWidget()
+{
+}
+
+//----------------------------------------------------------------------------//
+void TreeWidget::initialiseComponents()
+{
+    TreeView::initialiseComponents();
+    setModel(&d_itemModel);
+}
+
+//----------------------------------------------------------------------------//
+StandardItemModel* TreeWidget::getModel()
+{
+    return &d_itemModel;
+}
+
+//----------------------------------------------------------------------------//
+void TreeWidget::addItem(StandardItem* item)
+{
+    d_itemModel.addItem(item);
+}
+}
