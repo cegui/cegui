@@ -179,8 +179,6 @@ class Thumb;
 class Titlebar;
 class ToggleButton;
 class Tooltip;
-class Tree;
-class TreeItem;
 class VerticalLayoutContainer;
 
 /*************************************************************************
@@ -212,7 +210,6 @@ class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;
 class ResourceEventArgs;
-class TreeEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
 

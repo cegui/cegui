@@ -62,8 +62,6 @@
 #include "./Titlebar.h"
 #include "./ToggleButton.h"
 #include "./Tooltip.h"
-#include "./Tree.h"
-#include "./TreeItem.h"
 #include "./TreeWidget.h"
 #include "./VerticalLayoutContainer.h"
 
