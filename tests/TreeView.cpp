@@ -56,14 +56,14 @@ struct TreeViewFixture
     bool onSubtreeExpanded(const EventArgs& args)
     {
         expanded_nodes.push_back(
-            static_cast<const TreeViewEventArgs&>(args).d_index);
+            static_cast<const ItemViewEventArgs&>(args).d_index);
         return true;
     }
 
     bool onSubtreeCollapsed(const EventArgs& args)
     {
         collapsed_nodes.push_back(
-            static_cast<const TreeViewEventArgs&>(args).d_index);
+            static_cast<const ItemViewEventArgs&>(args).d_index);
         return true;
     }
 

@@ -173,7 +173,7 @@ protected:
     virtual void    onPointerActivate(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
     virtual void    onViewContentsChanged(WindowEventArgs& e);
-    virtual void    onSelectionChanged(WindowEventArgs& e);
+    virtual void    onSelectionChanged(ItemViewEventArgs& e);
 
 	/*************************************************************************
 		Implementation Data

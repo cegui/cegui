@@ -65,13 +65,6 @@ const String TreeView::EventSubtreeExpanded("SubtreeExpanded");
 const String TreeView::EventSubtreeCollapsed("SubtreeCollapsed");
 
 //----------------------------------------------------------------------------//
-TreeViewEventArgs::TreeViewEventArgs(TreeView* wnd, ModelIndex index) :
-    WindowEventArgs(wnd),
-    d_index(index)
-{
-}
-
-//----------------------------------------------------------------------------//
 TreeViewItemRenderingState::TreeViewItemRenderingState(TreeView* attached_tree_view) :
     d_totalChildCount(0),
     d_size(0, 0),
@@ -374,7 +367,7 @@ void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 
     item.d_subtreeIsExpanded = !item.d_subtreeIsExpanded;
 
-    TreeViewEventArgs args(this,
+    ItemViewEventArgs args(this,
         d_itemModel->makeIndex(item.d_childId, item.d_parentIndex));
 
     if (item.d_subtreeIsExpanded)
@@ -500,13 +493,13 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void TreeView::onSubtreeExpanded(TreeViewEventArgs& args)
+void TreeView::onSubtreeExpanded(ItemViewEventArgs& args)
 {
     fireEvent(EventSubtreeExpanded, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void TreeView::onSubtreeCollapsed(TreeViewEventArgs& args)
+void TreeView::onSubtreeCollapsed(ItemViewEventArgs& args)
 {
     fireEvent(EventSubtreeCollapsed, args, EventNamespace);
 }

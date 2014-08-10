@@ -26,8 +26,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/views/ItemView.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/views/ItemView.h"
 #include "CEGUI/widgets/Tooltip.h"
 
 namespace CEGUI
@@ -247,7 +247,7 @@ void ItemView::setModel(ItemModel* item_model)
     d_indexSelectionStates.clear();
     d_needsFullRender = true;
 
-    WindowEventArgs args(this);
+    ItemViewEventArgs args(this);
     onSelectionChanged(args);
 }
 
@@ -319,7 +319,7 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
         }
     }
 
-    WindowEventArgs wargs(this);
+    ItemViewEventArgs wargs(this);
     onSelectionChanged(wargs);
 
     WindowEventArgs evt_args(this);
@@ -335,7 +335,7 @@ bool ItemView::onChildrenDataChanged(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onSelectionChanged(WindowEventArgs& args)
+void ItemView::onSelectionChanged(ItemViewEventArgs& args)
 {
     invalidateView(false);
     fireEvent(EventSelectionChanged, args);
@@ -746,7 +746,7 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
         {
             d_indexSelectionStates.erase(d_indexSelectionStates.begin() + index_position);
 
-            WindowEventArgs args(this);
+            ItemViewEventArgs args(this, index);
             onSelectionChanged(args);
             return true;
         }
@@ -785,7 +785,7 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
 
     d_lastSelectedIndex = index;
 
-    WindowEventArgs args(this);
+    ItemViewEventArgs args(this, index);
     onSelectionChanged(args);
     return true;
 }
@@ -914,7 +914,7 @@ void ItemView::ensureItemIsVisible(const ModelIndex& index)
     const float right = left + rect.getWidth();
 
     // if left is left of the view area, or if item too big
-    if ((left < render_area.d_min.d_x) || ((right - left) > render_area.getWidth()))
+    if ((left < render_area.d_min.d_x) || ((right - left) > view_width))
     {
         // scroll item to left
         horz_scroll->setScrollPosition(currPos + left);
@@ -923,7 +923,7 @@ void ItemView::ensureItemIsVisible(const ModelIndex& index)
     else if (right >= render_area.d_max.d_x)
     {
         // scroll item to right of list
-        horz_scroll->setScrollPosition(currPos + right - render_area.getWidth());
+        horz_scroll->setScrollPosition(currPos + right - view_width);
     }
 }
 
@@ -974,4 +974,12 @@ void ItemView::resizeToContent()
         d_isAutoResizeWidthEnabled, d_isAutoResizeHeightEnabled);
 }
 
+
+//----------------------------------------------------------------------------//
+ItemViewEventArgs::ItemViewEventArgs(ItemView* wnd, ModelIndex index) :
+WindowEventArgs(wnd),
+d_index(index)
+{
+
+}
 }

@@ -204,6 +204,7 @@ class DragDropEventArgs;
 class FontEventArgs;
 class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
+class ItemViewEventArgs;
 class KeyEventArgs;
 class ModelEventARgs;
 class PointerIndicatorEventArgs;
@@ -212,7 +213,6 @@ class RenderQueueEventArgs;
 class RenderTargetEventArgs;
 class ResourceEventArgs;
 class TreeEventArgs;
-class TreeViewEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
 

@@ -67,15 +67,6 @@ public:
     virtual float getSubtreeExpanderXIndent(int depth) const = 0;
 };
 
-class CEGUIEXPORT TreeViewEventArgs : public WindowEventArgs
-{
-public:
-    TreeViewEventArgs(TreeView* wnd, ModelIndex index);
-
-    //! The index affected by the event.
-    ModelIndex d_index;
-};
-
 class CEGUIEXPORT TreeViewItemRenderingState
 {
 public:
@@ -153,8 +144,8 @@ protected:
     virtual bool onChildrenRemoved(const EventArgs& args);
     virtual bool onChildrenAdded(const EventArgs& args);
 
-    virtual void onSubtreeExpanded(TreeViewEventArgs& args);
-    virtual void onSubtreeCollapsed(TreeViewEventArgs& args);
+    virtual void onSubtreeExpanded(ItemViewEventArgs& args);
+    virtual void onSubtreeCollapsed(ItemViewEventArgs& args);
 
 private:
     typedef void (TreeView::*TreeViewItemAction)(
