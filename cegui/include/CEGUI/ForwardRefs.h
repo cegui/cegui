@@ -158,7 +158,6 @@ class ListboxItem;
 class ListboxTextItem;
 class ListHeader;
 class ListHeaderSegment;
-class ListWidget;
 class Menubar;
 class MenuBase;
 class MenuItem;
@@ -194,6 +193,7 @@ class ModelIndex;
 class StandardItemModel;
 class StandardItem;
 class TreeView;
+class TreeWidget;
 
 /*************************************************************************
     Forward declare EventArg based classes.
