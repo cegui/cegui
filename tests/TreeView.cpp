@@ -103,14 +103,14 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
 {
     // we do this on purpose: we need to skip the root from selection & related.
     // if it has a name then we need not to render it.
-    model.getInventoryRoot().d_name = "Root";
+    model.getRoot().setText("Root");
     model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(Vector2f(expander_width * 2, font_height / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        model.getInventoryRoot().d_items.at(0),
+        model.getRoot().getChildren().at(0),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectTreeWithOffset_ReturnsCorrectIn
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        model.getInventoryRoot().d_items.at(0),
+        model.getRoot().getChildren().at(0),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectTreeWithScrollbar_Returns
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        model.getInventoryRoot().d_items.at(49),
+        model.getRoot().getChildren().at(49),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
 
     BOOST_REQUIRE(index.d_modelData != 0);
     BOOST_REQUIRE_EQUAL(
-        model.getInventoryRoot().d_items.at(1),
+        model.getRoot().getChildren().at(1),
         static_cast<InventoryItem*>(index.d_modelData));
 }
 
@@ -501,25 +501,25 @@ BOOST_AUTO_TEST_CASE(GetTreeViewItemForIndex)
 
 BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_TreeIsSorted)
 {
-    InventoryItem* i1 = InventoryItem::make("C", 1, &model.getInventoryRoot());
-    InventoryItem* i2 = InventoryItem::make("B", 1, &model.getInventoryRoot());
-    InventoryItem* i3 = InventoryItem::make("A", 1, &model.getInventoryRoot());
+    InventoryItem* i1 = InventoryItem::make("C", 1, &model.getRoot());
+    InventoryItem* i2 = InventoryItem::make("B", 1, &model.getRoot());
+    InventoryItem* i3 = InventoryItem::make("A", 1, &model.getRoot());
 
     InventoryItem* i1_child1 = InventoryItem::make("Z3", 1, i1);
     InventoryItem* i1_child2 = InventoryItem::make("Z1", 1, i1);
-    i1->d_items.push_back(i1_child1);
-    i1->d_items.push_back(i1_child2);
+    i1->getChildren().push_back(i1_child1);
+    i1->getChildren().push_back(i1_child2);
 
     InventoryItem* i_leaf1 = InventoryItem::make("Z", 1, i1_child1);
     InventoryItem* i_leaf2 = InventoryItem::make("A", 1, i1_child1);
     InventoryItem* i_leaf3 = InventoryItem::make("B", 1, i1_child1);
-    i1_child1->d_items.push_back(i_leaf1);
-    i1_child1->d_items.push_back(i_leaf2);
-    i1_child1->d_items.push_back(i_leaf3);
+    i1_child1->getChildren().push_back(i_leaf1);
+    i1_child1->getChildren().push_back(i_leaf2);
+    i1_child1->getChildren().push_back(i_leaf3);
 
-    model.getInventoryRoot().d_items.push_back(i1);
-    model.getInventoryRoot().d_items.push_back(i2);
-    model.getInventoryRoot().d_items.push_back(i3);
+    model.getRoot().getChildren().push_back(i1);
+    model.getRoot().getChildren().push_back(i2);
+    model.getRoot().getChildren().push_back(i3);
     view->prepareForRender();
 
     view->setSortMode(VSM_Ascending);

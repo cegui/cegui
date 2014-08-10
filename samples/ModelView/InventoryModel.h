@@ -27,7 +27,7 @@
 #ifndef _Sample_Model_View_Model_h_
 #define _Sample_Model_View_Model_h_
 
-#include "CEGUI/views/ItemModel.h"
+#include "CEGUI/views/AbstractItemModel.h"
 #include "CEGUI/String.h"
 #include <vector>
 
@@ -48,57 +48,32 @@
     ...
 */
 
-class InventoryItem
+class InventoryItem : public CEGUI::AbstractItem
 {
 public:
+    InventoryItem(CEGUI::String name);
     float d_weight;
-    CEGUI::String d_name;
-    CEGUI::String d_icon;
-    std::vector<InventoryItem*> d_items;
-    InventoryItem* d_parent;
 
     bool operator==(const InventoryItem& other);
-    bool operator!=(const InventoryItem& other);
 
-    InventoryItem();
-    static InventoryItem* make(const CEGUI::String& name, float weight, InventoryItem* parent = 0);
+    static InventoryItem* make(const CEGUI::String& name, float weight,
+        AbstractItem* parent = 0);
     friend std::ostream& operator<< (std::ostream& output, const InventoryItem& item);
 };
 
-class InventoryModel : public CEGUI::ItemModel
+class InventoryModel : public CEGUI::AbstractItemModel<InventoryItem>
 {
 public:
     InventoryModel();
-    ~InventoryModel();
 
     // simulate loading the model
     void load();
 
-    void clear(bool notify = true);
-    void addItem(const CEGUI::ModelIndex& parent, InventoryItem* new_item, size_t position);
     void addRandomItemWithChildren(const CEGUI::ModelIndex& parent, size_t position,
         size_t child_count = 1);
-    void removeItem(const CEGUI::ModelIndex& index);
     void updateItemName(const CEGUI::ModelIndex& index, const CEGUI::String& newName);
 
-
-    // implementation of ItemModel
-    virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
-    virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& parent_index);
-    virtual bool areIndicesEqual(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2) const;
-    virtual int compareIndices(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2) const;
-    virtual CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index) const;
-    virtual int getChildId(const CEGUI::ModelIndex& model_index) const;
-    virtual CEGUI::ModelIndex getRootIndex() const;
-    virtual size_t getChildCount(const CEGUI::ModelIndex& model_index) const;
-    virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
-
-    InventoryItem& getInventoryRoot() { return *d_inventoryRoot; }
 private:
-    void deleteChildren(InventoryItem* item, bool notify);
-
-
-    InventoryItem* d_inventoryRoot;
     int d_randomItemsCount;
 };
 
