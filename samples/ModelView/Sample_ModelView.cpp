@@ -243,7 +243,7 @@ void ModelViewDemo::initListWidgetItems(ListWidget* list_widget)
     ImageManager::ImageIterator itor = ImageManager::getSingleton().getIterator();
     while (!itor.isAtEnd())
     {
-        list_widget->addItem(itor.getCurrentKey());
+        list_widget->addItem(new StandardItem(itor.getCurrentKey(), itor.getCurrentKey()));
         ++itor;
     }
 }
