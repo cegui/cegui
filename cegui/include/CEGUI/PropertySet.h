@@ -51,7 +51,7 @@ namespace CEGUI
 {
 /*!
 \brief
-	Class that contains a collection of Property objects.
+	Interface providing introspection capabilities
 
 CEGUI uses this interface for introspection and serialisation, especially in
 CEGUI::Window and classes that inherit it.
