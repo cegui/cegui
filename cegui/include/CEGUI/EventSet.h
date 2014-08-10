@@ -45,17 +45,119 @@ namespace CEGUI
 {
 /*!
 \brief
-    Class that collects together a set of Event objects.
+    Interface providing event signaling and handling
 
     The EventSet is a means for code to attach a handler function to some
     named event, and later, for that event to be fired and the subscribed
     handler(s) called.
-    \par
-    As of 0.5, the EventSet no longer needs to be filled with available events.
+
+    Its purpose is similar to Qt's signal and slot system, you can think of
+    Event name as the signal and the subscribed handler as the slot.
+
+    Each Event has a name and a set of handlers. Handlers can be free functions,
+    class member functions or even functors. Whenever an Event is fired all of
+    its handlers are invoked. You are most likely looking for a way to react
+    to mouse clicks or other events fired internally by CEGUI.
+
+    The handlers have to have a very specific signature. They have to return
+    bool and they have to take const EventArgs&. If this is not met you will
+    encounter build errors!
+
+\par Reacting to internal CEGUI events
+
+\code{.cpp}
+bool handler(const EventArgs& args)
+{
+    std::cout << "Don't you dare click me again!" << std::endl;
+
+    // returning true means we handled the Event and it doesn't need to be
+    // propagated any further
+    return true;
+}
+
+void example()
+{
+    CEGUI::Window* wnd = ...;
+    wnd->subscribeEvent(CEGUI::Window::EventMouseClick, &handler);
+}
+\endcode
+
+\par A contrived example of various handler types
+
+\code{.cpp}
+bool freeFunction(const EventArgs& args)
+{
+    // your handler code here
+}
+
+// nothing special about this class!
+class CustomClass
+{
+    public:
+        bool memberFunction(const EventArgs& args)
+        {
+            // your handler code here
+        }
+
+        static bool staticMemberFunction(const EventArgs& args)
+        {
+            // your handler code here
+        }
+
+        bool memberFunctionWithArg(const EventArgs& args, bool something)
+        {
+            // your handler code here
+        }
+};
+
+class Functor
+{
+    public:
+        bool operator()(const EventArgs& args)
+        {
+            // your handler code here
+        }
+}
+
+void example()
+{
+    CustomClass instance;
+
+    CEGUI::Window* wnd = ...;
+
+    // creates "CustomEvent", subscribes freeFunction to it
+    wnd->subscribeEvent("CustomEvent", &freeFunction);
+    // subscribes memberFunction of "instance" to CustomEvent
+    wnd->subscribeEvent("CustomEvent", &CustomClass::memberFunction, &instance);
+    // subscribes staticMemberFunction of CustomClass to CustomEvent
+    wnd->subscribeEvent("CustomEvent", &CustomClass::staticMemberFunction);
+    // subscribes Functor to CustomEvent, Functor instance is owned by EventSet
+    // after this call, it will be destroyed by EventSet
+    wnd->subscribeEvent("CustomEvent", Functor());
+
+    // Advanced subscribers using boost::bind follow:
+
+    // subscribes memberFunctionWithArg of CustomClass to CustomEvent
+    wnd->subscribeEvent("CustomEvent", boost::bind(&CustomClass::memberFunctionWithArg, _1, _2, true), &instance);
+    // same as above, binding the instance itself as well
+    wnd->subscribeEvent("CustomEvent", boost::bind(&CustomClass::memberFunctionWithArg, instance, _1, true));
+
+    // the following line causes all subscribed handlers to be called
+    wnd->fireEvent("CustomEvent");
+}
+\endcode
+
+\par EventSet works well with others
+    The EventSet can also subscribe boost::function, std::function, functors
+    created by boost::bind and possibly others. This is not a feature of
+    CEGUI per se, just a fortunate side effect of being able to call functors.
+
+\par Events are automatically created on demand
+    As of CEGUI 0.5, the EventSet no longer needs to be filled with available events.
     Events are now added to the set as they are first used; that is, the first
     time a handler is subscribed to an event for a given EventSet, an Event
     object is created and added to the EventSet.
-    \par
+
     Instead of throwing an exception when firing an event that does not actually
     exist in the set, we now do nothing (if the Event does not exist, then it
     has no handlers subscribed, and therefore doing nothing is the correct
@@ -198,7 +300,7 @@ public:
     {
         return subscribeEvent(name, Event::Subscriber(arg1, arg2));
     }
-    
+
     /*!
     \copydoc EventSet::subscribeEvent
     
@@ -209,7 +311,7 @@ public:
     {
         return subscribeEvent(name, group, Event::Subscriber(arg1, arg2));
     }
-    
+
     /*!
     \brief
         Subscribes the named Event to a scripted funtion
@@ -335,7 +437,7 @@ protected:
         CEGUI_MAP_ALLOC(String, Event*)> EventMap;
     EventMap    d_events;
 
-    bool    d_muted;    //!< true if events for this EventSet have been muted.
+    bool d_muted;    //!< true if events for this EventSet have been muted.
 
 public:
     /*************************************************************************
@@ -359,4 +461,3 @@ public:
 #endif
 
 #endif  // end of guard _CEGUIEventSet_h_
-
