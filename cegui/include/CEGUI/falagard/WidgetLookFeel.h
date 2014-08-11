@@ -677,10 +677,15 @@ public:
     */
     const CEGUI::String& getInheritedWidgetLookName() const;
 
-
+    StringSet getStateImageryNames(bool inherits = false) const;
+    //! \deprecated This function has been renamed to getStateImageryNames to conform the general way of naming functions, and will be replaced in the next version
     StringSet getStateNames(bool inherits = false) const;
+    StringSet getImagerySectionNames(bool inherits = false) const;
+    //! \deprecated This function has been renamed to getImagerySectionNames to conform the general way of naming functions, and will be replaced in the next version
     StringSet getImageryNames(bool inherits = false) const;
     StringSet getNamedAreaNames(bool inherits = false) const;
+    StringSet getWidgetComponentNames(bool inherits = false) const;
+    //! \deprecated This function has been renamed to getWidgetComponentNames to conform the general way of naming functions, and will be replaced in the next version
     StringSet getWidgetNames(bool inherits = false) const;
     StringSet getPropertyInitialiserNames(bool inherits = false) const;
     StringSet getPropertyDefinitionNames(bool inherits = false) const;
