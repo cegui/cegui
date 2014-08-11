@@ -71,6 +71,7 @@ TreeViewItemRenderingState::TreeViewItemRenderingState(TreeView* attached_tree_v
     d_isSelected(false),
     d_childId(0),
     d_subtreeIsExpanded(false),
+    d_nestedLevel(0),
     d_attachedTreeView(attached_tree_view)
 {
 }
@@ -177,6 +178,8 @@ void TreeView::prepareForRender()
         d_renderedTotalHeight = 0;
 
         d_rootItemState = TreeViewItemRenderingState(this);
+        // root item isn't a proper item so it does not have a nested level.
+        d_rootItemState.d_nestedLevel = -1;
         d_rootItemState.d_subtreeIsExpanded = true;
 
         computeRenderedChildrenForItem(d_rootItemState, root_index,
@@ -211,18 +214,19 @@ bool TreeView::handleSelection(const ModelIndex& index, bool should_select,
 
 //----------------------------------------------------------------------------//
 TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
-    const ModelIndex& parent_index, size_t child_id, float& rendered_max_width,
-    float& rendered_total_height)
+    const ModelIndex& parent_index, size_t child_id, size_t nested_level,
+    float& rendered_max_width, float& rendered_total_height)
 {
     ModelIndex index = d_itemModel->makeIndex(child_id, parent_index);
     TreeViewItemRenderingState state(this);
+    state.d_nestedLevel = nested_level;
+    state.d_parentIndex = parent_index;
+    state.d_childId = child_id;
+
     fillRenderingState(state, index, rendered_max_width, rendered_total_height);
 
     computeRenderedChildrenForItem(state, index, rendered_max_width,
         rendered_total_height);
-
-    state.d_parentIndex = parent_index;
-    state.d_childId = child_id;
 
     return state;
 }
@@ -240,8 +244,8 @@ void TreeView::computeRenderedChildrenForItem(TreeViewItemRenderingState &item,
     for (size_t child = 0; child < child_count; ++child)
     {
         item.d_children.push_back(
-            computeRenderingStateForIndex(index, child, rendered_max_width,
-            rendered_total_height));
+            computeRenderingStateForIndex(index, child, item.d_nestedLevel + 1,
+            rendered_max_width, rendered_total_height));
     }
 
     item.sortChildren();
@@ -261,6 +265,7 @@ void TreeView::updateRenderingStateForItem(TreeViewItemRenderingState& item,
     for (ItemStateVector::iterator itor = item.d_children.begin();
         itor != item.d_children.end(); ++itor)
     {
+        (*itor).d_nestedLevel = item.d_nestedLevel + 1;
         updateRenderingStateForItem(*itor, rendered_max_width, rendered_total_height);
     }
 }
@@ -280,7 +285,9 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
         rendered_string.getHorizontalExtent(this),
         rendered_string.getVerticalExtent(this));
 
-    rendered_max_width = ceguimax(rendered_max_width, item.d_size.d_width);
+    float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
+        getViewRenderer()->getSubtreeExpanderSize().d_width;
+    rendered_max_width = ceguimax(rendered_max_width, item.d_size.d_width + indent);
     rendered_total_height += item.d_size.d_height;
 
     item.d_isSelected = isIndexSelected(index);
@@ -309,15 +316,14 @@ ModelIndex TreeView::indexAtWithAction(const Vector2f& position,
 
     float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
     bool handled = false;
-    // root is actually depth = -1, since its a dummy tree item.
     return indexAtRecursive(d_rootItemState, cur_height, window_position,
-        handled, action, -1);
+        handled, action);
 }
 
 //----------------------------------------------------------------------------//
 ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     float& cur_height, const Vector2f& window_position, bool& handled,
-    TreeViewItemAction action, int depth)
+    TreeViewItemAction action)
 {
     float next_height = cur_height + item.d_size.d_height;
 
@@ -327,7 +333,7 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
         handled = true;
 
         float expander_width = getViewRenderer()->getSubtreeExpanderSize().d_width;
-        float base_x = getViewRenderer()->getSubtreeExpanderXIndent(depth);
+        float base_x = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel);
         base_x -= getHorzScrollbar()->getScrollPosition();
         if (window_position.d_x >= base_x &&
             window_position.d_x <= base_x + expander_width)
@@ -345,7 +351,7 @@ ModelIndex TreeView::indexAtRecursive(TreeViewItemRenderingState& item,
     for (size_t i = 0; i < item.d_renderedChildren.size(); ++i)
     {
         ModelIndex index = indexAtRecursive(*item.d_renderedChildren.at(i),
-            cur_height, window_position, handled, action, depth + 1);
+            cur_height, window_position, handled, action);
         if (handled)
             return index;
     }
@@ -472,7 +478,7 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     for (size_t id = margs.d_startId; id < margs.d_startId + margs.d_count; ++id)
     {
         states.push_back(computeRenderingStateForIndex(margs.d_parentIndex, id,
-            d_renderedMaxWidth, d_renderedTotalHeight));
+            item->d_nestedLevel + 1, d_renderedMaxWidth, d_renderedTotalHeight));
     }
 
     // update existing child ids

@@ -538,4 +538,22 @@ BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_TreeIsSorted)
         children.at(2)->d_renderedChildren.at(1)->d_renderedChildren.at(2)->d_childId);
 }
 
+BOOST_AUTO_TEST_CASE(MultipleLevelsHierarchy_RenderedMaxWidthGreaterThanViewSize)
+{
+    view->setSize(USize(cegui_absdim(10), cegui_absdim(10)));
+    InventoryItem* parent = &model.getRoot();
+    for (size_t i = 0; i < 100; ++i)
+    {
+        InventoryItem* item = InventoryItem::make("level " + PropertyHelper<int>::toString(i), 0, parent);
+
+        parent->getChildren().push_back(item);
+        parent = item;
+    }
+    view->prepareForRender();
+
+    view->expandAllSubtrees();
+
+    BOOST_REQUIRE(view->getRenderedMaxWidth() > 100);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -87,6 +87,7 @@ public:
     ModelIndex d_parentIndex;
     size_t d_childId;
     bool d_subtreeIsExpanded;
+    int d_nestedLevel;
 
     TreeView* d_attachedTreeView;
 
@@ -154,7 +155,7 @@ private:
 
     TreeViewItemRenderingState d_rootItemState;
     TreeViewItemRenderingState computeRenderingStateForIndex(
-        const ModelIndex& parent_index, size_t child_id,
+        const ModelIndex& parent_index, size_t child_id, size_t nested_level,
         float& rendered_max_width, float& rendered_total_height);
 
     float d_subtreeExpanderMargin;
@@ -171,8 +172,7 @@ private:
 
     ModelIndex indexAtWithAction(const Vector2f& position, TreeViewItemAction action);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
-        const Vector2f& window_position, bool& handled, TreeViewItemAction action,
-        int depth);
+        const Vector2f& window_position, bool& handled, TreeViewItemAction action);
 
     void clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight);
     void handleSelectionAction(TreeViewItemRenderingState& item, bool toggles_expander);
