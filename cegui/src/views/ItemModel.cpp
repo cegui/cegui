@@ -29,8 +29,11 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const String ItemModel::EventChildrenWillBeAdded("ChildrenWillBeAdded");
 const String ItemModel::EventChildrenAdded("ChildrenAdded");
+const String ItemModel::EventChildrenWillBeRemoved("ChildrenWillBeRemoved");
 const String ItemModel::EventChildrenRemoved("ChildrenRemoved");
+const String ItemModel::EventChildrenDataWillChange;
 const String ItemModel::EventChildrenDataChanged("ChildrenDataChanged");
 
 //----------------------------------------------------------------------------//
@@ -66,10 +69,24 @@ ItemModel::~ItemModel()
 }
 
 //----------------------------------------------------------------------------//
+void ItemModel::notifyChildrenWillBeAdded(ModelIndex parent_index, size_t start_id, size_t count)
+{
+    ModelEventArgs args(this, parent_index, start_id, count);
+    fireEvent(EventChildrenWillBeAdded, args);
+}
+
+//----------------------------------------------------------------------------//
 void ItemModel::notifyChildrenAdded(ModelIndex parent_index, size_t start_id, size_t count)
 {
     ModelEventArgs args(this, parent_index, start_id, count);
     fireEvent(EventChildrenAdded, args);
+}
+
+//----------------------------------------------------------------------------//
+void ItemModel::notifyChildrenWillBeRemoved(ModelIndex parent_index, size_t start_id, size_t count)
+{
+    ModelEventArgs args(this, parent_index, start_id, count);
+    fireEvent(EventChildrenWillBeRemoved, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -80,10 +97,16 @@ void ItemModel::notifyChildrenRemoved(ModelIndex parent_index, size_t start_id, 
 }
 
 //----------------------------------------------------------------------------//
+void ItemModel::notifyChildrenDataWillChange(ModelIndex parent_index, size_t start_id, size_t count)
+{
+    ModelEventArgs args(this, parent_index, start_id, count);
+    fireEvent(EventChildrenDataWillChange, args);
+}
+
+//----------------------------------------------------------------------------//
 void ItemModel::notifyChildrenDataChanged(ModelIndex parent_index, size_t start_id, size_t count)
 {
     ModelEventArgs args(this, parent_index, start_id, count);
     fireEvent(EventChildrenDataChanged, args);
 }
-
 }
