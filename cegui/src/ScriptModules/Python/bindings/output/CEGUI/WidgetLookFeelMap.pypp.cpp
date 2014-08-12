@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_WidgetLookFeelMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::WidgetLookFeel*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetLookFeel*> > > >("WidgetLookFeelMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::WidgetLookFeel*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetLookFeel*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel*> > > > WidgetLookFeelMap_exposer_t;
+        WidgetLookFeelMap_exposer_t WidgetLookFeelMap_exposer = WidgetLookFeelMap_exposer_t( "WidgetLookFeelMap" );
+        bp::scope WidgetLookFeelMap_scope( WidgetLookFeelMap_exposer );
+        WidgetLookFeelMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel*> > > >() );
+    }
 
 }

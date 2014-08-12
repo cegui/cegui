@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_EventLinkDefinitionMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::EventLinkDefinition*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::EventLinkDefinition*> > > >("EventLinkDefinitionMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::EventLinkDefinition*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::EventLinkDefinition*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::EventLinkDefinition*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::EventLinkDefinition*> > > > EventLinkDefinitionMap_exposer_t;
+        EventLinkDefinitionMap_exposer_t EventLinkDefinitionMap_exposer = EventLinkDefinitionMap_exposer_t( "EventLinkDefinitionMap" );
+        bp::scope EventLinkDefinitionMap_scope( EventLinkDefinitionMap_exposer );
+        EventLinkDefinitionMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::EventLinkDefinition*> > > >() );
+    }
 
 }

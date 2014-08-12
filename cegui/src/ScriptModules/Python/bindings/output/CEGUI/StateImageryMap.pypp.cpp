@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_StateImageryMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::StateImagery*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::StateImagery*> > > >("StateImageryMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::StateImagery*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::StateImagery*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::StateImagery*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::StateImagery*> > > > StateImageryMap_exposer_t;
+        StateImageryMap_exposer_t StateImageryMap_exposer = StateImageryMap_exposer_t( "StateImageryMap" );
+        bp::scope StateImageryMap_scope( StateImageryMap_exposer );
+        StateImageryMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::StateImagery*> > > >() );
+    }
 
 }

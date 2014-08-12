@@ -417,7 +417,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getEventLinkDefinitionMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::EventLinkDefinition*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::EventLinkDefinition*> > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::EventLinkDefinition*> > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getEventLinkDefinitionMap"
@@ -504,7 +504,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getImagerySectionMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::ImagerySection*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::ImagerySection*> > > ( ::CEGUI::WidgetLookFeel::*getImagerySectionMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection*> > > ( ::CEGUI::WidgetLookFeel::*getImagerySectionMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getImagerySectionMap"
@@ -599,7 +599,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getNamedAreaMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::NamedArea*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::NamedArea*> > > ( ::CEGUI::WidgetLookFeel::*getNamedAreaMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::NamedArea*> > > ( ::CEGUI::WidgetLookFeel::*getNamedAreaMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getNamedAreaMap"
@@ -739,7 +739,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyInitialiserMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::PropertyInitialiser*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::PropertyInitialiser*> > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::PropertyInitialiser*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::PropertyInitialiser*> > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyInitialiserMap"
@@ -861,7 +861,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getStateImageryMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::StateImagery*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::StateImagery*> > > ( ::CEGUI::WidgetLookFeel::*getStateImageryMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::StateImagery*> > > ( ::CEGUI::WidgetLookFeel::*getStateImageryMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getStateImageryMap"
@@ -928,7 +928,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getWidgetComponentMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::WidgetComponent*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetComponent*> > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetComponent*> > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getWidgetComponentMap"

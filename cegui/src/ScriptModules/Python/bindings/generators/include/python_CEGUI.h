@@ -11,21 +11,21 @@
 namespace boost
 {
     /*
-	 * Workaround that allows users to inherit CEGUI classes with methods
-	 * that deal with strings (almost all classes)
-	 *
-	 * The situation:
-	 * boost python can't recognize boost::ref(const CEGUI::String&) and doesn't
-	 * auto convert it to python unicode string. This works for all types that are
-	 * registered normally (CEGUI::String is always converted, the class is unknown
-	 * in python).
-	 *
-	 * The solution:
-	 * Make an overloaded version of boost::ref that just returns what it gets.
-	 *
-	 * Is this horrible?
-	 * YES!
-	 */
+     * Workaround that allows users to inherit CEGUI classes with methods
+     * that deal with strings (almost all classes)
+     *
+     * The situation:
+     * boost python can't recognize boost::ref(const CEGUI::String&) and doesn't
+     * auto convert it to python unicode string. This works for all types that are
+     * registered normally (CEGUI::String is always converted, the class is unknown
+     * in python).
+     *
+     * The solution:
+     * Make an overloaded version of boost::ref that just returns what it gets.
+     *
+     * Is this horrible?
+     * YES!
+     */
     inline const CEGUI::String& ref(const CEGUI::String& v)
     {
         return v;
@@ -62,7 +62,7 @@ public:
     {
         return PropertyHelper<Rectf >::fromString(str);
     }
-    static const Image*	stringToImage(const String& str)
+    static const Image* stringToImage(const String& str)
     {
         return PropertyHelper<Image*>::fromString(str);
     }
@@ -287,6 +287,41 @@ class Workarounds
         {
             return map[key];
         }
+
+        static PropertyInitialiser* PropertyInitialiserMapGet(WidgetLookFeel::PropertyInitialiserPointerMap& map, const WidgetLookFeel::PropertyInitialiserPointerMap::key_type& key)
+        {
+            return map[key];
+        }
+
+        static WidgetComponent* WidgetComponentMapGet(WidgetLookFeel::WidgetComponentPointerMap& map, const WidgetLookFeel::WidgetComponentPointerMap::key_type& key)
+        {
+            return map[key];
+        }
+
+        static ImagerySection* ImagerySectionMapGet(WidgetLookFeel::ImagerySectionPointerMap& map, const WidgetLookFeel::ImagerySectionPointerMap::key_type& key)
+        {
+            return map[key];
+        }
+
+        static NamedArea* NamedAreaMapGet(WidgetLookFeel::NamedAreaPointerMap& map, const WidgetLookFeel::NamedAreaPointerMap::key_type& key)
+        {
+            return map[key];
+        }
+
+        static StateImagery* StateImageryMapGet(WidgetLookFeel::StateImageryPointerMap& map, const WidgetLookFeel::StateImageryPointerMap::key_type& key)
+        {
+            return map[key];
+        }
+
+        static EventLinkDefinition* EventLinkDefinitionMapGet(WidgetLookFeel::EventLinkDefinitionPointerMap& map, const WidgetLookFeel::EventLinkDefinitionPointerMap::key_type& key)
+        {
+            return map[key];
+        }
+
+        static WidgetLookFeel* WidgetLookFeelMapGet(WidgetLookManager::WidgetLookPointerMap& map, const WidgetLookManager::WidgetLookPointerMap::key_type& key)
+        {
+            return map[key];
+        }
 };
 
 }
@@ -314,7 +349,7 @@ namespace pyplusplus
         // typedef std::vector<CEGUI::Scheme::AliasMapping> AliasMappingVector;
         typedef std::vector<CEGUI::PropertyInitialiser
             CEGUI_VECTOR_ALLOC(CEGUI::PropertyInitialiser)> PropertyInitialiserVector;
-        // typedef std::vector<CEGUI::Scheme::FalagardMapping> FalagardMappingVector; 
+        // typedef std::vector<CEGUI::Scheme::FalagardMapping> FalagardMappingVector;
         // typedef std::vector<CEGUI::Scheme::LoadableUIElement> LoadableUIElementVector;
         // typedef std::vector<CEGUI::Scheme::UIElementFactory> UIElementFactoryVector;
         // typedef std::vector<CEGUI::Scheme::UIModule> UIModuleVector;
@@ -365,7 +400,7 @@ namespace pyplusplus
         typedef std::multimap<Group, Connection
             CEGUI_MULTIMAP_ALLOC(Group, Connection)> SlotContainer;
         typedef std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)>	EventMap;
+            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)>  EventMap;
         typedef std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Font*)> FontRegistry;
         typedef std::pair<CEGUI::Window*, bool> WindowStackEntry;
@@ -377,7 +412,7 @@ namespace pyplusplus
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)> UserStringMap;
         typedef std::set<CEGUI::String, CEGUI::StringFastLessCompare> StringSet;
         typedef std::vector<CEGUI::String
-            CEGUI_VECTOR_ALLOC(CEGUI::String)> TargetTypeStack;		//!< Type used to implement stack of target type names.
+            CEGUI_VECTOR_ALLOC(CEGUI::String)> TargetTypeStack;     //!< Type used to implement stack of target type names.
         typedef std::map<CEGUI::String, CEGUI::Window*, CEGUI::StringFastLessCompare
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Window*)> WindowRegistry; //!< Type used to implement registry of Window objects
         typedef std::vector<CEGUI::Window*

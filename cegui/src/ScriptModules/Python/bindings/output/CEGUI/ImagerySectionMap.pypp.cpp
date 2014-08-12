@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_ImagerySectionMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::ImagerySection*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::ImagerySection*> > > >("ImagerySectionMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::ImagerySection*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::ImagerySection*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection*> > > > ImagerySectionMap_exposer_t;
+        ImagerySectionMap_exposer_t ImagerySectionMap_exposer = ImagerySectionMap_exposer_t( "ImagerySectionMap" );
+        bp::scope ImagerySectionMap_scope( ImagerySectionMap_exposer );
+        ImagerySectionMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection*> > > >() );
+    }
 
 }

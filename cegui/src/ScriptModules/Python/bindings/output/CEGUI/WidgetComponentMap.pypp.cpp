@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_WidgetComponentMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::WidgetComponent*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetComponent*> > > >("WidgetComponentMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::WidgetComponent*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetComponent*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetComponent*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetComponent*> > > > WidgetComponentMap_exposer_t;
+        WidgetComponentMap_exposer_t WidgetComponentMap_exposer = WidgetComponentMap_exposer_t( "WidgetComponentMap" );
+        bp::scope WidgetComponentMap_scope( WidgetComponentMap_exposer );
+        WidgetComponentMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetComponent*> > > >() );
+    }
 
 }
