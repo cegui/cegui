@@ -1608,7 +1608,7 @@
         <StateImagery name="Disabled"/>
     </WidgetLook>
     <WidgetLook name="Vanilla/ComboDropList">
-        <Property name="ForceVertScrollbar" value="true"/>
+        <Property name="VertScrollbarDisplayMode" value="Shown"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Property name="SelectionBrushImage" value="Vanilla-Images/GenericBrush"/>
         <NamedArea name="ItemRenderingArea">
