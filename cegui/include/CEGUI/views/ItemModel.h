@@ -120,11 +120,19 @@ class CEGUIEXPORT ItemModel : public EventSet
 public:
     virtual ~ItemModel();
 
-    //! Name of the event triggered after new children were added
+    //! Name of the event triggered \b before children will be added
+    static const String EventChildrenWillBeAdded;
+    //! Name of the event triggered \b after new children were added
     static const String EventChildrenAdded;
-    //! Name of the event triggered after existing children were removed
+
+    //! Name of the event triggered \b before existing children will be removed
+    static const String EventChildrenWillBeRemoved;
+    //! Name of the event triggered \b after existing children were removed
     static const String EventChildrenRemoved;
-    //! Name of the event triggered after existing children's data was changed
+
+    //! Name of the event triggered \b before existing children's data will be changed
+    static const String EventChildrenDataWillChange;
+    //! Name of the event triggered \b after existing children's data was changed
     static const String EventChildrenDataChanged;
 
     /*!
@@ -208,6 +216,27 @@ public:
 
     /*!
     \brief
+        Notifies any listeners of the EventChildrenWillBeAdded event that new children
+        will be added to this model.
+
+    \param parent_index
+        The parent index under which children will be added.
+
+    \param start_id
+        The id of the child starting from which children will be added.
+
+    \param count
+        The number of children that will be added.
+
+    \remark
+        If this method is overridden, it *needs* to call this base method or invoke
+        manually the EventChildrenWillBeAdded event.
+    */
+    virtual void notifyChildrenWillBeAdded(ModelIndex parent_index,
+        size_t start_id, size_t count);
+
+    /*!
+    \brief
         Notifies any listeners of the EventChildrenAdded event that new children
         have been added to this model.
 
@@ -225,6 +254,27 @@ public:
         manually the EventChildrenAdded event.
     */
     virtual void notifyChildrenAdded(ModelIndex parent_index,
+        size_t start_id, size_t count);
+
+    /*!
+    \brief
+        Notifies any listeners of the EventChildrenWillBeRemoved event that existing
+        children will be removed from this model.
+
+    \param parent_index
+        The parent index under which children will be removed.
+
+    \param start_id
+        The id of the child starting from which children will be removed.
+
+    \param count
+        The number of children that will be removed.
+
+    \remark
+        If this method is overridden, it *needs* to call this base method or invoke
+        manually the EventChildrenWillBeRemoved event.
+    */
+    virtual void notifyChildrenWillBeRemoved(ModelIndex parent_index,
         size_t start_id, size_t count);
 
     /*!
@@ -250,8 +300,20 @@ public:
 
     /*!
     \brief
+        Notifies any listeners of the EventChildDataWillChange event that existing
+        children's data will change.
+
+    \remark
+        If this method is overridden, it *needs* to call this base method or invoke
+        manually the EventChildDataWillChange event.
+    */
+    virtual void notifyChildrenDataWillChange(ModelIndex parent_index,
+        size_t start_id, size_t count);
+
+    /*!
+    \brief
         Notifies any listeners of the EventChildDataChanged event that existing
-        child has been updated.
+        children's data has been updated.
 
     \remark
         If this method is overridden, it *needs* to call this base method or invoke
