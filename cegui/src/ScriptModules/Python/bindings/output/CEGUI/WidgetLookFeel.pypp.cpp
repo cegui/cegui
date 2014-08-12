@@ -668,7 +668,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitionMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::PropertyDefinitionBase*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::PropertyDefinitionBase*> > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::PropertyDefinitionBase*> > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitionMap"
@@ -789,7 +789,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionMap
         
-            typedef ::std::map<CEGUI::String,CEGUI::PropertyDefinitionBase*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::PropertyDefinitionBase*> > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionMap_function_type )( bool ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::PropertyDefinitionBase*> > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionMap_function_type )( bool ) ;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitionMap"
@@ -1010,6 +1010,9 @@ void register_WidgetLookFeel_class(){
                     - true if a named area with the requested name is defined for this\n\
                       WidgetLookFeel.\n\
                     - false if no such named area is defined for this WidgetLookFeel.\n\
+            \n\
+                 deprecated This function is deprecated because it does not consider WidgetLook inheritance. It\
+                 will be changed to isNamedAreaPresent() in the next major version.\n\
                 *\n" );
         
         }
@@ -1031,6 +1034,10 @@ void register_WidgetLookFeel_class(){
                 @return\n\
                     - true if imagery exists for the specified state,\n\
                     - false if no imagery exists for the specified state.\n\
+            \n\
+                 deprecated This function is deprecated because it does not consider WidgetLook inheritance. It\
+                 will be replaced by a\n\
+                            new isStateImageryPresent function in the next major version.\n\
                 *\n" );
         
         }

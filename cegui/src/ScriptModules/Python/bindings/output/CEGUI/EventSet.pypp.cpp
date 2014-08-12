@@ -254,22 +254,127 @@ void register_EventSet_class(){
         typedef bp::class_< EventSet_wrapper, boost::noncopyable > EventSet_exposer_t;
         EventSet_exposer_t EventSet_exposer = EventSet_exposer_t( "EventSet", "*!\n\
         \n\
-            Class that collects together a set of Event objects.\n\
+            Interface providing event signaling and handling\n\
         \n\
             The EventSet is a means for code to attach a handler function to some\n\
             named event, and later, for that event to be fired and the subscribed\n\
             handler(s) called.\n\
-            \n\
-            As of 0.5, the EventSet no longer needs to be filled with available events.\n\
+        \n\
+            Its purpose is similar to Qt's signal and slot system, you can think of\n\
+            Event name as the signal and the subscribed handler as the slot.\n\
+        \n\
+            Each Event has a name and a set of handlers. Handlers can be free functions,\n\
+            class member functions or even functors. Whenever an Event is fired all of\n\
+            its handlers are invoked. You are most likely looking for a way to react\n\
+            to mouse clicks or other events fired internally by CEGUI.\n\
+        \n\
+            The handlers have to have a very specific signature. They have to return\n\
+            bool and they have to take const EventArgs&. If this is not met you will\n\
+            encounter build errors!\n\
+        \n\
+         Reacting to internal CEGUI events\n\
+        \n\
+        .{.cpp}\n\
+        bool handler(const EventArgs& args)\n\
+        {\n\
+            std.cout << Don't you dare click me again! << std.endl;\n\
+        \n\
+             returning true means we handled the Event and it doesn't need to be\n\
+             propagated any further\n\
+            return true;\n\
+        }\n\
+        \n\
+        void example()\n\
+        {\n\
+            CEGUI.Window* wnd = ...;\n\
+            wnd.subscribeEvent(CEGUI.Window.EventMouseClick, &handler);\n\
+        }\n\
+        \n\n\
+        \n\
+         A contrived example of various handler types\n\
+        \n\
+        .{.cpp}\n\
+        bool freeFunction(const EventArgs& args)\n\
+        {\n\
+             your handler code here\n\
+        }\n\
+        \n\
+         nothing special about this class!\n\
+        class CustomClass\n\
+        {\n\
+            public:\n\
+                bool memberFunction(const EventArgs& args)\n"
+        "        {\n\
+                     your handler code here\n\
+                }\n\
+        \n\
+                static bool staticMemberFunction(const EventArgs& args)\n\
+                {\n\
+                     your handler code here\n\
+                }\n\
+        \n\
+                bool memberFunctionWithArg(const EventArgs& args, bool something)\n\
+                {\n\
+                     your handler code here\n\
+                }\n\
+        };\n\
+        \n\
+        class Functor\n\
+        {\n\
+            public:\n\
+                bool operator()(const EventArgs& args)\n\
+                {\n\
+                     your handler code here\n\
+                }\n\
+        }\n\
+        \n\
+        void example()\n\
+        {\n\
+            CustomClass instance;\n\
+        \n\
+            CEGUI.Window* wnd = ...;\n\
+        \n\
+             creates CustomEvent, subscribes freeFunction to it\n\
+            wnd.subscribeEvent(CustomEvent, &freeFunction);\n\
+             subscribes memberFunction of instance to CustomEvent\n\
+            wnd.subscribeEvent(CustomEvent, &CustomClass.memberFunction, &instance);\n\
+             subscribes staticMemberFunction of CustomClass to CustomEvent\n\
+            wnd.subscribeEvent(CustomEvent, &CustomClass.staticMemberFunction);\n\
+             subscribes Functor to CustomEvent, Functor instance is owned by EventSet\n\
+             after this call, it will be destroyed by EventSet\n\
+            wnd.subscribeEvent(CustomEvent, Functor());\n\
+        \n\
+             Advanced subscribers using boost.bind follow:\n\
+        \n\
+             subscribes memberFunctionWithArg of CustomClass to CustomEvent\n\
+            wnd.subscribeEvent(CustomEvent, boost.bind(&CustomClass.memberFunctionWithArg, _1, _2, true),\
+            &instance);\n\
+             same as above, binding the instance itself as well\n\
+            wnd.subscribeEvent(CustomEvent, boost.bind(&CustomClass.memberFunctionWithArg, instance, _1,"
+        "    true));\n\
+        \n\
+             the following line causes all subscribed handlers to be called\n\
+            wnd.fireEvent(CustomEvent);\n\
+        }\n\
+        \n\n\
+        \n\
+         EventSet works well with others\n\
+            The EventSet can also subscribe boost.function, std.function, functors\n\
+            created by boost.bind and possibly others. This is not a feature of\n\
+            CEGUI per se, just a fortunate side effect of being able to call functors.\n\
+        \n\
+         Events are automatically created on demand\n\
+            As of CEGUI 0.5, the EventSet no longer needs to be filled with available events.\n\
             Events are now added to the set as they are first used; that is, the first\n\
             time a handler is subscribed to an event for a given EventSet, an Event\n\
             object is created and added to the EventSet.\n\
-            \n\
+        \n\
             Instead of throwing an exception when firing an event that does not actually\n\
             exist in the set, we now do nothing (if the Event does not exist, then it\n\
             has no handlers subscribed, and therefore doing nothing is the correct\n\
             course action).\n\
-        *\n", bp::init< >("*!\n\
+        *\n\
+        ", bp::init< >("*!\n\
         \n\
             Constructor for EventSet objects\n\
         *\n") );

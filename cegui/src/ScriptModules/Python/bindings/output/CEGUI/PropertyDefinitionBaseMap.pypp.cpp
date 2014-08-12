@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_PropertyDefinitionBaseMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::PropertyDefinitionBase*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::PropertyDefinitionBase*> > > >("PropertyDefinitionBaseMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::PropertyDefinitionBase*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::PropertyDefinitionBase*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::PropertyDefinitionBase*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::PropertyDefinitionBase*> > > > PropertyDefinitionBaseMap_exposer_t;
+        PropertyDefinitionBaseMap_exposer_t PropertyDefinitionBaseMap_exposer = PropertyDefinitionBaseMap_exposer_t( "PropertyDefinitionBaseMap" );
+        bp::scope PropertyDefinitionBaseMap_scope( PropertyDefinitionBaseMap_exposer );
+        PropertyDefinitionBaseMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::PropertyDefinitionBase*> > > >() );
+    }
 
 }

@@ -12,8 +12,60 @@ void register_PropertySet_class(){
         typedef bp::class_< CEGUI::PropertySet, bp::bases< CEGUI::PropertyReceiver > > PropertySet_exposer_t;
         PropertySet_exposer_t PropertySet_exposer = PropertySet_exposer_t( "PropertySet", "*!\n\
         \n\
-           Class that contains a collection of Property objects.\n\
-        *\n", bp::init< >("*!\n\
+           Interface providing introspection capabilities\n\
+        \n\
+        CEGUI uses this interface for introspection and serialisation, especially in\n\
+        CEGUI.Window and classes that inherit it.\n\
+        \n\
+        If you are just a user of an existing PropertySet class there are just 2 methods\n\
+        that you should be aware of - PropertySet.setProperty and PropertySet.getProperty.\n\
+        Both methods are available in 2 variants - string fallback mode and templated\n\
+        native mode.  It is recommended to use the native mode. Code example:\n\
+        \n\
+        .{.cpp}\n\
+        CEGUI.Window* wnd = ...;\n\
+         native mode property set\n\
+        wnd.setProperty<float>(Alpha, 0.5f);  set Alpha to 50%\n\
+         string fallback mode\n\
+        wnd.setProperty(Alpha, 0.5);  set Alpha to 50%\n\
+        \n\
+         native mode property get\n\
+        const float alpha = wnd.getProperty<float>(Alpha);\n\
+         string fallback mode\n\
+        const String alphaString = wnd.getProperty(Alpha);\n\
+        \n\n\
+        \n\
+        If you use native mode with the wrong type CEGUI will resort to string fallback\n\
+        and will try to convert the type to whatever you requested.\n\
+        \n\
+        .{.cpp}\n\
+        CEGUI.Window* wnd = ...;\n\
+         will set Alpha to 100% but is slower due to the casts\n\
+        wnd.setProperty<int>(Alpha, 1);\n\
+         retrieves Alpha as string, then proceeds to convert that to int\n\
+         beware of rounding errors!\n\
+        wnd.getProperty<int>(Alpha);\n\
+        \n\n\
+        \n\
+        We will always offer string fallback mode because it is necessary for serialisation\n\
+        and scripting. Scripting languages are often duck typed and cannot use C++\n\
+        templated code.\n\
+        \n\
+        The CEGUI.Property instances hold pointers to getter and setter of\n\
+        a given property. They are designed in such a way that multiple PropertySets\n"
+        "(multiple widgets) can share the Property instances to save memory. This means\n\
+        that PropertySets don't own the Properties themselves. The Property instances\n\
+        are usually static members of the PropertySet classes or static local\n\
+        variables in the scope of the constructor or a method called from there.\n\
+        \n\
+        It's unusual but multiple instances of the same class can have different\n\
+        Properties added to them.\n\
+        \n\
+        It is recommended to use the  CEGUI_DEFINE_PROPERTY macro instead of using\n\
+        PropertySet.addProperty directly. This takes care of property initialisation\n\
+        as well as it's addition to the PropertySet instance.\n\
+        *\n\
+        ", bp::init< >("*!\n\
         \n\
            Constructs a new PropertySet object\n\
         *\n") );
@@ -33,12 +85,13 @@ void register_PropertySet_class(){
                @param property\n\
                   Pointer to the Property object to be added to the PropertySet.\n\
             \n\
-               @return\n\
-                  Nothing.\n\
-            \n\
                @exception NullObjectException      Thrown if  property is NULL.\n\
                @exception AlreadyExistsException   Thrown if a Property with the same name as  property already\
                exists in the PropertySet\n\
+            \n\
+                \note\n\
+                    You most likely don't want to use this method unless you are implementing\n\
+                    a custom Property class. Please see CEGUI_DEFINE_PROPERTY instead.\n\
                *\n" );
         
         }
@@ -50,12 +103,9 @@ void register_PropertySet_class(){
                 "clearProperties"
                 , clearProperties_function_type( &::CEGUI::PropertySet::clearProperties )
                 , "*!\n\
-               \n\
-                  Removes all Property objects from the PropertySet.\n\
             \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
+               Removes all Property objects from the PropertySet.\n\
+             *\n" );
         
         }
         { //::CEGUI::PropertySet::getProperty
@@ -216,9 +266,6 @@ void register_PropertySet_class(){
                @param name\n\
                   String containing the name of the Property to be removed.  If Property  name is not in the\
                   set, nothing happens.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
                *\n" );
         
         }
@@ -239,9 +286,6 @@ void register_PropertySet_class(){
             \n\
                @param value\n\
                   String containing a textual representation of the new value for the Property\n\
-            \n\
-               @return\n\
-                  Nothing\n\
             \n\
                @exception UnknownObjectException   Thrown if no Property named  name is in the PropertySet.\n\
                @exception InvalidRequestException  Thrown when the Property was unable to interpret the content\

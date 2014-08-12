@@ -280,6 +280,15 @@ public:
     }
 };
 
+class Workarounds
+{
+    public:
+        static PropertyDefinitionBase* PropertyDefinitionBaseMapGet(WidgetLookFeel::PropertyDefinitionBasePointerMap& map, const WidgetLookFeel::PropertyDefinitionBasePointerMap::key_type& key)
+        {
+            return map[key];
+        }
+};
+
 }
 
 // First we create a magic namespace to hold all our aliases

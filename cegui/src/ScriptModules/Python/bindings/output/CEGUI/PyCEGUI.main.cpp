@@ -694,6 +694,8 @@
 
 #include "WindowRendererManager.pypp.hpp"
 
+#include "Workarounds.pypp.hpp"
+
 #include "XMLAttributes.pypp.hpp"
 
 #include "XMLHandler.pypp.hpp"
@@ -826,13 +828,13 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertyInitialiserMap_class();
 
-    register_PropertyDefinitionBaseMap_class();
-
     register_NamedAreaMap_class();
 
     register_ImagerySectionMap_class();
 
     register_EventLinkDefinitionMap_class();
+
+    register_PropertyDefinitionBaseMap_class();
 
     register_BaseDim_class();
 
@@ -1481,6 +1483,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_WindowRendererFactory_class();
 
     register_WindowRendererManager_class();
+
+    register_Workarounds_class();
 
     register_XMLAttributes_class();
 
