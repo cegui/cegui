@@ -67,7 +67,7 @@ public:
     */
     virtual void resizeViewToContent(bool fit_width, bool fit_height) const = 0;
 
-    inline virtual ItemView* getView() const;
+    virtual ItemView* getView() const;
 };
 
 enum ScrollbarDisplayMode
