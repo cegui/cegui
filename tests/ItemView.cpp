@@ -88,6 +88,7 @@ BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
     }
 
     {
+        model.notifyChildrenWillBeRemoved(model.getRootIndex(), 0, 1);
         view->setIsDirty(false);
         model.notifyChildrenRemoved(model.getRootIndex(), 0, 1);
 

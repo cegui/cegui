@@ -355,6 +355,8 @@ template <typename TAbstractItem>
 void AbstractItemModel<TAbstractItem>::addItemAtPosition(AbstractItem* new_item,
     const ModelIndex& parent_index, size_t position)
 {
+    notifyChildrenWillBeAdded(parent_index, position, 1);
+
     AbstractItem* parent = static_cast<AbstractItem*>(parent_index.d_modelData);
     if (position > parent->getChildren().size())
         CEGUI_THROW(InvalidRequestException("The specified position is out of range."));
@@ -395,6 +397,8 @@ void AbstractItemModel<TAbstractItem>::removeItem(const AbstractItem* item)
     if (itor != parent_item->getChildren().end())
     {
         size_t child_id = std::distance(parent_item->getChildren().begin(), itor);
+
+        notifyChildrenWillBeRemoved(ModelIndex(parent_item), child_id, 1);
 
         deleteChildren(*itor, true);
         CEGUI_DELETE_AO *itor;
@@ -446,6 +450,11 @@ void CEGUI::AbstractItemModel<TAbstractItem>::deleteChildren(AbstractItem* item,
 
     size_t items_count = item->getChildren().size();
     std::vector<AbstractItem*>::iterator itor = item->getChildren().begin();
+
+    if (notify)
+    {
+        notifyChildrenWillBeRemoved(ModelIndex(item), 0, items_count);
+    }
 
     while (itor != item->getChildren().end())
     {
