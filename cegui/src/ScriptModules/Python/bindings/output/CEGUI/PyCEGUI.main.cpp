@@ -828,13 +828,13 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertyInitialiserMap_class();
 
+    register_PropertyDefinitionBaseMap_class();
+
     register_NamedAreaMap_class();
 
     register_ImagerySectionMap_class();
 
     register_EventLinkDefinitionMap_class();
-
-    register_PropertyDefinitionBaseMap_class();
 
     register_BaseDim_class();
 

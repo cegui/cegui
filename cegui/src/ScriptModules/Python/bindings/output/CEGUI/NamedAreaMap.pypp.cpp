@@ -10,7 +10,11 @@ namespace bp = boost::python;
 
 void register_NamedAreaMap_class(){
 
-    bp::class_< std::map<CEGUI::String,CEGUI::NamedArea*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::NamedArea*> > > >("NamedAreaMap")    
-        .def( bp::indexing::map_suite< std::map<CEGUI::String,CEGUI::NamedArea*,CEGUI::StringFastLessCompare,std::allocator<std::pair<const CEGUI::String, CEGUI::NamedArea*> > > >() );
+    { //::std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::NamedArea*> > >
+        typedef bp::class_< std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::NamedArea*> > > > NamedAreaMap_exposer_t;
+        NamedAreaMap_exposer_t NamedAreaMap_exposer = NamedAreaMap_exposer_t( "NamedAreaMap" );
+        bp::scope NamedAreaMap_scope( NamedAreaMap_exposer );
+        NamedAreaMap_exposer.def( bp::indexing::map_suite< std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::NamedArea*> > > >() );
+    }
 
 }
