@@ -106,6 +106,14 @@ public:
     {
         return PropertyHelper<HorizontalFormatting>::fromString(str);
     }
+    static HorizontalAlignment stringToHorizontalAlignment(const String& str)
+    {
+        return PropertyHelper<HorizontalAlignment>::fromString(str);
+    }
+    static VerticalAlignment stringToVerticalAlignment(const String& str)
+    {
+        return PropertyHelper<VerticalAlignment>::fromString(str);
+    }
     static const Font* stringToFont(const String& str)
     {
         return PropertyHelper<Font*>::fromString(str);
@@ -178,6 +186,14 @@ public:
     static String horizontalFormattingToString(HorizontalFormatting val)
     {
         return PropertyHelper<HorizontalFormatting>::toString(val);
+    }
+    static String verticalAlignmentToString(VerticalAlignment val)
+    {
+        return PropertyHelper<VerticalAlignment>::toString(val);
+    }
+    static String horizontalAlignmentToString(HorizontalAlignment val)
+    {
+        return PropertyHelper<HorizontalAlignment>::toString(val);
     }
     static String fontToString(const Font* val)
     {
