@@ -1233,6 +1233,9 @@ void Iterator_previous(::CEGUI::%s& t)
     # no need for this function, just use getSingleton
     mb.mem_funs("getSingletonPtr").exclude()
 
+    # include workaround functions from the CEGUI namespace
+    CEGUI_ns.class_("Workarounds").include();
+
     # at no point should you need any private methods
     common_utils.excludeAllPrivate(CEGUI_ns)
 
