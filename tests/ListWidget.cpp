@@ -120,4 +120,41 @@ BOOST_AUTO_TEST_CASE(RemoveItem_IsRemoved)
     BOOST_REQUIRE_EQUAL(1, view->getItems().size());
     BOOST_REQUIRE_EQUAL("item2", view->getItems().at(0)->d_text);
 }
+
+
+//----------------------------------------------------------------------------//
+struct OnListSelectionQueriesFirstSelectedItemTestFixture : public ListWidgetFixture
+{
+    OnListSelectionQueriesFirstSelectedItemTestFixture()
+    {
+        view->subscribeEvent(ListWidget::EventSelectionChanged,
+            Event::Subscriber(
+                &OnListSelectionQueriesFirstSelectedItemTestFixture::onSelectionChanged,
+                this));
+    }
+
+    bool onSelectionChanged(const EventArgs& args)
+    {
+        d_firstSelectedItem = view->getFirstSelectedItem();
+        return true;
+    }
+
+    StandardItem* d_firstSelectedItem;
+};
+
+BOOST_FIXTURE_TEST_CASE(
+    ClearList_ViewWithSelectionChangedHandler_SelectedItemEqualsToNull,
+    OnListSelectionQueriesFirstSelectedItemTestFixture)
+{
+    view->addItem("ichi");
+    view->addItem("ni");
+    view->addItem("san");
+
+    view->setItemSelectionState(1, true);
+
+    view->clearList();
+
+    BOOST_REQUIRE_EQUAL(static_cast<StandardItem*>(0), d_firstSelectedItem);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

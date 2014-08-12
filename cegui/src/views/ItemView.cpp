@@ -257,15 +257,32 @@ void ItemView::connectToModelEvents(ItemModel* d_itemModel)
     if (d_itemModel == 0)
         return;
 
+    d_eventChildrenWillBeAddedConnection = d_itemModel->subscribeEvent(
+        ItemModel::EventChildrenWillBeAdded,
+        &ItemView::onChildrenWillBeAdded, this);
     d_eventChildrenAddedConnection = d_itemModel->subscribeEvent(
         ItemModel::EventChildrenAdded,
         &ItemView::onChildrenAdded, this);
+
+    d_eventChildrenWillBeRemovedConnection = d_itemModel->subscribeEvent(
+        ItemModel::EventChildrenWillBeRemoved,
+        &ItemView::onChildrenWillBeRemoved, this);
     d_eventChildrenRemovedConnection = d_itemModel->subscribeEvent(
         ItemModel::EventChildrenRemoved,
         &ItemView::onChildrenRemoved, this);
+
+    d_eventChildrenDataWillChangeConnection = d_itemModel->subscribeEvent(
+        ItemModel::EventChildrenDataWillChange,
+        &ItemView::onChildrenDataWillChange, this);
     d_eventChildrenDataChangedConnection = d_itemModel->subscribeEvent(
         ItemModel::EventChildrenDataChanged,
         &ItemView::onChildrenDataChanged, this);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::onChildrenWillBeAdded(const EventArgs& args)
+{
+    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -293,7 +310,7 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenRemoved(const EventArgs& args)
+bool ItemView::onChildrenWillBeRemoved(const EventArgs& args)
 {
     if (d_itemModel == 0)
         return false;
@@ -319,11 +336,24 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
         }
     }
 
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::onChildrenRemoved(const EventArgs& args)
+{
+
     ItemViewEventArgs wargs(this);
     onSelectionChanged(wargs);
 
     WindowEventArgs evt_args(this);
     onViewContentsChanged(evt_args);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::onChildrenDataWillChange(const EventArgs& args)
+{
     return true;
 }
 
@@ -370,17 +400,21 @@ void ItemView::onPointerMove(PointerEventArgs& e)
     Window::onPointerMove(e);
 }
 
+static void disconnectIfNotNull(Event::Connection& connection)
+{
+    if (connection != 0)
+        connection->disconnect();
+}
+
 //----------------------------------------------------------------------------//
 void ItemView::disconnectModelEvents()
 {
-    if (d_eventChildrenAddedConnection != 0)
-        d_eventChildrenAddedConnection->disconnect();
-
-    if (d_eventChildrenRemovedConnection != 0)
-        d_eventChildrenRemovedConnection->disconnect();
-
-    if (d_eventChildrenDataChangedConnection != 0)
-        d_eventChildrenDataChangedConnection->disconnect();
+    disconnectIfNotNull(d_eventChildrenWillBeAddedConnection);
+    disconnectIfNotNull(d_eventChildrenAddedConnection);
+    disconnectIfNotNull(d_eventChildrenWillBeRemovedConnection);
+    disconnectIfNotNull(d_eventChildrenRemovedConnection);
+    disconnectIfNotNull(d_eventChildrenDataWillChangeConnection);
+    disconnectIfNotNull(d_eventChildrenDataChangedConnection);
 }
 
 //----------------------------------------------------------------------------//
@@ -973,7 +1007,6 @@ void ItemView::resizeToContent()
     getViewRenderer()->resizeViewToContent(
         d_isAutoResizeWidthEnabled, d_isAutoResizeHeightEnabled);
 }
-
 
 //----------------------------------------------------------------------------//
 ItemViewEventArgs::ItemViewEventArgs(ItemView* wnd, ModelIndex index) :

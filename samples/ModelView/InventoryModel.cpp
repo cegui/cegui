@@ -146,10 +146,14 @@ void InventoryModel::addRandomItemWithChildren(const ModelIndex& parent, size_t 
 //----------------------------------------------------------------------------//
 void InventoryModel::updateItemName(const ModelIndex& index, const String& newName)
 {
+    ModelIndex parent_index = getParentIndex(index);
+
+    notifyChildrenDataWillChange(parent_index, 0, 1);
+
     InventoryItem* item = static_cast<InventoryItem*>(index.d_modelData);
     item->setText(newName);
 
-    notifyChildrenDataChanged(getParentIndex(index), 0, 1);
+    notifyChildrenDataChanged(parent_index, 0, 1);
 }
 
 //----------------------------------------------------------------------------//

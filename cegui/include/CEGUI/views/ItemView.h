@@ -332,9 +332,13 @@ protected:
 
     virtual void initialiseComponents(void);
 
+    virtual bool onChildrenWillBeAdded(const EventArgs& args);
     virtual bool onChildrenAdded(const EventArgs& args);
+    virtual bool onChildrenWillBeRemoved(const EventArgs& args);
     virtual bool onChildrenRemoved(const EventArgs& args);
+    virtual bool onChildrenDataWillChange(const EventArgs& args);
     virtual bool onChildrenDataChanged(const EventArgs& args);
+
     virtual bool onScrollPositionChanged(const EventArgs& args);
     virtual void onSelectionChanged(ItemViewEventArgs& args);
     virtual void onMultiselectModeChanged(WindowEventArgs& args);
@@ -347,8 +351,11 @@ protected:
     virtual void onSemanticInputEvent(SemanticEventArgs& e);
     virtual void onParentSized(ElementEventArgs& e);
 
+    Event::Connection d_eventChildrenWillBeAddedConnection;
     Event::Connection d_eventChildrenAddedConnection;
+    Event::Connection d_eventChildrenWillBeRemovedConnection;
     Event::Connection d_eventChildrenRemovedConnection;
+    Event::Connection d_eventChildrenDataWillChangeConnection;
     Event::Connection d_eventChildrenDataChangedConnection;
     void connectToModelEvents(ItemModel* d_itemModel);
     void disconnectModelEvents();

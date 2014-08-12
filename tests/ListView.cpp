@@ -189,6 +189,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_RenderingHeightIsUpdated)
     model.d_items.push_back(ITEM3);
     view->prepareForRender();
 
+    model.notifyChildrenWillBeRemoved(model.getRootIndex(), 0, 3);
     model.d_items.clear();
     model.notifyChildrenRemoved(model.getRootIndex(), 0, 3);
 
@@ -208,6 +209,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
 
     float itemSize = view->d_renderedTotalHeight / 3;
 
+    model.notifyChildrenWillBeRemoved(model.getRootIndex(), 1, 1);
     model.d_items.erase(model.d_items.begin() + 1);
     model.notifyChildrenRemoved(model.getRootIndex(), 1, 1);
 
@@ -219,12 +221,14 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
     BOOST_REQUIRE(view->d_renderedTotalHeight <= (itemSize * 2 + 0.01f));
 }
 
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
 {
     model.d_items.push_back(ITEM1);
     view->prepareForRender();
     BOOST_CHECK_EQUAL(1, view->getItems().at(0)->d_string.getLineCount());
 
+    model.notifyChildrenDataWillChange(model.getRootIndex(), 0, 1);
     model.d_items.at(0) = ITEM_WITH_6LINES;
     model.notifyChildrenDataChanged(model.getRootIndex(), 0, 1);
 
@@ -232,6 +236,7 @@ BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
     BOOST_REQUIRE_EQUAL(6, view->getItems().at(0)->d_string.getLineCount());
 }
 
+//----------------------------------------------------------------------------//
 void triggerSelectRangeEvent(Vector2f position, ItemView* view)
 {
     SemanticEventArgs args(view);
@@ -255,6 +260,7 @@ BOOST_AUTO_TEST_CASE(SelectRange)
     BOOST_REQUIRE_EQUAL(3, view->getIndexSelectionStates().size());
 }
 
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_ListIsSorted)
 {
     model.d_items.push_back(ITEM3);
