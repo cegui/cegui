@@ -34,6 +34,12 @@ const String ItemModel::EventChildrenRemoved("ChildrenRemoved");
 const String ItemModel::EventChildrenDataChanged("ChildrenDataChanged");
 
 //----------------------------------------------------------------------------//
+std::ostream& operator<< (std::ostream& os, const ModelIndex& arg)
+{
+    return os << "CEGUI::ModelIndex(" << arg.d_modelData << ")";
+}
+
+//----------------------------------------------------------------------------//
 ModelEventArgs::ModelEventArgs(ItemModel* item_model, ModelIndex parent_index, size_t start_id, size_t count /*= 1*/) :
     d_itemModel(item_model),
     d_parentIndex(parent_index),
