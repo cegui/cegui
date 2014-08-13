@@ -133,13 +133,13 @@ void ComboDropList::onSelectionChanged(WindowEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for mouse movement events
+	Handler for pointer movement events
 *************************************************************************/
-void ComboDropList::onMouseMove(MouseEventArgs& e)
+void ComboDropList::onPointerMove(PointerEventArgs& e)
 {
-	Listbox::onMouseMove(e);
+	Listbox::onPointerMove(e);
 
-	// if mouse is within our area (but not our children)
+    // if pointer is within our area (but not our children)
 	if (isHit(e.position))
 	{
 		if (!getChildAtPosition(e.position))
@@ -152,10 +152,10 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 
 			if (d_armed)
 			{
-				// check for an item under the mouse
+                // check for an item under the pointer
 				ListboxItem* selItem = getItemAtPoint(e.position);
 
-				// if an item is under mouse, select it
+                // if an item is under pointer, select it
 				if (selItem)
 				{
 					setItemSelectState(selItem, true);
@@ -173,8 +173,8 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 	// not within the list area
 	else
 	{
-		// if left mouse button is down, clear any selection
-		if (e.sysKeys & LeftMouse)
+		// if left pointer is held, clear any selection
+		if (e.pointerState.isHeld(PS_Left))
 		{
 			clearAllSelections();
 		}
@@ -185,13 +185,13 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button pressed events
+    Handler for pointer pressed events
 *************************************************************************/
-void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
+void ComboDropList::onPointerPressHold(PointerEventArgs& e)
 {
-	Listbox::onMouseButtonDown(e);
+    Listbox::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (!isHit(e.position))
 		{
@@ -205,18 +205,17 @@ void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 
 /*************************************************************************
-	Handler for mouse button release events
+	Handler for pointer activation events
 *************************************************************************/
-void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
+void ComboDropList::onPointerActivate(PointerEventArgs& e)
 {
-	Listbox::onMouseButtonUp(e);
+    Listbox::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (d_armed && (getChildAtPosition(e.position) == 0))
 		{
@@ -229,7 +228,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 
             releaseInput();
 		}
-		// if we are not already armed, in response to a left button up event, we auto-arm.
+        // if we are not already armed, in response to a left pointer activation event, we auto-arm.
 		else
 		{
 			d_armed = true;

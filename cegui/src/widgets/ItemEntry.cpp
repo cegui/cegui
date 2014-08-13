@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	31/3/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
+
 	purpose:	Implementation of ItemEntry widget base class
 *************************************************************************/
 /***************************************************************************
@@ -125,38 +125,38 @@ bool ItemEntry::validateWindowRenderer(const WindowRenderer* renderer) const
 }
 
 /*************************************************************************
-    Handle 'MouseClicked' event
-*************************************************************************/
-void ItemEntry::onMouseClicked(MouseEventArgs& e)
-{
-    Window::onMouseClicked(e);
-
-    if (d_selectable && e.button == LeftButton)
-    {
-        if (d_ownerList)
-            d_ownerList->notifyItemClicked(this);
-        else
-            setSelected(!isSelected());
-        ++e.handled;
-    }
-}
-
-/*************************************************************************
     Add ItemEntry specific properties
 *************************************************************************/
 void ItemEntry::addItemEntryProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
             "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"true\" or \"false\".",
             &ItemEntry::setSelectable, &ItemEntry::isSelectable, false
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
             "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"true\" or \"false\".",
             &ItemEntry::setSelected, &ItemEntry::isSelected, false
     );
+}
+
+void ItemEntry::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool range_selection = e.d_semanticValue == SV_SelectRange;
+    bool cumulative_selection = e.d_semanticValue == SV_SelectCumulative;
+
+    if (d_selectable &&
+        (e.d_semanticValue == SV_PointerActivate || range_selection || cumulative_selection) &&
+         e.d_payload.source == PS_Left)
+    {
+        if (d_ownerList)
+            d_ownerList->notifyItemActivated(this, cumulative_selection, range_selection);
+        else
+            setSelected(!isSelected());
+        ++e.handled;
+    }
 }
 
 } // End of  CEGUI namespace section

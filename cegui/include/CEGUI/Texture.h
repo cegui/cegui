@@ -134,7 +134,7 @@ public:
         as required to hold the image.
 
     \param filename
-        The filename of the image file that is to be loaded into the texture
+        The filename of the image file that is to be loaded into the texture.
 
     \param resourceGroup
         Resource group identifier to be passed to the resource provider when
