@@ -341,55 +341,6 @@ namespace CEGUI
         ImageryList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
         TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
         String              d_colourPropertyName;   //!< name of property to fetch colours from.
-
-    public:
-        //!  \deprecated This iterator is deprecated because the function that uses the type is deprecated
-        typedef ConstVectorIterator<ImageryList> ImageryComponentIterator;
-        //!  \deprecated This iterator is deprecated because the function that uses the type is deprecated
-        typedef ConstVectorIterator<TextList> TextComponentIterator;
-        //!  \deprecated This iterator is deprecated because the function that uses the type is deprecated
-        typedef ConstVectorIterator<FrameList> FrameComponentIterator;
-
-        /*!
-        \brief
-            Return a ImagerySection::ImageryComponentIterator object to iterate
-            over the ImageryComponent elements currently added to the
-            ImagerySection.
-
-        \deprecated
-            This iterator is deprecated because it returns copies of the instances instead of
-            pointers to them and the resulting values can therefore not be used in the remove
-            function. The function getImageryComponents should instead be used to retrieve the
-            added elements.
-        */
-        ImageryComponentIterator getImageryComponentIterator() const;
-        /*!
-        \brief
-            Return a ImagerySection::TextComponentIterator object to iterate
-            over the TextComponent elements currently added to the
-            ImagerySection.
-
-        \deprecated
-            This iterator is deprecated because it returns copies of the instances instead of
-            pointers to them and the resulting values can therefore not be used in the remove
-            function. The function getTextComponents should instead be used to retrieve the
-            added elements.
-        */
-        TextComponentIterator getTextComponentIterator() const;
-        /*!
-        \brief
-            Return a ImagerySection::FrameComponentIterator object to iterate
-            over the FrameComponent elements currently added to the
-            ImagerySection.
-
-        \deprecated
-            This iterator is deprecated because it returns copies of the instances instead of
-            pointers to them and the resulting values can therefore not be used in the remove
-            function. The function getFrameComponents should instead be used to retrieve the
-            added elements.
-        */
-        FrameComponentIterator getFrameComponentIterator() const;
-
     };
 
 } // End of  CEGUI namespace section
