@@ -375,22 +375,6 @@ namespace CEGUI
         return result;
     }
 
-    ImagerySection::ImageryComponentIterator
-    ImagerySection::getImageryComponentIterator() const
-    {
-        return ImageryComponentIterator(d_images.begin(), d_images.end());
-    }
-    ImagerySection::TextComponentIterator
-    ImagerySection::getTextComponentIterator() const
-    {
-        return TextComponentIterator(d_texts.begin(), d_texts.end());
-    }
-    ImagerySection::FrameComponentIterator
-    ImagerySection::getFrameComponentIterator() const
-    {
-        return FrameComponentIterator(d_frames.begin(), d_frames.end());
-    }
-
     ImagerySection::ImageryComponentPointerList ImagerySection::getImageryComponents()
     {
         ImagerySection::ImageryComponentPointerList pointerList;
