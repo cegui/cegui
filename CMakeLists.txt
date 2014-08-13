@@ -217,7 +217,7 @@ set (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D11}
 set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
 
 # Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
-if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
+if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
     if (NOT OIS_FOUND)
         message(STATUS "The SampleFramework is deactivated due to missing Ogre dependencies (OIS not found)")
