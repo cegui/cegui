@@ -1818,19 +1818,6 @@ public:
 
     /*!
     \brief
-        Invalidate this window causing at least this window to be redrawn during
-        the next rendering pass.
-
-    \return
-        Nothing
-
-    \deprecated
-        This function is deprecated in favour of the version taking a boolean.
-    */
-    void invalidate(void);
-
-    /*!
-    \brief
         Invalidate this window and - dependant upon \a recursive - all child
         content, causing affected windows to be redrawn during the next
         rendering pass.
