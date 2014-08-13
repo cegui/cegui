@@ -1827,11 +1827,8 @@ public:
         invalidated.
         - true will cause all child content to be invalidated also.
         - false will just invalidate this single window.
-
-    \return
-        Nothing
     */
-    void invalidate(const bool recursive);
+    void invalidate(const bool recursive = false);
 
     /*!
     \brief
