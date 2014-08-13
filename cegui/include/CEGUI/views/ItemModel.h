@@ -65,8 +65,6 @@ public:
     */
     void* d_modelData;
 
-    bool operator==(const ModelIndex& other) const;
-
     CEGUIEXPORT friend std::ostream& operator<< (std::ostream& os, const ModelIndex& arg);
 };
 
