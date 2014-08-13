@@ -211,10 +211,10 @@ public:
 
     /*!
     \brief
-        Notify this ItemListbox that the given ListItem was just clicked.
+        Notify this ItemListbox that the given ListItem was just activated.
         Internal function - not to be used from client code.
     */
-    virtual void notifyItemClicked(ItemEntry* li);
+    virtual void notifyItemActivated(ItemEntry* li, bool cumulativeSelection, bool rangeSelection);
 
     /*!
     \brief
@@ -258,7 +258,7 @@ protected:
     /************************************************************************
         Overridden event handlers
     ************************************************************************/
-    virtual void onKeyDown(KeyEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /************************************************************************
         Implementation data
