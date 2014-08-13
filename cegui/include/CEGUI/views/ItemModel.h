@@ -41,7 +41,20 @@ namespace CEGUI
 
 /*!
 \brief
-    Class that holds an index to a model item.
+    ModelIndex is CEGUI's way of representing user data in the views. It uses
+    a \b void* pointer to store a reference to arbitrary, user-owned data.
+
+    Even though the naming might suggest a particular order, it doesn't have any.
+    For comparing two indices ItemModel's compareIndices should be used.
+
+    The index should not be stored because the pointed data might be deleted in
+    the meantime. The only entity that should interpret the contents of this
+    class is the ItemModel (and its descendants). All decisions (e.g.: comparisons,
+    data providing) based on an index need to go through the ItemModel.
+
+    All operations with the view are done using the ModelIndex. For example, if you want
+    to select something you need to give it the ModelIndex of that item's. What that means
+    is that the view doesn't know about the actual model items.
 */
 class CEGUIEXPORT ModelIndex
 {
@@ -71,13 +84,16 @@ public:
 /*!
 \brief
     Enumeration that specifies which type of data is required from the ItemModel
-    in order for the View to render it.
+    in order for the view to render it.
 
-    Users can use the IDR_UserDefinedItemDataRole as a base for custom roles.
+    Users can use the IDR_User member as a starting base for custom roles. Anything
+    below is reserved for CEGUI usage.
 */
 enum ItemDataRole
 {
     IDR_Text,
+    //! The string returned for the icon must be an image name that can
+    //! retrieved from ImageManager
     IDR_Icon,
     IDR_Tooltip,
 
@@ -87,7 +103,8 @@ enum ItemDataRole
 
 /*!
 \brief
-    Arguments class for events that happened with regards to the specified ItemModel.
+    Arguments class for events that happened with regard to the specified ItemModel
+    on the specified indices.
 */
 class CEGUIEXPORT ModelEventArgs : public EventArgs
 {
@@ -107,11 +124,20 @@ public:
     size_t d_count;
 };
 
-
 /*!
 \brief
-    Abstract class defining the interface between the view and the model.
+    Abstract class defining the interface between the view and the user data.
     This is used by views to query data that is to be shown.
+
+    A view will require a custom implementation of this provider. CEGUI provides
+    a basic implementation in form of AbstractItemModel.
+
+    This model provides events to notify listeners (usually the view it is
+    attached to) of different events that will happen or happened. It is the
+    implementer's job to properly raise the events with the proper arguments so
+    that the view can correctly process those and render the view. For convenience,
+    there are the notifyChildren* method which raise the specified events
+    with the proper event arguments.
 */
 class CEGUIEXPORT ItemModel : public EventSet
 {
@@ -137,23 +163,45 @@ public:
     \brief
         Returns true if the specified ModelIndex is valid, false otherwise.
 
-    \param model_index
-        The ModelIndex for which to get the validity.
+        Usually, an index is valid if at least it does not contain a reference
+        to a NULL object. Extra logic can be added to check that the referenced
+        object is actually part of the model.
     */
     virtual bool isValidIndex(const ModelIndex& model_index) const = 0;
 
     /*!
     \brief
-        Creates a new ModelIndex for the specified child and parent index.
+        Creates a new ModelIndex that points to the specified child of the
+        specified parent index.
+
+        To create an index for a nested item, you need to chain the index creation.
+        Given a model for the following tree:
+        <pre>
+        |A
+        |--B
+        |-----C
+        |--D
+        </pre>
+
+        We can compute the indices for the nodes in the following way:
+        \code{.cpp}
+        ModelIndex a = makeIndex(0, getRootIndex());
+        ModelIndex b = makeIndex(0, a);
+        ModelIndex c = makeIndex(0, b);
+        ModelIndex d = makeIndex(1, a);
+        \endcode
 
     \param child
-        The child id, which is a number between 0 and getChildrenCount(parentIndex).
+        The ordinal child id (index), which is a number between 0 and
+        getChildrenCount(parent_index). This will specify which children in the
+        parent's index list of children should be referenced.
     */
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index) = 0;
 
     /*!
     \brief
-        Compares two indices and returns true if they are equal, false otherwise.
+        Compares semantically two indices and returns true if they are equal,
+        false otherwise.
     */
     virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const = 0;
 
@@ -161,21 +209,27 @@ public:
     \brief
         Compares semantically the contents of the specified two indices and returns:
         - 0 if they are equal.
-        - -1 if first index is less than second index.
+        - -1 if first index is less than the second index.
         - 1 if the first index is bigger than the second index.
+
+        This function is used by the view when it needs to sort the items.
     */
     virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const = 0;
 
     /*!
     \brief
         Returns the ModelIndex which is parent for the specified ModelIndex.
+
+    \return
+        The returned index should be equal to getRootIndex() for direct children
+        of the root index.
     */
     virtual ModelIndex getParentIndex(const ModelIndex& model_index) const = 0;
 
     /*!
     \brief
-        Returns the child id (between 0 and getChildrenCount(getParentIndex(model_index)))
-        or -1 if no such child exists, for the given ModelIndex.
+        Returns the ordinal id (index) of the child represented by the given
+        index, in its parent's list or -1 if no such child exists.
     */
     virtual int getChildId(const ModelIndex& model_index) const = 0;
 
@@ -192,10 +246,7 @@ public:
 
     /*!
     \brief
-        Returns the number of children of the specified ModelIndex.
-
-    \param model_index
-        The ModelIndex for which to compute the number of children.
+        Returns the number of direct children of the specified ModelIndex.
     */
     virtual size_t getChildCount(const ModelIndex& model_index) const = 0;
 
@@ -207,8 +258,18 @@ public:
 
     \remark
         For example, in the case of an image decoration, the name of the image
-        could be returned, and the view could use ImageManager to retrieve the
+        could be returned, and the view would use ImageManager to retrieve the
         specific Image instance by the name and render that.
+
+        An example implementation for the IDR_Icon role could be:
+        \code{.cpp}
+        Image* img; // get the image from somewhere
+
+        String getData(const ModelIndex& model_index, ItemDataRole role)
+        {
+            if (role == IDR_Icon) return img->getName();
+        }
+        \endcode
     */
     virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text) = 0;
 
