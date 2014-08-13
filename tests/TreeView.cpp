@@ -34,6 +34,7 @@
 #include "InventoryModel.h"
 
 using namespace CEGUI;
+#define BOOST_REQUIRE_INDICES_EQUAL(i1, i2) BOOST_REQUIRE_EQUAL(i1.d_modelData, i2.d_modelData)
 
 //----------------------------------------------------------------------------//
 struct TreeViewFixture
@@ -339,7 +340,7 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseEventsFired)
         createPointerEventArgs(expander_width / 2, font_height / 2, view);
     ModelIndex target_node = model.makeIndex(0, model.getRootIndex());
     view->onPointerPressHold(args);
-    BOOST_REQUIRE_EQUAL(target_node, expanded_nodes.at(0));
+    BOOST_REQUIRE_INDICES_EQUAL(target_node, expanded_nodes.at(0));
     BOOST_REQUIRE(collapsed_nodes.empty());
     view->prepareForRender();
 
@@ -350,8 +351,8 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseEventsFired)
 
     // collapse
     view->onPointerPressHold(args);
-    BOOST_REQUIRE_EQUAL(target_node, expanded_nodes.at(0));
-    BOOST_REQUIRE_EQUAL(target_node, collapsed_nodes.at(0));
+    BOOST_REQUIRE_INDICES_EQUAL(target_node, expanded_nodes.at(0));
+    BOOST_REQUIRE_INDICES_EQUAL(target_node, collapsed_nodes.at(0));
     BOOST_REQUIRE(!children.at(0)->d_subtreeIsExpanded);
     BOOST_REQUIRE_EQUAL(0, children.at(0)->d_renderedChildren.size());
 }
@@ -371,8 +372,8 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandChild)
         font_height + font_height / 2, view);
     view->onPointerPressHold(args);
     ModelIndex first_node = model.makeIndex(0, model.getRootIndex());
-    BOOST_REQUIRE_EQUAL(first_node, expanded_nodes.at(0));
-    BOOST_REQUIRE_EQUAL(model.makeIndex(0, first_node), expanded_nodes.at(1));
+    BOOST_REQUIRE_INDICES_EQUAL(first_node, expanded_nodes.at(0));
+    BOOST_REQUIRE_INDICES_EQUAL(model.makeIndex(0, first_node), expanded_nodes.at(1));
     BOOST_REQUIRE(collapsed_nodes.empty());
 
     view->prepareForRender();
