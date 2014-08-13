@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUISample_ScrollablePane"
+    type      = "C++ Module"
+    summary         = "The ScrollbarPane sample uses the WindowsLook, which gives it a look similar to old Windows applications. The background consists of a ScrollablePane to which windows can be added, using the menu bar. The items on the pane can be moved freely and the pane can be scrolled with the scrollbars."
+    description     = "The background window is of target type &quot;CEGUI/ScrollablePane&quot;. The WindowsLook skin is used for all the windows."
+    credits         = "Tomas Lindquist Olsen"
+/>
