@@ -481,8 +481,13 @@ void WidgetLookFeel::clearPropertyLinkDefinitions()
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::StringSet
-WidgetLookFeel::getStateNames(bool inherits) const
+WidgetLookFeel::StringSet WidgetLookFeel::getStateNames(bool inherits) const
+{
+    return getStateImageryNames(inherits);
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::StringSet WidgetLookFeel::getStateImageryNames(bool inherits) const
 {
     StringSet result;
     for(StateList::const_iterator i = d_stateImagery.begin();
@@ -519,8 +524,13 @@ WidgetLookFeel::getStateIterator(bool inherits) const
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::StringSet
-WidgetLookFeel::getImageryNames(bool inherits) const
+WidgetLookFeel::StringSet WidgetLookFeel::getImageryNames(bool inherits) const
+{
+    return getImagerySectionNames(inherits);
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::StringSet WidgetLookFeel::getImagerySectionNames(bool inherits) const
 {
     StringSet result;
 
@@ -596,8 +606,13 @@ WidgetLookFeel::getNamedAreaIterator(bool inherits) const
 }
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::StringSet
-WidgetLookFeel::getWidgetNames(bool inherits) const
+WidgetLookFeel::StringSet WidgetLookFeel::getWidgetNames(bool inherits) const
+{
+    return getWidgetComponentNames(inherits);
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel::StringSet WidgetLookFeel::getWidgetComponentNames(bool inherits) const
 {
     StringSet result;
     for(WidgetList::const_iterator i = d_childWidgets.begin();

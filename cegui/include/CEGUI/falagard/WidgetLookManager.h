@@ -308,9 +308,9 @@ namespace CEGUI
         WidgetLookList  d_widgetLooks;  
 
     public:
-        //! \deprecated Marked for removal in the next version.
+        //! \deprecated Use WidgetLookPointerMap instead, which provides direct access to the added elements.
         typedef ConstMapIterator<WidgetLookList> WidgetLookIterator;
-        //! \deprecated Marked for removal in the next version.
+        //! \deprecated Use getWidgetLookMap instead, which provides direct access to the added elements.
         WidgetLookIterator getWidgetLookIterator() const;
     };
 
