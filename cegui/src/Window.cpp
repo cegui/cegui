@@ -1020,12 +1020,6 @@ void Window::setInheritsAlpha(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::invalidate(void)
-{
-    invalidate(false);
-}
-
-//----------------------------------------------------------------------------//
 void Window::invalidate(const bool recursive)
 {
     invalidate_impl(recursive);
