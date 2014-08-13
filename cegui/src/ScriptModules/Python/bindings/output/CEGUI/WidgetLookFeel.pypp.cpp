@@ -426,7 +426,12 @@ void register_WidgetLookFeel_class(){
                 , "*!\n\
                 \n\
                     Returns a map of names to pointers for all EventLinkDefinition elements this WidgetLookFeel\
-                    owns.\n\
+                    owns. If the list of\n\
+                    EventLinkDefinitions of this or an inherited WidgetLookFeel is modified in any way (by\
+                    clearing it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -480,7 +485,9 @@ void register_WidgetLookFeel_class(){
             WidgetLookFeel_exposer.def( 
                 "getImageryNames"
                 , getImageryNames_function_type( &::CEGUI::WidgetLookFeel::getImageryNames )
-                , ( bp::arg("inherits")=(bool)(false) ) );
+                , ( bp::arg("inherits")=(bool)(false) )
+                , "!  deprecated This function has been renamed to getImagerySectionNames to conform the general way of\
+            naming functions, and will be replaced in the next version\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getImagerySection
@@ -512,8 +519,13 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("includeInheritedElements")=(bool)(false) )
                 , "*!\n\
                 \n\
-                    Returns a map of names to pointers for all ImagerySection elements this WidgetLookFeel\
-                    owns.\n\
+                    Returns a map of names to pointers for all ImagerySection elements this WidgetLookFeel owns.\
+                    If the list of\n\
+                    ImagerySections of this or an inherited WidgetLookFeel is modified in any way (by clearing\
+                    it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -522,6 +534,18 @@ void register_WidgetLookFeel_class(){
                 @return\n\
                     A map of names to ImagerySection pointers.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getImagerySectionNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getImagerySectionNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getImagerySectionNames"
+                , getImagerySectionNames_function_type( &::CEGUI::WidgetLookFeel::getImagerySectionNames )
+                , ( bp::arg("inherits")=(bool)(false) )
+                , "!  deprecated This function has been renamed to getStateImageryNames to conform the general way of\
+            naming functions, and will be replaced in the next version\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getInheritedWidgetLookName
@@ -607,7 +631,13 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("includeInheritedElements")=(bool)(false) )
                 , "*!\n\
                 \n\
-                    Returns a map of names to pointers for all NamedArea elements this WidgetLookFeel owns.\n\
+                    Returns a map of names to pointers for all NamedArea elements this WidgetLookFeel owns. If\
+                    the list of\n\
+                    NamedAreas of this or an inherited WidgetLookFeel is modified in any way (by clearing it,\
+                    adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -625,7 +655,9 @@ void register_WidgetLookFeel_class(){
             WidgetLookFeel_exposer.def( 
                 "getNamedAreaNames"
                 , getNamedAreaNames_function_type( &::CEGUI::WidgetLookFeel::getNamedAreaNames )
-                , ( bp::arg("inherits")=(bool)(false) ) );
+                , ( bp::arg("inherits")=(bool)(false) )
+                , "!  deprecated This function has been renamed to getImagerySectionNames to conform the general way of\
+            naming functions, and will be replaced in the next version\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getProperties
@@ -677,7 +709,12 @@ void register_WidgetLookFeel_class(){
                 , "*!\n\
                 \n\
                     Returns a map of names to pointers for all PropertyDefinition elements this WidgetLookFeel\
-                    owns.\n\
+                    owns. If the list of\n\
+                    PropertyDefinitions of this or an inherited WidgetLookFeel is modified in any way (by\
+                    clearing it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -748,7 +785,12 @@ void register_WidgetLookFeel_class(){
                 , "*!\n\
                 \n\
                     Returns a map of names to pointers for all PropertyInitialiser elements this WidgetLookFeel\
-                    owns.\n\
+                    owns. If the list of\n\
+                    PropertyInitialisers of this or an inherited WidgetLookFeel is modified in any way (by\
+                    clearing it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -766,7 +808,9 @@ void register_WidgetLookFeel_class(){
             WidgetLookFeel_exposer.def( 
                 "getPropertyInitialiserNames"
                 , getPropertyInitialiserNames_function_type( &::CEGUI::WidgetLookFeel::getPropertyInitialiserNames )
-                , ( bp::arg("inherits")=(bool)(false) ) );
+                , ( bp::arg("inherits")=(bool)(false) )
+                , "!  deprecated This function has been renamed to getWidgetComponentNames to conform the general way\
+            of naming functions, and will be replaced in the next version\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionIterator
@@ -798,7 +842,12 @@ void register_WidgetLookFeel_class(){
                 , "*!\n\
                 \n\
                     Returns a map of names to pointers for all PropertyLinkDefinition elements this\
-                    WidgetLookFeel owns.\n\
+                    WidgetLookFeel owns. If the list of\n\
+                    PropertyLinkDefinitions of this or an inherited WidgetLookFeel is modified in any way (by\
+                    clearing it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -869,7 +918,13 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("includeInheritedElements")=(bool)(false) )
                 , "*!\n\
                 \n\
-                    Returns a map of names to pointers for all StateImagery elements this WidgetLookFeel owns.\n\
+                    Returns a map of names to pointers for all StateImagery elements this WidgetLookFeel owns.\
+                    If the list of\n\
+                    StateImageries of this or an inherited WidgetLookFeel is modified in any way (by clearing\
+                    it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -878,6 +933,16 @@ void register_WidgetLookFeel_class(){
                 @return\n\
                     A map of names to StateImagery pointers.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getStateImageryNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getStateImageryNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getStateImageryNames"
+                , getStateImageryNames_function_type( &::CEGUI::WidgetLookFeel::getStateImageryNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
         
         }
         { //::CEGUI::WidgetLookFeel::getStateIterator
@@ -905,7 +970,9 @@ void register_WidgetLookFeel_class(){
             WidgetLookFeel_exposer.def( 
                 "getStateNames"
                 , getStateNames_function_type( &::CEGUI::WidgetLookFeel::getStateNames )
-                , ( bp::arg("inherits")=(bool)(false) ) );
+                , ( bp::arg("inherits")=(bool)(false) )
+                , "!  deprecated This function has been renamed to getStateImageryNames to conform the general way of\
+            naming functions, and will be replaced in the next version\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getWidgetComponentIterator
@@ -937,7 +1004,12 @@ void register_WidgetLookFeel_class(){
                 , "*!\n\
                 \n\
                     Returns a map of names to pointers for all WidgetComponent elements this WidgetLookFeel\
-                    owns.\n\
+                    owns. If the list of\n\
+                    WidgetComponents of this or an inherited WidgetLookFeel is modified in any way (by clearing\
+                    it, adding or\n\
+                    removing elements), then the pointers in this map are not valid anymore. The function should\
+                    then be called\n\
+                    again to retrieve valid pointers.\n\
             \n\
                 @param includeInheritedElements\n\
                     If set to true, this function will try to also include elements from the inherited\
@@ -948,6 +1020,16 @@ void register_WidgetLookFeel_class(){
                 *\n" );
         
         }
+        { //::CEGUI::WidgetLookFeel::getWidgetComponentNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getWidgetComponentNames"
+                , getWidgetComponentNames_function_type( &::CEGUI::WidgetLookFeel::getWidgetComponentNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
         { //::CEGUI::WidgetLookFeel::getWidgetNames
         
             typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getWidgetNames_function_type )( bool ) const;
@@ -955,7 +1037,9 @@ void register_WidgetLookFeel_class(){
             WidgetLookFeel_exposer.def( 
                 "getWidgetNames"
                 , getWidgetNames_function_type( &::CEGUI::WidgetLookFeel::getWidgetNames )
-                , ( bp::arg("inherits")=(bool)(false) ) );
+                , ( bp::arg("inherits")=(bool)(false) )
+                , "!  deprecated This function has been renamed to getWidgetComponentNames to conform the general way\
+            of naming functions, and will be replaced in the next version\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::handleFontRenderSizeChange

@@ -370,6 +370,10 @@ namespace pyplusplus
         // typedef std::vector<CEGUI::Scheme::UIElementFactory> UIElementFactoryVector;
         // typedef std::vector<CEGUI::Scheme::UIModule> UIModuleVector;
 
+        typedef std::vector<CEGUI::TextComponent* CEGUI_VECTOR_ALLOC(CEGUI::TextComponent*)> TextComponentVector;
+        typedef std::vector<CEGUI::ImageryComponent* CEGUI_VECTOR_ALLOC(CEGUI::ImageryComponent*)> ImageryComponentVector;
+        typedef std::vector<CEGUI::FrameComponent* CEGUI_VECTOR_ALLOC(CEGUI::FrameComponent*)> FrameComponentVector;
+
         typedef ::CEGUI::Event::Connection Connection;
         typedef ::CEGUI::Event::Subscriber Subscriber;
         typedef ::CEGUI::EventSet::EventIterator EventIterator;
