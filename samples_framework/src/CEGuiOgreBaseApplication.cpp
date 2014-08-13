@@ -77,11 +77,17 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // initialise system according to user options.
         d_window = d_ogreRoot->initialise(true);
 
+#if CEGUI_OGRE_VERSION_MAJOR < 2
+        // Create the scene manager
+        SceneManager* sm = d_ogreRoot->
+            createSceneManager(ST_GENERIC,
+            "SampleSceneMgr");
+#else
         // Create the scene manager
         SceneManager* sm = d_ogreRoot->
             createSceneManager(ST_GENERIC, 2, INSTANCING_CULLING_SINGLETHREAD,
             "SampleSceneMgr");
-
+#endif
         // Create and initialise the camera
         d_camera = sm->createCamera("SampleCam");
         d_camera->setPosition(Vector3(0,0,500));
