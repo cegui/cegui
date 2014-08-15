@@ -469,7 +469,7 @@ void Combobox::setItemSelectState(StandardItem* item, bool state)
 {
     bool was_selected = (item && getDropList()->isItemSelected(item));
 
-    getDropList()->setItemSelectionState(item, state);
+    getDropList()->setIndexSelectionState(item, state);
 
     itemSelectChangeTextUpdate(item, state, was_selected);
 }
@@ -488,7 +488,7 @@ void Combobox::setItemSelectState(size_t item_index, bool state)
 
     bool was_selected = (item && droplist->isItemSelected(item));
 
-    droplist->setItemSelectionState(item_index, state);
+    droplist->setIndexSelectionState(item_index, state);
 
     itemSelectChangeTextUpdate(item, state, was_selected);
 }
@@ -708,8 +708,8 @@ void Combobox::selectListItemWithEditboxText()
 
     if (StandardItem* item = droplist->findItemWithText(getEditbox()->getText(), 0))
     {
-        droplist->setItemSelectionState(item, true);
-        droplist->ensureItemIsVisible(item);
+        droplist->setIndexSelectionState(item, true);
+        droplist->ensureIndexIsVisible(item);
     }
     else
         droplist->clearSelections();
@@ -817,8 +817,8 @@ bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
 
 			if (item)
 			{
-                droplist->setItemSelectionState(item, true);
-				droplist->ensureItemIsVisible(item);
+                droplist->setIndexSelectionState(item, true);
+				droplist->ensureIndexIsVisible(item);
 			}
 			// no matching item, so select nothing
 			else

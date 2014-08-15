@@ -51,7 +51,7 @@ void ListWidget::initialiseComponents()
 }
 
 //----------------------------------------------------------------------------//
-void ListWidget::setItemSelectionState(size_t item_index, bool state)
+void ListWidget::setIndexSelectionState(size_t item_index, bool state)
 {
     if (item_index > getItemCount())
     {
@@ -59,19 +59,19 @@ void ListWidget::setItemSelectionState(size_t item_index, bool state)
             "the value passed in the 'item_index' parameter is out of range for this ListWidget."));
     }
 
-    ListView::setItemSelectionState(
+    ListView::setIndexSelectionState(
         d_itemModel.makeIndex(item_index, d_itemModel.getRootIndex()), state);
 }
 
 //----------------------------------------------------------------------------//
-void ListWidget::setItemSelectionState(StandardItem* item, bool state)
+void ListWidget::setIndexSelectionState(StandardItem* item, bool state)
 {
     if (item == 0)
     {
         CEGUI_THROW(InvalidRequestException("the item passed was null."));
     }
 
-    ListView::setSelectedItem(d_itemModel.getIndexForItem(item));
+    ListView::setSelectedIndex(d_itemModel.getIndexForItem(item));
 }
 //----------------------------------------------------------------------------//
 StandardItem* ListWidget::getFirstSelectedItem()
@@ -223,8 +223,8 @@ bool ListWidget::isIndexSelected(size_t index)
 }
 
 //----------------------------------------------------------------------------//
-void ListWidget::ensureItemIsVisible(const StandardItem* item)
+void ListWidget::ensureIndexIsVisible(const StandardItem* item)
 {
-    ListView::ensureItemIsVisible(d_itemModel.getIndexForItem(item));
+    ListView::ensureIndexIsVisible(d_itemModel.getIndexForItem(item));
 }
 }

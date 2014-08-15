@@ -509,14 +509,14 @@ bool ItemView::isIndexSelected(const ModelIndex& index) const
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::setSelectedItem(const ModelIndex& index)
+bool ItemView::setSelectedIndex(const ModelIndex& index)
 {
     // simple calls of this method shouldn't do cumulative selection
     return handleSelection(index, true, false, false);
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::setItemSelectionState(const ModelIndex& index, bool selected)
+bool ItemView::setIndexSelectionState(const ModelIndex& index, bool selected)
 {
     return handleSelection(index, selected, d_isMultiSelectEnabled, false);
 }
@@ -721,7 +721,7 @@ void ItemView::setMultiSelectEnabled(bool enabled)
     // deselect others
     if (!d_isItemTooltipsEnabled && d_indexSelectionStates.size() > 1)
     {
-        setItemSelectionState(d_indexSelectionStates.front().d_selectedIndex, true);
+        setIndexSelectionState(d_indexSelectionStates.front().d_selectedIndex, true);
     }
 
     WindowEventArgs args(this);
@@ -897,7 +897,7 @@ void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
         next_selected_child_id == last_selected_child_id)
         return;
 
-    setSelectedItem(d_itemModel->makeIndex(
+    setSelectedIndex(d_itemModel->makeIndex(
         static_cast<size_t>(next_selected_child_id), parent_index));
 }
 
@@ -914,7 +914,7 @@ float ItemView::getRenderedTotalHeight() const
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::ensureItemIsVisible(const ModelIndex& index)
+void ItemView::ensureIndexIsVisible(const ModelIndex& index)
 {
     Scrollbar* vert_scroll = getVertScrollbar();
     Scrollbar* horz_scroll = getHorzScrollbar();

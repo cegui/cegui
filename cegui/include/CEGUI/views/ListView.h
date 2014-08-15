@@ -42,6 +42,16 @@ namespace CEGUI
 
 class ListView;
 
+/*!
+\brief
+    This internal struct represents the rendering state of an item that is part
+    of the ListView. This is recomputed each time the ListView is invalidated.
+
+    This struct is meant to be used as a caching mechanism so that the ItemModel
+    is not queries each time rendering is done. That means, the users of ListView
+    shouldn't use this struct for interacting with the list, but rather use the
+    attached ItemModel.
+*/
 struct CEGUIEXPORT ListViewItemRenderingState
 {
     RenderedString d_string;
@@ -61,6 +71,12 @@ struct CEGUIEXPORT ListViewItemRenderingState
 /*!
 \brief
     View that displays items in a listed fashion.
+
+    ItemModel%s that use a tree structure can be still rendered by this view,
+    but only the children that are direct children of the ItemModel::getRootIndex()
+    are taken into considerations. That is, you cannot use a list to render
+    arbitrary list of children, unless a specific ItemModel implementation that
+    provides that is specified.
 */
 class CEGUIEXPORT ListView : public ItemView
 {
@@ -90,6 +106,8 @@ private:
     void resortListView();
     virtual void resortView();
 
+    //! Updates the rendering state for the specified \a item using the specified
+    //! \a index as the data source.
     void updateItem(ListViewItemRenderingState& item, ModelIndex index,
         float& max_width, float& total_height);
 

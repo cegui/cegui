@@ -184,7 +184,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
 {
     model.load();
 
-    bool selected = view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    bool selected = view->setSelectedIndex(model.makeIndex(0, model.getRootIndex()));
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
@@ -195,10 +195,10 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
 BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
 {
     model.load();
-    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(0, model.getRootIndex()));
     view->prepareForRender();
 
-    bool selected = view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    bool selected = view->setSelectedIndex(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0);
     model.addRandomItemWithChildren(model.getRootIndex(), 0);
-    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
     model.addRandomItemWithChildren(model.getRootIndex(), 0);
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
         createPointerEventArgs(expander_width / 2, font_height * 3 / 2, view);
     view->onPointerPressHold(args);
     // first child
-    view->setSelectedItem(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
+    view->setSelectedIndex(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
 
     model.addRandomItemWithChildren(model.getRootIndex(), 0);
     view->prepareForRender();
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 0);
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 0);
-    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
     float itemSize = view->d_renderedTotalHeight / 2;
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE(SubtreeExpanded_SelectionChanges_DoesNotChangeExpandedState
         view->getRootItemState().d_renderedChildren;
     BOOST_REQUIRE(children.at(0)->d_subtreeIsExpanded);
 
-    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
     BOOST_REQUIRE(children.at(0)->d_subtreeIsExpanded);
@@ -420,7 +420,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ChildInExpandedSubtree_SelectsChild)
         view->getRootItemState().d_renderedChildren;
     BOOST_REQUIRE(children.at(0)->d_subtreeIsExpanded);
 
-    view->setSelectedItem(model.makeIndex(0, model.makeIndex(0, model.getRootIndex())));
+    view->setSelectedIndex(model.makeIndex(0, model.makeIndex(0, model.getRootIndex())));
     view->prepareForRender();
 
     BOOST_REQUIRE(children.at(0)->d_subtreeIsExpanded);

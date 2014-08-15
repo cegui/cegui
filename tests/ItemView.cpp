@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
 BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_RemovesSelection)
 {
     model.d_items.push_back("item");
-    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(0, model.getRootIndex()));
 
     BOOST_CHECK_EQUAL(1, view->getIndexSelectionStates().size());
 
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(ClearSelection)
 {
     model.d_items.push_back("item");
 
-    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(0, model.getRootIndex()));
 
     view->clearSelections();
 
@@ -141,10 +141,10 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ReplacesSelection)
     model.d_items.push_back("item2");
     view->setModel(&model);
 
-    view->setSelectedItem(model.makeIndex(0, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(0, model.getRootIndex()));
     BOOST_CHECK_EQUAL(1, view->getIndexSelectionStates().size());
 
-    view->setSelectedItem(model.makeIndex(1, model.getRootIndex()));
+    view->setSelectedIndex(model.makeIndex(1, model.getRootIndex()));
     BOOST_REQUIRE_EQUAL(1, view->getIndexSelectionStates().size());
     BOOST_REQUIRE_EQUAL("item2",
         *(static_cast<String*>(
@@ -159,8 +159,8 @@ BOOST_AUTO_TEST_CASE(SetItemSelectionState_MultiSelectToggled_ModifiesSelectionA
     view->setModel(&model);
     view->setMultiSelectEnabled(true);
 
-    view->setItemSelectionState(model.makeIndex(0, model.getRootIndex()), true);
-    view->setItemSelectionState(model.makeIndex(1, model.getRootIndex()), true);
+    view->setIndexSelectionState(model.makeIndex(0, model.getRootIndex()), true);
+    view->setIndexSelectionState(model.makeIndex(1, model.getRootIndex()), true);
 
     BOOST_REQUIRE_EQUAL(2, view->getIndexSelectionStates().size());
     BOOST_REQUIRE_EQUAL("item2",
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(EnsureItemIsVisible_ScrollsHorizontallyAndVertically)
     view->getVertScrollbar()->setScrollPosition(view->getRenderedTotalHeight());
     view->getHorzScrollbar()->setScrollPosition(view->getRenderedMaxWidth());
 
-    view->ensureItemIsVisible(model.makeIndex(0, model.getRootIndex()));
+    view->ensureIndexIsVisible(model.makeIndex(0, model.getRootIndex()));
 
     BOOST_REQUIRE_CLOSE(0.0f, view->getVertScrollbar()->getScrollPosition(), 1.0f);
     BOOST_REQUIRE_CLOSE(0.0f, view->getHorzScrollbar()->getScrollPosition(), 1.0f);

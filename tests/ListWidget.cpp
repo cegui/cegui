@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(GetFirstSelectedItem_OneItem_ReturnsSelection)
 {
     view->addItem("item1");
 
-    view->setItemSelectionState(static_cast<size_t>(0), true);
+    view->setIndexSelectionState(static_cast<size_t>(0), true);
 
     BOOST_REQUIRE_EQUAL(view->getItemAtIndex(0), view->getFirstSelectedItem());
 }
@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_CASE(GetFirstSelectedItem_MultipleSelectedItemsUnordered_Returns
     view->addItem("item3");
     view->setMultiSelectEnabled(true);
 
-    view->setItemSelectionState(2, true);
-    view->setItemSelectionState(1, true);
+    view->setIndexSelectionState(2, true);
+    view->setIndexSelectionState(1, true);
 
     BOOST_REQUIRE_EQUAL(2, view->getSelectedItemsCount());
     BOOST_REQUIRE_EQUAL(view->getItemAtIndex(1), view->getFirstSelectedItem());
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(GetNextSelectedItem_OneItem_NullStartItem_ReturnsFirstSelec
 {
     view->addItem("item1");
 
-    view->setItemSelectionState(static_cast<size_t>(0), true);
+    view->setIndexSelectionState(static_cast<size_t>(0), true);
 
     BOOST_REQUIRE_EQUAL(view->getItemAtIndex(0), view->getNextSelectedItem(0));
 }
@@ -94,8 +94,8 @@ BOOST_AUTO_TEST_CASE(GetNextSelectedItem_HappyFlow_ReturnsExpectedItem)
     view->addItem("item3");
     view->setMultiSelectEnabled(true);
 
-    view->setItemSelectionState(2, true);
-    view->setItemSelectionState(1, true);
+    view->setIndexSelectionState(2, true);
+    view->setIndexSelectionState(1, true);
 
     BOOST_REQUIRE_EQUAL(2, view->getSelectedItemsCount());
     BOOST_REQUIRE_EQUAL(view->getItemAtIndex(1),
@@ -150,7 +150,7 @@ BOOST_FIXTURE_TEST_CASE(
     view->addItem("ni");
     view->addItem("san");
 
-    view->setItemSelectionState(1, true);
+    view->setIndexSelectionState(1, true);
 
     view->clearList();
 

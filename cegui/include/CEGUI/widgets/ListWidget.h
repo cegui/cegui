@@ -37,6 +37,14 @@ namespace CEGUI
 \brief
     This is a convenience widget as an alternative to the new list view, for
     simple scenarios that don't require a custom ItemModel implementation.
+
+    Basically, what this class does, is to use a StandardItemModel as the source
+    ItemModel, and provide some quick-access methods directly to the items,
+    instead of going through the ModelIndex. Most of the ListView functions
+    have the item-typed variants/overloads here. It also provides size_t-based
+    index overloads, since this is a list with only one level of nestedness.
+
+    This a direct alternative for the old ListBox or ItemListbox widgets.
 */
 class CEGUIEXPORT ListWidget : public ListView
 {
@@ -49,10 +57,16 @@ public:
     ListWidget(const String& type, const String& name);
     virtual ~ListWidget();
 
-    void setItemSelectionState(size_t item_index, bool state);
-    void setItemSelectionState(StandardItem* item, bool state);
+    void setIndexSelectionState(size_t item_index, bool state);
+    void setIndexSelectionState(StandardItem* item, bool state);
 
+    /*!
+    \brief
+        Gets the ordinal first item. If the ListWidget has multi selection enabled
+        and multiple items are selected, the first one will be returned.
+    */
     StandardItem* getFirstSelectedItem();
+
     /*!
     \brief
         Returns the next selected item after the specified \a start_item
@@ -63,6 +77,16 @@ public:
     */
     StandardItem* getNextSelectedItem(const StandardItem* start_item);
     StandardItem* getItemAtIndex(size_t index);
+
+    /*!
+    \brief
+        Returns a StandardItem that has the specified \a text, the searching
+        procedure starting from \a start_item
+
+    \param start_item
+        If \a start_item is NULL, the search will start from the first item
+        of the list.
+    */
     StandardItem* findItemWithText(const String& text, const StandardItem* start_item);
 
     bool isItemInList(const StandardItem* item);
@@ -82,7 +106,7 @@ public:
     //! Clears the items in this list and deletes all associated items.
     void clearList();
 
-    virtual void ensureItemIsVisible(const StandardItem* item);
+    virtual void ensureIndexIsVisible(const StandardItem* item);
 
 protected:
     virtual void initialiseComponents();
