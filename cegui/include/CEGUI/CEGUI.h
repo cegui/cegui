@@ -128,6 +128,9 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/XMLSerializer.h"
 
+// Model-view
+#include "CEGUI/views/All.h"
+
 // Falagard core system include
 #include "CEGUI/falagard/WidgetLookManager.h"
 
