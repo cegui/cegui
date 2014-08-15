@@ -1,6 +1,6 @@
 ################################################################################
 # FindCEGUI
-# 
+#
 # Locate CEGUI LIBRARIES
 #
 # This module defines
@@ -14,7 +14,7 @@
 #         Modules :
 #    CEGUI_${COMPONENT}_FOUND - ${COMPONENT} is available
 #    CEGUI_${COMPONENT}_INCLUDE_DIRS - additional include directories for ${COMPONENT}
-#    CEGUI_${COMPONENT}_LIBRARIES - link these to use ${COMPONENT} 
+#    CEGUI_${COMPONENT}_LIBRARIES - link these to use ${COMPONENT}
 #    CEGUI_${COMPONENT}_BINARY_REL - location of the component binary (win32 non-static only, release)
 #    CEGUI_${COMPONENT}_BINARY_DBG - location of the component binary (win32 non-static only, debug)
 #
@@ -41,6 +41,14 @@
 #                ExpatParser LibXMLParser RapidXMLParser TinyXMLParser XercesParser)
 #        Script:
 #                LuaScriptModule
+#
+# author: Guillaume Smaha
+#
+# People have asked us to include a FindCEGUI that is high quality that they will
+# be able to copy and use to find CEGUI, so we have finally done that.
+#
+# If you have improvements for this scripts, please consider sending them upstream.
+# See https://bitbucket.org/cegui/cegui
 ################################################################################
 
 
@@ -80,13 +88,13 @@ endmacro()
 # Replace the value of a preprocessor entry
 ################################################################################
 macro(replace_preprocessor_entry VARIABLE KEYWORD NEW_VALUE)
-    string(REGEX REPLACE 
+    string(REGEX REPLACE
         "(// *)?# *define +${KEYWORD} +[^ \n]*"
         "#define ${KEYWORD} ${NEW_VALUE}"
         ${VARIABLE}_TEMP
         ${${VARIABLE}}
     )
-    set(${VARIABLE} ${${VARIABLE}_TEMP})    
+    set(${VARIABLE} ${${VARIABLE}_TEMP})
 endmacro()
 
 ################################################################################
@@ -98,16 +106,14 @@ macro(set_preprocessor_entry VARIABLE KEYWORD ENABLE)
     else ()
         set(TMP_REPLACE_STR "// #define ${KEYWORD}")
     endif ()
-    string(REGEX REPLACE 
+    string(REGEX REPLACE
         "(// *)?# *define +${KEYWORD} *\n"
         ${TMP_REPLACE_STR}
         ${VARIABLE}_TEMP
         ${${VARIABLE}}
     )
-    set(${VARIABLE} ${${VARIABLE}_TEMP})    
+    set(${VARIABLE} ${${VARIABLE}_TEMP})
 endmacro()
-    
-
 
 ################################################################################
 # Begin processing of package
@@ -191,7 +197,7 @@ endmacro (use_pkgconfig)
 # Couple a set of release AND debug libraries (or frameworks)
 ################################################################################
 macro(make_library_set PREFIX)
-            
+
     if (${PREFIX}_FWK)
         set(${PREFIX} ${${PREFIX}_FWK})
     elseif (${PREFIX}_REL AND ${PREFIX}_DBG)
@@ -213,7 +219,7 @@ macro(get_debug_names PREFIX)
 endmacro(get_debug_names)
 
 ################################################################################
-# Add the parent dir from DIR to VAR 
+# Add the parent dir from DIR to VAR
 ################################################################################
 macro(add_parent_dir VAR DIR)
     get_filename_component(${DIR}_TEMP "${${DIR}}/.." ABSOLUTE)
@@ -249,107 +255,107 @@ endmacro(findpkg_finish)
 
 #########################################################
 # Find cegui modules
-#########################################################                
+#########################################################
 macro(cegui_find_modules PLUGIN_COMPONENT)
 
     foreach (comp ${CEGUI_${PLUGIN_COMPONENT}_MODULES})
-    
+
         set(LIBNAME ${comp})
         set(HEADER ${CEGUI_${PLUGIN_COMPONENT}_MODULES_${comp}_HEADER})
         set(PKGCONFIG ${CEGUI_${PLUGIN_COMPONENT}_MODULES_${comp}_PKGCONFIG})
         set(CHECKNOPREFIX ${CEGUI_${PLUGIN_COMPONENT}_MODULES_${comp}_CHECKNOPREFIX})
-        
+
         if (NOT "${HEADER}" STREQUAL "")
-        
+
             findpkg_begin(CEGUI_${comp})
-            
+
             if(PKGCONFIG)
                 use_pkgconfig(CEGUI_${comp}_PKGC "CEGUI-${PKGCONFIG}")
                 if(NOT CEGUI_${comp}_PKGC_INCLUDE_DIRS AND CEGUI_LIB_SUFFIX)
                     use_pkgconfig(CEGUI_${comp}_PKGC "CEGUI${CEGUI_LIB_SUFFIX}-${PKGCONFIG}")
                 endif()
             endif()
-            
+
             list(LENGTH HEADER len)
             math(EXPR lenmax "${len} - 1")
 
             foreach(val RANGE ${lenmax})
                 list(GET HEADER ${val} pathHeader)
-                
+
                 if(CEGUI_${comp}_INCLUDE_DIR)
                     set(CEGUI_${comp}_INCLUDE_DIR_TMP ${CEGUI_${comp}_INCLUDE_DIR})
                     unset(CEGUI_${comp}_INCLUDE_DIR CACHE)
                 endif()
-                
+
                 get_filename_component(head "${pathHeader}" NAME)
                 get_filename_component(dir "${pathHeader}" DIRECTORY)
                 if (NOT "${dir}" STREQUAL "")
                     set(dir "${dir}/")
                 endif ()
-                
+
                 find_path(CEGUI_${comp}_INCLUDE_DIR NAMES ${head} HINTS ${CEGUI_INCLUDE_DIRS} ${CEGUI_${comp}_PKGC_INCLUDE_DIRS} PATH_SUFFIXES ${dir} CEGUI/${dir})
 
                 if(CEGUI_${comp}_INCLUDE_DIR_TMP)
                     set(CEGUI_${comp}_INCLUDE_DIR ${CEGUI_${comp}_INCLUDE_DIR} ${CEGUI_${comp}_INCLUDE_DIR_TMP})
                     unset(CEGUI_${comp}_INCLUDE_DIR_TMP CACHE)
                 endif()
-                
+
             endforeach()
             list(REMOVE_DUPLICATES CEGUI_${comp}_INCLUDE_DIR)
-            
+
             set(CEGUI_SUBLIB_DIR "cegui-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}")
-            
-            
+
+
             set(CEGUI_${comp}_LIBRARY_NAMES "CEGUI${comp}")
             get_debug_names(CEGUI_${comp}_LIBRARY_NAMES)
-            
+
             set(CEGUI_${comp}_LIBRARY_NAMES_SUFFIX "CEGUI${comp}${CEGUI_LIB_SUFFIX}")
             get_debug_names(CEGUI_${comp}_LIBRARY_NAMES_SUFFIX)
-            
+
             find_library(CEGUI_${comp}_LIBRARY_REL NAMES ${CEGUI_${comp}_LIBRARY_NAMES} ${CEGUI_${comp}_LIBRARY_NAMES_SUFFIX} HINTS ${CEGUI_LIBRARY_DIR_REL} ${CEGUI_LIBRARY_DIR_REL}/${CEGUI_SUBLIB_DIR} ${CEGUI_${comp}_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
             find_library(CEGUI_${comp}_LIBRARY_DBG NAMES ${CEGUI_${comp}_LIBRARY_NAMES_DBG} ${CEGUI_${comp}_LIBRARY_NAMES_SUFFIX_DBG} HINTS ${CEGUI_LIBRARY_DIR_DBG} ${CEGUI_LIBRARY_DIR_DBG}/${CEGUI_SUBLIB_DIR} ${CEGUI_${comp}_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" "Debug")
-            
+
             if(CHECKNOPREFIX AND (NOT CEGUI_${comp}_LIBRARY_REL OR NOT CEGUI_${comp}_LIBRARY_DBG))
                 set(CEGUI_${comp}_LIBRARY_NAMES "${comp}")
                 get_debug_names(CEGUI_${comp}_LIBRARY_NAMES)
-                
+
                 set(CEGUI_${comp}_LIBRARY_NAMES_SUFFIX "${comp}${CEGUI_LIB_SUFFIX}")
                 get_debug_names(CEGUI_${comp}_LIBRARY_NAMES_SUFFIX)
-                
+
                 find_library(CEGUI_${comp}_LIBRARY_REL NAMES ${CEGUI_${comp}_LIBRARY_NAMES} ${CEGUI_${comp}_LIBRARY_NAMES_SUFFIX} HINTS ${CEGUI_LIBRARY_DIR_REL} ${CEGUI_LIBRARY_DIR_REL}/${CEGUI_SUBLIB_DIR} ${CEGUI_${comp}_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
                 find_library(CEGUI_${comp}_LIBRARY_DBG NAMES ${CEGUI_${comp}_LIBRARY_NAMES_DBG} ${CEGUI_${comp}_LIBRARY_NAMES_SUFFIX_DBG} HINTS ${CEGUI_LIBRARY_DIR_DBG} ${CEGUI_LIBRARY_DIR_DBG}/${CEGUI_SUBLIB_DIR} ${CEGUI_${comp}_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" "Debug")
             endif()
-            
+
             make_library_set(CEGUI_${comp}_LIBRARY)
-                
+
             if (NOT CEGUI_STATIC)
                 if (WIN32)
                     find_file(CEGUI_${comp}_BINARY_REL NAMES "CEGUI${comp}.dll" "CEGUI${comp}${CEGUI_LIB_SUFFIX}.dll" HINTS ${CEGUI_BIN_SEARCH_PATH} ${CEGUI_${comp}_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
                     find_file(CEGUI_${comp}_BINARY_DBG NAMES "CEGUI${comp}_d.dll" "CEGUI${comp}${CEGUI_LIB_SUFFIX}_d.dll" HINTS ${CEGUI_BIN_SEARCH_PATH} ${CEGUI_${comp}_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" "Debug")
-                    
+
                      if(CHECKNOPREFIX AND (NOT CEGUI_${comp}_LIBRARY_REL OR NOT CEGUI_${comp}_LIBRARY_DBG))
                          find_file(CEGUI_${comp}_BINARY_REL NAMES "${comp}${CEGUI_LIB_SUFFIX}.dll" HINTS ${CEGUI_BIN_SEARCH_PATH} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
                          find_file(CEGUI_${comp}_BINARY_DBG NAMES "${comp}${CEGUI_LIB_SUFFIX}_d.dll" HINTS ${CEGUI_BIN_SEARCH_PATH} PATH_SUFFIXES "" "Debug")
                     endif()
                 endif()
-                
+
                 get_filename_component(CEGUI_${comp}_BINARY_DIR_REL "${CEGUI_${comp}_BINARY_REL}" PATH)
                 get_filename_component(CEGUI_${comp}_BINARY_DIR_DBG "${CEGUI_${comp}_BINARY_DBG}" PATH)
                 mark_as_advanced(CEGUI_${comp}_BINARY_REL CEGUI_${comp}_BINARY_DBG CEGUI_${comp}_BINARY_DIR_REL CEGUI_${comp}_BINARY_DIR_DBG)
             endif()
-            
+
             findpkg_finish(CEGUI_${comp})
-            
+
         endif ()
-        
+
     endforeach (comp)
-    
+
 endmacro(cegui_find_modules)
 
 
 #########################################################
 # register a module
-#########################################################                
+#########################################################
 macro(cegui_register_module TYPE LIBNAME HEADER PKGCONFIG)
         set(CEGUI_MODULES ${CEGUI_MODULES} ${LIBNAME})
         set(CEGUI_${TYPE}_MODULES ${CEGUI_${TYPE}_MODULES} ${LIBNAME})
@@ -360,9 +366,6 @@ macro(cegui_register_module TYPE LIBNAME HEADER PKGCONFIG)
 endmacro()
 
 
-
-
-
 #########################################################
 # Main
 #########################################################
@@ -370,12 +373,10 @@ endmacro()
 
 set(CEGUI_VERSION_MAJOR_DEFAULT "0")
 
-
-#Register var to check change on base
+# Register var to check change on base
 set(CEGUI_RESET_VARS CEGUI_CONFIG_INCLUDE_DIR CEGUI_INCLUDE_DIR CEGUI_LIBRARY_REL CEGUI_LIBRARY_DBG)
 set(CEGUI_PREFIX_WATCH ${CEGUI_PREFIX_PATH})
 clear_if_changed(CEGUI_PREFIX_WATCH ${CEGUI_RESET_VARS})
-
 
 findpkg_begin(CEGUI)
 
@@ -417,7 +418,7 @@ elseif (UNIX)
         $ENV{HOME}/CEGUI
     )
     if (APPLE)
-        set(CEGUI_PREFIX_GUESSES 
+        set(CEGUI_PREFIX_GUESSES
             ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx
             ${CEGUI_PREFIX_GUESSES}
         )
@@ -450,7 +451,7 @@ if (CEGUI_INCLUDE_DIR)
     else()
         file(READ ${CEGUI_INCLUDE_DIR}/Version.h CEGUI_TEMP_VERSION_CONTENT)
     endif()
-    
+
     if (NOT "${CEGUI_TEMP_VERSION_CONTENT}" STREQUAL "")
         get_preprocessor_entry(CEGUI_TEMP_VERSION_CONTENT CEGUI_VERSION_MAJOR CEGUI_VERSION_MAJOR)
         get_preprocessor_entry(CEGUI_TEMP_VERSION_CONTENT CEGUI_VERSION_MINOR CEGUI_VERSION_MINOR)
@@ -462,7 +463,7 @@ if (CEGUI_INCLUDE_DIR)
         message(SEND_ERROR "Can't found CEGUI version !")
         set(CEGUI_INCOMPATIBLE FALSE)
     endif()
-    
+
 else ()
     set(CEGUI_INCOMPATIBLE FALSE)
 endif ()
@@ -502,26 +503,26 @@ get_filename_component(CEGUI_LIBRARY_DIR_DBG "${CEGUI_LIBRARY_DBG}" PATH)
 set(CEGUI_LIBRARY_DIRS ${CEGUI_LIBRARY_DIR_REL} ${CEGUI_LIBRARY_DIR_DBG})
 
 
-# find binaries 
+# find binaries
 if (NOT CEGUI_STATIC)
         if (WIN32)
                 find_file(CEGUI_BINARY_REL NAMES "CEGUIBase${CEGUI_LIB_SUFFIX}.dll" "CEGUIBase.dll" HINTS ${CEGUI_BIN_SEARCH_PATH} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
                 find_file(CEGUI_BINARY_DBG NAMES "CEGUIBase${CEGUI_LIB_SUFFIX}_d.dll" "CEGUIBase_d.dll" HINTS ${CEGUI_BIN_SEARCH_PATH} PATH_SUFFIXES "" "Debug")
         endif()
-        
+
         get_filename_component(CEGUI_BINARY_DIR_REL "${CEGUI_BINARY_REL}" PATH)
         get_filename_component(CEGUI_BINARY_DIR_DBG "${CEGUI_BINARY_DBG}" PATH)
         mark_as_advanced(CEGUI_BINARY_REL CEGUI_BINARY_DBG CEGUI_BINARY_DIR_REL CEGUI_BINARY_DIR_DBG)
 endif()
 
 if ("${CEGUI_VERSION}" VERSION_GREATER "0.8.0")
-    #Base
+    # Base
     cegui_register_module(BASE CommonDialogs CommonDialogs/Module.h "")
-    
-    #WindowsRenderer
+
+    # WindowsRenderer
     cegui_register_module(WINDOWSRENDERER CoreWindowRendererSet WindowRendererSets/Core/Module.h "")
-    
-    #Renderer
+
+    # Renderer
     cegui_register_module(RENDERER Direct3D9Renderer RendererModules/Direct3D9/Renderer.h "")
     cegui_register_module(RENDERER Direct3D10Renderer RendererModules/Direct3D10/Renderer.h "")
     cegui_register_module(RENDERER Direct3D11Renderer RendererModules/Direct3D11/Renderer.h "")
@@ -532,8 +533,8 @@ if ("${CEGUI_VERSION}" VERSION_GREATER "0.8.0")
     cegui_register_module(RENDERER OpenGLRenderer RendererModules/OpenGL/GLRenderer.h "OPENGL")
     cegui_register_module(RENDERER OpenGL3Renderer RendererModules/OpenGL/GL3Renderer.h "OPENGL3")
     cegui_register_module(RENDERER OpenGLESRenderer RendererModules/OpenGLES/Renderer.h "")
-    
-    #ImageCodec
+
+    # ImageCodec
     cegui_register_module(IMAGECODEC CoronaImageCodec ImageCodecModules/Corona/ImageCodec.h "")
     cegui_register_module(IMAGECODEC DevILImageCodec ImageCodecModules/DevIL/ImageCodec.h "")
     cegui_register_module(IMAGECODEC FreeImageImageCodec ImageCodecModules/FreeImage/ImageCodec.h "")
@@ -541,23 +542,23 @@ if ("${CEGUI_VERSION}" VERSION_GREATER "0.8.0")
     cegui_register_module(IMAGECODEC STBImageCodec ImageCodecModules/STB/ImageCodec.h "")
     cegui_register_module(IMAGECODEC TGAImageCodec ImageCodecModules/TGA/ImageCodec.h "")
     cegui_register_module(IMAGECODEC PVRImageCodec ImageCodecModules/PVR/ImageCodec.h "")
-    
-    #Parser
+
+    # Parser
     cegui_register_module(PARSER ExpatParser XMLParserModules/Expat/XMLParser.h "")
     cegui_register_module(PARSER LibXMLParser XMLParserModules/Libxml2/XMLParser.h "")
     cegui_register_module(PARSER RapidXMLParser XMLParserModules/RapidXML/XMLParser.h "")
     cegui_register_module(PARSER TinyXMLParser XMLParserModules/TinyXML/XMLParser.h "")
     cegui_register_module(PARSER XercesParser XMLParserModules/Xerces/XMLParser.h "")
-    
-    #Script
+
+    # Script
     cegui_register_module(SCRIPT LuaScriptModule ScriptModules/Lua/ScriptModule.h "LUA")
-    
+
 else ()
-    
-    #WindowsRenderer
+
+    # WindowsRenderer
     cegui_register_module(WINDOWSRENDERER FalagardWRBase "WindowRendererSets/Falagard/FalModule.h;falagard/CEGUIFalNamedArea.h" "")
-    
-    #Renderer
+
+    # Renderer
     cegui_register_module(RENDERER Direct3D9Renderer RendererModules/Direct3D9/CEGUIDirect3D9Renderer.h "")
     cegui_register_module(RENDERER Direct3D10Renderer RendererModules/Direct3D10/CEGUIDirect3D10Renderer.h "")
     cegui_register_module(RENDERER Direct3D11Renderer RendererModules/Direct3D11/CEGUIDirect3D11Renderer.h "")
@@ -566,25 +567,25 @@ else ()
     cegui_register_module(RENDERER NullRenderer RendererModules/Null/CEGUINullRenderer.h "NULL")
     cegui_register_module(RENDERER OgreRenderer RendererModules/Ogre/CEGUIOgreRenderer.h "OGRE")
     cegui_register_module(RENDERER OpenGLRenderer RendererModules/OpenGL/CEGUIOpenGLRenderer.h "OPENGL")
-    
-    #ImageCodec
+
+    # ImageCodec
     cegui_register_module(IMAGECODEC CoronaImageCodec ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h "")
     cegui_register_module(IMAGECODEC DevILImageCodec ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h "")
     cegui_register_module(IMAGECODEC FreeImageImageCodec ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodec.h "")
     cegui_register_module(IMAGECODEC SILLYImageCodec ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h "")
     cegui_register_module(IMAGECODEC STBImageCodec ImageCodecModules/STBImageCodec/CEGUISTBImageCodec.h "")
     cegui_register_module(IMAGECODEC TGAImageCodec ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h "")
-    
-    #Parser
+
+    # Parser
     cegui_register_module(PARSER ExpatParser XMLParserModules/ExpatParser/CEGUIExpatParser.h "")
     cegui_register_module(PARSER LibxmlParser XMLParserModules/LibxmlParser/CEGUILibxmlParser.h "")
     cegui_register_module(PARSER RapidXMLParser XMLParserModules/RapidXMLParser/CEGUIRapidXMLParser.h "")
     cegui_register_module(PARSER TinyXMLParser XMLParserModules/TinyXMLParser/CEGUITinyXMLParser.h "")
     cegui_register_module(PARSER XercesParser XMLParserModules/XercesParser/CEGUIXercesParser.h "")
-    
-    #Script
+
+    # Script
     cegui_register_module(SCRIPT LuaScriptModule ScriptingModules/LuaScriptModule/CEGUILua.h "")
-    
+
     if(WIN32)
         cegui_register_module(SCRIPT tolua++ ScriptingModules/LuaScriptModule/support/tolua++/tolua++.h "")
         set(CEGUI_SCRIPT_MODULES_tolua++_CHECKNOPREFIX TRUE)
@@ -595,7 +596,7 @@ else ()
 endif ()
 
 
-#Register var to check change on modules
+# Register var to check change on modules
 set(CEGUI_RESET_MODULES_VARS "")
 foreach (comp ${CEGUI_MODULES})
     set(CEGUI_RESET_MODULES_VARS ${CEGUI_RESET_MODULES_VARS}
@@ -607,7 +608,7 @@ set(CEGUI_PREFIX_MODULES_WATCH ${CEGUI_PREFIX_MODULES_PATH})
 clear_if_changed(CEGUI_PREFIX_WATCH ${CEGUI_RESET_MODULES_VARS})
 
 
-#Find modules
+# Find modules
 cegui_find_modules(BASE)
 cegui_find_modules(WINDOWSRENDERER)
 cegui_find_modules(RENDERER)
@@ -616,11 +617,10 @@ cegui_find_modules(PARSER)
 cegui_find_modules(SCRIPT)
 
 
-#Find modules
+# Find modules
 if (CEGUI_STATIC)
     set(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES_OLD}")
 endif()
-
 
 
 #Check change on modules
