@@ -105,8 +105,8 @@ find_package(PVRTools)
 
 find_package(Lua51)
 find_package(TOLUAPP)
-find_package(PythonInterp)
-find_package(PythonLibs)
+find_package(PythonInterp 2)
+find_package(PythonLibs 2)
 find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system)
 
 find_package(Doxygen)
