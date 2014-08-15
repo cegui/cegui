@@ -168,7 +168,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     }
     if(d_widgetSelectorListWidget->getItemCount() > 0)
     {
-        d_widgetSelectorListWidget->setItemSelectionState(static_cast<size_t>(0), true);
+        d_widgetSelectorListWidget->setIndexSelectionState(static_cast<size_t>(0), true);
     }
 
     d_listItemModel.addItem("item 1");

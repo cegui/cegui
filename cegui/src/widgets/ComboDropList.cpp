@@ -156,7 +156,7 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
                 // if an item is under pointer, select it
                 if (item != 0)
                 {
-                    setItemSelectionState(item, true);
+                    setIndexSelectionState(item, true);
                 }
                 else
                 {
@@ -249,7 +249,7 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
     if (d_lastItemSelected != 0 && isItemSelected(d_lastItemSelected))
     {
         clearSelections();
-        setItemSelectionState(d_lastItemSelected, true);
+        setIndexSelectionState(d_lastItemSelected, true);
     }
 }
 

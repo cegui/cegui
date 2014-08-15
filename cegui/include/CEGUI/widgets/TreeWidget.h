@@ -37,6 +37,8 @@ namespace CEGUI
 \brief
     This is a convenience widget as an alternative to the new tree view, for
     simple scenarios that don't require a custom ItemModel implementation.
+
+    This is a direct alternative to the old Tree widget.
 */
 class CEGUIEXPORT TreeWidget : public TreeView
 {

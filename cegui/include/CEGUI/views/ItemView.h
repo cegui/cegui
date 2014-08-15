@@ -47,6 +47,11 @@ namespace CEGUI
 {
 class ItemView;
 
+/*!
+\brief
+    This renderer interface provides data for the views to aid in the rendering
+    process.
+*/
 class CEGUIEXPORT ItemViewWindowRenderer : public WindowRenderer
 {
 public:
@@ -70,17 +75,29 @@ public:
     virtual ItemView* getView() const;
 };
 
+/*!
+\brief
+    This enumeration controls the \b display mode of the scrollbar, that is,
+    it's visibility. This does not affect the scrollbar behaviour. For example,
+    even if the scrollbar is SDM_Hidden, one can still scroll it if the size
+    allows it (content is bigger than the view).
+*/
 enum ScrollbarDisplayMode
 {
+    //! The scrollbar will be shown always, even if the content is smaller than
+    //! the view.
     SDM_Shown,
+    //! The scrollbar will be hidden, even if the content is bigger than the
+    //! view and scrolling is possible.
     SDM_Hidden,
-    //! The scrollbar will be shown only if the underlining view's size is too small to contain its items
+    //! The scrollbar will be shown only if the underlining view's size is too
+    //! small to contain its items.
     SDM_WhenNeeded
 };
 
 enum ViewSortMode
 {
-    //! Items are not sorted, but shown in the same order as they are provided by the model
+    //! Items are not sorted, but shown in the same order as they are provided by the model.
     VSM_None,
     VSM_Ascending,
     VSM_Descending
@@ -142,7 +159,12 @@ public:
 
 /*!
 \brief
-    Abstract base class for all view classes based on ItemModel
+    Abstract base class for all view classes that use an ItemModel to provide
+    the data to be rendered. In order for a view to properly display data,
+    the setModel(ItemModel*) function should be called with an instance of the
+    model.
+
+    This class is mean to be inherited by a specific view before being used.
 */
 class CEGUIEXPORT ItemView : public Window
 {
@@ -155,8 +177,9 @@ public:
     static const Colour DefaultSelectionColour;
     //! Widget name for the vertical scrollbar component.
     static const String VertScrollbarName;
-    //! Widget name for the horizontal scrollbar component
+    //! Widget name for the horizontal scrollbar component.
     static const String HorzScrollbarName;
+
     static const String EventVertScrollbarDisplayModeChanged;
     static const String EventHorzScrollbarDisplayModeChanged;
     static const String EventSelectionChanged;
@@ -165,7 +188,7 @@ public:
     //! Triggered when items are added, removed or when the view's item are cleared.
     static const String EventViewContentsChanged;
 
-    //!Sets the ItemModel to be used inside this view.
+    //! Sets the ItemModel to be used inside this view.
     virtual void setModel(ItemModel* item_model);
 
     //! Returns the current ItemModel of this view.
@@ -185,7 +208,7 @@ public:
     void setTextColourRect(const ColourRect& colour_rect);
     void setTextColour(Colour colour);
 
-    //! Gets the colour used for higlighting the selection.
+    //! Gets the colour used for highlighting the selection.
     const ColourRect& getSelectionColourRect() const;
     //! Sets the colour used for highlighting the selection.
     void setSelectionColourRect(const ColourRect& colour_rect);
@@ -196,8 +219,11 @@ public:
 
     /*!
     \brief
-       Invalidates this view by marking the rendering state as dirty.
-       This also calls the base Window invalidate
+       Invalidates this view by marking the rendering state as dirty. That means
+       that the next call to prepareForRender() will have to reconstruct it's
+       rendering state.
+
+       This also calls the base Window::invalidate.
     */
     virtual void invalidateView(bool recursive);
 
@@ -214,6 +240,7 @@ public:
             while(!view->getIndexSelectionStates().empty())
             {
                 ModelIndexSelectionState& state = view->getIndexSelectionStates().back();
+                view->getIndexSelectionStates().pop_back();
                 // remove item from model
             }
         \endcode
@@ -222,43 +249,58 @@ public:
 
     /*!
     \brief
-        Returns the ModelIndex at the specified position.
+        Returns the ModelIndex of the item at the specified position.
+
+    \param position
+        The position is expected to be in screen coordinates - it will be converted
+        to window coordinates internally.
 
     \return
         The ModelIndex for the position or a default-constructed ModelIndex
-        if nothing was found at that position.
+        if nothing was found at that position or if the position is outside
+        the view's rendering area.
     */
     virtual ModelIndex indexAt(const Vector2f& position) = 0;
 
     /*!
     \brief
-        Sets the specified item index's as the currently selected item.
+        Sets the item specified by the \a index as the currently selected one.
 
     \return
-        True if the item has been successfully selected, false otherwise.
+        True if the index has been successfully selected, false otherwise.
     */
-    virtual bool setSelectedItem(const ModelIndex& index);
-    virtual bool setItemSelectionState(const ModelIndex& index, bool selected);
+    virtual bool setSelectedIndex(const ModelIndex& index);
+    virtual bool setIndexSelectionState(const ModelIndex& index, bool selected);
+
+    virtual bool isIndexSelected(const ModelIndex& index) const;
 
     /*!
     \brief
         Ensures that the item specified by the \a index is visible by setting
-        the proper the vertical scrollbar's position.
+        the proper the vertical and horizontal scrollbars' position.
     */
-    virtual void ensureItemIsVisible(const ModelIndex& index);
+    virtual void ensureIndexIsVisible(const ModelIndex& index);
 
-    //! Clears all selected items
+    //! Clears all selected indices.
     void clearSelections();
 
-    virtual bool isIndexSelected(const ModelIndex& index) const;
-
     void setSelectionBrushImage(const Image* image);
+    /*!
+    \brief
+        Sets the image represented by the specified \name as the selection brush.
+
+        This call is the same as:
+        \code{.cpp}
+        Image* img = ImageManager::getSingleton().getImage(name);
+        view->setSelectionBrushImage(img);
+        \endcode
+    */
     void setSelectionBrushImage(const String& name);
     const Image* getSelectionBrushImage(void) const;
 
     /*!
     \brief
-        Returns a pointer to the vertical scrollbar component widget for this view.
+        Returns a pointer to the vertical Scrollbar component widget for this view.
 
     \exception UnknownObjectException
         Thrown if the vertical Scrollbar component does not exist.
@@ -270,7 +312,7 @@ public:
 
     /*!
     \brief
-        Returns a pointer to the horizontal scrollbar component widget for this view.
+        Returns a pointer to the horizontal Scrollbar component widget for this view.
 
     \exception UnknownObjectException
         Thrown if the horizontal Scrollbar component does not exist.
@@ -280,20 +322,34 @@ public:
     void setHorzScrollbarDisplayMode(ScrollbarDisplayMode mode);
     ScrollbarDisplayMode getHorzScrollbarDisplayMode() const;
 
+    /*!
+    \brief
+        Specifies whether the view will vertically auto-resize to match the
+        content's height or not. This happens when the parent size is changed,
+        items are added or removed.
+    */
     void setAutoResizeHeightEnabled(bool enabled);
     bool isAutoResizeHeightEnabled() const;
 
+    /*!
+    \brief
+        Specifies whether the view will horizontally auto-resize to match the
+        content's height or not. This happens when the parent size is changed,
+        items are added or removed.
+    */
     void setAutoResizeWidthEnabled(bool enabled);
     bool isAutoResizeWidthEnabled() const;
 
-    //! Specifies whether this view has separate tooltips for each item or not.
+    //! Specifies whether this view should show tooltips for its items or not.
     bool isItemTooltipsEnabled() const;
     void setItemTooltipsEnabled(bool enabled);
 
+    //! Specifies whether one can select multiple items in the view or not.
     bool isMultiSelectEnabled() const;
     void setMultiSelectEnabled(bool enabled);
 
     ViewSortMode getSortMode() const;
+    //! Setting a new sorting mode will trigger the instant sorting of this view.
     void setSortMode(ViewSortMode sort_mode);
 
     //! Returns the width of the rendered contents.

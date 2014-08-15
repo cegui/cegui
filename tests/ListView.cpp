@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
 
-    bool selected = view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    bool selected = view->setSelectedIndex(ModelIndex(&model.d_items.at(0)));
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
@@ -152,10 +152,10 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
 {
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
-    view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    view->setSelectedIndex(ModelIndex(&model.d_items.at(0)));
     view->prepareForRender();
 
-    bool selected = view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    bool selected = view->setSelectedIndex(ModelIndex(&model.d_items.at(1)));
     view->prepareForRender();
 
     BOOST_REQUIRE(selected);
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 {
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
-    view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view->setSelectedIndex(ModelIndex(&model.d_items.at(1)));
     view->prepareForRender();
 
     model.d_items.insert(model.d_items.begin() + 1, 1, ITEM3);
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
     model.d_items.push_back(ITEM1);
     model.d_items.push_back(ITEM2);
     model.d_items.push_back(ITEM3);
-    view->setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view->setSelectedIndex(ModelIndex(&model.d_items.at(1)));
     view->prepareForRender();
 
     float itemSize = view->d_renderedTotalHeight / 3;
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(SelectRange)
     view->prepareForRender();
     view->setMultiSelectEnabled(true);
 
-    view->setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    view->setSelectedIndex(ModelIndex(&model.d_items.at(0)));
 
     triggerSelectRangeEvent(Vector2f(1, font_height * 2.0f + font_height / 2.0f), view);
 

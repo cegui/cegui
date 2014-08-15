@@ -234,7 +234,7 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     //Subscribe font selection event
     d_fontSelector->subscribeEvent(ListView::EventSelectionChanged, Event::Subscriber(&FontsDemo::handleFontSelectionChanged, this));
 
-    d_textSelector->setItemSelectionState(static_cast<size_t>(0), true);
+    d_textSelector->setIndexSelectionState(static_cast<size_t>(0), true);
 
     return true;
 }
@@ -282,7 +282,7 @@ bool FontsDemo::handleFontCreationButtonClicked(const EventArgs& e)
     }
 
     d_fontSelector->addItem(fontName);
-    d_fontSelector->setItemSelectionState(d_fontSelector->getItemCount(), true);
+    d_fontSelector->setIndexSelectionState(d_fontSelector->getItemCount(), true);
 
     return true;
 }
@@ -480,7 +480,7 @@ void FontsDemo::initialiseFontFileNameCombobox()
             d_fontFileNameSelector->addItem(new StandardItem(fileName, i));
         }
 
-        d_fontFileNameSelector->getDropList()->setItemSelectionState(static_cast<size_t>(0), true);
+        d_fontFileNameSelector->getDropList()->setIndexSelectionState(static_cast<size_t>(0), true);
         d_fontFileNameSelector->getEditbox()->setText(d_fontFileNameSelector->getItemFromIndex(0)->getText());
     }
 }
@@ -546,7 +546,7 @@ void FontsDemo::changeFontSelectorFontSelection(const CEGUI::String& font)
 
         if(itemFontName.compare(font) == 0)
         {
-            d_fontSelector->setItemSelectionState(i, true);
+            d_fontSelector->setIndexSelectionState(i, true);
             return;
         }
     }

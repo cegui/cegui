@@ -43,6 +43,10 @@
 namespace CEGUI
 {
 
+/*!
+\brief
+    This renderer provides extra TreeView-specific rendering information.
+*/
 class CEGUIEXPORT TreeViewWindowRenderer : public ItemViewWindowRenderer
 {
 public:
@@ -63,10 +67,21 @@ public:
 
     \param depth
         The depth of the item for which to compute the actual indentation.
+        Depth 0 is the depth for the root's children items.
     */
     virtual float getSubtreeExpanderXIndent(int depth) const = 0;
 };
 
+/*!
+\brief
+    This struct represents the internal rendering state of the TreeView. It should
+    not be used to manipulate the TreeView or its items unless a TreeView's
+    method requires it. This struct is exposed only because it's cheaper to use
+    this for specific operations rather than compute it based of a ModelIndex
+    each request.
+
+    Access to the root state is done via TreeView::getRootItemState().
+*/
 class CEGUIEXPORT TreeViewItemRenderingState
 {
 public:
@@ -106,7 +121,8 @@ protected:
 
 /*!
 \brief
-    View that displays items in a tree fashion.
+    View that displays items in a tree fashion. A list-only ItemModel can be
+    provided as well as the ItemModel of this view.
 */
 class CEGUIEXPORT TreeView : public ItemView
 {
@@ -119,20 +135,38 @@ public:
     static const String EventSubtreeCollapsed;
 
     TreeView(const String& type, const String& name);
-
     virtual ~TreeView();
 
     const TreeViewItemRenderingState& getRootItemState() const;
+
     virtual void prepareForRender();
+
     virtual ModelIndex indexAt(const Vector2f& position);
 
     float getSubtreeExpanderMargin() const;
+    //! Allows setting extra margin around the subtree expander component.
     void setSubtreeExpanderMargin(float value);
 
     TreeViewItemRenderingState* getTreeViewItemForIndex(const ModelIndex& index);
 
+    /*!
+    \brief
+        Triggers the \b recursive expansion of all subtrees in the TreeView.
+        This will raise the EventSubtreeExpanded event for all non-expanded
+        subtrees.
+
+        This function invokes the expandSubtreeRecursive(TreeViewItemRenderingState)
+        recursively on each item.
+    */
     void expandAllSubtrees();
     void expandSubtreeRecursive(TreeViewItemRenderingState& item);
+
+    /*!
+    \brief
+        Toggles the expanded/collapsed state of the specified tree item.
+        This will raise the EventSubtreeExpanded or EventSubtreeCollapsed
+        events based on the current item's state.
+    */
     void toggleSubtree(TreeViewItemRenderingState& item);
 
 protected:
