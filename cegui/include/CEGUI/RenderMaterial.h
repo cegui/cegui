@@ -62,7 +62,7 @@ public:
 	\return
 		The pointer to the ShaderWrapper used for this Renderer.
 	*/
-    ShaderWrapper* getShaderWrapper();
+    const ShaderWrapper* getShaderWrapper() const;
 
     /*!
 	\brief

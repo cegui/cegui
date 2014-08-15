@@ -56,7 +56,7 @@ void RenderMaterial::prepareForRendering() const
 }
 
 //----------------------------------------------------------------------------//
-ShaderWrapper* RenderMaterial::getShaderWrapper()
+const ShaderWrapper* RenderMaterial::getShaderWrapper() const
 {
     return d_shaderWrapper;
 }
