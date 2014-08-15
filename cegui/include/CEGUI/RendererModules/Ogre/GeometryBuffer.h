@@ -29,6 +29,7 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
+#include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/Rect.h"
 #include "CEGUI/Quaternion.h"
 

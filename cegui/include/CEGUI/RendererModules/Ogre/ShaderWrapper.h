@@ -57,6 +57,8 @@ public:
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
+    Ogre::GpuProgramParametersSharedPtr getVertexParameters();
+
 protected:
 
     //! Renderer object that owns this GeometryBuffer
