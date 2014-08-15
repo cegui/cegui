@@ -33,7 +33,18 @@
 
 namespace CEGUI
 {
+/*!
+\brief
+    Base class for the items used by AbstractItemModel. The item has a list
+    of children attached to it, thus being able to represent a tree hierarchy.
 
+    It's important to understand that this is a simple class that only holds
+    structured data. Direct changes to this item won't be propagated to the
+    ItemModel it's part of, unless one links them manually. In order to modify
+    this item and update the ItemModel (and consequently the view) you need to
+    call ItemModel implementation's functions (e.g.:
+    AbstractItemModel::removeItem(const AbstractItem*)).
+*/
 class CEGUIEXPORT AbstractItem
 {
 public:
@@ -53,6 +64,19 @@ public:
 
     std::vector<AbstractItem*>& getChildren() { return d_children; }
 
+    /*!
+    \brief
+        Adds a child item to the item.
+
+    \remark
+        This method <b>does not</b> notify anyone of the child that was just
+        added. If you want the notifications, you can use one of the following
+        methods:
+        - AbstractItemModel::addItemAtPosition(AbstractItem*, size_t)
+        - AbstractItemModel::addItemAtPosition(AbstractItem*, const ModelIndex&, size_t)
+        - AbstractItemModel::insertItem(AbstractItem*, const AbstractItem*)
+
+    */
     virtual void addItem(AbstractItem* child);
 
     virtual bool operator== (const AbstractItem& other) const;
@@ -74,7 +98,7 @@ protected:
 
     Users of this class can either create a template instantiation of this
     implementation, or inherit it and augment with custom operations or
-    overwrite certain methods (e.g.: getData)
+    overwrite certain methods to provide more functionality (e.g.: getData).
 
     One such example is the following, where we instantiate a model for our
     own MyItem type:
@@ -106,6 +130,21 @@ public:
 
         The \a root will be taken ownership of, and cleaned when the model is
         destructed (using CEGUI_DELETE_AO).
+
+        An example of initializing such AbstractItemModel implementation is the
+        following:
+        \code{.cpp}
+        class MyItemModel : public AbstractItemModel<MyItem>
+        {
+            MyItemModel() : AbstractItemModel<MyItem>(CEGUI_NEW_AO MyItem)
+            {
+            }
+        };
+        \endcode
+
+        Alternatively, if you want to create a root upon declaring the model, you
+        can let the caller provide it, in which case our \b MyItemModel constructor
+        will receive the root TAbstractItem instance.
     */
     explicit AbstractItemModel(TAbstractItem* root);
     virtual ~AbstractItemModel();
@@ -116,39 +155,73 @@ public:
         of it.
 
         If this method is used, the TAbstractItem type should have a string
-        constructor in order to successfully compile.
+        constructor in order to successfully compile. This method is equivalent
+        with:
+        \code{.cpp}
+        AbstractItem* item = CEGUI_NEW_AO AbstractItem("MyText");
+        model->addItem(item);
+        \endcode
     */
     virtual void addItem(String text);
-    //! Adds the item as root child and takes ownership of it.
+    //! Adds the item as child of the root and takes ownership of it.
     virtual void addItem(AbstractItem* item);
-    //! Adds the item as root child at the specified position
+    //! Adds the item as child of the root at the specified position.
     virtual void addItemAtPosition(AbstractItem* item, size_t pos);
-    //! Adds the item as child of the specified parent, at the specified position
+    /*!
+    \brief
+        Adds the item as child of the specified parent, at the specified position.
+
+        After the addition, the \a parent's node will contain \a item as child
+        at the \a position.
+    */
     virtual void addItemAtPosition(AbstractItem* item, const ModelIndex& parent,
         size_t position);
 
     /*!
     \brief
-        Inserts the specified item before the specified position item. If position
-        is NULL the new item will be added at the beginning.
+        Inserts the specified \a item before the specified \a position item.
+        If \a position is NULL the new item will be added at the beginning of
+        the root's children list.
+
+        This method allows for arbitrary level (nestedness/depth) insertions.
+        Another function which can be used instead of this, is
+        addItemAtPosition(AbstractItem*, const ModelIndex&, size_t).
     */
     virtual void insertItem(AbstractItem* item, const AbstractItem* position);
+
     virtual void removeItem(const AbstractItem* item);
     virtual void removeItem(const ModelIndex& index);
 
     /*!
     \brief
-        Clears the items from this ItemModel, deleting them.
+        Clears the items of this ItemModel, deleting them, using CEGUI_DELETE_AO
+        on each, optionally notifying any listeners of the removal of the items.
 
     \param notify
-        If true, it will raise the EventChildrenRemoved event for each deleted
-        item.
+        If true, it will raise the EventChildrenWillBeRemoved and
+        EventChildrenRemoved events for each deleted item.
     */
-    void clear(bool notify = true);
+    virtual void clear(bool notify = true);
 
+    /*!
+    \brief
+        Gets the underlying TAbstractItem represented by the given \a index or
+        NULL if the index does not represent a valid item.
+
+        This method is the inverse of to getIndexForItem(const AbstractItem*).
+    */
     inline virtual TAbstractItem* getItemForIndex(const ModelIndex& index) const;
-    virtual int getChildId(const AbstractItem* item) const;
+
+    /*!
+    \brief
+        Creates a ModelIndex that represents the specified index.
+
+        This method is the inverse of getItemForIndex(const ModelIndex&).
+    */
     virtual ModelIndex getIndexForItem(const AbstractItem* item) const;
+
+    //! Gets the ordinal id (index) of the specified item in parent's children list.
+    virtual int getChildId(const AbstractItem* item) const;
 
     /*!
     \brief
@@ -170,7 +243,7 @@ public:
 
 protected:
     //! Deletes all children of the specified item, optionally invoking the
-    //! EventChildrenRemoved event
+    //! EventChildren(WillBe)Removed event
     void deleteChildren(AbstractItem* item, bool notify);
 
     //! Makes a valid index if \a id is withing \a vector's bounds.
@@ -374,7 +447,12 @@ void AbstractItemModel<TAbstractItem>::insertItem(AbstractItem* item,
 {
     int child_id = position == 0 ? -1 : getChildId(position);
 
-    addItemAtPosition(item, child_id == -1 ? 0 : static_cast<size_t>(child_id));
+    ModelIndex parent_index = getRootIndex();
+    if (position != 0)
+        parent_index = getParentIndex(getIndexForItem(position));
+
+    addItemAtPosition(item, parent_index,
+        child_id <= 0 ? 0 : static_cast<size_t>(child_id));
 }
 
 //----------------------------------------------------------------------------//
