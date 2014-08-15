@@ -60,16 +60,13 @@ void register_ImagerySection_class(){
             ImagerySection_exposer.def( 
                 "addFrameComponent"
                 , addFrameComponent_function_type( &::CEGUI::ImagerySection::addFrameComponent )
-                , ( bp::arg("frame") )
+                , ( bp::arg("frameComponent") )
                 , "*!\n\
                     \n\
                         Add a FrameComponent to this ImagerySection.\n\
             \n\
                     @param frame\n\
                         FrameComponent to be added to the section (a copy is made)\n\
-            \n\
-                    @return\n\
-                        Nothing\n\
                     *\n" );
         
         }
@@ -80,16 +77,13 @@ void register_ImagerySection_class(){
             ImagerySection_exposer.def( 
                 "addImageryComponent"
                 , addImageryComponent_function_type( &::CEGUI::ImagerySection::addImageryComponent )
-                , ( bp::arg("img") )
+                , ( bp::arg("imageryComponent") )
                 , "*!\n\
                     \n\
                         Add an ImageryComponent to this ImagerySection.\n\
             \n\
-                    @param img\n\
+                    @param imageryComponent\n\
                         ImageryComponent to be added to the section (a copy is made)\n\
-            \n\
-                    @return\n\
-                        Nothing\n\
                     *\n" );
         
         }
@@ -100,16 +94,13 @@ void register_ImagerySection_class(){
             ImagerySection_exposer.def( 
                 "addTextComponent"
                 , addTextComponent_function_type( &::CEGUI::ImagerySection::addTextComponent )
-                , ( bp::arg("text") )
+                , ( bp::arg("textComponent") )
                 , "*!\n\
                     \n\
                         Add a TextComponent to this ImagerySection.\n\
             \n\
-                    @param text\n\
+                    @param textComponent\n\
                         TextComponent to be added to the section (a copy is made)\n\
-            \n\
-                    @return\n\
-                        Nothing\n\
                     *\n" );
         
         }
@@ -197,17 +188,50 @@ void register_ImagerySection_class(){
                 "getFrameComponentIterator"
                 , getFrameComponentIterator_function_type( &::CEGUI::ImagerySection::getFrameComponentIterator )
                 , "*!\n\
+                    \n\
+                        Return a ImagerySection.TextComponentIterator object to iterate\n\
+                        over the TextComponent elements currently added to the\n\
+                        ImagerySection.\n\
             \n\
-                Return a ImagerySection.TextComponentIterator object to iterate\n\
-                over the TextComponent elements currently added to the\n\
-                ImagerySection.\n\
-            *\n\
-            *!\n\
+                     deprecated\n\
+                        This iterator is deprecated because it returns copies of the instances instead of\n\
+                        pointers to them and the resulting values can therefore not be used in the remove\n\
+                        function. The function getTextComponents should instead be used to retrieve the\n\
+                        added elements.\n\
+                    *\n\
+                    *!\n\
+                    \n\
+                        Return a ImagerySection.FrameComponentIterator object to iterate\n\
+                        over the FrameComponent elements currently added to the\n\
+                        ImagerySection.\n\
             \n\
-                Return a ImagerySection.FrameComponentIterator object to iterate\n\
-                over the FrameComponent elements currently added to the\n\
-                ImagerySection.\n\
-            *\n" );
+                     deprecated\n\
+                        This iterator is deprecated because it returns copies of the instances instead of\n\
+                        pointers to them and the resulting values can therefore not be used in the remove\n\
+                        function. The function getFrameComponents should instead be used to retrieve the\n\
+                        added elements.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::getFrameComponents
+        
+            typedef ::std::vector< CEGUI::FrameComponent* > ( ::CEGUI::ImagerySection::*getFrameComponents_function_type )(  ) ;
+            
+            ImagerySection_exposer.def( 
+                "getFrameComponents"
+                , getFrameComponents_function_type( &::CEGUI::ImagerySection::getFrameComponents )
+                , "*!\n\
+                    \n\
+                        Returns a vector of pointers to the FrameComponents that are currently added to this\
+                        ImagerySection. If a\n\
+                        FrameComponent is added or removed from this ImagerySection, then the pointers in this\
+                        vector are not valid\n\
+                        anymore. The function should then be called again to retrieve valid pointers.\n\
+            \n\
+                     @return\n\
+                        A vector of pointers to the FrameComponents that are currently added to this\
+                        ImagerySection\n\
+                    *\n" );
         
         }
         { //::CEGUI::ImagerySection::getImageryComponentIterator
@@ -218,11 +242,38 @@ void register_ImagerySection_class(){
                 "getImageryComponentIterator"
                 , getImageryComponentIterator_function_type( &::CEGUI::ImagerySection::getImageryComponentIterator )
                 , "*!\n\
+                    \n\
+                        Return a ImagerySection.ImageryComponentIterator object to iterate\n\
+                        over the ImageryComponent elements currently added to the\n\
+                        ImagerySection.\n\
             \n\
-                Return a ImagerySection.ImageryComponentIterator object to iterate\n\
-                over the ImageryComponent elements currently added to the\n\
-                ImagerySection.\n\
-            *\n" );
+                     deprecated\n\
+                        This iterator is deprecated because it returns copies of the instances instead of\n\
+                        pointers to them and the resulting values can therefore not be used in the remove\n\
+                        function. The function getImageryComponents should instead be used to retrieve the\n\
+                        added elements.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::getImageryComponents
+        
+            typedef ::std::vector< CEGUI::ImageryComponent* > ( ::CEGUI::ImagerySection::*getImageryComponents_function_type )(  ) ;
+            
+            ImagerySection_exposer.def( 
+                "getImageryComponents"
+                , getImageryComponents_function_type( &::CEGUI::ImagerySection::getImageryComponents )
+                , "*!\n\
+                    \n\
+                        Returns a vector of pointers to the ImageryComponents that are currently added to this\
+                        ImagerySection. If an\n\
+                        ImageryComponent is added or removed from this ImagerySection, then the pointers in this\
+                        vector are not valid\n\
+                        anymore. The function should then be called again to retrieve valid pointers.\n\
+            \n\
+                     @return\n\
+                        A vector of pointers to the ImageryComponents that are currently added to this\
+                        ImagerySection\n\
+                    *\n" );
         
         }
         { //::CEGUI::ImagerySection::getMasterColours
@@ -284,17 +335,50 @@ void register_ImagerySection_class(){
                 "getTextComponentIterator"
                 , getTextComponentIterator_function_type( &::CEGUI::ImagerySection::getTextComponentIterator )
                 , "*!\n\
+                    \n\
+                        Return a ImagerySection.ImageryComponentIterator object to iterate\n\
+                        over the ImageryComponent elements currently added to the\n\
+                        ImagerySection.\n\
             \n\
-                Return a ImagerySection.ImageryComponentIterator object to iterate\n\
-                over the ImageryComponent elements currently added to the\n\
-                ImagerySection.\n\
-            *\n\
-            *!\n\
+                     deprecated\n\
+                        This iterator is deprecated because it returns copies of the instances instead of\n\
+                        pointers to them and the resulting values can therefore not be used in the remove\n\
+                        function. The function getImageryComponents should instead be used to retrieve the\n\
+                        added elements.\n\
+                    *\n\
+                    *!\n\
+                    \n\
+                        Return a ImagerySection.TextComponentIterator object to iterate\n\
+                        over the TextComponent elements currently added to the\n\
+                        ImagerySection.\n\
             \n\
-                Return a ImagerySection.TextComponentIterator object to iterate\n\
-                over the TextComponent elements currently added to the\n\
-                ImagerySection.\n\
-            *\n" );
+                     deprecated\n\
+                        This iterator is deprecated because it returns copies of the instances instead of\n\
+                        pointers to them and the resulting values can therefore not be used in the remove\n\
+                        function. The function getTextComponents should instead be used to retrieve the\n\
+                        added elements.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::getTextComponents
+        
+            typedef ::std::vector< CEGUI::TextComponent* > ( ::CEGUI::ImagerySection::*getTextComponents_function_type )(  ) ;
+            
+            ImagerySection_exposer.def( 
+                "getTextComponents"
+                , getTextComponents_function_type( &::CEGUI::ImagerySection::getTextComponents )
+                , "*!\n\
+                    \n\
+                        Returns a vector of pointers to the TextComponents that are currently added to this\
+                        ImagerySection. If a\n\
+                        TextComponent is added or removed from this ImagerySection, then the pointers in this\
+                        vector are not valid\n\
+                        anymore. The function should then be called again to retrieve valid pointers.\n\
+            \n\
+                     @return\n\
+                        A vector of pointers to the TextComponents that are currently added to this\
+                        ImagerySection\n\
+                    *\n" );
         
         }
         { //::CEGUI::ImagerySection::handleFontRenderSizeChange
@@ -335,16 +419,17 @@ void register_ImagerySection_class(){
             ImagerySection_exposer.def( 
                 "removeFrameComponent"
                 , removeFrameComponent_function_type( &::CEGUI::ImagerySection::removeFrameComponent )
-                , ( bp::arg("frame") )
+                , ( bp::arg("frameComponent") )
                 , "*!\n\
                     \n\
-                        Add a FrameComponent to this ImagerySection.\n\
+                        Removes an FrameComponent from this ImagerySection. The supplied FrameComponent\
+                        reference should be\n\
+                        retrieved via the getFrameComponents function. The check to find out which\
+                        FrameComponent to remove\n\
+                        is done using memory address comparison (identity check).\n\
             \n\
-                    @param frame\n\
-                        FrameComponent to be added to the section (a copy is made)\n\
-            \n\
-                    @return\n\
-                        Nothing\n\
+                    @param frameComponent\n\
+                        A reference to the FrameComponent to be removed to the section\n\
                     *\n" );
         
         }
@@ -355,16 +440,17 @@ void register_ImagerySection_class(){
             ImagerySection_exposer.def( 
                 "removeImageryComponent"
                 , removeImageryComponent_function_type( &::CEGUI::ImagerySection::removeImageryComponent )
-                , ( bp::arg("img") )
+                , ( bp::arg("imageryComponent") )
                 , "*!\n\
                     \n\
-                        Add an ImageryComponent to this ImagerySection.\n\
+                        Removes an ImageryComponent from this ImagerySection. The supplied ImagerySection\
+                        reference should be\n\
+                        retrieved via the getImageryComponents function. The check to find out which\
+                        ImagerySection to remove\n\
+                        is done using memory address comparison (identity check).\n\
             \n\
-                    @param img\n\
-                        ImageryComponent to be added to the section (a copy is made)\n\
-            \n\
-                    @return\n\
-                        Nothing\n\
+                    @param imageryComponent\n\
+                        A reference to the ImageryComponent to be removed to the section\n\
                     *\n" );
         
         }
@@ -375,16 +461,17 @@ void register_ImagerySection_class(){
             ImagerySection_exposer.def( 
                 "removeTextComponent"
                 , removeTextComponent_function_type( &::CEGUI::ImagerySection::removeTextComponent )
-                , ( bp::arg("text") )
+                , ( bp::arg("textComponent") )
                 , "*!\n\
                     \n\
-                        Add a TextComponent to this ImagerySection.\n\
+                        Removes an TextComponent from this ImagerySection. The supplied TextComponent reference\
+                        should be\n\
+                        retrieved via the getTextComponents function. The check to find out which TextComponent\
+                        to remove\n\
+                        is done using memory address comparison (identity check).\n\
             \n\
-                    @param text\n\
-                        TextComponent to be added to the section (a copy is made)\n\
-            \n\
-                    @return\n\
-                        Nothing\n\
+                    @param textComponent\n\
+                        A reference to the TextComponent to be removed to the section\n\
                     *\n" );
         
         }
