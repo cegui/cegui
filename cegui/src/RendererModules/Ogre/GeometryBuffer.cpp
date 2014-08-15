@@ -109,8 +109,7 @@ void OgreGeometryBuffer::draw() const
         memcpy(&converted_mat[3][0], &d_previousFinalMatrix[3][0], 
             sizeof(float)*4);
 
-        RenderMaterial& renderMat = const_cast<RenderMaterial&>(*d_renderMaterial);
-        OgreShaderWrapper* ogreShader = static_cast<OgreShaderWrapper*>(renderMat.getShaderWrapper());
+        OgreShaderWrapper* ogreShader = static_cast<OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
         if (ogreShader->getVertexParameters()->getTransposeMatrices())
         {
             glm::mat4 transpose_mat = glm::transpose (converted_mat); 
