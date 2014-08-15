@@ -390,6 +390,21 @@ namespace CEGUI
         return pointerList;
     }
 
+    ImagerySection::ImageryComponentConstPointerList ImagerySection::getImageryComponents() const
+    {
+        ImagerySection::ImageryComponentConstPointerList pointerList;
+
+        ImageryList::const_iterator imageryComponentIter = d_images.begin();
+        ImageryList::const_iterator imageryComponentEnd = d_images.end();
+        while( imageryComponentIter != imageryComponentEnd )
+        {
+            pointerList.push_back(&(*imageryComponentIter));
+            ++imageryComponentIter;
+        }
+
+        return pointerList;
+    }
+
     ImagerySection::TextComponentPointerList ImagerySection::getTextComponents()
     {
         ImagerySection::TextComponentPointerList pointerList;
@@ -405,12 +420,42 @@ namespace CEGUI
         return pointerList;
     }
 
+    ImagerySection::TextComponentConstPointerList ImagerySection::getTextComponents() const
+    {
+        ImagerySection::TextComponentConstPointerList pointerList;
+
+        TextList::const_iterator textComponentIter = d_texts.begin();
+        TextList::const_iterator textComponentEnd = d_texts.end();
+        while( textComponentIter != textComponentEnd )
+        {
+            pointerList.push_back(&(*textComponentIter));
+            ++textComponentIter;
+        }
+
+        return pointerList;
+    }
+
     ImagerySection::FrameComponentPointerList ImagerySection::getFrameComponents()
     {
         ImagerySection::FrameComponentPointerList pointerList;
 
         FrameList::iterator frameComponentIter = d_frames.begin();
         FrameList::iterator frameComponentEnd = d_frames.end();
+        while( frameComponentIter != frameComponentEnd )
+        {
+            pointerList.push_back(&(*frameComponentIter));
+            ++frameComponentIter;
+        }
+
+        return pointerList;
+    }
+
+    ImagerySection::FrameComponentConstPointerList ImagerySection::getFrameComponents() const
+    {
+        ImagerySection::FrameComponentConstPointerList pointerList;
+
+        FrameList::const_iterator frameComponentIter = d_frames.begin();
+        FrameList::const_iterator frameComponentEnd = d_frames.end();
         while( frameComponentIter != frameComponentEnd )
         {
             pointerList.push_back(&(*frameComponentIter));

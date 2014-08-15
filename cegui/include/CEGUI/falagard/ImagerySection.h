@@ -282,6 +282,14 @@ namespace CEGUI
         //! Vector of FrameComponent Pointers
         typedef std::vector<FrameComponent* CEGUI_VECTOR_ALLOC(FrameComponent*)> FrameComponentPointerList;
 
+
+        //! Vector of constant ImageryComponent Pointers
+        typedef std::vector<const ImageryComponent* CEGUI_VECTOR_ALLOC(const ImageryComponent*)> ImageryComponentConstPointerList;
+        //! Vector of constant TextComponent Pointers
+        typedef std::vector<const TextComponent* CEGUI_VECTOR_ALLOC(const TextComponent*)> TextComponentConstPointerList;
+        //! Vector of constant FrameComponent Pointers
+        typedef std::vector<const FrameComponent* CEGUI_VECTOR_ALLOC(const FrameComponent*)> FrameComponentConstPointerList;
+
         /*!
         \brief
             Returns a vector of pointers to the ImageryComponents that are currently added to this ImagerySection. If an
@@ -292,6 +300,17 @@ namespace CEGUI
             A vector of pointers to the ImageryComponents that are currently added to this ImagerySection
         */
         ImageryComponentPointerList getImageryComponents();
+
+        /*!
+        \brief
+            Returns a vector of const pointers to the ImageryComponents that are currently added to this ImagerySection. If an
+            ImageryComponent is added or removed from this ImagerySection, then the pointers in this vector are not valid
+            anymore. The function should then be called again to retrieve valid pointers.
+
+         \return
+            A vector of const pointers to the ImageryComponents that are currently added to this ImagerySection
+        */
+        ImageryComponentConstPointerList getImageryComponents() const;
 
         /*!
         \brief
@@ -306,6 +325,17 @@ namespace CEGUI
 
         /*!
         \brief
+            Returns a vector of const pointers to the TextComponents that are currently added to this ImagerySection. If a
+            TextComponent is added or removed from this ImagerySection, then the pointers in this vector are not valid
+            anymore. The function should then be called again to retrieve valid pointers.
+
+         \return
+            A vector of const pointers to the TextComponents that are currently added to this ImagerySection
+        */
+        TextComponentConstPointerList getTextComponents() const;
+
+        /*!
+        \brief
             Returns a vector of pointers to the FrameComponents that are currently added to this ImagerySection. If a
             FrameComponent is added or removed from this ImagerySection, then the pointers in this vector are not valid
             anymore. The function should then be called again to retrieve valid pointers.
@@ -314,6 +344,17 @@ namespace CEGUI
             A vector of pointers to the FrameComponents that are currently added to this ImagerySection
         */
         FrameComponentPointerList getFrameComponents();
+
+        /*!
+        \brief
+            Returns a vector of const pointers to the FrameComponents that are currently added to this ImagerySection. If a
+            FrameComponent is added or removed from this ImagerySection, then the pointers in this vector are not valid
+            anymore. The function should then be called again to retrieve valid pointers.
+
+         \return
+            A vector of const pointers to the FrameComponents that are currently added to this ImagerySection
+        */
+        FrameComponentConstPointerList getFrameComponents() const;
 
     protected:
         /*!
