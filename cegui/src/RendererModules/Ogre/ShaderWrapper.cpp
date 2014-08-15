@@ -89,6 +89,12 @@ OgreShaderWrapper::~OgreShaderWrapper()
 }
 
 //----------------------------------------------------------------------------//
+Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() 
+{
+    return d_vertexParameters;
+}
+
+//----------------------------------------------------------------------------//
 void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* 
     shaderParameterBindings)
 {
@@ -154,19 +160,9 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             if (d_previousMatrix != mat->d_parameterValue)
             {
                 d_previousMatrix = mat->d_parameterValue;
-
                 d_vertexParameters->_writeRawConstants(target_index, 
-                    &d_previousMatrix[0][0], 4);
-
-                d_vertexParameters->_writeRawConstants(target_index+4, 
-                    &d_previousMatrix[1][0], 4);
-
-                d_vertexParameters->_writeRawConstants(target_index+8, 
-                    &d_previousMatrix[2][0], 4);
-
-                d_vertexParameters->_writeRawConstants(target_index+12, 
-                    &d_previousMatrix[3][0], 4);
-            }
+                    &d_previousMatrix[0][0], 16);
+            } 
             break;
         }
         case SPT_FLOAT:
