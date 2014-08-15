@@ -57,4 +57,23 @@ BOOST_AUTO_TEST_CASE(Insert_NonNullPosition_InsertsBefore)
     BOOST_REQUIRE_EQUAL("i3", model.getData(model.makeIndex(1, model.getRootIndex()), IDR_Text));
 }
 
+BOOST_AUTO_TEST_CASE(Insert_ChildOfNode_InsertsBefore)
+{
+    StandardItemModel model;
+    model.addItem("i1");
+    model.addItem("i2");
+
+    ModelIndex i1_index = model.makeIndex(0, model.getRootIndex());
+    StandardItem* i1_child1 = new StandardItem("i1-child1");
+    model.addItemAtPosition(i1_child1, i1_index, 0);
+
+    BOOST_REQUIRE_EQUAL(1, model.getChildCount(i1_index));
+    BOOST_REQUIRE_EQUAL(i1_child1->getText(), model.getData(model.makeIndex(0, i1_index), IDR_Text));
+
+    model.insertItem(new StandardItem("i1-child2"), i1_child1);
+    BOOST_REQUIRE_EQUAL(2, model.getChildCount(i1_index));
+    BOOST_REQUIRE_EQUAL("i1-child2", model.getData(model.makeIndex(0, i1_index), IDR_Text));
+    BOOST_REQUIRE_EQUAL(i1_child1->getText(), model.getData(model.makeIndex(1, i1_index), IDR_Text));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

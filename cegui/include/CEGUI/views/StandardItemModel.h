@@ -34,6 +34,10 @@
 namespace CEGUI
 {
 
+/*!
+\brief
+    This is an implementation of AbstractItem that has an additional id.
+*/
 class CEGUIEXPORT StandardItem : public AbstractItem
 {
 public:
@@ -51,12 +55,25 @@ protected:
 
 /*!
 \brief
-    A simple item model that contains StandardItem%s.
+    This is an example model that inherits the default AbstractItemModel
+    functionality over a specified model type (StandardItem).
+
+    Besides that we added a new function that updates a given item's text.
 */
 class CEGUIEXPORT StandardItemModel : public AbstractItemModel<StandardItem>
 {
 public:
-    explicit StandardItemModel();
+    StandardItemModel();
+
+    /*!
+    \brief
+        Updates the specified \a item's text with the new one.
+
+        This function will notify the listeners that the specified \a item's
+        text has been changed, via the EventChildrenDataWillChange and
+        EventChildrenDataChanged events.
+    */
+    void updateItemText(StandardItem* item, const String& new_text);
 };
 
 }

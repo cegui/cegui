@@ -50,4 +50,16 @@ StandardItemModel::StandardItemModel() :
 AbstractItemModel<StandardItem>(CEGUI_NEW_AO StandardItem)
 {
 }
+
+//----------------------------------------------------------------------------//
+void StandardItemModel::updateItemText(StandardItem* item, const String& new_text)
+{
+    ModelIndex parent_index = getParentIndex(getIndexForItem(item));
+
+    notifyChildrenDataWillChange(parent_index, 0, 1);
+
+    item->setText(new_text);
+
+    notifyChildrenDataChanged(parent_index, 0, 1);
+}
 }
