@@ -26,12 +26,15 @@
 ***************************************************************************/
 #include <boost/test/unit_test.hpp>
 
-#define protected public
-#include "CEGUI/Font.h"
-#include "CEGUI/Event.h"
-#include "CEGUI/WindowManager.h"
-#include "CEGUI/views/TreeView.h"
 #include "InventoryModel.h"
+#include "CEGUI/Event.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/WindowManager.h"
+
+// Yup. We need this in order to easily inject/call event handlers without having
+// to go through GUIContext, or inherit from widgets in order to test them.
+#define protected public
+#include "CEGUI/views/TreeView.h"
 
 using namespace CEGUI;
 #define BOOST_REQUIRE_INDICES_EQUAL(i1, i2) BOOST_REQUIRE_EQUAL(i1.d_modelData, i2.d_modelData)
@@ -282,7 +285,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
     view->setSelectedIndex(model.makeIndex(1, model.getRootIndex()));
     view->prepareForRender();
 
-    float itemSize = view->d_renderedTotalHeight / 2;
+    float itemSize = view->getRenderedTotalHeight() / 2;
 
     model.removeItem(model.makeIndex(1, model.getRootIndex()));
 
@@ -293,7 +296,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
     BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_renderedChildren.size());
     BOOST_REQUIRE_EQUAL(1, view->getRootItemState().d_totalChildCount);
     BOOST_REQUIRE(!children.at(0)->d_isSelected);
-    BOOST_REQUIRE(view->d_renderedTotalHeight <= (itemSize + 0.01f));
+    BOOST_REQUIRE(view->getRenderedTotalHeight() <= (itemSize + 0.01f));
 }
 
 //----------------------------------------------------------------------------//

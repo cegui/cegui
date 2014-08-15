@@ -25,15 +25,16 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include <boost/test/unit_test.hpp>
+
+#include "ItemModelStub.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/widgets/Scrollbar.h"
+
 // Yup. We need this in order to easily inject/call event handlers without having
 // to go through GUIContext, or inherit from widgets in order to test them.
 #define protected public
-
 #include "CEGUI/views/ListView.h"
-#include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/Font.h"
-#include "CEGUI/WindowManager.h"
-#include "ItemModelStub.h"
 
 using namespace CEGUI;
 
@@ -195,7 +196,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_RenderingHeightIsUpdated)
 
     view->prepareForRender();
 
-    BOOST_REQUIRE(view->d_renderedTotalHeight <= 0.01f);
+    BOOST_REQUIRE(view->getRenderedTotalHeight() <= 0.01f);
 }
 
 //----------------------------------------------------------------------------//
@@ -207,7 +208,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
     view->setSelectedIndex(ModelIndex(&model.d_items.at(1)));
     view->prepareForRender();
 
-    float itemSize = view->d_renderedTotalHeight / 3;
+    float itemSize = view->getRenderedTotalHeight() / 3;
 
     model.notifyChildrenWillBeRemoved(model.getRootIndex(), 1, 1);
     model.d_items.erase(model.d_items.begin() + 1);
@@ -218,7 +219,7 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelectedAndRenderingHeightIsUpdated)
     BOOST_REQUIRE(view->getItems().size() == 2);
     BOOST_REQUIRE(!view->getItems().at(0)->d_isSelected);
     BOOST_REQUIRE(!view->getItems().at(1)->d_isSelected);
-    BOOST_REQUIRE(view->d_renderedTotalHeight <= (itemSize * 2 + 0.01f));
+    BOOST_REQUIRE(view->getRenderedTotalHeight() <= (itemSize * 2 + 0.01f));
 }
 
 //----------------------------------------------------------------------------//
