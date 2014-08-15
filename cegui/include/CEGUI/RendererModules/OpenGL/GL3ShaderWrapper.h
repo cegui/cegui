@@ -62,8 +62,8 @@ public:
     //! Adds a shader attribute variable to the list of variables
     void addTextureUniformVariable(const std::string& uniformName, GLint textureUnitIndex);
 
-    GLint getAttributeLocation(const std::string& attributeName);
-    GLint getUniformLocation(const std::string& uniformName);
+    GLint getAttributeLocation(const std::string& attributeName) const;
+    GLint getUniformLocation(const std::string& uniformName) const;
 
 protected:
     //! The underlying GLSL shader that this class wraps the access to

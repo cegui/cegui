@@ -289,7 +289,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
             "The empty vertex layout is invalid because it is empty."));
 
 
-    CEGUI::Direct3D11ShaderWrapper* shaderWrapper = static_cast<CEGUI::Direct3D11ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+    const CEGUI::Direct3D11ShaderWrapper* shaderWrapper = static_cast<const CEGUI::Direct3D11ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
 
     if (d_inputLayout)
         d_inputLayout->Release();

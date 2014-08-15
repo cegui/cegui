@@ -194,7 +194,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 }
 
 //----------------------------------------------------------------------------//
-void* Direct3D11ShaderWrapper::getVertShaderBufferPointer()
+void* Direct3D11ShaderWrapper::getVertShaderBufferPointer() const
 {
     ID3D10Blob* vertexShaderBuffer = d_shader.getVertexShaderBuffer();
 
@@ -202,7 +202,7 @@ void* Direct3D11ShaderWrapper::getVertShaderBufferPointer()
 }
 
 //----------------------------------------------------------------------------//
-SIZE_T Direct3D11ShaderWrapper::getVertShaderBufferSize()
+SIZE_T Direct3D11ShaderWrapper::getVertShaderBufferSize() const
 {
     ID3D10Blob* vertexShaderBuffer = d_shader.getVertexShaderBuffer();
 

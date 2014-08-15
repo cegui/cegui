@@ -74,9 +74,9 @@ public:
     void createPerObjectBuffer(ShaderType shaderType);
 
     //! Returns the vertex shader buffer pointer
-    void* getVertShaderBufferPointer();
+    void* getVertShaderBufferPointer() const;
     //! Returns the vertex shader buffer size
-    SIZE_T getVertShaderBufferSize();
+    SIZE_T getVertShaderBufferSize() const;
 
 protected:
     //! Prepare the uniform variable mapping
