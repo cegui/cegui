@@ -1,7 +1,7 @@
 /***********************************************************************
     created:    27/3/2005
     author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
-    
+
     purpose:    Interface to base class for PopupMenu widget
 *************************************************************************/
 /***************************************************************************
@@ -170,7 +170,7 @@ protected:
 
     /*!
     \brief
-        Setup size and position for the item widgets attached to this Listbox
+        Setup size and position for the item widgets attached to this Window
 
     \return
         Nothing.

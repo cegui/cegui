@@ -5,7 +5,7 @@
         <Property name="Area" value="{{-0.00078125,0},{-0.00138889,0},{0.999219,0},{0.998611,0}}" />
         <Property name="Text" value="Page two" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
-        <Window type="TaharezLook/Listbox" name="ClassesListBox" >
+        <Window type="TaharezLook/ListWidget" name="ClassesList" >
             <Property name="Area" value="{{0,141},{0,76},{0,357},{0,353}}" />
         </Window>
         <Window type="TaharezLook/Button" name="SelectButton" >
