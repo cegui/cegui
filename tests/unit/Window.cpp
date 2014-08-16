@@ -29,7 +29,6 @@
 #include "CEGUI/WindowManager.h"
 
 #include <boost/test/unit_test.hpp>
-#include <boost/timer.hpp>
 
 /*
  * Used to bring some Windows up for testing
@@ -178,62 +177,4 @@ BOOST_AUTO_TEST_CASE(RecursiveSearch)
     d_insideInsideRoot->setID(previousID[2]);
 }
 
-struct DrawListPerformanceFixture
-{
-    DrawListPerformanceFixture()
-    {
-        d_root = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow");
-        d_root->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
-        d_root->setSize(CEGUI::USize(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
-
-        for (unsigned int i = 0; i < 100; ++i)
-        {
-            d_windows.push_back(d_root->createChild("DefaultWindow"));
-        }
-    }
-
-    ~DrawListPerformanceFixture()
-    {
-        CEGUI::WindowManager::getSingleton().destroyWindow(d_root);
-    }
-
-    CEGUI::Window* d_root;
-    std::vector<CEGUI::Window*> d_windows;
-};
-/*
-BOOST_AUTO_TEST_CASE(DrawListPerformance)
-{
-    DrawListPerformanceFixture fixture;
-
-    {
-        boost::timer timer;
-        for (unsigned int i = 0; i < 1000; ++i)
-        {
-
-            // first, we are trying to measure the hit we get when we have to move a window to the back of the draw list
-            for (unsigned int i = 0; i < 100; ++i)
-            {
-                fixture.d_windows[i]->moveToBack();
-            }
-        }
-
-        BOOST_TEST_MESSAGE("Time taken, 1000x 100 windows moved back (100 windows total): " << timer.elapsed());
-    }
-
-    {
-        boost::timer timer;
-        for (unsigned int i = 0; i < 1000; ++i)
-        {
-
-            // secondly, we are trying to measure the hit we get when we have to move a window to the front of the draw list
-            for (unsigned int i = 0; i < 100; ++i)
-            {
-                fixture.d_windows[i]->moveToFront();
-            }
-        }
-
-        BOOST_TEST_MESSAGE("Time taken, 1000x 100 windows moved front (100 windows total): " << timer.elapsed());
-    }
-}
-*/
 BOOST_AUTO_TEST_SUITE_END()
