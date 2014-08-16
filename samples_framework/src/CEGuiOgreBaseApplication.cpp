@@ -477,7 +477,7 @@ bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
 {
-    d_sampleApp->injectMousePosition(e.state.X.abs, e.state.Y.abs);
+    d_sampleApp->injectMousePosition(static_cast<float>(e.state.X.abs), static_cast<float>(e.state.Y.abs));
     d_sampleApp->injectMouseWheelChange(e.state.Z.rel / 120.0f);
 
     return true;
