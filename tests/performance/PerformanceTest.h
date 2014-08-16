@@ -42,7 +42,7 @@
 class PerformanceTest
 {
 public:
-    PerformanceTest(CEGUI::String test_name) : d_testName(test_name) { }
+    explicit PerformanceTest(CEGUI::String test_name) : d_testName(test_name) { }
     virtual ~PerformanceTest() {}
 
 
