@@ -578,6 +578,7 @@ set(CPACK_SOURCE_IGNORE_FILES
 # the rest is modelled after .hgignore
 "build/"
 "~$"
+"\\\\.orig$"
 
 "Thumbs.db"
 "\\\\.directory"
@@ -587,6 +588,7 @@ set(CPACK_SOURCE_IGNORE_FILES
 "\\\\.project"
 "\\\\.cproject"
 "\\\\.pydevproject"
+"\\\\.ropeproject"
 )
 
 include(CPack)
