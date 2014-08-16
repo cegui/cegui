@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(Children)
     BOOST_CHECK_THROW(root->removeChild("child"), CEGUI::UnknownObjectException);
     root->addChild(child2);
     BOOST_CHECK_THROW(root->addChild(child1), CEGUI::AlreadyExistsException);
-    
+
     delete child2;
     delete child1;
     delete root;
@@ -57,16 +57,16 @@ BOOST_AUTO_TEST_CASE(NamePath)
     CEGUI::NamedElement* inner_child = new CEGUI::NamedElement("inner_child");
     root->addChild(child);
     child->addChild(inner_child);
-    
+
     BOOST_CHECK_EQUAL(child->getNamePath(), "root/child");
     BOOST_CHECK_EQUAL(child->getProperty("NamePath"), "root/child");
     BOOST_CHECK_EQUAL(inner_child->getNamePath(), "root/child/inner_child");
-    
+
     BOOST_CHECK_EQUAL(root->getChildElement("child"), child);
     BOOST_CHECK_EQUAL(root->getChildElement("child/inner_child"), inner_child);
     BOOST_CHECK_EQUAL(child->getChildElement("inner_child"), inner_child);
     BOOST_CHECK_THROW(child->getChildElement("nonexistant"), CEGUI::UnknownObjectException);
-    
+
     delete inner_child;
     delete child;
     delete root;
