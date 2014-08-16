@@ -108,7 +108,7 @@ namespace CEGUI
         /*!
         \brief
             Removes an ImageryComponent from this ImagerySection. The supplied ImagerySection reference should be
-            retrieved via the getImageryComponents function. The check to find out which ImagerySection to remove
+            retrieved via the getImageryComponents or getImageryComponentPointers function. The check to find out which ImagerySection to remove
             is done using memory address comparison (identity check).
 
         \param imageryComponent
@@ -137,7 +137,7 @@ namespace CEGUI
         /*!
         \brief
             Removes an TextComponent from this ImagerySection. The supplied TextComponent reference should be
-            retrieved via the getTextComponents function. The check to find out which TextComponent to remove
+            retrieved via the getTextComponents or getTextComponentPointers function. The check to find out which TextComponent to remove
             is done using memory address comparison (identity check).
 
         \param textComponent
@@ -175,7 +175,7 @@ namespace CEGUI
         /*!
         \brief
             Removes an FrameComponent from this ImagerySection. The supplied FrameComponent reference should be
-            retrieved via the getFrameComponents function. The check to find out which FrameComponent to remove
+            retrieved via the getFrameComponents or getFrameComponentPointers function. The check to find out which FrameComponent to remove
             is done using memory address comparison (identity check).
 
         \param frameComponent
