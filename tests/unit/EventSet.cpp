@@ -31,7 +31,6 @@
 #include "CEGUI/Exceptions.h"
 
 #include <boost/test/unit_test.hpp>
-#include <boost/timer.hpp>
 
 BOOST_AUTO_TEST_SUITE(EventSet)
 
@@ -134,63 +133,4 @@ BOOST_AUTO_TEST_CASE(Subscribing)
         connection->disconnect();
     }
 }
-/*
-BOOST_AUTO_TEST_CASE(Performance)
-{
-    CEGUI::EventSet set;
-
-    const CEGUI::String eventName("ExplicitlyAddedTestEvent");
-    set.addEvent(eventName);
-    // at this point, the EventSet should contain just one event with eventName as it's name
-
-    TestEventArgs args;
-    // we measure event firing lookup overhead with one event first
-
-    {
-        boost::timer timer;
-        for (unsigned int i = 0; i < 1000000; ++i)
-        {
-            set.fireEvent(eventName, args);
-        }
-
-        BOOST_TEST_MESSAGE("Time taken, 1000000x event lookup (1 event): " << timer.elapsed());
-    }
-
-    // now lets add events to a total of 100 and try again (realistic scenario test)
-    for (unsigned int i = 1; i < 100; ++i)
-    {
-        std::stringstream s;
-        s << "Event" << i;
-        set.addEvent(s.str());
-    }
-
-    {
-        boost::timer timer;
-        for (unsigned int i = 0; i < 1000000; ++i)
-        {
-            set.fireEvent(eventName, args);
-        }
-
-        BOOST_TEST_MESSAGE("Time taken, 1000000x event lookup (100 events): " << timer.elapsed());
-    }
-
-    // now lets add events to a total of 10000 and try again (synthetic test)
-    for (unsigned int i = 100; i < 10000; ++i)
-    {
-        std::stringstream s;
-        s << "Event" << i;
-        set.addEvent(s.str());
-    }
-
-    {
-        boost::timer timer;
-        for (unsigned int i = 0; i < 1000000; ++i)
-        {
-            set.fireEvent(eventName, args);
-        }
-
-        BOOST_TEST_MESSAGE("Time taken, 1000000x event lookup (10000 events): " << timer.elapsed());
-    }
-}
-*/
 BOOST_AUTO_TEST_SUITE_END()
