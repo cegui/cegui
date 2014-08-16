@@ -180,7 +180,7 @@ macro(clear_if_changed TESTVAR)
             set(${var} "NOTFOUND" CACHE STRING "${var}-docstring" FORCE)
         endforeach(var)
     endif ()
-    set(${TESTVAR}_INT_CHECK ${${TESTVAR}} CACHE INTERNAL "${testvar}-docstring" FORCE)
+    set(${TESTVAR}_INT_CHECK ${${TESTVAR}} CACHE INTERNAL "${TESTVAR}-docstring" FORCE)
 endmacro(clear_if_changed)
 
 ################################################################################
