@@ -223,7 +223,7 @@ endmacro(get_debug_names)
 ################################################################################
 macro(add_parent_dir VAR DIR)
     get_filename_component(${DIR}_TEMP "${${DIR}}/.." ABSOLUTE)
-    set(${VAR} ${${DIR}_TEMP})
+    set(${VAR} ${${VAR}} ${${DIR}_TEMP})
 endmacro(add_parent_dir)
 
 ################################################################################
@@ -488,7 +488,14 @@ endif ()
 set(CEGUI_INCLUDE_DIR ${CEGUI_CONFIG_INCLUDE_DIR} ${CEGUI_INCLUDE_DIR})
 list(REMOVE_DUPLICATES CEGUI_INCLUDE_DIR)
 findpkg_finish(CEGUI)
-add_parent_dir(CEGUI_INCLUDE_DIRS CEGUI_INCLUDE_DIR)
+
+# Starting CEGUI 0.8, the headers are in the CEGUI subdirectory, and we must include
+# its parent rather than directly the subdirectory. Otherwise we'll get compiler errors.
+if ("${CEGUI_VERSION}" VERSION_GREATER "0.8.0")
+    add_parent_dir(CEGUI_INCLUDE_DIRS_TEMP CEGUI_INCLUDE_DIR)
+    message(${CEGUI_INCLUDE_DIRS_TEMP})
+    set(${CEGUI_INCLUDE_DIRS} ${CEGUI_INCLUDE_DIRS_TEMP})
+endif()
 set(CEGUI_INCLUDE_DIR ${CEGUI_INCLUDE_DIRS})
 
 mark_as_advanced(CEGUI_CONFIG_INCLUDE_DIR)
