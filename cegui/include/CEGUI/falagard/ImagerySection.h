@@ -108,7 +108,7 @@ namespace CEGUI
         /*!
         \brief
             Removes an ImageryComponent from this ImagerySection. The supplied ImagerySection reference should be
-            retrieved via the getImageryComponents function. The check to find out which ImagerySection to remove
+            retrieved via the getImageryComponentPointers function. The check to find out which ImagerySection to remove
             is done using memory address comparison (identity check).
 
         \param imageryComponent
@@ -137,7 +137,7 @@ namespace CEGUI
         /*!
         \brief
             Removes an TextComponent from this ImagerySection. The supplied TextComponent reference should be
-            retrieved via the getTextComponents function. The check to find out which TextComponent to remove
+            retrieved via the getTextComponentPointers function. The check to find out which TextComponent to remove
             is done using memory address comparison (identity check).
 
         \param textComponent
@@ -175,7 +175,7 @@ namespace CEGUI
         /*!
         \brief
             Removes an FrameComponent from this ImagerySection. The supplied FrameComponent reference should be
-            retrieved via the getFrameComponents function. The check to find out which FrameComponent to remove
+            retrieved via the getFrameComponentPointers function. The check to find out which FrameComponent to remove
             is done using memory address comparison (identity check).
 
         \param frameComponent
@@ -291,7 +291,7 @@ namespace CEGUI
          \return
             A vector of pointers to the ImageryComponents that are currently added to this ImagerySection
         */
-        ImageryComponentPointerList getImageryComponents();
+        ImageryComponentPointerList getImageryComponentPointers();
 
         /*!
         \brief
@@ -302,7 +302,7 @@ namespace CEGUI
          \return
             A vector of pointers to the TextComponents that are currently added to this ImagerySection
         */
-        TextComponentPointerList getTextComponents();
+        TextComponentPointerList getTextComponentPointers();
 
         /*!
         \brief
@@ -313,7 +313,7 @@ namespace CEGUI
          \return
             A vector of pointers to the FrameComponents that are currently added to this ImagerySection
         */
-        FrameComponentPointerList getFrameComponents();
+        FrameComponentPointerList getFrameComponentPointers();
 
     protected:
         /*!
@@ -357,10 +357,8 @@ namespace CEGUI
             ImagerySection.
 
         \deprecated
-            This iterator is deprecated because it returns copies of the instances instead of
-            pointers to them and the resulting values can therefore not be used in the remove
-            function. The function getImageryComponents should instead be used to retrieve the
-            added elements.
+            This iterator is deprecated because it will be replaced by the function getImageryComponents
+            in the next version.
         */
         ImageryComponentIterator getImageryComponentIterator() const;
         /*!
@@ -370,10 +368,8 @@ namespace CEGUI
             ImagerySection.
 
         \deprecated
-            This iterator is deprecated because it returns copies of the instances instead of
-            pointers to them and the resulting values can therefore not be used in the remove
-            function. The function getTextComponents should instead be used to retrieve the
-            added elements.
+            This iterator is deprecated because it will be replaced by the function getTextComponents
+            in the next version.
         */
         TextComponentIterator getTextComponentIterator() const;
         /*!
@@ -383,10 +379,8 @@ namespace CEGUI
             ImagerySection.
 
         \deprecated
-            This iterator is deprecated because it returns copies of the instances instead of
-            pointers to them and the resulting values can therefore not be used in the remove
-            function. The function getFrameComponents should instead be used to retrieve the
-            added elements.
+            This iterator is deprecated because it will be replaced by the function getFrameComponents
+            in the next version.
         */
         FrameComponentIterator getFrameComponentIterator() const;
 

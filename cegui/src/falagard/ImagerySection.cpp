@@ -391,7 +391,7 @@ namespace CEGUI
         return FrameComponentIterator(d_frames.begin(), d_frames.end());
     }
 
-    ImagerySection::ImageryComponentPointerList ImagerySection::getImageryComponents()
+    ImagerySection::ImageryComponentPointerList ImagerySection::getImageryComponentPointers()
     {
         ImagerySection::ImageryComponentPointerList pointerList;
 
@@ -406,7 +406,7 @@ namespace CEGUI
         return pointerList;
     }
 
-    ImagerySection::TextComponentPointerList ImagerySection::getTextComponents()
+    ImagerySection::TextComponentPointerList ImagerySection::getTextComponentPointers()
     {
         ImagerySection::TextComponentPointerList pointerList;
 
@@ -421,7 +421,7 @@ namespace CEGUI
         return pointerList;
     }
 
-    ImagerySection::FrameComponentPointerList ImagerySection::getFrameComponents()
+    ImagerySection::FrameComponentPointerList ImagerySection::getFrameComponentPointers()
     {
         ImagerySection::FrameComponentPointerList pointerList;
 
