@@ -177,10 +177,10 @@ macro(clear_if_changed TESTVAR)
     if (NOT "${${TESTVAR}}" STREQUAL "${${TESTVAR}_INT_CHECK}")
         message(STATUS "${TESTVAR} changed.")
         foreach(var ${ARGN})
-            set(${var} "NOTFOUND" CACHE STRING "x" FORCE)
+            set(${var} "NOTFOUND" CACHE STRING "${var}-docstring" FORCE)
         endforeach(var)
     endif ()
-    set(${TESTVAR}_INT_CHECK ${${TESTVAR}} CACHE INTERNAL "x" FORCE)
+    set(${TESTVAR}_INT_CHECK ${${TESTVAR}} CACHE INTERNAL "${testvar}-docstring" FORCE)
 endmacro(clear_if_changed)
 
 ################################################################################
@@ -223,7 +223,7 @@ endmacro(get_debug_names)
 ################################################################################
 macro(add_parent_dir VAR DIR)
     get_filename_component(${DIR}_TEMP "${${DIR}}/.." ABSOLUTE)
-    set(${VAR} ${${VAR}} ${${DIR}_TEMP})
+    set(${VAR} ${${DIR}_TEMP})
 endmacro(add_parent_dir)
 
 ################################################################################
