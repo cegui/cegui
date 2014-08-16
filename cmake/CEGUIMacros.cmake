@@ -449,6 +449,8 @@ macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXT
     set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES})
     set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
 
+    include_directories(${Boost_INCLUDE_DIR})
+
     ###########################################################################
     #                     Statically Linked Executable
     ###########################################################################
