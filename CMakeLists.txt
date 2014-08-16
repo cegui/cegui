@@ -107,7 +107,7 @@ find_package(Lua51)
 find_package(TOLUAPP)
 find_package(PythonInterp)
 find_package(PythonLibs)
-find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system)
+find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system timer)
 
 find_package(Doxygen)
 find_package(GTK2 COMPONENTS gtk)
@@ -275,9 +275,11 @@ endif()
 # unit tests
 cmake_dependent_option( CEGUI_BUILD_TESTS "Specifies whether to build the unit tests." FALSE "Boost_UNIT_TEST_FRAMEWORK_FOUND" FALSE )
 
+cmake_dependent_option( CEGUI_BUILD_PERFORMANCE_TESTS "Specifies whether to build the performance tests." FALSE "Boost_UNIT_TEST_FRAMEWORK_FOUND;Boost_TIMER_FOUND" FALSE )
+
 # sanity check on unit tests
-if (CEGUI_BUILD_TESTS AND NOT CEGUI_BUILD_RENDERER_NULL)
-    message(SEND_ERROR "The CEGUI unit tests (option CEGUI_BUILD_TESTS) require the null renderer (CEGUI_BUILD_RENDERER_NULL). Please enable it.")
+if ((CEGUI_BUILD_TESTS OR CEGUI_BUILD_PERFORMANCE_TESTS) AND NOT CEGUI_BUILD_RENDERER_NULL)
+    message(SEND_ERROR "The CEGUI tests (option CEGUI_BUILD_TESTS or CEGUI_BUILD_PEPRFORMANCE_TESTS) require the null renderer (CEGUI_BUILD_RENDERER_NULL). Please enable it.")
 endif()
 
 # datafiles tests
@@ -547,7 +549,7 @@ if (DOXYGEN_FOUND)
         COMMENT "Generating documentation" VERBATIM)
 endif()
 
-if (CEGUI_BUILD_TESTS OR CEGUI_BUILD_DATAFILES_TEST)
+if (CEGUI_BUILD_TESTS OR CEGUI_BUILD_PERFORMANCE_TESTS OR CEGUI_BUILD_DATAFILES_TEST)
     enable_testing()
 
     add_subdirectory(tests)

@@ -111,7 +111,7 @@ macro (cegui_add_dependency_static_libs _TARGET_NAME _DEP_NAME)
                 target_link_libraries(${_TARGET_NAME} ${${_DEP_NAME}_LIBRARIES_STATIC})
             endif()
         else()
-            cegui_add_dependency_dynamic_libs(${_TARGET_NAME} ${_DEP_NAME})            
+            cegui_add_dependency_dynamic_libs(${_TARGET_NAME} ${_DEP_NAME})
         endif()
     endif()
 endmacro()
@@ -402,7 +402,6 @@ macro (cegui_add_sample _NAME)
     # Add the MetaData chunk of the sample to the final xml
     file(READ ${CMAKE_CURRENT_SOURCE_DIR}/SampleMetaData.xml DEMO_META_DATA)
     file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "${DEMO_META_DATA}")
- 
 endmacro()
 
 #
@@ -438,9 +437,17 @@ endmacro()
 # Define a CEGUI test executable
 #
 macro (cegui_add_test_executable _NAME)
+    cegui_add_test_executable_with_extra_files(${_NAME} "" "")
+endmacro()
+
+macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE_FILES)
     set (CEGUI_TARGET_NAME ${_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
 
     cegui_gather_files()
+
+    # add the extra header/source files
+    set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES})
+    set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
 
     ###########################################################################
     #                     Statically Linked Executable
@@ -484,7 +491,7 @@ macro (cegui_add_test_executable _NAME)
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
         )
     endif()
-    
+
     ###########################################################################
     #                      LIBRARY LINK SETUP
     ###########################################################################
@@ -493,6 +500,13 @@ macro (cegui_add_test_executable _NAME)
         ${CEGUI_NULL_RENDERER_LIBNAME}
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
+
+    if (CEGUI_BUILD_PERFORMANCE_TESTS)
+        cegui_target_link_libraries(${CEGUI_TARGET_NAME}
+            ${Boost_TIMER_LIBRARY}
+            ${Boost_SYSTEM_LIBRARY}
+        )
+    endif()
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         target_link_libraries(${CEGUI_TARGET_NAME}_Static
@@ -561,7 +575,7 @@ endmacro()
 # _PKGNAME: The name of package we're checking for.
 # _LIBBASENAMEVAR: name of the library base name variable.  This name will be
 #                  used in the construction of other variable names which should
-#                  be set for various configurations (eg. BASENAMEVAR_DBG for 
+#                  be set for various configurations (eg. BASENAMEVAR_DBG for
 #                  dynamic debug config, BASENAMEVAR_STATIC for non debug static)
 # Optional other args: all other args will be tested verbatim (they're passed
 #                      along to find_package_handle_standard_args).
