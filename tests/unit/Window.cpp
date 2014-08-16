@@ -33,7 +33,7 @@
 
 /*
  * Used to bring some Windows up for testing
- * 
+ *
  * This is for exception safety, no matter what happens in the tests,
  * its destructor will be called
  */
@@ -44,28 +44,28 @@ struct LayoutSetupFixture
         d_root = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow");
         d_root->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
         d_root->setSize(CEGUI::USize(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
-        
+
         d_insideRoot = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow");
         d_insideRoot->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 100), CEGUI::UDim(0, 50)));
         d_insideRoot->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0), CEGUI::UDim(0.5f, 0)));
         d_root->addChild(d_insideRoot);
-        
+
         d_insideInsideRoot = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow");
         d_insideInsideRoot->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 100), CEGUI::UDim(0, 50)));
         d_insideInsideRoot->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0), CEGUI::UDim(0.5f, 0)));
         d_insideRoot->addChild(d_insideInsideRoot);
-        
+
         CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
         CEGUI::System::getSingleton().notifyDisplaySizeChanged(CEGUI::Sizef(800, 600));
     }
-    
+
     ~LayoutSetupFixture()
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(0);
-        
+
         CEGUI::WindowManager::getSingleton().destroyWindow(d_root);
     }
-    
+
     CEGUI::Window* d_root;
     CEGUI::Window* d_insideRoot;
     CEGUI::Window* d_insideInsideRoot;
@@ -78,12 +78,12 @@ BOOST_AUTO_TEST_CASE(Defaults)
     /*
      * We check these to ensure we don't change them between releases, as people very likely depend on them!
      */
-    
+
     BOOST_CHECK(!d_root->isActive());
-    
+
     BOOST_CHECK(!d_root->isDisabled());
     BOOST_CHECK(!d_root->isEffectiveDisabled());
-    
+
     BOOST_CHECK(d_root->isVisible());
     BOOST_CHECK(d_root->isEffectiveVisible());
 }
@@ -93,22 +93,22 @@ BOOST_AUTO_TEST_CASE(PropertyInheritance)
     /*
      * Alpha and Disabled state should get "inherited"/propagated to children via effective alpha/disabled
      */
-    
+
     d_root->setAlpha(0.5f);
     d_insideRoot->setAlpha(0.5f);
-    
+
     BOOST_CHECK_EQUAL(d_insideInsideRoot->getEffectiveAlpha(), 0.25f);
-    
+
     d_root->setAlpha(1.0f);
     d_insideRoot->setAlpha(1.0f);
-    
+
     d_root->setDisabled(true);
-    
+
     BOOST_CHECK_EQUAL(d_insideRoot->isEffectiveDisabled(), true);
     BOOST_CHECK_EQUAL(d_insideInsideRoot->isEffectiveDisabled(), true);
-    
+
     d_root->setDisabled(false);
-    
+
     BOOST_CHECK_EQUAL(d_insideRoot->isEffectiveDisabled(), false);
     BOOST_CHECK_EQUAL(d_insideInsideRoot->isEffectiveDisabled(), false);
 }
@@ -127,14 +127,14 @@ BOOST_AUTO_TEST_CASE(HitTesting)
     /*
      * We know where the windows are so lets check whether CEGUI reports correct hits for them
      */
-    
+
     BOOST_CHECK(d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150)));
-    
+
     d_insideInsideRoot->setDisabled(true);
     BOOST_CHECK(!d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), false));
     BOOST_CHECK(d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), true));
     d_insideInsideRoot->setDisabled(false);
-    
+
     d_root->setDisabled(true);
     BOOST_CHECK(!d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), false));
     BOOST_CHECK(d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), true));
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(Hierarchy)
     CEGUI::Window* child = d_insideInsideRoot->createChild("DefaultWindow");
     BOOST_CHECK(d_insideInsideRoot->isChild(child));
     d_insideInsideRoot->destroyChild(child);
-    
+
     child = d_insideInsideRoot->createChild("DefaultWindow");
     child->setDestroyedByParent(false);
     d_insideInsideRoot->removeChild(child);
@@ -160,19 +160,19 @@ BOOST_AUTO_TEST_CASE(RecursiveSearch)
     previousID[0] = d_root->getID();
     previousID[1] = d_insideRoot->getID();
     previousID[2] = d_insideInsideRoot->getID();
-    
+
     d_root->setID(2);
     d_insideRoot->setID(3);
     d_insideInsideRoot->setID(5);
-    
+
     BOOST_CHECK_EQUAL(d_insideInsideRoot, d_root->getChildRecursive(5)); // finding the correct window
     BOOST_CHECK_EQUAL(d_insideRoot, d_root->getChildRecursive(3));
     BOOST_CHECK_EQUAL(d_insideInsideRoot, d_insideRoot->getChildRecursive(5));
-    
+
     BOOST_CHECK(0 == d_root->getChildRecursive(10)); // not finding these
     BOOST_CHECK(0 == d_root->getChildRecursive(6));
     BOOST_CHECK(0 == d_insideRoot->getChildRecursive(10));
-    
+
     d_root->setID(previousID[0]);
     d_insideRoot->setID(previousID[1]);
     d_insideInsideRoot->setID(previousID[2]);
@@ -185,18 +185,18 @@ struct DrawListPerformanceFixture
         d_root = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow");
         d_root->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
         d_root->setSize(CEGUI::USize(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
-        
+
         for (unsigned int i = 0; i < 100; ++i)
         {
             d_windows.push_back(d_root->createChild("DefaultWindow"));
         }
     }
-    
+
     ~DrawListPerformanceFixture()
     {
         CEGUI::WindowManager::getSingleton().destroyWindow(d_root);
     }
-    
+
     CEGUI::Window* d_root;
     std::vector<CEGUI::Window*> d_windows;
 };
@@ -204,34 +204,34 @@ struct DrawListPerformanceFixture
 BOOST_AUTO_TEST_CASE(DrawListPerformance)
 {
     DrawListPerformanceFixture fixture;
-    
+
     {
         boost::timer timer;
         for (unsigned int i = 0; i < 1000; ++i)
         {
-        
+
             // first, we are trying to measure the hit we get when we have to move a window to the back of the draw list
             for (unsigned int i = 0; i < 100; ++i)
             {
                 fixture.d_windows[i]->moveToBack();
             }
         }
-        
+
         BOOST_TEST_MESSAGE("Time taken, 1000x 100 windows moved back (100 windows total): " << timer.elapsed());
     }
-    
+
     {
         boost::timer timer;
         for (unsigned int i = 0; i < 1000; ++i)
         {
-        
+
             // secondly, we are trying to measure the hit we get when we have to move a window to the front of the draw list
             for (unsigned int i = 0; i < 100; ++i)
             {
                 fixture.d_windows[i]->moveToFront();
             }
         }
-        
+
         BOOST_TEST_MESSAGE("Time taken, 1000x 100 windows moved front (100 windows total): " << timer.elapsed());
     }
 }

@@ -37,7 +37,7 @@
 
 /*
  * Used to bring some Spinners up for testing
- * 
+ *
  * This is for exception safety, no matter what happens in the tests,
  * its destructor will be called
  */

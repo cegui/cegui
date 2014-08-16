@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(String)
 BOOST_AUTO_TEST_CASE(ConstructionAssignment)
 {
     CEGUI::String a;
-    
+
     BOOST_CHECK_EQUAL(a, "");
     BOOST_CHECK_EQUAL(a.length(), 0);
     a = "abc";
@@ -49,10 +49,10 @@ BOOST_AUTO_TEST_CASE(Operators)
 {
     CEGUI::String a = "ABC";
     CEGUI::String b = "BCD";
-    
+
     BOOST_CHECK_EQUAL(a, a);
     BOOST_CHECK_EQUAL(b, b);
-    
+
     BOOST_CHECK(a != b);
 }
 

@@ -1,1 +1,1 @@
-cegui_add_test_executable(CEGUITests)
+add_subdirectory(unit)

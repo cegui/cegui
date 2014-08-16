@@ -38,9 +38,9 @@ BOOST_AUTO_TEST_SUITE(EventSet)
 BOOST_AUTO_TEST_CASE(AddingAndRemovingEvents)
 {
     CEGUI::EventSet set;
-    
+
     const CEGUI::String eventName("ExplicitlyAddedTestEvent");
-    
+
     set.addEvent(eventName);
     BOOST_CHECK(set.isEventPresent(eventName));
     BOOST_CHECK_THROW(set.addEvent(eventName), CEGUI::AlreadyExistsException);
@@ -63,7 +63,7 @@ public:
     TestEventArgs():
     d_targetValue(0)
     {}
-    
+
     int d_targetValue;
 };
 
@@ -75,7 +75,7 @@ public:
 bool freeFunctionSubscriber(const CEGUI::EventArgs& args)
 {
     g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
-    
+
     return true;
 }
 
@@ -85,7 +85,7 @@ public:
     bool operator()(const CEGUI::EventArgs& args)
     {
         g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
-        
+
         return true;
     }
 };
@@ -96,7 +96,7 @@ public:
     bool memberMethod(const CEGUI::EventArgs& args)
     {
         g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
-        
+
         return true;
     }
 };
@@ -104,13 +104,13 @@ public:
 BOOST_AUTO_TEST_CASE(Subscribing)
 {
     CEGUI::EventSet set;
-    
+
     const CEGUI::String eventName("ExplicitlyAddedTestEvent");
     set.addEvent(eventName);
     // at this point, the EventSet should contain just one event with eventName as it's name
-    
+
     TestEventArgs args;
-    
+
     {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &freeFunctionSubscriber);
         args.d_targetValue = 1;
@@ -138,24 +138,24 @@ BOOST_AUTO_TEST_CASE(Subscribing)
 BOOST_AUTO_TEST_CASE(Performance)
 {
     CEGUI::EventSet set;
-    
+
     const CEGUI::String eventName("ExplicitlyAddedTestEvent");
     set.addEvent(eventName);
     // at this point, the EventSet should contain just one event with eventName as it's name
-    
+
     TestEventArgs args;
     // we measure event firing lookup overhead with one event first
-    
+
     {
         boost::timer timer;
         for (unsigned int i = 0; i < 1000000; ++i)
         {
             set.fireEvent(eventName, args);
         }
-        
+
         BOOST_TEST_MESSAGE("Time taken, 1000000x event lookup (1 event): " << timer.elapsed());
     }
-    
+
     // now lets add events to a total of 100 and try again (realistic scenario test)
     for (unsigned int i = 1; i < 100; ++i)
     {
@@ -163,17 +163,17 @@ BOOST_AUTO_TEST_CASE(Performance)
         s << "Event" << i;
         set.addEvent(s.str());
     }
-    
+
     {
         boost::timer timer;
         for (unsigned int i = 0; i < 1000000; ++i)
         {
             set.fireEvent(eventName, args);
         }
-        
+
         BOOST_TEST_MESSAGE("Time taken, 1000000x event lookup (100 events): " << timer.elapsed());
     }
-    
+
     // now lets add events to a total of 10000 and try again (synthetic test)
     for (unsigned int i = 100; i < 10000; ++i)
     {
@@ -181,14 +181,14 @@ BOOST_AUTO_TEST_CASE(Performance)
         s << "Event" << i;
         set.addEvent(s.str());
     }
-    
+
     {
         boost::timer timer;
         for (unsigned int i = 0; i < 1000000; ++i)
         {
             set.fireEvent(eventName, args);
         }
-        
+
         BOOST_TEST_MESSAGE("Time taken, 1000000x event lookup (10000 events): " << timer.elapsed());
     }
 }
