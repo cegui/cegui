@@ -27,6 +27,7 @@ xcuserdata/
 .project
 .cproject
 .pydevproject
+.ropeproject
 
 cppcheck-output
 
