@@ -280,6 +280,9 @@ if (CEGUI_BUILD_TESTS AND NOT CEGUI_BUILD_RENDERER_NULL)
     message(SEND_ERROR "The CEGUI unit tests (option CEGUI_BUILD_TESTS) require the null renderer (CEGUI_BUILD_RENDERER_NULL). Please enable it.")
 endif()
 
+# datafiles tests
+cmake_dependent_option( CEGUI_BUILD_DATAFILES_TEST "Specifies whether to build the datafiles test." FALSE "PYTHONINTERP_FOUND" FALSE )
+
 option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to the install location (TRUE) or with no RPATH set (FALSE)." FALSE )
 
 ################################################################################
@@ -544,7 +547,7 @@ if (DOXYGEN_FOUND)
         COMMENT "Generating documentation" VERBATIM)
 endif()
 
-if (CEGUI_BUILD_TESTS)
+if (CEGUI_BUILD_TESTS OR CEGUI_BUILD_DATAFILES_TEST)
     enable_testing()
 
     add_subdirectory(tests)
