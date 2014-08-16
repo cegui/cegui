@@ -493,7 +493,7 @@ findpkg_finish(CEGUI)
 # its parent rather than directly the subdirectory. Otherwise we'll get compiler errors.
 if ("${CEGUI_VERSION}" VERSION_GREATER "0.8.0")
     add_parent_dir(CEGUI_INCLUDE_DIRS_TEMP CEGUI_INCLUDE_DIR)
-    set(${CEGUI_INCLUDE_DIRS} ${CEGUI_INCLUDE_DIRS_TEMP})
+    set(CEGUI_INCLUDE_DIRS ${CEGUI_INCLUDE_DIRS_TEMP})
 endif()
 set(CEGUI_INCLUDE_DIR ${CEGUI_INCLUDE_DIRS})
 
