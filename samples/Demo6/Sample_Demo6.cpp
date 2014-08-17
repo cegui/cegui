@@ -92,7 +92,6 @@ void Demo6Sample::deinitialise()
 void Demo6Sample::createDemoWindows(CEGUI::Window* root)
 {
     using namespace CEGUI;
-    ListboxTextItem* itm;
 
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -118,44 +117,22 @@ void Demo6Sample::createDemoWindows(CEGUI::Window* root)
     //cbbo->setSortingEnabled(true);
 
     // populate combobox with possible selection modes
-    const CEGUI::Image* sel_img = &ImageManager::getSingleton().get("TaharezLook/MultiListSelectionBrush");
-    itm = new ListboxTextItem("Full Row (Single)", 0);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Full Row (Multiple)", 1);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Full Column (Single)", 2);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Full Column (Multiple)", 3);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Single Cell (Single)", 4);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Single Cell (Multiple)", 5);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Nominated Column (Single)", 6);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Nominated Column (Multiple)", 7);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    ListboxTextItem* pStore = itm;
-    itm = new ListboxTextItem("Nominated Row (Single)", 8);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
-    itm = new ListboxTextItem("Nominated Row (Multiple)", 9);
-    itm->setSelectionBrushImage(sel_img);
-    cbbo->addItem(itm);
+    cbbo->addItem(new StandardItem("Full Row (Single)", 0));
+    cbbo->addItem(new StandardItem("Full Row (Multiple)", 1));
+    cbbo->addItem(new StandardItem("Full Column (Single)", 2));
+    cbbo->addItem(new StandardItem("Full Column (Multiple)", 3));
+    cbbo->addItem(new StandardItem("Single Cell (Single)", 4));
+    cbbo->addItem(new StandardItem("Single Cell (Multiple)", 5));
+    cbbo->addItem(new StandardItem("Nominated Column (Single)", 6));
+    StandardItem* pStore = new StandardItem("Nominated Column (Multiple)", 7);
+    cbbo->addItem(pStore);
+    cbbo->addItem(new StandardItem("Nominated Row (Single)", 8));
+    cbbo->addItem(new StandardItem("Nominated Row (Multiple)", 9));
     cbbo->setReadOnly(true);
     // Now change the text to test the sorting
     pStore->setText("Abracadabra");
-    //cbbo->setSortingEnabled(false);
     cbbo->setSortingEnabled(true);
-    //cbbo->handleUpdatedListItemData();
+    cbbo->handleUpdatedListItemData();
 
     // column control section
     Window* st = winMgr.createWindow("TaharezLook/StaticText", "ColumnPanel");
@@ -628,12 +605,12 @@ bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs& args)
     Combobox* combo = static_cast<Combobox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SelModeBox"));
 
     // find the selected item in the combobox
-    ListboxItem* item = combo->findItemWithText(combo->getText(), 0);
+    StandardItem* item = combo->findItemWithText(combo->getText(), 0);
 
     // set new selection mode according to ID of selected ListboxItem
     if (item)
     {
-        switch (item->getID())
+        switch (item->getId())
         {
         case 0:
             mcl->setSelectionMode(MultiColumnList::RowSingle);

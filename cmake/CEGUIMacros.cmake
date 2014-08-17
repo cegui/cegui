@@ -403,6 +403,7 @@ macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE
     # Add the MetaData chunk of the sample to the final xml
     file(READ ${CMAKE_CURRENT_SOURCE_DIR}/SampleMetaData.xml DEMO_META_DATA)
     file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "${DEMO_META_DATA}")
+
 endmacro()
 macro (cegui_add_sample _NAME)
 	cegui_add_sample_with_extra_files(${_NAME} "" "")
@@ -442,11 +443,19 @@ endmacro()
 # Define a CEGUI test executable
 #
 macro (cegui_add_test_executable _NAME)
+    cegui_add_test_executable_with_extra_files(${_NAME} "" "")
+endmacro()
+
+macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE_FILES)
     set (CEGUI_TARGET_NAME ${_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
 
     cegui_gather_files()
 
     include_directories(${Boost_INCLUDE_DIR})
+
+    # add the extra header/source files
+    set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES})
+    set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
 
     ###########################################################################
     #                     Statically Linked Executable

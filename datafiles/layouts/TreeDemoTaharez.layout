@@ -12,10 +12,10 @@
 		<Property name="RollUpEnabled" value="True" />
 		<Property name="SizingBorderThickness" value="8.0" />
 
-        <Window name="Tree" type="TaharezLook/Tree">
+        <Window name="Tree" type="TaharezLook/TreeWidget">
 			<Property name="ID" value="1" />
 			<Property name="MaxSize" value="{{1,0},{1,0}}" />
-		
+
 			<Property name="Size" value="{{0.96,0},{0.90,0}}" />
 			<Property name="Position" value="{{0.02,0},{0.02,0}}" />
 		</Window>
