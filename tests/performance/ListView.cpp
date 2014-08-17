@@ -36,58 +36,15 @@
 
 using namespace CEGUI;
 
-class ListViewPerformanceTest : public PerformanceTest<ListView>
+class ListViewPerformanceTest : public BaseListPerformanceTest<ListView>
 {
 public:
     ListViewPerformanceTest(String const& windowType, String const& renderer)
-        : PerformanceTest<ListView>(windowType, renderer)
+        : BaseListPerformanceTest<ListView>(windowType, renderer)
     {
         d_window->setModel(&d_model);
     }
 
-protected:
-    //----------------------------------------------------------------------------//
-    virtual void doTest()
-    {
-        addItems(5000);
-        render();
-
-        d_model.clear(true);
-        render();
-
-
-        addItems(10000);
-        render();
-
-        deleteFirstItems(1500);
-        render();
-
-        for (size_t step = 0; step < 17; ++step)
-        {
-            deleteFirstItems(17);
-            render();
-        }
-
-        deleteLastItems(1230);
-        render();
-
-        d_model.clear(true);
-        render();
-
-        addItems(500);
-        render();
-
-        addItems(100, 100);
-        render();
-
-        d_window->setSortMode(VSM_Ascending);
-        render();
-
-        d_window->setSortMode(VSM_Descending);
-        render();
-    }
-
-    //----------------------------------------------------------------------------//
     void addItems(size_t count)
     {
         for (size_t i = 0; i < count; ++i)
@@ -96,7 +53,6 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------//
     void addItems(size_t count, size_t at_position)
     {
         for (size_t i = 0; i < count; ++i)
@@ -106,7 +62,6 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------//
     void deleteFirstItems(size_t count)
     {
         ModelIndex root_index = d_model.getRootIndex();
@@ -116,7 +71,6 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------//
     void deleteLastItems(size_t count)
     {
         ModelIndex root_index = d_model.getRootIndex();
@@ -126,6 +80,16 @@ protected:
         {
             d_model.removeItem(d_model.makeIndex(child_count - 1, root_index));
         }
+    }
+
+    virtual void clearItems()
+    {
+        d_model.clear(true);
+    }
+
+    virtual void sortItems()
+    {
+        d_window->setSortMode(VSM_Ascending);
     }
 
     StandardItemModel d_model;
