@@ -83,7 +83,7 @@ public:
 
 protected:
     //! Update the cached matrices
-    void updateMatrices() const;
+    void updateMatrix() const;
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase& d_owner;

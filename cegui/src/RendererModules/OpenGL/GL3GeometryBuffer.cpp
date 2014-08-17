@@ -80,7 +80,7 @@ void OpenGL3GeometryBuffer::draw() const
         d_glStateChanger->disable(GL_SCISSOR_TEST);
 
     // Update the matrix
-    updateMatrices();
+    updateMatrix();
 
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
 

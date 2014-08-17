@@ -62,7 +62,7 @@ void OpenGLGeometryBuffer::draw() const
         glDisable(GL_SCISSOR_TEST);
 
     // apply the transformations we need to use.
-    updateMatrices();
+    updateMatrix();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(d_matrix));
