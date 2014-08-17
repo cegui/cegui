@@ -55,5 +55,11 @@ void RenderTarget::activate()
         owner.invalidateMatricesOfGeomBuffersUsingRenderTarget(this);
 }
 
+//----------------------------------------------------------------------------//
+unsigned int RenderTarget::getActivationCounter() const
+{
+    return d_activationCounter;
+}
+
 }
 

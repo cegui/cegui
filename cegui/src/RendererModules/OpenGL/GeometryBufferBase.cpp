@@ -77,6 +77,11 @@ const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrices() const
 {
+    // Check if the ached values from the RenderTarget are still valid or an update
+    // is required for this GeometryBuffer
+    if(d_matrixValid)
+        d_matrixValid = checkAndUpdateRenderTargetValidity(d_owner.getActiveRenderTarget());
+
     if(!d_matrixValid)
     {
         //Apply translation, rotation and scale matrix

@@ -27,6 +27,7 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/ShaderParameterBindings.h"
+#include "CEGUI/RenderTarget.h"
 
 #include <vector>
 
@@ -368,6 +369,17 @@ void GeometryBuffer::invalidateMatrix()
 const RenderTarget* GeometryBuffer::getLastRenderTarget() const
 {
     return d_lastRenderTarget;
+}
+
+//---------------------------------------------------------------------------//
+bool GeometryBuffer::checkAndUpdateRenderTargetValidity(const RenderTarget* activeRenderTarget) const
+{
+    bool isValid = (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivCount + 1 == activeRenderTarget->getActivationCounter());
+
+    d_lastRenderTarget = activeRenderTarget;
+    d_lastRenderTargetActivCount = activeRenderTarget->getActivationCounter();
+
+    return isValid;
 }
 
 
