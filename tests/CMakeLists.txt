@@ -1,3 +1,6 @@
+# provide access to common test files
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
 if (CEGUI_BUILD_TESTS)
     add_subdirectory(unit)
 endif()
