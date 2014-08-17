@@ -97,6 +97,8 @@ void Direct3D11RenderTarget<T>::activate()
     d_deviceContext.RSSetViewports(1, &vp);
 
     d_owner.setViewProjectionMatrix(d_matrix);
+
+    d_owner.markAllGeometryBufferMatricesAsInvalid();
 }
 
 //----------------------------------------------------------------------------//
@@ -128,7 +130,7 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
     const glm::mat4& projMatrix = d_matrix;
-    const glm::mat4& modelMatrix = gb.getMatrix();
+    const glm::mat4& modelMatrix = gb.getModelViewProjectionMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;

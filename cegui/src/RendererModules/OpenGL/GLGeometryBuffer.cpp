@@ -62,11 +62,10 @@ void OpenGLGeometryBuffer::draw() const
         glDisable(GL_SCISSOR_TEST);
 
     // apply the transformations we need to use.
-    if (!d_matrixValid)
-        updateMatrix();
+    updateMatrices();
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(glm::value_ptr(d_matrix));
+    glLoadMatrixf(glm::value_ptr(d_modelViewProjectionMatrix));
 
     // activate desired blending mode
     d_owner.setupRenderingBlendMode(d_blendMode);

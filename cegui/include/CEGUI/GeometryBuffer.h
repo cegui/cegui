@@ -1,9 +1,10 @@
 /***********************************************************************
     created:    Thu Jan 8 2009
     author:     Paul D Turner
+                edited by Lukas Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -448,6 +449,36 @@ public:
     */
     float getAlpha() const;
 
+    /*!
+    \brief 
+        Returns if the model matrix is valid or not. If True, then no translation, rotation
+        or other kind of transformation of this GeometryBuffer has been changed since the last update.
+
+    \return
+        True, if the model matrix is valid. False, if it needs to be updated
+    */
+    bool isModelMatrixValid() const;
+
+    /*!
+    \brief 
+        Returns if the view projection matrix of the Renderer owning this 
+        GeometryBuffer has changed since the last model view projection matrix update or not.
+
+    \return
+        True, if the view projection is valid. False, if it needs to be updated
+    */
+    bool isViewProjectionValid() const;
+    
+    /*!
+    \brief 
+        Sets the matrix to be invalid or valid. This should be called with the parameter false, whenever
+        any values have been changed that can affect the result of the matrix calculations.
+
+    \return
+        True, if matrix is valid. False, if the matrix is not valid
+    */
+    void setViewProjectionValid(bool isMatrixValid);
+
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
@@ -479,8 +510,17 @@ protected:
     Vector3f        d_pivot;
     //! custom transformation matrix
     glm::mat4x4     d_customTransform;
-    //! true when there have been no changes to the GeometryBuffer's transformation since it has last been updated.
-    mutable bool    d_matrixValid;
+    /*
+    \brief
+        true when there have been no translation, rotation or other transformation changes to the GeometryBuffer
+        since the last update of the model matrix.
+    */
+    mutable bool    d_modelMatrixValid;
+    /*
+    \brief
+        true if the projection and view matrices of the owning Renderer haven't changed for this GeometryBuffer since the last update of the final matrix.
+    */
+    mutable bool    d_viewProjectionValid;
 
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode       d_blendMode;

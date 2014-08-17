@@ -29,7 +29,6 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
-#include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 #include "CEGUI/RenderEffect.h"
@@ -43,7 +42,7 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CE
     : GeometryBuffer(renderMaterial)
     , d_owner(owner)
     , d_clipRect(0, 0, 0, 0)
-    , d_matrix(1.0)
+    , d_modelMatrix(1.0)
 {
 }
 
@@ -51,8 +50,6 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CE
 OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 {
 }
-
-
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
@@ -70,35 +67,45 @@ void OpenGLGeometryBufferBase::reset()
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
+const glm::mat4& OpenGLGeometryBufferBase::getModelViewProjectionMatrix() const
 {
-    if (!d_matrixValid)
-        updateMatrix();
+    updateMatrices();
 
-    return d_matrix;
+    return d_modelViewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::updateMatrix() const
+void OpenGLGeometryBufferBase::updateMatrices() const
 {
-    const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
-                                d_translation.d_y + d_pivot.d_y,
-                                d_translation.d_z + d_pivot.d_z);
+    if(!d_modelMatrixValid)
+    {
+        //Apply translation, rotation and scale matrix
+        const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
+                                    d_translation.d_y + d_pivot.d_y,
+                                    d_translation.d_z + d_pivot.d_z);
 
-    d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
+        d_modelMatrix = glm::translate(glm::mat4(1.0f), final_trans);
 
-    glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
-    glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
+        glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
+        glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
 
-    glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
+        glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
 
-    d_matrix *= rotation_matrix * scale_matrix;
+        d_modelMatrix *= rotation_matrix * scale_matrix;
 
-    glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-    glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
-    d_matrix *=  translMatrix * d_customTransform;
+        glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+        glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
+        d_modelMatrix *=  translMatrix * d_customTransform;
+    }
 
-    d_matrixValid = true;
+    if(!d_viewProjectionValid || !d_modelMatrixValid)
+    {
+        //Apply the model view projection matrix
+        d_modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_modelMatrix;
+
+        d_viewProjectionValid = true;
+        d_modelMatrixValid = true;
+    }
 }
 
 //----------------------------------------------------------------------------//

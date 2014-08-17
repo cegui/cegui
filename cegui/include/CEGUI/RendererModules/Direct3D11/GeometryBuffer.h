@@ -54,7 +54,7 @@ public:
     ~Direct3D11GeometryBuffer();
 
     //! Returns the model matrix, which is in effect for this GeometryBuffer
-    const glm::mat4& getMatrix() const;
+    const glm::mat4& getModelViewProjectionMatrix() const;
 
     // Implement GeometryBuffer interface.
     void draw() const;
@@ -72,8 +72,8 @@ public:
     void finaliseVertexAttributes();
 
 protected:
-    //! update cached matrix
-    void updateMatrix() const;
+    //! Update the cached matrices
+    void updateMatrices() const;
     //! Synchronise data in the hardware buffer with what's been added
     void updateVertexBuffer() const;
     //! Allocates a hardware vertex buffer of size 'dataSize' (size in bytes).
@@ -96,8 +96,10 @@ protected:
     mutable UINT d_bufferSize;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! model matrix cache
-    mutable glm::mat4 d_matrix;
+    //! Cache of the model matrix
+    mutable glm::mat4 d_modelMatrix;
+    //! Cache of model view projection matrix
+    mutable glm::mat4 d_modelViewProjectionMatrix;
     //! D3D11 input layout describing the vertex format we use.
     ID3D11InputLayout* d_inputLayout;
 };

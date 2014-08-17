@@ -40,7 +40,8 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
     , d_pivot(0, 0, 0)
     , d_customTransform(1.0f)
     , d_effect(0)
-    , d_matrixValid(false)
+    , d_modelMatrixValid(false)
+    , d_viewProjectionValid(false)
     , d_blendMode(BM_NORMAL)
     , d_renderMaterial(renderMaterial)
     , d_polygonFillRule(PFR_NONE)
@@ -261,7 +262,7 @@ void GeometryBuffer::setTranslation(const Vector3f& translation)
     if(d_translation != translation)
     {
         d_translation = translation;
-        d_matrixValid = false;
+        d_modelMatrixValid = false;
     }
 }
 
@@ -271,7 +272,7 @@ void GeometryBuffer::setRotation(const Quaternion& rotationQuat)
     if(d_rotation != rotationQuat)
     {
         d_rotation = rotationQuat;
-        d_matrixValid = false;
+        d_modelMatrixValid = false;
     }
 }
 
@@ -281,7 +282,7 @@ void GeometryBuffer::setScale(const Vector3f& scale)
     if(d_scale != scale)
     {
         d_scale = scale;
-        d_matrixValid = false;
+        d_modelMatrixValid = false;
     }
 }
 
@@ -297,7 +298,7 @@ void GeometryBuffer::setPivot(const Vector3f& p)
     if(d_pivot != p)
     {
         d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
-        d_matrixValid = false;
+        d_modelMatrixValid = false;
     }
 }
 
@@ -307,7 +308,7 @@ void GeometryBuffer::setCustomTransform(const glm::mat4x4& transformation)
     if(d_customTransform != transformation)
     {
         d_customTransform = transformation;
-        d_matrixValid = false;
+        d_modelMatrixValid = false;
     }
 }
 
@@ -350,9 +351,29 @@ void GeometryBuffer::setAlpha(float alpha)
     d_alpha = alpha;
 }
 
+//---------------------------------------------------------------------------//
 float GeometryBuffer::getAlpha() const
 {
     return d_alpha;
+}
+
+
+//---------------------------------------------------------------------------//
+bool GeometryBuffer::isModelMatrixValid() const
+{
+    return d_modelMatrixValid;
+}
+
+//---------------------------------------------------------------------------//
+bool GeometryBuffer::isViewProjectionValid() const
+{
+    return d_viewProjectionValid;
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::setViewProjectionValid(bool isMatrixValid)
+{
+    d_viewProjectionValid = false;
 }
 
 }

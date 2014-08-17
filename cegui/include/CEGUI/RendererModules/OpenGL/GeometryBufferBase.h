@@ -66,7 +66,7 @@ public:
     void reset();
 
     //! Returns the model matrix, which is in effect for this GeometryBuffer
-    const glm::mat4& getMatrix() const;
+    const glm::mat4& getModelViewProjectionMatrix() const;
 
     /*
     \brief
@@ -76,15 +76,17 @@ public:
     virtual void finaliseVertexAttributes() = 0;
 
 protected:
-    //! update cached matrix
-    void updateMatrix() const;
+    //! Update the cached matrices
+    void updateMatrices() const;
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase& d_owner;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! cache of the model matrix
-    mutable glm::mat4 d_matrix;
+    //! Cache of the model matrix
+    mutable glm::mat4 d_modelMatrix;
+    //! Cache of model view projection matrix
+    mutable glm::mat4 d_modelViewProjectionMatrix;
 };
 
 }

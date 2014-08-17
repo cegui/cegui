@@ -57,7 +57,7 @@ void Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 void Renderer::destroyAllGeometryBuffers()
 {
     while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
+        destroyGeometryBuffer(*d_geometryBuffers.back());
 }
 
 //----------------------------------------------------------------------------//
@@ -74,6 +74,21 @@ GeometryBuffer& Renderer::createGeometryBufferColoured()
     GeometryBuffer& geometry_buffer = createGeometryBufferColoured(createRenderMaterial(DS_SOLID));
 
     return geometry_buffer;
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::markAllGeometryBufferMatricesAsInvalid()
+{
+    GeometryBufferList::iterator currentIter = d_geometryBuffers.begin();
+    GeometryBufferList::iterator iterEnd = d_geometryBuffers.end();
+
+    while(currentIter != iterEnd)
+    {
+        GeometryBuffer* geomBuffer = *currentIter;
+        geomBuffer->setViewProjectionValid(false);
+
+        ++currentIter;
+    }
 }
 
 //----------------------------------------------------------------------------//
