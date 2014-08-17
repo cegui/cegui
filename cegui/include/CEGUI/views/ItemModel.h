@@ -45,7 +45,8 @@ namespace CEGUI
     a \b void* pointer to store a reference to arbitrary, user-owned data.
 
     Even though the naming might suggest a particular order, it doesn't have any.
-    For comparing two indices ItemModel's compareIndices should be used.
+    For comparing two indices ItemModel::compareIndices(const ModelIndex&, const ModelIndex&)
+    should be used.
 
     The index should not be stored because the pointed data might be deleted in
     the meantime. The only entity that should interpret the contents of this
@@ -101,6 +102,11 @@ enum ItemDataRole
     IDR_User = 0x1000
 };
 
+/*
+TODO: The count thing is very ugly and counter-intuitive to the whole design.
+    We should either:
+    * Fire an event per index
+    * Store the actual indices in a vector.
 /*!
 \brief
     Arguments class for events that happened with regard to the specified ItemModel
@@ -177,9 +183,11 @@ public:
         To create an index for a nested item, you need to chain the index creation.
         Given a model for the following tree:
         <pre>
-        |A
+        A
+        |
         |--B
-        |-----C
+        |  |--C
+        |
         |--D
         </pre>
 
@@ -203,7 +211,7 @@ public:
         Compares semantically two indices and returns true if they are equal,
         false otherwise.
     */
-    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const = 0;
+    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const;
 
     /*!
     \brief
@@ -222,7 +230,8 @@ public:
 
     \return
         The returned index should be equal to getRootIndex() for direct children
-        of the root index.
+        of the root index. If this is called on the root index, it returns
+        an invalid (empty/default) ModelIndex.
     */
     virtual ModelIndex getParentIndex(const ModelIndex& model_index) const = 0;
 
