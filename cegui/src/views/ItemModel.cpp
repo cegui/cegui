@@ -103,4 +103,10 @@ void ItemModel::notifyChildrenDataChanged(ModelIndex parent_index, size_t start_
     ModelEventArgs args(this, parent_index, start_id, count);
     fireEvent(EventChildrenDataChanged, args);
 }
+
+//----------------------------------------------------------------------------//
+bool ItemModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const
+{
+    return compareIndices(index1, index2) == 0;
+}
 }

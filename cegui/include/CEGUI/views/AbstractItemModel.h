@@ -210,7 +210,7 @@ public:
 
         This method is the inverse of to getIndexForItem(const AbstractItem*).
     */
-    inline virtual TAbstractItem* getItemForIndex(const ModelIndex& index) const;
+    virtual TAbstractItem* getItemForIndex(const ModelIndex& index) const;
 
     /*!
     \brief
