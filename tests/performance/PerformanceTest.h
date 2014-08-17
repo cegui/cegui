@@ -53,38 +53,32 @@ public:
         std::cout
             << "Running performance test " << d_testName << "..." << std::endl;
 
-        std::ofstream fout(openReportFile());
+        boost::timer::auto_cpu_timer timer;
 
-        {
-            boost::timer::auto_cpu_timer timer;
+        doTest();
 
-            doTest();
-
-            fout << d_testName << ", " <<
-                boost::timer::format(timer.elapsed(), timer.places(), "%u, %w") << std::endl;
-        }
-
-        fout.close();
-
+        logRunningTime(boost::timer::format(timer.elapsed(), timer.places(), "%u, %w"));
     }
 
 protected:
     virtual void doTest() = 0;
 
 private:
-    std::ofstream openReportFile()
+    void logRunningTime(std::string result)
     {
         std::ofstream fout("performance-test-results.csv",
             std::ofstream::out | std::ofstream::app);
 
         // fill column names if file is empty.
         fout.seekp(0, std::ios::end);
-        if (fout.tellp().seekpos() == 0)
+        long length = fout.tellp();
+        if (length == 0)
         {
             fout << "test name, user time (seconds), wall time (seconds)" << std::endl;
         }
 
-        return fout;
+        fout << d_testName << ", " << result << std::endl;
+        fout.close();
     }
 };
 
@@ -129,45 +123,45 @@ class BaseListPerformanceTest : public WindowPerformanceTest<TWindow>
 {
 public:
     BaseListPerformanceTest(CEGUI::String windowType, CEGUI::String renderer) :
-        WindowPerformanceTest(windowType, renderer)
+        WindowPerformanceTest<TWindow>(windowType, renderer)
     {
     }
 
     virtual void doTest()
     {
         addItems(500);
-        render();
+        this->render();
 
         clearItems();
-        render();
+        this->render();
 
 
         addItems(1000);
-        render();
+        this->render();
 
         deleteFirstItems(150);
-        render();
+        this->render();
 
         for (size_t step = 0; step < 17; ++step)
         {
             deleteFirstItems(3);
-            render();
+            this->render();
         }
 
         deleteLastItems(123);
-        render();
+        this->render();
 
         clearItems();
-        render();
+        this->render();
 
         addItems(100);
-        render();
+        this->render();
 
         addItems(50, 50);
-        render();
+        this->render();
 
         sortItems();
-        render();
+        this->render();
     }
 
     virtual void clearItems() = 0;
