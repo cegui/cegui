@@ -472,7 +472,7 @@ void FontsDemo::initialiseFontFileNameCombobox()
     //Select a font file name if any are present
     if(d_fontFileNameOptions.size() > 0)
     {
-        // Add the font file names to the listbox
+        // Add the font file names to the combo box
         for(unsigned int i = 0; i < d_fontFileNameOptions.size(); i++)
         {
             const CEGUI::String& fileName(d_fontFileNameOptions[i]);

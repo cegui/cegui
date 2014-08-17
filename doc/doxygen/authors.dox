@@ -25,6 +25,8 @@ The following have made large, important, or on-going contributions to the syste
 - Timotei Dolean:
     - Reworked the input system to allow other devices besides mouse and keyboard.
     - Support for GUI navigation.
+    - Added new model-view widgets (ListView, TreeView) and their old-widget's counterparts:
+        ListWidget and TreeWidget.
 - Jeff Leigh:
     - Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
 - Eugene Marcotte:
