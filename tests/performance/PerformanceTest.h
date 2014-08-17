@@ -71,7 +71,7 @@ private:
 
         // fill column names if file is empty.
         fout.seekp(0, std::ios::end);
-        std::streamoff length = fout.tellp();
+        const std::streamoff length = fout.tellp();
         if (length == 0)
         {
             fout << "test name, user time (seconds), wall time (seconds)" << std::endl;
@@ -129,15 +129,12 @@ public:
 
     virtual void doTest()
     {
-        addItems(500);
-        this->render();
+        addItemsWithRender(500);
 
         clearItems();
         this->render();
 
-
-        addItems(1000);
-        this->render();
+        addItemsWithRender(1000);
 
         deleteFirstItems(150);
         this->render();
@@ -154,14 +151,26 @@ public:
         clearItems();
         this->render();
 
-        addItems(100);
-        this->render();
+        addItemsWithRender(100);
 
-        addItems(50, 50);
-        this->render();
+        for (size_t i = 0; i < 50; ++i)
+        {
+            addItems(1, 50);
+            this->render();
+        }
 
         sortItems();
         this->render();
+    }
+
+    //! Adds the specified number of items, rendering after each addition.
+    virtual void addItemsWithRender(size_t count)
+    {
+        for (size_t i = 0; i < count; ++i)
+        {
+            addItems(1);
+            this->render();
+        }
     }
 
     virtual void clearItems() = 0;
