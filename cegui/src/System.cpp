@@ -663,7 +663,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<DefaultWindow>();
     WindowFactoryManager::addWindowType<DragContainer>();
     WindowFactoryManager::addWindowType<ScrolledContainer>();
-    WindowFactoryManager::addWindowType<ClippedContainer>();
     WindowFactoryManager::addWindowType<PushButton>();
     WindowFactoryManager::addWindowType<RadioButton>();
     WindowFactoryManager::addWindowType<Combobox>();
