@@ -828,7 +828,7 @@ private:
     typedef std::vector<String
         CEGUI_VECTOR_ALLOC(String)> AnimationList;
     //! Map of Windows to AnimationInstances
-    typedef std::multimap<Window*, AnimationInstance*
+    typedef std::multimap<Window*, AnimationInstance*, std::less<Window*>
         CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)> AnimationInstanceMap;
 
     //! Name of this WidgetLookFeel.
