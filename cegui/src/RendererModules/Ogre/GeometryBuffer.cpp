@@ -26,18 +26,20 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RenderEffect.h"
-
-#include <OgreRenderSystem.h>
-#include <OgreQuaternion.h>
-#include <OgreHardwareBufferManager.h>
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ShaderParameterBindings.h"
 
-#include "OgreManualObject.h"
-#include "OgreRenderOperation.h"
-#include "OgreSceneManager.h"
+#include <OgreRenderSystem.h>
+#include <OgreHardwareBufferManager.h>
+#include <OgreQuaternion.h>
+#include <OgreManualObject.h>
+#include <OgreRenderOperation.h>
+#include <OgreSceneManager.h>
+
+#include "glm/gtc/type_ptr.hpp"
 
 #define FLOATS_PER_TEXTURED     9
 #define FLOATS_PER_COLOURED     7
@@ -54,7 +56,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_clipRect(0, 0, 0, 0),
     d_expectedData(MT_INVALID),
     d_dataAppended(false),
-    d_previousFinalMatrix(Ogre::Matrix4::IDENTITY),
+    d_matrix(1.0),
     d_previousAlphaValue(-1.f)
 {
     
@@ -84,44 +86,14 @@ void OgreGeometryBuffer::draw() const
         setScissorRects();
     }
 
-    // Update the model matrix if necessary
-    if (!d_matrixValid)
-        updateMatrix();
+    // Update the matrix
+    updateMatrix();
 
     CEGUI::ShaderParameterBindings* shaderParameterBindings = 
         (*d_renderMaterial).getShaderParamBindings();
 
     // Set the ModelViewProjection matrix in the bindings
-    Ogre::Matrix4 omat = d_owner.getWorldViewProjMatrix()*d_matrix;
-
-    if (omat != d_previousFinalMatrix)
-    {
-        d_previousFinalMatrix = omat;
-
-        glm::mat4 converted_mat;
-
-        memcpy(&converted_mat[0][0], &d_previousFinalMatrix[0][0], 
-            sizeof(float)*4);
-        memcpy(&converted_mat[1][0], &d_previousFinalMatrix[1][0], 
-            sizeof(float)*4);
-        memcpy(&converted_mat[2][0], &d_previousFinalMatrix[2][0], 
-            sizeof(float)*4);
-        memcpy(&converted_mat[3][0], &d_previousFinalMatrix[3][0], 
-            sizeof(float)*4);
-
-        OgreShaderWrapper* ogreShader = static_cast<OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
-        if (ogreShader->getVertexParameters()->getTransposeMatrices())
-        {
-            glm::mat4 transpose_mat = glm::transpose (converted_mat); 
-            shaderParameterBindings->setParameter("modelViewPerspMatrix", 
-              transpose_mat);
-        }
-        else
-        { 
-            shaderParameterBindings->setParameter("modelViewPerspMatrix", 
-                converted_mat);
-        }
-    }
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_matrix);
 
     if (d_alpha != d_previousAlphaValue)
     {
@@ -237,30 +209,39 @@ void OgreGeometryBuffer::updateMatrix() const
     Ogre::Matrix4 trans;
 
     trans.makeTrans(d_translation.d_x + d_pivot.d_x,
-        d_translation.d_y + d_pivot.d_y,
-        d_translation.d_z + d_pivot.d_z);
+                    d_translation.d_y + d_pivot.d_y,
+                    d_translation.d_z + d_pivot.d_z);
 
     // rotation
-    Ogre::Matrix4 rot(Ogre::Quaternion(
-        d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
+    Ogre::Matrix4 rot(Ogre::Quaternion(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
 
     // translation to remove rotation pivot offset
     Ogre::Matrix4 inv_pivot_trans;
     inv_pivot_trans.makeTrans(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
 
     // calculate final matrix
-    d_matrix = trans * rot * inv_pivot_trans;
+    Ogre::Matrix4 finalMatrix = trans * rot * inv_pivot_trans;
 
-    d_matrixValid = true;
+    // Apply WorldViewProjection Matrix
+    finalMatrix = d_owner.getWorldViewProjMatrix() * finalMatrix;
+
+    //Reinterpret as glm matrix
+    d_matrix = glm::make_mat4(&finalMatrix[0][0]);
+
+    //If necessary: transpose
+    const OgreShaderWrapper* ogreShader = static_cast<const OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+    if (ogreShader->getVertexParameters()->getTransposeMatrices())
+        d_matrix = glm::transpose(d_matrix); 
+
+    d_modelMatrixValid = true;
 }
 
 //----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const
+const Ogre::Matrix4 OgreGeometryBuffer::getMatrix() const
 {
-    if (!d_matrixValid)
-        updateMatrix();
+    updateMatrix();
 
-    return d_matrix;
+    return Ogre::Matrix4(&d_matrix[0][0]);
 }
 
 //----------------------------------------------------------------------------//
@@ -349,8 +330,8 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
 // ------------------------------------ //
 void OgreGeometryBuffer::setScissorRects() const
 {
-    d_renderSystem.setScissorTest(true, d_clipRect.left(), 
-        d_clipRect.top(), d_clipRect.right(), d_clipRect.bottom());
+    d_renderSystem.setScissorTest(true, static_cast<size_t>(d_clipRect.left()), 
+        static_cast<size_t>(d_clipRect.top()), static_cast<size_t>(d_clipRect.right()), static_cast<size_t>(d_clipRect.bottom()));
 }
 
 // ------------------------------------ //

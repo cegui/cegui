@@ -38,6 +38,8 @@
 #include <OgreTexture.h>
 #include <OgreMatrix4.h>
 
+#include <glm/core/type.hpp>
+
 #include <utility>
 #include <vector>
 
@@ -70,7 +72,7 @@ public:
     virtual ~OgreGeometryBuffer();
 
     //! return the transformation matrix used for this buffer.
-    const Ogre::Matrix4& getMatrix() const;
+    const Ogre::Matrix4 getMatrix() const;
 
     // implement CEGUI::GeometryBuffer interface.
     virtual void draw() const;
@@ -107,7 +109,7 @@ protected:
     Rectf d_clipRect;
 
     //! model matrix cache
-    mutable Ogre::Matrix4 d_matrix;
+    mutable glm::mat4 d_matrix;
 
     //! The type of vertex data we expect
     MANUALOBJECT_TYPE d_expectedData;
@@ -120,9 +122,6 @@ protected:
 
     //! Marks the d_hwBuffer as being out of date
     mutable bool d_dataAppended;
-
-    //! The old matrix cached for performance
-    mutable Ogre::Matrix4 d_previousFinalMatrix;
 
     //! The old alpha value
     mutable float d_previousAlphaValue;

@@ -768,8 +768,8 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 {
     d_pimpl->d_renderSystem = d_pimpl->d_ogreRoot->getRenderSystem();
 
-    d_pimpl->d_displaySize.d_width  = target.getWidth();
-    d_pimpl->d_displaySize.d_height = target.getHeight();
+    d_pimpl->d_displaySize.d_width  = static_cast<float>(target.getWidth());
+    d_pimpl->d_displaySize.d_height = static_cast<float>(target.getHeight());
 
     // Now properly checks for the openGL version
     if (d_pimpl->d_renderSystem->getName().find("OpenGL") != Ogre::String::npos)
@@ -1219,29 +1219,30 @@ void OgreRenderer::setWorldMatrix(const Ogre::Matrix4& m)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setViewMatrix(const Ogre::Matrix4& m)
+void OgreRenderer::setViewMatrix(const Ogre::Matrix4& matrix)
 {
-    d_pimpl->d_renderSystem->_setViewMatrix(m);
+    d_pimpl->d_renderSystem->_setViewMatrix(matrix);
 
-    d_pimpl->d_viewMatrix = m;
+    d_pimpl->d_viewMatrix = matrix;
     d_pimpl->d_combinedMatrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
+void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& matrix)
 {
-    d_pimpl->d_renderSystem->_setProjectionMatrix(m);
+    d_pimpl->d_renderSystem->_setProjectionMatrix(matrix);
 
-    d_pimpl->d_projectionMatrix = m;
+    d_pimpl->d_projectionMatrix = matrix;
     d_pimpl->d_combinedMatrixValid = false;
 }
 
+//----------------------------------------------------------------------------//
 void OgreRenderer::bindBlendMode(BlendMode blend)
 {
-
     setupRenderingBlendMode(blend, false);
 }
 
+//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     const DefaultShaderType shaderType) const
 {
@@ -1267,6 +1268,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     }
 }
 
+//----------------------------------------------------------------------------//
 GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
@@ -1282,6 +1284,7 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     return *geom_buffer;
 }
 
+//----------------------------------------------------------------------------//
 GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {

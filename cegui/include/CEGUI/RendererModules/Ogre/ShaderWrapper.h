@@ -57,7 +57,7 @@ public:
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
-    Ogre::GpuProgramParametersSharedPtr getVertexParameters();
+    Ogre::GpuProgramParametersSharedPtr getVertexParameters() const;
 
 protected:
 

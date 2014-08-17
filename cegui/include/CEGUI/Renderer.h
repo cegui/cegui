@@ -419,6 +419,13 @@ public:
     */
     virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const = 0;
 
+    /*!
+    \brief
+        Marks all of the GeometryBuffer's matrices as dirty, so that they are updated the next time they are required for rendering.
+        This is for example necessary to be called if the Renderer's window, and therefore also the projection matrix, has changed.
+    */
+    void markAllGeometryBufferMatricesAsInvalid();
+
     //! Destructor.
     virtual ~Renderer() {}
 
