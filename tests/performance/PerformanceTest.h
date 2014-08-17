@@ -71,7 +71,7 @@ private:
 
         // fill column names if file is empty.
         fout.seekp(0, std::ios::end);
-        long length = fout.tellp();
+        std::streamoff length = fout.tellp();
         if (length == 0)
         {
             fout << "test name, user time (seconds), wall time (seconds)" << std::endl;
