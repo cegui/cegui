@@ -459,6 +459,9 @@ public:
     //TODO DOCU
     const RenderTarget* getLastRenderTarget() const;
 
+    //TODO DOCU
+    bool checkAndUpdateRenderTargetValidity(const RenderTarget* activeRenderTarget) const;
+
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
@@ -498,9 +501,9 @@ protected:
     */
     mutable bool    d_matrixValid;
     //! The RenderTarget that this GeometryBuffer's matrix was last updated for
-    const RenderTarget* d_lastRenderTarget;
+    mutable const RenderTarget*   d_lastRenderTarget;
     //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
-    unsigned int    d_lastRenderTargetActivCount;
+    mutable unsigned int    d_lastRenderTargetActivCount;
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode       d_blendMode;
     //! The fill rule that should be used when rendering the geometry.

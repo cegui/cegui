@@ -92,7 +92,7 @@ public:
 
 protected:
 
-    //! update cached matrix
+    //! Updates the cached matrix. This should only be called after the RenderTarget was set.
     void updateMatrix() const;
     //! Sets the current scissor rect active
     void setScissorRects() const;

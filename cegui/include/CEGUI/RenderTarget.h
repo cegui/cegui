@@ -172,6 +172,9 @@ public:
     // TODO DOCU
     virtual Renderer& getOwner() = 0;
 
+    // TODO DOCU
+    unsigned int getActivationCounter() const;
+
 private:
     /*!
     \brief
