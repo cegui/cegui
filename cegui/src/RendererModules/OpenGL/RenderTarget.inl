@@ -213,6 +213,8 @@ void OpenGLRenderTarget<T>::updateMatrix() const
     d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
+    //! This triggers all GeometryBuffers to regenerate their matrices
+    d_activationCounter = 0;
 }
 
 
