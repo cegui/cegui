@@ -140,7 +140,7 @@ public:
         Activate the render target and put it in a state ready to be drawn to.
 
     \note
-        You MUST call this before doing any rendering - if you do not call this,
+        This must be called before doing any rendering - if it is not called,
         in the unlikely event that your application actually works, it will
         likely stop working in some future version.
     */
@@ -151,8 +151,8 @@ public:
         Deactivate the render target after having completed rendering.
 
     \note
-        You MUST call this after you finish rendering to the target - if you do
-        not call this, in the unlikely event that your application actually
+        This must be called after you have finished rendering to a target -
+        if it is not called, in the unlikely event that your application actually
         works, it will likely stop working in some future version.
     */
     virtual void deactivate() = 0;

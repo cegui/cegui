@@ -88,7 +88,6 @@ namespace CEGUI
             // decide what colours are to be used
             ColourRect finalColours;
             initColourRectForOverride(srcWindow, finalColours);
-            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             if (modcols)
                 finalColours *= *modcols;
@@ -119,7 +118,6 @@ namespace CEGUI
             // decide what colours are to be used
             ColourRect finalColours;
             initColourRectForOverride(srcWindow, finalColours);
-            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             if (modcols)
                 finalColours *= *modcols;

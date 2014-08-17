@@ -29,6 +29,8 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/InputAggregator.h"
+#include "CEGUI/InputEventReceiver.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
@@ -65,10 +67,8 @@ private:
 
     // new dialog menu item handler
     bool demoNewDialog(const CEGUI::EventArgs& e);
-
-    // handler for all the global hotkeys
-    bool hotkeysHandler(const CEGUI::EventArgs& e);
-
+    bool semanticEventHandler(const CEGUI::EventArgs& e);
+    
     // member data
     CEGUI::WindowManager* d_wm; // we will use the window manager alot
     CEGUI::System* d_system;    // the gui system
@@ -79,6 +79,28 @@ private:
     CEGUI::GUIContext* d_guiContext;
 };
 
+/*************************************************************************
+Custom implementation of InputAggregator
+*************************************************************************/
+enum SampleSemanticValue
+{
+    // we start from the user-defined value
+    SpawnNewDialog = CEGUI::SV_UserDefinedSemanticValue
+};
+
+class SampleInputAggregator : public CEGUI::InputAggregator
+{
+public:
+    SampleInputAggregator(CEGUI::InputEventReceiver* input_receiver) :
+        CEGUI::InputAggregator(input_receiver)
+    {
+    }
+
+    void initialise()
+    {
+        d_keyValuesMappings[CEGUI::Key::Space] = SpawnNewDialog;
+    }
+};
 
 /*************************************************************************
 Sample specific initialisation goes here.
@@ -89,6 +111,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_guiContext = guiContext;
     d_usedFiles = CEGUI::String(__FILE__);
+    
+    d_inputAggregator = new SampleInputAggregator(d_guiContext);
 
     // this sample will use WindowsLook
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
@@ -97,9 +121,9 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-12-NoScale.font");
     d_guiContext->setDefaultFont(d_font);
 
-    // set the mouse cursor
+    // set the pointer indicator
     d_system = System::getSingletonPtr();
-    d_guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    d_guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_guiContext->setDefaultTooltipType("WindowsLook/Tooltip");
@@ -113,9 +137,9 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("FrameEnabled", "false");
     d_root->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     d_root->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
+    d_root->subscribeEvent(Window::EventSemanticEvent, 
+        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
 
-    // root window will take care of hotkeys
-    d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
     d_guiContext->setRootWindow(d_root);
 
     // create a menubar.
@@ -193,6 +217,7 @@ void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
 void ScrollablePaneSample::deinitialise()
 {
     // everything we did is cleaned up by CEGUI
+    delete d_inputAggregator;
 }
 
 /*************************************************************************
@@ -220,31 +245,19 @@ bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
     return true;
 }
 
-/*************************************************************************
-    Handler for global hotkeys
-*************************************************************************/
-bool ScrollablePaneSample::hotkeysHandler(const CEGUI::EventArgs& e)
+bool ScrollablePaneSample::semanticEventHandler(const CEGUI::EventArgs& e)
 {
-    using namespace CEGUI;
-    const KeyEventArgs& k = static_cast<const KeyEventArgs&>(e);
-
-    switch (k.scancode)
+    const CEGUI::SemanticEventArgs& args = static_cast<const CEGUI::SemanticEventArgs&>(e);
+    if (args.d_semanticValue == SpawnNewDialog)
     {
-    // space is a hotkey for demo -> new dialog
-    case Key::Space:
         // this handler does not use the event args at all so this is fine :)
-        // though maybe a bit hackish...
+        // though maybe a bit hack-ish...
         demoNewDialog(e);
-        break;
-
-    // no hotkey found? event not used...
-    default:
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
-
 
 /*************************************************************************
     Define the module function that returns an instance of the sample

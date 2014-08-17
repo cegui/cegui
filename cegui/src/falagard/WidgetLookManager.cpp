@@ -263,12 +263,6 @@ namespace CEGUI
         return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
     }
 
-    WidgetLookManager::WidgetLookIterator
-    WidgetLookManager::getWidgetLookIterator() const
-    {
-        return WidgetLookIterator(d_widgetLooks.begin(),d_widgetLooks.end());
-    }
-
     WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookMap()
     {
         WidgetLookPointerMap pointerMap;
