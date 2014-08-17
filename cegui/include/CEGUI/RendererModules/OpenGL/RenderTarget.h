@@ -51,14 +51,15 @@ public:
     virtual ~OpenGLRenderTarget();
 
     // implement parts of RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
-    void activate();
-    void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
+    virtual void draw(const GeometryBuffer& buffer);
+    virtual void draw(const RenderQueue& queue);
+    virtual void setArea(const Rectf& area);
+    virtual const Rectf& getArea() const;
+    virtual void activate();
+    virtual void deactivate();
+    virtual void unprojectPoint(const GeometryBuffer& buff,
                         const Vector2f& p_in, Vector2f& p_out) const;
+    virtual Renderer& getOwner();
 
 protected:
     //! helper that initialises the cached matrix

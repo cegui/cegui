@@ -198,24 +198,6 @@ public:
     */
     const CEGUI::Rectf& getActiveViewPort();
 
-    /*!
-    \brief
-        Helper to set the active render target.
-
-    \param renderTarget
-        The active RenderTarget.
-    */
-    void setActiveRenderTarget(RenderTarget* renderTarget);
-        
-    /*!
-    \brief
-        Helper to get the active render target.
-
-    \return
-        The active RenderTarget.
-    */
-    RenderTarget* getActiveRenderTarget();
-
 protected:
     OpenGLRendererBase();
 
@@ -273,8 +255,6 @@ protected:
     BlendMode d_activeBlendMode;
     //! View projection matrix
     glm::mat4 d_viewProjectionMatrix;
-    //! The active RenderTarget
-    RenderTarget* d_activeRenderTarget;
 };
 
 /**

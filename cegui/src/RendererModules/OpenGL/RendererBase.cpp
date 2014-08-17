@@ -51,8 +51,7 @@ OpenGLRendererBase::OpenGLRendererBase() :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(1.0f),
-    d_activeRenderTarget(0)
+    d_viewProjectionMatrix(1.0f)
 {
     initialiseMaxTextureSize();
     initialiseDisplaySizeWithViewportSize();
@@ -66,8 +65,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(1.0f),
-    d_activeRenderTarget(0)
+    d_viewProjectionMatrix(1.0f)
 {
     initialiseMaxTextureSize();
 
@@ -414,18 +412,6 @@ void OpenGLRendererBase::setViewProjectionMatrix(const glm::mat4& viewProjection
 const CEGUI::Rectf& OpenGLRendererBase::getActiveViewPort()
 {
     return d_activeRenderTarget->getArea();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::setActiveRenderTarget(RenderTarget* renderTarget)
-{
-    d_activeRenderTarget = renderTarget;
-}
-
-//----------------------------------------------------------------------------//
-RenderTarget* OpenGLRendererBase::getActiveRenderTarget()
-{
-    return d_activeRenderTarget;
 }
 
 //----------------------------------------------------------------------------//

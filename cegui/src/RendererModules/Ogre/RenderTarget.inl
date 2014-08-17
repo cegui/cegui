@@ -138,7 +138,7 @@ void OgreRenderTarget<T>::activate()
     d_owner.setProjectionMatrix(d_matrix);
     d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
 
-    d_owner.markAllGeometryBufferMatricesAsInvalid();
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -273,6 +273,13 @@ void OgreRenderTarget<T>::updateViewport()
     d_viewport->_updateDimensions();
 
     d_viewportValid = true;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& OgreRenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//
