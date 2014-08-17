@@ -40,13 +40,14 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
     , d_pivot(0, 0, 0)
     , d_customTransform(1.0f)
     , d_effect(0)
-    , d_modelMatrixValid(false)
-    , d_viewProjectionValid(false)
     , d_blendMode(BM_NORMAL)
     , d_renderMaterial(renderMaterial)
     , d_polygonFillRule(PFR_NONE)
     , d_postStencilVertexCount(0)
     , d_alpha(1.f)
+    , d_matrixValid(false)
+    , d_lastRenderTarget(0)
+    , d_lastRenderTargetActivCount(0)
 {
 }
 
@@ -262,7 +263,7 @@ void GeometryBuffer::setTranslation(const Vector3f& translation)
     if(d_translation != translation)
     {
         d_translation = translation;
-        d_modelMatrixValid = false;
+        d_matrixValid = false;
     }
 }
 
@@ -272,7 +273,7 @@ void GeometryBuffer::setRotation(const Quaternion& rotationQuat)
     if(d_rotation != rotationQuat)
     {
         d_rotation = rotationQuat;
-        d_modelMatrixValid = false;
+        d_matrixValid = false;
     }
 }
 
@@ -282,7 +283,7 @@ void GeometryBuffer::setScale(const Vector3f& scale)
     if(d_scale != scale)
     {
         d_scale = scale;
-        d_modelMatrixValid = false;
+        d_matrixValid = false;
     }
 }
 
@@ -298,7 +299,7 @@ void GeometryBuffer::setPivot(const Vector3f& p)
     if(d_pivot != p)
     {
         d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
-        d_modelMatrixValid = false;
+        d_matrixValid = false;
     }
 }
 
@@ -308,7 +309,7 @@ void GeometryBuffer::setCustomTransform(const glm::mat4x4& transformation)
     if(d_customTransform != transformation)
     {
         d_customTransform = transformation;
-        d_modelMatrixValid = false;
+        d_matrixValid = false;
     }
 }
 
@@ -357,24 +358,18 @@ float GeometryBuffer::getAlpha() const
     return d_alpha;
 }
 
-
 //---------------------------------------------------------------------------//
-bool GeometryBuffer::isModelMatrixValid() const
+void GeometryBuffer::invalidateMatrix()
 {
-    return d_modelMatrixValid;
+    d_matrixValid = false;
 }
 
 //---------------------------------------------------------------------------//
-bool GeometryBuffer::isViewProjectionValid() const
+const RenderTarget* GeometryBuffer::getLastRenderTarget() const
 {
-    return d_viewProjectionValid;
+    return d_lastRenderTarget;
 }
 
-//---------------------------------------------------------------------------//
-void GeometryBuffer::setViewProjectionValid(bool isMatrixValid)
-{
-    d_viewProjectionValid = false;
-}
 
 }
 

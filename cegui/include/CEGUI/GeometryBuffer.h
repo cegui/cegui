@@ -451,33 +451,13 @@ public:
 
     /*!
     \brief 
-        Returns if the model matrix is valid or not. If True, then no translation, rotation
-        or other kind of transformation of this GeometryBuffer has been changed since the last update.
-
-    \return
-        True, if the model matrix is valid. False, if it needs to be updated
+        Invalidates the local matrix. This should be called whenever anything extraordinary
+        that requires to recalculate the matrix has occured
     */
-    bool isModelMatrixValid() const;
+    void invalidateMatrix();
 
-    /*!
-    \brief 
-        Returns if the view projection matrix of the Renderer owning this 
-        GeometryBuffer has changed since the last model view projection matrix update or not.
-
-    \return
-        True, if the view projection is valid. False, if it needs to be updated
-    */
-    bool isViewProjectionValid() const;
-    
-    /*!
-    \brief 
-        Sets the matrix to be invalid or valid. This should be called with the parameter false, whenever
-        any values have been changed that can affect the result of the matrix calculations.
-
-    \return
-        True, if matrix is valid. False, if the matrix is not valid
-    */
-    void setViewProjectionValid(bool isMatrixValid);
+    //TODO DOCU
+    const RenderTarget* getLastRenderTarget() const;
 
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
@@ -512,16 +492,15 @@ protected:
     glm::mat4x4     d_customTransform;
     /*
     \brief
-        true when there have been no translation, rotation or other transformation changes to the GeometryBuffer
-        since the last update of the model matrix.
+        true, when there have been no translations, rotations or other transformations applied to the GeometryBuffer,
+        as well as when it is guaranteed that the view projection matrix of the RenderTarget has been unchanged
+        since the last update.
     */
-    mutable bool    d_modelMatrixValid;
-    /*
-    \brief
-        true if the projection and view matrices of the owning Renderer haven't changed for this GeometryBuffer since the last update of the final matrix.
-    */
-    mutable bool    d_viewProjectionValid;
-
+    mutable bool    d_matrixValid;
+    //! The RenderTarget that this GeometryBuffer's matrix was last updated for
+    const RenderTarget* d_lastRenderTarget;
+    //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
+    unsigned int    d_lastRenderTargetActivCount;
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode       d_blendMode;
     //! The fill rule that should be used when rendering the geometry.
@@ -534,6 +513,7 @@ protected:
     bool            d_clippingActive;
     //! The alpha value which will be applied to the whole buffer when rendering
     float           d_alpha;
+
 };
 
 }

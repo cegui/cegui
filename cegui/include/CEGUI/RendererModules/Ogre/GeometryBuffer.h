@@ -71,7 +71,13 @@ public:
     //! Destructor
     virtual ~OgreGeometryBuffer();
 
-    //! return the transformation matrix used for this buffer.
+    /*
+    \brief
+        Returns the cached model view projection matrix.
+
+    \return
+        The cached model view projection matrix.
+    */
     const Ogre::Matrix4 getMatrix() const;
 
     // implement CEGUI::GeometryBuffer interface.
