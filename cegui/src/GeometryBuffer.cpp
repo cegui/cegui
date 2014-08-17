@@ -374,12 +374,14 @@ const RenderTarget* GeometryBuffer::getLastRenderTarget() const
 //---------------------------------------------------------------------------//
 bool GeometryBuffer::checkAndUpdateRenderTargetValidity(const RenderTarget* activeRenderTarget) const
 {
-    bool isValid = (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivCount + 1 == activeRenderTarget->getActivationCounter());
+    return (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivCount + 1 == activeRenderTarget->getActivationCounter());
+}
 
+//--------------------------------------------------------------------------//
+void GeometryBuffer::updateRenderTargetData(const RenderTarget* activeRenderTarget) const
+{
     d_lastRenderTarget = activeRenderTarget;
     d_lastRenderTargetActivCount = activeRenderTarget->getActivationCounter();
-
-    return isValid;
 }
 
 

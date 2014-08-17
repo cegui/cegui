@@ -69,13 +69,13 @@ void OpenGLGeometryBufferBase::reset()
 //----------------------------------------------------------------------------//
 const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
 {
-    updateMatrices();
+    updateMatrix();
 
     return d_matrix;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::updateMatrices() const
+void OpenGLGeometryBufferBase::updateMatrix() const
 {
     // Check if the ached values from the RenderTarget are still valid or an update
     // is required for this GeometryBuffer
@@ -107,6 +107,8 @@ void OpenGLGeometryBufferBase::updateMatrices() const
 
         d_matrixValid = true;
     }
+
+    updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//

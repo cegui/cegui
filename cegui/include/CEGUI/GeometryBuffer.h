@@ -462,6 +462,9 @@ public:
     //TODO DOCU
     bool checkAndUpdateRenderTargetValidity(const RenderTarget* activeRenderTarget) const;
 
+    //TODO DOCU
+    void updateRenderTargetData(const RenderTarget* activeRenderTarget) const;
+
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 

@@ -175,13 +175,13 @@ public:
     // TODO DOCU
     unsigned int getActivationCounter() const;
 
-private:
+protected:
     /*!
     \brief
         The current number of activation of this RenderTarget. This is increased on every call to activate() and
         will in turn be used to remove the most common redundant matrix updates of GeometryBuffers.
     */
-    unsigned int d_activationCounter;
+    mutable unsigned int d_activationCounter;
 };
 
 } // End of  CEGUI namespace section
