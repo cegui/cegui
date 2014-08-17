@@ -107,6 +107,8 @@ TODO: The count thing is very ugly and counter-intuitive to the whole design.
     We should either:
     * Fire an event per index
     * Store the actual indices in a vector.
+*/
+
 /*!
 \brief
     Arguments class for events that happened with regard to the specified ItemModel
