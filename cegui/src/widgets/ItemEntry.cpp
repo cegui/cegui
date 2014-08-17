@@ -86,7 +86,7 @@ void ItemEntry::setSelected_impl(bool setting, bool notify)
     {
         d_selected = setting;
 
-        // notify the ItemListbox if there is one that we just got selected
+        // notify the ItemListBase if there is one that we just got selected
         // to ensure selection scheme is not broken when setting selection from code
         if (d_ownerList && notify)
         {
