@@ -27,7 +27,6 @@
 #ifndef _CEGUIAllWidgets_h_
 #define _CEGUIAllWidgets_h_
 
-#include "./ClippedContainer.h"
 #include "./Combobox.h"
 #include "./ComboDropList.h"
 #include "./DefaultWindow.h"
