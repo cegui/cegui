@@ -98,7 +98,7 @@ void Direct3D11RenderTarget<T>::activate()
 
     d_owner.setViewProjectionMatrix(d_matrix);
 
-    d_owner.markAllGeometryBufferMatricesAsInvalid();
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -130,7 +130,7 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
     const glm::mat4& projMatrix = d_matrix;
-    const glm::mat4& modelMatrix = gb.getModelViewProjectionMatrix();
+    const glm::mat4& modelMatrix = gb.getMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
@@ -240,6 +240,13 @@ void Direct3D11RenderTarget<T>::setupViewport(D3D11_VIEWPORT& vp) const
     vp.Height = static_cast<FLOAT>(d_area.getHeight());
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& Direct3D11RenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//

@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderTarget.h"
+#include "CEGUI/Renderer.h"
 
 namespace CEGUI
 {
@@ -33,6 +34,26 @@ const String RenderTarget::EventNamespace("RenderTarget");
 const String RenderTarget::EventAreaChanged("AreaChanged");
 
 //----------------------------------------------------------------------------//
+RenderTarget::RenderTarget():
+    d_activationCounter(0)
+{}
+
+//----------------------------------------------------------------------------//
+RenderTarget::~RenderTarget()
+{}
+
+//----------------------------------------------------------------------------//
+void RenderTarget::activate()
+{
+    Renderer& owner = getOwner();
+
+    owner.setActiveRenderTarget(this);
+
+    ++d_activationCounter;
+
+    if(d_activationCounter == 0)
+        owner.invalidateMatricesOfGeomBuffersUsingRenderTarget(this);
+}
 
 }
 

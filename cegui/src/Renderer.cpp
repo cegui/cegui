@@ -33,6 +33,10 @@
 namespace CEGUI
 {
 
+Renderer::Renderer():
+    d_activeRenderTarget(0)
+{}
+
 //----------------------------------------------------------------------------//
 void Renderer::addGeometryBuffer(GeometryBuffer& buffer) 
 {
@@ -77,7 +81,7 @@ GeometryBuffer& Renderer::createGeometryBufferColoured()
 }
 
 //----------------------------------------------------------------------------//
-void Renderer::markAllGeometryBufferMatricesAsInvalid()
+void Renderer::invalidateMatricesOfGeomBuffersUsingRenderTarget(const CEGUI::RenderTarget* renderTarget)
 {
     GeometryBufferList::iterator currentIter = d_geometryBuffers.begin();
     GeometryBufferList::iterator iterEnd = d_geometryBuffers.end();
@@ -85,10 +89,24 @@ void Renderer::markAllGeometryBufferMatricesAsInvalid()
     while(currentIter != iterEnd)
     {
         GeometryBuffer* geomBuffer = *currentIter;
-        geomBuffer->setViewProjectionValid(false);
+        if(geomBuffer->getLastRenderTarget() == renderTarget)
+            geomBuffer->invalidateMatrix();
 
         ++currentIter;
     }
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::setActiveRenderTarget(RenderTarget* renderTarget)
+{
+    d_activeRenderTarget = renderTarget;
+}
+        
+
+//----------------------------------------------------------------------------//
+RenderTarget* Renderer::getActiveRenderTarget()
+{
+    return d_activeRenderTarget;
 }
 
 //----------------------------------------------------------------------------//
