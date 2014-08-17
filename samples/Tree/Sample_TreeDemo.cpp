@@ -91,13 +91,13 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
-    d_usedFiles = CEGUI::String(__FILE__);
+    d_usedFiles = String(__FILE__);
 
-    Tree *      theTree;
-    TreeItem *  newTreeCtrlEntryLvl1;  // Level 1 TreeCtrlEntry (branch)
-    TreeItem *  newTreeCtrlEntryLvl2;  // Level 2 TreeCtrlEntry (branch)
-    TreeItem *  newTreeCtrlEntryLvl3;  // Level 3 TreeCtrlEntry (branch)
-    TreeItem *  newTreeCtrlEntryParent;
+    TreeWidget* theTree;
+    StandardItem*  newTreeCtrlEntryLvl1;  // Level 1 TreeCtrlEntry (branch)
+    StandardItem*  newTreeCtrlEntryLvl2;  // Level 2 TreeCtrlEntry (branch)
+    StandardItem*  newTreeCtrlEntryLvl3;  // Level 3 TreeCtrlEntry (branch)
+    StandardItem*  newTreeCtrlEntryParent;
     Image *     iconArray[9];
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -145,11 +145,11 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 
    background->addChild(TreeDemoWindow);
 
-   theTree = (Tree *)TreeDemoWindow->getChild(TreeID);
-   theTree->initialise();
-   theTree->subscribeEvent(Tree::EventSelectionChanged, Event::Subscriber(&TreeDemoSample::handleEventSelectionChanged, this));
-   theTree->subscribeEvent(Tree::EventBranchOpened, Event::Subscriber(&TreeDemoSample::handleEventBranchOpened, this));
-   theTree->subscribeEvent(Tree::EventBranchClosed, Event::Subscriber(&TreeDemoSample::handleEventBranchClosed, this));
+   theTree = static_cast<TreeWidget*>(TreeDemoWindow->getChild(TreeID));
+   theTree->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   theTree->subscribeEvent(TreeWidget::EventSelectionChanged, Event::Subscriber(&TreeDemoSample::handleEventSelectionChanged, this));
+   theTree->subscribeEvent(TreeWidget::EventSubtreeExpanded, Event::Subscriber(&TreeDemoSample::handleEventSubtreeExpanded, this));
+   theTree->subscribeEvent(TreeWidget::EventSubtreeCollapsed, Event::Subscriber(&TreeDemoSample::handleEventSubtreeCollapsed, this));
 
    // activate the background window
    background->activate();
@@ -165,54 +165,36 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    iconArray[8] = &ImageManager::getSingleton().get("DriveIcons/GreenCandy");
 
    // Create a top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1a");
-   newTreeCtrlEntryLvl1->setIcon(ImageManager::getSingleton().get("DriveIcons/Black"));
-   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
-//   newTreeCtrlEntryLvl1->setUserData((void *)someData);
+   newTreeCtrlEntryLvl1 = new StandardItem("Tree Item Level 1a", "DriveIcons/Black");
    theTree->addItem(newTreeCtrlEntryLvl1);
+
    // Create a second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2a (1a)");
-   newTreeCtrlEntryLvl2->setIcon(ImageManager::getSingleton().get("DriveIcons/Artic"));
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl2 = new StandardItem("Tree Item Level 2a (1a)");
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create a third-level TreeCtrlEntry and attach it to the above TreeCtrlEntry
-   newTreeCtrlEntryLvl3 = new TreeItem("Tree Item Level 3a (2a)");
-   newTreeCtrlEntryLvl3->setIcon(ImageManager::getSingleton().get("DriveIcons/Blue"));
-   newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl3 = new StandardItem("Tree Item Level 3a (2a)", "DriveIcons/Blue");
    newTreeCtrlEntryLvl2->addItem(newTreeCtrlEntryLvl3);
    // Create another third-level TreeCtrlEntry and attach it to the above TreeCtrlEntry
-   newTreeCtrlEntryLvl3 = new TreeItem("Tree Item Level 3b (2a)");
-   newTreeCtrlEntryLvl3->setIcon(ImageManager::getSingleton().get("DriveIcons/Lime"));
-   newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl3 = new StandardItem("Tree Item Level 3b (2a)", "DriveIcons/Lime");
    newTreeCtrlEntryLvl2->addItem(newTreeCtrlEntryLvl3);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2b (1a)");
-   newTreeCtrlEntryLvl2->setIcon(ImageManager::getSingleton().get("DriveIcons/Sunset"));
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl2 = new StandardItem("Tree Item Level 2b (1a)", "DriveIcons/Sunset");
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2c (1a)");
-   newTreeCtrlEntryLvl2->setIcon(ImageManager::getSingleton().get("DriveIcons/Silver"));
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl2 = new StandardItem("Tree Item Level 2c (1a)", "DriveIcons/Silver");
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
 
    // Create another top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1b");
-   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
-   newTreeCtrlEntryLvl1->setIcon(ImageManager::getSingleton().get("DriveIcons/DriveStack"));
-   newTreeCtrlEntryLvl1->setDisabled(true); // Let's disable this one just to be sure it works
+   newTreeCtrlEntryLvl1 = new StandardItem("Tree Item Level 1b", "DriveIcons/DriveStack");
    theTree->addItem(newTreeCtrlEntryLvl1);
    // Create a second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2a (1b)");
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl2 = new StandardItem("Tree Item Level 2a (1b)");
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
-   newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2b (1b)");
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl2 = new StandardItem("Tree Item Level 2b (1b)");
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
 
-   newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1c");
-   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl1 = new StandardItem("Tree Item Level 1c");
    theTree->addItem(newTreeCtrlEntryLvl1);
 
    // Now let's create a whole bunch of items automatically
@@ -226,60 +208,52 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
       {
       idepthIndex = 0;
       itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex);
-      newTreeCtrlEntryLvl1 = new TreeItem(itemText);
+      newTreeCtrlEntryLvl1 = new StandardItem(itemText);
       // Set a random icon for the item.  Sometimes blank (on purpose).
       iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0])) + 2);
       if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
-         newTreeCtrlEntryLvl1->setIcon(*iconArray[iconIndex]);
-      newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+         newTreeCtrlEntryLvl1->setIcon((*iconArray[iconIndex]).getName());
       theTree->addItem(newTreeCtrlEntryLvl1);
       newTreeCtrlEntryParent = newTreeCtrlEntryLvl1;
 
-#if 1
       childIndex = 0;
       childCount = randInt(0, 3);
       while (childIndex < childCount)
          {
          itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
-         newTreeCtrlEntryLvl2 = new TreeItem(itemText);
+         newTreeCtrlEntryLvl2 = new StandardItem(itemText);
          // Set a random icon for the item.  Sometimes blank (on purpose).
          iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
          if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
-            newTreeCtrlEntryLvl2->setIcon(*iconArray[iconIndex]);
-         newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+            newTreeCtrlEntryLvl2->setIcon((*iconArray[iconIndex]).getName());
          newTreeCtrlEntryParent->addItem(newTreeCtrlEntryLvl2);
          ++childIndex;
          }
-#endif
 
       while (idepthIndex < 15)
          {
          itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1);
-         newTreeCtrlEntryLvl2 = new TreeItem(itemText);
+         newTreeCtrlEntryLvl2 = new StandardItem(itemText);
          // Set a random icon for the item.  Sometimes blank (on purpose).
          iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
          if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
-            newTreeCtrlEntryLvl2->setIcon(*iconArray[iconIndex]);
-         newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+            newTreeCtrlEntryLvl2->setIcon((*iconArray[iconIndex]).getName());
          newTreeCtrlEntryParent->addItem(newTreeCtrlEntryLvl2);
          newTreeCtrlEntryParent = newTreeCtrlEntryLvl2;
 
-#if 1
          childIndex = 0;
          childCount = randInt(0, 3);
          while (childIndex < childCount)
             {
             itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
-            newTreeCtrlEntryLvl2 = new TreeItem(itemText);
+            newTreeCtrlEntryLvl2 = new StandardItem(itemText);
             // Set a random icon for the item.  Sometimes blank (on purpose).
             iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
             if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
-               newTreeCtrlEntryLvl2->setIcon(*iconArray[iconIndex]);
-            newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+               newTreeCtrlEntryLvl2->setIcon((*iconArray[iconIndex]).getName());
             newTreeCtrlEntryParent->addItem(newTreeCtrlEntryLvl2);
             ++childIndex;
             }
-#endif
          ++idepthIndex;
          }
       ++levelIndex;
@@ -301,13 +275,14 @@ bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
    {
    using namespace CEGUI;
 
-   const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
+   const ItemViewEventArgs& treeArgs = static_cast<const ItemViewEventArgs&>(args);
    Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
 
+   TreeWidget* tree = static_cast<TreeWidget*>(treeArgs.window);
    // Three different ways to get the item selected.
 //   TreeCtrlEntry *selectedItem = theTree->getFirstSelectedItem();      // the first selection in the list (may be more)
 //   TreeCtrlEntry *selectedItem = theTree->getLastSelectedItem();       // the last (time-wise) selected by the user
-   TreeItem *selectedItem = treeArgs.treeItem;                    // the actual item that caused this event
+   StandardItem* selectedItem = tree->getModel()->getItemForIndex(treeArgs.d_index);                    // the actual item that caused this event
 
    if (selectedItem)
       {
@@ -330,24 +305,28 @@ bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
    return true;
    }
 
-bool TreeDemoSample::handleEventBranchOpened(const CEGUI::EventArgs& args)
+bool TreeDemoSample::handleEventSubtreeExpanded(const CEGUI::EventArgs& args)
    {
    using namespace CEGUI;
 
-   const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
+   const ItemViewEventArgs& treeArgs = static_cast<const ItemViewEventArgs&>(args);
    Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
-   editBox->setText("Opened: " + treeArgs.treeItem->getText());
+   TreeWidget* tree = static_cast<TreeWidget*>(treeArgs.window);
+   StandardItem* expanded_item = tree->getModel()->getItemForIndex(treeArgs.d_index);
+   editBox->setText("Opened: " + expanded_item->getText());
    return true;
    }
 
 
-bool TreeDemoSample::handleEventBranchClosed(const CEGUI::EventArgs& args)
+bool TreeDemoSample::handleEventSubtreeCollapsed(const CEGUI::EventArgs& args)
    {
    using namespace CEGUI;
 
-   const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
+   const ItemViewEventArgs& treeArgs = static_cast<const ItemViewEventArgs&>(args);
    Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
-   editBox->setText("Closed: " + treeArgs.treeItem->getText());
+   TreeWidget* tree = static_cast<TreeWidget*>(treeArgs.window);
+   StandardItem* collapsed_item = tree->getModel()->getItemForIndex(treeArgs.d_index);
+   editBox->setText("Closed: " + collapsed_item->getText());
    return true;
    }
 

@@ -46,8 +46,8 @@ protected:
    static const unsigned int EditBoxID;
 
    bool handleEventSelectionChanged(const CEGUI::EventArgs& args);
-   bool handleEventBranchOpened(const CEGUI::EventArgs& args);
-   bool handleEventBranchClosed(const CEGUI::EventArgs& args);
+   bool handleEventSubtreeExpanded(const CEGUI::EventArgs& args);
+   bool handleEventSubtreeCollapsed(const CEGUI::EventArgs& args);
    };
 
 

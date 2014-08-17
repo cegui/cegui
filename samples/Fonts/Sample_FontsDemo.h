@@ -91,8 +91,8 @@ protected:
     CEGUI::PushButton*      d_renewFontNameButton;
     CEGUI::Window*          d_fontEditorInfoLabel;
 
-    CEGUI::Listbox*         d_fontSelector;
-    CEGUI::Listbox*         d_textSelector;
+    CEGUI::ListWidget*      d_fontSelector;
+    CEGUI::ListWidget*      d_textSelector;
 
     CEGUI::MultiLineEditbox*        d_textDisplayMultiLineEditbox;
 
