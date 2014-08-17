@@ -53,8 +53,14 @@ public:
     //! Destructor
     ~Direct3D11GeometryBuffer();
 
-    //! Returns the model matrix, which is in effect for this GeometryBuffer
-    const glm::mat4& getModelViewProjectionMatrix() const;
+    /*
+    \brief
+        Returns the cached model view projection matrix.
+
+    \return
+        The cached model view projection matrix.
+    */
+    const glm::mat4& getMatrix() const;
 
     // Implement GeometryBuffer interface.
     void draw() const;
@@ -96,10 +102,8 @@ protected:
     mutable UINT d_bufferSize;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! Cache of the model matrix
-    mutable glm::mat4 d_modelMatrix;
-    //! Cache of model view projection matrix
-    mutable glm::mat4 d_modelViewProjectionMatrix;
+    //! Cache of the model view projection matrix
+    mutable glm::mat4 d_matrix;
     //! D3D11 input layout describing the vertex format we use.
     ID3D11InputLayout* d_inputLayout;
 };

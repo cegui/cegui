@@ -64,9 +64,15 @@ public:
     void setClippingRegion(const Rectf& region);
     void appendGeometry(const std::vector<float>& vertex_data);
     void reset();
+    
+    /*
+    \brief
+        Returns the cached model view projection matrix.
 
-    //! Returns the model matrix, which is in effect for this GeometryBuffer
-    const glm::mat4& getModelViewProjectionMatrix() const;
+    \return
+        The cached model view projection matrix.
+    */
+    const glm::mat4& getMatrix() const;
 
     /*
     \brief
@@ -83,10 +89,8 @@ protected:
     OpenGLRendererBase& d_owner;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! Cache of the model matrix
-    mutable glm::mat4 d_modelMatrix;
-    //! Cache of model view projection matrix
-    mutable glm::mat4 d_modelViewProjectionMatrix;
+    //! Cache of the model view projection matrix
+    mutable glm::mat4 d_matrix;
 };
 
 }

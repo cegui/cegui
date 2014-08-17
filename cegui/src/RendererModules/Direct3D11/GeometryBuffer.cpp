@@ -78,7 +78,7 @@ void Direct3D11GeometryBuffer::draw() const
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
 
     // Set the uniform variables for this GeometryBuffer in the Shader
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_modelViewProjectionMatrix);
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_matrix);
     shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
 
     // set our buffer as the vertex source.
@@ -133,43 +133,39 @@ void Direct3D11GeometryBuffer::appendGeometry(const std::vector<float>& vertex_d
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::updateMatrices() const
 {
-    if(!d_modelMatrixValid)
+    if(!d_matrixValid)
     {
         //Apply translation, rotation and scale matrix
         const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                     d_translation.d_y + d_pivot.d_y,
                                     d_translation.d_z + d_pivot.d_z);
 
-        d_modelMatrix = glm::translate(glm::mat4(1.0f), final_trans);
+        d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
 
         glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
         glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
 
         glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
 
-        d_modelMatrix *= rotation_matrix * scale_matrix;
+        d_matrix *= rotation_matrix * scale_matrix;
 
         glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
         glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
-        d_modelMatrix *=  translMatrix * d_customTransform;
-    }
+        d_matrix *=  translMatrix * d_customTransform;
 
-    if(!d_viewProjectionValid || !d_modelMatrixValid)
-    {
         //Apply the model view projection matrix
-        d_modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_modelMatrix;
+        d_matrix = d_owner.getViewProjectionMatrix() * d_matrix;
 
-        d_viewProjectionValid = true;
-        d_modelMatrixValid = true;
+        d_matrixValid = true;
     }
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& Direct3D11GeometryBuffer::getModelViewProjectionMatrix() const
+const glm::mat4& Direct3D11GeometryBuffer::getMatrix() const
 {
     updateMatrices();
 
-    return d_modelViewProjectionMatrix;
+    return d_matrix;
 }
 
 //----------------------------------------------------------------------------//

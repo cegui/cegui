@@ -233,7 +233,7 @@ void OgreGeometryBuffer::updateMatrix() const
     if (ogreShader->getVertexParameters()->getTransposeMatrices())
         d_matrix = glm::transpose(d_matrix); 
 
-    d_modelMatrixValid = true;
+    d_matrixValid = true;
 }
 
 //----------------------------------------------------------------------------//
