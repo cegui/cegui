@@ -69,7 +69,8 @@ void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
     d_renderTarget = &target;
 
     Rectf init_area(Vector2f(0.0f, 0.0f),
-                    Sizef(d_renderTarget->getWidth(), d_renderTarget->getHeight()) );
+                    Sizef(static_cast<float>(d_renderTarget->getWidth()), 
+                          static_cast<float>(d_renderTarget->getHeight())) );
 
     setArea(init_area);
 }
