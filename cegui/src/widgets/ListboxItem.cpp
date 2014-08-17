@@ -89,23 +89,6 @@ void ListboxItem::setSelectionBrushImage(const String& name)
 	setSelectionBrushImage(&ImageManager::getSingleton().get(name));
 }
 
-
-/*************************************************************************
-	Return a ColourRect object describing the colours in 'cols' after
-	having their alpha component modulated by the value 'alpha'.
-*************************************************************************/
-ColourRect ListboxItem::getModulateAlphaColourRect(const ColourRect& cols, float alpha) const
-{
-	return ColourRect
-		(
-			calculateModulatedAlphaColour(cols.d_top_left, alpha),
-			calculateModulatedAlphaColour(cols.d_top_right, alpha),
-			calculateModulatedAlphaColour(cols.d_bottom_left, alpha),
-			calculateModulatedAlphaColour(cols.d_bottom_right, alpha)
-		);
-}
-
-
 /*************************************************************************
 	Return a colour value describing the colour specified by 'col' after
 	having its alpha component modulated by the value 'alpha'.

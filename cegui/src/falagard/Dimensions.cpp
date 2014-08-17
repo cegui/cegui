@@ -1194,7 +1194,7 @@ const String& ComponentArea::getNamedAreaSourceLook() const
 }
 
 //----------------------------------------------------------------------------//
-void ComponentArea::setNamedAreaSouce(const String& widget_look,
+void ComponentArea::setNamedAreaSource(const String& widget_look,
                                       const String& area_name)
 {
     d_namedSource = area_name;

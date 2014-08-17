@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUISample_FormNavigation"
+    type      = "C++ Module"
+    summary         = "A demo that shows a form which can be navigated using the keyboard or other devices."
+    description     = "The demo uses the WindowManager to create from code, a window with a form that contains: labels, editboxes, checkboxes, 'submit' and 'reset' buttons. "
+    credits         = "Timotei Dolean"
+/>

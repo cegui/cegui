@@ -474,7 +474,6 @@
 -->
     <WidgetLook name="OgreTray/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="true"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -583,7 +582,6 @@
 -->
     <WidgetLook name="OgreTray/HorizontalScrollbar">
         <Property name="VerticalScrollbar" value="false"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -2332,7 +2330,7 @@
         <PropertyLinkDefinition targetProperty="NormalTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="NormalEditTextColour"/>
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="SelectedEditTextColour"/>
         <Property name="ReadOnly" value="true"/>
-        <Property name="SingleClickMode" value="true"/>
+        <Property name="SinglePointerActivationMode" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="OgreTray/Editbox">
             <Area>
@@ -2797,8 +2795,7 @@
 -->
     <WidgetLook name="OgreTray/Slider">
         <Property name="VerticalSlider" value="false"/>
-        <Property name="MouseAutoRepeatEnabled" value="true"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="PointerAutoRepeatEnabled" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -4323,7 +4320,6 @@
     <WidgetLook name="OgreTray/MenuItem">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="TextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF779977" type="ColourRect" name="PushedOffColour"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
