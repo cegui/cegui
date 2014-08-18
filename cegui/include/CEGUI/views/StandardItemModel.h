@@ -28,7 +28,7 @@
 #define _CEGUIStandardItemModel_h_
 
 #include "CEGUI/views/ItemModel.h"
-#include "CEGUI/views/AbstractItemModel.h"
+#include "CEGUI/views/GenericItemModel.h"
 #include <vector>
 
 namespace CEGUI
@@ -36,9 +36,9 @@ namespace CEGUI
 
 /*!
 \brief
-    This is an implementation of AbstractItem that has an additional id.
+    This is an implementation of GenericItem that has an additional id.
 */
-class CEGUIEXPORT StandardItem : public AbstractItem
+class CEGUIEXPORT StandardItem : public GenericItem
 {
 public:
     StandardItem();
@@ -55,12 +55,12 @@ protected:
 
 /*!
 \brief
-    This is an example model that inherits the default AbstractItemModel
+    This is an example model that inherits the default GenericItemModel
     functionality over a specified model type (StandardItem).
 
     Besides that we added a new function that updates a given item's text.
 */
-class CEGUIEXPORT StandardItemModel : public AbstractItemModel<StandardItem>
+class CEGUIEXPORT StandardItemModel : public GenericItemModel<StandardItem>
 {
 public:
     StandardItemModel();

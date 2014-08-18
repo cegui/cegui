@@ -35,7 +35,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Base class for the items used by AbstractItemModel. The item has a list
+    Base class for the items used by GenericItemModel. The item has a list
     of children attached to it, thus being able to represent a tree hierarchy.
 
     It's important to understand that this is a simple class that only holds
@@ -43,15 +43,15 @@ namespace CEGUI
     ItemModel it's part of, unless one links them manually. In order to modify
     this item and update the ItemModel (and consequently the view) you need to
     call ItemModel implementation's functions (e.g.:
-    AbstractItemModel::removeItem(const AbstractItem*)).
+    GenericItemModel::removeItem(const GenericItem*)).
 */
-class CEGUIEXPORT AbstractItem
+class CEGUIEXPORT GenericItem
 {
 public:
-    AbstractItem();
-    explicit AbstractItem(const String& text);
-    AbstractItem(const String& text, const String& icon);
-    virtual ~AbstractItem();
+    GenericItem();
+    explicit GenericItem(const String& text);
+    GenericItem(const String& text, const String& icon);
+    virtual ~GenericItem();
 
     String getText() const { return d_text; }
     void setText(const String& val) { d_text = val; }
@@ -59,10 +59,10 @@ public:
     String getIcon() const { return d_icon; }
     void setIcon(const String& icon) { d_icon = icon; }
 
-    AbstractItem* getParent() const { return d_parent; }
-    void setParent(AbstractItem* item) { d_parent = item; }
+    GenericItem* getParent() const { return d_parent; }
+    void setParent(GenericItem* item) { d_parent = item; }
 
-    std::vector<AbstractItem*>& getChildren() { return d_children; }
+    std::vector<GenericItem*>& getChildren() { return d_children; }
 
     /*!
     \brief
@@ -72,29 +72,29 @@ public:
         This method <b>does not</b> notify anyone of the child that was just
         added. If you want the notifications, you can use one of the following
         methods:
-        - AbstractItemModel::addItemAtPosition(AbstractItem*, size_t)
-        - AbstractItemModel::addItemAtPosition(AbstractItem*, const ModelIndex&, size_t)
-        - AbstractItemModel::insertItem(AbstractItem*, const AbstractItem*)
+        - GenericItemModel::addItemAtPosition(GenericItem*, size_t)
+        - GenericItemModel::addItemAtPosition(GenericItem*, const ModelIndex&, size_t)
+        - GenericItemModel::insertItem(GenericItem*, const GenericItem*)
 
     */
-    virtual void addItem(AbstractItem* child);
+    virtual void addItem(GenericItem* child);
 
-    virtual bool operator== (const AbstractItem& other) const;
-    virtual bool operator!= (const AbstractItem& other) const;
-    virtual bool operator< (const AbstractItem& other) const;
+    virtual bool operator== (const GenericItem& other) const;
+    virtual bool operator!= (const GenericItem& other) const;
+    virtual bool operator< (const GenericItem& other) const;
 
 protected:
     String d_text;
     String d_icon;
 
-    std::vector<AbstractItem*> d_children;
-    AbstractItem* d_parent;
+    std::vector<GenericItem*> d_children;
+    GenericItem* d_parent;
 };
 
 /*!
 \brief
     An abstract implementation of the ItemModel that works with
-    a tree structure using items of class that inherits from AbstractItem.
+    a tree structure using items of class that inherits from GenericItem.
 
     Users of this class can either create a template instantiation of this
     implementation, or inherit it and augment with custom operations or
@@ -103,11 +103,11 @@ protected:
     One such example is the following, where we instantiate a model for our
     own MyItem type:
     \code{.cpp}
-    class MyItem : public AbstractItem
+    class MyItem : public GenericItem
     {
     };
 
-    typedef AbstractItemModel<MyItem> MyItemModel;
+    typedef GenericItemModel<MyItem> MyItemModel;
     \endcode
 
 \remark
@@ -115,12 +115,12 @@ protected:
     means they are deleted by it. CEGUI_DELETE_AO is used for that, so
     CEGUI_NEW_AO should be used for already created objects that are added.
 
-\tparam TAbstractItem
+\tparam TGenericItem
     The type of the item this model operates on. The type \b needs to inherit
-    directly or indirectly from AbstractItem.
+    directly or indirectly from GenericItem.
 */
-template <typename TAbstractItem>
-class AbstractItemModel : public ItemModel
+template <typename TGenericItem>
+class GenericItemModel : public ItemModel
 {
 public:
     /*!
@@ -131,12 +131,12 @@ public:
         The \a root will be taken ownership of, and cleaned when the model is
         destructed (using CEGUI_DELETE_AO).
 
-        An example of initializing such AbstractItemModel implementation is the
+        An example of initializing such GenericItemModel implementation is the
         following:
         \code{.cpp}
-        class MyItemModel : public AbstractItemModel<MyItem>
+        class MyItemModel : public GenericItemModel<MyItem>
         {
-            MyItemModel() : AbstractItemModel<MyItem>(CEGUI_NEW_AO MyItem)
+            MyItemModel() : GenericItemModel<MyItem>(CEGUI_NEW_AO MyItem)
             {
             }
         };
@@ -144,29 +144,29 @@ public:
 
         Alternatively, if you want to create a root upon declaring the model, you
         can let the caller provide it, in which case our \b MyItemModel constructor
-        will receive the root TAbstractItem instance.
+        will receive the root TGenericItem instance.
     */
-    explicit AbstractItemModel(TAbstractItem* root);
-    virtual ~AbstractItemModel();
+    explicit GenericItemModel(TGenericItem* root);
+    virtual ~GenericItemModel();
 
     /*!
     \brief
         Adds a new item in the model with the specified text, taking ownership
         of it.
 
-        If this method is used, the TAbstractItem type should have a string
+        If this method is used, the TGenericItem type should have a string
         constructor in order to successfully compile. This method is equivalent
         with:
         \code{.cpp}
-        AbstractItem* item = CEGUI_NEW_AO AbstractItem("MyText");
+        GenericItem* item = CEGUI_NEW_AO GenericItem("MyText");
         model->addItem(item);
         \endcode
     */
     virtual void addItem(String text);
     //! Adds the item as child of the root and takes ownership of it.
-    virtual void addItem(AbstractItem* item);
+    virtual void addItem(GenericItem* item);
     //! Adds the item as child of the root at the specified position.
-    virtual void addItemAtPosition(AbstractItem* item, size_t pos);
+    virtual void addItemAtPosition(GenericItem* item, size_t pos);
     /*!
     \brief
         Adds the item as child of the specified parent, at the specified position.
@@ -174,7 +174,7 @@ public:
         After the addition, the \a parent's node will contain \a item as child
         at the \a position.
     */
-    virtual void addItemAtPosition(AbstractItem* item, const ModelIndex& parent,
+    virtual void addItemAtPosition(GenericItem* item, const ModelIndex& parent,
         size_t position);
 
     /*!
@@ -185,11 +185,11 @@ public:
 
         This method allows for arbitrary level (nestedness/depth) insertions.
         Another function which can be used instead of this, is
-        addItemAtPosition(AbstractItem*, const ModelIndex&, size_t).
+        addItemAtPosition(GenericItem*, const ModelIndex&, size_t).
     */
-    virtual void insertItem(AbstractItem* item, const AbstractItem* position);
+    virtual void insertItem(GenericItem* item, const GenericItem* position);
 
-    virtual void removeItem(const AbstractItem* item);
+    virtual void removeItem(const GenericItem* item);
     virtual void removeItem(const ModelIndex& index);
 
     /*!
@@ -205,12 +205,12 @@ public:
 
     /*!
     \brief
-        Gets the underlying TAbstractItem represented by the given \a index or
+        Gets the underlying TGenericItem represented by the given \a index or
         NULL if the index does not represent a valid item.
 
-        This method is the inverse of to getIndexForItem(const AbstractItem*).
+        This method is the inverse of to getIndexForItem(const GenericItem*).
     */
-    virtual TAbstractItem* getItemForIndex(const ModelIndex& index) const;
+    virtual TGenericItem* getItemForIndex(const ModelIndex& index) const;
 
     /*!
     \brief
@@ -218,10 +218,10 @@ public:
 
         This method is the inverse of getItemForIndex(const ModelIndex&).
     */
-    virtual ModelIndex getIndexForItem(const AbstractItem* item) const;
+    virtual ModelIndex getIndexForItem(const GenericItem* item) const;
 
     //! Gets the ordinal id (index) of the specified item in parent's children list.
-    virtual int getChildId(const AbstractItem* item) const;
+    virtual int getChildId(const GenericItem* item) const;
 
     /*!
     \brief
@@ -229,7 +229,7 @@ public:
         ignored in normal operations. It's merely used in order to provide
         an access point to the items tree.
     */
-    TAbstractItem& getRoot() { return static_cast<TAbstractItem&>(*d_root); }
+    TGenericItem& getRoot() { return static_cast<TGenericItem&>(*d_root); }
 
     virtual bool isValidIndex(const ModelIndex& model_index) const;
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);
@@ -244,20 +244,20 @@ public:
 protected:
     //! Deletes all children of the specified item, optionally invoking the
     //! EventChildren(WillBe)Removed event
-    void deleteChildren(AbstractItem* item, bool notify);
+    void deleteChildren(GenericItem* item, bool notify);
 
     //! Makes a valid index if \a id is withing \a vector's bounds.
     template <typename T>
     ModelIndex makeValidIndex(size_t id, std::vector<T>& vector);
 
-    AbstractItem* d_root;
+    GenericItem* d_root;
 };
 
 //----------------------------------------------------------------------------//
-// Implementation of the AbstractItemModel
+// Implementation of the GenericItemModel
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-AbstractItemModel<TAbstractItem>::AbstractItemModel(TAbstractItem* root) :
+template <typename TGenericItem>
+GenericItemModel<TGenericItem>::GenericItemModel(TGenericItem* root) :
 d_root(root)
 {
     if (root == 0)
@@ -265,9 +265,9 @@ d_root(root)
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
+template <typename TGenericItem>
 template <typename T>
-ModelIndex AbstractItemModel<TAbstractItem>::makeValidIndex(size_t id,
+ModelIndex GenericItemModel<TGenericItem>::makeValidIndex(size_t id,
     std::vector<T>& vector)
 {
     if (id >= 0 && id < vector.size())
@@ -276,8 +276,8 @@ ModelIndex AbstractItemModel<TAbstractItem>::makeValidIndex(size_t id,
     return ModelIndex();
 }
 
-template <typename TAbstractItem>
-AbstractItemModel<TAbstractItem>::~AbstractItemModel()
+template <typename TGenericItem>
+GenericItemModel<TGenericItem>::~GenericItemModel()
 {
     clear(false);
 
@@ -285,35 +285,35 @@ AbstractItemModel<TAbstractItem>::~AbstractItemModel()
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-bool AbstractItemModel<TAbstractItem>::isValidIndex(const ModelIndex& model_index) const
+template <typename TGenericItem>
+bool GenericItemModel<TGenericItem>::isValidIndex(const ModelIndex& model_index) const
 {
     return model_index.d_modelData != 0;
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-ModelIndex AbstractItemModel<TAbstractItem>::makeIndex(size_t child,
+template <typename TGenericItem>
+ModelIndex GenericItemModel<TGenericItem>::makeIndex(size_t child,
     const ModelIndex& parent_index)
 {
     if (parent_index.d_modelData == 0)
         return ModelIndex();
 
-    AbstractItem* item = static_cast<AbstractItem*>(parent_index.d_modelData);
+    GenericItem* item = static_cast<GenericItem*>(parent_index.d_modelData);
     return makeValidIndex(child, item->getChildren());
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-bool AbstractItemModel<TAbstractItem>::areIndicesEqual(const ModelIndex& index1,
+template <typename TGenericItem>
+bool GenericItemModel<TGenericItem>::areIndicesEqual(const ModelIndex& index1,
     const ModelIndex& index2) const
 {
     return compareIndices(index1, index2) == 0;
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-int AbstractItemModel<TAbstractItem>::compareIndices(const ModelIndex& index1,
+template <typename TGenericItem>
+int GenericItemModel<TGenericItem>::compareIndices(const ModelIndex& index1,
     const ModelIndex& index2) const
 {
     if (!isValidIndex(index1) || !isValidIndex(index2) ||
@@ -327,13 +327,13 @@ int AbstractItemModel<TAbstractItem>::compareIndices(const ModelIndex& index1,
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-ModelIndex AbstractItemModel<TAbstractItem>::getParentIndex(const ModelIndex& model_index) const
+template <typename TGenericItem>
+ModelIndex GenericItemModel<TGenericItem>::getParentIndex(const ModelIndex& model_index) const
 {
     if (model_index.d_modelData == d_root)
         return ModelIndex();
 
-    AbstractItem* item = static_cast<AbstractItem*>(model_index.d_modelData);
+    GenericItem* item = static_cast<GenericItem*>(model_index.d_modelData);
     if (item->getParent() == 0)
         return getRootIndex();
 
@@ -341,22 +341,22 @@ ModelIndex AbstractItemModel<TAbstractItem>::getParentIndex(const ModelIndex& mo
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-int AbstractItemModel<TAbstractItem>::getChildId(const ModelIndex& model_index) const
+template <typename TGenericItem>
+int GenericItemModel<TGenericItem>::getChildId(const ModelIndex& model_index) const
 {
     return getChildId(getItemForIndex(model_index));
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-int AbstractItemModel<TAbstractItem>::getChildId(const AbstractItem* item) const
+template <typename TGenericItem>
+int GenericItemModel<TGenericItem>::getChildId(const GenericItem* item) const
 {
     if (item == 0 || item->getParent() == 0)
         return -1;
 
-    AbstractItem* parent_item = item->getParent();
+    GenericItem* parent_item = item->getParent();
 
-    std::vector<AbstractItem*>::iterator itor = std::find(
+    std::vector<GenericItem*>::iterator itor = std::find(
         parent_item->getChildren().begin(), parent_item->getChildren().end(), item);
 
     if (itor == parent_item->getChildren().end())
@@ -366,31 +366,31 @@ int AbstractItemModel<TAbstractItem>::getChildId(const AbstractItem* item) const
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-ModelIndex AbstractItemModel<TAbstractItem>::getRootIndex() const
+template <typename TGenericItem>
+ModelIndex GenericItemModel<TGenericItem>::getRootIndex() const
 {
     return ModelIndex(d_root);
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-size_t AbstractItemModel<TAbstractItem>::getChildCount(const ModelIndex& model_index) const
+template <typename TGenericItem>
+size_t GenericItemModel<TGenericItem>::getChildCount(const ModelIndex& model_index) const
 {
     if (model_index.d_modelData == 0)
         return d_root->getChildren().size();
 
-    return static_cast<AbstractItem*>(model_index.d_modelData)->getChildren().size();
+    return static_cast<GenericItem*>(model_index.d_modelData)->getChildren().size();
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-String AbstractItemModel<TAbstractItem>::getData(const ModelIndex& model_index,
+template <typename TGenericItem>
+String GenericItemModel<TGenericItem>::getData(const ModelIndex& model_index,
     ItemDataRole role /*= IDR_Text*/)
 {
     if (!isValidIndex(model_index))
         return "";
 
-    AbstractItem* item = static_cast<AbstractItem*>(model_index.d_modelData);
+    GenericItem* item = static_cast<GenericItem*>(model_index.d_modelData);
     if (role == IDR_Text) return item->getText();
     if (role == IDR_Icon) return item->getIcon();
     if (role == IDR_Tooltip) return "Tooltip for " + item->getText();
@@ -399,15 +399,15 @@ String AbstractItemModel<TAbstractItem>::getData(const ModelIndex& model_index,
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::addItem(String text)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::addItem(String text)
 {
-    addItem(CEGUI_NEW_AO TAbstractItem(text));
+    addItem(CEGUI_NEW_AO TGenericItem(text));
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::addItem(AbstractItem* item)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::addItem(GenericItem* item)
 {
     if (item == 0)
         CEGUI_THROW(InvalidRequestException("Cannot add a NULL item to the model!"));
@@ -417,20 +417,20 @@ void AbstractItemModel<TAbstractItem>::addItem(AbstractItem* item)
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::addItemAtPosition(AbstractItem* item, size_t pos)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::addItemAtPosition(GenericItem* item, size_t pos)
 {
     addItemAtPosition(item, getRootIndex(), pos);
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::addItemAtPosition(AbstractItem* new_item,
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::addItemAtPosition(GenericItem* new_item,
     const ModelIndex& parent_index, size_t position)
 {
     notifyChildrenWillBeAdded(parent_index, position, 1);
 
-    AbstractItem* parent = static_cast<AbstractItem*>(parent_index.d_modelData);
+    GenericItem* parent = static_cast<GenericItem*>(parent_index.d_modelData);
     if (position > parent->getChildren().size())
         CEGUI_THROW(InvalidRequestException("The specified position is out of range."));
 
@@ -441,9 +441,9 @@ void AbstractItemModel<TAbstractItem>::addItemAtPosition(AbstractItem* new_item,
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::insertItem(AbstractItem* item,
-    const AbstractItem* position)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::insertItem(GenericItem* item,
+    const GenericItem* position)
 {
     int child_id = position == 0 ? -1 : getChildId(position);
 
@@ -456,19 +456,19 @@ void AbstractItemModel<TAbstractItem>::insertItem(AbstractItem* item,
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::removeItem(const ModelIndex& index)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::removeItem(const ModelIndex& index)
 {
     removeItem(getItemForIndex(index));
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::removeItem(const AbstractItem* item)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::removeItem(const GenericItem* item)
 {
-    AbstractItem* parent_item = item->getParent();
+    GenericItem* parent_item = item->getParent();
 
-    std::vector<AbstractItem*>::iterator itor = std::find(
+    std::vector<GenericItem*>::iterator itor = std::find(
         parent_item->getChildren().begin(), parent_item->getChildren().end(),
         item);
 
@@ -487,47 +487,47 @@ void AbstractItemModel<TAbstractItem>::removeItem(const AbstractItem* item)
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-TAbstractItem* AbstractItemModel<TAbstractItem>::getItemForIndex(
+template <typename TGenericItem>
+TGenericItem* GenericItemModel<TGenericItem>::getItemForIndex(
     const ModelIndex& index) const
 {
     if (index.d_modelData == 0)
         return 0;
 
-    return static_cast<TAbstractItem*>(index.d_modelData);
+    return static_cast<TGenericItem*>(index.d_modelData);
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void AbstractItemModel<TAbstractItem>::clear(bool notify /*= true */)
+template <typename TGenericItem>
+void GenericItemModel<TGenericItem>::clear(bool notify /*= true */)
 {
     deleteChildren(d_root, notify);
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-ModelIndex AbstractItemModel<TAbstractItem>::getIndexForItem(
-    const AbstractItem* item) const
+template <typename TGenericItem>
+ModelIndex GenericItemModel<TGenericItem>::getIndexForItem(
+    const GenericItem* item) const
 {
     // TODO: this is annoying. We should be able to just hand out the ModelIndex
     // Right now we can't, since we're in a const method, operating on a const item
     // In hindsight, the index we hand out will be modifiable so maybe we need
     // to change the const-ness of the item parameter.
-    AbstractItem* parent = item->getParent();
+    GenericItem* parent = item->getParent();
     int child_id = getChildId(item);
     return ModelIndex(child_id != -1 ? parent->getChildren().at(child_id) : 0);
 }
 
 //----------------------------------------------------------------------------//
-template <typename TAbstractItem>
-void CEGUI::AbstractItemModel<TAbstractItem>::deleteChildren(AbstractItem* item,
+template <typename TGenericItem>
+void CEGUI::GenericItemModel<TGenericItem>::deleteChildren(GenericItem* item,
     bool notify)
 {
     if (item == 0)
         CEGUI_THROW(InvalidRequestException("Cannot delete children of a NULL item!"));
 
     size_t items_count = item->getChildren().size();
-    std::vector<AbstractItem*>::iterator itor = item->getChildren().begin();
+    std::vector<GenericItem*>::iterator itor = item->getChildren().begin();
 
     if (notify)
     {

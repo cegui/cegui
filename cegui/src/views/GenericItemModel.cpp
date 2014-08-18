@@ -24,41 +24,41 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/views/AbstractItemModel.h"
+#include "CEGUI/views/GenericItemModel.h"
 #include "CEGUI/Exceptions.h"
 
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-AbstractItem::AbstractItem() : d_text(""), d_parent(0)
+GenericItem::GenericItem() : d_text(""), d_parent(0)
 {
 }
 
 //----------------------------------------------------------------------------//
-AbstractItem::AbstractItem(const String& text) : d_text(text), d_parent(0)
+GenericItem::GenericItem(const String& text) : d_text(text), d_parent(0)
 {
 }
 
 //----------------------------------------------------------------------------//
-AbstractItem::AbstractItem(const String& text, const String& icon) :
+GenericItem::GenericItem(const String& text, const String& icon) :
 d_text(text), d_icon(icon), d_parent(0)
 {
 }
 
 //----------------------------------------------------------------------------//
-AbstractItem::~AbstractItem()
+GenericItem::~GenericItem()
 {
     while (!d_children.empty())
     {
-        AbstractItem* item = d_children.back();
+        GenericItem* item = d_children.back();
         d_children.pop_back();
         CEGUI_DELETE_AO item;
     }
 }
 
 //----------------------------------------------------------------------------//
-bool AbstractItem::operator==(const AbstractItem& other) const
+bool GenericItem::operator==(const GenericItem& other) const
 {
     if (d_text != other.d_text)
         return false;
@@ -78,19 +78,19 @@ bool AbstractItem::operator==(const AbstractItem& other) const
 }
 
 //----------------------------------------------------------------------------//
-bool AbstractItem::operator!=(const AbstractItem& other) const
+bool GenericItem::operator!=(const GenericItem& other) const
 {
     return !(*this == other);
 }
 
 //----------------------------------------------------------------------------//
-bool AbstractItem::operator<(const AbstractItem& other) const
+bool GenericItem::operator<(const GenericItem& other) const
 {
     return d_text < other.d_text;
 }
 
 //----------------------------------------------------------------------------//
-void AbstractItem::addItem(AbstractItem* child)
+void GenericItem::addItem(GenericItem* child)
 {
     d_children.push_back(child);
     child->setParent(this);
