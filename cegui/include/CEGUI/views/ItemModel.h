@@ -138,7 +138,7 @@ public:
     This is used by views to query data that is to be shown.
 
     A view will require a custom implementation of this provider. CEGUI provides
-    a basic implementation in form of AbstractItemModel.
+    a basic implementation in form of GenericItemModel.
 
     This model provides events to notify listeners (usually the view it is
     attached to) of different events that will happen or happened. It is the

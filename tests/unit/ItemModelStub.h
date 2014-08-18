@@ -30,8 +30,6 @@
 #include "CEGUI/views/ItemModel.h"
 #include <vector>
 
-// TODO: see if we can migrate basic logic from this to an abstract base
-// ItemModel (e.g.: AbstractItemModel / ItemModelBase, a' la Qt) in the main lib
 class ItemModelStub : public CEGUI::ItemModel
 {
 public:

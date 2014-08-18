@@ -30,24 +30,24 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem() : AbstractItem()
+StandardItem::StandardItem() : GenericItem()
 {
 }
 
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem(const String& text, uint id) : AbstractItem(text), d_id(id)
+StandardItem::StandardItem(const String& text, uint id) : GenericItem(text), d_id(id)
 {
 }
 
 //----------------------------------------------------------------------------//
 StandardItem::StandardItem(const String& text, const String& icon, uint id /*= 0*/) :
-AbstractItem(text, icon), d_id(id)
+GenericItem(text, icon), d_id(id)
 {
 }
 
 //----------------------------------------------------------------------------//
 StandardItemModel::StandardItemModel() :
-AbstractItemModel<StandardItem>(CEGUI_NEW_AO StandardItem)
+GenericItemModel<StandardItem>(CEGUI_NEW_AO StandardItem)
 {
 }
 

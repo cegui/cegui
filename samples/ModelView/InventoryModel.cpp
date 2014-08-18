@@ -32,12 +32,12 @@
 using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
-InventoryItem::InventoryItem(String name) : AbstractItem(name)
+InventoryItem::InventoryItem(String name) : GenericItem(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-InventoryItem* InventoryItem::make(const String& name, float weight, AbstractItem* parent)
+InventoryItem* InventoryItem::make(const String& name, float weight, GenericItem* parent)
 {
     InventoryItem* item = new InventoryItem(name);
 
@@ -50,7 +50,7 @@ InventoryItem* InventoryItem::make(const String& name, float weight, AbstractIte
 //----------------------------------------------------------------------------//
 bool InventoryItem::operator==(const InventoryItem& other)
 {
-    if (!AbstractItem::operator==(other))
+    if (!GenericItem::operator==(other))
         return false;
 
     return d_weight == other.d_weight;
@@ -58,7 +58,7 @@ bool InventoryItem::operator==(const InventoryItem& other)
 
 //----------------------------------------------------------------------------//
 InventoryModel::InventoryModel() :
-AbstractItemModel<InventoryItem>(InventoryItem::make("Inventory", 0.0f)),
+GenericItemModel<InventoryItem>(InventoryItem::make("Inventory", 0.0f)),
 d_randomItemsCount(0)
 {
 }

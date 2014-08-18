@@ -27,7 +27,7 @@
 #ifndef _Sample_Model_View_Model_h_
 #define _Sample_Model_View_Model_h_
 
-#include "CEGUI/views/AbstractItemModel.h"
+#include "CEGUI/views/GenericItemModel.h"
 #include "CEGUI/String.h"
 #include <vector>
 
@@ -48,7 +48,7 @@
     ...
 */
 
-class InventoryItem : public CEGUI::AbstractItem
+class InventoryItem : public CEGUI::GenericItem
 {
 public:
     InventoryItem(CEGUI::String name);
@@ -57,11 +57,11 @@ public:
     bool operator==(const InventoryItem& other);
 
     static InventoryItem* make(const CEGUI::String& name, float weight,
-        AbstractItem* parent = 0);
+        GenericItem* parent = 0);
     friend std::ostream& operator<< (std::ostream& output, const InventoryItem& item);
 };
 
-class InventoryModel : public CEGUI::AbstractItemModel<InventoryItem>
+class InventoryModel : public CEGUI::GenericItemModel<InventoryItem>
 {
 public:
     InventoryModel();
