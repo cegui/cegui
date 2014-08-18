@@ -174,7 +174,6 @@ public:
     bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
-    void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
 protected:
