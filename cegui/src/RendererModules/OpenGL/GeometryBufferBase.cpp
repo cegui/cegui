@@ -67,48 +67,20 @@ void OpenGLGeometryBufferBase::reset()
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
-{
-    updateMatrix();
-
-    return d_matrix;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
     // Check if the ached values from the RenderTarget are still valid or an update
     // is required for this GeometryBuffer
     if(d_matrixValid)
-        d_matrixValid = checkAndUpdateRenderTargetValidity(d_owner.getActiveRenderTarget());
+        d_matrixValid = checkRenderTargetValidity(d_owner.getActiveRenderTarget());
 
     if(!d_matrixValid)
     {
-        //Apply translation, rotation and scale matrix
-        const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
-                                    d_translation.d_y + d_pivot.d_y,
-                                    d_translation.d_z + d_pivot.d_z);
-
-        d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
-
-        glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
-        glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
-
-        glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
-
-        d_matrix *= rotation_matrix * scale_matrix;
-
-        glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-        glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
-        d_matrix *=  translMatrix * d_customTransform;
-
         //Apply the model view projection matrix
-        d_matrix = d_owner.getViewProjectionMatrix() * d_matrix;
+        d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
 
         d_matrixValid = true;
     }
-
-    updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//
@@ -117,6 +89,27 @@ void OpenGLGeometryBufferBase::appendGeometry(const std::vector<float>& vertex_d
     d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
     // Update size of geometry buffer
     d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
+}
+
+//----------------------------------------------------------------------------//
+glm::mat4 OpenGLGeometryBufferBase::getModelMatrix() const
+{
+    //Apply translation, rotation and scale matrix
+    const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
+                                d_translation.d_y + d_pivot.d_y,
+                                d_translation.d_z + d_pivot.d_z);
+
+    const glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
+    const glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
+
+    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
+
+    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z));
+
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), final_trans);
+    modelMatrix *= rotation_matrix * scale_matrix * translMatrix * d_customTransform;
+
+    return modelMatrix;
 }
 
 
