@@ -460,7 +460,7 @@ public:
     const RenderTarget* getLastRenderTarget() const;
 
     //TODO DOCU
-    bool checkAndUpdateRenderTargetValidity(const RenderTarget* activeRenderTarget) const;
+    bool checkRenderTargetValidity(const RenderTarget* activeRenderTarget) const;
 
     //TODO DOCU
     void updateRenderTargetData(const RenderTarget* activeRenderTarget) const;

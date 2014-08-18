@@ -67,12 +67,12 @@ public:
     
     /*
     \brief
-        Returns the cached model view projection matrix.
+        Calculates and returns the model matrix of this GeometryBuffer.
 
     \return
-        The cached model view projection matrix.
+        The model matrix of this GeometryBuffer.
     */
-    const glm::mat4& getMatrix() const;
+    glm::mat4 getModelMatrix() const;
 
     /*
     \brief
