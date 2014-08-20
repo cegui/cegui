@@ -89,7 +89,7 @@ OgreShaderWrapper::~OgreShaderWrapper()
 }
 
 //----------------------------------------------------------------------------//
-Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() 
+Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() const 
 {
     return d_vertexParameters;
 }
