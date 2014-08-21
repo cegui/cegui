@@ -1,4 +1,2 @@
-option(CEGUI_SAMPLES_ENABLE_DEMO6 "Specifies whether this sample should be built or not" TRUE)
-if(CEGUI_SAMPLES_ENABLE_DEMO6)
-    cegui_add_sample(CEGUISample_Demo6)
-endif()
+list (APPEND SAMPLES_SOURCES Sample_Demo6.cpp)
+list (APPEND SAMPLES_HEADERS Sample_Demo6.h)
