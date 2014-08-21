@@ -1,1 +1,1 @@
-list (APPEND SAMPLES_SOURCES Sample_TabControl.cpp)
+list (APPEND SAMPLES_SOURCES TabControl.cpp)
