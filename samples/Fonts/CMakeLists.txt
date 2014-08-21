@@ -1,4 +1,2 @@
-option(CEGUI_SAMPLES_ENABLE_FONTS "Specifies whether this sample should be built or not" TRUE)
-if(CEGUI_SAMPLES_ENABLE_FONTS)
-    cegui_add_sample(CEGUISample_Fonts)
-endif()
+list (APPEND SAMPLES_SOURCES Sample_FontsDemo.cpp)
+list (APPEND SAMPLES_HEADERS Sample_FontsDemo.h)

@@ -1,4 +1,2 @@
-option(CEGUI_SAMPLES_ENABLE_GAMEMENU "Specifies whether this sample should be built or not" TRUE)
-if(CEGUI_SAMPLES_ENABLE_GAMEMENU)
-    cegui_add_sample(CEGUISample_GameMenuDemo)
-endif()
+list (APPEND SAMPLES_SOURCES GameMenu.cpp)
+list (APPEND SAMPLES_HEADERS GameMenu.h)
