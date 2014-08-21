@@ -261,3 +261,4 @@ if (APPLE)
 endif()
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
+cegui_target_link_libraries(${CEGUI_TARGET_NAME} "CEGUISamples")
