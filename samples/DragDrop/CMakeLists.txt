@@ -1,2 +1,2 @@
-list (APPEND SAMPLES_SOURCES Sample_DragAndDrop.cpp)
-list (APPEND SAMPLES_HEADERS Sample_DragAndDrop.h)
+list (APPEND SAMPLES_SOURCES DragAndDrop.cpp)
+list (APPEND SAMPLES_HEADERS DragAndDrop.h)

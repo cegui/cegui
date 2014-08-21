@@ -1,2 +1,2 @@
-list (APPEND SAMPLES_SOURCES Sample_Demo6.cpp)
-list (APPEND SAMPLES_HEADERS Sample_Demo6.h)
+list (APPEND SAMPLES_SOURCES Demo6.cpp)
+list (APPEND SAMPLES_HEADERS Demo6.h)

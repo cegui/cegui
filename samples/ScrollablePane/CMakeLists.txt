@@ -1,1 +1,1 @@
-list (APPEND SAMPLES_SOURCES Sample_ScrollablePane.cpp)
+list (APPEND SAMPLES_SOURCES ScrollablePane.cpp)
