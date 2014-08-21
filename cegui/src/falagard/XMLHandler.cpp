@@ -413,7 +413,7 @@ namespace CEGUI
             attributes.getValueAsBool(AutoWindowAttribute, true));
 
         CEGUI_LOGINSANE("-----> Start of definition for child widget."
-            " Type: " + d_childcomponent->getBaseWidgetType() +
+            " Type: " + d_childcomponent->getTargetType() +
             " Name: " + d_childcomponent->getWidgetName() +
             " Look: " + d_childcomponent->getWidgetLookName() +
             " Auto: " + (d_childcomponent->isAutoWindow() ? "Yes" : "No"));

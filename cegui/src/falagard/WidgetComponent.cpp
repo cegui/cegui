@@ -44,7 +44,7 @@ namespace CEGUI
                                      const String& suffix,
                                      const String& renderer,
                                      bool autoWindow) :
-        d_baseType(type),
+        d_targetType(type),
         d_widgetLookName(look),
         d_name(suffix),
         d_rendererType(renderer),
@@ -55,7 +55,7 @@ namespace CEGUI
 
     void WidgetComponent::create(Window& parent) const
     {
-        Window* widget = WindowManager::getSingleton().createWindow(d_baseType, d_name);
+        Window* widget = WindowManager::getSingleton().createWindow(d_targetType, d_name);
         widget->setAutoWindow(d_autoWindow);
 
         // set the window renderer
@@ -120,14 +120,14 @@ namespace CEGUI
         d_area = area;
     }
 
-    const String& WidgetComponent::getBaseWidgetType() const
+    const String& WidgetComponent::getTargetType() const
     {
-        return d_baseType;
+        return d_targetType;
     }
 
-    void WidgetComponent::setBaseWidgetType(const String& type)
+    void WidgetComponent::setTargetType(const String& type)
     {
-        d_baseType = type;
+        d_targetType = type;
     }
 
     const String& WidgetComponent::getWidgetLookName() const
@@ -242,7 +242,7 @@ namespace CEGUI
         // output opening tag
         xml_stream.openTag(Falagard_xmlHandler::ChildElement)
             .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name)
-            .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType);
+            .attribute(Falagard_xmlHandler::TypeAttribute, d_targetType);
 
         if (!d_widgetLookName.empty())
             xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_widgetLookName);

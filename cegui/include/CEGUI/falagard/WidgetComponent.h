@@ -75,8 +75,8 @@ namespace CEGUI
         const ComponentArea& getComponentArea() const;
         void setComponentArea(const ComponentArea& area);
 
-        const String& getBaseWidgetType() const;
-        void setBaseWidgetType(const String& type);
+        const String& getTargetType() const;
+        void setTargetType(const String& type);
 
         const String& getWidgetLookName() const;
         void setWidgetLookName(const String& look);
@@ -164,7 +164,7 @@ namespace CEGUI
 
     private:
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
-        String   d_baseType;                 //!< Type of widget to be created.
+        String   d_targetType;               //!< The target type (e.g. falagard mapping or alias) mapping of the widget to be created.
         String   d_widgetLookName;           //!< Name of a WidgetLookFeel to be used for the widget.
         String   d_name;                     //!< Name to create this widget with.
         String   d_rendererType;             //!< Name of the window renderer type to assign to the widget.
