@@ -45,7 +45,7 @@ namespace CEGUI
                                      const String& renderer,
                                      bool autoWindow) :
         d_baseType(type),
-        d_imageryName(look),
+        d_widgetLookName(look),
         d_name(suffix),
         d_rendererType(renderer),
         d_autoWindow(autoWindow),
@@ -63,8 +63,8 @@ namespace CEGUI
             widget->setWindowRenderer(d_rendererType);
 
         // set the widget look
-        if (!d_imageryName.empty())
-            widget->setLookNFeel(d_imageryName);
+        if (!d_widgetLookName.empty())
+            widget->setLookNFeel(d_widgetLookName);
 
         // add the new widget to its parent
         parent.addChild(widget);
@@ -132,12 +132,12 @@ namespace CEGUI
 
     const String& WidgetComponent::getWidgetLookName() const
     {
-        return d_imageryName;
+        return d_widgetLookName;
     }
 
     void WidgetComponent::setWidgetLookName(const String& look)
     {
-        d_imageryName = look;
+        d_widgetLookName = look;
     }
 
     const String& WidgetComponent::getWidgetName() const
@@ -244,8 +244,8 @@ namespace CEGUI
             .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name)
             .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType);
 
-        if (!d_imageryName.empty())
-            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_imageryName);
+        if (!d_widgetLookName.empty())
+            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_widgetLookName);
 
         if (!d_rendererType.empty())
             xml_stream.attribute(Falagard_xmlHandler::RendererAttribute, d_rendererType);

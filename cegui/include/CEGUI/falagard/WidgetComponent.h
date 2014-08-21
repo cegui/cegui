@@ -165,10 +165,10 @@ namespace CEGUI
     private:
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
         String   d_baseType;                 //!< Type of widget to be created.
-        String   d_imageryName;              //!< Name of a WidgetLookFeel to be used for the widget.
-        String   d_name;                     //!< name to create this widget with.
+        String   d_widgetLookName;           //!< Name of a WidgetLookFeel to be used for the widget.
+        String   d_name;                     //!< Name to create this widget with.
         String   d_rendererType;             //!< Name of the window renderer type to assign to the widget.
-        bool     d_autoWindow;               //!< specifies whether to mark component as an auto-window.
+        bool     d_autoWindow;               //!< Specifies whether to mark component as an auto-window.
         VerticalAlignment    d_vertAlign;    //!< Vertical alignment to be used for this widget.
         HorizontalAlignment  d_horzAlign;    //!< Horizontal alignment to be used for this widget.
         PropertiesList  d_properties;        //!< Collection of PropertyInitialisers to be applied the the widget upon creation.
