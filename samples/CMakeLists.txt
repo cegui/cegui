@@ -22,7 +22,7 @@ add_subdirectory(SVG)
 add_subdirectory(CustomShapesDrawing)
 
 if (CEGUI_BUILD_LUA_MODULE)
-    # add_subdirectory(Demo8)
+    add_subdirectory(Demo8)
 endif()
 
 cegui_add_library("CEGUISamples" SAMPLES_SOURCES SAMPLES_HEADERS)
