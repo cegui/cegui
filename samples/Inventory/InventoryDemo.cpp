@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "Sample_InventoryDemo.h"
+#include "InventoryDemo.h"
 #include "InventoryItem.h"
 #include "InventoryItemRenderer.h"
 #include "InventoryReceiver.h"
