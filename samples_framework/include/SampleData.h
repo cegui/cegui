@@ -101,11 +101,9 @@ protected:
 class SampleDataModule : public SampleData
 {
 public:
-    SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
+    SampleDataModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
     CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
     virtual ~SampleDataModule();
-
-    virtual void getSampleInstanceFromDLL();
 
     virtual void initialise(int width, int height);
     virtual void deinitialise();

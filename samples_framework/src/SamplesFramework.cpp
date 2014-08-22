@@ -26,7 +26,6 @@ author:     Lukas E Meindl
 ***************************************************************************/
 #include "SamplesFramework.h"
 
-#include "Samples_xmlHandler.h"
 #include "Sample.h"
 #include "SampleData.h"
 #include "CEGuiBaseApplication.h"
@@ -82,6 +81,8 @@ SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
     d_quittingSampleView(false),
     d_samplesXMLFilename(xml_filename)
 {
+    if (!framework)
+        framework = this;
 }
 
 //----------------------------------------------------------------------------//
@@ -159,41 +160,14 @@ void SamplesFramework::unloadSamples()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::loadSamplesDataFromXML(const String& filename)
-{
-    if (filename.empty())
-        CEGUI_THROW(InvalidRequestException(
-        "SamplesFramework::loadSamplesDataFromXML: "
-        "filename supplied for file loading must be valid."));
-
-    Samples_xmlHandler handler(this);
-
-    // do parse (which uses handler to create actual data)
-    CEGUI_TRY
-    {
-        System::getSingleton().getXMLParser()->
-            parseXMLFile(handler, filename, XMLSchemaName, "");
-    }
-    CEGUI_CATCH(...)
-    {
-        Logger::getSingleton().logEvent(
-            "SamplesFramework::loadSamplesDataFromXML: "
-            "loading of sample data from file '" + filename + "' has failed.",
-            Errors);
-
-        CEGUI_RETHROW;
-    }
-}
-
-
-//----------------------------------------------------------------------------//
-void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName,
+void SamplesFramework::addSampleDataCppModule(Sample* instance,
+											  CEGUI::String sampleName,
                                               CEGUI::String summary,
                                               CEGUI::String description,
                                               SampleType sampleTypeEnum,
                                               CEGUI::String credits)
 {
-    SampleData* sampleData = new SampleDataModule(sampleName, summary,
+    SampleData* sampleData = new SampleDataModule(instance, sampleName, summary,
                                                   description, sampleTypeEnum,
                                                   credits);
 
@@ -509,11 +483,6 @@ bool SamplesFramework::updateInitialisationStep()
     {
     case 0:
     {
-        const String filename(d_samplesXMLFilename.empty() ?
-            String(d_baseApp->getDataPathPrefix()) + "/samples/samples.xml" :
-            d_samplesXMLFilename);
-
-        loadSamplesDataFromXML(filename);
         ++step;
         displaySampleBrowserLayoutLoadProgress();
 
@@ -661,4 +630,3 @@ CEGUI::InputAggregator* SamplesFramework::getCurrentInputAggregator()
 }
 
 //----------------------------------------------------------------------------//
-

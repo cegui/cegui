@@ -27,8 +27,6 @@ author:     Lukas E Meindl
 #include "SampleData.h"
 #include "Sample.h"
 
-#include "Samples_xmlHandler.h"
-
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/Version.h"
 #include "CEGUI/Exceptions.h"
@@ -46,9 +44,6 @@ using namespace CEGUI;
 
 #define S_(X) #X
 #define STRINGIZE(X) S_(X)
-
-typedef Sample& (*getSampleInstance)();
-#define GetSampleInstanceFuncName "getSampleInstance"
 
 SampleData::SampleData(CEGUI::String sampleName,
                        CEGUI::String summary,
@@ -95,13 +90,13 @@ CEGUI::String SampleData::getSampleTypeString()
     switch(d_type)
     {
     case ST_Module:
-        return SampleDataHandler::SampleTypeCppModule;
+        return "C++ Module";
         break;
     case ST_Lua:
-        return SampleDataHandler::SampleTypeLua;
+        return "Lua";
         break;
     case ST_Python:
-        return SampleDataHandler::SampleTypePython;
+        return "Python";
     default:
         return "";
     }
@@ -231,13 +226,14 @@ void SampleData::setTextureTargetImageArea(float height, float width)
 }
 
 //----------------------------------------------------------------------------//
-SampleDataModule::SampleDataModule(CEGUI::String sampleName,
+SampleDataModule::SampleDataModule(Sample* instance,
+                                   CEGUI::String sampleName,
                                    CEGUI::String summary,
                                    CEGUI::String description,
                                    SampleType sampleTypeEnum,
                                    CEGUI::String credits)
     : SampleData(sampleName, summary, description, sampleTypeEnum, credits)
-    , d_sample(0)
+    , d_sample(instance)
     , d_dynamicModule(0)
 {
 }
@@ -249,8 +245,6 @@ SampleDataModule::~SampleDataModule()
 void SampleDataModule::initialise(int width, int height)
 {
     SampleData::initialise(width, height);
-
-    getSampleInstanceFromDLL();
 
     d_sample->initialise(d_guiContext);
     d_usedFilesString = d_sample->getUsedFilesString();
@@ -271,20 +265,6 @@ void SampleDataModule::deinitialise()
         d_sample->deinitialise();
 
     SampleData::deinitialise();   
-}
-
-void SampleDataModule::getSampleInstanceFromDLL()
-{
-    CEGUI::DynamicModule* sampleModule = new CEGUI::DynamicModule(d_name);
-    getSampleInstance functionPointerGetSample = (getSampleInstance)sampleModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName));
-
-    if(functionPointerGetSample == 0)
-    {
-        CEGUI::String errorMessage = "The sample creation function is not defined in the dynamic library of " + d_name;
-        CEGUI_THROW(CEGUI::InvalidRequestException(errorMessage.c_str()));
-    }
-
-    d_sample =  &(functionPointerGetSample());
 }
 
 void SampleDataModule::onEnteringSample()
