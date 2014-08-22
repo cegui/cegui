@@ -35,11 +35,6 @@
 namespace CEGUI
 {
 
-bool StateImagery::LayerSpecificationPointerComparator::operator() (const LayerSpecification* layerSpec1, const LayerSpecification* layerSpec2) const
-{
-    return *layerSpec1 < *layerSpec2;
-}
-
 StateImagery::StateImagery(const String& name) :
     d_stateName(name),
     d_clipToDisplay(false)
@@ -114,15 +109,18 @@ StateImagery::getLayerIterator() const
     return LayerIterator(d_layers.begin(),d_layers.end());
 }
 
-StateImagery::LayerSpecificationPointerMultiset StateImagery::getLayerSpecificationPointers()
+StateImagery::LayerSpecificationPointerList StateImagery::getLayerSpecificationPointers()
 {
-    StateImagery::LayerSpecificationPointerMultiset pointerList;
+    StateImagery::LayerSpecificationPointerList pointerList;
 
     LayersList::iterator layerSpecIter = d_layers.begin();
     LayersList::iterator layerSpecIterEnd = d_layers.end();
     while( layerSpecIter != layerSpecIterEnd )
     {
-        pointerList.insert(&(*layerSpecIter));
+        //! This hack is necessary because in newer C++ versions the multiset and sets return only const iterators.
+        //! \deprecated This will be replaced with proper types and behaviour in the next version.
+        LayerSpecification* layerSpec = const_cast<LayerSpecification*>(&(*layerSpecIter));
+        pointerList.push_back(layerSpec);
         ++layerSpecIter;
     }
 
