@@ -31,4 +31,4 @@ endforeach ()
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/common/include)
 include_directories(${CMAKE_BINARY_DIR}/samples/common/include)
 
-cegui_add_library("CEGUISamples" SAMPLES_SOURCES SAMPLES_HEADERS)
+cegui_add_library_impl("CEGUISamples" FALSE SAMPLES_SOURCES SAMPLES_HEADERS FALSE FALSE)
