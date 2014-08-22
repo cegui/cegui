@@ -45,23 +45,25 @@ public:
 
     virtual void doTest()
     {
+        size_t root_items_count = 200;
         size_t id = 0;
-        // 200 items with 100 children each
-        for (size_t parent = 0; parent < 200; ++parent, ++id)
+        // 200 items with 50 children each
+        for (size_t parent = 0; parent < root_items_count; ++parent, ++id)
         {
             CEGUI::TreeItem* item = new CEGUI::TreeItem(
                 CEGUI::PropertyHelper<CEGUI::uint>::toString(id));
             d_window->addItem(item);
 
-            for (size_t child = 0; child < 100; ++child, ++id)
+            for (size_t child = 0; child < 50; ++child, ++id)
             {
                 item->addItem(new CEGUI::TreeItem(
                     CEGUI::PropertyHelper<CEGUI::uint>::toString(id)));
+                d_window->render();
             }
         }
         d_window->render();
 
-        for (size_t i = 0; i < 200; ++i)
+        for (size_t i = 0; i < root_items_count; ++i)
         {
             d_window->d_listItems.at(i)->toggleIsOpen();
         }

@@ -275,12 +275,12 @@ void OpenGLRenderer::endRendering()
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::setupExtraStates()
 {
+    CEGUI_activeTexture(GL_TEXTURE0);
+    CEGUI_clientActiveTexture(GL_TEXTURE0);
+
     glMatrixMode(GL_TEXTURE);
     glPushMatrix();
     glLoadIdentity();
-
-    CEGUI_activeTexture(GL_TEXTURE0);
-    CEGUI_clientActiveTexture(GL_TEXTURE0);
 
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
