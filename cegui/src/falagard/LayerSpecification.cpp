@@ -31,6 +31,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
     LayerSpecification::LayerSpecification(uint priority) :
         d_layerPriority(priority)
     {}
@@ -98,4 +99,20 @@ namespace CEGUI
     {
         return SectionIterator(d_sections.begin(), d_sections.end());
     }
+
+    LayerSpecification::SectionSpecificationPointerList LayerSpecification::getSectionSpecificationPointers()
+    {
+        LayerSpecification::SectionSpecificationPointerList pointerList;
+
+        SectionList::iterator sectionSpecificationIter = d_sections.begin();
+        SectionList::iterator sectionSpecificationEnd = d_sections.end();
+        while( sectionSpecificationIter != sectionSpecificationEnd )
+        {
+            pointerList.push_back(&(*sectionSpecificationIter));
+            ++sectionSpecificationIter;
+        }
+
+        return pointerList;
+    }
+
 } // End of  CEGUI namespace section
