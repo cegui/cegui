@@ -56,9 +56,8 @@ public:
     bool initialise();
     void deinitialise();
 
-    void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary,
-                                CEGUI::String description,
-                                SampleType sampleTypeEnum, CEGUI::String credits);
+    void addSampleDataCppModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
+                                CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);
@@ -81,12 +80,12 @@ public:
 
     static const CEGUI::String XMLSchemaName;
 
+    static SamplesFramework* framework;
+
 protected:
     void initialiseLoadScreenLayout();
 
     void initialiseSampleBrowserLayout();
-    void loadSamplesDataFromXML(const CEGUI::String& filename);
-    void getSampleInstanceFromDLL(SampleData& sampleData);
 
     void addSample(SampleData* sampleData);
 

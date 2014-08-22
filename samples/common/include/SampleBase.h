@@ -38,4 +38,8 @@ author:     Lukas E Meindl
 #   define SAMPLE_EXPORT
 #endif
 
+#define ADD_SAMPLE(instance, name, summary, description, type, credits) \
+    class SamplesFramework; \
+	SamplesFramework::framework->addSampleDataCppModule(instance, name, summary, description, sampleTypeEnum, credits)
+
 #endif

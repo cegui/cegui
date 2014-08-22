@@ -977,7 +977,7 @@ void GameMenuDemo::setupSelectionIconAnimations()
     iconAnimInst->setTargetWindow(window);
 }
 /*************************************************************************
-Define the module function that returns an instance of the sample
+    Register the sample with the SamplesFramework
 *************************************************************************/
 extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {

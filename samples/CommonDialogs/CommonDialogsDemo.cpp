@@ -110,11 +110,10 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 //----------------------------------------------------------------------------//
 
 
-/*************************************************************************
-    Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static CommonDialogsDemo sample;
-    return sample;
-}
+static const CEGUI::String name = "";
+static const CEGUI::String summary = "";
+static const CEGUI::String description = "";
+static const CEGUI::String type = "";
+static const CEGUI::String credits = "";
+
+ADD_SAMPLE(new CommonDialogsDemo(), name, summary, description, type, credits);
