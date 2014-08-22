@@ -208,7 +208,7 @@ public:
         Return the Image object that will be drawn by this FrameComponent
         for a specified frame part.
 
-    \param part
+    \param imageComponent
         One of the FrameImageComponent enumerated values specifying the
         component image to be accessed.
 
@@ -221,8 +221,23 @@ public:
         or if the image is sourced from a property that returns an empty
         image name.
     */
-    const Image* getImage(FrameImageComponent part,
+    const Image* getImage(FrameImageComponent imageComponent,
                           const Window& wnd) const;
+
+    /*!
+    \brief
+        Return a pointer to the Image object that was set for this FrameComponent
+        for a specified frame part.
+
+    \param imageComponent
+        One of the FrameImageComponent enumerated values specifying the
+        component image to be accessed.
+
+    \return
+        Pointer to the Image object, or a null pointer if the image
+        had not been set.
+    */
+    const Image* getImage(FrameImageComponent imageComponent) const;
 
     /*!
     \brief
