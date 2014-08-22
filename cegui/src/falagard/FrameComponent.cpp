@@ -169,18 +169,32 @@ HorizontalFormatting FrameComponent::getBackgroundHorizontalFormatting(
 }
 
 //----------------------------------------------------------------------------//
-const Image* FrameComponent::getImage(FrameImageComponent part,
+const Image* FrameComponent::getImage(FrameImageComponent imageComponent,
                                       const Window& wnd) const
 {
-    assert(part < FIC_FRAME_IMAGE_COUNT);
+    assert(imageComponent < FIC_FRAME_IMAGE_COUNT);
 
-    if (!d_frameImages[part].d_specified)
+    if (!d_frameImages[imageComponent].d_specified)
         return 0;
 
-    if (d_frameImages[part].d_propertyName.empty())
-        return d_frameImages[part].d_image;
+    if (d_frameImages[imageComponent].d_propertyName.empty())
+        return d_frameImages[imageComponent].d_image;
 
-    return wnd.getProperty<Image*>(d_frameImages[part].d_propertyName);
+    return wnd.getProperty<Image*>(d_frameImages[imageComponent].d_propertyName);
+}
+
+//----------------------------------------------------------------------------//
+const Image* FrameComponent::getImage(FrameImageComponent imageComponent) const
+{
+    assert(imageComponent < FIC_FRAME_IMAGE_COUNT);
+
+    if (!d_frameImages[imageComponent].d_specified)
+        return 0;
+
+    if (d_frameImages[imageComponent].d_propertyName.empty())
+        return d_frameImages[imageComponent].d_image;
+
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
