@@ -20,3 +20,6 @@ include_directories(${CMAKE_BINARY_DIR}/samples/common/include)
 
 list (APPEND SAMPLES_SOURCES WidgetsDemo.cpp)
 list (APPEND SAMPLES_HEADERS WidgetsDemo.h)
+
+set (SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
+set (SAMPLES_HEADERS "${SAMPLES_HEADERS}" PARENT_SCOPE)
