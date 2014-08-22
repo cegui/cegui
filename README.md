@@ -8,6 +8,15 @@ The majority of the auxiliary files for CEGUI, that used to be plain text, are n
 
 What follows is just a quick-start guide, go to our doxygen docs for more detailed documentation.
 
+## Available branches and versions
+
+- The CEGUI repository consists of multiple branches:
+    - `v0-8` provides the latest stable ABI compatible (to 0.8.X releases) version of CEGUI. This allows you to replace older 0.8.X versions with newer 0.8.X versions and vice-versa, without having to recompile your project. This branch is also the base for new 0.8.X releases.
+    - `v-0` Provides the latest stable API compatible version of CEGUI and contains changes that break the ABI. Versions from this branch will be used for the next minor version release.
+    - `default` contains changes that will only be used in the next major version. This branch is highly unstable, will introduce fundamental changes and **breaks ABI and API** compatibility. We do not recommend you to use this in production, unless you heavily depend on a feature and discussed this with a developer of CEGUI before: This is recommended so that you are aware of all potential risks. In the general case you are advised to use one of the stable branches, to save you a lot of headache.
+
+The `v0-8` and `v-0` branches are considered stable but do undergo bug-fixes and small changes, which do not break ABI and API respectively. These changes of course introduce a small risk that there might be temporary issues for the moment in the branches. If you notice any bugs in those branches, please report them to us as soon as possible - use the [forum](http://cegui.org.uk/forum/index.php) and/or our IRC channels `#cegui` and `#cegui-devel` on `irc.freenode.net` to inform us. Please consider that we are not available on IRC 24 hours per day, but feel free to idle there until we respond. If in doubt which branch to use, also feel free to ask us this way. For production usage we generally recommend to use a stable release version. A list of releases can be found on the [on our website](cegui.org.uk/download).
+
 ## Contributing
 
 We are happiest with **clean pull requests** containing conscise commits with **proper commit messages**. We also accept **plain patches** but making it easier for us to just accept your contribution with one click greatly speeds up the review process.
@@ -15,12 +24,10 @@ We are happiest with **clean pull requests** containing conscise commits with **
 Here is an explanation on how to fork from our repository, commit changes to your fork, and create a pull request targeting the right branch:
 https://confluence.atlassian.com/display/BITBUCKET/Fork+a+Repo,+Compare+Code,+and+Create+a+Pull+Request
 
-- Make sure you target the appropriate branch! If in doubt, ask us on IRC.
-  - `default` if your change **breaks API**
-  - *API branch* (e.g.: `v0`) if it is a minor change that **doesn't break API but does break ABI**
-  - *ABI branch* (e.g.: `v0-8`) for bugfixes or very small changes that **don't break API and ABI**
-- Join the `#cegui` and `#cegui-devel` channels on `irc.freenode.net`
-  - We are fun and rarely on-topic.
+Please also keep in mind to target the right repository. We prefer to target the ABI compatible branch if possible. Otherwise the API compatible ones. For information about ABI/API compatibility, please read this page: https://techbase.kde.org/Policies/Binary_Compatibility_Issues_With_C++
+
+If in doubt which branch to target, please contact us!
+
 
 ## Building CEGUI
 The following script is more or less universal for *NIX systems and Windows. Minor changes may be required.
@@ -92,7 +99,7 @@ If CMake tells you that **something** was not found, you **shall not panic** ;) 
 ### "It is slow"
 Whenever users complained in the forums about CEGUI's speed it turned out to be that they either ran the application in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage.
 
-While we agree that **some** areas of the CEGUI codebase are not as optimised as they could be yet, most of our code-base is very fast. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations on the CPU as well as the rendering speed on the GPU. It even runs optimally still if hudreds of windows are opened and rendered at the same time.
+While no complex library out there will ever be perfectly optimised, CEGUI is still to be considered highly performant. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations done on the CPU as well as those on the GPU and the resulting rendering speed. It still runs optimally when hundreds of windows are opened and rendered at the same time.
 
 The best proof that CEGUI is fast is that big proprietary games, which displays hundreds of widgets and use complex hierarchies, have been made using CEGUI (Torchlight 1, Torchlight 2, Venetica, etc.). CEGUI is definitely not *too slow to use*. It could be too slow if you are doing something wrong - like loading layout files every frame or causing unnecessary updates and events. In this case it is best to do a forum search and - if you do not find anything helpful - to describe your setup in detail and what issues you have.
 
