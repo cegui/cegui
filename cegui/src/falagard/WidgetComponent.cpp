@@ -34,18 +34,17 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
     //! Default values
     const HorizontalAlignment WidgetComponent::HorizontalAlignmentDefault(HA_LEFT);
     const VerticalAlignment WidgetComponent::VerticalAlignmentDefault(VA_TOP);
 
 
-    WidgetComponent::WidgetComponent(const String& type,
-                                     const String& look,
+    WidgetComponent::WidgetComponent(const String& targetType,
                                      const String& suffix,
                                      const String& renderer,
                                      bool autoWindow) :
-        d_targetType(type),
-        d_widgetLookName(look),
+        d_targetType(targetType),
         d_name(suffix),
         d_rendererType(renderer),
         d_autoWindow(autoWindow),
@@ -61,10 +60,6 @@ namespace CEGUI
         // set the window renderer
         if (!d_rendererType.empty())
             widget->setWindowRenderer(d_rendererType);
-
-        // set the widget look
-        if (!d_widgetLookName.empty())
-            widget->setLookNFeel(d_widgetLookName);
 
         // add the new widget to its parent
         parent.addChild(widget);
@@ -128,16 +123,6 @@ namespace CEGUI
     void WidgetComponent::setTargetType(const String& type)
     {
         d_targetType = type;
-    }
-
-    const String& WidgetComponent::getWidgetLookName() const
-    {
-        return d_widgetLookName;
-    }
-
-    void WidgetComponent::setWidgetLookName(const String& look)
-    {
-        d_widgetLookName = look;
     }
 
     const String& WidgetComponent::getWidgetName() const
@@ -243,9 +228,6 @@ namespace CEGUI
         xml_stream.openTag(Falagard_xmlHandler::ChildElement)
             .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name)
             .attribute(Falagard_xmlHandler::TypeAttribute, d_targetType);
-
-        if (!d_widgetLookName.empty())
-            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_widgetLookName);
 
         if (!d_rendererType.empty())
             xml_stream.attribute(Falagard_xmlHandler::RendererAttribute, d_rendererType);
