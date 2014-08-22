@@ -33,6 +33,30 @@
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <Ogre.h>
 #include <OIS.h>
+#include <OgreFrameListener.h>
+
+#include <OgreBuildSettings.h>
+#ifdef OGRE_STATIC_LIB
+#   ifdef OGRE_BUILD_RENDERSYSTEM_D3D9
+#       define OGRE_STATIC_Direct3D9
+#   endif
+#   ifdef OGRE_BUILD_RENDERSYSTEM_D3D11
+#       define OGRE_STATIC_Direct3D11
+#   endif
+#   ifdef OGRE_BUILD_RENDERSYSTEM_GL
+#       define OGRE_STATIC_GL
+#   endif
+#   ifdef OGRE_BUILD_RENDERSYSTEM_GL3PLUS
+#       define OGRE_STATIC_GL3Plus
+#   endif
+#   ifdef OGRE_BUILD_RENDERSYSTEM_GLES
+#   define OGRE_STATIC_GLES
+#   endif
+#   ifdef OGRE_BUILD_RENDERSYSTEM_GLES2
+#       define OGRE_STATIC_GLES2
+#   endif
+#   include <OgreStaticPluginLoader.h>
+#endif
 
 // Frame listener forward ref (see class below)
 class CEGuiDemoFrameListener;
@@ -77,6 +101,9 @@ protected:
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
     bool d_initialised;
+#ifdef OGRE_STATIC_LIB
+    Ogre::StaticPluginLoader* d_staticPluginLoader; 
+#endif
 
     CEGuiDemoFrameListener* d_frameListener;
     WndEvtListener* d_windowEventListener;

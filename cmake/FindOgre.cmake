@@ -1,6 +1,19 @@
 ################################################################################
 # Custom cmake module for CEGUI to find OGRE
 ################################################################################
+# Additionally this script searches for the following optional
+# parts of the Ogre package:
+#  RenderSystem_GL, RenderSystem_GL3Plus,
+#  RenderSystem_GLES, RenderSystem_GLES2,
+#  RenderSystem_Direct3D9, RenderSystem_Direct3D11
+#
+# For each of these components, the following variables are defined:
+#
+#  OGRE_${COMPONENT}_FOUND - ${COMPONENT} is available
+#  OGRE_${COMPONENT}_INCLUDE_DIRS - additional include directories for ${COMPONENT}
+#  OGRE_${COMPONENT}_LIBRARIES - link these to use ${COMPONENT}
+#  OGRE_${COMPONENT}_BINARY_REL - location of the component binary (win32 non-static only, release)
+#  OGRE_${COMPONENT}_BINARY_DBG - location of the component binary (win32 non-static only, debug)
 include(FindPackageHandleStandardArgs)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -101,6 +114,8 @@ find_path(OGRE_H_PATH
           PATHS ${OGRE_PREFIX_PATH}
           PATH_SUFFIXES ${OGRE_PATH_SUFFIXES})
 
+set (OGRE_INCLUDE_DIRS ${OGRE_H_PATH})
+
 # Also find the build settings Ogre header.
 find_path(OGRE_H_BUILD_SETTINGS_PATH
           NAMES OgreBuildSettings.h
@@ -185,6 +200,8 @@ if (OGRE_FOUND)
         set(OGRE_DEPS_FOUND TRUE)
         find_package(FreeImage QUIET)
         find_package(Freetype QUIET)
+        find_package(OpenGL QUIET)
+        find_package(OpenGLES QUIET)
         find_package(ZLIB QUIET)
         find_package(ZZip QUIET)
         if (UNIX AND NOT APPLE)
@@ -211,6 +228,7 @@ if (OGRE_FOUND)
             if (NOT X11_FOUND)
                 set(OGRE_DEPS_FOUND FALSE)
             endif ()
+            set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${X11_LIBRARIES} ${X11_Xt_LIB} ${XAW_LIBRARY} ${X11_Xrandr_LIB} pthread dl)
         endif ()
         if (NOT OGRE_DEPS_FOUND)
             message(status "Could not find all required dependencies for the Ogre package.")
@@ -234,4 +252,154 @@ else()
     set (CEGUI_FOUND_OGRE_VERSION_MINOR 0)
     set (CEGUI_FOUND_OGRE_VERSION_PATCH 0)
 endif()
+
+# Generate debug names from given release names                                                                       
+macro(get_debug_names PREFIX)
+    foreach(i ${${PREFIX}})
+        set(${PREFIX}_DBG ${${PREFIX}_DBG} ${i}d ${i}D ${i}_d ${i}_D ${i}_debug ${i})
+    endforeach(i)
+endmacro(get_debug_names)
+# Couple a set of release AND debug libraries (or frameworks)
+macro(make_library_set PREFIX)
+    if (${PREFIX}_FWK)
+        set(${PREFIX} ${${PREFIX}_FWK})
+    elseif (${PREFIX}_REL AND ${PREFIX}_DBG)
+        set(${PREFIX} optimized ${${PREFIX}_REL} debug ${${PREFIX}_DBG})
+    elseif (${PREFIX}_REL)
+        set(${PREFIX} ${${PREFIX}_REL})
+    elseif (${PREFIX}_DBG)
+        set(${PREFIX} ${${PREFIX}_DBG})
+    endif ()
+endmacro(make_library_set)
+
+#########################################################
+# Find Ogre plugins
+#########################################################        
+macro(ogre_find_plugin PLUGIN HEADER)
+    # On Unix, the plugins might have no prefix
+    if (CMAKE_FIND_LIBRARY_PREFIXES)
+        set(TMP_CMAKE_LIB_PREFIX ${CMAKE_FIND_LIBRARY_PREFIXES})
+        set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
+    endif()
+
+    # strip RenderSystem_ or Plugin_ prefix from plugin name
+    string(REPLACE "RenderSystem_" "" PLUGIN_TEMP ${PLUGIN})
+    string(REPLACE "Plugin_" "" PLUGIN_NAME ${PLUGIN_TEMP})
+
+    # header files for plugins are not usually needed, but find them anyway if they are present
+    set(OGRE_PLUGIN_PATH_SUFFIXES
+        PlugIns PlugIns/${PLUGIN_NAME} Plugins Plugins/${PLUGIN_NAME} ${PLUGIN} 
+        RenderSystems RenderSystems/${PLUGIN_NAME} ${ARGN})
+    find_path(OGRE_${PLUGIN}_INCLUDE_DIR NAMES ${HEADER} 
+        HINTS ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE}  
+        PATH_SUFFIXES ${OGRE_PLUGIN_PATH_SUFFIXES})
+    # find link libraries for plugins
+    set(OGRE_${PLUGIN}_LIBRARY_NAMES "${PLUGIN}${OGRE_LIB_SUFFIX}")
+    get_debug_names(OGRE_${PLUGIN}_LIBRARY_NAMES)
+    set(OGRE_${PLUGIN}_LIBRARY_FWK ${OGRE_LIBRARY_FWK})
+    find_library(OGRE_${PLUGIN}_LIBRARY_REL NAMES ${OGRE_${PLUGIN}_LIBRARY_NAMES}
+        HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} ${OGRE_FRAMEWORK_PATH} PATH_SUFFIXES "" OGRE OGRE-${OGRE_VERSION} opt Release Release/opt RelWithDebInfo RelWithDebInfo/opt MinSizeRel MinSizeRel/opt)
+    find_library(OGRE_${PLUGIN}_LIBRARY_DBG NAMES ${OGRE_${PLUGIN}_LIBRARY_NAMES_DBG}
+        HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} ${OGRE_FRAMEWORK_PATH} PATH_SUFFIXES "" OGRE OGRE-${OGRE_VERSION} opt Debug Debug/opt)
+    make_library_set(OGRE_${PLUGIN}_LIBRARY)
+
+    if (OGRE_${PLUGIN}_LIBRARY OR OGRE_${PLUGIN}_INCLUDE_DIR)
+        set(OGRE_${PLUGIN}_FOUND TRUE)
+        if (OGRE_${PLUGIN}_INCLUDE_DIR)
+            set(OGRE_${PLUGIN}_INCLUDE_DIRS ${OGRE_${PLUGIN}_INCLUDE_DIR})
+        endif()
+        set(OGRE_${PLUGIN}_LIBRARIES ${OGRE_${PLUGIN}_LIBRARY})
+    endif ()
+
+    mark_as_advanced(OGRE_${PLUGIN}_INCLUDE_DIR OGRE_${PLUGIN}_LIBRARY_REL OGRE_${PLUGIN}_LIBRARY_DBG OGRE_${PLUGIN}_LIBRARY_FWK)
+
+    # look for plugin dirs
+    if (OGRE_${PLUGIN}_FOUND)
+        if (NOT OGRE_PLUGIN_DIR_REL OR NOT OGRE_PLUGIN_DIR_DBG)
+            if (WIN32)
+                set(OGRE_PLUGIN_SEARCH_PATH_REL 
+                    ${OGRE_LIBRARY_DIR_REL}/..
+                    ${OGRE_LIBRARY_DIR_REL}/../..
+                    ${OGRE_BIN_SEARCH_PATH}
+                    )
+                set(OGRE_PLUGIN_SEARCH_PATH_DBG
+                    ${OGRE_LIBRARY_DIR_DBG}/..
+                    ${OGRE_LIBRARY_DIR_DBG}/../..
+                    ${OGRE_BIN_SEARCH_PATH}
+                    )
+                find_path(OGRE_PLUGIN_DIR_REL NAMES "${PLUGIN}.dll" HINTS ${OGRE_PLUGIN_SEARCH_PATH_REL}
+                    PATH_SUFFIXES "" bin bin/Release bin/RelWithDebInfo bin/MinSizeRel Release)
+                find_path(OGRE_PLUGIN_DIR_DBG NAMES "${PLUGIN}_d.dll" HINTS ${OGRE_PLUGIN_SEARCH_PATH_DBG}
+                    PATH_SUFFIXES "" bin bin/Debug Debug)
+            elseif (UNIX)
+                get_filename_component(OGRE_PLUGIN_DIR_TMP ${OGRE_${PLUGIN}_LIBRARY_REL} PATH)
+                set(OGRE_PLUGIN_DIR_REL ${OGRE_PLUGIN_DIR_TMP} CACHE STRING "Ogre plugin dir (release)" FORCE)
+                get_filename_component(OGRE_PLUGIN_DIR_TMP ${OGRE_${PLUGIN}_LIBRARY_DBG} PATH)
+                set(OGRE_PLUGIN_DIR_DBG ${OGRE_PLUGIN_DIR_TMP} CACHE STRING "Ogre plugin dir (debug)" FORCE)  
+            endif ()
+        endif ()
+
+        # find binaries
+        if (NOT OGRE_STATIC)
+            if (WIN32)
+                find_file(OGRE_${PLUGIN}_REL NAMES "${PLUGIN}.dll" HINTS ${OGRE_PLUGIN_DIR_REL})
+                find_file(OGRE_${PLUGIN}_DBG NAMES "${PLUGIN}_d.dll" HINTS ${OGRE_PLUGIN_DIR_DBG})
+            endif()
+            mark_as_advanced(OGRE_${PLUGIN}_REL OGRE_${PLUGIN}_DBG)
+        endif()
+
+    endif ()
+
+    if (TMP_CMAKE_LIB_PREFIX)
+        set(CMAKE_FIND_LIBRARY_PREFIXES ${TMP_CMAKE_LIB_PREFIX})
+    endif ()
+endmacro(ogre_find_plugin)
+
+ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL/include)
+ogre_find_plugin(RenderSystem_GL3Plus OgreGL3PlusRenderSystem.h RenderSystems/GL3Plus/include)
+ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/include)
+ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
+ogre_find_plugin(RenderSystem_Direct3D9 OgreD3D9RenderSystem.h RenderSystems/Direct3D9/include)
+ogre_find_plugin(RenderSystem_Direct3D11 OgreD3D11RenderSystem.h RenderSystems/Direct3D11/include)
+
+if (OGRE_STATIC)
+    # check if dependencies for plugins are met
+    if (NOT DirectX_FOUND)
+        set(OGRE_RenderSystem_Direct3D9_FOUND FALSE)
+    endif ()
+    if (NOT DirectX_D3D11_FOUND)
+        set(OGRE_RenderSystem_Direct3D11_FOUND FALSE)
+    endif ()
+    if (NOT OPENGL_FOUND)
+        set(OGRE_RenderSystem_GL_FOUND FALSE)
+    endif ()
+    if (NOT OPENGL_FOUND)
+        set(OGRE_RenderSystem_GL3Plus_FOUND FALSE)
+    endif ()
+    if (NOT OPENGLES_FOUND)
+        set(OGRE_RenderSystem_GLES_FOUND FALSE)
+    endif ()
+    if (NOT OPENGLES2_FOUND)
+        set(OGRE_RenderSystem_GLES2_FOUND FALSE)
+    endif ()
+  
+    set(OGRE_RenderSystem_Direct3D9_LIBRARIES ${OGRE_RenderSystem_Direct3D9_LIBRARIES}
+        ${DirectX_LIBRARIES}
+    )
+    set(OGRE_RenderSystem_Direct3D11_LIBRARIES ${OGRE_RenderSystem_Direct3D11_LIBRARIES}
+        ${DirectX_D3D11_LIBRARIES}
+    )
+    set(OGRE_RenderSystem_GL_LIBRARIES ${OGRE_RenderSystem_GL_LIBRARIES}
+        ${OPENGL_LIBRARIES}
+    )
+    set(OGRE_RenderSystem_GL3Plus_LIBRARIES ${OGRE_RenderSystem_GL3Plus_LIBRARIES}
+        ${OPENGL_LIBRARIES}
+    )
+    set(OGRE_RenderSystem_GLES_LIBRARIES ${OGRE_RenderSystem_GLES_LIBRARIES}
+        ${OPENGLES_LIBRARIES}
+    )
+    set(OGRE_RenderSystem_GLES2_LIBRARIES ${OGRE_RenderSystem_GLES2_LIBRARIES}
+        ${OPENGLES2_LIBRARIES}
+    )
+endif ()
 
