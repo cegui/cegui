@@ -39,6 +39,8 @@
 
 namespace CEGUI
 {
+//! \deprecated This will be removed in the next version as it has been replaced by Falagard_xmlHandler::ParentIdentifier
+extern const String S_parentIdentifier;
 
 /*!
 \brief
