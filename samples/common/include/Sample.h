@@ -48,6 +48,17 @@ public:
     //! Get an explicit instance of input aggregator to be used with this sample
     CEGUI::InputAggregator* getInputAggregator() { return d_inputAggregator; }
 
+    //! Sample name. Has to be initialised in each sample that is created.
+    static const CEGUI::String d_name;
+    //! Sample summary. Has to be initialised in each sample that is created.
+    static const CEGUI::String d_summary;
+    //! Sample description. Has to be initialised in each sample that is created.
+    static const CEGUI::String d_description;
+    //! Sample credits (author etc.). Has to be initialised in each sample that is created.
+    static const CEGUI::String d_credits;
+    //! Sample type (C++, Lua or Python). Has to be initialised in each sample that is created.
+    static const CEGUI::String d_type;
+
 protected:
     CEGUI::String d_usedFiles;
     CEGUI::InputAggregator* d_inputAggregator;
