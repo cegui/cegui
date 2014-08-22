@@ -1,9 +1,10 @@
 /***********************************************************************
-    created:    Wed Aug 2 2006
-    author:     Tomas Lindquist Olsen
+    created:    Aug 22 2014
+    author:     Luca Ebach <lucaebach@gmail.com>
+                (based on original code by Tomas Lindquist Olsen)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,6 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "ScrollablePaneDemo.h"
+
 #include "CEGUI/System.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
@@ -41,70 +44,6 @@
 
 #include "SampleBase.h"
 
-/*
-This is a demonstration of the ScrollablePane widget
-*/
-
-// ScrollablePane demo sample class
-class ScrollablePaneSample : public Sample
-{
-public:
-    // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-    // method to perform any required cleanup operations.
-    virtual void deinitialise();
-
-private:
-    // creates the menubar with content
-    void createMenu(CEGUI::Window* bar);
-
-    // quit menu item handler
-    bool fileQuit(const CEGUI::EventArgs&)
-    {
-        //d_sampleApp->setQuitting(true);
-        return true;
-    }
-
-    // new dialog menu item handler
-    bool demoNewDialog(const CEGUI::EventArgs& e);
-    bool semanticEventHandler(const CEGUI::EventArgs& e);
-    
-    // member data
-    CEGUI::WindowManager* d_wm; // we will use the window manager alot
-    CEGUI::System* d_system;    // the gui system
-    CEGUI::Window* d_root;      // the gui sheet
-    CEGUI::Font* d_font;        // the font we use
-    CEGUI::ScrollablePane* d_pane; // the scrollable pane. center piece of the demo
-
-    CEGUI::GUIContext* d_guiContext;
-};
-
-/*************************************************************************
-Custom implementation of InputAggregator
-*************************************************************************/
-enum SampleSemanticValue
-{
-    // we start from the user-defined value
-    SpawnNewDialog = CEGUI::SV_UserDefinedSemanticValue
-};
-
-class SampleInputAggregator : public CEGUI::InputAggregator
-{
-public:
-    SampleInputAggregator(CEGUI::InputEventReceiver* input_receiver) :
-        CEGUI::InputAggregator(input_receiver)
-    {
-    }
-
-    void initialise()
-    {
-        d_keyValuesMappings[CEGUI::Key::Space] = SpawnNewDialog;
-    }
-};
-
-/*************************************************************************
-Sample specific initialisation goes here.
-*************************************************************************/
 bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
@@ -172,9 +111,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     return true;
 }
 
-/*************************************************************************
-    Creates the menu bar and fills it up :)
-*************************************************************************/
+/*************************************************************************/
 void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
 {
     using namespace CEGUI;
@@ -211,18 +148,14 @@ void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
     popup->addChild(item);
 }
 
-/*************************************************************************
-    Cleans up resources allocated in the initialiseSample call.
-*************************************************************************/
+/************************************************************************/
 void ScrollablePaneSample::deinitialise()
 {
     // everything we did is cleaned up by CEGUI
     delete d_inputAggregator;
 }
 
-/*************************************************************************
-    Handler for the 'Demo -> New dialog' menu item
-*************************************************************************/
+/************************************************************************/
 bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
