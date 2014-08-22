@@ -1,3 +1,5 @@
 list (APPEND SAMPLES_SOURCES CommonDialogsDemo.cpp)
 
+set (SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
+
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
