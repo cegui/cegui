@@ -48,7 +48,16 @@ namespace CEGUI
         public AllocatedObject<ImagerySection>
     {
     public:
+        //! Vector of ImageryComponent Pointers
+        typedef std::vector<ImageryComponent* CEGUI_VECTOR_ALLOC(ImageryComponent*)> ImageryComponentPointerList;
+        //! Vector of TextComponent Pointers
+        typedef std::vector<TextComponent* CEGUI_VECTOR_ALLOC(TextComponent*)> TextComponentPointerList;
+        //! Vector of FrameComponent Pointers
+        typedef std::vector<FrameComponent* CEGUI_VECTOR_ALLOC(FrameComponent*)> FrameComponentPointerList;
+
+
         /*!
+
         \brief
             Constructor.
         */
@@ -273,14 +282,6 @@ namespace CEGUI
 
         //! perform any processing required due to the given font having changed.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
-
-
-        //! Vector of ImageryComponent Pointers
-        typedef std::vector<ImageryComponent* CEGUI_VECTOR_ALLOC(ImageryComponent*)> ImageryComponentPointerList;
-        //! Vector of TextComponent Pointers
-        typedef std::vector<TextComponent* CEGUI_VECTOR_ALLOC(TextComponent*)> TextComponentPointerList;
-        //! Vector of FrameComponent Pointers
-        typedef std::vector<FrameComponent* CEGUI_VECTOR_ALLOC(FrameComponent*)> FrameComponentPointerList;
 
         /*!
         \brief
