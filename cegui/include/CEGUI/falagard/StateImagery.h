@@ -47,6 +47,16 @@ namespace CEGUI
         public AllocatedObject<StateImagery>
     {
     public:
+        //! A custom comparator for a multiset of LayerSpecification pointers
+        struct LayerSpecificationPointerComparator
+        {
+            bool operator()(const LayerSpecification* layerSpec1, const LayerSpecification* layerSpec2) const;
+        };
+
+        //! Container type for LayerSpecification pointers
+        typedef std::multiset<LayerSpecification* 
+            CEGUI_SET_ALLOC(LayerSpecification*), LayerSpecificationPointerComparator> LayerSpecificationPointerMultiset;
+
         /*!
         \brief
             Constructor
@@ -170,15 +180,30 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+
+        /*!
+        \brief
+            Returns a multiset of pointers to the LayerSpecifications that are currently added to this StateImagery.
+            If a LayerSpecification is added or removed from this StateImagery, then the pointers in this vector are
+            not valid anymore. The function should then be called again to retrieve valid pointers.
+
+         \return
+            A vector of pointers to the LayerSpecifications that are currently added to this StateImagery
+        */
+        LayerSpecificationPointerMultiset getLayerSpecificationPointers();
+
     private:
+        //! \deprecated This type is deprecated because it doesn't use CEGUI allocators and is private. In the next version a new public type "LayerSpecificationMultiset" will replace this one.
         typedef std::multiset<LayerSpecification> LayersList;
 
         CEGUI::String   d_stateName;    //!< Name of this state.
         LayersList      d_layers;       //!< Collection of LayerSpecification objects to be drawn for this state.
         bool            d_clipToDisplay; //!< true if Imagery for this state should be clipped to the display instead of winodw (effectively, not clipped).
     public:
+        //! \deprecated This type is deprecated and will be removed in the next version. A const reference to the Container type of getLayerSpecifications will replace this.
         typedef ConstVectorIterator<LayersList> LayerIterator;
 
+        //! \deprecated This function is deprecated. Instead the getLayerSpecifications and getLayerSpecificationPointers will be used in the next version.
         LayerIterator getLayerIterator() const;
 
     };
