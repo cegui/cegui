@@ -34,6 +34,12 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+    bool StateImagery::LayerSpecificationPointerComparator::operator() (const LayerSpecification* layerSpec1, const LayerSpecification* layerSpec2) const
+    {
+        return *layerSpec1 < *layerSpec2;
+    }
+
     StateImagery::StateImagery(const String& name) :
         d_stateName(name),
         d_clipToDisplay(false)
@@ -106,6 +112,21 @@ namespace CEGUI
     StateImagery::getLayerIterator() const
     {
         return LayerIterator(d_layers.begin(),d_layers.end());
+    }
+
+    StateImagery::LayerSpecificationPointerMultiset StateImagery::getLayerSpecificationPointers()
+    {
+        StateImagery::LayerSpecificationPointerMultiset pointerList;
+
+        LayersList::iterator layerSpecIter = d_layers.begin();
+        LayersList::iterator layerSpecIterEnd = d_layers.end();
+        while( layerSpecIter != layerSpecIterEnd )
+        {
+            pointerList.insert(&(*layerSpecIter));
+            ++layerSpecIter;
+        }
+
+        return pointerList;
     }
 
 } // End of  CEGUI namespace section
