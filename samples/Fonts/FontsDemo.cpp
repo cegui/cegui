@@ -29,7 +29,7 @@ author:     Paul D Turner
 // sample texts might show up unreadable in this source file. The sample
 // should look okay though when running.
 
-#include "Sample_FontsDemo.h"
+#include "FontsDemo.h"
 #include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;

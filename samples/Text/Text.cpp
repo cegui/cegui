@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "Sample_Text.h"
+#include "Text.h"
 #include "CEGUI/CEGUI.h"
 #include <cstdlib>
 
