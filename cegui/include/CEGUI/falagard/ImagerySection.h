@@ -362,12 +362,12 @@ namespace CEGUI
         void initMasterColourRect(const Window& wnd, ColourRect& cr) const;
 
     private:
-        CEGUI::String       d_name;             //!< Holds the name of the ImagerySection.
-        CEGUI::ColourRect   d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).
-        FrameComponentList           d_frames;           //!< Collection of FrameComponent objects to be drawn for this ImagerySection.
-        ImageryComponentList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
-        TextComponentList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
-        String              d_colourPropertyName;   //!< name of property to fetch colours from.
+        CEGUI::String               d_name;             //!< Holds the name of the ImagerySection.
+        CEGUI::ColourRect           d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).
+        FrameComponentList          d_frames;           //!< Collection of FrameComponent objects to be drawn for this ImagerySection.
+        ImageryComponentList        d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
+        TextComponentList           d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
+        String                      d_colourPropertyName;   //!< name of property to fetch colours from.
     };
 
 } // End of  CEGUI namespace section
