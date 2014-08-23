@@ -68,19 +68,18 @@ int main(int argc, char* argv[])
     }
 #endif
 
-    SamplesFramework sampleFramework(argc > 1 ? argv[argidx] : "");
+    SamplesFramework sampleFramework;
     return sampleFramework.run();
 }
 
 //----------------------------------------------------------------------------//
-SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
+SamplesFramework::SamplesFramework() :
     d_sampleExitButton(0),
     d_metaDataWinMgr(0),
     d_samplesWinMgr(0),
     d_selectedSampleData(0),
     d_loadingProgressBar(0),
-    d_quittingSampleView(false),
-    d_samplesXMLFilename(xml_filename)
+    d_quittingSampleView(false)
 {
     if (!framework)
         framework = this;

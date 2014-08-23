@@ -36,11 +36,12 @@ author:     Lukas E Meindl
 // forward declarations
 #include "CEGUI/ForwardRefs.h"
 
+using namespace CEGUI;
+
 class SampleData;
 class Sample;
 class MetaDataWindowManager;
 class SamplesBrowserManager;
-
 
 /*!
 \brief
@@ -49,7 +50,7 @@ This is
 class SamplesFramework : public SamplesFrameworkBase
 {
 public:
-    SamplesFramework(const CEGUI::String& xml_filename);
+    SamplesFramework();
     virtual ~SamplesFramework();
 
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
@@ -126,8 +127,6 @@ protected:
 
     bool                        d_quittingSampleView;
     CEGUI::InputAggregator*     d_systemInputAggregator;
-
-    CEGUI::String d_samplesXMLFilename;
 };
 
 #endif
