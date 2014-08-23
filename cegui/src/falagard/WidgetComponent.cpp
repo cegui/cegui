@@ -34,18 +34,17 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
     //! Default values
     const HorizontalAlignment WidgetComponent::HorizontalAlignmentDefault(HA_LEFT);
     const VerticalAlignment WidgetComponent::VerticalAlignmentDefault(VA_TOP);
 
 
-    WidgetComponent::WidgetComponent(const String& type,
-                                     const String& look,
+    WidgetComponent::WidgetComponent(const String& targetType,
                                      const String& suffix,
                                      const String& renderer,
                                      bool autoWindow) :
-        d_baseType(type),
-        d_imageryName(look),
+        d_targetType(targetType),
         d_name(suffix),
         d_rendererType(renderer),
         d_autoWindow(autoWindow),
@@ -55,16 +54,12 @@ namespace CEGUI
 
     void WidgetComponent::create(Window& parent) const
     {
-        Window* widget = WindowManager::getSingleton().createWindow(d_baseType, d_name);
+        Window* widget = WindowManager::getSingleton().createWindow(d_targetType, d_name);
         widget->setAutoWindow(d_autoWindow);
 
         // set the window renderer
         if (!d_rendererType.empty())
             widget->setWindowRenderer(d_rendererType);
-
-        // set the widget look
-        if (!d_imageryName.empty())
-            widget->setLookNFeel(d_imageryName);
 
         // add the new widget to its parent
         parent.addChild(widget);
@@ -120,24 +115,14 @@ namespace CEGUI
         d_area = area;
     }
 
-    const String& WidgetComponent::getBaseWidgetType() const
+    const String& WidgetComponent::getTargetType() const
     {
-        return d_baseType;
+        return d_targetType;
     }
 
-    void WidgetComponent::setBaseWidgetType(const String& type)
+    void WidgetComponent::setTargetType(const String& type)
     {
-        d_baseType = type;
-    }
-
-    const String& WidgetComponent::getWidgetLookName() const
-    {
-        return d_imageryName;
-    }
-
-    void WidgetComponent::setWidgetLookName(const String& look)
-    {
-        d_imageryName = look;
+        d_targetType = type;
     }
 
     const String& WidgetComponent::getWidgetName() const
@@ -242,10 +227,7 @@ namespace CEGUI
         // output opening tag
         xml_stream.openTag(Falagard_xmlHandler::ChildElement)
             .attribute(Falagard_xmlHandler::NameSuffixAttribute, d_name)
-            .attribute(Falagard_xmlHandler::TypeAttribute, d_baseType);
-
-        if (!d_imageryName.empty())
-            xml_stream.attribute(Falagard_xmlHandler::LookAttribute, d_imageryName);
+            .attribute(Falagard_xmlHandler::TypeAttribute, d_targetType);
 
         if (!d_rendererType.empty())
             xml_stream.attribute(Falagard_xmlHandler::RendererAttribute, d_rendererType);
