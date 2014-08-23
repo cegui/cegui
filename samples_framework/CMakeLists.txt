@@ -5,7 +5,6 @@ set( CORE_SOURCE_FILES
     ./src/SamplesFramework.cpp
     ./src/CEGuiBaseApplication.cpp
     ./src/CEGuiRendererSelector.cpp
-    ./src/Samples_xmlHandler.cpp
     ./src/SampleData.cpp
     ./src/MetaDataWindowManager.cpp
     ./src/SamplesBrowserManager.cpp
@@ -17,7 +16,6 @@ set( CORE_HEADER_FILES
     ./include/SamplesFramework.h
     ./include/CEGuiBaseApplication.h
     ./include/CEGuiRendererSelector.h
-    ./include/Samples_xmlHandler.h
     ./include/SampleData.h
     ./include/MetaDataWindowManager.h
     ./include/SamplesBrowserManager.h
