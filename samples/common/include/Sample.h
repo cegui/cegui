@@ -33,6 +33,15 @@ author:     Lukas E Meindl
 // SamplesFramework as interface for Samples that will be loaded.
 #include "CEGUI/ForwardRefs.h"
 
+enum SampleType
+{
+    ST_Module,
+    ST_Python,
+    ST_Lua,
+
+    ST_Count
+};
+
 class Sample
 {
 public:
@@ -48,20 +57,21 @@ public:
     //! Get an explicit instance of input aggregator to be used with this sample
     CEGUI::InputAggregator* getInputAggregator() { return d_inputAggregator; }
 
-    //! Sample name. Has to be initialised in each sample that is created.
-    static const CEGUI::String d_name;
-    //! Sample summary. Has to be initialised in each sample that is created.
-    static const CEGUI::String d_summary;
-    //! Sample description. Has to be initialised in each sample that is created.
-    static const CEGUI::String d_description;
-    //! Sample credits (author etc.). Has to be initialised in each sample that is created.
-    static const CEGUI::String d_credits;
-    //! Sample type (C++, Lua or Python). Has to be initialised in each sample that is created.
-    static const CEGUI::String d_type;
+    CEGUI::String getName() const { return d_name; }
+    CEGUI::String getCredits() const { return d_credits; }
+    CEGUI::String getSummary() const { return d_summary; }
+    CEGUI::String getDescription() const { return d_description; }
+    SampleType getType() const { return d_type; }
 
 protected:
     CEGUI::String d_usedFiles;
     CEGUI::InputAggregator* d_inputAggregator;
+
+    CEGUI::String d_name;
+    CEGUI::String d_credits;
+    CEGUI::String d_summary;
+    CEGUI::String d_description;
+    SampleType d_type;
 };
 
 #endif
