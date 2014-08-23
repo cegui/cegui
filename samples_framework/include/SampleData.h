@@ -37,14 +37,7 @@ namespace CEGUI
     class BitmapImage;
 }
 
-enum SampleType
-{
-    ST_Module,
-    ST_Lua,
-    ST_Python,
-
-    ST_Count
-};
+enum SampleType;
 
 class Sample;
 

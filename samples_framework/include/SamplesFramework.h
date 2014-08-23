@@ -29,6 +29,7 @@ author:     Lukas E Meindl
 
 #include "SamplesFrameworkBase.h"
 #include "SampleData.h"
+#include "Sample.h"
 
 #include <vector>
 

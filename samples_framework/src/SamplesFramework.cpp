@@ -38,6 +38,7 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/ProgressBar.h"
 
+#include "samples.h"
 
 #include <string>
 #include <iostream>
