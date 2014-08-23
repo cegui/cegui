@@ -24,15 +24,34 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "InventoryDemo.h"
+#include "Inventory.h"
 #include "InventoryItem.h"
 #include "InventoryItemRenderer.h"
 #include "InventoryReceiver.h"
 
 #include <CEGUI/CEGUI.h>
 
+InventorySample::InventorySample()
+{
+    Sample::d_name = "InventorySample";
+    Sample::d_credits = "CrazyEddie";
+    Sample::d_description = 
+        "The sample contains an RPG style inventory that allows "
+        "dragging shaped items from one inventory window to another. "
+        "Red and green colours display if the item can be "
+        "dropped at the current position.";
+    Sample::d_summary = 
+        "To achieve this the custom windows \"TaharezLook/InventoryReceiver\" "
+        "and \"TaharezLook/InventoryItem\" were added via the "
+        "\"InventoryComponents.looknfeel\" file. For handling the mechanics of "
+        "allowing or refusing items to be dropped at set position, the "
+        "InventoryReceiver class provides extra functionality in the C++ code. "
+        "Event handlers are used to react to drag n' drop events for this purpose.";
+    Sample::d_type = ST_Module;
+}
+
 //----------------------------------------------------------------------------//
-bool InventoryDemo::initialise(CEGUI::GUIContext* guiContext)
+bool InventorySample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -134,19 +153,9 @@ bool InventoryDemo::initialise(CEGUI::GUIContext* guiContext)
 }
 
 //----------------------------------------------------------------------------//
-void InventoryDemo::deinitialise()
+void InventorySample::deinitialise()
 {
     // nothing to do here!
 }
 
 //----------------------------------------------------------------------------//
-
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static InventoryDemo sample;
-    return sample;
-}

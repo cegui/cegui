@@ -27,18 +27,23 @@
 #include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
+#include "CommonDialogs.h"
+
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
 
-//----------------------------------------------------------------------------//
-class CommonDialogsDemo : public Sample
+CommonDialogsSample::CommonDialogsSample()
 {
-public:
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-    void deinitialise(void) {}
-};
+    Sample::d_name = "CommonDialogsSample";
+    Sample::d_credits = "CrazyEddie, Lukas \"Ident\" Meindl";
+    Sample::d_description = "The Sample uses the \"Vanilla/ColourPicker\" widget";
+    Sample::d_summary = "Shows the functionalities of the Common Dialogues library."
+                " Currently this library consists only of the ColourPicker for CEGUI."
+                " It can be opened by clicking one of the coloured rectangle in the Sample.";
+    Sample::d_type = ST_Module;
+}
 
 //----------------------------------------------------------------------------//
-bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
+bool CommonDialogsSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -62,7 +67,7 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
     Window* root = winMgr.createWindow("DefaultWindow", "Root");
     guiContext->setRootWindow(root);
 
-    // create container window for the demo
+    // create container window for the Sample
     FrameWindow* wnd = static_cast<FrameWindow*>(
         winMgr.createWindow("Vanilla/FrameWindow"));
     root->addChild(wnd);
@@ -71,7 +76,7 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     wnd->setPosition(UVector2(cegui_reldim(0.05f), cegui_reldim( 0.25f)));
     wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
-    wnd->setText("Common Dialogs Demo - Main Window");
+    wnd->setText("Common Dialogs Sample - Main Window");
     wnd->setCloseButtonEnabled(false);
 
     // Add a colour picker & label
@@ -106,14 +111,3 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     return true;
 }
-
-//----------------------------------------------------------------------------//
-
-
-static const CEGUI::String name = "";
-static const CEGUI::String summary = "";
-static const CEGUI::String description = "";
-static const CEGUI::String type = "";
-static const CEGUI::String credits = "";
-
-ADD_SAMPLE(new CommonDialogsDemo(), name, summary, description, type, credits);

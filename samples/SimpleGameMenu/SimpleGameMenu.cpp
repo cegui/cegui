@@ -40,18 +40,23 @@ static CEGUI::String SoundOptionsMenu = "SoundOptionsContainer";
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
 
-SimpleGameMenu::SimpleGameMenu() :
+SimpleGameMenuSample::SimpleGameMenuSample() :
     d_currentMenu(0),
     d_layout(0),
     d_root(0),
     d_windowNavigator(0)
 {
+    Sample::d_name = "SimpleGameMenuSample";
+    Sample::d_credits = "Timotei Dolean";
+    Sample::d_description = "A demo that shows a simple game menu with navigation.";
+    Sample::d_summary = "";
+    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool SimpleGameMenu::initialise(CEGUI::GUIContext* gui_context)
+bool SimpleGameMenuSample::initialise(CEGUI::GUIContext* gui_context)
 {
     using namespace CEGUI;
 
@@ -87,7 +92,7 @@ bool SimpleGameMenu::initialise(CEGUI::GUIContext* gui_context)
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
 
-    d_layout = win_mgr.loadLayoutFromFile("SimpleGameMenu.layout");
+    d_layout = win_mgr.loadLayoutFromFile("SimpleGameMenuSample.layout");
     d_root->addChild(d_layout);
     showMenu(MainMenu);
 
@@ -99,12 +104,12 @@ bool SimpleGameMenu::initialise(CEGUI::GUIContext* gui_context)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void SimpleGameMenu::deinitialise()
+void SimpleGameMenuSample::deinitialise()
 {
     delete d_windowNavigator;
 }
 
-std::map<int, CEGUI::String> SimpleGameMenu::createNavigationMappings()
+std::map<int, CEGUI::String> SimpleGameMenuSample::createNavigationMappings()
 {
     using namespace CEGUI;
 
@@ -116,38 +121,38 @@ std::map<int, CEGUI::String> SimpleGameMenu::createNavigationMappings()
     return mappings;
 }
 
-void SimpleGameMenu::createEventHandlers()
+void SimpleGameMenuSample::createEventHandlers()
 {
     using namespace CEGUI;
 
     d_layout->getChild(MainMenu)->getChild("NewGameButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleNewGameButtonClick, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleNewGameButtonClick, this));
     d_layout->getChild(MainMenu)->getChild("ContinueGameButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleContinueGameButtonClick, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleContinueGameButtonClick, this));
     d_layout->getChild(MainMenu)->getChild("OptionsButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleOptionsButtonClick, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleOptionsButtonClick, this));
 
     d_layout->getChild(OptionsMenu)->getChild("GeneralOptionsButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleGeneralOptionsButtonClick, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleGeneralOptionsButtonClick, this));
     d_layout->getChild(OptionsMenu)->getChild("VideoOptionsButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleVideoOptionsButtonClick, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleVideoOptionsButtonClick, this));
     d_layout->getChild(OptionsMenu)->getChild("SoundOptionsButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleSoundOptionsButtonClick, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleSoundOptionsButtonClick, this));
 
     d_layout->getChild(OptionsMenu)->getChild("OptionsBackButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleGoToMainMenu, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleGoToMainMenu, this));
     d_layout->getChild(DifficultyMenu)->getChild("DifficultyBackButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleGoToMainMenu, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleGoToMainMenu, this));
 
     d_layout->getChild(VideoOptionsMenu)->getChild("VideoOptionsBackButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleGoToOptionsMenu, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleGoToOptionsMenu, this));
     d_layout->getChild(SoundOptionsMenu)->getChild("SoundOptionsBackButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleGoToOptionsMenu, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleGoToOptionsMenu, this));
     d_layout->getChild(GeneralOptionsMenu)->getChild("GeneralOptionsBackButton")->subscribeEvent(
-        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenu::handleGoToOptionsMenu, this));
+        PushButton::EventClicked, Event::Subscriber(&SimpleGameMenuSample::handleGoToOptionsMenu, this));
 }
 
-void SimpleGameMenu::showMenu(CEGUI::String menu_name)
+void SimpleGameMenuSample::showMenu(CEGUI::String menu_name)
 {
     if (d_currentMenu != 0)
         d_currentMenu->setVisible(false);
@@ -157,59 +162,49 @@ void SimpleGameMenu::showMenu(CEGUI::String menu_name)
     d_navigationStrategy->d_targetWindow = d_currentMenu;
 }
 
-bool SimpleGameMenu::handleNewGameButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleNewGameButtonClick(const CEGUI::EventArgs& e)
 {
     showMenu(DifficultyMenu);
     return true;
 }
 
-bool SimpleGameMenu::handleContinueGameButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleContinueGameButtonClick(const CEGUI::EventArgs& e)
 {
     return true;
 }
 
-bool SimpleGameMenu::handleOptionsButtonClick(const CEGUI::EventArgs& e)
-{
-    showMenu(OptionsMenu);
-    return true;
-}
-
-bool SimpleGameMenu::handleGoToOptionsMenu(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleOptionsButtonClick(const CEGUI::EventArgs& e)
 {
     showMenu(OptionsMenu);
     return true;
 }
 
-bool SimpleGameMenu::handleSoundOptionsButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleGoToOptionsMenu(const CEGUI::EventArgs& e)
+{
+    showMenu(OptionsMenu);
+    return true;
+}
+
+bool SimpleGameMenuSample::handleSoundOptionsButtonClick(const CEGUI::EventArgs& e)
 {
     showMenu(SoundOptionsMenu);
     return true;
 }
 
-bool SimpleGameMenu::handleVideoOptionsButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleVideoOptionsButtonClick(const CEGUI::EventArgs& e)
 {
     showMenu(VideoOptionsMenu);
     return true;
 }
 
-bool SimpleGameMenu::handleGoToMainMenu(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleGoToMainMenu(const CEGUI::EventArgs& e)
 {
     showMenu(MainMenu);
     return true;
 }
 
-bool SimpleGameMenu::handleGeneralOptionsButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleGeneralOptionsButtonClick(const CEGUI::EventArgs& e)
 {
     showMenu(GeneralOptionsMenu);
     return true;
-}
-
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static SimpleGameMenu sample;
-    return sample;
 }

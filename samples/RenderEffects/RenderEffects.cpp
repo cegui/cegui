@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "EffectsDemo.h"
+#include "RenderEffects.h"
 #include "CEGUI/CEGUI.h"
 
 #include "CEGUI/RenderingWindow.h"
@@ -525,17 +525,32 @@ bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& wi
 
 
 //----------------------------------------------------------------------------//
-// The following are for the main EffectsDemo class.
+// The following are for the main RenderEffectsSample class.
 //----------------------------------------------------------------------------//
 
-const CEGUI::String EffectsDemo::s_effectNameElastic = "ElasticWindow";
-const CEGUI::String EffectsDemo::s_effectNameWobblyNew = "WobblyWindow";
-const CEGUI::String EffectsDemo::s_effectNameWobblyOld = "OldWobblyWindow";
+const CEGUI::String RenderEffectsSample::s_effectNameElastic = "ElasticWindow";
+const CEGUI::String RenderEffectsSample::s_effectNameWobblyNew = "WobblyWindow";
+const CEGUI::String RenderEffectsSample::s_effectNameWobblyOld = "OldWobblyWindow";
+
+RenderEffectsSample::RenderEffectsSample()
+{
+    Sample::d_name = "RenderEffectsSample";
+    Sample::d_credits = "Lukas \"Ident\" Meindl, Martin \"Kulik\" Preisler";
+    Sample::d_description = 
+        "Displays render effects that can be applied to CEGUI windows. "
+        "When moving the window the effect will render the windows "
+        "in a way specified by the effect.";
+    Sample::d_summary = 
+        "Custom render effects (CEGUI::RenderEffect) can be created for the windows. "
+        "The demo's c++ files present 3 examples for such effects. The effects can be "
+        "mapped using schemes or can be directly applied using functions.";
+    Sample::d_type = ST_Module;
+}
 
 /*************************************************************************
 Sample specific initialisation goes here.
 *************************************************************************/
-bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
+bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -551,7 +566,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     // We create a type "Vanilla/WobblyFrameWindow".  Note that it would be
     // more usual for this mapping to be specified in the scheme xml file,
     // though here we are doing in manually to save from needing either multiple
-    // versions of the schemes or from having demo specific definitions in
+    // versions of the schemes or from having Sample specific definitions in
     // the schemes.
     WindowFactoryManager::getSingleton().addFalagardWindowMapping(
         "Vanilla/WobblyFrameWindow",    // type to create
@@ -560,7 +575,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
         "Core/FrameWindow",             // WindowRenderer to use.
         s_effectNameWobblyNew);         // effect to use.
 
-    // Since we want to be able to load the EffectsDemo.layout in the editor
+    // Since we want to be able to load the RenderEffectsSample.layout in the editor
     // tools (where the above mapping is not available), we now alias the
     // new window type onto the original TaharezLook/FrameWindow.  This has
     // the effect that - after the alias is added - any time a window of
@@ -604,8 +619,8 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     // set the background window as the root window for our GUIContext
     guiContext->setRootWindow(background);
 
-    // load the windows for the EffectsDemo from the layout file.
-    Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
+    // load the windows for the RenderEffectsSample from the layout file.
+    Window* sheet = winMgr.loadLayoutFromFile("EffectsSample.layout");
  
     // Get the combobox created from within the layout
     CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(sheet->getChild("EffectsFrameWindow/EffectsCombobox"));
@@ -665,7 +680,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void EffectsDemo::deinitialise()
+void RenderEffectsSample::deinitialise()
 {
     // nothing to do here!
 }
@@ -673,7 +688,7 @@ void EffectsDemo::deinitialise()
 /*************************************************************************
 Initialises the effects ListItems for the Combobox.
 *************************************************************************/
-void EffectsDemo::initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox)
+void RenderEffectsSample::initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox)
 {
     d_listItemEffectWobblyNew = new MyListItem("Wobbly Window Effect");
     d_listItemEffectElastic = new MyListItem("Elastic Window Effect");
@@ -687,13 +702,13 @@ void EffectsDemo::initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox)
     effectsCombobox->addItem(d_listItemEffectNone);
 
     effectsCombobox->setItemSelectState(d_listItemEffectWobblyNew, true);
-    effectsCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber(&EffectsDemo::handleEffectsComboboxSelectionChanged, this));
+    effectsCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber(&RenderEffectsSample::handleEffectsComboboxSelectionChanged, this));
 }
 
 /*************************************************************************
     Selection EventHandler for the effects Combobox.
 *************************************************************************/
-bool EffectsDemo::handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& args)
+bool RenderEffectsSample::handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& args)
 {
     const CEGUI::WindowEventArgs& winArgs(static_cast<const CEGUI::WindowEventArgs&>(args));
 
@@ -724,7 +739,7 @@ bool EffectsDemo::handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& 
     return true;
 }
 
-void EffectsDemo::initialiseEffects(CEGUI::Window* effectsWindow)
+void RenderEffectsSample::initialiseEffects(CEGUI::Window* effectsWindow)
 {
     d_renderEffectElastic = &CEGUI::RenderEffectManager::getSingleton().create(
         s_effectNameElastic,
@@ -737,13 +752,4 @@ void EffectsDemo::initialiseEffects(CEGUI::Window* effectsWindow)
     d_renderEffectWobblyOld = &CEGUI::RenderEffectManager::getSingleton().create(
         s_effectNameWobblyOld,
         effectsWindow);
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static EffectsDemo sample;
-    return sample;
 }

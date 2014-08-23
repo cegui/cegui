@@ -30,9 +30,11 @@
 #include "SampleBase.h"
 #include "NavigationStrategies.h"
 
-class FormNavigationDemo : public Sample
+class FormNavigationSample : public Sample
 {
 public:
+    FormNavigationSample();
+
     virtual bool initialise(CEGUI::GUIContext* gui_context);
     virtual void deinitialise();
 

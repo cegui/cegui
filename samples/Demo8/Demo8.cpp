@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "Sample_Demo8.h"
+#include "Demo8.h"
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/ScriptModules/Lua/ScriptModule.h"
 

@@ -24,11 +24,21 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "DragAndDrop.h"
+#include "DragDrop.h"
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
+DragDropSample::DragDropSample()
+{
+    Sample::d_name = "DragDropSample";
+    Sample::d_credits = "The CEGUI team";
+    Sample::d_summary = "Drag and drop Sample";
+    Sample::d_description = "Drag and drop Sample";
+    Sample::d_type = ST_Module;
+}
+
+//----------------------------------------------------------------------------//
+bool DragDropSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -51,7 +61,7 @@ bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load the initial layout
     guiContext->setRootWindow(
-        WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
+        WindowManager::getSingleton().loadLayoutFromFile("DragDropSample.layout"));
 
     // setup events
     subscribeEvents();
@@ -61,13 +71,13 @@ bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
 }
 
 //----------------------------------------------------------------------------//
-void DragDropDemo::deinitialise()
+void DragDropSample::deinitialise()
 {
     // nothing doing in here!
 }
 
 //----------------------------------------------------------------------------//
-void DragDropDemo::subscribeEvents()
+void DragDropSample::subscribeEvents()
 {
     using namespace CEGUI;
 
@@ -81,7 +91,7 @@ void DragDropDemo::subscribeEvents()
         Window* main_wnd = root->getChild("MainWindow");
         main_wnd->subscribeEvent(
             FrameWindow::EventCloseClicked,
-            Event::Subscriber(&DragDropDemo::handle_CloseButton, this));
+            Event::Subscriber(&DragDropSample::handle_CloseButton, this));
     }
     // if something goes wrong, log the issue but do not bomb!
     CEGUI_CATCH(CEGUI::Exception&)
@@ -103,7 +113,7 @@ void DragDropDemo::subscribeEvents()
             // subscribe the handler.
             wnd->subscribeEvent(
                 Window::EventDragDropItemDropped,
-                Event::Subscriber(&DragDropDemo::handle_ItemDropped, this));
+                Event::Subscriber(&DragDropSample::handle_ItemDropped, this));
         }
         // if something goes wrong, log the issue but do not bomb!
         CEGUI_CATCH(CEGUI::Exception&)
@@ -112,7 +122,7 @@ void DragDropDemo::subscribeEvents()
 }
 
 //----------------------------------------------------------------------------//
-bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
+bool DragDropSample::handle_ItemDropped(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
@@ -134,19 +144,7 @@ bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool DragDropDemo::handle_CloseButton(const CEGUI::EventArgs&)
+bool DragDropSample::handle_CloseButton(const CEGUI::EventArgs&)
 {
     return true;
-}
-
-//----------------------------------------------------------------------------//
-
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static DragDropDemo sample;
-    return sample;
 }

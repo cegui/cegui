@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "SVGSample.h"
+#include "SVG.h"
 
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/GUIContext.h"
@@ -45,6 +45,11 @@ using namespace CEGUI;
 *************************************************************************/
 SVGSample::SVGSample()
 {
+    Sample::d_name = "SVGSample";
+    Sample::d_credits = "Lukas \"Ident\" Meindl";
+    Sample::d_description = "";
+    Sample::d_summary = "";
+    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************
@@ -121,13 +126,4 @@ void SVGSample::update(float timeSinceLastUpdate)
 
 void SVGSample::deinitialise()
 {
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static SVGSample sample;
-    return sample;
 }

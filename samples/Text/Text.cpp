@@ -30,10 +30,22 @@
 
 using namespace CEGUI;
 
+TextSample::TextSample()
+{
+    Sample::d_name = "TextSample";
+    Sample::d_credits = "CEGUI team";
+    Sample::d_description = 
+        "The text sample contains text editing widgets and offers possibilities to "
+        "change the text formatting or enter text to play around with the options";
+    Sample::d_summary = "The text formatting and scrollbar visibility "
+        "are adjusted using the properties of the windows";
+    Sample::d_type = ST_Module;
+}
+
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
+bool TextSample::initialise(CEGUI::GUIContext* guiContext)
 {
     d_guiContext = guiContext;
     d_usedFiles = CEGUI::String(__FILE__);
@@ -68,7 +80,7 @@ bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setRootWindow(background);
 
     // Load our layout as a basic
-    background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
+    background->addChild(winMgr.loadLayoutFromFile("TextSample.layout"));
 
     // Init the seperate blocks which make up this sample
     initStaticText();
@@ -76,60 +88,60 @@ bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
     initMultiLineEdit();
 
     // Quit button
-    subscribeEvent("Root/TextDemo/Quit", PushButton::EventClicked, Event::Subscriber(&TextDemo::quit, this));
+    subscribeEvent("Root/TextSample/Quit", PushButton::EventClicked, Event::Subscriber(&TextSample::quit, this));
 
     // Success (so far)
     return true;
 }
 
-void TextDemo::initStaticText()
+void TextSample::initStaticText()
 {
     // Name, Group, Selected
-    initRadio("Root/TextDemo/StaticGroup/HorzLeft", 0, true);
-    initRadio("Root/TextDemo/StaticGroup/HorzRight", 0, false);
-    initRadio("Root/TextDemo/StaticGroup/HorzCentered", 0, false);
+    initRadio("Root/TextSample/StaticGroup/HorzLeft", 0, true);
+    initRadio("Root/TextSample/StaticGroup/HorzRight", 0, false);
+    initRadio("Root/TextSample/StaticGroup/HorzCentered", 0, false);
     // New group!
-    initRadio("Root/TextDemo/StaticGroup/VertTop", 1, true);
-    initRadio("Root/TextDemo/StaticGroup/VertBottom", 1, false);
-    initRadio("Root/TextDemo/StaticGroup/VertCentered", 1, false);
+    initRadio("Root/TextSample/StaticGroup/VertTop", 1, true);
+    initRadio("Root/TextSample/StaticGroup/VertBottom", 1, false);
+    initRadio("Root/TextSample/StaticGroup/VertCentered", 1, false);
     //
     // Events
     //
     // Word-wrap checkbox (we can't re-use a handler struct for the last argument!!)
-    subscribeEvent("Root/TextDemo/StaticGroup/Wrap", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/StaticGroup/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/StaticGroup/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/StaticGroup/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/StaticGroup/VertTop", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/StaticGroup/VertBottom", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/StaticGroup/VertCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/Wrap", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/VertTop", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/VertBottom", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
+    subscribeEvent("Root/TextSample/StaticGroup/VertCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextSample::formatChangedHandler, this));
 }
 
-void TextDemo::initSingleLineEdit()
+void TextSample::initSingleLineEdit()
 {
     Window* root = d_guiContext->getRootWindow();
     // Only accepts digits for the age field
-    if (root->isChild("Root/TextDemo/SingleLineGroup/editAge"))
+    if (root->isChild("Root/TextSample/SingleLineGroup/editAge"))
     {
-        static_cast<Editbox*>(root->getChild("Root/TextDemo/SingleLineGroup/editAge"))->setValidationString("[0-9]*");
+        static_cast<Editbox*>(root->getChild("Root/TextSample/SingleLineGroup/editAge"))->setValidationString("[0-9]*");
     }
     // Set password restrictions
-    if (root->isChild("Root/TextDemo/SingleLineGroup/editPasswd"))
+    if (root->isChild("Root/TextSample/SingleLineGroup/editPasswd"))
     {
-        Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextDemo/SingleLineGroup/editPasswd"));
+        Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextSample/SingleLineGroup/editPasswd"));
         passwd->setValidationString("[A-Za-z0-9]*");
         // Render masked
         passwd->setTextMasked(true);
     }
 }
 
-void TextDemo::initMultiLineEdit()
+void TextSample::initMultiLineEdit()
 {
     // Scrollbar checkbox
-    subscribeEvent("Root/TextDemo/MultiLineGroup/forceScroll", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
+    subscribeEvent("Root/TextSample/MultiLineGroup/forceScroll", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextSample::vertScrollChangedHandler, this));
 }
 
-void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
+void TextSample::initRadio(const CEGUI::String& radio, int group, bool selected)
 {
     Window* root = d_guiContext->getRootWindow();
     if (root->isChild(radio))
@@ -140,7 +152,7 @@ void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
     }
 }
 
-void TextDemo::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
+void TextSample::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
     Window* root = d_guiContext->getRootWindow();
     if (root->isChild(widget))
@@ -150,7 +162,7 @@ void TextDemo::subscribeEvent(const String& widget, const String& event, const E
     }
 }
 
-bool TextDemo::isRadioSelected(const CEGUI::String& radio)
+bool TextSample::isRadioSelected(const CEGUI::String& radio)
 {
     Window* root = d_guiContext->getRootWindow();
     // Check
@@ -162,7 +174,7 @@ bool TextDemo::isRadioSelected(const CEGUI::String& radio)
     return false;
 }
 
-bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
+bool TextSample::isCheckboxSelected(const CEGUI::String& checkbox)
 {
     Window* root = d_guiContext->getRootWindow();
     // Check
@@ -174,31 +186,31 @@ bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
     return false;
 }
 
-bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
+bool TextSample::formatChangedHandler(const CEGUI::EventArgs&)
 {
     Window* root = d_guiContext->getRootWindow();
 
-    if (root->isChild("Root/TextDemo/StaticGroup/StaticText"))
+    if (root->isChild("Root/TextSample/StaticGroup/StaticText"))
     {
         // and also the static text for which we will set the formatting options
-        Window* st = root->getChild("Root/TextDemo/StaticGroup/StaticText");
+        Window* st = root->getChild("Root/TextSample/StaticGroup/StaticText");
 
         // handle vertical formatting settings
-        if (isRadioSelected("Root/TextDemo/StaticGroup/VertTop"))
+        if (isRadioSelected("Root/TextSample/StaticGroup/VertTop"))
             st->setProperty("VertFormatting", "TopAligned");
-        else if (isRadioSelected("Root/TextDemo/StaticGroup/VertBottom"))
+        else if (isRadioSelected("Root/TextSample/StaticGroup/VertBottom"))
             st->setProperty("VertFormatting", "BottomAligned");
-        else if (isRadioSelected("Root/TextDemo/StaticGroup/VertCentered"))
+        else if (isRadioSelected("Root/TextSample/StaticGroup/VertCentered"))
             st->setProperty("VertFormatting", "CentreAligned");
 
         // handle horizontal formatting settings
-        bool wrap = isCheckboxSelected("Root/TextDemo/StaticGroup/Wrap");
+        bool wrap = isCheckboxSelected("Root/TextSample/StaticGroup/Wrap");
 
-        if (isRadioSelected("Root/TextDemo/StaticGroup/HorzLeft"))
+        if (isRadioSelected("Root/TextSample/StaticGroup/HorzLeft"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapLeftAligned" : "LeftAligned");
-        else if (isRadioSelected("Root/TextDemo/StaticGroup/HorzRight"))
+        else if (isRadioSelected("Root/TextSample/StaticGroup/HorzRight"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
-        else if (isRadioSelected("Root/TextDemo/StaticGroup/HorzCentered"))
+        else if (isRadioSelected("Root/TextSample/StaticGroup/HorzCentered"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapCentreAligned" : "CentreAligned");
     }
 
@@ -206,22 +218,22 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
     return true;
 }
 
-bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
+bool TextSample::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
     Window* root = d_guiContext->getRootWindow();
 
-    if (root->isChild("Root/TextDemo/MultiLineGroup/editMulti"))
+    if (root->isChild("Root/TextSample/MultiLineGroup/editMulti"))
     {
-        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(root->getChild("Root/TextDemo/MultiLineGroup/editMulti"));
+        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(root->getChild("Root/TextSample/MultiLineGroup/editMulti"));
         // Use setter for a change
-        multiEdit->setShowVertScrollbar(isCheckboxSelected("Root/TextDemo/MultiLineGroup/forceScroll"));
+        multiEdit->setShowVertScrollbar(isCheckboxSelected("Root/TextSample/MultiLineGroup/forceScroll"));
     }
 
     // event was handled
     return true;
 }
 
-bool TextDemo::quit(const CEGUI::EventArgs&)
+bool TextSample::quit(const CEGUI::EventArgs&)
 {
 
     // event was handled
@@ -231,17 +243,7 @@ bool TextDemo::quit(const CEGUI::EventArgs&)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void TextDemo::deinitialise()
+void TextSample::deinitialise()
 {
     // nothing to do here!
-}
-
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static TextDemo sample;
-    return sample;
 }

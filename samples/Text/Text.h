@@ -35,9 +35,11 @@ namespace CEGUI
 }
 
 // Sample class
-class TextDemo : public Sample
+class TextSample : public Sample
 {
 public:
+    TextSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
@@ -48,6 +50,7 @@ public:
         member functions used as event handlers
     *************************************************************************/
     bool handleQuit(const CEGUI::EventArgs& e);
+
 private:
     /** Sub routines for each edit panel.*/
     void initStaticText();
@@ -71,4 +74,4 @@ private:
     CEGUI::GUIContext* d_guiContext;
 };
 
-#endif  // end of guard _Sample_Demo4_h_
+#endif  // end of guard _Sample_Sample4_h_

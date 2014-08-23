@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Fri Apr 22 2011
-    author:     Paul D Turner <paul@cegui.org.uk>
+    created:    20/5/2008
+    author:     Cegui Team
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,21 +24,38 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_InventoryDemo_h_
-#define _Sample_InventoryDemo_h_
+#ifndef _DragDropSample_h_
+#define _DragDropSample_h_
 
 #include "SampleBase.h"
-#include "CEGUI/CEGUI.h"
 
-class InventoryDemo : public Sample
+namespace CEGUI
+{
+    class GUIContext;
+    class EventArgs;
+}
+
+// Sample class
+class DragDropSample : public Sample
 {
 public:
-    // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    DragDropSample();
 
-    // method to perform any required cleanup operations.
+    // override member to initialse the sample.
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    // override member to perform cleanup.
     virtual void deinitialise();
+
+private:
+    /// member to subscribe handler to each 'slot' in the layout.
+    void subscribeEvents();
+    /// member that handles what happens when an item is dropped in a slot.
+    bool handle_ItemDropped(const CEGUI::EventArgs& args);
+    /// member that handles the frame window close button and quits
+    bool handle_CloseButton(const CEGUI::EventArgs& args);
+
+    CEGUI::GUIContext* d_guiContext;
 };
 
-#endif  // end of guard _Sample_InventoryDemo_h_
+#endif  // end of guard _DragDropSample_h_
 

@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Demo6_h_
-#define _Sample_Demo6_h_
+#ifndef _Demo6Sample_h_
+#define _Demo6Sample_h_
 
 #include "SampleBase.h"
 
@@ -40,6 +40,8 @@ namespace CEGUI
 class Demo6Sample : public Sample
 {
 public:
+    Demo6Sample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
     // method to perform any required cleanup operations.
@@ -62,4 +64,4 @@ protected:
     bool handleContentsChanged(const CEGUI::EventArgs& e);
 };
 
-#endif  // end of guard _Sample_Demo6_h_
+#endif  // end of guard _Demo6Sample_h_

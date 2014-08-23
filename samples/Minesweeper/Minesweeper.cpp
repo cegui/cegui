@@ -26,69 +26,12 @@ author:     Olivier Delannoy (Dalfy)
 ***************************************************************************/
 #include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
+
+#include "Minesweeper.h"
 #include "Minesweeper_Timer.h"
+
 #include <ctime>
 #include <cstdlib>
-struct Location
-{
-    size_t d_row;
-    size_t d_col;
-};
-const size_t MinesweeperSize = 10;
-const size_t MineCount = 15;
-
-class MinesweeperSample : public Sample
-{
-public:
-    // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-
-    // method to perform any required cleanup operations.
-    virtual void deinitialise();
-
-protected:
-    // Handle new game
-    bool handleGameStartClicked(const CEGUI::EventArgs& event);
-    // Handle click on a button of the board
-    bool handleMineButtonClicked(const CEGUI::EventArgs& event);
-    // Handle pointer press & hold on a button of the board
-    bool handleMinePointerPressHold(const CEGUI::EventArgs& event);
-    // Update the timer if needed
-    bool handleUpdateTimer(const CEGUI::EventArgs& event);
-    // reset the board
-    void boardReset();
-    // place mine and computes mine neighborhood
-    void boardPositionMines();
-    // Test whether the player wins or not
-    bool isGameWin();
-    // Call this function if the game is finished
-    void gameEnd(bool victory);
-    // When a button is clicked
-    bool boardDiscover(const Location& location);
-    // Store all buttons needed
-    CEGUI::PushButton* d_buttons[MinesweeperSize][MinesweeperSize];
-    // Store button location
-    Location d_buttonsMapping[MinesweeperSize][MinesweeperSize];
-    // Store the value of the board itself
-    size_t d_board[MinesweeperSize][MinesweeperSize];
-    // Store the number of case the user discovered
-    size_t d_boardCellDiscovered;
-    // Store the number of mine to find
-    CEGUI::Editbox* d_counter;
-    // Store the number of second elapsed
-    CEGUI::Editbox* d_timer;
-    // Used to display the result text
-    CEGUI::Window* d_result;
-
-    // True if the game is started false otherwise
-    bool d_gameStarted;
-    // time at the start of the game
-    clock_t d_timerStartTime;
-    // current value of the timer
-    clock_t d_timerValue;
-    // Custom window type to force refresh of the timer
-    Timer* d_alarm;
-};
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -96,6 +39,18 @@ protected:
 MinesweeperSample class
 
 *************************************************************************/
+
+MinesweeperSample::MinesweeperSample()
+{
+    Sample::d_name = "MinesweeperSample";
+    Sample::d_credits = "Olivier \"Dalfy\" Delannoy";
+    Sample::d_description = 
+        "The Minesweeper sample is a fully functional replication of the well known game using CEGUI";
+    Sample::d_summary = 
+        "The demo uses event handlers and the Vanilla and Taharez skins";
+    Sample::d_type = ST_Module;
+}
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 Sample specific initialisation goes here.
@@ -516,11 +471,4 @@ bool MinesweeperSample::boardDiscover(const Location& loc)
         }
     }
     return true;
-}
-
-
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static MinesweeperSample sample;
-    return sample;
 }

@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Effects_Demo_
-#define _Effects_Demo_
+#ifndef _Effects_Sample_
+#define _Effects_Sample_
 
 #include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
@@ -129,9 +129,11 @@ protected:
 };
 
 // Sample class
-class EffectsDemo : public Sample
+class RenderEffectsSample : public Sample
 {
 public:
+    RenderEffectsSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 

@@ -35,10 +35,23 @@ using namespace NavigationStrategiesPayloads;
 /** This sample uses most of the code from the 'HelloWorld' sample. 
     Thus, most of the clarifying comments have been removed for brevity. **/
 
+FormNavigationSample::FormNavigationSample()
+{
+    Sample::d_name = "FormNavigationSample";
+    Sample::d_credits = "Timotei Dolean";
+    Sample::d_description = 
+        "A Sample that shows a form which can be navigated using the keyboard or other devices.";
+    Sample::d_summary = 
+        "The Sample uses the WindowManager to create from code, "
+        "a window with a form that contains: labels, editboxes, "
+        "checkboxes, 'submit' and 'reset' buttons.";
+    Sample::d_type = ST_Module;
+}
+
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FormNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
+bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 {
     d_usedFiles = CEGUI::String(__FILE__);
 
@@ -58,7 +71,7 @@ bool FormNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     gui_context->setWindowNavigator(d_windowNavigator);
 
     FrameWindow* wnd = (FrameWindow*)win_mgr.createWindow("TaharezLook/FrameWindow", 
-        "Demo Window");
+        "Sample Window");
     d_root->addChild(wnd);
 
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
@@ -76,11 +89,11 @@ bool FormNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void FormNavigationDemo::deinitialise()
+void FormNavigationSample::deinitialise()
 {
 }
 
-void FormNavigationDemo::createForm(FrameWindow* wnd)
+void FormNavigationSample::createForm(FrameWindow* wnd)
 {
     wnd->addChild(createWidget("TaharezLook/Label", 0.0f, 0.0f, "Char name:"));
     wnd->addChild(createWidget("TaharezLook/Label", 0.0f, 0.1f, "Guild name:"));
@@ -109,18 +122,18 @@ void FormNavigationDemo::createForm(FrameWindow* wnd)
 
     d_confirmButton = createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm");
     d_confirmButton->subscribeEvent(PushButton::EventClicked, 
-        Event::Subscriber(&FormNavigationDemo::disableConfirmButton, this));
+        Event::Subscriber(&FormNavigationSample::disableConfirmButton, this));
     wnd->addChild(d_confirmButton);
     d_navigationStrategy->d_windows.push_back(d_confirmButton);
 
     Window* resetButton = createWidget("TaharezLook/Button", 0.3f, 0.4f, "Reset");
     resetButton->subscribeEvent(PushButton::EventClicked, 
-        Event::Subscriber(&FormNavigationDemo::resetForm, this));
+        Event::Subscriber(&FormNavigationSample::resetForm, this));
     wnd->addChild(resetButton);
     d_navigationStrategy->d_windows.push_back(resetButton);
 }
 
-CEGUI::Window* FormNavigationDemo::createWidget(const String& type, 
+CEGUI::Window* FormNavigationSample::createWidget(const String& type, 
     float position_x, float position_y, const String& text)
 {
     Window* widget = WindowManager::getSingleton().createWindow(type);
@@ -131,7 +144,7 @@ CEGUI::Window* FormNavigationDemo::createWidget(const String& type,
     return widget;
 }
 
-bool FormNavigationDemo::resetForm(const CEGUI::EventArgs& e)
+bool FormNavigationSample::resetForm(const CEGUI::EventArgs& e)
 {
     for(std::vector<Window*>::const_iterator itor = d_editboxes.begin(); 
         itor != d_editboxes.end(); ++itor)
@@ -145,23 +158,14 @@ bool FormNavigationDemo::resetForm(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool FormNavigationDemo::disableConfirmButton(const CEGUI::EventArgs& e)
+bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs& e)
 {
     d_confirmButton->setEnabled(false);
 
     return true;
 }
 
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static FormNavigationDemo sample;
-    return sample;
-}
-
-std::map<int, String> FormNavigationDemo::getNavigationMappings()
+std::map<int, String> FormNavigationSample::getNavigationMappings()
 {
     std::map<int, String> mappings;
 

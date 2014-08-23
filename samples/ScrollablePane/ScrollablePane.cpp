@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "ScrollablePaneDemo.h"
+#include "ScrollablePane.h"
 
 #include "CEGUI/System.h"
 #include "CEGUI/SchemeManager.h"
@@ -43,6 +43,21 @@
 #include "CEGUI/widgets/ScrolledContainer.h"
 
 #include "SampleBase.h"
+
+ScrollablePaneSample::ScrollablePaneSample()
+{
+    Sample::d_name = "ScrollablePaneDeme";
+    Sample::d_credits = "Tomas Lindquist Olsen";
+    Sample::d_description = 
+        "The ScrollbarPane sample uses the WindowsLook, which gives it a look similar "
+        "to old Windows applications. The background consists of a ScrollablePane to "
+        "which windows can be added, using the menu bar. The items on the pane can be "
+        "moved freely and the pane can be scrolled with the scrollbars.";
+    Sample::d_summary = 
+        "The background window is of target type \"CEGUI/ScrollablePane\". "
+        "The WindowsLook skin is used for all the windows.";
+    Sample::d_type = ST_Module;
+}
 
 bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 {
@@ -82,7 +97,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setRootWindow(d_root);
 
     // create a menubar.
-    // this will fit in the top of the screen and have options for the demo
+    // this will fit in the top of the screen and have options for the Sample
     UDim bar_bottom(0,d_font->getLineSpacing(1.5f));
 
     Window* bar = d_wm->createWindow("WindowsLook/Menubar");
@@ -92,7 +107,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // fill out the menubar
     createMenu(bar);
 
-    // create a scrollable pane for our demo content
+    // create a scrollable pane for our Sample content
     d_pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
     d_pane->setArea(URect(UDim(0,0),bar_bottom,UDim(1,0),UDim(1,0)));
     // this scrollable pane will be a kind of virtual desktop in the sense that it's bigger than
@@ -131,20 +146,20 @@ void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
     item->subscribeEvent("Clicked", Event::Subscriber(&ScrollablePaneSample::fileQuit, this));
     popup->addChild(item);
 
-    // demo menu item
-    Window* demo = d_wm->createWindow("WindowsLook/MenuItem");
-    demo->setText("Demo");
-    bar->addChild(demo);
+    // Sample menu item
+    Window* Sample = d_wm->createWindow("WindowsLook/MenuItem");
+    Sample->setText("Sample");
+    bar->addChild(Sample);
 
-    // demo popup
+    // Sample popup
     popup = d_wm->createWindow("WindowsLook/PopupMenu");
-    demo->addChild(popup);
+    Sample->addChild(popup);
 
-    // demo -> new window
+    // Sample -> new window
     item = d_wm->createWindow("WindowsLook/MenuItem");
     item->setText("New dialog");
     item->setTooltipText("Hotkey: Space");
-    item->subscribeEvent("Clicked", Event::Subscriber(&ScrollablePaneSample::demoNewDialog, this));
+    item->subscribeEvent("Clicked", Event::Subscriber(&ScrollablePaneSample::SampleNewDialog, this));
     popup->addChild(item);
 }
 
@@ -156,7 +171,7 @@ void ScrollablePaneSample::deinitialise()
 }
 
 /************************************************************************/
-bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
+bool ScrollablePaneSample::SampleNewDialog(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
     
@@ -185,18 +200,9 @@ bool ScrollablePaneSample::semanticEventHandler(const CEGUI::EventArgs& e)
     {
         // this handler does not use the event args at all so this is fine :)
         // though maybe a bit hack-ish...
-        demoNewDialog(e);
+        SampleNewDialog(e);
         return true;
     }
 
     return false;
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static ScrollablePaneSample sample;
-    return sample;
 }

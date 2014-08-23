@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "TreeDemo.h"
+#include "Tree.h"
 #include "CEGUI/CEGUI.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -37,8 +37,8 @@
 #include <cstdlib>
 
 
-const unsigned int TreeDemoSample::TreeID    = 1;
-const unsigned int TreeDemoSample::EditBoxID = 2;
+const unsigned int TreeSample::TreeID    = 1;
+const unsigned int TreeSample::EditBoxID = 2;
 
 #define USE_VANILLA  0
 
@@ -48,14 +48,14 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #define IMAGES_FILE_NAME   "Vanilla-Images"
 #define STATICIMAGE_NAME   "Vanilla/StaticImage"
 #define TOOLTIP_NAME       "Vanilla/Tooltip"
-#define LAYOUT_FILE_NAME   "TreeDemo.layout"
+#define LAYOUT_FILE_NAME   "TreeSample.layout"
 #define BRUSH_NAME         "GenericBrush"
 #else
 #define SCHEME_FILE_NAME   "TaharezLook.scheme"
 #define IMAGES_FILE_NAME   "TaharezLook"
 #define STATICIMAGE_NAME   "TaharezLook/StaticImage"
 #define TOOLTIP_NAME       "TaharezLook/Tooltip"
-#define LAYOUT_FILE_NAME   "TreeDemoTaharez.layout"
+#define LAYOUT_FILE_NAME   "TreeSampleTaharez.layout"
 #define BRUSH_NAME         "/TextSelectionBrush"
 #endif
 
@@ -78,16 +78,27 @@ int randInt(int low, int high)
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
-    TreeDemoSample class
+    TreeSample class
 
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 
+TreeSample::TreeSample()
+{
+    Sample::d_name = "TreeSample";
+    Sample::d_credits = "David Durant";
+    Sample::d_description = 
+        "The Tree sample contains a tree of items that can be expanded and collapsed.";
+    Sample::d_summary = 
+        "The sample showcases the \"CEGUI/Tree\" functionality. "
+        "The \"TaharezLook/Tree\" widget is used for this purpose.";
+    Sample::d_type = ST_Module;
+}
 
 /*************************************************************************
 Sample specific initialisation goes here.
 *************************************************************************/
-bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
+bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -141,15 +152,15 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 
    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
-   TreeDemoWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
+   TreeSampleWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
 
-   background->addChild(TreeDemoWindow);
+   background->addChild(TreeSampleWindow);
 
-   theTree = (Tree *)TreeDemoWindow->getChild(TreeID);
+   theTree = (Tree *)TreeSampleWindow->getChild(TreeID);
    theTree->initialise();
-   theTree->subscribeEvent(Tree::EventSelectionChanged, Event::Subscriber(&TreeDemoSample::handleEventSelectionChanged, this));
-   theTree->subscribeEvent(Tree::EventBranchOpened, Event::Subscriber(&TreeDemoSample::handleEventBranchOpened, this));
-   theTree->subscribeEvent(Tree::EventBranchClosed, Event::Subscriber(&TreeDemoSample::handleEventBranchClosed, this));
+   theTree->subscribeEvent(Tree::EventSelectionChanged, Event::Subscriber(&TreeSample::handleEventSelectionChanged, this));
+   theTree->subscribeEvent(Tree::EventBranchOpened, Event::Subscriber(&TreeSample::handleEventBranchOpened, this));
+   theTree->subscribeEvent(Tree::EventBranchClosed, Event::Subscriber(&TreeSample::handleEventBranchClosed, this));
 
    // activate the background window
    background->activate();
@@ -292,17 +303,17 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void TreeDemoSample::deinitialise()
+void TreeSample::deinitialise()
    {
    }
 
 
-bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
+bool TreeSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
    {
    using namespace CEGUI;
 
    const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
-   Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
+   Editbox *editBox = (Editbox *)TreeSampleWindow->getChild(EditBoxID);
 
    // Three different ways to get the item selected.
 //   TreeCtrlEntry *selectedItem = theTree->getFirstSelectedItem();      // the first selection in the list (may be more)
@@ -330,33 +341,23 @@ bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
    return true;
    }
 
-bool TreeDemoSample::handleEventBranchOpened(const CEGUI::EventArgs& args)
+bool TreeSample::handleEventBranchOpened(const CEGUI::EventArgs& args)
    {
    using namespace CEGUI;
 
    const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
-   Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
+   Editbox *editBox = (Editbox *)TreeSampleWindow->getChild(EditBoxID);
    editBox->setText("Opened: " + treeArgs.treeItem->getText());
    return true;
    }
 
 
-bool TreeDemoSample::handleEventBranchClosed(const CEGUI::EventArgs& args)
+bool TreeSample::handleEventBranchClosed(const CEGUI::EventArgs& args)
    {
    using namespace CEGUI;
 
    const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
-   Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
+   Editbox *editBox = (Editbox *)TreeSampleWindow->getChild(EditBoxID);
    editBox->setText("Closed: " + treeArgs.treeItem->getText());
    return true;
-   }
-
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static TreeDemoSample sample;
-    return sample;
 }

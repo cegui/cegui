@@ -24,14 +24,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Demo8_h_
-#define _Sample_Demo8_h_
+#ifndef _Demo8_h_
+#define _Demo8_h_
 
 #include "CEGuiSample.h"
 #include "CEGUI/CEGUI.h"
 
 // Sample class
-class Demo8Sample : public CEGuiSample
+class Demo8 : public CEGuiSample
 {
 public:
     // method to initialse the samples windows and events.
@@ -43,4 +43,4 @@ public:
 protected:
 };
 
-#endif  // end of guard _Sample_Demo7_h_
+#endif  // end of guard _Demo8_h_

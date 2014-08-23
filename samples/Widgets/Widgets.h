@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Widget_Demo_
-#define _Widget_Demo_
+#ifndef _Widget_Sample_
+#define _Widget_Sample_
 
 #include "SampleBase.h"
 
@@ -42,9 +42,11 @@ struct WidgetPropertiesObject;
 typedef std::vector<MyListItem*> WidgetListType;
 
 // Sample class
-class WidgetDemo : public Sample
+class WidgetsSample : public Sample
 {
 public:
+    WidgetsSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
@@ -52,6 +54,7 @@ public:
 
     // method to perform any required cleanup operations.
     virtual void deinitialise();
+
 protected:
     // initialisation helpers
     void initialiseAvailableWidgetsMap();
@@ -106,7 +109,7 @@ protected:
 
     void saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow);
 
-    static const CEGUI::String s_widgetDemoWindowPrefix;
+    static const CEGUI::String s_widgetSampleWindowPrefix;
 
     CEGUI::GUIContext* d_guiContext;
 

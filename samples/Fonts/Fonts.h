@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Sample_FontsDemo_h_
-#define _Sample_FontsDemo_h_
+#ifndef _FontsSample_h_
+#define _FontsSample_h_
 
 #include "SampleBase.h"
 
@@ -37,13 +37,15 @@ author:     Lukas E Meindl
 struct FontOption;
 
 // Sample class
-class FontsDemo : public Sample
+class FontsSample : public Sample
 {
 public:
+    FontsSample();
+
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext);
 
-    void initialiseDemoFonts();
+    void initialiseSampleFonts();
     void initialiseFontEditorInfoLabel();
     void deinitialise();
 
@@ -106,5 +108,4 @@ protected:
     std::vector<CEGUI::String> d_autoScaleOptionsArray;
 };
 
-
-#endif
+#endif // _FontsSample_h_
