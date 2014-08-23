@@ -49,7 +49,12 @@ file (APPEND ${SAMPLE_LIST_HEADER} "\n#endif")
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/common/include)
 include_directories (${CMAKE_BINARY_DIR}/samples/common/include)
 
-cegui_add_library_impl("CEGUISamples" FALSE SAMPLES_SOURCES SAMPLES_HEADERS FALSE FALSE)
+# ensure this gets built into a static lib
+add_library(CEGUISamples STATIC ${SAMPLES_SOURCES} ${SAMPLES_HEADERS})
+set_property(TARGET CEGUISamples APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
+if (CEGUI_BUILD_STATIC_FACTORY_MODULE)
+    set_property(TARGET CEGUISamples APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_BUILD_STATIC_FACTORY_MODULE)
+endif()
 
 # parse additional libs
 foreach (lib ${ADDITIONAL_LIBS})
