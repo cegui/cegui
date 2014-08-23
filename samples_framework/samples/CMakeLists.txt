@@ -11,7 +11,8 @@ MACRO(SUBDIRLIST result curdir)
 ENDMACRO()
 
 # initialize variables
-set (ADDITIONAL_LIBS "${CEGUI_BASE_LIBNAME}")
+set (ADDITIONAL_LIBS "")
+set (ADDITIONAL_INCLUDE_DIRS "")
 set (SAMPLES_SOURCES "")
 set (SAMPLES_HEADERS "")
 set (SAMPLES_LIST "")
@@ -45,18 +46,12 @@ foreach (sample ${SAMPLES_LIST})
 endforeach ()
 file (APPEND ${SAMPLE_LIST_HEADER} "\n#endif")
 
-# additional include directories have to go here
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/common/include)
-include_directories (${CMAKE_BINARY_DIR}/samples/common/include)
+# additional include directories have to appear here
+list (APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/common/include")
+list (APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/samples/common/include")
 
-# ensure this gets built into a static lib
-add_library(CEGUISamples STATIC ${SAMPLES_SOURCES} ${SAMPLES_HEADERS})
-set_property(TARGET CEGUISamples APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
-if (CEGUI_BUILD_STATIC_FACTORY_MODULE)
-    set_property(TARGET CEGUISamples APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_BUILD_STATIC_FACTORY_MODULE)
-endif()
-
-# parse additional libs
-foreach (lib ${ADDITIONAL_LIBS})
-    cegui_target_link_libraries("CEGUISamples" ${lib})
-endforeach ()
+# forward all files, include dirs, and libs to samples_framework
+set (SAMPLES_HEADERS "${SAMPLES_HEADERS}" PARENT_SCOPE)
+set (SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
+set (ADDITIONAL_INCLUDE_DIRS "${ADDITIONAL_INCLUDE_DIRS}" PARENT_SCOPE)
+set (ADDITIONAL_LIBS "${ADDITIONAL_LIBS}" PARENT_SCOPE)
