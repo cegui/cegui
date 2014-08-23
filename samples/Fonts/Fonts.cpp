@@ -29,7 +29,7 @@ author:     Paul D Turner
 // sample texts might show up unreadable in this source file. The sample
 // should look okay though when running.
 
-#include "FontsDemo.h"
+#include "Fonts.h"
 #include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
@@ -56,7 +56,7 @@ static struct
             (encoded_char*)"DejaVuSans-12",
             (encoded_char*)"Try out writing text in any language here. The used font can be changed on the right.\n"
             "You can create new fonts if needed. The new font will be set as font for the selected text/language...\n"
-            "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other demos)\n"
+            "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other Samples)\n"
             "Important: When you switch to a font the FIRST time, it takes some time to load it. Especially for fonts with asian characters this load time might be noticable.!"
     },
     {
@@ -167,8 +167,31 @@ public:
       }
 };
 
+FontsSample::FontsSample()
+{
+    Sample::d_name = "FontsSample";
+    Sample::d_credits = "Lukas \"Ident\" Meindl";
+    Sample::d_description = 
+        "Showcase of different fonts packaged with CEGUI. A selection of "
+        "fonts and predefined texts, with characters from a variety of languages, "
+        "is given. It is possible to edit the Samplenstration text and create or "
+        "edit fonts the font editor window.";
+    Sample::d_summary = 
+        "The Sample displays the usage of CEGUI::Font's using the fonts "
+        "from the datafiles folder. For the special characters, UTF-8 "
+        "character encoding is supported by CEGUI and is used in the Sample. "
+        "All \".font\" files found in the datafiles' font folder are "
+        "loaded into the Sample. Additionally, some of the supported font "
+        "file endings (.ttf, .pcf, .otf) are added to the list in the "
+        "font editor window using the CEGUI ResourceProvider. CEGUI Fonts "
+        "have size and autoscale settings that can be adjusted in the Sample. "
+        "In CEGUI fonts can be loaded using the &quot;.font&quot; files or "
+        "can be created in run-time using the CEGUI::FontManager. "
+        "They can be edited at any time.";
+    Sample::d_type = ST_Module;
+}
 
-bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
+bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
 {
     d_usedFiles = CEGUI::String(__FILE__);
 
@@ -195,8 +218,8 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     retrieveLoadedFontNames(false);
 
     // Now that we know about all existing fonts we will initialise
-    // the fonts we wanna use for this demo hardcoded
-    initialiseDemoFonts();
+    // the fonts we wanna use for this Sample hardcoded
+    initialiseSampleFonts();
 
     // Fill list with all new and thus editable font names
     retrieveLoadedFontNames(true);
@@ -208,7 +231,7 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setDefaultTooltipType("Vanilla/Tooltip");
 
     // Load the GUI layout and attach it to the context as root window
-    d_root = winMgr.loadLayoutFromFile("FontsDemo.layout");
+    d_root = winMgr.loadLayoutFromFile("FontsSample.layout");
     d_guiContext->setRootWindow(d_root);
 
     //Here we create a font and apply it to the renew font name button
@@ -220,11 +243,11 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     d_root->getChild("FontsSampleWindow/FontCreator/FontSizeLabel");
 
     //Subscribe click event for renewing font name based on font file name and size
-    d_renewFontNameButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsDemo::handleRenewFontNameButtonClicked, this));
+    d_renewFontNameButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsSample::handleRenewFontNameButtonClicked, this));
 
     // Get the editbox where we display the text
     d_textDisplayMultiLineEditbox = static_cast<CEGUI::MultiLineEditbox*>(d_root->getChild("FontsSampleWindow/MultiLineTextWindow"));
-    d_textDisplayMultiLineEditbox->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, Event::Subscriber(&FontsDemo::handleTextMultiLineEditboxTextChanged, this));
+    d_textDisplayMultiLineEditbox->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, Event::Subscriber(&FontsSample::handleTextMultiLineEditboxTextChanged, this));
 
     //Get the font editor info label and apply an animation to it for blending out
     initialiseFontEditorInfoLabel();
@@ -245,7 +268,7 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
     initialiseTextSelector();
 
     //Subscribe font selection event
-    d_fontSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsDemo::handleFontSelectionChanged, this));
+    d_fontSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsSample::handleFontSelectionChanged, this));
 
     d_textSelector->setItemSelectState(size_t(0), true);
 
@@ -253,11 +276,11 @@ bool FontsDemo::initialise(CEGUI::GUIContext* guiContext)
 }
 
 // method to perform any required cleanup operations.
-void FontsDemo::deinitialise()
+void FontsSample::deinitialise()
 {
 }
 
-bool FontsDemo::handleFontCreationButtonClicked(const EventArgs& e)
+bool FontsSample::handleFontCreationButtonClicked(const EventArgs& e)
 {
     FontManager& fontMgr(FontManager::getSingleton());
 
@@ -302,7 +325,7 @@ bool FontsDemo::handleFontCreationButtonClicked(const EventArgs& e)
 }
 
 
-bool FontsDemo::handleFontEditButtonClicked(const EventArgs& e)
+bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
 {
     FontManager& fontMgr(FontManager::getSingleton());
 
@@ -338,7 +361,7 @@ bool FontsDemo::handleFontEditButtonClicked(const EventArgs& e)
     return true;
 }
 
-bool FontsDemo::handleFontSelectionChanged(const EventArgs& e)
+bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
 {
     //Change font of the selected language/text sample
     if(d_textSelector->getFirstSelectedItem() && d_fontSelector->getFirstSelectedItem())
@@ -405,7 +428,7 @@ bool FontsDemo::handleFontSelectionChanged(const EventArgs& e)
     return true;
 }
 
-bool FontsDemo::handleTextSelectionChanged(const EventArgs& e)
+bool FontsSample::handleTextSelectionChanged(const EventArgs& e)
 {
     if(d_textSelector->getFirstSelectedItem())
     {
@@ -419,7 +442,7 @@ bool FontsDemo::handleTextSelectionChanged(const EventArgs& e)
     return true;
 }
 
-bool FontsDemo::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
+bool FontsSample::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
 {
     if(d_textSelector->getFirstSelectedItem())
     {
@@ -431,21 +454,21 @@ bool FontsDemo::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
     return true;
 }
 
-bool FontsDemo::handleFontFileNameSelectionChanged(const EventArgs& e)
+bool FontsSample::handleFontFileNameSelectionChanged(const EventArgs& e)
 {
     generateNewFontName();
 
     return true;
 }
 
-bool FontsDemo::handleRenewFontNameButtonClicked(const EventArgs& e)
+bool FontsSample::handleRenewFontNameButtonClicked(const EventArgs& e)
 {
     generateNewFontName();
 
     return true;
 }
 
-void FontsDemo::initialiseAutoScaleOptionsArray()
+void FontsSample::initialiseAutoScaleOptionsArray()
 {
     //AutoScale options in the enum order
     d_autoScaleOptionsArray.push_back("Disabled");
@@ -457,7 +480,7 @@ void FontsDemo::initialiseAutoScaleOptionsArray()
 }
 
 
-void FontsDemo::retrieveLoadedFontNames(bool areEditable)
+void FontsSample::retrieveLoadedFontNames(bool areEditable)
 {
     FontManager& fontManager(FontManager::getSingleton());
     FontManager::FontIterator fi = fontManager.getIterator();
@@ -475,14 +498,14 @@ void FontsDemo::retrieveLoadedFontNames(bool areEditable)
 }
 
 
-void FontsDemo::retrieveFontFileNames()
+void FontsSample::retrieveFontFileNames()
 {
     System::getSingleton().getResourceProvider()->getResourceGroupFileNames(d_fontFileNameOptions, "*.ttf", Font::getDefaultResourceGroup());
     System::getSingleton().getResourceProvider()->getResourceGroupFileNames(d_fontFileNameOptions, "*.pcf", Font::getDefaultResourceGroup());
     System::getSingleton().getResourceProvider()->getResourceGroupFileNames(d_fontFileNameOptions, "*.otf", Font::getDefaultResourceGroup());
 }
 
-void FontsDemo::initialiseFontFileNameCombobox()
+void FontsSample::initialiseFontFileNameCombobox()
 {
     //Select a font file name if any are present
     if(d_fontFileNameOptions.size() > 0)
@@ -500,7 +523,7 @@ void FontsDemo::initialiseFontFileNameCombobox()
     }
 }
 
-void FontsDemo::initialiseFontCreator()
+void FontsSample::initialiseFontCreator()
 {
     d_fontFileNameSelector = static_cast<CEGUI::Combobox*>(d_root->getChild("FontsSampleWindow/FontCreator/FontFileCombobox"));
     d_fontNameEditbox = static_cast<CEGUI::Editbox*>(d_root->getChild("FontsSampleWindow/FontCreator/FontNameEditbox"));
@@ -510,17 +533,17 @@ void FontsDemo::initialiseFontCreator()
     d_fontCreationButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontsSampleWindow/FontCreator/CreationButton"));
     d_fontEditButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontsSampleWindow/FontCreator/EditButton"));
 
-    d_fontFileNameSelector->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&FontsDemo::handleFontFileNameSelectionChanged, this));
+    d_fontFileNameSelector->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&FontsSample::handleFontFileNameSelectionChanged, this));
 
-    d_fontCreationButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsDemo::handleFontCreationButtonClicked, this));
-    d_fontEditButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsDemo::handleFontEditButtonClicked, this));
+    d_fontCreationButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsSample::handleFontCreationButtonClicked, this));
+    d_fontEditButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsSample::handleFontEditButtonClicked, this));
 
     initialiseFontFileNameCombobox();
     initialiseAutoScaleCombobox();
 
 }
 
-void FontsDemo::initialiseFontSelector()
+void FontsSample::initialiseFontSelector()
 {
     d_fontSelector = static_cast<CEGUI::Listbox*>(d_root->getChild("FontsSampleWindow/FontSelector"));
 
@@ -540,10 +563,10 @@ void FontsDemo::initialiseFontSelector()
     d_fontSelector->handleUpdatedItemData();
 }
 
-void FontsDemo::initialiseTextSelector()
+void FontsSample::initialiseTextSelector()
 {
     d_textSelector = static_cast<CEGUI::Listbox*>(d_root->getChild("FontsSampleWindow/TextSelector"));
-    d_textSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsDemo::handleTextSelectionChanged, this));
+    d_textSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsSample::handleTextSelectionChanged, this));
 
     for(unsigned int i = 0; i < LangListSize; ++i)
     {
@@ -552,7 +575,7 @@ void FontsDemo::initialiseTextSelector()
     }
 }
 
-void FontsDemo::changeFontSelectorFontSelection(const CEGUI::String& font)
+void FontsSample::changeFontSelectorFontSelection(const CEGUI::String& font)
 {
     while(d_fontSelector->getFirstSelectedItem())
     {
@@ -574,7 +597,7 @@ void FontsDemo::changeFontSelectorFontSelection(const CEGUI::String& font)
     }
 }
 
-void FontsDemo::initialiseLangToTextMap()
+void FontsSample::initialiseLangToTextMap()
 {
     for(unsigned int i = 0; i < LangListSize; ++i)
     {
@@ -582,7 +605,7 @@ void FontsDemo::initialiseLangToTextMap()
     }
 }
 
-void FontsDemo::generateNewFontName()
+void FontsSample::generateNewFontName()
 {
     CEGUI::String fileName = d_fontFileNameSelector->getText();
     CEGUI::String pointSize = d_fontSizeEditbox->getText();
@@ -593,7 +616,7 @@ void FontsDemo::generateNewFontName()
     d_fontNameEditbox->setText(fontName);
 }
 
-void FontsDemo::initialiseAutoScaleCombobox()
+void FontsSample::initialiseAutoScaleCombobox()
 {
    for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
     {
@@ -602,7 +625,7 @@ void FontsDemo::initialiseAutoScaleCombobox()
     }
 }
 
-int FontsDemo::getAutoScaleMode()
+int FontsSample::getAutoScaleMode()
 {
     CEGUI::String autoScaleString = d_fontAutoScaleCombobox->getSelectedItem()->getText();
 
@@ -615,7 +638,7 @@ int FontsDemo::getAutoScaleMode()
     return 0;
 }
 
-bool FontsDemo::findFontOption(CEGUI::String fontName)
+bool FontsSample::findFontOption(CEGUI::String fontName)
 {
     std::map<String, bool>::iterator iter = d_fontNameOptions.begin();
     for(; iter != d_fontNameOptions.end(); ++iter)
@@ -628,7 +651,7 @@ bool FontsDemo::findFontOption(CEGUI::String fontName)
     return true;
 }
 
-void FontsDemo::initialiseFontEditorInfoLabel()
+void FontsSample::initialiseFontEditorInfoLabel()
 {
     d_fontEditorInfoLabel = d_root->getChild("FontsSampleWindow/FontCreator/InfoLabel");
 
@@ -655,15 +678,15 @@ void FontsDemo::initialiseFontEditorInfoLabel()
     instance->start();
 }
 
-void FontsDemo::checkIfEditButtonShouldBeDisabled(CEGUI::Font &font)
+void FontsSample::checkIfEditButtonShouldBeDisabled(CEGUI::Font &font)
 {
     bool isEditable = findFontOption(font.getName());
 
     if(!isEditable)
     {
         d_fontEditButton->disable();
-        d_fontEditButton->setTooltipText("This demo won't allow editing of\n"
-            "fonts that were created outside the demo or\n"
+        d_fontEditButton->setTooltipText("This Sample won't allow editing of\n"
+            "fonts that were created outside the Sample or\n"
             "were loaded from .font files");
     }
     else
@@ -673,7 +696,7 @@ void FontsDemo::checkIfEditButtonShouldBeDisabled(CEGUI::Font &font)
     }
 }
 
-void FontsDemo::initialiseDemoFonts()
+void FontsSample::initialiseSampleFonts()
 {
     FontManager& fontManager(FontManager::getSingleton());
     fontManager.createFreeTypeFont("Junicode-14", 14.f, true, "Junicode.ttf",
@@ -702,13 +725,4 @@ void FontsDemo::initialiseDemoFonts()
 
     fontManager.createFreeTypeFont("mizufalp-12", 12.f, true, "mizufalp.ttf",
         Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.0f, 720.0f));
-}
-
-/*************************************************************************
-Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static FontsDemo sample;
-    return sample;
 }

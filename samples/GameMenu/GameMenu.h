@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Game_Menu_Demo_
-#define _Game_Menu_Demo_
+#ifndef _Game_Menu_Sample_
+#define _Game_Menu_Sample_
 
 #include "SampleBase.h"
 
@@ -44,9 +44,11 @@ enum WriteFocus
 
 
 // Sample class
-class GameMenuDemo : public Sample
+class GameMenuSample : public Sample
 {
 public:
+    GameMenuSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
@@ -56,7 +58,6 @@ public:
     virtual void onEnteringSample();
 
     virtual void update(float timeSinceLastUpdate);
-
 
 protected:
     void setupWindows();

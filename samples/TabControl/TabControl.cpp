@@ -27,11 +27,25 @@
 #include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
-#include "TabControlDemo.h"
+#include "TabControl.h"
 
 using namespace CEGUI;
 
-bool TabControlDemo::initialise(CEGUI::GUIContext* guiContext)
+TabControlSample::TabControlSample()
+{
+    Sample::d_name = "TabControlSample";
+    Sample::d_credits = "Andrew Zabolotny";
+    Sample::d_description = 
+        "The TabControl sample contains a window that has multiple pages, "
+        "which can be switching by clicking the tabs. Tabs can be adjusted "
+        "and created with the widgets on the 1st page.";
+    Sample::d_summary = 
+        "The tab window is of type \"TaharezLook/TabControl\". "
+        "For the seperate pages CEGUI layouts are loaded and attached.";
+    Sample::d_type = ST_Module;
+}
+
+bool TabControlSample::initialise(CEGUI::GUIContext* guiContext)
 {
     d_guiContext = guiContext;
     d_usedFiles = CEGUI::String(__FILE__);
@@ -68,8 +82,8 @@ bool TabControlDemo::initialise(CEGUI::GUIContext* guiContext)
     // set tooltip styles (by default there is none)
     d_guiContext->setDefaultTooltipType(SKIN "/Tooltip");
 
-    // load some demo windows and attach to the background 'root'
-    background->addChild(winMgr.loadLayoutFromFile("TabControlDemo.layout"));
+    // load some Sample windows and attach to the background 'root'
+    background->addChild(winMgr.loadLayoutFromFile("TabControlSample.layout"));
 
     TabControl* tc = static_cast<TabControl*>(background->getChild("Frame/TabControl"));
 
@@ -82,52 +96,52 @@ bool TabControlDemo::initialise(CEGUI::GUIContext* guiContext)
     static_cast<PushButton*>(
         background->getChild("Frame/TabControl/Page1/AddTab"))->subscribeEvent(
             PushButton::EventClicked,
-            Event::Subscriber(&TabControlDemo::handleAddTab, this));
+            Event::Subscriber(&TabControlSample::handleAddTab, this));
 
     // Click to visit this tab
     static_cast<PushButton*>(
         background->getChild("Frame/TabControl/Page1/Go"))->subscribeEvent(
             PushButton::EventClicked,
-            Event::Subscriber(&TabControlDemo::handleGoto, this));
+            Event::Subscriber(&TabControlSample::handleGoto, this));
 
     // Click to make this tab button visible (when scrolling is required)
     static_cast<PushButton*>(
         background->getChild("Frame/TabControl/Page1/Show"))->subscribeEvent(
             PushButton::EventClicked,
-            Event::Subscriber(&TabControlDemo::handleShow, this));
+            Event::Subscriber(&TabControlSample::handleShow, this));
 
     static_cast<PushButton*>(
         background->getChild("Frame/TabControl/Page1/Del"))->subscribeEvent(
             PushButton::EventClicked,
-            Event::Subscriber(&TabControlDemo::handleDel, this));
+            Event::Subscriber(&TabControlSample::handleDel, this));
 
     RadioButton* rb = static_cast<RadioButton*>(
                             background->getChild("Frame/TabControl/Page1/TabPaneTop"));
     rb->setSelected(tc->getTabPanePosition() == TabControl::Top);
     rb->subscribeEvent(
         RadioButton::EventSelectStateChanged,
-        Event::Subscriber(&TabControlDemo::handleTabPanePos, this));
+        Event::Subscriber(&TabControlSample::handleTabPanePos, this));
 
     rb = static_cast<RadioButton*>(
                 background->getChild("Frame/TabControl/Page1/TabPaneBottom"));
     rb->setSelected(tc->getTabPanePosition() == TabControl::Bottom);
     rb->subscribeEvent(
         RadioButton::EventSelectStateChanged,
-        Event::Subscriber(&TabControlDemo::handleTabPanePos, this));
+        Event::Subscriber(&TabControlSample::handleTabPanePos, this));
 
     Scrollbar* sb = static_cast<Scrollbar*>(
                         background->getChild("Frame/TabControl/Page1/TabHeight"));
     sb->setScrollPosition(tc->getTabHeight().d_offset);
     sb->subscribeEvent(
         Scrollbar::EventScrollPositionChanged,
-        Event::Subscriber(&TabControlDemo::handleTabHeight, this));
+        Event::Subscriber(&TabControlSample::handleTabHeight, this));
 
     sb = static_cast<Scrollbar*>(
                 background->getChild("Frame/TabControl/Page1/TabPadding"));
     sb->setScrollPosition(tc->getTabTextPadding().d_offset);
     sb->subscribeEvent(
         Scrollbar::EventScrollPositionChanged,
-        Event::Subscriber(&TabControlDemo::handleTabPadding, this));
+        Event::Subscriber(&TabControlSample::handleTabPadding, this));
 
     refreshPageList();
 
@@ -137,11 +151,11 @@ bool TabControlDemo::initialise(CEGUI::GUIContext* guiContext)
     return true;
 }
 
-void TabControlDemo::deinitialise()
+void TabControlSample::deinitialise()
 {
 }
 
-void TabControlDemo::refreshPageList()
+void TabControlSample::refreshPageList()
 {
     Window* root = d_guiContext->getRootWindow();
     // Check if the windows exists
@@ -166,13 +180,13 @@ void TabControlDemo::refreshPageList()
 
         for (size_t i = 0; i < tc->getTabCount(); i++)
         {
-            lbox->addItem(new MyListItem(
+            lbox->addItem(new TabControlListItem(
                                 tc->getTabContentsAtIndex(i)->getName()));
         }
     }
 }
 
-bool TabControlDemo::handleTabPanePos(const EventArgs& e)
+bool TabControlSample::handleTabPanePos(const EventArgs& e)
 {
     TabControl::TabPanePosition tpp;
 
@@ -200,7 +214,7 @@ bool TabControlDemo::handleTabPanePos(const EventArgs& e)
     return true;
 }
 
-bool TabControlDemo::handleTabHeight(const EventArgs& e)
+bool TabControlSample::handleTabHeight(const EventArgs& e)
 {
     Scrollbar* sb = static_cast<Scrollbar*>(
                         static_cast<const WindowEventArgs&>(e).window);
@@ -219,7 +233,7 @@ bool TabControlDemo::handleTabHeight(const EventArgs& e)
     return true;
 }
 
-bool TabControlDemo::handleTabPadding(const EventArgs& e)
+bool TabControlSample::handleTabPadding(const EventArgs& e)
 {
     Scrollbar* sb = static_cast<Scrollbar*>(
                         static_cast<const WindowEventArgs&>(e).window);
@@ -237,7 +251,7 @@ bool TabControlDemo::handleTabPadding(const EventArgs& e)
     return true;
 }
 
-bool TabControlDemo::handleAddTab(const EventArgs&)
+bool TabControlSample::handleAddTab(const EventArgs&)
 {
     Window* root = d_guiContext->getRootWindow();
 
@@ -289,7 +303,7 @@ bool TabControlDemo::handleAddTab(const EventArgs&)
     return true;
 }
 
-bool TabControlDemo::handleGoto(const EventArgs&)
+bool TabControlSample::handleGoto(const EventArgs&)
 {
     Window* root = d_guiContext->getRootWindow();
     // Check if the windows exists
@@ -321,7 +335,7 @@ bool TabControlDemo::handleGoto(const EventArgs&)
     return true;
 }
 
-bool TabControlDemo::handleShow(const EventArgs&)
+bool TabControlSample::handleShow(const EventArgs&)
 {
     Window* root = d_guiContext->getRootWindow();
     // Check if the windows exists
@@ -353,7 +367,7 @@ bool TabControlDemo::handleShow(const EventArgs&)
     return true;
 }
 
-bool TabControlDemo::handleDel(const EventArgs&)
+bool TabControlSample::handleDel(const EventArgs&)
 {
     Window* root = d_guiContext->getRootWindow();
     // Check if the windows exists
@@ -388,13 +402,4 @@ bool TabControlDemo::handleDel(const EventArgs&)
     }
 
     return true;
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static TabControlDemo sample;
-    return sample;
 }

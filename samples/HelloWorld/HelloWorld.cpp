@@ -29,11 +29,23 @@
 
 #include <iostream>
 
+HelloWorldSample::HelloWorldSample()
+{
+    Sample::d_name = "HelloWorldSample";
+    Sample::d_credits = "CrazyEddie, Lukas \"Ident\" Meindl";
+    Sample::d_description = 
+        "A very simple &quot;Hello World&quot; sample. It contains a single "
+        "window which will write &quot;Hello-World&quot; to the console if clicked";
+    Sample::d_summary = 
+        "The Sample uses the WindowManager to create the window from code. "
+        "An event handler is used to handle the mouse clicks on the window.";
+    Sample::d_type = ST_Module;
+}
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
+bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -87,8 +99,8 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
     //
-    // Create a FrameWindow in the TaharezLook style, and name it 'Demo Window'
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Demo Window");
+    // Create a FrameWindow in the TaharezLook style, and name it 'Sample Window'
+    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Sample Window");
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
@@ -121,7 +133,7 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // FrameWindow's titlebar.
     wnd->setText("Hello World!");
 
-    wnd->subscribeEvent(CEGUI::Window::EventPointerActivate,  Event::Subscriber(&HelloWorldDemo::handleHelloWorldClicked, this));
+    wnd->subscribeEvent(CEGUI::Window::EventPointerActivate,  Event::Subscriber(&HelloWorldSample::handleHelloWorldClicked, this));
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.
@@ -132,22 +144,13 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void HelloWorldDemo::deinitialise()
+void HelloWorldSample::deinitialise()
 {
 }
 
-bool HelloWorldDemo::handleHelloWorldClicked(const CEGUI::EventArgs& args)
+bool HelloWorldSample::handleHelloWorldClicked(const CEGUI::EventArgs& args)
 {
     std::cout << "Hello World!" << std::endl;
 
     return false;
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static HelloWorldDemo sample;
-    return sample;
 }

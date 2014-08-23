@@ -1,9 +1,9 @@
-/***********************************************************************
-    created:    20/5/2008
-    author:     Cegui Team
+/************************************************************************
+    created:	 10/17/2004
+    author:		 David Durant (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,36 +24,33 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_DragDropDemo_h_
-#define _Sample_DragDropDemo_h_
+#ifndef _Sample_TreeSample_h_
+#define _Sample_TreeSample_h_
 
 #include "SampleBase.h"
+#include "CEGUI/CEGUI.h"
 
-namespace CEGUI
-{
-    class GUIContext;
-    class EventArgs;
-}
 
-// Sample class
-class DragDropDemo : public Sample
+class TreeSample : public Sample
 {
 public:
-    // override member to initialse the sample.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-    // override member to perform cleanup.
-    virtual void deinitialise();
+    TreeSample();
 
-private:
-    /// member to subscribe handler to each 'slot' in the layout.
-    void subscribeEvents();
-    /// member that handles what happens when an item is dropped in a slot.
-    bool handle_ItemDropped(const CEGUI::EventArgs& args);
-    /// member that handles the frame window close button and quits
-    bool handle_CloseButton(const CEGUI::EventArgs& args);
+   // method to initialse the samples windows and events.
+   virtual bool initialise(CEGUI::GUIContext* guiContext);
 
-    CEGUI::GUIContext* d_guiContext;
-};
+   // method to perform any required cleanup operations.
+   virtual void deinitialise();
 
-#endif  // end of guard _Sample_DragDropDemo_h_
+protected:
+   CEGUI::Window* TreeSampleWindow;
+   static const unsigned int TreeID;
+   static const unsigned int EditBoxID;
 
+   bool handleEventSelectionChanged(const CEGUI::EventArgs& args);
+   bool handleEventBranchOpened(const CEGUI::EventArgs& args);
+   bool handleEventBranchClosed(const CEGUI::EventArgs& args);
+   };
+
+
+#endif  // end of guard _Sample_TreeSample_h_

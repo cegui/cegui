@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _SampleCustomShapesDrawing_h_
-#define _SampleCustomShapesDrawing_h_
+#ifndef _SampleCustomShapesDrawingSample_h_
+#define _SampleCustomShapesDrawingSample_h_
 
 #include "SampleBase.h"
 
@@ -41,10 +41,10 @@ namespace CEGUI
     class DefaultWindow;
 }
 
-class CustomShapesDrawing : public Sample
+class CustomShapesDrawingSample : public Sample
 {
 public:
-    CustomShapesDrawing();
+    CustomShapesDrawingSample();
 
     //! Initialises our sample
     virtual bool initialise(CEGUI::GUIContext* guiContext);

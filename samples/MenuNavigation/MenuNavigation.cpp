@@ -47,11 +47,23 @@ public:
 
 /** This sample uses most of the code from the 'HelloWorld' sample. 
     Thus, most of the clarifying comments have been removed for brevity. **/
+    
+MenuNavigationSample::MenuNavigationSample()
+{
+    Sample::d_name = "MenuNavigationSample";
+    Sample::d_credits = "Timotei Dolean";
+    Sample::d_description = 
+        "A demo that shows a 2D menu which can be navigated using the keyboard or other devices.";
+    Sample::d_summary = 
+        "The demo uses the WindowManager to create from code a window "
+        "with a menu that contains multiple buttons arranged in a 4x4 matrix.";
+    Sample::d_type = ST_Module;
+}
 
-/*************************************************************************ech
+/*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
+bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 {
     using namespace CEGUI;
 
@@ -61,7 +73,7 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     gui_context->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();
-    d_root = win_mgr.loadLayoutFromFile("MenuNavigationDemo.layout");
+    d_root = win_mgr.loadLayoutFromFile("MenuNavigationSample.layout");
 
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
@@ -79,9 +91,9 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
     tabControl->subscribeEvent(TabControl::EventSelectionChanged,
-        Event::Subscriber(&MenuNavigationDemo::handleTabSelectionChanged, this));
+        Event::Subscriber(&MenuNavigationSample::handleTabSelectionChanged, this));
 
-    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout");
+    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationSampleTabPage1.layout");
     d_logWidget1 = page1Window->getChild("StaticText");
     d_logWidget1->setText("OK");
 
@@ -94,20 +106,20 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 
         PushButton* button = static_cast<PushButton*>(page1Window->getChild(os.str()));
         button->subscribeEvent(PushButton::EventClicked,
-            Event::Subscriber(&MenuNavigationDemo::handleNumberButtonClicked, this));
+            Event::Subscriber(&MenuNavigationSample::handleNumberButtonClicked, this));
 
         d_matrixNavigationStrategy->d_windows.at((i - 1) % 4).push_back(button);
     }
 
     tabControl->addTab(page1Window);
 
-    Window* page2Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
+    Window* page2Window = win_mgr.loadLayoutFromFile("MenuNavigationSampleTabPage2.layout");
     d_logWidget2 = page2Window->getChild("StaticText");
     d_logWidget2->setText("OK");
 
     Window* selectButton = page2Window->getChild("SelectButton");
     selectButton->subscribeEvent(PushButton::EventClicked, 
-        Event::Subscriber(&MenuNavigationDemo::handleSelectButtonClicked, this));
+        Event::Subscriber(&MenuNavigationSample::handleSelectButtonClicked, this));
 
     tabControl->addTab(page2Window);
 
@@ -124,11 +136,11 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void MenuNavigationDemo::deinitialise()
+void MenuNavigationSample::deinitialise()
 {
 }
 
-void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
+void MenuNavigationSample::initialiseClasses(CEGUI::Listbox* classesListBox)
 {
     static const int classes_list_size = 5;
     static const char* classes_list[] = 
@@ -146,7 +158,7 @@ void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
     }
 }
 
-bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
+bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
@@ -159,7 +171,7 @@ bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool MenuNavigationDemo::handleNumberButtonClicked(const CEGUI::EventArgs& e)
+bool MenuNavigationSample::handleNumberButtonClicked(const CEGUI::EventArgs& e)
 {
     d_logWidget1->setText("Button " + 
         static_cast<const CEGUI::WindowEventArgs&>(e).window->getText() + 
@@ -168,7 +180,7 @@ bool MenuNavigationDemo::handleNumberButtonClicked(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool MenuNavigationDemo::handleTabSelectionChanged(const CEGUI::EventArgs& e)
+bool MenuNavigationSample::handleTabSelectionChanged(const CEGUI::EventArgs& e)
 {
     TabControl* tabControl = static_cast<TabControl*>(static_cast<const WindowEventArgs&>(e).window);
 
@@ -180,7 +192,7 @@ bool MenuNavigationDemo::handleTabSelectionChanged(const CEGUI::EventArgs& e)
     return true;
 }
 
-std::map<int, String> MenuNavigationDemo::createMatrixNavigationMappings()
+std::map<int, String> MenuNavigationSample::createMatrixNavigationMappings()
 {
     std::map<int, String> mappings;
 
@@ -194,7 +206,7 @@ std::map<int, String> MenuNavigationDemo::createMatrixNavigationMappings()
     return mappings;
 }
 
-std::map<int, CEGUI::String> MenuNavigationDemo::createLinearNavigationMappings()
+std::map<int, CEGUI::String> MenuNavigationSample::createLinearNavigationMappings()
 {
     std::map<int, String> mappings;
 
@@ -202,13 +214,4 @@ std::map<int, CEGUI::String> MenuNavigationDemo::createLinearNavigationMappings(
     mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
 
     return mappings;
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static MenuNavigationDemo sample;
-    return sample;
 }

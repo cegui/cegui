@@ -24,8 +24,13 @@ author:     Luca Ebach <lucaebach@gmail.com>
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _TabControlDemo_h_
-#define _TabControlDemo_h_
+#ifndef _TabControlSample_h_
+#define _TabControlSample_h_
+
+#include "SampleBase.h"
+#include "CEGUI/ForwardRefs.h"
+
+using namespace CEGUI;
 
 #define SKIN "TaharezLook"
 // for this to work you'll have to change the .layout files
@@ -51,19 +56,21 @@ static const char* PageText[] =
 
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
 // image.  This saves doing it manually every time in the code.
-class MyListItem : public ListboxTextItem
+class TabControlListItem : public ListboxTextItem
 {
 public:
-    MyListItem(const String& text) : ListboxTextItem(text)
+    TabControlListItem(const String& text) : ListboxTextItem(text)
     {
         setSelectionBrushImage(SKIN "/MultiListSelectionBrush");
     }
 };
 
 // Sample class
-class TabControlDemo : public Sample
+class TabControlSample : public Sample
 {
 public:
+    TabControlSample();
+
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext);
 
@@ -83,4 +90,4 @@ protected:
     CEGUI::GUIContext* d_guiContext;
 };
 
-#endif // _TabControlDemo_h_
+#endif // _TabControlSample_h_

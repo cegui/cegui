@@ -24,7 +24,7 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "WidgetsDemo.h"
+#include "Widgets.h"
 
 #include "CEGUI/CEGUI.h"
 
@@ -64,14 +64,14 @@ struct WidgetPropertiesObject
 class EventHandlerObject
 {
 public: 
-    EventHandlerObject(CEGUI::String eventName, WidgetDemo* owner);
+    EventHandlerObject(CEGUI::String eventName, WidgetsSample* owner);
     bool handleEvent(const CEGUI::EventArgs& args);
 private:
     CEGUI::String d_eventName;
-    WidgetDemo* d_owner;
+    WidgetsSample* d_owner;
 };
 
-EventHandlerObject::EventHandlerObject(CEGUI::String eventName, WidgetDemo* owner)
+EventHandlerObject::EventHandlerObject(CEGUI::String eventName, WidgetsSample* owner)
     : d_eventName(eventName),
     d_owner(owner)
 {
@@ -117,15 +117,40 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 
 
 //----------------------------------------------------------------------------//
-// The following are for the main WidgetDemo class.
+// The following are for the main WidgetSample class.
 //----------------------------------------------------------------------------//
 
 /*************************************************************************
 Sample specific initialisation goes here.
 *************************************************************************/
-const CEGUI::String WidgetDemo::s_widgetDemoWindowPrefix = "WidgetDemoWindow_";
+const CEGUI::String WidgetsSample::s_widgetSampleWindowPrefix = "WidgetSampleWindow_";
 
-bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
+WidgetsSample::WidgetsSample()
+{
+    Sample::d_name = "WidgetsSample";
+    Sample::d_credits = "Lukas \"Ident\" Meindl";
+    Sample::d_description = 
+        "The widgets sample allows to choose any of widgets from the stock "
+        "CEGUI skins. The widget will then be displayed and is ready for "
+        "interaction. All occuring events will be logged in the event "
+        "logger below the widget display. By accessing the \"Properties\" "
+        "tab, the user can see all properties the widget has and "
+        "their respective current values.";
+    Sample::d_summary = 
+        "The Sample's code is quite specific and probably not of use for most "
+        "projects using CEGUI. The main purpose of this sample is demonstration "
+        "of the widgets and their triggered effects. It makes use of the list "
+        "of mapped widgets and subscribes to all throwable events of it. The "
+        "properties are retrieved from the widget using the PropertyIterator. "
+        "The greatest use of this Sample for users is to see the available properties "
+        "of specific widgets and to interactively inspect how events are thrown and "
+        "how widgets look. Additionally the special setup of certain widgets, for "
+        "example in initItemListbox(), initListbox(), initMenubar() and "
+        "initMultiColumnList(), can be useful interesting to look at in the code";
+    Sample::d_type = ST_Module;
+}
+
+bool WidgetsSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -158,8 +183,8 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     //Create windows and initialise them 
     createLayout();
 
-    d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetDemo::handleRenderingEnded, this));
-    d_guiContext->getRootWindow()->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&WidgetDemo::handleRootWindowUpdate, this));
+    d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetsSample::handleRenderingEnded, this));
+    d_guiContext->getRootWindow()->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&WidgetsSample::handleRootWindowUpdate, this));
 
     if(CEGUI::ListboxItem* skinItem = d_skinSelectionCombobox->getListboxItemFromIndex(0))
     {
@@ -178,7 +203,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
 Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void WidgetDemo::deinitialise()
+void WidgetsSample::deinitialise()
 {
     if(d_currentlyDisplayedWidgetRoot != 0)
         d_widgetDisplayWindowInnerWindow->removeChild(d_currentlyDisplayedWidgetRoot);
@@ -188,7 +213,7 @@ void WidgetDemo::deinitialise()
     deinitWidgetListItems();
 }
 
-bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
+bool WidgetsSample::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
 
@@ -209,7 +234,7 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
+bool WidgetsSample::handleRenderingEnded(const CEGUI::EventArgs& args)
 {
     d_windowLightPointerMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();
@@ -217,7 +242,7 @@ bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
+bool WidgetsSample::handleRootWindowUpdate(const CEGUI::EventArgs& args)
 {
     const CEGUI::UpdateEventArgs& updateArgs = static_cast<const CEGUI::UpdateEventArgs&>(args);
     float passedTime = updateArgs.d_timeSinceLastFrame;
@@ -236,7 +261,7 @@ bool WidgetDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
+bool WidgetsSample::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
 
@@ -260,7 +285,7 @@ bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
 
     d_widgetDisplayWindowInnerWindow->addChild(widgetWindowRoot);
     d_currentlyDisplayedWidgetRoot = widgetWindowRoot;
-    d_widgetDisplayWindow->setText("Demo of widget: \"" + widgetTypeString + "\"");
+    d_widgetDisplayWindow->setText("Sample of widget: \"" + widgetTypeString + "\"");
 
     //Special initialisations for certain Windows
     handleSpecialWindowCases(widgetWindowRoot, widgetTypeString);
@@ -274,7 +299,7 @@ bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
 }
 
 
-void WidgetDemo::initialiseAvailableWidgetsMap()
+void WidgetsSample::initialiseAvailableWidgetsMap()
 {
     //Retrieve the widget look types and add a Listboxitem for each widget, to the right scheme in the map
     CEGUI::WindowFactoryManager& windowFactorymanager = CEGUI::WindowFactoryManager::getSingleton();
@@ -317,7 +342,7 @@ void WidgetDemo::initialiseAvailableWidgetsMap()
 }
 
 
-void WidgetDemo::createLayout()
+void WidgetsSample::createLayout()
 {
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "BackgroundWindow");
@@ -330,7 +355,7 @@ void WidgetDemo::createLayout()
     initialiseWidgetInspector(background);
 }
 
-void WidgetDemo::initialiseSkinCombobox(CEGUI::Window* container)
+void WidgetsSample::initialiseSkinCombobox(CEGUI::Window* container)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -345,7 +370,7 @@ void WidgetDemo::initialiseSkinCombobox(CEGUI::Window* container)
     d_skinSelectionCombobox->setReadOnly(true);
     d_skinSelectionCombobox->setSortingEnabled(false);
 
-    d_skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&WidgetDemo::handleSkinSelectionAccepted, this));
+    d_skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&WidgetsSample::handleSkinSelectionAccepted, this));
 
     std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
     while(iter != d_skinListItemsMap.end())
@@ -359,7 +384,7 @@ void WidgetDemo::initialiseSkinCombobox(CEGUI::Window* container)
     container->addChild(skinSelectionComboboxLabel);
 }
 
-void WidgetDemo::initialiseBackgroundWindow(CEGUI::Window* background)
+void WidgetsSample::initialiseBackgroundWindow(CEGUI::Window* background)
 {
     background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
     background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
@@ -368,7 +393,7 @@ void WidgetDemo::initialiseBackgroundWindow(CEGUI::Window* background)
     background->setProperty("Image", "SpaceBackgroundImage");
 }
 
-void WidgetDemo::initialiseWidgetSelectorListbox()
+void WidgetsSample::initialiseWidgetSelectorListbox()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -378,10 +403,10 @@ void WidgetDemo::initialiseWidgetSelectorListbox()
     d_widgetSelectorListbox->setShowVertScrollbar(false);
     d_widgetSelectorListbox->setSortingEnabled(true);
 
-    d_widgetSelectorListbox->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&WidgetDemo::handleWidgetSelectionChanged, this));   
+    d_widgetSelectorListbox->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&WidgetsSample::handleWidgetSelectionChanged, this));   
 }
 
-void WidgetDemo::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer)
+void WidgetsSample::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer)
 {
     widgetSelectorContainer->setPosition(CEGUI::UVector2(cegui_reldim(0.6f), cegui_reldim(0.25f)));
     widgetSelectorContainer->setSize(CEGUI::USize(cegui_reldim(0.325f), cegui_reldim(0.56f)));
@@ -390,7 +415,7 @@ void WidgetDemo::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelector
     widgetSelectorContainer->setProperty("HorzFormatting", "CentreAligned");
 }
 
-void WidgetDemo::initialiseWidgetsEventsLog()
+void WidgetsSample::initialiseWidgetsEventsLog()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -409,14 +434,14 @@ void WidgetDemo::initialiseWidgetsEventsLog()
 /*************************************************************************
 Helper function to add MyListItem's to the widget list
 *************************************************************************/
-void WidgetDemo::addItemToWidgetList(const CEGUI::String& widgetName, WidgetListType &widgetList)
+void WidgetsSample::addItemToWidgetList(const CEGUI::String& widgetName, WidgetListType &widgetList)
 {
     MyListItem* widgetListItem = new MyListItem(widgetName);
     widgetListItem->setAutoDeleted(false);
     widgetList.push_back(widgetListItem);
 }
 
-void WidgetDemo::initialiseEventHandlerObjects()
+void WidgetsSample::initialiseEventHandlerObjects()
 {
 #include "AllEvents.inc"
 
@@ -429,12 +454,12 @@ void WidgetDemo::initialiseEventHandlerObjects()
     }
 }
 
-CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType)
+CEGUI::Window* WidgetsSample::createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType)
 {
     //Create default widget of the selected type
     CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 
-    CEGUI::Window* widgetWindow = windowManager.createWindow(widgetMapping, s_widgetDemoWindowPrefix + widgetMapping);
+    CEGUI::Window* widgetWindow = windowManager.createWindow(widgetMapping, s_widgetSampleWindowPrefix + widgetMapping);
     //Subscribe to all possible events the window could fire, the handler will output them to the log
     subscribeToAllEvents(widgetWindow);
 
@@ -453,7 +478,7 @@ CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, cons
 }
 
 
-void WidgetDemo::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage)
+void WidgetsSample::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage)
 {
     if(eventName == CEGUI::Window::EventPointerMove)
     {
@@ -469,12 +494,12 @@ void WidgetDemo::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::S
     }
 }
 
-void WidgetDemo::addEventHandlerObjectToMap(CEGUI::String eventName)
+void WidgetsSample::addEventHandlerObjectToMap(CEGUI::String eventName)
 {
     d_eventHandlerObjectsMap[eventName] = new EventHandlerObject(eventName, this);
 }
 
-void WidgetDemo::deinitWidgetListItems()
+void WidgetsSample::deinitWidgetListItems()
 {
     std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
     while(iter != d_skinListItemsMap.end())
@@ -494,7 +519,7 @@ void WidgetDemo::deinitWidgetListItems()
     }
 }
 
-void WidgetDemo::destroyWidgetWindows()
+void WidgetsSample::destroyWidgetWindows()
 {
     CEGUI::WindowManager& winMan = CEGUI::WindowManager::getSingleton();
     std::map<CEGUI::String, CEGUI::Window*>::iterator iter = d_widgetsMap.begin();
@@ -506,7 +531,7 @@ void WidgetDemo::destroyWidgetWindows()
     }
 }
 
-void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
+void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
 {
     CEGUI::WindowManager &winMgr = CEGUI::WindowManager::getSingleton();
 
@@ -542,7 +567,7 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
     pointerMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
 }
 
-void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)
+void WidgetsSample::logFiredEvent(const CEGUI::String& logMessage)
 {
     ListboxItem* item = d_widgetSelectorListbox->getFirstSelectedItem();
     if(!item)
@@ -568,7 +593,7 @@ void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)
     scrollbar->setScrollPosition(scrollbar->getDocumentSize() - scrollbar->getPageSize());
 }
 
-void WidgetDemo::subscribeToAllEvents(CEGUI::Window* widgetWindow)
+void WidgetsSample::subscribeToAllEvents(CEGUI::Window* widgetWindow)
 {
     //Register all events for the widget window
     std::map<CEGUI::String, EventHandlerObject*>::iterator iter = d_eventHandlerObjectsMap.begin();
@@ -580,7 +605,7 @@ void WidgetDemo::subscribeToAllEvents(CEGUI::Window* widgetWindow)
     }
 }
 
-CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow, const CEGUI::String &widgetType)
+CEGUI::Window* WidgetsSample::initialiseSpecialWidgets(CEGUI::Window* widgetWindow, const CEGUI::String &widgetType)
 {
     CEGUI::RadioButton* radioButton = dynamic_cast<CEGUI::RadioButton*>(widgetWindow);
     if(radioButton)
@@ -656,7 +681,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
     return widgetWindow;
 }
 
-void WidgetDemo::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList)
+void WidgetsSample::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList)
 {
     multilineColumnList->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.4f)));
 
@@ -697,7 +722,7 @@ void WidgetDemo::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList
     multilineColumnList->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
 }
 
-void WidgetDemo::initCombobox(CEGUI::Combobox* combobox)
+void WidgetsSample::initCombobox(CEGUI::Combobox* combobox)
 {
     MyListItem* item1 = new MyListItem("Combobox Item 1");
     combobox->addItem(item1);
@@ -722,7 +747,7 @@ void WidgetDemo::initCombobox(CEGUI::Combobox* combobox)
 }
 
 
-void WidgetDemo::saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow)
+void WidgetsSample::saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow)
 {
     CEGUI::PropertySet::PropertyIterator propertyIter = widgetWindow->getPropertyIterator();
 
@@ -737,7 +762,7 @@ void WidgetDemo::saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, cons
     }
 }
 
-void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
+void WidgetsSample::initListbox(CEGUI::Listbox* listbox)
 {
     MyListItem* item1 = new MyListItem("Listbox Item 1");
     listbox->addItem(item1);
@@ -761,7 +786,7 @@ void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
     }
 }
 
-void WidgetDemo::initItemListbox(CEGUI::ItemListbox* itemListbox)
+void WidgetsSample::initItemListbox(CEGUI::ItemListbox* itemListbox)
 {
     CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 
@@ -784,40 +809,40 @@ void WidgetDemo::initItemListbox(CEGUI::ItemListbox* itemListbox)
     itemListbox->setText("Item 4");
 }
 
-void WidgetDemo::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow)
+void WidgetsSample::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow)
 {
     CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 
     CEGUI::RadioButton* radioButton1 = radioButton;
-    widgetWindow = windowManager.createWindow("DefaultWindow", "RadioButtonWidgetDemoRoot");
+    widgetWindow = windowManager.createWindow("DefaultWindow", "RadioButtonWidgetSampleRoot");
     widgetWindow->addChild(radioButton1);
 
-    CEGUI::Window* radioButton2 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton1");
+    CEGUI::Window* radioButton2 = windowManager.createWindow(radioButton1->getType(), "WidgetSampleRadiobutton1");
     widgetWindow->addChild(radioButton2);
     radioButton2->setText("Additional Radiobutton1");
     radioButton2->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.17f)));
 
-    CEGUI::Window* radioButton3 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton2");
+    CEGUI::Window* radioButton3 = windowManager.createWindow(radioButton1->getType(), "WidgetSampleRadiobutton2");
     widgetWindow->addChild(radioButton3);
     radioButton3->setText("Additional Radiobutton2");
     radioButton3->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.27f)));
 }
 
-void WidgetDemo::initialiseWidgetDisplayWindow()
+void WidgetsSample::initialiseWidgetDisplayWindow()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_widgetDisplayWindow = winMgr.createWindow("Vanilla/FrameWindow", "WidgetDisplayWindow");
     d_widgetDisplayWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)));
     d_widgetDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.6f)));
-    d_widgetDisplayWindow->setText("Widget Demo");
+    d_widgetDisplayWindow->setText("Widget Sample");
 
     d_widgetDisplayWindowInnerWindow =  winMgr.createWindow("DefaultWindow", "WidgetDisplayWindowInnerContainer");
     d_widgetDisplayWindowInnerWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     d_widgetDisplayWindow->addChild(d_widgetDisplayWindowInnerWindow);
 }
 
-void WidgetDemo::initialiseWidgetSelector(CEGUI::Window* container)
+void WidgetsSample::initialiseWidgetSelector(CEGUI::Window* container)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -831,12 +856,12 @@ void WidgetDemo::initialiseWidgetSelector(CEGUI::Window* container)
     widgetSelectorContainer->addChild(d_widgetSelectorListbox);
 }
 
-void WidgetDemo::initialiseWidgetInspector(CEGUI::Window* container)
+void WidgetsSample::initialiseWidgetInspector(CEGUI::Window* container)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
     //Add a tabcontrol serving as WidgetInspector, allowing to switch between events+widgets and the properties display
-    TabControl* tabControl = static_cast<TabControl*>(winMgr.createWindow("TaharezLook/TabControl", "WidgetDemoWidgetInspector"));
+    TabControl* tabControl = static_cast<TabControl*>(winMgr.createWindow("TaharezLook/TabControl", "WidgetSampleWidgetInspector"));
     container->addChild(tabControl);
     tabControl->setSize(CEGUI::USize(cegui_reldim(0.55f), cegui_reldim(0.96f)));
     tabControl->setPosition(CEGUI::UVector2(cegui_reldim(0.02f), cegui_reldim(0.02f)));
@@ -865,7 +890,7 @@ void WidgetDemo::initialiseWidgetInspector(CEGUI::Window* container)
     initialiseEventLights(widgetMainInspectionContainer);
 }
 
-bool WidgetDemo::getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetTypeString)
+bool WidgetsSample::getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetTypeString)
 {
     //Retrieving the Strings for the selections
     CEGUI::ListboxItem* widgetListboxItem = d_widgetSelectorListbox->getFirstSelectedItem();
@@ -885,7 +910,7 @@ bool WidgetDemo::getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetT
     return true;
 }
 
-CEGUI::Window* WidgetDemo::retrieveOrCreateWidgetWindow(const CEGUI::String& widgetTypeString, const CEGUI::String& widgetName)
+CEGUI::Window* WidgetsSample::retrieveOrCreateWidgetWindow(const CEGUI::String& widgetTypeString, const CEGUI::String& widgetName)
 {
     //Choose the existing widget if available, otherwise create it and save it to the list
     std::map<CEGUI::String, CEGUI::Window*>::iterator iter = d_widgetsMap.find(widgetTypeString);
@@ -900,7 +925,7 @@ CEGUI::Window* WidgetDemo::retrieveOrCreateWidgetWindow(const CEGUI::String& wid
     }
 }
 
-void WidgetDemo::handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString)
+void WidgetsSample::handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString)
 {
     //Reset to 0 progress in case of a progressbar
     CEGUI::ProgressBar* progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot);
@@ -920,7 +945,7 @@ void WidgetDemo::handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI
         d_widgetDisplayWindowInnerWindow->setTooltip(0);
 }
 
-void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRoot)
+void WidgetsSample::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRoot)
 {
     d_widgetPropertiesDisplayWindow->resetList();
 
@@ -967,7 +992,7 @@ void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRo
     d_widgetPropertiesDisplayWindow->handleUpdatedItemData();
 }
 
-void WidgetDemo::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widgetPropertiesInspectionContainer)
+void WidgetsSample::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widgetPropertiesInspectionContainer)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
     d_widgetPropertiesDisplayWindow = static_cast<CEGUI::MultiColumnList*>(
@@ -992,7 +1017,7 @@ void WidgetDemo::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widgetPr
     d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::Ascending);
 }
 
-void WidgetDemo::initMenubar(CEGUI::Menubar* menuBar)
+void WidgetsSample::initMenubar(CEGUI::Menubar* menuBar)
 {
     CEGUI::String skin = menuBar->getType();
     skin = skin.substr(0, skin.find_first_of('/'));
@@ -1031,12 +1056,4 @@ void WidgetDemo::initMenubar(CEGUI::Menubar* menuBar)
     menuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "ViewTestMenuItem1"));
     menuItem->setText("Midgets");
     viewPopupMenu->addItem(menuItem);
-}
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static WidgetDemo sample;
-    return sample;
 }

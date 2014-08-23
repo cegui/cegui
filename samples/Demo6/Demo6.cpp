@@ -33,6 +33,15 @@
 
 using namespace CEGUI;
 
+Demo6Sample::Demo6Sample()
+{
+    Sample::d_name = "Demo6Sample";
+    Sample::d_credits = "The CEGUI team";
+    Sample::d_summary = "Demo6Sample";
+    Sample::d_description = "Demo6Sample";
+    Sample::d_type = ST_Module;
+}
+
 /*************************************************************************
 Sample specific initialisation goes here.
 *************************************************************************/
@@ -712,13 +721,4 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
 
     // event was handled.
     return true;
-}
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static Demo6Sample sample;
-    return sample;
 }

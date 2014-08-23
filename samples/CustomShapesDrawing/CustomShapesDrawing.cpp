@@ -53,7 +53,7 @@ using namespace glm;
 /*************************************************************************
     Constructor.
 *************************************************************************/
-CustomShapesDrawing::CustomShapesDrawing()
+CustomShapesDrawingSample::CustomShapesDrawingSample()
     : d_FPSMaxGraphValue(1)
     , d_FPSGraphSamplesCount(30)
     , d_useRealFPS(false)
@@ -62,6 +62,25 @@ CustomShapesDrawing::CustomShapesDrawing()
     , d_customGeometryGraphWidth(300.0f)
     , d_customGeometryGraphHeight(100.0f)
 {
+    Sample::d_name = "CustomShapesDrawingSample";
+    Sample::d_credits = "Lukas \"Ident\" Meindl";
+    Sample::d_description = 
+        "In CEGUI the GeometryBuffer can be used to render vertices directly on the screen. However, this comes with limitations, "
+        "since CEGUI is not a Rendering Engine.For example only textured and coloured vertices are available out of the box.The vertices for all lines and "
+        "the quad of the background of the graph had to be calculated with extra code.The other possibility to render a graph, as display in this sample, "
+        "is by using an SVGImage.Each SVGImage points to a(possibly shared) SVGData object that contains its data.This data can be modified by adding shapes based "
+        "on the SVG BasicShapes.The vertices do not have to be calculated in this case and the rendering specifics like colours and line widths can be specified "
+        "more conveniently.Additionally, with SVGImages it is possible to switch on anti - aliasing, which is implemented by adding additional blending geometry to all shapes. "
+        "Also, it is easily possible to add the SVGImage to a window, by referring to it via a property, which is not possible with the GeometryBuffer method.This is "
+        "displayed in the sample with a WindowsLook / FrameWindow that contains an Generic / Image window.The FrameWindow is sizeable and will also scale its child window when "
+        "sized.The Generic / Image window has an 'Image' property that is pointing to our SVGImage.When the FrameWindow is sized it can thus be seen that the image is "
+        "being scaled too.";
+    Sample::d_summary = 
+        "This sample displays rendering possibilities provided with CEGUI's GeometryBuffer and SVGImage/SVGData class. "
+        "The goal is to render an FPS graph that displays the last recorded FPS values.SVGImage provides optional anti - aliasing and the possibility to "
+        "use the Image as part of a window.";
+    Sample::d_type = ST_Module;
+
     // Initialising the FPS values
     for(unsigned int i = 0; i < d_FPSGraphSamplesCount; ++i)
         d_lastFPSValues.push_front(0);
@@ -70,7 +89,7 @@ CustomShapesDrawing::CustomShapesDrawing()
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
+bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
 {
     d_usedFiles = CEGUI::String(__FILE__);
 
@@ -103,7 +122,7 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     // Create a label displaying the last FPS value
     createLastFPSLabel();
 
-    // Create a label with description of the demo
+    // Create a label with description of the Sample
     createDescriptionLabel();
 
     /* We will render custom geometry in two different ways. The first uses an SVGImage with attached customly defined
@@ -135,7 +154,7 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     // Subscribe handler to reposition our labels when the window size is changed
     CEGUI::System::getSingleton().subscribeEvent(
         CEGUI::System::EventDisplaySizeChanged,
-        CEGUI::Event::Subscriber(&CustomShapesDrawing::handleDisplaySizeChange,
+        CEGUI::Event::Subscriber(&CustomShapesDrawingSample::handleDisplaySizeChange,
         this));
 
     // return true so that the samples framework knows that initialisation was a
@@ -146,7 +165,7 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Positions the GeometryBuffer based graph
 *************************************************************************/
-void CustomShapesDrawing::positionCustomGeometryFPSGraph()
+void CustomShapesDrawingSample::positionCustomGeometryFPSGraph()
 {
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), renderer->getDisplaySize());
@@ -158,7 +177,7 @@ void CustomShapesDrawing::positionCustomGeometryFPSGraph()
 /*************************************************************************
     Triggers the drawing of our FPS graph after everything else was rendered
 *************************************************************************/
-bool CustomShapesDrawing::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
+bool CustomShapesDrawingSample::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
 {
     if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
         return false;
@@ -172,7 +191,7 @@ bool CustomShapesDrawing::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
 /*************************************************************************
     Update the FPS graph geometry when necessary
 *************************************************************************/
-void CustomShapesDrawing::update(float timeSinceLastUpdate)
+void CustomShapesDrawingSample::update(float timeSinceLastUpdate)
 {
     updateFPS(timeSinceLastUpdate);
     positionCustomGeometryFPSGraph();
@@ -181,7 +200,7 @@ void CustomShapesDrawing::update(float timeSinceLastUpdate)
 /*************************************************************************
     Update the FPS value
 *************************************************************************/
-void CustomShapesDrawing::updateFPS(const float elapsed)
+void CustomShapesDrawingSample::updateFPS(const float elapsed)
 {
     // another frame
     ++d_FPSFrames;
@@ -208,7 +227,7 @@ void CustomShapesDrawing::updateFPS(const float elapsed)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void CustomShapesDrawing::deinitialise()
+void CustomShapesDrawingSample::deinitialise()
 {
     // Destroy the GeometryBuffer created for this sample
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
@@ -228,7 +247,7 @@ void CustomShapesDrawing::deinitialise()
 /*************************************************************************
     Update the geometry used for the FPS graph
 *************************************************************************/
-void CustomShapesDrawing::updateFPSGraphs()
+void CustomShapesDrawingSample::updateFPSGraphs()
 {
     d_FPSGraphGeometryBuffer->reset();
 
@@ -263,7 +282,7 @@ void CustomShapesDrawing::updateFPSGraphs()
 /*************************************************************************
     Update the FPS graph geometry
 *************************************************************************/
-void CustomShapesDrawing::updateCustomGeometryGraph(std::vector<glm::vec2> linePositions)
+void CustomShapesDrawingSample::updateCustomGeometryGraph(std::vector<glm::vec2> linePositions)
 {
     // Reset all geometry data
     d_FPSGraphGeometryBuffer->reset();
@@ -317,7 +336,7 @@ void CustomShapesDrawing::updateCustomGeometryGraph(std::vector<glm::vec2> lineP
 /*************************************************************************
     Update the FPS graph SVGImage's Polyline
 *************************************************************************/
-void CustomShapesDrawing::updateCustomSVGImagePolyline(std::vector<glm::vec2> linePositions)
+void CustomShapesDrawingSample::updateCustomSVGImagePolyline(std::vector<glm::vec2> linePositions)
 {
     //! We need to scale and offset our linepoints to match the chosen SVGImage size
     size_t linePosCount = linePositions.size();
@@ -337,11 +356,11 @@ void CustomShapesDrawing::updateCustomSVGImagePolyline(std::vector<glm::vec2> li
 /*************************************************************************
     Sets up everything we need to draw our graph into the GeometryBuffer
 *************************************************************************/
-void CustomShapesDrawing::setupCustomGeometryGraph(CEGUI::GUIContext* guiContext)
+void CustomShapesDrawingSample::setupCustomGeometryGraph(CEGUI::GUIContext* guiContext)
 {
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
 
-    // GeometryBuffer used for drawing in this demo
+    // GeometryBuffer used for drawing in this Sample
     d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
 
     // Calculate and save our custom graph background
@@ -352,14 +371,14 @@ void CustomShapesDrawing::setupCustomGeometryGraph(CEGUI::GUIContext* guiContext
 
     // Subscribe handler to render overlay items
     guiContext->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-        CEGUI::Event::Subscriber(&CustomShapesDrawing::drawFPSGraphOverlay,
+        CEGUI::Event::Subscriber(&CustomShapesDrawingSample::drawFPSGraphOverlay,
         this));
 }
 
 /*************************************************************************
     Sets up everything we need to draw our graph using an SVGImage object
 *************************************************************************/
-void CustomShapesDrawing::setupCustomSVGImage()
+void CustomShapesDrawingSample::setupCustomSVGImage()
 {
     // Create an SVGImage using the ImageManager
     CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
@@ -397,7 +416,7 @@ void CustomShapesDrawing::setupCustomSVGImage()
 /*************************************************************************
     Refreshes the maximum value that will be visualised in the graph
 *************************************************************************/
-void CustomShapesDrawing::refreshFPSMaxGraphValue()
+void CustomShapesDrawingSample::refreshFPSMaxGraphValue()
 {
     d_FPSMaxGraphValue = 0;
 
@@ -409,7 +428,7 @@ void CustomShapesDrawing::refreshFPSMaxGraphValue()
 /*************************************************************************
     Creates a checkbox to let the user choose to display randomised or real FPS value
 *************************************************************************/
-void CustomShapesDrawing::createCheckboxShowRealFPS()
+void CustomShapesDrawingSample::createCheckboxShowRealFPS()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -419,7 +438,7 @@ void CustomShapesDrawing::createCheckboxShowRealFPS()
     checkboxShowRealFPS->setHorizontalAlignment(HA_CENTRE);
     checkboxShowRealFPS->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.13f)));
     checkboxShowRealFPS->setText("Show randomly generated FPS values");
-    checkboxShowRealFPS->subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&CustomShapesDrawing::handleToggleButtonShowRandomisedFpsSelectionChanged, this));
+    checkboxShowRealFPS->subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&CustomShapesDrawingSample::handleToggleButtonShowRandomisedFpsSelectionChanged, this));
     checkboxShowRealFPS->setSelected(true);
     d_root->addChild(checkboxShowRealFPS);
 }
@@ -427,7 +446,7 @@ void CustomShapesDrawing::createCheckboxShowRealFPS()
 /*************************************************************************
     Creates a label that will display our last FPS value
 *************************************************************************/
-void CustomShapesDrawing::createLastFPSLabel()
+void CustomShapesDrawingSample::createLastFPSLabel()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -442,7 +461,7 @@ void CustomShapesDrawing::createLastFPSLabel()
 /*************************************************************************
     Creates a label that contains a description of what is seen in the sample
 *************************************************************************/
-void CustomShapesDrawing::createDescriptionLabel()
+void CustomShapesDrawingSample::createDescriptionLabel()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -464,7 +483,7 @@ void CustomShapesDrawing::createDescriptionLabel()
 /*************************************************************************
     Event handler for the FPS value checkbox selection change
 *************************************************************************/
-bool CustomShapesDrawing::handleToggleButtonShowRandomisedFpsSelectionChanged(const CEGUI::EventArgs& args)
+bool CustomShapesDrawingSample::handleToggleButtonShowRandomisedFpsSelectionChanged(const CEGUI::EventArgs& args)
 {
     const CEGUI::WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
     CEGUI::ToggleButton* checkbox = static_cast<CEGUI::ToggleButton*>(winArgs.window);
@@ -477,7 +496,7 @@ bool CustomShapesDrawing::handleToggleButtonShowRandomisedFpsSelectionChanged(co
 /*************************************************************************
     Updates everything needed for the graphs and then the graphs themselves
 *************************************************************************/
-void CustomShapesDrawing::updateFPSData(int newFPSValue)
+void CustomShapesDrawingSample::updateFPSData(int newFPSValue)
 {
     //Update the window displaying the current FPS as text
     std::stringstream sstream;
@@ -495,7 +514,7 @@ void CustomShapesDrawing::updateFPSData(int newFPSValue)
 /*************************************************************************
     Sets up the background of the GeometryBuffer-based graph 
 *************************************************************************/
-void CustomShapesDrawing::setupCustomGeometryGraphBackground()
+void CustomShapesDrawingSample::setupCustomGeometryGraphBackground()
 {
     // Add a grey background quad
     glm::vec2 topLeft(0.0f, 0.0f);
@@ -560,7 +579,7 @@ void CustomShapesDrawing::setupCustomGeometryGraphBackground()
 /*************************************************************************
     Creates the labels that we will use to display the FPS values next to the GeometryBuffer-based graph
 *************************************************************************/
-void CustomShapesDrawing::createCustomGeometryFPSLabels()
+void CustomShapesDrawingSample::createCustomGeometryFPSLabels()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -589,7 +608,7 @@ void CustomShapesDrawing::createCustomGeometryFPSLabels()
 /*************************************************************************
     Updates the labels we will display next to the graph made with the GeometryBuffer
 *************************************************************************/
-void CustomShapesDrawing::updateCustomGeometryFPSLabels()
+void CustomShapesDrawingSample::updateCustomGeometryFPSLabels()
 {
     //Calculate our top position with the half of the window's height as offset for centering
     float absoluteHeight = d_customGeometryFPSLabel1->getUnclippedOuterRect().get().getHeight();
@@ -613,7 +632,7 @@ void CustomShapesDrawing::updateCustomGeometryFPSLabels()
 /*************************************************************************
     Creates the labels we will display next to the graph using the SVGImage
 *************************************************************************/
-void CustomShapesDrawing::createCustomSVGImageFPSLabels()
+void CustomShapesDrawingSample::createCustomSVGImageFPSLabels()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -642,7 +661,7 @@ void CustomShapesDrawing::createCustomSVGImageFPSLabels()
 /*************************************************************************
     Updates the labels we will display next to the graph using the SVGImage
 *************************************************************************/
-void CustomShapesDrawing::updateCustomSVGImageFPSLabels()
+void CustomShapesDrawingSample::updateCustomSVGImageFPSLabels()
 {
     //Calculate our top position with the half of the window's height as offset for centering
     float absoluteHeight = d_customSVGImageFPSLabel1->getUnclippedOuterRect().get().getHeight();
@@ -670,7 +689,7 @@ void CustomShapesDrawing::updateCustomSVGImageFPSLabels()
 /*************************************************************************
     Sets up the background of the SVGImage-based graph
 *************************************************************************/
-void CustomShapesDrawing::setupCustomSVGImageGraphBackground(CEGUI::SVGData &fpsSVGData)
+void CustomShapesDrawingSample::setupCustomSVGImageGraphBackground(CEGUI::SVGData &fpsSVGData)
 {
     // We make a grey quad background for the graph. We offset its position by 2.5% of the height and 
     // make the total height of the rect 95% of the image height. We will later do the same with our lines
@@ -708,7 +727,7 @@ void CustomShapesDrawing::setupCustomSVGImageGraphBackground(CEGUI::SVGData &fps
 /*************************************************************************
     Creates the windows which will be used to display the SVGImage graph
 *************************************************************************/
-void CustomShapesDrawing::createCustomSVGImageWindows()
+void CustomShapesDrawingSample::createCustomSVGImageWindows()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -718,7 +737,7 @@ void CustomShapesDrawing::createCustomSVGImageWindows()
     d_customSVGImageFrameWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.5f), cegui_reldim(0.29f)));
     d_root->addChild(d_customSVGImageFrameWindow);
     d_customSVGImageFrameWindow->subscribeEvent(CEGUI::Window::EventSized,
-        CEGUI::Event::Subscriber(&CustomShapesDrawing::handleSVGImageFrameWindowSizeChanged,
+        CEGUI::Event::Subscriber(&CustomShapesDrawingSample::handleSVGImageFrameWindowSizeChanged,
         this));
 
     //We create the image window through which our custom SVGImage will be rendered.
@@ -732,7 +751,7 @@ void CustomShapesDrawing::createCustomSVGImageWindows()
 /*************************************************************************
     Display size change handler
 *************************************************************************/
-bool CustomShapesDrawing::handleDisplaySizeChange(const CEGUI::EventArgs& args)
+bool CustomShapesDrawingSample::handleDisplaySizeChange(const CEGUI::EventArgs& args)
 {
     updateCustomGeometryFPSLabels();
 
@@ -744,19 +763,9 @@ bool CustomShapesDrawing::handleDisplaySizeChange(const CEGUI::EventArgs& args)
 /*************************************************************************
     Handler for size changes of the custom-SVGImage FrameWindow
 *************************************************************************/
-bool CustomShapesDrawing::handleSVGImageFrameWindowSizeChanged(const CEGUI::EventArgs& args)
+bool CustomShapesDrawingSample::handleSVGImageFrameWindowSizeChanged(const CEGUI::EventArgs& args)
 {
     updateCustomSVGImageFPSLabels();
 
     return false;
-}
-
-
-/*************************************************************************
-    Register the sample with the SamplesFramework
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static CustomShapesDrawing sample;
-    return sample;
 }

@@ -1,9 +1,9 @@
-/************************************************************************
-    created:	 10/17/2004
-    author:		 David Durant (based on code by Paul D Turner)
+/***********************************************************************
+    created:    Fri Apr 22 2011
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,31 +24,23 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_TreeDemo_h_
-#define _Sample_TreeDemo_h_
+#ifndef _Sample_InventorySample_h_
+#define _Sample_InventorySample_h_
 
 #include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
-
-class TreeDemoSample : public Sample
-   {
+class InventorySample : public Sample
+{
 public:
-   // method to initialse the samples windows and events.
-   virtual bool initialise(CEGUI::GUIContext* guiContext);
+    InventorySample();
 
-   // method to perform any required cleanup operations.
-   virtual void deinitialise();
+    // method to initialse the samples windows and events.
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
-protected:
-   CEGUI::Window* TreeDemoWindow;
-   static const unsigned int TreeID;
-   static const unsigned int EditBoxID;
+    // method to perform any required cleanup operations.
+    virtual void deinitialise();
+};
 
-   bool handleEventSelectionChanged(const CEGUI::EventArgs& args);
-   bool handleEventBranchOpened(const CEGUI::EventArgs& args);
-   bool handleEventBranchClosed(const CEGUI::EventArgs& args);
-   };
+#endif  // end of guard _Sample_InventorySample_h_
 
-
-#endif  // end of guard _Sample_TreeDemo_h_

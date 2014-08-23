@@ -31,10 +31,10 @@
 #include "NavigationStrategies.h"
 #include <vector>
 
-class SimpleGameMenu : public Sample
+class SimpleGameMenuSample : public Sample
 {
 public:
-    SimpleGameMenu();
+    SimpleGameMenuSample();
     virtual bool initialise(CEGUI::GUIContext* gui_context);
     virtual void deinitialise();
 
@@ -61,4 +61,4 @@ private:
     std::map<int, CEGUI::String> createNavigationMappings();
 };
 
-#endif  // end of guard _Sample_SimpleGameMenu_h_
+#endif  // end of guard _Sample_SimpleGameMenuSample_h_
