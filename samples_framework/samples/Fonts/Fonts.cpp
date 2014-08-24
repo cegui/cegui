@@ -231,7 +231,7 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setDefaultTooltipType("Vanilla/Tooltip");
 
     // Load the GUI layout and attach it to the context as root window
-    d_root = winMgr.loadLayoutFromFile("FontsDemo.layout");
+    d_root = winMgr.loadLayoutFromFile("FontsSample.layout");
     d_guiContext->setRootWindow(d_root);
 
     //Here we create a font and apply it to the renew font name button

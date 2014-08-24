@@ -2,7 +2,7 @@
 
 <GUILayout version="4">
     <Window type="TaharezLook/FrameWindow" name="Frame" >
-        <Property name="Text" value="Tab Control Demo" />
+        <Property name="Text" value="Tab Control Sample" />
         <Property name="TooltipText" value="This is a demonstration of TabControl abilities." />
         <Property name="TitlebarFont" value="DejaVuSans-12" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />

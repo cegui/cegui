@@ -389,7 +389,7 @@ void Demo6Sample::createDemoWindows(CEGUI::Window* root)
     fwnd->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.93f)));
     btn->setSize(USize(cegui_reldim(0.50f), cegui_reldim( 0.05f)));
-    btn->setText("Quit This Demo!");
+    btn->setText("Quit This Sample!");
 }
 
 

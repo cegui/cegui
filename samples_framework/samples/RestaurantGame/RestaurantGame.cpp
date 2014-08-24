@@ -118,13 +118,13 @@ int GamePlate::getPoints()
     return 0;
 }
 
-const CEGUI::String RestaurantGameSample::s_imageNamePlate = "RestaurantGameDemo/Plate";
-const CEGUI::String RestaurantGameSample::s_imageNameBread = "RestaurantGameDemo/Bread";
-const CEGUI::String RestaurantGameSample::s_imageNamePoo = "RestaurantGameDemo/Poo";
-const CEGUI::String RestaurantGameSample::s_imageNamePrizza = "RestaurantGameDemo/Prizza";
-const CEGUI::String RestaurantGameSample::s_imageNameSteak = "RestaurantGameDemo/Steak";
-const CEGUI::String RestaurantGameSample::s_imageNameVegPeople = "RestaurantGameDemo/VegetablePeople";
-const CEGUI::String RestaurantGameSample::s_imageNameVegFruits = "RestaurantGameDemo/VegetablesAndFruits";
+const CEGUI::String RestaurantGameSample::s_imageNamePlate = "RestaurantGameSample/Plate";
+const CEGUI::String RestaurantGameSample::s_imageNameBread = "RestaurantGameSample/Bread";
+const CEGUI::String RestaurantGameSample::s_imageNamePoo = "RestaurantGameSample/Poo";
+const CEGUI::String RestaurantGameSample::s_imageNamePrizza = "RestaurantGameSample/Prizza";
+const CEGUI::String RestaurantGameSample::s_imageNameSteak = "RestaurantGameSample/Steak";
+const CEGUI::String RestaurantGameSample::s_imageNameVegPeople = "RestaurantGameSample/VegetablePeople";
+const CEGUI::String RestaurantGameSample::s_imageNameVegFruits = "RestaurantGameSample/VegetablesAndFruits";
 
 RestaurantGameSample::RestaurantGameSample()
 {
@@ -155,22 +155,22 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
     d_usedFiles = CEGUI::String(__FILE__);
     d_guiContext = guiContext;
 
-    SchemeManager::getSingleton().createFromFile("RestaurantGameDemo.scheme");
+    SchemeManager::getSingleton().createFromFile("RestaurantGameSample.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
 
     FontManager::getSingleton().createFromFile("DejaVuSans-14.font");
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
     // Load the RestaurantGameSample Layout
-    d_rootIngame = winMgr.loadLayoutFromFile("RestaurantGameDemoIngame.layout");
-    d_rootGameOver = winMgr.loadLayoutFromFile("RestaurantGameDemoGameOver.layout");
-    d_root = winMgr.createWindow("DefaultWindow", "RestaurantGameDemoRoot");
+    d_rootIngame = winMgr.loadLayoutFromFile("RestaurantGameSampleIngame.layout");
+    d_rootGameOver = winMgr.loadLayoutFromFile("RestaurantGameSampleGameOver.layout");
+    d_root = winMgr.createWindow("DefaultWindow", "RestaurantGameSampleRoot");
     d_root->addChild(d_rootIngame);
     d_guiContext->setRootWindow(d_root);
 
-    if(!ImageManager::getSingleton().isDefined("RestaurantGameDemoGameOver"))
-        ImageManager::getSingleton().addBitmapImageFromFile("RestaurantGameDemoGameOver", "RestaurantGameDemoGameOver.png");
-    d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "RestaurantGameDemoGameOver");
+    if(!ImageManager::getSingleton().isDefined("RestaurantGameSampleGameOver"))
+        ImageManager::getSingleton().addBitmapImageFromFile("RestaurantGameSampleGameOver", "RestaurantGameSampleGameOver.png");
+    d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "RestaurantGameSampleGameOver");
 
     setupPointerIndicator();
 
@@ -236,7 +236,7 @@ void RestaurantGameSample::setupPointerIndicator()
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     d_pointerIndicatorWnd = winMgr.createWindow("Generic/Image");
-    d_pointerIndicatorWnd->setProperty("Image", "RestaurantGameDemo/Spoon");
+    d_pointerIndicatorWnd->setProperty("Image", "RestaurantGameSample/Spoon");
     d_pointerIndicatorWnd->setAspectMode(CEGUI::AM_EXPAND);
     d_pointerIndicatorWnd->setAspectRatio(1.0f);
     d_pointerIndicatorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
@@ -394,7 +394,7 @@ void RestaurantGameSample::createScorePopup(const CEGUI::Vector2<float>& pointer
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameDemo/PopupLabel");
+    CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameSample/PopupLabel");
     d_rootIngame->addChild(popupWindow);
     popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(pointerPos.d_x), cegui_absdim(pointerPos.d_y)));
     popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));

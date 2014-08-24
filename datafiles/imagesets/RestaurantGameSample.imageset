@@ -1,4 +1,4 @@
-<Imageset autoScaled="vertical" imagefile="RestaurantGameDemo.png" name="RestaurantGameDemo" nativeHorzRes="1280" nativeVertRes="720" version="2">
+<Imageset autoScaled="vertical" imagefile="RestaurantGameSample.png" name="RestaurantGameSample" nativeHorzRes="1280" nativeVertRes="720" version="2">
     <Image height="162" name="Poo" width="162" xPos="0" yPos="7" />
     <Image height="146" name="Plate" width="483" xPos="779" yPos="1113" />
     <Image height="300" name="Bread" width="300" xPos="980" yPos="37" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GUILayout version="4" >
-    <Window type="Generic/Image" name="GameMenuRoot" >
+    <Window type="Generic/Image" name="GameMenuSampleRoot" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="Image" value="GameMenuImages/Background" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />

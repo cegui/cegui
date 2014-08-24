@@ -5,7 +5,7 @@
 		<Property name="MinSize" value="{{0,128},{0,128}}" />
 		<Property name="Size" value="{{0.5,0},{0.8,0}}" />
 
-        <Property name="Text" value="Tree Demo" />
+        <Property name="Text" value="Tree Sample" />
         <Property name="CloseButtonEnabled" value="False" />
 		<Property name="SizingEnabled" value="True" />
 		<Property name="FrameEnabled" value="True" />

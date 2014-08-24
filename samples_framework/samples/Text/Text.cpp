@@ -80,7 +80,7 @@ bool TextSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setRootWindow(background);
 
     // Load our layout as a basic
-    background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
+    background->addChild(winMgr.loadLayoutFromFile("TextSample.layout"));
 
     // Init the seperate blocks which make up this sample
     initStaticText();

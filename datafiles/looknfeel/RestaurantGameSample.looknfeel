@@ -3,13 +3,13 @@
 <!--
     Generic.looknfeel by Lukas E. Meindl
 
-    This looknfeel was created for the RestaurantGameDemo to provide it with a score popup widget, it uses an animation defined
+    This looknfeel was created for the RestaurantGameSample to provide it with a score popup widget, it uses an animation defined
     in this looknfeel file
 -->
 
 <Falagard version="7">
 
-    <WidgetLook name="RestaurantGameDemo/PopupLabel">
+    <WidgetLook name="RestaurantGameSample/PopupLabel">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFF0000" type="Colour" name="NormalTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFF0000" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
@@ -66,7 +66,7 @@
     </WidgetLook>
 
 
-    <WidgetLook name="RestaurantGameDemo/ProgressBar">
+    <WidgetLook name="RestaurantGameSample/ProgressBar">
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
@@ -100,7 +100,7 @@
                         <UnifiedDim scale="1" type="Height"/>
                     </Dim>
                 </Area>
-                <Image name="RestaurantGameDemo/LifeBarBG"/>
+                <Image name="RestaurantGameSample/LifeBarBG"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
             </ImageryComponent>
@@ -121,7 +121,7 @@
                         <UnifiedDim scale="1" type="Height"/>
                     </Dim>
                 </Area>
-                <Image name="RestaurantGameDemo/LifeBarFill"/>
+                <Image name="RestaurantGameSample/LifeBarFill"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
             </ImageryComponent>

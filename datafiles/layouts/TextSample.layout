@@ -5,7 +5,7 @@
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Property name="InheritsAlpha" value="False" />
-        <Window type="TaharezLook/FrameWindow" name="TextDemo" >
+        <Window type="TaharezLook/FrameWindow" name="TextSample" >
             <Property name="Area" value="{{0.0191444,-4},{0.0367866,0},{0.989488,-4},{0.901572,0}}" />
             <Property name="Text" value="Text sample" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
