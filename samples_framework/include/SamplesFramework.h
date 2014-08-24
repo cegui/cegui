@@ -82,10 +82,6 @@ public:
     virtual bool injectMouseWheelChange(float position);
     virtual bool injectMousePosition(float x, float y);
 
-    static const CEGUI::String XMLSchemaName;
-
-    static SamplesFramework* framework;
-
 protected:
     void initialiseLoadScreenLayout();
 
