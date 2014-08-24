@@ -169,7 +169,7 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setRootWindow(d_root);
 
     if(!ImageManager::getSingleton().isDefined("RestaurantGameDemoGameOver"))
-        ImageManager::getSingleton().addBitmapImageFromFile("RestaurantGameSampleGameOver", "RestaurantGameDemoGameOver.png");
+        ImageManager::getSingleton().addBitmapImageFromFile("RestaurantGameDemoGameOver", "RestaurantGameDemoGameOver.png");
     d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "RestaurantGameDemoGameOver");
 
     setupPointerIndicator();
