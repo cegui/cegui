@@ -620,7 +620,7 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setRootWindow(background);
 
     // load the windows for the RenderEffectsSample from the layout file.
-    Window* sheet = winMgr.loadLayoutFromFile("EffectsSample.layout");
+    Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
  
     // Get the combobox created from within the layout
     CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(sheet->getChild("EffectsFrameWindow/EffectsCombobox"));

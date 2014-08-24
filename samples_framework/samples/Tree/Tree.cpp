@@ -48,7 +48,7 @@ const unsigned int TreeSample::EditBoxID = 2;
 #define IMAGES_FILE_NAME   "Vanilla-Images"
 #define STATICIMAGE_NAME   "Vanilla/StaticImage"
 #define TOOLTIP_NAME       "Vanilla/Tooltip"
-#define LAYOUT_FILE_NAME   "TreeSample.layout"
+#define LAYOUT_FILE_NAME   "TreeDemo.layout"
 #define BRUSH_NAME         "GenericBrush"
 #else
 #define SCHEME_FILE_NAME   "TaharezLook.scheme"
