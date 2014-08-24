@@ -65,7 +65,40 @@ void register_StateImagery_class(){
             
             StateImagery_exposer.def( 
                 "getLayerIterator"
-                , getLayerIterator_function_type( &::CEGUI::StateImagery::getLayerIterator ) );
+                , getLayerIterator_function_type( &::CEGUI::StateImagery::getLayerIterator )
+                , "!  deprecated This function is deprecated. Instead the getLayerSpecifications and\
+            getLayerSpecificationPointers will be used in the next version.\n" );
+        
+        }
+        { //::CEGUI::StateImagery::getLayerSpecificationPointers
+        
+            typedef ::std::vector< CEGUI::LayerSpecification* > ( ::CEGUI::StateImagery::*getLayerSpecificationPointers_function_type )(  ) ;
+            
+            StateImagery_exposer.def( 
+                "getLayerSpecificationPointers"
+                , getLayerSpecificationPointers_function_type( &::CEGUI::StateImagery::getLayerSpecificationPointers )
+                , "*!\n\
+                    \n\
+                        Returns a multiset of pointers to the LayerSpecifications that are currently added to\
+                        this StateImagery.\n\
+                        If a LayerSpecification is added or removed from this StateImagery, then the pointers in\
+                        this vector are\n\
+                        not valid anymore. The function should then be called again to retrieve valid\
+                        pointers.\n\
+            \n\
+                     \note\n\
+                        Whenever a pointer from this list is changed in a way that the multiset needs to be\
+                        resorted, the element\n\
+                        has to be specifically removed from the multiset, and added again. Otherwise the\
+                        multiset is not valid anymore.\n\
+                        In the next version this workaround will be deprecated: there will be a simple resort\
+                        function to be called\n\
+                        for this purpose.\n\
+            \n\
+                     @return\n\
+                        A vector of pointers to the LayerSpecifications that are currently added to this\
+                        StateImagery\n\
+                    *\n" );
         
         }
         { //::CEGUI::StateImagery::getName

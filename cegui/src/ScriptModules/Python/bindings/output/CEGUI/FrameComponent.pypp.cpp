@@ -133,14 +133,14 @@ void register_FrameComponent_class(){
             FrameComponent_exposer.def( 
                 "getImage"
                 , getImage_function_type( &::CEGUI::FrameComponent::getImage )
-                , ( bp::arg("part"), bp::arg("wnd") )
+                , ( bp::arg("imageComponent"), bp::arg("wnd") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
                     Return the Image object that will be drawn by this FrameComponent\n\
                     for a specified frame part.\n\
             \n\
-                @param part\n\
+                @param imageComponent\n\
                     One of the FrameImageComponent enumerated values specifying the\n\
                     component image to be accessed.\n\
             \n\
@@ -152,6 +152,30 @@ void register_FrameComponent_class(){
                     pointer to an Image object, or 0 if the image had not been set\n\
                     or if the image is sourced from a property that returns an empty\n\
                     image name.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::getImage
+        
+            typedef ::CEGUI::Image const * ( ::CEGUI::FrameComponent::*getImage_function_type )( ::CEGUI::FrameImageComponent ) const;
+            
+            FrameComponent_exposer.def( 
+                "getImage"
+                , getImage_function_type( &::CEGUI::FrameComponent::getImage )
+                , ( bp::arg("imageComponent") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return a pointer to the Image object that was set for this FrameComponent\n\
+                    for a specified frame part.\n\
+            \n\
+                @param imageComponent\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to be accessed.\n\
+            \n\
+                @return\n\
+                    Pointer to the Image object, or a null pointer if the image\n\
+                    had not been set.\n\
                 *\n" );
         
         }
