@@ -83,7 +83,7 @@ bool TabControlSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setDefaultTooltipType(SKIN "/Tooltip");
 
     // load some Sample windows and attach to the background 'root'
-    background->addChild(winMgr.loadLayoutFromFile("TabControlSample.layout"));
+    background->addChild(winMgr.loadLayoutFromFile("TabControlDemo.layout"));
 
     TabControl* tc = static_cast<TabControl*>(background->getChild("Frame/TabControl"));
 
