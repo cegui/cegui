@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <GUILayout version="4">
-    <Window name="EffectsDemoRoot" type="DefaultWindow">
+    <Window name="EffectsSampleRoot" type="DefaultWindow">
     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window name="EffectsFrameWindow" type="Vanilla/FrameWindow">
             <Property name="Text" value="Effects Demo" />

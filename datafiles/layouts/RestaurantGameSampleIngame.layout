@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GUILayout version="4" >
-    <Window type="Generic/Image" name="RestaurantGameDemoRoot" >
+    <Window type="Generic/Image" name="RestaurantGameSampleRoot" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-        <Property name="Image" value="RestaurantGameDemo/Background" />
+        <Property name="Image" value="RestaurantGameSample/Background" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Property name="HorzFormatting" value="Tiled" />
         <Property name="VertFormatting" value="Tiled" />
         <Property name="PointerPassThroughEnabled" value="True" />
         <Window type="Generic/Image" name="TopBar" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0.12,0}}" />
-            <Property name="Image" value="RestaurantGameDemo/BGBar" />
+            <Property name="Image" value="RestaurantGameSample/BGBar" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="RiseOnClickEnabled" value="False" />
             <Window type="Generic/Image" name="Life1" >
                 <Property name="Area" value="{{0.0140625,0},{0.0930233,0},{0.0140625,0},{0.697674,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/Life" />
+                <Property name="Image" value="RestaurantGameSample/Life" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="RiseOnClickEnabled" value="False" />
             </Window>
             <Window type="Generic/Image" name="Life2" >
                 <Property name="Area" value="{{0.0617188,0},{0.0930233,0},{0.102344,0},{0.697674,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/Life" />
+                <Property name="Image" value="RestaurantGameSample/Life" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="RiseOnClickEnabled" value="False" />
             </Window>
             <Window type="Generic/Image" name="Life3" >
                 <Property name="Area" value="{{0.109766,0},{0.0930233,0},{0.150391,0},{0.697674,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/Life" />
+                <Property name="Image" value="RestaurantGameSample/Life" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="RiseOnClickEnabled" value="False" />
             </Window>
-            <Window type="RestaurantGameDemo/ProgressBar" name="LifeBar" >
+            <Window type="RestaurantGameSample/ProgressBar" name="LifeBar" >
                 <Property name="Area" value="{{0.0140625,0},{0.755814,3},{0.289063,0},{0.918605,0}}" />
                 <Property name="StepSize" value="0.01" />
                 <Property name="CurrentProgress" value="0.3" />
@@ -51,7 +51,7 @@
             </Window>
             <Window type="Generic/Image" name="Logo" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{1,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/Logo" />
+                <Property name="Image" value="RestaurantGameSample/Logo" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="2.247" />
@@ -60,7 +60,7 @@
             </Window>
             <Window type="Generic/Image" name="ScoreBGImage" >
                 <Property name="Area" value="{{-0.03,0},{0,0},{-0.03,0},{1,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/ScoreBG" />
+                <Property name="Image" value="RestaurantGameSample/ScoreBG" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="2" />
@@ -88,14 +88,14 @@
         </Window>
         <Window type="Generic/Image" name="BotBar" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0.12,0}}" />
-            <Property name="Image" value="RestaurantGameDemo/BGBar" />
+            <Property name="Image" value="RestaurantGameSample/BGBar" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="AlwaysOnTop" value="True" />
             <Property name="VerticalAlignment" value="Bottom" />
             <Property name="RiseOnClickEnabled" value="False" />
             <Window type="Generic/Image" name="MenuImage" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{4,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/Menu" />
+                <Property name="Image" value="RestaurantGameSample/Menu" />
                 <Property name="MaxSize" value="{{999,0},{999,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="0.944" />
@@ -161,7 +161,7 @@
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Window type="Generic/Image" name="BonusItemBG1" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{1,0}}" />
-                    <Property name="Image" value="RestaurantGameDemo/ToolBG" />
+                    <Property name="Image" value="RestaurantGameSample/ToolBG" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="AspectMode" value="Expand" />
                     <Property name="AspectRatio" value="1.644" />
@@ -169,7 +169,7 @@
                     <Property name="RiseOnClickEnabled" value="False" />
                     <Window type="Generic/Image" name="ToolMixerImage" >
                         <Property name="Area" value="{{0,0},{0,0},{0,0},{0.8,0}}" />
-                        <Property name="Image" value="RestaurantGameDemo/ToolMixer" />
+                        <Property name="Image" value="RestaurantGameSample/ToolMixer" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="AspectMode" value="Expand" />
                         <Property name="VerticalAlignment" value="Centre" />
@@ -179,7 +179,7 @@
                 </Window>
                 <Window type="Generic/Image" name="BonusItemBG2" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{1,0}}" />
-                    <Property name="Image" value="RestaurantGameDemo/ToolBG" />
+                    <Property name="Image" value="RestaurantGameSample/ToolBG" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="AspectMode" value="Expand" />
                     <Property name="AspectRatio" value="1.644" />
@@ -188,7 +188,7 @@
                     <Property name="HorizontalAlignment" value="Centre" />
                     <Window type="Generic/Image" name="ToolMixerImage" >
                         <Property name="Area" value="{{0,0},{0,0},{0,0},{0.8,0}}" />
-                        <Property name="Image" value="RestaurantGameDemo/ToolGlove" />
+                        <Property name="Image" value="RestaurantGameSample/ToolGlove" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="AspectMode" value="Expand" />
                         <Property name="VerticalAlignment" value="Centre" />
@@ -198,7 +198,7 @@
                 </Window>
                 <Window type="Generic/Image" name="BonusItemBG3" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{1,0}}" />
-                    <Property name="Image" value="RestaurantGameDemo/ToolBG" />
+                    <Property name="Image" value="RestaurantGameSample/ToolBG" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="AspectMode" value="Expand" />
                     <Property name="AspectRatio" value="1.644" />
@@ -207,7 +207,7 @@
                     <Property name="HorizontalAlignment" value="Right" />
                     <Window type="Generic/Image" name="ToolMixerImage" >
                         <Property name="Area" value="{{0,0},{0,0},{0,0},{0.8,0}}" />
-                        <Property name="Image" value="RestaurantGameDemo/ToolPot" />
+                        <Property name="Image" value="RestaurantGameSample/ToolPot" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="AspectMode" value="Expand" />
                         <Property name="VerticalAlignment" value="Centre" />
@@ -218,7 +218,7 @@
             </Window>
             <Window type="Generic/Image" name="WeaponBGImage" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{1,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/WeaponBG" />
+                <Property name="Image" value="RestaurantGameSample/WeaponBG" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="3" />
@@ -248,7 +248,7 @@
             </Window>
             <Window type="Generic/Image" name="WeaponSpoon" >
                 <Property name="Area" value="{{0.0648438,0},{-1.0814,0},{0.124531,0},{-1.0814,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/IconSpoon" />
+                <Property name="Image" value="RestaurantGameSample/IconSpoon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="0.404" />
@@ -259,7 +259,7 @@
             </Window>
             <Window type="Generic/Image" name="WeaponKnife" >
                 <Property name="Area" value="{{0.130469,0},{-0.813953,0},{0.158906,0},{-0.813953,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/IconKnife" />
+                <Property name="Image" value="RestaurantGameSample/IconKnife" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="0.213" />
@@ -270,7 +270,7 @@
             </Window>
             <Window type="Generic/Image" name="WeaponFork" >
                 <Property name="Area" value="{{0.0304688,0},{-0.848837,0},{0.0796877,0},{-0.848837,0}}" />
-                <Property name="Image" value="RestaurantGameDemo/IconFork" />
+                <Property name="Image" value="RestaurantGameSample/IconFork" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="0.421" />

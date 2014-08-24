@@ -61,7 +61,7 @@ bool DragDropSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load the initial layout
     guiContext->setRootWindow(
-        WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
+        WindowManager::getSingleton().loadLayoutFromFile("DragDropSample.layout"));
 
     // setup events
     subscribeEvents();

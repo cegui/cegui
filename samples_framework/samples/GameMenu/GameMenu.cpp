@@ -66,9 +66,9 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext = guiContext;
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().createFromFile("GameMenu.scheme");
+    SchemeManager::getSingleton().createFromFile("GameMenuSample.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    d_guiContext->getPointerIndicator().setDefaultImage("GameMenuImages/MouseCursor");
+    d_guiContext->getPointerIndicator().setDefaultImage("GameMenuSampleImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");
@@ -79,7 +79,7 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    d_root = winMgr.loadLayoutFromFile("GameMenu.layout");
+    d_root = winMgr.loadLayoutFromFile("GameMenuSample.layout");
     d_guiContext->setRootWindow(d_root);
 
     setupWindows();
@@ -107,7 +107,7 @@ void GameMenuSample::deinitialise()
 void GameMenuSample::setupAnimations()
 {
     AnimationManager& animMgr = AnimationManager::getSingleton();
-    animMgr.loadAnimationsFromXML("GameMenu.anims");
+    animMgr.loadAnimationsFromXML("GameMenuSample.anims");
 
     CEGUI::Animation* startButtAnim = animMgr.getAnimation("StartButtonPulsating");
     CEGUI::AnimationInstance* startButtAnimInstance = animMgr.instantiateAnimation(startButtAnim);

@@ -1,4 +1,4 @@
-<Imageset autoScaled="vertical" imagefile="GameMenu.png" name="GameMenuImages" nativeHorzRes="1024" nativeVertRes="720" version="2">
+<Imageset autoScaled="vertical" imagefile="GameMenuSample.png" name="GameMenuSampleImages" nativeHorzRes="1024" nativeVertRes="720" version="2">
     <Image height="220" name="CenterImageInside" width="220" xPos="55" yPos="1256" />
     <Image height="356" name="CenterImageOutside1" width="353" xPos="747" yPos="242" />
     <Image height="332" name="CenterImageOutside2" width="328" xPos="340" yPos="254" />

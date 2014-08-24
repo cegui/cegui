@@ -73,7 +73,7 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     gui_context->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();
-    d_root = win_mgr.loadLayoutFromFile("MenuNavigationDemo.layout");
+    d_root = win_mgr.loadLayoutFromFile("MenuNavigationSample.layout");
 
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
@@ -93,7 +93,7 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     tabControl->subscribeEvent(TabControl::EventSelectionChanged,
         Event::Subscriber(&MenuNavigationSample::handleTabSelectionChanged, this));
 
-    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout");
+    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationSampleTabPage1.layout");
     d_logWidget1 = page1Window->getChild("StaticText");
     d_logWidget1->setText("OK");
 
@@ -113,7 +113,7 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 
     tabControl->addTab(page1Window);
 
-    Window* page2Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
+    Window* page2Window = win_mgr.loadLayoutFromFile("MenuNavigationSampleTabPage2.layout");
     d_logWidget2 = page2Window->getChild("StaticText");
     d_logWidget2->setText("OK");
 

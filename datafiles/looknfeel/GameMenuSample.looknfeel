@@ -1,59 +1,59 @@
 <?xml version="1.0" ?>
 
 <!--
-    GameMenu.looknfeel by Lukas E. Meindl
+    GameMenuSample.looknfeel by Lukas E. Meindl
 
-    This looknfeel was created for the GameMenu Demo
+    This looknfeel was created for the GameMenuSample Demo
 -->
 
 <Falagard version="7">
 
     
-    <WidgetLook name="GameMenu/Editbox">
+    <WidgetLook name="GameMenuSample/Editbox">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="NormalTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="PointerIndicatorImage" value="GameMenuImages/MouseTextBar"/>
+        <Property name="PointerIndicatorImage" value="GameMenuSampleImages/MouseTextBar"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
-                    <ImageDim name="GameMenuImages/EditboxLeft" dimension="Width"/>
+                    <ImageDim name="GameMenuSampleImages/EditboxLeft" dimension="Width"/>
                 </Dim>
                 <Dim type="TopEdge">
-                    <ImageDim name="GameMenuImages/EditboxTop" dimension="Height"/>
+                    <ImageDim name="GameMenuSampleImages/EditboxTop" dimension="Height"/>
                 </Dim>
                 <Dim type="RightEdge">
                     <OperatorDim op="Subtract">
                         <UnifiedDim scale="1" type="RightEdge"/>
-                        <ImageDim name="GameMenuImages/EditboxRight" dimension="Width"/>
+                        <ImageDim name="GameMenuSampleImages/EditboxRight" dimension="Width"/>
                     </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge">
                     <OperatorDim op="Subtract">
                         <UnifiedDim scale="1" type="BottomEdge"/>
-                        <ImageDim name="GameMenuImages/EditboxBot" dimension="Height"/>
+                        <ImageDim name="GameMenuSampleImages/EditboxBot" dimension="Height"/>
                     </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <ImagerySection name="container_normal">
             <FrameComponent>
-                <Image component="TopLeftCorner" name="GameMenuImages/EditboxLeftTop"/>
-                <Image component="TopRightCorner" name="GameMenuImages/EditboxRightTop"/>
-                <Image component="BottomLeftCorner" name="GameMenuImages/EditboxLeftBot"/>
-                <Image component="BottomRightCorner" name="GameMenuImages/EditboxRightBot"/>
-                <Image component="LeftEdge" name="GameMenuImages/EditboxLeft"/>
-                <Image component="RightEdge" name="GameMenuImages/EditboxRight"/>
-                <Image component="TopEdge" name="GameMenuImages/EditboxTop"/>
-                <Image component="BottomEdge" name="GameMenuImages/EditboxBot"/>
-                <Image component="Background" name="GameMenuImages/EditboxMid"/>
+                <Image component="TopLeftCorner" name="GameMenuSampleImages/EditboxLeftTop"/>
+                <Image component="TopRightCorner" name="GameMenuSampleImages/EditboxRightTop"/>
+                <Image component="BottomLeftCorner" name="GameMenuSampleImages/EditboxLeftBot"/>
+                <Image component="BottomRightCorner" name="GameMenuSampleImages/EditboxRightBot"/>
+                <Image component="LeftEdge" name="GameMenuSampleImages/EditboxLeft"/>
+                <Image component="RightEdge" name="GameMenuSampleImages/EditboxRight"/>
+                <Image component="TopEdge" name="GameMenuSampleImages/EditboxTop"/>
+                <Image component="BottomEdge" name="GameMenuSampleImages/EditboxBot"/>
+                <Image component="Background" name="GameMenuSampleImages/EditboxMid"/>
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
             <ImageryComponent>
-                <Image name="GameMenuImages/GenericBrush"/>
+                <Image name="GameMenuSampleImages/GenericBrush"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
             </ImageryComponent>
@@ -65,7 +65,7 @@
                         <AbsoluteDim value="3"/>
                     </Dim>
                 </Area>
-                <Image name="GameMenuImages/GenericBrush"/>
+                <Image name="GameMenuSampleImages/GenericBrush"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
             </ImageryComponent>
