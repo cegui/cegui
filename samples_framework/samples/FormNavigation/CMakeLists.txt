@@ -1,8 +1,8 @@
 list (APPEND SAMPLES_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/FormNavigation.cpp)
-list (APPEND SAMPLES_SOURCES ${CMAKE_SOURCE_DIR}/samples/common/NavigationStrategies.cpp)
+list (APPEND SAMPLES_SOURCES ${CMAKE_SOURCE_DIR}/samples_framework/samples/common/NavigationStrategies.cpp)
 
 list (APPEND SAMPLES_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/FormNavigation.h)
-list (APPEND SAMPLES_HEADERS ${CMAKE_SOURCE_DIR}/samples/common/include/NavigationStrategies.h)
+list (APPEND SAMPLES_HEADERS ${CMAKE_SOURCE_DIR}/samples_framework/samples/common/include/NavigationStrategies.h)
 
 list (APPEND SAMPLES_LIST "FormNavigation")
 

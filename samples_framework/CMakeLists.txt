@@ -11,7 +11,7 @@ set( CORE_SOURCE_FILES
 )
 
 set( CORE_HEADER_FILES
-    ../samples/common/include/Sample.h
+    ./samples/common/include/Sample.h
     ./include/SamplesFrameworkBase.h
     ./include/SamplesFramework.h
     ./include/CEGuiBaseApplication.h
@@ -21,10 +21,9 @@ set( CORE_HEADER_FILES
     ./include/SamplesBrowserManager.h
 )
 
-
 include_directories(${CMAKE_SOURCE_DIR}/samples_framework/include
-                    ${CMAKE_BINARY_DIR}/samples/common/include
-                    ${CMAKE_SOURCE_DIR}/samples/common/include
+                    ${CMAKE_BINARY_DIR}/samples_framework/samples/common/include
+                    ${CMAKE_SOURCE_DIR}/samples_framework/samples/common/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
 
 if (WIN32)
@@ -100,6 +99,13 @@ if (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
     link_directories(${DIRECTXSDK_LIBRARY_DIR})
 endif()
 
+add_subdirectory(samples/)
+
+set (CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${SAMPLES_SOURCES})
+set (CORE_HEADER_FILES ${CORE_SOURCE_FILES} ${SAMPLES_HEADERS})
+
+include_directories (${ADDITIONAL_INCLUDE_DIRS})
+
 ###########################################################################
 #                     Statically Linked Executable
 ###########################################################################
@@ -128,6 +134,9 @@ endif()
 #                   Dynamically Linked Executable
 ###########################################################################
 add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+
+# additional dependencies from samples
+add_dependencies (${CEGUI_TARGET_NAME} "${ADDITIONAL_LIBS}")
 
 # append the _d (or whatever) for debug builds as needed.
 if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
@@ -259,4 +268,3 @@ if (APPLE)
 endif()
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
-cegui_target_link_libraries(${CEGUI_TARGET_NAME} "CEGUISamples")
