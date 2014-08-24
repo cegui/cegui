@@ -42,6 +42,7 @@ author:     Lukas E Meindl
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 using namespace CEGUI;
 
@@ -49,10 +50,6 @@ using namespace CEGUI;
 #if (defined( __WIN32__ ) || defined( _WIN32 ))
 #include "windows.h"
 #endif
-
-//----------------------------------------------------------------------------//
-// Name of the xsd schema file used to validate samples XML files.
-const String SamplesFramework::XMLSchemaName("Samples.xsd");
 
 //----------------------------------------------------------------------------//
 int main(int argc, char* argv[])
@@ -81,8 +78,6 @@ SamplesFramework::SamplesFramework() :
     d_loadingProgressBar(0),
     d_quittingSampleView(false)
 {
-    if (!framework)
-        framework = this;
 }
 
 //----------------------------------------------------------------------------//
