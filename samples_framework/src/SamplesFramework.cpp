@@ -99,6 +99,8 @@ bool SamplesFramework::initialise()
 
     initialiseLoadScreenLayout();
 
+    loadSamples();
+
     d_systemInputAggregator = new InputAggregator(
         &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
     d_systemInputAggregator->initialise();
@@ -143,6 +145,20 @@ void SamplesFramework::initialiseLoadScreenLayout()
 
     d_loadingScreenText->setText("Parsing samples XML file...");
     d_loadingProgressBar->setProgress(0.0f);
+}
+
+//----------------------------------------------------------------------------//
+void SamplesFramework::loadSamples()
+{
+#   include "samples.inc"
+    
+    std::vector<Sample*>::iterator iter = samples.begin();
+    
+    for (; iter != samples.end(); ++iter)
+    {
+        addSampleDataCppModule(*iter, (*iter)->getName(), (*iter)->getSummary(),
+                               (*iter)->getDescription(), (*iter)->getType(), (*iter)->getCredits());
+    }
 }
 
 //----------------------------------------------------------------------------//

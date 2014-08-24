@@ -58,6 +58,8 @@ public:
     bool initialise();
     void deinitialise();
 
+    void loadSamples();
+
     void addSampleDataCppModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
                                 CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
 
