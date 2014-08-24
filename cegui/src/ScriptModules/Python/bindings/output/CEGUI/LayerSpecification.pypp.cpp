@@ -82,7 +82,32 @@ void register_LayerSpecification_class(){
             
             LayerSpecification_exposer.def( 
                 "getSectionIterator"
-                , getSectionIterator_function_type( &::CEGUI::LayerSpecification::getSectionIterator ) );
+                , getSectionIterator_function_type( &::CEGUI::LayerSpecification::getSectionIterator )
+                , "!  deprecated This type will be removed in the next version and replaced by a const list in the\
+            getSectionSpecifications function.\n\
+            !  deprecated This function will be replaced by a getSectionSpecifications function in the next\
+            version.\n" );
+        
+        }
+        { //::CEGUI::LayerSpecification::getSectionSpecificationPointers
+        
+            typedef ::std::vector< CEGUI::SectionSpecification* > ( ::CEGUI::LayerSpecification::*getSectionSpecificationPointers_function_type )(  ) ;
+            
+            LayerSpecification_exposer.def( 
+                "getSectionSpecificationPointers"
+                , getSectionSpecificationPointers_function_type( &::CEGUI::LayerSpecification::getSectionSpecificationPointers )
+                , "*!\n\
+                    \n\
+                        Returns a vector of pointers to the SectionSpecifications that are currently added to\
+                        this LayerSpecification. If a\n\
+                        SectionSpecification is added or removed from this LayerSpecification, then the pointers\
+                        in this vector are not valid\n\
+                        anymore. The function should then be called again to retrieve valid pointers.\n\
+            \n\
+                     @return\n\
+                        A vector of pointers to the SectionSpecifications that are currently added to this\
+                        LayerSpecification\n\
+                    *\n" );
         
         }
         LayerSpecification_exposer.def( bp::self < bp::self );

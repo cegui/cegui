@@ -86,6 +86,10 @@ public:
     {
         return PropertyHelper<URect>::fromString(str);
     }
+    static USize stringToUSize(const String& str)
+    {
+        return PropertyHelper<USize>::fromString(str);
+    }
     static UBox stringToUBox(const String& str)
     {
         return PropertyHelper<UBox>::fromString(str);
@@ -117,6 +121,10 @@ public:
     static const Font* stringToFont(const String& str)
     {
         return PropertyHelper<Font*>::fromString(str);
+    }
+    static AspectMode stringToAspectMode(const String& str)
+    {
+        return PropertyHelper<AspectMode>::fromString(str);
     }
 
     static String floatToString(float val)
@@ -167,6 +175,10 @@ public:
     {
         return PropertyHelper<URect>::toString(val);
     }
+    static String usizeToString(const USize& val)
+    {
+        return PropertyHelper<USize>::toString(val);
+    }
     static String uboxToString(const UBox& val)
     {
         return PropertyHelper<UBox>::toString(val);
@@ -199,6 +211,11 @@ public:
     {
         return PropertyHelper<Font*>::toString(val);
     }
+    static String aspectmodeToString(AspectMode val)
+    {
+        return PropertyHelper<AspectMode>::toString(val);
+    }
+
 };
 
 
@@ -373,6 +390,8 @@ namespace pyplusplus
         typedef std::vector<CEGUI::TextComponent* CEGUI_VECTOR_ALLOC(CEGUI::TextComponent*)> TextComponentVector;
         typedef std::vector<CEGUI::ImageryComponent* CEGUI_VECTOR_ALLOC(CEGUI::ImageryComponent*)> ImageryComponentVector;
         typedef std::vector<CEGUI::FrameComponent* CEGUI_VECTOR_ALLOC(CEGUI::FrameComponent*)> FrameComponentVector;
+        typedef std::vector<CEGUI::LayerSpecification* CEGUI_VECTOR_ALLOC(CEGUI::LayerSpecification*)> LayerSpecificationVector;
+        typedef std::vector<CEGUI::SectionSpecification* CEGUI_VECTOR_ALLOC(CEGUI::SectionSpecification*)> SectionSpecificationVector;
 
         typedef ::CEGUI::Event::Connection Connection;
         typedef ::CEGUI::Event::Subscriber Subscriber;

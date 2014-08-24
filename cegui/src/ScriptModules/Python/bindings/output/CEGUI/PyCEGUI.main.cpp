@@ -278,6 +278,8 @@
 
 #include "LayerSpecification.pypp.hpp"
 
+#include "LayerSpecificationVector.pypp.hpp"
+
 #include "LayoutContainer.pypp.hpp"
 
 #include "LineList.pypp.hpp"
@@ -515,6 +517,8 @@
 #include "SectionIterator.pypp.hpp"
 
 #include "SectionSpecification.pypp.hpp"
+
+#include "SectionSpecificationVector.pypp.hpp"
 
 #include "SequentialLayoutContainer.pypp.hpp"
 
@@ -818,6 +822,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_TargetTypeStack_class();
 
+    register_SectionSpecificationVector_class();
+
     register_ComponentList_class();
 
     register_PropertyInitialiserVector_class();
@@ -825,6 +831,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_vector_less__CEGUI_scope_PropertyDefinitionBase_ptr___greater__class();
 
     register_LineList_class();
+
+    register_LayerSpecificationVector_class();
 
     register_ImageryComponentVector_class();
 
