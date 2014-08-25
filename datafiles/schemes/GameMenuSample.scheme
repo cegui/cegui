@@ -7,7 +7,7 @@
 	<LookNFeel filename="GameMenuSample.looknfeel" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
     
-    <FalagardMapping windowType="GameMenu/Editbox" targetType="CEGUI/Editbox" renderer="Core/Editbox" lookNFeel="GameMenuSample/Editbox" />
+    <FalagardMapping windowType="GameMenuSample/Editbox" targetType="CEGUI/Editbox" renderer="Core/Editbox" lookNFeel="GameMenuSample/Editbox" />
 	
     </GUIScheme>
 
