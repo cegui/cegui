@@ -3,12 +3,12 @@
 <GUILayout version="4" >
     <Window type="Generic/Image" name="GameMenuSampleRoot" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-        <Property name="Image" value="GameMenuImages/Background" />
+        <Property name="Image" value="GameMenuSampleImages/Background" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Property name="PointerPassThroughEnabled" value="True" />
         <Window type="Generic/Image" name="TopBar" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0,0}}" />
-            <Property name="Image" value="GameMenuImages/TopBar" />
+            <Property name="Image" value="GameMenuSampleImages/TopBar" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="AspectMode" value="Expand" />
             <Property name="AspectRatio" value="13.714" />
@@ -23,7 +23,7 @@
         </Window>
         <Window type="Generic/Image" name="BotBar" >
             <Property name="Area" value="{{0,-1},{0,1},{1,-1},{0,1}}" />
-            <Property name="Image" value="GameMenuImages/BotBar" />
+            <Property name="Image" value="GameMenuSampleImages/BotBar" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="AspectMode" value="Expand" />
             <Property name="AspectRatio" value="13.714" />
@@ -45,7 +45,7 @@
             <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Image" name="InsideImage1" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{0.347222,0}}" />
-                <Property name="Image" value="GameMenuImages/CenterImageInside" />
+                <Property name="Image" value="GameMenuSampleImages/CenterImageInside" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="VerticalAlignment" value="Centre" />
@@ -70,7 +70,7 @@
                 </Window>
                 <Window type="Generic/Image" name="StartButtonImage" >
                     <Property name="Area" value="{{0,0},{-0.35,0},{0,0},{-0.15,0}}" />
-                    <Property name="Image" value="GameMenuImages/CenterImageButtonStartButt" />
+                    <Property name="Image" value="GameMenuSampleImages/CenterImageButtonStartButt" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="AspectMode" value="Expand" />
                     <Property name="AspectRatio" value="2.5" />
@@ -88,7 +88,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="InsideImage3" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{0.54,0}}" />
-                    <Property name="Image" value="GameMenuImages/CenterImageOutside1" />
+                    <Property name="Image" value="GameMenuSampleImages/CenterImageOutside1" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="AspectMode" value="Expand" />
                     <Property name="PixelAligned" value="False" />
@@ -99,7 +99,7 @@
                 </Window>
                 <Window type="Generic/Image" name="InsideImage4" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{0.495,0}}" />
-                    <Property name="Image" value="GameMenuImages/CenterImageOutside2" />
+                    <Property name="Image" value="GameMenuSampleImages/CenterImageOutside2" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="AspectMode" value="Expand" />
                     <Property name="PixelAligned" value="False" />
@@ -111,7 +111,7 @@
             </Window>
             <Window type="Generic/Image" name="InsideImage2" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{0.3,0}}" />
-                <Property name="Image" value="GameMenuImages/CenterImageInside2" />
+                <Property name="Image" value="GameMenuSampleImages/CenterImageInside2" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="VerticalAlignment" value="Centre" />
@@ -123,12 +123,12 @@
             <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="PointerPassThroughEnabled" value="True" />
-            <Window type="GameMenu/Editbox" name="LoginEditbox" >
+            <Window type="GameMenuSample/Editbox" name="LoginEditbox" >
                 <Property name="Area" value="{{0.828906,0},{0.154167,0},{0.928906,0},{0.179167,0}}" />
                 <Property name="Font" value="Jura-10" />
                 <Property name="PointerIndicatorImage" value="" />
             </Window>
-            <Window type="GameMenu/Editbox" name="PasswordEditbox" >
+            <Window type="GameMenuSample/Editbox" name="PasswordEditbox" >
                 <Property name="Area" value="{{0.849219,0},{0.202778,0},{0.949219,0},{0.227778,0}}" />
                 <Property name="Font" value="Jura-10" />
                 <Property name="PointerIndicatorImage" value="" />
@@ -151,7 +151,7 @@
             </Window>
             <Window type="Generic/Image" name="AcceptButton" >
                 <Property name="Area" value="{{0.888,0},{0.25,0},{0.888,0},{0.275,0}}" />
-                <Property name="Image" value="GameMenuImages/LoginButtonBG" />
+                <Property name="Image" value="GameMenuSampleImages/LoginButtonBG" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="AspectRatio" value="2" />
@@ -171,7 +171,7 @@
             <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Image" name="ButtonOptions" >
                 <Property name="Area" value="{{0.125781,0},{-0.136806,0},{0.160937,0},{-0.0743055,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonOptionsIcon" />
+                <Property name="Image" value="GameMenuSampleImages/ButtonOptionsIcon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Shrink" />
                 <Property name="PixelAligned" value="False" />
@@ -180,7 +180,7 @@
             </Window>
             <Window type="Generic/Image" name="ButtonLoad" >
                 <Property name="Area" value="{{-0.0941409,0},{-0.197917,0},{-0.0681408,0},{-0.145917,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonLoadIcon" />
+                <Property name="Image" value="GameMenuSampleImages/ButtonLoadIcon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Shrink" />
                 <Property name="PixelAligned" value="False" />
@@ -189,7 +189,7 @@
             </Window>
             <Window type="Generic/Image" name="ButtonCharacters" >
                 <Property name="Area" value="{{-0.127734,0},{-0.120834,0},{-0.101734,0},{-0.0688336,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonCharactersIcon" />
+                <Property name="Image" value="GameMenuSampleImages/ButtonCharactersIcon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Shrink" />
                 <Property name="PixelAligned" value="False" />
@@ -198,7 +198,7 @@
             </Window>
             <Window type="Generic/Image" name="ButtonQuit" >
                 <Property name="Area" value="{{0.10039,0},{0.173611,0},{0.127734,0},{0.222222,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonQuitIcon" />
+                <Property name="Image" value="GameMenuSampleImages/ButtonQuitIcon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Shrink" />
                 <Property name="PixelAligned" value="False" />
@@ -207,7 +207,7 @@
             </Window>
             <Window type="Generic/Image" name="PopupLinesSave" >
                 <Property name="Area" value="{{-0.571211,0},{0.166632,0},{-0.271211,0},{0.259514,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesSave" />
+                <Property name="Image" value="GameMenuSampleImages/PopupLinesSave" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="MinSize" value="{{0,0},{0.0928819,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
@@ -226,7 +226,7 @@
             </Window>
             <Window type="Generic/Image" name="PopupLinesLoad" >
                 <Property name="Area" value="{{-0.601876,0},{0.203784,0},{-0.301876,0},{0.29684,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesSave" />
+                <Property name="Image" value="GameMenuSampleImages/PopupLinesSave" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="MinSize" value="{{0,0},{0.0930555,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
@@ -246,7 +246,7 @@
             </Window>
             <Window type="Generic/Image" name="PopupLinesCharacters" >
                 <Property name="Area" value="{{-0.636055,0},{0.298229,0},{-0.336055,0},{0.598229,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesCharacter" />
+                <Property name="Image" value="GameMenuSampleImages/PopupLinesCharacter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="MinSize" value="{{0,0},{0.3,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
@@ -311,7 +311,7 @@
             </Window>
             <Window type="Generic/Image" name="PopupLinesOptions" >
                 <Property name="Area" value="{{0.63914,0},{0.24441,0},{0.93914,0},{0.397188,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesOptions" />
+                <Property name="Image" value="GameMenuSampleImages/PopupLinesOptions" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="MinSize" value="{{0,0},{0.152778,0}}" />
                 <Property name="HorzFormatting" value="LeftAligned" />
@@ -357,7 +357,7 @@
             </Window>
             <Window type="Generic/Image" name="PopupLinesQuit" >
                 <Property name="Area" value="{{0.609843,0},{0.652395,0},{0.909843,0},{0.798228,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesQuit" />
+                <Property name="Image" value="GameMenuSampleImages/PopupLinesQuit" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="MinSize" value="{{0,0},{0.145833,0}}" />
                 <Property name="HorzFormatting" value="LeftAligned" />
@@ -394,7 +394,7 @@
             </Window>
             <Window type="Generic/Image" name="ButtonSave" >
                 <Property name="Area" value="{{-0.0640627,0},{-0.227084,0},{-0.0380627,0},{-0.175084,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonSaveIcon" />
+                <Property name="Image" value="GameMenuSampleImages/ButtonSaveIcon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Shrink" />
                 <Property name="PixelAligned" value="False" />
@@ -403,7 +403,7 @@
             </Window>
             <Window type="Generic/Image" name="SaveSelectionIcon" >
                 <Property name="Area" value="{{-0.157813,0},{0.218056,0},{-0.135938,0},{0.256944,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -412,7 +412,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -420,7 +420,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -428,7 +428,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -437,7 +437,7 @@
             </Window>
             <Window type="Generic/Image" name="LoadSelectionIcon" >
                 <Property name="Area" value="{{-0.189836,0},{0.256889,0},{-0.167961,0},{0.295778,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -446,7 +446,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -454,7 +454,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -462,7 +462,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -471,7 +471,7 @@
             </Window>
             <Window type="Generic/Image" name="Name2SelectionIcon" >
                 <Property name="Area" value="{{-0.23632,0},{0.496472,0},{-0.214445,0},{0.535361,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -480,7 +480,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -488,7 +488,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -496,7 +496,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -505,7 +505,7 @@
             </Window>
             <Window type="Generic/Image" name="NewSelectionIcon" >
                 <Property name="Area" value="{{-0.228703,0},{0.537792,0},{-0.206828,0},{0.576681,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -514,7 +514,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -522,7 +522,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -530,7 +530,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -539,7 +539,7 @@
             </Window>
             <Window type="Generic/Image" name="DeleteSelectionIcon" >
                 <Property name="Area" value="{{-0.137883,0},{0.47425,0},{-0.116008,0},{0.513139,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -548,7 +548,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -556,7 +556,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -564,7 +564,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -573,7 +573,7 @@
             </Window>
             <Window type="Generic/Image" name="SelectSelectionIcon" >
                 <Property name="Area" value="{{-0.137688,0},{0.439875,0},{-0.115812,0},{0.478764,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -582,7 +582,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -590,7 +590,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -598,7 +598,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -607,7 +607,7 @@
             </Window>
             <Window type="Generic/Image" name="ControlsSelectionIcon" >
                 <Property name="Area" value="{{0.323445,0},{0.349944,0},{0.34532,0},{0.388833,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -616,7 +616,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -624,7 +624,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -632,7 +632,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -641,7 +641,7 @@
             </Window>
             <Window type="Generic/Image" name="VideoSelectionIcon" >
                 <Property name="Area" value="{{0.318758,0},{0.310708,0},{0.340633,0},{0.349597,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -650,7 +650,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -658,7 +658,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -666,7 +666,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -675,7 +675,7 @@
             </Window>
             <Window type="Generic/Image" name="AudioSelectionIcon" >
                 <Property name="Area" value="{{0.313875,0},{0.274597,0},{0.33575,0},{0.313486,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -684,7 +684,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -692,7 +692,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -700,7 +700,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -709,7 +709,7 @@
             </Window>
             <Window type="Generic/Image" name="YesSelectionIcon" >
                 <Property name="Area" value="{{0.288875,0},{0.674944,0},{0.31075,0},{0.713833,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -718,7 +718,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -726,7 +726,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -734,7 +734,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -743,7 +743,7 @@
             </Window>
             <Window type="Generic/Image" name="NoSelectionIcon" >
                 <Property name="Area" value="{{0.288094,0},{0.738833,0},{0.309969,0},{0.777722,0}}" />
-                <Property name="Image" value="GameMenuImages/DotOuter" />
+                <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="RightAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
@@ -752,7 +752,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotDot" />
+                    <Property name="Image" value="GameMenuSampleImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -760,7 +760,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInner" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInner" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -768,7 +768,7 @@
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotInnest" />
+                    <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
@@ -782,14 +782,14 @@
             <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Image" name="LeftArrow" >
                 <Property name="Area" value="{{-0.12,0},{0.82,0},{-0.1,0},{0.856,0}}" />
-                <Property name="Image" value="GameMenuImages/BotBarLeftArrow" />
+                <Property name="Image" value="GameMenuSampleImages/BotBarLeftArrow" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="HorizontalAlignment" value="Centre" />
             </Window>
             <Window type="Generic/Image" name="RightArrow" >
                 <Property name="Area" value="{{0.12,0},{0.82,0},{0.14,0},{0.856,0}}" />
-                <Property name="Image" value="GameMenuImages/BotBarRightArrow" />
+                <Property name="Image" value="GameMenuSampleImages/BotBarRightArrow" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AspectMode" value="Expand" />
                 <Property name="HorizontalAlignment" value="Centre" />
@@ -800,7 +800,7 @@
                 <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="NavigationIcon" >
                     <Property name="Area" value="{{0,0},{0.783,0},{0.0382812,0},{0.878833,0}}" />
-                    <Property name="Image" value="GameMenuImages/IconChangeDestination" />
+                    <Property name="Image" value="GameMenuSampleImages/IconChangeDestination" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorizontalAlignment" value="Centre" />
                 </Window>
@@ -815,7 +815,7 @@
                 </Window>
                 <Window type="Generic/Image" name="NaviBotSelectionIcon" >
                     <Property name="Area" value="{{0.066,0},{0.805,0},{0.087875,0},{0.843889,0}}" />
-                    <Property name="Image" value="GameMenuImages/DotOuter" />
+                    <Property name="Image" value="GameMenuSampleImages/DotOuter" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="TopAligned" />
@@ -824,7 +824,7 @@
                     <Property name="PointerPassThroughEnabled" value="True" />
                     <Window type="Generic/Image" name="Image1" >
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                        <Property name="Image" value="GameMenuImages/DotInner" />
+                        <Property name="Image" value="GameMenuSampleImages/DotInner" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="HorzFormatting" value="RightAligned" />
                         <Property name="VertFormatting" value="BottomAligned" />
@@ -832,7 +832,7 @@
                     </Window>
                     <Window type="Generic/Image" name="Image2" >
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                        <Property name="Image" value="GameMenuImages/DotInnest" />
+                        <Property name="Image" value="GameMenuSampleImages/DotInnest" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="HorzFormatting" value="RightAligned" />
                         <Property name="VertFormatting" value="BottomAligned" />
@@ -840,7 +840,7 @@
                     </Window>
                     <Window type="Generic/Image" name="Image3" >
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                        <Property name="Image" value="GameMenuImages/DotDot" />
+                        <Property name="Image" value="GameMenuSampleImages/DotDot" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="HorzFormatting" value="RightAligned" />
                         <Property name="VertFormatting" value="BottomAligned" />
