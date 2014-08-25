@@ -34,9 +34,9 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// Static string holding parent link identifier
+// String holding parent link identifier
 // This is deprecated and declared as an extern in PropertyLinkDefinition.h
-static const String S_parentIdentifier("__parent__");
+const String S_parentIdentifier("__parent__");
 
 
 //----------------------------------------------------------------------------//
