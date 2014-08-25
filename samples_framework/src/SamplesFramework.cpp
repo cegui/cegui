@@ -138,7 +138,7 @@ void SamplesFramework::initialiseLoadScreenLayout()
     d_loadScreenChunkProgressText =
         d_loadingScreenText->getChild("LoadScreenTextChunkProgress");
 
-    d_loadingScreenText->setText("Parsing samples XML file...");
+    d_loadingScreenText->setText("Parsing samples...");
     d_loadingProgressBar->setProgress(0.0f);
 }
 
