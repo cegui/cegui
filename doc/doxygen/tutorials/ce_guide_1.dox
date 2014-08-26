@@ -1,6 +1,6 @@
 namespace CEGUI {
 /**
-@page rendering_tutorial The Beginners Guide to Initialising CEGUI
+@page rendering_tutorial 1 - The Beginners Guide to Initialising CEGUI
 @author Paul D Turner
 @tableofcontents
 
