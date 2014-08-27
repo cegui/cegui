@@ -1,5 +1,5 @@
 # Lists all subdirectories of a given directory
-macro(SUBDIRLIST result curdir)
+macro(subdirlist result curdir)
     file(GLOB children RELATIVE ${curdir} ${curdir}/*)
     set(dirlist "")
     foreach(child ${children})
@@ -22,7 +22,7 @@ set(SAMPLE_LIST_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/common/include/samples.h)
 set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_SOURCE_DIR}/common/include/samples.inc)
 
 # gather sample dirs
-SUBDIRLIST(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
+subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 # loop through samples and exclude those that should not be build 
 foreach(dir ${SAMPLES_SUBDIRS})
