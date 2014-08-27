@@ -1,9 +1,9 @@
-#if (CEGUI_BUILD_RENDERER_OPENGLES)
-#    list (APPEND SAMPLES_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/GLESTest.cpp)
+#if(CEGUI_BUILD_RENDERER_OPENGLES)
+#    list(APPEND SAMPLES_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/GLESTest.cpp)
 #
-#    set (SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
+#    set(SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
 #
 #    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGLES_RENDERER_LIBNAME})
 #    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGLES)
-#endif ()
-message ("You should not use GLESTest until CrazyEddie gives his OK. Skipping.")
+#endif()
+message("You should not use GLESTest until CrazyEddie gives his OK. Skipping.")
