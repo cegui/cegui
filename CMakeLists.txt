@@ -489,7 +489,7 @@ set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_VER_INSTALL_SUBDIR}" )
 configure_file( cegui/include/CEGUI/Version.h.in cegui/include/CEGUI/Version.h )
 configure_file( cegui/include/CEGUI/Config.h.in cegui/include/CEGUI/Config.h )
 configure_file( cegui/include/CEGUI/ModuleConfig.h.in cegui/include/CEGUI/ModuleConfig.h )
-configure_file( samples_framework/samples/common/include/CEGUISamplesConfig.h.in samples_framework/samples/common/include/CEGUISamplesConfig.h )
+configure_file( samples/common/include/CEGUISamplesConfig.h.in samples/common/include/CEGUISamplesConfig.h )
 configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
 
 if (UNIX AND NOT APPLE)
@@ -535,7 +535,7 @@ add_subdirectory(cegui/src/ScriptModules)
 add_subdirectory(cegui/src/CommonDialogs)
 
 if (CEGUI_SAMPLES_ENABLED)
-    add_subdirectory(samples_framework)
+    add_subdirectory(samples)
 endif()
 
 add_subdirectory(datafiles)
