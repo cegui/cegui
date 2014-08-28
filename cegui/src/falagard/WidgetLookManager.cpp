@@ -269,7 +269,7 @@ namespace CEGUI
         return WidgetLookIterator(d_widgetLooks.begin(),d_widgetLooks.end());
     }
 
-    WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookMap()
+    WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookPointerMap()
     {
         WidgetLookPointerMap pointerMap;
 
