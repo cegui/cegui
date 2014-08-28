@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Menu_Navigation_h_
-#define _Sample_Menu_Navigation_h_
+#ifndef _Sample_SimpleGameMenu_h_
+#define _Sample_SimpleGameMenu_h_
 
 #include "SampleBase.h"
 #include "NavigationStrategies.h"
