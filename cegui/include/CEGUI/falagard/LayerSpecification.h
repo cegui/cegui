@@ -165,7 +165,7 @@ namespace CEGUI
     public:
         //! \deprecated This type will be removed in the next version and replaced by a const list in the getSectionSpecifications function.
         typedef ConstVectorIterator<SectionList> SectionIterator;
-        //! \deprecated This function will be replaced by a getSectionSpecifications function in the next version.
+        //! \deprecated This function will be replaced by the getSectionSpecifications function in the next version. For editing getSectionSpecificationPointers can be used.
         SectionIterator getSectionIterator() const;
     };
 
