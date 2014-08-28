@@ -1,0 +1,12 @@
+# append your files to the sources and headers list
+list(APPEND SAMPLES_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/prototype.cpp)
+list(APPEND SAMPLES_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/prototype.h)
+
+# forward your changes to the parent directory
+set(SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
+set(SAMPLES_HEADERS "${SAMPLES_HEADERS}" PARENT_SCOPE)
+
+# add your sample to the samples list and forward the list
+# the name has to be your class name without "Sample"
+list(APPEND SAMPLES_LIST  "Prototype")
+set(SAMPLES_LIST "${SAMPLES_LIST}" PARENT_SCOPE)

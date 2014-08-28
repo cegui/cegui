@@ -1,4 +1,4 @@
-# Lists all subdirectories of a given directory
+# macro to list all subdirectories of a given directory
 macro(subdirlist result curdir)
     file(GLOB children RELATIVE ${curdir} ${curdir}/*)
     set(dirlist "")
