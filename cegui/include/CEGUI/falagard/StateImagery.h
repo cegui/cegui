@@ -208,7 +208,7 @@ namespace CEGUI
         //! \deprecated This type is deprecated and will be removed in the next version. A const reference to the Container type of getLayerSpecifications will replace this.
         typedef ConstVectorIterator<LayersList> LayerIterator;
 
-        //! \deprecated This function is deprecated. Instead the getLayerSpecifications and getLayerSpecificationPointers will be used in the next version.
+        //! \deprecated This function is deprecated. Instead the getLayerSpecifications will be used in the next version and getLayerSpecificationPointers can be used for editing.
         LayerIterator getLayerIterator() const;
 
     };
