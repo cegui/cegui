@@ -291,7 +291,7 @@ namespace CEGUI
         \return
             A map of Strings to WidgetLookFeel pointers.
         */
-        WidgetLookPointerMap getWidgetLookMap();
+        WidgetLookPointerMap getWidgetLookPointerMap();
 
     private:
         //! Name of schema file used for XML validation.
@@ -301,8 +301,9 @@ namespace CEGUI
 
 
         //! Typedef for a map of Strings to WidgetLookFeel objects
+        // \deprecated  Will use the correct allocator in the next version and will
+        // be renamed to "WidgetLookMap"
         typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
-        // deprecated: Will use the correct allocator in the next version
 
         //! List of WidgetLookFeels added to this Manager
         WidgetLookList  d_widgetLooks;  
@@ -310,7 +311,7 @@ namespace CEGUI
     public:
         //! \deprecated Use WidgetLookPointerMap instead, which provides direct access to the added elements.
         typedef ConstMapIterator<WidgetLookList> WidgetLookIterator;
-        //! \deprecated Use getWidgetLookMap instead, which provides direct access to the added elements.
+        //! \deprecated Use getWidgetLookPointerMap instead, which provides direct access to the added elements. In the next version getWidgetLookMap will be added to replace the const-ness.
         WidgetLookIterator getWidgetLookIterator() const;
     };
 
