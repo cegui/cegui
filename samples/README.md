@@ -17,11 +17,12 @@ Due to the last major changes to the samples browser you have to follow some nam
 - append "Sample" to your class name
 
 If you followed these rules your folder structure should look like this (if you decided to name your sample "Widgets"):
+```
 /Widgets
   |- CMakeLists.txt
   |- Widgets.cpp
   |- Widgets.h
-  
+```
 And the name of your class would have to be "WidgetsSample".
 
 Right now you can start to implement your sample. Put all additional imagesets, layouts, etc. into the corresponding subfolder of the "datafiles" folder.
