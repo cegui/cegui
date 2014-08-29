@@ -46,6 +46,11 @@ namespace CEGUI
         public AllocatedObject<LayerSpecification>
     {
     public:
+        //! The container type for SectionSpecifications
+        typedef std::vector<SectionSpecification*
+            CEGUI_VECTOR_ALLOC(SectionSpecification*)> SectionSpecificationPointerList;
+
+
         /*!
         \brief
             Constructor.
@@ -139,15 +144,28 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+        /*!
+        \brief
+            Returns a vector of pointers to the SectionSpecifications that are currently added to this LayerSpecification. If a
+            SectionSpecification is added or removed from this LayerSpecification, then the pointers in this vector are not valid
+            anymore. The function should then be called again to retrieve valid pointers.
+
+         \return
+            A vector of pointers to the SectionSpecifications that are currently added to this LayerSpecification
+        */
+        SectionSpecificationPointerList getSectionSpecificationPointers();  
+
     private:
+        //! \deprecated This type will be made public in the next version and be renamed to SectionSpecificationList.
         typedef std::vector<SectionSpecification
             CEGUI_VECTOR_ALLOC(SectionSpecification)> SectionList;
 
         SectionList d_sections;         //!< Collection of SectionSpecification objects descibing the sections to be drawn for this layer.
         uint        d_layerPriority;    //!< Priority of the layer.
     public:
+        //! \deprecated This type will be removed in the next version and replaced by a const list in the getSectionSpecifications function.
         typedef ConstVectorIterator<SectionList> SectionIterator;
-
+        //! \deprecated This function will be replaced by the getSectionSpecifications function in the next version. For editing getSectionSpecificationPointers can be used.
         SectionIterator getSectionIterator() const;
     };
 

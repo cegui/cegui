@@ -67,8 +67,13 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 #else
     Ogre::String pluginsFileName = "plugins.cfg";
 #endif
-
-    d_ogreRoot = new Root(pluginsFileName);
+#ifndef OGRE_STATIC_LIB
+    d_ogreRoot = new Ogre::Root(pluginsFileName);
+#else
+    d_ogreRoot = new Ogre::Root();
+    d_staticPluginLoader = new Ogre::StaticPluginLoader();
+    d_staticPluginLoader->load();
+#endif
 
     setupDefaultConfigIfNeeded();
 
@@ -207,7 +212,10 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
     renderer.destroyOgreImageCodec(
         *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
     CEGUI::OgreRenderer::destroy(renderer);
-
+#ifdef OGRE_STATIC_LIB
+    d_staticPluginLoader->unload();
+    delete d_staticPluginLoader;
+#endif
     delete d_ogreRoot;
     delete d_windowEventListener;
 }

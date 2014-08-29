@@ -12,6 +12,16 @@ void register_PropertyHelper_class(){
         typedef bp::class_< CEGUI::PropertyHelper_wrapper > PropertyHelper_exposer_t;
         PropertyHelper_exposer_t PropertyHelper_exposer = PropertyHelper_exposer_t( "PropertyHelper" );
         bp::scope PropertyHelper_scope( PropertyHelper_exposer );
+        { //::CEGUI::PropertyHelper_wrapper::aspectmodeToString
+        
+            typedef ::CEGUI::String ( *aspectmodeToString_function_type )( ::CEGUI::AspectMode );
+            
+            PropertyHelper_exposer.def( 
+                "aspectmodeToString"
+                , aspectmodeToString_function_type( &::CEGUI::PropertyHelper_wrapper::aspectmodeToString )
+                , ( bp::arg("val") ) );
+        
+        }
         { //::CEGUI::PropertyHelper_wrapper::boolToString
         
             typedef ::CEGUI::String ( *boolToString_function_type )( bool );
@@ -120,6 +130,16 @@ void register_PropertyHelper_class(){
                 "sizeToString"
                 , sizeToString_function_type( &::CEGUI::PropertyHelper_wrapper::sizeToString )
                 , ( bp::arg("val") ) );
+        
+        }
+        { //::CEGUI::PropertyHelper_wrapper::stringToAspectMode
+        
+            typedef ::CEGUI::AspectMode ( *stringToAspectMode_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToAspectMode"
+                , stringToAspectMode_function_type( &::CEGUI::PropertyHelper_wrapper::stringToAspectMode )
+                , ( bp::arg("str") ) );
         
         }
         { //::CEGUI::PropertyHelper_wrapper::stringToBool
@@ -264,6 +284,16 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("str") ) );
         
         }
+        { //::CEGUI::PropertyHelper_wrapper::stringToUSize
+        
+            typedef ::CEGUI::USize ( *stringToUSize_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToUSize"
+                , stringToUSize_function_type( &::CEGUI::PropertyHelper_wrapper::stringToUSize )
+                , ( bp::arg("str") ) );
+        
+        }
         { //::CEGUI::PropertyHelper_wrapper::stringToUVector2
         
             typedef ::CEGUI::UVector2 ( *stringToUVector2_function_type )( ::CEGUI::String const & );
@@ -364,6 +394,16 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("val") ) );
         
         }
+        { //::CEGUI::PropertyHelper_wrapper::usizeToString
+        
+            typedef ::CEGUI::String ( *usizeToString_function_type )( ::CEGUI::USize const & );
+            
+            PropertyHelper_exposer.def( 
+                "usizeToString"
+                , usizeToString_function_type( &::CEGUI::PropertyHelper_wrapper::usizeToString )
+                , ( bp::arg("val") ) );
+        
+        }
         { //::CEGUI::PropertyHelper_wrapper::uvector2ToString
         
             typedef ::CEGUI::String ( *uvector2ToString_function_type )( ::CEGUI::UVector2 const & );
@@ -414,6 +454,7 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("val") ) );
         
         }
+        PropertyHelper_exposer.staticmethod( "aspectmodeToString" );
         PropertyHelper_exposer.staticmethod( "boolToString" );
         PropertyHelper_exposer.staticmethod( "colourRectToString" );
         PropertyHelper_exposer.staticmethod( "colourToString" );
@@ -425,6 +466,7 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "imageToString" );
         PropertyHelper_exposer.staticmethod( "rectToString" );
         PropertyHelper_exposer.staticmethod( "sizeToString" );
+        PropertyHelper_exposer.staticmethod( "stringToAspectMode" );
         PropertyHelper_exposer.staticmethod( "stringToBool" );
         PropertyHelper_exposer.staticmethod( "stringToColour" );
         PropertyHelper_exposer.staticmethod( "stringToColourRect" );
@@ -439,6 +481,7 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "stringToUBox" );
         PropertyHelper_exposer.staticmethod( "stringToUDim" );
         PropertyHelper_exposer.staticmethod( "stringToURect" );
+        PropertyHelper_exposer.staticmethod( "stringToUSize" );
         PropertyHelper_exposer.staticmethod( "stringToUVector2" );
         PropertyHelper_exposer.staticmethod( "stringToUint" );
         PropertyHelper_exposer.staticmethod( "stringToVector2" );
@@ -449,6 +492,7 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "udimToString" );
         PropertyHelper_exposer.staticmethod( "uintToString" );
         PropertyHelper_exposer.staticmethod( "urectToString" );
+        PropertyHelper_exposer.staticmethod( "usizeToString" );
         PropertyHelper_exposer.staticmethod( "uvector2ToString" );
         PropertyHelper_exposer.staticmethod( "vector2ToString" );
         PropertyHelper_exposer.staticmethod( "verticalAlignmentToString" );
