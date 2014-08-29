@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GUILayout version="4" >
-    <Window type="TaharezLook/FrameWindow" name="Frame" >
+<Window name="Root" type="DefaultWindow">
+    <Window type="TaharezLook/FrameWindow" name="FrameWindow" >
         <Property name="Area" value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
         <Property name="Text" value="Menu Navigation Demo" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
@@ -38,4 +39,5 @@
             </AutoWindow>
         </Window>
     </Window>
+</Window>
 </GUILayout>

@@ -77,7 +77,7 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     d_linearWindowNavigator = new WindowNavigator(createLinearNavigationMappings(),
         d_linearNavigatorStrategy);
 
-    TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
+    TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("FrameWindow/TabControl"));
     tabControl->subscribeEvent(TabControl::EventSelectionChanged,
         Event::Subscriber(&MenuNavigationDemo::handleTabSelectionChanged, this));
 
