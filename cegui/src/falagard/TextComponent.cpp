@@ -346,7 +346,7 @@ namespace CEGUI
         d_area.writeXMLToStream(xml_stream);
 
         // write text element
-        if (!d_font.empty() && !getText().empty())
+        if (!d_font.empty() || !getText().empty())
         {
             xml_stream.openTag(Falagard_xmlHandler::TextElement);
             if (!d_font.empty())
