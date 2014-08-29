@@ -28,7 +28,22 @@
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
+EditboxValidationSample::EditboxValidationSample()
+{
+    Sample::d_name = "EditboxValidationSample";
+    Sample::d_credits = "CrazyEddie";
+    Sample::d_description = 
+        "The \"RegexMatchStateEventArgs\" are used in the Sample to retrieve "
+        "the validation status of a text matched against a regular expression";
+    Sample::d_summary = 
+        "Displays how text can be validated. In the Sample an editbox is presented which "
+        "validates incoming text. Partially valid, valid and invalid entries in the "
+        "editbox are displayed using different text colours";
+    Sample::d_type = ST_Module;
+}
+
+//----------------------------------------------------------------------------//
+bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -49,7 +64,7 @@ bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
     Window* wnd = root->createChild("AlfiskoSkin/FrameWindow");
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
     wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
-    wnd->setText("Editbox Validation Demo");
+    wnd->setText("Editbox Validation Sample");
 
     Window* label = wnd->createChild("AlfiskoSkin/Label");
     label->setProperty("HorzFormatting", "WordWrapCentreAligned");
@@ -64,7 +79,7 @@ bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
     eb->setSize(USize(cegui_reldim(0.8f), cegui_reldim(0.15f)));
     eb->subscribeEvent(
         Editbox::EventTextValidityChanged,
-        Event::Subscriber(&EditboxValidation::validationChangeHandler, this));
+        Event::Subscriber(&EditboxValidationSample::validationChangeHandler, this));
 
     eb->setValidationString("[0-9]{4}");
     eb->activate();
@@ -73,7 +88,7 @@ bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxValidation::validationChangeHandler(const CEGUI::EventArgs& args)
+bool EditboxValidationSample::validationChangeHandler(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
     const RegexMatchStateEventArgs& ra(
@@ -99,24 +114,13 @@ bool EditboxValidation::validationChangeHandler(const CEGUI::EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxValidation::quitButtonHandler(const CEGUI::EventArgs& args)
+bool EditboxValidationSample::quitButtonHandler(const CEGUI::EventArgs& args)
 {
     return true;
 }
 
 //----------------------------------------------------------------------------//
-void EditboxValidation::deinitialise()
+void EditboxValidationSample::deinitialise()
 {
     // nothing to do here!
-}
-
-//----------------------------------------------------------------------------//
-
-/*************************************************************************
-Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static EditboxValidation sample;
-    return sample;
 }

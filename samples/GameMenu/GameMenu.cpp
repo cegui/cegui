@@ -38,11 +38,27 @@ author:     Lukas E Meindl
 using namespace CEGUI;
 
 
-const float GameMenuDemo::s_firstStartDelay = 5.0f;
-const float GameMenuDemo::s_secondStartDelay = 11.0f;
-const float GameMenuDemo::s_loginDisplayStartDelay = 15.77f;
+const float GameMenuSample::s_firstStartDelay = 5.0f;
+const float GameMenuSample::s_secondStartDelay = 11.0f;
+const float GameMenuSample::s_loginDisplayStartDelay = 15.77f;
 
-bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
+GameMenuSample::GameMenuSample()
+{
+    Sample::d_name = "GameMenuSample";
+    Sample::d_credits = 
+        "Lukas \"Ident\" Meindl, graphics: Charles \"Syg\" Mattei";
+    Sample::d_description = 
+        "Displays a science-fiction game menu using a lot of animations.";
+    Sample::d_summary = 
+        "The Sample uses a custom skin (look n' feel) and a great variety "
+        "of animations defined. The animations are loaded from xml and "
+        "utilized via C++ code. For the animated windows, which do not "
+        "display text, the pixel alignment setting was switched off for "
+        "smoother transitions, and event handlers are used to control the animations.";
+    Sample::d_type = ST_Module;
+}
+
+bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -50,9 +66,9 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext = guiContext;
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().createFromFile("GameMenu.scheme");
+    SchemeManager::getSingleton().createFromFile("GameMenuSample.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    d_guiContext->getPointerIndicator().setDefaultImage("GameMenuImages/MouseCursor");
+    d_guiContext->getPointerIndicator().setDefaultImage("GameMenuSampleImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");
@@ -63,7 +79,7 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    d_root = winMgr.loadLayoutFromFile("GameMenu.layout");
+    d_root = winMgr.loadLayoutFromFile("GameMenuSample.layout");
     d_guiContext->setRootWindow(d_root);
 
     setupWindows();
@@ -84,14 +100,14 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
 Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void GameMenuDemo::deinitialise()
+void GameMenuSample::deinitialise()
 {
 }
 
-void GameMenuDemo::setupAnimations()
+void GameMenuSample::setupAnimations()
 {
     AnimationManager& animMgr = AnimationManager::getSingleton();
-    animMgr.loadAnimationsFromXML("GameMenu.anims");
+    animMgr.loadAnimationsFromXML("GameMenuSample.anims");
 
     CEGUI::Animation* startButtAnim = animMgr.getAnimation("StartButtonPulsating");
     CEGUI::AnimationInstance* startButtAnimInstance = animMgr.instantiateAnimation(startButtAnim);
@@ -240,7 +256,7 @@ void GameMenuDemo::setupAnimations()
     setupSelectionIconAnimations();
 }
 
-void GameMenuDemo::onEnteringSample()
+void GameMenuSample::onEnteringSample()
 {
     d_navigationTravelIcon->setEnabled(false);
 
@@ -282,7 +298,7 @@ void GameMenuDemo::onEnteringSample()
     makeAllSelectionIconsInvisible();
 }
 
-void GameMenuDemo::update(float timeSinceLastUpdate)
+void GameMenuSample::update(float timeSinceLastUpdate)
 {
     d_timeSinceStart += timeSinceLastUpdate;
 
@@ -305,7 +321,7 @@ void GameMenuDemo::update(float timeSinceLastUpdate)
     }
 }
 
-bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
 {
     d_startButtonClickArea->setAlpha(0.0f);
     d_startButtonBlendInAnimInst->start();
@@ -327,7 +343,7 @@ bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args)
 {
     if(!d_interactivePlanetElementsAreEnabled)
         enableInteractivePlanetElements();
@@ -341,7 +357,7 @@ bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& ar
 }
 
 
-bool GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args)
 {
     if(!d_loginWasAccepted)
         return false;
@@ -387,7 +403,7 @@ float getAngle(const CEGUI::Quaternion& quat)
 }
 
 
-bool GameMenuDemo::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args)
 {
     const CEGUI::AnimationEventArgs& animArgs = static_cast<const CEGUI::AnimationEventArgs&>(args);
 
@@ -405,7 +421,7 @@ bool GameMenuDemo::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& args)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -414,7 +430,7 @@ bool GameMenuDemo::handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& args)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -423,7 +439,7 @@ bool GameMenuDemo::handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handlePointerEntersRightArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerEntersRightArrowArea(const CEGUI::EventArgs& args)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -432,7 +448,7 @@ bool GameMenuDemo::handlePointerEntersRightArrowArea(const CEGUI::EventArgs& arg
     return false;
 }
 
-bool GameMenuDemo::handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& args)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -442,7 +458,7 @@ bool GameMenuDemo::handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& arg
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args)
 {
     if(!d_startButtonClicked)
         return false;
@@ -457,7 +473,7 @@ bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args)
 {
     if(!d_startButtonClicked)
         return false;
@@ -472,7 +488,7 @@ bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& args)
 {
     if(!d_startButtonClicked)
         return false;
@@ -491,7 +507,7 @@ bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& args)
 {
     if(!d_startButtonClicked)
         return false;
@@ -509,7 +525,7 @@ bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& a
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args)
 {
     if(!d_startButtonClicked)
         return false;
@@ -526,7 +542,7 @@ bool GameMenuDemo::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args
 }
 
 
-bool GameMenuDemo::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args)
 {
     const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
 
@@ -538,7 +554,7 @@ bool GameMenuDemo::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool GameMenuDemo::handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args)
 {
     const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
 
@@ -551,7 +567,7 @@ bool GameMenuDemo::handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args)
 }
 
 
-void GameMenuDemo::makeAllSelectionIconsInvisible()
+void GameMenuSample::makeAllSelectionIconsInvisible()
 {
     CEGUI::EventArgs fireArgs;
 
@@ -568,7 +584,7 @@ void GameMenuDemo::makeAllSelectionIconsInvisible()
     d_root->getChild("InnerButtonsContainer/NewSelectionIcon")->setVisible(false);
 }
 
-void GameMenuDemo::stopStartPopupLinesAnimations()
+void GameMenuSample::stopStartPopupLinesAnimations()
 {
     d_popupLinesCharactersAnimInst->setPosition(d_popupLinesLoadAnimInst->getDefinition()->getDuration());
     d_popupLinesCharactersAnimInst->apply();
@@ -595,7 +611,7 @@ void GameMenuDemo::stopStartPopupLinesAnimations()
 }
 
 
-void GameMenuDemo::setupWindows()
+void GameMenuSample::setupWindows()
 {
     d_botBarLabel = d_root->getChild("BotBar/BotBarLabel");
     d_topBarLabel = d_root->getChild("TopBar/TopBarLabel");
@@ -610,15 +626,15 @@ void GameMenuDemo::setupWindows()
     d_botNaviCenter = d_root->getChild("BotNavigationContainer/NaviCenterContainer");
 
     d_loginAcceptButton = d_loginContainer->getChild("AcceptButton");
-    d_loginAcceptButton->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleLoginAcceptButtonClicked, this));
+    d_loginAcceptButton->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleLoginAcceptButtonClicked, this));
 
     d_startButtonClickArea = d_root->getChild("InnerPartContainer/InsideStartClickArea");   
-    d_startButtonClickArea->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleInnerPartStartClickAreaClick, this));
+    d_startButtonClickArea->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleInnerPartStartClickAreaClick, this));
 
     d_navigationTravelIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");
     d_navigationSelectionIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NaviBotSelectionIcon");
 
-    d_navigationSelectionIcon->subscribeEvent(CEGUI::AnimationInstance::EventAnimationStarted, Event::Subscriber(&GameMenuDemo::handleNaviSelectionIconAnimStart, this));
+    d_navigationSelectionIcon->subscribeEvent(CEGUI::AnimationInstance::EventAnimationStarted, Event::Subscriber(&GameMenuSample::handleNaviSelectionIconAnimStart, this));
 
     setupNaviIconAnimationEventHandlers();
 
@@ -626,7 +642,7 @@ void GameMenuDemo::setupWindows()
 
 }
 
-void GameMenuDemo::disableInteractivePlanetElements()
+void GameMenuSample::disableInteractivePlanetElements()
 {
     d_centerButtonsBlendInInst->pause();
     d_centerButtonsPartialBlendOutInst->start();
@@ -635,7 +651,7 @@ void GameMenuDemo::disableInteractivePlanetElements()
     d_interactiveElementsWereInitiallyBlendedOut = true;
 }
 
-void GameMenuDemo::enableInteractivePlanetElements()
+void GameMenuSample::enableInteractivePlanetElements()
 {
     d_centerButtonsPartialBlendOutInst->pause();
     d_centerButtonsBlendInInst->start();
@@ -643,7 +659,7 @@ void GameMenuDemo::enableInteractivePlanetElements()
     d_interactivePlanetElementsAreEnabled = true;
 }
 
-void GameMenuDemo::disableNavigationBarElements()
+void GameMenuSample::disableNavigationBarElements()
 {
     d_naviBlendInInst->pause();
     d_naviPartialBlendOutInst->start();
@@ -654,7 +670,7 @@ void GameMenuDemo::disableNavigationBarElements()
     d_navigationIsEnabled = false;
 }
 
-void GameMenuDemo::enableNavigationBarElements()
+void GameMenuSample::enableNavigationBarElements()
 {
     d_naviPartialBlendOutInst->pause();
     d_naviBlendInInst->start();
@@ -665,7 +681,7 @@ void GameMenuDemo::enableNavigationBarElements()
     d_navigationIsEnabled = true;
 }
 
-void GameMenuDemo::updateIntroText()
+void GameMenuSample::updateIntroText()
 {
     static const CEGUI::String firstPart = "Connection established...";
     static const CEGUI::String secondPart = "Warning! User Authentication required!";
@@ -693,7 +709,7 @@ void GameMenuDemo::updateIntroText()
     d_botBarLabel->setText(finalText);
 }
 
-void GameMenuDemo::updateLoginWelcomeText(float passedTime)
+void GameMenuSample::updateLoginWelcomeText(float passedTime)
 {
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
@@ -719,7 +735,7 @@ void GameMenuDemo::updateLoginWelcomeText(float passedTime)
 }
 
 
-void GameMenuDemo::updateLoginStartButtonText(float passedTime)
+void GameMenuSample::updateLoginStartButtonText(float passedTime)
 {
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
@@ -749,25 +765,25 @@ void GameMenuDemo::updateLoginStartButtonText(float passedTime)
     d_botBarLabel->setText(finalText);
 }
 
-void GameMenuDemo::setupNaviIconAnimationEventHandlers()
+void GameMenuSample::setupNaviIconAnimationEventHandlers()
 {
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
     CEGUI::Window* window;
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationLabel");
-    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
-    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");
-    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
-    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NaviBotSelectionIcon");
-    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
-    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
 }
 
-void GameMenuDemo::startEntranceAnimations()
+void GameMenuSample::startEntranceAnimations()
 {
     d_topBarAnimInst->start();
     d_botBarAnimInst->start();
@@ -785,7 +801,7 @@ void GameMenuDemo::startEntranceAnimations()
     d_naviBotMoveInInst->start();
 }
 
-void GameMenuDemo::resetAnimations()
+void GameMenuSample::resetAnimations()
 {
     //Set animations to end and apply their changes to the windows
     //For every animation instance that uses source properties
@@ -810,69 +826,69 @@ void GameMenuDemo::resetAnimations()
     d_naviBotMoveInInst->apply();
 }
 
-void GameMenuDemo::setupButtonClickHandlers()
+void GameMenuSample::setupButtonClickHandlers()
 {
     CEGUI::Window* buttonSave = d_root->getChild("InnerButtonsContainer/ButtonSave");
-    buttonSave->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesSaveDisplay, this));
+    buttonSave->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleStartPopupLinesSaveDisplay, this));
     CEGUI::Window* buttonLoad = d_root->getChild("InnerButtonsContainer/ButtonLoad");
-    buttonLoad->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesLoadDisplay, this));
+    buttonLoad->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleStartPopupLinesLoadDisplay, this));
     CEGUI::Window* buttonCharacters = d_root->getChild("InnerButtonsContainer/ButtonCharacters");
-    buttonCharacters->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesCharactersDisplay, this));
+    buttonCharacters->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleStartPopupLinesCharactersDisplay, this));
     CEGUI::Window* buttonOptions = d_root->getChild("InnerButtonsContainer/ButtonOptions");
-    buttonOptions->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesOptionsDisplay, this));
+    buttonOptions->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleStartPopupLinesOptionsDisplay, this));
     CEGUI::Window* buttonQuit = d_root->getChild("InnerButtonsContainer/ButtonQuit");
-    buttonQuit->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesQuitDisplay, this));
+    buttonQuit->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleStartPopupLinesQuitDisplay, this));
 }
 
-void GameMenuDemo::setupNaviArrowWindows()
+void GameMenuSample::setupNaviArrowWindows()
 {
     d_botNaviLeftArrowArea = d_root->getChild("BotNavigationContainer/LeftArrowArea");
     d_botNaviRightArrowArea = d_root->getChild("BotNavigationContainer/RightArrowArea");
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handlePointerEntersLeftArrowArea, this));
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handlePointerLeavesLeftArrowArea, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handlePointerEntersRightArrowArea, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handlePointerLeavesRightArrowArea, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handlePointerEntersLeftArrowArea, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handlePointerLeavesLeftArrowArea, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handlePointerEntersRightArrowArea, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handlePointerLeavesRightArrowArea, this));
 }
 
-void GameMenuDemo::setupInnerButtonsSubOptionsLabels()
+void GameMenuSample::setupInnerButtonsSubOptionsLabels()
 {
     CEGUI::Window* label;
     label = d_root->getChild("InnerButtonsContainer/PopupLinesLoad/LabelLoad");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesSave/LabelSave");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelName2");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelNew");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelSelect");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelDelete");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesOptions/LabelVideo");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesOptions/LabelAudio");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesOptions/LabelControls");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesQuit/LabelYes");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesQuit/LabelNo");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuDemo::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
 }
 
-CEGUI::Window* GameMenuDemo::getIconWindowFromLabel(CEGUI::Window* window)
+CEGUI::Window* GameMenuSample::getIconWindowFromLabel(CEGUI::Window* window)
 {
     const CEGUI::String windowPrefix = "Label";
     const CEGUI::String iconPostfix = "SelectionIcon";
@@ -883,7 +899,7 @@ CEGUI::Window* GameMenuDemo::getIconWindowFromLabel(CEGUI::Window* window)
     return window->getParent()->getParent()->getChild(windowName + iconPostfix);
 }
 
-void GameMenuDemo::setupPopupLinesAnimations()
+void GameMenuSample::setupPopupLinesAnimations()
 {
     CEGUI::Window* window;
     CEGUI::AnimationManager& animMgr = CEGUI::AnimationManager::getSingleton();
@@ -906,7 +922,7 @@ void GameMenuDemo::setupPopupLinesAnimations()
     d_popupLinesQuitAnimInst->setTarget(window);
 }
 
-void GameMenuDemo::setupSelectionIconAnimations()
+void GameMenuSample::setupSelectionIconAnimations()
 {
     CEGUI::Window* window;
     CEGUI::AnimationManager& animMgr = CEGUI::AnimationManager::getSingleton();
@@ -975,12 +991,4 @@ void GameMenuDemo::setupSelectionIconAnimations()
     iconAnimInst->setTargetWindow(window);
     iconAnimInst = animMgr.instantiateAnimation(iconAnimationStop);
     iconAnimInst->setTargetWindow(window);
-}
-/*************************************************************************
-Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static GameMenuDemo sample;
-    return sample;
 }
