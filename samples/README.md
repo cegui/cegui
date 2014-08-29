@@ -1,10 +1,10 @@
 This ReadMe gives a short introduction to the structure of the samples folder and explains how to create new samples.
 
-The structure of the samples folder is very simple:
-- a "common" folder containing all files that are used by more than one sample
-- a "browser" folder containing all files that are used by the SamplesBrowser. You should not use ANY of the sources as base code for creating own apps with CEGUI. Look into the "tests/app" folder instead.
-- and a lot of other folders containing a sample corresponding to the name
-- a CMakeLists.txt.prototype, a prototype.h, and a prototype.cpp - this files might be used as base files for your own sample
+The structure of the samples folder is very simple:   
+- a "common" folder containing all files that are used by more than one sample  
+- a "browser" folder containing all files that are used by the SamplesBrowser. You should not use    ANY of the sources as base code for creating own apps with CEGUI. Look into the "tests/app" folder instead.   
+- and a lot of other folders containing a sample corresponding to the name   
+- a CMakeLists.txt.prototype, a prototype.h, and a prototype.cpp - this files might be used as base files for your own sample   
 
 If you want to create a new sample you simply have to add a new folder and rename it to what you want.
 After that you have to create a source and a header file within that folder with exact the same name and you have to create a CMakeLists.txt file.
