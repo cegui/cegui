@@ -31,71 +31,88 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    LayerSpecification::LayerSpecification(uint priority) :
-        d_layerPriority(priority)
-    {}
 
-    void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
+LayerSpecification::LayerSpecification(uint priority) :
+    d_layerPriority(priority)
+{}
+
+void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
+{
+    // render all sections in this layer
+    for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
     {
-        // render all sections in this layer
-        for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
-        {
-            (*curr).render(srcWindow, modcols, clipper, clipToDisplay);
-        }
+        (*curr).render(srcWindow, modcols, clipper, clipToDisplay);
+    }
+}
+
+void LayerSpecification::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
+{
+    // render all sections in this layer
+    for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
+    {
+        (*curr).render(srcWindow, baseRect, modcols, clipper, clipToDisplay);
+    }
+}
+
+void LayerSpecification::addSectionSpecification(const SectionSpecification& section)
+{
+    d_sections.push_back(section);
+}
+
+void LayerSpecification::clearSectionSpecifications()
+{
+    d_sections.clear();
+}
+
+uint LayerSpecification::getLayerPriority() const
+{
+    return d_layerPriority;
+}
+
+void LayerSpecification::setLayerPriority(uint priority)
+{
+    d_layerPriority = priority;
+}
+bool LayerSpecification::operator<(const LayerSpecification& other) const
+{
+    return d_layerPriority < other.d_layerPriority;
+}
+
+void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
+{
+    xml_stream.openTag(Falagard_xmlHandler::LayerElement);
+
+    if (d_layerPriority != 0)
+        xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<uint>::toString(d_layerPriority));
+
+    // ouput all sections in this layer
+    for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
+    {
+        (*curr).writeXMLToStream(xml_stream);
     }
 
-    void LayerSpecification::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
+    xml_stream.closeTag();
+}
+
+LayerSpecification::SectionIterator
+LayerSpecification::getSectionIterator() const
+{
+    return SectionIterator(d_sections.begin(), d_sections.end());
+}
+
+LayerSpecification::SectionSpecificationPointerList LayerSpecification::getSectionSpecificationPointers()
+{
+    LayerSpecification::SectionSpecificationPointerList pointerList;
+
+    SectionList::iterator sectionSpecificationIter = d_sections.begin();
+    SectionList::iterator sectionSpecificationEnd = d_sections.end();
+    while( sectionSpecificationIter != sectionSpecificationEnd )
     {
-        // render all sections in this layer
-        for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
-        {
-            (*curr).render(srcWindow, baseRect, modcols, clipper, clipToDisplay);
-        }
+        pointerList.push_back(&(*sectionSpecificationIter));
+        ++sectionSpecificationIter;
     }
 
-    void LayerSpecification::addSectionSpecification(const SectionSpecification& section)
-    {
-        d_sections.push_back(section);
-    }
+    return pointerList;
+}
 
-    void LayerSpecification::clearSectionSpecifications()
-    {
-        d_sections.clear();
-    }
-
-    uint LayerSpecification::getLayerPriority() const
-    {
-        return d_layerPriority;
-    }
-
-    void LayerSpecification::setLayerPriority(uint priority)
-    {
-        d_layerPriority = priority;
-    }
-    bool LayerSpecification::operator<(const LayerSpecification& other) const
-    {
-        return d_layerPriority < other.d_layerPriority;
-    }
-
-    void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
-    {
-        xml_stream.openTag(Falagard_xmlHandler::LayerElement);
-
-        if (d_layerPriority != 0)
-            xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<uint>::toString(d_layerPriority));
-
-        // ouput all sections in this layer
-        for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
-        {
-            (*curr).writeXMLToStream(xml_stream);
-        }
-
-        xml_stream.closeTag();
-    }
-
-    LayerSpecification::SectionIterator
-    LayerSpecification::getSectionIterator() const
-    {
-        return SectionIterator(d_sections.begin(), d_sections.end());
-    }
 } // End of  CEGUI namespace section

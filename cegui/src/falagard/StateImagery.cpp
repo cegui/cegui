@@ -34,74 +34,93 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    StateImagery::StateImagery(const String& name) :
-        d_stateName(name),
-        d_clipToDisplay(false)
-    {}
 
-    void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
+StateImagery::StateImagery(const String& name) :
+    d_stateName(name),
+    d_clipToDisplay(false)
+{}
+
+void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
+{
+    // render all layers defined for this state
+    for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
+        (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
+}
+
+void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
+{
+    // render all layers defined for this state
+    for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
+        (*curr).render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);
+}
+
+void StateImagery::addLayer(const LayerSpecification& layer)
+{
+    d_layers.insert(layer);
+}
+
+void StateImagery::clearLayers()
+{
+    d_layers.clear();
+}
+
+const String& StateImagery::getName() const
+{
+    return d_stateName;
+}
+
+void StateImagery::setName(const String& name)
+{
+    d_stateName = name;
+}
+
+bool StateImagery::isClippedToDisplay() const
+{
+    return d_clipToDisplay;
+}
+
+void StateImagery::setClippedToDisplay(bool setting)
+{
+    d_clipToDisplay = setting;
+}
+
+void StateImagery::writeXMLToStream(XMLSerializer& xml_stream) const
+{
+    xml_stream.openTag(Falagard_xmlHandler::StateImageryElement)
+        .attribute(Falagard_xmlHandler::NameAttribute, d_stateName);
+
+    if (d_clipToDisplay)
+        xml_stream.attribute(Falagard_xmlHandler::ClippedAttribute, PropertyHelper<bool>::False);
+
+    // output all layers defined for this state
+    for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
+        (*curr).writeXMLToStream(xml_stream);
+    // write closing </StateImagery> tag
+    xml_stream.closeTag();
+}
+
+StateImagery::LayerIterator
+StateImagery::getLayerIterator() const
+{
+    return LayerIterator(d_layers.begin(),d_layers.end());
+}
+
+StateImagery::LayerSpecificationPointerList StateImagery::getLayerSpecificationPointers()
+{
+    StateImagery::LayerSpecificationPointerList pointerList;
+
+    LayersList::iterator layerSpecIter = d_layers.begin();
+    LayersList::iterator layerSpecIterEnd = d_layers.end();
+    while( layerSpecIter != layerSpecIterEnd )
     {
-        // render all layers defined for this state
-        for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-            (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
+        //! This hack is necessary because in newer C++ versions the multiset and sets return only const iterators.
+        //! \deprecated This will be replaced with proper types and behaviour in the next version.
+        LayerSpecification* layerSpec = const_cast<LayerSpecification*>(&(*layerSpecIter));
+        pointerList.push_back(layerSpec);
+        ++layerSpecIter;
     }
 
-    void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
-    {
-        // render all layers defined for this state
-        for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-            (*curr).render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);
-    }
-
-    void StateImagery::addLayer(const LayerSpecification& layer)
-    {
-        d_layers.insert(layer);
-    }
-
-    void StateImagery::clearLayers()
-    {
-        d_layers.clear();
-    }
-
-    const String& StateImagery::getName() const
-    {
-        return d_stateName;
-    }
-
-    void StateImagery::setName(const String& name)
-    {
-        d_stateName = name;
-    }
-
-    bool StateImagery::isClippedToDisplay() const
-    {
-        return d_clipToDisplay;
-    }
-
-    void StateImagery::setClippedToDisplay(bool setting)
-    {
-        d_clipToDisplay = setting;
-    }
-
-    void StateImagery::writeXMLToStream(XMLSerializer& xml_stream) const
-    {
-        xml_stream.openTag(Falagard_xmlHandler::StateImageryElement)
-            .attribute(Falagard_xmlHandler::NameAttribute, d_stateName);
-
-        if (d_clipToDisplay)
-            xml_stream.attribute(Falagard_xmlHandler::ClippedAttribute, PropertyHelper<bool>::False);
-
-        // output all layers defined for this state
-        for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-            (*curr).writeXMLToStream(xml_stream);
-        // write closing </StateImagery> tag
-        xml_stream.closeTag();
-    }
-
-    StateImagery::LayerIterator
-    StateImagery::getLayerIterator() const
-    {
-        return LayerIterator(d_layers.begin(),d_layers.end());
-    }
+    return pointerList;
+}
 
 } // End of  CEGUI namespace section

@@ -41,8 +41,9 @@ void register_ImagerySection_class(){
         typedef bp::class_< ImagerySection_wrapper > ImagerySection_exposer_t;
         ImagerySection_exposer_t ImagerySection_exposer = ImagerySection_exposer_t( "ImagerySection", bp::init< >("*!\n\
         \n\
-            Constructor.\n\
-        *\n") );
+                \n\
+                    Constructor.\n\
+                *\n") );
         bp::scope ImagerySection_scope( ImagerySection_exposer );
         ImagerySection_exposer.def( bp::init< CEGUI::String const & >(( bp::arg("name") ), "*!\n\
                 \n\

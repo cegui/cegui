@@ -1,217 +1,220 @@
 namespace CEGUI {
 /**
-@page window_tutorial The Beginners Guide to Creating a CEGUI Window
-@author Paul D Turner
+@page datafile_tutorial 3 - The Beginners Guide to Data Files and Defaults Initialisation
+@author Paul D Turner 
 @tableofcontents
 
-The purpose of this tutorial is to show you how to create a simple window and
-get it on screen.  Before continuing here, it is very important that you have
-already read and fully understood the articles @ref rendering_tutorial,
-@ref resprov_tutorial and @ref datafile_tutorial because this tutorial builds upon the
-basic ideas introduced in those previous tutorials.
+It is assumed that prior to reading this tutorial you are already familiar with
+the concepts surrounding CEGUI's ResourceProvider and have correctly initialised
+your Renderer and the CEGUI System objects.  If you've not yet covered these
+topics, it is highly recommended that you read @ref rendering_tutorial and
+@ref resprov_tutorial.
 
 <br>
-@section window_tutorial_intro Introduction to window and widget concepts
-Before we get to the the meat of this tutorial there are some essential ideas
-that you must first consider.
+@section datafile_tutorial_intro Introduction
+CEGUI uses a variety of different data files and - at least initially - it's
+possible there may be some confusion as to what exactly all these files are and
+how they relate to one another.  In addition, there are some system wide
+defaults that - while not technically <em>required</em> to be set - you will
+almost certainly want to set for the majority of your applications using CEGUI.
 
-@subsection window_tutorial_window_base Every widget is a window
-This is the most central concept that must be grasped when working with CEGUI.
-Every widget within the system is derived from the same Window base class; so
-for the purposes of this tutorial, whenever I mention a window, the same ideas
-could just as easily be applied to a push button or scrollbar widget.
-
-@subsection window_tutorial_window_inheritance Many settings are inherited
-Many of the settings and properties available for windows in CEGUI are passed
-down the window hierarchy.  For example, if you set the alpha transparency on a
-particular window to 0.5, then by default, all window and widgets attached to
-that window will also be affected by the change applied at the higher level;
-although note also that the actual setting on the child window remains
-unchanged - the final values and/or settings used are usually some combination
-of the setting values from all windows in the hierarchy down to the current
-window.  This also applies to things such as window destruction; by default, a
-window will destroy attached child windows and widgets when it is destroyed.
-The main advantages of this arrangement are that you can easily affect a the
-whole GUI by making changes to the root window settings for things like alpha,
-visibility, enabled / disabled state, and can easily 'clean up' an entire GUI
-layout by simply destroying the root window.  The default 'inherited' behaviours
-can be overridden on a per window basis where more fine grained control is
-needed, or where certain advanced management techniques are to be used.
+This tutorial will serve as an introduction to these topics in order that you
+can be more comfortable with the data files and with setting the basic default
+options used with CEGUI.
 
 <br>
-@section window_tutorial_creating_intro Creating the windows
-Enough of the waffle!  Let's create a window.
+@section datafile_tutorial_allxml Font, Imageset, LookNFeel, Scheme, XSD?  It's all XML!
+With the exception of graphical image files, script language files and loadable
+modules (.dll /. so files, etc), all the data files used with CEGUI are XML
+based.  This actually leads us to the first potential obstacle that you may run
+into: the .xsd schema files.
 
-There are two ways of doing this, via C++ code and XML layout files.  Each
-approach is discussed below.
+@subsection datafile_tutorial_validation Schema Validation with Xerces-C++
+Although the Expat based XML parser module is the default choice for parsing the
+XML data files, CEGUI also supports a parser based upon the Xerces-C++ library
+from the Apache Software Foundation (see http://xerces.apache.org/xerces-c).
 
-@subsection window_tutorial_creating_cpp GUI Creation via C++ code
-All windows in CEGUI are created by the WindowManager singleton object.  You can
-get access to this object via the WindowManager::getSingleton function:
-@code
-using namespace CEGUI;
-WindowManager& wmgr = WindowManager::getSingleton();
-@endcode
+The advantage of using this particular parser is that it provides
+<em>schema validation</em>.  For the uninitiated, schema validation is a means
+by which the incoming XML data can be checked to ensure it is well formed and
+that it contains the required information.  In order for this validation to
+work, some additional files - unsurprisingly known as schema files (not to be
+confused with CEGUI's own <em>scheme files</em> described below) - are required.
+The schema files used to validate the XML for CEGUI can be found in the
+<c>datafiles/xml_schema/</c> directory within the CEGUI distribution, and have
+the .xsd file extension.
 
-In general, you will be using what is known as a DefaultWindow as the 'root'
-window in your GUI layouts.  This is not required, but has a couple of useful
-benefits as regards to input handling, is the accepted pattern of usage for
-CEGUI and, once you start adding more top-level windows, helps simplify laying
-things out.
+The main thing you need to know for now is that when using the Xerces-C++
+based XML parser, these .xsd files must be available to the ResourceProvider
+system; this is probably best achieved by setting up a resource group to the
+directory containing the schema files and setting that group as the default to
+be used by CEGUI::XercesParser when loading schema files (the specifics on how
+to do this are covered in @ref resprov_tutorial).
 
-So, to get the ball rolling, we'll create a DefaultWindow as set it as the root
-window for the initial, default GUIContext:
-@code
-Window* myRoot = wmgr.createWindow( "DefaultWindow", "root" );
-System::getSingleton().getDefaultGUIContext().setRootWindow( myRoot );
-@endcode
-
-The WindowManager::createWindow function takes two strings as its parameters.
-The first one, <c>"DefaultWindow"</c> in this example, tells the system the type
-or class of the window you wish to create.  Generally, the windows you have
-available are those which were registered when you loaded your scheme file,
-although some, like DefaultWindow, are global types and are always available.
-The second parameter, <c>"root"</c> in this example, is a name which will be
-assigned to the window. Note that naming your root window "root" is not
-required, but is a common convention.
-
-The GUIContext::setRootWindow function is used, unsurprisingly, to specify a
-window to be used as the root of the GUI for a given GUIContext.  This will
-replace any current root window, although do note that the previous window
-hierarchy is not actually destroyed - it is just detached from the
-GUIContext - you can easily switch between GUI 'pages' by flipping between them
-using the GUIContext::setRootWindow function.
-
-Now you have created your first window and attached it to the GUIContext; the
-system will use this window as the root of the GUI when it draws the GUI.
-But if you were to compile a simple program using this code, you still can't see
-anything; what gives?  There's nothing wrong with your application, the
-DefaultWindow which we created above is just totally invisible!  This is what
-makes the DefaultWindow ideally suited as a root window; it serves as a blank
-canvas onto which other window and widgets can be attached.  Let's do that now...
-
-Here we will create a frame window; this is a window that functions in a similar
-manner to the windows on your desktop UI, it has a title bar and can be moved
-and re-sized.
-@code
-FrameWindow* fWnd = static_cast<FrameWindow*>(
-    wmgr.createWindow( "TaharezLook/FrameWindow", "testWindow" ));
-@endcode
-
-here we are creating a <c>"TaharezLook/FrameWindow"</c> window.  This name uses
-another convention seen throughout the system, whereby a window type is prefixed
-by the name of the widget set (if you were to load the WindowsLook scheme, you
-could create a <c>"WindowsLook/FrameWindow"</c> object instead).  We have given
-our new window the simple test name of <c>"testWindow"</c>.  One final thing to
-note is the use of the cast, this is required since the
-WindowManager::createWindow function always returns a the Window type.
-In this - and many other - cases a basic Window pointer will suffice, but there
-are times when you'll want to access functions introduced in the sub-classes, so
-the use of the cast as shown is common when using CEGUI.
-
-In order for the system to be able to do something useful with our new window,
-we must perform a few additional steps.
-
-First, we must attach the window to the root window we established above:
-@code
-myRoot->addChild( fWnd );
-@endcode
-
-Now we can set an initial position and size for our window.  CEGUI uses a
-'unified' co-ordinate system enabling the use of relative (scale) and absolute
-(offset) components at the same time - this is why each co-ordinate you will see
-has two parts.  For a slightly extended introduction of this concept see
-@ref fal_unifiedsystem which is part of the @ref fal_man.
-Back to the example:
-@code
-// position a quarter of the way in from the top-left of parent.
-fWnd->setPosition( UVector2( UDim( 0.25f, 0.0f ), UDim( 0.25f, 0.0f ) ) );
-
-// set size to be half the size of the parent
-fWnd->setSize( USize( UDim( 0.5f, 0.0f ), UDim( 0.5f, 0.0f ) ) );
-@endcode
-
-Finally, we set a caption for the frame window's title bar:
-@code
-fWnd->setText( "Hello World!" );
-@endcode
-And that's it!  When compiled into an application, you will now see a simple
-frame window in the middle of the display.
-
-Note that now you have your FrameWindow "testWindow" attached to your
-DefaultWindow "root". As such, now would be a good time to mention CEGUI's name
-paths. As your layouts become more complex, you will often need to access some
-child window given a known starting point (usually the root window), this is
-where CEGUI's name paths shine. Each window has a name path which is basically
-the names of all ancestor windows separated by a slash character. In our example
-the name path of the FrameWindow is "root/testWindow". You can access any window
-within a hierarchy by way of its name path and the CEGUI::Window::getChild
-function. When requesting a child window, note that the path you specify is
-@e exclusive of the starting point, so to access the FrameWindow from @c "root"
-you ask for the child @c "testWindow" and not @c "root/testWindow", but if the
-FrameWindow had, say, a button attached to it named @c "myButton" to access that
-button from the root you would call Window::getChild with the name path
-@c "testWindow/myButton"
+The CEGUI developers recommend using Xerces-C++ during development and testing,
+and then switching to Expat (or one of the other lightweight parsers) for final
+deployment -- this way you minimise the chances of bad XML files slipping into
+your product.
 
 <br>
-@subsection window_tutorial_creating_xml XML layouts
-All of the above is very nice, but there is one major drawback; any time you
-wish to adjust the GUI layout, you need to edit your code and recompile.  This
-will get old pretty quick, so what you really want is to be able to specify your
-GUI layout externally, and have your code load the layout via a file.  This is
-the purpose of the CEGUI layout XML files.
+@section datafile_tutorial_files The Data Files
+As previously mentioned, the majority of the data files in CEGUI are XML based.
+Rather than using a generic '.xml' file extension, the data files are usually
+named according to what the files actually represent; for example .imageset for
+an Imageset and .font for a Font (this naming convention is not, however, a
+requirement of the system - you are free to name the files any way you like).
+There now follows a very brief overview of the purpose each file type.
 
-The system supports XML layout files, which can be loaded via the
-WindowManager::loadWindowLayout function.  This function creates all the windows
-for you and returns a pointer to the root window of the loaded hierarchy - which
-is ideal for assigning as the root of the GUI!
+@subsection datafile_tutorial_imageset Imageset
+An Imageset is a collection of named regions upon some source surface, such as
+an image file or texture.  In CEGUI terminology, each of these named regions is
+an Image and is the basic level of imagery used by CEGUI.  By modifying the
+source image file or texture content, or by modifying the areas of the defined
+regions within the Imageset file, you can easily change the appearance of what
+gets drawn by CEGUI.
 
-So, first of all we need a layout file.  The following XML saved as a text file,
-is a layout file equivalent to the code we discussed above:
-@code
-<?xml version="1.0" ?>
-<GUILayout version="4">
-    <Window type="DefaultWindow" name="root">
-        <Window type="TaharezLook/FrameWindow" name="testWindow">
-            <Property name="UnifiedPosition" value="{ {0.25, 0}, {0.25, 0} }" />
-            <Property name="UnifiedSize" value="{ {0.5, 0}, {0.5, 0} }" />
-            <Property name="Text" value="Hello World!" />
-        </Window>
-    </Window>
-</GUILayout>
-@endcode
+For a complete description of imageset files, please see @ref xml_imageset
 
-The Window elements show an obvious mapping to the WindowManager::createWindow
-function - they take a type and a name which directly correspond to the
-parameters discussed previously.
+@subsection datafile_tutorial_font Font
+A Font file, unsurprisingly, defines a font for use in CEGUI.  There are at
+present two types of font which may be defined:
+- FreeTypeFont: This is a font based upon a standard font file (such as a
+true-type '.ttf' font).  A FreeTypeFont is specified via the attribute
+<c>Type="FreeType"</c> in the .font XML file.
+- PixmapFont: This type of font is based upon an Imageset which defines Images
+for the font glyphs, and is best thought of as a bitmapped font.  A PixmapFont
+is specified via the attribute <c>Type="Pixmap"</c> in the .font XML file.
 
-Nesting of the Window elements is used to attach certain windows to others.
-Note that you may only have one 'root' level window in a layout file, which is
-another reason you'll usually see the DefaultWindow used as a canvas on which
-other windows and widgets are placed.
+For a complete description of font files, please see @ref xml_font
 
-The Property elements are used to set properties on the Window being defined.
-There are many properties available for each window/widget class, and each class
-also inherits all properties from it's parent class.
+@subsection datafile_tutorial_looknfeel LookNFeel
+LookNFeel files form a major part of CEGUI's skinning system.  Each will contain
+one or more WidgetLook definitions that describe to the system various imagery
+and child widget components, their locations, additional property values
+and so on an so forth.  These WidgetLook specifications are later bound to
+concrete elements within the system to form what are ultimately represented as
+the windows and widgets in CEGUI.
 
-If saved as a file called "test.layout", you could load this layout and set it
-as the GUIContext root as follows:
-@code
-using namespace CEGUI;
-Window* myRoot = WindowManager::getSingleton().loadLayoutFromFile( "test.layout" );
-System::getSingleton().getDefaultGUIContext().setRootWindow( myRoot );
-@endcode
+For a complete description of looknfeel files (and other skinning related
+material), please see @ref fal_man
 
-The end result is exactly the same as what was done in C++ code earlier, except
-that now you can modify and enhance the GUI layout without the need for constant
-editing and recompilation of the application code.
+@subsection datafile_tutorial_scheme Scheme
+A Scheme file is a largely means to group other data files and resources
+together, and to define some of their interactions, and form a single point
+to load what might be considered a 'skin' for CEGUI's windows and widgets.
+A Scheme can contain one or more of the following:
+- @c Imageset Specifies an Imageset file to be loaded as part of the scheme.
+- @c Font Specifies a Font file to be loaded as part of the scheme.
+- @c LookNFeel Specifies a LookNFeel file to be loaded as part of the scheme.
+- @c WindowSet Specifies the name of a loadable module, and a set of widget
+  names contained within that module that you wish to register with the system
+  (if no names are listed, all available types in the module are registered).
+  This is a convenient way of adding additional core widget types to CEGUI
+  (especially if the module is provided by a third party).
+- @c WindowRendererSet Specifies the name of a loadable module, and a set of
+  window renderer names contained within that module that you wish to register
+  with the system (if no names are listed, all available types in the module are
+  registered).  A 'Window Renderer' is an object that can control rendering for
+  some base window type(s), all the window renderer objects supplied with CEGUI
+  perform rendering by making use of the 'Falagard' skinning system
+  (though this is not a strict requirement).
+- @c WindowAlias Provides a means to refer to a window / widget type by
+  alternative names, it can also be used to 'hide' an already registered widget
+  type with another widget type (so that other widget type gets used instead).
+- @c FalagardMapping  Creates a new usable window type by linking a concrete
+  window/widget type, a window renderer type, a widget look definition and --
+  optionally -- a render effect.
+
+For a complete description of scheme files, please see @ref xml_scheme
+
+@subsection datafile_tutorial_layout Layout
+A layout file contains an XML representation of a window layout.  Each nested
+'Window' element defines a window or widget to be created, the 'Property'
+elements define the desired settings and property values for each window
+defined.
+
+For a complete description of layout files, please see @ref xml_layout
+
+@subsection datafile_tutorial_config Config
+CEGUI's config file support allows you to specify all the system defaults,
+initial resources to be loaded, as well as initialisation and termination script
+files to execute (when using a ScriptModule), without writing a line of C++ code
+beyond that which creates the Renderer and System objects.
+
+For a complete description of config files, please see @ref xml_config
 
 <br>
-@section window_tutorial_conclusion Conclusion
-Here you have seen how to perform basic window creation, how to create a simple
-window hierarchy, and how modify some window settings.  You have seen how this
-can be accomplished using both C++ code and external XML layout files.  There
-are many advanced possibilities available using both methods, although such
-possibilities are beyond the scope of this indroductory tutorial.
+@section datafile_tutorial_load_basics Loading the Basic Files
+In order to get things up and running you need to load in some files.
+The typical set of files needed are:
+- Imageset
+- Font
+- LookNFeel
+- Scheme
+
+The good thing about the Scheme file - as you may have gathered from the above
+description - is that it can automatically load the other files for you.  For
+the purposes of this tutorial, we will load a scheme file and a font file -
+it is assumed the scheme automatically loads an Imageset and LookNFeel for us.
+Loading the scheme and font files is done as follows:
+@code
+// create (load) the TaharezLook scheme file
+// (this auto-loads the TaharezLook looknfeel and imageset files)
+CEGUI::SchemeManager::getSingleton().createFromFile( "TaharezLook.scheme" );
+
+// create (load) a font.
+// The first font loaded automatically becomes the default font, but note
+// that the scheme might have already loaded a font, so there may already
+// be a default set - if we want the "DejaVuSans-10" font to definitely
+// be the default, we should set the default explicitly afterwards.
+CEGUI::FontManager::getSingleton().createFromFile( "DejaVuSans-10.font" );
+@endcode
+
+In the above code (and in the CEGUI samples) it is assumed that the resource
+group locations and the default groups have all been set up as described in
+@ref resprov_tutorial.
+
+<br>
+@section datafile_tutorial_setup_defaults System Defaults Initialisation
+Finally, you need to specify some default options for the System.  This ensures
+that the system always has a font and mouse cursor available for when a window
+or widget specifies no preference of its own.
+
+The FontManager automatically sets the first loaded font as the system default.
+If this is not the default font you require, or if you can not guarantee the
+order fonts are loaded, you should set the default explicitly, as in this code:
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont( "DejaVuSans-10" );
+@endcode
+
+Another default object you'll normally set is a mouse cursor.  This ensures
+that when you move the mouse over any element that does not set a cursor of its
+own, the cursor does not disappear.  The code to set the default mouse cursor
+for the initial, default GUIContext is as follows:
+@note This uses the TaharezLook imageset which was loaded as part of the
+TaharezLook scheme we loaded above.
+
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().
+    getMouseCursor().setDefaultImage( "TaharezLook/MouseArrow" );
+@endcode
+
+Finally, if you intend to use tool tips, you should specify the type of the
+ToolTip based widget that you want used for that purpose.  It is actually
+possible to set this on a per-window basis, though this is not normally
+required, and is beyond the scope of this introductory tutorial.  The code to
+set the default tool tip window type for the initial, default GUIContext looks
+like this:
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().
+    setDefaultTooltipType( "TaharezLook/Tooltip" );
+@endcode
+
+<br>
+@section datafile_tutorial_conclusion Conclusion
+Here we have discovered the very basics of what the various data files used by
+CEGUI are, how they are loaded, and the minimal initialisation needed for CEGUI
+applications.
+
 */
 }

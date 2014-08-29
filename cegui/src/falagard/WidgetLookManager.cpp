@@ -263,7 +263,7 @@ namespace CEGUI
         return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
     }
 
-    WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookMap()
+    WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookPointerMap()
     {
         WidgetLookPointerMap pointerMap;
 

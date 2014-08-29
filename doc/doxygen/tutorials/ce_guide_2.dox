@@ -1,200 +1,159 @@
-namespace CEGUI {
+namespace {
 /**
-@page datafile_tutorial The Beginners Guide to Data Files and Defaults Initialisation
-@author Paul D Turner 
+@page resprov_tutorial 2 - The Beginners Guide to resource loading with ResourceProviders
+@author Paul D Turner
 @tableofcontents
 
-It is assumed that prior to reading this tutorial you are already familiar with
-the concepts surrounding CEGUI's ResourceProvider and have correctly initialised
-your Renderer and the CEGUI System objects.  If you've not yet covered these
-topics, it is highly recommended that you read @ref rendering_tutorial and
-@ref resprov_tutorial.
+This tutorial introduces the CEGUI::ResourceProvider concept, explains how to
+set up resource groups and directories in the DefaultResourceProvider and how to
+specify the default resource groups to be used by various parts of the system.
 
 <br>
-@section datafile_tutorial_intro Introduction
-CEGUI uses a variety of different data files and - at least initially - it's
-possible there may be some confusion as to what exactly all these files are and
-how they relate to one another.  In addition, there are some system wide
-defaults that - while not technically <em>required</em> to be set - you will
-almost certainly want to set for the majority of your applications using CEGUI.
-
-This tutorial will serve as an introduction to these topics in order that you
-can be more comfortable with the data files and with setting the basic default
-options used with CEGUI.
+@section resprov_tutorial_intro What is a ResourceProvider?
+CEGUI uses a ResourceProvider object to provide a bridge between the CEGUI
+library and external file loading systems - whether this might be the basic
+underlying file system of the machine executing the code, or something a bit
+more exotic such as the resource management sub-systems offered by the Ogre3D
+and Irrlicht engines; by providing custom implementations of the
+ResourceProvider interface, it is possible for CEGUI to seamlessly integrate
+with all of these systems.
 
 <br>
-@section datafile_tutorial_allxml Font, Imageset, LookNFeel, Scheme, XSD?  It's all XML!
-With the exception of graphical image files, script language files and loadable
-modules (.dll /. so files, etc), all the data files used with CEGUI are XML
-based.  This actually leads us to the first potential obstacle that you may run
-into: the .xsd schema files.
+@section resprov_tutorial_default_rp DefaultResourceProvider Explained
+CEGUI's default resource provider, DefaultResourceProvider, supplies some
+basic functionality for those who do not yet have, or do not need, a more
+sophisticated alternative.  As well as supplying the functions required by CEGUI
+for actually loading file data, DefaultResourceProvider also has some
+rudimentary support for 'resource groups'.  Here, a resource group is basically
+a label given to a directory location on the system.  This allows one to have
+logical grouping of files within directories and then to be able to refer to
+those locations via a simple label rather than hard coded paths.  This then
+means that should you need to change the location of some data files, you just
+need to update the resource group location instead of updating path information
+throughout your code and XML files.
 
-@subsection datafile_tutorial_validation Schema Validation with Xerces-C++
-Although the Expat based XML parser module is the default choice for parsing the
-XML data files, CEGUI also supports a parser based upon the Xerces-C++ library
-from the Apache Software Foundation (see http://xerces.apache.org/xerces-c).
+For users of the Ogre3D library - or users with other custom resource providers
+not derived from DefaultResourceProvider - <em>you should not follow the parts
+of this tutorial that deal with defining resouce groups and their
+directories</em> (you should especially ignore any example code that casts to
+DefaultResouceProvider).  These users should follow the usual procedures for
+using the underlying resouce system in use (for example, in Ogre3D you might set
+up your resource locations in code using the Ogre::ResourceManager or via a
+resources.cfg file).
 
-The advantage of using this particular parser is that it provides
-<em>schema validation</em>.  For the uninitiated, schema validation is a means
-by which the incoming XML data can be checked to ensure it is well formed and
-that it contains the required information.  In order for this validation to
-work, some additional files - unsurprisingly known as schema files (not to be
-confused with CEGUI's own <em>scheme files</em> described below) - are required.
-The schema files used to validate the XML for CEGUI can be found in the
-<c>datafiles/xml_schema/</c> directory within the CEGUI distribution, and have
-the .xsd file extension.
+This said, <em>all users</em> should follow the parts of this tutorial dealing
+with setting the default resouce groups for the various resource classes, as
+detailed in @ref resprov_tutorial_default_resource_groups.
 
-The main thing you need to know for now is that when using the Xerces-C++
-based XML parser, these .xsd files must be available to the ResourceProvider
-system; this is probably best achieved by setting up a resource group to the
-directory containing the schema files and setting that group as the default to
-be used by CEGUI::XercesParser when loading schema files (the specifics on how
-to do this are covered in @ref resprov_tutorial).
+@subsection resprov_tutorial_default_rp_groups Specifying Resource Groups and Directories
+The DefaultResourceProvider allows you to define any number of named resource
+groups and to specify a directory to be accessed by each of those groups.
+What this means is that you can create a resource group, say
+@c "imagesets", and assign a directory to that group, for example
+@c "./mygame/datafiles/gui/imagesets/".  When loading an Imageset through the
+ImageManager, you might then specify the resource group to be used as
+@c "imagesets" and the system will look in the predefined location
+@c "./mygame/datafiles/gui/imagesets/".  Note that at present each resource
+group may only have a single directory associated with it.
 
-The CEGUI developers recommend using Xerces-C++ during development and testing,
-and then switching to Expat (or one of the other lightweight parsers) for final
-deployment -- this way you minimise the chances of bad XML files slipping into
-your product.
-
-<br>
-@section datafile_tutorial_files The Data Files
-As previously mentioned, the majority of the data files in CEGUI are XML based.
-Rather than using a generic '.xml' file extension, the data files are usually
-named according to what the files actually represent; for example .imageset for
-an Imageset and .font for a Font (this naming convention is not, however, a
-requirement of the system - you are free to name the files any way you like).
-There now follows a very brief overview of the purpose each file type.
-
-@subsection datafile_tutorial_imageset Imageset
-An Imageset is a collection of named regions upon some source surface, such as
-an image file or texture.  In CEGUI terminology, each of these named regions is
-an Image and is the basic level of imagery used by CEGUI.  By modifying the
-source image file or texture content, or by modifying the areas of the defined
-regions within the Imageset file, you can easily change the appearance of what
-gets drawn by CEGUI.
-
-For a complete description of imageset files, please see @ref xml_imageset
-
-@subsection datafile_tutorial_font Font
-A Font file, unsurprisingly, defines a font for use in CEGUI.  There are at
-present two types of font which may be defined:
-- FreeTypeFont: This is a font based upon a standard font file (such as a
-true-type '.ttf' font).  A FreeTypeFont is specified via the attribute
-<c>Type="FreeType"</c> in the .font XML file.
-- PixmapFont: This type of font is based upon an Imageset which defines Images
-for the font glyphs, and is best thought of as a bitmapped font.  A PixmapFont
-is specified via the attribute <c>Type="Pixmap"</c> in the .font XML file.
-
-For a complete description of font files, please see @ref xml_font
-
-@subsection datafile_tutorial_looknfeel LookNFeel
-LookNFeel files form a major part of CEGUI's skinning system.  Each will contain
-one or more WidgetLook definitions that describe to the system various imagery
-and child widget components, their locations, additional property values
-and so on an so forth.  These WidgetLook specifications are later bound to
-concrete elements within the system to form what are ultimately represented as
-the windows and widgets in CEGUI.
-
-For a complete description of looknfeel files (and other skinning related
-material), please see @ref fal_man
-
-@subsection datafile_tutorial_scheme Scheme
-A Scheme file is a largely means to group other data files and resources
-together, and to define some of their interactions, and form a single point
-to load what might be considered a 'skin' for CEGUI's windows and widgets.
-A Scheme can contain one or more of the following:
-- @c Imageset Specifies an Imageset file to be loaded as part of the scheme.
-- @c Font Specifies a Font file to be loaded as part of the scheme.
-- @c LookNFeel Specifies a LookNFeel file to be loaded as part of the scheme.
-- @c WindowSet Specifies the name of a loadable module, and a set of widget
-  names contained within that module that you wish to register with the system
-  (if no names are listed, all available types in the module are registered).
-  This is a convenient way of adding additional core widget types to CEGUI
-  (especially if the module is provided by a third party).
-- @c WindowRendererSet Specifies the name of a loadable module, and a set of
-  window renderer names contained within that module that you wish to register
-  with the system (if no names are listed, all available types in the module are
-  registered).  A 'Window Renderer' is an object that can control rendering for
-  some base window type(s), all the window renderer objects supplied with CEGUI
-  perform rendering by making use of the 'Falagard' skinning system
-  (though this is not a strict requirement).
-- @c WindowAlias Provides a means to refer to a window / widget type by
-  alternative names, it can also be used to 'hide' an already registered widget
-  type with another widget type (so that other widget type gets used instead).
-- @c FalagardMapping  Creates a new usable window type by linking a concrete
-  window/widget type, a window renderer type, a widget look definition and --
-  optionally -- a render effect.
-
-For a complete description of scheme files, please see @ref xml_scheme
-
-@subsection datafile_tutorial_layout Layout
-A layout file contains an XML representation of a window layout.  Each nested
-'Window' element defines a window or widget to be created, the 'Property'
-elements define the desired settings and property values for each window
-defined.
-
-For a complete description of layout files, please see @ref xml_layout
-
-@subsection datafile_tutorial_config Config
-CEGUI's config file support allows you to specify all the system defaults,
-initial resources to be loaded, as well as initialisation and termination script
-files to execute (when using a ScriptModule), without writing a line of C++ code
-beyond that which creates the Renderer and System objects.
-
-For a complete description of config files, please see @ref xml_config
-
-<br>
-@section datafile_tutorial_load_basics Loading the Basic Files
-In order to get things up and running you need to load in some files.
-The typical set of files needed are:
-- Imageset
-- Font
-- LookNFeel
-- Scheme
-
-The good thing about the Scheme file - as you may have gathered from the above
-description - is that it can automatically load the other files for you.  For
-the purposes of this tutorial, we will load a scheme file and a font file -
-it is assumed the scheme automatically loads an Imageset and LookNFeel for us.
-Loading the scheme and font files is done as follows:
+A small code example is in order to clarify what has been said.  Instead of
+loading resources by giving an explicit path, like this:
 @code
-// create (load) the TaharezLook scheme file
-// (this auto-loads the TaharezLook looknfeel and imageset files)
-CEGUI::SchemeManager::getSingleton().createFromFile( "TaharezLook.scheme" );
-
-// create (load) a font.
-// The first font loaded automatically becomes the default font, but note
-// that the scheme might have already loaded a font, so there may already
-// be a default set - if we want the "DejaVuSans-10" font to definitely
-// be the default, we should set the default explicitly afterwards.
-CEGUI::FontManager::getSingleton().createFromFile( "DejaVuSans-10.font" );
+ImageManager::getSingleton().loadImageset(
+    "./mygame/datafiles/gui/imagesets/WindowsLook.imageset");
 @endcode
 
-In the above code (and in the CEGUI samples) it is assumed that the resource
-group locations and the default groups have all been set up as described in
-@ref resprov_tutorial.
-
-<br>
-@section datafile_tutorial_setup_defaults System Defaults Initialisation
-Finally, you need to specify some default options for the System.  This ensures
-that the system always has a font and mouse cursor available for when a window
-or widget specifies no preference of its own.
-
-The FontManager automatically sets the first loaded font as the system default.
-If this is not the default font you require, or if you can not guarantee the
-order fonts are loaded, you should set the default explicitly, as in this code:
+At initialisation time, you set up a resource group in the default resource
+provider, like this:
 @code
-CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont( "DejaVuSans-10" );
+DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(
+    CEGUI::System::getSingleton().getResourceProvider());
+
+rp->setResourceGroupDirectory("imagesets", "./mygame/datafiles/gui/imagesets/");
 @endcode
 
-Another default object you'll normally set is a mouse cursor.  This ensures
-that when you move the mouse over any element that does not set a cursor of its
-own, the cursor does not disappear.  The code to set the default mouse cursor
-for the initial, default GUIContext is as follows:
-@note This uses the TaharezLook imageset which was loaded as part of the
-TaharezLook scheme we loaded above.
-
+Then later on in the code, when you need to load an imageset, just do this:
 @code
+ImageManager::getSingleton().loadImageset(
+    "WindowsLook.imageset", "imagesets");
+@endcode
+
+Note how when loading the imageset from a file we do not specify any path
+information; the path information is obtained from the resource group specified,
+in the example this is @c "imagesets".  We will later show you how you set
+default resource groups for each of the resource types - then you do not have to
+specify the group when you load a resource (unless you're loading it from a
+group other than the default, of course).
+
+Something important to consider is that when using this resource group approach,
+data files that contain references to other data files should not contain
+relative path information - they should, in general, just have the actual file
+name of the file being referred to - this way the resource group system can be
+put to better use, and it also makes it easier to move files around later -
+since rather than having to 'fix up' all the relative paths, you just have to
+update the resource group paths instead.
+
+<br>
+@section resprov_tutorial_default_resource_groups Specifying Default Resource Groups
+Each of the core system classes that represents a loadable resource has static
+members to set and get a default resource group.  This resource group will be
+used when loading the specific data files needed by a given class.
+
+For each of the resource consuming classes, the static members are named the
+same (special exceptions are the ImageManager and the the xerces-c based XML
+paser - see below):
+@code
+const String& getDefaultResourceGroup();
+void setDefaultResourceGroup(const String& groupname);
+@endcode
+
+The following is a list of the core resource loading classes and the resources that they load:
+- @c CEGUI::Font              : Font xml and freetype loadable font files.
+- @c CEGUI::Scheme            : Scheme xml files.
+- @c CEGUI::WindowManager     : Window layout xml files.
+- @c CEGUI::WidgetLookManager : LookNFeel xml files
+- @c CEGUI::ScriptModule      : Script files in whichever scripted langauge.
+
+@note One final thing to consider, is that the ResourceProvider class also has a
+default resource group.  This should be considered a global or master default;
+it is used whenever a specific resource loading class has no default of it's own
+specified.  This would prove useful if you have all your data in a single
+directory.
+
+There are a couple of special exceptions, as mentioned above, these are the
+ImageManager and the Xerces-C++ based XML parser.
+
+@subsection resprov_tutorial_default_resource_groups_im ImageManager Default Resource Group
+Since there is no acutal Imageset class (an Imageset is now just a set of images
+loaded together from an xml file), the default group used for loading these
+files is set on the CEGUI::ImageManager class and uses functions named
+differently from the 'standard' mentined above, the functions you need are named:
+@code
+const String& ImageManager::getImagesetDefaultResourceGroup();
+void ImageManager::setImagesetDefaultResourceGroup(const String& resourceGroup);
+@endcode
+
+The resource group specified will be used as the default for loading imageset
+XML files as well as image texture files.
+
+@subsection resprov_tutorial_default_resource_groups_xc XercesParser Default Resource Group
+For the XercesParser there is a special resource group setting to specify where
+the .xsd schema files - used for XML schema validation - can be found.  For this
+special case, you instead use the PropertySet interface and access a property
+named @c SchemaDefaultResourceGroup.  The use of the property interface mainly
+serves to eliminate the need to link directly with the xerces xml based parser
+module just to set the default schema resource group.
+
+Because you may not know ahead of time which XML parser module is actually being
+used - and therefore may not know whether the property exists - you should check
+the existence of the propery before setting it.  This is better than checking
+the XML parser ID string for "Xerces" because it allows you to seamlessly work
+with any future parser module that may also offer validation (so long as it
+exposes the same property).
+
+For example:
+@code
+<<<<<<< local
 CEGUI::System::getSingleton().getDefaultGUIContext().
     getPointerIndicator().setDefaultImage( "TaharezLook/MouseArrow" );
 @endcode
@@ -208,13 +167,62 @@ like this:
 @code
 CEGUI::System::getSingleton().getDefaultGUIContext().
     setDefaultTooltipType( "TaharezLook/Tooltip" );
+=======
+// setup default group for validation schemas
+CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
+if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
+    parser->setProperty("SchemaDefaultResourceGroup", "schemas");
+>>>>>>> other
 @endcode
 
 <br>
-@section datafile_tutorial_conclusion Conclusion
-Here we have discovered the very basics of what the various data files used by
-CEGUI are, how they are loaded, and the minimal initialisation needed for CEGUI
-applications.
+@section resprov_tutorial_example A final, Complete Example
+To close, we will show how you might perform the initialisation of resource
+groups and their target directories to access the data files within the
+datafiles directory that comes with CEGUI, and how we assign the default groups
+to be used for all of the resource types.
 
+After initialising the core CEGUI::System object as usual, we then specify a set
+of resource groups and their target directories (this assumes the working
+directory will be the 'bin' directory within the CEGUI package:
+@code
+// initialise the required dirs for the DefaultResourceProvider
+CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
+    (CEGUI::System::getSingleton().getResourceProvider());
+
+rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
+rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
+rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
+rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
+rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
+rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
+
+// This is only really needed if you are using Xerces and need to
+// specify the schemas location
+rp->setResourceGroupDirectory("schemas", "../datafiles/xml_schemas/");
+@endcode
+Now that is done, we have a nice set of resource groups defined with their
+target directories set.  Finally, to get the system to use these directories, we
+set the default resource groups to be used:
+@code
+// set the default resource groups to be used
+CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
+CEGUI::Font::setDefaultResourceGroup("fonts");
+CEGUI::Scheme::setDefaultResourceGroup("schemes");
+CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
+CEGUI::WindowManager::setDefaultResourceGroup("layouts");
+CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+
+// setup default group for validation schemas
+CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
+if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
+    parser->setProperty("SchemaDefaultResourceGroup", "schemas");
+@endcode
+
+@section resprov_tutorial_conclusion Conclusion
+This has been a brief introduction to the ResouceProvider system used by CEGUI.
+You have seen how to create and use resource groups with CEGUI's
+DefaultResourceProvider, and how to specify default resource groups for each
+resource type used by CEGUI.
 */
 }

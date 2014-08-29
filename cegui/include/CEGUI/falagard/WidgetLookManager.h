@@ -291,7 +291,7 @@ namespace CEGUI
         \return
             A map of Strings to WidgetLookFeel pointers.
         */
-        WidgetLookPointerMap getWidgetLookMap();
+        WidgetLookPointerMap getWidgetLookPointerMap();
 
     private:
         //! Name of schema file used for XML validation.
