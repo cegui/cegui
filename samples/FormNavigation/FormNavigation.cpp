@@ -45,7 +45,6 @@ FormNavigationSample::FormNavigationSample()
         "The Sample uses the WindowManager to create from code, "
         "a window with a form that contains: labels, editboxes, "
         "checkboxes, 'submit' and 'reset' buttons.";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

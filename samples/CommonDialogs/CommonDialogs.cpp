@@ -39,7 +39,6 @@ CommonDialogsSample::CommonDialogsSample()
     Sample::d_summary = "Shows the functionalities of the Common Dialogues library."
                 " Currently this library consists only of the ColourPicker for CEGUI."
                 " It can be opened by clicking one of the coloured rectangle in the Sample.";
-    Sample::d_type = ST_Module;
 }
 
 //----------------------------------------------------------------------------//

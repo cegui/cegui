@@ -544,7 +544,6 @@ RenderEffectsSample::RenderEffectsSample()
         "Custom render effects (CEGUI::RenderEffect) can be created for the windows. "
         "The demo's c++ files present 3 examples for such effects. The effects can be "
         "mapped using schemes or can be directly applied using functions.";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

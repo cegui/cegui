@@ -61,7 +61,7 @@ public:
     void loadSamples();
 
     void addSampleDataCppModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
-                                CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
+                                CEGUI::String description, CEGUI::String credits);
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);

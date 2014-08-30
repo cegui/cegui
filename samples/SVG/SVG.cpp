@@ -49,7 +49,6 @@ SVGSample::SVGSample()
     Sample::d_credits = "Lukas \"Ident\" Meindl";
     Sample::d_description = "";
     Sample::d_summary = "";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

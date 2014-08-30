@@ -188,7 +188,6 @@ FontsSample::FontsSample()
         "In CEGUI fonts can be loaded using the &quot;.font&quot; files or "
         "can be created in run-time using the CEGUI::FontManager. "
         "They can be edited at any time.";
-    Sample::d_type = ST_Module;
 }
 
 bool FontsSample::initialise(CEGUI::GUIContext* guiContext)

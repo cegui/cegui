@@ -45,7 +45,7 @@ class SampleData
 {
 public:
     SampleData(CEGUI::String sampleName, CEGUI::String summary,
-        CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
+        CEGUI::String description, CEGUI::String credits);
     virtual ~SampleData();
 
     virtual void initialise(int width, int height);
@@ -69,7 +69,6 @@ public:
 
     CEGUI::String getName();
     CEGUI::String getSummary();
-    CEGUI::String getSampleTypeString();
     CEGUI::String getDescription();
     CEGUI::String getUsedFilesString();
     CEGUI::String getCredits();
@@ -78,7 +77,6 @@ protected:
     CEGUI::String           d_name;
     CEGUI::String           d_summary;
     CEGUI::String           d_description;
-    SampleType              d_type;
     CEGUI::String           d_usedFilesString;
     CEGUI::String           d_credits;
 
@@ -95,7 +93,7 @@ class SampleDataModule : public SampleData
 {
 public:
     SampleDataModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
+    CEGUI::String description, CEGUI::String credits);
     virtual ~SampleDataModule();
 
     virtual void initialise(int width, int height);

@@ -55,7 +55,6 @@ GameMenuSample::GameMenuSample()
         "utilized via C++ code. For the animated windows, which do not "
         "display text, the pixel alignment setting was switched off for "
         "smoother transitions, and event handlers are used to control the animations.";
-    Sample::d_type = ST_Module;
 }
 
 bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)

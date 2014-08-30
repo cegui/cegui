@@ -39,7 +39,6 @@ HelloWorldSample::HelloWorldSample()
     Sample::d_summary = 
         "The Sample uses the WindowManager to create the window from code. "
         "An event handler is used to handle the mouse clicks on the window.";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

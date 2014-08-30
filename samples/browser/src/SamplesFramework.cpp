@@ -151,7 +151,7 @@ void SamplesFramework::loadSamples()
     for (; iter != samples.end(); ++iter)
     {
         addSampleDataCppModule(*iter, (*iter)->getName(), (*iter)->getSummary(),
-                               (*iter)->getDescription(), (*iter)->getType(), (*iter)->getCredits());
+                               (*iter)->getDescription(), (*iter)->getCredits());
     }
 }
 
@@ -174,12 +174,10 @@ void SamplesFramework::addSampleDataCppModule(Sample* instance,
 											  CEGUI::String sampleName,
                                               CEGUI::String summary,
                                               CEGUI::String description,
-                                              SampleType sampleTypeEnum,
                                               CEGUI::String credits)
 {
     SampleData* sampleData = new SampleDataModule(instance, sampleName, summary,
-                                                  description, sampleTypeEnum,
-                                                  credits);
+                                                  description, credits);
 
     addSample(sampleData);
 }

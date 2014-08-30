@@ -57,7 +57,6 @@ MenuNavigationSample::MenuNavigationSample()
     Sample::d_summary = 
         "The demo uses the WindowManager to create from code a window "
         "with a menu that contains multiple buttons arranged in a 4x4 matrix.";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************
