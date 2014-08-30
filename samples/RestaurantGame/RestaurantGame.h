@@ -48,9 +48,11 @@ enum SelectedWeapon
 };
 
 // Sample class
-class HUDDemo : public Sample
+class RestaurantGameSample : public Sample
 {
 public:
+    RestaurantGameSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 

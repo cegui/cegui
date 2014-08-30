@@ -1,12 +1,11 @@
-option(CEGUI_SAMPLES_ENABLE_MENU_NAVIGATION "Specifies whether this sample should be built or not" TRUE)
-if(CEGUI_SAMPLES_ENABLE_MENU_NAVIGATION)
-    #add the navigation strategies
-    set(EXTRA_HEADER_FILES
-        ${CMAKE_SOURCE_DIR}/samples/common/include/NavigationStrategies.h
-    )
-    set(EXTRA_SOURCE_FILES
-        ${CMAKE_SOURCE_DIR}/samples/common/NavigationStrategies.cpp
-    )
+list(APPEND SAMPLES_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/MenuNavigation.cpp)
+list(APPEND SAMPLES_SOURCES ${CMAKE_SOURCE_DIR}/samples/common/NavigationStrategies.cpp)
 
-    cegui_add_sample_with_extra_files(CEGUISample_MenuNavigation ${EXTRA_HEADER_FILES} ${EXTRA_SOURCE_FILES})
-endif()
+list(APPEND SAMPLES_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/MenuNavigation.h)
+list(APPEND SAMPLES_HEADERS ${CMAKE_SOURCE_DIR}/samples/common/include/NavigationStrategies.h)
+
+list(APPEND SAMPLES_LIST  "MenuNavigation")
+
+set(SAMPLES_LIST "${SAMPLES_LIST}" PARENT_SCOPE)
+set(SAMPLES_SOURCES "${SAMPLES_SOURCES}" PARENT_SCOPE)
+set(SAMPLES_HEADERS "${SAMPLES_HEADERS}" PARENT_SCOPE)
