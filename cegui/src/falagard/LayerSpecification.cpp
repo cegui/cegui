@@ -105,6 +105,11 @@ LayerSpecification::SectionSpecificationPointerList LayerSpecification::getSecti
     return pointerList;
 }
 
+const LayerSpecification::SectionSpecificationList& LayerSpecification::getSectionSpecifications() const
+{
+    return d_sections;
+}
+
 bool LayerSpecification::operator< (const LayerSpecification& otherLayerSpec) const
 {
     return d_layerPriority < otherLayerSpec.getLayerPriority();
