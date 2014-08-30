@@ -37,6 +37,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    // This is deprecated and declared as an extern in PropertyLinkDefinition.h
+    const String S_parentIdentifier("__parent__");
 
     SectionSpecification::SectionSpecification() :
         d_usingColourOverride(false)
