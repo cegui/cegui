@@ -128,9 +128,6 @@ namespace CEGUI
         */
         void setLayerPriority(uint priority);
 
-        // required to sort layers according to priority
-        bool operator<(const LayerSpecification& other) const;
-
         /*!
         \brief
             Writes an xml representation of this Layer to \a out_stream.
@@ -154,6 +151,10 @@ namespace CEGUI
             A vector of pointers to the SectionSpecifications that are currently added to this LayerSpecification
         */
         SectionSpecificationPointerList getSectionSpecificationPointers();  
+
+
+        //! The comparison operator, which is used for sorting
+        bool operator< (const LayerSpecification& otherLayerSpec) const;
 
     private:
         //! \deprecated This type will be made public in the next version and be renamed to SectionSpecificationList.

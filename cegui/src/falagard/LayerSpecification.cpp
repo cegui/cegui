@@ -73,10 +73,6 @@ void LayerSpecification::setLayerPriority(uint priority)
 {
     d_layerPriority = priority;
 }
-bool LayerSpecification::operator<(const LayerSpecification& other) const
-{
-    return d_layerPriority < other.d_layerPriority;
-}
 
 void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
 {
@@ -113,6 +109,11 @@ LayerSpecification::SectionSpecificationPointerList LayerSpecification::getSecti
     }
 
     return pointerList;
+}
+
+bool LayerSpecification::operator< (const LayerSpecification& otherLayerSpec) const
+{
+    return d_layerPriority < otherLayerSpec.getLayerPriority();
 }
 
 } // End of  CEGUI namespace section
