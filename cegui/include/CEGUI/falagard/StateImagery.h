@@ -177,7 +177,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Returns a multiset of pointers to the LayerSpecifications that are currently added to this StateImagery.
+            Returns a vector of pointers to the LayerSpecifications that are currently added to this StateImagery.
             If a LayerSpecification is added or removed from this StateImagery, then the pointers in this vector are
             not valid anymore. The function should then be called again to retrieve valid pointers.
 
