@@ -47,6 +47,10 @@ namespace CEGUI
         public AllocatedObject<StateImagery>
     {
     public:
+        //! Container for LayerSpecifications. This container needs to be sorted for priority every time a member is changed, added or removed.
+        typedef std::vector<LayerSpecification
+            CEGUI_VECTOR_ALLOC(LayerSpecification)> LayerSpecificationList;
+
         //! Container type for LayerSpecification pointers
         typedef std::vector<LayerSpecification* 
             CEGUI_VECTOR_ALLOC(LayerSpecification*)> LayerSpecificationPointerList;
@@ -174,6 +178,14 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+        /*!
+        \brief
+            Returns a const reference to the list of LayerSpecifications that are currently added to this StateImagery.
+
+         \return
+            A const reference to the vector of LayerSpecifications that are currently added to this StateImagery
+        */
+        const LayerSpecificationList& getLayerSpecifications() const;
 
         /*!
         \brief
@@ -191,24 +203,9 @@ namespace CEGUI
         LayerSpecificationPointerList getLayerSpecificationPointers();
 
     private:
-        /*!
-        \deprecated 
-            This type is deprecated because it doesn't use CEGUI allocators and is private and needs to be replaced with a vector that gets
-            sorted whenever needed. std::multisets and sets make their elements constant which introduces issues when changing them. In the next
-            version a new public type "LayerSpecificationList" will replace this one.
-        */
-        typedef std::multiset<LayerSpecification> LayersList;
-
-        CEGUI::String   d_stateName;    //!< Name of this state.
-        LayersList      d_layers;       //!< Collection of LayerSpecification objects to be drawn for this state.
-        bool            d_clipToDisplay; //!< true if Imagery for this state should be clipped to the display instead of winodw (effectively, not clipped).
-    public:
-        //! \deprecated This type is deprecated and will be removed in the next version. A const reference to the Container type of getLayerSpecifications will replace this.
-        typedef ConstVectorIterator<LayersList> LayerIterator;
-
-        //! \deprecated This function is deprecated. Instead the getLayerSpecifications will be used in the next version and getLayerSpecificationPointers can be used for editing.
-        LayerIterator getLayerIterator() const;
-
+        CEGUI::String               d_stateName;    //!< Name of this state.
+        LayerSpecificationList      d_layers;       //!< Collection of LayerSpecification objects to be drawn for this state.
+        bool                        d_clipToDisplay; //!< true if Imagery for this state should be clipped to the display instead of winodw (effectively, not clipped).
     };
 
 } // End of  CEGUI namespace section
