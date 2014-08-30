@@ -47,6 +47,10 @@ namespace CEGUI
     {
     public:
         //! The container type for SectionSpecifications
+        typedef std::vector<SectionSpecification
+            CEGUI_VECTOR_ALLOC(SectionSpecification)> SectionSpecificationList;
+
+        //! The container type for pointers to SectionSpecifications
         typedef std::vector<SectionSpecification*
             CEGUI_VECTOR_ALLOC(SectionSpecification*)> SectionSpecificationPointerList;
 
@@ -144,6 +148,15 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+         /*!
+        \brief
+            Returns a reference to the vector of SectionSpecifications that are currently added to this LayerSpecification.
+
+         \return
+            A const reference to the vector SectionSpecifications that are currently added to this LayerSpecification
+        */
+        const SectionSpecificationList& getSectionSpecifications() const;  
+
         /*!
         \brief
             Returns a vector of pointers to the SectionSpecifications that are currently added to this LayerSpecification. If a
@@ -156,17 +169,10 @@ namespace CEGUI
         SectionSpecificationPointerList getSectionSpecificationPointers();  
 
     private:
-        //! \deprecated This type will be made public in the next version and be renamed to SectionSpecificationList.
-        typedef std::vector<SectionSpecification
-            CEGUI_VECTOR_ALLOC(SectionSpecification)> SectionList;
-
-        SectionList d_sections;         //!< Collection of SectionSpecification objects descibing the sections to be drawn for this layer.
-        uint        d_layerPriority;    //!< Priority of the layer.
-    public:
-        //! \deprecated This type will be removed in the next version and replaced by a const list in the getSectionSpecifications function.
-        typedef ConstVectorIterator<SectionList> SectionIterator;
-        //! \deprecated This function will be replaced by the getSectionSpecifications function in the next version. For editing getSectionSpecificationPointers can be used.
-        SectionIterator getSectionIterator() const;
+        //! Collection of SectionSpecification instances
+        SectionSpecificationList    d_sections;
+        //! Priority of the layer
+        uint                        d_layerPriority;
     };
 
 } // End of  CEGUI namespace section
