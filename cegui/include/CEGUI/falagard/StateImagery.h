@@ -109,6 +109,13 @@ namespace CEGUI
 
         /*!
         \brief
+            Sorts the LayerSpecifications after their priority. Whenever a LayerSpecification, which has been added
+            to this StateImagery, is changed, this sort function should be called.
+        */
+        void sort();
+
+        /*!
+        \brief
             Removed all LayerSpecifications from this state.
 
         \return
@@ -182,8 +189,8 @@ namespace CEGUI
             not valid anymore. The function should then be called again to retrieve valid pointers.
 
          \note
-            Whenever a pointer from this list is changed in a way that the multiset needs to be resorted, the resort
-            function must be called.
+             Whenever a pointer from this list is changed in a way that the multiset needs to be resorted, the sort
+             function of this class must be called.
 
          \return
             A vector of pointers to the LayerSpecifications that are currently added to this StateImagery
