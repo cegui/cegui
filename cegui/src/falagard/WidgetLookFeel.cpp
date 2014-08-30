@@ -241,8 +241,10 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
          pdi != pdc.end();
          ++pdi)
     {
+        PropertyDefinitionBase* propDefBase = *pdi;
+        Property* curProperty = dynamic_cast<Property*>(propDefBase);
         // add the property to the window
-        widget.addProperty(dynamic_cast<Property*>(*pdi));
+        widget.addProperty(curProperty);
     }
 
     // add required child widgets
