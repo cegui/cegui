@@ -26,7 +26,7 @@ subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 # loop through samples and exclude those that should not be build 
 foreach(dir ${SAMPLES_SUBDIRS})
-    if("${dir}" MATCHES "^GLESDemo$") # exclude the GLES demo until CE gives his OK
+    if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK
     elseif("${dir}" MATCHES "^common$") # exclude common folder; samples include files from there directly if necessary
     elseif("${dir}" MATCHES "^samples$") # exclude this directory
     elseif("${dir}" MATCHES "^Demo8$") # this demo doesn't work at the moment
