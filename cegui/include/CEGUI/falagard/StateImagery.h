@@ -78,9 +78,6 @@ namespace CEGUI
 
         \param srcWindow
             Window to use when convering BaseDim values to pixels.
-
-        \return
-            Nothing.
         */
         void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0) const;
 
@@ -93,9 +90,6 @@ namespace CEGUI
 
         \param baseRect
             Rect to use when convering BaseDim values to pixels.
-
-        \return
-            Nothing.
         */
         void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0) const;
 
@@ -105,25 +99,20 @@ namespace CEGUI
 
         \param layer
             LayerSpecification to be added to this state (will be copied)
-
-        \return
-            Nothing.
         */
         void addLayer(const LayerSpecification& layer);
 
         /*!
         \brief
             Sorts the LayerSpecifications after their priority. Whenever a LayerSpecification, which has been added
-            to this StateImagery, is changed, this sort function should be called.
+            to this StateImagery, is changed or an element is added to or removed from the list, this sort function
+            has to be called.
         */
         void sort();
 
         /*!
         \brief
             Removed all LayerSpecifications from this state.
-
-        \return
-            Nothing.
         */
         void clearLayers();
 
@@ -166,9 +155,6 @@ namespace CEGUI
         \param setting
             - true if the imagery should be clipped to the display area.
             - false if the imagery should be clipped to the target window area.
-
-        \return
-            Nothing.
         */
         void setClippedToDisplay(bool setting);
 
@@ -178,10 +164,6 @@ namespace CEGUI
 
         \param xml_stream
             Stream where xml data should be output.
-
-
-        \return
-            Nothing.
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
@@ -200,11 +182,11 @@ namespace CEGUI
             If a LayerSpecification is added or removed from this StateImagery, then the pointers in this vector are
             not valid anymore. The function should then be called again to retrieve valid pointers.
 
-         \note
-             Whenever a pointer from this list is changed in a way that the multiset needs to be resorted, the sort
-             function of this class must be called.
+        \note
+            Whenever a pointer from this list is changed in a way that the multiset needs to be resorted, the sort
+            function of this class must be called.
 
-         \return
+        \return
             A vector of pointers to the LayerSpecifications that are currently added to this StateImagery
         */
         LayerSpecificationPointerList getLayerSpecificationPointers();
