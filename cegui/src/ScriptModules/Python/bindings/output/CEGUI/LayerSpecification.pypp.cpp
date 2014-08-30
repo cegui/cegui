@@ -85,8 +85,8 @@ void register_LayerSpecification_class(){
                 , getSectionIterator_function_type( &::CEGUI::LayerSpecification::getSectionIterator )
                 , "!  deprecated This type will be removed in the next version and replaced by a const list in the\
             getSectionSpecifications function.\n\
-            !  deprecated This function will be replaced by a getSectionSpecifications function in the next\
-            version.\n" );
+            !  deprecated This function will be replaced by the getSectionSpecifications function in the next\
+            version. For editing getSectionSpecificationPointers can be used.\n" );
         
         }
         { //::CEGUI::LayerSpecification::getSectionSpecificationPointers
