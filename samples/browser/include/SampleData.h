@@ -32,12 +32,12 @@ author:     Lukas E Meindl
 // forward declarations
 #include "CEGUI/ForwardRefs.h"
 
+#include "Sample.h"
+
 namespace CEGUI
 {
     class BitmapImage;
 }
-
-enum SampleType;
 
 class Sample;
 
