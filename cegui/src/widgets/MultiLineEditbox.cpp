@@ -432,15 +432,6 @@ void MultiLineEditbox::configureScrollbars(void)
 	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
-
-/*************************************************************************
-	Format the text into lines as needed by the current formatting options.
-*************************************************************************/
-void MultiLineEditbox::formatText(void)
-{
-    formatText(true);
-}
-
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::formatText(const bool update_scrollbars)
 {

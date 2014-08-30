@@ -508,13 +508,6 @@ protected:
 	/*************************************************************************
 		Implementation Methods
 	*************************************************************************/
-	/*!
-	\brief
-		Format the text into lines as needed by the current formatting options.
-    \deprecated
-        This is deprecated in favour of the version taking a boolean.
-	*/
-	void	formatText(void);
 
 	/*!
 	\brief
