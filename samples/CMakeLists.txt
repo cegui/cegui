@@ -50,4 +50,5 @@ file(APPEND ${SAMPLE_LIST_HEADER} "\n#endif")
 list(APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/common/include")
 list(APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/samples/common/include")
 
+# finally, include the samples browser directory
 add_subdirectory(browser/)
