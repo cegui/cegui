@@ -177,15 +177,13 @@ namespace CEGUI
 
         /*!
         \brief
-            Returns a multiset of pointers to the LayerSpecifications that are currently added to this StateImagery.
+            Returns a vector of pointers to the LayerSpecifications that are currently added to this StateImagery.
             If a LayerSpecification is added or removed from this StateImagery, then the pointers in this vector are
             not valid anymore. The function should then be called again to retrieve valid pointers.
 
          \note
-            Whenever a pointer from this list is changed in a way that the multiset needs to be resorted, the element
-            has to be specifically removed from the multiset, and added again. Otherwise the multiset is not valid anymore.
-            In the next version this workaround will be deprecated: there will be a simple resort function to be called
-            for this purpose.
+            Whenever a pointer from this list is changed in a way that the multiset needs to be resorted, the resort
+            function must be called.
 
          \return
             A vector of pointers to the LayerSpecifications that are currently added to this StateImagery
@@ -197,7 +195,7 @@ namespace CEGUI
         \deprecated 
             This type is deprecated because it doesn't use CEGUI allocators and is private and needs to be replaced with a vector that gets
             sorted whenever needed. std::multisets and sets make their elements constant which introduces issues when changing them. In the next
-            version a new public type "LayerSpecificationMultiset" will replace this one.
+            version a new public type "LayerSpecificationList" will replace this one.
         */
         typedef std::multiset<LayerSpecification> LayersList;
 
