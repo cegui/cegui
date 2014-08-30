@@ -30,12 +30,18 @@
 //----------------------------------------------------------------------------//
 DragDropSample::DragDropSample()
 {
-    // add your info 
+    // add your info here
+    // if you don't know what to write have a look
+    // into the other samples
+    
+    // the name of your sample
     Sample::d_name = "";
+    // your name goes here
     Sample::d_credits = "";
+    // summarise what your sample wants to demonstrate
     Sample::d_summary = "";
+    // explain how you achieve this
     Sample::d_description = "";
-    Sample::d_type = ST_Count;
 }
 
 //----------------------------------------------------------------------------//
@@ -48,7 +54,8 @@ bool DragDropSample::initialise(CEGUI::GUIContext* guiContext)
     // add additional files, if you have some
     d_usedFiles = CEGUI::String(__FILE__);
 
-    // add your own initialisation code below here
+    // add your initialisation code below here
+    // e.g. loading layouts, etc.
 
     // success!
     return true;

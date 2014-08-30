@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    20/5/2008
+    created:    dd-mm-yyyy
     author:     name <email>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - YYYY Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Prototype_h_ // change to your belongings (to use the sample name is always
-#define _Prototype_h_ // a good idea because the name of your sample has to be unique)
+#ifndef _Prototype_h_ // change to your belongings (it is always a good idea to use
+#define _Prototype_h_ // the sample name because the name of your sample has to be unique)
 
 #include "SampleBase.h"
 
@@ -38,6 +38,7 @@ namespace CEGUI
 class PrototypeSample : public Sample
 {
 public:
+    // ctor
     PrototypeSample();
 
     // override member to initialise the sample.
