@@ -44,6 +44,8 @@ struct TreeViewFixture
 {
     TreeViewFixture()
     {
+        System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
+
         view = static_cast<TreeView*>(
             WindowManager::getSingleton().createWindow("TaharezLook/TreeView", "tv"));
         view->setModel(&model);
