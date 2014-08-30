@@ -1283,7 +1283,7 @@ namespace CEGUI
 
         if (d_childcomponent)
         {
-            CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
+            CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getTargetType() + ".");
             d_widgetlook->addWidgetComponent(*d_childcomponent);
             CEGUI_DELETE_AO d_childcomponent;
             d_childcomponent = 0;
