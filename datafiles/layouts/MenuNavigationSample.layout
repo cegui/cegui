@@ -2,7 +2,7 @@
 
 <GUILayout version="4">
 <Window type="DefaultWindow" name="root">
-    <Window type="TaharezLook/FrameWindow" name="Frame" >
+    <Window type="TaharezLook/FrameWindow" name="FrameWindow" >
         <Property name="Area" value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
         <Property name="Text" value="Menu Navigation Sample" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
