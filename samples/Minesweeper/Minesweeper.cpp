@@ -48,7 +48,6 @@ MinesweeperSample::MinesweeperSample()
         "The Minesweeper sample is a fully functional replication of the well known game using CEGUI";
     Sample::d_summary = 
         "The demo uses event handlers and the Vanilla and Taharez skins";
-    Sample::d_type = ST_Module;
 }
 
 //////////////////////////////////////////////////////////////////////////

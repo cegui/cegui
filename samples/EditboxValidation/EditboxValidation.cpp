@@ -39,7 +39,6 @@ EditboxValidationSample::EditboxValidationSample()
         "Displays how text can be validated. In the Sample an editbox is presented which "
         "validates incoming text. Partially valid, valid and invalid entries in the "
         "editbox are displayed using different text colours";
-    Sample::d_type = ST_Module;
 }
 
 //----------------------------------------------------------------------------//

@@ -42,7 +42,6 @@ TabControlSample::TabControlSample()
     Sample::d_summary = 
         "The tab window is of type \"TaharezLook/TabControl\". "
         "For the seperate pages CEGUI layouts are loaded and attached.";
-    Sample::d_type = ST_Module;
 }
 
 bool TabControlSample::initialise(CEGUI::GUIContext* guiContext)

@@ -145,7 +145,6 @@ RestaurantGameSample::RestaurantGameSample()
         "was made. The animations are triggered by firing events and when the pop-up animation is "
         "over the event handler will react to this and subsequently the window will be "
         "deleted as defined in the C++ code.";
-    Sample::d_type = ST_Module;
 }
     
 bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)

@@ -147,7 +147,6 @@ WidgetsSample::WidgetsSample()
         "how widgets look. Additionally the special setup of certain widgets, for "
         "example in initItemListbox(), initListbox(), initMenubar() and "
         "initMultiColumnList(), can be useful interesting to look at in the code";
-    Sample::d_type = ST_Module;
 }
 
 bool WidgetsSample::initialise(CEGUI::GUIContext* guiContext)

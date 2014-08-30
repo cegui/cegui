@@ -39,7 +39,6 @@ Demo6Sample::Demo6Sample()
     Sample::d_credits = "The CEGUI team";
     Sample::d_summary = "Demo6Sample";
     Sample::d_description = "Demo6Sample";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

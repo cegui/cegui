@@ -34,7 +34,6 @@ DragDropSample::DragDropSample()
     Sample::d_credits = "The CEGUI team";
     Sample::d_summary = "Drag and drop Sample";
     Sample::d_description = "Drag and drop Sample";
-    Sample::d_type = ST_Module;
 }
 
 //----------------------------------------------------------------------------//

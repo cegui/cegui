@@ -92,7 +92,6 @@ TreeSample::TreeSample()
     Sample::d_summary = 
         "The sample showcases the \"CEGUI/Tree\" functionality. "
         "The \"TaharezLook/Tree\" widget is used for this purpose.";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

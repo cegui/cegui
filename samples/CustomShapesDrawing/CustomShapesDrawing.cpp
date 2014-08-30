@@ -79,7 +79,6 @@ CustomShapesDrawingSample::CustomShapesDrawingSample()
         "This sample displays rendering possibilities provided with CEGUI's GeometryBuffer and SVGImage/SVGData class. "
         "The goal is to render an FPS graph that displays the last recorded FPS values.SVGImage provides optional anti - aliasing and the possibility to "
         "use the Image as part of a window.";
-    Sample::d_type = ST_Module;
 
     // Initialising the FPS values
     for(unsigned int i = 0; i < d_FPSGraphSamplesCount; ++i)

@@ -42,7 +42,6 @@ MetaDataWindowManager::MetaDataWindowManager(CEGUI::Window* metaDataWindow)
 
 void MetaDataWindowManager::init()
 {
-    d_wndSampleType = d_root->getChild("SampleType");
     d_wndSummary = d_root->getChild("Summary");
     d_wndDescription = d_root->getChild("Description");
     d_wndUsedFiles = d_root->getChild("UsedFiles");
@@ -59,7 +58,6 @@ void MetaDataWindowManager::setSampleInfo(SampleData* sampleData)
 {
     d_root->setText(sampleData->getName());
     d_wndSummary->setText(sampleData->getSummary());
-    d_wndSampleType->setText(sampleData->getSampleTypeString());
     d_wndDescription->setText(sampleData->getDescription());
     d_wndUsedFiles->setText(sampleData->getUsedFilesString());
     d_wndCredits->setText(sampleData->getCredits());

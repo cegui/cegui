@@ -50,7 +50,6 @@ SimpleGameMenuSample::SimpleGameMenuSample() :
     Sample::d_credits = "Timotei Dolean";
     Sample::d_description = "A demo that shows a simple game menu with navigation.";
     Sample::d_summary = "";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

@@ -39,7 +39,6 @@ TextSample::TextSample()
         "change the text formatting or enter text to play around with the options";
     Sample::d_summary = "The text formatting and scrollbar visibility "
         "are adjusted using the properties of the windows";
-    Sample::d_type = ST_Module;
 }
 
 /*************************************************************************

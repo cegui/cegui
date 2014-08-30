@@ -56,7 +56,6 @@ ScrollablePaneSample::ScrollablePaneSample()
     Sample::d_summary = 
         "The background window is of target type \"CEGUI/ScrollablePane\". "
         "The WindowsLook skin is used for all the windows.";
-    Sample::d_type = ST_Module;
 }
 
 bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)

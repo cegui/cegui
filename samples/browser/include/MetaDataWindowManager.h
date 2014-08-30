@@ -52,7 +52,6 @@ private:
 
     CEGUI::Window* d_root;
 
-    CEGUI::Window* d_wndSampleType;
     CEGUI::Window* d_wndSummary;
     CEGUI::Window* d_wndDescription;
     CEGUI::Window* d_wndUsedFiles;

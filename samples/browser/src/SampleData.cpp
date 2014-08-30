@@ -48,12 +48,10 @@ using namespace CEGUI;
 SampleData::SampleData(CEGUI::String sampleName,
                        CEGUI::String summary,
                        CEGUI::String description,
-                       SampleType sampleTypeEnum,
                        CEGUI::String credits)
     : d_name(sampleName)
     , d_summary(summary)
     , d_description(description)
-    , d_type(sampleTypeEnum)
     , d_usedFilesString("")
     , d_credits(credits)
     , d_sampleWindow(0)
@@ -83,23 +81,6 @@ CEGUI::String SampleData::getSummary()
 CEGUI::String SampleData::getCredits()
 {
     return "Credits:\n" + d_credits;
-}
-
-CEGUI::String SampleData::getSampleTypeString()
-{
-    switch(d_type)
-    {
-    case ST_Module:
-        return "C++ Module";
-        break;
-    case ST_Lua:
-        return "Lua";
-        break;
-    case ST_Python:
-        return "Python";
-    default:
-        return "";
-    }
 }
 
 CEGUI::String SampleData::getDescription()
@@ -230,9 +211,8 @@ SampleDataModule::SampleDataModule(Sample* instance,
                                    CEGUI::String sampleName,
                                    CEGUI::String summary,
                                    CEGUI::String description,
-                                   SampleType sampleTypeEnum,
                                    CEGUI::String credits)
-    : SampleData(sampleName, summary, description, sampleTypeEnum, credits)
+    : SampleData(sampleName, summary, description, credits)
     , d_sample(instance)
     , d_dynamicModule(0)
 {

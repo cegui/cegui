@@ -47,7 +47,6 @@ InventorySample::InventorySample()
         "allowing or refusing items to be dropped at set position, the "
         "InventoryReceiver class provides extra functionality in the C++ code. "
         "Event handlers are used to react to drag n' drop events for this purpose.";
-    Sample::d_type = ST_Module;
 }
 
 //----------------------------------------------------------------------------//
