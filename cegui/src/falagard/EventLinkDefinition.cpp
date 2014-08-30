@@ -34,12 +34,6 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// String holding parent link identifier
-// This is deprecated and declared as an extern in PropertyLinkDefinition.h
-const String S_parentIdentifier("__parent__");
-
-
-//----------------------------------------------------------------------------//
 EventLinkDefinition::EventLinkDefinition(const String& event_name) :
     d_eventName(event_name)
 {
