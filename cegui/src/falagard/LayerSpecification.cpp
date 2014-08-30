@@ -39,7 +39,7 @@ LayerSpecification::LayerSpecification(uint priority) :
 void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
 {
     // render all sections in this layer
-    for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
+    for(SectionSpecificationList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
     {
         (*curr).render(srcWindow, modcols, clipper, clipToDisplay);
     }
@@ -48,7 +48,7 @@ void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, co
 void LayerSpecification::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
 {
     // render all sections in this layer
-    for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
+    for(SectionSpecificationList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
     {
         (*curr).render(srcWindow, baseRect, modcols, clipper, clipToDisplay);
     }
@@ -86,7 +86,7 @@ void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
         xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<uint>::toString(d_layerPriority));
 
     // ouput all sections in this layer
-    for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
+    for(SectionSpecificationList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
     {
         (*curr).writeXMLToStream(xml_stream);
     }
@@ -94,18 +94,12 @@ void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     xml_stream.closeTag();
 }
 
-LayerSpecification::SectionIterator
-LayerSpecification::getSectionIterator() const
-{
-    return SectionIterator(d_sections.begin(), d_sections.end());
-}
-
 LayerSpecification::SectionSpecificationPointerList LayerSpecification::getSectionSpecificationPointers()
 {
     LayerSpecification::SectionSpecificationPointerList pointerList;
 
-    SectionList::iterator sectionSpecificationIter = d_sections.begin();
-    SectionList::iterator sectionSpecificationEnd = d_sections.end();
+    SectionSpecificationList::iterator sectionSpecificationIter = d_sections.begin();
+    SectionSpecificationList::iterator sectionSpecificationEnd = d_sections.end();
     while( sectionSpecificationIter != sectionSpecificationEnd )
     {
         pointerList.push_back(&(*sectionSpecificationIter));
@@ -113,6 +107,11 @@ LayerSpecification::SectionSpecificationPointerList LayerSpecification::getSecti
     }
 
     return pointerList;
+}
+
+const LayerSpecification::SectionSpecificationList& LayerSpecification::getSectionSpecifications() const
+{
+    return d_sections;
 }
 
 } // End of  CEGUI namespace section
