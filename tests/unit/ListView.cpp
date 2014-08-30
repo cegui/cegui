@@ -49,6 +49,8 @@ struct ListViewFixture
 {
     ListViewFixture()
     {
+        System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
+
         view = static_cast<ListView*>(WindowManager::getSingleton().createWindow("TaharezLook/ListView", "lv"));
         view->setWindowRenderer("Core/ListView");
         view->setModel(&model);
