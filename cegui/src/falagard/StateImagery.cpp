@@ -29,6 +29,8 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
+
+#include <algorithm>
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -57,6 +59,13 @@ void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const Colour
 void StateImagery::addLayer(const LayerSpecification& layer)
 {
     d_layers.push_back(layer);
+
+    sort();
+}
+
+void StateImagery::sort()
+{
+    std::sort(d_layers.begin(), d_layers.end());   
 }
 
 void StateImagery::clearLayers()
@@ -117,30 +126,6 @@ StateImagery::LayerSpecificationPointerList StateImagery::getLayerSpecificationP
     }
 
     return pointerList;
-}
-
-void StateImagery::sort()
-{
-    //! \deprecated Deprecated behaviour: We have to remove all elements and re-add them to force them to be sorted.
-    std::vector<LayerSpecification> temporaryList;
-
-    LayersList::iterator layerSpecMapIter = d_layers.begin();
-    LayersList::iterator layerSpecMapIterEnd = d_layers.end();
-    while( layerSpecMapIter != layerSpecMapIterEnd )
-    {
-        temporaryList.push_back(*layerSpecMapIter);
-        ++layerSpecMapIter;
-    }
-
-    clearLayers();
-    
-    std::vector<LayerSpecification>::iterator layerSpecVecIter = temporaryList.begin();
-    std::vector<LayerSpecification>::iterator layerSpecVecIterEnd = temporaryList.end();
-    while( layerSpecVecIter != layerSpecVecIterEnd )
-    {
-        addLayer(*layerSpecVecIter);
-        ++layerSpecVecIter;
-    }
 }
 
 } // End of  CEGUI namespace section
