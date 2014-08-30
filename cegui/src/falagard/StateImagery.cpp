@@ -119,4 +119,28 @@ StateImagery::LayerSpecificationPointerList StateImagery::getLayerSpecificationP
     return pointerList;
 }
 
+void StateImagery::sort()
+{
+    //! \deprecated Deprecated behaviour: We have to remove all elements and re-add them to force them to be sorted.
+    std::vector<LayerSpecification> temporaryList;
+
+    LayersList::iterator layerSpecMapIter = d_layers.begin();
+    LayersList::iterator layerSpecMapIterEnd = d_layers.end();
+    while( layerSpecMapIter != layerSpecMapIterEnd )
+    {
+        temporaryList.push_back(*layerSpecMapIter);
+        ++layerSpecMapIter;
+    }
+
+    clearLayers();
+    
+    std::vector<LayerSpecification>::iterator layerSpecVecIter = temporaryList.begin();
+    std::vector<LayerSpecification>::iterator layerSpecVecIterEnd = temporaryList.end();
+    while( layerSpecVecIter != layerSpecVecIterEnd )
+    {
+        addLayer(*layerSpecVecIter);
+        ++layerSpecVecIter;
+    }
+}
+
 } // End of  CEGUI namespace section
