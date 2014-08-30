@@ -104,7 +104,7 @@
                         <Property name="Visible" value="False" />
                     </AutoWindow>
                     <AutoWindow namePath="__auto_decbtn__" >
-                        <Property name="Visible" value="false" />
+                        <Property name="Visible" value="False" />
                     </AutoWindow>
                 </AutoWindow>
             </Window>
