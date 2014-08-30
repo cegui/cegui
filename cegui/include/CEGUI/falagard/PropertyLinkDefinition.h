@@ -106,7 +106,7 @@ public:
     //------------------------------------------------------------------------//
     void initialisePropertyReceiver(PropertyReceiver* receiver) const
     {
-        updateLinkTargets(receiver, Helper::fromString(PropertyDefinitionBase::d_initialValue));
+        updateLinkTargets(receiver, Helper::fromString(FalagardPropertyBase<T>::d_initialValue));
     }
 
     //------------------------------------------------------------------------//
@@ -128,7 +128,7 @@ protected:
 
         // if no target, or target (currently) invalid, return the default value
         if (d_targets.empty() || !target_wnd)
-            return Helper::fromString(PropertyDefinitionBase::d_initialValue);
+            return Helper::fromString(FalagardPropertyBase<T>::d_initialValue);
 
         // otherwise return the value of the property for first target, since
         // this is considered the 'master' target for get operations.

@@ -165,16 +165,17 @@ void register_WidgetLookManager_class(){
                 , getWidgetLookIterator_function_type( &::CEGUI::WidgetLookManager::getWidgetLookIterator )
                 , "!  deprecated Use WidgetLookPointerMap instead, which provides direct access to the added\
             elements.\n\
-            !  deprecated Use getWidgetLookMap instead, which provides direct access to the added elements.\n" );
+            !  deprecated Use getWidgetLookPointerMap instead, which provides direct access to the added\
+            elements. In the next version getWidgetLookMap will be added to replace the const-ness.\n" );
         
         }
-        { //::CEGUI::WidgetLookManager::getWidgetLookMap
+        { //::CEGUI::WidgetLookManager::getWidgetLookPointerMap
         
-            typedef ::std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel*> > > ( ::CEGUI::WidgetLookManager::*getWidgetLookMap_function_type )(  ) ;
+            typedef ::std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel*> > > ( ::CEGUI::WidgetLookManager::*getWidgetLookPointerMap_function_type )(  ) ;
             
             WidgetLookManager_exposer.def( 
-                "getWidgetLookMap"
-                , getWidgetLookMap_function_type( &::CEGUI::WidgetLookManager::getWidgetLookMap )
+                "getWidgetLookPointerMap"
+                , getWidgetLookPointerMap_function_type( &::CEGUI::WidgetLookManager::getWidgetLookPointerMap )
                 , "*!\n\
                     \n\
                         Returns a map containing Strings to WidgetLookFeel pointers. The map contains pointers\

@@ -57,7 +57,7 @@ public:
     //------------------------------------------------------------------------//
     void initialisePropertyReceiver(PropertyReceiver* receiver) const
     {
-        setWindowUserString(static_cast<Window*>(receiver), PropertyDefinitionBase::d_initialValue);
+        setWindowUserString(static_cast<Window*>(receiver), FalagardPropertyBase<T>::d_initialValue);
     }
 
     //------------------------------------------------------------------------//
@@ -95,9 +95,9 @@ protected:
             // to just return d_default, and while technically correct, it
             // would be very slow.
             const_cast<Window*>(wnd)->
-                setUserString(d_userStringName, PropertyDefinitionBase::d_initialValue);
+                setUserString(d_userStringName, FalagardPropertyBase<T>::d_initialValue);
 
-            return Helper::fromString(PropertyDefinitionBase::d_initialValue);
+            return Helper::fromString(FalagardPropertyBase<T>::d_initialValue);
         }
     }
 
