@@ -259,37 +259,37 @@ void RenderingWindow::realiseGeometry_impl()
                           Rectf(0, 0, tu, tv));
 
     const Rectf area(0, 0, d_size.d_width, d_size.d_height);
-    const Colour c(1, 1, 1, 1);
+    const glm::mediump_vec4 colour(1.0, 1.0, 1.0, 1.0);
     TexturedColouredVertex vbuffer[6];
 
     // vertex 0
     vbuffer[0].d_position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
-    vbuffer[0].d_colour = c;
+    vbuffer[0].d_colour = colour;
     vbuffer[0].d_texCoords = glm::vec2(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 1
     vbuffer[1].d_position   = glm::vec3(area.d_min.d_x, area.d_max.d_y, 0.0f);
-    vbuffer[1].d_colour = c;
+    vbuffer[1].d_colour = colour;
     vbuffer[1].d_texCoords = glm::vec2(tex_rect.d_min.d_x, tex_rect.d_max.d_y);
 
     // vertex 2
     vbuffer[2].d_position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
-    vbuffer[2].d_colour = c;
+    vbuffer[2].d_colour = colour;
     vbuffer[2].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     // vertex 3
     vbuffer[3].d_position   = glm::vec3(area.d_max.d_x, area.d_min.d_y, 0.0f);
-    vbuffer[3].d_colour = c;
+    vbuffer[3].d_colour = colour;
     vbuffer[3].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_min.d_y);
 
     // vertex 4
     vbuffer[4].d_position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
-    vbuffer[4].d_colour = c;
+    vbuffer[4].d_colour = colour;
     vbuffer[4].d_texCoords = glm::vec2(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 5
     vbuffer[5].d_position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
-    vbuffer[5].d_colour = c;
+    vbuffer[5].d_colour = colour;
     vbuffer[5].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     d_geometryBuffer.setTexture("texture0", &tex);

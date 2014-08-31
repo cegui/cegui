@@ -45,7 +45,7 @@
 
 #include <iostream>
 #include <ctime>
-#include <cstdlib>
+#include <stddef.h>
 
 using namespace CEGUI;
 using namespace glm;
@@ -61,6 +61,8 @@ CustomShapesDrawingSample::CustomShapesDrawingSample()
     , d_customSVGImageHeight(100.0f)
     , d_customGeometryGraphWidth(300.0f)
     , d_customGeometryGraphHeight(100.0f)
+    , d_FPSElapsed(0.0f)
+    , d_FPSFrames()
 {
     Sample::d_name = "CustomShapesDrawingSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
@@ -309,8 +311,10 @@ void CustomShapesDrawingSample::updateCustomGeometryGraph(std::vector<glm::vec2>
         offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * 1.0f;
 
         CEGUI::ColouredVertex linePositionVertex;
+        static const CEGUI::Colour lineColour(0.0f, 1.0f, 0.0f, 1.0f);
+
         glm::vec2 vertexPosition;
-        linePositionVertex.d_colour = CEGUI::Colour(0.0f, 1.0f, 0.0f, 1.0f);
+        linePositionVertex.setColour(lineColour);
 
         linePositionVertex.d_position = glm::vec3(prevPos - offsetVector, 0.0f);
         d_FPSGraphGeometryBuffer->appendVertex(linePositionVertex);
@@ -516,13 +520,17 @@ void CustomShapesDrawingSample::updateFPSData(int newFPSValue)
 void CustomShapesDrawingSample::setupCustomGeometryGraphBackground()
 {
     // Add a grey background quad
-    glm::vec2 topLeft(0.0f, 0.0f);
-    glm::vec2 bottomLeft(0.0f, d_customGeometryGraphHeight);
-    glm::vec2 topRight(d_customGeometryGraphWidth * 0.9f + d_customGeometryGraphWidth * 0.05f, 0.0f);
-    glm::vec2 bottomRight(d_customGeometryGraphWidth * 0.9f + d_customGeometryGraphWidth * 0.05f, d_customGeometryGraphHeight);
+    static const glm::vec2 topLeft(0.0f, 0.0f);
+    static const glm::vec2 bottomLeft(0.0f, d_customGeometryGraphHeight);
+    static const glm::vec2 topRight(d_customGeometryGraphWidth * 0.9f + d_customGeometryGraphWidth * 0.05f, 0.0f);
+    static const glm::vec2 bottomRight(d_customGeometryGraphWidth * 0.9f + d_customGeometryGraphWidth * 0.05f, d_customGeometryGraphHeight);
+
+    // Defining some colours we will use
+    static const CEGUI::Colour backgroundQuadColour(0.3f, 0.3f, 0.3f, 1.0f);
+    static const CEGUI::Colour lineColour(0.5f, 0.5f, 0.5f, 1.0f);
 
     CEGUI::ColouredVertex backgroundQuadVertex;
-    backgroundQuadVertex.d_colour = CEGUI::Colour(0.3f, 0.3f, 0.3f, 1.0f);
+    backgroundQuadVertex.setColour(backgroundQuadColour);
 
     backgroundQuadVertex.d_position = glm::vec3(topLeft, 0.0f);
     d_customGeometryGraphBackgroundVertices.push_back(backgroundQuadVertex);
@@ -544,7 +552,7 @@ void CustomShapesDrawingSample::setupCustomGeometryGraphBackground()
 
     // We save some horizontical line vertices that we will use for our graph's background.
     CEGUI::ColouredVertex linePositionVertex;
-    linePositionVertex.d_colour = CEGUI::Colour(0.5f, 0.5f, 0.5f, 1.0f);
+    linePositionVertex.setColour(lineColour);
 
     size_t lineCount = 7;
     for (size_t i = 0; i < lineCount; ++i)

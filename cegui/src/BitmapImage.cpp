@@ -128,19 +128,19 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     const CEGUI::ColourRect&  colours = render_settings.d_multiplyColours;
 
     // vertex 0
-    vbuffer[0].d_position   = glm::vec3(final_rect.left(), final_rect.top(), 0.0f);
-    vbuffer[0].d_colour = colours.d_top_left;
-    vbuffer[0].d_texCoords = glm::vec2(tex_rect.left(), tex_rect.top());
+    vbuffer[0].setColour(colours.d_top_left);
+    vbuffer[0].d_position   = glm::mediump_vec3(final_rect.left(), final_rect.top(), 0.0f);
+    vbuffer[0].d_texCoords = glm::mediump_vec2(tex_rect.left(), tex_rect.top());
 
     // vertex 1
-    vbuffer[1].d_position   = glm::vec3(final_rect.left(), final_rect.bottom(), 0.0f);
-    vbuffer[1].d_colour = colours.d_bottom_left;
-    vbuffer[1].d_texCoords = glm::vec2(tex_rect.left(), tex_rect.bottom());
+    vbuffer[1].setColour(colours.d_bottom_left);
+    vbuffer[1].d_position   = glm::mediump_vec3(final_rect.left(), final_rect.bottom(), 0.0f);
+    vbuffer[1].d_texCoords = glm::mediump_vec2(tex_rect.left(), tex_rect.bottom());
 
     // vertex 2
+    vbuffer[2].setColour(colours.d_bottom_right);
     vbuffer[2].d_position.x   = final_rect.right();
     vbuffer[2].d_position.z   = 0.0f;
-    vbuffer[2].d_colour   = colours.d_bottom_right;
     vbuffer[2].d_texCoords.x = tex_rect.right();
 
     // top-left to bottom-right diagonal
@@ -157,14 +157,14 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     }
 
     // vertex 3
+    vbuffer[3].setColour(colours.d_top_right);
     vbuffer[3].d_position   = glm::vec3(final_rect.right(), final_rect.top(), 0.0f);
-    vbuffer[3].d_colour = colours.d_top_right;
     vbuffer[3].d_texCoords = glm::vec2(tex_rect.right(), tex_rect.top());
 
     // vertex 4
+    vbuffer[4].setColour(colours.d_top_left);
     vbuffer[4].d_position.x   = final_rect.left();
     vbuffer[4].d_position.z   = 0.0f;
-    vbuffer[4].d_colour   = colours.d_top_left;
     vbuffer[4].d_texCoords.x = tex_rect.left();
 
     // top-left to bottom-right diagonal
@@ -181,8 +181,8 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     }
 
     // vertex 5
+    vbuffer[5].setColour(colours.d_bottom_right);
     vbuffer[5].d_position     = glm::vec3(final_rect.right(), final_rect.bottom(), 0.0f);
-    vbuffer[5].d_colour   = colours.d_bottom_right;
     vbuffer[5].d_texCoords   = glm::vec2(tex_rect.right(), tex_rect.bottom());
 
     CEGUI::GeometryBuffer& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
