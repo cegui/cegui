@@ -256,9 +256,9 @@ RenderEffect* GeometryBuffer::getRenderEffect()
 }
 
 //----------------------------------------------------------------------------//
-void GeometryBuffer::setTranslation(const Vector3f& translation)
+void GeometryBuffer::setTranslation(const glm::vec3& translation)
 {
-    if(d_translation != translation)
+    if (d_translation != translation)
     {
         d_translation = translation;
         d_matrixValid = false;
@@ -276,9 +276,9 @@ void GeometryBuffer::setRotation(const Quaternion& rotationQuat)
 }
 
 //----------------------------------------------------------------------------//
-void GeometryBuffer::setScale(const Vector3f& scale)
+void GeometryBuffer::setScale(const glm::vec3& scale)
 {
-    if(d_scale != scale)
+    if (d_scale != scale)
     {
         d_scale = scale;
         d_matrixValid = false;
@@ -288,15 +288,15 @@ void GeometryBuffer::setScale(const Vector3f& scale)
 //----------------------------------------------------------------------------//
 void GeometryBuffer::setScale(const Vector2f& scale)
 {
-    setScale(Vector3f(scale, 0.f));
+    setScale(glm::vec3(scale.d_x, scale.d_y, 0.0f));
 }
 
 //----------------------------------------------------------------------------//
-void GeometryBuffer::setPivot(const Vector3f& p)
+void GeometryBuffer::setPivot(const glm::vec3& p)
 {
-    if(d_pivot != p)
+    if (d_pivot != p)
     {
-        d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+        d_pivot = p;
         d_matrixValid = false;
     }
 }

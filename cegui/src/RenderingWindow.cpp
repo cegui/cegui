@@ -79,13 +79,13 @@ void RenderingWindow::setPosition(const Vector2f& position)
 {
     d_position = position;
 
-    Vector3f trans(d_position.d_x, d_position.d_y, 0.0f);
+    glm::vec3 trans(d_position.d_x, d_position.d_y, 0.0f);
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
     {
-        trans.d_x -= static_cast<RenderingWindow*>(d_owner)->d_position.d_x;
-        trans.d_y -= static_cast<RenderingWindow*>(d_owner)->d_position.d_y;
+        trans.x -= static_cast<RenderingWindow*>(d_owner)->d_position.d_x;
+        trans.y -= static_cast<RenderingWindow*>(d_owner)->d_position.d_y;
     }
 
     d_geometryBuffer.setTranslation(trans);
@@ -111,7 +111,7 @@ void RenderingWindow::setRotation(const Quaternion& rotation)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPivot(const Vector3f& pivot)
+void RenderingWindow::setPivot(const glm::vec3& pivot)
 {
     d_pivot = pivot;
     d_geometryBuffer.setPivot(d_pivot);
@@ -136,7 +136,7 @@ const Quaternion& RenderingWindow::getRotation() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector3f& RenderingWindow::getPivot() const
+const glm::vec3& RenderingWindow::getPivot() const
 {
     return d_pivot;
 }

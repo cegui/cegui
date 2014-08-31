@@ -355,7 +355,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 void CEGuiBaseApplication::updateLogoGeometry()
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
-    CEGUI::Vector3f position(10.0f, scrn.getSize().d_height - 89.0f, 0.0f);
+    const glm::vec3 position(10.0f, scrn.getSize().d_height - 89.0f, 0.0f);
 
     const size_t bufferCount = d_logoGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
@@ -369,7 +369,7 @@ void CEGuiBaseApplication::updateLogoGeometry()
 void CEGuiBaseApplication::updateFPSGeometry()
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
-    CEGUI::Vector3f position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
+    const glm::vec3 position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
 
     const size_t bufferCount = d_FPSGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
@@ -419,7 +419,7 @@ void CEGuiBaseApplication::updateLogoGeometryRotation()
     const size_t bufferCount = d_logoGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
     {
-        d_logoGeometry[i]->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
+        d_logoGeometry[i]->setPivot(glm::vec3(91.5f, 44.5f, 0));
     }
 }
 

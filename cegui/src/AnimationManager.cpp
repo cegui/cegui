@@ -69,11 +69,11 @@ AnimationManager::AnimationManager(void)
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<int>("int"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<uint>("uint"));
     addBasicInterpolator(CEGUI_NEW_AO TplDiscreteInterpolator<bool>("bool"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Sizef >("Sizef"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2f >("Vector2f"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector3f >("Vector3f"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Sizef>("Sizef"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2f>("Vector2f"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<glm::vec3>("vec3"));
     addBasicInterpolator(CEGUI_NEW_AO QuaternionSlerpInterpolator());
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rectf >("Rectf"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rectf>("Rectf"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Colour>("Colour"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<ColourRect>("ColourRect"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UDim>("UDim"));

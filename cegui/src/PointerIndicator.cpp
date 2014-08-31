@@ -384,7 +384,7 @@ void PointerIndicator::updateGeometryBuffersTranslation()
     for (size_t i = 0; i < geom_buffer_count; ++i)
     {
         CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-        currentBuffer->setTranslation(Vector3f(d_position.d_x, d_position.d_y, 0));
+        currentBuffer->setTranslation(glm::vec3(d_position.d_x, d_position.d_y, 0));
     }
 }
 

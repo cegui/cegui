@@ -113,7 +113,7 @@ public:
     \param translation
         Vector3 describing the three axis translation vector to be used.
     */
-    virtual void setTranslation(const Vector3f& translation);
+    virtual void setTranslation(const glm::vec3& translation);
 
     /*!
     \brief
@@ -133,7 +133,7 @@ public:
     \param scale
         Vector3 describing the scale to be used.
     */
-    virtual void setScale(const Vector3f& scale);
+    virtual void setScale(const glm::vec3& scale);
 
     /*!
     \brief
@@ -153,7 +153,7 @@ public:
         Vector3 describing the location of the pivot point to be used when
         applying the rotation to the geometry.
     */
-    void setPivot(const Vector3f& p);
+    void setPivot(const glm::vec3& p);
 
     /*!
     \brief
@@ -470,13 +470,13 @@ protected:
 
 
     //! translation vector
-    Vector3f        d_translation;
+    glm::vec3       d_translation;
     //! rotation quaternion
     Quaternion      d_rotation;
     //! scaling vector
-    Vector3f        d_scale;
+    glm::vec3       d_scale;
     //! pivot point for rotation
-    Vector3f        d_pivot;
+    glm::vec3       d_pivot;
     //! custom transformation matrix
     glm::mat4x4     d_customTransform;
     //! true when there have been no changes to the GeometryBuffer's transformation since it has last been updated.
