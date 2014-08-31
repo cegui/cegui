@@ -31,7 +31,12 @@
 
 #include "glm/glm.hpp"
 
-// Start of CEGUI namespace section
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
+
 namespace CEGUI
 {
 /*!
@@ -39,24 +44,31 @@ namespace CEGUI
     Structure that is used to hold the attributes of a vertex for coloured and
     textured geometry in 3D space.
 */
-struct TexturedColouredVertex :
-    public AllocatedObject<TexturedColouredVertex>
+struct CEGUIEXPORT TexturedColouredVertex : public AllocatedObject<TexturedColouredVertex>
 {
     //! Constructor
-    TexturedColouredVertex() {}
+    TexturedColouredVertex()
+    {
+    }
 
-    TexturedColouredVertex(glm::vec3 position, Colour colour, glm::vec2 texCoords) :
-        d_position(position),
-        d_colour(colour),
-        d_texCoords(texCoords)
-    {}
+    TexturedColouredVertex(const glm::mediump_vec3& position,
+                           const glm::mediump_vec4& colour,
+                           const glm::mediump_vec2& texCoords)
+        : d_position(position)
+        , d_colour(colour)
+        , d_texCoords(texCoords)
+    {
+    }
+
+    //! Sets the colour of the struct
+    void setColour(const CEGUI::Colour& colour);
 
     //! Position of the vertex in 3D space.
-    glm::vec3 d_position;
+    glm::mediump_vec3   d_position;
     //! Multiplicative-colour attribute of the vertex.
-    Colour  d_colour;
+    glm::mediump_vec4   d_colour;
     //! Texture coordinates of the vertex.
-    glm::vec2 d_texCoords;
+    glm::mediump_vec2   d_texCoords;
 };
 
 /*!
@@ -64,24 +76,35 @@ struct TexturedColouredVertex :
     Structure that is used to hold the attributes of coloured geometry
     in 3D space.
 */
-struct ColouredVertex :
-    public AllocatedObject<ColouredVertex>
+struct CEGUIEXPORT ColouredVertex : public AllocatedObject<ColouredVertex>
 {
     //! Constructor
-    ColouredVertex() {}
+    ColouredVertex()
+    {
+    }
 
-    ColouredVertex(glm::vec3 position, Colour colour) :
-        d_position(position),
-        d_colour(colour)
-    {}
+    ColouredVertex(const glm::mediump_vec3& position,
+                   const glm::mediump_vec4& colour)
+        : d_position(position)
+        , d_colour(colour)
+    {
+    }
+
+    //! Sets the colour of the struct
+    void setColour(const CEGUI::Colour& colour);
 
     //! Position of the vertex in 3D space.
-    glm::vec3   d_position;
+    glm::mediump_vec3   d_position;
+
     //! Colour attribute of the vertex.
-    Colour      d_colour;
+    glm::mediump_vec4   d_colour;
 };
 
 
-} // End of  CEGUI namespace section
+}
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIVertex_h_
