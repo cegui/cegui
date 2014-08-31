@@ -29,6 +29,9 @@
 #include "CEGUI/ShaderParameterBindings.h"
 
 #include <vector>
+#include <algorithm>
+#include <iterator>
+#include <stddef.h>
 
 namespace CEGUI
 {
@@ -77,24 +80,32 @@ void GeometryBuffer::appendGeometry(const std::vector<ColouredVertex>& coloured_
 void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
                                     uint vertex_count)
 {
+    // Create a temporary array to contain our data
+    static const std::size_t vertexDataSize = 7;
+    std::size_t fullArraySize = vertexDataSize * vertex_count;
+    float* vertexData = new float[fullArraySize];
+
     // Add the vertex data in their default order into an array
-    std::vector<float> vertexData;
     const ColouredVertex* vs = vertex_array;
     for (uint i = 0; i < vertex_count; ++i, ++vs)
     {
         // Add all the elements in the default order for textured and coloured
         // geometry into the vector
-        vertexData.push_back(vs->d_position.x);
-        vertexData.push_back(vs->d_position.y);
-        vertexData.push_back(vs->d_position.z);
-        vertexData.push_back(vs->d_colour.getRed());
-        vertexData.push_back(vs->d_colour.getGreen());
-        vertexData.push_back(vs->d_colour.getBlue());
-        vertexData.push_back(vs->d_colour.getAlpha());
+        std::size_t currentIndex = i * vertexDataSize;
+
+        vertexData[currentIndex + 0] = vs->d_position.x;
+        vertexData[currentIndex + 1] = vs->d_position.y;
+        vertexData[currentIndex + 2] = vs->d_position.z;
+        vertexData[currentIndex + 3] = vs->d_colour.r;
+        vertexData[currentIndex + 4] = vs->d_colour.g;
+        vertexData[currentIndex + 5] = vs->d_colour.b;
+        vertexData[currentIndex + 6] = vs->d_colour.a;
     }
 
     // Append the prepared geometry data
-    appendGeometry(vertexData);
+    appendGeometry(vertexData, vertexDataSize);
+
+    delete[] vertexData;
 }
 
 //---------------------------------------------------------------------------//
@@ -110,34 +121,45 @@ void GeometryBuffer::appendGeometry(const std::vector<TexturedColouredVertex>& t
 void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
                                     uint vertex_count)
 {
+    // Create a temporary array to contain our data
+    static const std::size_t vertexDataSize = 9;
+    std::size_t fullArraySize = vertexDataSize * vertex_count;
+    float* vertexData = new float[fullArraySize];
+
     // Add the vertex data in their default order into an array
-    std::vector<float> vertexData;
     const TexturedColouredVertex* vs = vertex_array;
     for (uint i = 0; i < vertex_count; ++i, ++vs)
     {
         // Add all the elements in the default order for textured and coloured
         // geometry into the vector
-        vertexData.push_back(vs->d_position.x);
-        vertexData.push_back(vs->d_position.y);
-        vertexData.push_back(vs->d_position.z);
-        vertexData.push_back(vs->d_colour.getRed());
-        vertexData.push_back(vs->d_colour.getGreen());
-        vertexData.push_back(vs->d_colour.getBlue());
-        vertexData.push_back(vs->d_colour.getAlpha());
-        vertexData.push_back(vs->d_texCoords.x);
-        vertexData.push_back(vs->d_texCoords.y);
+        std::size_t currentIndex = i * vertexDataSize;
+        
+        vertexData[currentIndex + 0] = vs->d_position.x;
+        vertexData[currentIndex + 1] = vs->d_position.y;
+        vertexData[currentIndex + 2] = vs->d_position.z;
+        vertexData[currentIndex + 3] = vs->d_colour.r;
+        vertexData[currentIndex + 4] = vs->d_colour.g;
+        vertexData[currentIndex + 5] = vs->d_colour.b;
+        vertexData[currentIndex + 6] = vs->d_colour.a;
+        vertexData[currentIndex + 7] = vs->d_texCoords.x;
+        vertexData[currentIndex + 8] = vs->d_texCoords.y;
     }
 
     // Append the prepared geometry data
-    appendGeometry(vertexData);
+    appendGeometry(vertexData, fullArraySize);
+
+    delete[] vertexData;
 }
 
 //---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const float* const vertex_data,
-                                    uint array_size)
+void GeometryBuffer::appendGeometry(const float* vertex_data,
+                                    std::size_t array_size)
 {
-    std::vector<float> vectorVertexData(vertex_data, vertex_data + array_size);
-    appendGeometry(vectorVertexData);
+    d_vertexData.reserve( d_vertexData.size() + array_size);
+    std::copy(vertex_data, vertex_data + array_size, std::back_inserter(d_vertexData));
+
+    // Update size of geometry buffer
+    d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
 }
 
 //---------------------------------------------------------------------------//
@@ -150,10 +172,10 @@ void GeometryBuffer::appendVertex(const TexturedColouredVertex& vertex)
     vertexData[0] = vertex.d_position.x;
     vertexData[1] = vertex.d_position.y;
     vertexData[2] = vertex.d_position.z;
-    vertexData[3] = vertex.d_colour.getRed();
-    vertexData[4] = vertex.d_colour.getGreen();
-    vertexData[5] = vertex.d_colour.getBlue();
-    vertexData[6] = vertex.d_colour.getAlpha();
+    vertexData[3] = vertex.d_colour.r;
+    vertexData[4] = vertex.d_colour.g;
+    vertexData[5] = vertex.d_colour.b;
+    vertexData[6] = vertex.d_colour.a;
     vertexData[7] = vertex.d_texCoords.x;
     vertexData[8] = vertex.d_texCoords.y;
 
@@ -170,10 +192,10 @@ void GeometryBuffer::appendVertex(const ColouredVertex& vertex)
     vertexData[0] = vertex.d_position.x;
     vertexData[1] = vertex.d_position.y;
     vertexData[2] = vertex.d_position.z;
-    vertexData[3] = vertex.d_colour.getRed();
-    vertexData[4] = vertex.d_colour.getGreen();
-    vertexData[5] = vertex.d_colour.getBlue();
-    vertexData[6] = vertex.d_colour.getAlpha();
+    vertexData[3] = vertex.d_colour.r;
+    vertexData[4] = vertex.d_colour.g;
+    vertexData[5] = vertex.d_colour.b;
+    vertexData[6] = vertex.d_colour.a;
 
     appendGeometry(vertexData, 7);
 }
