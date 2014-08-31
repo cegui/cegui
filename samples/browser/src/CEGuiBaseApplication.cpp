@@ -24,6 +24,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef __APPLE__
+#   include <Carbon/Carbon.h>
+#endif
+
 #include "CEGUISamplesConfig.h"
 #include "CEGuiBaseApplication.h"
 #include "SamplesFramework.h"
@@ -45,10 +49,6 @@
 #include <string.h>
 #include <limits.h>
 #include <math.h>
-
-#ifdef __APPLE__
-#   include <Carbon/Carbon.h>
-#endif
 
 // setup default-default path
 #ifndef CEGUI_SAMPLE_DATAPATH
