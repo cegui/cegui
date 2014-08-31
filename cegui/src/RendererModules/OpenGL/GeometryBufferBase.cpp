@@ -63,12 +63,6 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::reset()
-{
-    GeometryBuffer::reset();
-}
-
-//----------------------------------------------------------------------------//
 const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
 {
     if (!d_matrixValid)
@@ -92,14 +86,6 @@ void OpenGLGeometryBufferBase::updateMatrix() const
     d_matrix *=  translMatrix * d_customTransform;
 
     d_matrixValid = true;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::appendGeometry(const std::vector<float>& vertex_data)
-{
-    d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
-    // Update size of geometry buffer
-    d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
 }
 
 //----------------------------------------------------------------------------//

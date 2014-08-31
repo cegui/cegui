@@ -123,11 +123,9 @@ void Direct3D11GeometryBuffer::setClippingRegion(const Rectf& region)
 
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
+void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
 {
-    d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
-    // Update size of geometry buffer
-    d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
+    GeometryBuffer::appendGeometry(vertex_data, array_size);
 
     updateVertexBuffer();
 }

@@ -58,11 +58,8 @@ public:
     OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGLGeometryBufferBase();
 
-    // implementation of abstract members from GeometryBuffer
-    void setCustomTransform(const glm::mat4x4& transformation);
-    void setClippingRegion(const Rectf& region);
-    void appendGeometry(const std::vector<float>& vertex_data);
-    void reset();
+    // Overrides of virtual and abstract methods inherited from GeometryBuffer
+    virtual void setClippingRegion(const Rectf& region);
 
     //! Returns the model matrix, which is in effect for this GeometryBuffer
     const glm::mat4& getMatrix() const;

@@ -172,16 +172,11 @@ void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
+void OgreGeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
 {
-    d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), 
-        vertex_data.end());
+    GeometryBuffer::appendGeometry(vertex_data, array_size);
 
     d_dataAppended = true;
-
-    size_t float_per_element = getFloatsPerVertex();
-
-    d_vertexCount = d_vertexData.size()/float_per_element;
 }
 
 void OgreGeometryBuffer::syncVertexData() const
@@ -321,7 +316,7 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 
         // Create the a new vertex buffer
         d_hwBuffer = Ogre::HardwareBufferManager::getSingleton().
-            createVertexBuffer(getFloatsPerVertex()*sizeof(float), count,
+            createVertexBuffer(getVertexAttributeElementCount()*sizeof(float), count,
             Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
             false);
     }
@@ -370,13 +365,19 @@ void OgreGeometryBuffer::setTextureStates() const
 }
 
 // ------------------------------------ //
-size_t OgreGeometryBuffer::getFloatsPerVertex() const
+int OgreGeometryBuffer::getVertexAttributeElementCount() const
 {
-    
-    switch(d_expectedData){
-    case MT_COLOURED: return FLOATS_PER_COLOURED;
-    case MT_TEXTURED: return FLOATS_PER_TEXTURED;
-    default: return 0;
+    switch(d_expectedData)
+    {
+        case MT_COLOURED:
+            return FLOATS_PER_COLOURED;
+            break;
+        case MT_TEXTURED:
+            return FLOATS_PER_TEXTURED;
+            break;
+        default:
+            return 0;
+            break;
     }
 }
 

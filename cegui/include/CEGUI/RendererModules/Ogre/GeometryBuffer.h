@@ -68,16 +68,15 @@ public:
     //! Destructor
     virtual ~OgreGeometryBuffer();
 
+    // Overrides of virtual and abstract methods inherited from GeometryBuffer
+    virtual void draw() const;
+    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
+    virtual void setClippingRegion(const Rectf& region);
+    virtual void reset();
+    virtual int getVertexAttributeElementCount() const;
+
     //! return the transformation matrix used for this buffer.
     const Ogre::Matrix4& getMatrix() const;
-
-    // implement CEGUI::GeometryBuffer interface.
-    virtual void draw() const;
-    void appendGeometry(const std::vector<float>& vertex_data);
-
-    void setClippingRegion(const Rectf& region);
-
-    void reset();
 
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
 
@@ -95,8 +94,6 @@ protected:
     void setTextureStates() const;
 
     void cleanUpVertexAttributes();
-
-    inline size_t getFloatsPerVertex() const;
 
     //! Renderer object that owns this GeometryBuffer
     OgreRenderer& d_owner;
