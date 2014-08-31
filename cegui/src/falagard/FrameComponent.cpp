@@ -32,7 +32,7 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/CoordConverter.h"
 #include <iostream>
-#include <cstdlib>
+#include <stddef.h>
 
 namespace CEGUI
 {

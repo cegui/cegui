@@ -34,7 +34,7 @@
 #endif
 
 #include <ctime>
-#include <cstdlib>
+#include <stddef.h>
 
 
 const unsigned int TreeSample::TreeID    = 1;

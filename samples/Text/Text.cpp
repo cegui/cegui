@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "Text.h"
 #include "CEGUI/CEGUI.h"
-#include <cstdlib>
+#include <stddef.h>
 
 using namespace CEGUI;
 
