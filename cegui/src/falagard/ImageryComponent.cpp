@@ -33,7 +33,7 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
 #include <iostream>
-#include <cstdlib>
+#include <stddef.h>
 
 // void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours);
 

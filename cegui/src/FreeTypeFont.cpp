@@ -36,7 +36,7 @@
 #include "CEGUI/Font_xmlHandler.h"
 #include <cmath>
 #include <cstdio>
-#include <cstdlib>
+#include <stddef.h>
 #include <cstring>
 
 #ifdef _MSC_VER

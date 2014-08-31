@@ -31,7 +31,7 @@ author:     Olivier Delannoy (Dalfy)
 #include "Minesweeper_Timer.h"
 
 #include <ctime>
-#include <cstdlib>
+#include <stddef.h>
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
