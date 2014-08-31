@@ -24,8 +24,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
-
 #include "CEGUI/RendererModules/OpenGL/GL3FBOTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"

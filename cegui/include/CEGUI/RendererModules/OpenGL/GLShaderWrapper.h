@@ -28,8 +28,8 @@
 #define _CEGUIOpenGLShaderWrapper_h_
 
 #include "RendererBase.h"
-
 #include "CEGUI/ShaderWrapper.h"
+
 #include <string>
 
 #if defined(_MSC_VER)

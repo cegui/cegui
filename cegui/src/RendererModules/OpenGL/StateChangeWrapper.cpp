@@ -25,8 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include <GL/glew.h>
-
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 
 namespace CEGUI

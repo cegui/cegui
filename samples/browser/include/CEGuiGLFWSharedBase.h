@@ -29,6 +29,8 @@
 
 #include "CEGuiBaseApplication.h"
 #include "CEGUI/PointerIndicator.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
 #include <GL/glfw.h>
 
 class SamplesFrameworkBase;

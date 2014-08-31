@@ -24,8 +24,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
-
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/Logger.h"
