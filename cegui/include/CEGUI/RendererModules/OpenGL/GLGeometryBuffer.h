@@ -50,11 +50,11 @@ public:
     //! Constructor
     OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
-    // Implementation/overrides of members from GeometryBuffer
-    void draw() const;
+    // Overrides of virtual and abstract methods inherited from GeometryBuffer
+    virtual void draw() const;
 
-    // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
-    void finaliseVertexAttributes();
+    // Overrides of virtual and abstract methods inherited from GeometryBufferBase
+    virtual void finaliseVertexAttributes();
 
     /*
     \brief

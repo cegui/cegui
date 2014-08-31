@@ -51,14 +51,13 @@ public:
     //! Destructor
     ~Direct3D11GeometryBuffer();
 
+    // Overrides of virtual and abstract methods inherited from GeometryBuffer
+    virtual void draw() const;
+    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
+    virtual void setClippingRegion(const Rectf& region);
+
     //! Returns the model matrix, which is in effect for this GeometryBuffer
     const glm::mat4& getMatrix() const;
-
-    // Implement GeometryBuffer interface.
-    void draw() const;
-
-    void appendGeometry(const std::vector<float>& vertex_data);
-    void setClippingRegion(const Rectf& region);
 
     /*
     \brief

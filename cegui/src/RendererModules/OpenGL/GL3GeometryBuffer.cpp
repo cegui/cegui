@@ -229,9 +229,10 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
+void OpenGL3GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
 {
-    OpenGLGeometryBufferBase::appendGeometry(vertex_data);
+    OpenGLGeometryBufferBase::appendGeometry(vertex_data, array_size);
+
     updateOpenGLBuffers();
 }
 
