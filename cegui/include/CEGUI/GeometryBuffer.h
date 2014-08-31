@@ -37,6 +37,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include <vector>
+#include <cstddef> //size_t
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -198,20 +199,9 @@ public:
         should be added to the GeometryBuffer.
 
     \param array_size
-        The number of elements in the array.
+        The number of elements in the passed array.
     */
-    virtual void appendGeometry(const float* const vertex_data, uint array_size);
-
-
-    /*!
-    \brief
-        Append the geometry data to the existing data
-
-    \param vertex_data
-        Vector of floats containing the geometry data that should be added to the
-        GeometryBuffer.
-    */
-    virtual void appendGeometry(const std::vector<float>& vertex_data) = 0;
+    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
 
     /*!
     \brief
@@ -319,7 +309,7 @@ public:
         The total number of floats used by the attributes of the current vertex
         layout.
     */
-    int getVertexAttributeElementCount() const;
+    virtual int getVertexAttributeElementCount() const;
 
 
     /*!
