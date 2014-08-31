@@ -44,7 +44,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
             "ID3D11Device."));
 
     Rectf area(
-        Vector2f(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
+        glm::vec2(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
         Sizef(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 

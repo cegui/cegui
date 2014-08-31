@@ -138,7 +138,7 @@ public:
         extent measurement functions).
     */
     float drawText(std::vector<GeometryBuffer*>& geom_buffers, const String& text,
-                   const Vector2f& position, const Rectf* clip_rect,
+                   const glm::vec2& position, const Rectf* clip_rect,
                    const bool clipping_enabled, const ColourRect& colours,
                    const float space_extra = 0.0f, const float x_scale = 1.0f,
                    const float y_scale = 1.0f) const;

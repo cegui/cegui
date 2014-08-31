@@ -200,8 +200,8 @@ void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& 
 bool InputAggregator::injectMouseMove(float delta_x, float delta_y)
 {
     return injectMousePosition(
-        delta_x + d_pointerPosition.d_x * d_mouseMovementScalingFactor,
-        delta_y + d_pointerPosition.d_y * d_mouseMovementScalingFactor);
+        delta_x + d_pointerPosition.x * d_mouseMovementScalingFactor,
+        delta_y + d_pointerPosition.y * d_mouseMovementScalingFactor);
 }
 
 bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
@@ -209,7 +209,7 @@ bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
     if (d_inputReceiver == 0)
         return false;
 
-    d_pointerPosition = Vector2f(x_pos, y_pos);
+    d_pointerPosition = glm::vec2(x_pos, y_pos);
 
     SemanticInputEvent semantic_event(SV_PointerMove);
     semantic_event.d_payload.array[0] = x_pos;
@@ -252,9 +252,9 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
         // build new allowable area for multi-clicks
         tkr.d_click_area.setPosition(d_pointerPosition);
         tkr.d_click_area.setSize(d_mouseButtonMultiClickAbsoluteTolerance);
-        tkr.d_click_area.offset(Vector2f(
-            -(d_mouseButtonMultiClickAbsoluteTolerance.d_width / 2),
-            -(d_mouseButtonMultiClickAbsoluteTolerance.d_height / 2)));
+        tkr.d_click_area.offset(-0.5f * glm::vec2(
+            d_mouseButtonMultiClickAbsoluteTolerance.d_width,
+            d_mouseButtonMultiClickAbsoluteTolerance.d_height));
     }
 
     // reset timer for this tracker.

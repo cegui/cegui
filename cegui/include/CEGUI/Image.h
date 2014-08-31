@@ -216,7 +216,7 @@ public:
 
     //! Constructor
     Image(const String& name);
-    Image(const String& name, const Vector2f& pixel_offset,
+    Image(const String& name, const glm::vec2& pixel_offset,
           const Rectf& image_area, AutoScaledMode auto_scaled,
           const Sizef& native_resolution);
 
@@ -263,7 +263,7 @@ public:
     \return
         The rendered offset of this Image.
     */
-    virtual const Vector2f& getRenderedOffset() const;
+    virtual const glm::vec2& getRenderedOffset() const;
 
     /*!
     \brief
@@ -291,7 +291,7 @@ public:
     \param pixel_offset
         The pixel offset of this Image.
     */
-    void setOffset(const Vector2f& pixel_offset);
+    void setOffset(const glm::vec2& pixel_offset);
 
     
     /*!
@@ -327,7 +327,7 @@ public:
     }
 
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Rectf* clip_area = 0,
                 const bool clipping_enabled = false) const
     {
@@ -336,7 +336,7 @@ public:
     }
 
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Rectf* clip_area,
                 const bool clipping_enabled,
                 const ColourRect& colours,
@@ -348,7 +348,7 @@ public:
     }
 
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Sizef& size,
                 const Rectf* clip_area = 0,
                 const bool clipping_enabled = false) const
@@ -359,7 +359,7 @@ public:
 
 
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Sizef& size,
                 const Rectf* clip_area,
                 const bool clipping_enabled,
@@ -404,7 +404,7 @@ protected:
     //! the underlying data of the Image.
     Rectf d_imageArea;
     //! The pixel offset of the Image. It defines ???
-    Vector2f d_pixelOffset;
+    glm::vec2 d_pixelOffset;
     //! Whether image is auto-scaled or not and how.
     AutoScaledMode d_autoScaled;
     //! Native resolution used for autoscaling.
@@ -412,7 +412,7 @@ protected:
     //! The size in pixels after having autoscaling applied.
     Sizef d_scaledSize;
     //! The offset in pixels after having autoscaling applied.
-    Vector2f d_scaledOffset;
+    glm::vec2 d_scaledOffset;
 
 };
 

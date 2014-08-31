@@ -212,7 +212,7 @@ protected:
     //! Scaling factor applied to injected pointer move deltas.
     float d_mouseMovementScalingFactor;
 
-    Vector2f d_pointerPosition;
+    glm::vec2 d_pointerPosition;
     int d_keyValuesMappings[0xFF]; //!< Mapping from a key to its semantic
     bool d_keysPressed[0xFF];
 };

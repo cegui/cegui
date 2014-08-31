@@ -596,7 +596,7 @@ public:
         position \a pt, or 0 if no ListboxItem attached to this Listbox is at
         that position.
 	*/
-    ListboxItem* getItemAtPoint(const Vector2f& pt) const;
+    ListboxItem* getItemAtPoint(const glm::vec2& pt) const;
 
 
 	/*************************************************************************
@@ -763,7 +763,7 @@ private:
 		Private methods
 	*************************************************************************/
     void addListboxProperties(void);
-    void handleListSelection(CEGUI::Vector2f position, bool cumulative, bool multipleItems);
+    void handleListSelection(glm::vec2 position, bool cumulative, bool multipleItems);
     void handleListSelection(ListboxItem* selectedItem, bool cumulative, bool multipleItems);
 };
 

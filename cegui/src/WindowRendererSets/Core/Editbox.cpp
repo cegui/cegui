@@ -277,20 +277,20 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     String sect = text.substr(0, w->getSelectionStartIndex());
     colours = unselectedColours;
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
                        &text_area, true, colours);
 
     // draw highlight text
     sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
                        &text_area, true, colours);
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
     colours = unselectedColours;
-    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
+    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
                    &text_area, true, colours);
 }
 
@@ -415,12 +415,12 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getTextIndexFromPosition(const Vector2f& pt) const
+size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
     // calculate final window position to be checked
-    float wndx = CoordConverter::screenToWindowX(*w, pt.d_x);
+    float wndx = CoordConverter::screenToWindowX(*w, pt.x);
 
     wndx -= d_lastTextOffset;
 

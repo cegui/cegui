@@ -284,9 +284,9 @@ void GeometryBuffer::setScale(const glm::vec3& scale)
 }
 
 //----------------------------------------------------------------------------//
-void GeometryBuffer::setScale(const Vector2f& scale)
+void GeometryBuffer::setScale(const glm::vec2& scale)
 {
-    setScale(glm::vec3(scale.d_x, scale.d_y, 0.0f));
+    setScale(glm::vec3(scale, 0));
 }
 
 //----------------------------------------------------------------------------//

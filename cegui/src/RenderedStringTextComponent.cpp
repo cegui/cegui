@@ -157,7 +157,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(const Window* ref_wnd,
                                        std::vector<GeometryBuffer*>& geometry_buffers,
-                                       const Vector2f& position,
+                                       const glm::vec2& position,
                                        const ColourRect* mod_colours,
                                        const Rectf* clip_rect,
                                        const float vertical_space,
@@ -168,18 +168,18 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
     if (!fnt)
         return;
 
-    Vector2f final_pos(position);
+    glm::vec2 final_pos(position);
     float y_scale = 1.0f;
 
     // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        final_pos.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
+        final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_CENTRE_ALIGNED:
-        final_pos.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+        final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
     case VF_STRETCHED:
@@ -196,7 +196,7 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
     }
 
     // apply padding to position:
-    final_pos += d_padding.getPosition();
+    final_pos += d_padding.getPositionGLM();
 
     // apply modulative colours if needed.
     ColourRect final_cols(d_colours);
@@ -213,10 +213,10 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
 
         sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
 
-        Rectf sel_rect(position.d_x + sel_start_extent,
-                       position.d_y,
-                       position.d_x + sel_end_extent,
-                       position.d_y + vertical_space);
+        Rectf sel_rect(position.x + sel_start_extent,
+                       position.y,
+                       position.x + sel_end_extent,
+                       position.y + vertical_space);
 
         d_selectionImage->render(geometry_buffers, sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
     }

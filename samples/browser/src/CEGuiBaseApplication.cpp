@@ -121,7 +121,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
 
-    const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
+    const CEGUI::Rectf scrn(glm::vec2(0, 0), d_renderer->getDisplaySize());
 
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addBitmapImageFromFile("cegui_logo",
@@ -320,7 +320,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
             d_FPSGeometry.clear();
 
-            fnt->drawText(d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0, false,
+            fnt->drawText(d_FPSGeometry, fps_textbuff, glm::vec2(0, 0), 0, false,
                           CEGUI::Colour(0xFFFFFFFF));
 
             updateFPSGeometry();

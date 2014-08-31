@@ -71,11 +71,11 @@ void WobblyWindowEffect::syncPivots(CEGUI::RenderingWindow& window)
             const float factorMinY = static_cast<float>(ds_yPivotCount - y) / (ds_yPivotCount - 1);
             const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
 
-            d_pivots[x][y] = CEGUI::Vector2f(
+            d_pivots[x][y] = glm::vec2(
                     factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
                     factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
 
-            d_pivotVelocities[x][y] = CEGUI::Vector2f(
+            d_pivotVelocities[x][y] = glm::vec2(
                     0.0f,
                     0.0f);
         }
@@ -94,12 +94,12 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     // qw is the width of one subdivision "box", qh is the height of it
     const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
     const float qh = window.getSize().d_height / (ds_yPivotCount - 1);
-    const float tcx = qw * tex.getTexelScaling().d_x;
+    const float tcx = qw * tex.getTexelScaling().x;
     const float tcy =
         (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
-            tex.getTexelScaling().d_y;
+            tex.getTexelScaling().y;
 
-    const glm::vec3 windowPosition = glm::vec3(window.getPosition().d_x, window.getPosition().d_y, 0.0f);
+    const glm::vec3 windowPosition = glm::vec3(window.getPosition(), 0);
 
     for (size_t y = 0; y < ds_yPivotCount - 1; ++y)
     {
@@ -112,34 +112,34 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             // first triangle
 
             // vertex 0 - top left
-            d_vertices[idx + 0].d_position   = glm::vec3(d_pivots[x][y].d_x, d_pivots[x][y].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 0].d_position   = glm::vec3(d_pivots[x][y], 0) - windowPosition;
             d_vertices[idx + 0].d_colour = c;
             d_vertices[idx + 0].d_texCoords = glm::vec2(x * tcx, y * tcy);
 
             // vertex 1 - bottom left
-            d_vertices[idx + 1].d_position   = glm::vec3(d_pivots[x][y + 1].d_x, d_pivots[x][y + 1].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 1].d_position   = glm::vec3(d_pivots[x][y + 1], 0) - windowPosition;
             d_vertices[idx + 1].d_colour = c;
             d_vertices[idx + 1].d_texCoords = glm::vec2(x * tcx, (y + 1) * tcy);
 
             // vertex 2 - bottom right
-            d_vertices[idx + 2].d_position   = glm::vec3(d_pivots[x + 1][y + 1].d_x, d_pivots[x + 1][y + 1].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 2].d_position   = glm::vec3(d_pivots[x + 1][y + 1], 0) - windowPosition;
             d_vertices[idx + 2].d_colour = c;
             d_vertices[idx + 2].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
 
             // second triangle
 
             // vertex 3 - bottom right
-            d_vertices[idx + 3].d_position   = glm::vec3(d_pivots[x + 1][y + 1].d_x, d_pivots[x + 1][y + 1].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 3].d_position   = glm::vec3(d_pivots[x + 1][y + 1], 0) - windowPosition;
             d_vertices[idx + 3].d_colour = c;
             d_vertices[idx + 3].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
 
             // vertex 4 - top right
-            d_vertices[idx + 4].d_position   = glm::vec3(d_pivots[x + 1][y].d_x, d_pivots[x + 1][y].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 4].d_position   = glm::vec3(d_pivots[x + 1][y], 0) - windowPosition;
             d_vertices[idx + 4].d_colour = c;
             d_vertices[idx + 4].d_texCoords = glm::vec2((x + 1) * tcx, y * tcy);
 
             // vertex 5 - top left
-            d_vertices[idx + 5].d_position   = glm::vec3(d_pivots[x][y].d_x, d_pivots[x][y].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 5].d_position   = glm::vec3(d_pivots[x][y], 0) - windowPosition;
             d_vertices[idx + 5].d_colour = c;
             d_vertices[idx + 5].d_texCoords = glm::vec2(x * tcx, y * tcy);
         }
@@ -180,21 +180,21 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
             const float factorMinY = static_cast<float>(ds_yPivotCount - 1 - y) / (ds_yPivotCount - 1);
             const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
 
-            const Vector2f desiredPos = Vector2f(
+            const glm::vec2 desiredPos = glm::vec2(
                     factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
                     factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
 
-            const Vector2f delta = desiredPos - d_pivots[x][y];
+            const glm::vec2 delta = desiredPos - d_pivots[x][y];
 
             float speed = 300.0f;
-            const Vector2f cursorDelta = d_window->getTitlebar()->isDragged() ? window.getPosition() + d_window->getTitlebar()->getDragPoint() - d_pivots[x][y] : Vector2f(0.0f, 0.0f);
-            const float cursorDeltaLength = sqrtf(cursorDelta.d_x * cursorDelta.d_x + cursorDelta.d_y * cursorDelta.d_y);
+            const glm::vec2 cursorDelta = d_window->getTitlebar()->isDragged() ? window.getPosition() + d_window->getTitlebar()->getDragPoint() - d_pivots[x][y] : glm::vec2(0.0f, 0.0f);
+            const float cursorDeltaLength = sqrtf(cursorDelta.x * cursorDelta.x + cursorDelta.y * cursorDelta.y);
             speed /= cursorDeltaLength > 64 ? sqrtf(cursorDeltaLength) * 0.125f : 1;
 
             d_pivotVelocities[x][y] *= pow(0.00001f, elapsed);
             d_pivotVelocities[x][y] += delta * (speed * elapsed);
 
-            const Vector2f old_pivot(d_pivots[x][y]);
+            const glm::vec2 old_pivot(d_pivots[x][y]);
             d_pivots[x][y] += d_pivotVelocities[x][y] * elapsed;
             changed |= (old_pivot != d_pivots[x][y]);
         }
@@ -256,10 +256,10 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
-    const float tcx = qw * tex.getTexelScaling().d_x;
+    const float tcx = qw * tex.getTexelScaling().x;
     const float tcy =
         (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
-            tex.getTexelScaling().d_y;
+            tex.getTexelScaling().y;
 
     for (int j = 0; j < tess_y; ++j)
     {
@@ -325,21 +325,21 @@ bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& 
     if (!initialised)
     {
         initialised=true;
-        lastX = window.getPosition().d_x;
-        lastY = window.getPosition().d_y;
+        lastX = window.getPosition().x;
+        lastY = window.getPosition().y;
         return true;
     }
 
-    const Vector2f pos(window.getPosition());
+    const glm::vec2 pos(window.getPosition());
 
     //
     // Set up for X axis animation.
     //
-    if (pos.d_x != lastX)
+    if (pos.x != lastX)
     {
-        dragX += (pos.d_x - lastX) * 0.2f;
+        dragX += (pos.x - lastX) * 0.2f;
         elasX = 0.05f;
-        lastX = pos.d_x;
+        lastX = pos.x;
 
         if (dragX > 25)
             dragX = 25;
@@ -350,11 +350,11 @@ bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& 
     //
     // Set up for y axis animation
     //
-    if (pos.d_y != lastY)
+    if (pos.y != lastY)
     {
-        dragY += (pos.d_y - lastY) * 0.2f;
+        dragY += (pos.y - lastY) * 0.2f;
         elasY = 0.05f;
-        lastY = pos.d_y;
+        lastY = pos.y;
 
         if (dragY > 25)
             dragY = 25;
@@ -442,43 +442,43 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     float uvTop = window.getTextureTarget().isRenderingInverted() ? 1.0f : 0.0f;
     float uvBot = window.getTextureTarget().isRenderingInverted() ? 0.0f : 1.0f;
 
-    const glm::vec3 windowPosition = glm::vec3(window.getPosition().d_x, window.getPosition().d_y, 0.0f);
-    const Vector2f& currentTopLeft = d_currentPosition ;
-    const Vector2f currentBottomRight = d_currentPosition +
-        Vector2f(window.getSize().d_width, window.getSize().d_height);
+    const glm::vec3 windowPosition = glm::vec3(window.getPosition(), 0);
+    const glm::vec2& currentTopLeft = d_currentPosition ;
+    const glm::vec2 currentBottomRight = d_currentPosition +
+        glm::vec2(window.getSize().d_width, window.getSize().d_height);
 
     {
         // first triangle
 
         // vertex 0 - top left
-        d_vertices[0].d_position   = glm::vec3(currentTopLeft.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[0].d_position = glm::vec3(currentTopLeft, 0) - windowPosition;
         d_vertices[0].d_colour = c;
         d_vertices[0].d_texCoords = glm::vec2(0.0f, uvTop);
 
         // vertex 1 - bottom left
-        d_vertices[1].d_position   = glm::vec3(currentTopLeft.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[1].d_position = glm::vec3(currentTopLeft.x, currentBottomRight.y, 0) - windowPosition;
         d_vertices[1].d_colour = c;
         d_vertices[1].d_texCoords = glm::vec2(0.0f, uvBot);
 
         // vertex 2 - bottom right
-        d_vertices[2].d_position   = glm::vec3(currentBottomRight.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[2].d_position = glm::vec3(currentBottomRight, 0) - windowPosition;
         d_vertices[2].d_colour = c;
         d_vertices[2].d_texCoords = glm::vec2(1.0f, uvBot);
 
         // second triangle
 
         // vertex 3 - bottom right
-        d_vertices[3].d_position   = glm::vec3(currentBottomRight.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[3].d_position = glm::vec3(currentBottomRight, 0) - windowPosition;
         d_vertices[3].d_colour = c;
         d_vertices[3].d_texCoords = glm::vec2(1.0f, uvBot);
 
         // vertex 4 - top right
-        d_vertices[4].d_position   = glm::vec3(currentBottomRight.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[4].d_position = glm::vec3(currentBottomRight.x, currentTopLeft.y, 0) - windowPosition;
         d_vertices[4].d_colour = c;
         d_vertices[4].d_texCoords = glm::vec2(1.0f, uvTop);
 
         // vertex 5 - top left
-        d_vertices[5].d_position   = glm::vec3(currentTopLeft.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[5].d_position = glm::vec3(currentTopLeft, 0) - windowPosition;
         d_vertices[5].d_colour = c;
         d_vertices[5].d_texCoords = glm::vec2(0.0f, uvTop);
     }
@@ -499,19 +499,19 @@ bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& wi
     if (!d_initialised)
     {
         d_currentPosition = window.getPosition();
-        d_currentVelocity = Vector2f(0, 0);
+        d_currentVelocity = glm::vec2(0, 0);
 
         d_initialised = true;
         return true;
     }
 
-    const Vector2f delta = window.getPosition() - d_currentPosition;
+    const glm::vec2 delta = window.getPosition() - d_currentPosition;
 
     const float speed = 300.0f;
     d_currentVelocity *= pow(0.00001f, elapsed);
     d_currentVelocity += delta * (speed * elapsed);
 
-    const Vector2f old_position(d_currentPosition);
+    const glm::vec2 old_position(d_currentPosition);
     d_currentPosition += d_currentVelocity * elapsed;
     const bool changed = d_currentPosition != old_position;
 

@@ -232,8 +232,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Logger::getSingleton().logEvent(err.str().c_str(), Errors);
 
                     // Create a 'null' image for this glyph so we do not seg later
-                    Rectf area(0, 0, 0, 0);
-                    Vector2f offset(0, 0);
+                    const Rectf area(0, 0, 0, 0);
+                    const glm::vec2 offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BitmapImage* img =
                         CEGUI_NEW_AO BitmapImage(name, &texture, area, offset, ASM_Disabled,
@@ -265,12 +265,13 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
                     // Create a new image in the imageset
                     const Rectf area(static_cast<float>(x),
-                                      static_cast<float>(y),
-                                      static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
-                                      static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
+                                     static_cast<float>(y),
+                                     static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
+                                     static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
 
-                    Vector2f offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
-                                    -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
+                    const glm::vec2 offset(
+                        d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
+                        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BitmapImage* img =
@@ -401,8 +402,8 @@ void FreeTypeFont::updateFont()
             "cannot be used."));
     }
 
-    uint horzdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().d_x);
-    uint vertdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().d_y);
+    const uint horzdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().x);
+    const uint vertdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().y);
 
     float hps = d_ptSize * 64;
     float vps = d_ptSize * 64;

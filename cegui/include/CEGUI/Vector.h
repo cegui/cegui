@@ -44,10 +44,6 @@ namespace CEGUI
 \par
     This class is templated now, this allows us to use it as a Vector2 of floats,
     ints or even UDims without replicating the code all over the place.
-
-\par
-    For a simple Vector2 of floats (what was called Vector2 before), use Vector2f
-    as the T template parameter defaults to float to save fingertips.
 */
 template<typename T>
 class Vector2:
@@ -193,9 +189,6 @@ public:
     T d_x;
     T d_y;
 };
-
-// the main reason for this is to keep C++ API in sync with other languages
-typedef Vector2<float> Vector2f;
 
 // we need to allow UVector2 to be multiplied by floats, this is the most elegant way to do that
 inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)

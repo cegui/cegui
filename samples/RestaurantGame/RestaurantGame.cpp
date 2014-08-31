@@ -246,16 +246,16 @@ void RestaurantGameSample::setupPointerIndicator()
 
 void RestaurantGameSample::updatePointerIndicator()
 {
-    CEGUI::Vector2f position = d_guiContext->getPointerIndicator().getPosition();
+    glm::vec2 position = d_guiContext->getPointerIndicator().getPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height
     float absHeight = d_pointerIndicatorWnd->getPixelSize().d_height;
-    position.d_y -= absHeight;
+    position.y -= absHeight;
 
     d_pointerIndicatorWnd->setPosition(
         CEGUI::UVector2(
-        cegui_absdim(position.d_x - 5.0f), cegui_absdim(position.d_y + 5.0f))
+        cegui_absdim(position.x - 5.0f), cegui_absdim(position.y + 5.0f))
         );
 }
 
@@ -389,13 +389,13 @@ bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& ar
     return false;
 }
 
-void RestaurantGameSample::createScorePopup(const CEGUI::Vector2<float>& pointerPos, int points)
+void RestaurantGameSample::createScorePopup(const glm::vec2& pointerPos, int points)
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameSample/PopupLabel");
     d_rootIngame->addChild(popupWindow);
-    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(pointerPos.d_x), cegui_absdim(pointerPos.d_y)));
+    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(pointerPos.x), cegui_absdim(pointerPos.y)));
     popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));

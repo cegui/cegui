@@ -256,21 +256,21 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 /*************************************************************************
 	Processing for drag-sizing the segment
 *************************************************************************/
-void ListHeaderSegment::doDragSizing(const Vector2f& local_pointer)
+void ListHeaderSegment::doDragSizing(const glm::vec2& local_pointer)
 {
-    float delta = local_pointer.d_x - d_dragPoint.d_x;
+    float delta = local_pointer.x - d_dragPoint.x;
 
     // store this so we can work out how much size actually changed
-    float orgWidth = d_pixelSize.d_width;
+    const float orgWidth = d_pixelSize.d_width;
 
     // ensure that we only size to the set constraints.
     //
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
-    float newWidth = orgWidth + delta;
+    const float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
+    const float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
+    const float newWidth = orgWidth + delta;
 
     if (maxWidth != 0.0f && newWidth > maxWidth)
         delta = maxWidth - orgWidth;
@@ -283,7 +283,7 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_pointer)
     setArea_impl(area.d_min, area.getSize());
 
     // move the dragging point so pointer remains 'attached' to edge of segment
-    d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
+    d_dragPoint.x += d_pixelSize.d_width - orgWidth;
 
     WindowEventArgs args(this);
     onSegmentSized(args);
@@ -293,19 +293,19 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_pointer)
 /*************************************************************************
     Processing for drag-moving the segment
 *************************************************************************/
-void ListHeaderSegment::doDragMoving(const Vector2f& local_pointer)
+void ListHeaderSegment::doDragMoving(const glm::vec2& local_pointer)
 {
     // calculate movement deltas.
-    float deltaX = local_pointer.d_x - d_dragPoint.d_x;
-    float deltaY = local_pointer.d_y - d_dragPoint.d_y;
+    const float deltaX = local_pointer.x - d_dragPoint.x;
+    const float deltaY = local_pointer.y - d_dragPoint.y;
 
 	// update 'ghost' position
-	d_dragPosition.d_x += deltaX;
-	d_dragPosition.d_y += deltaY;
+    d_dragPosition.x += deltaX;
+    d_dragPosition.y += deltaY;
 
 	// update drag point.
-	d_dragPoint.d_x += deltaX;
-	d_dragPoint.d_y += deltaY;
+    d_dragPoint.x += deltaX;
+    d_dragPoint.y += deltaY;
 
 	WindowEventArgs args(this);
 	onSegmentDragPositionChanged(args);
@@ -323,8 +323,7 @@ void ListHeaderSegment::initDragMoving(void)
 		d_dragMoving = true;
 		d_segmentPushed = false;
 		d_segmentHover = false;
-		d_dragPosition.d_x = 0.0f;
-		d_dragPosition.d_y = 0.0f;
+        d_dragPosition = glm::vec2(0, 0);
 
         // setup new indicator
         getGUIContext().getPointerIndicator().setImage(d_movingPointerIndicator);
@@ -390,12 +389,12 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	Return true if move threshold for initiating drag-moving has been
 	exceeded.
 *************************************************************************/
-bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_pointer)
+bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_pointer)
 {
     // see if pointer has moved far enough to start move operation
     // calculate movement deltas.
-    float deltaX = local_pointer.d_x - d_dragPoint.d_x;
-    float deltaY = local_pointer.d_y - d_dragPoint.d_y;
+    const float deltaX = local_pointer.x - d_dragPoint.x;
+    const float deltaY = local_pointer.y - d_dragPoint.y;
 
 	if ((deltaX > SegmentMoveThreshold) || (deltaX < -SegmentMoveThreshold) ||
 		(deltaY > SegmentMoveThreshold) || (deltaY < -SegmentMoveThreshold))
@@ -406,7 +405,6 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_pointe
 	{
 		return false;
 	}
-
 }
 
 
@@ -418,10 +416,8 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 	// base class processing
 	Window::onPointerMove(e);
 
-    //
     // convert pointer position to something local
-    //
-    Vector2f localPointerPos(CoordConverter::screenToWindow(*this, e.position));
+    const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, e.position));
 
 	// handle drag sizing
 	if (d_dragSizing)
@@ -437,7 +433,7 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
     else if (isHit(e.position))
     {
         // pointer in sizing area & sizing is enabled
-        if ((localPointerPos.d_x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
+        if ((localPointerPos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
 		{
 			initSizingHoverState();
 		}
@@ -493,7 +489,7 @@ void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 		if (captureInput())
 		{
             // get position of pointer as co-ordinates local to this window.
-			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
+            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;

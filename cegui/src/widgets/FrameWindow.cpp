@@ -222,10 +222,10 @@ void FrameWindow::setRolledup(bool val)
 /*************************************************************************
 	Move the window by the pixel offsets specified in 'offset'.	
 *************************************************************************/
-void FrameWindow::offsetPixelPosition(const Vector2f& offset)
+void FrameWindow::offsetPixelPosition(const glm::vec2& offset)
 {
-    UVector2 uOffset(cegui_absdim(/*PixelAligned(*/offset.d_x/*)*/),
-                     cegui_absdim(/*PixelAligned(*/offset.d_y/*)*/));
+    UVector2 uOffset(cegui_absdim(/*PixelAligned(*/offset.x/*)*/),
+                     cegui_absdim(/*PixelAligned(*/offset.y/*)*/));
 
     setPosition(d_area.getPosition() + uOffset);
 }
@@ -236,7 +236,7 @@ void FrameWindow::offsetPixelPosition(const Vector2f& offset)
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
 *************************************************************************/
-FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& pt) const
+FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2& pt) const
 {
 	Rectf frame(getSizingRect());
 
@@ -253,10 +253,10 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& 
 			frame.d_max.d_y -= d_borderSize;
 
 			// detect which edges we are on
-			bool top = (pt.d_y < frame.d_min.d_y);
-			bool bottom = (pt.d_y >= frame.d_max.d_y);
-			bool left = (pt.d_x < frame.d_min.d_x);
-			bool right = (pt.d_x >= frame.d_max.d_x);
+            bool top = (pt.y < frame.d_min.d_y);
+            bool bottom = (pt.y >= frame.d_max.d_y);
+            bool left = (pt.x < frame.d_min.d_x);
+            bool right = (pt.x >= frame.d_max.d_x);
 
 			// return appropriate 'SizingLocation' value
 			if (top && left)
@@ -291,12 +291,10 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& 
 			{
 				return SizingRight;
 			}
-
 		}
-
 	}
 
-	// deafult: None.
+    // default: None.
 	return SizingNone;
 }
 
@@ -382,7 +380,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     }
 
     // move the dragging point so pointer remains 'attached' to edge of window
-    d_dragPoint.d_x += adjustment;
+    d_dragPoint.x += adjustment;
 
     return d_horizontalAlignment == HA_RIGHT;
 }
@@ -470,7 +468,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     }
 
     // move the dragging point so pointer remains 'attached' to edge of window
-    d_dragPoint.d_y += adjustment;
+    d_dragPoint.y += adjustment;
 
     return d_verticalAlignment == VA_BOTTOM;
 }
@@ -492,7 +490,7 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
     Set the appropriate pointer indicator for the given window-relative pixel
     point.
 *************************************************************************/
-void FrameWindow::setIndicatorForPoint(const Vector2f& pt) const
+void FrameWindow::setIndicatorForPoint(const glm::vec2& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
@@ -525,7 +523,6 @@ void FrameWindow::setIndicatorForPoint(const Vector2f& pt) const
             getPointerIndicator().setImage(getPointerIndicator());
 		break;
 	}
-
 }
 
 
@@ -569,15 +566,15 @@ void FrameWindow::onPointerMove(PointerEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-        Vector2f localPointerPos(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
 			SizingLocation dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
 			// calculate sizing deltas...
-            float deltaX = localPointerPos.d_x - d_dragPoint.d_x;
-            float deltaY = localPointerPos.d_y - d_dragPoint.d_y;
+            const float deltaX = localPointerPos.x - d_dragPoint.x;
+            const float deltaY = localPointerPos.y - d_dragPoint.y;
 
             URect new_area(d_area);
             bool top_left_sizing = false;
@@ -627,7 +624,7 @@ void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 		if (isSizingEnabled())
 		{
             // get position of pointer as co-ordinates local to this window.
-			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
+            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
             // if the pointer is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)
@@ -897,6 +894,11 @@ void FrameWindow::setNWSESizingIndicatorImage(const String& name)
 void FrameWindow::setNESWSizingIndicatorImage(const String& name)
 {
     d_neswSizingCursor = &ImageManager::getSingleton().get(name);
+}
+
+bool FrameWindow::isHit(const glm::vec2& position, const bool /*allow_disabled*/) const
+{
+    return Window::isHit(position) && !d_rolledup;
 }
 
 /*************************************************************************

@@ -182,7 +182,7 @@ public:
 	\return
 		Point object describing the drag move offset position.
 	*/
-	const Vector2f& getDragMoveOffset(void) const	{return d_dragPosition;}
+    const glm::vec2& getDragMoveOffset(void) const	{return d_dragPosition;}
 
 
 	/*!
@@ -331,7 +331,7 @@ protected:
 	\return
 		Nothing.
 	*/
-    void    doDragSizing(const Vector2f& local_pointer);
+    void    doDragSizing(const glm::vec2& local_pointer);
 
 
 	/*!
@@ -344,7 +344,7 @@ protected:
 	\return
 		Nothing.
 	*/
-    void    doDragMoving(const Vector2f& local_pointer);
+    void    doDragMoving(const glm::vec2& local_pointer);
 
 
 	/*!
@@ -380,7 +380,7 @@ protected:
 		true if the threshold has been exceeded and drag-moving should be initiated, or false
 		if the threshold has not been exceeded.
 	*/		
-    bool    isDragMoveThresholdExceeded(const Vector2f& local_pointer);
+    bool    isDragMoveThresholdExceeded(const glm::vec2& local_pointer);
 
 	/*************************************************************************
 		New Event Handlers
@@ -476,7 +476,7 @@ protected:
     bool    d_splitterHover;    //!< True if the pointer is over the splitter
 
 	bool	d_dragSizing;		//!< true when we are being sized.
-	Vector2f d_dragPoint;		//!< point we are being dragged at when sizing or moving.
+    glm::vec2 d_dragPoint;		//!< point we are being dragged at when sizing or moving.
 
 	SortDirection	d_sortDir;	//!< Direction for sorting (used for deciding what icon to display).
 
@@ -485,7 +485,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true when sizing is enabled for this segment.
 	bool	d_movingEnabled;	//!< True when drag-moving is enabled for this segment;
 	bool	d_dragMoving;		//!< true when segment is being drag moved.
-    Vector2f d_dragPosition;    //!< position of dragged segment.
+    glm::vec2 d_dragPosition;    //!< position of dragged segment.
 	bool	d_allowClicks;		//!< true if the segment can be clicked.
 
 private:

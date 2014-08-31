@@ -108,11 +108,10 @@ void Direct3D11RenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2f& p_in, Vector2f& p_out) const
+    const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
-
     
     const Direct3D11GeometryBuffer& gb =
         static_cast<const Direct3D11GeometryBuffer&>(buff);

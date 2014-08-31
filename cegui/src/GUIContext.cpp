@@ -350,7 +350,7 @@ void GUIContext::updateWindowContainingPointer()
 bool GUIContext::updateWindowContainingPointer_impl() const
 {
     PointerEventArgs pa(0);
-    const Vector2f pointer_pos(d_pointerIndicator.getPosition());
+    const glm::vec2 pointer_pos(d_pointerIndicator.getPosition());
 
     Window* const curr_wnd_with_pointer = getTargetWindow(pointer_pos, true);
 
@@ -437,8 +437,8 @@ void GUIContext::notifyPointerTransition(Window* top, Window* bottom,
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getTargetWindow(const Vector2f& pt,
-                                 const bool allow_disabled) const
+Window* GUIContext::getTargetWindow(const glm::vec2& pt,
+                                    const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
@@ -731,7 +731,7 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
     pa.position = d_pointerIndicator.getPosition();
-    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.moveDelta = glm::vec2(0, 0);
     pa.source = event.d_payload.source;
     pa.scroll = 0;
     pa.window = getTargetWindow(pa.position, false);
@@ -755,7 +755,7 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
     pa.position = d_pointerIndicator.getPosition();
-    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.moveDelta = glm::vec2(0, 0);
     pa.source = event.d_payload.source;
     pa.scroll = 0;
     pa.window = getTargetWindow(pa.position, false);
@@ -775,7 +775,7 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
     pa.position = d_pointerIndicator.getPosition();
-    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.moveDelta = glm::vec2(0, 0);
     pa.source = PS_None;
     pa.scroll = event.d_payload.single;
     pa.window = getTargetWindow(pa.position, false);
@@ -814,7 +814,7 @@ bool GUIContext::handlePointerMove_impl(PointerEventArgs& pa)
 //----------------------------------------------------------------------------//
 bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
 {
-    const Vector2f new_position(
+    const glm::vec2 new_position(
         event.d_payload.array[0],
         event.d_payload.array[1]);
 
@@ -823,7 +823,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
     pa.moveDelta = new_position - d_pointerIndicator.getPosition();
 
     // no movement means no event
-    if ((pa.moveDelta.d_x == 0) && (pa.moveDelta.d_y == 0))
+    if ((pa.moveDelta.x == 0) && (pa.moveDelta.y == 0))
         return false;
 
     pa.scroll = 0;
@@ -847,7 +847,7 @@ bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
     PointerEventArgs pa(0);
     pa.position = getWindowContainingPointer()->getUnprojectedPosition(
         d_pointerIndicator.getPosition());
-    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.moveDelta = glm::vec2(0, 0);
     pa.source = PS_None;
     pa.scroll = 0;
     pa.window = getWindowContainingPointer();

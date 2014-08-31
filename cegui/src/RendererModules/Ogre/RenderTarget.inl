@@ -148,8 +148,8 @@ void OgreRenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-                                      const Vector2f& p_in,
-                                      Vector2f& p_out) const
+                                         const glm::vec2& p_in,
+                                         glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();

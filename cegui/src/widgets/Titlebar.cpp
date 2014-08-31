@@ -95,7 +95,7 @@ bool Titlebar::isDragged() const
     return d_dragging;
 }
 
-const Vector2f& Titlebar::getDragPoint() const
+const glm::vec2& Titlebar::getDragPoint() const
 {
     return d_dragPoint;
 }
@@ -110,10 +110,8 @@ void Titlebar::onPointerMove(PointerEventArgs& e)
 
 	if (d_dragging && (d_parent != 0))
 	{
-		Vector2f delta(CoordConverter::screenToWindow(*this, e.position));
-
-		// calculate amount that window has been moved
-		delta -= d_dragPoint;
+        // calculate amount that window has been moved
+        const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position) - d_dragPoint);
 
 		// move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
 		((FrameWindow*)d_parent)->offsetPixelPosition(delta);
@@ -151,7 +149,7 @@ void Titlebar::onPointerPressHold(PointerEventArgs& e)
 
 				if ((d_parent == 0) || (getParent()->getParent() == 0))
 				{
-                    Rectf screen(Vector2f(0, 0), getRootContainerSize());
+                    const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}
 				else 

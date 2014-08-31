@@ -282,7 +282,7 @@ protected:
     \return
         Nothing
     */
-    void    updateInternalState(const Vector2f& pointer_pos);
+    void    updateInternalState(const glm::vec2& pointer_pos);
 
 
     /*!

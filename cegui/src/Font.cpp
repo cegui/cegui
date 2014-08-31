@@ -243,13 +243,13 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 
 //----------------------------------------------------------------------------//
 float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
-                    const String& text, const Vector2f& position,
+                    const String& text, const glm::vec2& position,
                     const Rectf* clip_rect, const bool clipping_enabled,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale) const
 {
-    const float base_y = position.d_y + getBaseline(y_scale);
-    Vector2f glyph_pos(position);
+    const float base_y = position.y + getBaseline(y_scale);
+    glm::vec2 glyph_pos(position);
 
     for (size_t c = 0; c < text.length(); ++c)
     {
@@ -258,18 +258,18 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
         {
             const Image* const img = glyph->getImage();
 
-            glyph_pos.d_y =
-                base_y - (img->getRenderedOffset().d_y - img->getRenderedOffset().d_y * y_scale);
+            glyph_pos.y =
+                base_y - (img->getRenderedOffset().y - img->getRenderedOffset().y * y_scale);
             img->render(geom_buffers, glyph_pos,
                       glyph->getSize(x_scale, y_scale), clip_rect, clipping_enabled, colours);
-            glyph_pos.d_x += glyph->getAdvance(x_scale);
+            glyph_pos.x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
             if (text[c] == ' ')
-                glyph_pos.d_x += space_extra;
+                glyph_pos.x += space_extra;
         }
     }
 
-    return glyph_pos.d_x;
+    return glyph_pos.x;
 }
 
 //----------------------------------------------------------------------------//

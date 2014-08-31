@@ -168,18 +168,18 @@ namespace CEGUI
         }
     }
 
-    float FalagardSlider::getAdjustDirectionFromPoint(const Vector2f& pt) const
+    float FalagardSlider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
     {
         Slider* w = (Slider*)d_window;
         const Rectf absrect(w->getThumb()->getUnclippedOuterRect().get());
 
-        if ((d_vertical && (pt.d_y < absrect.top())) ||
-            (!d_vertical && (pt.d_x > absrect.right())))
+        if ((d_vertical && (pt.y < absrect.top())) ||
+            (!d_vertical && (pt.x > absrect.right())))
         {
             return d_reversed ? -1.0f : 1.0f;
         }
-        else if ((d_vertical && (pt.d_y > absrect.bottom())) ||
-            (!d_vertical && (pt.d_x < absrect.left())))
+        else if ((d_vertical && (pt.y > absrect.bottom())) ||
+            (!d_vertical && (pt.x < absrect.left())))
         {
             return d_reversed ? 1.0f : -1.0f;
         }

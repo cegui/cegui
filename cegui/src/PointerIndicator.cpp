@@ -43,7 +43,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 bool PointerIndicator::s_initialPositionSet = false;
-Vector2f PointerIndicator::s_initialPosition(0.0f, 0.0f);
+glm::vec2 PointerIndicator::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
@@ -65,7 +65,7 @@ PointerIndicator::PointerIndicator(void) :
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
 {
-    const Rectf screenArea(Vector2f(0, 0),
+    const Rectf screenArea(glm::vec2(0, 0),
                            System::getSingleton().getRenderer()->getDisplaySize());
 	// default constraint is to whole screen
 	setConstraintArea(&screenArea);
@@ -74,8 +74,8 @@ PointerIndicator::PointerIndicator(void) :
         setPosition(s_initialPosition);
     else
         // pointer defaults to middle of the constrained area
-        setPosition(Vector2f(screenArea.getWidth() / 2,
-                              screenArea.getHeight() / 2));
+        setPosition(0.5f * glm::vec2(screenArea.getWidth(),
+                                     screenArea.getHeight()));
 }
 
 
@@ -159,7 +159,7 @@ void PointerIndicator::draw()
 /*************************************************************************
 	Set the current pointer indicator position
 *************************************************************************/
-void PointerIndicator::setPosition(const Vector2f& position)
+void PointerIndicator::setPosition(const glm::vec2& position)
 {
     d_position = position;
 	constrainPosition();
@@ -171,10 +171,9 @@ void PointerIndicator::setPosition(const Vector2f& position)
 /*************************************************************************
 	Offset the pointer indicator position by the deltas specified in 'offset'.
 *************************************************************************/
-void PointerIndicator::offsetPosition(const Vector2f& offset)
+void PointerIndicator::offsetPosition(const glm::vec2& offset)
 {
-	d_position.d_x += offset.d_x;
-	d_position.d_y += offset.d_y;
+    d_position += offset;
 	constrainPosition();
 
     updateGeometryBuffersTranslation();
@@ -185,21 +184,21 @@ void PointerIndicator::offsetPosition(const Vector2f& offset)
 	Checks the pointer indicator position is within the current 'constrain'
 	Rect and adjusts as required.
 *************************************************************************/
-void PointerIndicator::constrainPosition(void)
+void PointerIndicator::constrainPosition()
 {
-    Rectf absarea(getConstraintArea());
+    const Rectf absarea(getConstraintArea());
 
-	if (d_position.d_x >= absarea.d_max.d_x)
-		d_position.d_x = absarea.d_max.d_x -1;
+    if (d_position.x >= absarea.d_max.d_x)
+        d_position.x = absarea.d_max.d_x -1;
 
-	if (d_position.d_y >= absarea.d_max.d_y)
-		d_position.d_y = absarea.d_max.d_y -1;
+    if (d_position.y >= absarea.d_max.d_y)
+        d_position.y = absarea.d_max.d_y -1;
 
-	if (d_position.d_y < absarea.d_min.d_y)
-		d_position.d_y = absarea.d_min.d_y;
+    if (d_position.y < absarea.d_min.d_y)
+        d_position.y = absarea.d_min.d_y;
 
-	if (d_position.d_x < absarea.d_min.d_x)
-		d_position.d_x = absarea.d_min.d_x;
+    if (d_position.x < absarea.d_min.d_x)
+        d_position.x = absarea.d_min.d_x;
 }
 
 
@@ -208,8 +207,8 @@ void PointerIndicator::constrainPosition(void)
 *************************************************************************/
 void PointerIndicator::setConstraintArea(const Rectf* area)
 {
-    const Rectf renderer_area(Vector2f(0, 0),
-                               System::getSingleton().getRenderer()->getDisplaySize());
+    const Rectf renderer_area(glm::vec2(0, 0),
+                              System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (!area)
 	{
@@ -236,8 +235,8 @@ void PointerIndicator::setConstraintArea(const Rectf* area)
 *************************************************************************/
 void PointerIndicator::setUnifiedConstraintArea(const URect* area)
 {
-    const Rectf renderer_area(Vector2f(0, 0),
-                               System::getSingleton().getRenderer()->getDisplaySize());
+    const Rectf renderer_area(glm::vec2(0, 0),
+                              System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (area)
 	{
@@ -274,18 +273,18 @@ const URect& PointerIndicator::getUnifiedConstraintArea(void) const
 	Return the current pointer indicator position in display resolution
 	independant values.
 *************************************************************************/
-Vector2f PointerIndicator::getDisplayIndependantPosition(void) const
+glm::vec2 PointerIndicator::getDisplayIndependantPosition(void) const
 {
-    Sizef dsz(System::getSingleton().getRenderer()->getDisplaySize());
+    const Sizef dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
-    return Vector2f(d_position.d_x / (dsz.d_width - 1.0f),
-                 d_position.d_y / (dsz.d_height - 1.0f));
+    return glm::vec2(d_position.x / (dsz.d_width - 1.0f),
+                     d_position.y / (dsz.d_height - 1.0f));
 }
 
 //----------------------------------------------------------------------------//
 void PointerIndicator::notifyDisplaySizeChanged(const Sizef& new_size)
 {
-    updateGeometryBuffersClipping(Rectf(Vector2f(0.0f, 0.0f), new_size));
+    updateGeometryBuffersClipping(Rectf(glm::vec2(0.0f, 0.0f), new_size));
 
     // invalidate to regenerate geometry at (maybe) new size
     d_cachedGeometryValid = false;
@@ -321,10 +320,10 @@ void PointerIndicator::cacheGeometry()
     }
     else
     {
-        d_indicatorImage->render(d_geometryBuffers, Vector2f(0, 0));
+        d_indicatorImage->render(d_geometryBuffers, glm::vec2(0, 0));
     }
 
-    const Rectf clipping_area(Vector2f(0, 0),
+    const Rectf clipping_area(glm::vec2(0, 0),
         System::getSingleton().getRenderer()->getDisplaySize());
     updateGeometryBuffersClipping(clipping_area);
     updateGeometryBuffersTranslation();
@@ -334,16 +333,16 @@ void PointerIndicator::cacheGeometry()
 void PointerIndicator::calculateCustomOffset() const
 {
     const Sizef sz(d_indicatorImage->getRenderedSize());
-    const Vector2f offset(d_indicatorImage->getRenderedOffset());
+    const glm::vec2 offset(d_indicatorImage->getRenderedOffset());
 
-    d_customOffset.d_x =
-        d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;
-    d_customOffset.d_y =
-        d_customSize.d_height / sz.d_height * offset.d_y - offset.d_y;
+    d_customOffset.x =
+        d_customSize.d_width / sz.d_width * offset.x - offset.x;
+    d_customOffset.y =
+        d_customSize.d_height / sz.d_height * offset.y - offset.y;
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::setInitialPointerPosition(const Vector2f& position)
+void PointerIndicator::setInitialPointerPosition(const glm::vec2& position)
 {
     s_initialPosition = position;
     s_initialPositionSet = true;
@@ -384,7 +383,7 @@ void PointerIndicator::updateGeometryBuffersTranslation()
     for (size_t i = 0; i < geom_buffer_count; ++i)
     {
         CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-        currentBuffer->setTranslation(glm::vec3(d_position.d_x, d_position.d_y, 0));
+        currentBuffer->setTranslation(glm::vec3(d_position, 0));
     }
 }
 

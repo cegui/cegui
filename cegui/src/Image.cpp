@@ -50,7 +50,7 @@ Image::Image(const String& name) :
 
 //----------------------------------------------------------------------------//
 Image::Image(const String& name,
-             const Vector2f& pixel_offset,
+             const glm::vec2& pixel_offset,
              const Rectf& image_area,
              AutoScaledMode auto_scaled,
              const Sizef& native_resolution
@@ -147,11 +147,10 @@ const Sizef& Image::getRenderedSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& Image::getRenderedOffset() const
+const glm::vec2& Image::getRenderedOffset() const
 {
     return d_scaledOffset;
 }
-
 
 //----------------------------------------------------------------------------//
 void Image::setImageArea(const Rectf& image_area)
@@ -168,7 +167,7 @@ void Image::setImageArea(const Rectf& image_area)
 }
 
 //----------------------------------------------------------------------------//
-void Image::setOffset(const Vector2f& pixel_offset)
+void Image::setOffset(const glm::vec2& pixel_offset)
 {
     d_pixelOffset = pixel_offset;
 
@@ -219,10 +218,10 @@ void Image::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
 
 void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
 {
-    Vector2f scaleFactors;
+    glm::vec2 scaleFactors;
 
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
+        scaleFactors.x, scaleFactors.y);
 
     d_scaledSize = d_imageArea.getSize() * scaleFactors;
     d_scaledOffset = d_pixelOffset * scaleFactors;
@@ -231,10 +230,10 @@ void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
 //----------------------------------------------------------------------------//
 void Image::updateScaledSize(const Sizef& renderer_display_size)
 {
-    Vector2f scaleFactors;
+    glm::vec2 scaleFactors;
 
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
+        scaleFactors.x, scaleFactors.y);
 
     d_scaledSize = d_imageArea.getSize() * scaleFactors;
 }
@@ -242,15 +241,14 @@ void Image::updateScaledSize(const Sizef& renderer_display_size)
 //----------------------------------------------------------------------------//
 void Image::updateScaledOffset(const Sizef& renderer_display_size)
 {
-    Vector2f scaleFactors;
+    glm::vec2 scaleFactors;
 
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
+        scaleFactors.x, scaleFactors.y);
 
     d_scaledOffset = d_pixelOffset * scaleFactors;
 }
 
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
-
+}

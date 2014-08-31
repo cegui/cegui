@@ -529,25 +529,25 @@ public:
 };
 
 template<>
-class PropertyHelper<Vector2f >
+class PropertyHelper<glm::vec2>
 {
 public:
-    typedef Vector2f return_type;
+    typedef glm::vec2 return_type;
     typedef return_type safe_method_return_type;
-    typedef const Vector2f& pass_type;
+    typedef const glm::vec2& pass_type;
     typedef String string_return_type;
 
     static const String& getDataTypeName()
     {
-        static String type("Vector2f");
+        static String type("vec2");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Vector2f val(0, 0) ;
-        sscanf(str.c_str(), " x:%g y:%g", &val.d_x, &val.d_y);
+        glm::vec2 val(0, 0) ;
+        sscanf(str.c_str(), " x:%g y:%g", &val.x, &val.y);
 
         return val;
     }
@@ -555,7 +555,7 @@ public:
     static string_return_type toString(pass_type val)
     {
         char buff[128];
-        snprintf(buff, sizeof(buff), "x:%g y:%g", val.d_x, val.d_y);
+        snprintf(buff, sizeof(buff), "x:%g y:%g", val.x, val.y);
 
         return String(buff);
     }

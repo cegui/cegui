@@ -46,7 +46,7 @@ public:
     BitmapImage(const XMLAttributes& attributes);
 
     BitmapImage(const String& name, Texture* texture,
-               const Rectf& tex_area, const Vector2f& offset,
+               const Rectf& tex_area, const glm::vec2& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
     // Implement CEGUI::Image interface

@@ -167,7 +167,7 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
 void CustomShapesDrawingSample::positionCustomGeometryFPSGraph()
 {
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
-    const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), renderer->getDisplaySize());
+    const CEGUI::Rectf scrn(glm::vec2(0, 0), renderer->getDisplaySize());
 
     d_FPSGraphGeometryBuffer->setClippingRegion(scrn);
     d_FPSGraphGeometryBuffer->setTranslation(glm::vec3(250.0f, 250.0f, 0.0f));
@@ -393,7 +393,7 @@ void CustomShapesDrawingSample::setupCustomSVGImage()
     // Set the pointer to the SVGData for the SVGImage
     d_customSVGImage->setSVGData(d_customSVGData);
     // We make our SVGImage the same size as the SVGData
-    const Rectf imageArea(Vector2f(0.0f, 0.0f), CEGUI::Sizef(d_customSVGData->getWidth(), d_customSVGData->getHeight()));
+    const Rectf imageArea(glm::vec2(0, 0), CEGUI::Sizef(d_customSVGData->getWidth(), d_customSVGData->getHeight()));
     d_customSVGImage->setImageArea(imageArea);
 
     // We create a graph background consisting of a grey background and some lines for better readability

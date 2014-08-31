@@ -1512,7 +1512,7 @@ protected:
 		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
 		item is under that position.
 	*/
-	ListboxItem*	getItemAtPoint(const Vector2f& pt) const;
+    ListboxItem*	getItemAtPoint(const glm::vec2& pt) const;
 
 
 	/*!
@@ -1737,7 +1737,7 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addMultiColumnListProperties(void);
-    void    handleSelection(const Vector2f& position, bool cumulative, bool range);
+    void    handleSelection(const glm::vec2& position, bool cumulative, bool range);
 };
 
 

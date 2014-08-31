@@ -44,7 +44,7 @@ struct InputInjectionFixture
     {
         d_inputAggregator->initialise();
         // reset the pointer to (0,0)
-        d_guiContext->getPointerIndicator().setPosition(Vector2f());
+        d_guiContext->getPointerIndicator().setPosition(glm::vec2(0, 0));
 
         System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
         Rectf constraint_area(0, 0, 100, 100);

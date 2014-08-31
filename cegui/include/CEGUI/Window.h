@@ -933,7 +933,7 @@ public:
         check if the given pixel position would hit this window.
 
     \param position
-        Vector2 object describing the position to check.  The position
+        vec2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
     \param allow_disabled
@@ -944,7 +944,7 @@ public:
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2f& position,
+    virtual bool isHit(const glm::vec2& position,
                        const bool allow_disabled = false) const;
 
     /*!
@@ -952,14 +952,14 @@ public:
         return the child Window that is hit by the given pixel position
 
     \param position
-        Vector2 object describing the position to check.  The position
+        vec2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
     \return
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getChildAtPosition(const Vector2f& position) const;
+    Window* getChildAtPosition(const glm::vec2& position) const;
 
     /*!
     \brief
@@ -967,7 +967,7 @@ public:
         allowed to handle pointer events.
 
     \param position
-        Vector2 object describing the position to check.  The position
+        vec2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
     \param allow_disabled
@@ -978,7 +978,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2f& position, 
+    Window* getTargetChildAtPosition(const glm::vec2& position,
                                      const bool allow_disabled = false) const;
 
     /*!
@@ -2471,8 +2471,8 @@ public:
     //! retrieves currently set margin
     const UBox& getMargin() const;
 
-    //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2f getUnprojectedPosition(const Vector2f& pos) const;
+    //! return glm::vec2 \a pos after being fully unprojected for this Window.
+    glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
 
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const
@@ -3414,11 +3414,11 @@ protected:
     void markCachedWindowRectsInvalid();
     void layoutLookNFeelChildWidgets();
 
-    Window* getChildAtPosition(const Vector2f& position,
-                               bool (Window::*hittestfunc)(const Vector2f&, bool) const,
+    Window* getChildAtPosition(const glm::vec2& position,
+                               bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
                                bool allow_disabled = false) const;
 
-    bool isHitTargetWindow(const Vector2f& position, bool allow_disabled) const;
+    bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const;
 
     /*************************************************************************
         Properties for Window base class
