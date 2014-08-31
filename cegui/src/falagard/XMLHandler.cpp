@@ -875,8 +875,8 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<Sizef>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Vector2f>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<Vector2f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<Vector3f>::getDataTypeName())
-            prop = CEGUI_NEW_AO PropertyDefinition<Vector3f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == PropertyHelper<glm::vec3>::getDataTypeName())
+            prop = CEGUI_NEW_AO PropertyDefinition<glm::vec3>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Rectf>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<Rectf>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Font*>::getDataTypeName())
@@ -986,8 +986,8 @@ namespace CEGUI
         else if (type == PropertyHelper<Vector2f>::getDataTypeName())
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector2f>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == PropertyHelper<Vector3f>::getDataTypeName())
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector3f>(name,
+        else if (type == PropertyHelper<glm::vec3>::getDataTypeName())
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<glm::vec3>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == PropertyHelper<Rectf>::getDataTypeName())
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Rectf>(name,
@@ -1513,8 +1513,8 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<Sizef>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Vector2f>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Vector2f>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<Vector3f>::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<Vector3f>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == PropertyHelper<glm::vec3>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<glm::vec3>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Rectf>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Rectf>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Font*>::getDataTypeName())

@@ -102,7 +102,7 @@ void OpenGLESGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setTranslation(const Vector3f& v)
+void OpenGLESGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -116,9 +116,9 @@ void OpenGLESGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setPivot(const Vector3f& p)
+void OpenGLESGeometryBuffer::setPivot(const glm::vec3& p)
 {
-    d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+    d_pivot = p;
     d_matrixValid = false;
 }
 
@@ -228,12 +228,10 @@ void OpenGLESGeometryBuffer::updateMatrix() const
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    const Vector3f final_trans(d_translation.d_x + d_pivot.d_x,
-                               d_translation.d_y + d_pivot.d_y,
-                               d_translation.d_z + d_pivot.d_z);
+    const Vector3f final_trans = d_translation + d_pivot;
 
     glLoadIdentity();
-    glTranslatef(final_trans.d_x, final_trans.d_y, final_trans.d_z);
+    glTranslatef(final_trans.x, final_trans.y, final_trans.z);
 
     float rotation_matrix[16];
     rotation_matrix[ 0] = 1.0f - 2.0f * (d_rotation.d_y * d_rotation.d_y + d_rotation.d_z * d_rotation.d_z);
@@ -258,7 +256,7 @@ void OpenGLESGeometryBuffer::updateMatrix() const
 
     glMultMatrixf(rotation_matrix);
 
-    glTranslatef(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+    glTranslatef(-d_pivot.x, -d_pivot.y, -d_pivot.z);
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, d_matrix);
     glPopMatrix();

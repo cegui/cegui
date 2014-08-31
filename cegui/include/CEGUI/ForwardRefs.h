@@ -122,7 +122,6 @@ class TextUtils;
 class UBox;
 class UDim;
 template<typename T> class Vector2;
-template<typename T> class Vector3;
 struct TexturedColouredVertex;
 struct ColouredVertex;
 class WidgetLookFeel;

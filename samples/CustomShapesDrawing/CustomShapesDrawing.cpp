@@ -170,7 +170,7 @@ void CustomShapesDrawingSample::positionCustomGeometryFPSGraph()
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), renderer->getDisplaySize());
 
     d_FPSGraphGeometryBuffer->setClippingRegion(scrn);
-    d_FPSGraphGeometryBuffer->setTranslation( CEGUI::Vector3f(250.0f, 250.0f, 0.0f) );
+    d_FPSGraphGeometryBuffer->setTranslation(glm::vec3(250.0f, 250.0f, 0.0f));
 }
 
 /*************************************************************************
@@ -303,7 +303,7 @@ void CustomShapesDrawingSample::updateCustomGeometryGraph(std::vector<glm::vec2>
         currentPos.x = currentPos.x * d_customGeometryGraphWidth * 0.95f;
         currentPos.y = d_customGeometryGraphHeight - currentPos.y * d_customGeometryGraphHeight;
 
-        // Normalize and tilt the 2D direction vector by 90° to get the vector pointing in the offset direction
+        // Normalize and tilt the 2D direction vector by 90ï¿½ to get the vector pointing in the offset direction
         glm::vec2 offsetVector = currentPos - prevPos;
         offsetVector = glm::normalize(offsetVector);
         offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * 1.0f;

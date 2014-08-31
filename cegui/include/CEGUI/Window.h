@@ -3626,12 +3626,12 @@ protected:
     bool d_containsPointer;
 
     //! The translation which was set for this window.
-    CEGUI::Vector3f d_translation;
+    glm::vec3 d_translation;
     //! true when this window is focused.
     bool d_isFocused;
 
     //! The clipping region which was set for this window.
-    CEGUI::Rectf d_clippingRegion;
+    Rectf d_clippingRegion;
 
 private:
     /*************************************************************************

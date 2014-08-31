@@ -138,7 +138,7 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3f itemPos;
+        glm::vec3 itemPos;
         Sizef itemSize;
         Rectf itemClipper, itemRect;
         const float widest = lb->getWidestItemWidth();
@@ -147,9 +147,9 @@ namespace CEGUI
         Rectf itemsArea(getListRenderArea());
 
         // set up some initial positional details for items
-        itemPos.d_x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();
-        itemPos.d_y = itemsArea.top() - lb->getVertScrollbar()->getScrollPosition();
-        itemPos.d_z = 0.0f;
+        itemPos.x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();
+        itemPos.y = itemsArea.top() - lb->getVertScrollbar()->getScrollPosition();
+        itemPos.z = 0.0f;
 
         const float alpha = lb->getEffectiveAlpha();
 
@@ -165,15 +165,15 @@ namespace CEGUI
             itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
 
             // calculate destination area for this item.
-            itemRect.left(itemPos.d_x);
-            itemRect.top(itemPos.d_y);
+            itemRect.left(itemPos.x);
+            itemRect.top(itemPos.y);
             itemRect.setSize(itemSize);
             itemClipper = itemRect.getIntersection(itemsArea);
 
             // skip this item if totally clipped
             if (itemClipper.getWidth() == 0)
             {
-                itemPos.d_y += itemSize.d_height;
+                itemPos.y += itemSize.d_height;
                 continue;
             }
 
@@ -181,7 +181,7 @@ namespace CEGUI
             listItem->draw(lb->getGeometryBuffers(), itemRect, alpha, &itemClipper);
 
             // update position ready for next item
-            itemPos.d_y += itemSize.d_height;
+            itemPos.y += itemSize.d_height;
         }
 
     }
