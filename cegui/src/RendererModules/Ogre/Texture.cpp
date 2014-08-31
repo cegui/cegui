@@ -153,7 +153,7 @@ const Sizef& OgreTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OgreTexture::getTexelScaling() const
+const glm::vec2& OgreTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }

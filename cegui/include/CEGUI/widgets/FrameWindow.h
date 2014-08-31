@@ -292,12 +292,12 @@ public:
 		This is intended for internal system use - it is the method by which the title bar moves the frame window.
 
 	\param offset
-		Vector2 object containing the offsets to apply (offsets are in screen pixels).
+        vec2 object containing the offsets to apply (offsets are in screen pixels).
 
 	\return
 		Nothing.
 	*/
-	void	offsetPixelPosition(const Vector2f& offset);
+    void offsetPixelPosition(const glm::vec2& offset);
 
 
 	/*!
@@ -468,8 +468,7 @@ public:
     void setNESWSizingIndicatorImage(const String& name);
 
     // overridden from Window class
-    bool isHit(const Vector2f& position, const bool /*allow_disabled*/) const
-        { return Window::isHit(position) && !d_rolledup; }
+    bool isHit(const glm::vec2& position, const bool allow_disabled) const;
 
     /*!
     \brief
@@ -563,13 +562,13 @@ protected:
 		the sizing border.
 
 	\param pt
-		Point object describing, in pixels, the window relative offset to check.
+        vec2 object describing, in pixels, the window relative offset to check.
 
 	\return
 		One of the SizingLocation enumerated values that describe which part of
 		the sizing border that \a pt corresponded to, if any.
 	*/
-	SizingLocation	getSizingBorderAtPoint(const Vector2f& pt) const;
+    SizingLocation	getSizingBorderAtPoint(const glm::vec2& pt) const;
 
  
 	/*!
@@ -635,7 +634,7 @@ protected:
     \brief
         Set the appropriate pointer indicator for the given window-relative pixel point.
     */
-	void	setIndicatorForPoint(const Vector2f& pt) const;
+    void	setIndicatorForPoint(const glm::vec2& pt) const;
 
 
 	/*!
@@ -693,7 +692,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.
 	bool	d_beingSized;		//!< true if window is being sized.
 	float	d_borderSize;		//!< thickness of the sizing border around this window
-	Vector2f d_dragPoint;		//!< point window is being dragged at.
+    glm::vec2 d_dragPoint;		//!< point window is being dragged at.
 
 	// images for cursor when on sizing border
 	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.

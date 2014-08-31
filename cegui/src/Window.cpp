@@ -519,7 +519,7 @@ Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) cons
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
             getParent()->getClipRect(isNonClient()) :
-            Rectf(Vector2f(0, 0), getRootContainerSize()));
+            Rectf(glm::vec2(0, 0), getRootContainerSize()));
 }
 
 //----------------------------------------------------------------------------//
@@ -562,12 +562,12 @@ Rectf Window::getHitTestRect_impl() const
     else
     {
         return getUnclippedOuterRect().get().getIntersection(
-            Rectf(Vector2f(0, 0), getRootContainerSize()));
+            Rectf(glm::vec2(0, 0), getRootContainerSize()));
     }
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isHit(const Vector2f& position, const bool allow_disabled) const
+bool Window::isHit(const glm::vec2& position, const bool allow_disabled) const
 {
     // cannot be hit if we are disabled.
     if (!allow_disabled && isEffectiveDisabled())
@@ -582,17 +582,17 @@ bool Window::isHit(const Vector2f& position, const bool allow_disabled) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChildAtPosition(const Vector2f& position) const
+Window* Window::getChildAtPosition(const glm::vec2& position) const
 {
     return getChildAtPosition(position, &Window::isHit);
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChildAtPosition(const Vector2f& position,
-                    bool (Window::*hittestfunc)(const Vector2f&, bool) const,
+Window* Window::getChildAtPosition(const glm::vec2& position,
+                    bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
                     bool allow_disabled) const
 {
-    Vector2f p;
+    glm::vec2 p;
     // if the window has RenderingWindow backing
     if (d_surface && d_surface->isRenderingWindow())
         static_cast<RenderingWindow*>(d_surface)->unprojectPoint(position, p);
@@ -620,14 +620,14 @@ Window* Window::getChildAtPosition(const Vector2f& position,
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getTargetChildAtPosition(const Vector2f& position,
+Window* Window::getTargetChildAtPosition(const glm::vec2& position,
                                          const bool allow_disabled) const
 {
     return getChildAtPosition(position, &Window::isHitTargetWindow, allow_disabled);
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isHitTargetWindow(const Vector2f& position, bool allow_disabled) const
+bool Window::isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const
 {
     return !isPointerPassThroughEnabled() && isHit(position, allow_disabled);
 }
@@ -1296,7 +1296,7 @@ void Window::generateAutoRepeatEvent(PointerSource source)
     PointerEventArgs pa(this);
     pa.position = getUnprojectedPosition(
         getGUIContext().getPointerIndicator().getPosition());
-    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.moveDelta = glm::vec2(0, 0);
     pa.source = source;
     pa.scroll = 0;
     onPointerPressHold(pa);
@@ -2371,9 +2371,9 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // (this is a bit of a hack that uses the injection of a semantic event to handle
     // this for us).
     SemanticInputEvent moveEvent(SV_PointerMove);
-    Vector2f cursorPosition = getGUIContext().getPointerIndicator().getPosition();
-    moveEvent.d_payload.array[0] = cursorPosition.d_x;
-    moveEvent.d_payload.array[1] = cursorPosition.d_y;
+    const glm::vec2 cursorPosition = getGUIContext().getPointerIndicator().getPosition();
+    moveEvent.d_payload.array[0] = cursorPosition.x;
+    moveEvent.d_payload.array[1] = cursorPosition.y;
     getGUIContext().injectInputEvent(moveEvent);
 
     fireEvent(EventInputCaptureLost, e, EventNamespace);
@@ -2909,7 +2909,7 @@ void Window::updateGeometryRenderSettings()
     if (ctx.owner == this && ctx.surface->isRenderingWindow())
     {
         static_cast<RenderingWindow*>(ctx.surface)->
-            setPosition(getUnclippedOuterRect().get().getPosition());
+            setPosition(getUnclippedOuterRect().get().getPositionGLM());
         static_cast<RenderingWindow*>(d_surface)->setPivot(
             glm::vec3(
                 d_pixelSize.d_width / 2.0f,
@@ -2926,8 +2926,8 @@ void Window::updateGeometryRenderSettings()
         // position is the offset of the window on the dest surface.
         const Rectf ucrect(getUnclippedOuterRect().get());
 
-        d_translation = glm::vec3(ucrect.d_min.d_x - ctx.offset.d_x,
-                                  ucrect.d_min.d_y - ctx.offset.d_y,
+        d_translation = glm::vec3(ucrect.d_min.d_x - ctx.offset.x,
+                                  ucrect.d_min.d_y - ctx.offset.y,
                                   0.0f);
     }
     initialiseClippers(ctx);
@@ -3040,7 +3040,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     {
         ctx.surface = d_surface;
         ctx.owner = this;
-        ctx.offset = getUnclippedOuterRect().get().getPosition();
+        ctx.offset = getUnclippedOuterRect().get().getPositionGLM();
         ctx.queue = RQ_BASE;
     }
     else if (d_parent)
@@ -3051,7 +3051,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     {
         ctx.surface = &getGUIContext();
         ctx.owner = 0;
-        ctx.offset = Vector2f(0, 0);
+        ctx.offset = glm::vec2(0, 0);
         ctx.queue = RQ_BASE;
     }
 }
@@ -3170,7 +3170,7 @@ void Window::allocateRenderingWindow()
         // set size and position of RenderingWindow
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
         static_cast<RenderingWindow*>(d_surface)->
-            setPosition(getUnclippedOuterRect().get().getPosition());
+            setPosition(getUnclippedOuterRect().get().getPositionGLM());
 
         getGUIContext().markAsDirty();
     }
@@ -3227,16 +3227,16 @@ void Window::initialiseClippers(const RenderingContext& ctx)
                 getParent()->getClipRect(d_nonClient));
         else
             rendering_window->setClippingRegion(
-                Rectf(Vector2f(0, 0), getRootContainerSize()));
+                Rectf(glm::vec2(0, 0), getRootContainerSize()));
 
-        d_clippingRegion = Rectf(Vector2f(0, 0), d_pixelSize);
+        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
     }
     else
     {
         Rectf geo_clip(getOuterRectClipper());
 
         if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
-            geo_clip.offset(Vector2f(-ctx.offset.d_x, -ctx.offset.d_y));
+            geo_clip.offset(-ctx.offset);
 
         d_clippingRegion = Rectf(geo_clip);
     }
@@ -3334,7 +3334,7 @@ RenderedStringParser& Window::getRenderedStringParser() const
 }
 
 //----------------------------------------------------------------------------//
-Vector2f Window::getUnprojectedPosition(const Vector2f& pos) const
+glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
 {
     RenderingSurface* rs = &getTargetRenderingSurface();
 
@@ -3346,13 +3346,13 @@ Vector2f Window::getUnprojectedPosition(const Vector2f& pos) const
     RenderingWindow* rw = static_cast<RenderingWindow*>(rs);
 
     // setup for loop
-    Vector2f out_pos(pos);
+    glm::vec2 out_pos(pos);
 
     // while there are rendering windows
     while (rw)
     {
         // unproject the point for the current rw
-        const Vector2f in_pos(out_pos);
+        const glm::vec2 in_pos(out_pos);
         rw->unprojectPoint(in_pos, out_pos);
 
         // get next rendering window, if any

@@ -320,7 +320,7 @@ namespace CEGUI
 
         // add geometry for text to the target window.
         d_formattedRenderedString->draw(&srcWindow, srcWindow.getGeometryBuffers(),
-                                        destRect.getPosition(),
+                                        destRect.getPositionGLM(),
                                         &finalColours, clipper);
     }
 

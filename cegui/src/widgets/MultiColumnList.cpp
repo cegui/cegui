@@ -1595,10 +1595,10 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
 {
     const ListHeader* header = getListHeader();
-    Rectf listArea(getListRenderArea());
+    const Rectf listArea(getListRenderArea());
 
     float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
@@ -1608,7 +1608,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
         y += getHighestRowItemHeight(i);
 
         // have we located the row?
-        if (pt.d_y < y)
+        if (pt.y < y)
         {
             // scan across to find column that was clicked
             for (uint j = 0; j < getColumnCount(); ++j)
@@ -1617,7 +1617,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (pt.d_x < x)
+                if (pt.x < x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
@@ -1927,7 +1927,7 @@ void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
 
     if (e.source == PS_Left)
     {
-        Vector2f local_point = CoordConverter::screenToWindow(*this, e.position);
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
         handleSelection(local_point, false, false);
 
         ++e.handled;
@@ -1941,7 +1941,7 @@ void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
 
     if (cumulative || range)
     {
-        Vector2f local_point = CoordConverter::screenToWindow(*this,
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
             getGUIContext().getPointerIndicator().getPosition());
         handleSelection(local_point, cumulative, range);
 
@@ -1972,7 +1972,7 @@ void MultiColumnList::onScroll(PointerEventArgs& e)
 	++e.handled;
 }
 
-void MultiColumnList::handleSelection(const Vector2f& position, bool cumulative, bool range)
+void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative, bool range)
 {
     bool modified = false;
 

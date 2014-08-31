@@ -66,26 +66,23 @@ void RenderingWindow::setClippingRegion(const Rectf& region)
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
     {
-        final_region.offset(
-            Vector2f(-static_cast<RenderingWindow*>(d_owner)->d_position.d_x,
-                     -static_cast<RenderingWindow*>(d_owner)->d_position.d_y));
+        final_region.offset(-static_cast<RenderingWindow*>(d_owner)->d_position);
     }
 
     d_geometryBuffer.setClippingRegion(final_region);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPosition(const Vector2f& position)
+void RenderingWindow::setPosition(const glm::vec2& position)
 {
     d_position = position;
 
-    glm::vec3 trans(d_position.d_x, d_position.d_y, 0.0f);
+    glm::vec3 trans(d_position, 0.0f);
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
     {
-        trans.x -= static_cast<RenderingWindow*>(d_owner)->d_position.d_x;
-        trans.y -= static_cast<RenderingWindow*>(d_owner)->d_position.d_y;
+        trans -= glm::vec3(static_cast<RenderingWindow*>(d_owner)->d_position, 0);
     }
 
     d_geometryBuffer.setTranslation(trans);
@@ -118,7 +115,7 @@ void RenderingWindow::setPivot(const glm::vec3& pivot)
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& RenderingWindow::getPosition() const
+const glm::vec2& RenderingWindow::getPosition() const
 {
     return d_position;
 }
@@ -255,8 +252,8 @@ void RenderingWindow::realiseGeometry_impl()
 {
     Texture& tex = d_textarget.getTexture();
 
-    const float tu = d_size.d_width * tex.getTexelScaling().d_x;
-    const float tv = d_size.d_height * tex.getTexelScaling().d_y;
+    const float tu = d_size.d_width * tex.getTexelScaling().x;
+    const float tv = d_size.d_height * tex.getTexelScaling().y;
     const Rectf tex_rect(d_textarget.isRenderingInverted() ?
                           Rectf(0, 1, tu, 1 - tv) :
                           Rectf(0, 0, tu, tv));
@@ -300,7 +297,7 @@ void RenderingWindow::realiseGeometry_impl()
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::unprojectPoint(const Vector2f& p_in, Vector2f& p_out)
+void RenderingWindow::unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out)
 {
     // quick test for rotations to save us a lot of work in the unrotated case
     if (d_rotation == glm::quat(1, 0, 0, 0))
@@ -309,15 +306,14 @@ void RenderingWindow::unprojectPoint(const Vector2f& p_in, Vector2f& p_out)
         return;
     }
 
-    Vector2f in(p_in);
+    glm::vec2 in(p_in);
 
     // localise point for cases where owner is also a RenderingWindow
     if (d_owner->isRenderingWindow())
         in -= static_cast<RenderingWindow*>(d_owner)->getPosition();
 
     d_owner->getRenderTarget().unprojectPoint(d_geometryBuffer, in, p_out);
-    p_out.d_x += d_position.d_x;
-    p_out.d_y += d_position.d_y;
+    p_out += d_position;
 }
 
 //----------------------------------------------------------------------------//

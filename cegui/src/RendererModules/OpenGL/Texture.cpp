@@ -172,7 +172,7 @@ const Sizef& OpenGLTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLTexture::getTexelScaling() const
+const glm::vec2& OpenGLTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -222,7 +222,7 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
+    blitFromMemory(buffer, Rectf(glm::vec2(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -348,7 +348,7 @@ void OpenGLTexture::restoreTexture()
     generateOpenGLTexture();
     setTextureSize_impl(d_size);
 
-    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), d_size));
+    blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), d_size));
 
     // free the grabbuffer
     delete [] d_grabBuffer;
@@ -405,9 +405,9 @@ void OpenGLTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
-    //Update the scale of a texel based on the absolute size
-    d_texelScaling.d_x = (d_size.d_width != 0.0f) ? (1.0f / d_size.d_width) : 0.0f;
-    d_texelScaling.d_y = (d_size.d_height != 0.0f) ? (1.0f / d_size.d_height) : 0.0f;
+    // Update the scale of a texel based on the absolute size
+    d_texelScaling.x = (d_size.d_width != 0.0f) ? (1.0f / d_size.d_width) : 0.0f;
+    d_texelScaling.y = (d_size.d_height != 0.0f) ? (1.0f / d_size.d_height) : 0.0f;
 }
 
 //----------------------------------------------------------------------------//

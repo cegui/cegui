@@ -321,11 +321,11 @@ float ImageDimBase::getValue(const Window& wnd) const
             break;
 
         case DT_X_OFFSET:
-            return img->getRenderedOffset().d_x;
+            return img->getRenderedOffset().x;
             break;
 
         case DT_Y_OFFSET:
-            return img->getRenderedOffset().d_y;
+            return img->getRenderedOffset().y;
             break;
 
         default:

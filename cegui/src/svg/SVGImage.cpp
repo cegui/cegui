@@ -62,9 +62,9 @@ SVGImage::SVGImage(const String& name) :
 //----------------------------------------------------------------------------//
 SVGImage::SVGImage(const String& name, SVGData& svg_data) :
     Image(name,
-          Vector2f(0.0f, 0.0f),
-          Rectf(Vector2f(0.0f, 0.0f),
-                Vector2f(svg_data.getWidth(), svg_data.getHeight())),
+          glm::vec2(0.0f, 0.0f),
+          Rectf(glm::vec2(0.0f, 0.0f),
+                glm::vec2(svg_data.getWidth(), svg_data.getHeight())),
           ASM_Disabled,
           Sizef(640, 480)),
     d_svgData(&svg_data),
@@ -75,10 +75,10 @@ SVGImage::SVGImage(const String& name, SVGData& svg_data) :
 //----------------------------------------------------------------------------//
 SVGImage::SVGImage(const XMLAttributes& attributes) :
     Image(attributes.getValueAsString(ImageNameAttribute),
-          Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
-                   static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
-          Rectf(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
-                         static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
+          glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
+                    static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
+          Rectf(glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
+                          static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
                 Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
                       static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0)))),
           PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute)),

@@ -61,10 +61,10 @@ BitmapImage::BitmapImage(const String& name) :
 //----------------------------------------------------------------------------//
 BitmapImage::BitmapImage(const XMLAttributes& attributes) :
     Image(attributes.getValueAsString(ImageNameAttribute),
-          Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
-                   static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
-          Rectf(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
-                         static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
+          glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
+                    static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
+          Rectf(glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
+                          static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
                 Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
                       static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0)))),
           PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute)),
@@ -77,7 +77,7 @@ BitmapImage::BitmapImage(const XMLAttributes& attributes) :
 
 //----------------------------------------------------------------------------//
 BitmapImage::BitmapImage(const String& name, Texture* texture,
-                       const Rectf& pixel_area, const Vector2f& pixel_offset,
+                       const Rectf& pixel_area, const glm::vec2& pixel_offset,
                        const AutoScaledMode autoscaled, const Sizef& native_res) :
     Image(name,
           pixel_offset,
@@ -85,8 +85,7 @@ BitmapImage::BitmapImage(const String& name, Texture* texture,
           autoscaled,
           native_res),
     d_texture(texture)
-{
-}
+{}
 
 //----------------------------------------------------------------------------//
 void BitmapImage::setTexture(Texture* texture)
@@ -113,8 +112,8 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
         return;
 
     // Obtain correct scale values from the texture
-    const Vector2f& texel_scale = d_texture->getTexelScaling();
-    const Vector2f tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
+    const glm::vec2& texel_scale = d_texture->getTexelScaling();
+    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
 
     // calculate final, clipped, texture co-ordinates
     const Rectf tex_rect((d_imageArea + ((final_rect - dest) * tex_per_pix)) * texel_scale);

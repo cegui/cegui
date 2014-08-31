@@ -77,7 +77,7 @@ MenuItem::~MenuItem(void)
 /*************************************************************************
     Update the internal state of the Widget
 *************************************************************************/
-void MenuItem::updateInternalState(const Vector2f& pointer_pos)
+void MenuItem::updateInternalState(const glm::vec2& pointer_pos)
 {
     bool oldstate = d_hovering;
 

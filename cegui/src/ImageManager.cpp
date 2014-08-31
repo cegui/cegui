@@ -326,7 +326,7 @@ void ImageManager::addBitmapImageFromFile(const String& name, const String& file
 
     BitmapImage& image = static_cast<BitmapImage&>(create("BitmapImage", name));
     image.setTexture(tex);
-    const Rectf rect(Vector2f(0.0f, 0.0f), tex->getOriginalDataSize());
+    const Rectf rect(glm::vec2(0.0f, 0.0f), tex->getOriginalDataSize());
     image.setImageArea(rect);
 }
 

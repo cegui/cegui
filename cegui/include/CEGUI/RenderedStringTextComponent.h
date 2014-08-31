@@ -65,7 +65,7 @@ public:
 
     // implementation of abstract base interface
     void draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
-              const Vector2f& position, const ColourRect* mod_colours,
+              const glm::vec2& position, const ColourRect* mod_colours,
               const Rectf* clip_rect, const float vertical_space,
               const float space_extra) const;
     Sizef getPixelSize(const Window* ref_wnd) const;

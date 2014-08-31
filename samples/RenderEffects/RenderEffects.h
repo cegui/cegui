@@ -50,8 +50,8 @@ protected:
     // number of vertical subdivisions
     static const int ds_yPivotCount = 11;
 
-    CEGUI::Vector2f d_pivots[ds_xPivotCount][ds_yPivotCount];
-    CEGUI::Vector2f d_pivotVelocities[ds_xPivotCount][ds_yPivotCount];
+    glm::vec2 d_pivots[ds_xPivotCount][ds_yPivotCount];
+    glm::vec2 d_pivotVelocities[ds_xPivotCount][ds_yPivotCount];
 
     bool d_initialised;
 
@@ -117,8 +117,8 @@ public:
     bool update(const float elapsed, CEGUI::RenderingWindow& window);
 
 protected:
-    CEGUI::Vector2f d_currentPosition;
-    CEGUI::Vector2f d_currentVelocity;
+    glm::vec2 d_currentPosition;
+    glm::vec2 d_currentVelocity;
 
     bool d_initialised;
 

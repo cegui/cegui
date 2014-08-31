@@ -1913,7 +1913,7 @@ void SVGTesselator::setupGeometryBufferSettings(CEGUI::GeometryBuffer* geometry_
     else
         geometry_buffer->setClippingActive(false);
 
-    geometry_buffer->setScale(CEGUI::Vector2f(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y));
+    geometry_buffer->setScale(glm::vec2(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y));
     geometry_buffer->setCustomTransform(cegui_transformation_matrix);
     geometry_buffer->setAlpha(render_settings.d_alpha);
 }

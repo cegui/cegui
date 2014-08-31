@@ -588,7 +588,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
     const Sizef pixel_size = skipAllPixelAlignment ?
         calculatePixelSize(true) : getPixelSize();
-    Rectf ret(Vector2f(0, 0), pixel_size);
+    Rectf ret(glm::vec2(0, 0), pixel_size);
 
     const Element* parent = getParentElement();
 
@@ -600,20 +600,20 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     }
     else
     {
-        parent_rect = Rectf(Vector2f(0, 0), getRootContainerSize());
+        parent_rect = Rectf(glm::vec2(0, 0), getRootContainerSize());
     }
 
     const Sizef parent_size = parent_rect.getSize();
 
-    Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
+    glm::vec2 offset = glm::vec2(parent_rect.d_min.d_x, parent_rect.d_min.d_y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {
         case HA_CENTRE:
-            offset.d_x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
+            offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
             break;
         case HA_RIGHT:
-            offset.d_x += parent_size.d_width - pixel_size.d_width;
+            offset.x += parent_size.d_width - pixel_size.d_width;
             break;
         default:
             break;
@@ -622,10 +622,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     switch (getVerticalAlignment())
     {
         case VA_CENTRE:
-            offset.d_y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
+            offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
             break;
         case VA_BOTTOM:
-            offset.d_y += parent_size.d_height - pixel_size.d_height;
+            offset.y += parent_size.d_height - pixel_size.d_height;
             break;
         default:
             break;
@@ -633,8 +633,8 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     if (d_pixelAligned && !skipAllPixelAlignment)
     {
-        offset = Vector2f(CoordConverter::alignToPixels(offset.d_x),
-                          CoordConverter::alignToPixels(offset.d_y));
+        offset = glm::vec2(CoordConverter::alignToPixels(offset.x),
+                           CoordConverter::alignToPixels(offset.y));
     }
 
     ret.offset(offset);

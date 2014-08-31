@@ -28,7 +28,7 @@ author:     Lukas E Meindl
 #define _First_Person_HUD_
 
 #include "SampleBase.h"
-
+#include <glm/glm.hpp>
 #include <vector>
 
 namespace CEGUI
@@ -89,7 +89,7 @@ protected:
     bool handleRestartButtonClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
-    void createScorePopup(const CEGUI::Vector2<float>& pointerPos, int points);
+    void createScorePopup(const glm::vec2& pointerPos, int points);
 
     void handleLivesChanged();
 

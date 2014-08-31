@@ -185,22 +185,19 @@ void Thumb::onPointerMove(PointerEventArgs& e)
 	// only react if we are being dragged
 	if (d_beingDragged)
 	{
-        Sizef parentSize(getParentPixelSize());
+        const Sizef parentSize(getParentPixelSize());
 
-		Vector2f delta;
-		float hmin, hmax, vmin, vmax;
+        const float hmin = d_horzMin;
+        const float hmax = d_horzMax;
+        const float vmin = d_vertMin;
+        const float vmax = d_vertMax;
 
-        delta = CoordConverter::screenToWindow(*this, e.position);
+        glm::vec2 delta = CoordConverter::screenToWindow(*this, e.position);
 
-        hmin = d_horzMin;
-        hmax = d_horzMax;
-        vmin = d_vertMin;
-        vmax = d_vertMax;
-
-		// calculate amount of movement      
+        // calculate amount of movement
 		delta -= d_dragPoint;
-        delta.d_x /= parentSize.d_width;
-        delta.d_y /= parentSize.d_height;
+        delta.x /= parentSize.d_width;
+        delta.y /= parentSize.d_height;
 
 		//
 		// Calculate new (pixel) position for thumb
@@ -209,7 +206,7 @@ void Thumb::onPointerMove(PointerEventArgs& e)
 
 		if (d_horzFree)
 		{
-			newPos.d_x.d_scale += delta.d_x;
+            newPos.d_x.d_scale += delta.x;
 
 			// limit value to within currently set range
 			newPos.d_x.d_scale = (newPos.d_x.d_scale < hmin) ? hmin : (newPos.d_x.d_scale > hmax) ? hmax : newPos.d_x.d_scale;
@@ -217,7 +214,7 @@ void Thumb::onPointerMove(PointerEventArgs& e)
 
 		if (d_vertFree)
 		{
-			newPos.d_y.d_scale += delta.d_y;
+            newPos.d_y.d_scale += delta.y;
 
 			// limit new position to within currently set range
 			newPos.d_y.d_scale = (newPos.d_y.d_scale < vmin) ? vmin : (newPos.d_y.d_scale > vmax) ? vmax : newPos.d_y.d_scale;
@@ -234,9 +231,7 @@ void Thumb::onPointerMove(PointerEventArgs& e)
 				WindowEventArgs args(this);
 				onThumbPositionChanged(args);
 			}
-
 		}
-
 	}
 
 	++e.handled;

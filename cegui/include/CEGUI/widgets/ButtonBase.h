@@ -120,9 +120,9 @@ protected:
     \return
         Nothing
     */
-    void    updateInternalState(const Vector2f& pointer_pos);
+    void updateInternalState(const glm::vec2& pointer_pos);
 
-    bool calculateCurrentHoverState(const Vector2f& pointer_pos);
+    bool calculateCurrentHoverState(const glm::vec2& pointer_pos);
 
 	/*************************************************************************
 		Implementation Data

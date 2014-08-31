@@ -384,10 +384,10 @@ public:
         Returns the resolution of the display or host window in dots per inch.
 
     \return
-        Vector2 object that describes the resolution of the display or host
+        vec2 object that describes the resolution of the display or host
         window in DPI.
     */
-    virtual const Vector2f& getDisplayDPI() const = 0;
+    virtual const glm::vec2& getDisplayDPI() const = 0;
 
     /*!
     \brief

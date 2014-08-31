@@ -85,12 +85,12 @@ namespace CEGUI
 
         d_inPositionSelf = true;
 
-        PointerIndicator& indicator = getGUIContext().getPointerIndicator();
-        Rectf screen(Vector2f(0, 0), getRootContainerSize());
+        const PointerIndicator& indicator = getGUIContext().getPointerIndicator();
+        const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
         const Image* pointerImage = indicator.getImage();
 
-        Vector2f pointerPos(indicator.getPosition());
+        const glm::vec2 pointerPos(indicator.getPosition());
         Sizef pointerSz(0,0);
 
         if (pointerImage)
@@ -98,27 +98,27 @@ namespace CEGUI
             pointerSz = pointerImage->getRenderedSize();
         }
 
-        Vector2f tmpPos(pointerPos.d_x + pointerSz.d_width, pointerPos.d_y + pointerSz.d_height);
+        glm::vec2 tmpPos(pointerPos.x + pointerSz.d_width, pointerPos.y + pointerSz.d_height);
         tipRect.setPosition(tmpPos);
 
         // if tooltip would be off the right of the screen,
         // reposition to the other side of the pointer indicator.
         if (screen.right() < tipRect.right())
         {
-            tmpPos.d_x = pointerPos.d_x - tipRect.getWidth() - 5;
+            tmpPos.x = pointerPos.x - tipRect.getWidth() - 5;
         }
 
         // if tooltip would be off the bottom of the screen,
         // reposition to the other side of the pointer indicator.
         if (screen.bottom() < tipRect.bottom())
         {
-            tmpPos.d_y = pointerPos.d_y - tipRect.getHeight() - 5;
+            tmpPos.y = pointerPos.y - tipRect.getHeight() - 5;
         }
 
         // set final position of tooltip window.
         setPosition(
-            UVector2(cegui_absdim(tmpPos.d_x),
-                     cegui_absdim(tmpPos.d_y)));
+            UVector2(cegui_absdim(tmpPos.x),
+                     cegui_absdim(tmpPos.y)));
 
         d_inPositionSelf = false;
     }

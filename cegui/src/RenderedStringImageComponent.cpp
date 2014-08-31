@@ -114,7 +114,7 @@ void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(const Window* ref_wnd,
                                         std::vector<GeometryBuffer*>& geometry_buffers,
-                                        const Vector2f& position,
+                                        const glm::vec2& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect,
                                         const float vertical_space,
@@ -123,7 +123,7 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (!d_image)
         return;
 
-    CEGUI::Rectf dest(position.d_x, position.d_y, 0, 0);
+    Rectf dest(position.x, position.y, 0, 0);
     float y_scale = 1.0f;
 
     // handle formatting options

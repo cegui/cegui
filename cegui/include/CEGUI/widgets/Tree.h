@@ -727,9 +727,9 @@ protected:
          TreeItem that is under window pixel co-ordinate \a pt, or 0 if no
          item is under that position.
      */
-    TreeItem* getItemAtPoint(const Vector2f& pt) const;
+    TreeItem* getItemAtPoint(const glm::vec2& pt) const;
     TreeItem* getItemFromListAtPoint(const LBItemList &itemList, float *bottomY,
-                                     const Vector2f& pt) const;
+                                     const glm::vec2& pt) const;
 
     /*!
      \brief
@@ -756,7 +756,7 @@ protected:
     bool handleFontRenderSizeChange(const EventArgs& args);
  
      void drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
-                       Vector2f& itemPos, std::vector<GeometryBuffer*>& geometryBuffers, float alpha);
+                       glm::vec2& itemPos, std::vector<GeometryBuffer*>& geometryBuffers, float alpha);
     
     /*************************************************************************
         New event handlers
@@ -850,7 +850,7 @@ private:
         Private methods
      *************************************************************************/
     void addTreeProperties(void);
-    void handleSelection(Vector2f local_pos, bool cumulative, bool range);
+    void handleSelection(glm::vec2 local_pos, bool cumulative, bool range);
 
     Rectf d_itemArea;
 };

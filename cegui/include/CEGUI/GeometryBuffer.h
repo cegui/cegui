@@ -143,7 +143,7 @@ public:
     \param scale
         Vector2 describing the x and y scale to be used.
     */
-    void setScale(const Vector2f& scale);
+    void setScale(const glm::vec2& scale);
 
     /*!
     \brief
