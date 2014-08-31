@@ -33,26 +33,24 @@
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//
-GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
-    : d_translation(0, 0, 0)
-    , d_rotation(Quaternion::IDENTITY)
-    , d_scale(1.0f, 1.0f, 1.0f)
-    , d_pivot(0, 0, 0)
-    , d_customTransform(1.0f)
-    , d_effect(0)
-    , d_matrixValid(false)
-    , d_blendMode(BM_NORMAL)
-    , d_renderMaterial(renderMaterial)
-    , d_polygonFillRule(PFR_NONE)
-    , d_postStencilVertexCount(0)
-    , d_alpha(1.f)
-{
-}
+GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
+    d_translation(0, 0, 0),
+    d_rotation(1, 0, 0, 0), // <-- IDENTITY
+    d_scale(1.0f, 1.0f, 1.0f),
+    d_pivot(0, 0, 0),
+    d_customTransform(1.0f),
+    d_effect(0),
+    d_matrixValid(false),
+    d_blendMode(BM_NORMAL),
+    d_renderMaterial(renderMaterial),
+    d_polygonFillRule(PFR_NONE),
+    d_postStencilVertexCount(0),
+    d_alpha(1.0f)
+{}
 
 //---------------------------------------------------------------------------//
 GeometryBuffer::~GeometryBuffer()
-{
-}
+{}
 
 //---------------------------------------------------------------------------//
 void GeometryBuffer::setBlendMode(const BlendMode mode)
@@ -266,9 +264,9 @@ void GeometryBuffer::setTranslation(const glm::vec3& translation)
 }
 
 //----------------------------------------------------------------------------//
-void GeometryBuffer::setRotation(const Quaternion& rotationQuat)
+void GeometryBuffer::setRotation(const glm::quat& rotationQuat)
 {
-    if(d_rotation != rotationQuat)
+    if (d_rotation != rotationQuat)
     {
         d_rotation = rotationQuat;
         d_matrixValid = false;

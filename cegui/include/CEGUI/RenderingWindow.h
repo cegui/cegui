@@ -29,9 +29,11 @@
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Rect.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -127,7 +129,7 @@ public:
     \param rotation
         Quaternion object describing the rotation.
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief
@@ -171,7 +173,7 @@ public:
     \return
         Quaternion object describing the rotation for the RenderingWindow.
     */
-    const Quaternion& getRotation()const;
+    const glm::quat& getRotation()const;
 
     /*!
     \brief
@@ -307,7 +309,7 @@ protected:
     //! Size of this RenderingWindow
     Sizef d_size;
     //! Rotation for this RenderingWindow
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! Pivot point used for the rotation.
     glm::vec3 d_pivot;
 };

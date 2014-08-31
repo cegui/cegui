@@ -413,7 +413,7 @@
             <xsd:enumeration value="Rectf" />
             <xsd:enumeration value="Font" />
             <xsd:enumeration value="Image" />
-            <xsd:enumeration value="Quaternion" />
+            <xsd:enumeration value="quat" />
             <xsd:enumeration value="AspectMode" />
             <xsd:enumeration value="HorizontalAlignment" />
             <xsd:enumeration value="VerticalAlignment" />

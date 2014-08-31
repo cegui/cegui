@@ -28,10 +28,9 @@
 #ifndef _CEGUIGeometryBufferBase_h_
 #define _CEGUIGeometryBufferBase_h_
 
-#include "../../GeometryBuffer.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
-#include "../../Rect.h"
-#include "../../Quaternion.h"
+#include "CEGUI/Rect.h"
 
 #include "CEGUI/RefCounted.h"
 
