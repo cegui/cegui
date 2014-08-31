@@ -29,7 +29,6 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Rect.h"
-#include "CEGUI/Quaternion.h"
 #include <directfb.h>
 #include <vector>
 
@@ -52,7 +51,7 @@ public:
     // Implement GeometryBuffer interface.
     void draw() const;
     void setTranslation(const glm::vec3& v);
-    void setRotation(const Quaternion& r);
+    void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);
     void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
@@ -98,7 +97,7 @@ protected:
     //! translation vector
     glm::vec3 d_translation;
     //! rotation vector
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! pivot point for rotation
     glm::vec3 d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer

@@ -27,11 +27,9 @@
 #ifndef _CEGUIDirect3D11GeometryBuffer_h_
 #define _CEGUIDirect3D11GeometryBuffer_h_
 
-#include "../../GeometryBuffer.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "../../Rect.h"
-#include "../../Quaternion.h"
-
+#include "CEGUI/Rect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

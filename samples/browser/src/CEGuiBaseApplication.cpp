@@ -345,7 +345,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
     const size_t bufferCount = d_logoGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
     {
-        d_logoGeometry[i]->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
+        d_logoGeometry[i]->setRotation(glm::quat(glm::vec3(glm::radians(rot), 0, 0)));
     }
 
     rot = fmodf(rot + 180.0f * elapsed, 360.0f);

@@ -32,12 +32,13 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/Rect.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include <cstdio>
 
@@ -594,17 +595,17 @@ public:
 };
 
 template<>
-class PropertyHelper<Quaternion>
+class PropertyHelper<glm::quat>
 {
 public:
-    typedef Quaternion return_type;
+    typedef glm::quat return_type;
     typedef return_type safe_method_return_type;
-    typedef const Quaternion& pass_type;
+    typedef const glm::quat& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName()
     {
-        static String type("Quaternion");
+        static String type("quat");
 
         return type;
     }
@@ -613,23 +614,25 @@ public:
     {
         if (strchr(str.c_str(), 'w') || strchr(str.c_str(), 'W'))
         {
-            Quaternion val(1, 0, 0, 0);
-            sscanf(str.c_str(), " w:%g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
+            glm::quat val(1, 0, 0, 0);
+            sscanf(str.c_str(), " w:%g x:%g y:%g z:%g", &val.w, &val.x, &val.y, &val.z);
 
             return val;
         }
         else
         {
             float x, y, z;
+            // CEGUI takes degrees because it's easier to work with
             sscanf(str.c_str(), " x:%g y:%g z:%g", &x, &y, &z);
-            return Quaternion::eulerAnglesDegrees(x, y, z);
+            // glm::radians converts from degrees to radians
+            return glm::quat(glm::vec3(glm::radians(x), glm::radians(y), glm::radians(z)));
         }
     }
 
     static string_return_type toString(pass_type val)
     {
         char buff[128];
-        snprintf(buff, sizeof(buff), "w:%g x:%g y:%g z:%g", val.d_w, val.d_x, val.d_y, val.d_z);
+        snprintf(buff, sizeof(buff), "w:%g x:%g y:%g z:%g", val.w, val.x, val.y, val.z);
 
         return String(buff);
     }

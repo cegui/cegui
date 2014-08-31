@@ -31,7 +31,6 @@
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/Rect.h"
-#include "CEGUI/Quaternion.h"
 
 #include <OgreColourValue.h>
 #include <OgreRenderOperation.h>

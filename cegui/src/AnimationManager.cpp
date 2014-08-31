@@ -35,6 +35,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/Animation_xmlHandler.h"
+#include "CEGUI/Quaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

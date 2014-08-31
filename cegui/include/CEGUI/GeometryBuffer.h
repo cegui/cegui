@@ -32,9 +32,9 @@
 #include "CEGUI/Rect.h"
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/RenderMaterial.h"
-#include "CEGUI/Quaternion.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include <vector>
 
@@ -123,7 +123,7 @@ public:
     \param rotationQuat
         Quaternion describing the rotation to be used.
     */
-    virtual void setRotation(const Quaternion& rotationQuat);
+    virtual void setRotation(const glm::quat& rotationQuat);
 
     /*!
     \brief
@@ -472,7 +472,7 @@ protected:
     //! translation vector
     glm::vec3       d_translation;
     //! rotation quaternion
-    Quaternion      d_rotation;
+    glm::quat       d_rotation;
     //! scaling vector
     glm::vec3       d_scale;
     //! pivot point for rotation

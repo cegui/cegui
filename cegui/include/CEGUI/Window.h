@@ -33,7 +33,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/EventSet.h"
