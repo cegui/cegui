@@ -29,7 +29,7 @@
 
 #include "CEGUI/RenderingWindow.h"
 
-#include <cstdlib>
+#include <stddef.h>
 
 //----------------------------------------------------------------------------//
 WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
@@ -89,7 +89,7 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const CEGUI::Colour c(1, 1, 1, 1);
+    static const glm::mediump_vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
     // qw is the width of one subdivision "box", qh is the height of it
     const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
@@ -113,34 +113,34 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
             // vertex 0 - top left
             d_vertices[idx + 0].d_position   = glm::vec3(d_pivots[x][y], 0) - windowPosition;
-            d_vertices[idx + 0].d_colour = c;
+            d_vertices[idx + 0].d_colour = colour;
             d_vertices[idx + 0].d_texCoords = glm::vec2(x * tcx, y * tcy);
 
             // vertex 1 - bottom left
             d_vertices[idx + 1].d_position   = glm::vec3(d_pivots[x][y + 1], 0) - windowPosition;
-            d_vertices[idx + 1].d_colour = c;
+            d_vertices[idx + 1].d_colour = colour;
             d_vertices[idx + 1].d_texCoords = glm::vec2(x * tcx, (y + 1) * tcy);
 
             // vertex 2 - bottom right
             d_vertices[idx + 2].d_position   = glm::vec3(d_pivots[x + 1][y + 1], 0) - windowPosition;
-            d_vertices[idx + 2].d_colour = c;
+            d_vertices[idx + 2].d_colour = colour;
             d_vertices[idx + 2].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
 
             // second triangle
 
             // vertex 3 - bottom right
             d_vertices[idx + 3].d_position   = glm::vec3(d_pivots[x + 1][y + 1], 0) - windowPosition;
-            d_vertices[idx + 3].d_colour = c;
+            d_vertices[idx + 3].d_colour = colour;
             d_vertices[idx + 3].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
 
             // vertex 4 - top right
             d_vertices[idx + 4].d_position   = glm::vec3(d_pivots[x + 1][y], 0) - windowPosition;
-            d_vertices[idx + 4].d_colour = c;
+            d_vertices[idx + 4].d_colour = colour;
             d_vertices[idx + 4].d_texCoords = glm::vec2((x + 1) * tcx, y * tcy);
 
             // vertex 5 - top left
             d_vertices[idx + 5].d_position   = glm::vec3(d_pivots[x][y], 0) - windowPosition;
-            d_vertices[idx + 5].d_colour = c;
+            d_vertices[idx + 5].d_colour = colour;
             d_vertices[idx + 5].d_texCoords = glm::vec2(x * tcx, y * tcy);
         }
     }
@@ -252,7 +252,7 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const CEGUI::Colour c(1, 1, 1, 1);
+    static const glm::mediump_vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
@@ -279,32 +279,32 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
             // vertex 0
             vb[idx + 0].d_position   = glm::vec3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
-            vb[idx + 0].d_colour = c;
+            vb[idx + 0].d_colour = colour;
             vb[idx + 0].d_texCoords = glm::vec2(i * tcx, j*tcy);
 
             // vertex 1
             vb[idx + 1].d_position   = glm::vec3(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
-            vb[idx + 1].d_colour = c;
+            vb[idx + 1].d_colour = colour;
             vb[idx + 1].d_texCoords = glm::vec2(i*tcx, j*tcy+tcy);
 
             // vertex 2
             vb[idx + 2].d_position   = glm::vec3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
-            vb[idx + 2].d_colour = c;
+            vb[idx + 2].d_colour = colour;
             vb[idx + 2].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 3
             vb[idx + 3].d_position   = glm::vec3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
-            vb[idx + 3].d_colour = c;
+            vb[idx + 3].d_colour = colour;
             vb[idx + 3].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 4
             vb[idx + 4].d_position   = glm::vec3(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
-            vb[idx + 4].d_colour = c;
+            vb[idx + 4].d_colour = colour;
             vb[idx + 4].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy);
 
             // vertex 5
             vb[idx + 5].d_position   = glm::vec3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
-            vb[idx + 5].d_colour = c;
+            vb[idx + 5].d_colour = colour;
             vb[idx + 5].d_texCoords = glm::vec2(i * tcx, j*tcy);
         }
     }
@@ -437,7 +437,7 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const CEGUI::Colour c(1, 1, 1, 1);
+    static const glm::mediump_vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
     float uvTop = window.getTextureTarget().isRenderingInverted() ? 1.0f : 0.0f;
     float uvBot = window.getTextureTarget().isRenderingInverted() ? 0.0f : 1.0f;
@@ -452,34 +452,34 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
         // vertex 0 - top left
         d_vertices[0].d_position = glm::vec3(currentTopLeft, 0) - windowPosition;
-        d_vertices[0].d_colour = c;
+        d_vertices[0].d_colour = colour;
         d_vertices[0].d_texCoords = glm::vec2(0.0f, uvTop);
 
         // vertex 1 - bottom left
         d_vertices[1].d_position = glm::vec3(currentTopLeft.x, currentBottomRight.y, 0) - windowPosition;
-        d_vertices[1].d_colour = c;
+        d_vertices[1].d_colour = colour;
         d_vertices[1].d_texCoords = glm::vec2(0.0f, uvBot);
 
         // vertex 2 - bottom right
         d_vertices[2].d_position = glm::vec3(currentBottomRight, 0) - windowPosition;
-        d_vertices[2].d_colour = c;
+        d_vertices[2].d_colour = colour;
         d_vertices[2].d_texCoords = glm::vec2(1.0f, uvBot);
 
         // second triangle
 
         // vertex 3 - bottom right
         d_vertices[3].d_position = glm::vec3(currentBottomRight, 0) - windowPosition;
-        d_vertices[3].d_colour = c;
+        d_vertices[3].d_colour = colour;
         d_vertices[3].d_texCoords = glm::vec2(1.0f, uvBot);
 
         // vertex 4 - top right
         d_vertices[4].d_position = glm::vec3(currentBottomRight.x, currentTopLeft.y, 0) - windowPosition;
-        d_vertices[4].d_colour = c;
+        d_vertices[4].d_colour = colour;
         d_vertices[4].d_texCoords = glm::vec2(1.0f, uvTop);
 
         // vertex 5 - top left
         d_vertices[5].d_position = glm::vec3(currentTopLeft, 0) - windowPosition;
-        d_vertices[5].d_colour = c;
+        d_vertices[5].d_colour = colour;
         d_vertices[5].d_texCoords = glm::vec2(0.0f, uvTop);
     }
 

@@ -1,4 +1,4 @@
-/***********************************************************************
+﻿/***********************************************************************
     created:    1st August 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -61,7 +61,7 @@ SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buf
     d_strokeVertex.d_position.z = 0.0f;
     //Create the fade stroke colour from the normal colour and set the alpha to 0
     d_strokeFadeVertex = d_strokeVertex;
-    d_strokeFadeVertex.d_colour.setAlpha(0.0f);
+    d_strokeFadeVertex.d_colour.a = 0.0f;
 }
 
 //----------------------------------------------------------------------------//
@@ -303,17 +303,17 @@ void SVGTesselator::setupGeometryBuffers(GeometryBuffer*& fill_geometry_buffer,
 }
 
 //----------------------------------------------------------------------------//
-Colour SVGTesselator::getFillColour(const SVGPaintStyle &paint_style)
+glm::mediump_vec4 SVGTesselator::getFillColour(const SVGPaintStyle &paint_style)
 {
     const glm::vec3& fill_colour_values = paint_style.d_fill.d_colour;
-    return Colour(fill_colour_values.x, fill_colour_values.y, fill_colour_values.z, paint_style.d_fillOpacity);
+    return glm::mediump_vec4(fill_colour_values.x, fill_colour_values.y, fill_colour_values.z, paint_style.d_fillOpacity);
 }
 
 //----------------------------------------------------------------------------//
-Colour SVGTesselator::getStrokeColour(const SVGPaintStyle &paint_style)
+glm::mediump_vec4 SVGTesselator::getStrokeColour(const SVGPaintStyle &paint_style)
 {
     const glm::vec3& stroke_colour_values = paint_style.d_stroke.d_colour;
-    return Colour(stroke_colour_values.x, stroke_colour_values.y, stroke_colour_values.z, paint_style.d_strokeOpacity);
+    return glm::mediump_vec4(stroke_colour_values.x, stroke_colour_values.y, stroke_colour_values.z, paint_style.d_strokeOpacity);
 }
 
 //----------------------------------------------------------------------------//
@@ -815,7 +815,7 @@ void SVGTesselator::calculateCircleTesselationParameters(const float radius,
     float theta = std::acos( 1.0f - ( segment_length / radius ) );
 
     static const float two_pi = 2.0f * glm::pi<float>(); 
-    //Calculate the number of segments using 360� as angle and using theta
+    //Calculate the number of segments using 360° as angle and using theta
     num_segments = two_pi / theta;
 
     //Precalculate values we will need for our circle tesselation
@@ -1558,7 +1558,7 @@ void SVGTesselator::createRectangleFill(const SVGPaintStyle& paint_style, std::v
         return;
 
     //Get colours
-    const Colour fill_colour = getFillColour(paint_style);
+    const glm::vec4 fill_colour = getFillColour(paint_style);
 
     //Create the rectangle fill vertex
     ColouredVertex rectFillVertex(glm::vec3(), fill_colour);
@@ -1767,7 +1767,7 @@ void SVGTesselator::createFillGeometryAAFadeOnly(const std::vector<glm::vec2>& p
     fill_vertex.d_position.z = 0.0f;
     //Create the fade fill vertex from the fill vertex and set its alpha to 0
     ColouredVertex fill_fade_vertex = fill_vertex;
-    fill_fade_vertex.d_colour.setAlpha(0.0f);
+    fill_fade_vertex.d_colour.a = 0.0f;
 
     size_t points_count = points.size();
     for(size_t i = 0; i < points_count - 1; ++i)
