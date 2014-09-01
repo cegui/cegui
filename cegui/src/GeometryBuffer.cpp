@@ -96,10 +96,10 @@ void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
         vertexData[currentIndex + 0] = vs->d_position.x;
         vertexData[currentIndex + 1] = vs->d_position.y;
         vertexData[currentIndex + 2] = vs->d_position.z;
-        vertexData[currentIndex + 3] = vs->d_colour.r;
-        vertexData[currentIndex + 4] = vs->d_colour.g;
-        vertexData[currentIndex + 5] = vs->d_colour.b;
-        vertexData[currentIndex + 6] = vs->d_colour.a;
+        vertexData[currentIndex + 3] = vs->d_colour.x;
+        vertexData[currentIndex + 4] = vs->d_colour.y;
+        vertexData[currentIndex + 5] = vs->d_colour.z;
+        vertexData[currentIndex + 6] = vs->d_colour.w;
     }
 
     // Append the prepared geometry data
@@ -137,10 +137,10 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
         vertexData[currentIndex + 0] = vs->d_position.x;
         vertexData[currentIndex + 1] = vs->d_position.y;
         vertexData[currentIndex + 2] = vs->d_position.z;
-        vertexData[currentIndex + 3] = vs->d_colour.r;
-        vertexData[currentIndex + 4] = vs->d_colour.g;
-        vertexData[currentIndex + 5] = vs->d_colour.b;
-        vertexData[currentIndex + 6] = vs->d_colour.a;
+        vertexData[currentIndex + 3] = vs->d_colour.x;
+        vertexData[currentIndex + 4] = vs->d_colour.y;
+        vertexData[currentIndex + 5] = vs->d_colour.z;
+        vertexData[currentIndex + 6] = vs->d_colour.w;
         vertexData[currentIndex + 7] = vs->d_texCoords.x;
         vertexData[currentIndex + 8] = vs->d_texCoords.y;
     }
@@ -172,10 +172,10 @@ void GeometryBuffer::appendVertex(const TexturedColouredVertex& vertex)
     vertexData[0] = vertex.d_position.x;
     vertexData[1] = vertex.d_position.y;
     vertexData[2] = vertex.d_position.z;
-    vertexData[3] = vertex.d_colour.r;
-    vertexData[4] = vertex.d_colour.g;
-    vertexData[5] = vertex.d_colour.b;
-    vertexData[6] = vertex.d_colour.a;
+    vertexData[3] = vertex.d_colour.x;
+    vertexData[4] = vertex.d_colour.y;
+    vertexData[5] = vertex.d_colour.z;
+    vertexData[6] = vertex.d_colour.w;
     vertexData[7] = vertex.d_texCoords.x;
     vertexData[8] = vertex.d_texCoords.y;
 
@@ -192,10 +192,10 @@ void GeometryBuffer::appendVertex(const ColouredVertex& vertex)
     vertexData[0] = vertex.d_position.x;
     vertexData[1] = vertex.d_position.y;
     vertexData[2] = vertex.d_position.z;
-    vertexData[3] = vertex.d_colour.r;
-    vertexData[4] = vertex.d_colour.g;
-    vertexData[5] = vertex.d_colour.b;
-    vertexData[6] = vertex.d_colour.a;
+    vertexData[3] = vertex.d_colour.x;
+    vertexData[4] = vertex.d_colour.y;
+    vertexData[5] = vertex.d_colour.z;
+    vertexData[6] = vertex.d_colour.w;
 
     appendGeometry(vertexData, 7);
 }
