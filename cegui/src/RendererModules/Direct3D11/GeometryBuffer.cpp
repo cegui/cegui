@@ -133,21 +133,12 @@ void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::siz
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::updateMatrix() const
 {
-    const glm::vec3 final_trans(d_translation.x + d_pivot.x,
-                                d_translation.y + d_pivot.y,
-                                d_translation.z + d_pivot.z);
+    d_matrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
 
-    d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
+    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
+    d_matrix *= glm::mat4_cast(d_rotation) * scale_matrix;
 
-    glm::quat rotationQuat = glm::quat(d_rotation.w, d_rotation.x, d_rotation.y, d_rotation.z);
-    glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
-
-    glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.x, d_scale.y, d_scale.z)));
-
-    d_matrix *= rotation_matrix * scale_matrix;
-
-    glm::vec3 transl = glm::vec3(-d_pivot.x, -d_pivot.y, -d_pivot.z);
-    glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
+    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
     d_matrix *=  translMatrix * d_customTransform;
 
     d_matrixValid = true;
