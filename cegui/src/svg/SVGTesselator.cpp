@@ -61,7 +61,7 @@ SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buf
     d_strokeVertex.d_position.z = 0.0f;
     //Create the fade stroke colour from the normal colour and set the alpha to 0
     d_strokeFadeVertex = d_strokeVertex;
-    d_strokeFadeVertex.d_colour.a = 0.0f;
+    d_strokeFadeVertex.d_colour.w = 0.0f;
 }
 
 //----------------------------------------------------------------------------//
@@ -1767,7 +1767,7 @@ void SVGTesselator::createFillGeometryAAFadeOnly(const std::vector<glm::vec2>& p
     fill_vertex.d_position.z = 0.0f;
     //Create the fade fill vertex from the fill vertex and set its alpha to 0
     ColouredVertex fill_fade_vertex = fill_vertex;
-    fill_fade_vertex.d_colour.a = 0.0f;
+    fill_fade_vertex.d_colour.w = 0.0f;
 
     size_t points_count = points.size();
     for(size_t i = 0; i < points_count - 1; ++i)
