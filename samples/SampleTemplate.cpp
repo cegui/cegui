@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    dd-mm-yyyy
+    created:    20/5/2008
     author:     name <email>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - YYYY Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,31 +24,45 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Prototype_h_ // change to your belongings (it is always a good idea to use
-#define _Prototype_h_ // the sample name because the name of your sample has to be unique)
+#include "SampleTemplate.h"
+#include "CEGUI/CEGUI.h"
 
-#include "SampleBase.h"
-
-namespace CEGUI
+//----------------------------------------------------------------------------//
+WellNamedSample::WellNamedSample()
 {
-    // forward declarations (if necessary)
+    // add your info here
+    // if you don't know what to write have a look
+    // into the other samples
+    
+    // the name of your sample
+    Sample::d_name = "";
+    // your name goes here
+    Sample::d_credits = "";
+    // summarise what your sample wants to demonstrate
+    Sample::d_summary = "";
+    // explain how you achieve this
+    Sample::d_description = "";
 }
 
-// the sample class. needs to inherit from "Sample" class
-class PrototypeSample : public Sample
+//----------------------------------------------------------------------------//
+bool WellNamedSample::initialise(CEGUI::GUIContext* guiContext)
 {
-public:
-    // ctor
-    PrototypeSample();
+    using namespace CEGUI;
 
-    // override member to initialise the sample.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-    // override member to perform cleanup.
-    virtual void deinitialise();
+    d_guiContext = guiContext;
+    
+    // add additional files, if you have some
+    d_usedFiles = CEGUI::String(__FILE__);
 
-private:
-    CEGUI::GUIContext* d_guiContext;
-};
+    // add your initialisation code below here
+    // e.g. loading layouts, etc.
 
-#endif  // end of guard _Prototype_h_
+    // success!
+    return true;
+}
 
+//----------------------------------------------------------------------------//
+void WellNamedSample::deinitialise()
+{
+    // add your deinitialisation code below (if there's a need for it)
+}

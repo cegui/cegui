@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    20/5/2008
+    created:    dd-mm-yyyy
     author:     name <email>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - YYYY Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,45 +24,31 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "prototype.h"
-#include "CEGUI/CEGUI.h"
+#ifndef _WellNamedSample_h_ // change to your belongings (it is always a good idea to use
+#define _WellNamedSample_h_ // the sample name because the name of your sample has to be unique)
 
-//----------------------------------------------------------------------------//
-DragDropSample::DragDropSample()
+#include "SampleBase.h"
+
+namespace CEGUI
 {
-    // add your info here
-    // if you don't know what to write have a look
-    // into the other samples
-    
-    // the name of your sample
-    Sample::d_name = "";
-    // your name goes here
-    Sample::d_credits = "";
-    // summarise what your sample wants to demonstrate
-    Sample::d_summary = "";
-    // explain how you achieve this
-    Sample::d_description = "";
+    // forward declarations (if necessary)
 }
 
-//----------------------------------------------------------------------------//
-bool DragDropSample::initialise(CEGUI::GUIContext* guiContext)
+// the sample class. needs to inherit from "Sample" class
+class WellNamedSample : public Sample
 {
-    using namespace CEGUI;
+public:
+    // ctor
+    WellNamedSample();
 
-    d_guiContext = guiContext;
-    
-    // add additional files, if you have some
-    d_usedFiles = CEGUI::String(__FILE__);
+    // override member to initialise the sample.
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    // override member to perform cleanup.
+    virtual void deinitialise();
 
-    // add your initialisation code below here
-    // e.g. loading layouts, etc.
+private:
+    CEGUI::GUIContext* d_guiContext;
+};
 
-    // success!
-    return true;
-}
+#endif  // end of guard _Prototype_h_
 
-//----------------------------------------------------------------------------//
-void DragDropSample::deinitialise()
-{
-    // add your deinitialisation code below (if there's a need for it)
-}
