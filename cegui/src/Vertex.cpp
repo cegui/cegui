@@ -31,14 +31,14 @@
 namespace CEGUI
 {
 
-void TexturedColouredVertex::setColour(const CEGUI::Colour& colour)
+void TexturedColouredVertex::setColour(const Colour& colour)
 { 
-    d_colour = glm::mediump_vec4(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getAlpha());
+    d_colour = glm::vec4(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getAlpha());
 }
 
-void ColouredVertex::setColour(const CEGUI::Colour& colour)
+void ColouredVertex::setColour(const Colour& colour)
 {
-    d_colour = glm::mediump_vec4(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getAlpha());
+    d_colour = glm::vec4(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getAlpha());
 }
 
 }

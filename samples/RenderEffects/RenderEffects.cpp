@@ -89,7 +89,7 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const glm::mediump_vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
+    static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
     // qw is the width of one subdivision "box", qh is the height of it
     const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
@@ -252,7 +252,7 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const glm::mediump_vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
+    static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
@@ -437,7 +437,7 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const glm::mediump_vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
+    static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
     float uvTop = window.getTextureTarget().isRenderingInverted() ? 1.0f : 0.0f;
     float uvBot = window.getTextureTarget().isRenderingInverted() ? 0.0f : 1.0f;

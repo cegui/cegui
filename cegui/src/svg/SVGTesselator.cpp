@@ -303,17 +303,17 @@ void SVGTesselator::setupGeometryBuffers(GeometryBuffer*& fill_geometry_buffer,
 }
 
 //----------------------------------------------------------------------------//
-glm::mediump_vec4 SVGTesselator::getFillColour(const SVGPaintStyle &paint_style)
+glm::vec4 SVGTesselator::getFillColour(const SVGPaintStyle &paint_style)
 {
     const glm::vec3& fill_colour_values = paint_style.d_fill.d_colour;
-    return glm::mediump_vec4(fill_colour_values.x, fill_colour_values.y, fill_colour_values.z, paint_style.d_fillOpacity);
+    return glm::vec4(fill_colour_values.x, fill_colour_values.y, fill_colour_values.z, paint_style.d_fillOpacity);
 }
 
 //----------------------------------------------------------------------------//
-glm::mediump_vec4 SVGTesselator::getStrokeColour(const SVGPaintStyle &paint_style)
+glm::vec4 SVGTesselator::getStrokeColour(const SVGPaintStyle &paint_style)
 {
     const glm::vec3& stroke_colour_values = paint_style.d_stroke.d_colour;
-    return glm::mediump_vec4(stroke_colour_values.x, stroke_colour_values.y, stroke_colour_values.z, paint_style.d_strokeOpacity);
+    return glm::vec4(stroke_colour_values.x, stroke_colour_values.y, stroke_colour_values.z, paint_style.d_strokeOpacity);
 }
 
 //----------------------------------------------------------------------------//
@@ -1111,8 +1111,8 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
                                                        const bool polygon_is_clockwise,
                                                        const bool draw)
 {
-    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
     GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
     const glm::vec2& inner_point = polygon_is_clockwise ? segment_end_right : segment_end_left;
@@ -1589,7 +1589,7 @@ void SVGTesselator::createRectangleFill(const SVGPaintStyle& paint_style, std::v
 void SVGTesselator::createStrokeSegmentConnection(StrokeSegmentData& stroke_data)
 {
     // Add the geometry
-    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
     GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
     stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
@@ -1615,8 +1615,8 @@ void SVGTesselator::createStrokeSegmentConnection(StrokeSegmentData& stroke_data
 //----------------------------------------------------------------------------//
 void SVGTesselator::createStrokeSegmentConnectionAA(StrokeSegmentData &stroke_data)
 { 
-    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
     GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
     //Fade1
@@ -1665,8 +1665,8 @@ void SVGTesselator::addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke
                                                        const glm::vec2& linecap_left, const glm::vec2& linecap_right,
                                                        const glm::vec2& linecap_fade_left, const glm::vec2& linecap_fade_right)
 { 
-    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
     GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
     stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = linecap_fade_left;
@@ -1706,7 +1706,7 @@ void SVGTesselator::createStrokeGeometry(const std::vector<glm::vec2>& outer_poi
                                          StrokeSegmentData &stroke_data,
                                          const bool is_surface_closed)
 {
-    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
     GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
     size_t circle_points_count = outer_points.size();
@@ -1727,8 +1727,8 @@ void SVGTesselator::createStrokeGeometryAA(const std::vector<glm::vec2>& outer_p
                                            StrokeSegmentData &stroke_data,
                                            const bool is_surface_closed)
 {
-    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
     GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
     size_t points_count = outer_points.size();

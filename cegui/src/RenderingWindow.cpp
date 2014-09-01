@@ -259,7 +259,7 @@ void RenderingWindow::realiseGeometry_impl()
                           Rectf(0, 0, tu, tv));
 
     const Rectf area(0, 0, d_size.d_width, d_size.d_height);
-    const glm::mediump_vec4 colour(1.0, 1.0, 1.0, 1.0);
+    const glm::vec4 colour(1.0, 1.0, 1.0, 1.0);
     TexturedColouredVertex vbuffer[6];
 
     // vertex 0
