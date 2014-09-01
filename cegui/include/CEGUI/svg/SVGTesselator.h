@@ -395,10 +395,10 @@ private:
     static glm::mat4 createRenderableMatrixFromSVGMatrix(glm::mat3 svg_matrix);
 
     //! Helper function for getting the fill Colour from an SVGPaintStyle
-    static glm::mediump_vec4 getFillColour(const SVGPaintStyle& paint_style);
+    static glm::vec4 getFillColour(const SVGPaintStyle& paint_style);
 
     //! Helper function for getting the stroke Colour from an SVGPaintStyle
-    static glm::mediump_vec4 getStrokeColour(const SVGPaintStyle& paint_style);
+    static glm::vec4 getStrokeColour(const SVGPaintStyle& paint_style);
 
     //! Create the circle's fill
     static void createCircleFill(const std::vector<glm::vec2>& circle_points,

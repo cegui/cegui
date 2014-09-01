@@ -129,13 +129,13 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
 
     // vertex 0
     vbuffer[0].setColour(colours.d_top_left);
-    vbuffer[0].d_position   = glm::mediump_vec3(final_rect.left(), final_rect.top(), 0.0f);
-    vbuffer[0].d_texCoords = glm::mediump_vec2(tex_rect.left(), tex_rect.top());
+    vbuffer[0].d_position   = glm::vec3(final_rect.left(), final_rect.top(), 0.0f);
+    vbuffer[0].d_texCoords = glm::vec2(tex_rect.left(), tex_rect.top());
 
     // vertex 1
     vbuffer[1].setColour(colours.d_bottom_left);
-    vbuffer[1].d_position   = glm::mediump_vec3(final_rect.left(), final_rect.bottom(), 0.0f);
-    vbuffer[1].d_texCoords = glm::mediump_vec2(tex_rect.left(), tex_rect.bottom());
+    vbuffer[1].d_position   = glm::vec3(final_rect.left(), final_rect.bottom(), 0.0f);
+    vbuffer[1].d_texCoords = glm::vec2(tex_rect.left(), tex_rect.bottom());
 
     // vertex 2
     vbuffer[2].setColour(colours.d_bottom_right);

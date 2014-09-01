@@ -48,27 +48,25 @@ struct CEGUIEXPORT TexturedColouredVertex : public AllocatedObject<TexturedColou
 {
     //! Constructor
     TexturedColouredVertex()
-    {
-    }
+    {}
 
-    TexturedColouredVertex(const glm::mediump_vec3& position,
-                           const glm::mediump_vec4& colour,
-                           const glm::mediump_vec2& texCoords)
-        : d_position(position)
-        , d_colour(colour)
-        , d_texCoords(texCoords)
-    {
-    }
+    TexturedColouredVertex(const glm::vec3& position,
+                           const glm::vec4& colour,
+                           const glm::vec2& texCoords) :
+        d_position(position),
+        d_colour(colour),
+        d_texCoords(texCoords)
+    {}
 
     //! Sets the colour of the struct
-    void setColour(const CEGUI::Colour& colour);
+    void setColour(const Colour& colour);
 
     //! Position of the vertex in 3D space.
-    glm::mediump_vec3   d_position;
+    glm::vec3   d_position;
     //! Multiplicative-colour attribute of the vertex.
-    glm::mediump_vec4   d_colour;
+    glm::vec4   d_colour;
     //! Texture coordinates of the vertex.
-    glm::mediump_vec2   d_texCoords;
+    glm::vec2   d_texCoords;
 };
 
 /*!
@@ -80,24 +78,22 @@ struct CEGUIEXPORT ColouredVertex : public AllocatedObject<ColouredVertex>
 {
     //! Constructor
     ColouredVertex()
-    {
-    }
+    {}
 
-    ColouredVertex(const glm::mediump_vec3& position,
-                   const glm::mediump_vec4& colour)
-        : d_position(position)
-        , d_colour(colour)
-    {
-    }
+    ColouredVertex(const glm::vec3& position,
+                   const glm::vec4& colour) :
+        d_position(position),
+        d_colour(colour)
+    {}
 
     //! Sets the colour of the struct
-    void setColour(const CEGUI::Colour& colour);
+    void setColour(const Colour& colour);
 
     //! Position of the vertex in 3D space.
-    glm::mediump_vec3   d_position;
+    glm::vec3   d_position;
 
     //! Colour attribute of the vertex.
-    glm::mediump_vec4   d_colour;
+    glm::vec4   d_colour;
 };
 
 
