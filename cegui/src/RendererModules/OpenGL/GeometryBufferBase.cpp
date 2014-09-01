@@ -74,12 +74,9 @@ const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
-    const glm::vec3 final_trans = d_translation + d_pivot;
-
-    d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
+    d_matrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
 
     const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
-
     d_matrix *= glm::mat4_cast(d_rotation) * scale_matrix;
 
     const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
