@@ -42,8 +42,6 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-#define S_(X) #X
-#define STRINGIZE(X) S_(X)
 
 SampleData::SampleData(CEGUI::String sampleName,
                        CEGUI::String summary,
