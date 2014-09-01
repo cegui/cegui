@@ -4931,9 +4931,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/ListView">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFF0000" type="ColourRect" name="TextColourRect"/>
         <Property name="Size" value="{{1, 0}, {1, 0}}" />
         <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="FFFF0000" type="ColourRect" name="TextColourRect"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
