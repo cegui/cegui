@@ -60,14 +60,14 @@ namespace CEGUI
         const String scroll_suffix(
             vscroll ? hscroll ? "HVScroll" : "VScroll" : hscroll ? "HScroll" : "");
 
-        if (wlf.isNamedAreaDefined(area_name + scroll_suffix))
+        if (wlf.isNamedAreaPresent(area_name + scroll_suffix))
                 return wlf.getNamedArea(area_name + scroll_suffix).getArea().getPixelRect(*lb);
 
-        if (wlf.isNamedAreaDefined(alternate_name + scroll_suffix))
+        if (wlf.isNamedAreaPresent(alternate_name + scroll_suffix))
                 return wlf.getNamedArea(alternate_name + scroll_suffix).getArea().getPixelRect(*lb);
 
         // default to plain ItemRenderingArea
-        if (wlf.isNamedAreaDefined(area_name))
+        if (wlf.isNamedAreaPresent(area_name))
             return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
         else
             return wlf.getNamedArea(alternate_name).getArea().getPixelRect(*lb);
@@ -138,7 +138,7 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3f itemPos;
+        glm::vec3 itemPos;
         Sizef itemSize;
         Rectf itemClipper, itemRect;
         const float widest = lb->getWidestItemWidth();
@@ -147,9 +147,9 @@ namespace CEGUI
         Rectf itemsArea(getListRenderArea());
 
         // set up some initial positional details for items
-        itemPos.d_x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();
-        itemPos.d_y = itemsArea.top() - lb->getVertScrollbar()->getScrollPosition();
-        itemPos.d_z = 0.0f;
+        itemPos.x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();
+        itemPos.y = itemsArea.top() - lb->getVertScrollbar()->getScrollPosition();
+        itemPos.z = 0.0f;
 
         const float alpha = lb->getEffectiveAlpha();
 
@@ -165,23 +165,23 @@ namespace CEGUI
             itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
 
             // calculate destination area for this item.
-            itemRect.left(itemPos.d_x);
-            itemRect.top(itemPos.d_y);
+            itemRect.left(itemPos.x);
+            itemRect.top(itemPos.y);
             itemRect.setSize(itemSize);
             itemClipper = itemRect.getIntersection(itemsArea);
 
             // skip this item if totally clipped
             if (itemClipper.getWidth() == 0)
             {
-                itemPos.d_y += itemSize.d_height;
+                itemPos.y += itemSize.d_height;
                 continue;
             }
 
             // draw this item
-            listItem->draw(lb->getGeometryBuffer(), itemRect, alpha, &itemClipper);
+            listItem->draw(lb->getGeometryBuffers(), itemRect, alpha, &itemClipper);
 
             // update position ready for next item
-            itemPos.d_y += itemSize.d_height;
+            itemPos.y += itemSize.d_height;
         }
 
     }
@@ -193,8 +193,9 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
-        // peform the rendering operation.
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled"
+            : (d_window->isFocused() ? "EnabledFocused" : "Enabled"));
+        // perform the rendering operation.
         imagery->render(*d_window);
     }
 

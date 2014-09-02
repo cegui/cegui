@@ -24,11 +24,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/ImageCodec.h"
+
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -172,7 +172,7 @@ const Sizef& OpenGLTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLTexture::getTexelScaling() const
+const glm::vec2& OpenGLTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -189,17 +189,12 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     // load file to memory via resource provider
     RawDataContainer texFile;
-    System::getSingleton().getResourceProvider()->
+    CEGUI::System& system = System::getSingleton();
+
+    system.getResourceProvider()->
         loadRawDataContainer(filename, texFile, resourceGroup);
 
-    // get and check existence of CEGUI::System (needed to access ImageCodec)
-    System* sys = System::getSingletonPtr();
-    if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created: "
-            "unable to access ImageCodec."));
-
-    Texture* res = sys->getImageCodec().load(texFile, this);
+    Texture* res = system.getImageCodec().load(texFile, this);
 
     // unload file data buffer
     System::getSingleton().getResourceProvider()->
@@ -208,7 +203,7 @@ void OpenGLTexture::loadFromFile(const String& filename,
     if (!res)
         // It's an error
         CEGUI_THROW(RendererException(
-            sys->getImageCodec().getIdentifierString() +
+            system.getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
 
@@ -227,7 +222,7 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
+    blitFromMemory(buffer, Rectf(glm::vec2(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -353,7 +348,7 @@ void OpenGLTexture::restoreTexture()
     generateOpenGLTexture();
     setTextureSize_impl(d_size);
 
-    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), d_size));
+    blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), d_size));
 
     // free the grabbuffer
     delete [] d_grabBuffer;
@@ -410,35 +405,9 @@ void OpenGLTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
-    //
-    // calculate what to use for x scale
-    //
-    const float orgW = d_dataSize.d_width;
-    const float texW = d_size.d_width;
-
-    // if texture and original data width are the same, scale is based
-    // on the original size.
-    // if texture is wider (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    if(orgW == texW && orgW == 0.0f)
-        d_texelScaling.d_x = 0.0f;
-    else
-        d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
-
-    //
-    // calculate what to use for y scale
-    //
-    const float orgH = d_dataSize.d_height;
-    const float texH = d_size.d_height;
-
-    // if texture and original data height are the same, scale is based
-    // on the original size.
-    // if texture is taller (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    if(orgH == texH && orgH == 0.0f)
-        d_texelScaling.d_x = 0.0f;
-    else
-        d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    // Update the scale of a texel based on the absolute size
+    d_texelScaling.x = (d_size.d_width != 0.0f) ? (1.0f / d_size.d_width) : 0.0f;
+    d_texelScaling.y = (d_size.d_height != 0.0f) ? (1.0f / d_size.d_height) : 0.0f;
 }
 
 //----------------------------------------------------------------------------//

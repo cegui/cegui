@@ -35,6 +35,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/Animation_xmlHandler.h"
+#include "CEGUI/Quaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -69,11 +70,11 @@ AnimationManager::AnimationManager(void)
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<int>("int"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<uint>("uint"));
     addBasicInterpolator(CEGUI_NEW_AO TplDiscreteInterpolator<bool>("bool"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Sizef >("Sizef"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2f >("Vector2f"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector3f >("Vector3f"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Sizef>("Sizef"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<glm::vec2>("vec2"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<glm::vec3>("vec3"));
     addBasicInterpolator(CEGUI_NEW_AO QuaternionSlerpInterpolator());
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rectf >("Rectf"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rectf>("Rectf"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Colour>("Colour"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<ColourRect>("ColourRect"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UDim>("UDim"));

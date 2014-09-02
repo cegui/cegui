@@ -34,6 +34,8 @@
 #include <typeinfo>
 #include <ostream>
 
+#include <glm/glm.hpp>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -102,9 +104,9 @@ public:
         return Size(d_width * s.d_width, d_height * s.d_height);
     }
 
-    inline Size operator*(const Vector2f& vec) const
+    inline Size operator*(const glm::vec2& vec) const
     {
-        return Size(d_width * vec.d_x, d_height * vec.d_y);
+        return Size(d_width * vec.x, d_height * vec.y);
     }
 
     inline Size operator+(const Size& s) const

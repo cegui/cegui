@@ -294,8 +294,8 @@ protected:
 	/*************************************************************************
 		Overridden event handling routines
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
+    virtual void    onPointerPressHold(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 
 
@@ -313,7 +313,7 @@ protected:
 
 	// internal state
 	bool	d_beingDragged;				//!< true if thumb is being dragged
-	Vector2f d_dragPoint;				//!< point where we are being dragged at.
+    glm::vec2 d_dragPoint;				//!< point where we are being dragged at.
 
 
 private:

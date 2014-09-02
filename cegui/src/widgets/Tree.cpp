@@ -604,24 +604,19 @@ void Tree::populateGeometryBuffer()
     cacheTreeBaseImagery();
     
     // Render list items
-    Vector2f itemPos;
-    float    widest = getWidestItemWidth();
+    glm::vec2 itemPos(
+        d_itemArea.left() - d_horzScrollbar->getScrollPosition(),
+        d_itemArea.top() - d_vertScrollbar->getScrollPosition()
+    );
+    const float widest = getWidestItemWidth();
     
-    // calculate position of area we have to render into
-    //Rect itemsArea(getTreeRenderArea());
-    //Rect itemsArea(0,0,500,500);
-    
-    // set up some initial positional details for items
-    itemPos.d_x = d_itemArea.left() - d_horzScrollbar->getScrollPosition();
-    itemPos.d_y = d_itemArea.top() - d_vertScrollbar->getScrollPosition();
-    
-    drawItemList(d_listItems, d_itemArea, widest, itemPos, *d_geometry,
+    drawItemList(d_listItems, d_itemArea, widest, itemPos, d_geometryBuffers,
                  getEffectiveAlpha());
 }
 
 // Recursive!
 void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
-                        Vector2f& itemPos, GeometryBuffer& geometry, float alpha)
+                        glm::vec2& itemPos, std::vector<GeometryBuffer*>& geometryBuffers, float alpha)
 {
     if (itemList.empty())
         return;
@@ -639,8 +634,8 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
         itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
         
         // calculate destination area for this item.
-        itemRect.left(itemPos.d_x);
-        itemRect.top(itemPos.d_y);
+        itemRect.left(itemPos.x);
+        itemRect.top(itemPos.y);
         itemRect.setSize(itemSize);
         itemClipper = itemRect.getIntersection(itemsArea);
         itemRect.d_min.d_x += 20; // start text past open/close buttons
@@ -648,7 +643,7 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
         if (itemClipper.getHeight() > 0)
         {
             itemIsVisible = true;
-            itemList[i]->draw(geometry, itemRect, alpha, &itemClipper);
+            itemList[i]->draw(geometryBuffers, itemRect, alpha, &itemClipper);
         }
         else
         {
@@ -659,9 +654,9 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
         if (itemList[i]->getItemCount() > 0)
         {
             Rectf buttonRenderRect;
-            buttonRenderRect.left(itemPos.d_x);
+            buttonRenderRect.left(itemPos.x);
             buttonRenderRect.right(buttonRenderRect.left() + 10);
-            buttonRenderRect.top(itemPos.d_y);
+            buttonRenderRect.top(itemPos.y);
             buttonRenderRect.bottom(buttonRenderRect.top() + 10);
             itemList[i]->setButtonLocation(buttonRenderRect);
             
@@ -672,12 +667,12 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
                     d_closeButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
-                itemPos.d_y += itemSize.d_height;
+                itemPos.y += itemSize.d_height;
                 
-                itemPos.d_x += 20;
+                itemPos.x += 20;
                 drawItemList(itemList[i]->getItemList(), itemsArea, widest,
-                             itemPos, geometry, alpha);
-                itemPos.d_x -= 20;
+                             itemPos, geometryBuffers, alpha);
+                itemPos.x -= 20;
             }
             else
             {
@@ -686,13 +681,13 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
                     d_openButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
-                itemPos.d_y += itemSize.d_height;
+                itemPos.y += itemSize.d_height;
             }
         }
         else
         {
             // update position ready for next item
-            itemPos.d_y += itemSize.d_height;
+            itemPos.y += itemSize.d_height;
         }
     }
     
@@ -919,9 +914,9 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 /*************************************************************************
     Return the TreeItem under the given window local pixel co-ordinate.
 *************************************************************************/
-TreeItem* Tree::getItemAtPoint(const Vector2f& pt) const
+TreeItem* Tree::getItemAtPoint(const glm::vec2& pt) const
 {
-    Rectf renderArea(getTreeRenderArea());
+    const Rectf renderArea(getTreeRenderArea());
     
     // point must be within the rendering area of the Tree.
     if (renderArea.isPointInRect(pt))
@@ -929,7 +924,7 @@ TreeItem* Tree::getItemAtPoint(const Vector2f& pt) const
         float y = renderArea.top() - d_vertScrollbar->getScrollPosition();
         
         // test if point is above first item
-        if (pt.d_y >= y)
+        if (pt.y >= y)
             return getItemFromListAtPoint(d_listItems, &y, pt);
     }
     
@@ -937,14 +932,14 @@ TreeItem* Tree::getItemAtPoint(const Vector2f& pt) const
 }
 
 // Recursive!
-TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Vector2f& pt) const
+TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const glm::vec2& pt) const
 {
-    size_t itemCount = itemList.size();
+    const size_t itemCount = itemList.size();
     
     for (size_t i = 0; i < itemCount; ++i)
     {
         *bottomY += itemList[i]->getPixelSize().d_height;
-        if (pt.d_y < *bottomY)
+        if (pt.y < *bottomY)
             return itemList[i];
         
         if (itemList[i]->getItemCount() > 0)
@@ -1068,117 +1063,49 @@ void Tree::onSized(ElementEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void Tree::onMouseButtonDown(MouseEventArgs& e)
+void Tree::onPointerPressHold(PointerEventArgs& e)
 {
     // base class processing
     // populateGeometryBuffer();
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
     
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
-        //bool modified = false;
-        
-        Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
-        //      Point localPos(screenToWindow(e.position));
-        
-        TreeItem* item = getItemAtPoint(localPos);
-        
-        if (item != 0)
-        {
-            //modified = true;
-            TreeEventArgs args(this);
-            args.treeItem = item;
-            populateGeometryBuffer();
-            Rectf buttonLocation = item->getButtonLocation();
-            if ((localPos.d_x >= buttonLocation.left()) && (localPos.d_x <= buttonLocation.right()) &&
-                (localPos.d_y >= buttonLocation.top()) && (localPos.d_y <= buttonLocation.bottom()))
-            {
-                item->toggleIsOpen();
-                if (item->getIsOpen())
-                {
-                    TreeItem *lastItemInList = item->getTreeItemFromIndex(item->getItemCount() - 1);
-                    ensureItemIsVisible(lastItemInList);
-                    ensureItemIsVisible(item);
-                    onBranchOpened(args);
-                }
-                else
-                {
-                    onBranchClosed(args);
-                }
-                
-                // Update the item screen locations, needed to update the scrollbars.
-                //	populateGeometryBuffer();
-                
-                // Opened or closed a tree branch, so must update scrollbars.
-                configureScrollbars();
-            }
-            else
-            {
-                // clear old selections if no control key is pressed or if multi-select is off
-                if (!(e.sysKeys & Control) || !d_multiselect)
-                    clearAllSelections_impl();
-                
-                // select range or item, depending upon keys and last selected item
-#if 0 // TODO: fix this
-                if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
-                    selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
-                else
-#endif
-                    item->setSelected(item->isSelected() ^ true);
-                
-                // update last selected item
-                d_lastSelected = item->isSelected() ? item : 0;
-                onSelectionChanged(args);
-            }
-        }
-        else
-        {
-            // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiselect)
-            {
-                if (clearAllSelections_impl())
-                {
-                    // Changes to the selections were actually made
-                    TreeEventArgs args(this);
-                    args.treeItem = item;
-                    onSelectionChanged(args);
-                }
-            }
-        }
-        
-        
+        const glm::vec2 local_pos(CoordConverter::screenToWindow(*this, e.position));
+        handleSelection(local_pos, false, false);
+
         ++e.handled;
     }
 }
 
 /*************************************************************************
-    Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
-void Tree::onMouseWheel(MouseEventArgs& e)
+void Tree::onScroll(PointerEventArgs& e)
 {
     // base class processing.
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
     
     if (d_vertScrollbar->isEffectiveVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.scroll);
     else if (d_horzScrollbar->isEffectiveVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
-        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.scroll);
     
     ++e.handled;
 }
 
 /*************************************************************************
-    Handler for mouse movement
+    Handler for pointer movement
 *************************************************************************/
-void Tree::onMouseMove(MouseEventArgs& e)
+void Tree::onPointerMove(PointerEventArgs& e)
 {
     if (d_itemTooltips)
     {
         static TreeItem* lastItem = 0;
         
-        Vector2f posi(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 posi(CoordConverter::screenToWindow(*this, e.position));
         //      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
         TreeItem* item = getItemAtPoint(posi);
         if (item != lastItem)
@@ -1207,7 +1134,22 @@ void Tree::onMouseMove(MouseEventArgs& e)
         }
     }
     
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
+}
+
+void Tree::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool cumulative = e.d_semanticValue == SV_SelectCumulative;
+    bool range = e.d_semanticValue == SV_SelectRange;
+
+    if (cumulative || range)
+    {
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
+            getGUIContext().getPointerIndicator().getPosition());
+        handleSelection(local_point, cumulative, range);
+
+        ++ e.handled;
+    }
 }
 
 // Recursive!
@@ -1378,6 +1320,73 @@ bool Tree::handleFontRenderSizeChange(const EventArgs& args)
     }
 
     return res;
+}
+
+void Tree::handleSelection(glm::vec2 local_pos, bool cumulative, bool range)
+{
+    TreeItem* item = getItemAtPoint(local_pos);
+
+    if (item != 0)
+    {
+        TreeEventArgs args(this);
+        args.treeItem = item;
+        populateGeometryBuffer();
+        Rectf buttonLocation = item->getButtonLocation();
+        if ((local_pos.x >= buttonLocation.left()) && (local_pos.x <= buttonLocation.right()) &&
+            (local_pos.y >= buttonLocation.top()) && (local_pos.y <= buttonLocation.bottom()))
+        {
+            item->toggleIsOpen();
+            if (item->getIsOpen())
+            {
+                TreeItem *lastItemInList = item->getTreeItemFromIndex(item->getItemCount() - 1);
+                ensureItemIsVisible(lastItemInList);
+                ensureItemIsVisible(item);
+                onBranchOpened(args);
+            }
+            else
+            {
+                onBranchClosed(args);
+            }
+
+            // Update the item screen locations, needed to update the scrollbars.
+            //	populateGeometryBuffer();
+
+            // Opened or closed a tree branch, so must update scrollbars.
+            configureScrollbars();
+        }
+        else
+        {
+            // clear old selections if no cumulative selection or if multi-select is off
+            if (!cumulative || !d_multiselect)
+                clearAllSelections_impl();
+
+            // select range or item, depending upon keys and last selected item
+#if 0 // TODO: fix this
+            if (range && d_lastSelected != 0 && d_multiselect)
+                selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
+            else
+#endif
+                item->setSelected(item->isSelected() ^ true);
+
+            // update last selected item
+            d_lastSelected = item->isSelected() ? item : 0;
+            onSelectionChanged(args);
+        }
+    }
+    else
+    {
+        // clear old selections if no cumulative selection or if multi-select is off
+        if (!cumulative || !d_multiselect)
+        {
+            if (clearAllSelections_impl())
+            {
+                // Changes to the selections were actually made
+                TreeEventArgs args(this);
+                args.treeItem = item;
+                onSelectionChanged(args);
+            }
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////

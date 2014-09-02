@@ -27,7 +27,6 @@
 #include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 
 #include <cmath>
 
@@ -46,18 +45,16 @@ template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
-    d_matrix(0),
+    d_matrix(1.0f),
     d_matrixValid(false),
     d_viewDistance(0)
 {
-    d_matrix = new mat4Pimpl();
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 OpenGLRenderTarget<T>::~OpenGLRenderTarget()
 {
-    delete d_matrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -118,7 +115,7 @@ void OpenGLRenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2f& p_in, Vector2f& p_out) const
+    const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -133,11 +130,11 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
         static_cast<GLint>(d_area.getHeight())
     };
 
-    GLdouble in_x, in_y, in_z = 0.0;
+    GLdouble in_x, in_y, in_z;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
-    const glm::mat4& projMatrix = d_matrix->d_matrix;
-    const glm::mat4& modelMatrix = gb.getMatrix()->d_matrix;
+    const glm::mat4& projMatrix = d_matrix;
+    const glm::mat4& modelMatrix = gb.getMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
@@ -146,8 +143,8 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     in_y = vp[3] * 0.5;
     in_z = -d_viewDistance;
     unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
-    in_x = p_in.d_x;
-    in_y = vp[3] - p_in.d_y;
+    in_x = p_in.x;
+    in_y = vp[3] - p_in.y;
     in_z = 0.0;
     unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
@@ -182,8 +179,8 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const double is_x = unprojected1.x - rv.x * tmp1;
     const double is_y = unprojected1.y - rv.y * tmp1;
 
-    p_out.d_x = static_cast<float>(is_x);
-    p_out.d_y = static_cast<float>(is_y);
+    p_out.x = static_cast<float>(is_x);
+    p_out.y = static_cast<float>(is_y);
 
     p_out = p_in; // CrazyEddie wanted this
 }
@@ -213,7 +210,7 @@ void OpenGLRenderTarget<T>::updateMatrix() const
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
-    d_matrix->d_matrix = projectionMatrix * viewMatrix;
+    d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
 }

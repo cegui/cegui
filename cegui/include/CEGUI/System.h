@@ -227,9 +227,18 @@ public:
     */
     void renderAllGUIContexts();
 
+    /*!
+    \brief
+        Renders the contexts associated with the renderer
+    \todo
+        This needs to be actually made to check if context matches the renderer
+        and for that to work all the contexts need to know their renderer
+    \see renderAllGUIContexts
+    */
+    void renderAllGUIContextsOnTarget(Renderer* contained_in);
 
-	/*!
-	\brief
+    /*!
+    \brief
 		Return a pointer to the ScriptModule being used for scripting within the GUI system.
 
 	\return
@@ -439,7 +448,7 @@ public:
 
         Calling this function ensures that any other parts of the system that
         need to know about display size changes are notified.  This affects
-        things such as the MouseCursor default constraint area, and also the
+        things such as the PointerIndicator default constraint area, and also the
         auto-scale functioning of Imagesets and Fonts.
 
     \note
@@ -487,9 +496,9 @@ public:
 
         This function will invalidate the caches used for both imagery and
         geometry for all content that is managed by the core CEGUI manager
-        objects, causing a full and total redraw of that content.  This
+        objects, causing a full and total redraw of that content. This
         includes Window object's cached geometry, rendering surfaces and
-        rendering windows and the mouse pointer geometry.
+        rendering windows and the pointer geometry.
     */
     void invalidateAllCachedRendering();
 
@@ -606,8 +615,8 @@ protected:
 
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
-
-	/*************************************************************************
+    
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
@@ -615,6 +624,7 @@ protected:
 	bool d_ourResourceProvider;
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
+    NativeClipboardProvider* d_nativeClipboardProvider; //!< the default native clipboard provider (only on Win32 for now)
 
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.

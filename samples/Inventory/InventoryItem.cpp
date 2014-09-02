@@ -87,13 +87,13 @@ void InventoryItem::setLocationOnReceiver(int x, int y)
 }
 
 //------------------------------------------------------------------------------//
-bool InventoryItem::isHit(const Vector2f& position, const bool allow_disabled) const
+bool InventoryItem::isHit(const glm::vec2& position, const bool allow_disabled) const
 {
     if (!DragContainer::isHit(position, allow_disabled))
         return false;
 
-    int gx = gridXLocationFromPixelPosition(position.d_x);
-    int gy = gridYLocationFromPixelPosition(position.d_y);
+    int gx = gridXLocationFromPixelPosition(position.x);
+    int gy = gridYLocationFromPixelPosition(position.y);
 
     if (gx < 0 || gx >= d_content.width() || gy < 0 || gy >= d_content.height())
         return false;
@@ -130,10 +130,12 @@ void InventoryItem::populateGeometryBuffer()
         for (int x = 0; x < d_content.width(); ++x)
         {
             if (d_content.elementAtLocation(x, y))
-                img->render(*d_geometry,
-                            Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
-                            Sizef(square_size.d_width - 2, square_size.d_height - 2), 0,
+            {
+                img->render(d_geometryBuffers,
+                            glm::vec2(x * square_size.d_width + 1, y * square_size.d_height + 1),
+                            Sizef(square_size.d_width - 2, square_size.d_height - 2), 0, false,
                             ColourRect(colour));
+            }
         }
     }
 }
@@ -157,7 +159,7 @@ void InventoryItem::onMoved(ElementEventArgs& e)
     {
         const Sizef square_size(receiver->squarePixelSize());
         Rectf area(getUnclippedOuterRect().get());
-        area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
+        area.offset(0.5f * glm::vec2(square_size.d_width, square_size.d_height));
         const int x = receiver->gridXLocationFromPixelPosition(area.left());
         const int y = receiver->gridYLocationFromPixelPosition(area.top());
 

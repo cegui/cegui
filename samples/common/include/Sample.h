@@ -36,6 +36,8 @@ author:     Lukas E Meindl
 class Sample
 {
 public:
+    Sample() : d_inputAggregator(0) {}
+
     virtual bool initialise(CEGUI::GUIContext* guiContext) = 0;
     virtual void deinitialise() = 0;
 
@@ -43,9 +45,30 @@ public:
     virtual void update(float timeSinceLastUpdate) {}
 
     const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
+    //! Get an explicit instance of input aggregator to be used with this sample
+    CEGUI::InputAggregator* getInputAggregator() { return d_inputAggregator; }
+
+    //! Get the name of the sample
+    CEGUI::String getName() const { return d_name; }
+    //! Get the credits (author(s)) of the sample
+    CEGUI::String getCredits() const { return d_credits; }
+    //! Get the summary of what the samples wants to demonstrate
+    CEGUI::String getSummary() const { return d_summary; }
+    //! Get the description of how the sample achieves what it aims to demonstrate
+    CEGUI::String getDescription() const { return d_description; }
 
 protected:
     CEGUI::String d_usedFiles;
+    CEGUI::InputAggregator* d_inputAggregator;
+
+    //! The name of the sample
+    CEGUI::String d_name;
+    //! The credits of the sample (author(s))
+    CEGUI::String d_credits;
+    //! The summary of what the sample wants to demonstrate
+    CEGUI::String d_summary;
+    //! The summary of how the sample achieves what it aims to demonstrate
+    CEGUI::String d_description;
 };
 
 #endif

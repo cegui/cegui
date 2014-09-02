@@ -25,14 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
-
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/DynamicModule.h"
@@ -52,7 +49,7 @@ OpenGLRendererBase::OpenGLRendererBase() :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(new mat4Pimpl()),
+    d_viewProjectionMatrix(1.0f),
     d_activeRenderTarget(0)
 {
     initialiseMaxTextureSize();
@@ -67,7 +64,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(new mat4Pimpl()),
+    d_viewProjectionMatrix(1.0f),
     d_activeRenderTarget(0)
 {
     initialiseMaxTextureSize();
@@ -83,7 +80,6 @@ OpenGLRendererBase::~OpenGLRendererBase()
     destroyAllTextures();
 
     CEGUI_DELETE_AO d_defaultTarget;
-    delete d_viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -110,33 +106,32 @@ RenderTarget& OpenGLRendererBase::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& OpenGLRendererBase::createGeometryBuffer()
+GeometryBuffer& OpenGLRendererBase::createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl();
-    d_geometryBuffers.push_back(b);
-    return *b;
+    OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
+
+    geom_buffer->addVertexAttribute(VAT_POSITION0);
+    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+    geom_buffer->finaliseVertexAttributes();
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRendererBase::destroyGeometryBuffer(const GeometryBuffer& buffer)
+GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
+    OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
 
-    if (d_geometryBuffers.end() != i)
-    {
-        d_geometryBuffers.erase(i);
-        CEGUI_DELETE_AO &buffer;
-    }
+    geom_buffer->addVertexAttribute(VAT_POSITION0);
+    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->finaliseVertexAttributes();
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
 }
 
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::destroyAllGeometryBuffers()
-{
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
-}
 
 //----------------------------------------------------------------------------//
 TextureTarget* OpenGLRendererBase::createTextureTarget()
@@ -284,7 +279,7 @@ const Sizef& OpenGLRendererBase::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLRendererBase::getDisplayDPI() const
+const glm::vec2& OpenGLRendererBase::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -402,15 +397,15 @@ float OpenGLRendererBase::getNextPOTSize(const float f)
 }
 
 //----------------------------------------------------------------------------//
-const mat4Pimpl* OpenGLRendererBase::getViewProjectionMatrix()
+const glm::mat4& OpenGLRendererBase::getViewProjectionMatrix()
 {
     return d_viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRendererBase::setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix)
+void OpenGLRendererBase::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
 {
-    *d_viewProjectionMatrix = *viewProjectionMatrix;
+    d_viewProjectionMatrix = viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
