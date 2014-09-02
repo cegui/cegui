@@ -54,6 +54,7 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
+#include "CEGUI/views/All.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
 #include "CEGUI/svg/SVGDataManager.h"
@@ -318,7 +319,7 @@ System::~System(void)
     if (d_ourLogger)
         CEGUI_DELETE_AO Logger::getSingletonPtr();
 #endif
-    
+
     CEGUI_DELETE_AO d_clipboard;
 }
 
@@ -662,7 +663,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<DefaultWindow>();
     WindowFactoryManager::addWindowType<DragContainer>();
     WindowFactoryManager::addWindowType<ScrolledContainer>();
-    WindowFactoryManager::addWindowType<ClippedContainer>();
     WindowFactoryManager::addWindowType<PushButton>();
     WindowFactoryManager::addWindowType<RadioButton>();
     WindowFactoryManager::addWindowType<Combobox>();
@@ -670,9 +670,9 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Editbox>();
     WindowFactoryManager::addWindowType<FrameWindow>();
     WindowFactoryManager::addWindowType<ItemEntry>();
-    WindowFactoryManager::addWindowType<Listbox>();
     WindowFactoryManager::addWindowType<ListHeader>();
     WindowFactoryManager::addWindowType<ListHeaderSegment>();
+    WindowFactoryManager::addWindowType<ListWidget>();
     WindowFactoryManager::addWindowType<Menubar>();
     WindowFactoryManager::addWindowType<PopupMenu>();
     WindowFactoryManager::addWindowType<MenuItem>();
@@ -689,13 +689,16 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Titlebar>();
     WindowFactoryManager::addWindowType<ToggleButton>();
     WindowFactoryManager::addWindowType<Tooltip>();
-    WindowFactoryManager::addWindowType<ItemListbox>();
     WindowFactoryManager::addWindowType<GroupBox>();
-    WindowFactoryManager::addWindowType<Tree>();
+    WindowFactoryManager::addWindowType<TreeWidget>();
     WindowFactoryManager::addWindowType<LayoutCell>();
     WindowFactoryManager::addWindowType<HorizontalLayoutContainer>();
     WindowFactoryManager::addWindowType<VerticalLayoutContainer>();
     WindowFactoryManager::addWindowType<GridLayoutContainer>();
+
+    // views
+    WindowFactoryManager::addWindowType<ListView>();
+    WindowFactoryManager::addWindowType<TreeView>();
 }
 
 void System::createSingletons()
@@ -954,7 +957,7 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
     if (parser != d_customRenderedStringParser)
     {
         d_customRenderedStringParser = parser;
-        
+
         // fire event
         EventArgs args;
         fireEvent(EventRenderedStringParserChanged, args, EventNamespace);

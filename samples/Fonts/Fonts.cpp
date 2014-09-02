@@ -91,8 +91,8 @@ static struct
                     "朝辭白帝彩雲間，\n"
                     "千里江陵一日還。\n"
                     "兩岸猿聲啼不住，\n"
-                    "輕舟己過萬重山。\n\n\n\n\n" 
- 
+                    "輕舟己過萬重山。\n\n\n\n\n"
+
                     //Korean
                     "이몸이/죽고죽어/일백번/고쳐죽어/\n"
                     "백골이/진퇴되어/넋이라도/있고없고/\n"
@@ -131,7 +131,7 @@ static struct
                             (encoded_char*)"RichStyle Icons font",
                                 (encoded_char*)"RichStyle-22",
                                 (encoded_char*)"+ - ? B I W Y f n t ℹ ⇦ ⇧ ⇨ ⇩ ⌘ ☎ ☐ ☑ ⚖ ⚙ ⚠ ⛏ ✎ ✑ ✓ ✔ ✕ ✖ ❝ ❞ ➡ ⬀ ⬁ ⬂ ⬃ ⬅ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋                       "
-                            },  
+                            },
                             {
                                 (encoded_char*)"Old Runic writing using Futhark Adapted font",
                                     (encoded_char*)"FutharkAdapted-18",
@@ -155,28 +155,16 @@ static struct
                                 }
 };
 
-// Sample sub-class for ListboxTextItem that auto-sets the selection brush
-// image.  This saves doing it manually every time in the code.
-class MyListItem : public ListboxTextItem
-{
-public:
-    MyListItem(const String& text, CEGUI::uint item_id = 0) :
-      ListboxTextItem(text, item_id)
-      {
-          setSelectionBrushImage("Vanilla-Images/GenericBrush");
-      }
-};
-
 FontsSample::FontsSample()
 {
     Sample::d_name = "FontsSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
-    Sample::d_description = 
+    Sample::d_description =
         "Showcase of different fonts packaged with CEGUI. A selection of "
         "fonts and predefined texts, with characters from a variety of languages, "
         "is given. It is possible to edit the Samplenstration text and create or "
         "edit fonts the font editor window.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "The Sample displays the usage of CEGUI::Font's using the fonts "
         "from the datafiles folder. For the special characters, UTF-8 "
         "character encoding is supported by CEGUI and is used in the Sample. "
@@ -217,7 +205,7 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     retrieveLoadedFontNames(false);
 
     // Now that we know about all existing fonts we will initialise
-    // the fonts we wanna use for this Sample hardcoded
+    // the fonts we wanna use for this sample hardcoded
     initialiseSampleFonts();
 
     // Fill list with all new and thus editable font names
@@ -236,7 +224,7 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     //Here we create a font and apply it to the renew font name button
     CEGUI::Font& buttonFont = fontManager.createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf",
         Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.0f, 720.0f));
-    d_renewFontNameButton =  static_cast<CEGUI::PushButton*>(d_root->getChild("FontsSampleWindow/FontCreator/RenewNameButton"));
+    d_renewFontNameButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontsSampleWindow/FontCreator/RenewNameButton"));
     d_renewFontNameButton->setFont(&buttonFont);
 
     d_root->getChild("FontsSampleWindow/FontCreator/FontSizeLabel");
@@ -267,9 +255,9 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     initialiseTextSelector();
 
     //Subscribe font selection event
-    d_fontSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsSample::handleFontSelectionChanged, this));
+    d_fontSelector->subscribeEvent(ListView::EventSelectionChanged, Event::Subscriber(&FontsSample::handleFontSelectionChanged, this));
 
-    d_textSelector->setItemSelectState(size_t(0), true);
+    d_textSelector->setIndexSelectionState(static_cast<size_t>(0), true);
 
     return true;
 }
@@ -285,7 +273,7 @@ bool FontsSample::handleFontCreationButtonClicked(const EventArgs& e)
 
     CEGUI::String fontName = d_fontNameEditbox->getText();
     bool fontNameExists = fontMgr.isDefined(fontName);
-    if(fontNameExists ||fontName.size() == 0)
+    if (fontNameExists || fontName.size() == 0)
     {
         d_fontEditorInfoLabel->setText("Font name already in use.");
         return true;
@@ -295,34 +283,32 @@ bool FontsSample::handleFontCreationButtonClicked(const EventArgs& e)
 
     CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
     float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
-    if(fontSize == 0.0f)
+    if (fontSize == 0.0f)
         return true;
 
     bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
 
-    
+
     AutoScaledMode autoScaleMode = static_cast<AutoScaledMode>(getAutoScaleMode());
 
 
     String::size_type pos = fontFileName.rfind(".imageset");
-    if(pos != -1)
+    if (pos != -1)
     {
         CEGUI::Font& createdFont = fontMgr.createPixmapFont(fontName, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
             CEGUI::Sizef(1280.0f, 720.0f), XREA_THROW);
     }
     else
     {
-        CEGUI::Font& createdFont = fontMgr.createFreeTypeFont(fontName, fontSize, antiAlias, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode, 
+        CEGUI::Font& createdFont = fontMgr.createFreeTypeFont(fontName, fontSize, antiAlias, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
             CEGUI::Sizef(1280.0f, 720.0f), XREA_THROW);
     }
 
-    ListboxItem* item = new MyListItem(fontName, 0);
-    d_fontSelector->addItem(item);
-    d_fontSelector->setItemSelectState(item, true);
+    d_fontSelector->addItem(fontName);
+    d_fontSelector->setIndexSelectionState(d_fontSelector->getItemCount(), true);
 
     return true;
 }
-
 
 bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
 {
@@ -330,7 +316,7 @@ bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
 
     CEGUI::String fontName = d_fontNameEditbox->getText();
     bool fontNameExists = fontMgr.isDefined(fontName);
-    if(!fontNameExists)
+    if (!fontNameExists)
     {
         d_fontEditorInfoLabel->setText("A font with this name does not exist.");
         return true;
@@ -339,15 +325,15 @@ bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
     CEGUI::Font& font(fontMgr.get(fontName));
 
 
-    if(font.isPropertyPresent("PointSize"))
+    if (font.isPropertyPresent("PointSize"))
     {
         CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
         float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
-        if(fontSize != 0.0f)
+        if (fontSize != 0.0f)
             font.setProperty<float>("PointSize", fontSize);
     }
 
-    if(font.isPropertyPresent("Antialiased"))
+    if (font.isPropertyPresent("Antialiased"))
     {
         bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
         font.setProperty("Antialiased", PropertyHelper<bool>::toString(antiAlias));
@@ -363,19 +349,19 @@ bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
 bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
 {
     //Change font of the selected language/text sample
-    if(d_textSelector->getFirstSelectedItem() && d_fontSelector->getFirstSelectedItem())
+    if (d_textSelector->getFirstSelectedItem() && d_fontSelector->getFirstSelectedItem())
     {
-        unsigned int index = d_textSelector->getFirstSelectedItem()->getID();
-        
+        unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
+
         d_languageToFontMap[LangList[index].Language] = d_fontSelector->getFirstSelectedItem()->getText();
     }
 
     //Change the font creatore fields according to the font
-    if(d_fontSelector->getFirstSelectedItem())
+    if (d_fontSelector->getFirstSelectedItem())
     {
         CEGUI::String fontName = d_fontSelector->getFirstSelectedItem()->getText();
 
-        if(FontManager::getSingleton().isDefined(fontName))
+        if (FontManager::getSingleton().isDefined(fontName))
         {
             CEGUI::Font& font(FontManager::getSingleton().get(fontName));
 
@@ -388,7 +374,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
             d_fontAutoScaleCombobox->getEditbox()->setText(autoScaleString);
             d_fontAutoScaleCombobox->selectListItemWithEditboxText();
 
-            if(font.isPropertyPresent("Antialiased"))
+            if (font.isPropertyPresent("Antialiased"))
             {
                 bool fontAntiAlias = font.getProperty<bool>("Antialiased");
                 d_fontAntiAliasCheckbox->enable();
@@ -399,7 +385,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
                 d_fontAntiAliasCheckbox->disable();
             }
 
-            if(font.isPropertyPresent("PointSize"))
+            if (font.isPropertyPresent("PointSize"))
             {
                 CEGUI::String fontPointSize = font.getProperty("PointSize");
                 d_fontSizeEditbox->enable();
@@ -416,7 +402,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
 
 
             //Change the font colour for pixmap fonts
-            if(font.getTypeName().compare(Font_xmlHandler::FontTypePixmap) == 0)
+            if (font.getTypeName().compare(Font_xmlHandler::FontTypePixmap) == 0)
                 d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(1.0f, 1.0f, 1.0f, 1.0f)));
             else
                 d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f)));
@@ -429,9 +415,9 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
 
 bool FontsSample::handleTextSelectionChanged(const EventArgs& e)
 {
-    if(d_textSelector->getFirstSelectedItem())
+    if (d_textSelector->getFirstSelectedItem())
     {
-        unsigned int index = d_textSelector->getFirstSelectedItem()->getID();
+        unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
 
         d_textDisplayMultiLineEditbox->setText(d_languageToTextMap[LangList[index].Language]);
 
@@ -443,9 +429,9 @@ bool FontsSample::handleTextSelectionChanged(const EventArgs& e)
 
 bool FontsSample::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
 {
-    if(d_textSelector->getFirstSelectedItem())
+    if (d_textSelector->getFirstSelectedItem())
     {
-        unsigned int index = d_textSelector->getFirstSelectedItem()->getID();
+        unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
 
         d_languageToTextMap[LangList[index].Language] = d_textDisplayMultiLineEditbox->getText();
     }
@@ -488,7 +474,7 @@ void FontsSample::retrieveLoadedFontNames(bool areEditable)
     {
         CEGUI::Font& font(fontManager.get(fi.getCurrentKey()));
 
-        if(d_fontNameOptions.find(font.getName()) == d_fontNameOptions.end())
+        if (d_fontNameOptions.find(font.getName()) == d_fontNameOptions.end())
         {
             d_fontNameOptions[font.getName()] = areEditable;
         }
@@ -507,18 +493,18 @@ void FontsSample::retrieveFontFileNames()
 void FontsSample::initialiseFontFileNameCombobox()
 {
     //Select a font file name if any are present
-    if(d_fontFileNameOptions.size() > 0)
+    if (d_fontFileNameOptions.size() > 0)
     {
-        // Add the font file names to the listbox
-        for(unsigned int i = 0; i < d_fontFileNameOptions.size(); i++)
+        // Add the font file names to the combo box
+        for (unsigned int i = 0; i < d_fontFileNameOptions.size(); i++)
         {
             const CEGUI::String& fileName(d_fontFileNameOptions[i]);
 
-            d_fontFileNameSelector->addItem(new MyListItem(fileName, i));  
+            d_fontFileNameSelector->addItem(new StandardItem(fileName, i));
         }
 
-        d_fontFileNameSelector->getListboxItemFromIndex(0)->setSelected(true);
-        d_fontFileNameSelector->getEditbox()->setText(d_fontFileNameSelector->getListboxItemFromIndex(0)->getText());
+        d_fontFileNameSelector->getDropList()->setIndexSelectionState(static_cast<size_t>(0), true);
+        d_fontFileNameSelector->getEditbox()->setText(d_fontFileNameSelector->getItemFromIndex(0)->getText());
     }
 }
 
@@ -544,53 +530,46 @@ void FontsSample::initialiseFontCreator()
 
 void FontsSample::initialiseFontSelector()
 {
-    d_fontSelector = static_cast<CEGUI::Listbox*>(d_root->getChild("FontsSampleWindow/FontSelector"));
-
-    d_fontSelector->setSortingEnabled(true);
+    d_fontSelector = static_cast<ListWidget*>(d_root->getChild("FontsSampleWindow/FontSelector"));
+    d_fontSelector->setSortMode(VSM_Ascending);
 
     //Select a font file name if any are present
-    if(d_fontNameOptions.size() > 0)
+    if (d_fontNameOptions.size() > 0)
     {
         std::map<String, bool>::iterator iter = d_fontNameOptions.begin();
-        for(; iter != d_fontNameOptions.end(); ++iter)
+        for (; iter != d_fontNameOptions.end(); ++iter)
         {
-            std::pair<const CEGUI::String, bool>& currentPair = *iter;
-            d_fontSelector->addItem(new MyListItem(currentPair.first, 0));
+            std::pair<const String, bool>& currentPair = *iter;
+            d_fontSelector->addItem(currentPair.first);
         }
     }
-
-    d_fontSelector->handleUpdatedItemData();
 }
 
 void FontsSample::initialiseTextSelector()
 {
-    d_textSelector = static_cast<CEGUI::Listbox*>(d_root->getChild("FontsSampleWindow/TextSelector"));
-    d_textSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontsSample::handleTextSelectionChanged, this));
+    d_textSelector = static_cast<ListWidget*>(d_root->getChild("FontsSampleWindow/TextSelector"));
+    d_textSelector->subscribeEvent(ListView::EventSelectionChanged, Event::Subscriber(&FontsSample::handleTextSelectionChanged, this));
 
-    for(unsigned int i = 0; i < LangListSize; ++i)
+    for (unsigned int i = 0; i < LangListSize; ++i)
     {
-         d_textSelector->addItem(new MyListItem(LangList[i].Language, i)); 
-         d_languageToFontMap[LangList[i].Language] = LangList[i].Font;
+        d_textSelector->addItem(new StandardItem(LangList[i].Language, i));
+        d_languageToFontMap[LangList[i].Language] = LangList[i].Font;
     }
 }
 
 void FontsSample::changeFontSelectorFontSelection(const CEGUI::String& font)
 {
-    while(d_fontSelector->getFirstSelectedItem())
-    {
-        d_fontSelector->setItemSelectState(d_fontSelector->getFirstSelectedItem(), false);
-    }
+    d_fontSelector->clearSelections();
 
     unsigned int itemCount = d_fontSelector->getItemCount();
-    for(unsigned int i = 0; i < itemCount; ++i)
+    for (unsigned int i = 0; i < itemCount; ++i)
     {
-        CEGUI::ListboxItem* item = d_fontSelector->getListboxItemFromIndex(i);
+        StandardItem* item = d_fontSelector->getItemAtIndex(i);
+        String itemFontName = item->getText();
 
-        CEGUI::String itemFontName = item->getText();
-
-        if(itemFontName.compare(font) == 0)
+        if (itemFontName.compare(font) == 0)
         {
-            d_fontSelector->setItemSelectState(item, true);
+            d_fontSelector->setIndexSelectionState(i, true);
             return;
         }
     }
@@ -598,7 +577,7 @@ void FontsSample::changeFontSelectorFontSelection(const CEGUI::String& font)
 
 void FontsSample::initialiseLangToTextMap()
 {
-    for(unsigned int i = 0; i < LangListSize; ++i)
+    for (unsigned int i = 0; i < LangListSize; ++i)
     {
         d_languageToTextMap[LangList[i].Language] = LangList[i].Text;
     }
@@ -617,10 +596,10 @@ void FontsSample::generateNewFontName()
 
 void FontsSample::initialiseAutoScaleCombobox()
 {
-   for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
+    for (unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
     {
         CEGUI::String itemText = d_autoScaleOptionsArray.at(i);
-        d_fontAutoScaleCombobox->addItem(new MyListItem(itemText, i));
+        d_fontAutoScaleCombobox->addItem(new StandardItem(itemText, i));
     }
 }
 
@@ -628,9 +607,9 @@ int FontsSample::getAutoScaleMode()
 {
     CEGUI::String autoScaleString = d_fontAutoScaleCombobox->getSelectedItem()->getText();
 
-    for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
+    for (unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
     {
-        if(autoScaleString.compare(d_autoScaleOptionsArray.at(i)) == 0)
+        if (autoScaleString.compare(d_autoScaleOptionsArray.at(i)) == 0)
             return i;
     }
 
@@ -640,12 +619,12 @@ int FontsSample::getAutoScaleMode()
 bool FontsSample::findFontOption(CEGUI::String fontName)
 {
     std::map<String, bool>::iterator iter = d_fontNameOptions.begin();
-    for(; iter != d_fontNameOptions.end(); ++iter)
+    for (; iter != d_fontNameOptions.end(); ++iter)
     {
         std::pair<const CEGUI::String, bool>& currentPair = *iter;
 
-        if(currentPair.first.compare(fontName) == 0)
-            return currentPair.second; 
+        if (currentPair.first.compare(fontName) == 0)
+            return currentPair.second;
     }
     return true;
 }
@@ -681,7 +660,7 @@ void FontsSample::checkIfEditButtonShouldBeDisabled(CEGUI::Font &font)
 {
     bool isEditable = findFontOption(font.getName());
 
-    if(!isEditable)
+    if (!isEditable)
     {
         d_fontEditButton->disable();
         d_fontEditButton->setTooltipText("This Sample won't allow editing of\n"

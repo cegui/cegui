@@ -1,5 +1,5 @@
 /***********************************************************************
- *    created:    Sat Aug 16 2014
+ *    created:    Fri Aug 15 2014
  *    author:     Timotei Dolean <timotei21@gmail.com>
  *************************************************************************/
 /***************************************************************************
@@ -24,77 +24,83 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "PerformanceTest.h"
-
 #include <boost/test/unit_test.hpp>
 
-#include "CEGUI/widgets/Listbox.h"
-#include "CEGUI/widgets/ListboxTextItem.h"
+#include "PerformanceTest.h"
 
-class ListBoxPerformanceTest : public BaseListPerformanceTest<CEGUI::Listbox>
+#include "CEGUI/views/StandardItemModel.h"
+#include "CEGUI/views/ListView.h"
+#include "CEGUI/Window.h"
+
+#include <iostream>
+
+using namespace CEGUI;
+
+class ListViewPerformanceTest : public BaseListPerformanceTest<ListView>
 {
 public:
-    ListBoxPerformanceTest(CEGUI::String const& windowType, CEGUI::String const& renderer)
-        : BaseListPerformanceTest<CEGUI::Listbox>(windowType, renderer)
+    ListViewPerformanceTest(String const& windowType, String const& renderer)
+        : BaseListPerformanceTest<ListView>(windowType, renderer)
     {
+        d_window->setModel(&d_model);
+    }
+
+    void addItems(size_t count)
+    {
+        for (size_t i = 0; i < count; ++i)
+        {
+            d_model.addItem(PropertyHelper<uint>::toString(i));
+        }
+    }
+
+    void addItems(size_t count, size_t at_position)
+    {
+        for (size_t i = 0; i < count; ++i)
+        {
+            d_model.addItemAtPosition(
+                new StandardItem(PropertyHelper<uint>::toString(i)), at_position + i + 1);
+        }
+    }
+
+    void deleteFirstItems(size_t count)
+    {
+        ModelIndex root_index = d_model.getRootIndex();
+        for (size_t i = 0; i < count; ++i)
+        {
+            d_model.removeItem(d_model.makeIndex(0, root_index));
+        }
+    }
+
+    void deleteLastItems(size_t count)
+    {
+        ModelIndex root_index = d_model.getRootIndex();
+        size_t child_count = d_model.getChildCount(d_model.getRootIndex());
+
+        for (size_t i = 0; i < count; ++i, --child_count)
+        {
+            d_model.removeItem(d_model.makeIndex(child_count - 1, root_index));
+        }
     }
 
     virtual void clearItems()
     {
-        d_window->resetList();
-    }
-
-    virtual void addItems(size_t count)
-    {
-        for (size_t i = 0; i < count; ++i)
-        {
-            d_window->addItem(new CEGUI::ListboxTextItem(
-                CEGUI::PropertyHelper<CEGUI::uint>::toString(i)));
-        }
-    }
-
-    virtual void addItems(size_t count, size_t at_position)
-    {
-        CEGUI::ListboxItem* item_at_pos = d_window->getListboxItemFromIndex(at_position);
-        for (size_t i = 0; i < count; ++i)
-        {
-            d_window->insertItem(new CEGUI::ListboxTextItem(
-                CEGUI::PropertyHelper<CEGUI::uint>::toString(i)), item_at_pos);
-        }
-    }
-
-    virtual void deleteFirstItems(size_t count)
-    {
-        for (size_t i = 0; i < count; ++i)
-        {
-            d_window->removeItem(d_window->getListboxItemFromIndex(0));
-        }
-    }
-
-    virtual void deleteLastItems(size_t count)
-    {
-        size_t child_count = d_window->getItemCount();
-
-        for (size_t i = 0; i < count; ++i, --child_count)
-        {
-            d_window->removeItem(d_window->getListboxItemFromIndex(child_count - 1));
-        }
+        d_model.clear(true);
     }
 
     virtual void sortItems()
     {
-        d_window->setSortingEnabled(false);
-        d_window->setSortingEnabled(true);
+        d_window->setSortMode(VSM_Ascending);
     }
+
+    StandardItemModel d_model;
 };
 
-BOOST_AUTO_TEST_SUITE(ListBoxPerformance)
+BOOST_AUTO_TEST_SUITE(ListViewPerformance)
 
 BOOST_AUTO_TEST_CASE(Test)
 {
-    ListBoxPerformanceTest list_box_performance_test(
-        "TaharezLook/Listbox", "Core/Listbox");
-    list_box_performance_test.execute();
+    ListViewPerformanceTest listview_test("TaharezLook/ListView", "Core/ListView");
+    listview_test.execute();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

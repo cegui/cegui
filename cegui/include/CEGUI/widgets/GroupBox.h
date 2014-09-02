@@ -31,7 +31,6 @@
 
 #include "../Base.h"
 #include "../WindowFactory.h"
-#include "./ClippedContainer.h"
 #include <vector>
 
 #if defined(_MSC_VER)

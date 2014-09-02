@@ -516,13 +516,13 @@ void ScrollablePane::addScrollablePaneProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
-        "bar of the tree.  Value is either \"true\" or \"false\".",
+        "bar of the pane.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
-        "scroll bar of the tree.  Value is either \"true\" or \"false\".",
+        "scroll bar of the pane.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 

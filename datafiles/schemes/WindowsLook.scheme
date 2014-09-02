@@ -26,9 +26,8 @@
 	<FalagardMapping windowType="WindowsLook/TabControl" targetType="CEGUI/TabControl" renderer="Core/TabControl" lookNFeel="WindowsLook/TabControl" />
 	<FalagardMapping windowType="WindowsLook/TabContentPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="WindowsLook/TabContentPane" />
 	<FalagardMapping windowType="WindowsLook/TabButtonPane"    targetType="DefaultWindow"    renderer="Core/Default"    lookNFeel="WindowsLook/TabButtonPane" />
-	<FalagardMapping windowType="WindowsLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/Listbox" lookNFeel="WindowsLook/ComboDropList" />
+	<FalagardMapping windowType="WindowsLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/ListView" lookNFeel="WindowsLook/ComboDropList" />
 	<FalagardMapping windowType="WindowsLook/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="WindowsLook/Combobox" />
-	<FalagardMapping windowType="WindowsLook/Listbox"           targetType="CEGUI/Listbox"           renderer="Core/Listbox"           lookNFeel="WindowsLook/Listbox" />
 	<FalagardMapping windowType="WindowsLook/ListHeader"        targetType="CEGUI/ListHeader"        renderer="Core/ListHeader"        lookNFeel="WindowsLook/ListHeader" />
 	<FalagardMapping windowType="WindowsLook/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="WindowsLook/ListHeaderSegment" />
 	<FalagardMapping windowType="WindowsLook/MultiColumnList"   targetType="CEGUI/MultiColumnList"   renderer="Core/MultiColumnList"   lookNFeel="WindowsLook/MultiColumnList" />
@@ -40,10 +39,13 @@
 	<FalagardMapping windowType="WindowsLook/Static"      targetType="DefaultWindow" renderer="Core/Static"      lookNFeel="WindowsLook/Static" />
 	<FalagardMapping windowType="WindowsLook/StaticImage" targetType="DefaultWindow" renderer="Core/StaticImage" lookNFeel="WindowsLook/StaticImage" />
 	<FalagardMapping windowType="WindowsLook/StaticText"  targetType="DefaultWindow" renderer="Core/StaticText"  lookNFeel="WindowsLook/StaticText" />
-	<FalagardMapping windowType="WindowsLook/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Core/ItemListbox" lookNFeel="WindowsLook/ItemListbox" />
 	<FalagardMapping windowType="WindowsLook/ListboxItem" targetType="CEGUI/ItemEntry"   renderer="Core/ItemEntry"   lookNFeel="WindowsLook/ListboxItem" />
 <!--
 	<FalagardMapping windowType="WindowsLook/GroupBox" targetType="DefaultWindow"   renderer="Core/Default"   lookNFeel="WindowsLook/GroupBox" />
 -->
+
+    <!-- Views -->
+    <FalagardMapping windowType="WindowsLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="WindowsLook/ListView" />
+    <FalagardMapping windowType="WindowsLook/ListWidget" targetType="CEGUI/ListWidget" renderer="Core/ListView" lookNFeel="WindowsLook/ListView" />
 </GUIScheme>
 

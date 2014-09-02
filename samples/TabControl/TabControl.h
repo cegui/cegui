@@ -87,6 +87,9 @@ public:
     bool handleDel(const EventArgs&);
 
 protected:
+    TabControl* getTabControl(Window* root);
+    ListWidget* getPageListWidget(Window* root);
+
     CEGUI::GUIContext* d_guiContext;
 };
 

@@ -1,5 +1,5 @@
 /***********************************************************************
- *    created:    Sat Aug 16 2014
+ *    created:    Fri Aug 15 2014
  *    author:     Timotei Dolean <timotei21@gmail.com>
  *************************************************************************/
 /***************************************************************************
@@ -24,69 +24,72 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "PerformanceTest.h"
-
 #include <boost/test/unit_test.hpp>
 
-#include "CEGUI/PropertyHelper.h"
-// Easy way to access the tree's items - tree doesn't provide individual access
-// to already added items by index :(
-#define protected public
-#include "CEGUI/widgets/Tree.h"
-#include "CEGUI/widgets/TreeItem.h"
+#include "PerformanceTest.h"
 
-class TreePerformanceTest : public WindowPerformanceTest<CEGUI::Tree>
+#include "CEGUI/views/StandardItemModel.h"
+#include "CEGUI/views/TreeView.h"
+#include "CEGUI/Window.h"
+
+#include <iostream>
+
+using namespace CEGUI;
+
+
+class TreePerformanceTest : public WindowPerformanceTest<TreeView>
 {
 public:
-    TreePerformanceTest(CEGUI::String const& windowType, CEGUI::String const& renderer)
-        : WindowPerformanceTest<CEGUI::Tree>(windowType, renderer)
+    TreePerformanceTest(String const& windowType, String const& renderer)
+        : WindowPerformanceTest<TreeView>(windowType, renderer)
     {
+        d_window->setModel(&d_model);
     }
 
     virtual void doTest()
     {
-        size_t root_items_count = 200;
         size_t id = 0;
         // 200 items with 50 children each
-        for (size_t parent = 0; parent < root_items_count; ++parent, ++id)
+        for (size_t parent = 0; parent < 200; ++parent, ++id)
         {
-            CEGUI::TreeItem* item = new CEGUI::TreeItem(
-                CEGUI::PropertyHelper<CEGUI::uint>::toString(id));
-            d_window->addItem(item);
+            StandardItem* item = new StandardItem(
+                PropertyHelper<uint>::toString(id));
+            d_model.addItem(item);
 
+            ModelIndex index = d_model.getIndexForItem(item);
             for (size_t child = 0; child < 50; ++child, ++id)
             {
-                item->addItem(new CEGUI::TreeItem(
-                    CEGUI::PropertyHelper<CEGUI::uint>::toString(id)));
+                d_model.addItemAtPosition(
+                    new StandardItem(PropertyHelper<uint>::toString(child)),
+                    index, 0);
                 d_window->render();
             }
         }
         d_window->render();
 
-        for (size_t i = 0; i < root_items_count; ++i)
-        {
-            d_window->d_listItems.at(i)->toggleIsOpen();
-        }
+        d_window->expandAllSubtrees();
         d_window->render();
 
+        ModelIndex root = d_model.getRootIndex();
         for (size_t i = 0; i < 30; ++i)
         {
-            d_window->removeItem(d_window->d_listItems.at(i));
+            d_model.removeItem(d_model.makeIndex(i, root));
         }
         d_window->render();
 
-        d_window->setSortingEnabled(false);
-        d_window->setSortingEnabled(true);
+        d_window->setSortMode(VSM_Ascending);
     }
+
+    StandardItemModel d_model;
 };
 
-BOOST_AUTO_TEST_SUITE(TreePerformance)
+BOOST_AUTO_TEST_SUITE(TreeViewPerformance)
 
 BOOST_AUTO_TEST_CASE(Test)
 {
-    TreePerformanceTest tree_performance_test(
-        "TaharezLook/Tree", "Core/Tree");
-    tree_performance_test.execute();
+    TreePerformanceTest treeview_performance_test(
+        "TaharezLook/TreeView", "Core/TreeView");
+    treeview_performance_test.execute();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
