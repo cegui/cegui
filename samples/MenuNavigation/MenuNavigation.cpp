@@ -33,34 +33,21 @@
 using namespace CEGUI;
 using namespace NavigationStrategiesPayloads;
 
-// Sample sub-class for ListboxTextItem that auto-sets the selection brush
-// image.  This saves doing it manually every time in the code.
-class MyListItem : public CEGUI::ListboxTextItem
-{
-public:
-    MyListItem(const CEGUI::String& text, CEGUI::uint item_id = 0) :
-      ListboxTextItem(text, item_id)
-      {
-          setSelectionBrushImage("TaharezLook/GenericBrush");
-      }
-};
-
-/** This sample uses most of the code from the 'HelloWorld' sample. 
+/** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
-    
+
 MenuNavigationSample::MenuNavigationSample()
 {
     Sample::d_name = "MenuNavigationSample";
     Sample::d_credits = "Timotei Dolean";
-    Sample::d_description = 
+    Sample::d_description =
         "A demo that shows a 2D menu which can be navigated using the keyboard or other devices.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "The demo uses the WindowManager to create from code a window "
         "with a menu that contains multiple buttons arranged in a 4x4 matrix.";
 }
-
-/*************************************************************************
-    Sample specific initialisation goes here.
+/*************************************************************************ech
+Sample specific initialisation goes here.
 *************************************************************************/
 bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 {
@@ -117,32 +104,32 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     d_logWidget2->setText("OK");
 
     Window* selectButton = page2Window->getChild("SelectButton");
-    selectButton->subscribeEvent(PushButton::EventClicked, 
+    selectButton->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&MenuNavigationSample::handleSelectButtonClicked, this));
 
     tabControl->addTab(page2Window);
 
-    d_classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
-    d_classesListBox->setMultiselectEnabled(true);
-    initialiseClasses(d_classesListBox);
+    d_classesList = static_cast<ListWidget*>(page2Window->getChild("ClassesList"));
+    d_classesList->setMultiSelectEnabled(true);
+    initialiseClasses(d_classesList);
 
-    d_linearNavigatorStrategy->d_windows.push_back(d_classesListBox);
+    d_linearNavigatorStrategy->d_windows.push_back(d_classesList);
     d_linearNavigatorStrategy->d_windows.push_back(selectButton);
 
     return true;
 }
 
 /*************************************************************************
-    Cleans up resources allocated in the initialiseSample call.
+Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
 void MenuNavigationSample::deinitialise()
 {
 }
 
-void MenuNavigationSample::initialiseClasses(CEGUI::Listbox* classesListBox)
+void MenuNavigationSample::initialiseClasses(ListWidget* classes_list_view)
 {
     static const int classes_list_size = 5;
-    static const char* classes_list[] = 
+    static const char* classes_list[] =
     {
         "Druid",
         "Shaman",
@@ -150,10 +137,10 @@ void MenuNavigationSample::initialiseClasses(CEGUI::Listbox* classesListBox)
         "Priest",
         "Death Knight"
     };
-   
-    for(int i = 0; i < classes_list_size; ++i)
+
+    for (int i = 0; i < classes_list_size; ++i)
     {
-        classesListBox->addItem(new MyListItem(classes_list[i]));
+        classes_list_view->addItem(new StandardItem(classes_list[i]));
     }
 }
 
@@ -161,7 +148,7 @@ bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
-    ListboxItem* item = d_classesListBox->getFirstSelectedItem();
+    StandardItem* item = d_classesList->getFirstSelectedItem();
     if (item != 0)
     {
         d_logWidget2->setText("Selected " + item->getText() + "\n");
@@ -172,8 +159,8 @@ bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs& e)
 
 bool MenuNavigationSample::handleNumberButtonClicked(const CEGUI::EventArgs& e)
 {
-    d_logWidget1->setText("Button " + 
-        static_cast<const CEGUI::WindowEventArgs&>(e).window->getText() + 
+    d_logWidget1->setText("Button " +
+        static_cast<const WindowEventArgs&>(e).window->getText() +
         " pressed\n");
 
     return true;

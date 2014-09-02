@@ -35,7 +35,8 @@
 #include "CEGUI/WindowRendererSets/Core/ItemEntry.h"
 #include "CEGUI/WindowRendererSets/Core/ListHeader.h"
 #include "CEGUI/WindowRendererSets/Core/ListHeaderSegment.h"
-#include "CEGUI/WindowRendererSets/Core/Listbox.h"
+#include "CEGUI/WindowRendererSets/Core/ListView.h"
+
 #include "CEGUI/WindowRendererSets/Core/Menubar.h"
 #include "CEGUI/WindowRendererSets/Core/MenuItem.h"
 #include "CEGUI/WindowRendererSets/Core/MultiColumnList.h"
@@ -53,8 +54,7 @@
 #include "CEGUI/WindowRendererSets/Core/Titlebar.h"
 #include "CEGUI/WindowRendererSets/Core/ToggleButton.h"
 #include "CEGUI/WindowRendererSets/Core/Tooltip.h"
-#include "CEGUI/WindowRendererSets/Core/ItemListbox.h"
-#include "CEGUI/WindowRendererSets/Core/Tree.h"
+#include "CEGUI/WindowRendererSets/Core/TreeView.h"
 
 //----------------------------------------------------------------------------//
 extern "C"
@@ -76,7 +76,7 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardItemEntry>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListHeader>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListHeaderSegment>());
-    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListbox>());
+    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListView>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardMenubar>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardMenuItem>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardMultiColumnList>());
@@ -94,8 +94,7 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTitlebar>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardToggleButton>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTooltip>());
-    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardItemListbox>());
-    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTree>());
+    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardTreeView>());
 }
 
 //----------------------------------------------------------------------------//

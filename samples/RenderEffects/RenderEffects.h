@@ -141,7 +141,7 @@ public:
     virtual void deinitialise();
 
 protected:
-    // Initialiser for the effects in the combobox 
+    // Initialiser for the effects in the combobox
     void initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox);
 
     // Handler for the selection changes in the effects combobox
@@ -159,11 +159,11 @@ protected:
     CEGUI::RenderEffect* d_renderEffectWobblyNew;
     CEGUI::RenderEffect* d_renderEffectWobblyOld;
 
-    // The listbox items of the effects combobox
-    CEGUI::ListboxItem* d_listItemEffectElastic;
-    CEGUI::ListboxItem* d_listItemEffectWobblyNew;
-    CEGUI::ListboxItem* d_listItemEffectWobblyOld;
-    CEGUI::ListboxItem* d_listItemEffectNone;
+    // The list items of the effects combobox
+    CEGUI::StandardItem* d_listItemEffectElastic;
+    CEGUI::StandardItem* d_listItemEffectWobblyNew;
+    CEGUI::StandardItem* d_listItemEffectWobblyOld;
+    CEGUI::StandardItem* d_listItemEffectNone;
 
     CEGUI::GUIContext* d_guiContext;
 };

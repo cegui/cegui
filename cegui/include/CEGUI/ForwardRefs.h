@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Forward declares all core system classes
 *************************************************************************/
 /***************************************************************************
@@ -140,7 +140,6 @@ class XMLSerializer;
     Forward declare window / widget classes.
 *************************************************************************/
 class ButtonBase;
-class ClippedContainer;
 class Combobox;
 class ComboDropList;
 class DefaultWindow;
@@ -151,9 +150,7 @@ class GridLayoutContainer;
 class HorizontalLayoutContainer;
 class ItemEntry;
 class ItemListBase;
-class ItemListbox;
 class LayoutContainer;
-class Listbox;
 class ListboxItem;
 class ListboxTextItem;
 class ListHeader;
@@ -170,7 +167,6 @@ class RadioButton;
 class ScrollablePane;
 class Scrollbar;
 class ScrolledContainer;
-class ScrolledItemListBase;
 class SequentialLayoutContainer;
 class Slider;
 class Spinner;
@@ -180,9 +176,19 @@ class Thumb;
 class Titlebar;
 class ToggleButton;
 class Tooltip;
-class Tree;
-class TreeItem;
 class VerticalLayoutContainer;
+
+/*************************************************************************
+    Forward declare model-view classes.
+*************************************************************************/
+class ItemModel;
+class ListView;
+class ListWidget;
+class ModelIndex;
+class StandardItemModel;
+class StandardItem;
+class TreeView;
+class TreeWidget;
 
 /*************************************************************************
     Forward declare EventArg based classes.
@@ -193,13 +199,14 @@ class DragDropEventArgs;
 class FontEventArgs;
 class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
+class ItemViewEventArgs;
 class KeyEventArgs;
+class ModelEventARgs;
 class PointerIndicatorEventArgs;
 class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;
 class ResourceEventArgs;
-class TreeEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
 

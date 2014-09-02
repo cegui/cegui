@@ -42,12 +42,12 @@ private:
     CEGUI::Window*      d_root;
     CEGUI::Window*      d_logWidget1;
     CEGUI::Window*      d_logWidget2;
-    CEGUI::Listbox*     d_classesListBox;
+    CEGUI::ListWidget*  d_classesList;;
 
     CEGUI::WindowNavigator*     d_matrixWindowNavigator;
     CEGUI::WindowNavigator*     d_linearWindowNavigator;
 
-    void initialiseClasses(CEGUI::Listbox* classes_listbox);
+    void initialiseClasses(CEGUI::ListWidget* classes_listwidget);
     bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
     bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
     bool handleTabSelectionChanged(const CEGUI::EventArgs& e);

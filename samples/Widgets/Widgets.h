@@ -34,6 +34,7 @@ author:     Lukas E Meindl
 
 
 #include "CEGUI/ForwardRefs.h"
+#include "CEGUI/views/StandardItemModel.h"
 
 class EventHandlerObject;
 class MyListItem;
@@ -69,7 +70,7 @@ protected:
     void initialiseWidgetDisplayWindow();
     void initialiseEventLights(CEGUI::Window* container);
     void initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer);
-    void initialiseWidgetSelectorListbox();
+    void initialiseWidgetSelectorListWidget();
     void initialiseBackgroundWindow(CEGUI::Window* background);
     void initialiseSkinCombobox(CEGUI::Window* container);
     void initialiseWidgetsEventsLog();
@@ -81,8 +82,8 @@ protected:
     bool handleSkinSelectionAccepted(const CEGUI::EventArgs& args);
     bool handleWidgetSelectionChanged(const CEGUI::EventArgs& args);
 
-    void fillWidgetPropertiesDisplayWindow( CEGUI::Window* widgetWindowRoot );
-    void handleSpecialWindowCases( CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString );
+    void fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRoot);
+    void handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString);
     CEGUI::Window* retrieveOrCreateWidgetWindow(const CEGUI::String& widgetTypeString, const CEGUI::String& widgetName);
     bool getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetTypeString);
     CEGUI::Window* createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType);
@@ -91,14 +92,13 @@ protected:
 
     void initMenubar(CEGUI::Menubar* menuBar);
     void initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow);
-    void initListbox(CEGUI::Listbox* listbox);
-    void initItemListbox(CEGUI::ItemListbox* itemListbox);
+    void initListWidget(CEGUI::ListWidget* list_widget);
+    void initListView(CEGUI::ListView* item_view);
     void initCombobox(CEGUI::Combobox* combobox);
     void initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList);
     void subscribeToAllEvents(CEGUI::Window* widgetWindow);
     void addEventHandlerObjectToMap(CEGUI::String eventName);
 
-    
     void logFiredEvent(const CEGUI::String& logMessage);
 
     void destroyWidgetWindows();
@@ -108,12 +108,11 @@ protected:
     bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
 
     void saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow);
-
     static const CEGUI::String s_widgetSampleWindowPrefix;
 
     CEGUI::GUIContext* d_guiContext;
 
-    CEGUI::Listbox* d_widgetSelectorListbox;
+    CEGUI::ListWidget* d_widgetSelectorListWidget;
     CEGUI::Combobox* d_skinSelectionCombobox;
     CEGUI::Window* d_widgetDisplayWindow;
     CEGUI::Window* d_widgetDisplayWindowInnerWindow;
@@ -130,6 +129,8 @@ protected:
     std::map<CEGUI::String, CEGUI::Window*> d_widgetsMap;
     std::map<CEGUI::String, EventHandlerObject*> d_eventHandlerObjectsMap;
     std::map<const CEGUI::Window*, WidgetPropertiesObject> d_widgetPropertiesMap;
+
+    CEGUI::StandardItemModel d_listItemModel;
 };
 
 #endif
