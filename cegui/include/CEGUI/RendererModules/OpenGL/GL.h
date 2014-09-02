@@ -31,9 +31,11 @@
 #   if (defined( __WIN32__ ) || defined( _WIN32 ))
 #       include <windows.h>
 #   endif
+#   include <GL/glew.h>
 #   include <GL/gl.h>
 #   include <GL/glu.h>
 #else
+#   include <GL/glew.h>
 #   include <OpenGL/gl.h>
 #   include <OpenGL/glu.h>
 #endif

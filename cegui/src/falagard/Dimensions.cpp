@@ -321,11 +321,11 @@ float ImageDimBase::getValue(const Window& wnd) const
             break;
 
         case DT_X_OFFSET:
-            return img->getRenderedOffset().d_x;
+            return img->getRenderedOffset().x;
             break;
 
         case DT_Y_OFFSET:
-            return img->getRenderedOffset().d_y;
+            return img->getRenderedOffset().y;
             break;
 
         default:
@@ -1194,7 +1194,7 @@ const String& ComponentArea::getNamedAreaSourceLook() const
 }
 
 //----------------------------------------------------------------------------//
-void ComponentArea::setNamedAreaSouce(const String& widget_look,
+void ComponentArea::setNamedAreaSource(const String& widget_look,
                                       const String& area_name)
 {
     d_namedSource = area_name;

@@ -211,10 +211,7 @@ protected:
     */
     virtual void onSelectionChanged(WindowEventArgs& e);
 
-    /*************************************************************************
-		Overridden Event Handlers
-	*************************************************************************/
-	virtual void onMouseClicked(MouseEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*************************************************************************
         Implementation Data

@@ -407,15 +407,13 @@ namespace CEGUI
         assert(d_childcomponent == 0);
         d_childcomponent = CEGUI_NEW_AO WidgetComponent(
             attributes.getValueAsString(TypeAttribute),
-            attributes.getValueAsString(LookAttribute),
             attributes.getValueAsString(NameSuffixAttribute),
             attributes.getValueAsString(RendererAttribute),
             attributes.getValueAsBool(AutoWindowAttribute, true));
 
         CEGUI_LOGINSANE("-----> Start of definition for child widget."
-            " Type: " + d_childcomponent->getBaseWidgetType() +
+            " Type: " + d_childcomponent->getTargetType() +
             " Name: " + d_childcomponent->getWidgetName() +
-            " Look: " + d_childcomponent->getWidgetLookName() +
             " Auto: " + (d_childcomponent->isAutoWindow() ? "Yes" : "No"));
     }
 
@@ -875,18 +873,18 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<UVector2>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Sizef>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<Sizef>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<Vector2f>::getDataTypeName())
-            prop = CEGUI_NEW_AO PropertyDefinition<Vector2f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<Vector3f>::getDataTypeName())
-            prop = CEGUI_NEW_AO PropertyDefinition<Vector3f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == PropertyHelper<glm::vec2>::getDataTypeName())
+            prop = CEGUI_NEW_AO PropertyDefinition<glm::vec2>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == PropertyHelper<glm::vec3>::getDataTypeName())
+            prop = CEGUI_NEW_AO PropertyDefinition<glm::vec3>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Rectf>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<Rectf>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Font*>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<Font*>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<Image*>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<Image*>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<Quaternion>::getDataTypeName())
-            prop = CEGUI_NEW_AO PropertyDefinition<Quaternion>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == PropertyHelper<glm::quat>::getDataTypeName())
+            prop = CEGUI_NEW_AO PropertyDefinition<glm::quat>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<AspectMode>::getDataTypeName())
             prop = CEGUI_NEW_AO PropertyDefinition<AspectMode>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<HorizontalAlignment>::getDataTypeName())
@@ -985,11 +983,11 @@ namespace CEGUI
         else if (type == PropertyHelper<Sizef>::getDataTypeName())
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Sizef>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == PropertyHelper<Vector2f>::getDataTypeName())
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector2f>(name,
+        else if (type == PropertyHelper<glm::vec2>::getDataTypeName())
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<glm::vec2>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == PropertyHelper<Vector3f>::getDataTypeName())
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector3f>(name,
+        else if (type == PropertyHelper<glm::vec3>::getDataTypeName())
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<glm::vec3>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == PropertyHelper<Rectf>::getDataTypeName())
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Rectf>(name,
@@ -1000,8 +998,8 @@ namespace CEGUI
         else if (type == PropertyHelper<Image*>::getDataTypeName())
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Image*>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == PropertyHelper<Quaternion>::getDataTypeName())
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Quaternion>(name,
+        else if (type == PropertyHelper<glm::quat>::getDataTypeName())
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<glm::quat>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == PropertyHelper<AspectMode>::getDataTypeName())
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<AspectMode>(name,
@@ -1285,7 +1283,7 @@ namespace CEGUI
 
         if (d_childcomponent)
         {
-            CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
+            CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getTargetType() + ".");
             d_widgetlook->addWidgetComponent(*d_childcomponent);
             CEGUI_DELETE_AO d_childcomponent;
             d_childcomponent = 0;
@@ -1318,7 +1316,7 @@ namespace CEGUI
         if (d_stateimagery)
         {
             CEGUI_LOGINSANE("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.");
-            d_widgetlook->addStateSpecification(*d_stateimagery);
+            d_widgetlook->addStateImagery(*d_stateimagery);
             CEGUI_DELETE_AO d_stateimagery;
             d_stateimagery = 0;
         }
@@ -1513,18 +1511,18 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<UVector2>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Sizef>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Sizef>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<Vector2f>::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<Vector2f>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<Vector3f>::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<Vector3f>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == PropertyHelper<glm::vec2>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<glm::vec2>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == PropertyHelper<glm::vec3>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<glm::vec3>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Rectf>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Rectf>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Font*>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Font*>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<Image*>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Image*>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<Quaternion>::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<Quaternion>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == PropertyHelper<glm::quat>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<glm::quat>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<AspectMode>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<AspectMode>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<HorizontalAlignment>::getDataTypeName())
@@ -1663,7 +1661,7 @@ namespace CEGUI
 
         const String look(attributes.getValueAsString(LookAttribute));
 
-        d_area->setNamedAreaSouce(look.empty() ? d_widgetlook->getName() : look,
+        d_area->setNamedAreaSource(look.empty() ? d_widgetlook->getName() : look,
                                   attributes.getValueAsString(NameAttribute));
     }
 

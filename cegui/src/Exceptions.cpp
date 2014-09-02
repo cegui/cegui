@@ -41,7 +41,7 @@
 #include <execinfo.h>
 #include <dlfcn.h>
 #include <cxxabi.h>
-#include <cstdlib>
+#include <stddef.h>
 #endif
 
 // Start of CEGUI namespace section

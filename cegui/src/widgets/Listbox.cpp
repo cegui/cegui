@@ -34,6 +34,7 @@
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/CoordConverter.h"
 #include <algorithm>
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -737,9 +738,9 @@ bool Listbox::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
-ListboxItem* Listbox::getItemAtPoint(const Vector2f& pt) const
+ListboxItem* Listbox::getItemAtPoint(const glm::vec2& pt) const
 {
-    const Vector2f local_pos(CoordConverter::screenToWindow(*this, pt));
+    const glm::vec2 local_pos(CoordConverter::screenToWindow(*this, pt));
 	const Rectf renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.
@@ -748,17 +749,16 @@ ListboxItem* Listbox::getItemAtPoint(const Vector2f& pt) const
 		float y = renderArea.d_min.d_x - getVertScrollbar()->getScrollPosition();
 
 		// test if point is above first item
-		if (local_pos.d_y >= y)
+        if (local_pos.y >= y)
 		{
 			for (size_t i = 0; i < getItemCount(); ++i)
 			{
 				y += d_listItems[i]->getPixelSize().d_height;
 
-				if (local_pos.d_y < y)
+                if (local_pos.y < y)
 				{
 					return d_listItems[i];
 				}
-
 			}
 		}
 	}
@@ -845,83 +845,49 @@ void Listbox::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void Listbox::onMouseButtonDown(MouseEventArgs& e)
+void Listbox::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
-	{
-		bool modified = false;
+    if (e.source == PS_Left)
+    {
+        handleListSelection(e.position, false, false);
 
-		// clear old selections if no control key is pressed or if multi-select is off
-		if (!(e.sysKeys & Control) || !d_multiselect)
-		{
-			modified = clearAllSelections_impl();
-		}
-
-		ListboxItem* item = getItemAtPoint(e.position);
-
-		if (item)
-		{
-			modified = true;
-
-			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
-			{
-				selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
-			}
-			else
-			{
-				item->setSelected(item->isSelected() ^ true);
-			}
-
-			// update last selected item
-			d_lastSelected = item->isSelected() ? item : 0;
-		}
-
-		// fire event if needed
-		if (modified)
-		{
-			WindowEventArgs args(this);
-			onSelectionChanged(args);
-		}
-
-		++e.handled;
-	}
-
+        ++e.handled;
+    }
 }
 
 
 /*************************************************************************
-	Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
-void Listbox::onMouseWheel(MouseEventArgs& e)
+void Listbox::onScroll(PointerEventArgs& e)
 {
 	// base class processing.
-	Window::onMouseWheel(e);
+	Window::onScroll(e);
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
 	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
 	}
 
 	++e.handled;
 }
 
 /*************************************************************************
-    Handler for mouse movement
+    Handler for pointer movement
 *************************************************************************/
-void Listbox::onMouseMove(MouseEventArgs& e)
+void Listbox::onPointerMove(PointerEventArgs& e)
 {
     if (d_itemTooltips)
     {
@@ -954,9 +920,41 @@ void Listbox::onMouseMove(MouseEventArgs& e)
         }
     }
 
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
 }
 
+void Listbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (isDisabled())
+        return;
+
+    if (e.d_semanticValue == SV_SelectCumulative)
+    {
+        handleListSelection(getGUIContext().getPointerIndicator().getPosition(), 
+            true, false);
+    }
+    else if (e.d_semanticValue == SV_SelectRange)
+    {
+        handleListSelection(getGUIContext().getPointerIndicator().getPosition(),
+            false, true);
+    }
+
+    // operations that make sense only on a non-empty list
+    if (getItemCount() > 0)
+    {
+        int lastSelectedIndex = d_lastSelected != 0 ? getItemIndex(d_lastSelected) : -1;
+        int newSelectedIndex = -1;
+
+        if (e.d_semanticValue == SV_GoDown)
+            newSelectedIndex = std::min(static_cast<size_t>(lastSelectedIndex + 1), 
+                getItemCount() - 1);
+        else if (e.d_semanticValue == SV_GoUp)
+            newSelectedIndex = std::max(0, lastSelectedIndex - 1);
+
+        if (newSelectedIndex != -1)
+            handleListSelection(d_listItems[newSelectedIndex], false, false);
+    }
+}
 
 /*************************************************************************
 	Ensure the item at the specified index is visible within the list box.
@@ -1103,6 +1101,52 @@ bool Listbox::resetList_impl(void)
 		return true;
 	}
 
+}
+
+/*************************************************************************
+    Handles the selection of the item at the specified position
+*************************************************************************/
+void Listbox::handleListSelection(glm::vec2 position, bool cumulative, bool multipleItems)
+{
+    handleListSelection(getItemAtPoint(position), cumulative, multipleItems);
+}
+
+/*************************************************************************
+    Handles the selection of the specified item
+*************************************************************************/
+void Listbox::handleListSelection(ListboxItem* item, bool cumulative, bool multipleItems)
+{
+    bool modified = false;
+
+    // clear old selections if not a cumulative selection or if multi-select is off
+    if (!cumulative || !d_multiselect)
+    {
+        modified = clearAllSelections_impl();
+    }
+    if (item)
+    {
+        modified = true;
+
+        // select range or item, depending upon multipleItems flag and last selected item
+        if ((multipleItems && (d_lastSelected != 0)) && d_multiselect)
+        {
+            selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
+        }
+        else
+        {
+            item->setSelected(item->isSelected() ^ true);
+        }
+
+        // update last selected item
+        d_lastSelected = item->isSelected() ? item : 0;
+    }
+
+    // fire event if needed
+    if (modified)
+    {
+        WindowEventArgs args(this);
+        onSelectionChanged(args);
+    }
 }
 
 /*************************************************************************

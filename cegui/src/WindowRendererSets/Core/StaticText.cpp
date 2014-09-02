@@ -154,18 +154,18 @@ namespace CEGUI
             case HTF_WORDWRAP_LEFT_ALIGNED:
             case HTF_JUSTIFIED:
             case HTF_WORDWRAP_JUSTIFIED:
-                absarea.offset(Vector2f(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_CENTRE_ALIGNED:
             case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(Vector2f(range / 2 - horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_RIGHT_ALIGNED:
             case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(Vector2f(range - horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             }
         }
@@ -191,11 +191,10 @@ namespace CEGUI
             }
 
         // calculate final colours
-        ColourRect final_cols(d_textCols);
-        final_cols.modulateAlpha(d_window->getEffectiveAlpha());
+        const ColourRect final_cols(d_textCols);
         // cache the text for rendering.
-        d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffer(),
-                                        absarea.getPosition(),
+        d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffers(),
+                                        absarea.getPositionGLM(),
                                         &final_cols, &clipper);
     }
 
@@ -246,7 +245,7 @@ namespace CEGUI
             area_name += "Scroll";
         }
 
-        if (wlf.isNamedAreaDefined(area_name))
+        if (wlf.isNamedAreaPresent(area_name))
         {
             return wlf.getNamedArea(area_name).getArea().getPixelRect(*d_window);
         }
@@ -403,11 +402,11 @@ namespace CEGUI
 
 
     /*************************************************************************
-        Handler for mouse wheel changes
+        Handler for scroll actions
     *************************************************************************/
-    bool FalagardStaticText::onMouseWheel(const EventArgs& event)
+    bool FalagardStaticText::onScroll(const EventArgs& event)
     {
-        const MouseEventArgs& e = static_cast<const MouseEventArgs&>(event);
+        const PointerEventArgs& e = static_cast<const PointerEventArgs&>(event);
 
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -417,11 +416,11 @@ namespace CEGUI
 
         if (vertScrollbarVisible && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
         {
-            vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
+            vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
         }
         else if (horzScrollbarVisible && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
         {
-            horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
+            horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
         }
 
         return vertScrollbarVisible || horzScrollbarVisible;
@@ -471,8 +470,8 @@ namespace CEGUI
                 Event::Subscriber(&FalagardStaticText::onFontChanged, this)));
 
         d_connections.push_back(
-            d_window->subscribeEvent(Window::EventMouseWheel,
-                Event::Subscriber(&FalagardStaticText::onMouseWheel, this)));
+            d_window->subscribeEvent(Window::EventScroll,
+                Event::Subscriber(&FalagardStaticText::onScroll, this)));
     }
 
     void FalagardStaticText::onLookNFeelUnassigned()

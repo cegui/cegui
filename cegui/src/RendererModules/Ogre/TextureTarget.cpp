@@ -77,7 +77,7 @@ void OgreTextureTarget::clear()
 
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem.clearFrameBuffer(Ogre::FBT_COLOUR,
-                                    Ogre::ColourValue(0, 0, 0, 0));
+        Ogre::ColourValue(0, 0, 0, 0));
 
 #if OGRE_VERSION < 0x10800
     if (saved_vp)
@@ -100,17 +100,24 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    Ogre::TexturePtr rttTex = Ogre::TextureManager::getSingleton().createManual(
-        OgreTexture::getUniqueName(),
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        Ogre::TEX_TYPE_2D, sz.d_width, sz.d_height, 1, 0, Ogre::PF_A8R8G8B8,
-        Ogre::TU_RENDERTARGET);
+    Ogre::TexturePtr rttTex = Ogre::TextureManager::getSingleton().createManual(OgreTexture::getUniqueName(),
+                                                                                Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+                                                                                Ogre::TEX_TYPE_2D,
+                                                                                static_cast<Ogre::uint>(sz.d_width),
+                                                                                static_cast<Ogre::uint>(sz.d_height),
+                                                                                1,
+                                                                                0, 
+                                                                                Ogre::PF_A8R8G8B8,
+                                                                                Ogre::TU_RENDERTARGET);
 
     d_renderTarget = rttTex->getBuffer()->getRenderTarget();
 
-    Rectf init_area(
-        Vector2f(0, 0),
-        Sizef(d_renderTarget->getWidth(), d_renderTarget->getHeight())
+    const Rectf init_area(
+        glm::vec2(0.0f, 0.0f),
+        Sizef(
+            static_cast<float>(d_renderTarget->getWidth()),
+            static_cast<float>(d_renderTarget->getHeight())
+        )
     );
 
     setArea(init_area);

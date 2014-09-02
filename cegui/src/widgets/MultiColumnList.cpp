@@ -1595,10 +1595,10 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
 {
     const ListHeader* header = getListHeader();
-    Rectf listArea(getListRenderArea());
+    const Rectf listArea(getListRenderArea());
 
     float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
@@ -1608,7 +1608,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
         y += getHighestRowItemHeight(i);
 
         // have we located the row?
-        if (pt.d_y < y)
+        if (pt.y < y)
         {
             // scan across to find column that was clicked
             for (uint j = 0; j < getColumnCount(); ++j)
@@ -1617,7 +1617,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (pt.d_x < x)
+                if (pt.x < x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
@@ -1918,80 +1918,97 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
+void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
 {
-	// base class processing
-	Window::onMouseButtonDown(e);
+    // base class processing
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
-	{
-		bool modified = false;
+    if (e.source == PS_Left)
+    {
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
+        handleSelection(local_point, false, false);
 
-		Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
-		ListboxItem* item = getItemAtPoint(localPos);
-
-		if (item)
-		{
-            // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiSelect)
-            {
-                modified = clearAllSelections_impl();
-            }
-
-			modified = true;
-
-			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
-			{
-				modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
-			}
-			else
-			{
-				modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
-			}
-
-			// update last selected item
-			d_lastSelected = item->isSelected() ? item : 0;
-		}
-
-		// fire event if needed
-		if (modified)
-		{
-			WindowEventArgs args(this);
-			onSelectionChanged(args);
-		}
-
-		++e.handled;
-	}
-
+        ++e.handled;
+    }
 }
 
+void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool cumulative = e.d_semanticValue == SV_SelectCumulative;
+    bool range = e.d_semanticValue == SV_SelectRange;
+
+    if (cumulative || range)
+    {
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
+            getGUIContext().getPointerIndicator().getPosition());
+        handleSelection(local_point, cumulative, range);
+
+        ++ e.handled;
+    }
+}
 
 /*************************************************************************
-	Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
-void MultiColumnList::onMouseWheel(MouseEventArgs& e)
+void MultiColumnList::onScroll(PointerEventArgs& e)
 {
 	// base class processing.
-	Window::onMouseWheel(e);
+	Window::onScroll(e);
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
 	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
 	}
 
 	++e.handled;
 }
 
+void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative, bool range)
+{
+    bool modified = false;
+
+    ListboxItem* item = getItemAtPoint(position);
+
+    if (item)
+    {
+        // clear old selections if not a cumulative selection or if multi-select is off
+        if (!cumulative || !d_multiSelect)
+        {
+            modified = clearAllSelections_impl();
+        }
+
+        modified = true;
+
+        // select range or item, depending upon state and last selected item
+        if (range && (d_lastSelected != 0) && d_multiSelect)
+        {
+            modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
+        }
+        else
+        {
+            modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
+        }
+
+        // update last selected item
+        d_lastSelected = item->isSelected() ? item : 0;
+    }
+
+    // fire event if needed
+    if (modified)
+    {
+        WindowEventArgs args(this);
+        onSelectionChanged(args);
+    }
+}
 
 /*************************************************************************
 	Event handler for header offset changes (scrolling)
@@ -2691,7 +2708,6 @@ void MultiColumnList::resortList()
     }
     // else no (or invalid) direction, so do not sort.
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************

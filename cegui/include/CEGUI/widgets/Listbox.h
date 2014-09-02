@@ -596,7 +596,7 @@ public:
         position \a pt, or 0 if no ListboxItem attached to this Listbox is at
         that position.
 	*/
-    ListboxItem* getItemAtPoint(const Vector2f& pt) const;
+    ListboxItem* getItemAtPoint(const glm::vec2& pt) const;
 
 
 	/*************************************************************************
@@ -737,10 +737,10 @@ protected:
 		Overridden Event handlers
 	*************************************************************************/
 	virtual void	onSized(ElementEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
-	virtual void	onMouseMove(MouseEventArgs& e);
-
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onScroll(PointerEventArgs& e);
+    virtual void    onPointerMove(PointerEventArgs& e);
+    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Implementation Data
@@ -762,7 +762,9 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addListboxProperties(void);
+    void addListboxProperties(void);
+    void handleListSelection(glm::vec2 position, bool cumulative, bool multipleItems);
+    void handleListSelection(ListboxItem* selectedItem, bool cumulative, bool multipleItems);
 };
 
 

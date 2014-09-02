@@ -1512,7 +1512,7 @@ protected:
 		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
 		item is under that position.
 	*/
-	ListboxItem*	getItemAtPoint(const Vector2f& pt) const;
+    ListboxItem*	getItemAtPoint(const glm::vec2& pt) const;
 
 
 	/*!
@@ -1652,15 +1652,14 @@ protected:
 	*/
 	virtual	void	onListColumnMoved(WindowEventArgs& e);
 
-
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
 	virtual	void	onFontChanged(WindowEventArgs& e);
 	virtual void	onSized(ElementEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
-
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onScroll(PointerEventArgs& e);
+    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Handlers for subscribed events
@@ -1738,6 +1737,7 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addMultiColumnListProperties(void);
+    void    handleSelection(const glm::vec2& position, bool cumulative, bool range);
 };
 
 

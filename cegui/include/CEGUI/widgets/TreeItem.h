@@ -573,6 +573,9 @@ public:
      \brief
         Draw the tree item in its current state
      
+    \param geometry_buffers
+        The list of geometry buffers that the tree item geometry will be added to.
+
      \param position
         Vector2 object describing the upper-left corner of area that should be
         rendered in to for the draw operation.
@@ -586,7 +589,7 @@ public:
      \return
         Nothing.
      */
-    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
+    virtual void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                       float alpha, const Rectf* clipper) const;
 
     /*!

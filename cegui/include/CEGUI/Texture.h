@@ -126,7 +126,7 @@ public:
         Reference to a Vector2 object that describes the scaling values required
         to accurately map pixel positions to texture co-ordinates.
     */
-    virtual const Vector2f& getTexelScaling() const = 0;
+    virtual const glm::vec2& getTexelScaling() const = 0;
 
     /*!
     \brief
@@ -134,7 +134,7 @@ public:
         as required to hold the image.
 
     \param filename
-        The filename of the image file that is to be loaded into the texture
+        The filename of the image file that is to be loaded into the texture.
 
     \param resourceGroup
         Resource group identifier to be passed to the resource provider when

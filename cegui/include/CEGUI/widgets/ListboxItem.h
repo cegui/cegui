@@ -412,7 +412,7 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
+    virtual void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                       float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************
@@ -436,14 +436,6 @@ protected:
     /*************************************************************************
         Implementation methods
     *************************************************************************/
-    /*!
-    \brief
-        Return a ColourRect object describing the colours in \a cols after having their alpha
-        component modulated by the value \a alpha.
-    */
-    ColourRect getModulateAlphaColourRect(const ColourRect& cols, float alpha) const;
-
-
     /*!
     \brief
         Return a colour value describing the colour specified by \a col after having its alpha
