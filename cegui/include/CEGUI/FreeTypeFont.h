@@ -171,12 +171,10 @@ protected:
     //! Font file data
     RawDataContainer d_fontData;
     //! Type definition for TextureVector.
-    typedef std::vector<Texture*
-        CEGUI_VECTOR_ALLOC(Texture*)> TextureVector;
+    typedef std::vector<Texture*> TextureVector;
     //! Textures that hold the glyph imagery for this font.
     mutable TextureVector d_glyphTextures;
-    typedef std::vector<BitmapImage*
-        CEGUI_VECTOR_ALLOC(BitmapImage*)> ImageVector;
+    typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
 };

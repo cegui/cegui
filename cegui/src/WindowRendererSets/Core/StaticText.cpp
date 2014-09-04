@@ -112,7 +112,7 @@ namespace CEGUI
     FalagardStaticText::~FalagardStaticText()
     {
         if (d_formattedRenderedString)
-            CEGUI_DELETE_AO d_formattedRenderedString;
+            delete d_formattedRenderedString;
     }
 
 //----------------------------------------------------------------------------//
@@ -499,45 +499,45 @@ namespace CEGUI
         {
         case HTF_LEFT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO LeftAlignedRenderedString(d_window->getRenderedString());
+                new LeftAlignedRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_RIGHT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RightAlignedRenderedString(d_window->getRenderedString());
+                new RightAlignedRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_CENTRE_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO CentredRenderedString(d_window->getRenderedString());
+                new CentredRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_JUSTIFIED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO JustifiedRenderedString(d_window->getRenderedString());
+                new JustifiedRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_LEFT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <LeftAlignedRenderedString>(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_RIGHT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <RightAlignedRenderedString>(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_CENTRE_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <CentredRenderedString>(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_JUSTIFIED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <JustifiedRenderedString>(d_window->getRenderedString());
             break;
         }

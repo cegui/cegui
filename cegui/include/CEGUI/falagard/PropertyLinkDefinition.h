@@ -109,7 +109,7 @@ public:
     //------------------------------------------------------------------------//
     Property* clone() const
     {
-        return CEGUI_NEW_AO PropertyLinkDefinition<T>(*this);
+        return new PropertyLinkDefinition<T>(*this);
     }
 
 protected:
@@ -241,7 +241,7 @@ protected:
     //------------------------------------------------------------------------//
     typedef std::pair<String,String> StringPair;
     //! type used for the collection of targets.
-    typedef std::vector<StringPair CEGUI_VECTOR_ALLOC(StringPair)> LinkTargetCollection;
+    typedef std::vector<StringPair> LinkTargetCollection;
 
     //! collection of targets for this PropertyLinkDefinition.
     LinkTargetCollection d_targets;

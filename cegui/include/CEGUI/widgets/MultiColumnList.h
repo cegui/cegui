@@ -1680,8 +1680,7 @@ protected:
     */
 	struct ListRow
 	{
-		typedef	std::vector<ListboxItem*
-            CEGUI_VECTOR_ALLOC(ListboxItem*)> RowItems;
+		typedef	std::vector<ListboxItem*> RowItems;
 		RowItems	d_items;
 		uint		d_sortColumn;
 		uint		d_rowID;
@@ -1722,8 +1721,7 @@ protected:
     uint    d_columnCount;          //!< keeps track of the number of columns.
 
 	// storage of items in the list box.
-	typedef std::vector<ListRow
-        CEGUI_VECTOR_ALLOC(ListRow)> ListItemGrid;
+	typedef std::vector<ListRow> ListItemGrid;
 	ListItemGrid	d_grid;			//!< Holds the list box data.
 
     //! whether header size will be considered when auto-sizing columns.

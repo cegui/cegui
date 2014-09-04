@@ -48,7 +48,7 @@ namespace CEGUI
     Defines the 'paint' type based on how it is used in SVG. Main purpose is for defining how
     'fill' and 'stroke' are to be drawn.
 */
-class CEGUIEXPORT SVGPaint : public AllocatedObject<SVGPaint>
+class CEGUIEXPORT SVGPaint
 {
 public:
     SVGPaint();
@@ -63,7 +63,7 @@ public:
 \brief
     Defines the SVGShapeStyle class, which describes the overall shape style of an SVG shape.
 */
-class CEGUIEXPORT SVGPaintStyle : public AllocatedObject<SVGPaintStyle>
+class CEGUIEXPORT SVGPaintStyle
 {
 public:
     /*!

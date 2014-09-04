@@ -59,8 +59,7 @@ enum ShaderType
 };
 //----------------------------------------------------------------------------//
 
-class D3D11_GUIRENDERER_API Direct3D11Shader :
-    public AllocatedObject<Direct3D11Shader>
+class D3D11_GUIRENDERER_API Direct3D11Shader
 {
 public:
 

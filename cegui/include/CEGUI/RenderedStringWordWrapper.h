@@ -62,8 +62,7 @@ protected:
     //! Delete the current formatters and associated RenderedStrings
     void deleteFormatters();
     //! type of collection used to track the formatted lines.
-    typedef std::vector<FormattedRenderedString*
-        CEGUI_VECTOR_ALLOC(FormattedRenderedString*)> LineList;
+    typedef std::vector<FormattedRenderedString*> LineList;
     //! collection of lines.
     LineList d_lines;
 };
@@ -111,7 +110,7 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
 
             // split rstring at width into lstring and remaining rstring
             rstring.split(ref_wnd, line, area_size.d_width, lstring);
-            frs = CEGUI_NEW_AO T(*new RenderedString(lstring));
+            frs = new T(*new RenderedString(lstring));
             frs->format(ref_wnd, area_size);
             d_lines.push_back(frs);
             line = 0;
@@ -119,7 +118,7 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
     }
 
     // last line.
-    frs = CEGUI_NEW_AO T(*new RenderedString(rstring));
+    frs = new T(*new RenderedString(rstring));
     frs->format(ref_wnd, area_size);
     d_lines.push_back(frs);
 }
@@ -189,9 +188,9 @@ void RenderedStringWordWrapper<T>::deleteFormatters()
         // get the rendered string back from rthe formatter
         const RenderedString* rs = &d_lines[i]->getRenderedString();
         // delete the formatter
-        CEGUI_DELETE_AO d_lines[i];
+        delete d_lines[i];
         // delete the rendered string.
-        CEGUI_DELETE_AO rs;
+        delete rs;
     }
 
     d_lines.clear();

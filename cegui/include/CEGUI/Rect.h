@@ -42,8 +42,7 @@ namespace CEGUI
 	Class encapsulating operations on a Rectangle
 */
 template<typename T>
-class Rect:
-    public AllocatedObject<Rect<T> >
+class Rect
 {
 public:
     typedef T value_type;

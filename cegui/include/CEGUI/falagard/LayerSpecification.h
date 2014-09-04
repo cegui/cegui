@@ -42,17 +42,14 @@ namespace CEGUI
     \brief
         Class that encapsulates a single layer of imagery.
     */
-    class CEGUIEXPORT LayerSpecification :
-        public AllocatedObject<LayerSpecification>
+    class CEGUIEXPORT LayerSpecification
     {
     public:
         //! The container type for SectionSpecifications
-        typedef std::vector<SectionSpecification
-            CEGUI_VECTOR_ALLOC(SectionSpecification)> SectionSpecificationList;
+        typedef std::vector<SectionSpecification> SectionSpecificationList;
 
         //! The container type for pointers to SectionSpecifications
-        typedef std::vector<SectionSpecification*
-            CEGUI_VECTOR_ALLOC(SectionSpecification*)> SectionSpecificationPointerList;
+        typedef std::vector<SectionSpecification*> SectionSpecificationPointerList;
 
 
         /*!

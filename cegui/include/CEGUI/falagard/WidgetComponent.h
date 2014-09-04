@@ -44,8 +44,7 @@ namespace CEGUI
     \brief
         Class that encapsulates information regarding a child-widget that is used in a WidgetLookFeel.
     */
-    class CEGUIEXPORT WidgetComponent :
-        public AllocatedObject<WidgetComponent>
+    class CEGUIEXPORT WidgetComponent
     {
     public:
         WidgetComponent() {}
@@ -131,10 +130,8 @@ namespace CEGUI
         static const VerticalAlignment VerticalAlignmentDefault;
 
     private:
-        typedef std::vector<PropertyInitialiser
-            CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;
-        typedef std::vector<EventAction
-            CEGUI_VECTOR_ALLOC(EventAction)> EventActionList;
+        typedef std::vector<PropertyInitialiser> PropertiesList;
+        typedef std::vector<EventAction> EventActionList;
 
     public:
         /*************************************************************************

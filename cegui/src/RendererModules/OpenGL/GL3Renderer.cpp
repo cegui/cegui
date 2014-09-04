@@ -69,7 +69,7 @@ template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
     TextureTarget* create(OpenGLRendererBase& r) const
-        { return CEGUI_NEW_AO T(static_cast<OpenGL3Renderer&>(r)); }
+        { return new T(static_cast<OpenGL3Renderer&>(r)); }
 };
 
 //----------------------------------------------------------------------------//
@@ -82,7 +82,7 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const int abi)
             "CEGUI::System object is already initialised."));
 
     OpenGL3Renderer& renderer(create());
-    DefaultResourceProvider* rp = CEGUI_NEW_AO CEGUI::DefaultResourceProvider();
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
     return renderer;
@@ -99,7 +99,7 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size,
             "CEGUI::System object is already initialised."));
 
     OpenGL3Renderer& renderer(create(display_size));
-    DefaultResourceProvider* rp = CEGUI_NEW_AO CEGUI::DefaultResourceProvider();
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
     return renderer;
@@ -118,7 +118,7 @@ void OpenGL3Renderer::destroySystem()
         static_cast<DefaultResourceProvider*>(sys->getResourceProvider());
 
     System::destroy();
-    CEGUI_DELETE_AO rp;
+    delete rp;
     destroy(*renderer);
 }
 
@@ -127,7 +127,7 @@ OpenGL3Renderer& OpenGL3Renderer::create(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO OpenGL3Renderer();
+    return *new OpenGL3Renderer();
 }
 
 //----------------------------------------------------------------------------//
@@ -136,13 +136,13 @@ OpenGL3Renderer& OpenGL3Renderer::create(const Sizef& display_size,
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO OpenGL3Renderer(display_size);
+    return *new OpenGL3Renderer(display_size);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 {
-    CEGUI_DELETE_AO &renderer;
+    delete &renderer;
 }
 
 //----------------------------------------------------------------------------//
@@ -153,7 +153,7 @@ OpenGL3Renderer::OpenGL3Renderer() :
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
-    d_openGLStateChanger = CEGUI_NEW_AO OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
 }
@@ -167,7 +167,7 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
-    d_openGLStateChanger = CEGUI_NEW_AO OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
 }
@@ -175,9 +175,9 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::~OpenGL3Renderer()
 {
-    CEGUI_DELETE_AO d_textureTargetFactory;
-    CEGUI_DELETE_AO d_openGLStateChanger;
-    CEGUI_DELETE_AO d_shaderManager;
+    delete d_textureTargetFactory;
+    delete d_openGLStateChanger;
+    delete d_shaderManager;
 
     delete d_shaderWrapperTextured;
     delete d_shaderWrapperSolid;
@@ -193,7 +193,7 @@ void OpenGL3Renderer::initialiseRendererIDString()
 //----------------------------------------------------------------------------//
 OpenGLGeometryBufferBase* OpenGL3Renderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    return CEGUI_NEW_AO OpenGL3GeometryBuffer(*this, renderMaterial);
+    return new OpenGL3GeometryBuffer(*this, renderMaterial);
 }
 
 //----------------------------------------------------------------------------//
@@ -239,7 +239,7 @@ void OpenGL3Renderer::initialiseTextureTargetFactory()
 {
     //Use OGL core implementation for FBOs
     d_rendererID += "  TextureTarget support enabled via FBO OGL 3.2 core implementation.";
-    d_textureTargetFactory = CEGUI_NEW_AO OGLTemplateTargetFactory<OpenGL3FBOTextureTarget>;
+    d_textureTargetFactory = new OGLTemplateTargetFactory<OpenGL3FBOTextureTarget>;
 }
 
 //----------------------------------------------------------------------------//
@@ -278,7 +278,7 @@ OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
-    d_shaderManager = CEGUI_NEW_AO OpenGL3ShaderManager(d_openGLStateChanger);
+    d_shaderManager = new OpenGL3ShaderManager(d_openGLStateChanger);
     d_shaderManager->initialiseShaders();
 
     initialiseStandardTexturedShaderWrapper();
@@ -330,13 +330,13 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 {
     if(shaderType == DS_TEXTURED)
     {
-        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperTextured));
+        RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
     else if(shaderType == DS_SOLID)
     {
-        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperSolid));
+        RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 
         return render_material;
     }

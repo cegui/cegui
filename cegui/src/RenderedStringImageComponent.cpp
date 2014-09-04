@@ -214,7 +214,7 @@ RenderedStringImageComponent* RenderedStringImageComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent* RenderedStringImageComponent::clone() const
 {
-    return CEGUI_NEW_AO RenderedStringImageComponent(*this);
+    return new RenderedStringImageComponent(*this);
 }
 
 //----------------------------------------------------------------------------//

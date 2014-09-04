@@ -140,7 +140,7 @@ void SVGData::destroyShapes()
 {
     const unsigned int shape_count = d_svgBasicShapes.size();
     for (unsigned int i = 0; i < shape_count; ++i)
-        CEGUI_DELETE_AO d_svgBasicShapes[i];
+        delete d_svgBasicShapes[i];
 
     d_svgBasicShapes.clear();
 }
@@ -265,7 +265,7 @@ void SVGData::elementSVGRect(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGRectAttributeRoundedY, "0"));
     float ry = parseLengthDataType(ryString).d_value;
 
-    SVGRect* rect = CEGUI_NEW_AO SVGRect(paint_style, transform, x, y, width, height, rx, ry);
+    SVGRect* rect = new SVGRect(paint_style, transform, x, y, width, height, rx, ry);
     addShape(rect);
 }
 
@@ -287,7 +287,7 @@ void SVGData::elementSVGCircle(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGCircleAttributeRadius, "0"));
     float radius = parseLengthDataType(radiusString).d_value;
 
-    SVGCircle* circle = CEGUI_NEW_AO SVGCircle(paint_style, transform, cx, cy, radius);
+    SVGCircle* circle = new SVGCircle(paint_style, transform, cx, cy, radius);
     addShape(circle);  
 }
 
@@ -313,7 +313,7 @@ void SVGData::elementSVGEllipse(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGEllipseAttributeRY, "0"));
     float ry = parseLengthDataType(ryString).d_value;
 
-    SVGEllipse* ellipse = CEGUI_NEW_AO SVGEllipse(paint_style, transform, cx, cy, rx, ry);
+    SVGEllipse* ellipse = new SVGEllipse(paint_style, transform, cx, cy, rx, ry);
     addShape(ellipse);  
 }
 
@@ -339,7 +339,7 @@ void SVGData::elementSVGLine(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGLineAttributeY2, "0"));
     float y2 = parseLengthDataType(y2String).d_value;
 
-    SVGLine* line = CEGUI_NEW_AO SVGLine(paint_style, transform,
+    SVGLine* line = new SVGLine(paint_style, transform,
                                          x1, y1, x2, y2);
     addShape(line);
 }
@@ -356,7 +356,7 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
     std::vector<glm::vec2> points;
     parsePointsString(pointsString, points);
 
-    SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
+    SVGPolyline* polyline = new SVGPolyline(paint_style, transform, points);
     addShape(polyline);
 }
 
@@ -372,7 +372,7 @@ void SVGData::elementSVGPolygon(const XMLAttributes& attributes)
     std::vector<glm::vec2> points;
     parsePointsString(pointsString, points);
 
-    SVGPolygon* polygon = CEGUI_NEW_AO SVGPolygon(paint_style, transform, points);
+    SVGPolygon* polygon = new SVGPolygon(paint_style, transform, points);
     addShape(polygon);
 }
 

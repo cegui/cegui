@@ -46,8 +46,7 @@ namespace CEGUI
     ints or even UDims without replicating the code all over the place.
 */
 template<typename T>
-class Vector2:
-    public AllocatedObject<Vector2<T> >
+class Vector2
 {
 public:
     typedef T value_type;

@@ -58,7 +58,7 @@ void RenderedStringWordWrapper<JustifiedRenderedString>::format(
 
             // split rstring at width into lstring and remaining rstring
             rstring.split(ref_wnd, line, area_size.d_width, lstring);
-            frs = CEGUI_NEW_AO JustifiedRenderedString(*CEGUI_NEW_AO RenderedString(lstring));
+            frs = new JustifiedRenderedString(*new RenderedString(lstring));
             frs->format(ref_wnd, area_size);
             d_lines.push_back(frs);
             line = 0;
@@ -66,7 +66,7 @@ void RenderedStringWordWrapper<JustifiedRenderedString>::format(
     }
 
     // last line (which we do not justify)
-    frs = CEGUI_NEW_AO LeftAlignedRenderedString(*CEGUI_NEW_AO RenderedString(rstring));
+    frs = new LeftAlignedRenderedString(*new RenderedString(rstring));
     frs->format(ref_wnd, area_size);
     d_lines.push_back(frs);
 }

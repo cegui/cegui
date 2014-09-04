@@ -55,7 +55,7 @@ OpenGLRendererBase::OpenGLRendererBase() :
     initialiseMaxTextureSize();
     initialiseDisplaySizeWithViewportSize();
 
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -69,7 +69,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
 {
     initialiseMaxTextureSize();
 
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -79,7 +79,7 @@ OpenGLRendererBase::~OpenGLRendererBase()
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    CEGUI_DELETE_AO d_defaultTarget;
+    delete d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -154,7 +154,7 @@ void OpenGLRendererBase::destroyTextureTarget(TextureTarget* target)
     if (d_textureTargets.end() != i)
     {
         d_textureTargets.erase(i);
-        CEGUI_DELETE_AO target;
+        delete target;
     }
 }
 
@@ -172,7 +172,7 @@ Texture& OpenGLRendererBase::createTexture(const String& name)
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* tex = CEGUI_NEW_AO OpenGLTexture(*this, name);
+    OpenGLTexture* tex = new OpenGLTexture(*this, name);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -189,7 +189,7 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* tex = CEGUI_NEW_AO OpenGLTexture(*this, name, filename, resourceGroup);
+    OpenGLTexture* tex = new OpenGLTexture(*this, name, filename, resourceGroup);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -204,7 +204,7 @@ Texture& OpenGLRendererBase::createTexture(const String& name, const Sizef& size
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* tex = CEGUI_NEW_AO OpenGLTexture(*this, name, size);
+    OpenGLTexture* tex = new OpenGLTexture(*this, name, size);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -234,7 +234,7 @@ void OpenGLRendererBase::destroyTexture(const String& name)
     if (d_textures.end() != i)
     {
         logTextureDestruction(name);
-        CEGUI_DELETE_AO i->second;
+        delete i->second;
         d_textures.erase(i);
     }
 }
@@ -304,7 +304,7 @@ Texture& OpenGLRendererBase::createTexture(const String& name, GLuint tex,
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* t = CEGUI_NEW_AO OpenGLTexture(*this, name, tex, sz);
+    OpenGLTexture* t = new OpenGLTexture(*this, name, tex, sz);
     d_textures[name] = t;
 
     logTextureCreation(name);

@@ -47,7 +47,7 @@ GenericItem(text, icon), d_id(id)
 
 //----------------------------------------------------------------------------//
 StandardItemModel::StandardItemModel() :
-GenericItemModel<StandardItem>(CEGUI_NEW_AO StandardItem)
+GenericItemModel<StandardItem>(new StandardItem)
 {
 }
 

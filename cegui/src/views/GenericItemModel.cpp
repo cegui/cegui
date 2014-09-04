@@ -53,7 +53,7 @@ GenericItem::~GenericItem()
     {
         GenericItem* item = d_children.back();
         d_children.pop_back();
-        CEGUI_DELETE_AO item;
+        delete item;
     }
 }
 

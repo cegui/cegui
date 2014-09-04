@@ -49,8 +49,7 @@ namespace CEGUI
     for the rest of the system to work.  Texture objects are only created
     through the Renderer object's texture creation functions.
 */
-class CEGUIEXPORT Texture :
-    public AllocatedObject<Texture>
+class CEGUIEXPORT Texture
 {
 public:
     /*!

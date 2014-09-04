@@ -69,14 +69,14 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     const size_t size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    unsigned char* const buffer = CEGUI_NEW_ARRAY_PT(unsigned char, size, RawDataContainer);
+    unsigned char* const buffer = new unsigned char[size];
 
     const size_t size_read = fread(buffer, sizeof(char), size, file);
     fclose(file);
 
     if (size_read != size)
     {
-        CEGUI_DELETE_ARRAY_PT(buffer, unsigned char, size, BufferAllocator);
+        delete[] buffer;
 
         CEGUI_THROW(FileIOException(
             "A problem occurred while reading file: " + final_filename));

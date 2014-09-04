@@ -206,7 +206,7 @@ RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent* RenderedStringWidgetComponent::clone() const
 {
-    return CEGUI_NEW_AO RenderedStringWidgetComponent(*this);
+    return new RenderedStringWidgetComponent(*this);
 }
 
 //----------------------------------------------------------------------------//

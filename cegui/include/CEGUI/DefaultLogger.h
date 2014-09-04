@@ -63,8 +63,7 @@ protected:
     std::ostringstream d_workstream;
 
     typedef std::pair<String, LoggingLevel> CacheItem;
-    typedef std::vector<CacheItem
-        CEGUI_VECTOR_ALLOC(CacheItem)> Cache;
+    typedef std::vector<CacheItem> Cache;
     //! Used to cache log entries before log file is created. 
     Cache d_cache;
     //! true while log entries are beign cached (prior to logfile creation)

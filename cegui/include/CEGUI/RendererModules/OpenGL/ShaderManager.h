@@ -53,8 +53,7 @@ namespace CEGUI
         SHADER_ID_COUNT
     };
 
-    class OpenGL3ShaderManager :
-        public AllocatedObject<OpenGL3ShaderManager>
+    class OpenGL3ShaderManager
     {
     public:
         OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger);

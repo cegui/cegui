@@ -37,8 +37,7 @@
 namespace CEGUI
 {
 //! Abstract interface for a generic 'dimension' class.
-class CEGUIEXPORT BaseDim :
-    public AllocatedObject<BaseDim>
+class CEGUIEXPORT BaseDim
 {
 public:
     BaseDim();
@@ -690,8 +689,7 @@ private:
     dimensional value, but also a record of what the dimension value is supposed
     to represent. (e.g. a co-ordinate on the x axis, or the height of something).
 */
-class CEGUIEXPORT Dimension :
-    public AllocatedObject<Dimension>
+class CEGUIEXPORT Dimension
 {
 public:
     Dimension();
@@ -777,8 +775,7 @@ private:
     represent width and height depending upon what the assigned Dimension(s)
     represent.
 */
-class CEGUIEXPORT ComponentArea :
-    public AllocatedObject<ComponentArea>
+class CEGUIEXPORT ComponentArea
 {
 public:
     ComponentArea();

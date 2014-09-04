@@ -62,7 +62,7 @@ RenderingSurface::~RenderingSurface()
     // destroy all the RenderingWindow objects attached to this surface
     const size_t count = d_windows.size();
     for (size_t i = 0; i < count; ++i)
-        CEGUI_DELETE_AO d_windows[i];
+        delete d_windows[i];
 }
 
 //----------------------------------------------------------------------------//
@@ -159,7 +159,7 @@ bool RenderingSurface::isRenderingWindow() const
 //----------------------------------------------------------------------------//
 RenderingWindow& RenderingSurface::createRenderingWindow(TextureTarget& target)
 {
-    RenderingWindow* w = CEGUI_NEW_AO RenderingWindow(target, *this);
+    RenderingWindow* w = new RenderingWindow(target, *this);
     attachWindow(*w);
 
     return *w;
@@ -171,7 +171,7 @@ void RenderingSurface::destroyRenderingWindow(RenderingWindow& window)
     if (&window.getOwner() == this)
     {
         detatchWindow(window);
-        CEGUI_DELETE_AO &window;
+        delete &window;
     }
 }
 

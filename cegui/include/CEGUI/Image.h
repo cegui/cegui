@@ -163,7 +163,6 @@ public:
     quad, or something more complex.
 */
 class CEGUIEXPORT Image :
-    public AllocatedObject<Image>,
     public ChainedXMLHandler
 {
 public:

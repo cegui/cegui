@@ -75,8 +75,7 @@ public:
         String          d_text;
     };
 
-    typedef std::deque<UndoAction
-        CEGUI_VECTOR_ALLOC(UndoAction)>   UndoList;   //!< Type for collection of UndoActions.
+    typedef std::deque<UndoAction>   UndoList;   //!< Type for collection of UndoActions.
 
     /*!
     \brief

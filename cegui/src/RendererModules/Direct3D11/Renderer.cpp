@@ -425,7 +425,7 @@ const glm::mat4& Direct3D11Renderer::getViewProjectionMatrix()
 //----------------------------------------------------------------------------//
 GeometryBuffer& Direct3D11Renderer::createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    Direct3D11GeometryBuffer* geom_buffer = CEGUI_NEW_AO Direct3D11GeometryBuffer(*this, renderMaterial);
+    Direct3D11GeometryBuffer* geom_buffer = new Direct3D11GeometryBuffer(*this, renderMaterial);
 
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
@@ -439,7 +439,7 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferTextured(CEGUI::RefCount
 //----------------------------------------------------------------------------//
 GeometryBuffer& Direct3D11Renderer::createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    Direct3D11GeometryBuffer* geom_buffer = CEGUI_NEW_AO Direct3D11GeometryBuffer(*this, renderMaterial);
+    Direct3D11GeometryBuffer* geom_buffer = new Direct3D11GeometryBuffer(*this, renderMaterial);
 
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
@@ -454,13 +454,13 @@ RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const Defaul
 {
     if(shaderType == DS_TEXTURED)
     {
-        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperTextured));
+        RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
     else if(shaderType == DS_SOLID)
     {
-        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperSolid));
+        RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 
         return render_material;
     }
@@ -475,8 +475,8 @@ RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const Defaul
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
 {
-    Direct3D11Shader* shader_standard_textured = CEGUI_NEW_AO Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured);
-    d_shaderWrapperTextured = CEGUI_NEW_AO Direct3D11ShaderWrapper(*shader_standard_textured, this);
+    Direct3D11Shader* shader_standard_textured = new Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured);
+    d_shaderWrapperTextured = new Direct3D11ShaderWrapper(*shader_standard_textured, this);
 
     d_shaderWrapperTextured->addUniformVariable("texture0", ST_PIXEL, SPT_TEXTURE);
 
@@ -488,8 +488,8 @@ void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
 {
-    Direct3D11Shader* shader_standard_solid = CEGUI_NEW_AO Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured);
-    d_shaderWrapperSolid = CEGUI_NEW_AO Direct3D11ShaderWrapper(*shader_standard_solid, this);
+    Direct3D11Shader* shader_standard_solid = new Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured);
+    d_shaderWrapperSolid = new Direct3D11ShaderWrapper(*shader_standard_solid, this);
 
     d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix", ST_VERTEX, SPT_MATRIX_4X4);
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage", ST_PIXEL, 

@@ -624,7 +624,7 @@ void WidgetLookFeel::addPropertyDefinition(PropertyDefinitionBase* propertyDefin
     {
         Logger::getSingleton().logEvent("WidgetLookFeel::addPropertyDefinition - Entry for PropertyDefinition '" +
             name + "' already exists. Deleting and replacing previous definition.");
-        CEGUI_DELETE_AO( foundIter->second );
+        delete( foundIter->second );
         d_propertyDefinitionMap.erase(foundIter);
     }
 
@@ -638,7 +638,7 @@ void WidgetLookFeel::clearPropertyDefinitions()
     PropertyDefinitionMap::iterator propDefEnd = d_propertyDefinitionMap.end();
     while (propDefIter != propDefEnd)
     {
-        CEGUI_DELETE_AO (propDefIter->second);
+        delete (propDefIter->second);
         ++propDefIter;
     }
 
@@ -655,7 +655,7 @@ void WidgetLookFeel::addPropertyLinkDefinition(PropertyDefinitionBase* propertyL
     {
         Logger::getSingleton().logEvent("WidgetLookFeel::addPropertyLinkDefinition - Entry for PropertyLinkDefinition '" +
             name + "' already exists. Deleting and replacing previous definition.");
-        CEGUI_DELETE_AO( foundIter->second );
+        delete( foundIter->second );
         d_propertyLinkDefinitionMap.erase(foundIter);
     }
 
@@ -669,7 +669,7 @@ void WidgetLookFeel::clearPropertyLinkDefinitions()
     PropertyLinkDefinitionMap::iterator propLinkDefEnd = d_propertyLinkDefinitionMap.end();
     while (propLinkDefIter != propLinkDefEnd)
     {
-        CEGUI_DELETE_AO (propLinkDefIter->second);
+        delete (propLinkDefIter->second);
         ++propLinkDefIter;
     }
 

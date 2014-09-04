@@ -59,8 +59,7 @@ public:
     float getVerticalExtent(const Window* ref_wnd) const;
 
 protected:
-    std::vector<float
-        CEGUI_VECTOR_ALLOC(float)> d_offsets;
+    std::vector<float> d_offsets;
 };
 
 } // End of  CEGUI namespace section

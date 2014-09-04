@@ -47,8 +47,7 @@ namespace CEGUI
         Manager class that gives top-level access to widget data based "look and feel" specifications loaded into the system.
     */
     class CEGUIEXPORT WidgetLookManager :
-        public Singleton<WidgetLookManager>,
-        public AllocatedObject<WidgetLookManager>
+        public Singleton<WidgetLookManager>
     {
     public:
         /*!
@@ -84,10 +83,10 @@ namespace CEGUI
 
 
         /** Typedef for a set of WidgetLookFeel names. */
-        typedef std::set<String, StringFastLessCompare CEGUI_SET_ALLOC(String)> WidgetLookNameSet;
+        typedef std::set<String, StringFastLessCompare> WidgetLookNameSet;
 
         //! Typedef for a map of Strings to WidgetLookFeel objects
-        typedef std::map<String, WidgetLookFeel*, StringFastLessCompare CEGUI_MAP_ALLOC(String, WidgetLookFeel*)> WidgetLookPointerMap;
+        typedef std::map<String, WidgetLookFeel*, StringFastLessCompare> WidgetLookPointerMap;
 
         /*!
         \brief
@@ -301,7 +300,7 @@ namespace CEGUI
 
 
         //! Typedef for a map of Strings to WidgetLookFeel instances
-        typedef std::map<String, WidgetLookFeel, StringFastLessCompare CEGUI_MAP_ALLOC(String, WidgetLookFeel)> WidgetLookList;
+        typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
 
         //! List of WidgetLookFeels added to this Manager
         WidgetLookList  d_widgetLooks;  

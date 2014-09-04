@@ -44,7 +44,7 @@ namespace CEGUI
     Structure that is used to hold the attributes of a vertex for coloured and
     textured geometry in 3D space.
 */
-struct CEGUIEXPORT TexturedColouredVertex : public AllocatedObject<TexturedColouredVertex>
+struct CEGUIEXPORT TexturedColouredVertex
 {
     //! Constructor
     TexturedColouredVertex()
@@ -74,7 +74,7 @@ struct CEGUIEXPORT TexturedColouredVertex : public AllocatedObject<TexturedColou
     Structure that is used to hold the attributes of coloured geometry
     in 3D space.
 */
-struct CEGUIEXPORT ColouredVertex : public AllocatedObject<ColouredVertex>
+struct CEGUIEXPORT ColouredVertex
 {
     //! Constructor
     ColouredVertex()

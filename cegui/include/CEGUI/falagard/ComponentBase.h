@@ -34,8 +34,7 @@
 namespace CEGUI
 {
 //! Common base class used for renderable components within an ImagerySection.
-class CEGUIEXPORT FalagardComponentBase :
-    public AllocatedObject<FalagardComponentBase>
+class CEGUIEXPORT FalagardComponentBase
 {
 public:
     FalagardComponentBase();

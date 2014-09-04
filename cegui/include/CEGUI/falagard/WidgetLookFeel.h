@@ -51,8 +51,7 @@ namespace CEGUI
 \brief
     Class that encapsulates Look N' Feel information for a widget.
 */
-class CEGUIEXPORT WidgetLookFeel :
-    public AllocatedObject<WidgetLookFeel>
+class CEGUIEXPORT WidgetLookFeel
 {
 public:
     WidgetLookFeel(const String& name, const String& inheritedLookName);
@@ -501,35 +500,27 @@ public:
     const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
 
     //! A typedef defining a set of String objects
-    typedef std::set<String, StringFastLessCompare CEGUI_SET_ALLOC(String)> StringSet;
+    typedef std::set<String, StringFastLessCompare> StringSet;
 
     /** Typedefs for maps of Falagard elements this WidgetLookFeel owns. */
     //! Map of Strings to StateImagery pointers
-    typedef std::map<String, StateImagery*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, StateImagery*)> StateImageryPointerMap;
+    typedef std::map<String, StateImagery*, StringFastLessCompare> StateImageryPointerMap;
     //! Map of Strings to ImagerySection pointers
-    typedef std::map<String, ImagerySection*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, ImagerySection*)> ImagerySectionPointerMap;
+    typedef std::map<String, ImagerySection*, StringFastLessCompare> ImagerySectionPointerMap;
     //! Map of Strings to NamedArea pointers
-    typedef std::map<String, NamedArea*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, NamedArea*)> NamedAreaPointerMap;
+    typedef std::map<String, NamedArea*, StringFastLessCompare> NamedAreaPointerMap;
     //! Map of Strings to WidgetComponent pointers
-    typedef std::map<String, WidgetComponent*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, WidgetComponent*)> WidgetComponentPointerMap;
+    typedef std::map<String, WidgetComponent*, StringFastLessCompare> WidgetComponentPointerMap;
     //! Map of Strings to AnimationInstance pointers
-    typedef std::map<String, AnimationInstance*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, AnimationInstance*)> AnimationInstancePointerMap;
+    typedef std::map<String, AnimationInstance*, StringFastLessCompare> AnimationInstancePointerMap;
     //! Map of Strings to EventLinkDefinition pointers
-    typedef std::map<String, EventLinkDefinition*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, EventLinkDefinition*)> EventLinkDefinitionPointerMap;
+    typedef std::map<String, EventLinkDefinition*, StringFastLessCompare> EventLinkDefinitionPointerMap;
 
     /** Typedefs for maps of property related elements this WidgetLookFeel owns. */
     //! Map of Strings to PropertyInitialiser pointers
-    typedef std::map<String, PropertyInitialiser*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyInitialiser*)> PropertyInitialiserPointerMap;
+    typedef std::map<String, PropertyInitialiser*, StringFastLessCompare> PropertyInitialiserPointerMap;
     //! Map of Strings to PropertyDefinitionBase pointers
-    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyDefinitionBase*)> PropertyDefinitionBasePointerMap;
+    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare> PropertyDefinitionBasePointerMap;
 
 
     //! perform any processing required due to the given font having changed.
@@ -805,31 +796,21 @@ private:
 
 
     //! Map types for the Falagard elements that this WidgetLookFeel can own. The keys are the names of the corresponding elements, as CEGUI::String.
-    typedef std::map<String, StateImagery, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, StateImagery)> StateImageryMap;
-    typedef std::map<String, ImagerySection, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, ImagerySection)> ImagerySectionMap;
-    typedef std::map<String, NamedArea, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, NamedArea)> NamedAreaMap;
+    typedef std::map<String, StateImagery, StringFastLessCompare> StateImageryMap;
+    typedef std::map<String, ImagerySection, StringFastLessCompare> ImagerySectionMap;
+    typedef std::map<String, NamedArea, StringFastLessCompare> NamedAreaMap;
 
-    typedef std::map<String, PropertyInitialiser, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyInitialiser)> PropertyInitialiserMap;
-    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyDefinitionBase*)> PropertyDefinitionMap;
-    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyDefinitionBase*)> PropertyLinkDefinitionMap;
+    typedef std::map<String, PropertyInitialiser, StringFastLessCompare> PropertyInitialiserMap;
+    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare> PropertyDefinitionMap;
+    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare> PropertyLinkDefinitionMap;
 
-    typedef std::map<String, WidgetComponent, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, WidgetComponent)> WidgetComponentMap;
-    typedef std::map<String, EventLinkDefinition, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, EventLinkDefinition)> EventLinkDefinitionMap;
+    typedef std::map<String, WidgetComponent, StringFastLessCompare> WidgetComponentMap;
+    typedef std::map<String, EventLinkDefinition, StringFastLessCompare> EventLinkDefinitionMap;
 
     //! List of animation names
-    typedef std::vector<String
-        CEGUI_VECTOR_ALLOC(String)> AnimationList;
+    typedef std::vector<String> AnimationList;
     //! Map of Windows to AnimationInstances
-    typedef std::multimap<Window*, AnimationInstance*, std::less<Window*>
-        CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)> AnimationInstanceMap;
+    typedef std::multimap<Window*, AnimationInstance*, std::less<Window*> > AnimationInstanceMap;
 
     //! Name of this WidgetLookFeel.
     CEGUI::String d_lookName;
@@ -863,8 +844,7 @@ private:
     typedef NamedDefinitionCollator<String, PropertyDefinitionBase*> PropertyLinkDefinitionCollator;
     typedef NamedDefinitionCollator<String, const PropertyInitialiser*> PropertyInitialiserCollator;
     typedef NamedDefinitionCollator<String, const EventLinkDefinition*> EventLinkDefinitionCollator;
-    typedef std::set<String, StringFastLessCompare
-        CEGUI_SET_ALLOC(String)> AnimationNameSet;
+    typedef std::set<String, StringFastLessCompare> AnimationNameSet;
 
     // functions to populate containers with collections of objects that we
     // gain through inheritence.

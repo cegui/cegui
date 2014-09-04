@@ -43,17 +43,14 @@ namespace CEGUI
     \brief
         Class the encapsulates imagery for a given widget state.
     */
-    class CEGUIEXPORT StateImagery :
-        public AllocatedObject<StateImagery>
+    class CEGUIEXPORT StateImagery
     {
     public:
         //! Container for LayerSpecifications. This container needs to be sorted for priority every time a member is changed, added or removed.
-        typedef std::vector<LayerSpecification
-            CEGUI_VECTOR_ALLOC(LayerSpecification)> LayerSpecificationList;
+        typedef std::vector<LayerSpecification> LayerSpecificationList;
 
         //! Container type for LayerSpecification pointers
-        typedef std::vector<LayerSpecification* 
-            CEGUI_VECTOR_ALLOC(LayerSpecification*)> LayerSpecificationPointerList;
+        typedef std::vector<LayerSpecification*> LayerSpecificationPointerList;
 
         /*!
         \brief

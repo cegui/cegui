@@ -77,7 +77,7 @@ enum ShaderParamType
     The class is the abstract interface used for all shader parameters that
     are added to the RenderMaterials.
 */
-class ShaderParameter : public AllocatedObject<ShaderParameter>
+class ShaderParameter
 {
 public:
     ShaderParameter()
@@ -227,7 +227,7 @@ public:
 \brief
 
 */
-class CEGUIEXPORT ShaderParameterBindings : public AllocatedObject<ShaderParameterBindings>
+class CEGUIEXPORT ShaderParameterBindings
 {
 public:
     typedef std::map<std::string, ShaderParameter*> ShaderParameterBindingsMap;

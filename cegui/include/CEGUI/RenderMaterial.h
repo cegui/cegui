@@ -28,7 +28,6 @@
 #define _CEGUIRenderMaterial_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/MemoryAllocatedObject.h"
 
 namespace CEGUI
 {
@@ -40,7 +39,7 @@ class ShaderParameterBindings;
     A RenderMaterial is used for rendering GeometryBuffers. It contains
     a pointer to the used shader (ShaderWrapper) and owns shader parameters.
 */
-class CEGUIEXPORT RenderMaterial : public AllocatedObject<RenderMaterial>
+class CEGUIEXPORT RenderMaterial
 {
 public:
     RenderMaterial(ShaderWrapper* shaderWrapper);

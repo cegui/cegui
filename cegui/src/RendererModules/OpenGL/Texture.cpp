@@ -351,7 +351,7 @@ void OpenGLTexture::restoreTexture()
     blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), d_size));
 
     // free the grabbuffer
-    delete [] d_grabBuffer;
+    delete[] d_grabBuffer;
     d_grabBuffer = 0;
 }
 

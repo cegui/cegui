@@ -47,7 +47,6 @@ namespace CEGUI
 {
 class CEGUIEXPORT ImageManager :
         public Singleton<ImageManager>,
-        public AllocatedObject<ImageManager>,
         public ChainedXMLHandler
 {
 public:
@@ -190,9 +189,7 @@ public:
     typedef std::pair<Image*, ImageFactory*> ImagePair;
 
     //! container type used to hold the images.
-    typedef std::map<String, ImagePair,
-                     StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
+    typedef std::map<String, ImagePair, StringFastLessCompare> ImageMap;
 
     //! ConstBaseIterator type definition.
     typedef ConstMapIterator<ImageMap> ImageIterator;
@@ -210,8 +207,7 @@ private:
     void elementEndLocal(const String& element);
 
     //! container type used to hold the registered Image types.
-    typedef std::map<String, ImageFactory*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, ImageFactory*)> ImageFactoryRegistry;
+    typedef std::map<String, ImageFactory*, StringFastLessCompare> ImageFactoryRegistry;
 
     //! helper to delete an image given an map iterator.
     void destroy(ImageMap::iterator& iter);
@@ -246,7 +242,7 @@ void ImageManager::addImageType(const String& name)
         CEGUI_THROW(AlreadyExistsException(
             "Image type already exists: " + name));
 
-    d_factories[name] = CEGUI_NEW_AO TplImageFactory<T>;
+    d_factories[name] = new TplImageFactory<T>;
 
     Logger::getSingleton().logEvent(
         "[CEGUI::ImageManager] Registered Image type: " + name);

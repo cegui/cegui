@@ -211,9 +211,9 @@ Window::Window(const String& type, const String& name):
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
+    d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
+    d_bidiVisualMapping(new MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -288,7 +288,7 @@ Window::~Window(void)
     // most cleanup actually happened earlier in Window::destroy.
     destroyGeometryBuffers();
 
-    CEGUI_DELETE_AO d_bidiVisualMapping;
+    delete d_bidiVisualMapping;
 }
 
 //----------------------------------------------------------------------------//

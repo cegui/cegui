@@ -94,8 +94,7 @@ enum PolygonFillRule
     Abstract class defining the interface for objects that buffer geometry for
     later rendering.
 */
-class CEGUIEXPORT GeometryBuffer :
-    public AllocatedObject<GeometryBuffer>
+class CEGUIEXPORT GeometryBuffer
 {
 public:
     virtual ~GeometryBuffer();

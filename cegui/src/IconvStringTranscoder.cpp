@@ -99,12 +99,12 @@ static T* iconvTranscode(IconvHelper& ich, const char* in_buf, size_t in_len)
     // Handle empty strings
     if (in_len == 0)
     {
-        T* ret_buff = CEGUI_NEW_ARRAY_PT(T, 1, CEGUI::BufferAllocator);
+        T* ret_buff = new T[1];
         ret_buff[0] = 0;
         return ret_buff;
     }
 
-    std::vector<T CEGUI_VECTOR_ALLOC(T)> out_vec;
+    std::vector<T> out_vec;
     out_vec.resize(in_len);
     size_t out_count = 0;
 
@@ -124,8 +124,7 @@ static T* iconvTranscode(IconvHelper& ich, const char* in_buf, size_t in_len)
 
         if (result != static_cast<size_t>(-1))
         {
-            T* ret_buff = CEGUI_NEW_ARRAY_PT(T, out_count + 1,
-                                             CEGUI::BufferAllocator);
+            T* ret_buff = new T[out_count + 1];
             memcpy(ret_buff, &out_vec[0], out_count * sizeof(T));
             ret_buff[out_count] = 0;
             return ret_buff;

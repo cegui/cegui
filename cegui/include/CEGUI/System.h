@@ -64,8 +64,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT System :
     public Singleton<System>,
-    public EventSet,
-    public AllocatedObject<System>
+    public EventSet
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -651,7 +650,7 @@ protected:
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
 
-    typedef std::vector<GUIContext* CEGUI_VECTOR_ALLOC(GUIContext*)> GUIContextCollection;
+    typedef std::vector<GUIContext*> GUIContextCollection;
     GUIContextCollection d_guiContexts;
     //! instance of class that can convert string encodings
 #if defined(__WIN32__) || defined(_WIN32)
