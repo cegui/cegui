@@ -152,6 +152,8 @@ option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching 
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
 
+option( CEGUI_BUILD_COMMON_DIALOGS "Specifies whether to build the CommonDialogs library, which contains the code for the ColourPicker and other dialogs" TRUE)
+
 option( CEGUI_BUILD_XMLPARSER_EXPAT "Specifies whether to build the Expat based XMLParser module" ${EXPAT_FOUND} )
 option( CEGUI_BUILD_XMLPARSER_XERCES "Specifies whether to build the Xerces-C++ based XMLParser module" ${XERCESC_FOUND} )
 option( CEGUI_BUILD_XMLPARSER_LIBXML2 "Specifies whether to build the libxml2 based XMLParser module" ${LIBXML2_FOUND} )
@@ -538,7 +540,9 @@ add_subdirectory(cegui/src/ImageCodecModules)
 add_subdirectory(cegui/src/WindowRendererSets)
 add_subdirectory(cegui/src/ScriptModules)
 
-add_subdirectory(cegui/src/CommonDialogs)
+if(CEGUI_BUILD_COMMON_DIALOGS)
+    add_subdirectory(cegui/src/CommonDialogs)
+endif()
 
 if (CEGUI_SAMPLES_ENABLED)
     add_subdirectory(samples)
