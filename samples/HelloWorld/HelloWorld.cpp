@@ -34,8 +34,8 @@ HelloWorldSample::HelloWorldSample()
     Sample::d_name = "HelloWorldSample";
     Sample::d_credits = "CrazyEddie, Lukas \"Ident\" Meindl";
     Sample::d_description = 
-        "A very simple &quot;Hello World&quot; sample. It contains a single "
-        "window which will write &quot;Hello-World&quot; to the console if clicked";
+        "A very simple \"Hello World\" sample. It contains a single "
+        "window which will write \"Hello-World\" to the console if clicked";
     Sample::d_summary = 
         "The Sample uses the WindowManager to create the window from code. "
         "An event handler is used to handle the mouse clicks on the window.";
