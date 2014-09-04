@@ -173,7 +173,7 @@ FontsSample::FontsSample()
         "file endings (.ttf, .pcf, .otf) are added to the list in the "
         "font editor window using the CEGUI ResourceProvider. CEGUI Fonts "
         "have size and autoscale settings that can be adjusted in the Sample. "
-        "In CEGUI fonts can be loaded using the &quot;.font&quot; files or "
+        "In CEGUI fonts can be loaded using the \".font\" files or "
         "can be created in run-time using the CEGUI::FontManager. "
         "They can be edited at any time.";
 }
