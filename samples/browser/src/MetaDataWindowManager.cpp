@@ -28,6 +28,7 @@ author:     Lukas E Meindl
 
 #include "SampleData.h"
 
+#include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
@@ -58,7 +59,11 @@ void MetaDataWindowManager::setSampleInfo(SampleData* sampleData)
 {
     d_root->setText(sampleData->getName());
     d_wndSummary->setText(sampleData->getSummary());
+    static_cast<CEGUI::Scrollbar*>(d_wndSummary->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
     d_wndDescription->setText(sampleData->getDescription());
+    static_cast<CEGUI::Scrollbar*>(d_wndDescription->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
     d_wndUsedFiles->setText(sampleData->getUsedFilesString());
+    static_cast<CEGUI::Scrollbar*>(d_wndUsedFiles->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
     d_wndCredits->setText(sampleData->getCredits());
+    static_cast<CEGUI::Scrollbar*>(d_wndCredits->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
 }
