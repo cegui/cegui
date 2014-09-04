@@ -13,10 +13,10 @@ endmacro()
 # initialize variables
 set(ADDITIONAL_LIBS "")
 set(ADDITIONAL_INCLUDE_DIRS "")
-set(SAMPLES_SOURCES "")
-set(SAMPLES_HEADERS "")
 set(SAMPLES_LIST "")
 set(SAMPLES_SUBDIRS "")
+set(SAMPLES_SOURCES_LIST "")
+set(SAMPLES_HEADERS_LIST "")
 
 set(SAMPLE_LIST_HEADER ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.h)
 set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.inc)

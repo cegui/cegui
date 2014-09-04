@@ -11,7 +11,6 @@ set(CORE_SOURCE_FILES
 )
 
 set(CORE_HEADER_FILES
-    ../common/include/Sample.h
     ./include/SamplesFrameworkBase.h
     ./include/SamplesFramework.h
     ./include/CEGuiBaseApplication.h
@@ -20,6 +19,12 @@ set(CORE_HEADER_FILES
     ./include/MetaDataWindowManager.h
     ./include/SamplesBrowserManager.h
 )
+
+
+# Getting all header and source files from the common files folder
+file(GLOB COMMON_HEADER_FILES "${CMAKE_SOURCE_DIR}/samples/common/*.h")
+file(GLOB COMMON_SOURCE_FILES "${CMAKE_SOURCE_DIR}/samples/common/*.cpp")
+
 
 include_directories(${CMAKE_SOURCE_DIR}/samples/browser/include
                     ${CMAKE_BINARY_DIR}/samples/common/include
@@ -99,9 +104,20 @@ if(CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
     link_directories(${DIRECTXSDK_LIBRARY_DIR})
 endif()
 
-# include the samples' sources and headers
-set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${SAMPLES_SOURCES})
-set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${SAMPLES_HEADERS})
+
+# Combine the sample framework/browser's sources and headers with the common files of the samples
+set(COMBINED_HEADER_FILES ${CORE_HEADER_FILES} ${COMMON_HEADER_FILES})
+set(COMBINED_SOURCE_FILES ${CORE_SOURCE_FILES} ${COMMON_SOURCE_FILES})
+
+# We iterate through all added Samples and add the sources and headers to the combined headers and sources
+foreach(CUR_SAMPLE_DIR_NAME ${SAMPLES_LIST})
+    # We generate the Sample's variable names for the list of headers and list of sources, based on the directory name of the sample
+    set(SAMPLE_HEADER_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_HEADERS")
+    set(SAMPLE_SOURCE_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_SOURCES")
+
+    set(COMBINED_SOURCE_FILES ${COMBINED_SOURCE_FILES} ${${SAMPLE_HEADER_LIST_NAME}})
+    set(COMBINED_HEADER_FILES ${COMBINED_HEADER_FILES} ${${SAMPLE_SOURCE_LIST_NAME}})
+endforeach()
 
 # add additional include directories; provided by sample
 include_directories(${ADDITIONAL_INCLUDE_DIRS})
@@ -110,7 +126,7 @@ include_directories(${ADDITIONAL_INCLUDE_DIRS})
 #                     Statically Linked Executable
 ###########################################################################
 if(CEGUI_BUILD_STATIC_CONFIGURATION)
-    add_executable(${CEGUI_TARGET_NAME}_Static ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+    add_executable(${CEGUI_TARGET_NAME}_Static ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
     set_property(TARGET ${CEGUI_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
 
     # append the _d (or whatever) for debug builds as needed.
@@ -133,7 +149,7 @@ endif()
 ###########################################################################
 #                   Dynamically Linked Executable
 ###########################################################################
-add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+add_executable(${CEGUI_TARGET_NAME} ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
 
 # additional dependencies from samples
 add_dependencies(${CEGUI_TARGET_NAME} "${ADDITIONAL_LIBS}")
@@ -162,6 +178,27 @@ if(APPLE)
 
     cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
 endif()
+
+###########################################################################
+#                    Setting up the source groups
+###########################################################################
+
+source_group("Header Files\\browser" FILES ${CORE_HEADER_FILES})
+source_group("Source Files\\browser" FILES ${CORE_SOURCE_FILES})
+
+source_group("Header Files\\common" FILES ${COMMON_HEADER_FILES})
+source_group("Source Files\\common" FILES ${COMMON_SOURCE_FILES})
+
+# We iterate through all added Samples and add a source group for its sources and headers respectively
+foreach(CUR_SAMPLE_DIR_NAME ${SAMPLES_LIST})
+    # We generate the Sample's variable names for the list of headers and list of sources, based on the directory name of the sample
+    set(SAMPLE_HEADER_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_HEADERS")
+    set(SAMPLE_SOURCE_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_SOURCES")
+
+    # We set the source group for the files
+    source_group("Header Files\\${CUR_SAMPLE_DIR_NAME}" FILES ${${SAMPLE_HEADER_LIST_NAME}})
+    source_group("Source Files\\${CUR_SAMPLE_DIR_NAME}" FILES ${${SAMPLE_SOURCE_LIST_NAME}})
+endforeach()
 
 ###########################################################################
 #                    MSVC PROJ USER FILE TEMPLATES
