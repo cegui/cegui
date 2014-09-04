@@ -117,8 +117,8 @@ protected:
 
 \remark
     Items added to the model are taken over and managed by the model, which
-    means they are deleted by it. CEGUI_DELETE_AO is used for that, so
-    CEGUI_NEW_AO should be used for already created objects that are added.
+    means they are deleted by it. delete is used for that, so
+    new should be used for already created objects that are added.
 
 \tparam TGenericItem
     The type of the item this model operates on. The type \b needs to inherit
@@ -134,14 +134,14 @@ public:
         must not be NULL - otherwise an InvalidRequestException is thrown.
 
         The \a root will be taken ownership of, and cleaned when the model is
-        destructed (using CEGUI_DELETE_AO).
+        destructed (using delete).
 
         An example of initializing such GenericItemModel implementation is the
         following:
         \code{.cpp}
         class MyItemModel : public GenericItemModel<MyItem>
         {
-            MyItemModel() : GenericItemModel<MyItem>(CEGUI_NEW_AO MyItem)
+            MyItemModel() : GenericItemModel<MyItem>(new MyItem)
             {
             }
         };
@@ -163,7 +163,7 @@ public:
         constructor in order to successfully compile. This method is equivalent
         with:
         \code{.cpp}
-        GenericItem* item = CEGUI_NEW_AO GenericItem("MyText");
+        GenericItem* item = new GenericItem("MyText");
         model->addItem(item);
         \endcode
     */
@@ -199,7 +199,7 @@ public:
 
     /*!
     \brief
-        Clears the items of this ItemModel, deleting them, using CEGUI_DELETE_AO
+        Clears the items of this ItemModel, deleting them, using delete
         on each, optionally notifying any listeners of the removal of the items.
 
     \param notify
@@ -286,7 +286,7 @@ GenericItemModel<TGenericItem>::~GenericItemModel()
 {
     clear(false);
 
-    CEGUI_DELETE_AO d_root;
+    delete d_root;
 }
 
 //----------------------------------------------------------------------------//
@@ -407,7 +407,7 @@ String GenericItemModel<TGenericItem>::getData(const ModelIndex& model_index,
 template <typename TGenericItem>
 void GenericItemModel<TGenericItem>::addItem(String text)
 {
-    addItem(CEGUI_NEW_AO TGenericItem(text));
+    addItem(new TGenericItem(text));
 }
 
 //----------------------------------------------------------------------------//
@@ -484,7 +484,7 @@ void GenericItemModel<TGenericItem>::removeItem(const GenericItem* item)
         notifyChildrenWillBeRemoved(ModelIndex(parent_item), child_id, 1);
 
         deleteChildren(*itor, true);
-        CEGUI_DELETE_AO *itor;
+        delete *itor;
         parent_item->getChildren().erase(itor);
 
         notifyChildrenRemoved(ModelIndex(parent_item), child_id, 1);
@@ -542,7 +542,7 @@ void CEGUI::GenericItemModel<TGenericItem>::deleteChildren(GenericItem* item,
     while (itor != item->getChildren().end())
     {
         deleteChildren(*itor, notify);
-        CEGUI_DELETE_AO *itor;
+        delete *itor;
         itor = item->getChildren().erase(itor);
     }
 

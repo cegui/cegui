@@ -36,8 +36,7 @@ namespace CEGUI
 \brief
     struct that holds some context relating to a RenderingSurface object.
 */
-struct RenderingContext :
-    public AllocatedObject<RenderingContext>
+struct RenderingContext
 {
     //! RenderingSurface to be used for drawing
     RenderingSurface* surface;

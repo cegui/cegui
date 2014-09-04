@@ -60,7 +60,7 @@ void EventLinkDefinition::clearLinkTargets()
 //----------------------------------------------------------------------------//
 void EventLinkDefinition::initialiseWidget(Window& window) const
 {
-    LinkedEvent* e = CEGUI_NEW_AO LinkedEvent(d_eventName, &window);
+    LinkedEvent* e = new LinkedEvent(d_eventName, &window);
 
     LinkTargetCollection::const_iterator i = d_targets.begin();
     for ( ; i != d_targets.end(); ++i)

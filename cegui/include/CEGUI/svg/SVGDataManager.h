@@ -45,8 +45,7 @@ namespace CEGUI
 class SVGData;
 
 class CEGUIEXPORT SVGDataManager :
-        public Singleton<SVGDataManager>,
-        public AllocatedObject<SVGDataManager>
+        public Singleton<SVGDataManager>
 {
 public:
     SVGDataManager();

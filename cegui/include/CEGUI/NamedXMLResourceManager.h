@@ -232,8 +232,7 @@ public:
 protected:
     // singleton allocator fits here, resource managers are very likely to be singletons
     //! type of collection used to store and manage objects
-    typedef std::map<String, T*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, T*)> ObjectRegistry;
+    typedef std::map<String, T*, StringFastLessCompare> ObjectRegistry;
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);
     //! function to enforce XMLResourceExistsAction policy.
@@ -369,7 +368,7 @@ void NamedXMLResourceManager<T, U>::destroyObject(
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);
 
-    CEGUI_DELETE_AO ob->second;
+    delete ob->second;
     d_objects.erase(ob);
 
     // fire event signalling an object has been destroyed
@@ -393,7 +392,7 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
             // delete any new object we already had created
-            CEGUI_DELETE_AO object;
+            delete object;
             // return existing instance of object.
             return *d_objects[object_name];
 
@@ -406,13 +405,13 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
             break;
 
         case XREA_THROW:
-            CEGUI_DELETE_AO object;
+            delete object;
             CEGUI_THROW(AlreadyExistsException(
                 "an object of type '" + d_resourceType + "' named '" +
                 object_name + "' already exists in the collection."));
 
         default:
-            CEGUI_DELETE_AO object;
+            delete object;
             CEGUI_THROW(InvalidRequestException(
                 "Invalid CEGUI::XMLResourceExistsAction was specified."));
         }

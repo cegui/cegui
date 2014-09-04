@@ -65,8 +65,7 @@ enum AspectMode
 	Class that holds the size (width & height) of something.
 */
 template<typename T>
-class Size:
-    public AllocatedObject<Size<T> >
+class Size
 {
 public:
     typedef T value_type;

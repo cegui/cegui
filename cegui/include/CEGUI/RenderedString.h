@@ -47,8 +47,7 @@ namespace CEGUI
     Here 'string' does not refer solely to a text string, rather a string of
     any renderable items.
 */
-class CEGUIEXPORT RenderedString :
-    public AllocatedObject<RenderedString>
+class CEGUIEXPORT RenderedString
 {
 public:
     //! Constructor.
@@ -174,15 +173,13 @@ public:
 
 protected:
     //! Collection type used to hold the string components.
-    typedef std::vector<RenderedStringComponent*
-        CEGUI_VECTOR_ALLOC(RenderedStringComponent*)> ComponentList;
+    typedef std::vector<RenderedStringComponent*> ComponentList;
     //! RenderedStringComponent objects that comprise this RenderedString.
     ComponentList d_components;
     //! track info for a line.  first is componetn idx, second is component count.
     typedef std::pair<size_t, size_t> LineInfo;
     //! Collection type used to hold details about the lines.
-    typedef std::vector<LineInfo
-        CEGUI_VECTOR_ALLOC(LineInfo)> LineList;
+    typedef std::vector<LineInfo> LineList;
     //! lines that make up this string.
     LineList d_lines;
     //! Make this object's component list a clone of \a list.

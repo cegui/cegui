@@ -241,8 +241,7 @@ class directly. You most likely want to use CEGUI::Window.
 */
 class CEGUIEXPORT Element :
     public PropertySet,
-    public EventSet,
-    public AllocatedObject<Element>
+    public EventSet
 {
 public:
     //! Namespace for global events
@@ -1293,8 +1292,7 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child elements.
-    typedef std::vector<Element*
-        CEGUI_VECTOR_ALLOC(Element*)> ChildList;
+    typedef std::vector<Element*> ChildList;
 
     //! The list of child element objects attached to this.
     ChildList d_children;

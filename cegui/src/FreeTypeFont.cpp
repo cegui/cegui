@@ -195,7 +195,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         d_glyphTextures.push_back(&texture);
 
         // Create a memory buffer where we will render our glyphs
-        argb_t* mem_buffer = CEGUI_NEW_ARRAY_PT(argb_t, texsize * texsize, BufferAllocator);
+        argb_t* mem_buffer = new argb_t[texsize * texsize];
         memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
 
         // Go ahead, line by line, top-left to bottom-right
@@ -236,7 +236,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     const glm::vec2 offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BitmapImage* img =
-                        CEGUI_NEW_AO BitmapImage(name, &texture, area, offset, ASM_Disabled,
+                        new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
@@ -275,7 +275,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BitmapImage* img =
-                        CEGUI_NEW_AO BitmapImage(name, &texture, area, offset, ASM_Disabled,
+                        new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
@@ -305,7 +305,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
         // Copy our memory buffer into the texture and free it
         texture.loadFromMemory(mem_buffer, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PF_RGBA);
-        CEGUI_DELETE_ARRAY_PT(mem_buffer, argb_t, texsize * texsize, BufferAllocator);
+        delete[] mem_buffer;
 
         if (finished)
             break;
@@ -361,7 +361,7 @@ void FreeTypeFont::free()
     d_cp_map.clear();
 
     for (size_t i = 0; i < d_glyphImages.size(); ++i)
-        CEGUI_DELETE_AO d_glyphImages[i];
+        delete d_glyphImages[i];
     d_glyphImages.clear();
 
     for (size_t i = 0; i < d_glyphTextures.size(); i++)

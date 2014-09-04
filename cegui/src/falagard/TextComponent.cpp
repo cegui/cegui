@@ -53,14 +53,14 @@ namespace CEGUI
 #ifndef CEGUI_BIDI_SUPPORT
         d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-        d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
+        d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-        d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
+        d_bidiVisualMapping(new MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
         d_bidiDataValid(false),
-        d_formattedRenderedString(CEGUI_NEW_AO LeftAlignedRenderedString(d_renderedString)),
+        d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
         d_horzFormatting(HTF_LEFT_ALIGNED)
@@ -68,7 +68,7 @@ namespace CEGUI
 
     TextComponent::~TextComponent()
     {
-        CEGUI_DELETE_AO d_bidiVisualMapping;
+        delete d_bidiVisualMapping;
     }
 
     TextComponent::TextComponent(const TextComponent& obj) :
@@ -77,9 +77,9 @@ namespace CEGUI
 #ifndef CEGUI_BIDI_SUPPORT
         d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-        d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
+        d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-        d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
+        d_bidiVisualMapping(new MinibidiVisualMapping),
 #endif
         d_bidiDataValid(false),
         d_renderedString(obj.d_renderedString),
@@ -208,45 +208,45 @@ namespace CEGUI
         {
         case HTF_LEFT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO LeftAlignedRenderedString(rendered_string);
+                new LeftAlignedRenderedString(rendered_string);
             break;
 
         case HTF_CENTRE_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO CentredRenderedString(rendered_string);
+                new CentredRenderedString(rendered_string);
             break;
 
         case HTF_RIGHT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RightAlignedRenderedString(rendered_string);
+                new RightAlignedRenderedString(rendered_string);
             break;
 
         case HTF_JUSTIFIED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO JustifiedRenderedString(rendered_string);
+                new JustifiedRenderedString(rendered_string);
             break;
 
         case HTF_WORDWRAP_LEFT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <LeftAlignedRenderedString>(rendered_string);
             break;
 
         case HTF_WORDWRAP_CENTRE_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <CentredRenderedString>(rendered_string);
             break;
 
         case HTF_WORDWRAP_RIGHT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <RightAlignedRenderedString>(rendered_string);
             break;
 
         case HTF_WORDWRAP_JUSTIFIED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <JustifiedRenderedString>(rendered_string);
             break;
         }

@@ -43,8 +43,7 @@ namespace CEGUI
     \brief
         Class representing a block of attributes associated with an XML element.
      */
-    class CEGUIEXPORT XMLAttributes :
-        public AllocatedObject<XMLAttributes>
+    class CEGUIEXPORT XMLAttributes
     {
     public:
         /*!

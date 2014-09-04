@@ -55,8 +55,7 @@ public:
     normally created via the Renderer object.
 */
 class CEGUIEXPORT RenderTarget :
-    public EventSet,
-    public AllocatedObject<RenderTarget>
+    public EventSet
 {
 public:
     //! Namespace for global events

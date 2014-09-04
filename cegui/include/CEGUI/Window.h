@@ -3468,14 +3468,11 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of child windows to be drawn
-    typedef std::vector<Window*
-        CEGUI_VECTOR_ALLOC(Window*)> ChildDrawList;
+    typedef std::vector<Window*> ChildDrawList;
     //! definition of type used for the UserString dictionary.
-    typedef std::map<String, String, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, String)> UserStringMap;
+    typedef std::map<String, String, StringFastLessCompare> UserStringMap;
     //! definition of type used to track properties banned from writing XML.
-    typedef std::set<String, StringFastLessCompare
-        CEGUI_SET_ALLOC(String)> BannedXMLPropertySet;
+    typedef std::set<String, StringFastLessCompare> BannedXMLPropertySet;
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;

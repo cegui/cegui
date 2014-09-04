@@ -46,8 +46,7 @@ class CEGUI_COMMONDIALOGS_API RGB_Colour;
 class CEGUI_COMMONDIALOGS_API HSV_Colour;
 
 //! Class representing an RGB colour using unsigned chars
-class CEGUI_COMMONDIALOGS_API RGB_Colour :
-    public AllocatedObject<RGB_Colour>
+class CEGUI_COMMONDIALOGS_API RGB_Colour
 {
 public:
     RGB_Colour(unsigned char red, unsigned char green, unsigned char blue) :
@@ -71,8 +70,7 @@ public:
 };
 
 //! Class representing a Colour according to the L*a*b* standard
-class CEGUI_COMMONDIALOGS_API Lab_Colour :
-    public AllocatedObject<Lab_Colour>
+class CEGUI_COMMONDIALOGS_API Lab_Colour
 {
 public:
     Lab_Colour(float LValue, float aValue, float bValue) :
@@ -94,8 +92,7 @@ public:
 };
 
 //! Class representing an HSV (hue, saturation and value) colour using floats.
-class CEGUI_COMMONDIALOGS_API HSV_Colour :
-    public AllocatedObject<HSV_Colour>
+class CEGUI_COMMONDIALOGS_API HSV_Colour
 {
 public:
     HSV_Colour(float HValue, float SValue, float VValue) :

@@ -113,13 +113,11 @@ typedef std::vector<TextureTarget*> TextureTargetList;
 //! container type used to hold GeometryBuffers we create.
 typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
 //! container type used to hold Textures we create.
-typedef std::map<String, OgreTexture*, StringFastLessCompare
-                 CEGUI_MAP_ALLOC(String, OgreTexture*)> TextureMap;
+typedef std::map<String, OgreTexture*, StringFastLessCompare> TextureMap;
 
 //----------------------------------------------------------------------------//
 // Implementation data for the OgreRenderer
-struct OgreRenderer_impl :
-    public AllocatedObject<OgreRenderer_impl>
+struct OgreRenderer_impl
 {
     OgreRenderer_impl() :
         d_displayDPI(96, 96),
@@ -301,7 +299,7 @@ OgreRenderer& OgreRenderer::create(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO OgreRenderer();
+    return *new OgreRenderer();
 }
 
 //----------------------------------------------------------------------------//
@@ -310,19 +308,19 @@ OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target,
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO OgreRenderer(target);
+    return *new OgreRenderer(target);
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroy(OgreRenderer& renderer)
 {
-    CEGUI_DELETE_AO &renderer;
+    delete &renderer;
 }
 
 //----------------------------------------------------------------------------//
 OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 {
-    return *CEGUI_NEW_AO OgreResourceProvider();
+    return *new OgreResourceProvider();
 }
 
 //----------------------------------------------------------------------------//
@@ -390,19 +388,19 @@ void OgreRenderer::createOgreCompositorResources()
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyOgreResourceProvider(OgreResourceProvider& rp)
 {
-    CEGUI_DELETE_AO &rp;
+    delete &rp;
 }
 
 //----------------------------------------------------------------------------//
 OgreImageCodec& OgreRenderer::createOgreImageCodec()
 {
-    return *CEGUI_NEW_AO OgreImageCodec();
+    return *new OgreImageCodec();
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 {
-    CEGUI_DELETE_AO &ic;
+    delete &ic;
 }
 
 //----------------------------------------------------------------------------//
@@ -447,7 +445,7 @@ void OgreRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
         if ((*iter) == &buffer)
         {
             d_pimpl->d_geometryBuffers.erase(iter);
-            CEGUI_DELETE_AO &buffer;
+            delete &buffer;
             return;
         }
     }
@@ -459,7 +457,7 @@ void OgreRenderer::destroyAllGeometryBuffers()
     // Perhaps a faster function for destroying many buffers
     for (size_t i = 0; i < d_pimpl->d_geometryBuffers.size(); i++)
     {
-        CEGUI_DELETE_AO d_pimpl->d_geometryBuffers[i];
+        delete d_pimpl->d_geometryBuffers[i];
     }
 
     d_pimpl->d_geometryBuffers.clear();
@@ -468,7 +466,7 @@ void OgreRenderer::destroyAllGeometryBuffers()
 //----------------------------------------------------------------------------//
 TextureTarget* OgreRenderer::createTextureTarget()
 {
-    TextureTarget* tt = CEGUI_NEW_AO OgreTextureTarget(*this, *d_pimpl->d_renderSystem);
+    TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem);
     d_pimpl->d_textureTargets.push_back(tt);
     return tt;
 }
@@ -483,7 +481,7 @@ void OgreRenderer::destroyTextureTarget(TextureTarget* target)
     if (d_pimpl->d_textureTargets.end() != i)
     {
         d_pimpl->d_textureTargets.erase(i);
-        CEGUI_DELETE_AO target;
+        delete target;
     }
 }
 
@@ -499,7 +497,7 @@ Texture& OgreRenderer::createTexture(const String& name)
 {
     throwIfNameExists(name);
 
-    OgreTexture* t = CEGUI_NEW_AO OgreTexture(name);
+    OgreTexture* t = new OgreTexture(name);
     d_pimpl->d_textures[name] = t;
 
     logTextureCreation(name);
@@ -513,7 +511,7 @@ Texture& OgreRenderer::createTexture(const String& name, const String& filename,
 {
     throwIfNameExists(name);
 
-    OgreTexture* t = CEGUI_NEW_AO OgreTexture(name, filename, resourceGroup);
+    OgreTexture* t = new OgreTexture(name, filename, resourceGroup);
     d_pimpl->d_textures[name] = t;
 
     logTextureCreation(name);
@@ -526,7 +524,7 @@ Texture& OgreRenderer::createTexture(const String& name, const Sizef& size)
 {
     throwIfNameExists(name);
 
-    OgreTexture* t = CEGUI_NEW_AO OgreTexture(name, size);
+    OgreTexture* t = new OgreTexture(name, size);
     d_pimpl->d_textures[name] = t;
 
     logTextureCreation(name);
@@ -540,7 +538,7 @@ Texture& OgreRenderer::createTexture(const String& name, Ogre::TexturePtr& tex,
 {
     throwIfNameExists(name);
 
-    OgreTexture* t = CEGUI_NEW_AO OgreTexture(name, tex, take_ownership);
+    OgreTexture* t = new OgreTexture(name, tex, take_ownership);
     d_pimpl->d_textures[name] = t;
 
     logTextureCreation(name);
@@ -578,7 +576,7 @@ void OgreRenderer::destroyTexture(const String& name)
     if (d_pimpl->d_textures.end() != i)
     {
         logTextureDestruction(name);
-        CEGUI_DELETE_AO i->second;
+        delete i->second;
         d_pimpl->d_textures.erase(i);
     }
 }
@@ -690,7 +688,7 @@ const String& OgreRenderer::getIdentifierString() const
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer() :
-    d_pimpl(CEGUI_NEW_AO OgreRenderer_impl())
+    d_pimpl(new OgreRenderer_impl())
 {
     checkOgreInitialised();
 
@@ -707,7 +705,7 @@ OgreRenderer::OgreRenderer() :
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
-    d_pimpl(CEGUI_NEW_AO OgreRenderer_impl())
+    d_pimpl(new OgreRenderer_impl())
 {
     checkOgreInitialised();
 
@@ -739,7 +737,7 @@ OgreRenderer::~OgreRenderer()
     cleanupShaders();
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    CEGUI_DELETE_AO d_pimpl->d_frameListener;
+    delete d_pimpl->d_frameListener;
 #endif
 
     destroyAllGeometryBuffers();
@@ -747,8 +745,8 @@ OgreRenderer::~OgreRenderer()
     destroyAllTextures();
     clearVertexBufferPool();
 
-    CEGUI_DELETE_AO d_pimpl->d_defaultTarget;
-    CEGUI_DELETE_AO d_pimpl;
+    delete d_pimpl->d_defaultTarget;
+    delete d_pimpl;
 }
 
 //----------------------------------------------------------------------------//
@@ -781,7 +779,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 
     // create default target & rendering root (surface) that uses it
     d_pimpl->d_defaultTarget =
-        CEGUI_NEW_AO OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
+        new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
 #if OGRE_VERSION >= 0x10800
     // Check if built with RT Shader System and if it is: Check if fixed function pipeline is enabled
@@ -832,7 +830,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     
 
     // We will get notified when the workspace is drawn
-    d_pimpl->d_frameListener = CEGUI_NEW_AO OgreGUIRenderQueueListener(this);
+    d_pimpl->d_frameListener = new OgreGUIRenderQueueListener(this);
 
     // Create the workspace for rendering
     Ogre::CompositorManager2* manager = d_pimpl->d_ogreRoot->
@@ -1015,17 +1013,17 @@ void OgreRenderer::initialiseShaders()
     colour_vs->load();
     colour_ps->load();
 
-    d_pimpl->d_texturedShaderWrapper = CEGUI_NEW_AO OgreShaderWrapper(*this, 
+    d_pimpl->d_texturedShaderWrapper = new OgreShaderWrapper(*this, 
         *d_pimpl->d_renderSystem, texture_vs, texture_ps);
 
-    d_pimpl->d_colouredShaderWrapper = CEGUI_NEW_AO OgreShaderWrapper(*this, 
+    d_pimpl->d_colouredShaderWrapper = new OgreShaderWrapper(*this, 
         *d_pimpl->d_renderSystem, colour_vs, colour_ps);
 }
 
 void OgreRenderer::cleanupShaders()
 {
-    CEGUI_DELETE_AO d_pimpl->d_texturedShaderWrapper;
-    CEGUI_DELETE_AO d_pimpl->d_colouredShaderWrapper;
+    delete d_pimpl->d_texturedShaderWrapper;
+    delete d_pimpl->d_colouredShaderWrapper;
 }
 
 //----------------------------------------------------------------------------//
@@ -1247,14 +1245,14 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
 {
     if (shaderType == DS_TEXTURED)
     {
-        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO 
+        RefCounted<RenderMaterial> render_material(new 
             RenderMaterial(d_pimpl->d_texturedShaderWrapper));
 
         return render_material;
     }
     else if (shaderType == DS_SOLID)
     {
-        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO 
+        RefCounted<RenderMaterial> render_material(new 
             RenderMaterial(d_pimpl->d_colouredShaderWrapper));
 
         return render_material;
@@ -1270,7 +1268,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
 GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OgreGeometryBuffer* geom_buffer = CEGUI_NEW_AO OgreGeometryBuffer(*this, 
+    OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
         *d_pimpl->d_renderSystem, renderMaterial);
 
     geom_buffer->addVertexAttribute(VAT_POSITION0);
@@ -1285,7 +1283,7 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
 GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OgreGeometryBuffer* geom_buffer = CEGUI_NEW_AO OgreGeometryBuffer(*this, 
+    OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
         *d_pimpl->d_renderSystem, renderMaterial);
     
     geom_buffer->addVertexAttribute(VAT_POSITION0);

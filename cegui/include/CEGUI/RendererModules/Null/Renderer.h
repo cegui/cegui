@@ -166,8 +166,7 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, NullTexture*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, NullTexture*)> TextureMap;
+    typedef std::map<String, NullTexture*, StringFastLessCompare> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.

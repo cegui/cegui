@@ -97,14 +97,14 @@ OperatorDim::OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right) :
 //----------------------------------------------------------------------------//
 OperatorDim::~OperatorDim()
 {
-    CEGUI_DELETE_AO d_right;
-    CEGUI_DELETE_AO d_left;
+    delete d_right;
+    delete d_left;
 }
 
 //----------------------------------------------------------------------------//
 void OperatorDim::setLeftOperand(const BaseDim* operand)
 {
-    CEGUI_DELETE_AO d_left;
+    delete d_left;
     
     d_left = operand ? operand->clone() : 0;
 }
@@ -118,7 +118,7 @@ BaseDim* OperatorDim::getLeftOperand() const
 //----------------------------------------------------------------------------//
 void OperatorDim::setRightOperand(const BaseDim* operand)
 {
-    CEGUI_DELETE_AO d_right;
+    delete d_right;
     
     d_right = operand ? operand->clone() : 0;
 }
@@ -202,7 +202,7 @@ float OperatorDim::getValueImpl(const float lval, const float rval) const
 //----------------------------------------------------------------------------//
 BaseDim* OperatorDim::clone() const
 {
-    return CEGUI_NEW_AO OperatorDim(d_op, d_left, d_right);
+    return new OperatorDim(d_op, d_left, d_right);
 }
 
 //----------------------------------------------------------------------------//
@@ -267,7 +267,7 @@ float AbsoluteDim::getValue(const Window&, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* AbsoluteDim::clone() const
 {
-    return CEGUI_NEW_AO AbsoluteDim(*this);
+    return new AbsoluteDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -379,7 +379,7 @@ const Image* ImageDim::getSourceImage(const Window& /*wnd*/) const
 //----------------------------------------------------------------------------//
 BaseDim* ImageDim::clone() const
 {
-    return CEGUI_NEW_AO ImageDim(*this);
+    return new ImageDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -427,7 +427,7 @@ const Image* ImagePropertyDim::getSourceImage(const Window& wnd) const
 //----------------------------------------------------------------------------//
 BaseDim* ImagePropertyDim::clone() const
 {
-    return CEGUI_NEW_AO ImagePropertyDim(*this);
+    return new ImagePropertyDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -549,7 +549,7 @@ float WidgetDim::getValue(const Window& wnd, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* WidgetDim::clone() const
 {
-    return CEGUI_NEW_AO WidgetDim(*this);
+    return new WidgetDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -690,7 +690,7 @@ float FontDim::getValue(const Window& wnd, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* FontDim::clone() const
 {
-    return CEGUI_NEW_AO FontDim(*this);
+    return new FontDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -814,7 +814,7 @@ float PropertyDim::getValue(const Window& wnd, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* PropertyDim::clone() const
 {
-    return CEGUI_NEW_AO PropertyDim(*this);
+    return new PropertyDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -846,7 +846,7 @@ Dimension::Dimension()
 Dimension::~Dimension()
 {
     if (d_value)
-        CEGUI_DELETE_AO d_value;
+        delete d_value;
 }
 
 //----------------------------------------------------------------------------//
@@ -868,7 +868,7 @@ Dimension& Dimension::operator=(const Dimension& other)
 {
     // release old value, if any.
     if (d_value)
-        CEGUI_DELETE_AO d_value;
+        delete d_value;
 
     d_value = other.d_value ? other.d_value->clone() : 0;
     d_type = other.d_type;
@@ -888,7 +888,7 @@ void Dimension::setBaseDimension(const BaseDim& dim)
 {
     // release old value, if any.
     if (d_value)
-        CEGUI_DELETE_AO d_value;
+        delete d_value;
 
     d_value = dim.clone();
 }
@@ -1016,7 +1016,7 @@ float UnifiedDim::getValue(const Window&, const Rectf& container) const
 //----------------------------------------------------------------------------//
 BaseDim* UnifiedDim::clone() const
 {
-    UnifiedDim* ndim = CEGUI_NEW_AO UnifiedDim(d_value, d_what);
+    UnifiedDim* ndim = new UnifiedDim(d_value, d_what);
     return ndim;
 }
 

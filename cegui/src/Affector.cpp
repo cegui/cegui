@@ -132,7 +132,7 @@ KeyFrame* Affector::createKeyFrame(float position)
                         "already is a KeyFrame on that position."));
     }
 
-    KeyFrame* ret = CEGUI_NEW_AO KeyFrame(this, position);
+    KeyFrame* ret = new KeyFrame(this, position);
     d_keyFrames.insert(std::make_pair(position, ret));
 
     return ret;
@@ -163,7 +163,7 @@ void Affector::destroyKeyFrame(KeyFrame* keyframe)
     }
 
     d_keyFrames.erase(it);
-    CEGUI_DELETE_AO keyframe;
+    delete keyframe;
 }
 
 //----------------------------------------------------------------------------//

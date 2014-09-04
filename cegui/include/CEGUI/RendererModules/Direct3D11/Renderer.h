@@ -292,8 +292,7 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, Direct3D11Texture*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, Direct3D11Texture*)> TextureMap;
+    typedef std::map<String, Direct3D11Texture*, StringFastLessCompare> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
 

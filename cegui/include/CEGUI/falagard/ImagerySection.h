@@ -44,16 +44,15 @@ namespace CEGUI
     \brief
         Class that encapsulates a re-usable collection of imagery specifications.
     */
-    class CEGUIEXPORT ImagerySection :
-        public AllocatedObject<ImagerySection>
+    class CEGUIEXPORT ImagerySection
     {
     public:
         //! Vector of ImageryComponent Pointers
-        typedef std::vector<ImageryComponent* CEGUI_VECTOR_ALLOC(ImageryComponent*)> ImageryComponentPointerList;
+        typedef std::vector<ImageryComponent*> ImageryComponentPointerList;
         //! Vector of TextComponent Pointers
-        typedef std::vector<TextComponent* CEGUI_VECTOR_ALLOC(TextComponent*)> TextComponentPointerList;
+        typedef std::vector<TextComponent*> TextComponentPointerList;
         //! Vector of FrameComponent Pointers
-        typedef std::vector<FrameComponent* CEGUI_VECTOR_ALLOC(FrameComponent*)> FrameComponentPointerList;
+        typedef std::vector<FrameComponent*> FrameComponentPointerList;
 
 
         /*!
@@ -316,12 +315,9 @@ namespace CEGUI
         */
         FrameComponentPointerList getFrameComponentPointers();
 
-        typedef std::vector<ImageryComponent
-            CEGUI_VECTOR_ALLOC(ImageryComponent)> ImageryComponentList;
-        typedef std::vector<TextComponent
-            CEGUI_VECTOR_ALLOC(TextComponent)> TextComponentList;
-        typedef std::vector<FrameComponent
-            CEGUI_VECTOR_ALLOC(FrameComponent)> FrameComponentList;
+        typedef std::vector<ImageryComponent> ImageryComponentList;
+        typedef std::vector<TextComponent> TextComponentList;
+        typedef std::vector<FrameComponent> FrameComponentList;
 
         /*!
         \brief

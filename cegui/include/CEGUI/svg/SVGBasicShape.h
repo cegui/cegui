@@ -50,7 +50,7 @@ class GeometryBuffer;
 \brief
     Defines a class that acts as interface for several classes that store the data of SVG BasicShapes.
 */
-class CEGUIEXPORT SVGBasicShape : public AllocatedObject<SVGBasicShape>
+class CEGUIEXPORT SVGBasicShape
 {
 public:
     SVGBasicShape() {}

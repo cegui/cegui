@@ -68,7 +68,7 @@ SVGData& SVGDataManager::create(const String& name)
         CEGUI_THROW(AlreadyExistsException(
             "An SVGData object named " + name + " already exists."));
 
-    SVGData* svg_data = CEGUI_NEW_AO SVGData(name);
+    SVGData* svg_data = new SVGData(name);
     d_svgDataMap[name] = svg_data;
 
     logSVGDataCreation(svg_data);
@@ -85,7 +85,7 @@ SVGData& SVGDataManager::create(const String& name,
         CEGUI_THROW(AlreadyExistsException(
             "An SVGData object named " + name + " already exists."));
 
-    SVGData* svg_data = CEGUI_NEW_AO SVGData(name, filename, resourceGroup);
+    SVGData* svg_data = new SVGData(name, filename, resourceGroup);
     d_svgDataMap[name] = svg_data;
 
     logSVGDataCreation(svg_data);
@@ -136,7 +136,7 @@ void SVGDataManager::destroy(const String& name)
 
     if (iter != d_svgDataMap.end())
     {
-        CEGUI_DELETE_AO iter->second;
+        delete iter->second;
 
         Logger::getSingleton().logEvent(
             "[SVGDataManager] Deleted SVGData object: " + iter->first);

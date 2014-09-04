@@ -50,8 +50,7 @@ namespace CEGUI
 {
 //!	Class that provides pointer indicator support.
 class CEGUIEXPORT PointerIndicator :
-    public EventSet,
-    public AllocatedObject<PointerIndicator>
+    public EventSet
 {
 public:
     //! Namespace for global events.

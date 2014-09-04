@@ -48,8 +48,7 @@ namespace CEGUI
     exceptions are for subscribing member functions and references to functor
     objects.
 */
-class CEGUIEXPORT SubscriberSlot :
-    public AllocatedObject<SubscriberSlot>
+class CEGUIEXPORT SubscriberSlot
 {
 public:
     /*!

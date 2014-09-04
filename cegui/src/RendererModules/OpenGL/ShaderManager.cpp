@@ -63,7 +63,7 @@ void OpenGL3ShaderManager::loadShader(GLuint id, std::string vertexShader, std::
 {
     if(d_shaders.find(id) == d_shaders.end())
     {
-        d_shaders[id] = CEGUI_NEW_AO OpenGL3Shader(vertexShader, fragmentShader, d_glStateChanger);
+        d_shaders[id] = new OpenGL3Shader(vertexShader, fragmentShader, d_glStateChanger);
         d_shaders[id]->link();
     }
 }
@@ -96,7 +96,7 @@ void OpenGL3ShaderManager::deinitialiseShaders()
 {
     for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
     {
-        CEGUI_DELETE_AO iter->second;
+        delete iter->second;
     }
     d_shaders.clear();
 }
