@@ -319,7 +319,7 @@ set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
 set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 
 # SampleFramework executable related names
-cegui_set_executable_name( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework )
+cegui_set_executable_name( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleBrowser )
 
 # Additional lib names
 cegui_set_library_name( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
