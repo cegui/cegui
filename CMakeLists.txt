@@ -133,7 +133,7 @@ endif()
 
 set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
 1 - utf8 and utf32 aware inbuilt string,
-2 - regular std::string
+2 - regular std::string"
 )
 
 
