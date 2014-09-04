@@ -47,7 +47,7 @@ Win32ClipboardProvider::~Win32ClipboardProvider()
 void Win32ClipboardProvider::allocateBuffer(size_t size)
 {
    if(d_buffer)
-      delete [] d_buffer;
+      delete[] d_buffer;
 
    d_buffer = new char[size];
    d_bufferSize = size;
@@ -55,7 +55,7 @@ void Win32ClipboardProvider::allocateBuffer(size_t size)
 
 void Win32ClipboardProvider::deallocateBuffer()
 {
-   delete [] d_buffer;
+   delete[] d_buffer;
    d_buffer = 0;
    d_bufferSize = 0;
 }
