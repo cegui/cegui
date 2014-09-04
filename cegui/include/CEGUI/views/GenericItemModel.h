@@ -31,6 +31,11 @@
 #include "CEGUI/Exceptions.h"
 #include <vector>
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 /*!
@@ -547,5 +552,9 @@ void CEGUI::GenericItemModel<TGenericItem>::deleteChildren(GenericItem* item,
     }
 }
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
