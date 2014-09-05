@@ -43,7 +43,8 @@ using namespace CEGUI;
 /*************************************************************************
     Constructor.
 *************************************************************************/
-SVGSample::SVGSample()
+SVGSample::SVGSample() :
+    Sample(-10)
 {
     Sample::d_name = "SVGSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";

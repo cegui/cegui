@@ -42,7 +42,8 @@ const float GameMenuSample::s_firstStartDelay = 5.0f;
 const float GameMenuSample::s_secondStartDelay = 11.0f;
 const float GameMenuSample::s_loginDisplayStartDelay = 15.77f;
 
-GameMenuSample::GameMenuSample()
+GameMenuSample::GameMenuSample() :
+    Sample(100)
 {
     Sample::d_name = "GameMenuSample";
     Sample::d_credits = 

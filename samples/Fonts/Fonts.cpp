@@ -155,7 +155,8 @@ static struct
                                 }
 };
 
-FontsSample::FontsSample()
+FontsSample::FontsSample() :
+    Sample(88)
 {
     Sample::d_name = "FontsSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";

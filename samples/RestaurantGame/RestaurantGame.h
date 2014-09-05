@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _First_Person_HUD_
-#define _First_Person_HUD_
+#ifndef _Restaurant_Game_h
+#define _Restaurant_Game_h
 
 #include "SampleBase.h"
 #include <glm/glm.hpp>

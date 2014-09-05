@@ -53,16 +53,16 @@ using namespace glm;
 /*************************************************************************
     Constructor.
 *************************************************************************/
-CustomShapesDrawingSample::CustomShapesDrawingSample()
-    : d_FPSMaxGraphValue(1)
-    , d_FPSGraphSamplesCount(30)
-    , d_useRealFPS(false)
-    , d_customSVGImageWidth(300.0f)
-    , d_customSVGImageHeight(100.0f)
-    , d_customGeometryGraphWidth(300.0f)
-    , d_customGeometryGraphHeight(100.0f)
-    , d_FPSElapsed(0.0f)
-    , d_FPSFrames()
+CustomShapesDrawingSample::CustomShapesDrawingSample() :
+    d_FPSMaxGraphValue(1),
+    d_FPSGraphSamplesCount(30),
+    d_useRealFPS(false),
+    d_customSVGImageWidth(300.0f),
+    d_customSVGImageHeight(100.0f),
+    d_customGeometryGraphWidth(300.0f),
+    d_customGeometryGraphHeight(100.0f),
+    d_FPSElapsed(0.0f),
+    d_FPSFrames()
 {
     Sample::d_name = "CustomShapesDrawingSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
