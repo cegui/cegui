@@ -78,14 +78,13 @@ public:
         The cached model view projection matrix.
     */
     const Ogre::Matrix4 getMatrix() const;
+
+
     virtual void draw() const;
     virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
     virtual void setClippingRegion(const Rectf& region);
     virtual void reset();
     virtual int getVertexAttributeElementCount() const;
-
-    //! return the transformation matrix used for this buffer.
-    const Ogre::Matrix4& getMatrix() const;
 
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
 

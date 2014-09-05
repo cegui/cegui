@@ -205,11 +205,11 @@ void OgreGeometryBuffer::updateMatrix() const
     Ogre::Matrix4 trans;
 
     trans.makeTrans(d_translation.x + d_pivot.x,
-                    d_translation.d_y + d_pivot.d_y,
-                    d_translation.d_z + d_pivot.d_z);
+                    d_translation.y + d_pivot.y,
+                    d_translation.z + d_pivot.z);
 
     // rotation
-    Ogre::Matrix4 rot(Ogre::Quaternion(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
+    Ogre::Matrix4 rot(Ogre::Quaternion(d_rotation.w, d_rotation.x, d_rotation.y, d_rotation.z));
 
     // translation to remove rotation pivot offset
     Ogre::Matrix4 inv_pivot_trans;

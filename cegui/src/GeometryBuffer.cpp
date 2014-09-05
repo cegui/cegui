@@ -48,10 +48,11 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_renderMaterial(renderMaterial),
     d_polygonFillRule(PFR_NONE),
     d_postStencilVertexCount(0),
-    , d_alpha(1.0f)
-    , d_matrixValid(false)
-    , d_lastRenderTarget(0)
-    , d_lastRenderTargetActivCount(0)
+    d_alpha(1.0f),
+    d_matrixValid(false),
+    d_lastRenderTarget(0),
+    d_lastRenderTargetActivCount(0)
+{}
 
 //---------------------------------------------------------------------------//
 GeometryBuffer::~GeometryBuffer()
