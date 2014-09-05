@@ -72,15 +72,13 @@ void Direct3D11GeometryBuffer::draw() const
     if(d_clippingActive)
         setScissorRects();
 
-    // Update the model matrix if necessary
-    if (!d_matrixValid)
-        updateMatrix();
+    // Update the matrix
+    updateMatrices();
  
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-    // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_matrix;
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
+    // Set the uniform variables for this GeometryBuffer in the Shader
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_matrix);
     shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
 
     // set our buffer as the vertex source.
@@ -131,8 +129,10 @@ void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::siz
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::updateMatrix() const
+void Direct3D11GeometryBuffer::updateMatrices() const
 {
+    if(!d_matrixValid)
+    {
     d_matrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
 
     const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
@@ -147,8 +147,7 @@ void Direct3D11GeometryBuffer::updateMatrix() const
 //----------------------------------------------------------------------------//
 const glm::mat4& Direct3D11GeometryBuffer::getMatrix() const
 {
-    if (!d_matrixValid)
-        updateMatrix();
+    updateMatrices();
 
     return d_matrix;
 }

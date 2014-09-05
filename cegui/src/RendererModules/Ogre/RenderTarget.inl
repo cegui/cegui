@@ -134,8 +134,11 @@ void OgreRenderTarget<T>::activate()
 
     d_renderSystem._setViewport(d_viewport);
 
+    
     d_owner.setProjectionMatrix(d_matrix);
     d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
+
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -208,7 +211,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const Ogre::Real pn_dot_rv = pn.dotProduct(rv);
     const Ogre::Real tmp = pn_dot_rv != 0.0 ?
                             (pn.dotProduct(r1) + dist) / pn_dot_rv :
-                            0.0;
+                            0.0f;
 
     p_out.x = static_cast<float>(r1.x - rv.x * tmp);
     p_out.y = static_cast<float>(r1.y - rv.y * tmp);
@@ -270,6 +273,13 @@ void OgreRenderTarget<T>::updateViewport()
     d_viewport->_updateDimensions();
 
     d_viewportValid = true;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& OgreRenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//

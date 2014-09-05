@@ -58,6 +58,10 @@ class CEGUIEXPORT RenderTarget :
     public EventSet
 {
 public:
+    RenderTarget();
+
+    virtual ~RenderTarget();
+
     //! Namespace for global events
     static const String EventNamespace;
 
@@ -143,7 +147,7 @@ public:
         in the unlikely event that your application actually works, it will
         likely stop working in some future version.
     */
-    virtual void activate() = 0;
+    virtual void activate();
 
     /*!
     \brief
@@ -163,6 +167,20 @@ public:
     */
     virtual void unprojectPoint(const GeometryBuffer& buff,
                                 const glm::vec2& p_in, glm::vec2& p_out) const = 0;
+
+    // TODO DOCU
+    virtual Renderer& getOwner() = 0;
+
+    // TODO DOCU
+    unsigned int getActivationCounter() const;
+
+protected:
+    /*!
+    \brief
+        The current number of activation of this RenderTarget. This is increased on every call to activate() and
+        will in turn be used to remove the most common redundant matrix updates of GeometryBuffers.
+    */
+    mutable unsigned int d_activationCounter;
 };
 
 } // End of  CEGUI namespace section

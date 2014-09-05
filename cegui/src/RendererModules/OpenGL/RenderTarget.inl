@@ -103,7 +103,7 @@ void OpenGLRenderTarget<T>::activate()
 
     d_owner.setViewProjectionMatrix(d_matrix);
 
-    d_owner.setActiveRenderTarget(this);
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -134,7 +134,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
     const glm::mat4& projMatrix = d_matrix;
-    const glm::mat4& modelMatrix = gb.getMatrix();
+    const glm::mat4& modelMatrix = gb.getModelMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
@@ -181,8 +181,6 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     p_out.x = static_cast<float>(is_x);
     p_out.y = static_cast<float>(is_y);
-
-    p_out = p_in; // CrazyEddie wanted this
 }
 
 //----------------------------------------------------------------------------//
@@ -213,7 +211,18 @@ void OpenGLRenderTarget<T>::updateMatrix() const
     d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
+    //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
+    d_activationCounter = -1;
 }
+
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& OpenGLRenderTarget<T>::getOwner()
+{
+    return d_owner;
+}
+
 
 //----------------------------------------------------------------------------//
 

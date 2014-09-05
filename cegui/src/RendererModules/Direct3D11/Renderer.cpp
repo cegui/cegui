@@ -74,9 +74,6 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,
     initialiseRasterizerStates();
     initialiseDepthStencilState();
 
-    
-
-
     initialiseShaders();
 }
 

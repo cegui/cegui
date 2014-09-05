@@ -97,6 +97,8 @@ void Direct3D11RenderTarget<T>::activate()
     d_deviceContext.RSSetViewports(1, &vp);
 
     d_owner.setViewProjectionMatrix(d_matrix);
+
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -237,6 +239,13 @@ void Direct3D11RenderTarget<T>::setupViewport(D3D11_VIEWPORT& vp) const
     vp.Height = static_cast<FLOAT>(d_area.getHeight());
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& Direct3D11RenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//

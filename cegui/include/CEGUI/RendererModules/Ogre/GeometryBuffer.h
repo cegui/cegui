@@ -37,6 +37,8 @@
 #include <OgreTexture.h>
 #include <OgreMatrix4.h>
 
+#include <glm/core/type.hpp>
+
 #include <utility>
 #include <vector>
 
@@ -68,7 +70,14 @@ public:
     //! Destructor
     virtual ~OgreGeometryBuffer();
 
-    // Overrides of virtual and abstract methods inherited from GeometryBuffer
+    /*
+    \brief
+        Returns the cached model view projection matrix.
+
+    \return
+        The cached model view projection matrix.
+    */
+    const Ogre::Matrix4 getMatrix() const;
     virtual void draw() const;
     virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
     virtual void setClippingRegion(const Rectf& region);
@@ -82,7 +91,7 @@ public:
 
 protected:
 
-    //! update cached matrix
+    //! Updates the cached matrix. This should only be called after the RenderTarget was set.
     void updateMatrix() const;
     //! Sets the current scissor rect active
     void setScissorRects() const;
@@ -103,7 +112,7 @@ protected:
     Rectf d_clipRect;
 
     //! model matrix cache
-    mutable Ogre::Matrix4 d_matrix;
+    mutable glm::mat4 d_matrix;
 
     //! The type of vertex data we expect
     MANUALOBJECT_TYPE d_expectedData;
@@ -116,9 +125,6 @@ protected:
 
     //! Marks the d_hwBuffer as being out of date
     mutable bool d_dataAppended;
-
-    //! The old matrix cached for performance
-    mutable Ogre::Matrix4 d_previousFinalMatrix;
 
     //! The old alpha value
     mutable float d_previousAlphaValue;
