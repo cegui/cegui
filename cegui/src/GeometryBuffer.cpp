@@ -27,6 +27,7 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/ShaderParameterBindings.h"
+#include "CEGUI/RenderTarget.h"
 
 #include <vector>
 #include <algorithm>
@@ -43,13 +44,14 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_pivot(0, 0, 0),
     d_customTransform(1.0f),
     d_effect(0),
-    d_matrixValid(false),
     d_blendMode(BM_NORMAL),
     d_renderMaterial(renderMaterial),
     d_polygonFillRule(PFR_NONE),
     d_postStencilVertexCount(0),
-    d_alpha(1.0f)
-{}
+    , d_alpha(1.0f)
+    , d_matrixValid(false)
+    , d_lastRenderTarget(0)
+    , d_lastRenderTargetActivCount(0)
 
 //---------------------------------------------------------------------------//
 GeometryBuffer::~GeometryBuffer()
@@ -370,10 +372,37 @@ void GeometryBuffer::setAlpha(float alpha)
     d_alpha = alpha;
 }
 
+//---------------------------------------------------------------------------//
 float GeometryBuffer::getAlpha() const
 {
     return d_alpha;
 }
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::invalidateMatrix()
+{
+    d_matrixValid = false;
+}
+
+//---------------------------------------------------------------------------//
+const RenderTarget* GeometryBuffer::getLastRenderTarget() const
+{
+    return d_lastRenderTarget;
+}
+
+//---------------------------------------------------------------------------//
+bool GeometryBuffer::checkRenderTargetValidity(const RenderTarget* activeRenderTarget) const
+{
+    return (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivCount + 1 == activeRenderTarget->getActivationCounter());
+}
+
+//--------------------------------------------------------------------------//
+void GeometryBuffer::updateRenderTargetData(const RenderTarget* activeRenderTarget) const
+{
+    d_lastRenderTarget = activeRenderTarget;
+    d_lastRenderTargetActivCount = activeRenderTarget->getActivationCounter();
+}
+
 
 }
 

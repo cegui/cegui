@@ -62,8 +62,7 @@ void OpenGLGeometryBuffer::draw() const
         glDisable(GL_SCISSOR_TEST);
 
     // apply the transformations we need to use.
-    if (!d_matrixValid)
-        updateMatrix();
+    updateMatrix();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(d_matrix));
@@ -89,6 +88,8 @@ void OpenGLGeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+
+    updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//

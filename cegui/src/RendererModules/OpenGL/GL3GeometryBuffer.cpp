@@ -78,15 +78,13 @@ void OpenGL3GeometryBuffer::draw() const
     else
         d_glStateChanger->disable(GL_SCISSOR_TEST);
 
-    // apply the transformations we need to use.
-    if (!d_matrixValid)
-        updateMatrix();
+    // Update the matrix
+    updateMatrix();
 
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-    // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_matrix;
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
+    // Set the uniform variables for this GeometryBuffer in the Shader
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_matrix);
     shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
 
     // activate desired blending mode
@@ -111,6 +109,8 @@ void OpenGL3GeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+
+    updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//

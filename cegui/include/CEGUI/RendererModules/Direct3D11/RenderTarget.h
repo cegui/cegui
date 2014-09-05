@@ -58,6 +58,7 @@ public:
     void unprojectPoint(const GeometryBuffer& buff,
                         const glm::vec2& p_in,
                         glm::vec2& p_out) const;
+    virtual Renderer& getOwner();
 
 protected:
     //! helper that initialises the cached matrix

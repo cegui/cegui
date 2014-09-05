@@ -60,9 +60,15 @@ public:
 
     // Overrides of virtual and abstract methods inherited from GeometryBuffer
     virtual void setClippingRegion(const Rectf& region);
+    
+    /*
+    \brief
+        Calculates and returns the model matrix of this GeometryBuffer.
 
-    //! Returns the model matrix, which is in effect for this GeometryBuffer
-    const glm::mat4& getMatrix() const;
+    \return
+        The model matrix of this GeometryBuffer.
+    */
+    glm::mat4 getModelMatrix() const;
 
     /*
     \brief
@@ -72,14 +78,14 @@ public:
     virtual void finaliseVertexAttributes() = 0;
 
 protected:
-    //! update cached matrix
+    //! Update the cached matrices
     void updateMatrix() const;
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase& d_owner;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! cache of the model matrix
+    //! Cache of the model view projection matrix
     mutable glm::mat4 d_matrix;
 };
 

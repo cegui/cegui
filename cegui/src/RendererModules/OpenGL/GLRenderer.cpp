@@ -223,9 +223,6 @@ void OpenGLRenderer::beginRendering()
     glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
     glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-    // save current matrices
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
@@ -260,8 +257,6 @@ void OpenGLRenderer::endRendering()
 
     // restore former matrices
     // FIXME: If the push ops failed, the following could mess things up!
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
 
@@ -420,16 +415,6 @@ bool OpenGLRenderer::isS3TCSupported() const
 {
     return GLEW_EXT_texture_compression_s3tc > 0;
 }
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
-{
-    OpenGLRendererBase::setViewProjectionMatrix(viewProjectionMatrix);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(glm::value_ptr(d_viewProjectionMatrix));
-}
-
 
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
