@@ -31,7 +31,8 @@
 
 #include <CEGUI/CEGUI.h>
 
-InventorySample::InventorySample()
+InventorySample::InventorySample() :
+    Sample(97)
 {
     Sample::d_name = "InventorySample";
     Sample::d_credits = "CrazyEddie";
