@@ -78,7 +78,7 @@ void GeometryBuffer::appendGeometry(const std::vector<ColouredVertex>& coloured_
 
 //---------------------------------------------------------------------------//
 void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
-                                    uint vertex_count)
+                                    std::size_t vertex_count)
 {
     // Create a temporary array to contain our data
     static const std::size_t vertexDataSize = 7;
@@ -87,7 +87,7 @@ void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
 
     // Add the vertex data in their default order into an array
     const ColouredVertex* vs = vertex_array;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    for (std::size_t i = 0; i < vertex_count; ++i, ++vs)
     {
         // Add all the elements in the default order for textured and coloured
         // geometry into the vector
@@ -103,7 +103,7 @@ void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
     }
 
     // Append the prepared geometry data
-    appendGeometry(vertexData, vertexDataSize);
+    appendGeometry(vertexData, fullArraySize);
 
     delete[] vertexData;
 }
@@ -119,7 +119,7 @@ void GeometryBuffer::appendGeometry(const std::vector<TexturedColouredVertex>& t
 
 //---------------------------------------------------------------------------//
 void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
-                                    uint vertex_count)
+                                    std::size_t vertex_count)
 {
     // Create a temporary array to contain our data
     static const std::size_t vertexDataSize = 9;
@@ -128,7 +128,7 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
 
     // Add the vertex data in their default order into an array
     const TexturedColouredVertex* vs = vertex_array;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    for (std::size_t i = 0; i < vertex_count; ++i, ++vs)
     {
         // Add all the elements in the default order for textured and coloured
         // geometry into the vector
@@ -345,7 +345,7 @@ bool GeometryBuffer::isClippingActive() const
 
 
 //----------------------------------------------------------------------------//
-uint GeometryBuffer::getVertexCount() const
+std::size_t GeometryBuffer::getVertexCount() const
 {
     return d_vertexCount;
 }
