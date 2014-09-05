@@ -240,7 +240,7 @@ public:
         The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const ColouredVertex* vertex_array, uint vertex_count);
+    virtual void appendGeometry(const ColouredVertex* vertex_array, std::size_t vertex_count);
 
     /*!
     \brief
@@ -264,7 +264,7 @@ public:
         The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const TexturedColouredVertex* vertex_array, uint vertex_count);
+    virtual void appendGeometry(const TexturedColouredVertex* vertex_array, std::size_t vertex_count);
 
     /*!
     \brief
@@ -297,7 +297,7 @@ public:
     \return
         The number of vertices that have been appended to this GeometryBuffer.
     */
-    virtual uint getVertexCount() const;
+    virtual std::size_t getVertexCount() const;
 
     /*!
     \brief
