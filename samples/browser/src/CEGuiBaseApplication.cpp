@@ -59,7 +59,7 @@
     Static / Const data
 *************************************************************************/
 const char CEGuiBaseApplication::DATAPATH_VAR_NAME[] = "CEGUI_SAMPLE_DATAPATH";
-SamplesFrameworkBase* CEGuiBaseApplication::d_sampleApp(0);
+SampleBrowserBase* CEGuiBaseApplication::d_sampleApp(0);
 
 //----------------------------------------------------------------------------//
 CEGuiBaseApplication::CEGuiBaseApplication() :
@@ -106,7 +106,7 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
+bool CEGuiBaseApplication::execute(SampleBrowserBase* sampleApp)
 {
     d_sampleApp = sampleApp;
 

@@ -43,10 +43,10 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
-const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
+const CEGUI::uint32 SampleBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
+const CEGUI::uint32 SampleBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
 
-SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Window* samplesWindow)
+SampleBrowserManager::SampleBrowserManager(SampleBrowser* owner, CEGUI::Window* samplesWindow)
     : d_owner(owner),
     d_root(samplesWindow),
     d_childCount(0),
@@ -57,12 +57,12 @@ SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Win
 }
 
 
-CEGUI::Window* SamplesBrowserManager::getWindow()
+CEGUI::Window* SampleBrowserManager::getWindow()
 {
     return d_root;
 }
 
-CEGUI::FrameWindow* SamplesBrowserManager::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
+CEGUI::FrameWindow* SampleBrowserManager::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
 {
     CEGUI::VerticalLayoutContainer* root = createPreviewLayoutContainer();
 
@@ -89,14 +89,14 @@ CEGUI::FrameWindow* SamplesBrowserManager::createSampleWindow(const CEGUI::Strin
     return sampleWindow;
 }
 
-void SamplesBrowserManager::setWindowRatio(float aspectRatio)
+void SampleBrowserManager::setWindowRatio(float aspectRatio)
 {
     d_aspectRatio = aspectRatio;
 
     updateWindows();
 }
 
-void SamplesBrowserManager::updateWindows()
+void SampleBrowserManager::updateWindows()
 {
     int max = d_sampleWindows.size();
     for(int i = 0; i < max; ++i)
@@ -110,7 +110,7 @@ void SamplesBrowserManager::updateWindows()
     d_root->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 }
 
-bool SamplesBrowserManager::handlePointerActivateSampleWindow(const CEGUI::EventArgs& args)
+bool SampleBrowserManager::handlePointerActivateSampleWindow(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
 
@@ -122,7 +122,7 @@ bool SamplesBrowserManager::handlePointerActivateSampleWindow(const CEGUI::Event
 }
 
 
-bool SamplesBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs& args)
+bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs& args)
 {
     const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
 
@@ -166,7 +166,7 @@ bool SamplesBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs
 }
 
 
-bool SamplesBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
+bool SampleBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
 { 
     const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
 
@@ -176,7 +176,7 @@ bool SamplesBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args
     return true;
 }
 
-void SamplesBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
+void SampleBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
 {
     if(d_selectedWindow)
     {
@@ -190,7 +190,7 @@ void SamplesBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
     d_selectedWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRectSelected));
 }
 
-void SamplesBrowserManager::init()
+void SampleBrowserManager::init()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
@@ -203,7 +203,7 @@ void SamplesBrowserManager::init()
 
 }
 
-CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const CEGUI::String& name)
+CEGUI::DefaultWindow* SampleBrowserManager::createPreviewHeaderNameWindow(const CEGUI::String& name)
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
@@ -217,7 +217,7 @@ CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const
     return windowName;
 }
 
-CEGUI::VerticalLayoutContainer* SamplesBrowserManager::createPreviewLayoutContainer()
+CEGUI::VerticalLayoutContainer* SampleBrowserManager::createPreviewLayoutContainer()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
@@ -229,7 +229,7 @@ CEGUI::VerticalLayoutContainer* SamplesBrowserManager::createPreviewLayoutContai
     return root;
 }
 
-CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI::String& name, const CEGUI::Image &image)
+CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI::String& name, const CEGUI::Image &image)
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
@@ -240,9 +240,9 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     sampleWindow->setSize(USize(UDim(1.0f, -10.0f), cegui_absdim(1.0f)));
     sampleWindow->setPointerInputPropagationEnabled(true);
 
-    sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SamplesBrowserManager::handlePointerMoveSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SamplesBrowserManager::handlePointerActivateSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventPointerLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SampleBrowserManager::handlePointerMoveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerLeavesArea, Event::Subscriber(&SampleBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
@@ -252,7 +252,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     return sampleWindow;
 }
 
-CEGUI::HorizontalLayoutContainer* SamplesBrowserManager::createPreviewHeader()
+CEGUI::HorizontalLayoutContainer* SampleBrowserManager::createPreviewHeader()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
@@ -265,7 +265,7 @@ CEGUI::HorizontalLayoutContainer* SamplesBrowserManager::createPreviewHeader()
     return header;
 }
 
-CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
+CEGUI::PushButton* SampleBrowserManager::createPreviewHeaderEnterButton()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
@@ -279,7 +279,7 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
     button->setProperty("NormalImage", "SampleBrowserSkin/EntryButtonNormal");
     button->setProperty("HoverImage", "SampleBrowserSkin/EntryButtonHover");
     button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");
-    button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesBrowserManager::handleSampleEnterButtonClicked, this));
+    button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SampleBrowserManager::handleSampleEnterButtonClicked, this));
     button->setAlwaysOnTop(true);
     button->setHorizontalAlignment(HA_RIGHT);
     button->setVerticalAlignment(VA_CENTRE);
@@ -289,7 +289,7 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
 }
 
 
-bool SamplesBrowserManager::handleSampleEnterButtonClicked(const CEGUI::EventArgs& args)
+bool SampleBrowserManager::handleSampleEnterButtonClicked(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
 

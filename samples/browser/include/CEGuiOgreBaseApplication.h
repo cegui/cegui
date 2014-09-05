@@ -118,7 +118,7 @@ class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListen
 {
 public:
     // Construction and Destruction
-    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
+    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SampleBrowserBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
     ~CEGuiDemoFrameListener();
 
     // Processing to be done at start and end of each frame.
@@ -148,7 +148,7 @@ protected:
     Ogre::RenderWindow* d_window;
 
     CEGuiOgreBaseApplication*   d_baseApp;
-    SamplesFrameworkBase*&      d_sampleApp;
+    SampleBrowserBase*&         d_sampleApp;
 };
 
 //! window event listener class we use to hear abour window resizing

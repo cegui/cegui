@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _SamplesBrowserManager_h_
-#define _SamplesBrowserManager_h_
+#ifndef _SampleBrowserManager_h_
+#define _SampleBrowserManager_h_
 
 #include <vector>
 #include <map>
@@ -35,13 +35,13 @@ author:     Lukas E Meindl
 
 #include "CEGUI/ForwardRefs.h"
 
-class SamplesFramework;
+class SampleBrowser;
 
-class SamplesBrowserManager
+class SampleBrowserManager
 {
 public:
-    SamplesBrowserManager(SamplesFramework* owner, CEGUI::Window* samplesWindow);
-    virtual ~SamplesBrowserManager() {}
+    SampleBrowserManager(SampleBrowser* owner, CEGUI::Window* samplesWindow);
+    virtual ~SampleBrowserManager() {}
 
     CEGUI::Window* getWindow();
 
@@ -52,10 +52,10 @@ public:
     void selectSampleWindow(CEGUI::Window* wnd);
 
 private:
-    SamplesBrowserManager(const SamplesBrowserManager&) {}
+    SampleBrowserManager(const SampleBrowserManager&) {}
 
     void init();
-    SamplesBrowserManager& operator=(const SamplesBrowserManager&) {}
+    SampleBrowserManager& operator=(const SampleBrowserManager&) {}
 
     static const CEGUI::uint32 d_sampleWindowFrameNormal;
     static const CEGUI::uint32 d_sampleWindowFrameSelected;
@@ -74,7 +74,7 @@ private:
     CEGUI::PushButton* createPreviewHeaderEnterButton();
     CEGUI::HorizontalLayoutContainer* createPreviewHeader();
 
-    SamplesFramework* d_owner;
+    SampleBrowser* d_owner;
 
     CEGUI::Window* d_root;
     CEGUI::VerticalLayoutContainer* d_verticalLayoutContainerSamples;
