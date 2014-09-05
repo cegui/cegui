@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<Imageset version="2" name="SVGSampleImageset" imagefile="SVGSampleImage.svg" type="SVGImage" autoScaled="false">
+	<Image name="SVGTestImage1" xPos="0" yPos="0" width="1024" height="720" />
+</Imageset>

@@ -1,0 +1,304 @@
+/**
+@page xml_scheme Scheme XML files.
+@author Paul D Turner
+
+A Scheme file is a largely means to group other data files and resources
+together, and to define some of their interactions, and form a single point
+to load what might be considered a 'skin' for CEGUI's windows and widgets.
+
+@section xml_scheme_contents Scheme Element List:
+@ref xml_scheme_falagardmapping <br>
+@ref xml_scheme_font <br>
+@ref xml_scheme_guischeme <br>
+@ref xml_scheme_imageset <br>
+@ref xml_scheme_imagesetfromimage <br>
+@ref xml_scheme_looknfeel <br>
+@ref xml_scheme_windowalias <br>
+@ref xml_scheme_windowfactory <br>
+@ref xml_scheme_windowrendererfactory <br>
+@ref xml_scheme_windowrendererset <br>
+@ref xml_scheme_windowset <br>
+
+<br>
+@section xml_scheme_overview Overview
+The reference for each element is arranged into sections, as described below:
+- Purpose:
+    - This section describes what the elements general purpose is within the
+      specifications.
+
+- Attributes:
+    - This section describes available attributes for the elements, and whether
+      they are required or optional.
+
+- Usage:
+    - Describes where the element may appear, whether the element may have
+      sub-elements, and other important usage information.
+
+- Examples:
+    - For many elements, this section will contain brief examples showing the
+      element used in context.
+
+
+<br>
+@section xml_scheme_guischeme \<GUIScheme\> Element
+- Purpose:
+    - The \<GUIScheme\> element is the root element of the scheme file.
+
+- Attributes:
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI scheme version is: 5
+    - @c name: Specifies the name that the scheme will be known by within the
+      system.  Required attribute.
+
+- Usage:
+    - The \<GUIScheme> element is the root element for scheme files.
+    - The \<GUIScheme> element may contain the following sub-elements
+      (in any sequence):
+        - Any number of \<Imageset\> elements.
+        - Any number of \<ImagesetFromImage\> elements.
+        - Any number of \<Font\> elements.
+        - Any number of \<LookNFeel\> elements.
+        - Any number of \<WindowSet\> elements.
+        - Any number of \<WindowRendererSet\> elements.
+        - Any number of \<WindowAlias\> elements.
+        - Any number of \<FalagardMapping\> elements.
+    - No element may contain a \<GUIScheme> element as a sub-element.
+
+- Examples:
+
+<br>
+@section xml_scheme_falagardmapping \<FalagardMapping\> Element
+- Purpose:
+    - Specifies a mapping that ties together a concrete CEGUI::Window based
+      object, a concrete CEGUI::WindowRenderer based object, and a WidgetLook
+      definition to create a specified window type that can then be instantiated
+      via the CEGUI::WindowManager.
+
+- Attributes:
+    - @c windowType: Specifies a name for the mapping / window type being
+      created.  Required attribute.
+    - @c targetType: Specifies the name of the concrete CEGUI::Window based
+      object that contains the logic for the window type being specified.
+      Required attribute.
+    - @c renderer: Specifies the name of the concrete CEGUI::WindowRenderer
+      based object that contains the rendering specific code for the window
+      type being specified.  Required attribute.
+    - @c lookNFeel: Specifies the name of the Falagard WidgetLook definition
+      that contains imagery and other definitions for the window type being
+      specified.  Required attribute.
+    - @c renderEffect: Specifies the name of a registered RenderEffect of which
+      an instance will be created to be associated with each created window of
+      WindowType.  As the use of a RenderEffect requires an underlying
+      RenderingWindow, if this is not automaticaly created by the TargetType,
+      Renderer or LookNFeel the AutoRenderingSurface will be enabled prior to
+      creating and assigning the RenderEffect.  If the specified RenderEffect
+      is not registered with the system when instantiation of TargetType is
+      attempted, creation will not fail solely for lack of the effect - rather
+      the window will be created with no effect set (the missing RenderEffect
+      will be logged).
+      Optional attribute.
+
+- Usage:
+    - The \<FalagardMapping\> element may only appear as a sub-element of the
+      \<GUIScheme\> element.
+    - The \<FalagardMapping\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_font \<Font\> Element
+- Purpose:
+    - Specifies a Font to be loaded as part of the scheme.  If a font with the
+      requested name already exists, the file specified is not loaded.
+
+- Attributes:
+    - @c name: Specifies the name of the font as specified in the font
+      xml file.  This is a validation check; if this name is specified it
+      @e must match the name given in the font xml file or an exception will
+      be thrown.  If this name is not given, the name is extracted from the
+      font xml the first time it is loaded.  Optional attibute.
+    - @c filename: Specifies the path to the font XML file.
+      Required attribute.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file specified in the @c Filename
+      attribute.  Optional attribute, if this is not specified the default
+      resource group for Font files is used.
+
+- Usage:
+    - The \<Font\> element may only appear as a sub-element of the
+      \<GUIScheme\> element.
+    - The \<Font\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_imageset \<Imageset\> Element
+- Purpose:
+    - Specifies an imageset to be loaded as part of this scheme.  If an imageset
+      with the requested name already exists, the file specified is not loaded.
+
+- Attributes:
+    - @c name: Specifies the name of the imageset as specified in the imagseset
+      xml file.  This is a validation check; if this name is specified it
+      @e must match the name given in the imageset xml file or an exception will
+      be thrown.  If this name is not given, the name is extracted from the
+      imageset the first time it is loaded.  Optional attibute.
+    - @c filename: Specifies the path to the imageset XML file.
+      Required attribute.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file specified in the @c Filename
+      attribute.  Optional attribute, if this is not specified the default
+      resource group for Imageset files is used.
+
+- Usage:
+    - The \<Imageset\> element may only appear as a sub-element of the
+      \<GUIScheme\> element.
+    - The \<Imageset\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_imagesetfromimage \<ImagesetFromImage\> Element
+- Purpose:
+    - Specifies an imageset to be created directly from an image file as part of
+      this scheme.  If an imageset with the requested name already exists, the
+      file specified is not loaded.
+
+- Attributes:
+    - @c name: Specifies the name to be used for the imageset.  If this
+      attribute is not given, the imageset is given the name of it's file.
+      Optional attibute.
+    - @c filename: Specifies the path to the image file that will be loaded for
+      this imageset (also used as the name of the Imageset if the @c Name
+      attribute is not given).  Required attribute.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file specified in the @c Filename
+      attribute.  Optional attribute, if this is not specified the default
+      resource group for Imageset files is used.
+
+- Usage:
+    - The \<ImagesetFromImage\> element may only appear as a sub-element of the
+      \<GUIScheme\> element.
+    - The \<ImagesetFromImage\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_looknfeel \<LookNFeel\> Element
+- Purpose:
+    - Specifies a LookNFeel file - containing WidgetLook definitions - to be
+      parsed as part of this scheme.
+
+- Attributes:
+    - @c filename: Specifies the path to the looknfeel xml file that will be
+      parsed.  Required attribute.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file specified in the @c Filename
+      attribute.  Optional attribute, if this is not specified the default
+      resource group for LookNFeel files is used.
+
+- Usage:
+    - The \<LookNFeel\> element may only appear as a sub-element of the
+      \<GUIScheme\> element.
+    - The \<LookNFeel\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_windowalias \<WindowAlias\> Element
+- Purpose:
+    - Specifies an alias for a given window type.
+
+- Attributes:
+    - @c alias: Specifies the name of the alias; this is an alternative name by
+      which the window type specified by the @c Target attribute will be known.
+    - @c target: Specifies the window type that will be created when a window
+      of the type specified by the attribute @c Alias is specified.
+
+- Usage:
+    - The \<WindowAlias\> element may only appear as a sub-element of the
+      \<GUIScheme\> element.
+    - The \<WindowAlias\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_windowfactory \<WindowFactory\> Element
+- Purpose:
+    - Specifies the name of a WindowFactory object from the loadable module
+      represented by the containing \<WindowSet\> that is to be registered with
+      the system.
+
+- Attributes:
+    - @c name: Specifies the name of the WindowFactory object to be registered
+      with the system.  Required attribute.
+
+- Usage:
+    - The \<WindowFactory\> element may only appear as a sub-element of the
+      \<WindowSet\> element.
+    - The \<WindowFactory\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_windowrendererfactory \<WindowRendererFactory\> Element
+- Purpose:
+    - Specifies the name of a WindowRendererFactory object from the loadable
+      module represented by the containing \<WindowRendererSet\> that is to be
+      registered with the system.
+
+- Attributes:
+    - @c name: Specifies the name of the WindowRendererFactory object to be
+      registered with the system.  Required attribute.
+
+- Usage:
+    - The \<WindowRendererFactory\> element may only appear as a sub-element of
+      the \<WindowRendererSet\> element.
+    - The \<WindowRendererFactory\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_windowrendererset \<WindowRendererSet\> Element
+- Purpose:
+    - Specifies the name of a loadable module containing concrete
+      CEGUI::WindowRenderer based entities and their factories.  If one or more
+      \<WindowRendererFactory\> elements are given, only the specified factories
+      will be registered with the system; if no \<WindowRendererFactory\>
+      elements are specified, all available factories from the module will be
+      registered.
+
+- Attributes:
+    - @c filename: Specifies the name of the loadable module (dll / .so / etc).
+      Required attribute.
+
+- Usage:
+    - The \<WindowRendererSet\> element may only appear as a sub-element of
+      the \<GUIScheme\> element.
+    - The \<WindowRendererSet\> element may not any number of
+      \<WindowRendererFactory\> sub-elements.
+
+- Examples:
+
+<br>
+@section xml_scheme_windowset \<WindowSet\> Element
+- Purpose:
+    - Specifies the name of a loadable module containing concrete CEGUI::Window
+      based entities and their factories.  If one or more \<WindowFactory\>
+      elements are given, only the specified factories will be registered with
+      the system; if no \<WindowFactory\> elements are specified, all available
+      factories from the module will be registered.
+
+- Attributes:
+    - @c filename: Specifies the name of the loadable module (dll / .so / etc).
+      Required attribute.
+
+- Usage:
+    - The \<WindowSet\> element may only appear as a sub-element of
+      the \<GUIScheme\> element.
+    - The \<WindowSet\> element may not any number of \<WindowFactory\>
+      sub-elements.
+
+- Examples:
+
+*/

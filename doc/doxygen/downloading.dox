@@ -1,0 +1,69 @@
+/**
+@page downloading Obtaining the code
+@author Paul D Turner
+
+CEGUI is presently available in source code form only. You can either download a
+release archive package or clone the code from the mercurial repository at
+bitbucket.org (both unstable default branch and stable branch code available).
+@note There are no current plans to provide precompiled binary versions of the
+library. Things go much more smoothly when you compile everything yourself on
+the same system - this cuts down @e hugely on configuration mismatches and
+generally prevents many of the common user errors we have encountered multiple
+times over the years.
+
+All released packages are made available through the sourceforge.net file
+release network of mirrors, and you can browse the available releases by
+visiting: http://sourceforge.net/projects/crayzedsgui/files/
+
+For an alternative view of these packages, you might like to visit the CEGUIWiki
+main download page here: http://www.cegui.org.uk/wiki/index.php/Downloads
+
+<br>
+@section dl_src_releases Stable Release Source Packages
+Source code from the stable mercurial branch is released at various points in
+time and made available as source code packages.
+
+The current and previous releases are available here: <a href="http://cegui.org.uk/download">http://cegui.org.uk/download</a>
+
+The content of these archives (.zip, .tar.gz) is identical, multiple archive types are provided
+merely as a convenience.
+
+<br>
+@section dl_deps Dependency Package for Microsoft Windows and Apple OS X
+In order to make life simpler for Windows and OS X developers, we provide a
+package containing the source code for the dependency libraries that CEGUI uses.
+For more information about this, including build information, please refer to
+@ref building_deps
+
+The current package is available here:
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 Dependencies/0.8.x/cegui-deps-0.8.x-src.zip/download">cegui-deps-0.8.x-src.zip</a>
+
+<br>
+@section dl_hg Mercurial Source Code Repository
+The source code for CEGUI is kept in a mercurial repositiory at bitbucket.org.
+We also have the code repositories for other CEGUI related items hosted at
+bitbucket; the repository for the main CEGUI libraries is named 'cegui'.
+
+Within this repository, we maintain the main unstable code (as the default
+branch) and secondary branches for the current API stable and ABI stable
+releases (which are v0 and v0-8 respectively as of this writing), older branches
+are considered obsolete as newer stable code branches are created, although the
+older branches are still accessible for those who want or need that older code.
+
+To obtain a copy of the code from mercurial, you might use the following commands
+(or thier equivalent, if you use a GUI based mercurial client)
+@verbatim
+hg clone https://bitbucket.org/cegui/cegui cegui-source
+@endverbatim
+
+Once you have this, the cloned repository is updated to the default (unstable)
+code, so you most likely will want to switch to the API stable branch instead
+(be aware that the -C option here will discard any local file changes without
+additional warning):
+@verbatim
+hg update -C v0
+@endverbatim
+
+You can also browse the repository from your web browser here:
+https://bitbucket.org/cegui/cegui/src/
+*/
