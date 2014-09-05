@@ -85,7 +85,7 @@
 /*************************************************************************
     Constructor
 *************************************************************************/
-SamplesFrameworkBase::SamplesFrameworkBase() :
+SampleBrowserBase::SampleBrowserBase() :
         d_rendererSelector(0),
         d_baseApp(0),
         d_quitting(false),
@@ -97,7 +97,7 @@ SamplesFrameworkBase::SamplesFrameworkBase() :
 /*************************************************************************
     Destructor
 *************************************************************************/
-SamplesFrameworkBase::~SamplesFrameworkBase()
+SampleBrowserBase::~SampleBrowserBase()
 {
     if (d_baseApp)
     {
@@ -116,7 +116,7 @@ SamplesFrameworkBase::~SamplesFrameworkBase()
 /*************************************************************************
     Application entry point
 *************************************************************************/
-int SamplesFrameworkBase::run()
+int SampleBrowserBase::run()
 {
     CEGUI_TRY
     {
@@ -147,7 +147,7 @@ int SamplesFrameworkBase::run()
 /*************************************************************************
     Start the SamplesFramework application
 *************************************************************************/
-bool SamplesFrameworkBase::runApplication()
+bool SampleBrowserBase::runApplication()
 {
     // Setup renderer selection dialog for Win32
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -267,7 +267,7 @@ bool SamplesFrameworkBase::runApplication()
 /*************************************************************************
     Cleanup the sample application.
 *************************************************************************/
-void SamplesFrameworkBase::cleanup()
+void SampleBrowserBase::cleanup()
 {   
     delete d_baseApp;
     d_baseApp = 0;
@@ -285,7 +285,7 @@ void SamplesFrameworkBase::cleanup()
 /*************************************************************************
     Output a message to the user in some OS independant way.
 *************************************************************************/
-void SamplesFrameworkBase::outputExceptionMessage(const char* message)
+void SampleBrowserBase::outputExceptionMessage(const char* message)
 {
 #if defined(__WIN32__) || defined(_WIN32)
     MessageBoxA(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
@@ -295,17 +295,17 @@ void SamplesFrameworkBase::outputExceptionMessage(const char* message)
 #endif
 }
 
-void SamplesFrameworkBase::setQuitting(bool quit)
+void SampleBrowserBase::setQuitting(bool quit)
 {
     d_quitting = quit;
 }
 
-bool SamplesFrameworkBase::isQuitting()
+bool SampleBrowserBase::isQuitting()
 {
     return d_quitting;
 }
 
-void SamplesFrameworkBase::setApplicationWindowSize(int width, int height)
+void SampleBrowserBase::setApplicationWindowSize(int width, int height)
 {
     d_appWindowWidth = width;
     d_appWindowHeight = height;

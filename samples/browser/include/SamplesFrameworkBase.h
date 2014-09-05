@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _SamplesFrameworkBase_h_
-#define _SamplesFrameworkBase_h_
+#ifndef _SampleBrowserBase_h_
+#define _SampleBrowserBase_h_
 
 // forward declarations
 class CEGuiBaseApplication;
@@ -39,21 +39,21 @@ class CEGuiRendererSelector;
     Here we take care of common things such the renderer selection and application
     startup.
 */
-class SamplesFrameworkBase
+class SampleBrowserBase
 {
 public:
     /*!
     \brief
         Constructor.
     */
-    SamplesFrameworkBase();
+    SampleBrowserBase();
 
 
     /*!
     \brief
         Destructor.
     */
-    virtual ~SamplesFrameworkBase();
+    virtual ~SampleBrowserBase();
 
 
     /*!
@@ -214,4 +214,4 @@ protected:
     int                     d_appWindowHeight;           //!< Int defining the application window's height.
 };
 
-#endif  // end of guard _SamplesFrameworkBase_h_
+#endif  // end of guard _SampleBrowserBase_h_

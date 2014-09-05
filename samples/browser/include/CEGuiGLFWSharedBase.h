@@ -33,7 +33,7 @@
 
 #include <GL/glfw.h>
 
-class SamplesFrameworkBase;
+class SampleBrowserBase;
 
 class CEGuiGLFWSharedBase : public CEGuiBaseApplication
 {

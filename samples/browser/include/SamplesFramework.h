@@ -41,17 +41,17 @@ using namespace CEGUI;
 class SampleData;
 class Sample;
 class MetaDataWindowManager;
-class SamplesBrowserManager;
+class SampleBrowserManager;
 
 /*!
 \brief
 This is 
 */
-class SamplesFramework : public SamplesFrameworkBase
+class SampleBrowser : public SampleBrowserBase
 {
 public:
-    SamplesFramework();
-    virtual ~SamplesFramework();
+    SampleBrowser();
+    virtual ~SampleBrowser();
 
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
 
@@ -115,7 +115,7 @@ protected:
     std::vector<SampleData*>    d_samples;
 
     MetaDataWindowManager*      d_metaDataWinMgr;
-    SamplesBrowserManager*      d_samplesWinMgr;
+    SampleBrowserManager*       d_samplesWinMgr;
 
     SampleData*                 d_selectedSampleData;
 

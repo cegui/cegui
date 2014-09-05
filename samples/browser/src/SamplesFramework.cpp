@@ -65,12 +65,12 @@ int main(int argc, char* argv[])
     }
 #endif
 
-    SamplesFramework sampleFramework;
-    return sampleFramework.run();
+    SampleBrowser sampleBrowser;
+    return sampleBrowser.run();
 }
 
 //----------------------------------------------------------------------------//
-SamplesFramework::SamplesFramework() :
+SampleBrowser::SampleBrowser() :
     d_sampleExitButton(0),
     d_metaDataWinMgr(0),
     d_samplesWinMgr(0),
@@ -81,14 +81,14 @@ SamplesFramework::SamplesFramework() :
 }
 
 //----------------------------------------------------------------------------//
-SamplesFramework::~SamplesFramework()
+SampleBrowser::~SampleBrowser()
 {
     if (d_metaDataWinMgr)
         delete d_metaDataWinMgr;
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::initialise()
+bool SampleBrowser::initialise()
 {
     using namespace CEGUI;
 
@@ -101,12 +101,12 @@ bool SamplesFramework::initialise()
     d_systemInputAggregator->initialise();
 
     // return true to signalize the initialisation was sucessful and run the
-    // SamplesFramework
+    // SampleBrowser
     return true;
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::deinitialise()
+void SampleBrowser::deinitialise()
 {
     unloadSamples();
 
@@ -118,7 +118,7 @@ void SamplesFramework::deinitialise()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::initialiseLoadScreenLayout()
+void SampleBrowser::initialiseLoadScreenLayout()
 {
     CEGUI::Font& font =
         FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -142,7 +142,7 @@ void SamplesFramework::initialiseLoadScreenLayout()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::loadSamples()
+void SampleBrowser::loadSamples()
 {
 #   include "samples.inc"
     
@@ -156,7 +156,7 @@ void SamplesFramework::loadSamples()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::unloadSamples()
+void SampleBrowser::unloadSamples()
 {
     while (d_samples.size() > 0)
     {
@@ -170,7 +170,7 @@ void SamplesFramework::unloadSamples()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::addSampleDataCppModule(Sample* instance,
+void SampleBrowser::addSampleDataCppModule(Sample* instance,
 											  CEGUI::String sampleName,
                                               CEGUI::String summary,
                                               CEGUI::String description,
@@ -183,7 +183,7 @@ void SamplesFramework::addSampleDataCppModule(Sample* instance,
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
+bool SampleBrowser::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
     if (Key::Escape != ceguiKey)
         return getCurrentInputAggregator()->injectKeyDown(ceguiKey);
@@ -199,7 +199,7 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
+bool SampleBrowser::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 {
     if (getCurrentInputAggregator() == 0)
         return false;
@@ -208,7 +208,7 @@ bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectChar(int character)
+bool SampleBrowser::injectChar(int character)
 {
     if (getCurrentInputAggregator() == 0)
         return false;
@@ -217,7 +217,7 @@ bool SamplesFramework::injectChar(int character)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectMouseButtonDown(
+bool SampleBrowser::injectMouseButtonDown(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
     if (getCurrentInputAggregator() == 0)
@@ -227,7 +227,7 @@ bool SamplesFramework::injectMouseButtonDown(
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectMouseButtonUp(
+bool SampleBrowser::injectMouseButtonUp(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
     if (getCurrentInputAggregator() == 0)
@@ -237,7 +237,7 @@ bool SamplesFramework::injectMouseButtonUp(
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectMouseWheelChange(float position)
+bool SampleBrowser::injectMouseWheelChange(float position)
 {
     if (getCurrentInputAggregator() == 0)
         return false;
@@ -246,7 +246,7 @@ bool SamplesFramework::injectMouseWheelChange(float position)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::injectMousePosition(float x, float y)
+bool SampleBrowser::injectMousePosition(float x, float y)
 {
     if (getCurrentInputAggregator() == 0)
         return false;
@@ -255,7 +255,7 @@ bool SamplesFramework::injectMousePosition(float x, float y)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::update(float passedTime)
+void SampleBrowser::update(float passedTime)
 {
     static bool init(false);
 
@@ -291,7 +291,7 @@ void SamplesFramework::update(float passedTime)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::handleNewWindowSize(float width, float height)
+void SampleBrowser::handleNewWindowSize(float width, float height)
 {
     d_appWindowWidth = static_cast<int>(width);
     d_appWindowHeight = static_cast<int>(height);
@@ -310,13 +310,13 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::addSample(SampleData* sampleData)
+void SampleBrowser::addSample(SampleData* sampleData)
 {
     d_samples.push_back(sampleData);
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::renderGUIContexts()
+void SampleBrowser::renderGUIContexts()
 {
     if (!d_selectedSampleData)
     {
@@ -333,7 +333,7 @@ void SamplesFramework::renderGUIContexts()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::handleSampleSelection(CEGUI::Window* sampleWindow)
+void SampleBrowser::handleSampleSelection(CEGUI::Window* sampleWindow)
 {
     SampleData* correspondingSampleData = findSampleData(sampleWindow);
 
@@ -341,7 +341,7 @@ void SamplesFramework::handleSampleSelection(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
+void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
 {
     SampleData* correspondingSampleData = findSampleData(sampleWindow);
 
@@ -361,7 +361,7 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::stopDisplaySample()
+void SampleBrowser::stopDisplaySample()
 {
     GUIContext* sampleGUIContext = d_selectedSampleData->getGuiContext();
 
@@ -382,7 +382,7 @@ void SamplesFramework::stopDisplaySample()
 }
 
 //----------------------------------------------------------------------------//
-SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
+SampleData* SampleBrowser::findSampleData(CEGUI::Window* sampleWindow)
 {
     //Find corresponding SampleData
     std::vector<SampleData*>::iterator iter = d_samples.begin();
@@ -399,7 +399,7 @@ SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
+bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
 {
     d_quittingSampleView = true;
 
@@ -407,7 +407,7 @@ bool SamplesFramework::handleSampleExitButtonClicked(const CEGUI::EventArgs& arg
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::initialiseSampleStepwise(int sampleNumber)
+bool SampleBrowser::initialiseSampleStepwise(int sampleNumber)
 {
     if (static_cast<int>(d_samples.size()) <= sampleNumber)
         return true;
@@ -431,7 +431,7 @@ bool SamplesFramework::initialiseSampleStepwise(int sampleNumber)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::initialiseSampleBrowserLayout()
+void SampleBrowser::initialiseSampleBrowserLayout()
 {
     CEGUI::FontManager::getSingleton().
         createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
@@ -458,7 +458,7 @@ void SamplesFramework::initialiseSampleBrowserLayout()
 
     CEGUI::Window* samplesScrollablePane = d_root->getChild(
         "SampleFrameWindowContainer/SamplesFrameWindow/SamplesScrollablePane");
-    d_samplesWinMgr = new SamplesBrowserManager(this, samplesScrollablePane);
+    d_samplesWinMgr = new SampleBrowserManager(this, samplesScrollablePane);
 
     d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow(
         "SampleBrowserSkin/Button", "SampleExitButton"));
@@ -477,13 +477,13 @@ void SamplesFramework::initialiseSampleBrowserLayout()
         "PushedImage", "SampleBrowserSkin/ExitButtonClicked");
     d_sampleExitButton->subscribeEvent(
         PushButton::EventClicked,
-        Event::Subscriber(&SamplesFramework::handleSampleExitButtonClicked, this));
+        Event::Subscriber(&SampleBrowser::handleSampleExitButtonClicked, this));
 
     d_sampleExitButton->setAlwaysOnTop(true);
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::updateInitialisationStep()
+bool SampleBrowser::updateInitialisationStep()
 {
     static int step(0);
 
@@ -524,7 +524,7 @@ bool SamplesFramework::updateInitialisationStep()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::initialisationFinalisation()
+void SampleBrowser::initialisationFinalisation()
 {
     System::getSingleton().getDefaultGUIContext().getPointerIndicator().
         setDefaultImage("SampleBrowserSkin/MouseArrow");
@@ -543,7 +543,7 @@ void SamplesFramework::initialisationFinalisation()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::updateSamples(float passedTime)
+void SampleBrowser::updateSamples(float passedTime)
 {
     std::vector<SampleData*>::iterator iter = d_samples.begin();
     std::vector<SampleData*>::iterator end = d_samples.end();
@@ -559,7 +559,7 @@ void SamplesFramework::updateSamples(float passedTime)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::renderSampleGUIContexts()
+void SampleBrowser::renderSampleGUIContexts()
 {
     std::vector<SampleData*>::iterator iter = d_samples.begin();
     std::vector<SampleData*>::iterator end = d_samples.end();
@@ -585,7 +585,7 @@ void SamplesFramework::renderSampleGUIContexts()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::displaySampleBrowserLayoutLoadProgress()
+void SampleBrowser::displaySampleBrowserLayoutLoadProgress()
 {
     int totalNum = d_samples.size() + 2;
 
@@ -600,7 +600,7 @@ void SamplesFramework::displaySampleBrowserLayoutLoadProgress()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
+void SampleBrowser::displaySampleLoadProgress(int sampleNumber)
 {
     SampleData* sampleData = d_samples[sampleNumber + 1];
 
@@ -616,7 +616,7 @@ void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1,
+bool SampleBrowser::areWindowsIntersecting(CEGUI::Window* window1,
                                               CEGUI::Window* window2)
 {
     const CEGUI::Rectf& clipRect1 = window1->getOuterRectClipper();
@@ -629,7 +629,7 @@ bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1,
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::InputAggregator* SamplesFramework::getCurrentInputAggregator()
+CEGUI::InputAggregator* SampleBrowser::getCurrentInputAggregator()
 {
     if (d_selectedSampleData != 0)
         return d_selectedSampleData->getInputAggregator();

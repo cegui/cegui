@@ -48,7 +48,7 @@
 /*************************************************************************
     Forward refs
 *************************************************************************/
-class SamplesFrameworkBase;
+class SampleBrowserBase;
 namespace CEGUI
 {
 class Renderer;
@@ -93,7 +93,7 @@ public:
         - false if the application failed to initialise (cleanup function will
           not be called).
     */
-    bool execute(SamplesFrameworkBase* sampleApp);
+    bool execute(SampleBrowserBase* sampleApp);
 
     /*!
     \brief
@@ -180,7 +180,7 @@ protected:
     bool resizeHandler(const CEGUI::EventArgs& args);
 
     //! SampleFramework base used in the application
-    static SamplesFrameworkBase* d_sampleApp;
+    static SampleBrowserBase* d_sampleApp;
     //! The window width the application should get created with at start
     static const int s_defaultWindowWidth = 1280;
     //! The window height the application should get created with at start

@@ -52,7 +52,7 @@ const TCHAR Win32AppHelper::CREATE_DEVICE_ERROR[]   = _TEXT("Failed to create Di
 bool Win32AppHelper::s_mouseInWindow = false;
 
 // For input injection
-SamplesFrameworkBase* Win32AppHelper::s_samplesFramework(0);
+SampleBrowserBase* Win32AppHelper::s_sampleBrowser(0);
 
 /*************************************************************************
     Prototypes for internal helper functions a.k.a "The hacks section"
@@ -115,7 +115,7 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     switch(message)
     {
     case WM_CHAR:
-        s_samplesFramework->injectChar((CEGUI::utf32)wParam);
+        s_sampleBrowser->injectChar((CEGUI::utf32)wParam);
         break;
 
     case WM_MOUSELEAVE:
@@ -129,35 +129,35 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     case WM_MOUSEMOVE:
         mouseEnters();
 
-        s_samplesFramework->injectMousePosition((float)(LOWORD(lParam)), (float)(HIWORD(lParam)));
+        s_sampleBrowser->injectMousePosition((float)(LOWORD(lParam)), (float)(HIWORD(lParam)));
         break;
 
     case WM_LBUTTONDOWN:
-        s_samplesFramework->injectMouseButtonDown(CEGUI::LeftButton);
+        s_sampleBrowser->injectMouseButtonDown(CEGUI::LeftButton);
         break;
 
     case WM_LBUTTONUP:
-        s_samplesFramework->injectMouseButtonUp(CEGUI::LeftButton);
+        s_sampleBrowser->injectMouseButtonUp(CEGUI::LeftButton);
         break;
 
     case WM_RBUTTONDOWN:
-        s_samplesFramework->injectMouseButtonDown(CEGUI::RightButton);
+        s_sampleBrowser->injectMouseButtonDown(CEGUI::RightButton);
         break;
 
     case WM_RBUTTONUP:
-        s_samplesFramework->injectMouseButtonUp(CEGUI::RightButton);
+        s_sampleBrowser->injectMouseButtonUp(CEGUI::RightButton);
         break;
 
     case WM_MBUTTONDOWN:
-        s_samplesFramework->injectMouseButtonDown(CEGUI::MiddleButton);
+        s_sampleBrowser->injectMouseButtonDown(CEGUI::MiddleButton);
         break;
 
     case WM_MBUTTONUP:
-        s_samplesFramework->injectMouseButtonUp(CEGUI::MiddleButton);
+        s_sampleBrowser->injectMouseButtonUp(CEGUI::MiddleButton);
         break;
 
     case 0x020A: // WM_MOUSEWHEEL:
-        s_samplesFramework->injectMouseWheelChange(static_cast<float>((short)HIWORD(wParam)) / static_cast<float>(120));
+        s_sampleBrowser->injectMouseWheelChange(static_cast<float>((short)HIWORD(wParam)) / static_cast<float>(120));
         break;
 
     case WM_DESTROY:
@@ -316,11 +316,11 @@ void Win32AppHelper::doDirectInputEvents(const Win32AppHelper::DirectInputState&
         {
             if (LOBYTE(devDat.dwData) & 0x80)
             {
-                s_samplesFramework->injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
+                s_sampleBrowser->injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
             }
             else
             {
-                s_samplesFramework->injectKeyUp((CEGUI::Key::Scan)devDat.dwOfs);
+                s_sampleBrowser->injectKeyUp((CEGUI::Key::Scan)devDat.dwOfs);
             }
 
         }
@@ -363,9 +363,9 @@ bool Win32AppHelper::doWin32Events(bool& idle)
 }
 
 
-void Win32AppHelper::setSamplesFramework(SamplesFrameworkBase* samplesFramework)
+void Win32AppHelper::setSampleBrowser(SampleBrowserBase* sampleBrowser)
 {
-    s_samplesFramework = samplesFramework;
+    s_sampleBrowser = sampleBrowser;
 }
 
 #endif

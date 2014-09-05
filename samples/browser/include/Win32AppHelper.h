@@ -44,7 +44,7 @@
 #  pragma comment(lib, "dxguid.lib")
 #endif
 
-class SamplesFrameworkBase;
+class SampleBrowserBase;
 
 
 /*!
@@ -72,7 +72,7 @@ public:
     static bool doWin32Events(bool& idle);
     static LRESULT CALLBACK wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-    static void setSamplesFramework(SamplesFrameworkBase* samplesFramework);
+    static void setSampleBrowser(SampleBrowserBase* sampleBrowser);
 
     /*************************************************************************
         Constants
@@ -91,7 +91,7 @@ public:
 private:
     static bool s_mouseInWindow;
 
-    static SamplesFrameworkBase* s_samplesFramework;
+    static SampleBrowserBase* s_sampleBrowser;
 };
 
 #endif  // end of guard _Win32AppHelper_h_

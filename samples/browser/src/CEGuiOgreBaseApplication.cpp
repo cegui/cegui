@@ -384,7 +384,7 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
 ////////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------//
-CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp,
+CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SampleBrowserBase*& sampleApp,
     Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
     : d_baseApp(baseApp),
     d_sampleApp(sampleApp)
