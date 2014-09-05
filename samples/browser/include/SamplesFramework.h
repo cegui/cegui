@@ -62,8 +62,6 @@ public:
 
     void loadSamples();
 
-    void createAndAddSampleData(Sample* instance);
-
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);
 
@@ -87,8 +85,6 @@ protected:
     void initialiseLoadScreenLayout();
 
     void initialiseSampleBrowserLayout();
-
-    void addSample(SampleHandler* sampleData);
 
     bool initialiseSampleStepwise(int sampleNumber);
 

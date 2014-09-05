@@ -149,12 +149,16 @@ void SamplesFramework::loadSamples()
     std::vector<Sample*>::iterator iter = samples.begin();
     std::vector<Sample*>::iterator iterEnd = samples.end();
     
+    std::sort(samples.begin(), samples.end(), SamplePointerCompare());
+
     while (iter != iterEnd)
     {
-        createAndAddSampleData(*iter);
+        SampleHandler* sampleData = new SampleHandler(*iter);
+        d_samples.push_back(sampleData);
 
         ++iter;
     }
+
 }
 
 //----------------------------------------------------------------------------//
@@ -169,14 +173,6 @@ void SamplesFramework::unloadSamples()
 
         d_samples.pop_back();
     }
-}
-
-//----------------------------------------------------------------------------//
-void SamplesFramework::createAndAddSampleData(Sample* instance)
-{
-    SampleHandler* sampleData = new SampleHandler(instance);
-
-    addSample(sampleData);
 }
 
 //----------------------------------------------------------------------------//
@@ -304,12 +300,6 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
 
     if (d_samplesWinMgr)
         d_samplesWinMgr->setWindowRatio(width / height);
-}
-
-//----------------------------------------------------------------------------//
-void SamplesFramework::addSample(SampleHandler* sampleData)
-{
-    d_samples.push_back(sampleData);
 }
 
 //----------------------------------------------------------------------------//
