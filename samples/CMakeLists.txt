@@ -36,17 +36,6 @@ foreach(dir ${SAMPLES_SUBDIRS})
     endif()
 endforeach()
 
-# we need to bring the HelloWorld sample to the front if it exists, so:
-# get index of the HelloWorld sample in the list
-list(FIND SAMPLES_LIST "HelloWorld" hello_world_found)
-
-# we don't need to move it to the front if it's already there
-if (hello_world_found GREATER 0)
-    # remove the HelloWorld sample from the list and insert it to be first
-    list(REMOVE_AT SAMPLES_LIST hello_world_found)
-    list(INSERT SAMPLES_LIST 0 "HelloWorld")
-endif()
-
 # add all registered samples to samples.inc and samples.h file
 file(WRITE ${SAMPLE_LIST_HEADER} "#ifndef _SamplesListHeader_h_\n#define _SamplesListHeader_h_\n\n#include \"Sample.h\"\n")
 file(WRITE ${SAMPLE_LIST_CODE} "std::vector<Sample*> samples;")
