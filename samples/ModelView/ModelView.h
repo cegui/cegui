@@ -36,6 +36,8 @@
 class ModelViewSample : public Sample
 {
 public:
+    ModelViewSample();
+
     virtual bool initialise(CEGUI::GUIContext* gui_context);
     virtual void deinitialise();
 

@@ -32,6 +32,14 @@
 
 using namespace CEGUI;
 
+ModelViewSample::ModelViewSample()
+{
+    d_name = "ModelViewSample";
+    d_credits = "Timotei Dolean";
+    d_summary = "";
+    d_description = "";
+}
+
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
 
