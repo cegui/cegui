@@ -37,7 +37,7 @@ author:     Paul D Turner
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
 
 #include "CEGuiIrrlichtBaseApplication.h"
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 #include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
 #include "CEGUI/RendererModules/Irrlicht/ResourceProvider.h"
 #include "CEGUI/RendererModules/Irrlicht/Renderer.h"

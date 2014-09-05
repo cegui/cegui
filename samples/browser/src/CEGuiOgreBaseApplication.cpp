@@ -38,7 +38,7 @@
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 

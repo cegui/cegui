@@ -32,7 +32,7 @@
 #include "CEGUI/CEGUI.h"
 #include <TCHAR.H>
 
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 
 /*************************************************************************
     Static Data Definitions

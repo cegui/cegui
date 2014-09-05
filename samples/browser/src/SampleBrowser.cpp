@@ -24,14 +24,14 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "SamplesFramework.h"
+#include "SampleBrowser.h"
 
 #include "Sample.h"
 #include "SampleData.h"
 #include "CEGuiBaseApplication.h"
 
 #include "MetaDataWindowManager.h"
-#include "SamplesBrowserManager.h"
+#include "SampleBrowserManager.h"
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/Logger.h"

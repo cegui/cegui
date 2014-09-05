@@ -24,9 +24,9 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "SamplesBrowserManager.h"
+#include "SampleBrowserManager.h"
 
-#include "SamplesFramework.h"
+#include "SampleBrowser.h"
 
 #include "CEGUI/Window.h"
 #include "CEGUI/SchemeManager.h"

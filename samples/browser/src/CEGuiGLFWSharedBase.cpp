@@ -30,7 +30,7 @@ author:     Paul D Turner
 
 #include "CEGUISamplesConfig.h"
 #include "CEGuiGLFWSharedBase.h"
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 #include "CEGUI/CEGUI.h"
 
 #include <stdexcept>
