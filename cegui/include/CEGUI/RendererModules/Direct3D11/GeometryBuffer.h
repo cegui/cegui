@@ -51,14 +51,20 @@ public:
     //! Destructor
     ~Direct3D11GeometryBuffer();
 
+
+    // Implement GeometryBuffer interface.
+    virtual void draw() const;
+    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
+    virtual void setClippingRegion(const Rectf& region);
+
     /*
     \brief
-        Returns the cached model view projection matrix.
+        Calculates and returns the model matrix of this GeometryBuffer.
 
     \return
-        The cached model view projection matrix.
+        The model matrix of this GeometryBuffer.
     */
-    const glm::mat4& getMatrix() const;
+    glm::mat4 getModelMatrix() const;
 
     /*
     \brief
@@ -71,7 +77,7 @@ public:
 
 protected:
     //! Update the cached matrices
-    void updateMatrices() const;
+    void updateMatrix() const;
     //! Synchronise data in the hardware buffer with what's been added
     void updateVertexBuffer() const;
     //! Allocates a hardware vertex buffer of size 'dataSize' (size in bytes).

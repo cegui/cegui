@@ -73,7 +73,7 @@ void Direct3D11GeometryBuffer::draw() const
         setScissorRects();
 
     // Update the matrix
-    updateMatrices();
+    updateMatrix();
  
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
 
@@ -129,27 +129,34 @@ void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::siz
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::updateMatrices() const
+void Direct3D11GeometryBuffer::updateMatrix() const
 {
+    // Check if the ached values from the RenderTarget are still valid or an update
+    // is required for this GeometryBuffer
+    if(d_matrixValid)
+        d_matrixValid = checkRenderTargetValidity(d_owner.getActiveRenderTarget());
+
     if(!d_matrixValid)
     {
-    d_matrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
+        //Apply the model view projection matrix
+        d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
 
-    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
-    d_matrix *= glm::mat4_cast(d_rotation) * scale_matrix;
-
-    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
-    d_matrix *=  translMatrix * d_customTransform;
-
-    d_matrixValid = true;
+        d_matrixValid = true;
+    }
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& Direct3D11GeometryBuffer::getMatrix() const
+glm::mat4 Direct3D11GeometryBuffer::getModelMatrix() const
 {
-    updateMatrices();
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
 
-    return d_matrix;
+    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
+    modelMatrix *= glm::mat4_cast(d_rotation) * scale_matrix;
+
+    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
+    modelMatrix *=  translMatrix * d_customTransform;
+
+    return modelMatrix;
 }
 
 //----------------------------------------------------------------------------//
