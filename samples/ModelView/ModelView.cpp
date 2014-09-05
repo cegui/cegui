@@ -36,8 +36,8 @@ ModelViewSample::ModelViewSample()
 {
     d_name = "ModelViewSample";
     d_credits = "Timotei Dolean";
-    d_summary = "";
-    d_description = "";
+    d_summary = "A demo that shows the usage of the new Model-View widgets.";
+    d_description = "The demo uses the WindowManager to create from code a window with a listview, treeview and GridView.";
 }
 
 /** This sample uses most of the code from the 'HelloWorld' sample.
