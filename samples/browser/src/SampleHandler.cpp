@@ -24,7 +24,7 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "SampleData.h"
+#include "SampleHandler.h"
 #include "Sample.h"
 
 #include "CEGUI/DynamicModule.h"

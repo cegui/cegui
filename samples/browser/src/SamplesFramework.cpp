@@ -27,7 +27,7 @@ author:     Lukas E Meindl
 #include "SamplesFramework.h"
 
 #include "Sample.h"
-#include "SampleData.h"
+#include "SampleHandler.h"
 #include "CEGuiBaseApplication.h"
 
 #include "MetaDataWindowManager.h"
