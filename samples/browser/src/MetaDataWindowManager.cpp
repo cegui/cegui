@@ -26,7 +26,7 @@ author:     Lukas E Meindl
 ***************************************************************************/
 #include "MetaDataWindowManager.h"
 
-#include "SampleData.h"
+#include "SampleHandler.h"
 
 #include "CEGUI/Window.h"
 #include "CEGUI/SchemeManager.h"

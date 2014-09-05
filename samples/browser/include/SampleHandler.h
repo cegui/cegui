@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Sample_Data_h_
-#define _Sample_Data_h_
+#ifndef _Sample_Handler_h_
+#define _Sample_Handler_h_
 
 #include "CEGUI/String.h"
 

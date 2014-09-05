@@ -28,7 +28,7 @@ author:     Lukas E Meindl
 #define _Samples_Framework_h_
 
 #include "SamplesFrameworkBase.h"
-#include "SampleData.h"
+#include "SampleHandler.h"
 #include "Sample.h"
 
 #include <vector>
