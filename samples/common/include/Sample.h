@@ -36,7 +36,10 @@ author:     Lukas E Meindl
 class Sample
 {
 public:
-    Sample() : d_inputAggregator(0) {}
+    Sample(int priority = 0) :
+        d_inputAggregator(0), 
+        d_priority(priority)
+    {}
 
     virtual bool initialise(CEGUI::GUIContext* guiContext) = 0;
     virtual void deinitialise() = 0;
@@ -57,18 +60,32 @@ public:
     //! Get the description of how the sample achieves what it aims to demonstrate
     CEGUI::String getDescription() const { return d_description; }
 
+    //! Returns the priority of this sample in the browser
+    int getPriority() const { return d_priority; }
+
+    //! Operator for sorting the samples in the browser after their priority
+    bool operator< (const Sample& other) const { return d_priority > other.getPriority(); }
+
 protected:
-    CEGUI::String d_usedFiles;
-    CEGUI::InputAggregator* d_inputAggregator;
+    CEGUI::String               d_usedFiles;
+    CEGUI::InputAggregator*     d_inputAggregator;
 
     //! The name of the sample
-    CEGUI::String d_name;
+    CEGUI::String               d_name;
     //! The credits of the sample (author(s))
-    CEGUI::String d_credits;
+    CEGUI::String               d_credits;
     //! The summary of what the sample wants to demonstrate
-    CEGUI::String d_summary;
+    CEGUI::String               d_summary;
     //! The summary of how the sample achieves what it aims to demonstrate
-    CEGUI::String d_description;
+    CEGUI::String               d_description;
+
+    //! The priority of display of this sample in the browser. Higher priority means earlier display
+    int                         d_priority;
+};
+
+struct SamplePointerCompare
+{
+    bool operator()(const Sample* left, const Sample* right) { return *left < *right; }
 };
 
 #endif

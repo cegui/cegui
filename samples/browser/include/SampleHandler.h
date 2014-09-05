@@ -73,6 +73,8 @@ public:
     CEGUI::String getUsedFilesText();
     CEGUI::String getCreditsText();
 
+    const Sample* getSample() const;
+
 protected:
     //! The Sample we are wrapping in this class
     Sample*                 d_sample;

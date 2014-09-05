@@ -243,3 +243,8 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
     //! Helper function to set the image's area
     setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
 }
+
+const Sample* SampleHandler::getSample() const
+{
+    return d_sample;
+}
