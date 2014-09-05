@@ -32,7 +32,7 @@ namespace CEGUI
     class Window;
 }
 
-class SampleData;
+class SampleHandler;
 
 class MetaDataWindowManager
 {
@@ -40,7 +40,7 @@ public:
     MetaDataWindowManager(CEGUI::Window* metaDataWindow);
     virtual ~MetaDataWindowManager() {}
 
-    void setSampleInfo(SampleData* sampleData);
+    void setSampleInfo(SampleHandler* sampleData);
 
     CEGUI::Window* getWindow();
 

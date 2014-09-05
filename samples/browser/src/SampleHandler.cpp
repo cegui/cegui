@@ -24,7 +24,7 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "SampleData.h"
+#include "SampleHandler.h"
 #include "Sample.h"
 
 #include "CEGUI/DynamicModule.h"
@@ -43,85 +43,73 @@ author:     Lukas E Meindl
 using namespace CEGUI;
 
 
-SampleData::SampleData(CEGUI::String sampleName,
-                       CEGUI::String summary,
-                       CEGUI::String description,
-                       CEGUI::String credits)
-    : d_name(sampleName)
-    , d_summary(summary)
-    , d_description(description)
+SampleHandler::SampleHandler(Sample* sample)
+    : d_sample(sample)
     , d_usedFilesString("")
-    , d_credits(credits)
     , d_sampleWindow(0)
     , d_inputAggregator(0)
-    , d_nonDefaultInputAggregator(true)
+    , d_nonDefaultInputAggregator(false)
     , d_guiContext(0)
     , d_textureTarget(0)
     , d_textureTargetImage(0)
 {
 }
 
-SampleData::~SampleData()
+SampleHandler::~SampleHandler()
 {
-
 }
 
-CEGUI::String SampleData::getName()
+CEGUI::String SampleHandler::getNameText()
 {
-    return d_name;
+    return d_sample->getName();
 }
 
-CEGUI::String SampleData::getSummary()
+CEGUI::String SampleHandler::getSummaryText()
 {
-    return "Summary:\n" + d_summary;
+    return "Summary:\n" + d_sample->getSummary();
 }
 
-CEGUI::String SampleData::getCredits()
+CEGUI::String SampleHandler::getCreditsText()
 {
-    return "Credits:\n" + d_credits;
+    return "Credits:\n" + d_sample->getCredits();
 }
 
-CEGUI::String SampleData::getDescription()
+CEGUI::String SampleHandler::getDescriptionText()
 {
-    return "Description:\n" + d_description;
+    return "Description:\n" + d_sample->getDescription();
 }
 
-CEGUI::String SampleData::getUsedFilesString()
+CEGUI::String SampleHandler::getUsedFilesText()
 {
     return "Used files:\n" + d_usedFilesString;
 }
 
-void SampleData::setSampleWindow(CEGUI::Window* sampleWindow)
+void SampleHandler::setSampleWindow(CEGUI::Window* sampleWindow)
 {
     d_sampleWindow = sampleWindow;
 }
 
-CEGUI::Window* SampleData::getSampleWindow()
+CEGUI::Window* SampleHandler::getSampleWindow()
 {
     return d_sampleWindow;
 }
 
-void SampleData::initialise(int width, int height)
+void SampleHandler::initialise(int width, int height)
 {
-    CEGUI::System& system(System::getSingleton());
+    initialiseSamplePreviewRenderTarget(width, height);
 
-    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
 
-    d_textureTarget = system.getRenderer()->createTextureTarget();
-    d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
-    d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
-    d_inputAggregator->initialise();
-    d_textureTarget->declareRenderSize(size);
+    initialiseInputAggregator();
 
-    CEGUI::String imageName(d_textureTarget->getTexture().getName());
-    d_textureTargetImage = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", "SampleBrowser/" + imageName));
-    d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
-
-    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
+    initialiseSample();
 }
 
-void SampleData::deinitialise()
+void SampleHandler::deinitialise()
 {
+     if(d_sample)
+        d_sample->deinitialise();
+
+
     CEGUI::System& system(System::getSingleton());
 
     if(d_guiContext)
@@ -149,17 +137,17 @@ void SampleData::deinitialise()
     }
 }
 
-GUIContext* SampleData::getGuiContext()
+GUIContext* SampleHandler::getGuiContext()
 {
     return d_guiContext;
 }
 
-InputAggregator* SampleData::getInputAggregator()
+InputAggregator* SampleHandler::getInputAggregator()
 {
     return d_inputAggregator;
 }
 
-void SampleData::handleNewWindowSize(float width, float height)
+void SampleHandler::handleNewWindowSize(float width, float height)
 {
     setTextureTargetImageArea(height, width);
 
@@ -172,22 +160,22 @@ void SampleData::handleNewWindowSize(float width, float height)
     }
 }
 
-CEGUI::Image& SampleData::getRTTImage()
+CEGUI::Image& SampleHandler::getRTTImage()
 {
     return *d_textureTargetImage;
 }
 
-void SampleData::setGUIContextRTT()
+void SampleHandler::setGUIContextRTT()
 {
     d_guiContext->setRenderTarget(*d_textureTarget);
 }
 
-void SampleData::clearRTTTexture()
+void SampleHandler::clearRTTTexture()
 {
     d_textureTarget->clear();
 }
 
-void SampleData::setTextureTargetImageArea(float height, float width)
+void SampleHandler::setTextureTargetImageArea(float height, float width)
 {
     if(d_textureTarget)
     {
@@ -204,53 +192,59 @@ void SampleData::setTextureTargetImageArea(float height, float width)
     }
 }
 
-//----------------------------------------------------------------------------//
-SampleDataModule::SampleDataModule(Sample* instance,
-                                   CEGUI::String sampleName,
-                                   CEGUI::String summary,
-                                   CEGUI::String description,
-                                   CEGUI::String credits)
-    : SampleData(sampleName, summary, description, credits)
-    , d_sample(instance)
-    , d_dynamicModule(0)
-{
-}
-
-SampleDataModule::~SampleDataModule()
-{
-}
-
-void SampleDataModule::initialise(int width, int height)
-{
-    SampleData::initialise(width, height);
-
-    d_sample->initialise(d_guiContext);
-    d_usedFilesString = d_sample->getUsedFilesString();
-
-    // we need to override the default sample input aggregator
-    if (d_sample->getInputAggregator() != 0)
-    {
-        delete d_inputAggregator;
-
-        d_inputAggregator = d_sample->getInputAggregator();
-        d_nonDefaultInputAggregator = true;
-    }
-}
-
-void SampleDataModule::deinitialise()
-{
-    if(d_sample)
-        d_sample->deinitialise();
-
-    SampleData::deinitialise();   
-}
-
-void SampleDataModule::onEnteringSample()
+void SampleHandler::onEnteringSample()
 {
     d_sample->onEnteringSample();
 }
 
-void SampleDataModule::update(float timeSinceLastUpdate)
+void SampleHandler::update(float timeSinceLastUpdate)
 {
     d_sample->update(timeSinceLastUpdate);
+}
+
+void SampleHandler::initialiseSample()
+{
+    d_sample->initialise(d_guiContext);
+    d_usedFilesString = d_sample->getUsedFilesString();
+}
+
+void SampleHandler::initialiseInputAggregator()
+{
+    // If the sample has its own non-default InputAggregator, we will use that one, otherwise we create a default one
+    if (d_sample->getInputAggregator() != 0)
+    {
+        d_inputAggregator = d_sample->getInputAggregator();
+        d_nonDefaultInputAggregator = true;
+    }
+    else
+    {
+        //! Creating the an input aggregator for this sample
+        d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
+        d_inputAggregator->initialise();
+    }
+}
+
+void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
+{
+    CEGUI::System& system(System::getSingleton());
+
+    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
+
+    //! Creating a texcture target to render the GUIContext onto
+    d_textureTarget = system.getRenderer()->createTextureTarget();
+    d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+    d_textureTarget->declareRenderSize(size);
+
+    //! Creating an image based on the TextureTarget's texture, which allows us to use the rendered-to-texture inside CEGUI for previewing the sample
+    CEGUI::String imageName(d_textureTarget->getTexture().getName());
+    d_textureTargetImage = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", "SampleBrowser/" + imageName));
+    d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
+
+    //! Helper function to set the image's area
+    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
+}
+
+const Sample* SampleHandler::getSample() const
+{
+    return d_sample;
 }
