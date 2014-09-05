@@ -41,12 +41,11 @@ namespace CEGUI
 
 class Sample;
 
-class SampleData
+class SampleHandler
 {
 public:
-    SampleData(CEGUI::String sampleName, CEGUI::String summary,
-        CEGUI::String description, CEGUI::String credits);
-    virtual ~SampleData();
+    SampleHandler(Sample* instance);
+    virtual ~SampleHandler();
 
     virtual void initialise(int width, int height);
     virtual void deinitialise();
@@ -61,51 +60,38 @@ public:
     virtual void setGUIContextRTT();
     virtual void clearRTTTexture();
 
-    virtual void onEnteringSample() = 0;
-    virtual void update(float timeSinceLastUpdate) {};
+    virtual void onEnteringSample();
+    virtual void update(float timeSinceLastUpdate);
 
     void setSampleWindow(CEGUI::Window* sampleWindow);
     CEGUI::Window* getSampleWindow();
 
-    CEGUI::String getName();
-    CEGUI::String getSummary();
-    CEGUI::String getDescription();
-    CEGUI::String getUsedFilesString();
-    CEGUI::String getCredits();
+    CEGUI::String getNameText();
+    CEGUI::String getSummaryText();
+    CEGUI::String getDescriptionText();
+    CEGUI::String getUsedFilesText();
+    CEGUI::String getCreditsText();
 
 protected:
-    CEGUI::String           d_name;
-    CEGUI::String           d_summary;
-    CEGUI::String           d_description;
+    //! The Sample we are wrapping in this class
+    Sample*                 d_sample;
+    //! A string containing a list of files used for the sample
     CEGUI::String           d_usedFilesString;
-    CEGUI::String           d_credits;
-
+    //! The root window of the sample
     CEGUI::Window*          d_sampleWindow;
-
+    //! The GUIContext created to contain the sample root
     CEGUI::GUIContext*      d_guiContext;
+    //! The input aggregator which is created for the GUIContext
     CEGUI::InputAggregator* d_inputAggregator;
+    //! A bool determining if the input aggregator of this sample is the default one or a manually created one
     bool                    d_nonDefaultInputAggregator;
+    //! The texture target onto which the Sample will be rendered
     CEGUI::TextureTarget*   d_textureTarget;
-    CEGUI::BitmapImage*      d_textureTargetImage;
-};
-
-class SampleDataModule : public SampleData
-{
-public:
-    SampleDataModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, CEGUI::String credits);
-    virtual ~SampleDataModule();
-
-    virtual void initialise(int width, int height);
-    virtual void deinitialise();
-
-    virtual void onEnteringSample();
-
-    virtual void update(float timeSinceLastUpdate);
+    //! The Bitmap image which is used to display the Sample as a rendered preview in connection with the texture target
+    CEGUI::BitmapImage*     d_textureTargetImage;
 
 private:
-    CEGUI::DynamicModule*   d_dynamicModule;
-    Sample*                 d_sample;
+    void initialiseSample();
 };
 
 #endif

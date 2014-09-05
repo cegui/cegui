@@ -144,14 +144,16 @@ void SamplesFramework::initialiseLoadScreenLayout()
 //----------------------------------------------------------------------------//
 void SamplesFramework::loadSamples()
 {
-#   include "samples.inc"
+    #include "samples.inc"
     
     std::vector<Sample*>::iterator iter = samples.begin();
+    std::vector<Sample*>::iterator iterEnd = samples.end();
     
-    for (; iter != samples.end(); ++iter)
+    while (iter != iterEnd)
     {
-        addSampleDataCppModule(*iter, (*iter)->getName(), (*iter)->getSummary(),
-                               (*iter)->getDescription(), (*iter)->getCredits());
+        createAndAddSampleData(*iter);
+
+        ++iter;
     }
 }
 
@@ -160,7 +162,7 @@ void SamplesFramework::unloadSamples()
 {
     while (d_samples.size() > 0)
     {
-        SampleData*& sampleData = d_samples.back();
+        SampleHandler*& sampleData = d_samples.back();
 
         sampleData->deinitialise();
         delete sampleData;
@@ -170,14 +172,9 @@ void SamplesFramework::unloadSamples()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::addSampleDataCppModule(Sample* instance,
-											  CEGUI::String sampleName,
-                                              CEGUI::String summary,
-                                              CEGUI::String description,
-                                              CEGUI::String credits)
+void SamplesFramework::createAndAddSampleData(Sample* instance)
 {
-    SampleData* sampleData = new SampleDataModule(instance, sampleName, summary,
-                                                  description, credits);
+    SampleHandler* sampleData = new SampleHandler(instance);
 
     addSample(sampleData);
 }
@@ -296,11 +293,11 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
     d_appWindowWidth = static_cast<int>(width);
     d_appWindowHeight = static_cast<int>(height);
 
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
+    SampleList::iterator iter = d_samples.begin();
+    SampleList::iterator end = d_samples.end();
     for (; iter != end; ++iter)
     {
-        SampleData* sampleData = *iter;
+        SampleHandler* sampleData = *iter;
 
         sampleData->handleNewWindowSize(width, height);
     }
@@ -310,7 +307,7 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::addSample(SampleData* sampleData)
+void SamplesFramework::addSample(SampleHandler* sampleData)
 {
     d_samples.push_back(sampleData);
 }
@@ -335,7 +332,7 @@ void SamplesFramework::renderGUIContexts()
 //----------------------------------------------------------------------------//
 void SamplesFramework::handleSampleSelection(CEGUI::Window* sampleWindow)
 {
-    SampleData* correspondingSampleData = findSampleData(sampleWindow);
+    SampleHandler* correspondingSampleData = findSampleData(sampleWindow);
 
     d_metaDataWinMgr->setSampleInfo(correspondingSampleData);
 }
@@ -343,7 +340,7 @@ void SamplesFramework::handleSampleSelection(CEGUI::Window* sampleWindow)
 //----------------------------------------------------------------------------//
 void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
 {
-    SampleData* correspondingSampleData = findSampleData(sampleWindow);
+    SampleHandler* correspondingSampleData = findSampleData(sampleWindow);
 
     CEGUI::RenderTarget& defaultRenderTarget =
         CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget();
@@ -382,14 +379,14 @@ void SamplesFramework::stopDisplaySample()
 }
 
 //----------------------------------------------------------------------------//
-SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
+SampleHandler* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
 {
     //Find corresponding SampleData
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
+    SampleList::iterator iter = d_samples.begin();
+    SampleList::iterator end = d_samples.end();
     for (; iter != end; ++iter)
     {
-        SampleData* sampleData = *iter;
+        SampleHandler* sampleData = *iter;
 
         if (sampleData->getSampleWindow() == sampleWindow)
             return sampleData;
@@ -417,10 +414,10 @@ bool SamplesFramework::initialiseSampleStepwise(int sampleNumber)
 
     if (sampleNumber >= 0)
     {
-        SampleData* sampleData = d_samples[sampleNumber];
+        SampleHandler* sampleData = d_samples[sampleNumber];
         sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
         CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(
-            sampleData->getName(), sampleData->getRTTImage());
+            sampleData->getNameText(), sampleData->getRTTImage());
 
         sampleData->setSampleWindow(sampleWindow);
 
@@ -545,11 +542,11 @@ void SamplesFramework::initialisationFinalisation()
 //----------------------------------------------------------------------------//
 void SamplesFramework::updateSamples(float passedTime)
 {
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
+    SampleList::iterator iter = d_samples.begin();
+    SampleList::iterator end = d_samples.end();
     for (; iter != end; ++iter)
     {
-        SampleData* sampleData = *iter;
+        SampleHandler* sampleData = *iter;
 
         GUIContext* guiContext = sampleData->getGuiContext();
         guiContext->injectTimePulse(passedTime);
@@ -561,11 +558,11 @@ void SamplesFramework::updateSamples(float passedTime)
 //----------------------------------------------------------------------------//
 void SamplesFramework::renderSampleGUIContexts()
 {
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
+    SampleList::iterator iter = d_samples.begin();
+    SampleList::iterator end = d_samples.end();
     for (; iter != end; ++iter)
     {
-        SampleData* sampleData = *iter;
+        SampleHandler* sampleData = *iter;
 
         if (!sampleData->getGuiContext())
             continue;
@@ -602,10 +599,10 @@ void SamplesFramework::displaySampleBrowserLayoutLoadProgress()
 //----------------------------------------------------------------------------//
 void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
 {
-    SampleData* sampleData = d_samples[sampleNumber + 1];
+    SampleHandler* sampleData = d_samples[sampleNumber + 1];
 
     int totalNum = d_samples.size() + 2;
-    CEGUI::String loadText = "Loading " + sampleData->getName() + " ...";
+    CEGUI::String loadText = "Loading " + sampleData->getNameText() + " ...";
     d_loadingScreenText->setText(loadText);
 
     CEGUI::String progressText = PropertyHelper<int>::toString(sampleNumber + 3) +
