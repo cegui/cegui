@@ -125,7 +125,8 @@ Sample specific initialisation goes here.
 *************************************************************************/
 const CEGUI::String WidgetsSample::s_widgetSampleWindowPrefix = "WidgetSampleWindow_";
 
-WidgetsSample::WidgetsSample()
+WidgetsSample::WidgetsSample() :
+    Sample(89)
 {
     Sample::d_name = "WidgetsSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";

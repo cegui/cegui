@@ -41,6 +41,7 @@ static CEGUI::String SoundOptionsMenu = "SoundOptionsContainer";
     Thus, most of the clarifying comments have been removed for brevity. **/
 
 SimpleGameMenuSample::SimpleGameMenuSample() :
+    Sample(98),
     d_currentMenu(0),
     d_layout(0),
     d_root(0),

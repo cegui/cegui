@@ -28,7 +28,8 @@
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-DragDropSample::DragDropSample()
+DragDropSample::DragDropSample() :
+    Sample(96)
 {
     Sample::d_name = "DragDropSample";
     Sample::d_credits = "The CEGUI team";
