@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"

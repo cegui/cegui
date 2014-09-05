@@ -24,10 +24,10 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Samples_Framework_h_
-#define _Samples_Framework_h_
+#ifndef _Samples_Browser_h_
+#define _Samples_Browser_h_
 
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 #include "SampleData.h"
 #include "Sample.h"
 

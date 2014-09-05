@@ -1,23 +1,23 @@
 set(CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME})
 
 set(CORE_SOURCE_FILES
-    ./src/SamplesFrameworkBase.cpp
-    ./src/SamplesFramework.cpp
+    ./src/SampleBrowserBase.cpp
+    ./src/SampleBrowser.cpp
     ./src/CEGuiBaseApplication.cpp
     ./src/CEGuiRendererSelector.cpp
     ./src/SampleData.cpp
     ./src/MetaDataWindowManager.cpp
-    ./src/SamplesBrowserManager.cpp
+    ./src/SampleBrowserManager.cpp
 )
 
 set(CORE_HEADER_FILES
-    ./include/SamplesFrameworkBase.h
-    ./include/SamplesFramework.h
+    ./include/SampleBrowserBase.h
+    ./include/SampleBrowser.h
     ./include/CEGuiBaseApplication.h
     ./include/CEGuiRendererSelector.h
     ./include/SampleData.h
     ./include/MetaDataWindowManager.h
-    ./include/SamplesBrowserManager.h
+    ./include/SampleBrowserManager.h
 )
 
 

@@ -30,7 +30,7 @@
 
 #include "CEGUISamplesConfig.h"
 #include "CEGuiBaseApplication.h"
-#include "SamplesFramework.h"
+#include "SampleBrowser.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageManager.h"

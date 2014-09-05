@@ -30,7 +30,7 @@
 
 #include "CEGuiD3D11BaseApplication.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "SamplesFrameworkBase.h"
+#include "SampleBrowserBase.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 
