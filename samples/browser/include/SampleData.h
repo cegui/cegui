@@ -48,6 +48,7 @@ public:
     virtual ~SampleHandler();
 
     virtual void initialise(int width, int height);
+
     virtual void deinitialise();
 
     virtual CEGUI::GUIContext*  getGuiContext();
@@ -91,7 +92,9 @@ protected:
     CEGUI::BitmapImage*     d_textureTargetImage;
 
 private:
+    void initialiseSamplePreviewRenderTarget(int width, int height);
     void initialiseSample();
+    void initialiseInputAggregator();
 };
 
 #endif

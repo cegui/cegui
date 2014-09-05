@@ -54,11 +54,11 @@ CEGUI::Window* MetaDataWindowManager::getWindow()
     return d_root;
 }
 
-void MetaDataWindowManager::setSampleInfo(SampleData* sampleData)
+void MetaDataWindowManager::setSampleInfo(SampleHandler* sampleData)
 {
-    d_root->setText(sampleData->getName());
-    d_wndSummary->setText(sampleData->getSummary());
-    d_wndDescription->setText(sampleData->getDescription());
-    d_wndUsedFiles->setText(sampleData->getUsedFilesString());
-    d_wndCredits->setText(sampleData->getCredits());
+    d_root->setText(sampleData->getNameText());
+    d_wndSummary->setText(sampleData->getSummaryText());
+    d_wndDescription->setText(sampleData->getDescriptionText());
+    d_wndUsedFiles->setText(sampleData->getUsedFilesText());
+    d_wndCredits->setText(sampleData->getCreditsText());
 }

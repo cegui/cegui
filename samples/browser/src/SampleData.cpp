@@ -48,7 +48,7 @@ SampleHandler::SampleHandler(Sample* sample)
     , d_usedFilesString("")
     , d_sampleWindow(0)
     , d_inputAggregator(0)
-    , d_nonDefaultInputAggregator(true)
+    , d_nonDefaultInputAggregator(false)
     , d_guiContext(0)
     , d_textureTarget(0)
     , d_textureTargetImage(0)
@@ -96,26 +96,12 @@ CEGUI::Window* SampleHandler::getSampleWindow()
 
 void SampleHandler::initialise(int width, int height)
 {
-    CEGUI::System& system(System::getSingleton());
-
-    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
-
-    d_textureTarget = system.getRenderer()->createTextureTarget();
-    d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
-    d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
-    d_inputAggregator->initialise();
-    d_textureTarget->declareRenderSize(size);
-
-    CEGUI::String imageName(d_textureTarget->getTexture().getName());
-    d_textureTargetImage = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", "SampleBrowser/" + imageName));
-    d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
-
-    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
+    initialiseSamplePreviewRenderTarget(width, height);
 
 
+    initialiseInputAggregator();
 
     initialiseSample();
-
 }
 
 void SampleHandler::deinitialise()
@@ -220,13 +206,40 @@ void SampleHandler::initialiseSample()
 {
     d_sample->initialise(d_guiContext);
     d_usedFilesString = d_sample->getUsedFilesString();
+}
 
-    // we need to override the default sample input aggregator
+void SampleHandler::initialiseInputAggregator()
+{
+    // If the sample has its own non-default InputAggregator, we will use that one, otherwise we create a default one
     if (d_sample->getInputAggregator() != 0)
     {
-        delete d_inputAggregator;
-
         d_inputAggregator = d_sample->getInputAggregator();
         d_nonDefaultInputAggregator = true;
     }
+    else
+    {
+        //! Creating the an input aggregator for this sample
+        d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
+        d_inputAggregator->initialise();
+    }
+}
+
+void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
+{
+    CEGUI::System& system(System::getSingleton());
+
+    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
+
+    //! Creating a texcture target to render the GUIContext onto
+    d_textureTarget = system.getRenderer()->createTextureTarget();
+    d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+    d_textureTarget->declareRenderSize(size);
+
+    //! Creating an image based on the TextureTarget's texture, which allows us to use the rendered-to-texture inside CEGUI for previewing the sample
+    CEGUI::String imageName(d_textureTarget->getTexture().getName());
+    d_textureTargetImage = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", "SampleBrowser/" + imageName));
+    d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
+
+    //! Helper function to set the image's area
+    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
 }
