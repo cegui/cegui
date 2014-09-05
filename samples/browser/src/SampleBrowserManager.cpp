@@ -146,7 +146,7 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
 
     if (relPosX >= 0.0f && relPosX <= 1.0f && relPosY >= 0.0f && relPosY <= 1.0f)
     {
-        SampleData* sampleData = d_owner->findSampleData(wnd);
+        SampleHandler* sampleData = d_owner->findSampleData(wnd);
         const CEGUI::Sizef& contextSize(sampleData->getGuiContext()->getSurfaceSize());
 
         const float absPosX = relPosX * contextSize.d_width;

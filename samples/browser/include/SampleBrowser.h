@@ -28,7 +28,7 @@ author:     Lukas E Meindl
 #define _Samples_Browser_h_
 
 #include "SampleBrowserBase.h"
-#include "SampleData.h"
+#include "SampleHandler.h"
 #include "Sample.h"
 
 #include <vector>
@@ -38,7 +38,7 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-class SampleData;
+class SampleHandler;
 class Sample;
 class MetaDataWindowManager;
 class SampleBrowserManager;
@@ -53,15 +53,14 @@ public:
     SampleBrowser();
     virtual ~SampleBrowser();
 
+    typedef std::vector<SampleHandler*> SampleList;
+
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
 
     bool initialise();
     void deinitialise();
 
     void loadSamples();
-
-    void addSampleDataCppModule(Sample* instance, CEGUI::String sampleName, CEGUI::String summary,
-                                CEGUI::String description, CEGUI::String credits);
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);
@@ -72,7 +71,7 @@ public:
 
     virtual void renderGUIContexts();
 
-    SampleData* findSampleData(CEGUI::Window* sampleWindow);
+    SampleHandler* findSampleData(CEGUI::Window* sampleWindow);
 
     virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
     virtual bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey);
@@ -86,8 +85,6 @@ protected:
     void initialiseLoadScreenLayout();
 
     void initialiseSampleBrowserLayout();
-
-    void addSample(SampleData* sampleData);
 
     bool initialiseSampleStepwise(int sampleNumber);
 
@@ -108,23 +105,23 @@ protected:
 
     CEGUI::InputAggregator* getCurrentInputAggregator();
 
-    CEGUI::Window*              d_root;
+    CEGUI::Window*          d_root;
 
-    CEGUI::PushButton*          d_sampleExitButton;
+    CEGUI::PushButton*      d_sampleExitButton;
 
-    std::vector<SampleData*>    d_samples;
+    SampleList              d_samples;
 
-    MetaDataWindowManager*      d_metaDataWinMgr;
+    MetaDataWindowManager*  d_metaDataWinMgr;
     SampleBrowserManager*       d_samplesWinMgr;
 
-    SampleData*                 d_selectedSampleData;
+    SampleHandler*             d_selectedSampleData;
 
-    CEGUI::ProgressBar*         d_loadingProgressBar;
-    CEGUI::Window*              d_loadingScreenText;
-    CEGUI::Window*              d_loadScreenChunkProgressText;
+    CEGUI::ProgressBar*     d_loadingProgressBar;
+    CEGUI::Window*          d_loadingScreenText;
+    CEGUI::Window*          d_loadScreenChunkProgressText;
 
-    bool                        d_quittingSampleView;
-    CEGUI::InputAggregator*     d_systemInputAggregator;
+    bool                            d_quittingSampleView;
+    CEGUI::InputAggregator*         d_systemInputAggregator;
 };
 
 #endif
