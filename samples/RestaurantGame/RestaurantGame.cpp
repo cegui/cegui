@@ -126,7 +126,8 @@ const CEGUI::String RestaurantGameSample::s_imageNameSteak = "RestaurantGameSamp
 const CEGUI::String RestaurantGameSample::s_imageNameVegPeople = "RestaurantGameSample/VegetablePeople";
 const CEGUI::String RestaurantGameSample::s_imageNameVegFruits = "RestaurantGameSample/VegetablesAndFruits";
 
-RestaurantGameSample::RestaurantGameSample()
+RestaurantGameSample::RestaurantGameSample() :
+    Sample(99)
 {
     Sample::d_name = "RestaurantGameSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl, graphics: Charles \"Syg\" Mattei";

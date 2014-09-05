@@ -29,7 +29,8 @@
 
 #include <iostream>
 
-HelloWorldSample::HelloWorldSample()
+HelloWorldSample::HelloWorldSample() :
+    Sample(90)
 {
     Sample::d_name = "HelloWorldSample";
     Sample::d_credits = "CrazyEddie, Lukas \"Ident\" Meindl";
