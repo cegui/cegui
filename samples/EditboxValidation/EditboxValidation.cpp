@@ -32,10 +32,10 @@ EditboxValidationSample::EditboxValidationSample()
 {
     Sample::d_name = "EditboxValidationSample";
     Sample::d_credits = "CrazyEddie";
-    Sample::d_description = 
+    Sample::d_description =
         "The \"RegexMatchStateEventArgs\" are used in the Sample to retrieve "
         "the validation status of a text matched against a regular expression";
-    Sample::d_summary = 
+    Sample::d_summary =
         "Displays how text can be validated. In the Sample an editbox is presented which "
         "validates incoming text. Partially valid, valid and invalid entries in the "
         "editbox are displayed using different text colours";
@@ -54,7 +54,7 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(&defaultFont);
 
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
-    guiContext->getPointerIndicator().setDefaultImage("AlfiskoSkin/MouseArrow");
+    guiContext->getCursor().setDefaultImage("AlfiskoSkin/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
     Window* root = winMgr.createWindow("DefaultWindow");

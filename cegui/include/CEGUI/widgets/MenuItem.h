@@ -277,7 +277,7 @@ protected:
         Update the internal state of the widget with the pointer at the given position.
 
     \param pointer_pos
-        Point object describing, in screen pixel co-ordinates, the location of the pointer indicator.
+        Point object describing, in screen pixel co-ordinates, the location of the cursor.
 
     \return
         Nothing

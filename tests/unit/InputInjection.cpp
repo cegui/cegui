@@ -44,11 +44,11 @@ struct InputInjectionFixture
     {
         d_inputAggregator->initialise();
         // reset the pointer to (0,0)
-        d_guiContext->getPointerIndicator().setPosition(glm::vec2(0, 0));
+        d_guiContext->getCursor().setPosition(glm::vec2(0, 0));
 
         System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
         Rectf constraint_area(0, 0, 100, 100);
-        d_guiContext->getPointerIndicator().setConstraintArea(&constraint_area);
+        d_guiContext->getCursor().setConstraintArea(&constraint_area);
 
         d_window = WindowManager::getSingleton().createWindow("DefaultWindow");
         d_window->setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)));

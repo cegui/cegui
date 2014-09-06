@@ -34,7 +34,7 @@ TextSample::TextSample()
 {
     Sample::d_name = "TextSample";
     Sample::d_credits = "CEGUI team";
-    Sample::d_description = 
+    Sample::d_description =
         "The text sample contains text editing widgets and offers possibilities to "
         "change the text formatting or enter text to play around with the options";
     Sample::d_summary = "The text formatting and scrollbar visibility "
@@ -59,7 +59,7 @@ bool TextSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )

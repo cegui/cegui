@@ -45,7 +45,7 @@ ToggleButton::ToggleButton(const String& type, const String& name) :
 void ToggleButton::addToggleButtonProperties()
 {
     const String& propertyOrigin(WidgetTypeName);
-    
+
     CEGUI_DEFINE_PROPERTY(ToggleButton, bool,
         "Selected",
         "Property to access the selected state of the ToggleButton. "
@@ -83,7 +83,7 @@ void ToggleButton::onPointerActivate(PointerEventArgs& e)
             // was pointer released over this widget
             // (use pointer position, as e.position is already unprojected)
             if (this == sheet->getTargetChildAtPosition(
-                    getGUIContext().getPointerIndicator().getPosition()))
+                    getGUIContext().getCursor().getPosition()))
             {
                 setSelected(getPostClickSelectState());
             }

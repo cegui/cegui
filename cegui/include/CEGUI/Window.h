@@ -94,7 +94,7 @@ public:
 
     static return_type fromString(const String& str)
     {
-    
+
         if (str == "Always")
         {
             return WUM_ALWAYS;
@@ -160,7 +160,7 @@ public:
      * Handlers are passed a const UpdateEventArgs reference.
      */
     static const String EventUpdated;
-    
+
     /** Event fired when the text string for the Window has changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose text was changed.
@@ -266,7 +266,7 @@ public:
     static const String EventInvalidated;
     /** Event fired when rendering of the Window has started.  In this context
      * 'rendering' is the population of the GeometryBuffer with geometry for the
-     * window, not the actual rendering of that GeometryBuffer content to the 
+     * window, not the actual rendering of that GeometryBuffer content to the
      * display.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose rendering has started.
@@ -274,7 +274,7 @@ public:
     static const String EventRenderingStarted;
     /** Event fired when rendering of the Window has ended.  In this context
      * 'rendering' is the population of the GeometryBuffer with geometry for the
-     * window, not the actual rendering of that GeometryBuffer content to the 
+     * window, not the actual rendering of that GeometryBuffer content to the
      * display.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose rendering has ended.
@@ -626,7 +626,7 @@ public:
     {
         return static_cast<Window*>(getChildElementAtIdx(idx));
     }
-    
+
     /*!
     \brief
         return the attached child window that the given name path references.
@@ -996,19 +996,19 @@ public:
 
     /*!
     \brief
-        Return a pointer to the pointer indicator image to use when the pointer
+        Return a pointer to the cursor image to use when the pointer
         indicator is within this window's area.
 
     \param useDefault
-        Specifies whether to return the default pointer indicator image if this
-        window specifies no preferred pointer indicator image.
+        Specifies whether to return the default cursor image if this
+        window specifies no preferred cursor image.
 
     \return
-        Pointer to the pointer indicator image that will be used when the pointer
+        Pointer to the cursor image that will be used when the pointer
         enters this window's area.  May return NULL indicating no indicator will
         be drawn for this window.
     */
-    const Image* getPointerIndicator(bool useDefault = true) const;
+    const Image* getCursor(bool useDefault = true) const;
 
     /*!
     \brief
@@ -1539,11 +1539,11 @@ public:
     \brief
         Insert the text string \a text into the current text string for the
         Window object at the position specified by \a position.
-     
+
     \param text
         String object holding the text that is to be inserted into the Window
         object's current text string.
-     
+
     \param position
         The characted index position where the string \a text should be
         inserted.
@@ -1554,7 +1554,7 @@ public:
     \brief
         Append the string \a text to the currect text string for the Window
         object.
-     
+
     \param text
         String object holding the text that is to be appended to the Window
         object's current text string.
@@ -1609,7 +1609,7 @@ public:
     /*!
     \brief
         Creates a child window attached to this window.
-    
+
     \param type
         String that describes the type of Window to be created.  A valid
         WindowFactory for the specified type must be registered.
@@ -1640,7 +1640,7 @@ public:
         Name path that references the window to destroy
     */
     void destroyChild(const String& name_path);
-    
+
     /*!
     \brief
         Move the Window to the top of the z order.
@@ -1702,11 +1702,11 @@ public:
         The sibling window that this window will be moved behind.
     */
     void moveBehind(const Window* const window);
-    
+
     /*!
     \brief
         Return the (visual) z index of the window on it's parent.
-        
+
         The z index is a number that indicates the order that windows will be
         drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
         front of lower numbers.
@@ -1831,20 +1831,20 @@ public:
 
     /*!
     \brief
-        Set the pointer indicator image to be used when the pointer enters this window.
+        Set the cursor image to be used when the pointer enters this window.
 
     \param image
-        Pointer to the Image object to use as the pointer indicator image when the
+        Pointer to the Image object to use as the cursor image when the
         pointer enters the area for this Window.
 
     \return
         Nothing.
     */
-    void setPointerIndicator(const Image* image);
+    void setCursor(const Image* image);
 
     /*!
     \brief
-        Set the pointer indicator image to be used when the pointer enters this window.
+        Set the cursor image to be used when the pointer enters this window.
 
     \param imageset
         String object that contains the name of the Imageset that contains the
@@ -1859,7 +1859,7 @@ public:
     \exception UnknownObjectException
         thrown if no Image named \a name exists.
     */
-    void setPointerIndicator(const String& name);
+    void setCursor(const String& name);
 
     /*!
     \brief
@@ -1876,7 +1876,7 @@ public:
         Nothing.
     */
     void setUserData(void* user_data)   {d_userData = user_data;}
-    
+
     /*!
     \brief
         Set whether z-order changes are enabled or disabled for this Window.
@@ -2062,7 +2062,7 @@ public:
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on pointer activation is disabled it only affects the users ability to affect
-        the z order of the Window by activating the left pointer source; is still 
+        the z order of the Window by activating the left pointer source; is still
         possible to programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
@@ -2098,7 +2098,7 @@ public:
         code is supposed to use skins is by defining a Falagard mapping (either
         in a scheme xml file or in code) and then create instances of that
         mapped type via WindowManager.  See
-        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme. 
+        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme.
         With that being said, it is possible for client code to use this
         function so long as you are aware of the implications of doing so:
         - Automatically created child windows (AutoWindows) will be deleted, and
@@ -2203,38 +2203,38 @@ public:
         Nothing.
     */
     virtual void update(float elapsed);
-    
+
     /*!
     \brief
         Asks the widget to perform a clipboard copy to the provided clipboard
-        
+
     \param clipboard
         Target clipboard class
-        
+
     \return
         true if the copy was successful and allowed, false otherwise
     */
     virtual bool performCopy(Clipboard& clipboard);
-    
+
     /*!
     \brief
         Asks the widget to perform a clipboard cut to the provided clipboard
-     
+
     \param clipboard
         Target clipboard class
-     
+
     \return
         true if the cut was successful and allowed, false otherwise
     */
     virtual bool performCut(Clipboard& clipboard);
-    
+
     /*!
     \brief
         Asks the widget to perform a clipboard paste from the provided clipboard
-     
+
     \param clipboard
         Source clipboard class
-     
+
     \return
         true if the paste was successful and allowed, false otherwise
      */
@@ -2313,7 +2313,7 @@ public:
         code is supposed to use skins is by defining a Falagard mapping (either
         in a scheme xml file or in code) and then create instances of that
         mapped type via WindowManager.  See
-        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme. 
+        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme.
     */
     void setWindowRenderer(const String& name);
 
@@ -2532,7 +2532,7 @@ public:
         windows and widgets; updates should be disabled selectively and
         cautiously - if you are unsure of what you are doing, leave the mode
         set to WUM_ALWAYS.
-    
+
     \param mode
         One of the WindowUpdateMode enumerated values indicating the mode to
         set for this Window.
@@ -2551,7 +2551,7 @@ public:
         windows and widgets; updates should be disabled selectively and
         cautiously - if you are unsure of what you are doing, leave the mode
         set to WUM_ALWAYS.
-    
+
     \return
         One of the WindowUpdateMode enumerated values indicating the current
         mode set for this Window.
@@ -2621,7 +2621,7 @@ public:
         Return whether Window thinks pointer is currently within its area.
 
     \note
-        If the pointer indicator has moved or Window's area has changed since the
+        If the cursor has moved or Window's area has changed since the
         last time the GUIContext updated the window hit information, the value
         returned here may be inaccurate - this is not a bug, but is required
         to ensure correct handling of certain events.
@@ -2633,9 +2633,9 @@ public:
 
     /*!
     \brief
-        Return whether this Window is focused or not. 
-        
-        A window is focused when it is the active Window inside the current 
+        Return whether this Window is focused or not.
+
+        A window is focused when it is the active Window inside the current
         GUIContext.
     */
     bool isFocused() const;
@@ -2653,7 +2653,7 @@ public:
     /*!
     \brief
         Unfocus this Window.
-        
+
         This will trigger the deactivated event if this was an active window.
     */
     void unfocus();
@@ -2697,7 +2697,7 @@ protected:
         'this'.
     */
     virtual void onMoved(ElementEventArgs& e);
-    
+
     virtual void onRotated(ElementEventArgs& e);
 
     /*!
@@ -3052,7 +3052,7 @@ protected:
         PointerEventArgs object.  All fields are valid.
     */
     virtual void onPointerActivate(PointerEventArgs& e);
-    
+
     /*!
     \brief
         Handler called when a character has been injected while this window
@@ -3283,7 +3283,7 @@ protected:
 
     //! \copydoc Element::setArea_impl
     virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing = false, bool fireEvents = true);
-    
+
     /*!
     \brief
         Cleanup child windows
@@ -3355,7 +3355,7 @@ protected:
         Nothing.
     */
     void removeWindowFromDrawList(const Window& wnd);
-    
+
     /*!
     \brief
         Return whether the window is at the top of the Z-Order.  This will
@@ -3400,7 +3400,7 @@ protected:
     virtual Rectf getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
     virtual Rectf getHitTestRect_impl() const;
-    
+
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
@@ -3513,8 +3513,8 @@ protected:
     //! holds setting for automatic creation of of surface (RenderingWindow)
     bool d_autoRenderingWindow;
 
-    //! Holds pointer to the Window objects current pointer indicator image.
-    const Image* d_pointerIndicator;
+    //! Holds pointer to the Window objects current cursor image.
+    const Image* d_cursor;
 
     //! Alpha transparency setting for the Window
     float d_alpha;
@@ -3638,8 +3638,8 @@ private:
 
     //! Not intended for public use, only used as a "Font" property getter
     const Font* property_getFont() const;
-    //! Not intended for public use, only used as a "PointerIndicator" property getter
-    const Image* property_getPointerIndicator() const;
+    //! Not intended for public use, only used as a "Cursor" property getter
+    const Image* property_getCursor() const;
 
     //! connection for event listener for font render size changes.
     Event::ScopedConnection d_fontRenderSizeChangeConnection;

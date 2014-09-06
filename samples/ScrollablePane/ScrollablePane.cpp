@@ -48,12 +48,12 @@ ScrollablePaneSample::ScrollablePaneSample()
 {
     Sample::d_name = "ScrollablePaneDeme";
     Sample::d_credits = "Tomas Lindquist Olsen";
-    Sample::d_description = 
+    Sample::d_description =
         "The ScrollbarPane sample uses the WindowsLook, which gives it a look similar "
         "to old Windows applications. The background consists of a ScrollablePane to "
         "which windows can be added, using the menu bar. The items on the pane can be "
         "moved freely and the pane can be scrolled with the scrollbars.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "The background window is of target type \"CEGUI/ScrollablePane\". "
         "The WindowsLook skin is used for all the windows.";
 }
@@ -64,7 +64,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_guiContext = guiContext;
     d_usedFiles = CEGUI::String(__FILE__);
-    
+
     d_inputAggregator = new SampleInputAggregator(d_guiContext);
 
     // this sample will use WindowsLook
@@ -74,9 +74,9 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-12-NoScale.font");
     d_guiContext->setDefaultFont(d_font);
 
-    // set the pointer indicator
+    // set the cursor
     d_system = System::getSingletonPtr();
-    d_guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
+    d_guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_guiContext->setDefaultTooltipType("WindowsLook/Tooltip");
@@ -90,7 +90,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("FrameEnabled", "false");
     d_root->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     d_root->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
-    d_root->subscribeEvent(Window::EventSemanticEvent, 
+    d_root->subscribeEvent(Window::EventSemanticEvent,
         Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
 
     d_guiContext->setRootWindow(d_root);
@@ -129,16 +129,16 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
 {
     using namespace CEGUI;
-    
+
     // file menu item
     Window* file = d_wm->createWindow("WindowsLook/MenuItem");
     file->setText("File");
     bar->addChild(file);
-    
+
     // file popup
     Window* popup = d_wm->createWindow("WindowsLook/PopupMenu");
     file->addChild(popup);
-    
+
     // quit item in file menu
     Window* item = d_wm->createWindow("WindowsLook/MenuItem");
     item->setText("Quit");
@@ -173,22 +173,22 @@ void ScrollablePaneSample::deinitialise()
 bool ScrollablePaneSample::SampleNewDialog(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
-    
+
     // add a dialog to this pane so we have some more stuff to drag around :)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
     dlg->setMinSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setText("Drag me around too!");
-    
+
     // we put this in the center of the viewport into the scrollable pane
     UVector2 uni_center(UDim(0.5f,0), UDim(0.5f,0));
     // URGENT FIXME!
     //Vector2f center = CoordConverter::windowToScreen(*d_root, uni_center);
     //Vector2f target = CoordConverter::screenToWindow(*d_pane->getContentPane(), center);
     //dlg->setPosition(UVector2(UDim(0,target.d_x-100), UDim(0,target.d_y-50)));
-    
+
     d_pane->addChild(dlg);
-    
+
     return true;
 }
 

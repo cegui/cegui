@@ -46,11 +46,11 @@ GameMenuSample::GameMenuSample() :
     Sample(100)
 {
     Sample::d_name = "GameMenuSample";
-    Sample::d_credits = 
+    Sample::d_credits =
         "Lukas \"Ident\" Meindl, graphics: Charles \"Syg\" Mattei";
-    Sample::d_description = 
+    Sample::d_description =
         "Displays a science-fiction game menu using a lot of animations.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "The Sample uses a custom skin (look n' feel) and a great variety "
         "of animations defined. The animations are loaded from xml and "
         "utilized via C++ code. For the animated windows, which do not "
@@ -68,7 +68,7 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("GameMenuSample.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    d_guiContext->getPointerIndicator().setDefaultImage("GameMenuSampleImages/MouseCursor");
+    d_guiContext->getCursor().setDefaultImage("GameMenuSampleImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");
@@ -559,7 +559,7 @@ bool GameMenuSample::handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args)
     const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
 
     CEGUI::Window* iconWindow = getIconWindowFromLabel(pointerArgs.window);
- 
+
     CEGUI::EventArgs fireArgs;
     iconWindow->fireEvent("StopRotate", fireArgs);
 
@@ -628,7 +628,7 @@ void GameMenuSample::setupWindows()
     d_loginAcceptButton = d_loginContainer->getChild("AcceptButton");
     d_loginAcceptButton->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleLoginAcceptButtonClicked, this));
 
-    d_startButtonClickArea = d_root->getChild("InnerPartContainer/InsideStartClickArea");   
+    d_startButtonClickArea = d_root->getChild("InnerPartContainer/InsideStartClickArea");
     d_startButtonClickArea->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuSample::handleInnerPartStartClickAreaClick, this));
 
     d_navigationTravelIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");

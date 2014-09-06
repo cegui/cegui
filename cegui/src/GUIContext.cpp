@@ -251,7 +251,7 @@ void GUIContext::drawContent()
 {
     RenderingSurface::drawContent();
 
-    d_pointerIndicator.draw();
+    d_cursor.draw();
 }
 
 //----------------------------------------------------------------------------//
@@ -278,23 +278,23 @@ void GUIContext::renderWindowHierarchyToSurfaces()
 }
 
 //----------------------------------------------------------------------------//
-PointerIndicator& GUIContext::getPointerIndicator()
+Cursor& GUIContext::getCursor()
 {
-    return const_cast<PointerIndicator&>(
-        static_cast<const GUIContext*>(this)->getPointerIndicator());
+    return const_cast<Cursor&>(
+        static_cast<const GUIContext*>(this)->getCursor());
 }
 
 //----------------------------------------------------------------------------//
-const PointerIndicator& GUIContext::getPointerIndicator() const
+const Cursor& GUIContext::getCursor() const
 {
-    return d_pointerIndicator;
+    return d_cursor;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_pointerIndicator.notifyDisplaySizeChanged(d_surfaceSize);
+    d_cursor.notifyDisplaySizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
         updateRootWindowAreaRects();
@@ -350,7 +350,7 @@ void GUIContext::updateWindowContainingPointer()
 bool GUIContext::updateWindowContainingPointer_impl() const
 {
     PointerEventArgs pa(0);
-    const glm::vec2 pointer_pos(d_pointerIndicator.getPosition());
+    const glm::vec2 pointer_pos(d_cursor.getPosition());
 
     Window* const curr_wnd_with_pointer = getTargetWindow(pointer_pos, true);
 
@@ -669,7 +669,7 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
         return (*(*itor).second)(event);
     }
 
-    Window* targetWindow = getTargetWindow(d_pointerIndicator.getPosition(), false);
+    Window* targetWindow = getTargetWindow(d_cursor.getPosition(), false);
     // window navigator's window takes precedence
     if (d_windowNavigator != 0)
         targetWindow = d_windowNavigator->getCurrentFocusedWindow();
@@ -730,7 +730,7 @@ void GUIContext::deleteSemanticEventHandlers()
 bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
-    pa.position = d_pointerIndicator.getPosition();
+    pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = event.d_payload.source;
     pa.scroll = 0;
@@ -754,7 +754,7 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
-    pa.position = d_pointerIndicator.getPosition();
+    pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = event.d_payload.source;
     pa.scroll = 0;
@@ -774,7 +774,7 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
 bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
-    pa.position = d_pointerIndicator.getPosition();
+    pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = PS_None;
     pa.scroll = event.d_payload.single;
@@ -820,7 +820,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
 
     // setup pointer movement event args object.
     PointerEventArgs pa(0);
-    pa.moveDelta = new_position - d_pointerIndicator.getPosition();
+    pa.moveDelta = new_position - d_cursor.getPosition();
 
     // no movement means no event
     if ((pa.moveDelta.x == 0) && (pa.moveDelta.y == 0))
@@ -831,9 +831,9 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
     pa.pointerState = d_pointersState;
 
     // move pointer cursor to new position
-    d_pointerIndicator.setPosition(new_position);
+    d_cursor.setPosition(new_position);
     // update position in args (since actual position may be constrained)
-    pa.position = d_pointerIndicator.getPosition();
+    pa.position = d_cursor.getPosition();
 
     return handlePointerMove_impl(pa);
 }
@@ -846,7 +846,7 @@ bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
 
     PointerEventArgs pa(0);
     pa.position = getWindowContainingPointer()->getUnprojectedPosition(
-        d_pointerIndicator.getPosition());
+        d_cursor.getPosition());
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = PS_None;
     pa.scroll = 0;

@@ -81,7 +81,7 @@ void PushButton::onPointerActivate(PointerEventArgs& e)
             // if pointer was released over this widget
             // (use position from pointer, as e.position has been unprojected)
             if (this == sheet->getTargetChildAtPosition(
-                getGUIContext().getPointerIndicator().getPosition()))
+                getGUIContext().getCursor().getPosition()))
 			{
 				// fire event
 				WindowEventArgs args(this);

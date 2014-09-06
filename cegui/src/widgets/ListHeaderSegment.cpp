@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	15/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of List header segment widget.
 *************************************************************************/
 /***************************************************************************
@@ -27,7 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ListHeaderSegment.h"
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/ImageManager.h"
 
@@ -58,12 +58,12 @@ const float	ListHeaderSegment::SegmentMoveThreshold	= 12.0f;
 
 
 /*************************************************************************
-	Constructor for list header segment base class	
+	Constructor for list header segment base class
 *************************************************************************/
 ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	Window(type, name),
-	d_sizingPointerIndicator(0),
-	d_movingPointerIndicator(0),
+	d_sizingCursor(0),
+	d_movingCursor(0),
 	d_splitterSize(DefaultSizingArea),
 	d_splitterHover(false),
 	d_dragSizing(false),
@@ -80,7 +80,7 @@ ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 
 
 /*************************************************************************
-	Destructor for list header segment base class.	
+	Destructor for list header segment base class.
 *************************************************************************/
 ListHeaderSegment::~ListHeaderSegment(void)
 {
@@ -110,7 +110,7 @@ void ListHeaderSegment::setSizingEnabled(bool setting)
 
 
 /*************************************************************************
-	Set the current sort direction set for this segment.	
+	Set the current sort direction set for this segment.
 *************************************************************************/
 void ListHeaderSegment::setSortDirection(SortDirection sort_dir)
 {
@@ -128,7 +128,7 @@ void ListHeaderSegment::setSortDirection(SortDirection sort_dir)
 
 
 /*************************************************************************
-	Set whether drag moving is allowed for this segment.	
+	Set whether drag moving is allowed for this segment.
 *************************************************************************/
 void ListHeaderSegment::setDragMovingEnabled(bool setting)
 {
@@ -160,7 +160,7 @@ void ListHeaderSegment::setClickable(bool setting)
 
 
 /*************************************************************************
-	Handler called when segment is clicked.	
+	Handler called when segment is clicked.
 *************************************************************************/
 void ListHeaderSegment::onSegmentClicked(WindowEventArgs& e)
 {
@@ -169,7 +169,7 @@ void ListHeaderSegment::onSegmentClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the sizer/splitter is double-clicked.	
+	Handler called when the sizer/splitter is double-clicked.
 *************************************************************************/
 void ListHeaderSegment::onSplitterDoubleClicked(WindowEventArgs& e)
 {
@@ -276,7 +276,7 @@ void ListHeaderSegment::doDragSizing(const glm::vec2& local_pointer)
         delta = maxWidth - orgWidth;
     else if (newWidth < minWidth)
         delta = minWidth - orgWidth;
-    
+
     // update segment area rect
     // URGENT FIXME: The pixel alignment will be done automatically again, right? Why is it done here? setArea_impl will do it!
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,/*PixelAligned(*/delta/*)*/), d_area.d_max.d_y);
@@ -326,7 +326,7 @@ void ListHeaderSegment::initDragMoving(void)
         d_dragPosition = glm::vec2(0, 0);
 
         // setup new indicator
-        getGUIContext().getPointerIndicator().setImage(d_movingPointerIndicator);
+        getGUIContext().getCursor().setImage(d_movingCursor);
 
 		// Trigger the event
 		WindowEventArgs args(this);
@@ -346,8 +346,8 @@ void ListHeaderSegment::initSizingHoverState(void)
 	{
 		d_splitterHover = true;
 
-        // change the pointer indicator.
-        getGUIContext().getPointerIndicator().setImage(d_sizingPointerIndicator);
+        // change the cursor.
+        getGUIContext().getCursor().setImage(d_sizingCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
 		invalidate();
@@ -355,7 +355,7 @@ void ListHeaderSegment::initSizingHoverState(void)
 
 	// reset segment hover as needed.
 	if (d_segmentHover)
-	{	
+	{
 		d_segmentHover = false;
 		invalidate();
 	}
@@ -372,7 +372,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-        getGUIContext().getPointerIndicator().setImage(getPointerIndicator());
+        getGUIContext().getCursor().setImage(getCursor());
 		invalidate();
 	}
 
@@ -459,13 +459,13 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-            getGUIContext().getPointerIndicator().setImage(getPointerIndicator());
+            getGUIContext().getCursor().setImage(getCursor());
 			invalidate();
 		}
 
 		// reset segment hover state if not already done.
 		if (d_segmentHover)
-		{	
+		{
 			d_segmentHover = false;
 			invalidate();
 		}
@@ -531,7 +531,7 @@ void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-            getGUIContext().getPointerIndicator().setImage(getPointerIndicator());
+            getGUIContext().getCursor().setImage(getCursor());
 
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);
@@ -602,27 +602,27 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
         "Sizable", "Property to get/set the sizable setting of the header segment.  Value is either \"true\" or \"false\".",
         &ListHeaderSegment::setSizingEnabled, &ListHeaderSegment::isSizingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
         "Clickable", "Property to get/set the click-able setting of the header segment.  Value is either \"true\" or \"false\".",
         &ListHeaderSegment::setClickable, &ListHeaderSegment::isClickable, true
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
         "Dragable", "Property to get/set the drag-able setting of the header segment.  Value is either \"true\" or \"false\".",
         &ListHeaderSegment::setDragMovingEnabled, &ListHeaderSegment::isDragMovingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header segment.  Value is the text of one of the SortDirection enumerated value names.",
         &ListHeaderSegment::setSortDirection, &ListHeaderSegment::getSortDirection, ListHeaderSegment::None
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
         "SizingCursorImage", "Property to get/set the sizing cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
         &ListHeaderSegment::setSizingCursorImage, &ListHeaderSegment::getSizingCursorImage, 0
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
         "MovingCursorImage", "Property to get/set the moving cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
         &ListHeaderSegment::setMovingCursorImage, &ListHeaderSegment::getMovingCursorImage, 0
@@ -631,32 +631,32 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
 
 const Image* ListHeaderSegment::getSizingCursorImage() const
 {
-    return d_sizingPointerIndicator;
+    return d_sizingCursor;
 }
 
 void ListHeaderSegment::setSizingCursorImage(const Image* image)
 {
-    d_sizingPointerIndicator = image;
+    d_sizingCursor = image;
 }
 
 void ListHeaderSegment::setSizingCursorImage(const String& name)
 {
-    d_sizingPointerIndicator = &ImageManager::getSingleton().get(name);
+    d_sizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 const Image* ListHeaderSegment::getMovingCursorImage() const
 {
-    return d_movingPointerIndicator;
+    return d_movingCursor;
 }
 
 void ListHeaderSegment::setMovingCursorImage(const Image* image)
 {
-    d_movingPointerIndicator = image;
+    d_movingCursor = image;
 }
 
 void ListHeaderSegment::setMovingCursorImage(const String& name)
 {
-    d_movingPointerIndicator = &ImageManager::getSingleton().get(name);
+    d_movingCursor = &ImageManager::getSingleton().get(name);
 }
 
 } // End of  CEGUI namespace section

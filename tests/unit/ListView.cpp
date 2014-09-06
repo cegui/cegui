@@ -244,7 +244,7 @@ void triggerSelectRangeEvent(glm::vec2 position, ItemView* view)
 {
     SemanticEventArgs args(view);
     args.d_semanticValue = SV_SelectRange;
-    view->getGUIContext().getPointerIndicator().setPosition(position);
+    view->getGUIContext().getCursor().setPosition(position);
     view->onSemanticInputEvent(args);
 }
 

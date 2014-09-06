@@ -2,7 +2,7 @@
 	created:	21/2/2004
 	author:		Paul D Turner
 
-    purpose:    Defines interface for the PointerIndicator class
+    purpose:    Defines interface for the Cursor class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -26,8 +26,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIPointerIndicator_h_
-#define _CEGUIPointerIndicator_h_
+#ifndef _CEGUICursor_h_
+#define _CEGUICursor_h_
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
@@ -48,47 +48,46 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//!	Class that provides pointer indicator support.
-class CEGUIEXPORT PointerIndicator :
-    public EventSet
+//!	Class that provides cursor support.
+class CEGUIEXPORT Cursor : public EventSet
 {
 public:
     //! Namespace for global events.
 	static const String EventNamespace;
 
-    /** Name of Event fired when the pointer indicator image is changed.
-     * Handlers are passed a const PointerIndicatorEventArgs reference with
-     * PointerIndicatorEventArgs::d_pointerIndicator set to the PointerIndicator that has
-     * had it's image changed, and PointerIndicatorEventArgs::image set to the
-     * Image that is now set for the PointerIndicator (may be 0).
+    /** Name of Event fired when the cursor image is changed.
+     * Handlers are passed a const CursorEventArgs reference with
+     * CursorEventArgs::d_cursor set to the Cursor that has
+     * had it's image changed, and CursorEventArgs::image set to the
+     * Image that is now set for the Cursor (may be 0).
      */
 	static const String EventImageChanged;
 
-    /** Name of Event fired when the Image to be used as a default pointer indicator
+    /** Name of Event fired when the Image to be used as a default cursor
      * image is changed.
-     * Handlers are passed a const PointerIndicatorEventArgs reference with
-     * PointerIndicatorEventArgs::PointerIndicator set to the PointerIndicator that has
-     * had it's default image changed, and PointerIndicatorEventArgs::image set to
+     * Handlers are passed a const CursorEventArgs reference with
+     * CursorEventArgs::Cursor set to the Cursor that has
+     * had it's default image changed, and CursorEventArgs::image set to
      * the Image that is now set as the default (may be 0).
      */
 	static const String EventDefaultImageChanged;
 
 	/*!
 	\brief
-        Constructor for PointerIndicator objects
+        Constructor for Cursor objects
 	*/
-	PointerIndicator(void);
+	Cursor(void);
 
 
 	/*!
 	\brief
-        Destructor for PointerIndicator objects
+        Destructor for Cursor objects
 	*/
-	~PointerIndicator(void);
+	~Cursor(void);
 
 	/*!
 	\brief
-        Set the current pointer indicator image
+        Set the current cursor image
 
 	\param name
 		String object holding the name of the desired Image.
@@ -103,22 +102,22 @@ public:
 
 	/*!
 	\brief
-        Set the current pointer indicator image
+        Set the current cursor image
 	*/
 	void	setImage(const Image* image);
 
 
 	/*!
 	\brief
-        Get the current pointer indicator image
+        Get the current cursor image
 	\return
-        The current image used to draw pointer indicator.
+        The current image used to draw cursor.
 	*/
 	const Image*	getImage(void) const	{return d_indicatorImage;}
 
     /*!
     \brief
-        Set the image to be used as the default pointer indicator.
+        Set the image to be used as the default cursor.
 
     \param image
         Pointer to an image object that is to be used as the default pointer
@@ -128,7 +127,7 @@ public:
 
     /*!
     \brief
-        Set the image to be used as the default pointer indicator.
+        Set the image to be used as the default cursor.
 
     \param name
         String object that contains the name of the Image that is to be used.
@@ -140,10 +139,10 @@ public:
 
     /*!
     \brief
-        Return the currently set default pointer indicator image
+        Return the currently set default cursor image
 
     \return
-        Pointer to the current default image used for the pointer indicator.  May
+        Pointer to the current default image used for the cursor.  May
         return 0 if default cursor has not been set, or has intentionally
         been set to 0 - which results in a blank default cursor.
     */
@@ -160,7 +159,7 @@ public:
 
 	/*!
 	\brief
-        Set the current pointer indicator position
+        Set the current cursor position
 
 	\param position
         Point object describing the new location for the pointer. This will
@@ -171,7 +170,7 @@ public:
 
 	/*!
 	\brief
-        Offset the pointer indicator position by the deltas specified in \a offset.
+        Offset the cursor position by the deltas specified in \a offset.
 
 	\param offset
         Point object which describes the amount to move the indicator in each axis.
@@ -184,7 +183,7 @@ public:
 
 	/*!
 	\brief
-        Set the area that the pointer indicator is constrained to.
+        Set the area that the cursor is constrained to.
 
 	\param area
         Pointer to a Rect object that describes the area of the display that
@@ -201,7 +200,7 @@ public:
 
 	/*!
 	\brief
-        Set the area that the pointer indicator is constrained to.
+        Set the area that the cursor is constrained to.
 
 	\param area
         Pointer to a URect object that describes the area of the display that
@@ -218,7 +217,7 @@ public:
 
 	/*!
 	\brief
-        Hides the pointer indicator.
+        Hides the cursor.
 
 	\return
 		Nothing.
@@ -228,7 +227,7 @@ public:
 
 	/*!
 	\brief
-        Shows the pointer indicator.
+        Shows the cursor.
 
 	\return
 		Nothing.
@@ -238,10 +237,10 @@ public:
 
     /*!
     \brief
-        Set the visibility of the pointer indicator.
+        Set the visibility of the cursor.
 
     \param visible
-        'true' to show the pointer indicator, 'false' to hide it.
+        'true' to show the cursor, 'false' to hide it.
 
     \return
         Nothing.
@@ -251,21 +250,21 @@ public:
 
 	/*!
 	\brief
-        return whether the pointer indicator is visible.
+        return whether the cursor is visible.
 
 	\return
-		true if the pointer indicator is visible, false if the pointer indicator is hidden.
+		true if the cursor is visible, false if the cursor is hidden.
 	*/
 	bool	isVisible(void) const	{return d_visible;}
 
 
 	/*!
 	\brief
-        Return the current pointer indicator position as a pixel offset from 
+        Return the current cursor position as a pixel offset from
         the top-left corner of the display.
 
 	\return
-		Point object describing the pointer indicator position in screen pixels.
+		Point object describing the cursor position in screen pixels.
 	*/
     inline glm::vec2 getPosition() const
     {
@@ -274,31 +273,31 @@ public:
 
 	/*!
 	\brief
-        Return the current constraint area of the pointer indicator.
+        Return the current constraint area of the cursor.
 
 	\return
-        Rect object describing the active area that the pointer indicator is constrained to.
+        Rect object describing the active area that the cursor is constrained to.
 	*/
 	Rectf getConstraintArea(void) const;
 
 
 	/*!
 	\brief
-        Return the current constraint area of the pointer indicator.
+        Return the current constraint area of the cursor.
 
 	\return
-        URect object describing the active area that the pointer indicator is constrained to.
+        URect object describing the active area that the cursor is constrained to.
 	*/
 	const URect& getUnifiedConstraintArea(void) const;
 
 
 	/*!
 	\brief
-        Return the current pointer indicator position as display resolution
+        Return the current cursor position as display resolution
         independent values.
 
 	\return
-        Point object describing the current pointer indicator position as
+        Point object describing the current cursor position as
         resolution independent values that anges from 0.0f to 1.0f, where 0.0f
         represents the left-most and top-most positions, and 1.0f represents
         the right-most and bottom-most positions.
@@ -307,7 +306,7 @@ public:
 
     /*!
     \brief
-        Function used to notify the PointerIndicator of changes in the display size.
+        Function used to notify the Cursor of changes in the display size.
 
         You normally would not call this directly; rather you would call the
         function System::notifyDisplaySizeChanged and that will then call this
@@ -320,11 +319,11 @@ public:
 
     /*!
     \brief
-        Set an explicit size for the pointer indicator image to be drawn at.
+        Set an explicit size for the cursor image to be drawn at.
 
         This will override the size that is usually obtained directly from the
-        pointer indicator image and will stay in effect across changes to the
-        pointer indicator image.
+        cursor image and will stay in effect across changes to the
+        cursor image.
 
         Setting this size to (0, 0) will revert back to using the size as
         obtained from the Image itself.
@@ -344,24 +343,24 @@ public:
 
     /*!
     \brief
-        Static function to pre-initialise the pointer indicator position (prior to
-        PointerIndicator instantiation).
+        Static function to pre-initialise the cursor position (prior to
+        Cursor instantiation).
 
-        Calling this function prior to instantiating PointerIndicator will prevent
+        Calling this function prior to instantiating Cursor will prevent
         the pointer having it's position set to the middle of the initial view.
-        Calling this function after the PointerIndicator is instantiated will have
+        Calling this function after the Cursor is instantiated will have
         no effect.
 
     \param position
         vec2 object describing the initial pixel position to
-        be used for the pointer indicator.
+        be used for the cursor.
     */
     static void setInitialPointerPosition(const glm::vec2& position);
 
     /*!
     \brief
         Mark the cached geometry as invalid so it will be recached next time the
-        pointer indicator is drawn.
+        cursor is drawn.
     */
     void invalidate();
 
@@ -369,10 +368,10 @@ protected:
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
-    //! Event triggered internally when pointer indicator image is changed.
-    virtual void onImageChanged(PointerIndicatorEventArgs& e);
-    //! Event triggered internally when pointer indicator default image is changed.
-    virtual void onDefaultImageChanged(PointerIndicatorEventArgs& e);
+    //! Event triggered internally when cursor image is changed.
+    virtual void onImageChanged(CursorEventArgs& e);
+    //! Event triggered internally when cursor default image is changed.
+    virtual void onDefaultImageChanged(CursorEventArgs& e);
 
 private:
 	/*************************************************************************
@@ -380,7 +379,7 @@ private:
 	*************************************************************************/
 	/*!
 	\brief
-        Checks the pointer indicator position is within the current 'constrain'
+        Checks the cursor position is within the current 'constrain'
         Rect and adjusts as required.
 	*/
 	void constrainPosition(void);
@@ -393,22 +392,22 @@ private:
 
     /*!
     \brief
-        Destroys the geometry buffers of this PointerIndicator.
+        Destroys the geometry buffers of this Cursor.
     */
     void destroyGeometryBuffers();
 
     /*!
     \brief
-        Updates the translation of the geometry buffers of this PointerIndicator.
+        Updates the translation of the geometry buffers of this Cursor.
     */
     void updateGeometryBuffersTranslation();
 
     /*!
     \brief
-        Updates the clipping area of the geometry buffers of this PointerIndicator.
-        
+        Updates the clipping area of the geometry buffers of this Cursor.
+
     \param clipping_area
-        The clipping area that will be applied to the geometry buffers of this PointerIndicator.
+        The clipping area that will be applied to the geometry buffers of this Cursor.
     */
     void updateGeometryBuffersClipping(const Rectf& clipping_area);
 
@@ -416,9 +415,9 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    //! Image that is currently set as the pointer indicator.
+    //! Image that is currently set as the cursor.
 	const Image* d_indicatorImage;
-    //! Image that will be used as the default image for this pointer indicator.
+    //! Image that will be used as the default image for this cursor.
 	const Image* d_defaultIndicatorImage;
     //! Current location of the indicator
     glm::vec2 d_position;
@@ -426,7 +425,7 @@ private:
     bool    d_visible;
     //! Specifies the area (in screen pixels) that the indicator can move around in.
     URect   d_constraints;
-    //! buffer to hold geometry for pointer indicator imagery.
+    //! buffer to hold geometry for cursor imagery.
     std::vector<GeometryBuffer*> d_geometryBuffers;
     //! custom explicit size to render the indicator image at
     Sizef d_customSize;
@@ -446,4 +445,4 @@ private:
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIPointerIndicator_h_
+#endif	// end of guard _CEGUICursor_h_

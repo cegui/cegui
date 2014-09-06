@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of common Titlebar parts.
 *************************************************************************/
 /***************************************************************************
@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -142,7 +142,7 @@ void Titlebar::onPointerPressHold(PointerEventArgs& e)
 
                 // store old constraint area
                 d_oldCursorArea = getGUIContext().
-                    getPointerIndicator().getConstraintArea();
+                    getCursor().getConstraintArea();
 
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rectf constrainArea;
@@ -152,12 +152,12 @@ void Titlebar::onPointerPressHold(PointerEventArgs& e)
                     const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}
-				else 
+				else
 				{
 					constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
 				}
 
-                getGUIContext().getPointerIndicator().
+                getGUIContext().getCursor().
                     setConstraintArea(&constrainArea);
 			}
 		}
@@ -217,7 +217,7 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
 
 	// restore old constraint area
 	getGUIContext().
-        getPointerIndicator().setConstraintArea(&d_oldCursorArea);
+        getCursor().setConstraintArea(&d_oldCursorArea);
 }
 
 

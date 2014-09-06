@@ -36,12 +36,12 @@ InventorySample::InventorySample() :
 {
     Sample::d_name = "InventorySample";
     Sample::d_credits = "CrazyEddie";
-    Sample::d_description = 
+    Sample::d_description =
         "The sample contains an RPG style inventory that allows "
         "dragging shaped items from one inventory window to another. "
         "Red and green colours display if the item can be "
         "dropped at the current position.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "To achieve this the custom windows \"TaharezLook/InventoryReceiver\" "
         "and \"TaharezLook/InventoryItem\" were added via the "
         "\"InventoryComponents.looknfeel\" file. For handling the mechanics of "
@@ -65,7 +65,7 @@ bool InventorySample::initialise(CEGUI::GUIContext* guiContext)
     // basic system init using TaharezLook.
     WindowManager& winMgr = WindowManager::getSingleton();
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
     guiContext->setRootWindow(root);
 
