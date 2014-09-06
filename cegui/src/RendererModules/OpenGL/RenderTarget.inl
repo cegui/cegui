@@ -212,7 +212,7 @@ void OpenGLRenderTarget<T>::updateMatrix() const
 
     d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
-    d_activationCounter = -1;
+    RenderTarget::d_activationCounter = -1;
 }
 
 
