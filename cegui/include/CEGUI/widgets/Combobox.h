@@ -200,7 +200,7 @@ public:
         - false if the user must activate the pointer to show the list and then
         activate the pointer again to select an item.
 	*/
-	bool	getSinglePointerActivationEnabled(void) const;
+	bool	getSingleCursorActivationEnabled(void) const;
 
 
 	/*!
@@ -545,7 +545,7 @@ public:
 	\return
 		Nothing.
 	*/
-    void    setSinglePointerActivationEnabled(bool setting);
+    void    setSingleCursorActivationEnabled(bool setting);
 
     //! Select item in list matching editbox text, clear selection if none match
     void selectListItemWithEditboxText();

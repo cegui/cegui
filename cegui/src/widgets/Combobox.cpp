@@ -900,8 +900,8 @@ void Combobox::addComboboxProperties(void)
           &Combobox::setShowHorzScrollbar, &Combobox::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "SinglePointerActivationMode","Property to get/set the 'single activation mode' setting for the combo box.  Value is either \"true\" or \"false\".",
-          &Combobox::setSinglePointerActivationEnabled, &Combobox::getSinglePointerActivationEnabled, false /* TODO: Inconsistency between setter, getter and property name */
+          "SingleCursorActivationMode","Property to get/set the 'single activation mode' setting for the combo box.  Value is either \"true\" or \"false\".",
+          &Combobox::setSingleCursorActivationEnabled, &Combobox::getSingleCursorActivationEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "AutoSizeListHeight",
@@ -963,7 +963,7 @@ void Combobox::onSized(ElementEventArgs& e)
 /*************************************************************************
 	Return operation mode for the combo box
 *************************************************************************/
-bool Combobox::getSinglePointerActivationEnabled(void) const
+bool Combobox::getSingleCursorActivationEnabled(void) const
 {
 	return d_singleClickOperation;
 }
@@ -981,7 +981,7 @@ bool Combobox::isDropDownListVisible(void) const
 /*************************************************************************
 	Set the operation mode for the combo box.
 *************************************************************************/
-void Combobox::setSinglePointerActivationEnabled(bool setting)
+void Combobox::setSingleCursorActivationEnabled(bool setting)
 {
 	d_singleClickOperation = setting;
 	getDropList()->setAutoArmEnabled(setting);
