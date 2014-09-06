@@ -241,7 +241,7 @@ void RestaurantGameSample::setupCursor()
     d_cursorWnd->setAspectRatio(1.0f);
     d_cursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_cursorWnd->setAlwaysOnTop(true);
-    d_cursorWnd->setPointerPassThroughEnabled(true);
+    d_cursorWnd->setCursorPassThroughEnabled(true);
     d_rootIngame->addChild(d_cursorWnd);
 }
 
@@ -280,7 +280,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateImgWnd->setAspectRatio(3.308f);
     plateImgWnd->setAspectMode(CEGUI::AM_EXPAND);
     plateImgWnd->setVerticalAlignment(CEGUI::VA_BOTTOM);
-    plateImgWnd->setPointerPassThroughEnabled(true);
+    plateImgWnd->setCursorPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
     plateRoot->addChild(plateImgWnd);
 
@@ -292,7 +292,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateTopping->setAspectRatio(1.0f);
     plateTopping->setAspectMode(CEGUI::AM_EXPAND);
     plateTopping->setHorizontalAlignment(CEGUI::HA_CENTRE);
-    plateTopping->setPointerPassThroughEnabled(true);
+    plateTopping->setCursorPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);
     plateRoot->addChild(plateTopping);
 

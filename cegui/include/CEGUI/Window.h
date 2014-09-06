@@ -1264,7 +1264,7 @@ public:
         true if pointer pass through is enabled.
         false if pointer pass through is not enabled.
     */
-    bool isPointerPassThroughEnabled(void) const  {return d_pointerPassThroughEnabled;}
+    bool isCursorPassThroughEnabled(void) const  {return d_cursorPassThroughEnabled;}
 
     /*!
     \brief
@@ -2299,7 +2299,7 @@ public:
         true if pointer pass through is enabled.
         false if pointer pass through is not enabled.
     */
-    void setPointerPassThroughEnabled(bool setting)   {d_pointerPassThroughEnabled = setting;}
+    void setCursorPassThroughEnabled(bool setting)   {d_cursorPassThroughEnabled = setting;}
 
     /*!
     \brief
@@ -3567,7 +3567,7 @@ protected:
     bool d_zOrderingEnabled;
 
     //! whether (most) pointer events pass through this window
-    bool d_pointerPassThroughEnabled;
+    bool d_cursorPassThroughEnabled;
     //! whether pressed pointer will auto-repeat the down event.
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
