@@ -55,33 +55,33 @@ ButtonBase::~ButtonBase(void)
 /*************************************************************************
 	Update the internal state of the Widget
 *************************************************************************/
-void ButtonBase::updateInternalState(const glm::vec2& pointer_pos)
+void ButtonBase::updateInternalState(const glm::vec2& cursor_pos)
 {
 	const bool oldstate = d_hovering;
 
-    d_hovering = calculateCurrentHoverState(pointer_pos);
+    d_hovering = calculateCurrentHoverState(cursor_pos);
 
 	if (oldstate != d_hovering)
 		invalidate();
 }
 
 //----------------------------------------------------------------------------//
-bool ButtonBase::calculateCurrentHoverState(const glm::vec2& pointer_pos)
+bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
 {
 	if (const Window* capture_wnd = getCaptureWindow())
         return
             (capture_wnd == this ||
-            (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(pointer_pos);
+            (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(cursor_pos);
     else
 	    return getGUIContext().getWindowContainingPointer() == this;
 }
 
 /*************************************************************************
-	Handler for when the pointer moves
+	Handler for when the cursor moves
 *************************************************************************/
 void ButtonBase::onPointerMove(PointerEventArgs& e)
 {
-    // this is needed to discover whether pointer is in the widget area or not.
+    // this is needed to discover whether cursor is in the widget area or not.
 	// The same thing used to be done each frame in the rendering method,
 	// but in this version the rendering method may not be called every frame
 	// so we must discover the internal widget state here - which is actually
@@ -96,7 +96,7 @@ void ButtonBase::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for pointer press hold events
+	Handler for cursor press hold events
 *************************************************************************/
 void ButtonBase::onPointerPressHold(PointerEventArgs& e)
 {
@@ -132,7 +132,7 @@ void ButtonBase::setPushedState(const bool pushed)
 }
 
 /*************************************************************************
-	Handler for pointer activation events
+	Handler for cursor activation events
 *************************************************************************/
 void ButtonBase::onPointerActivate(PointerEventArgs& e)
 {
@@ -150,7 +150,7 @@ void ButtonBase::onPointerActivate(PointerEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when pointer capture is lost
+    Handler for when cursor capture is lost
 *************************************************************************/
 void ButtonBase::onCaptureLost(WindowEventArgs& e)
 {
@@ -167,7 +167,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when pointer leaves the widget
+    Handler for when cursor leaves the widget
 *************************************************************************/
 void ButtonBase::onPointerLeaves(PointerEventArgs& e)
 {

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	8/8/2004
 	author:		Steve Streeting
-	
+
 	purpose:	Interface to base class for TabButton widget
 *************************************************************************/
 /***************************************************************************
@@ -56,7 +56,7 @@ public:
      * WindowEventArgs::window set to the TabButton that was clicked.
      */
 	static const String EventClicked;
-    /** Event fired when use user attempts to drag the button with middle pointer
+    /** Event fired when use user attempts to drag the button with middle cursor
      * source.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.

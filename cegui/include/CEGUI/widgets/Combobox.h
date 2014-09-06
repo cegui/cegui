@@ -196,9 +196,9 @@ public:
 
 	\return
         - true if the user can show the list and select an item with a single
-        pointer activation.
-        - false if the user must activate the pointer to show the list and then
-        activate the pointer again to select an item.
+        cursor activation.
+        - false if the user must activate the cursor to show the list and then
+        activate the cursor again to select an item.
 	*/
 	bool	getSingleCursorActivationEnabled(void) const;
 
@@ -538,9 +538,9 @@ public:
 
 	\param setting
         - true if the user should be able to show the list and select an item
-        with a single pointer activation.
-        - false if the user must activate the pointer to show the list and then
-        activate the pointer again to select an item.
+        with a single cursor activation.
+        - false if the user must activate the cursor to show the list and then
+        activate the cursor again to select an item.
 
 	\return
 		Nothing.

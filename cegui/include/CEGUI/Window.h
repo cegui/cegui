@@ -240,23 +240,23 @@ public:
      * was changed.
      */
     static const String EventAlwaysOnTopChanged;
-    /** Event fired when the Window gains capture of pointer inputs.
+    /** Event fired when the Window gains capture of cursor inputs.
      * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window that has captured pointer inputs.
+     * WindowEventArgs::window set to the Window that has captured cursor inputs.
      */
     static const String EventInputCaptureGained;
-    /** Event fired when the Window loses capture of pointer inputs.
+    /** Event fired when the Window loses capture of cursor inputs.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to either:
-     * - the Window that has lost capture of pointer inputs if that event was
+     * - the Window that has lost capture of cursor inputs if that event was
      *   caused by the window itself releasing the capture.
-     * - the Window that is @gaining capture of pointer inputs if that is the
+     * - the Window that is @gaining capture of cursor inputs if that is the
      *   cause of the previous window with capture losing that capture.
      */
     static const String EventInputCaptureLost;
     /** Event fired when the Window has been invalidated.
      * When a window is invalidated its cached rendering geometry is cleared,
-     * the rendering surface that recieves the window's output is invalidated
+     * the rendering surface that receives the window's output is invalidated
      * and the window's target GUIContext is marked as dirty; this causes all
      * objects involved in the display of the window to be refreshed the next
      * time that the GUIContext::draw function is called.
@@ -335,39 +335,39 @@ public:
     static const String EventMarginChanged;
 
     // generated externally (inputs)
-    /** Event fired when the pointer has entered the Window's area.
+    /** Event fired when the cursor has entered the Window's area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
     static const String EventCursorEntersArea;
-    /** Event fired when the pointer has left the Window's area.
+    /** Event fired when the cursor has left the Window's area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
     static const String EventCursorLeavesArea;
-    /** Event fired when the pointer enters the Window's area.
+    /** Event fired when the cursor enters the Window's area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
-     *\note This event is fired if - and only if - the pointer is actually
+     *\note This event is fired if - and only if - the cursor is actually
      * over some part of this Window's surface area, and will not fire for
-     * example if the location of the pointer is over some child window (even
-     * though the pointer is technically also within the area of this Window).
+     * example if the location of the cursor is over some child window (even
+     * though the cursor is technically also within the area of this Window).
      * For an alternative version of this event see the
      * Window::EventCursorEntersArea event.
      */
     static const String EventPointerEntersSurface;
-    /** Event fired when the pointer is no longer over the Window's surface
+    /** Event fired when the cursor is no longer over the Window's surface
      * area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
-     *\note This event will fire whenever the pointer is no longer actually over
-     * some part of this Window's surface area, for example if the pointer is
-     * moved over some child window (even though technically the pointer has not
+     *\note This event will fire whenever the cursor is no longer actually over
+     * some part of this Window's surface area, for example if the cursor is
+     * moved over some child window (even though technically the cursor has not
      * actually 'left' this Window's area).  For an alternative version of this
      * event see the Window::EventCursorLeavesArea event.
      */
     static const String EventPointerLeavesSurface;
-    /** Event fired when the pointer moves within the area of the Window.
+    /** Event fired when the cursor moves within the area of the Window.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
@@ -377,12 +377,12 @@ public:
      * valid.
      */
     static const String EventScroll;
-    /** Event fired when a pointer is pressed and held down within the Window.
+    /** Event fired when a cursor is pressed and held down within the Window.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
     static const String EventPointerPressHold;
-    /** Event fired when the pointer is activated within the Window.
+    /** Event fired when the cursor is activated within the Window.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
@@ -964,7 +964,7 @@ public:
     /*!
     \brief
         return the child Window that is 'hit' by the given position, and is
-        allowed to handle pointer events.
+        allowed to handle cursor events.
 
     \param position
         vec2 object describing the position to check.  The position
@@ -996,7 +996,7 @@ public:
 
     /*!
     \brief
-        Return a pointer to the cursor image to use when the pointer
+        Return a pointer to the cursor image to use when the cursor
         indicator is within this window's area.
 
     \param useDefault
@@ -1004,7 +1004,7 @@ public:
         window specifies no preferred cursor image.
 
     \return
-        Pointer to the cursor image that will be used when the pointer
+        Pointer to the cursor image that will be used when the cursor
         enters this window's area.  May return NULL indicating no indicator will
         be drawn for this window.
     */
@@ -1046,7 +1046,7 @@ public:
     \note
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the pointer; is still possible to
+        the z order of the Window by clicking the cursor; is still possible to
         programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
@@ -1062,13 +1062,13 @@ public:
 
     /*!
     \brief
-        Return whether pointer press event autorepeat is enabled for this
+        Return whether cursor press event autorepeat is enabled for this
         window.
 
     \return
-        - true if autorepeat of pointer press events is enabled for this
+        - true if autorepeat of cursor press events is enabled for this
           window.
-        - false if autorepeat of pointer press events is not enabled for
+        - false if autorepeat of cursor press events is not enabled for
           this window.
     */
     bool isCursorAutoRepeatEnabled(void) const;
@@ -1079,7 +1079,7 @@ public:
 
     \return
         float value indicating the delay, in seconds, before the first repeat
-        pointer press event will be triggered when autorepeat is enabled.
+        cursor press event will be triggered when autorepeat is enabled.
     */
     float getAutoRepeatDelay(void) const;
 
@@ -1088,7 +1088,7 @@ public:
         Return the current auto-repeat rate setting for this window.
 
     \return
-        float value indicating the rate, in seconds, at which repeat pointer press
+        float value indicating the rate, in seconds, at which repeat cursor press
         events will be generated after the initial delay has expired.
     */
     float getAutoRepeatRate(void) const;
@@ -1161,12 +1161,12 @@ public:
     /*!
     \brief
         Return whether this window will rise to the top of the z-order when
-        activated with the left pointer source.
+        activated with the left cursor source.
 
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by activating the pointer; is still possible to
+        the z order of the Window by activating the cursor; is still possible to
         programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
@@ -1174,9 +1174,9 @@ public:
 
     \return
         - true if the window will come to the top of other windows when the left
-          pointer source is activated within its area.
+          cursor source is activated within its area.
         - false if the window does not change z-order position when the left
-          pointer source is activated within its area.
+          cursor source is activated within its area.
      */
     bool isRiseOnPointerActivationEnabled(void) const   { return d_riseOnPointerActivation; }
 
@@ -1256,13 +1256,13 @@ public:
 
     /*!
     \brief
-        Returns whether this window should ignore pointer event and pass them
+        Returns whether this window should ignore cursor event and pass them
         through to and other windows behind it. In effect making the window
-        transparent to the pointer.
+        transparent to the cursor.
 
     \return
-        true if pointer pass through is enabled.
-        false if pointer pass through is not enabled.
+        true if cursor pass through is enabled.
+        false if cursor pass through is not enabled.
     */
     bool isCursorPassThroughEnabled(void) const  {return d_cursorPassThroughEnabled;}
 
@@ -1831,11 +1831,11 @@ public:
 
     /*!
     \brief
-        Set the cursor image to be used when the pointer enters this window.
+        Set the cursor image to be used when the cursor enters this window.
 
     \param image
         Pointer to the Image object to use as the cursor image when the
-        pointer enters the area for this Window.
+        cursor enters the area for this Window.
 
     \return
         Nothing.
@@ -1844,7 +1844,7 @@ public:
 
     /*!
     \brief
-        Set the cursor image to be used when the pointer enters this window.
+        Set the cursor image to be used when the cursor enters this window.
 
     \param imageset
         String object that contains the name of the Imageset that contains the
@@ -1884,7 +1884,7 @@ public:
     \note
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by activating the pointer; is still possible to
+        the z order of the Window by activating the cursor; is still possible to
         programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
@@ -1903,12 +1903,12 @@ public:
 
     /*!
     \brief
-        Set whether pointer press event autorepeat is enabled for this
+        Set whether cursor press event autorepeat is enabled for this
         window.
 
     \param setting
-        - true to enable autorepeat of pointer press events.
-        - false to disable autorepeat of pointer press events.
+        - true to enable autorepeat of cursor press events.
+        - false to disable autorepeat of cursor press events.
 
     \return
         Nothing.
@@ -1921,7 +1921,7 @@ public:
 
     \param delay
         float value indicating the delay, in seconds, before the first repeat
-        pointer press event should be triggered when autorepeat is enabled.
+        cursor press event should be triggered when autorepeat is enabled.
 
     \return
         Nothing.
@@ -1933,7 +1933,7 @@ public:
         Set the current auto-repeat rate setting for this window.
 
     \param rate
-        float value indicating the rate, in seconds, at which repeat pointer press
+        float value indicating the rate, in seconds, at which repeat cursor press
         events should be generated after the initial delay has expired.
 
     \return
@@ -2057,12 +2057,12 @@ public:
     /*!
     \brief
         Set whether this window will rise to the top of the z-order when clicked
-        with the left pointer source.
+        with the left cursor source.
 
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
-        if rise on pointer activation is disabled it only affects the users ability to affect
-        the z order of the Window by activating the left pointer source; is still
+        if rise on cursor activation is disabled it only affects the users ability to affect
+        the z order of the Window by activating the left cursor source; is still
         possible to programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
@@ -2070,9 +2070,9 @@ public:
 
     \param setting
         - true if the window should come to the top of other windows when the
-          left pointer source is activated within its area.
+          left cursor source is activated within its area.
         - false if the window should not change z-order position when the left
-          pointer source is activated within its area.
+          cursor source is activated within its area.
 
     \return
         Nothing.
@@ -2291,13 +2291,13 @@ public:
 
     /*!
     \brief
-        Sets whether this window should ignore pointer events and pass them
+        Sets whether this window should ignore cursor events and pass them
         through to any windows behind it. In effect making the window
-        transparent to the pointer.
+        transparent to the cursor.
 
     \param setting
-        true if pointer pass through is enabled.
-        false if pointer pass through is not enabled.
+        true if cursor pass through is enabled.
+        false if cursor pass through is not enabled.
     */
     void setCursorPassThroughEnabled(bool setting)   {d_cursorPassThroughEnabled = setting;}
 
@@ -2560,25 +2560,17 @@ public:
 
     /*!
     \brief
-        Set whether pointer input that is not directly handled by this Window
+        Set whether cursor input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
-
-    \param enabled
-        - true if unhandled pointer input should be propagated to the parent.
-        - false if unhandled pointer input should not be propagated.
     */
     void setCursorInputPropagationEnabled(const bool enabled);
 
     /*!
     \brief
-        Return whether pointer input that is not directly handled by this Window
+        Return whether cursor input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
-
-    \return
-        - true if unhandled pointer input will be propagated to the parent.
-        - false if unhandled pointer input will not be propagated.
     */
     bool isCursorInputPropagationEnabled() const;
 
@@ -2618,7 +2610,7 @@ public:
 
     /*!
     \brief
-        Return whether Window thinks pointer is currently within its area.
+        Return whether Window thinks cursor is currently within its area.
 
     \note
         If the cursor has moved or Window's area has changed since the
@@ -2837,7 +2829,7 @@ protected:
 
     /*!
     \brief
-        Handler called when this window gains capture of pointer inputs.
+        Handler called when this window gains capture of cursor inputs.
 
     \param e
         WindowEventArgs object whose 'window' pointer field is set to the window
@@ -2848,7 +2840,7 @@ protected:
 
     /*!
     \brief
-        Handler called when this window loses capture of pointer inputs.
+        Handler called when this window loses capture of cursor inputs.
 
     \param e
         WindowEventArgs object whose 'window' pointer field is set to the window
@@ -2968,7 +2960,7 @@ protected:
 
     /*!
     \brief
-        Handler called when the pointer has entered this window's area.
+        Handler called when the cursor has entered this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -2977,7 +2969,7 @@ protected:
 
     /*!
     \brief
-        Handler called when the pointer has left this window's area.
+        Handler called when the cursor has left this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -2986,10 +2978,10 @@ protected:
 
     /*!
     \brief
-        Handler called when the pointer has entered this window's area and
+        Handler called when the cursor has entered this window's area and
         is actually over some part of this windows surface and not, for
         instance over a child window - even though technically in those cases
-        the pointer is also within this Window's area, the handler will not be
+        the cursor is also within this Window's area, the handler will not be
         called.
 
     \param e
@@ -3002,10 +2994,10 @@ protected:
 
     /*!
     \brief
-        Handler called when the pointer is no longer over this window's
-        surface area.  This will be called when the pointer is not over a part
-        of this Window's actual surface - even though technically the pointer is
-        still within the Window's area, for example if the pointer moves over a
+        Handler called when the cursor is no longer over this window's
+        surface area.  This will be called when the cursor is not over a part
+        of this Window's actual surface - even though technically the cursor is
+        still within the Window's area, for example if the cursor moves over a
         child window.
 
     \param e
@@ -3018,7 +3010,7 @@ protected:
 
     /*!
     \brief
-        Handler called when the pointer has been moved within this window's area.
+        Handler called when the cursor has been moved within this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -3027,7 +3019,7 @@ protected:
 
     /*!
     \brief
-        Handler called when the pointer scroll value changes within
+        Handler called when the cursor scroll value changes within
         this window's area.
 
     \param e
@@ -3037,7 +3029,7 @@ protected:
 
     /*!
     \brief
-        Handler called when a pointer is held pressed within this window's area.
+        Handler called when a cursor is held pressed within this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -3046,7 +3038,7 @@ protected:
 
     /*!
     \brief
-        Handler called when a pointer is activated within this window's area.
+        Handler called when a cursor is activated within this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -3227,7 +3219,7 @@ protected:
 
     /*!
     \brief
-        Fires off a repeated pointer press event for this window.
+        Fires off a repeated cursor press event for this window.
         Update position and clip region on this Windows geometry / rendering
         surface.
     */
@@ -3561,20 +3553,20 @@ protected:
 
     //! true if Window will be drawn on top of all other Windows
     bool d_alwaysOnTop;
-    //! whether window should rise in the z order when left pointer source is activated.
+    //! whether window should rise in the z order when left cursor source is activated.
     bool d_riseOnPointerActivation;
     //! true if the Window responds to z-order change requests.
     bool d_zOrderingEnabled;
 
-    //! whether (most) pointer events pass through this window
+    //! whether (most) cursor events pass through this window
     bool d_cursorPassThroughEnabled;
-    //! whether pressed pointer will auto-repeat the down event.
+    //! whether pressed cursor will auto-repeat the down event.
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
     float d_repeatDelay;
     //! seconds between further repeats after delay has expired.
     float d_repeatRate;
-    //! pointer source we're tracking for auto-repeat purposes.
+    //! Cursor source we're tracking for auto-repeat purposes.
     PointerSource d_repeatPointerSource;
     //! implements repeating - is true after delay has elapsed,
     bool d_repeating;
@@ -3612,13 +3604,13 @@ protected:
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
 
-    //! specifies whether pointer inputs should be propagated to parent(s)
+    //! specifies whether cursor inputs should be propagated to parent(s)
     bool d_propagatePointerInputs;
 
     //! GUIContext.  Set when this window is used as a root window.
     GUIContext* d_guiContext;
 
-    //! true when pointer is contained within this Window's area.
+    //! true when cursor is contained within this Window's area.
     bool d_containsPointer;
 
     //! The translation which was set for this window.

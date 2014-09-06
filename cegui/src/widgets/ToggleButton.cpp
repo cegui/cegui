@@ -80,8 +80,8 @@ void ToggleButton::onPointerActivate(PointerEventArgs& e)
     {
         if (const Window* const sheet = getGUIContext().getRootWindow())
         {
-            // was pointer released over this widget
-            // (use pointer position, as e.position is already unprojected)
+            // was cursor released over this widget
+            // (use cursor position, as e.position is already unprojected)
             if (this == sheet->getTargetChildAtPosition(
                     getGUIContext().getCursor().getPosition()))
             {

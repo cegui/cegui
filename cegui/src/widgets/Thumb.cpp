@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements common parts of the Thumb base class widget
 *************************************************************************/
 /***************************************************************************
@@ -63,7 +63,7 @@ Thumb::Thumb(const String& type, const String& name) :
 
 
 /*************************************************************************
-	Destructor for Thumb objects	
+	Destructor for Thumb objects
 *************************************************************************/
 Thumb::~Thumb(void)
 {
@@ -71,7 +71,7 @@ Thumb::~Thumb(void)
 
 
 /*************************************************************************
-	set the movement range of the thumb for the vertical axis.	
+	set the movement range of the thumb for the vertical axis.
 *************************************************************************/
 void Thumb::setVertRange(float min, float max)
 {
@@ -101,7 +101,7 @@ void Thumb::setVertRange(float min, float max)
 }
 
 /*************************************************************************
-	set the movement range of the thumb for the vertical axis.	
+	set the movement range of the thumb for the vertical axis.
 *************************************************************************/
 void Thumb::setVertRange(const std::pair<float, float> &range)
 {
@@ -148,7 +148,7 @@ void Thumb::setHorzRange(const std::pair<float, float> &range)
 
 
 /*************************************************************************
-	event triggered internally when the position of the thumb	
+	event triggered internally when the position of the thumb
 *************************************************************************/
 void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 {
@@ -157,7 +157,7 @@ void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler triggered when the user begins to drag the thumb. 	
+	Handler triggered when the user begins to drag the thumb.
 *************************************************************************/
 void Thumb::onThumbTrackStarted(WindowEventArgs& e)
 {
@@ -175,7 +175,7 @@ void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for pointer movement events
+	Handler for cursor movement events
 *************************************************************************/
 void Thumb::onPointerMove(PointerEventArgs& e)
 {
@@ -239,7 +239,7 @@ void Thumb::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer press events
+    Handler for cursor press events
 *************************************************************************/
 void Thumb::onPointerPressHold(PointerEventArgs& e)
 {
@@ -262,7 +262,7 @@ void Thumb::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for event triggered when we lose capture of pointer input
+    Handler for event triggered when we lose capture of cursor input
 *************************************************************************/
 void Thumb::onCaptureLost(WindowEventArgs& e)
 {
@@ -282,7 +282,7 @@ void Thumb::onCaptureLost(WindowEventArgs& e)
 
 /*************************************************************************
 	Return a std::pair that describes the current range set for the
-	vertical movement.	
+	vertical movement.
 *************************************************************************/
 std::pair<float, float>	Thumb::getVertRange(void) const
 {
@@ -292,7 +292,7 @@ std::pair<float, float>	Thumb::getVertRange(void) const
 
 /*************************************************************************
 	Return a std::pair that describes the current range set for the
-	horizontal movement.	
+	horizontal movement.
 *************************************************************************/
 std::pair<float, float>	Thumb::getHorzRange(void) const
 {
@@ -306,15 +306,15 @@ std::pair<float, float>	Thumb::getHorzRange(void) const
 void Thumb::addThumbProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HotTracked", "Property to get/set the state of the state of the 'hot-tracked' setting for the thumb."
         "  Value is either \"true\" or \"false\".",
         &Thumb::setHotTracked, &Thumb::isHotTracked, true
     );
-    
+
     typedef std::pair<float,float> range;
-    
+
     CEGUI_DEFINE_PROPERTY(Thumb, range,
         "VertRange", "Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".",
         &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f, 1.0f)
@@ -329,7 +329,7 @@ void Thumb::addThumbProperties(void)
         "VertFree", "Property to get/set the state the setting to free the thumb vertically.  Value is either \"true\" or \"false\".",
         &Thumb::setVertFree, &Thumb::isVertFree, false
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"true\" or \"false\".",
         &Thumb::setHorzFree, &Thumb::isHorzFree, false

@@ -201,7 +201,7 @@ Window::Window(const String& type, const String& name):
     d_alpha(1.0f),
     d_inheritsAlpha(true),
 
-    // pointer input capture set up
+    // cursor input capture set up
     d_oldCapture(0),
     d_restoreOldCapture(false),
     d_distCapturedInputs(false),
@@ -266,7 +266,7 @@ Window::Window(const String& type, const String& name):
     // Initial update mode
     d_updateMode(WUM_VISIBLE),
 
-    // Don't propagate pointer inputs by default.
+    // Don't propagate cursor inputs by default.
     d_propagatePointerInputs(false),
 
     d_guiContext(0),
@@ -1373,7 +1373,7 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "CursorAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat pointer press events. Value is either \"true\" or \"false\".",
+        "CursorAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat cursor press events. Value is either \"true\" or \"false\".",
         &Window::setCursorAutoRepeatEnabled, &Window::isCursorAutoRepeatEnabled, false
     );
 
@@ -1454,7 +1454,7 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "CursorInputPropagationEnabled", "Property to get/set whether unhandled pointer inputs should be "
+        "CursorInputPropagationEnabled", "Property to get/set whether unhandled cursor inputs should be "
         "propagated back to the Window's parent.  "
         "Value is either \"true\" or \"false\".",
         &Window::setCursorInputPropagationEnabled, &Window::isCursorInputPropagationEnabled, false
@@ -1509,7 +1509,7 @@ void Window::setCursorAutoRepeatEnabled(bool setting)
     d_repeatPointerSource = PS_None;
 
     // FIXME: There is a potential issue here if this setting is
-    // FIXME: changed _while_ the pointer is auto-repeating, and
+    // FIXME: changed _while_ the cursor is auto-repeating, and
     // FIXME: the 'captured' state of input could get messed up.
     // FIXME: The alternative is to always release here, but that
     // FIXME: has a load of side effects too - so for now nothing
@@ -1560,7 +1560,7 @@ void Window::update(float elapsed)
 //----------------------------------------------------------------------------//
 void Window::updateSelf(float elapsed)
 {
-    // pointer autorepeat processing.
+    // cursor autorepeat processing.
     if (d_autoRepeat && d_repeatPointerSource != PS_None)
     {
         d_repeatElapsed += elapsed;
@@ -2367,7 +2367,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
         d_oldCapture = 0;
     }
 
-    // handle case where pointer is now in a different window
+    // handle case where cursor is now in a different window
     // (this is a bit of a hack that uses the injection of a semantic event to handle
     // this for us).
     SemanticInputEvent moveEvent(SV_PointerMove);

@@ -55,7 +55,7 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-    /** Event fired when the user confirms the selection by activation (of the pointer).
+    /** Event fired when the user confirms the selection by activation (of the cursor).
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ComboDropList whose selection has been
      * confirmed by the user.
@@ -82,7 +82,7 @@ public:
 
 	\note
         This setting is not exclusively under client control; the ComboDropList will auto-arm in
-        response to certain pointer left source events.  This is also dependent upon the autoArm
+        response to certain cursor left source events.  This is also dependent upon the autoArm
         setting of the ComboDropList.
 
 	\param setting
@@ -115,7 +115,7 @@ public:
 		Set the mode of operation for the ComboDropList.
 
     \param setting
-        - true if the ComboDropList auto-arms when the pointer enters the box.
+        - true if the ComboDropList auto-arms when the cursor enters the box.
         - false if the user must activate to arm the box.
 
 	\return
@@ -129,7 +129,7 @@ public:
 		returns the mode of operation for the drop-list
 
     \return
-        - true if the ComboDropList auto-arms when the pointer enters the box.
+        - true if the ComboDropList auto-arms when the cursor enters the box.
         - false if the user must click to arm the box.
 	*/
 	bool	isAutoArmEnabled(void) const		{ return d_autoArm; }
@@ -178,7 +178,7 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	bool	d_autoArm;		//!< true if the box auto-arms when the pointer enters it.
+	bool	d_autoArm;		//!< true if the box auto-arms when the cursor enters it.
 	bool	d_armed;		//!< true when item selection has been armed.
     StandardItem* d_lastItemSelected; //!< Item last accepted by user.
 };

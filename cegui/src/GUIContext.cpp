@@ -350,11 +350,11 @@ void GUIContext::updateWindowContainingPointer()
 bool GUIContext::updateWindowContainingPointer_impl() const
 {
     PointerEventArgs pa(0);
-    const glm::vec2 pointer_pos(d_cursor.getPosition());
+    const glm::vec2 cursor_pos(d_cursor.getPosition());
 
-    Window* const curr_wnd_with_pointer = getTargetWindow(pointer_pos, true);
+    Window* const curr_wnd_with_pointer = getTargetWindow(cursor_pos, true);
 
-    // exit if window containing pointer has not changed.
+    // exit if window containing cursor has not changed.
     if (curr_wnd_with_pointer == d_windowContainingPointer)
         return false;
 
@@ -364,20 +364,20 @@ bool GUIContext::updateWindowContainingPointer_impl() const
     Window* oldWindow = d_windowContainingPointer;
     d_windowContainingPointer = curr_wnd_with_pointer;
 
-    // inform previous window the pointer has left it
+    // inform previous window the cursor has left it
     if (oldWindow)
     {
         pa.window = oldWindow;
-        pa.position = oldWindow->getUnprojectedPosition(pointer_pos);
+        pa.position = oldWindow->getUnprojectedPosition(cursor_pos);
         oldWindow->onPointerLeaves(pa);
     }
 
-    // inform window containing pointer that pointer has entered it
+    // inform window containing cursor that cursor has entered it
     if (d_windowContainingPointer)
     {
         pa.handled = 0;
         pa.window = d_windowContainingPointer;
-        pa.position = d_windowContainingPointer->getUnprojectedPosition(pointer_pos);
+        pa.position = d_windowContainingPointer->getUnprojectedPosition(cursor_pos);
         d_windowContainingPointer->onPointerEnters(pa);
     }
 
@@ -517,7 +517,7 @@ bool GUIContext::injectTimePulse(float timeElapsed)
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return false;
 
-    // ensure window containing pointer is now valid
+    // ensure window containing cursor is now valid
     getWindowContainingPointer();
 
     // else pass to sheet for distribution.
@@ -735,7 +735,7 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
     pa.source = event.d_payload.source;
     pa.scroll = 0;
     pa.window = getTargetWindow(pa.position, false);
-    // make pointer position sane for this target window
+    // make cursor position sane for this target window
     if (pa.window)
         pa.position = pa.window->getUnprojectedPosition(pa.position);
 
@@ -759,7 +759,7 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
     pa.source = event.d_payload.source;
     pa.scroll = 0;
     pa.window = getTargetWindow(pa.position, false);
-    // make pointer position sane for this target window
+    // make cursor position sane for this target window
     if (pa.window)
         pa.position = pa.window->getUnprojectedPosition(pa.position);
 
@@ -779,7 +779,7 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
     pa.source = PS_None;
     pa.scroll = event.d_payload.single;
     pa.window = getTargetWindow(pa.position, false);
-    // make pointer position sane for this target window
+    // make cursor position sane for this target window
     if (pa.window)
         pa.position = pa.window->getUnprojectedPosition(pa.position);
 
@@ -800,7 +800,7 @@ bool GUIContext::handlePointerMove_impl(PointerEventArgs& pa)
     if (!getWindowContainingPointer())
         return false;
 
-    // make pointer position sane for this target window
+    // make cursor position sane for this target window
     pa.position = getWindowContainingPointer()->getUnprojectedPosition(pa.position);
     // inform window about the input.
     pa.window = getWindowContainingPointer();
@@ -818,7 +818,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
         event.d_payload.array[0],
         event.d_payload.array[1]);
 
-    // setup pointer movement event args object.
+    // setup cursor movement event args object.
     PointerEventArgs pa(0);
     pa.moveDelta = new_position - d_cursor.getPosition();
 

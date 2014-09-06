@@ -437,12 +437,12 @@ void TabControl::addTabControlProperties(void)
         "TabHeight", "Property to get/set the height of the tabs.",
         &TabControl::setTabHeight, &TabControl::getTabHeight, UDim(0.05f,0.0f)
     );
-    
+
     CEGUI_DEFINE_PROPERTY(TabControl, UDim,
         "TabTextPadding", "Property to get/set the padding either side of the tab buttons.",
         &TabControl::setTabTextPadding, &TabControl::getTabTextPadding, UDim(0.0f,0.5f)
     );
-    
+
     CEGUI_DEFINE_PROPERTY(TabControl, TabPanePosition,
         "TabPanePosition", "Property to get/set the position of the buttons pane.",
         &TabControl::setTabPanePosition, &TabControl::getTabPanePosition, TabControl::Top
@@ -454,12 +454,12 @@ Internal version of adding a child window
 void TabControl::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
             "TabControl can only have Elements of type Window added as "
             "children (Window path: " + getNamePath() + ")."));
-    
+
     if (wnd->isAutoWindow())
     {
         // perform normal addChild
@@ -477,7 +477,7 @@ Internal version of removing a child window
 void TabControl::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
-    
+
     // protect against possible null pointers
     if (!wnd) return;
 
@@ -519,7 +519,7 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     // panel of the correct height already
     UVector2 position(cegui_absdim(0.0f), cegui_absdim(0.0f));
     USize size(cegui_absdim(0.0f), cegui_reldim(1.0f));
-    
+
     // x position is based on previous button
     if (!index)
     {
@@ -533,11 +533,11 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
         // position is prev pos + width
         position.d_x = prevButton->getArea().d_max.d_x;
     }
-   
-    size.d_width = 
+
+    size.d_width =
         cegui_absdim(btn->getRenderedString().getHorizontalExtent(btn)) +
             getTabTextPadding() + getTabTextPadding();
- 
+
     btn->setPosition(position);
     btn->setSize(size);
 
@@ -755,7 +755,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 
     if (pe.source == PS_Middle)
     {
-        // This is the middle pointer source activate event, remember initial drag position
+        // This is the middle cursor source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
         d_btGrabPos = (pe.position.x -
             but_pane->getOuterRectClipper().d_min.d_x) -
@@ -763,7 +763,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
     }
     else if (pe.source == PS_None)
     {
-        // Regular pointer move event
+        // Regular cursor move event
         Window *but_pane = getTabButtonPane();
         float new_to = (pe.position.x -
             but_pane->getOuterRectClipper().d_min.d_x) -

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	1/4/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
+
 	purpose:	Implementation of PopupMenu widget base class
 *************************************************************************/
 /***************************************************************************
@@ -127,7 +127,7 @@ void PopupMenu::openPopupMenu(bool notify)
 		d_fading = false;
 		setAlpha(d_origAlpha);
 	}
-	
+
 	show();
 	moveToFront();
 }
@@ -277,7 +277,7 @@ Sizef PopupMenu::getContentSize() const
 	// find the content sizes
 	float widest = 0;
 	float total_height = 0;
-	
+
 	size_t i = 0;
 	size_t max = d_listItems.size();
 	while (i < max)
@@ -289,7 +289,7 @@ Sizef PopupMenu::getContentSize() const
 
 		i++;
 	}
-	
+
 	const float count = float(i);
 
 	// vert item spacing
@@ -309,7 +309,7 @@ Sizef PopupMenu::getContentSize() const
 void PopupMenu::onAlphaChanged(WindowEventArgs& e)
 {
 	MenuBase::onAlphaChanged(e);
-	
+
 	// if we are not fading, this is a real alpha change request and we save a copy of the value
 	if (!d_fading)
 	{
@@ -354,23 +354,23 @@ void PopupMenu::onHidden(WindowEventArgs& e)
 
 
 /************************************************************************
-    Handler for pointer press events
+    Handler for cursor press events
 ************************************************************************/
 void PopupMenu::onPointerPressHold(PointerEventArgs& e)
 {
     MenuBase::onPointerPressHold(e);
-        // dont reach our parent
+        // don't reach our parent
         ++e.handled;
 }
 
 
 /************************************************************************
-    Handler for pointer activation events
+    Handler for cursor activation events
 ************************************************************************/
 void PopupMenu::onPointerActivate(PointerEventArgs& e)
 {
     MenuBase::onPointerActivate(e);
-        // dont reach our parent
+        // don't reach our parent
         ++e.handled;
 }
 
@@ -386,7 +386,7 @@ void PopupMenu::addPopupMenuProperties(void)
         "FadeInTime", "Property to get/set the fade in time in seconds of the popup menu.  Value is a float.",
         &PopupMenu::setFadeInTime, &PopupMenu::getFadeInTime, 0.0f
     );
-    
+
     CEGUI_DEFINE_PROPERTY(PopupMenu, float,
         "FadeOutTime", "Property to get/set the fade out time in seconds of the popup menu.  Value is a float.",
         &PopupMenu::setFadeOutTime, &PopupMenu::getFadeOutTime, 0.0f

@@ -165,7 +165,7 @@ void Editbox::setValidationString(const String& validation_string)
 
     if (!d_validator)
         CEGUI_THROW(InvalidRequestException(
-            "Unable to set validation string on Editbox '" + getNamePath() + 
+            "Unable to set validation string on Editbox '" + getNamePath() +
             "' because it does not currently have a RegexMatcher validator."));
 
     d_validationString = validation_string;
@@ -356,10 +356,10 @@ bool Editbox::performCopy(Clipboard& clipboard)
 {
     if (getSelectionLength() == 0)
         return false;
-    
+
     const String selectedText = getText().substr(
         getSelectionStartIndex(), getSelectionLength());
-    
+
     clipboard.setText(selectedText);
     return true;
 }
@@ -403,12 +403,12 @@ bool Editbox::performPaste(Clipboard& clipboard)
 {
     if (isReadOnly())
         return false;
-    
+
     String clipboardText = clipboard.getText();
-    
+
     if (clipboardText.empty())
         return false;
-    
+
     // backup current text
     String tmp(getText());
 
@@ -418,7 +418,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
 
     tmp.erase(getSelectionStartIndex(), getSelectionLength());
-    
+
     // if there is room
     if (tmp.length() < d_maxTextLen)
     {
@@ -434,11 +434,11 @@ bool Editbox::performPaste(Clipboard& clipboard)
             // erase selection using mode that does not modify getText()
             // (we just want to update state)
             eraseSelectedText(false);
-            
+
             // advance caret (done first so we can "do stuff" in event
             // handlers!)
             d_caretPos += clipboardText.length();
-            
+
             // set text to the newly modified string
             setText(tmp);
             d_undoHandler->addUndoHistory(undo);
@@ -463,7 +463,7 @@ void Editbox::onPointerPressHold(PointerEventArgs& e)
         // grab inputs
         if (captureInput())
         {
-            // handle pointer press
+            // handle cursor press
             clearSelection();
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
@@ -855,43 +855,43 @@ void Editbox::onTextChanged(WindowEventArgs& e)
 void Editbox::addEditboxProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, bool,
           "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
           &Editbox::setReadOnly, &Editbox::isReadOnly, false
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, bool,
           "MaskText","Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
           &Editbox::setTextMasked, &Editbox::isTextMasked, false /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, String::value_type,
           "MaskCodepoint","Property to get/set the utf32 codepoint value used for masking text. "
           "Value is either \"[uint]\" (number = codepoint) if CEGUI is compiled with utf32 string or \"[char]\" (just the symbol) if CEGUI is compiled with std::string.",
           &Editbox::setMaskCodePoint, &Editbox::getMaskCodePoint, 42
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, String,
           "ValidationString","Property to get/set the validation string Editbox.  Value is a text string.",
           &Editbox::setValidationString, &Editbox::getValidationString, ".*"
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "CaretIndex","Property to get/set the current caret index.  Value is \"[uint]\".",
           &Editbox::setCaretIndex, &Editbox::getCaretIndex, 0
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
           &Editbox::setSelectionStart, &Editbox::getSelectionStartIndex, 0 /* TODO: getter inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
           &Editbox::setSelectionLength, &Editbox::getSelectionLength, 0
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
           &Editbox::setMaxTextLength, &Editbox::getMaxTextLength, String().max_size()
@@ -939,7 +939,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         setSelection(d_dragAnchorIdx, d_caretPos);
         ++e.handled;
     }
-    else if (e.d_semanticValue == SV_SelectWord && 
+    else if (e.d_semanticValue == SV_SelectWord &&
         e.d_payload.source == PS_Left)
     {
         // if masked, set up to select all

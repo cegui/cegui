@@ -76,13 +76,13 @@ public:
     bool canFocus();
 
 protected:
-    //! helper to update pointer input handled state
+    //! helper to update cursor input handled state
     void updatePointerEventHandled(PointerEventArgs& e) const;
 
     // overridden functions from Window base class
     bool moveToFront_impl(bool wasClicked);
 
-    // override the pointer event handlers
+    // override the cursor event handlers
     void onPointerMove(PointerEventArgs& e);
     void onScroll(PointerEventArgs& e);
     void onPointerPressHold(PointerEventArgs& e);

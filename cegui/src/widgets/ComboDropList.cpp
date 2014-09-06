@@ -131,13 +131,13 @@ void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for pointer movement events
+	Handler for cursor movement events
 *************************************************************************/
 void ComboDropList::onPointerMove(PointerEventArgs& e)
 {
     ListWidget::onPointerMove(e);
 
-    // if pointer is within our area (but not our children)
+    // if cursor is within our area (but not our children)
 	if (isHit(e.position))
 	{
 		if (!getChildAtPosition(e.position))
@@ -150,10 +150,10 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 
 			if (d_armed)
 			{
-                // check for an item under the pointer
+                // check for an item under the cursor
                 StandardItem* item = d_itemModel.getItemForIndex(indexAt(e.position));
 
-                // if an item is under pointer, select it
+                // if an item is under cursor, select it
                 if (item != 0)
                 {
                     setIndexSelectionState(item, true);
@@ -170,7 +170,7 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 	// not within the list area
 	else
 	{
-		// if left pointer is held, clear any selection
+		// if left cursor is held, clear any selection
 		if (e.pointerState.isHeld(PS_Left))
 		{
             clearSelections();
@@ -180,7 +180,7 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer pressed events
+    Handler for cursor pressed events
 *************************************************************************/
 void ComboDropList::onPointerPressHold(PointerEventArgs& e)
 {
@@ -204,7 +204,7 @@ void ComboDropList::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for pointer activation events
+	Handler for cursor activation events
 *************************************************************************/
 void ComboDropList::onPointerActivate(PointerEventArgs& e)
 {
@@ -223,7 +223,7 @@ void ComboDropList::onPointerActivate(PointerEventArgs& e)
 
             releaseInput();
 		}
-        // if we are not already armed, in response to a left pointer activation event, we auto-arm.
+        // if we are not already armed, in response to a left cursor activation event, we auto-arm.
 		else
 		{
 			d_armed = true;

@@ -93,9 +93,9 @@ prevent collisions with the default ones, there is a value called
 SemanticValue::SV_UserDefinedSemanticValue, which signals the minimum
 value of a user-defined semantic value. The payload of a semantic input event
 is a union which covers most of the usage cases: either a single or a double
-float, or in the case of a pointer(see below), the source of the pointer (left,
+float, or in the case of a cursor (see below), the source of the cursor (left,
 right, middle). There is also no more knowledge of a mouse. Instead the generic
-term Pointer is used, because this can represent also a touch pointer.
+term Cursor is used, because this can represent also a touch pointer.
 
 You can create a totally different InputAggregator or you can
 inherit the default behaviour while adding new semantics. Such example
