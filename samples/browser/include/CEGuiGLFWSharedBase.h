@@ -28,7 +28,7 @@
 #define _CEGuiGLFWSharedBase_h_
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 
 #include <GL/glfw.h>

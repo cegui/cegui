@@ -80,12 +80,12 @@ namespace CEGUI
          * value has been changed.
          */
         static const String EventDragAlphaChanged;
-        /** Event fired when the pointer indicator used when dragging is changed.
+        /** Event fired when the cursor used when dragging is changed.
          * Handlers are passed a const WindowEventArgs reference with
          * WindowEventArgs::window set to the DragContainer whose dragging
-         * pointer indicator image has been changed.
+         * cursor image has been changed.
          */
-        static const String EventDragPointerIndicatorChanged;
+        static const String EventDragCursorChanged;
         /** Event fired when the drag pixel threshold is changed.
          * Handlers are passed a const WindowEventArgs reference with
          * WindowEventArgs::window set to the DragContainer whose dragging pixel
@@ -158,7 +158,7 @@ namespace CEGUI
             The drag threshold is the number of pixels that the pointer must be
             moved with the left source held pressed in order to commence a drag
             operation.
-        
+
         \return
             float value indicating the current drag threshold value.
         */
@@ -209,24 +209,24 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the Image currently set to be used for the pointer indicator 
+            Return the Image currently set to be used for the cursor
             when a drag operation is in progress.
 
         \return
-            Image object currently set to be used as the pointer indicator when dragging.
+            Image object currently set to be used as the cursor when dragging.
         */
         const Image* getDragIndicatorImage(void) const;
 
         /*!
         \brief
-            Set the Image to be used for the pointer indicator when a drag 
+            Set the Image to be used for the cursor when a drag
             operation is in progress.
 
-            This method may be used during a drag operation to update the current 
-            pointer indicator image.
+            This method may be used during a drag operation to update the current
+            cursor image.
 
         \param image
-            Image object to be used as the pointer indicator while dragging.
+            Image object to be used as the cursor while dragging.
 
         \return
             Nothing.
@@ -235,14 +235,14 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the Image to be used for the pointer indicator when a drag 
+            Set the Image to be used for the cursor when a drag
             operation is in progress.
 
-            This method may be used during a drag operation to update the current 
-            pointer indicator image.
+            This method may be used during a drag operation to update the current
+            cursor image.
 
         \param name
-            Image to be used as the pointer indicator when dragging.
+            Image to be used as the cursor when dragging.
 
         \return
             Nothing.
@@ -304,7 +304,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the fixed pointer indicator dragging offset to be used for this
+            Set the fixed cursor dragging offset to be used for this
             DragContainer.
 
         \param offset
@@ -319,7 +319,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the fixed pointer indicator dragging offset to be used for this
+            Return the fixed cursor dragging offset to be used for this
             DragContainer.
 
         \return
@@ -400,9 +400,9 @@ namespace CEGUI
 
         /*!
         \brief
-            Method to update pointer indicator image
+            Method to update cursor image
         */
-        void updateActivePointerIndicator(void) const;
+        void updateActiveCursor(void) const;
 
         /*************************************************************************
         	Overrides of methods in Window
@@ -480,13 +480,13 @@ namespace CEGUI
 
         /*!
         \brief
-            Method called when the pointer indicator to use when dragging is changed.
+            Method called when the cursor to use when dragging is changed.
         \param e
             WindowEventArgs object.
         \return
             Nothing.
         */
-        virtual void onDragPointerIndicatorChanged(WindowEventArgs& e);
+        virtual void onDragCursorChanged(WindowEventArgs& e);
 
         /*!
         \brief
@@ -519,7 +519,7 @@ namespace CEGUI
         	Data
         *************************************************************************/
         bool    d_draggingEnabled;  //!< True when dragging is enabled.
-        bool    d_leftPointerHeld;    //!< True when left pointer indicator source is held.
+        bool    d_leftPointerHeld;    //!< True when left cursor source is held.
         bool    d_dragging;         //!< true when being dragged.
         UVector2 d_dragPoint;       //!< point we are being dragged at.
         UVector2 d_startPosition;   //!< position prior to dragging.
@@ -528,7 +528,7 @@ namespace CEGUI
         float   d_storedAlpha;      //!< Alpha value to re-set when dragging ends.
         bool    d_storedClipState;  //!< Parent clip state to re-set.
         Window* d_dropTarget;       //!< Target window for possible drop operation.
-        const Image* d_dragIndicatorImage; //!< Image to use for pointer indicator when dragging.
+        const Image* d_dragIndicatorImage; //!< Image to use for cursor when dragging.
         bool d_dropflag;            //!< True when we're being dropped
         //! true when we're in 'sticky' mode.
         bool d_stickyMode;
@@ -546,7 +546,7 @@ namespace CEGUI
         /*!
         \brief
             Adds properties specific to the DragContainer base class.
-        
+
         \return
             Nothing.
         */

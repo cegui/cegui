@@ -190,7 +190,7 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
-    d_guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
+    d_guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // Create a custom font which we use to draw the list items. This custom
     // font won't get effected by the scaler and such.

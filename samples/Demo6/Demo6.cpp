@@ -53,7 +53,7 @@ bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
 
     // load font and setup default if not loaded via scheme

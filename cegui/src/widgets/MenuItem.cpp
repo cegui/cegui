@@ -323,7 +323,7 @@ void MenuItem::closeAllMenuItemPopups()
     // are we attached to a PopupMenu?
     if (!d_ownerList)
         return;
-    
+
     if (dynamic_cast<Menubar*>(d_ownerList))
     {
         closePopupMenu();
@@ -336,7 +336,7 @@ void MenuItem::closeAllMenuItemPopups()
         // is this parent popup attached to a menu item?
         Window* popParent = pop->getParent();
         MenuItem* mi = dynamic_cast<MenuItem*>(popParent);
-        
+
         if (mi)
         {
             // recurse
@@ -428,7 +428,7 @@ void MenuItem::onPointerActivate(PointerEventArgs& e)
         // (use pointer position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
                 getGUIContext().getRootWindow()->getTargetChildAtPosition(
-                    getGUIContext().getPointerIndicator().getPosition()) == this)
+                    getGUIContext().getCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
@@ -449,7 +449,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
     d_pushed = false;
     updateInternalState(getUnprojectedPosition(
-        getGUIContext().getPointerIndicator().getPosition()));
+        getGUIContext().getCursor().getPosition()));
     invalidate();
 
     // event was handled by us.
@@ -482,7 +482,7 @@ void MenuItem::onTextChanged(WindowEventArgs& e)
     // if we are attached to a ItemListBase, we make it update as necessary
     Window* parent = getParent();
     ItemListBase* ilb = dynamic_cast<ItemListBase*>(parent);
-    
+
     if (ilb)
     {
         ilb->handleUpdatedItemData();
@@ -536,12 +536,12 @@ void MenuItem::updateSelf(float elapsed)
 void MenuItem::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
             "MenuItem can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ")."));
-    
+
     ItemEntry::addChild_impl(wnd);
 
     PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd);
@@ -558,12 +558,12 @@ Add MenuItem specific properties
 void MenuItem::addMenuItemProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(MenuItem, UVector2,
         "PopupOffset","Property to specify an offset for the popup menu position. Value is a UVector2 property value.",
         &MenuItem::setPopupOffset, &MenuItem::getPopupOffset, UVector2::zero()
     );
-    
+
     CEGUI_DEFINE_PROPERTY(MenuItem, float,
         "AutoPopupTimeout","Property to specify the time, which has to elapse before the popup window is opened/closed if the hovering state changes. Value is a float property value.",
         &MenuItem::setAutoPopupTimeout, &MenuItem::getAutoPopupTimeout, 0.0f

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of FrameWindow base class
 *************************************************************************/
 /***************************************************************************
@@ -29,7 +29,7 @@
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
@@ -138,7 +138,7 @@ bool FrameWindow::isCloseButtonEnabled(void) const
 
 
 /*************************************************************************
-	Enables or disables sizing for this window.	
+	Enables or disables sizing for this window.
 *************************************************************************/
 void FrameWindow::setSizingEnabled(bool setting)
 {
@@ -147,7 +147,7 @@ void FrameWindow::setSizingEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables the frame for this window.	
+	Enables or disables the frame for this window.
 *************************************************************************/
 void FrameWindow::setFrameEnabled(bool setting)
 {
@@ -157,7 +157,7 @@ void FrameWindow::setFrameEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables the title bar for the frame window.	
+	Enables or disables the title bar for the frame window.
 *************************************************************************/
 void FrameWindow::setTitleBarEnabled(bool setting)
 {
@@ -168,7 +168,7 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables the close button for the frame window.	
+	Enables or disables the close button for the frame window.
 *************************************************************************/
 void FrameWindow::setCloseButtonEnabled(bool setting)
 {
@@ -179,7 +179,7 @@ void FrameWindow::setCloseButtonEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables roll-up (shading) for this window.	
+	Enables or disables roll-up (shading) for this window.
 *************************************************************************/
 void FrameWindow::setRollupEnabled(bool setting)
 {
@@ -194,14 +194,14 @@ void FrameWindow::setRollupEnabled(bool setting)
 
 /*************************************************************************
 	Toggles the state of the window between rolled-up (shaded) and normal
-	sizes.  This requires roll-up to be enabled.	
+	sizes.  This requires roll-up to be enabled.
 *************************************************************************/
 void FrameWindow::toggleRollup(void)
 {
     if (isRollupEnabled())
     {
         d_rolledup ^= true;
-        
+
         // event notification.
         WindowEventArgs args(this);
         onRollupToggled(args);
@@ -220,7 +220,7 @@ void FrameWindow::setRolledup(bool val)
 }
 
 /*************************************************************************
-	Move the window by the pixel offsets specified in 'offset'.	
+	Move the window by the pixel offsets specified in 'offset'.
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const glm::vec2& offset)
 {
@@ -231,7 +231,7 @@ void FrameWindow::offsetPixelPosition(const glm::vec2& offset)
 }
 
 
-/*************************************************************************	
+/*************************************************************************
 	check local pixel co-ordinate point 'pt' and return one of the
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
@@ -301,7 +301,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
 
 /*************************************************************************
 	move the window's left edge by 'delta'.  The rest of the window
-	does not move, thus this changes the size of the Window.	
+	does not move, thus this changes the size of the Window.
 *************************************************************************/
 bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
 {
@@ -430,7 +430,7 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
 
 /*************************************************************************
 	move the window's bottom edge by 'delta'.  The rest of the window
-	does not move, thus this changes the size of the Window.	
+	does not move, thus this changes the size of the Window.
 *************************************************************************/
 bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
 {
@@ -487,7 +487,7 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
 
 
 /*************************************************************************
-    Set the appropriate pointer indicator for the given window-relative pixel
+    Set the appropriate cursor for the given window-relative pixel
     point.
 *************************************************************************/
 void FrameWindow::setIndicatorForPoint(const glm::vec2& pt) const
@@ -497,30 +497,30 @@ void FrameWindow::setIndicatorForPoint(const glm::vec2& pt) const
 	case SizingTop:
 	case SizingBottom:
 		getGUIContext().
-            getPointerIndicator().setImage(d_nsSizingCursor);
+            getCursor().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
 		getGUIContext().
-            getPointerIndicator().setImage(d_ewSizingCursor);
+            getCursor().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
 		getGUIContext().
-            getPointerIndicator().setImage(d_nwseSizingCursor);
+            getCursor().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
 		getGUIContext().
-            getPointerIndicator().setImage(d_neswSizingCursor);
+            getCursor().setImage(d_neswSizingCursor);
 		break;
 
 	default:
 		getGUIContext().
-            getPointerIndicator().setImage(getPointerIndicator());
+            getCursor().setImage(getCursor());
 		break;
 	}
 }
@@ -542,7 +542,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Event generated internally whenever the close button is clicked.	
+	Event generated internally whenever the close button is clicked.
 *************************************************************************/
 void FrameWindow::onCloseClicked(WindowEventArgs& e)
 {
@@ -718,7 +718,7 @@ void FrameWindow::onDeactivated(ActivationEventArgs& e)
 
 
 /*************************************************************************
-	Set whether this FrameWindow can be moved by dragging the title bar.	
+	Set whether this FrameWindow can be moved by dragging the title bar.
 *************************************************************************/
 void FrameWindow::setDragMovingEnabled(bool setting)
 {

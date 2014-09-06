@@ -1942,7 +1942,7 @@ void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
     if (cumulative || range)
     {
         const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
-            getGUIContext().getPointerIndicator().getPosition());
+            getGUIContext().getCursor().getPosition());
         handleSelection(local_point, cumulative, range);
 
         ++ e.handled;
@@ -2242,7 +2242,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
         "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"true\" or \"false\".",
         &MultiColumnList::setUserColumnDraggingEnabled, &MultiColumnList::isUserColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction."
         "  Value is either \"true\" or \"false\".",
@@ -2260,7 +2260,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
         "  Value is either \"true\" or \"false\".",
         &MultiColumnList::setShowVertScrollbar, &MultiColumnList::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal scroll bar of the list box."
         "  Value is either \"true\" or \"false\".",
@@ -2279,7 +2279,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
 
     CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, uint,
         "RowCount", "Property to access the number of rows in the list (read only)",
-        0, &MultiColumnList::getRowCount, 0 
+        0, &MultiColumnList::getRowCount, 0
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, MultiColumnList::SelectionMode,

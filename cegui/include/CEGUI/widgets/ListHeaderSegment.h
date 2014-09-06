@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	15/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to list header segment class.
 *************************************************************************/
 /***************************************************************************
@@ -379,7 +379,7 @@ protected:
 	\return
 		true if the threshold has been exceeded and drag-moving should be initiated, or false
 		if the threshold has not been exceeded.
-	*/		
+	*/
     bool    isDragMoveThresholdExceeded(const glm::vec2& local_pointer);
 
 	/*************************************************************************
@@ -469,8 +469,8 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    const Image*    d_sizingPointerIndicator;   //!< Image to use for pointer when sizing (typically set by derived class).
-    const Image*    d_movingPointerIndicator;   //!< Image to use for pointer when moving (typically set by derived class).
+    const Image*    d_sizingCursor;   //!< Image to use for pointer when sizing (typically set by derived class).
+    const Image*    d_movingCursor;   //!< Image to use for pointer when moving (typically set by derived class).
 
     float   d_splitterSize;     //!< pixel width of the sizing area.
     bool    d_splitterHover;    //!< True if the pointer is over the splitter

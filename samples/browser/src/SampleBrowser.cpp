@@ -145,10 +145,10 @@ void SampleBrowser::initialiseLoadScreenLayout()
 void SampleBrowser::loadSamples()
 {
     #include "samples.inc"
-    
+
     std::vector<Sample*>::iterator iter = samples.begin();
     std::vector<Sample*>::iterator iterEnd = samples.end();
-    
+
     std::sort(samples.begin(), samples.end(), SamplePointerCompare());
 
     while (iter != iterEnd)
@@ -338,8 +338,8 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     sampleContext->setRenderTarget(defaultRenderTarget);
 
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
-    sampleContext->getPointerIndicator().setPosition(
-        CEGUI::System::getSingleton().getDefaultGUIContext().getPointerIndicator().
+    sampleContext->getCursor().setPosition(
+        CEGUI::System::getSingleton().getDefaultGUIContext().getCursor().
             getPosition());
 
     d_selectedSampleData = correspondingSampleData;
@@ -361,8 +361,8 @@ void SampleBrowser::stopDisplaySample()
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().getPointerIndicator().
-        setPosition(sampleGUIContext->getPointerIndicator().getPosition());
+    CEGUI::System::getSingleton().getDefaultGUIContext().getCursor().
+        setPosition(sampleGUIContext->getCursor().getPosition());
 
     d_selectedSampleData = 0;
     d_quittingSampleView = false;
@@ -513,7 +513,7 @@ bool SampleBrowser::updateInitialisationStep()
 //----------------------------------------------------------------------------//
 void SampleBrowser::initialisationFinalisation()
 {
-    System::getSingleton().getDefaultGUIContext().getPointerIndicator().
+    System::getSingleton().getDefaultGUIContext().getCursor().
         setDefaultImage("SampleBrowserSkin/MouseArrow");
     d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
 

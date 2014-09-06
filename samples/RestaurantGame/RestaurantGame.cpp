@@ -131,14 +131,14 @@ RestaurantGameSample::RestaurantGameSample() :
 {
     Sample::d_name = "RestaurantGameSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl, graphics: Charles \"Syg\" Mattei";
-    Sample::d_description = 
+    Sample::d_description =
         "The RestaurantGame presents a game that uses a head-up display. This shows that CEGUI has "
         "full capabilities for rendering HUD's for first person shooters or other any other types of games. "
         "The interface consists of a health bar, lives, switchable weapons and power-ups. "
         "The game itself consists of moving dishes that have to be clicked on to receive points. "
         "When clicked, the points appear in red or green text as a pop-up text that moves "
         "upwards and vanishes after some seconds.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "The HUD consists of basic \"Generic/Label\" and \"Generic/Image\" windows to display its elements. "
         "For some windows event handlers are registered to react to user interaction. "
         "A CEGUI/Progressbar with custom skinning was made for this demo to display the life bar. "
@@ -147,7 +147,7 @@ RestaurantGameSample::RestaurantGameSample() :
         "over the event handler will react to this and subsequently the window will be "
         "deleted as defined in the C++ code.";
 }
-    
+
 bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
@@ -172,7 +172,7 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
         ImageManager::getSingleton().addBitmapImageFromFile("RestaurantGameSampleGameOver", "RestaurantGameSampleGameOver.png");
     d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "RestaurantGameSampleGameOver");
 
-    setupPointerIndicator();
+    setupCursor();
 
     srand(static_cast<unsigned int >(time(0)));
 
@@ -182,9 +182,9 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponLeftArrowClicked, this));
     d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponRightArrowClicked, this));
-   
+
     d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&RestaurantGameSample::handleRestartButtonClicked, this));
-  
+
 
     return true;
 }
@@ -215,7 +215,7 @@ void RestaurantGameSample::update(float timeSinceLastUpdate)
 
     timeSinceLastSpawn += timeSinceLastUpdate;
 
-    updatePointerIndicator();
+    updateCursor();
 
 
     if(timeSinceLastSpawn> 1.2f)
@@ -231,30 +231,30 @@ void RestaurantGameSample::update(float timeSinceLastUpdate)
     d_guiContext->markAsDirty();
 }
 
-void RestaurantGameSample::setupPointerIndicator()
+void RestaurantGameSample::setupCursor()
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    d_pointerIndicatorWnd = winMgr.createWindow("Generic/Image");
-    d_pointerIndicatorWnd->setProperty("Image", "RestaurantGameSample/Spoon");
-    d_pointerIndicatorWnd->setAspectMode(CEGUI::AM_EXPAND);
-    d_pointerIndicatorWnd->setAspectRatio(1.0f);
-    d_pointerIndicatorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
-    d_pointerIndicatorWnd->setAlwaysOnTop(true);
-    d_pointerIndicatorWnd->setPointerPassThroughEnabled(true);
-    d_rootIngame->addChild(d_pointerIndicatorWnd);
+    d_cursorWnd = winMgr.createWindow("Generic/Image");
+    d_cursorWnd->setProperty("Image", "RestaurantGameSample/Spoon");
+    d_cursorWnd->setAspectMode(CEGUI::AM_EXPAND);
+    d_cursorWnd->setAspectRatio(1.0f);
+    d_cursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
+    d_cursorWnd->setAlwaysOnTop(true);
+    d_cursorWnd->setPointerPassThroughEnabled(true);
+    d_rootIngame->addChild(d_cursorWnd);
 }
 
-void RestaurantGameSample::updatePointerIndicator()
+void RestaurantGameSample::updateCursor()
 {
-    glm::vec2 position = d_guiContext->getPointerIndicator().getPosition();
+    glm::vec2 position = d_guiContext->getCursor().getPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height
-    float absHeight = d_pointerIndicatorWnd->getPixelSize().d_height;
+    float absHeight = d_cursorWnd->getPixelSize().d_height;
     position.y -= absHeight;
 
-    d_pointerIndicatorWnd->setPosition(
+    d_cursorWnd->setPosition(
         CEGUI::UVector2(
         cegui_absdim(position.x - 5.0f), cegui_absdim(position.y + 5.0f))
         );
@@ -447,7 +447,7 @@ void RestaurantGameSample::handleLivesChanged()
     bool life2Visible = (d_lives >= 2);
     bool life3Visible = (d_lives >= 3);
 
-    
+
     d_rootIngame->getChild("TopBar/Life1")->setAlpha( life1Visible ? 1.0f : 0.5f );
     d_rootIngame->getChild("TopBar/Life2")->setAlpha( life2Visible ? 1.0f : 0.5f );
     d_rootIngame->getChild("TopBar/Life3")->setAlpha( life3Visible ? 1.0f : 0.5f );
@@ -455,7 +455,7 @@ void RestaurantGameSample::handleLivesChanged()
     if(d_lives <= 0)
     {
         d_root->addChild(d_rootGameOver);
-        d_rootGameOver->addChild(d_pointerIndicatorWnd);
+        d_rootGameOver->addChild(d_cursorWnd);
     }
 }
 
@@ -483,7 +483,7 @@ void RestaurantGameSample::selectedWeapon(SelectedWeapon weapon)
         d_rootIngame->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
         d_rootIngame->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
         d_rootIngame->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Spoon");
-        
+
         break;
     case SW_Fork:
         d_rootIngame->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
@@ -516,7 +516,7 @@ bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs&
 bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs& args)
 {
     d_root->removeChild(d_rootGameOver);
-    d_rootIngame->addChild(d_pointerIndicatorWnd);
+    d_rootIngame->addChild(d_cursorWnd);
 
     initGame();
 

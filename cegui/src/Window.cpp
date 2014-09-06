@@ -32,7 +32,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
@@ -195,7 +195,7 @@ Window::Window(const String& type, const String& name):
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
-    d_pointerIndicator(0),
+    d_cursor(0),
 
     // alpha transparency set up
     d_alpha(1.0f),
@@ -1242,28 +1242,28 @@ void Window::onZChange_impl(void)
 }
 
 //----------------------------------------------------------------------------//
-const Image* Window::getPointerIndicator(bool useDefault) const
+const Image* Window::getCursor(bool useDefault) const
 {
-    if (d_pointerIndicator)
-        return d_pointerIndicator;
+    if (d_cursor)
+        return d_cursor;
     else
-        return useDefault ? getGUIContext().getPointerIndicator().getDefaultImage() : 0;
+        return useDefault ? getGUIContext().getCursor().getDefaultImage() : 0;
 }
 
 //----------------------------------------------------------------------------//
-void Window::setPointerIndicator(const String& name)
+void Window::setCursor(const String& name)
 {
-    setPointerIndicator(
+    setCursor(
         &ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
-void Window::setPointerIndicator(const Image* image)
+void Window::setCursor(const Image* image)
 {
-    d_pointerIndicator = image;
+    d_cursor = image;
 
     if (getGUIContext().getWindowContainingPointer() == this)
-        getGUIContext().getPointerIndicator().setImage(image);
+        getGUIContext().getCursor().setImage(image);
 }
 
 //----------------------------------------------------------------------------//
@@ -1295,7 +1295,7 @@ void Window::generateAutoRepeatEvent(PointerSource source)
 {
     PointerEventArgs pa(this);
     pa.position = getUnprojectedPosition(
-        getGUIContext().getPointerIndicator().getPosition());
+        getGUIContext().getCursor().getPosition());
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = source;
     pa.scroll = 0;
@@ -1348,8 +1348,8 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, Image*,
-        "PointerIndicatorImage","Property to get/set the pointer indicator image for the Window.  Value should be \"<image name>\".",
-        &Window::setPointerIndicator, &Window::property_getPointerIndicator, 0
+        "CursorImage","Property to get/set the cursor image for the Window.  Value should be \"<image name>\".",
+        &Window::setCursor, &Window::property_getCursor, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -2371,7 +2371,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // (this is a bit of a hack that uses the injection of a semantic event to handle
     // this for us).
     SemanticInputEvent moveEvent(SV_PointerMove);
-    const glm::vec2 cursorPosition = getGUIContext().getPointerIndicator().getPosition();
+    const glm::vec2 cursorPosition = getGUIContext().getCursor().getPosition();
     moveEvent.d_payload.array[0] = cursorPosition.x;
     moveEvent.d_payload.array[1] = cursorPosition.y;
     getGUIContext().injectInputEvent(moveEvent);
@@ -2493,8 +2493,8 @@ void Window::onPointerLeavesArea(PointerEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onPointerEnters(PointerEventArgs& e)
 {
-    // set the pointer indicator
-    getGUIContext().getPointerIndicator().setImage(getPointerIndicator());
+    // set the cursor
+    getGUIContext().getCursor().setImage(getCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -3665,9 +3665,9 @@ const Font* Window::property_getFont() const
 }
 
 //----------------------------------------------------------------------------//
-const Image* Window::property_getPointerIndicator() const
+const Image* Window::property_getCursor() const
 {
-    return getPointerIndicator();
+    return getCursor();
 }
 
 //----------------------------------------------------------------------------//

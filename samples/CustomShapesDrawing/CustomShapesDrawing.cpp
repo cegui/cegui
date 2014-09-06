@@ -66,7 +66,7 @@ CustomShapesDrawingSample::CustomShapesDrawingSample() :
 {
     Sample::d_name = "CustomShapesDrawingSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
-    Sample::d_description = 
+    Sample::d_description =
         "In CEGUI the GeometryBuffer can be used to render vertices directly on the screen. However, this comes with limitations, "
         "since CEGUI is not a Rendering Engine.For example only textured and coloured vertices are available out of the box.The vertices for all lines and "
         "the quad of the background of the graph had to be calculated with extra code.The other possibility to render a graph, as display in this sample, "
@@ -77,7 +77,7 @@ CustomShapesDrawingSample::CustomShapesDrawingSample() :
         "displayed in the sample with a WindowsLook / FrameWindow that contains an Generic / Image window.The FrameWindow is sizeable and will also scale its child window when "
         "sized.The Generic / Image window has an 'Image' property that is pointing to our SVGImage.When the FrameWindow is sized it can thus be seen that the image is "
         "being scaled too.";
-    Sample::d_summary = 
+    Sample::d_summary =
         "This sample displays rendering possibilities provided with CEGUI's GeometryBuffer and SVGImage/SVGData class. "
         "The goal is to render an FPS graph that displays the last recorded FPS values.SVGImage provides optional anti - aliasing and the possibility to "
         "use the Image as part of a window.";
@@ -97,7 +97,7 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
     // CEGUI setup
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // Create a Generic/image called 'Root' with a white image as Image property.
@@ -253,7 +253,7 @@ void CustomShapesDrawingSample::updateFPSGraphs()
     d_FPSGraphGeometryBuffer->reset();
 
     std::vector<glm::vec2> linePositions;
-    
+
     for(unsigned int i = 0; i < d_FPSGraphSamplesCount; ++i)
     {
         float currentOffset = i / static_cast<float>(d_FPSGraphSamplesCount - 1);
@@ -347,7 +347,7 @@ void CustomShapesDrawingSample::updateCustomSVGImagePolyline(std::vector<glm::ve
     {
         // Calculating the position with 95% horizontal scale
         linePositions[i].x = linePositions[i].x * d_customSVGImageWidth * 0.95f;
-        // Calculating the position with 90% vertical scale and 5% vertical offset 
+        // Calculating the position with 90% vertical scale and 5% vertical offset
         linePositions[i].y = d_customSVGImageHeight * 0.975f - linePositions[i].y * d_customSVGImageHeight * 0.95f;
     }
 
@@ -409,7 +409,7 @@ void CustomShapesDrawingSample::setupCustomSVGImage()
     d_customPolyline->d_paintStyle.d_stroke.d_colour = glm::vec3(0.0f, 1.0f, 0.0f);
     d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SLJ_ROUND;
     d_customPolyline->d_paintStyle.d_strokeWidth = 2.0f;
-    //By default the SVG standard has the default fill set to black. We do not want any fill so we switch it to "none". 
+    //By default the SVG standard has the default fill set to black. We do not want any fill so we switch it to "none".
     d_customPolyline->d_paintStyle.d_fill.d_none = true;
 
     //We add the created shape to the SVGData object
@@ -515,7 +515,7 @@ void CustomShapesDrawingSample::updateFPSData(int newFPSValue)
 }
 
 /*************************************************************************
-    Sets up the background of the GeometryBuffer-based graph 
+    Sets up the background of the GeometryBuffer-based graph
 *************************************************************************/
 void CustomShapesDrawingSample::setupCustomGeometryGraphBackground()
 {
@@ -698,7 +698,7 @@ void CustomShapesDrawingSample::updateCustomSVGImageFPSLabels()
 *************************************************************************/
 void CustomShapesDrawingSample::setupCustomSVGImageGraphBackground(CEGUI::SVGData &fpsSVGData)
 {
-    // We make a grey quad background for the graph. We offset its position by 2.5% of the height and 
+    // We make a grey quad background for the graph. We offset its position by 2.5% of the height and
     // make the total height of the rect 95% of the image height. We will later do the same with our lines
     // so that their strokes won't be clipped by the image's area.
     SVGRect* svg_rect = new SVGRect(SVGPaintStyle(), glm::mat3x3(1.0f),
@@ -721,7 +721,7 @@ void CustomShapesDrawingSample::setupCustomSVGImageGraphBackground(CEGUI::SVGDat
     size_t lineCount = 7;
     for (size_t i = 0; i < lineCount; ++i)
     {
-        // We calculate the current height of the line vertex using an offset from the top and the modified height, so that the stroke won't get clipped by the image 
+        // We calculate the current height of the line vertex using an offset from the top and the modified height, so that the stroke won't get clipped by the image
         const float currentHeight = d_customSVGImageHeight * 0.025f + adjustedHeight * i / static_cast<float>(lineCount - 1);
         const glm::vec2 linePointBegin(0.0f, currentHeight);
         const glm::vec2 linePointEnd(d_customSVGImageWidth, currentHeight);

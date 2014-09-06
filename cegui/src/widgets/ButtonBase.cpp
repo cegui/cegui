@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of ButtonBase widget
 *************************************************************************/
 /***************************************************************************
@@ -27,7 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ButtonBase.h"
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -124,7 +124,7 @@ void ButtonBase::setPushedState(const bool pushed)
 
     if (!pushed)
 	    updateInternalState(getUnprojectedPosition(
-            getGUIContext().getPointerIndicator().getPosition()));
+            getGUIContext().getCursor().getPosition()));
     else
         d_hovering = true;
 

@@ -54,7 +54,7 @@ bool DragDropSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(&defaultFont);
 
     // set up defaults
-    guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");

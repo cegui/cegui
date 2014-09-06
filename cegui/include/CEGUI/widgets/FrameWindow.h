@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for FrameWindow
 *************************************************************************/
 /***************************************************************************
@@ -52,7 +52,7 @@ public:
     static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
-		Constants	
+		Constants
 	*************************************************************************/
 	// additional event names for this window
     /** Event fired when the rollup (shade) state of the window is changed.
@@ -118,8 +118,8 @@ public:
 		Nothing
 	*/
 	virtual void	initialiseComponents(void);
-	
-	
+
+
 	/*!
 	\brief
 		Return whether this window is sizable.  Note that this requires that the window have an enabled frame and that sizing itself is enabled
@@ -146,7 +146,7 @@ public:
 
 	\return
 		true if the window has a title bar and it is enabled, false if the window has no title bar or if the title bar is disabled.
-	*/	
+	*/
 	bool	isTitleBarEnabled(void) const;
 
 
@@ -326,7 +326,7 @@ public:
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the north-south
-        sizing pointer indicator.
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
@@ -336,7 +336,7 @@ public:
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the east-west
-        sizing pointer indicator.
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
@@ -346,7 +346,7 @@ public:
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the northwest-southeast
-        sizing pointer indicator.
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
@@ -356,7 +356,7 @@ public:
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the northeast-southwest
-        sizing pointer indicator.
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
@@ -365,7 +365,7 @@ public:
 
     /*!
     \brief
-        Set the Image to be used for the north-south sizing pointer indicator.
+        Set the Image to be used for the north-south sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -377,7 +377,7 @@ public:
 
     /*!
     \brief
-        Set the Image to be used for the east-west sizing pointer indicator.
+        Set the Image to be used for the east-west sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -389,7 +389,7 @@ public:
 
     /*!
     \brief
-        Set the Image to be used for the northwest-southeast sizing pointer indicator.
+        Set the Image to be used for the northwest-southeast sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -401,7 +401,7 @@ public:
 
     /*!
     \brief
-        Set the Image to be used for the northeast-southwest sizing pointer indicator.
+        Set the Image to be used for the northeast-southwest sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -413,7 +413,7 @@ public:
 
     /*!
     \brief
-        Set the image to be used for the north-south sizing pointer indicator.
+        Set the image to be used for the north-south sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -427,7 +427,7 @@ public:
 
     /*!
     \brief
-        Set the image to be used for the east-west sizing pointer indicator.
+        Set the image to be used for the east-west sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -441,7 +441,7 @@ public:
 
     /*!
     \brief
-        Set the image to be used for the northwest-southeast sizing pointer indicator.
+        Set the image to be used for the northwest-southeast sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -455,7 +455,7 @@ public:
 
     /*!
     \brief
-        Set the image to be used for the northeast-southwest sizing pointer indicator.
+        Set the image to be used for the northeast-southwest sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -570,7 +570,7 @@ protected:
 	*/
     SizingLocation	getSizingBorderAtPoint(const glm::vec2& pt) const;
 
- 
+
 	/*!
 	\brief
 		return true if given SizingLocation is on left edge.
@@ -632,7 +632,7 @@ protected:
 
     /*!
     \brief
-        Set the appropriate pointer indicator for the given window-relative pixel point.
+        Set the appropriate cursor for the given window-relative pixel point.
     */
     void	setIndicatorForPoint(const glm::vec2& pt) const;
 

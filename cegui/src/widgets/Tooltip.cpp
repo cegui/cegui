@@ -66,7 +66,7 @@ namespace CEGUI
         setClippedByParent(false);
         setDestroyedByParent(false);
         setAlwaysOnTop(true);
-        
+
         // we need updates even when not visible
         setUpdateMode(WUM_ALWAYS);
 
@@ -85,7 +85,7 @@ namespace CEGUI
 
         d_inPositionSelf = true;
 
-        const PointerIndicator& indicator = getGUIContext().getPointerIndicator();
+        const Cursor& indicator = getGUIContext().getCursor();
         const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
         const Image* pointerImage = indicator.getImage();
@@ -102,14 +102,14 @@ namespace CEGUI
         tipRect.setPosition(tmpPos);
 
         // if tooltip would be off the right of the screen,
-        // reposition to the other side of the pointer indicator.
+        // reposition to the other side of the cursor.
         if (screen.right() < tipRect.right())
         {
             tmpPos.x = pointerPos.x - tipRect.getWidth() - 5;
         }
 
         // if tooltip would be off the bottom of the screen,
-        // reposition to the other side of the pointer indicator.
+        // reposition to the other side of the cursor.
         if (screen.bottom() < tipRect.bottom())
         {
             tmpPos.y = pointerPos.y - tipRect.getHeight() - 5;

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of ListHeader widget base class
 *************************************************************************/
 /***************************************************************************
@@ -683,7 +683,7 @@ void ListHeader::setSegmentOffset(float offset)
 		d_segmentOffset = offset;
 		layoutSegments();
 		invalidate();
-	
+
 		// Fire event.
 		WindowEventArgs args(this);
 		onSegmentOffsetChanged(args);
@@ -906,7 +906,7 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
     const glm::vec2 pointerPos(getUnprojectedPosition(
-        getGUIContext().getPointerIndicator().getPosition()));
+        getGUIContext().getCursor().getPosition()));
 
 	// segment must be dropped within the window
     if (isHit(pointerPos))
@@ -1013,7 +1013,7 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
     // get pointer position as something local
     const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
         getUnprojectedPosition(getGUIContext().
-            getPointerIndicator().getPosition())));
+            getCursor().getPosition())));
 
 	// scroll left?
     if (localPointerPos.x < 0.0f)
@@ -1051,22 +1051,22 @@ void ListHeader::addHeaderProperties(void)
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"true\" or \"false\".",
         &ListHeader::setSortingEnabled, &ListHeader::isSortingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"true\" or \"false\".",
         &ListHeader::setColumnSizingEnabled, &ListHeader::isColumnSizingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"true\" or \"false\".",
         &ListHeader::setColumnDraggingEnabled, &ListHeader::isColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, uint,
         "SortColumnID", "Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.",
         &ListHeader::setSortColumnFromID, &ListHeader::getSortSegmentID, 0 /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.",
         &ListHeader::setSortDirection, &ListHeader::getSortDirection, ListHeaderSegment::None

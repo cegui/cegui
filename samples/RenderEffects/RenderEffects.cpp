@@ -167,7 +167,7 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
 
-    const CEGUI::PointerIndicator& cursor = d_window->getGUIContext().getPointerIndicator();
+    const CEGUI::Cursor& cursor = d_window->getGUIContext().getCursor();
 
     bool changed = false;
 
@@ -591,7 +591,7 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
-    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");

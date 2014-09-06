@@ -2,7 +2,7 @@
 	created:	21/2/2004
 	author:		Paul D Turner
 
-    purpose:    Implements the PointerIndicator class
+    purpose:    Implements the Cursor class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -26,7 +26,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/PointerIndicator.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
@@ -42,21 +42,21 @@ namespace CEGUI
 /*************************************************************************
 	Static Data Definitions
 *************************************************************************/
-bool PointerIndicator::s_initialPositionSet = false;
-glm::vec2 PointerIndicator::s_initialPosition(0.0f, 0.0f);
+bool Cursor::s_initialPositionSet = false;
+glm::vec2 Cursor::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String PointerIndicator::EventNamespace("PointerIndicator");
-const String PointerIndicator::EventImageChanged("ImageChanged");
-const String PointerIndicator::EventDefaultImageChanged("DefaultImageChanged");
+const String Cursor::EventNamespace("Cursor");
+const String Cursor::EventImageChanged("ImageChanged");
+const String Cursor::EventDefaultImageChanged("DefaultImageChanged");
 
 
 /*************************************************************************
 	constructor
 *************************************************************************/
-PointerIndicator::PointerIndicator(void) :
+Cursor::Cursor(void) :
     d_indicatorImage(0),
     d_defaultIndicatorImage(0),
     d_position(0.0f, 0.0f),
@@ -82,16 +82,16 @@ PointerIndicator::PointerIndicator(void) :
 /*************************************************************************
 	Destructor
 *************************************************************************/
-PointerIndicator::~PointerIndicator(void)
+Cursor::~Cursor(void)
 {
     destroyGeometryBuffers();
 }
 
 
 /*************************************************************************
-    Set the current pointer indicator image
+    Set the current cursor image
 *************************************************************************/
-void PointerIndicator::setImage(const Image* image)
+void Cursor::setImage(const Image* image)
 {
     if (image == d_indicatorImage)
         return;
@@ -99,22 +99,22 @@ void PointerIndicator::setImage(const Image* image)
 	d_indicatorImage = image;
     d_cachedGeometryValid = false;
 
-	PointerIndicatorEventArgs args(this);
+	CursorEventArgs args(this);
 	args.d_image = image;
 	onImageChanged(args);
 }
 
 
 /*************************************************************************
-	Set the current pointer indicator image
+	Set the current cursor image
 *************************************************************************/
-void PointerIndicator::setImage(const String& name)
+void Cursor::setImage(const String& name)
 {
 	setImage(&ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::setDefaultImage(const Image* image)
+void Cursor::setDefaultImage(const Image* image)
 {
     if (image == d_defaultIndicatorImage)
         return;
@@ -122,27 +122,27 @@ void PointerIndicator::setDefaultImage(const Image* image)
 	d_defaultIndicatorImage = image;
     d_cachedGeometryValid = d_indicatorImage != 0;
 
-	PointerIndicatorEventArgs args(this);
+	CursorEventArgs args(this);
 	args.d_image = image;
 	onDefaultImageChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::setDefaultImage(const String& name)
+void Cursor::setDefaultImage(const String& name)
 {
 	setDefaultImage(&ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
-const Image* PointerIndicator::getDefaultImage() const
+const Image* Cursor::getDefaultImage() const
 {
     return d_defaultIndicatorImage;
 }
 
 /*************************************************************************
-	Draw the pointer indicator
+	Draw the cursor
 *************************************************************************/
-void PointerIndicator::draw()
+void Cursor::draw()
 {
     if (!d_visible || !d_indicatorImage)
         return;
@@ -157,9 +157,9 @@ void PointerIndicator::draw()
 
 
 /*************************************************************************
-	Set the current pointer indicator position
+	Set the current cursor position
 *************************************************************************/
-void PointerIndicator::setPosition(const glm::vec2& position)
+void Cursor::setPosition(const glm::vec2& position)
 {
     d_position = position;
 	constrainPosition();
@@ -169,9 +169,9 @@ void PointerIndicator::setPosition(const glm::vec2& position)
 
 
 /*************************************************************************
-	Offset the pointer indicator position by the deltas specified in 'offset'.
+	Offset the cursor position by the deltas specified in 'offset'.
 *************************************************************************/
-void PointerIndicator::offsetPosition(const glm::vec2& offset)
+void Cursor::offsetPosition(const glm::vec2& offset)
 {
     d_position += offset;
 	constrainPosition();
@@ -181,10 +181,10 @@ void PointerIndicator::offsetPosition(const glm::vec2& offset)
 
 
 /*************************************************************************
-	Checks the pointer indicator position is within the current 'constrain'
+	Checks the cursor position is within the current 'constrain'
 	Rect and adjusts as required.
 *************************************************************************/
-void PointerIndicator::constrainPosition()
+void Cursor::constrainPosition()
 {
     const Rectf absarea(getConstraintArea());
 
@@ -203,9 +203,9 @@ void PointerIndicator::constrainPosition()
 
 
 /*************************************************************************
-	Set the area that the pointer indicator is constrained to.
+	Set the area that the cursor is constrained to.
 *************************************************************************/
-void PointerIndicator::setConstraintArea(const Rectf* area)
+void Cursor::setConstraintArea(const Rectf* area)
 {
     const Rectf renderer_area(glm::vec2(0, 0),
                               System::getSingleton().getRenderer()->getDisplaySize());
@@ -231,9 +231,9 @@ void PointerIndicator::setConstraintArea(const Rectf* area)
 
 
 /*************************************************************************
-	Set the area that the pointer indicator is constrained to.
+	Set the area that the cursor is constrained to.
 *************************************************************************/
-void PointerIndicator::setUnifiedConstraintArea(const URect* area)
+void Cursor::setUnifiedConstraintArea(const URect* area)
 {
     const Rectf renderer_area(glm::vec2(0, 0),
                               System::getSingleton().getRenderer()->getDisplaySize());
@@ -254,26 +254,26 @@ void PointerIndicator::setUnifiedConstraintArea(const URect* area)
 }
 
 /*************************************************************************
-	Set the area that the pointer indicator is constrained to.
+	Set the area that the cursor is constrained to.
 *************************************************************************/
-Rectf PointerIndicator::getConstraintArea(void) const
+Rectf Cursor::getConstraintArea(void) const
 {
     return Rectf(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 /*************************************************************************
-	Set the area that the pointer indicator is constrained to.
+	Set the area that the cursor is constrained to.
 *************************************************************************/
-const URect& PointerIndicator::getUnifiedConstraintArea(void) const
+const URect& Cursor::getUnifiedConstraintArea(void) const
 {
     return d_constraints;
 }
 
 /*************************************************************************
-	Return the current pointer indicator position in display resolution
+	Return the current cursor position in display resolution
 	independant values.
 *************************************************************************/
-glm::vec2 PointerIndicator::getDisplayIndependantPosition(void) const
+glm::vec2 Cursor::getDisplayIndependantPosition(void) const
 {
     const Sizef dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
@@ -282,7 +282,7 @@ glm::vec2 PointerIndicator::getDisplayIndependantPosition(void) const
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::notifyDisplaySizeChanged(const Sizef& new_size)
+void Cursor::notifyDisplaySizeChanged(const Sizef& new_size)
 {
     updateGeometryBuffersClipping(Rectf(glm::vec2(0.0f, 0.0f), new_size));
 
@@ -291,20 +291,20 @@ void PointerIndicator::notifyDisplaySizeChanged(const Sizef& new_size)
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::setExplicitRenderSize(const Sizef& size)
+void Cursor::setExplicitRenderSize(const Sizef& size)
 {
     d_customSize = size;
     d_cachedGeometryValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& PointerIndicator::getExplicitRenderSize() const
+const Sizef& Cursor::getExplicitRenderSize() const
 {
     return d_customSize;
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::cacheGeometry()
+void Cursor::cacheGeometry()
 {
     d_cachedGeometryValid = true;
     destroyGeometryBuffers();
@@ -330,7 +330,7 @@ void PointerIndicator::cacheGeometry()
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::calculateCustomOffset() const
+void Cursor::calculateCustomOffset() const
 {
     const Sizef sz(d_indicatorImage->getRenderedSize());
     const glm::vec2 offset(d_indicatorImage->getRenderedOffset());
@@ -342,32 +342,32 @@ void PointerIndicator::calculateCustomOffset() const
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::setInitialPointerPosition(const glm::vec2& position)
+void Cursor::setInitialPointerPosition(const glm::vec2& position)
 {
     s_initialPosition = position;
     s_initialPositionSet = true;
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::invalidate()
+void Cursor::invalidate()
 {
     d_cachedGeometryValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::onImageChanged(PointerIndicatorEventArgs& e)
+void Cursor::onImageChanged(CursorEventArgs& e)
 {
     fireEvent(EventImageChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::onDefaultImageChanged(PointerIndicatorEventArgs& e)
+void Cursor::onDefaultImageChanged(CursorEventArgs& e)
 {
     fireEvent(EventDefaultImageChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::destroyGeometryBuffers()
+void Cursor::destroyGeometryBuffers()
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
@@ -377,7 +377,7 @@ void PointerIndicator::destroyGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::updateGeometryBuffersTranslation()
+void Cursor::updateGeometryBuffersTranslation()
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
@@ -388,7 +388,7 @@ void PointerIndicator::updateGeometryBuffersTranslation()
 }
 
 //----------------------------------------------------------------------------//
-void PointerIndicator::updateGeometryBuffersClipping(const Rectf& clipping_area)
+void Cursor::updateGeometryBuffersClipping(const Rectf& clipping_area)
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)

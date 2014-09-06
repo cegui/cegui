@@ -43,7 +43,7 @@ namespace CEGUI
     const String DragContainer::EventDragPositionChanged("DragPositionChanged");
     const String DragContainer::EventDragEnabledChanged("DragEnabledChanged");
     const String DragContainer::EventDragAlphaChanged("DragAlphaChanged");
-    const String DragContainer::EventDragPointerIndicatorChanged("DragPointerIndicatorChanged");
+    const String DragContainer::EventDragCursorChanged("DragCursorChanged");
     const String DragContainer::EventDragThresholdChanged("DragThresholdChanged");
     const String DragContainer::EventDragDropTargetChanged("DragDropTargetChanged");
 
@@ -124,7 +124,7 @@ namespace CEGUI
     const Image* DragContainer::getDragIndicatorImage(void) const
     {
         return d_dragIndicatorImage ? d_dragIndicatorImage :
-            getGUIContext().getPointerIndicator().getDefaultImage();
+            getGUIContext().getCursor().getDefaultImage();
     }
 
     void DragContainer::setDragIndicatorImage(const Image* image)
@@ -133,7 +133,7 @@ namespace CEGUI
         {
             d_dragIndicatorImage = image;
             WindowEventArgs args(this);
-            onDragPointerIndicatorChanged(args);
+            onDragCursorChanged(args);
         }
     }
 
@@ -155,35 +155,35 @@ namespace CEGUI
             "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the DragContainer.  Value is either \"true\" or \"false\".",
             &DragContainer::setDraggingEnabled, &DragContainer::isDraggingEnabled, true
         );
-        
+
         CEGUI_DEFINE_PROPERTY(DragContainer, float,
             "DragAlpha", "Property to get/set the dragging alpha value.  Value is a float.",
             &DragContainer::setDragAlpha, &DragContainer::getDragAlpha, 0.5f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(DragContainer, float,
             "DragThreshold", "Property to get/set the dragging threshold value.  Value is a float.",
             &DragContainer::setPixelDragThreshold, &DragContainer::getPixelDragThreshold, 8.0f /* TODO: Inconsistency */
         );
-        
+
         CEGUI_DEFINE_PROPERTY(DragContainer, Image*,
-            "DragIndicatorImage", "Property to get/set the pointer indicator image used when dragging.  Value should be \"set:<imageset name> image:<image name>\".",
+            "DragIndicatorImage", "Property to get/set the cursor image used when dragging.  Value should be \"set:<imageset name> image:<image name>\".",
             &DragContainer::setDragIndicatorImage, &DragContainer::getDragIndicatorImage, 0
         );
-        
+
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "StickyMode", "Property to get/set the state of the sticky mode setting for the "
                 "DragContainer.  Value is either \"true\" or \"false\".",
             &DragContainer::setStickyModeEnabled, &DragContainer::isStickyModeEnabled, true /* TODO: Inconsistency */
         );
-        
+
         CEGUI_DEFINE_PROPERTY(DragContainer, UVector2,
             "FixedDragOffset", "Property to get/set the state of the fixed dragging offset "
                 "setting for the DragContainer.  "
                 "Value is a UVector2 property value.",
             &DragContainer::setFixedDragOffset, &DragContainer::getFixedDragOffset, UVector2::zero()
         );
-        
+
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "UseFixedDragOffset", "Property to get/set the setting that control whether the fixed "
                 "dragging offset will be used.  "
@@ -219,7 +219,7 @@ namespace CEGUI
             notifyScreenAreaChanged();
 
             // Now drag mode is set, change cursor as required
-            updateActivePointerIndicator();
+            updateActiveCursor();
         }
     }
 
@@ -236,10 +236,10 @@ namespace CEGUI
         onDragPositionChanged(args);
     }
 
-    void DragContainer::updateActivePointerIndicator(void) const
+    void DragContainer::updateActiveCursor(void) const
     {
-        getGUIContext().getPointerIndicator().
-            setImage(d_dragging ? getDragIndicatorImage() : getPointerIndicator());
+        getGUIContext().getCursor().
+            setImage(d_dragging ? getDragIndicatorImage() : getCursor());
     }
 
     void DragContainer::onPointerPressHold(PointerEventArgs& e)
@@ -338,8 +338,8 @@ namespace CEGUI
 
             notifyScreenAreaChanged();
 
-            // restore normal pointer indicator
-            updateActivePointerIndicator();
+            // restore normal cursor
+            updateActiveCursor();
         }
 
         d_leftPointerHeld = false;
@@ -419,7 +419,7 @@ namespace CEGUI
             d_enabled = false;
             // find out which child of root window has the pointer in it
             Window* eventWindow = root->getTargetChildAtPosition(
-                getGUIContext().getPointerIndicator().getPosition());
+                getGUIContext().getCursor().getPosition());
             d_enabled = wasEnabled;
 
             // use root itself if no child was hit
@@ -460,11 +460,11 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::onDragPointerIndicatorChanged(WindowEventArgs& e)
+    void DragContainer::onDragCursorChanged(WindowEventArgs& e)
     {
-        fireEvent(EventDragPointerIndicatorChanged, e, EventNamespace);
+        fireEvent(EventDragCursorChanged, e, EventNamespace);
 
-        updateActivePointerIndicator();
+        updateActiveCursor();
     }
 
     void DragContainer::onDragThresholdChanged(WindowEventArgs& e)
@@ -554,7 +554,7 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
 
             // get position of pointer as co-ordinates local to this window.
             const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
-                getGUIContext().getPointerIndicator().getPosition()));
+                getGUIContext().getCursor().getPosition()));
             doDragging(localPointerPos);
 
             d_pickedUp = true;

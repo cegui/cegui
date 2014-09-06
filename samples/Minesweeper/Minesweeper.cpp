@@ -44,9 +44,9 @@ MinesweeperSample::MinesweeperSample()
 {
     Sample::d_name = "MinesweeperSample";
     Sample::d_credits = "Olivier \"Dalfy\" Delannoy";
-    Sample::d_description = 
+    Sample::d_description =
         "The Minesweeper sample is a fully functional replication of the well known game using CEGUI";
-    Sample::d_summary = 
+    Sample::d_summary =
         "The demo uses event handlers and the Vanilla and Taharez skins";
 }
 
@@ -79,7 +79,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
     // set default pointer image
-    guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
@@ -109,8 +109,8 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     d_alarm->addChild(frame);
     frame->setXPosition(UDim(0.3f, 0.0f));
     frame->setYPosition(UDim(0.15f, 0.0f));
-    frame->setWidth(UDim(0.4f, 0.0f)); 
-    frame->setHeight(UDim(0.7f, 0.0f)); 
+    frame->setWidth(UDim(0.4f, 0.0f));
+    frame->setHeight(UDim(0.7f, 0.0f));
     frame->setText("CEGUI Minesweeper");
 
     // create the action panel
@@ -158,7 +158,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     grid->setYPosition(UDim(0.23f, 0.0f));
     grid->setWidth(    UDim(0.94f, 0.0f));
     grid->setHeight(   UDim(0.74f, 0.0f));
-    const float d_inc = 1.0f / MinesweeperSize; 
+    const float d_inc = 1.0f / MinesweeperSize;
     for(size_t i = 0 ; i < MinesweeperSize ; ++i)
     {
         // create a container for each row

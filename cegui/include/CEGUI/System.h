@@ -402,7 +402,7 @@ public:
         returned may not actually correspond to the module in use.
     */
     static const String getDefaultXMLParserName();
-    
+
     /*!
     \brief
         Retrieve the image codec to be used by the system.
@@ -447,7 +447,7 @@ public:
 
         Calling this function ensures that any other parts of the system that
         need to know about display size changes are notified.  This affects
-        things such as the PointerIndicator default constraint area, and also the
+        things such as the Cursor default constraint area, and also the
         auto-scale functioning of Imagesets and Fonts.
 
     \note
@@ -469,7 +469,7 @@ public:
 
         If this global custom RenderedStringParser is set to 0, then all windows
         with parsing enabled and no custom RenderedStringParser set on the
-        window itself will use the systems BasicRenderedStringParser. 
+        window itself will use the systems BasicRenderedStringParser.
     */
     RenderedStringParser* getDefaultCustomRenderedStringParser() const;
 
@@ -485,7 +485,7 @@ public:
 
         If this global custom RenderedStringParser is set to 0, then all windows
         with parsing enabled and no custom RenderedStringParser set on the
-        window itself will use the systems BasicRenderedStringParser. 
+        window itself will use the systems BasicRenderedStringParser.
     */
     void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
 
@@ -606,15 +606,15 @@ protected:
     //! handle cleanup of the XML parser
     void cleanupXMLParser();
 
-    //! setup image codec 
+    //! setup image codec
     void setupImageCodec(const String& codecName);
 
-    //! cleanup image codec 
+    //! cleanup image codec
     void cleanupImageCodec();
 
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
-    
+
     /*************************************************************************
 		Implementation Data
 	*************************************************************************/

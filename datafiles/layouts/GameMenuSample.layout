@@ -126,12 +126,12 @@
             <Window type="GameMenuSample/Editbox" name="LoginEditbox" >
                 <Property name="Area" value="{{0.828906,0},{0.154167,0},{0.928906,0},{0.179167,0}}" />
                 <Property name="Font" value="Jura-10" />
-                <Property name="PointerIndicatorImage" value="" />
+                <Property name="CursorImage" value="" />
             </Window>
             <Window type="GameMenuSample/Editbox" name="PasswordEditbox" >
                 <Property name="Area" value="{{0.849219,0},{0.202778,0},{0.949219,0},{0.227778,0}}" />
                 <Property name="Font" value="Jura-10" />
-                <Property name="PointerIndicatorImage" value="" />
+                <Property name="CursorImage" value="" />
             </Window>
             <Window type="Generic/Label" name="PasswordLabel" >
                 <Property name="Area" value="{{0.746094,0},{0.202778,0},{0.846094,0},{0.227778,0}}" />

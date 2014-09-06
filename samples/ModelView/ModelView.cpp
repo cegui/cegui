@@ -53,7 +53,7 @@ bool ModelViewSample::initialise(GUIContext* gui_context)
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
-    gui_context->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
+    gui_context->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();
     d_root = win_mgr.loadLayoutFromFile("ModelViewSample.layout");

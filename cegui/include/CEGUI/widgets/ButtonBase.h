@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for ButtonBase widget
 *************************************************************************/
 /***************************************************************************
@@ -115,7 +115,7 @@ protected:
 
     \param pointer_pos
         Point object describing, in screen pixel co-ordinates, the location of
-        the pointer indicator.
+        the cursor.
 
     \return
         Nothing

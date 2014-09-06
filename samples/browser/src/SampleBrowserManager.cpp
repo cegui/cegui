@@ -155,23 +155,22 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
         sampleData->getInputAggregator()->injectMousePosition(absPosX, absPosY);
         sampleData->getGuiContext()->markAsDirty();
 
-        wnd->setPointerIndicator("SampleBrowserSkin/MouseArrowHover");
+        wnd->setCursor("SampleBrowserSkin/MouseArrowHover");
     }
     else
     {
-        wnd->setPointerIndicator("SampleBrowserSkin/MouseArrow");
+        wnd->setCursor("SampleBrowserSkin/MouseArrow");
     }
 
     return true;
 }
 
-
 bool SampleBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
-{ 
+{
     const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
 
     CEGUI::Window* wnd(pointerArgs.window);
-    wnd->setPointerIndicator("SampleBrowserSkin/MouseArrow");
+    wnd->setCursor("SampleBrowserSkin/MouseArrow");
 
     return true;
 }
