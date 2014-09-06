@@ -709,7 +709,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/VerticalScrollbarThumb">
         <Property name="VertFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
@@ -751,7 +751,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>

@@ -994,7 +994,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -1440,7 +1440,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/VerticalScrollbarThumb">
         <Property name="VertFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -2124,7 +2124,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/HorizontalSliderThumb">
         <Property name="HorzFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -2250,7 +2250,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/VerticalSliderThumb">
         <Property name="VertFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
