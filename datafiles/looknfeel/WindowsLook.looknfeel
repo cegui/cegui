@@ -1357,7 +1357,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="WindowsLook/Background" type="Image" name="SelectionBrush"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF3030FF" type="ColourRect" name="SelectionColour"/>
         <Property name="Selectable" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -1809,7 +1809,7 @@
     <WidgetLook name="WindowsLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="WindowsLook/MouseEsWeCursor"/>
         <Property name="MovingCursorImage" value="WindowsLook/MouseMoveCursor"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="segment">
             <ImageryComponent>
                 <Area>
@@ -2000,7 +2000,7 @@
     -->
     <WidgetLook name="WindowsLook/ListHeader">
         <Property name="SegmentWidgetType" value="WindowsLook/ListHeaderSegment"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
     </WidgetLook>
@@ -2829,7 +2829,7 @@
     <WidgetLook name="WindowsLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="true"/>
         <Property name="MinSize" value="{{0,0},{0,16}}"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3176,7 +3176,7 @@
     <WidgetLook name="WindowsLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="true"/>
         <Property name="MinSize" value="{{0,16},{0,0}}"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3518,7 +3518,7 @@
     -->
     <WidgetLook name="WindowsLook/SliderThumb">
         <Property name="HorzFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>

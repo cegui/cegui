@@ -196,7 +196,7 @@ void SampleBrowserManager::init()
     d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
 
     d_verticalLayoutContainerSamples->setMargin(CEGUI::UBox(cegui_reldim(0.0f), cegui_reldim(0.1f), cegui_absdim(14.f), cegui_reldim(0.1f)));
-    d_verticalLayoutContainerSamples->setPointerInputPropagationEnabled(true);
+    d_verticalLayoutContainerSamples->setCursorInputPropagationEnabled(true);
 
     d_root->addChild(d_verticalLayoutContainerSamples);
 
@@ -211,7 +211,7 @@ CEGUI::DefaultWindow* SampleBrowserManager::createPreviewHeaderNameWindow(const 
     windowName->setText(name);
     windowName->setFont("DejaVuSans-12-NoScale");
     windowName->setProperty("HorzFormatting", "Centre");
-    windowName->setPointerInputPropagationEnabled(true);
+    windowName->setCursorInputPropagationEnabled(true);
 
     return windowName;
 }
@@ -222,7 +222,7 @@ CEGUI::VerticalLayoutContainer* SampleBrowserManager::createPreviewLayoutContain
 
     CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
     root->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(1.0f)));
-    root->setPointerInputPropagationEnabled(true);
+    root->setCursorInputPropagationEnabled(true);
     root->setMargin(CEGUI::UBox(UDim(0.0f, 0.0f),UDim(0.0f, 0.0f),UDim(0.0f, 8.f), UDim(0.0f, 0.0f)));
 
     return root;
@@ -237,7 +237,7 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
     sampleWindow->setProperty("Image", imageName);
 
     sampleWindow->setSize(USize(UDim(1.0f, -10.0f), cegui_absdim(1.0f)));
-    sampleWindow->setPointerInputPropagationEnabled(true);
+    sampleWindow->setCursorInputPropagationEnabled(true);
 
     sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SampleBrowserManager::handlePointerMoveSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
@@ -257,7 +257,7 @@ CEGUI::HorizontalLayoutContainer* SampleBrowserManager::createPreviewHeader()
 
     CEGUI::HorizontalLayoutContainer* header = static_cast<HorizontalLayoutContainer*>(winMgr.createWindow("HorizontalLayoutContainer"));
     header->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(40.0f)));
-    header->setPointerInputPropagationEnabled(true);
+    header->setCursorInputPropagationEnabled(true);
     header->setMargin(CEGUI::UBox(UDim(0.0f, 12.f),UDim(0.0f, 0.0f),UDim(0.0f, 0), UDim(0.0f, 0.0f)));
     header->setHorizontalAlignment(HA_CENTRE);
 
@@ -274,7 +274,7 @@ CEGUI::PushButton* SampleBrowserManager::createPreviewHeaderEnterButton()
     button->setAspectMode(AM_EXPAND);
     button->setAspectRatio(1.0f);
     button->setPosition(CEGUI::UVector2(cegui_absdim(-7.f), cegui_absdim(0.0f)));
-    button->setPointerInputPropagationEnabled(true);
+    button->setCursorInputPropagationEnabled(true);
     button->setProperty("NormalImage", "SampleBrowserSkin/EntryButtonNormal");
     button->setProperty("HoverImage", "SampleBrowserSkin/EntryButtonHover");
     button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");

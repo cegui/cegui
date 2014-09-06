@@ -1246,7 +1246,7 @@
     -->
     <WidgetLook name="TaharezLook/SliderThumb">
         <Property name="VertFree" value="true" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Image name="TaharezLook/VertSliderThumbNormal" />
@@ -1337,7 +1337,7 @@
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="true" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 48}, {0, 16}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1462,7 +1462,7 @@
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="true" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 16}, {0, 48}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -2196,7 +2196,7 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="TaharezLook/MouseMoveCursor" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 192}, {0, 32}}" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
@@ -2358,7 +2358,7 @@
     -->
     <WidgetLook name="TaharezLook/ListHeader">
         <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -3608,7 +3608,7 @@
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbarThumb">
         <Property name="VertFree" value="true" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 10}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -3885,7 +3885,7 @@
         <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Selectable" value="true" />
-        <Property name="PointerInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>

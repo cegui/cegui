@@ -3,7 +3,7 @@
     <WidgetLook name="Vanilla/VerticalImageSliderThumb">
         <PropertyDefinition initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ScrollThumbColours"/>
         <Property name="VertFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -223,7 +223,7 @@
     <WidgetLook name="Vanilla/HorizontalImageSliderThumb">
         <PropertyDefinition initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ScrollThumbColours"/>
         <Property name="HorzFree" value="true"/>
-        <Property name="PointerInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>

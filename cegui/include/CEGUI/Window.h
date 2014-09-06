@@ -2568,7 +2568,7 @@ public:
         - true if unhandled pointer input should be propagated to the parent.
         - false if unhandled pointer input should not be propagated.
     */
-    void setPointerInputPropagationEnabled(const bool enabled);
+    void setCursorInputPropagationEnabled(const bool enabled);
 
     /*!
     \brief
@@ -2580,7 +2580,7 @@ public:
         - true if unhandled pointer input will be propagated to the parent.
         - false if unhandled pointer input will not be propagated.
     */
-    bool isPointerInputPropagationEnabled() const;
+    bool isCursorInputPropagationEnabled() const;
 
     /*!
     \brief

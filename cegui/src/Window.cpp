@@ -1454,10 +1454,10 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "PointerInputPropagationEnabled", "Property to get/set whether unhandled pointer inputs should be "
+        "CursorInputPropagationEnabled", "Property to get/set whether unhandled pointer inputs should be "
         "propagated back to the Window's parent.  "
         "Value is either \"true\" or \"false\".",
-        &Window::setPointerInputPropagationEnabled, &Window::isPointerInputPropagationEnabled, false
+        &Window::setCursorInputPropagationEnabled, &Window::isCursorInputPropagationEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -3499,13 +3499,13 @@ WindowUpdateMode Window::getUpdateMode() const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setPointerInputPropagationEnabled(const bool enabled)
+void Window::setCursorInputPropagationEnabled(const bool enabled)
 {
     d_propagatePointerInputs = enabled;
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isPointerInputPropagationEnabled() const
+bool Window::isCursorInputPropagationEnabled() const
 {
     return d_propagatePointerInputs;
 }
