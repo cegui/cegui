@@ -85,7 +85,7 @@ void DefaultWindow::updatePointerEventHandled(PointerEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
     // we do /not/ mark pointer events as handled.
-    if (!d_parent && e.handled && d_pointerPassThroughEnabled)
+    if (!d_parent && e.handled && d_cursorPassThroughEnabled)
         --e.handled;
 }
 
@@ -94,7 +94,7 @@ bool DefaultWindow::moveToFront_impl(bool wasClicked)
 {
     const bool took_action = Window::moveToFront_impl(wasClicked);
 
-    if (!d_parent && d_pointerPassThroughEnabled)
+    if (!d_parent && d_cursorPassThroughEnabled)
         return false;
     else
         return took_action;

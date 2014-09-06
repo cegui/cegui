@@ -1355,7 +1355,7 @@ void ColourPickerControls::initColourPicker()
 
     d_colourPickerIndicator->setWidth(UDim(0.05f, 0));
     d_colourPickerIndicator->setHeight(UDim(0.05f, 0));
-    d_colourPickerIndicator->setPointerPassThroughEnabled(true);
+    d_colourPickerIndicator->setCursorPassThroughEnabled(true);
     d_colourPickerIndicator->setClippedByParent(false);
 
     getColourPickerImageSlider()->getThumb()->setHotTracked(false);

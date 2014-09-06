@@ -234,7 +234,7 @@ Window::Window(const String& type, const String& name):
     d_riseOnPointerActivation(true),
     d_zOrderingEnabled(true),
 
-    d_pointerPassThroughEnabled(false),
+    d_cursorPassThroughEnabled(false),
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
     d_repeatRate(0.06f),
@@ -629,7 +629,7 @@ Window* Window::getTargetChildAtPosition(const glm::vec2& position,
 //----------------------------------------------------------------------------//
 bool Window::isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const
 {
-    return !isPointerPassThroughEnabled() && isHit(position, allow_disabled);
+    return !isCursorPassThroughEnabled() && isHit(position, allow_disabled);
 }
 
 //----------------------------------------------------------------------------//
@@ -1413,8 +1413,8 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "PointerPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
-        &Window::setPointerPassThroughEnabled, &Window::isPointerPassThroughEnabled, false
+        "CursorPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
+        &Window::setCursorPassThroughEnabled, &Window::isCursorPassThroughEnabled, false
     );
 
     addProperty(&d_windowRendererProperty);
