@@ -97,8 +97,8 @@ const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
-const String Window::EventPointerEntersArea("PointerEntersArea");
-const String Window::EventPointerLeavesArea("PointerLeavesArea");
+const String Window::EventCursorEntersArea("CursorEntersArea");
+const String Window::EventCursorLeavesArea("CursorLeavesArea");
 const String Window::EventPointerEntersSurface("PointerEntersSurface");
 const String Window::EventPointerLeavesSurface("PointerLeavesSurface");
 const String Window::EventPointerMove("PointerMove");
@@ -2477,17 +2477,17 @@ void Window::onChildRemoved(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerEntersArea(PointerEventArgs& e)
+void Window::onCursorEntersArea(PointerEventArgs& e)
 {
     d_containsPointer = true;
-    fireEvent(EventPointerEntersArea, e, EventNamespace);
+    fireEvent(EventCursorEntersArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerLeavesArea(PointerEventArgs& e)
+void Window::onCursorLeavesArea(PointerEventArgs& e)
 {
     d_containsPointer = false;
-    fireEvent(EventPointerLeavesArea, e, EventNamespace);
+    fireEvent(EventCursorLeavesArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

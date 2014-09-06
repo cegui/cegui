@@ -241,7 +241,7 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
 
     sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SampleBrowserManager::handlePointerMoveSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventPointerLeavesArea, Event::Subscriber(&SampleBrowserManager::handleLeaveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventCursorLeavesArea, Event::Subscriber(&SampleBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));

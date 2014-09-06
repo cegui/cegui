@@ -385,10 +385,10 @@ bool GUIContext::updateWindowContainingPointer_impl() const
     Window* root = getCommonAncestor(oldWindow, d_windowContainingPointer);
 
     if (oldWindow)
-        notifyPointerTransition(root, oldWindow, &Window::onPointerLeavesArea, pa);
+        notifyPointerTransition(root, oldWindow, &Window::onCursorLeavesArea, pa);
 
     if (d_windowContainingPointer)
-        notifyPointerTransition(root, d_windowContainingPointer, &Window::onPointerEntersArea, pa);
+        notifyPointerTransition(root, d_windowContainingPointer, &Window::onCursorEntersArea, pa);
 
     return true;
 }

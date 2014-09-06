@@ -767,20 +767,20 @@ void GameMenuSample::updateLoginStartButtonText(float passedTime)
 
 void GameMenuSample::setupNaviIconAnimationEventHandlers()
 {
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
     CEGUI::Window* window;
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationLabel");
-    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
-    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");
-    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
-    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NaviBotSelectionIcon");
-    window->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
-    window->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
+    window->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange, this));
 }
 
 void GameMenuSample::startEntranceAnimations()
@@ -844,48 +844,48 @@ void GameMenuSample::setupNaviArrowWindows()
 {
     d_botNaviLeftArrowArea = d_root->getChild("BotNavigationContainer/LeftArrowArea");
     d_botNaviRightArrowArea = d_root->getChild("BotNavigationContainer/RightArrowArea");
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handlePointerEntersLeftArrowArea, this));
-    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handlePointerLeavesLeftArrowArea, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handlePointerEntersRightArrowArea, this));
-    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handlePointerLeavesRightArrowArea, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handlePointerEntersLeftArrowArea, this));
+    d_botNaviLeftArrowArea->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handlePointerLeavesLeftArrowArea, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handlePointerEntersRightArrowArea, this));
+    d_botNaviRightArrowArea->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handlePointerLeavesRightArrowArea, this));
 }
 
 void GameMenuSample::setupInnerButtonsSubOptionsLabels()
 {
     CEGUI::Window* label;
     label = d_root->getChild("InnerButtonsContainer/PopupLinesLoad/LabelLoad");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesSave/LabelSave");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelName2");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelNew");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelSelect");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelDelete");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesOptions/LabelVideo");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesOptions/LabelAudio");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesOptions/LabelControls");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesQuit/LabelYes");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
     label = d_root->getChild("InnerButtonsContainer/PopupLinesQuit/LabelNo");
-    label->subscribeEvent(CEGUI::Window::EventPointerEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
-    label->subscribeEvent(CEGUI::Window::EventPointerLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorEntersArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelEntered, this));
+    label->subscribeEvent(CEGUI::Window::EventCursorLeavesArea, Event::Subscriber(&GameMenuSample::handleInnerButtonsLabelLeft, this));
 }
 
 CEGUI::Window* GameMenuSample::getIconWindowFromLabel(CEGUI::Window* window)

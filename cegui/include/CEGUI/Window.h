@@ -339,12 +339,12 @@ public:
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventPointerEntersArea;
+    static const String EventCursorEntersArea;
     /** Event fired when the pointer has left the Window's area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventPointerLeavesArea;
+    static const String EventCursorLeavesArea;
     /** Event fired when the pointer enters the Window's area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
@@ -353,7 +353,7 @@ public:
      * example if the location of the pointer is over some child window (even
      * though the pointer is technically also within the area of this Window).
      * For an alternative version of this event see the
-     * Window::EventPointerEntersArea event.
+     * Window::EventCursorEntersArea event.
      */
     static const String EventPointerEntersSurface;
     /** Event fired when the pointer is no longer over the Window's surface
@@ -364,7 +364,7 @@ public:
      * some part of this Window's surface area, for example if the pointer is
      * moved over some child window (even though technically the pointer has not
      * actually 'left' this Window's area).  For an alternative version of this
-     * event see the Window::EventPointerLeavesArea event.
+     * event see the Window::EventCursorLeavesArea event.
      */
     static const String EventPointerLeavesSurface;
     /** Event fired when the pointer moves within the area of the Window.
@@ -2973,7 +2973,7 @@ protected:
     \param e
         PointerEventArgs object.  All fields are valid.
     */
-    virtual void onPointerEntersArea(PointerEventArgs& e);
+    virtual void onCursorEntersArea(PointerEventArgs& e);
 
     /*!
     \brief
@@ -2982,7 +2982,7 @@ protected:
     \param e
         PointerEventArgs object.  All fields are valid.
     */
-    virtual void onPointerLeavesArea(PointerEventArgs& e);
+    virtual void onCursorLeavesArea(PointerEventArgs& e);
 
     /*!
     \brief
@@ -2996,7 +2996,7 @@ protected:
         PointerEventArgs object.  All fields are valid.
 
     \see
-        Window::onPointerEntersArea
+        Window::onCursorEntersArea
     */
     virtual void onPointerEnters(PointerEventArgs& e);
 
@@ -3012,7 +3012,7 @@ protected:
         PointerEventArgs object.  All fields are valid.
 
     \see
-        Window::onPointerLeavesArea
+        Window::onCursorLeavesArea
     */
     virtual void onPointerLeaves(PointerEventArgs& e);
 
