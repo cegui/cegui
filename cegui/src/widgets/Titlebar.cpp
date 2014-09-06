@@ -101,7 +101,7 @@ const glm::vec2& Titlebar::getDragPoint() const
 }
 
 /*************************************************************************
-	Handler for pointer movement events
+	Handler for cursor movement events
 *************************************************************************/
 void Titlebar::onPointerMove(PointerEventArgs& e)
 {
@@ -122,7 +122,7 @@ void Titlebar::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer press events
+    Handler for cursor press events
 *************************************************************************/
 void Titlebar::onPointerPressHold(PointerEventArgs& e)
 {
@@ -133,7 +133,7 @@ void Titlebar::onPointerPressHold(PointerEventArgs& e)
 	{
 		if ((d_parent != 0) && d_dragEnabled)
 		{
-            // we want all pointer inputs from now on
+            // we want all cursor inputs from now on
 			if (captureInput())
 			{
 				// initialise the dragging state
@@ -168,7 +168,7 @@ void Titlebar::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer activation events
+    Handler for cursor activation events
 *************************************************************************/
 void Titlebar::onPointerActivate(PointerEventArgs& e)
 {
@@ -205,14 +205,14 @@ void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for if the window loses capture of the pointer.
+    Handler for if the window loses capture of the cursor.
 *************************************************************************/
 void Titlebar::onCaptureLost(WindowEventArgs& e)
 {
 	// Base class processing
 	Window::onCaptureLost(e);
 
-    // when we lose out hold on the pointer inputs, we are no longer dragging.
+    // when we lose out hold on the cursor inputs, we are no longer dragging.
 	d_dragging = false;
 
 	// restore old constraint area

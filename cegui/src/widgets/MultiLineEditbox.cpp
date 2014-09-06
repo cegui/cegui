@@ -1183,7 +1183,7 @@ void MultiLineEditbox::handlePageDown(bool select)
 
 
 /*************************************************************************
-    Handler for when a pointer is pressed
+    Handler for when a cursor is pressed
 *************************************************************************/
 void MultiLineEditbox::onPointerPressHold(PointerEventArgs& e)
 {
@@ -1195,7 +1195,7 @@ void MultiLineEditbox::onPointerPressHold(PointerEventArgs& e)
 		// grab inputs
 		if (captureInput())
 		{
-            // handle pointer press
+            // handle cursor press
 			clearSelection();
 			d_dragging = true;
 			d_dragAnchorIdx = getTextIndexFromPosition(e.position);
@@ -1208,7 +1208,7 @@ void MultiLineEditbox::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when pointer is activated
+    Handler for when cursor is activated
 *************************************************************************/
 void MultiLineEditbox::onPointerActivate(PointerEventArgs& e)
 {
@@ -1223,7 +1223,7 @@ void MultiLineEditbox::onPointerActivate(PointerEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for when pointer moves in the window.
+	Handler for when cursor moves in the window.
 *************************************************************************/
 void MultiLineEditbox::onPointerMove(PointerEventArgs& e)
 {

@@ -57,7 +57,7 @@ protected:
     bool handleGameStartClicked(const CEGUI::EventArgs& event);
     // Handle click on a button of the board
     bool handleMineButtonClicked(const CEGUI::EventArgs& event);
-    // Handle pointer press & hold on a button of the board
+    // Handle cursor press & hold on a button of the board
     bool handleMinePointerPressHold(const CEGUI::EventArgs& event);
     // Update the timer if needed
     bool handleUpdateTimer(const CEGUI::EventArgs& event);

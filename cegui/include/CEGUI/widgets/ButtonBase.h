@@ -111,18 +111,18 @@ protected:
 	*************************************************************************/
     /*!
     \brief
-    Update the internal state of the widget with the pointer at the given position.
+    Update the internal state of the widget with the cursor at the given position.
 
-    \param pointer_pos
+    \param cursor_pos
         Point object describing, in screen pixel co-ordinates, the location of
         the cursor.
 
     \return
         Nothing
     */
-    void updateInternalState(const glm::vec2& pointer_pos);
+    void updateInternalState(const glm::vec2& cursor_pos);
 
-    bool calculateCurrentHoverState(const glm::vec2& pointer_pos);
+    bool calculateCurrentHoverState(const glm::vec2& cursor_pos);
 
 	/*************************************************************************
 		Implementation Data

@@ -129,7 +129,7 @@ public:
     const Cursor& getCursor() const;
 
 
-    //! Tell the context to reconsider which window it thinks the pointer is in.
+    //! Tell the context to reconsider which window it thinks the cursor is in.
     void updateWindowContainingPointer();
 
     Window* getInputCaptureWindow() const;
@@ -146,7 +146,7 @@ public:
         Tooltip is required.
 
     \note
-        When passing a pointer to a Tooltip object, ownership of the Tooltip
+        When passing a cursor to a Tooltip object, ownership of the Tooltip
         does not pass to the GUIContext.
     */
     void setDefaultTooltipObject(Tooltip* tooltip);
@@ -249,7 +249,7 @@ protected:
     bool areaChangedHandler(const EventArgs& args);
     bool windowDestroyedHandler(const EventArgs& args);
 
-    //! returns whether the window containing the pointer had changed.
+    //! returns whether the window containing the cursor had changed.
     bool updateWindowContainingPointer_impl() const;
     void resetWindowContainingPointer();
 

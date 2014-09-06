@@ -88,31 +88,31 @@ namespace CEGUI
         const Cursor& indicator = getGUIContext().getCursor();
         const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
-        const Image* pointerImage = indicator.getImage();
+        const Image* cursor_image = indicator.getImage();
 
-        const glm::vec2 pointerPos(indicator.getPosition());
-        Sizef pointerSz(0,0);
+        const glm::vec2 cursor_pos(indicator.getPosition());
+        Sizef cursor_size(0,0);
 
-        if (pointerImage)
+        if (cursor_image)
         {
-            pointerSz = pointerImage->getRenderedSize();
+            cursor_size = cursor_image->getRenderedSize();
         }
 
-        glm::vec2 tmpPos(pointerPos.x + pointerSz.d_width, pointerPos.y + pointerSz.d_height);
+        glm::vec2 tmpPos(cursor_pos.x + cursor_size.d_width, cursor_pos.y + cursor_size.d_height);
         tipRect.setPosition(tmpPos);
 
         // if tooltip would be off the right of the screen,
         // reposition to the other side of the cursor.
         if (screen.right() < tipRect.right())
         {
-            tmpPos.x = pointerPos.x - tipRect.getWidth() - 5;
+            tmpPos.x = cursor_pos.x - tipRect.getWidth() - 5;
         }
 
         // if tooltip would be off the bottom of the screen,
         // reposition to the other side of the cursor.
         if (screen.bottom() < tipRect.bottom())
         {
-            tmpPos.y = pointerPos.y - tipRect.getHeight() - 5;
+            tmpPos.y = cursor_pos.y - tipRect.getHeight() - 5;
         }
 
         // set final position of tooltip window.

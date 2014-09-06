@@ -84,7 +84,7 @@ void DefaultWindow::onPointerActivate(PointerEventArgs& e)
 void DefaultWindow::updatePointerEventHandled(PointerEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
-    // we do /not/ mark pointer events as handled.
+    // we do /not/ mark cursor events as handled.
     if (!d_parent && e.handled && d_cursorPassThroughEnabled)
         --e.handled;
 }

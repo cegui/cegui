@@ -176,7 +176,7 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when a pointer is pressed
+    Handler for when a cursor is pressed
 *************************************************************************/
 void Slider::onPointerPressHold(PointerEventArgs& e)
 {
@@ -262,12 +262,12 @@ void Slider::addSliderProperties(void)
         "CurrentValue", "Property to get/set the current value of the slider.  Value is a float.",
         &Slider::setCurrentValue, &Slider::getCurrentValue, 0.0f
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "MaximumValue", "Property to get/set the maximum value of the slider.  Value is a float.",
         &Slider::setMaxValue, &Slider::getMaxValue, 1.0f /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "ClickStepSize", "Property to get/set the click-step size for the slider.  Value is a float.",
         &Slider::setClickStep, &Slider::getClickStep, 0.01f /* TODO: Inconsistency */

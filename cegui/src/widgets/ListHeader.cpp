@@ -905,14 +905,14 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 *************************************************************************/
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
-    const glm::vec2 pointerPos(getUnprojectedPosition(
+    const glm::vec2 cursor_pos(getUnprojectedPosition(
         getGUIContext().getCursor().getPosition()));
 
 	// segment must be dropped within the window
-    if (isHit(pointerPos))
+    if (isHit(cursor_pos))
 	{
         // get pointer position as something local
-        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, pointerPos));
+        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, cursor_pos));
 
 		// set up to allow for current offsets
 		float currwidth = -d_segmentOffset;
@@ -1008,15 +1008,15 @@ bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 *************************************************************************/
 bool ListHeader::segmentDragHandler(const EventArgs&)
 {
-    // what we do here is monitor the position and scroll if we can when pointer is outside area.
+    // what we do here is monitor the position and scroll if we can when cursor is outside area.
 
     // get pointer position as something local
-    const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
+    const glm::vec2 local_cursor_Pos(CoordConverter::screenToWindow(*this,
         getUnprojectedPosition(getGUIContext().
             getCursor().getPosition())));
 
 	// scroll left?
-    if (localPointerPos.x < 0.0f)
+    if (local_cursor_Pos.x < 0.0f)
 	{
 		if (d_segmentOffset > 0.0f)
 		{
@@ -1024,7 +1024,7 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 		}
 	}
 	// scroll right?
-    else if (localPointerPos.x >= d_pixelSize.d_width)
+    else if (local_cursor_Pos.x >= d_pixelSize.d_width)
 	{
 		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
 

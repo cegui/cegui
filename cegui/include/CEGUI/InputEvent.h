@@ -300,18 +300,18 @@ public:
 /*!
 \brief
     EventArgs based class that is used for objects passed to input event handlers
-    concerning pointer input.
+    concerning cursor input.
 */
 class CEGUIEXPORT PointerEventArgs : public WindowEventArgs
 {
 public:
     PointerEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-    glm::vec2       position;       //!< holds current pointer position.
-    glm::vec2       moveDelta;      //!< holds variation of pointer position from last pointer input
+    glm::vec2       position;       //!< holds current cursor position.
+    glm::vec2       moveDelta;      //!< holds variation of cursor position from last cursor input
     PointerSource   source;         //!< one of the PointerSource enumerated values describing the source causing the event
     float           scroll;         //!< holds the amount of the scroll
-    PointersState   pointerState;   //!< current state (hold: true/false) of pointers sources. Addresable by members of \ref PointerSource
+    PointersState   pointerState;   //!< current state (hold: true/false) of cursors sources. Addressable by members of \ref PointerSource
 };
 
 /*!
@@ -325,7 +325,7 @@ public:
     CursorEventArgs(Cursor* cursor) : d_cursor(cursor) {}
 
     Cursor* d_cursor;  //!< pointer to a Cursor object of relevance to the event.
-    const Image* d_image;             //!< pointer to an Image object of relevance to the event.
+    const Image* d_image; //!< pointer to an Image object of relevance to the event.
 };
 
 /*!

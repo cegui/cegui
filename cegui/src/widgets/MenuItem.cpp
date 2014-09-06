@@ -77,7 +77,7 @@ MenuItem::~MenuItem(void)
 /*************************************************************************
     Update the internal state of the Widget
 *************************************************************************/
-void MenuItem::updateInternalState(const glm::vec2& pointer_pos)
+void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
 {
     bool oldstate = d_hovering;
 
@@ -88,9 +88,9 @@ void MenuItem::updateInternalState(const glm::vec2& pointer_pos)
     const Window* capture_wnd = getCaptureWindow();
 
     if (capture_wnd == 0)
-        d_hovering = (getGUIContext().getWindowContainingPointer() == this && isHit(pointer_pos));
+        d_hovering = (getGUIContext().getWindowContainingPointer() == this && isHit(cursor_pos));
     else
-        d_hovering = (capture_wnd == this && isHit(pointer_pos));
+        d_hovering = (capture_wnd == this && isHit(cursor_pos));
 
     // if state has changed, trigger a re-draw
     // and possible make the parent menu open another popup
@@ -368,11 +368,11 @@ void MenuItem::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when the pointer moves
+    Handler for when the cursor moves
 *************************************************************************/
 void MenuItem::onPointerMove(PointerEventArgs& e)
 {
-    // this is needed to discover whether pointer is in the widget area or not.
+    // this is needed to discover whether cursor is in the widget area or not.
     // The same thing used to be done each frame in the rendering method,
     // but in this version the rendering method may not be called every frame
     // so we must discover the internal widget state here - which is actually
@@ -387,7 +387,7 @@ void MenuItem::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer pressed events
+    Handler for cursor pressed events
 *************************************************************************/
 void MenuItem::onPointerPressHold(PointerEventArgs& e)
 {
@@ -413,7 +413,7 @@ void MenuItem::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer activation events
+    Handler for cursor activation events
 *************************************************************************/
 void MenuItem::onPointerActivate(PointerEventArgs& e)
 {
@@ -425,7 +425,7 @@ void MenuItem::onPointerActivate(PointerEventArgs& e)
         releaseInput();
 
         // was the button released over this window?
-        // (use pointer position, as e.position in args has been unprojected)
+        // (use cursor position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
                 getGUIContext().getRootWindow()->getTargetChildAtPosition(
                     getGUIContext().getCursor().getPosition()) == this)
@@ -440,7 +440,7 @@ void MenuItem::onPointerActivate(PointerEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when pointer capture is lost
+    Handler for when cursor capture is lost
 *************************************************************************/
 void MenuItem::onCaptureLost(WindowEventArgs& e)
 {
@@ -458,11 +458,11 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when pointer leaves the widget
+    Handler for when cursor leaves the widget
 *************************************************************************/
 void MenuItem::onPointerLeaves(PointerEventArgs& e)
 {
-    // deafult processing
+    // default processing
     ItemEntry::onPointerLeaves(e);
 
     d_hovering = false;
@@ -498,7 +498,7 @@ void MenuItem::updateSelf(float elapsed)
 {
     ItemEntry::updateSelf(elapsed);
 
-    //handle delayed popup closing/opening when hovering with the pointer
+    //handle delayed popup closing/opening when hovering with the cursor
     if (d_autoPopupTimeout != 0.0f && (d_popupOpening || d_popupClosing))
     {
         // stop timer if the hovering state isn't set appropriately anymore

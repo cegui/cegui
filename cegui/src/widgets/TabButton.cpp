@@ -84,7 +84,7 @@ void TabButton::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer press events
+    Handler for cursor press events
 *************************************************************************/
 void TabButton::onPointerPressHold(PointerEventArgs& e)
 {
@@ -109,8 +109,8 @@ void TabButton::onPointerActivate(PointerEventArgs& e)
 
 		if (sheet)
 		{
-            // if pointer was released over this widget
-            // (use pointer position, as e.position has been unprojected)
+            // if cursor was released over this widget
+            // (use cursor position, as e.position has been unprojected)
 			if (this == sheet->getTargetChildAtPosition(
                                     getGUIContext().getCursor().getPosition()))
 			{

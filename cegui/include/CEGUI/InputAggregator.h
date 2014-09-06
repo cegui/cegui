@@ -185,7 +185,7 @@ protected:
     virtual void onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args);
     virtual void onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args);
-    
+
     virtual bool isControlPressed();
     virtual bool isAltPressed();
     virtual bool isShiftPressed();
@@ -209,7 +209,7 @@ protected:
     bool d_generateMouseClickEvents;
     MouseClickTracker* d_mouseClickTrackers;
 
-    //! Scaling factor applied to injected pointer move deltas.
+    //! Scaling factor applied to injected cursor move deltas.
     float d_mouseMovementScalingFactor;
 
     glm::vec2 d_pointerPosition;

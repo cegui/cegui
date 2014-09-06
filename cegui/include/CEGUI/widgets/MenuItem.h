@@ -72,7 +72,7 @@ public:
         user is not over it for highlight)
 
     \return
-        true if the user is hovering or if the button is pushed and the pointer
+        true if the user is hovering or if the button is pushed and the cursor
         is not over the button. Otherwise return false.
     */
     bool    isHovering(void) const
@@ -115,7 +115,7 @@ public:
     /*!
     \brief
         Returns true if the menu item popup is closed or opened automatically
-        if hovering with the pointer.
+        if hovering with the cursor.
     */
     bool    hasAutoPopup(void) const
     {
@@ -274,15 +274,15 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Update the internal state of the widget with the pointer at the given position.
+        Update the internal state of the widget with the cursor at the given position.
 
-    \param pointer_pos
+    \param cursor_pos
         Point object describing, in screen pixel co-ordinates, the location of the cursor.
 
     \return
         Nothing
     */
-    void    updateInternalState(const glm::vec2& pointer_pos);
+    void    updateInternalState(const glm::vec2& cursor_pos);
 
 
     /*!
@@ -315,7 +315,7 @@ protected:
     bool d_opened;          //!< true when the menu item's popup menu is in its opened state.
     bool d_popupClosing;    //!< true when the d_popupTimerTimeElapsed timer is running to close the popup (another menu item of our container is hovered)
     bool d_popupOpening;    //!< true when the d_popupTimerTimeElapsed timer is running to open the popup (the menu item is hovered)
-    float d_autoPopupTimeout; //!< the time in seconds, to wait before opening / closing the popup if the pointer is over the item / over another item in our container
+    float d_autoPopupTimeout; //!< the time in seconds, to wait before opening / closing the popup if the cursor is over the item / over another item in our container
     float d_autoPopupTimeElapsed;  //!< the current time, which is already elapsed if the timer is running (d_popupClosing or d_popupOpening is true)
 
     PopupMenu*  d_popup;    //!< PopupMenu that this item displays when activated.

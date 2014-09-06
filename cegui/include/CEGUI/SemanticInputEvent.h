@@ -42,19 +42,19 @@ namespace CEGUI
 
 /*!
 \brief
-    Represents the source of an event that uses the pointer.
+    Represents the source of an event that uses the cursor.
 */
 enum PointerSource
 {
-    PS_None,        //!< No specific pointer source
-    PS_Left,        //!< Left pointer source
-    PS_Right,       //!< Right pointer source
-    PS_Middle,      //!< Middle pointer source
+    PS_None,        //!< No specific cursor source
+    PS_Left,        //!< Left cursor source
+    PS_Right,       //!< Right cursor source
+    PS_Middle,      //!< Middle cursor source
 };
 
 /*!
 \brief
-    Holds the state of the pointers (hold or not)
+    Holds the state of the cursors (hold or not)
 */
 class PointersState
 {

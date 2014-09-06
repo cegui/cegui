@@ -329,7 +329,7 @@ size_t Combobox::getItemCount(void) const
 
 
 /*************************************************************************
-	Return a pointer to the currently selected item.
+	Return a cursor to the currently selected item.
 *************************************************************************/
 StandardItem* Combobox::getSelectedItem(void) const
 {
@@ -798,7 +798,7 @@ bool Combobox::droplist_HiddenHandler(const EventArgs&)
 
 
 /*************************************************************************
-    Handler for pointer press & hold events in editbox
+    Handler for cursor press & hold events in editbox
 *************************************************************************/
 bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
 {
@@ -997,7 +997,7 @@ Editbox* Combobox::getEditbox() const
 }
 
 /************************************************************************
-    Return a pointer to the PushButton component widget for this Combobox.
+    Return a cursor to the PushButton component widget for this Combobox.
 ************************************************************************/
 PushButton* Combobox::getPushButton() const
 {
@@ -1005,7 +1005,7 @@ PushButton* Combobox::getPushButton() const
 }
 
 /************************************************************************
-    Return a pointer to the ComboDropList component widget for this
+    Return a cursor to the ComboDropList component widget for this
     Combobox.
 ************************************************************************/
 ComboDropList* Combobox::getDropList() const

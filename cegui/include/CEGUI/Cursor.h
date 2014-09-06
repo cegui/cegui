@@ -120,7 +120,7 @@ public:
         Set the image to be used as the default cursor.
 
     \param image
-        Pointer to an image object that is to be used as the default pointer
+        Pointer to an image object that is to be used as the default cursor
         indicator. To have no indicator rendered by default, you can specify 0 here.
     */
     void setDefaultImage(const Image* image);
@@ -162,7 +162,7 @@ public:
         Set the current cursor position
 
 	\param position
-        Point object describing the new location for the pointer. This will
+        Point object describing the new location for the cursor. This will
         be clipped to within the renderer screen area.
 	*/
     void setPosition(const glm::vec2& position);
@@ -187,8 +187,8 @@ public:
 
 	\param area
         Pointer to a Rect object that describes the area of the display that
-        the pointer is allowed to occupy. The given area will be clipped to
-        the current Renderer screen area - it is never possible for the pointer
+        the cursor is allowed to occupy. The given area will be clipped to
+        the current Renderer screen area - it is never possible for the cursor
         to leave this area. If this parameter is NULL, the constraint is set
         to the size of the current Renderer screen area.
 
@@ -204,8 +204,8 @@ public:
 
 	\param area
         Pointer to a URect object that describes the area of the display that
-        the pointer is allowed to occupy. The given area will be clipped to the
-        current Renderer screen area - it is never possible for the pointer to
+        the cursor is allowed to occupy. The given area will be clipped to the
+        current Renderer screen area - it is never possible for the cursor to
         leave this area. If this parameter is NULL, the constraint is set to
         the size of the current Renderer screen area.
 
@@ -347,7 +347,7 @@ public:
         Cursor instantiation).
 
         Calling this function prior to instantiating Cursor will prevent
-        the pointer having it's position set to the middle of the initial view.
+        the cursor having it's position set to the middle of the initial view.
         Calling this function after the Cursor is instantiated will have
         no effect.
 
@@ -431,11 +431,11 @@ private:
     Sizef d_customSize;
     //! correctly scaled offset used when using custom image size.
     mutable glm::vec2 d_customOffset;
-    //! true if the pointer initial position has been pre-set
+    //! true if the cursor initial position has been pre-set
     static bool s_initialPositionSet;
     //! value set as initial position (if any)
     static glm::vec2 s_initialPosition;
-    //! boolean indicating whether cached pointer geometry is valid.
+    //! boolean indicating whether cached cursor geometry is valid.
     mutable bool d_cachedGeometryValid;
 };
 

@@ -155,7 +155,7 @@ namespace CEGUI
         \brief
             Return the current drag threshold in pixels.
 
-            The drag threshold is the number of pixels that the pointer must be
+            The drag threshold is the number of pixels that the cursor must be
             moved with the left source held pressed in order to commence a drag
             operation.
 
@@ -168,7 +168,7 @@ namespace CEGUI
         \brief
             Set the current drag threshold in pixels.
 
-            The drag threshold is the number of pixels that the pointer must be
+            The drag threshold is the number of pixels that the cursor must be
             moved with the left source held pressed in order to commence a drag
             operation.
 
@@ -288,7 +288,7 @@ namespace CEGUI
         \brief
             Immediately pick up the DragContainer and optionally set the sticky
             mode in order to allow this to happen. Any current interaction
-            (i.e. pointer capture) will be interrupted.
+            (i.e. cursor capture) will be interrupted.
 
         \param force_sticky
             - true to automatically enable the sticky mode in order to
@@ -368,14 +368,14 @@ namespace CEGUI
             Return whether the required minimum movement threshold before initiating dragging
             has been exceeded.
 
-        \param local_pointer
+        \param local_cursor
             Pointer position as a pixel offset from the top-left corner of this window.
 
         \return
             - true if the threshold has been exceeded and dragging should be initiated.
             - false if the threshold has not been exceeded.
         */
-        bool isDraggingThresholdExceeded(const glm::vec2& local_pointer);
+        bool isDraggingThresholdExceeded(const glm::vec2& local_cursor);
 
 	    /*!
 	    \brief
@@ -390,13 +390,13 @@ namespace CEGUI
         \brief
             Update state for window dragging.
 
-        \param local_pointer
+        \param local_cursor
             Pointer position as a pixel offset from the top-left corner of this window.
 
 	    \return
 		    Nothing.
 	    */
-        void doDragging(const glm::vec2& local_pointer);
+        void doDragging(const glm::vec2& local_cursor);
 
         /*!
         \brief
@@ -523,7 +523,7 @@ namespace CEGUI
         bool    d_dragging;         //!< true when being dragged.
         UVector2 d_dragPoint;       //!< point we are being dragged at.
         UVector2 d_startPosition;   //!< position prior to dragging.
-        float   d_dragThreshold;    //!< Pixels pointer must move before dragging commences.
+        float   d_dragThreshold;    //!< Pixels cursor must move before dragging commences.
         float   d_dragAlpha;        //!< Alpha value to set when dragging.
         float   d_storedAlpha;      //!< Alpha value to re-set when dragging ends.
         bool    d_storedClipState;  //!< Parent clip state to re-set.
@@ -534,9 +534,9 @@ namespace CEGUI
         bool d_stickyMode;
         //! true after been picked-up / dragged via sticky mode
         bool d_pickedUp;
-        //! true if fixed pointer offset is used for dragging position.
+        //! true if fixed cursor offset is used for dragging position.
         bool d_usingFixedDragOffset;
-        //! current fixed pointer offset value.
+        //! current fixed cursor offset value.
         UVector2 d_fixedDragOffset;
 
     private:

@@ -92,7 +92,7 @@ public:
 
     /*!
     \brief
-        Enumeration that defines the set of possible locations for the pointer
+        Enumeration that defines the set of possible locations for the cursor
         on a frame windows sizing border.
     */
 	enum SizingLocation {
@@ -325,7 +325,7 @@ public:
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the north-south
+        Return a cursor to the currently set Image to be used for the north-south
         sizing cursor.
 
     \return
@@ -335,7 +335,7 @@ public:
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the east-west
+        Return a cursor to the currently set Image to be used for the east-west
         sizing cursor.
 
     \return
@@ -345,7 +345,7 @@ public:
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the northwest-southeast
+        Return a cursor to the currently set Image to be used for the northwest-southeast
         sizing cursor.
 
     \return
@@ -355,7 +355,7 @@ public:
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the northeast-southwest
+        Return a cursor to the currently set Image to be used for the northeast-southwest
         sizing cursor.
 
     \return

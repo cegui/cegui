@@ -256,9 +256,9 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 /*************************************************************************
 	Processing for drag-sizing the segment
 *************************************************************************/
-void ListHeaderSegment::doDragSizing(const glm::vec2& local_pointer)
+void ListHeaderSegment::doDragSizing(const glm::vec2& local_cursor)
 {
-    float delta = local_pointer.x - d_dragPoint.x;
+    float delta = local_cursor.x - d_dragPoint.x;
 
     // store this so we can work out how much size actually changed
     const float orgWidth = d_pixelSize.d_width;
@@ -282,7 +282,7 @@ void ListHeaderSegment::doDragSizing(const glm::vec2& local_pointer)
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,/*PixelAligned(*/delta/*)*/), d_area.d_max.d_y);
     setArea_impl(area.d_min, area.getSize());
 
-    // move the dragging point so pointer remains 'attached' to edge of segment
+    // move the dragging point so cursor remains 'attached' to edge of segment
     d_dragPoint.x += d_pixelSize.d_width - orgWidth;
 
     WindowEventArgs args(this);
@@ -293,11 +293,11 @@ void ListHeaderSegment::doDragSizing(const glm::vec2& local_pointer)
 /*************************************************************************
     Processing for drag-moving the segment
 *************************************************************************/
-void ListHeaderSegment::doDragMoving(const glm::vec2& local_pointer)
+void ListHeaderSegment::doDragMoving(const glm::vec2& local_cursor)
 {
     // calculate movement deltas.
-    const float deltaX = local_pointer.x - d_dragPoint.x;
-    const float deltaY = local_pointer.y - d_dragPoint.y;
+    const float deltaX = local_cursor.x - d_dragPoint.x;
+    const float deltaY = local_cursor.y - d_dragPoint.y;
 
 	// update 'ghost' position
     d_dragPosition.x += deltaX;
@@ -389,12 +389,12 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	Return true if move threshold for initiating drag-moving has been
 	exceeded.
 *************************************************************************/
-bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_pointer)
+bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_cursor)
 {
-    // see if pointer has moved far enough to start move operation
+    // see if cursor has moved far enough to start move operation
     // calculate movement deltas.
-    const float deltaX = local_pointer.x - d_dragPoint.x;
-    const float deltaY = local_pointer.y - d_dragPoint.y;
+    const float deltaX = local_cursor.x - d_dragPoint.x;
+    const float deltaY = local_cursor.y - d_dragPoint.y;
 
 	if ((deltaX > SegmentMoveThreshold) || (deltaX < -SegmentMoveThreshold) ||
 		(deltaY > SegmentMoveThreshold) || (deltaY < -SegmentMoveThreshold))
@@ -409,35 +409,35 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_point
 
 
 /*************************************************************************
-    Handler for when pointer position changes in widget area (or captured)
+    Handler for when cursor position changes in widget area (or captured)
 *************************************************************************/
 void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 {
 	// base class processing
 	Window::onPointerMove(e);
 
-    // convert pointer position to something local
-    const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, e.position));
+    // convert cursor position to something local
+    const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.position));
 
 	// handle drag sizing
 	if (d_dragSizing)
 	{
-        doDragSizing(localPointerPos);
+        doDragSizing(local_cursor_pos);
 	}
 	// handle drag moving
 	else if (d_dragMoving)
 	{
-        doDragMoving(localPointerPos);
+        doDragMoving(local_cursor_pos);
     }
-    // not sizing, is pointer in the widget area?
+    // not sizing, is cursor in the widget area?
     else if (isHit(e.position))
     {
-        // pointer in sizing area & sizing is enabled
-        if ((localPointerPos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
+        // cursor in sizing area & sizing is enabled
+        if ((local_cursor_pos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
 		{
 			initSizingHoverState();
 		}
-        // pointer not in sizing area and/or sizing not enabled
+        // cursor not in sizing area and/or sizing not enabled
 		else
 		{
 			initSegmentHoverState();
@@ -445,14 +445,14 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 			// if we are pushed but not yet drag moving
 			if (d_segmentPushed && !d_dragMoving)
 			{
-                if (isDragMoveThresholdExceeded(localPointerPos))
+                if (isDragMoveThresholdExceeded(local_cursor_pos))
                 {
                     initDragMoving();
                 }
 			}
 		}
 	}
-    // pointer is no longer within the widget area...
+    // cursor is no longer within the widget area...
 	else
 	{
 		// only change settings if change is required
@@ -476,7 +476,7 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when pointer is pressed
+    Handler for when cursor is pressed
 *************************************************************************/
 void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 {
@@ -488,13 +488,13 @@ void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 		// ensure all inputs come to us for now
 		if (captureInput())
 		{
-            // get position of pointer as co-ordinates local to this window.
+            // get position of cursor as co-ordinates local to this window.
             const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;
 
-            // if the pointer is in the sizing area
+            // if the cursor is in the sizing area
 			if (d_splitterHover)
 			{
 				if (isSizingEnabled())
@@ -514,7 +514,7 @@ void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when the pointer is activated
+    Handler for when the cursor is activated
 *************************************************************************/
 void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 {
@@ -523,7 +523,7 @@ void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 
     if (e.source == PS_Left)
 	{
-		// if we were pushed and pointer was released (activated) within our segment area
+		// if we were pushed and cursor was released (activated) within our segment area
 		if (d_segmentPushed && d_segmentHover)
 		{
 			WindowEventArgs args(this);
@@ -544,7 +544,7 @@ void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when pointer leaves the widget area (uncaptured)
+    Handler for when cursor leaves the widget area (uncaptured)
 *************************************************************************/
 void ListHeaderSegment::onPointerLeaves(PointerEventArgs& e)
 {
@@ -576,7 +576,7 @@ void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when pointer input capture is lost
+    Handler for when cursor input capture is lost
 *************************************************************************/
 void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 {

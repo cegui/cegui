@@ -68,7 +68,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for pointer activation events
+	Handler for cursor activation events
 *************************************************************************/
 void PushButton::onPointerActivate(PointerEventArgs& e)
 {
@@ -78,8 +78,8 @@ void PushButton::onPointerActivate(PointerEventArgs& e)
 
 		if (sheet)
 		{
-            // if pointer was released over this widget
-            // (use position from pointer, as e.position has been unprojected)
+            // if cursor was released over this widget
+            // (use position from cursor, as e.position has been unprojected)
             if (this == sheet->getTargetChildAtPosition(
                 getGUIContext().getCursor().getPosition()))
 			{

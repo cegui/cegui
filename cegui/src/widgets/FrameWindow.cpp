@@ -379,7 +379,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
-    // move the dragging point so pointer remains 'attached' to edge of window
+    // move the dragging point so cursor remains 'attached' to edge of window
     d_dragPoint.x += adjustment;
 
     return d_horizontalAlignment == HA_RIGHT;
@@ -467,7 +467,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
-    // move the dragging point so pointer remains 'attached' to edge of window
+    // move the dragging point so cursor remains 'attached' to edge of window
     d_dragPoint.y += adjustment;
 
     return d_verticalAlignment == VA_BOTTOM;
@@ -551,14 +551,14 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for pointer move events
+	Handler for cursor move events
 *************************************************************************/
 void FrameWindow::onPointerMove(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
 	Window::onPointerMove(e);
 
-    // if we are not the window containing the pointer, do NOT change the indicator
+    // if we are not the window containing the cursor, do NOT change the indicator
 	if (getGUIContext().getWindowContainingPointer() != this)
 	{
 		return;
@@ -566,15 +566,15 @@ void FrameWindow::onPointerMove(PointerEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
 			SizingLocation dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
 			// calculate sizing deltas...
-            const float deltaX = localPointerPos.x - d_dragPoint.x;
-            const float deltaY = localPointerPos.y - d_dragPoint.y;
+            const float deltaX = local_cursor_pos.x - d_dragPoint.x;
+            const float deltaY = local_cursor_pos.y - d_dragPoint.y;
 
             URect new_area(d_area);
             bool top_left_sizing = false;
@@ -602,7 +602,7 @@ void FrameWindow::onPointerMove(PointerEventArgs& e)
 		}
 		else
 		{
-            setIndicatorForPoint(localPointerPos);
+            setIndicatorForPoint(local_cursor_pos);
 		}
 	}
 
@@ -612,7 +612,7 @@ void FrameWindow::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer press events
+    Handler for cursor press events
 *************************************************************************/
 void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 {
@@ -649,7 +649,7 @@ void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for pointer activation events
+    Handler for cursor activation events
 *************************************************************************/
 void FrameWindow::onPointerActivate(PointerEventArgs& e)
 {
@@ -666,7 +666,7 @@ void FrameWindow::onPointerActivate(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when pointer capture is lost
+    Handler for when cursor capture is lost
 *************************************************************************/
 void FrameWindow::onCaptureLost(WindowEventArgs& e)
 {
