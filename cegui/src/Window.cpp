@@ -1373,8 +1373,8 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "PointerAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat pointer press events. Value is either \"true\" or \"false\".",
-        &Window::setPointerAutoRepeatEnabled, &Window::isPointerAutoRepeatEnabled, false
+        "CursorAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat pointer press events. Value is either \"true\" or \"false\".",
+        &Window::setCursorAutoRepeatEnabled, &Window::isCursorAutoRepeatEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, float,
@@ -1482,7 +1482,7 @@ void Window::setZOrderingEnabled(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isPointerAutoRepeatEnabled(void) const
+bool Window::isCursorAutoRepeatEnabled(void) const
 {
     return d_autoRepeat;
 }
@@ -1500,7 +1500,7 @@ float Window::getAutoRepeatRate(void) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setPointerAutoRepeatEnabled(bool setting)
+void Window::setCursorAutoRepeatEnabled(bool setting)
 {
     if (d_autoRepeat == setting)
         return;

@@ -1071,7 +1071,7 @@ public:
         - false if autorepeat of pointer press events is not enabled for
           this window.
     */
-    bool isPointerAutoRepeatEnabled(void) const;
+    bool isCursorAutoRepeatEnabled(void) const;
 
     /*!
     \brief
@@ -1913,7 +1913,7 @@ public:
     \return
         Nothing.
     */
-    void setPointerAutoRepeatEnabled(bool setting);
+    void setCursorAutoRepeatEnabled(bool setting);
 
     /*!
     \brief
