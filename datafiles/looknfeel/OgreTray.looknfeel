@@ -2796,7 +2796,7 @@
 -->
     <WidgetLook name="OgreTray/Slider">
         <Property name="VerticalSlider" value="false"/>
-        <Property name="PointerAutoRepeatEnabled" value="true"/>
+        <Property name="CursorAutoRepeatEnabled" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
