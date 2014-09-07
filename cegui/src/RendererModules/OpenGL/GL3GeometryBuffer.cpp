@@ -78,7 +78,7 @@ void OpenGL3GeometryBuffer::draw() const
     else
         d_glStateChanger->disable(GL_SCISSOR_TEST);
 
-    // Update the matrix
+    // Update the model view projection matrix
     updateMatrix();
 
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();

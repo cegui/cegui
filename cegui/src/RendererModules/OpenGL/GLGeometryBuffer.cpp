@@ -61,7 +61,7 @@ void OpenGLGeometryBuffer::draw() const
     else
         glDisable(GL_SCISSOR_TEST);
 
-    // apply the transformations we need to use.
+    // Update the model view projection matrix
     updateMatrix();
 
     glMatrixMode(GL_MODELVIEW);

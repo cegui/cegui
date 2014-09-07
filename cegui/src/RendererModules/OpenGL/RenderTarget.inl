@@ -38,7 +38,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const double OpenGLRenderTarget<T>::d_yfov_tan = 0.267949192431123;
+const float OpenGLRenderTarget<T>::d_yfov_tan = 0.267949192431123f;
 
 //----------------------------------------------------------------------------//
 template <typename T>
