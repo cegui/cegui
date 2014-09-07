@@ -52,7 +52,7 @@ void RenderTarget::activate()
     ++d_activationCounter;
 
     if(d_activationCounter == 0)
-        owner.invalidateMatricesOfGeomBuffersUsingRenderTarget(this);
+        owner.invalidateGeomBufferMatrices(this);
 }
 
 //----------------------------------------------------------------------------//
