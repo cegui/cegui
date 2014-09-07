@@ -431,7 +431,7 @@ public:
         the Buffer was not rendered for exactly the amount of maximum countable times, and is updated again exactly at
         the same count)
     */
-    void invalidateMatricesOfGeomBuffersUsingRenderTarget(const CEGUI::RenderTarget* renderTarget);
+    void invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget);
 
     /*!
     \brief

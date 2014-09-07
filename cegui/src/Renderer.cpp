@@ -81,7 +81,7 @@ GeometryBuffer& Renderer::createGeometryBufferColoured()
 }
 
 //----------------------------------------------------------------------------//
-void Renderer::invalidateMatricesOfGeomBuffersUsingRenderTarget(const CEGUI::RenderTarget* renderTarget)
+void Renderer::invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget)
 {
     GeometryBufferList::iterator currentIter = d_geometryBuffers.begin();
     GeometryBufferList::iterator iterEnd = d_geometryBuffers.end();
