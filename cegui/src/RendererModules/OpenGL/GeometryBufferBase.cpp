@@ -63,14 +63,9 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
-    // Check if the ached values from the RenderTarget are still valid or an update
-    // is required for this GeometryBuffer
-    if(d_matrixValid)
-        d_matrixValid = checkRenderTargetValidity(d_owner.getActiveRenderTarget());
-
-    if(!d_matrixValid)
+    if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
     {
-        //Apply the model view projection matrix
+        // Apply the view projection matrix to the model matrix and save the result as cached matrix
         d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
 
         d_matrixValid = true;

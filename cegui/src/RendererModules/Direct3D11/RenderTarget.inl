@@ -39,7 +39,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const double Direct3D11RenderTarget<T>::d_yfov_tan = 0.267949192431123;
+const float Direct3D11RenderTarget<T>::d_yfov_tan = 0.267949192431123f;
 
 //----------------------------------------------------------------------------//
 template <typename T>
@@ -197,7 +197,7 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
     d_viewDistance = midx / (aspect * d_yfov_tan);
 
-    glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
+    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
     glm::vec3 center = glm::vec3(midx, midy, 1);
     glm::vec3 up = glm::vec3(0, -1, 0);
 
@@ -206,8 +206,8 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
     // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which the following
     // manually filled matrix should fix:
     const float fovy = 30.f;
-    const float zNear = static_cast<float>(d_viewDistance * 0.5f);
-    const float zFar = static_cast<float>(d_viewDistance * 2.0f);
+    const float zNear = d_viewDistance * 0.5f;
+    const float zFar = d_viewDistance * 2.0f;
     const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
     const float Q = zFar / (zNear - zFar);
 
