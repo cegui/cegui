@@ -77,7 +77,7 @@ public:
     \return
         The cached model view projection matrix.
     */
-    const Ogre::Matrix4 getMatrix() const;
+    glm::mat4 getModelMatrix() const;
 
 
     virtual void draw() const;

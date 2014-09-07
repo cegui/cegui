@@ -33,9 +33,17 @@
 #include <OgreCamera.h>
 #include <OgreViewport.h>
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+//----------------------------------------------------------------------------//
+template <typename T>
+const float OgreRenderTarget<T>::d_yfov_tan = 0.267949192431123f;
+
 //----------------------------------------------------------------------------//
 template <typename T>
 OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
@@ -46,7 +54,7 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
     d_renderTarget(0),
     d_viewport(0),
     d_ogreViewportDimensions(0, 0, 0, 0),
-    d_matrix(Ogre::Matrix3::ZERO),
+    d_matrix(Ogre::Matrix4::IDENTITY),
     d_matrixValid(false),
     d_viewportValid(false),
     d_viewDistance(0)
@@ -172,7 +180,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     // matrices used for projecting and unprojecting points
 
-    const Ogre::Matrix4 proj(gb.getMatrix() * d_matrix * vpmat);
+    const Ogre::Matrix4 proj(OgreRenderer::glmToOgreMatrix(gb.getModelMatrix()) * d_matrix * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
 
     Ogre::Vector3 in;

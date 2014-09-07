@@ -62,6 +62,8 @@
 
 #include "Shaders.inl"
 
+#include "glm/gtc/type_ptr.hpp"
+
 #define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           60
 
 // Start of CEGUI namespace section
@@ -138,7 +140,7 @@ struct OgreRenderer_impl
         d_worldMatrix(Ogre::Matrix4::IDENTITY),
         d_viewMatrix(Ogre::Matrix4::IDENTITY),
         d_projectionMatrix(Ogre::Matrix4::IDENTITY),
-        d_worldViewProjMatrix(),
+        d_viewProjMatrix(1.0f),
         d_combinedMatrixValid(true),
         d_useGLSL(false),
         d_useGLSLES(false),
@@ -214,7 +216,7 @@ struct OgreRenderer_impl
     Ogre::Matrix4 d_worldMatrix;
     Ogre::Matrix4 d_viewMatrix;
     Ogre::Matrix4 d_projectionMatrix;
-    Ogre::Matrix4 d_worldViewProjMatrix;
+    glm::mat4 d_viewProjMatrix;
     bool d_combinedMatrixValid;
 };
 
@@ -401,6 +403,28 @@ OgreImageCodec& OgreRenderer::createOgreImageCodec()
 void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 {
     delete &ic;
+}
+
+//----------------------------------------------------------------------------//
+//! Conversion function from Ogre to glm
+glm::mat4 OgreRenderer::ogreToGlmMatrix(const Ogre::Matrix4& matrix)
+{
+    return  glm::mat4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                      matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                      matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+                      matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
+}
+
+//----------------------------------------------------------------------------//
+//! Conversion function from glm to Ogre
+Ogre::Matrix4 OgreRenderer::glmToOgreMatrix(const glm::mat4& matrix)
+{
+    Ogre::Matrix4 newMatrix(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                            matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                            matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+                            matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
+
+    return newMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -1165,28 +1189,28 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getWorldViewProjMatrix() const
+const glm::mat4& OgreRenderer::getViewProjectionMatrix() const
 {
     if (!d_pimpl->d_combinedMatrixValid)
     {
-        Ogre::Matrix4 final_prj(d_pimpl->d_projectionMatrix);
+        Ogre::Matrix4 projMatrix = d_pimpl->d_projectionMatrix;
+
 
         if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->
             requiresTextureFlipping())
         {
-            final_prj[1][0] = -final_prj[1][0];
-            final_prj[1][1] = -final_prj[1][1];
-            final_prj[1][2] = -final_prj[1][2];
-            final_prj[1][3] = -final_prj[1][3];
+            projMatrix[1][0] = -projMatrix[1][0];
+            projMatrix[1][1] = -projMatrix[1][1];
+            projMatrix[1][2] = -projMatrix[1][2];
+            projMatrix[1][3] = -projMatrix[1][3];
         }
 
-        d_pimpl->d_worldViewProjMatrix =
-            final_prj * d_pimpl->d_viewMatrix * d_pimpl->d_worldMatrix;
+        d_pimpl->d_viewProjMatrix = ogreToGlmMatrix(projMatrix *  d_pimpl->d_viewMatrix * d_pimpl->d_worldMatrix);
 
         d_pimpl->d_combinedMatrixValid = true;
     }
 
-    return d_pimpl->d_worldViewProjMatrix;
+    return d_pimpl->d_viewProjMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -1229,7 +1253,7 @@ void OgreRenderer::setViewMatrix(const Ogre::Matrix4& matrix)
 void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& matrix)
 {
     d_pimpl->d_renderSystem->_setProjectionMatrix(matrix);
-
+                                    
     d_pimpl->d_projectionMatrix = matrix;
     d_pimpl->d_combinedMatrixValid = false;
 }
