@@ -39,7 +39,10 @@
 #include <OgreRenderOperation.h>
 #include <OgreSceneManager.h>
 
+#include "glm/glm.hpp"
+#include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 #define FLOATS_PER_TEXTURED     9
 #define FLOATS_PER_COLOURED     7
@@ -132,6 +135,8 @@ void OgreGeometryBuffer::draw() const
     {
         d_renderSystem.setScissorTest(false);
     }
+
+    updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//
@@ -201,6 +206,24 @@ void OgreGeometryBuffer::syncVertexData() const
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::updateMatrix() const
 {
+    d_matrixValid = false;
+    if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
+    {
+        // Apply the view projection matrix to the model matrix and save the result as cached matrix
+        d_matrix = getModelMatrix() * d_owner.getViewProjectionMatrix();
+
+        //If necessary: transpose
+        const OgreShaderWrapper* ogreShader = static_cast<const OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+        if (ogreShader->getVertexParameters()->getTransposeMatrices())
+            d_matrix = glm::transpose(d_matrix); 
+
+        d_matrixValid = true;
+    }
+}
+
+//----------------------------------------------------------------------------//
+glm::mat4 OgreGeometryBuffer::getModelMatrix() const
+{
     // translation to position geometry and offset to pivot point
     Ogre::Matrix4 trans;
 
@@ -218,26 +241,8 @@ void OgreGeometryBuffer::updateMatrix() const
     // calculate final matrix
     Ogre::Matrix4 finalMatrix = trans * rot * inv_pivot_trans;
 
-    // Apply WorldViewProjection Matrix
-    finalMatrix = d_owner.getWorldViewProjMatrix() * finalMatrix;
-
     //Reinterpret as glm matrix
-    d_matrix = glm::make_mat4(&finalMatrix[0][0]);
-
-    //If necessary: transpose
-    const OgreShaderWrapper* ogreShader = static_cast<const OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
-    if (ogreShader->getVertexParameters()->getTransposeMatrices())
-        d_matrix = glm::transpose(d_matrix); 
-
-    d_matrixValid = true;
-}
-
-//----------------------------------------------------------------------------//
-const Ogre::Matrix4 OgreGeometryBuffer::getMatrix() const
-{
-    updateMatrix();
-
-    return Ogre::Matrix4(&d_matrix[0][0]);
+    return OgreRenderer::ogreToGlmMatrix(finalMatrix);
 }
 
 //----------------------------------------------------------------------------//

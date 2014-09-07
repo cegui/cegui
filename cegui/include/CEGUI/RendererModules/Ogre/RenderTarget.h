@@ -80,6 +80,9 @@ protected:
     //! helper to update the actual Ogre viewport dimensions
     void updateOgreViewportDimensions(const Ogre::RenderTarget* const rt);
 
+    //! tangent of the y FOV half-angle; used to calculate viewing distance.
+    static const float d_yfov_tan;
+
     //! OgreRenderer object that owns this RenderTarget
     OgreRenderer& d_owner;
     //! Ogre RendererSystem used to affect the rendering process
