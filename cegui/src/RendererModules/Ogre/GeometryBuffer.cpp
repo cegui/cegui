@@ -210,7 +210,7 @@ void OgreGeometryBuffer::updateMatrix() const
     if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
     {
         // Apply the view projection matrix to the model matrix and save the result as cached matrix
-        d_matrix = getModelMatrix() * d_owner.getViewProjectionMatrix();
+        d_matrix = glm::transpose( glm::transpose( d_owner.getViewProjectionMatrix()) * getModelMatrix());
 
         //If necessary: transpose
         const OgreShaderWrapper* ogreShader = static_cast<const OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
@@ -224,25 +224,15 @@ void OgreGeometryBuffer::updateMatrix() const
 //----------------------------------------------------------------------------//
 glm::mat4 OgreGeometryBuffer::getModelMatrix() const
 {
-    // translation to position geometry and offset to pivot point
-    Ogre::Matrix4 trans;
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
 
-    trans.makeTrans(d_translation.x + d_pivot.x,
-                    d_translation.y + d_pivot.y,
-                    d_translation.z + d_pivot.z);
+    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
+    modelMatrix *= glm::mat4_cast(d_rotation) * scale_matrix;
 
-    // rotation
-    Ogre::Matrix4 rot(Ogre::Quaternion(d_rotation.w, d_rotation.x, d_rotation.y, d_rotation.z));
+    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
+    modelMatrix *=  translMatrix * d_customTransform;
 
-    // translation to remove rotation pivot offset
-    Ogre::Matrix4 inv_pivot_trans;
-    inv_pivot_trans.makeTrans(-d_pivot.x, -d_pivot.y, -d_pivot.z);
-
-    // calculate final matrix
-    Ogre::Matrix4 finalMatrix = trans * rot * inv_pivot_trans;
-
-    //Reinterpret as glm matrix
-    return OgreRenderer::ogreToGlmMatrix(finalMatrix);
+    return modelMatrix;
 }
 
 //----------------------------------------------------------------------------//
