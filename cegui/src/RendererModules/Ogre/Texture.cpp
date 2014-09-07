@@ -212,7 +212,7 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     char* bufferCopy = new char[byte_size];
     memcpy(bufferCopy, buffer, byte_size);
 
-    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(buffer_size.d_width, buffer_size.d_height,
+    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<uint32>(buffer_size.d_width), static_cast<uint32>(buffer_size.d_height),
                                                         1, toOgrePixelFormat(pixel_format), bufferCopy);
     d_texture->freeInternalResources();
     d_texture->setWidth(buffer_size.d_width);
