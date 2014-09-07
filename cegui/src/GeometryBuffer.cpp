@@ -29,6 +29,8 @@
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RenderTarget.h"
 
+#include "glm/gtc/matrix_transform.hpp"
+
 #include <vector>
 #include <algorithm>
 #include <iterator>
@@ -405,6 +407,21 @@ void GeometryBuffer::updateRenderTargetData(const RenderTarget* activeRenderTarg
 {
     d_lastRenderTarget = activeRenderTarget;
     d_lastRenderTargetActivationCount = activeRenderTarget->getActivationCounter();
+}
+
+
+//----------------------------------------------------------------------------//
+glm::mat4 GeometryBuffer::getModelMatrix() const
+{
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
+
+    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
+    modelMatrix *= glm::mat4_cast(d_rotation) * scale_matrix;
+
+    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
+    modelMatrix *=  translMatrix * d_customTransform;
+
+    return modelMatrix;
 }
 
 

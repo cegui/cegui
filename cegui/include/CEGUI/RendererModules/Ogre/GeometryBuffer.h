@@ -70,16 +70,6 @@ public:
     //! Destructor
     virtual ~OgreGeometryBuffer();
 
-    /*
-    \brief
-        Returns the cached model view projection matrix.
-
-    \return
-        The cached model view projection matrix.
-    */
-    glm::mat4 getModelMatrix() const;
-
-
     virtual void draw() const;
     virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
     virtual void setClippingRegion(const Rectf& region);

@@ -460,6 +460,16 @@ public:
     //TODO DOCU
     void updateRenderTargetData(const RenderTarget* activeRenderTarget) const;
 
+    /*
+    \brief
+        Calculates and returns the model matrix for this GeometryBuffer.
+
+    \return
+        The model matrix for this GeometryBuffer.
+    */
+    glm::mat4 getModelMatrix() const;
+
+
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
