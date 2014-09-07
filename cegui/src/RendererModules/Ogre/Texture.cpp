@@ -215,8 +215,8 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<uint32>(buffer_size.d_width), static_cast<uint32>(buffer_size.d_height),
                                                         1, toOgrePixelFormat(pixel_format), bufferCopy);
     d_texture->freeInternalResources();
-    d_texture->setWidth(buffer_size.d_width);
-    d_texture->setHeight(buffer_size.d_height);
+    d_texture->setWidth(static_cast<uint32>(buffer_size.d_width));
+    d_texture->setHeight(static_cast<uint32>(buffer_size.d_height));
     d_texture->setDepth(1);
     d_texture->createInternalResources();
     d_texture->getBuffer(0,0).get()->blitFromMemory(*pixelBox);
@@ -259,7 +259,7 @@ void OgreTexture::blitToMemory(void* targetData)
     if (d_texture.isNull()) // TODO: exception?
         return;
 
-    Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
+    Ogre::PixelBox pb(static_cast<uint32>(d_size.d_width), static_cast<uint32>(d_size.d_height),
                       1, Ogre::PF_A8R8G8B8, targetData);
     d_texture->getBuffer()->blitToMemory(pb);
 }
