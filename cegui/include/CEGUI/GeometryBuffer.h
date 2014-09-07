@@ -448,8 +448,14 @@ public:
     //TODO DOCU
     const RenderTarget* getLastRenderTarget() const;
 
-    //TODO DOCU
-    bool checkRenderTargetValidity(const RenderTarget* activeRenderTarget) const;
+    /*!
+    \brief 
+        Returns if the data (matrix etc) from the RenderTarget that was last used is still valid or not.
+
+    \return
+        True if still valid. False if invalid.
+    */
+    bool isRenderTargetDataValid(const RenderTarget* activeRenderTarget) const;
 
     //TODO DOCU
     void updateRenderTargetData(const RenderTarget* activeRenderTarget) const;
@@ -495,7 +501,7 @@ protected:
     //! The RenderTarget that this GeometryBuffer's matrix was last updated for
     mutable const RenderTarget*   d_lastRenderTarget;
     //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
-    mutable unsigned int    d_lastRenderTargetActivCount;
+    mutable unsigned int    d_lastRenderTargetActivationCount;
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode       d_blendMode;
     //! The fill rule that should be used when rendering the geometry.

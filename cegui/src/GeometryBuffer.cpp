@@ -51,7 +51,7 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_alpha(1.0f),
     d_matrixValid(false),
     d_lastRenderTarget(0),
-    d_lastRenderTargetActivCount(0)
+    d_lastRenderTargetActivationCount(0)
 {}
 
 //---------------------------------------------------------------------------//
@@ -392,16 +392,19 @@ const RenderTarget* GeometryBuffer::getLastRenderTarget() const
 }
 
 //---------------------------------------------------------------------------//
-bool GeometryBuffer::checkRenderTargetValidity(const RenderTarget* activeRenderTarget) const
+bool GeometryBuffer::isRenderTargetDataValid(const RenderTarget* activeRenderTarget) const
 {
-    return (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivCount + 1 == activeRenderTarget->getActivationCounter());
+    //! The data received from the RenderTarget is only valid if:
+    //! 1. The RenderTarget is the same as the one used the last time
+    //! 2. The GeometryBuffer never skipped a RenderTarget activation (Checked via counter)
+    return (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivationCount + 1 == activeRenderTarget->getActivationCounter());
 }
 
 //--------------------------------------------------------------------------//
 void GeometryBuffer::updateRenderTargetData(const RenderTarget* activeRenderTarget) const
 {
     d_lastRenderTarget = activeRenderTarget;
-    d_lastRenderTargetActivCount = activeRenderTarget->getActivationCounter();
+    d_lastRenderTargetActivationCount = activeRenderTarget->getActivationCounter();
 }
 
 
