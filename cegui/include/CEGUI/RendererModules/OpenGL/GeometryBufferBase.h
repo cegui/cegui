@@ -60,15 +60,6 @@ public:
 
     // Overrides of virtual and abstract methods inherited from GeometryBuffer
     virtual void setClippingRegion(const Rectf& region);
-    
-    /*
-    \brief
-        Calculates and returns the model matrix of this GeometryBuffer.
-
-    \return
-        The model matrix of this GeometryBuffer.
-    */
-    glm::mat4 getModelMatrix() const;
 
     /*
     \brief

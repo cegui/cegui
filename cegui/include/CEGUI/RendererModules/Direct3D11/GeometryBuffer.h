@@ -59,15 +59,6 @@ public:
 
     /*
     \brief
-        Calculates and returns the model matrix of this GeometryBuffer.
-
-    \return
-        The model matrix of this GeometryBuffer.
-    */
-    glm::mat4 getModelMatrix() const;
-
-    /*
-    \brief
         The update function that is to be called when all the vertex attributes
         are set.
 
