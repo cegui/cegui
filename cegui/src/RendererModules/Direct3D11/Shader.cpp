@@ -98,7 +98,7 @@ void Direct3D11Shader::createVertexShader(const std::string& vertexShaderSource)
 #endif
 
     result = D3DCompile(static_cast<LPCSTR>(vertexShaderSource.c_str()), vertexShaderSource.size(), "CEGUI Vertex Shader",
-                        0, 0, "VSMain", getVertexShaderVersion().c_str(), flags1, 0, &d_vertexShaderBuffer, &errorMessage);
+                        0, 0, "main", getVertexShaderVersion().c_str(), flags1, 0, &d_vertexShaderBuffer, &errorMessage);
     if(FAILED(result))
     {
 		std::string msg(static_cast<const char*>(errorMessage->GetBufferPointer()), errorMessage->GetBufferSize());
@@ -137,7 +137,7 @@ void Direct3D11Shader::createPixelShader(const std::string& pixelShaderSource)
 #endif
 
     result = D3DCompile(static_cast<LPCSTR>(pixelShaderSource.c_str()), pixelShaderSource.size(), "D3D11 Pixel Shader",
-                        0, 0, "PSMain", getPixelShaderVersion().c_str(), flags1, 0, &d_pixelShaderBuffer, &errorMessage);
+                        0, 0, "main", getPixelShaderVersion().c_str(), flags1, 0, &d_pixelShaderBuffer, &errorMessage);
     if(FAILED(result))
     {
 		std::string msg(static_cast<const char*>(errorMessage->GetBufferPointer()), errorMessage->GetBufferSize());
