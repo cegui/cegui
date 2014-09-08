@@ -46,7 +46,7 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     d_pixelShader(ps),
     d_owner(owner),
     d_renderSystem(rs),
-    d_previousMatrix(),
+    d_lastMatrix(),
     d_previousAlpha(-1.f)
 {
     d_vertexParameters = d_vertexShader->createParameters();
@@ -157,11 +157,12 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
 
-            if (d_previousMatrix != mat->d_parameterValue)
+            if (d_lastMatrix != mat->d_parameterValue)
             {
-                d_previousMatrix = mat->d_parameterValue;
                 d_vertexParameters->_writeRawConstants(target_index, 
-                    &d_previousMatrix[0][0], 16);
+                                                       glm::value_ptr(mat->d_parameterValue),
+                                                       16);
+                d_lastMatrix = mat->d_parameterValue;
             } 
             break;
         }

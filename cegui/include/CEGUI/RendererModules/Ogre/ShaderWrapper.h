@@ -79,7 +79,7 @@ protected:
     Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
 
     //! The currently active matrix
-    glm::mat4 d_previousMatrix;
+    glm::mat4 d_lastMatrix;
 
     //! The current alpha value
     float d_previousAlpha;
