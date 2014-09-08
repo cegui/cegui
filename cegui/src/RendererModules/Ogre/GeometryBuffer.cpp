@@ -95,7 +95,7 @@ void OgreGeometryBuffer::draw() const
         (*d_renderMaterial).getShaderParamBindings();
 
     // Set the ModelViewProjection matrix in the bindings
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_matrix);
+    shaderParameterBindings->setParameter("modelViewProjMatrix", d_matrix);
 
 
     if (d_alpha != d_previousAlphaValue)
@@ -115,8 +115,6 @@ void OgreGeometryBuffer::draw() const
         // set up RenderEffect
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
-
-        setTextureStates();
 
         //Prepare for the rendering process according to the used render material
         d_renderMaterial->prepareForRendering();
@@ -209,7 +207,7 @@ void OgreGeometryBuffer::updateMatrix() const
     if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
     {
         // Apply the view projection matrix to the model matrix and save the result as cached matrix
-        d_matrix = glm::transpose( glm::transpose( d_owner.getViewProjectionMatrix()) * getModelMatrix());
+        d_matrix = glm::transpose( d_owner.getViewProjectionMatrix() * getModelMatrix() );
 
         //If necessary: transpose
         const OgreShaderWrapper* ogreShader = static_cast<const OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
@@ -315,14 +313,6 @@ void OgreGeometryBuffer::reset()
 {
     d_vertexData.clear();
     d_clippingActive = true;
-}
-
-// ------------------------------------ //
-void OgreGeometryBuffer::setTextureStates() const
-{
-    using namespace Ogre;
-    // Set texture states
-    d_renderSystem._setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_NONE);
 }
 
 // ------------------------------------ //

@@ -56,7 +56,7 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
         d_vertexShader->getConstantDefinitions().map;
 
     Ogre::GpuConstantDefinitionMap::const_iterator target = 
-        vertex_map.find("worldViewProjMatrix");
+        vertex_map.find("modelViewProjMatrix");
 
     const Ogre::GpuConstantDefinitionMap& pixel_map = 
         d_pixelShader->getConstantDefinitions().map;
@@ -153,7 +153,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         }
         case SPT_MATRIX_4X4:
         {
-            // This is the "modelViewPerspMatrix"
+            // This is the "modelViewProjMatrix"
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
 
