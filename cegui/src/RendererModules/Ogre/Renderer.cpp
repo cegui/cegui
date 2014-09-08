@@ -409,22 +409,20 @@ void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 //! Conversion function from Ogre to glm
 glm::mat4 OgreRenderer::ogreToGlmMatrix(const Ogre::Matrix4& matrix)
 {
-    return  glm::mat4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
-                      matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
-                      matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
-                      matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
+    return glm::mat4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                     matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                     matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+                     matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
 }
 
 //----------------------------------------------------------------------------//
 //! Conversion function from glm to Ogre
 Ogre::Matrix4 OgreRenderer::glmToOgreMatrix(const glm::mat4& matrix)
 {
-    Ogre::Matrix4 newMatrix(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
-                            matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
-                            matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
-                            matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
-
-    return newMatrix;
+    return Ogre::Matrix4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                         matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                         matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+                         matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
 }
 
 //----------------------------------------------------------------------------//
@@ -1160,6 +1158,7 @@ void OgreRenderer::initialiseRenderStateSettings()
     d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
     d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
     d_pimpl->d_renderSystem->_setTextureMatrix(0, Matrix4::IDENTITY);
+    d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_POINT, Ogre::FO_NONE);
     d_pimpl->d_renderSystem->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);

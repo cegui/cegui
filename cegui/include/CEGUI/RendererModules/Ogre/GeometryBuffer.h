@@ -89,8 +89,6 @@ protected:
 
     void setVertexBuffer(size_t count) const;
 
-    void setTextureStates() const;
-
     void cleanUpVertexAttributes();
 
     //! Renderer object that owns this GeometryBuffer
