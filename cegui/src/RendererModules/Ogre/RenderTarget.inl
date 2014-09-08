@@ -260,6 +260,8 @@ void OgreRenderTarget<T>::updateMatrix() const
     d_renderSystem._convertProjectionMatrix(tmp, d_matrix);
 
     d_matrixValid = true;
+    //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
+    RenderTarget::d_activationCounter = -1;
 }
 
 //----------------------------------------------------------------------------//
