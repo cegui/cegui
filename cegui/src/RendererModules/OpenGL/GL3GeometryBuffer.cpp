@@ -84,7 +84,7 @@ void OpenGL3GeometryBuffer::draw() const
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
 
     // Set the uniform variables for this GeometryBuffer in the Shader
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", d_matrix);
+    shaderParameterBindings->setParameter("modelViewProjMatrix", d_matrix);
     shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
 
     // activate desired blending mode

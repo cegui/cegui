@@ -32,7 +32,7 @@ namespace CEGUI
 const char StandardShaderSolidVert[] = 
 "#version 150 core\n"
 
-"uniform mat4 modelViewPerspMatrix;\n"
+"uniform mat4 modelViewProjMatrix;\n"
 
 "in vec3 inPosition;\n"
 "in vec4 inColour;\n"
@@ -43,7 +43,7 @@ const char StandardShaderSolidVert[] =
 "{\n"
     "exColour = inColour;\n"
 
-    "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
+    "gl_Position = modelViewProjMatrix * vec4(inPosition, 1.0);\n"
 "}"
 ;
 
@@ -72,7 +72,7 @@ supplied to the shader, resulting in the final colour.
 const char StandardShaderTexturedVert[] = 
 "#version 150 core\n"
 
-"uniform mat4 modelViewPerspMatrix;\n"
+"uniform mat4 modelViewProjMatrix;\n"
 
 "in vec3 inPosition;\n"
 "in vec2 inTexCoord;\n"
@@ -86,7 +86,7 @@ const char StandardShaderTexturedVert[] =
     "exTexCoord = inTexCoord;\n"
     "exColour = inColour;\n"
 
-    "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
+    "gl_Position = modelViewProjMatrix * vec4(inPosition, 1.0);\n"
 "}"
 ;
 
