@@ -1153,16 +1153,6 @@ void OgreRenderer::initialiseRenderStateSettings()
 
     // set alpha blending to known state
     setupRenderingBlendMode(BM_NORMAL, true);
-
-    d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, TEXCALC_NONE);
-    d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
-    d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
-    d_pimpl->d_renderSystem->_setTextureMatrix(0, Matrix4::IDENTITY);
-    d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_POINT, Ogre::FO_NONE);
-    d_pimpl->d_renderSystem->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);
-    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
-    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
-    d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
 }
 
 //----------------------------------------------------------------------------//
@@ -1432,6 +1422,20 @@ void OgreRenderer::cleanLargestVertexBufferPool(size_t count)
 
         d_pimpl->d_vbPool.pop_back();
     }
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::initialiseTextureStates()
+{
+    d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, Ogre::TEXCALC_NONE);
+    d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
+    d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
+    d_pimpl->d_renderSystem->_setTextureMatrix(0, Ogre::Matrix4::IDENTITY);
+    d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_NONE);
+    d_pimpl->d_renderSystem->_setAlphaRejectSettings(Ogre::CMPF_ALWAYS_PASS, 0, false);
+    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
+    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
+    d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
 }
 
 //----------------------------------------------------------------------------//

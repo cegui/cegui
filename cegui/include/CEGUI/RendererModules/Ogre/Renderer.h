@@ -325,6 +325,13 @@ public:
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
 
+    
+    /*!
+    \brief 
+        Initialises the states for rendering textured geometry
+    */
+    void initialiseTextureStates();
+
     /*!
     \brief 
         Returns a vertex buffer larger than size if any exist

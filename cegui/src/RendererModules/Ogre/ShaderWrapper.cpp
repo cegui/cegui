@@ -148,6 +148,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             }
 
             d_renderSystem._setTexture(0, true, actual_texture);
+            d_owner.initialiseTextureStates();
 
             break;
         }
