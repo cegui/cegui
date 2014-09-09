@@ -145,7 +145,6 @@ void OgreRenderTarget<T>::activate()
 
     
     d_owner.setProjectionMatrix(d_matrix);
-    d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
 
     RenderTarget::activate();
 }
@@ -252,8 +251,7 @@ void OgreRenderTarget<T>::updateMatrix() const
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
     glm::mat4 finalMatrix = projectionMatrix * viewMatrix;
-
-    
+  
     Ogre::Matrix4 temp = OgreRenderer::glmToOgreMatrix(finalMatrix);
     d_renderSystem._convertProjectionMatrix(temp, d_matrix, true);
 

@@ -297,16 +297,9 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
-    //! Set the current world matrix to the given matrix.
-    void setWorldMatrix(const Ogre::Matrix4& matrix);
-    //! Set the current view matrix to the given matrix.
-    void setViewMatrix(const Ogre::Matrix4& matrix);
     //! Set the current projection matrix to the given matrix.
     void setProjectionMatrix(const Ogre::Matrix4& matrix);
-    //! return a const reference to the current world matrix.
-    const Ogre::Matrix4& getWorldMatrix() const;
-    //! return a const reference to the current view matrix.
-    const Ogre::Matrix4& getViewMatrix() const;
+
     //! return a const reference to the current projection matrix.
     const Ogre::Matrix4& getProjectionMatrix() const;
 
