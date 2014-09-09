@@ -216,7 +216,7 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
     else
         vertexData = &d_vertexData[0];
 
-    GLsizei dataSize = d_bufferSize * sizeof(float);
+    GLsizei dataSize = vertexCount * sizeof(float);
 
     if(needNewBuffer)
     {
