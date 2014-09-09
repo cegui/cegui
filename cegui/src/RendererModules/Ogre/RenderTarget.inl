@@ -252,8 +252,7 @@ void OgreRenderTarget<T>::updateMatrix() const
   
     glm::mat4 finalMatrix = projectionMatrix * viewMatrix;
   
-    Ogre::Matrix4 temp = OgreRenderer::glmToOgreMatrix(finalMatrix);
-    d_renderSystem._convertProjectionMatrix(temp, d_matrix, true);
+    d_matrix = OgreRenderer::glmToOgreMatrix(finalMatrix);
 
     d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
