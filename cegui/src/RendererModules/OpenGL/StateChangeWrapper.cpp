@@ -204,6 +204,9 @@ void OpenGL3StateChangeWrapper::activeTexture(unsigned int texture_position)
 {
     if (d_activeTexturePosition != texture_position)
     {
+        while (texture_position >= d_boundTextures.size())
+            d_boundTextures.push_back(BoundTexture());
+
         glActiveTexture(GL_TEXTURE0 + texture_position);
         d_activeTexturePosition = texture_position;
     }
@@ -213,9 +216,6 @@ void OpenGL3StateChangeWrapper::bindTexture(GLenum target, GLuint texture)
 {
     if (d_activeTexturePosition == -1)
         return;
-
-    while (d_activeTexturePosition >= d_boundTextures.size())
-        d_boundTextures.push_back(BoundTexture());
 
     BoundTexture& boundTexture = d_boundTextures[d_activeTexturePosition];
     if (boundTexture.d_target != target || boundTexture.d_texture != texture)
