@@ -27,6 +27,9 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/ShaderParameterBindings.h"
+#include "CEGUI/RenderTarget.h"
+
+#include "glm/gtc/matrix_transform.hpp"
 
 #include <vector>
 #include <algorithm>
@@ -43,12 +46,14 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_pivot(0, 0, 0),
     d_customTransform(1.0f),
     d_effect(0),
-    d_matrixValid(false),
     d_blendMode(BM_NORMAL),
     d_renderMaterial(renderMaterial),
     d_polygonFillRule(PFR_NONE),
     d_postStencilVertexCount(0),
-    d_alpha(1.0f)
+    d_alpha(1.0f),
+    d_matrixValid(false),
+    d_lastRenderTarget(0),
+    d_lastRenderTargetActivationCount(0)
 {}
 
 //---------------------------------------------------------------------------//
@@ -370,10 +375,55 @@ void GeometryBuffer::setAlpha(float alpha)
     d_alpha = alpha;
 }
 
+//---------------------------------------------------------------------------//
 float GeometryBuffer::getAlpha() const
 {
     return d_alpha;
 }
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::invalidateMatrix()
+{
+    d_matrixValid = false;
+}
+
+//---------------------------------------------------------------------------//
+const RenderTarget* GeometryBuffer::getLastRenderTarget() const
+{
+    return d_lastRenderTarget;
+}
+
+//---------------------------------------------------------------------------//
+bool GeometryBuffer::isRenderTargetDataValid(const RenderTarget* activeRenderTarget) const
+{
+    //! The data received from the RenderTarget is only valid if:
+    //! 1. The RenderTarget is the same as the one used the last time
+    //! 2. The GeometryBuffer never skipped a RenderTarget activation (Checked via counter)
+    return (d_lastRenderTarget == activeRenderTarget) && (d_lastRenderTargetActivationCount + 1 == activeRenderTarget->getActivationCounter());
+}
+
+//--------------------------------------------------------------------------//
+void GeometryBuffer::updateRenderTargetData(const RenderTarget* activeRenderTarget) const
+{
+    d_lastRenderTarget = activeRenderTarget;
+    d_lastRenderTargetActivationCount = activeRenderTarget->getActivationCounter();
+}
+
+
+//----------------------------------------------------------------------------//
+glm::mat4 GeometryBuffer::getModelMatrix() const
+{
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
+
+    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
+    modelMatrix *= glm::mat4_cast(d_rotation) * scale_matrix;
+
+    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
+    modelMatrix *=  translMatrix * d_customTransform;
+
+    return modelMatrix;
+}
+
 
 }
 

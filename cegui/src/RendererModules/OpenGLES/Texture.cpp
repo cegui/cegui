@@ -173,36 +173,38 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
-                                                    const void* buffer) const
+void OpenGLESTexture::loadUncompressedTextureBuffer(const Rectf& dest_area,
+                                                    const GLvoid* buffer) const
 {
     GLint old_pack;
     glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                    static_cast<GLsizei>(buffer_size.d_width),
-                    static_cast<GLsizei>(buffer_size.d_height),
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+                    static_cast<GLint>(dest_area.left()),
+                    static_cast<GLint>(dest_area.top()),
+                    static_cast<GLsizei>(dest_area.getWidth()),
+                    static_cast<GLsizei>(dest_area.getHeight()),
                     d_format, d_subpixelFormat, buffer);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
-                                                  const void* buffer) const
+void OpenGLESTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
+                                                  const GLvoid* buffer) const
 {
-    GLsizei image_size = getCompressedTextureSize(buffer_size); 
+    const GLsizei image_size = getCompressedTextureSize(dest_area.getSize());
 
     glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
-                           static_cast<GLsizei>(buffer_size.d_width),
-                           static_cast<GLsizei>(buffer_size.d_height),
+                           static_cast<GLsizei>(dest_area.getWidth()),
+                           static_cast<GLsizei>(dest_area.getHeight()),
                            0, image_size, buffer);
 }
 
 //----------------------------------------------------------------------------//
-GLsizei getCompressedTextureSize(const Sizef& pixel_size) const
+GLsizei OpenGLESTexture::getCompressedTextureSize(const Sizef& pixel_size) const
 {
     // Calculate buffer size in bytes
     GLsizei image_space = 

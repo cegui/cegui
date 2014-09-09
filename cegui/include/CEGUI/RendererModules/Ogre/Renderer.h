@@ -193,6 +193,12 @@ public:
     //! function to destroy a CEGUI::OgreImageCodec object.
     static void destroyOgreImageCodec(OgreImageCodec& ic);
 
+    //! Conversion function from Ogre to glm
+    static glm::mat4 ogreToGlmMatrix(const Ogre::Matrix4& matrix);
+
+    //! Conversion function from glm to Ogre
+    static Ogre::Matrix4 glmToOgreMatrix(const glm::mat4& matrix);
+
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     //! Function to initialize required Ogre::Compositor2 workspaces
     static void createOgreCompositorResources();
@@ -291,16 +297,9 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
-    //! Set the current world matrix to the given matrix.
-    void setWorldMatrix(const Ogre::Matrix4& m);
-    //! Set the current view matrix to the given matrix.
-    void setViewMatrix(const Ogre::Matrix4& m);
     //! Set the current projection matrix to the given matrix.
-    void setProjectionMatrix(const Ogre::Matrix4& m);
-    //! return a const reference to the current world matrix.
-    const Ogre::Matrix4& getWorldMatrix() const;
-    //! return a const reference to the current view matrix.
-    const Ogre::Matrix4& getViewMatrix() const;
+    void setProjectionMatrix(const Ogre::Matrix4& matrix);
+
     //! return a const reference to the current projection matrix.
     const Ogre::Matrix4& getProjectionMatrix() const;
 
@@ -314,10 +313,17 @@ public:
         according to whether the current Ogre::RenderTarget requires textures
         to be flipped (i.e it does the right thing for both D3D and OpenGL).
     */
-    const Ogre::Matrix4& getWorldViewProjMatrix() const;
+    const glm::mat4& getViewProjectionMatrix() const;
 
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
+
+    
+    /*!
+    \brief 
+        Initialises the states for rendering textured geometry
+    */
+    void initialiseTextureStates();
 
     /*!
     \brief 

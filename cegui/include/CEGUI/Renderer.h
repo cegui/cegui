@@ -110,6 +110,10 @@ enum DefaultShaderType
 class CEGUIEXPORT Renderer
 {
 public:
+    Renderer();
+
+    virtual ~Renderer() {}
+
     /*!
     \brief
         Returns the default RenderTarget object.  The default render target is
@@ -418,8 +422,34 @@ public:
     */
     virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const = 0;
 
-    //! Destructor.
-    virtual ~Renderer() {}
+    /*!
+    \brief
+        Marks all matrices of all GeometryBuffers as dirty, so that they will be updated before their next usage.
+        This is a special function that will only be used if a RenderTarget has been rendered more than the amount
+        of numbers that can be stored in the counter, at which point the counter restarts at 0. This is necessary
+        to ensure that no Matrix will be reused although it actually would need updating (for example in the case
+        the Buffer was not rendered for exactly the amount of maximum countable times, and is updated again exactly at
+        the same count)
+    */
+    void invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget);
+
+    /*!
+    \brief
+        Sets the active render target.
+
+    \param renderTarget
+        The active RenderTarget.
+    */
+    void setActiveRenderTarget(RenderTarget* renderTarget);
+        
+    /*!
+    \brief
+        Retruns the active render target.
+
+    \return
+        The active RenderTarget.
+    */
+    RenderTarget* getActiveRenderTarget();
 
 protected:
     /*!
@@ -432,11 +462,15 @@ protected:
     */
     void addGeometryBuffer(GeometryBuffer& buffer);
 
+    //! The currently active RenderTarget
+    RenderTarget* d_activeRenderTarget;
+
 private:
     //! container type used to hold GeometryBuffers created.
     typedef std::vector<GeometryBuffer*> GeometryBufferList;
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
+
 
 };
 

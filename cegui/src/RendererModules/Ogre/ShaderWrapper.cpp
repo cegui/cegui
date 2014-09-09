@@ -46,7 +46,7 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     d_pixelShader(ps),
     d_owner(owner),
     d_renderSystem(rs),
-    d_previousMatrix(),
+    d_lastMatrix(),
     d_previousAlpha(-1.f)
 {
     d_vertexParameters = d_vertexShader->createParameters();
@@ -56,7 +56,7 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
         d_vertexShader->getConstantDefinitions().map;
 
     Ogre::GpuConstantDefinitionMap::const_iterator target = 
-        vertex_map.find("worldViewProjMatrix");
+        vertex_map.find("modelViewProjMatrix");
 
     const Ogre::GpuConstantDefinitionMap& pixel_map = 
         d_pixelShader->getConstantDefinitions().map;
@@ -89,7 +89,7 @@ OgreShaderWrapper::~OgreShaderWrapper()
 }
 
 //----------------------------------------------------------------------------//
-Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() const 
+Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() const
 {
     return d_vertexParameters;
 }
@@ -148,20 +148,22 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             }
 
             d_renderSystem._setTexture(0, true, actual_texture);
+            d_owner.initialiseTextureStates();
 
             break;
         }
         case SPT_MATRIX_4X4:
         {
-            // This is the "modelViewPerspMatrix"
+            // This is the "modelViewProjMatrix"
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
                 CEGUI::ShaderParameterMatrix*>(parameter);
 
-            if (d_previousMatrix != mat->d_parameterValue)
+            if (d_lastMatrix != mat->d_parameterValue)
             {
-                d_previousMatrix = mat->d_parameterValue;
                 d_vertexParameters->_writeRawConstants(target_index, 
-                    &d_previousMatrix[0][0], 16);
+                                                       glm::value_ptr(mat->d_parameterValue),
+                                                       16);
+                d_lastMatrix = mat->d_parameterValue;
             } 
             break;
         }

@@ -80,7 +80,8 @@ const Rectf& NullRenderTarget<T>::getArea() const
 //----------------------------------------------------------------------------//
 template<typename T>
 void NullRenderTarget<T>::activate()
-{
+{  
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -103,5 +104,13 @@ bool NullRenderTarget<T>::isImageryCache() const
 {
 	return false;
 }
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& NullRenderTarget<T>::getOwner()
+{
+    return d_owner;
+}
+
 
 } // End of  CEGUI namespace section

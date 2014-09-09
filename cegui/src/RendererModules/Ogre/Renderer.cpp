@@ -62,6 +62,8 @@
 
 #include "Shaders.inl"
 
+#include "glm/gtc/type_ptr.hpp"
+
 #define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           60
 
 // Start of CEGUI namespace section
@@ -135,10 +137,8 @@ struct OgreRenderer_impl
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
         d_useShaders(false),
-        d_worldMatrix(Ogre::Matrix4::IDENTITY),
-        d_viewMatrix(Ogre::Matrix4::IDENTITY),
         d_projectionMatrix(Ogre::Matrix4::IDENTITY),
-        d_worldViewProjMatrix(),
+        d_viewProjMatrix(1.0f),
         d_combinedMatrixValid(true),
         d_useGLSL(false),
         d_useGLSLES(false),
@@ -211,10 +211,8 @@ struct OgreRenderer_impl
     OgreShaderWrapper* d_texturedShaderWrapper;
     OgreShaderWrapper* d_colouredShaderWrapper;
 
-    Ogre::Matrix4 d_worldMatrix;
-    Ogre::Matrix4 d_viewMatrix;
     Ogre::Matrix4 d_projectionMatrix;
-    Ogre::Matrix4 d_worldViewProjMatrix;
+    glm::mat4 d_viewProjMatrix;
     bool d_combinedMatrixValid;
 };
 
@@ -401,6 +399,26 @@ OgreImageCodec& OgreRenderer::createOgreImageCodec()
 void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 {
     delete &ic;
+}
+
+//----------------------------------------------------------------------------//
+//! Conversion function from Ogre to glm
+glm::mat4 OgreRenderer::ogreToGlmMatrix(const Ogre::Matrix4& matrix)
+{
+    return glm::mat4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                     matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                     matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+                     matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
+}
+
+//----------------------------------------------------------------------------//
+//! Conversion function from glm to Ogre
+Ogre::Matrix4 OgreRenderer::glmToOgreMatrix(const glm::mat4& matrix)
+{
+    return Ogre::Matrix4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                         matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                         matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+                         matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
 }
 
 //----------------------------------------------------------------------------//
@@ -766,8 +784,8 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 {
     d_pimpl->d_renderSystem = d_pimpl->d_ogreRoot->getRenderSystem();
 
-    d_pimpl->d_displaySize.d_width  = target.getWidth();
-    d_pimpl->d_displaySize.d_height = target.getHeight();
+    d_pimpl->d_displaySize.d_width  = static_cast<float>(target.getWidth());
+    d_pimpl->d_displaySize.d_height = static_cast<float>(target.getHeight());
 
     // Now properly checks for the openGL version
     if (d_pimpl->d_renderSystem->getName().find("OpenGL") != Ogre::String::npos)
@@ -1131,15 +1149,6 @@ void OgreRenderer::initialiseRenderStateSettings()
 
     // set alpha blending to known state
     setupRenderingBlendMode(BM_NORMAL, true);
-
-    d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, TEXCALC_NONE);
-    d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
-    d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
-    d_pimpl->d_renderSystem->_setTextureMatrix(0, Matrix4::IDENTITY);
-    d_pimpl->d_renderSystem->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);
-    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
-    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
-    d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
 }
 
 //----------------------------------------------------------------------------//
@@ -1165,40 +1174,28 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getWorldViewProjMatrix() const
+const glm::mat4& OgreRenderer::getViewProjectionMatrix() const
 {
     if (!d_pimpl->d_combinedMatrixValid)
     {
-        Ogre::Matrix4 final_prj(d_pimpl->d_projectionMatrix);
+        Ogre::Matrix4 projMatrix = d_pimpl->d_projectionMatrix;
 
+        
         if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->
             requiresTextureFlipping())
         {
-            final_prj[1][0] = -final_prj[1][0];
-            final_prj[1][1] = -final_prj[1][1];
-            final_prj[1][2] = -final_prj[1][2];
-            final_prj[1][3] = -final_prj[1][3];
+            projMatrix[0][1] = -projMatrix[0][1];
+            projMatrix[1][1] = -projMatrix[1][1];
+            projMatrix[2][1] = -projMatrix[2][1];
+            projMatrix[3][1] = -projMatrix[3][1];
         }
 
-        d_pimpl->d_worldViewProjMatrix =
-            final_prj * d_pimpl->d_viewMatrix * d_pimpl->d_worldMatrix;
+        d_pimpl->d_viewProjMatrix = ogreToGlmMatrix(projMatrix);
 
         d_pimpl->d_combinedMatrixValid = true;
     }
 
-    return d_pimpl->d_worldViewProjMatrix;
-}
-
-//----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getWorldMatrix() const
-{
-    return d_pimpl->d_worldMatrix;
-}
-
-//----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getViewMatrix() const
-{
-    return d_pimpl->d_viewMatrix;
+    return d_pimpl->d_viewProjMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -1208,38 +1205,21 @@ const Ogre::Matrix4& OgreRenderer::getProjectionMatrix() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setWorldMatrix(const Ogre::Matrix4& m)
+void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& matrix)
 {
-    d_pimpl->d_renderSystem->_setWorldMatrix(m);
-
-    d_pimpl->d_worldMatrix = m;
+    d_pimpl->d_renderSystem->_setProjectionMatrix(matrix);
+                                    
+    d_pimpl->d_projectionMatrix = matrix;
     d_pimpl->d_combinedMatrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setViewMatrix(const Ogre::Matrix4& m)
-{
-    d_pimpl->d_renderSystem->_setViewMatrix(m);
-
-    d_pimpl->d_viewMatrix = m;
-    d_pimpl->d_combinedMatrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
-{
-    d_pimpl->d_renderSystem->_setProjectionMatrix(m);
-
-    d_pimpl->d_projectionMatrix = m;
-    d_pimpl->d_combinedMatrixValid = false;
-}
-
 void OgreRenderer::bindBlendMode(BlendMode blend)
 {
-
     setupRenderingBlendMode(blend, false);
 }
 
+//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     const DefaultShaderType shaderType) const
 {
@@ -1265,6 +1245,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     }
 }
 
+//----------------------------------------------------------------------------//
 GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
@@ -1280,6 +1261,7 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     return *geom_buffer;
 }
 
+//----------------------------------------------------------------------------//
 GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
@@ -1406,6 +1388,20 @@ void OgreRenderer::cleanLargestVertexBufferPool(size_t count)
 
         d_pimpl->d_vbPool.pop_back();
     }
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::initialiseTextureStates()
+{
+    d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, Ogre::TEXCALC_NONE);
+    d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
+    d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
+    d_pimpl->d_renderSystem->_setTextureMatrix(0, Ogre::Matrix4::IDENTITY);
+    d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_NONE);
+    d_pimpl->d_renderSystem->_setAlphaRejectSettings(Ogre::CMPF_ALWAYS_PASS, 0, false);
+    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
+    d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
+    d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
 }
 
 //----------------------------------------------------------------------------//

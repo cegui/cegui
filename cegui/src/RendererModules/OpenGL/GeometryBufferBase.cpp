@@ -51,8 +51,6 @@ OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 {
 }
 
-
-
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 {
@@ -63,27 +61,18 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
-{
-    if (!d_matrixValid)
-        updateMatrix();
-
-    return d_matrix;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
-    d_matrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
+    if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
+    {
+        // Apply the view projection matrix to the model matrix and save the result as cached matrix
+        d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
 
-    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
-    d_matrix *= glm::mat4_cast(d_rotation) * scale_matrix;
-
-    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
-    d_matrix *=  translMatrix * d_customTransform;
-
-    d_matrixValid = true;
+        d_matrixValid = true;
+    }
 }
+
+
 
 //----------------------------------------------------------------------------//
 

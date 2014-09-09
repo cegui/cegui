@@ -29,6 +29,8 @@
 #include "CEGUI/System.h"
 #include "CEGUI/ImageCodec.h"
 
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -423,11 +425,11 @@ void OpenGLTexture::generateOpenGLTexture()
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    // FIXME: This hack was needed to fix #980 in a way that maintains binary
-    // compatibility in v0-8 branch.
+    // TODO: This call is OpenGL-deprecated for OpenGL 3 Core Profile and should only be called when using the regular OpenGL Renderer.
+    // A better way to check for OGL vs OGL3 should be implemented (bool in OpenGLRendererBase?)
     if (d_owner.getIdentifierString().find("CEGUI::OpenGLRenderer -") == 0)
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
