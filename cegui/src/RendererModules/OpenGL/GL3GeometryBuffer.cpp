@@ -194,7 +194,7 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
+    GLsizei dataSize = vertexCount * sizeof(GLVertex);
 
     GLVertex* data;
     if(d_vertices.empty())
