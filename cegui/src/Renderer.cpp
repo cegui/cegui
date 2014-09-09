@@ -33,6 +33,10 @@
 namespace CEGUI
 {
 
+Renderer::Renderer():
+    d_activeRenderTarget(0)
+{}
+
 //----------------------------------------------------------------------------//
 void Renderer::addGeometryBuffer(GeometryBuffer& buffer) 
 {
@@ -57,7 +61,7 @@ void Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 void Renderer::destroyAllGeometryBuffers()
 {
     while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
+        destroyGeometryBuffer(*d_geometryBuffers.back());
 }
 
 //----------------------------------------------------------------------------//
@@ -74,6 +78,35 @@ GeometryBuffer& Renderer::createGeometryBufferColoured()
     GeometryBuffer& geometry_buffer = createGeometryBufferColoured(createRenderMaterial(DS_SOLID));
 
     return geometry_buffer;
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget)
+{
+    GeometryBufferList::iterator currentIter = d_geometryBuffers.begin();
+    GeometryBufferList::iterator iterEnd = d_geometryBuffers.end();
+
+    while(currentIter != iterEnd)
+    {
+        GeometryBuffer* geomBuffer = *currentIter;
+        if(geomBuffer->getLastRenderTarget() == renderTarget)
+            geomBuffer->invalidateMatrix();
+
+        ++currentIter;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::setActiveRenderTarget(RenderTarget* renderTarget)
+{
+    d_activeRenderTarget = renderTarget;
+}
+        
+
+//----------------------------------------------------------------------------//
+RenderTarget* Renderer::getActiveRenderTarget()
+{
+    return d_activeRenderTarget;
 }
 
 //----------------------------------------------------------------------------//

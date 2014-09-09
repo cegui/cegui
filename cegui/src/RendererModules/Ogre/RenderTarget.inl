@@ -33,9 +33,18 @@
 #include <OgreCamera.h>
 #include <OgreViewport.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+//----------------------------------------------------------------------------//
+template <typename T>
+const float OgreRenderTarget<T>::d_yfov_tan = 0.267949192431123f;
+
 //----------------------------------------------------------------------------//
 template <typename T>
 OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
@@ -46,7 +55,7 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
     d_renderTarget(0),
     d_viewport(0),
     d_ogreViewportDimensions(0, 0, 0, 0),
-    d_matrix(Ogre::Matrix3::ZERO),
+    d_matrix(Ogre::Matrix4::IDENTITY),
     d_matrixValid(false),
     d_viewportValid(false),
     d_viewDistance(0)
@@ -134,8 +143,10 @@ void OgreRenderTarget<T>::activate()
 
     d_renderSystem._setViewport(d_viewport);
 
+    
     d_owner.setProjectionMatrix(d_matrix);
-    d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
+
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -169,7 +180,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     // matrices used for projecting and unprojecting points
 
-    const Ogre::Matrix4 proj(gb.getMatrix() * d_matrix * vpmat);
+    const Ogre::Matrix4 proj(OgreRenderer::glmToOgreMatrix(gb.getModelMatrix()) * d_matrix * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
 
     Ogre::Vector3 in;
@@ -208,7 +219,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const Ogre::Real pn_dot_rv = pn.dotProduct(rv);
     const Ogre::Real tmp = pn_dot_rv != 0.0 ?
                             (pn.dotProduct(r1) + dist) / pn_dot_rv :
-                            0.0;
+                            0.0f;
 
     p_out.x = static_cast<float>(r1.x - rv.x * tmp);
     p_out.y = static_cast<float>(r1.y - rv.y * tmp);
@@ -218,8 +229,6 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void OgreRenderTarget<T>::updateMatrix() const
 {
-    // Now with updated code from OpenGL renderer
-
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();
 
@@ -231,24 +240,23 @@ void OgreRenderTarget<T>::updateMatrix() const
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * 0.267949192431123f);
+    d_viewDistance = midx / (aspect * d_yfov_tan);
 
-    const float nearZ = d_viewDistance * 0.5f;
-    const float farZ = d_viewDistance * 2.0f;
-    const float nr_sub_far = nearZ - farZ;
+    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
+    glm::vec3 center = glm::vec3(midx, midy, 1);
+    glm::vec3 up = glm::vec3(0, -1, 0);
 
-    Ogre::Matrix4 tmp(Ogre::Matrix4::ZERO);
-    tmp[0][0] = 3.732050808f / aspect;
-    tmp[0][3] = -d_viewDistance;
-    tmp[1][1] = -3.732050808f;
-    tmp[1][3] = d_viewDistance;
-    tmp[2][2] = -((farZ + nearZ) / nr_sub_far);
-    tmp[3][2] = 1.0f;
-    tmp[3][3] = d_viewDistance;
-
-    d_renderSystem._convertProjectionMatrix(tmp, d_matrix);
+    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, d_viewDistance * 0.5f, d_viewDistance * 2.0f);
+    // Projection matrix abuse!
+    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
+  
+    glm::mat4 finalMatrix = projectionMatrix * viewMatrix;
+  
+    d_matrix = OgreRenderer::glmToOgreMatrix(finalMatrix);
 
     d_matrixValid = true;
+    //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
+    RenderTarget::d_activationCounter = -1;
 }
 
 //----------------------------------------------------------------------------//
@@ -270,6 +278,13 @@ void OgreRenderTarget<T>::updateViewport()
     d_viewport->_updateDimensions();
 
     d_viewportValid = true;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& OgreRenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//

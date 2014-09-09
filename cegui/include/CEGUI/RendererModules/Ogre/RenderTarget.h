@@ -62,14 +62,15 @@ public:
     void setOgreViewportDimensions(const Rectf& area);
 
     // implement parts of CEGUI::RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
-    void activate();
-    void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
+    virtual void draw(const GeometryBuffer& buffer);
+    virtual void draw(const RenderQueue& queue);
+    virtual void setArea(const Rectf& area);
+    virtual const Rectf& getArea() const;
+    virtual void activate();
+    virtual void deactivate();
+    virtual void unprojectPoint(const GeometryBuffer& buff,
                         const glm::vec2& p_in, glm::vec2& p_out) const;
+    virtual Renderer& getOwner();
 
 protected:
     //! helper that initialises the cached matrix
@@ -78,6 +79,9 @@ protected:
     void updateViewport();
     //! helper to update the actual Ogre viewport dimensions
     void updateOgreViewportDimensions(const Ogre::RenderTarget* const rt);
+
+    //! tangent of the y FOV half-angle; used to calculate viewing distance.
+    static const float d_yfov_tan;
 
     //! OgreRenderer object that owns this RenderTarget
     OgreRenderer& d_owner;

@@ -35,7 +35,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -72,15 +71,13 @@ void Direct3D11GeometryBuffer::draw() const
     if(d_clippingActive)
         setScissorRects();
 
-    // Update the model matrix if necessary
-    if (!d_matrixValid)
-        updateMatrix();
+    // Update the model view projection matrix
+    updateMatrix();
  
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-    // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_matrix;
-    shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
+    // Set the uniform variables for this GeometryBuffer in the Shader
+    shaderParameterBindings->setParameter("modelViewProjMatrix", d_matrix);
     shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
 
     // set our buffer as the vertex source.
@@ -110,6 +107,8 @@ void Direct3D11GeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+
+    updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//
@@ -133,24 +132,13 @@ void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::siz
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::updateMatrix() const
 {
-    d_matrix = glm::translate(glm::mat4(1.0f), d_translation + d_pivot);
+    if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
+    {
+        // Apply the view projection matrix to the model matrix and save the result as cached matrix
+        d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
 
-    const glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), d_scale));
-    d_matrix *= glm::mat4_cast(d_rotation) * scale_matrix;
-
-    const glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), -d_pivot);
-    d_matrix *=  translMatrix * d_customTransform;
-
-    d_matrixValid = true;
-}
-
-//----------------------------------------------------------------------------//
-const glm::mat4& Direct3D11GeometryBuffer::getMatrix() const
-{
-    if (!d_matrixValid)
-        updateMatrix();
-
-    return d_matrix;
+        d_matrixValid = true;
+    }
 }
 
 //----------------------------------------------------------------------------//

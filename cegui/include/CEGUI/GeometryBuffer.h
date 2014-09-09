@@ -1,9 +1,10 @@
 /***********************************************************************
     created:    Thu Jan 8 2009
     author:     Paul D Turner
+                edited by Lukas Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -437,6 +438,38 @@ public:
     */
     float getAlpha() const;
 
+    /*!
+    \brief 
+        Invalidates the local matrix. This should be called whenever anything extraordinary
+        that requires to recalculate the matrix has occured
+    */
+    void invalidateMatrix();
+
+    //TODO DOCU
+    const RenderTarget* getLastRenderTarget() const;
+
+    /*!
+    \brief 
+        Returns if the data (matrix etc) from the RenderTarget that was last used is still valid or not.
+
+    \return
+        True if still valid. False if invalid.
+    */
+    bool isRenderTargetDataValid(const RenderTarget* activeRenderTarget) const;
+
+    //TODO DOCU
+    void updateRenderTargetData(const RenderTarget* activeRenderTarget) const;
+
+    /*
+    \brief
+        Calculates and returns the model matrix for this GeometryBuffer.
+
+    \return
+        The model matrix for this GeometryBuffer.
+    */
+    glm::mat4 getModelMatrix() const;
+
+
 protected:
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
@@ -468,9 +501,17 @@ protected:
     glm::vec3       d_pivot;
     //! custom transformation matrix
     glm::mat4x4     d_customTransform;
-    //! true when there have been no changes to the GeometryBuffer's transformation since it has last been updated.
+    /*
+    \brief
+        true, when there have been no translations, rotations or other transformations applied to the GeometryBuffer,
+        as well as when it is guaranteed that the view projection matrix of the RenderTarget has been unchanged
+        since the last update.
+    */
     mutable bool    d_matrixValid;
-
+    //! The RenderTarget that this GeometryBuffer's matrix was last updated for
+    mutable const RenderTarget*   d_lastRenderTarget;
+    //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
+    mutable unsigned int    d_lastRenderTargetActivationCount;
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode       d_blendMode;
     //! The fill rule that should be used when rendering the geometry.
@@ -483,6 +524,7 @@ protected:
     bool            d_clippingActive;
     //! The alpha value which will be applied to the whole buffer when rendering
     float           d_alpha;
+
 };
 
 }

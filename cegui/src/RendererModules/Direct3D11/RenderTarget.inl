@@ -39,7 +39,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const double Direct3D11RenderTarget<T>::d_yfov_tan = 0.267949192431123;
+const float Direct3D11RenderTarget<T>::d_yfov_tan = 0.267949192431123f;
 
 //----------------------------------------------------------------------------//
 template <typename T>
@@ -97,6 +97,8 @@ void Direct3D11RenderTarget<T>::activate()
     d_deviceContext.RSSetViewports(1, &vp);
 
     d_owner.setViewProjectionMatrix(d_matrix);
+
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -127,7 +129,7 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
     const glm::mat4& projMatrix = d_matrix;
-    const glm::mat4& modelMatrix = gb.getMatrix();
+    const glm::mat4& modelMatrix = gb.getModelMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
@@ -195,7 +197,7 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
     d_viewDistance = midx / (aspect * d_yfov_tan);
 
-    glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
+    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
     glm::vec3 center = glm::vec3(midx, midy, 1);
     glm::vec3 up = glm::vec3(0, -1, 0);
 
@@ -204,8 +206,8 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
     // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which the following
     // manually filled matrix should fix:
     const float fovy = 30.f;
-    const float zNear = static_cast<float>(d_viewDistance * 0.5f);
-    const float zFar = static_cast<float>(d_viewDistance * 2.0f);
+    const float zNear = d_viewDistance * 0.5f;
+    const float zFar = d_viewDistance * 2.0f;
     const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
     const float Q = zFar / (zNear - zFar);
 
@@ -237,6 +239,13 @@ void Direct3D11RenderTarget<T>::setupViewport(D3D11_VIEWPORT& vp) const
     vp.Height = static_cast<FLOAT>(d_area.getHeight());
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+Renderer& Direct3D11RenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//

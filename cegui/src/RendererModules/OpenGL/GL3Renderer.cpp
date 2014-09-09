@@ -357,7 +357,7 @@ void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 
     d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
 
-    d_shaderWrapperTextured->addUniformVariable("modelViewPerspMatrix");
+    d_shaderWrapperTextured->addUniformVariable("modelViewProjMatrix");
     d_shaderWrapperTextured->addUniformVariable("alphaPercentage");
 
     d_shaderWrapperTextured->addAttributeVariable("inPosition");
@@ -371,7 +371,7 @@ void OpenGL3Renderer::initialiseStandardColouredShaderWrapper()
     OpenGL3Shader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
     d_shaderWrapperSolid = new OpenGL3ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
 
-    d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix");
+    d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix");
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage");
 
     d_shaderWrapperSolid->addAttributeVariable("inPosition");

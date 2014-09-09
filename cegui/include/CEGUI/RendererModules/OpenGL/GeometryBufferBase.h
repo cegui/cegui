@@ -61,9 +61,6 @@ public:
     // Overrides of virtual and abstract methods inherited from GeometryBuffer
     virtual void setClippingRegion(const Rectf& region);
 
-    //! Returns the model matrix, which is in effect for this GeometryBuffer
-    const glm::mat4& getMatrix() const;
-
     /*
     \brief
         The update function that is to be called when all the vertex attributes
@@ -72,14 +69,14 @@ public:
     virtual void finaliseVertexAttributes() = 0;
 
 protected:
-    //! update cached matrix
+    //! Update the cached matrices
     void updateMatrix() const;
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase& d_owner;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! cache of the model matrix
+    //! Cache of the model view projection matrix
     mutable glm::mat4 d_matrix;
 };
 
