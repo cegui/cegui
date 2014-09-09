@@ -137,8 +137,6 @@ struct OgreRenderer_impl
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
         d_useShaders(false),
-        d_worldMatrix(Ogre::Matrix4::IDENTITY),
-        d_viewMatrix(Ogre::Matrix4::IDENTITY),
         d_projectionMatrix(Ogre::Matrix4::IDENTITY),
         d_viewProjMatrix(1.0f),
         d_combinedMatrixValid(true),
@@ -213,8 +211,6 @@ struct OgreRenderer_impl
     OgreShaderWrapper* d_texturedShaderWrapper;
     OgreShaderWrapper* d_colouredShaderWrapper;
 
-    Ogre::Matrix4 d_worldMatrix;
-    Ogre::Matrix4 d_viewMatrix;
     Ogre::Matrix4 d_projectionMatrix;
     glm::mat4 d_viewProjMatrix;
     bool d_combinedMatrixValid;
@@ -1184,17 +1180,17 @@ const glm::mat4& OgreRenderer::getViewProjectionMatrix() const
     {
         Ogre::Matrix4 projMatrix = d_pimpl->d_projectionMatrix;
 
-
+        
         if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->
             requiresTextureFlipping())
         {
-            projMatrix[1][0] = -projMatrix[1][0];
+            projMatrix[0][1] = -projMatrix[0][1];
             projMatrix[1][1] = -projMatrix[1][1];
-            projMatrix[1][2] = -projMatrix[1][2];
-            projMatrix[1][3] = -projMatrix[1][3];
+            projMatrix[2][1] = -projMatrix[2][1];
+            projMatrix[3][1] = -projMatrix[3][1];
         }
 
-        d_pimpl->d_viewProjMatrix = ogreToGlmMatrix(projMatrix *  d_pimpl->d_viewMatrix * d_pimpl->d_worldMatrix);
+        d_pimpl->d_viewProjMatrix = ogreToGlmMatrix(projMatrix);
 
         d_pimpl->d_combinedMatrixValid = true;
     }
@@ -1203,39 +1199,9 @@ const glm::mat4& OgreRenderer::getViewProjectionMatrix() const
 }
 
 //----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getWorldMatrix() const
-{
-    return d_pimpl->d_worldMatrix;
-}
-
-//----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getViewMatrix() const
-{
-    return d_pimpl->d_viewMatrix;
-}
-
-//----------------------------------------------------------------------------//
 const Ogre::Matrix4& OgreRenderer::getProjectionMatrix() const
 {
     return d_pimpl->d_projectionMatrix;
-}
-
-//----------------------------------------------------------------------------//
-void OgreRenderer::setWorldMatrix(const Ogre::Matrix4& m)
-{
-    d_pimpl->d_renderSystem->_setWorldMatrix(m);
-
-    d_pimpl->d_worldMatrix = m;
-    d_pimpl->d_combinedMatrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void OgreRenderer::setViewMatrix(const Ogre::Matrix4& matrix)
-{
-    d_pimpl->d_renderSystem->_setViewMatrix(matrix);
-
-    d_pimpl->d_viewMatrix = matrix;
-    d_pimpl->d_combinedMatrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
