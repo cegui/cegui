@@ -165,7 +165,7 @@ static Ogre::String PixelShaderColoured_GLSL_Compat(""
 
 //! A string containing an OpenGL3 vertex shader for solid colouring of a polygon
 static Ogre::String VertexShaderColoured_GLSL(""
-    "#version 130\n"
+    "#version 150 core\n"
 
     "uniform mat4 modelViewProjMatrix;\n"
 
@@ -184,7 +184,7 @@ static Ogre::String VertexShaderColoured_GLSL(""
 
 //! A string containing an OpenGL3 fragment shader for solid colouring of a polygon
 static Ogre::String PixelShaderColoured_GLSL(""
-    "#version 130\n"
+    "#version 150 core\n"
 
     "in vec4 exColour;\n"
 
@@ -205,7 +205,7 @@ based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 static Ogre::String VertexShaderTextured_GLSL("" 
-    "#version 130\n"
+    "#version 150 core\n"
 
     "uniform mat4 modelViewProjMatrix;\n"
 
@@ -231,7 +231,7 @@ based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 static Ogre::String PixelShaderTextured_GLSL("" 
-    "#version 130\n"
+    "#version 150 core\n"
 
     "uniform sampler2D texture0;\n"
     "uniform float alphaPercentage;\n"
