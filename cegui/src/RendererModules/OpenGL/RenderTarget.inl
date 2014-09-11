@@ -75,7 +75,7 @@ void OpenGLRenderTarget<T>::activate()
     if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
-    d_owner.setViewProjectionMatrix(d_matrix);
+    d_owner.setViewProjectionMatrix(RenderTarget::d_matrix);
 
     RenderTarget::activate();
 }
@@ -107,7 +107,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     GLdouble in_x, in_y, in_z;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
-    const glm::mat4& projMatrix = d_matrix;
+    const glm::mat4& projMatrix = RenderTarget::d_matrix;
     const glm::mat4& modelMatrix = gb.getModelMatrix();
 
     // unproject the ends of the ray

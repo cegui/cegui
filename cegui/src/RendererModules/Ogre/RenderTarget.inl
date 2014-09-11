@@ -117,7 +117,7 @@ void OgreRenderTarget<T>::activate()
 
     d_renderSystem._setViewport(d_viewport);
 
-    d_owner.setViewProjectionMatrix(d_matrix);
+    d_owner.setViewProjectionMatrix(RenderTarget::d_matrix);
 
     RenderTarget::activate();
 }
@@ -153,7 +153,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     // matrices used for projecting and unprojecting points
 
-    const Ogre::Matrix4 proj(OgreRenderer::glmToOgreMatrix(gb.getModelMatrix() * d_matrix) * vpmat);
+    const Ogre::Matrix4 proj(OgreRenderer::glmToOgreMatrix(gb.getModelMatrix() * RenderTarget::d_matrix) * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
 
     Ogre::Vector3 in;
