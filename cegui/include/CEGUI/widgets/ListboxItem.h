@@ -370,7 +370,7 @@ public:
         Perform any updates needed because the given font's render size has
         changed.
 
-    /note
+    \note
         The base implementation just returns false.
 
     \param font

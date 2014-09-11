@@ -138,7 +138,7 @@ public:
         Perform any updates needed because the given font's render size has
         changed.
 
-    /note
+    \note
         This base implementation deals with updates needed for various
         definitions in the assigned widget look.  If you override, you should
         generally always call this base class implementation.
