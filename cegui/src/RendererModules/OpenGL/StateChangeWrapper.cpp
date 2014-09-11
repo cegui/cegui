@@ -156,6 +156,11 @@ void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
 
 }
 
+GLuint OpenGL3StateChangeWrapper::getBoundVertexArray() const
+{
+    return d_vertexArrayObject;
+}
+
 void OpenGL3StateChangeWrapper::useProgram(GLuint program)
 {
     if (program != d_shaderProgram)
@@ -165,11 +170,21 @@ void OpenGL3StateChangeWrapper::useProgram(GLuint program)
     }
 }
 
+GLuint OpenGL3StateChangeWrapper::getUsedProgram() const
+{
+    return d_shaderProgram;
+}
+
 void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 {
     bool callIsRedundant = d_blendFuncSeperateParams.equal(sfactor, dfactor);
     if (!callIsRedundant)
         glBlendFunc(sfactor, dfactor);
+}
+
+OpenGL3StateChangeWrapper::BlendFuncSeperateParams OpenGL3StateChangeWrapper::getBlendFuncParams() const
+{
+    return d_blendFuncSeperateParams;
 }
 
 void OpenGL3StateChangeWrapper::blendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
@@ -186,6 +201,11 @@ void OpenGL3StateChangeWrapper::viewport(GLint x, GLint y, GLsizei width, GLsize
         glViewport(x, y, width, height);
 }
 
+OpenGL3StateChangeWrapper::PortParams OpenGL3StateChangeWrapper::getViewportParams() const
+{
+    return d_viewPortParams;
+}
+
 void OpenGL3StateChangeWrapper::scissor(GLint x, GLint y, GLsizei width, GLsizei height)
 {
     bool callIsRedundant = d_scissorParams.equal(x, y, width, height);
@@ -193,11 +213,21 @@ void OpenGL3StateChangeWrapper::scissor(GLint x, GLint y, GLsizei width, GLsizei
         glScissor(x, y, width, height);
 }
 
+OpenGL3StateChangeWrapper::PortParams OpenGL3StateChangeWrapper::getScissorParams() const
+{
+    return d_scissorParams;
+}
+
 void OpenGL3StateChangeWrapper::bindBuffer(GLenum target, GLuint buffer)
 {
     bool callIsRedundant = d_bindBufferParams.equal(target, buffer);
     if (!callIsRedundant)
         glBindBuffer(target, buffer);
+}
+
+OpenGL3StateChangeWrapper::BindBufferParams OpenGL3StateChangeWrapper::getBoundBuffer() const
+{
+    return d_bindBufferParams;
 }
 
 void OpenGL3StateChangeWrapper::activeTexture(unsigned int texture_position)
@@ -210,6 +240,11 @@ void OpenGL3StateChangeWrapper::activeTexture(unsigned int texture_position)
         glActiveTexture(GL_TEXTURE0 + texture_position);
         d_activeTexturePosition = texture_position;
     }
+}
+
+unsigned int OpenGL3StateChangeWrapper::getActiveTexture() const
+{
+    return GL_TEXTURE0 + d_activeTexturePosition;
 }
 
 void OpenGL3StateChangeWrapper::bindTexture(GLenum target, GLuint texture)
@@ -260,4 +295,21 @@ void OpenGL3StateChangeWrapper::disable(GLenum capability)
         glDisable(capability);
     }
 }
+
+int OpenGL3StateChangeWrapper::isStateEnabled(GLenum capability) const
+{
+    std::map<GLenum, bool>::const_iterator found_iterator = d_enabledOpenGLStates.find(capability);
+    if(found_iterator != d_enabledOpenGLStates.end())
+    {
+        bool isEnabled = found_iterator->second;
+        if(isEnabled)
+            return 1;
+        else
+            return 0;
+    }
+    else
+        return -1;
+}
+
+
 }
