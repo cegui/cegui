@@ -123,11 +123,12 @@ static Ogre::String PixelShaderTextured_HLSL(""
 
 //! Shader for older OpenGL versions < 3
 static Ogre::String VertexShaderTextured_GLSL_Compat(""
+    "uniform mat4 modelViewProjMatrix;\n"
     "void main(void)"
     "{"
     "    gl_TexCoord[0] = gl_MultiTexCoord0;"
     "    gl_FrontColor = gl_Color;"
-    "    gl_Position = gl_worldViewProjMatrix * gl_Vertex;"
+    "    gl_Position = modelViewProjMatrix * gl_Vertex;"
     "}"
 );
 
@@ -144,10 +145,11 @@ static Ogre::String PixelShaderTextured_GLSL_Compat(""
 
 //! Shader for older OpenGL versions < 3
 static Ogre::String VertexShaderColoured_GLSL_Compat(""
+    "uniform mat4 modelViewProjMatrix;\n"
     "void main(void)"
     "{"
     "    gl_FrontColor = gl_Color;"
-    "    gl_Position = gl_worldViewProjMatrix * gl_Vertex;"
+    "    gl_Position = modelViewProjMatrix * gl_Vertex;"
     "}"
 );
 
