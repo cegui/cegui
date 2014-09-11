@@ -110,5 +110,17 @@ RenderTarget* Renderer::getActiveRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
+void Renderer::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
+{
+    d_viewProjectionMatrix = viewProjectionMatrix;
+}
+
+//----------------------------------------------------------------------------//
+const glm::mat4& Renderer::getViewProjectionMatrix() const
+{
+    return d_viewProjectionMatrix;
+}
+
+//----------------------------------------------------------------------------//
 
 }

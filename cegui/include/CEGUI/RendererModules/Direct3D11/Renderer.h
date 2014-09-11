@@ -168,23 +168,6 @@ public:
 
     /*!
     \brief
-        Helper to set the view projection matrix.
-
-    \param viewProjectionMatrix
-        The view projection matrix.
-    */
-    virtual void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);    
-    /*!
-    \brief
-        Helper to return view projection matrix.
-
-    \return
-        The view projection matrix.
-    */
-    const glm::mat4& Direct3D11Renderer::getViewProjectionMatrix();
-
-    /*!
-    \brief
         Binds the corresponding D3D11 blend mode.
     */
     void bindBlendMode(BlendMode d_blendMode);
@@ -200,8 +183,6 @@ public:
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
     GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
@@ -287,10 +268,6 @@ protected:
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
-    //! container type used to hold GeometryBuffers we create.
-    typedef std::vector<Direct3D11GeometryBuffer*> GeometryBufferList;
-    //! Container used to track geometry buffers.
-    GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
     typedef std::map<String, Direct3D11Texture*, StringFastLessCompare> TextureMap;
     //! Container used to track textures.
@@ -298,9 +275,6 @@ protected:
 
     //! Variable containing the sampler state for CEGUI textures
     ID3D11SamplerState* d_samplerState;
-
-    //! View projection matrix
-    glm::mat4 d_viewProjectionMatrix;
 };
 
 

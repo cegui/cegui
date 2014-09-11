@@ -48,8 +48,7 @@ String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!"
 OpenGLRendererBase::OpenGLRendererBase() :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(1.0f)
+    d_activeBlendMode(BM_INVALID)
 {
     initialiseMaxTextureSize();
     initialiseDisplaySizeWithViewportSize();
@@ -62,8 +61,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
     d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(1.0f)
+    d_activeBlendMode(BM_INVALID)
 {
     initialiseMaxTextureSize();
 
@@ -392,18 +390,6 @@ float OpenGLRendererBase::getNextPOTSize(const float f)
     }
 
     return static_cast<float>(size);
-}
-
-//----------------------------------------------------------------------------//
-const glm::mat4& OpenGLRendererBase::getViewProjectionMatrix()
-{
-    return d_viewProjectionMatrix;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
-{
-    d_viewProjectionMatrix = viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//

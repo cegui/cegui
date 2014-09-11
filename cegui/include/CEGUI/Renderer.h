@@ -451,6 +451,24 @@ public:
     */
     RenderTarget* getActiveRenderTarget();
 
+    /*!
+    \brief
+        Sets the currently active view projection matrix.
+
+    \param viewProjectionMatrix
+        The view projection matrix that should be set as the new active matrix.
+    */
+    virtual void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);
+
+    /*!
+    \brief
+        Returns the currently active view projection matrix.
+
+    \return
+        The currently active view projection matrix.
+    */
+    const glm::mat4& getViewProjectionMatrix() const;
+
 protected:
     /*!
     \brief
@@ -465,12 +483,13 @@ protected:
     //! The currently active RenderTarget
     RenderTarget* d_activeRenderTarget;
 
+    //! The currently active view projection matrix 
+    glm::mat4 d_viewProjectionMatrix;
 private:
     //! container type used to hold GeometryBuffers created.
     typedef std::vector<GeometryBuffer*> GeometryBufferList;
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
-
 
 };
 

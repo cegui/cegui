@@ -155,27 +155,6 @@ GeometryBuffer& NullRenderer::createGeometryBufferColoured(RefCounted<RenderMate
 }
 
 //----------------------------------------------------------------------------//
-void NullRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
-{
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
-
-    if (d_geometryBuffers.end() != i)
-    {
-        d_geometryBuffers.erase(i);
-        delete &buffer;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void NullRenderer::destroyAllGeometryBuffers()
-{
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
-}
-
-//----------------------------------------------------------------------------//
 TextureTarget* NullRenderer::createTextureTarget()
 {
     TextureTarget* tt = new NullTextureTarget(*this);

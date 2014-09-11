@@ -152,27 +152,6 @@ RenderTarget& Direct3D11Renderer::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
-{
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
-
-    if (d_geometryBuffers.end() != i)
-    {
-        d_geometryBuffers.erase(i);
-        delete &buffer;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11Renderer::destroyAllGeometryBuffers()
-{
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
-}
-
-//----------------------------------------------------------------------------//
 TextureTarget* Direct3D11Renderer::createTextureTarget()
 {
     TextureTarget* t = new Direct3D11TextureTarget(*this);
@@ -405,18 +384,6 @@ Sizef Direct3D11Renderer::getViewportSize()
     else
         return Sizef(static_cast<float>(vp.Width),
                       static_cast<float>(vp.Height));
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11Renderer::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
-{
-    d_viewProjectionMatrix = viewProjectionMatrix;
-}
-
-//----------------------------------------------------------------------------//
-const glm::mat4& Direct3D11Renderer::getViewProjectionMatrix()
-{
-    return d_viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//

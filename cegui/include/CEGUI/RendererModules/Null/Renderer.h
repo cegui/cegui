@@ -111,8 +111,6 @@ public:
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
     GeometryBuffer& createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial);
     GeometryBuffer& createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial);
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
