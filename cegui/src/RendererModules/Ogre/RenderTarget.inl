@@ -28,6 +28,7 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
+#include "CEGUI/Exceptions.h"
 
 #include <OgreRenderSystem.h>
 #include <OgreCamera.h>
@@ -203,30 +204,12 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void OgreRenderTarget<T>::updateMatrix() const
 {
-    const float w = d_area.getWidth();
-    const float h = d_area.getHeight();
-
-    // We need to check if width or height are zero and act accordingly to prevent running into issues
-    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
-    // This is mostly important for avoiding asserts
-    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
-
-    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
-    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
-    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * d_yfov_tan);
-
-    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
-    glm::vec3 center = glm::vec3(midx, midy, 1);
-    glm::vec3 up = glm::vec3(0, -1, 0);
-
-    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, d_viewDistance * 0.5f, d_viewDistance * 2.0f);
-    // Projection matrix abuse!
-    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
-  
-    glm::mat4 finalMatrix = projectionMatrix * viewMatrix;
-  
-    d_matrix = OgreRenderer::glmToOgreMatrix(finalMatrix);
+    if (d_owner.usesOpenGL())
+        d_matrix = OgreRenderer::glmToOgreMatrix(createViewProjMatrixForOpenGL());
+    else if(d_owner.usesDirect3D())
+        d_matrix = OgreRenderer::glmToOgreMatrix(createViewProjMatrixForDirect3D());
+    else
+        CEGUI_THROW(RendererException("An unsupported RenderSystem is being used by Ogre. Please contact the CEGUI team."));
 
     d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices

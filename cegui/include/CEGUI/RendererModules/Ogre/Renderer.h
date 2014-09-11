@@ -379,6 +379,24 @@ public:
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
+    /*!
+    \brief
+        Returns if this OgreRenderer uses an OpenGL based RenderSystem.
+
+    \return
+        True if this OgreRenderer uses an OpenGL based RenderSystem.
+    */
+    bool usesOpenGL();
+
+    /*!
+    \brief
+        Returns if this OgreRenderer uses a Direct3D based RenderSystem.
+
+    \return
+        True if this OgreRenderer uses a Direct3D based RenderSystem.
+    */
+    bool usesDirect3D();
+
 protected:
     //! default constructor.
     OgreRenderer();
@@ -405,7 +423,6 @@ protected:
 
     //! Deletes count number of largest vertex buffers
     void cleanLargestVertexBufferPool(size_t count);
-
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
 };
