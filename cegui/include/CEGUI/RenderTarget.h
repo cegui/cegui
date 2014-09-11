@@ -33,6 +33,11 @@
 #include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -112,7 +117,7 @@ public:
         May be thrown if the RenderTarget does not support setting or changing
         its area, or if the area change can not be satisfied for some reason.
     */
-    virtual void setArea(const Rectf& area) = 0;
+    virtual void setArea(const Rectf& area);
 
     /*!
     \brief
@@ -121,7 +126,7 @@ public:
     \return
         Rect object describing the currently defined area for this RenderTarget.
     */
-    virtual const Rectf& getArea() const = 0;
+    const Rectf& getArea() const;
 
     /*!
     \brief
@@ -168,11 +173,44 @@ public:
     virtual void unprojectPoint(const GeometryBuffer& buff,
                                 const glm::vec2& p_in, glm::vec2& p_out) const = 0;
 
-    // TODO DOCU
+    /*!
+    \brief
+        Returns a reference to the Renderer that is the owner/creator of this RenderTarget instance.
+
+    \return
+        A reference to the Renderer that is the owner/creator of this RenderTarget instance.
+    */
     virtual Renderer& getOwner() = 0;
 
-    // TODO DOCU
+    /*!
+    \brief
+        Returns the current count of activations for this RenderTarget
+
+    \return
+        The current count of activations.
+    */
     unsigned int getActivationCounter() const;
+
+    /*!
+    \brief
+        Creates a view projection matrix for the OpenGL graphics library (Depth Range from -1 to 1) based
+        on this RenderTarget's current settings.
+
+    \return
+        A freshly created OpenGL view projection matrix for this RenderTarget.
+    */
+    glm::mat4 createViewProjMatrixForOpenGL() const;
+
+    /*!
+    \brief
+        Creates a view projection matrix for the Direct3D graphics library (Depth Range from 0 to 1) based
+        on this RenderTarget's current settings.
+
+    \return
+        A freshly created Direct3D view projection matrix for this RenderTarget.
+    */
+    glm::mat4 createViewProjMatrixForDirect3D() const;
+    
 
 protected:
     /*!
@@ -181,8 +219,23 @@ protected:
         will in turn be used to remove the most common redundant matrix updates of GeometryBuffers.
     */
     mutable unsigned int d_activationCounter;
+
+    //! holds defined area for the RenderTarget
+    Rectf d_area;
+
+    //! tracks viewing distance (this is set up at the same time as d_matrix)
+    mutable float d_viewDistance;
+    //! tangent of the y FOV half-angle; used to calculate viewing distance.
+    static const float d_yfov_tan;
+    //! true if saved matrix is up to date
+    mutable bool d_matrixValid;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
 
 #endif  // end of guard _CEGUIRenderTarget_h_

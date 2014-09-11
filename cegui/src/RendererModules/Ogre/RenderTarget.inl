@@ -43,22 +43,15 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 template <typename T>
-const float OgreRenderTarget<T>::d_yfov_tan = 0.267949192431123f;
-
-//----------------------------------------------------------------------------//
-template <typename T>
 OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
                                       Ogre::RenderSystem& rs) :
     d_owner(owner),
     d_renderSystem(rs),
-    d_area(0, 0, 0, 0),
     d_renderTarget(0),
     d_viewport(0),
     d_ogreViewportDimensions(0, 0, 0, 0),
     d_matrix(Ogre::Matrix4::IDENTITY),
-    d_matrixValid(false),
-    d_viewportValid(false),
-    d_viewDistance(0)
+    d_viewportValid(false)
 {
 }
 
@@ -83,18 +76,6 @@ void OgreRenderTarget<T>::draw(const RenderQueue& queue)
     queue.draw();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::setArea(const Rectf& area)
-{
-    d_area = area;
-    setOgreViewportDimensions(area);
-
-    d_matrixValid = false;
-
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
-}
 
 //----------------------------------------------------------------------------//
 template <typename T>
@@ -122,13 +103,6 @@ void OgreRenderTarget<T>::updateOgreViewportDimensions(
             d_ogreViewportDimensions.getWidth() / rt->getWidth(),
             d_ogreViewportDimensions.getHeight() / rt->getHeight());
     }
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-const Rectf& OgreRenderTarget<T>::getArea() const
-{
-    return d_area;
 }
 
 //----------------------------------------------------------------------------//
@@ -285,6 +259,15 @@ template <typename T>
 Renderer& OgreRenderTarget<T>::getOwner()
 {
     return d_owner;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void OgreRenderTarget<T>::setArea(const Rectf& area)
+{
+    setOgreViewportDimensions(area);
+
+    RenderTarget::setArea(area);
 }
 
 //----------------------------------------------------------------------------//

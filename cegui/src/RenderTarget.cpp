@@ -27,15 +27,24 @@
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/Renderer.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/constants.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const float RenderTarget::d_yfov_tan = 0.267949192431123f;
+
 const String RenderTarget::EventNamespace("RenderTarget");
 const String RenderTarget::EventAreaChanged("AreaChanged");
 
 //----------------------------------------------------------------------------//
 RenderTarget::RenderTarget():
-    d_activationCounter(0)
+    d_activationCounter(0),
+    d_area(0, 0, 0, 0),
+    d_matrixValid(false),
+    d_viewDistance(0)
 {}
 
 //----------------------------------------------------------------------------//
@@ -61,5 +70,93 @@ unsigned int RenderTarget::getActivationCounter() const
     return d_activationCounter;
 }
 
+//----------------------------------------------------------------------------//
+void RenderTarget::setArea(const Rectf& area)
+{
+    d_area = area;
+    d_matrixValid = false;
+
+    RenderTargetEventArgs args(this);
+    fireEvent(RenderTarget::EventAreaChanged, args);
 }
 
+//----------------------------------------------------------------------------//
+const Rectf& RenderTarget::getArea() const
+{
+    return d_area;
+}
+
+//----------------------------------------------------------------------------//
+glm::mat4 RenderTarget::createViewProjMatrixForOpenGL() const
+{
+    const float w = d_area.getWidth();
+    const float h = d_area.getHeight();
+
+    // We need to check if width or height are zero and act accordingly to prevent running into issues
+    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
+    // This is mostly important for avoiding asserts
+    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
+
+    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
+    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
+    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
+    d_viewDistance = midx / (aspect * d_yfov_tan);
+
+    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
+    glm::vec3 center = glm::vec3(midx, midy, 1);
+    glm::vec3 up = glm::vec3(0, -1, 0);
+
+    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, d_viewDistance * 0.5f, d_viewDistance * 2.0f);
+    // Projection matrix abuse!
+    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
+  
+    return projectionMatrix * viewMatrix;
+}
+
+//----------------------------------------------------------------------------//
+glm::mat4 RenderTarget::createViewProjMatrixForDirect3D() const
+{
+    const float w = d_area.getWidth();
+    const float h = d_area.getHeight();
+
+    // We need to check if width or height are zero and act accordingly to prevent running into issues
+    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
+    // This is mostly important for avoiding asserts
+    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
+
+    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
+    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
+    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
+    d_viewDistance = midx / (aspect * d_yfov_tan);
+
+    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
+    glm::vec3 center = glm::vec3(midx, midy, 1);
+    glm::vec3 up = glm::vec3(0, -1, 0);
+
+
+    // We need to have a projection matrix with its depth in clip space ranging from 0 to 1 for nearclip to farclip.
+    // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which the following
+    // manually filled matrix should fix:
+    const float fovy = 30.f;
+    const float zNear = d_viewDistance * 0.5f;
+    const float zFar = d_viewDistance * 2.0f;
+    const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
+    const float Q = zFar / (zNear - zFar);
+
+    float projectionMatrixFloat[16] =
+    {
+        f/aspect,           0.0f,               0.0f,           0.0f,
+        0.0f,               f,                  0.0f,           0.0f,
+        0.0f,               0.0f,               Q,              -1.0f,
+        0.0f,               0.0f,               Q * zNear,      0.0f
+    };
+
+    glm::mat4 projectionMatrix = glm::make_mat4(projectionMatrixFloat);
+
+    // Projection matrix abuse!
+    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
+
+    return projectionMatrix * viewMatrix;
+}
+
+}
