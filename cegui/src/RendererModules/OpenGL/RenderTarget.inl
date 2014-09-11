@@ -39,8 +39,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
-    d_owner(owner),
-    d_matrix(1.0f)
+    d_owner(owner)
 {
 }
 
@@ -162,11 +161,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void OpenGLRenderTarget<T>::updateMatrix() const
 {
-    d_matrix = RenderTarget::createViewProjMatrixForOpenGL();
-
-    RenderTarget::d_matrixValid = true;
-    //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
-    RenderTarget::d_activationCounter = -1;
+    RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
 }
 
 

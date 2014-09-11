@@ -51,7 +51,6 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
     d_renderTarget(0),
     d_viewport(0),
     d_ogreViewportDimensions(0, 0, 0, 0),
-    d_matrix(Ogre::Matrix4::IDENTITY),
     d_viewportValid(false)
 {
 }
@@ -118,8 +117,7 @@ void OgreRenderTarget<T>::activate()
 
     d_renderSystem._setViewport(d_viewport);
 
-    
-    d_owner.setProjectionMatrix(d_matrix);
+    d_owner.setViewProjectionMatrix(d_matrix);
 
     RenderTarget::activate();
 }
@@ -155,7 +153,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     // matrices used for projecting and unprojecting points
 
-    const Ogre::Matrix4 proj(OgreRenderer::glmToOgreMatrix(gb.getModelMatrix()) * d_matrix * vpmat);
+    const Ogre::Matrix4 proj(OgreRenderer::glmToOgreMatrix(gb.getModelMatrix() * d_matrix) * vpmat);
     const Ogre::Matrix4 unproj(proj.inverse());
 
     Ogre::Vector3 in;
@@ -205,15 +203,11 @@ template <typename T>
 void OgreRenderTarget<T>::updateMatrix() const
 {
     if (d_owner.usesOpenGL())
-        d_matrix = OgreRenderer::glmToOgreMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
-    else if(d_owner.usesDirect3D())
-        d_matrix = OgreRenderer::glmToOgreMatrix( RenderTarget::createViewProjMatrixForDirect3D() );
+        RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
+    else if (d_owner.usesDirect3D())
+        RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForDirect3D() );
     else
         CEGUI_THROW(RendererException("An unsupported RenderSystem is being used by Ogre. Please contact the CEGUI team."));
-
-    RenderTarget::d_matrixValid = true;
-    //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
-    RenderTarget::d_activationCounter = -1;
 }
 
 //----------------------------------------------------------------------------//

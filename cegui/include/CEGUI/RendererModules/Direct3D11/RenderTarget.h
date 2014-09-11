@@ -66,8 +66,6 @@ protected:
 
     //! Renderer that created and owns the render target.
     Direct3D11Renderer& d_owner;
-    //! Projection view matrix cache
-    mutable glm::mat4 d_matrix;
 
     //! The D3D Device
     ID3D11Device& d_device;

@@ -123,7 +123,7 @@ struct OgreRenderer_impl
 {
     OgreRenderer_impl() :
         d_displayDPI(96, 96),
-        // TODO: should be set to correct value
+        //! TODO: Currently there is no way to do this easily using Ogre
         d_maxTextureSize(2048),
         d_ogreRoot(Ogre::Root::getSingletonPtr()),
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
@@ -136,16 +136,13 @@ struct OgreRenderer_impl
 #endif
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
-        d_useShaders(false),
-        d_projectionMatrix(Ogre::Matrix4::IDENTITY),
-        d_viewProjMatrix(1.0f),
-        d_combinedMatrixValid(true),
         d_useGLSL(false),
         d_useGLSLES(false),
         d_useGLSLCore(false),
         d_texturedShaderWrapper(0),
         d_colouredShaderWrapper(0)
         {}
+
 
     //! String holding the renderer identification text.
     static String d_rendererID;
@@ -196,8 +193,6 @@ struct OgreRenderer_impl
     BlendMode d_activeBlendMode;
     //! Whether _beginFrame and _endFrame will be called.
     bool d_makeFrameControlCalls;
-    //! Whether shaders will be used for basic rendering
-    bool d_useShaders;
     //! Whether shaders are glsl or hlsl
     bool d_useGLSL;
     //! Whether shaders are glsles
@@ -210,10 +205,6 @@ struct OgreRenderer_impl
 
     OgreShaderWrapper* d_texturedShaderWrapper;
     OgreShaderWrapper* d_colouredShaderWrapper;
-
-    Ogre::Matrix4 d_projectionMatrix;
-    glm::mat4 d_viewProjMatrix;
-    bool d_combinedMatrixValid;
 };
 
 //----------------------------------------------------------------------------//
@@ -706,7 +697,8 @@ const String& OgreRenderer::getIdentifierString() const
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer() :
-    d_pimpl(new OgreRenderer_impl())
+    d_pimpl(new OgreRenderer_impl()),
+    d_viewProjMatrix(1.0f)
 {
     checkOgreInitialised();
 
@@ -723,7 +715,8 @@ OgreRenderer::OgreRenderer() :
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
-    d_pimpl(new OgreRenderer_impl())
+    d_pimpl(new OgreRenderer_impl()),
+    d_viewProjMatrix(1.0f)
 {
     checkOgreInitialised();
 
@@ -788,12 +781,9 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_displaySize.d_height = static_cast<float>(target.getHeight());
 
     //! Checking if OpenGL > 3.2 supported
-    if (d_pimpl->d_renderSystem->getName().find("OpenGL") != Ogre::String::npos)
+    if (d_pimpl->d_renderSystem->getName().find("OpenGL 3+") != Ogre::String::npos)
     {
-        const Ogre::DriverVersion driverVersion = d_pimpl->d_renderSystem->getDriverVersion();
-
-        if ( (driverVersion.major == 3 && driverVersion.minor >= 2) || driverVersion.major >= 4)
-            d_pimpl->d_useGLSLCore = true;
+        d_pimpl->d_useGLSLCore = true;
     }
 
     // create default target & rendering root (surface) that uses it
@@ -801,28 +791,9 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
         new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
 #if OGRE_VERSION >= 0x10800
-    // Check if built with RT Shader System and if it is: Check if fixed function pipeline is enabled
-    #if defined RTSHADER_SYSTEM_BUILD_CORE_SHADERS
-        bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
-    #else
-        bool isFixedFunctionEnabled = true;
-    #endif
-
     #ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
-        if (d_pimpl->d_useGLSLCore)
-            CEGUI_THROW(RendererException("RT Shader System not available but trying to render using OpenGL 3.X+ Core."
-            "When GLSL shaders are necessary, the RT Shader System component of Ogre is required for rendering CEGUI."));
+        CEGUI_THROW(RendererException("RT Shader System not available. However CEGUI relies on shaders for rendering. "));
     #endif
-
-    // Default to using shaders when that is the sane thing to do.
-    // We check for use of the OpenGL 3+ Renderer in which case we always wanna (because we have to) use shaders
-    if (isFixedFunctionEnabled && !d_pimpl->d_useGLSLCore)
-    {
-        // This may no longer be supported
-        CEGUI_THROW(RendererException("Underlying Ogre render system does not support shaders "
-            "which are required for supporting custom shaders in this CEGUI version"));
-    }
-
 #endif
 
     // hook into the rendering process
@@ -1173,41 +1144,23 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 //----------------------------------------------------------------------------//
 const glm::mat4& OgreRenderer::getViewProjectionMatrix() const
 {
-    if (!d_pimpl->d_combinedMatrixValid)
+    return d_viewProjMatrix;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::setViewProjectionMatrix(const glm::mat4& viewProjMatrix)
+{
+    d_pimpl->d_renderSystem->_setProjectionMatrix( OgreRenderer::glmToOgreMatrix(viewProjMatrix) );
+
+    d_viewProjMatrix = viewProjMatrix;
+
+    if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->requiresTextureFlipping())
     {
-        Ogre::Matrix4 projMatrix = d_pimpl->d_projectionMatrix;
-
-        
-        if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->
-            requiresTextureFlipping())
-        {
-            projMatrix[0][1] = -projMatrix[0][1];
-            projMatrix[1][1] = -projMatrix[1][1];
-            projMatrix[2][1] = -projMatrix[2][1];
-            projMatrix[3][1] = -projMatrix[3][1];
-        }
-
-        d_pimpl->d_viewProjMatrix = ogreToGlmMatrix(projMatrix);
-
-        d_pimpl->d_combinedMatrixValid = true;
-    }
-
-    return d_pimpl->d_viewProjMatrix;
-}
-
-//----------------------------------------------------------------------------//
-const Ogre::Matrix4& OgreRenderer::getProjectionMatrix() const
-{
-    return d_pimpl->d_projectionMatrix;
-}
-
-//----------------------------------------------------------------------------//
-void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& matrix)
-{
-    d_pimpl->d_renderSystem->_setProjectionMatrix(matrix);
-                                    
-    d_pimpl->d_projectionMatrix = matrix;
-    d_pimpl->d_combinedMatrixValid = false;
+        d_viewProjMatrix[0][1] = -d_viewProjMatrix[0][1];
+        d_viewProjMatrix[1][1] = -d_viewProjMatrix[1][1];
+        d_viewProjMatrix[2][1] = -d_viewProjMatrix[2][1];
+        d_viewProjMatrix[3][1] = -d_viewProjMatrix[3][1];
+    }  
 }
 
 //----------------------------------------------------------------------------//

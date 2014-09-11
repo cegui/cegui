@@ -157,9 +157,7 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void Direct3D11RenderTarget<T>::updateMatrix() const
 {
-    d_matrix = RenderTarget::createViewProjMatrixForDirect3D();
-
-    RenderTarget::d_matrixValid = true;
+    RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForDirect3D() );
 }
 
 //----------------------------------------------------------------------------//
