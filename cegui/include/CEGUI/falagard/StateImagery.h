@@ -137,7 +137,7 @@ namespace CEGUI
 
             Clipping to the display effectively implies that the imagery should be rendered unclipped.
 
-        /return
+        \return
             - true if the imagery will be clipped to the display area.
             - false if the imagery will be clipped to the target window area.
         */
