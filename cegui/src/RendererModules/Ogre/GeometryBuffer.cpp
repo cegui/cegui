@@ -207,12 +207,12 @@ void OgreGeometryBuffer::updateMatrix() const
     if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
     {
         // Apply the view projection matrix to the model matrix and save the result as cached matrix
-        d_matrix = glm::transpose( d_owner.getViewProjectionMatrix() * getModelMatrix() );
+        d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
 
         //If necessary: transpose
         const OgreShaderWrapper* ogreShader = static_cast<const OgreShaderWrapper*>(d_renderMaterial->getShaderWrapper());
-        if (ogreShader->getVertexParameters()->getTransposeMatrices())
-            d_matrix = glm::transpose(d_matrix); 
+        if (!ogreShader->getVertexParameters()->getTransposeMatrices())
+            d_matrix = glm::transpose(d_matrix);
 
         d_matrixValid = true;
     }
