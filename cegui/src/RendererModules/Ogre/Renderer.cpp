@@ -787,12 +787,13 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_displaySize.d_width  = static_cast<float>(target.getWidth());
     d_pimpl->d_displaySize.d_height = static_cast<float>(target.getHeight());
 
-    // Now properly checks for the openGL version
+    //! Checking if OpenGL > 3.2 supported
     if (d_pimpl->d_renderSystem->getName().find("OpenGL") != Ogre::String::npos)
     {
-        if (d_pimpl->d_renderSystem->getDriverVersion().major >= 3)
-            d_pimpl->d_useGLSLCore = true;
+        const Ogre::DriverVersion driverVersion = d_pimpl->d_renderSystem->getDriverVersion();
 
+        if ( (driverVersion.major == 3 && driverVersion.minor >= 2) || driverVersion.major >= 4)
+            d_pimpl->d_useGLSLCore = false;
     }
 
     // create default target & rendering root (surface) that uses it
@@ -865,13 +866,11 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
     initialiseShaders();
-
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::initialiseShaders()
 {
-
     Ogre::HighLevelGpuProgramPtr texture_vs;
     Ogre::HighLevelGpuProgramPtr texture_ps;
 
@@ -925,8 +924,6 @@ void OgreRenderer::initialiseShaders()
     texture_ps->setParameter("entry_point", "main");
     colour_vs->setParameter("entry_point", "main");
     colour_ps->setParameter("entry_point", "main");
-
-    // TODO: make sure that the legacy OpenGL shaders bind parameters properly
 
     // If we use GLSL
     if (d_pimpl->d_useGLSL)
@@ -1402,6 +1399,18 @@ void OgreRenderer::initialiseTextureStates()
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
     d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
+}
+
+//----------------------------------------------------------------------------//
+bool OgreRenderer::usesOpenGL()
+{
+    return d_pimpl->d_renderSystem->getName().find("OpenGL") != Ogre::String::npos;
+}
+
+//----------------------------------------------------------------------------//
+bool OgreRenderer::usesDirect3D()
+{
+    return d_pimpl->d_renderSystem->getName().find("Direct3D") != Ogre::String::npos;
 }
 
 //----------------------------------------------------------------------------//
