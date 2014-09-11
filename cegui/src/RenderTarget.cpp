@@ -44,7 +44,8 @@ RenderTarget::RenderTarget():
     d_activationCounter(0),
     d_area(0, 0, 0, 0),
     d_matrixValid(false),
-    d_viewDistance(0)
+    d_viewDistance(0),
+    d_matrix(1.0f)
 {}
 
 //----------------------------------------------------------------------------//
@@ -157,6 +158,16 @@ glm::mat4 RenderTarget::createViewProjMatrixForDirect3D() const
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
 
     return projectionMatrix * viewMatrix;
+}
+
+//----------------------------------------------------------------------------//
+void RenderTarget::updateMatrix(const glm::mat4& matrix) const
+{
+    d_matrix = matrix;
+
+    d_matrixValid = true;
+    //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
+    d_activationCounter = -1;
 }
 
 }

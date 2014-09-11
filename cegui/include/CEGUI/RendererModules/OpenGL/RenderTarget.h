@@ -60,13 +60,11 @@ public:
     virtual Renderer& getOwner();
 
 protected:
-    //! helper that initialises the cached matrix
+    //! helper that initialises the matrix
     virtual void updateMatrix() const;
 
     //! OpenGLRendererBase that created this object
     OpenGLRendererBase& d_owner;
-    //! Projection view matrix cache
-    mutable glm::mat4 d_matrix;
 };
 
 }

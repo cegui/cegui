@@ -91,9 +91,6 @@ protected:
     //! holds set Ogre viewport dimensions
     Rectf d_ogreViewportDimensions;
 
-    //! projection / view matrix cache
-    mutable Ogre::Matrix4 d_matrix;
-
     //! true when d_viewport is up to date and valid.
     //! \version Beginning from Ogre 2.0 this indicates whether the workspace is
     //! up to date

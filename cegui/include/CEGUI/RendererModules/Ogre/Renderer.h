@@ -297,23 +297,27 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
-    //! Set the current projection matrix to the given matrix.
-    void setProjectionMatrix(const Ogre::Matrix4& matrix);
-
-    //! return a const reference to the current projection matrix.
-    const Ogre::Matrix4& getProjectionMatrix() const;
-
     /*!
     \brief
-        Return a const reference to the final transformation matrix that
-        should be used when transforming geometry.
-
+        Return a const reference to the view projection matrix currently set for
+        this Renderer.
     \note
         The projection used when building this matrix is correctly adjusted
         according to whether the current Ogre::RenderTarget requires textures
-        to be flipped (i.e it does the right thing for both D3D and OpenGL).
+        to be flipped (i.e it does the right thing for both D3D and OpenGL) and
+        is also transposed depending on the RenderSystem and adapted for the depth range.
     */
     const glm::mat4& getViewProjectionMatrix() const;
+
+    /*!
+    \brief
+        Sets the view projection matrix that should be used for all following
+        Geometry.
+
+    \param viewProjMatrix
+        The view projection matrix.
+    */
+    void setViewProjectionMatrix(const glm::mat4& viewProjMatrix);
 
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
@@ -416,6 +420,8 @@ protected:
 
     //! common parts of constructor
     void constructor_impl(Ogre::RenderTarget& target);
+    //! Helper that switches off shader-usage
+    void switchShaderUsageOff();
     //! helper that creates and sets up shaders
     void initialiseShaders();
     //! helper to clean up shaders
@@ -425,6 +431,9 @@ protected:
     void cleanLargestVertexBufferPool(size_t count);
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
+
+    //! The view projection matrix that will currently be used by GeometryBuffers this Renderer will render
+    mutable glm::mat4 d_viewProjMatrix;
 };
 
 } // End of  CEGUI namespace section

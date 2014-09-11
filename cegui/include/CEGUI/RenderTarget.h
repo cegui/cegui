@@ -210,6 +210,12 @@ public:
         A freshly created Direct3D view projection matrix for this RenderTarget.
     */
     glm::mat4 createViewProjMatrixForDirect3D() const;
+
+    /*!
+    \brief
+        Updates the view projection matrix of this Rendertarget.
+    */
+    void updateMatrix(const glm::mat4& matrix) const;
     
 
 protected:
@@ -223,12 +229,15 @@ protected:
     //! holds defined area for the RenderTarget
     Rectf d_area;
 
+    //! Determines if the matrix is up to date
+    mutable bool d_matrixValid;
+    //! The view projection matrix
+    mutable glm::mat4 d_matrix;
+
     //! tracks viewing distance (this is set up at the same time as d_matrix)
     mutable float d_viewDistance;
-    //! tangent of the y FOV half-angle; used to calculate viewing distance.
+    //! The tangent of the y-axis FOV half-angle; used to calculate viewing distance.
     static const float d_yfov_tan;
-    //! true if saved matrix is up to date
-    mutable bool d_matrixValid;
 };
 
 } // End of  CEGUI namespace section
