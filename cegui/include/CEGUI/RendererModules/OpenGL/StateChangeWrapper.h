@@ -46,7 +46,7 @@ OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls be
 */
 class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper
 {
-protected:
+public:
     /*!
     \brief
         This has to be used for both glBlendFunc and glBlendFuncSeperate, as the second call is
@@ -84,10 +84,8 @@ protected:
         GLuint d_texture;
     };
 
-public:
-    //! constructor.
+
     OpenGL3StateChangeWrapper(OpenGL3Renderer& owner);
-    //! destructor
     virtual ~OpenGL3StateChangeWrapper();
 
 
@@ -95,6 +93,8 @@ public:
     //! all states on CPU-side so that the following calls will definitely change the states on GPU
     void reset();
 
+    //! Functions wrapping the gl* function calls to improve performance by storing the parameters and
+    //!  only calling the OpenGL functions when actual state changes are taking place.
     void bindVertexArray(GLuint vertexArray);
     void useProgram(GLuint program);
     void blendFunc(GLenum sfactor, GLenum dfactor);
@@ -104,17 +104,111 @@ public:
     void bindBuffer(GLenum target, GLuint buffer);
     void enable(GLenum capability);
     void disable(GLenum capability);
+    void bindTexture(GLenum target, GLuint texture);
+
     /*
     \brief
-        This function takes the number representing the texture position as integer, not the actual OpenGL value
-        for the position, such as GL_TEXTURE0, GL_TEXTURE1 etc.
+        This function takes the number representing the texture position as unsigned integer, 
+        not the actual OpenGL value for the position (GL_TEXTURE0, GL_TEXTURE1).
 
     \param texture_position
-        Variable representing the texture position as integer, it will be used in the following way to get the
+        Value representing the texture position as integer, it will be used in the following way to get the
         OpenGL Texture position: (GL_TEXTURE0 + texture_position)
     */
     void activeTexture(unsigned int texture_position);
-    void bindTexture(GLenum target, GLuint texture);
+
+    /*
+    \brief
+        Returns the number representing the last active texture's position. This value is the one that was last
+        set using this wrapper. No OpenGL getter function is called to retrieve the actual state of the variable,
+        which means that changes resulting from OpenGL calls done outside this wrapper, will not be considered.
+
+    \return
+        An unsigned int representing the currently active texture.
+    */
+    unsigned int getActiveTexture() const;
+
+    /*
+    \brief
+        Returns the ID of the bound vertex array. No OpenGL getter function is called to retrieve the actual state of 
+        the variable, which means that changes resulting from OpenGL calls done outside this wrapper, will not be
+        considered.
+
+    \return
+        An unsigned int representing the bound vertex array.
+    */
+    GLuint getBoundVertexArray() const;
+
+    /*
+    \brief
+        Returns the ID of the OpenGL shader program that is set to be used . No OpenGL getter function is called to
+        retrieve the actual state of the variable, which means that changes resulting from OpenGL calls done outside 
+        this wrapper, will not be considered.
+
+    \return
+        An unsigned int representing the ID of the OpenGL shader program.
+    */
+    GLuint getUsedProgram() const;
+
+    /*
+    \brief
+        Returns a struct containing the parameters that were set for the blend function. No OpenGL getter function is
+        called to retrieve the actual state of the variables, which means that changes resulting from OpenGL calls done
+        outside this wrapper, will not be considered.
+
+    \return
+        A struct containing the parameters for the blend function.
+    */
+    BlendFuncSeperateParams getBlendFuncParams() const;
+
+    /*
+    \brief
+        Returns a struct containing the parameters that were set for the viewport function. No OpenGL getter function is
+        called to retrieve the actual state of the variables, which means that changes resulting from OpenGL calls done
+        outside this wrapper, will not be considered.
+
+    \return
+        A struct containing the parameters for the viewport function.
+    */
+    PortParams getViewportParams() const;
+
+    /*
+    \brief
+        Returns a struct containing the parameters that were set for the scissor function. No OpenGL getter function is
+        called to retrieve the actual state of the variables, which means that changes resulting from OpenGL calls done
+        outside this wrapper, will not be considered.
+
+    \return
+        A struct containing the parameters for the scissor function.
+    */
+    PortParams getScissorParams() const; 
+
+    /*
+    \brief
+        Returns a struct containing the parameters that were set for the bindBuffer function. No OpenGL getter function is
+        called to retrieve the actual state of the variables, which means that changes resulting from OpenGL calls done
+        outside this wrapper, will not be considered.
+
+    \return
+        A struct containing the parameters for the bindBuffer function.
+    */
+    BindBufferParams getBoundBuffer() const;
+    
+    /*
+    \brief
+        Returns an integers representing if an OpenGL state was enabled, disabled or not set. No OpenGL getter function is
+        called to retrieve the actual state of the variables, which means that changes resulting from OpenGL calls done
+        outside this wrapper, will not be considered.
+
+    \param capability
+        The OpenGL state's OpenGL enum.
+
+    \return
+        0 if the requested state has been disabled,
+        1 if the requested state has been enabled,
+        -1 if the requested state has never been set using this class.
+    */
+    int isStateEnabled(GLenum capability) const;
 
 protected:
     GLuint                      d_vertexArrayObject;
