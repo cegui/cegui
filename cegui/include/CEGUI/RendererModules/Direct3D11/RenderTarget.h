@@ -51,8 +51,6 @@ public:
     // implement parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
@@ -68,20 +66,13 @@ protected:
 
     //! Renderer that created and owns the render target.
     Direct3D11Renderer& d_owner;
+    //! Projection view matrix cache
+    mutable glm::mat4 d_matrix;
+
     //! The D3D Device
     ID3D11Device& d_device;
     //! The D3D DeviceContext
     ID3D11DeviceContext& d_deviceContext;
-    //! holds defined area for the RenderTarget
-    Rectf d_area;
-    //! tangent of the y FOV half-angle; used to calculate viewing distance.
-    static const float d_yfov_tan;
-    //! View projection matrix cache
-    mutable glm::mat4 d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
-    //! tracks viewing distance (this is set up at the same time as d_matrix)
-    mutable float d_viewDistance;
 };
 
 }

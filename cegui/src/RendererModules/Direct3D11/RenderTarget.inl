@@ -29,8 +29,6 @@
 #include "CEGUI/RenderQueue.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/constants.hpp>
 
 #include <math.h>
 
@@ -39,17 +37,10 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const float Direct3D11RenderTarget<T>::d_yfov_tan = 0.267949192431123f;
-
-//----------------------------------------------------------------------------//
-template <typename T>
 Direct3D11RenderTarget<T>::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
     d_owner(owner),
     d_device(*d_owner.getDirect3DDevice()),
-    d_deviceContext(*d_owner.getDirect3DDeviceContext()),
-    d_area(0, 0, 0, 0),
-    d_viewDistance(0),
-    d_matrixValid(false)
+    d_deviceContext(*d_owner.getDirect3DDeviceContext())
 {
 }
 
@@ -65,24 +56,6 @@ template <typename T>
 void Direct3D11RenderTarget<T>::draw(const RenderQueue& queue)
 {
     queue.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::setArea(const Rectf& area)
-{
-    d_area = area;
-    d_matrixValid = false;
-
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-const Rectf& Direct3D11RenderTarget<T>::getArea() const
-{
-    return d_area;
 }
 
 //----------------------------------------------------------------------------//
@@ -184,47 +157,7 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void Direct3D11RenderTarget<T>::updateMatrix() const
 {
-    const float w = d_area.getWidth();
-    const float h = d_area.getHeight();
-
-    // We need to check if width or height are zero and act accordingly to prevent running into issues
-    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
-    // This is mostly important for avoiding asserts
-    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
-
-    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
-    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
-    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * d_yfov_tan);
-
-    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
-    glm::vec3 center = glm::vec3(midx, midy, 1);
-    glm::vec3 up = glm::vec3(0, -1, 0);
-
-
-    // We need to have a projection matrix with its depth in clip space ranging from 0 to 1 for nearclip to farclip.
-    // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which the following
-    // manually filled matrix should fix:
-    const float fovy = 30.f;
-    const float zNear = d_viewDistance * 0.5f;
-    const float zFar = d_viewDistance * 2.0f;
-    const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
-    const float Q = zFar / (zNear - zFar);
-
-    float projectionMatrixFloat[16] =
-    {
-        f/aspect,           0.0f,               0.0f,           0.0f,
-        0.0f,               f,                  0.0f,           0.0f,
-        0.0f,               0.0f,               Q,              -1.0f,
-        0.0f,               0.0f,               Q * zNear,      0.0f
-    };
-
-    glm::mat4 projectionMatrix = glm::make_mat4(projectionMatrixFloat);
-
-    // Projection matrix abuse!
-    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
-  
-    d_matrix = projectionMatrix * viewMatrix;
+    d_matrix = createViewProjMatrixForDirect3D();
 
     d_matrixValid = true;
 }

@@ -38,16 +38,9 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const float OpenGLRenderTarget<T>::d_yfov_tan = 0.267949192431123f;
-
-//----------------------------------------------------------------------------//
-template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
     d_owner(owner),
-    d_area(0, 0, 0, 0),
-    d_matrix(1.0f),
-    d_matrixValid(false),
-    d_viewDistance(0)
+    d_matrix(1.0f)
 {
 }
 
@@ -69,24 +62,6 @@ template <typename T>
 void OpenGLRenderTarget<T>::draw(const RenderQueue& queue)
 {
     queue.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::setArea(const Rectf& area)
-{
-    d_area = area;
-    d_matrixValid = false;
-
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-const Rectf& OpenGLRenderTarget<T>::getArea() const
-{
-    return d_area;
 }
 
 //----------------------------------------------------------------------------//
@@ -187,28 +162,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void OpenGLRenderTarget<T>::updateMatrix() const
 {
-    const float w = d_area.getWidth();
-    const float h = d_area.getHeight();
-
-    // We need to check if width or height are zero and act accordingly to prevent running into issues
-    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
-    // This is mostly important for avoiding asserts
-    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
-
-    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
-    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
-    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * d_yfov_tan);
-
-    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
-    glm::vec3 center = glm::vec3(midx, midy, 1);
-    glm::vec3 up = glm::vec3(0, -1, 0);
-
-    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, d_viewDistance * 0.5f, d_viewDistance * 2.0f);
-    // Projection matrix abuse!
-    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
-  
-    d_matrix = projectionMatrix * viewMatrix;
+    d_matrix = createViewProjMatrixForOpenGL();
 
     d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
