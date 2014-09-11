@@ -100,13 +100,13 @@ glm::mat4 RenderTarget::createViewProjMatrixForOpenGL() const
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * d_yfov_tan);
+    RenderTarget::d_viewDistance = midx / (aspect * RenderTarget::d_yfov_tan);
 
-    glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
+    glm::vec3 eye = glm::vec3(midx, midy, -RenderTarget::d_viewDistance);
     glm::vec3 center = glm::vec3(midx, midy, 1);
     glm::vec3 up = glm::vec3(0, -1, 0);
 
-    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, d_viewDistance * 0.5f, d_viewDistance * 2.0f);
+    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, RenderTarget::d_viewDistance * 0.5f, RenderTarget::d_viewDistance * 2.0f);
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
@@ -127,7 +127,7 @@ glm::mat4 RenderTarget::createViewProjMatrixForDirect3D() const
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * d_yfov_tan);
+    RenderTarget::d_viewDistance = midx / (aspect * RenderTarget::d_yfov_tan);
 
     glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
     glm::vec3 center = glm::vec3(midx, midy, 1);
@@ -138,8 +138,8 @@ glm::mat4 RenderTarget::createViewProjMatrixForDirect3D() const
     // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which the following
     // manually filled matrix should fix:
     const float fovy = 30.f;
-    const float zNear = d_viewDistance * 0.5f;
-    const float zFar = d_viewDistance * 2.0f;
+    const float zNear = RenderTarget::d_viewDistance * 0.5f;
+    const float zFar = RenderTarget::d_viewDistance * 2.0f;
     const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
     const float Q = zFar / (zNear - zFar);
 

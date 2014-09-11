@@ -205,13 +205,13 @@ template <typename T>
 void OgreRenderTarget<T>::updateMatrix() const
 {
     if (d_owner.usesOpenGL())
-        d_matrix = OgreRenderer::glmToOgreMatrix(createViewProjMatrixForOpenGL());
+        d_matrix = OgreRenderer::glmToOgreMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
     else if(d_owner.usesDirect3D())
-        d_matrix = OgreRenderer::glmToOgreMatrix(createViewProjMatrixForDirect3D());
+        d_matrix = OgreRenderer::glmToOgreMatrix( RenderTarget::createViewProjMatrixForDirect3D() );
     else
         CEGUI_THROW(RendererException("An unsupported RenderSystem is being used by Ogre. Please contact the CEGUI team."));
 
-    d_matrixValid = true;
+    RenderTarget::d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
     RenderTarget::d_activationCounter = -1;
 }
