@@ -297,28 +297,6 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
-    /*!
-    \brief
-        Return a const reference to the view projection matrix currently set for
-        this Renderer.
-    \note
-        The projection used when building this matrix is correctly adjusted
-        according to whether the current Ogre::RenderTarget requires textures
-        to be flipped (i.e it does the right thing for both D3D and OpenGL) and
-        is also transposed depending on the RenderSystem and adapted for the depth range.
-    */
-    const glm::mat4& getViewProjectionMatrix() const;
-
-    /*!
-    \brief
-        Sets the view projection matrix that should be used for all following
-        Geometry.
-
-    \param viewProjMatrix
-        The view projection matrix.
-    */
-    void setViewProjectionMatrix(const glm::mat4& viewProjMatrix);
-
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
 
@@ -345,17 +323,12 @@ public:
     void clearVertexBufferPool();
 
     // implement CEGUI::Renderer interface
-    RenderTarget& getDefaultRenderTarget();
+    virtual void setViewProjectionMatrix(const glm::mat4& viewProjMatrix);
+    virtual RenderTarget& getDefaultRenderTarget();
+    virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+    virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
-    RefCounted<RenderMaterial> createRenderMaterial(
-        const DefaultShaderType shaderType) const;
-    GeometryBuffer& createGeometryBufferColoured(
-        CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    GeometryBuffer& createGeometryBufferTextured(
-        CEGUI::RefCounted<RenderMaterial> renderMaterial);
-
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
@@ -431,9 +404,6 @@ protected:
     void cleanLargestVertexBufferPool(size_t count);
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
-
-    //! The view projection matrix that will currently be used by GeometryBuffers this Renderer will render
-    mutable glm::mat4 d_viewProjMatrix;
 };
 
 } // End of  CEGUI namespace section

@@ -440,39 +440,6 @@ RenderTarget& OgreRenderer::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
-{
-    // The find function that was here before would no longer compile for some reason
-
-    // Manually search the container for a matching pointer
-    CEGUI::GeometryBufferList::const_iterator end = 
-        d_pimpl->d_geometryBuffers.end();
-
-    for (CEGUI::GeometryBufferList::iterator iter = 
-        d_pimpl->d_geometryBuffers.begin(); iter != end; ++iter)
-    {
-        if ((*iter) == &buffer)
-        {
-            d_pimpl->d_geometryBuffers.erase(iter);
-            delete &buffer;
-            return;
-        }
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OgreRenderer::destroyAllGeometryBuffers()
-{
-    // Perhaps a faster function for destroying many buffers
-    for (size_t i = 0; i < d_pimpl->d_geometryBuffers.size(); i++)
-    {
-        delete d_pimpl->d_geometryBuffers[i];
-    }
-
-    d_pimpl->d_geometryBuffers.clear();
-}
-
-//----------------------------------------------------------------------------//
 TextureTarget* OgreRenderer::createTextureTarget()
 {
     TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem);
@@ -697,8 +664,7 @@ const String& OgreRenderer::getIdentifierString() const
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer() :
-    d_pimpl(new OgreRenderer_impl()),
-    d_viewProjMatrix(1.0f)
+    d_pimpl(new OgreRenderer_impl())
 {
     checkOgreInitialised();
 
@@ -715,8 +681,7 @@ OgreRenderer::OgreRenderer() :
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
-    d_pimpl(new OgreRenderer_impl()),
-    d_viewProjMatrix(1.0f)
+    d_pimpl(new OgreRenderer_impl())
 {
     checkOgreInitialised();
 
@@ -1142,24 +1107,18 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OgreRenderer::getViewProjectionMatrix() const
-{
-    return d_viewProjMatrix;
-}
-
-//----------------------------------------------------------------------------//
 void OgreRenderer::setViewProjectionMatrix(const glm::mat4& viewProjMatrix)
 {
     d_pimpl->d_renderSystem->_setProjectionMatrix( OgreRenderer::glmToOgreMatrix(viewProjMatrix) );
 
-    d_viewProjMatrix = viewProjMatrix;
+    d_viewProjectionMatrix = viewProjMatrix;
 
     if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->requiresTextureFlipping())
     {
-        d_viewProjMatrix[0][1] = -d_viewProjMatrix[0][1];
-        d_viewProjMatrix[1][1] = -d_viewProjMatrix[1][1];
-        d_viewProjMatrix[2][1] = -d_viewProjMatrix[2][1];
-        d_viewProjMatrix[3][1] = -d_viewProjMatrix[3][1];
+        d_viewProjectionMatrix[0][1] = -d_viewProjectionMatrix[0][1];
+        d_viewProjectionMatrix[1][1] = -d_viewProjectionMatrix[1][1];
+        d_viewProjectionMatrix[2][1] = -d_viewProjectionMatrix[2][1];
+        d_viewProjectionMatrix[3][1] = -d_viewProjectionMatrix[3][1];
     }  
 }
 

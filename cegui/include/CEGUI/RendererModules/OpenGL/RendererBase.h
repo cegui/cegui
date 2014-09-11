@@ -62,7 +62,6 @@ namespace CEGUI
 class OpenGLTexture;
 class OpenGLGeometryBufferBase;
 class RenderMaterial;
-struct mat4Pimpl;
 
 //! Common base class used for other OpenGL based renderer modules.
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
@@ -173,24 +172,6 @@ public:
 
     /*!
     \brief
-        Helper to return view projection matrix.
-
-    \return
-        The view projection matrix.
-    */
-    virtual const glm::mat4& getViewProjectionMatrix();
-
-    /*!
-    \brief
-        Helper to set the view projection matrix.
-
-    \param viewProjectionMatrix
-        The view projection matrix.
-    */
-    virtual void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);
-
-    /*!
-    \brief
         Helper to get the viewport.
 
     \return
@@ -252,8 +233,6 @@ protected:
     bool d_initExtraStates;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
-    //! View projection matrix
-    glm::mat4 d_viewProjectionMatrix;
 };
 
 /**
