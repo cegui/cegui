@@ -68,12 +68,12 @@ void OpenGLRenderTarget<T>::draw(const RenderQueue& queue)
 template <typename T>
 void OpenGLRenderTarget<T>::activate()
 {
-    glViewport(static_cast<GLsizei>(d_area.left()),
-               static_cast<GLsizei>(d_area.top()),
-               static_cast<GLsizei>(d_area.getWidth()),
-               static_cast<GLsizei>(d_area.getHeight()));
+    glViewport(static_cast<GLsizei>(RenderTarget::d_area.left()),
+               static_cast<GLsizei>(RenderTarget::d_area.top()),
+               static_cast<GLsizei>(RenderTarget::d_area.getWidth()),
+               static_cast<GLsizei>(RenderTarget::d_area.getHeight()));
 
-    if (!d_matrixValid)
+    if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
     d_owner.setViewProjectionMatrix(d_matrix);
@@ -92,17 +92,17 @@ template <typename T>
 void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec2& p_in, glm::vec2& p_out) const
 {
-    if (!d_matrixValid)
+    if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
     const OpenGLGeometryBufferBase& gb =
         static_cast<const OpenGLGeometryBufferBase&>(buff);
 
     const GLint vp[4] = {
-        static_cast<GLint>(d_area.left()),
-        static_cast<GLint>(d_area.top()),
-        static_cast<GLint>(d_area.getWidth()),
-        static_cast<GLint>(d_area.getHeight())
+        static_cast<GLint>(RenderTarget::d_area.left()),
+        static_cast<GLint>(RenderTarget::d_area.top()),
+        static_cast<GLint>(RenderTarget::d_area.getWidth()),
+        static_cast<GLint>(RenderTarget::d_area.getHeight())
     };
 
     GLdouble in_x, in_y, in_z;
@@ -164,7 +164,7 @@ void OpenGLRenderTarget<T>::updateMatrix() const
 {
     d_matrix = createViewProjMatrixForOpenGL();
 
-    d_matrixValid = true;
+    RenderTarget::d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
     RenderTarget::d_activationCounter = -1;
 }
