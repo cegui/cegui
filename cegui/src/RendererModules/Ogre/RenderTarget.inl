@@ -163,7 +163,7 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     // unproject the ends of the ray
     in.x = midx;
     in.y = midy;
-    in.z = -d_viewDistance;
+    in.z = -RenderTarget::d_viewDistance;
     const Ogre::Vector3 r1(unproj * in);
     in.x = p_in.x;
     in.y = p_in.y;
