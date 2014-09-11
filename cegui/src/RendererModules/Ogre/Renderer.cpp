@@ -793,7 +793,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
         const Ogre::DriverVersion driverVersion = d_pimpl->d_renderSystem->getDriverVersion();
 
         if ( (driverVersion.major == 3 && driverVersion.minor >= 2) || driverVersion.major >= 4)
-            d_pimpl->d_useGLSLCore = false;
+            d_pimpl->d_useGLSLCore = true;
     }
 
     // create default target & rendering root (surface) that uses it
