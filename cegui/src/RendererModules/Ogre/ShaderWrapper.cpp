@@ -64,13 +64,12 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     Ogre::GpuConstantDefinitionMap::const_iterator target2 = 
         pixel_map.find("alphaPercentage");
 
-    // This will only be true when the shaders/parameter names are invalid
+    // We will throw an error if shaders/parameter names are invalid
     if (target == vertex_map.end() || target2 == pixel_map.end())
     {
         CEGUI_THROW(RendererException("Ogre renderer couldn't find an index for"
             " the shader data."));
 
-        // Don't want to fall through, ever
         return;
     }
 
