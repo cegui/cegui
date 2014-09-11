@@ -116,7 +116,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     glm::vec3 unprojected2;
     in_x = vp[2] * 0.5;
     in_y = vp[3] * 0.5;
-    in_z = -d_viewDistance;
+    in_z = -RenderTarget::d_viewDistance;
     unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = p_in.x;
     in_y = vp[3] - p_in.y;
@@ -162,7 +162,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 template <typename T>
 void OpenGLRenderTarget<T>::updateMatrix() const
 {
-    d_matrix = createViewProjMatrixForOpenGL();
+    d_matrix = RenderTarget::createViewProjMatrixForOpenGL();
 
     RenderTarget::d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
