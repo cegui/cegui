@@ -25,8 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Null/RenderTarget.h"
-#include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/Null/GeometryBuffer.h"
 
 // Start of CEGUI namespace section
@@ -35,8 +33,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 template<typename T>
 NullRenderTarget<T>::NullRenderTarget(NullRenderer& owner) :
-    d_owner(owner),
-    d_area(0, 0, 0, 0)
+    d_owner(owner)
 {
 }
 
@@ -44,37 +41,6 @@ NullRenderTarget<T>::NullRenderTarget(NullRenderer& owner) :
 template<typename T>
 NullRenderTarget<T>::~NullRenderTarget()
 {
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::draw(const GeometryBuffer& buffer)
-{
-    buffer.draw();
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::draw(const RenderQueue& queue)
-{
-    queue.draw();
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::setArea(const Rectf& area)
-{
-    d_area = area;
-
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-const Rectf& NullRenderTarget<T>::getArea() const
-{
-    return d_area;
 }
 
 //----------------------------------------------------------------------------//

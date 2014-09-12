@@ -51,10 +51,6 @@ public:
     virtual ~NullRenderTarget();
 
     // implement parts of CEGUI::RenderTarget interface
-    virtual void draw(const GeometryBuffer& buffer);
-    virtual void draw(const RenderQueue& queue);
-    virtual void setArea(const Rectf& area);
-    virtual const Rectf& getArea() const;
     virtual void activate();
     virtual void deactivate();
     virtual void unprojectPoint(const GeometryBuffer& buff,
@@ -65,8 +61,6 @@ public:
 protected:
     //! NullRenderer object that owns this RenderTarget
     NullRenderer& d_owner;
-    //! holds defined area for the RenderTarget
-    Rectf d_area;
 };
 
 } // End of  CEGUI namespace section
