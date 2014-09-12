@@ -153,7 +153,7 @@ void Direct3D11RenderTarget<T>::setupViewport(D3D11_VIEWPORT& vp) const
 
 //----------------------------------------------------------------------------//
 template <typename T>
-Renderer& Direct3D11RenderTarget<T>::getOwner()
+Direct3D11Renderer& Direct3D11RenderTarget<T>::getOwner()
 {
     return d_owner;
 }

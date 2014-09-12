@@ -209,7 +209,7 @@ void OgreRenderTarget<T>::updateViewport()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-Renderer& OgreRenderTarget<T>::getOwner()
+OgreRenderer& OgreRenderTarget<T>::getOwner()
 {
     return d_owner;
 }

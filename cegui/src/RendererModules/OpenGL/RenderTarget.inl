@@ -146,7 +146,7 @@ void OpenGLRenderTarget<T>::updateMatrix() const
 
 //----------------------------------------------------------------------------//
 template <typename T>
-Renderer& OpenGLRenderTarget<T>::getOwner()
+OpenGLRendererBase& OpenGLRenderTarget<T>::getOwner()
 {
     return d_owner;
 }
