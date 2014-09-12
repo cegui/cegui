@@ -235,6 +235,10 @@ void OpenGL3Renderer::setupExtraStates()
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
+
+    glUseProgram(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 //----------------------------------------------------------------------------//
