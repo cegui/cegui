@@ -25,13 +25,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
-#include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 
-#include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -47,20 +46,6 @@ OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
 template <typename T>
 OpenGLRenderTarget<T>::~OpenGLRenderTarget()
 {
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::draw(const GeometryBuffer& buffer)
-{
-    buffer.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::draw(const RenderQueue& queue)
-{
-    queue.draw();
 }
 
 //----------------------------------------------------------------------------//

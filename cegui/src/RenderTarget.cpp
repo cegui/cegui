@@ -26,6 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/Renderer.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RenderQueue.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/constants.hpp>
@@ -63,6 +65,18 @@ void RenderTarget::activate()
 
     if(d_activationCounter == 0)
         owner.invalidateGeomBufferMatrices(this);
+}
+
+//----------------------------------------------------------------------------//
+void RenderTarget::draw(const GeometryBuffer& buffer)
+{
+    buffer.draw();
+}
+
+//----------------------------------------------------------------------------//
+void RenderTarget::draw(const RenderQueue& queue)
+{
+    queue.draw();
 }
 
 //----------------------------------------------------------------------------//

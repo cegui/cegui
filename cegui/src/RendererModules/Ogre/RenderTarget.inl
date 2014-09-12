@@ -25,8 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/RenderTarget.h"
-#include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 #include "CEGUI/Exceptions.h"
 
@@ -61,21 +59,6 @@ OgreRenderTarget<T>::~OgreRenderTarget()
 {
     delete d_viewport;
 }
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::draw(const GeometryBuffer& buffer)
-{
-    buffer.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::draw(const RenderQueue& queue)
-{
-    queue.draw();
-}
-
 
 //----------------------------------------------------------------------------//
 template <typename T>

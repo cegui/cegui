@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/Direct3D11/RenderTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/GeometryBuffer.h"
-#include "CEGUI/RenderQueue.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -42,20 +41,6 @@ Direct3D11RenderTarget<T>::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
     d_device(*d_owner.getDirect3DDevice()),
     d_deviceContext(*d_owner.getDirect3DDeviceContext())
 {
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::draw(const GeometryBuffer& buffer)
-{
-    buffer.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::draw(const RenderQueue& queue)
-{
-    queue.draw();
 }
 
 //----------------------------------------------------------------------------//
