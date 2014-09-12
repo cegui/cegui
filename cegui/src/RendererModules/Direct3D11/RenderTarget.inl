@@ -61,12 +61,6 @@ void Direct3D11RenderTarget<T>::activate()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void Direct3D11RenderTarget<T>::deactivate()
-{
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
 void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec2& p_in, glm::vec2& p_out) const
 {

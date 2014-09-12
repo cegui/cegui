@@ -68,6 +68,11 @@ void RenderTarget::activate()
 }
 
 //----------------------------------------------------------------------------//
+void RenderTarget::deactivate()
+{
+}
+
+//----------------------------------------------------------------------------//
 void RenderTarget::draw(const GeometryBuffer& buffer)
 {
     buffer.draw();
