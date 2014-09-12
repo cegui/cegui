@@ -55,7 +55,8 @@ public:
     virtual void unprojectPoint(const GeometryBuffer& buff,
                         const glm::vec2& p_in, glm::vec2& p_out) const;
     virtual bool isImageryCache() const;
-    virtual Renderer& getOwner();
+    // implementing the virtual function with a covariant return type
+    virtual NullRenderer& getOwner();
 
 protected:
     //! NullRenderer object that owns this RenderTarget

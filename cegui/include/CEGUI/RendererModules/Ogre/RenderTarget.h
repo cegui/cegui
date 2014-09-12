@@ -65,8 +65,9 @@ public:
     virtual void activate();
     virtual void unprojectPoint(const GeometryBuffer& buff,
                         const glm::vec2& p_in, glm::vec2& p_out) const;
-    virtual Renderer& getOwner();
     virtual void setArea(const Rectf& area);
+    // implementing the virtual function with a covariant return type
+    virtual OgreRenderer& getOwner();
 
 protected:
     //! helper that initialises the cached matrix

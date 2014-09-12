@@ -67,7 +67,7 @@ bool NullRenderTarget<T>::isImageryCache() const
 
 //----------------------------------------------------------------------------//
 template <typename T>
-Renderer& NullRenderTarget<T>::getOwner()
+NullRenderer& NullRenderTarget<T>::getOwner()
 {
     return d_owner;
 }
