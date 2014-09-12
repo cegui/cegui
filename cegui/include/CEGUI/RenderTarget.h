@@ -85,7 +85,7 @@ public:
         GeometryBuffer object holding the geometry that should be drawn to the
         RenderTarget.
     */
-    virtual void draw(const GeometryBuffer& buffer) = 0;
+    virtual void draw(const GeometryBuffer& buffer);
 
     /*!
     \brief
@@ -96,7 +96,7 @@ public:
         RenderQueue object holding the geometry that should be drawn to the
         RenderTarget.
     */
-    virtual void draw(const RenderQueue& queue) = 0;
+    virtual void draw(const RenderQueue& queue);
 
     /*!
     \brief

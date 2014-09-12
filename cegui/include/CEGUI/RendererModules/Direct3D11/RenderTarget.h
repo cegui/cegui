@@ -49,8 +49,6 @@ public:
     Direct3D11RenderTarget(Direct3D11Renderer& owner);
 
     // implement parts of RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,

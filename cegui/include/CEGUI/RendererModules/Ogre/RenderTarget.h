@@ -62,8 +62,6 @@ public:
     void setOgreViewportDimensions(const Rectf& area);
 
     // implement parts of CEGUI::RenderTarget interface
-    virtual void draw(const GeometryBuffer& buffer);
-    virtual void draw(const RenderQueue& queue);
     virtual void activate();
     virtual void deactivate();
     virtual void unprojectPoint(const GeometryBuffer& buff,
