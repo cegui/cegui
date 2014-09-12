@@ -52,7 +52,6 @@ public:
 
     // implement parts of RenderTarget interface
     virtual void activate();
-    virtual void deactivate();
     virtual void unprojectPoint(const GeometryBuffer& buff,
                         const glm::vec2& p_in, glm::vec2& p_out) const;
     virtual Renderer& getOwner();

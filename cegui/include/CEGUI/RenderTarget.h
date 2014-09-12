@@ -163,7 +163,7 @@ public:
         if it is not called, in the unlikely event that your application actually
         works, it will likely stop working in some future version.
     */
-    virtual void deactivate() = 0;
+    virtual void deactivate();
 
     /*!
     \brief

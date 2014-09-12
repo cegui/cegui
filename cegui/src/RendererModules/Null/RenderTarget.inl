@@ -52,12 +52,6 @@ void NullRenderTarget<T>::activate()
 
 //----------------------------------------------------------------------------//
 template<typename T>
-void NullRenderTarget<T>::deactivate()
-{
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
 void NullRenderTarget<T>::unprojectPoint(const GeometryBuffer&,
                                          const glm::vec2& p_in, glm::vec2& p_out) const
 {

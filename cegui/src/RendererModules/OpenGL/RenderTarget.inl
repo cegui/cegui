@@ -67,12 +67,6 @@ void OpenGLRenderTarget<T>::activate()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGLRenderTarget<T>::deactivate()
-{
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
 void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec2& p_in, glm::vec2& p_out) const
 {

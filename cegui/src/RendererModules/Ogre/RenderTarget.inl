@@ -107,13 +107,6 @@ void OgreRenderTarget<T>::activate()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OgreRenderTarget<T>::deactivate()
-{
-    // currently nothing to do in the basic case
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
 void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
                                          const glm::vec2& p_in,
                                          glm::vec2& p_out) const
