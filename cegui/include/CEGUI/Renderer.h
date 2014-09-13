@@ -35,7 +35,7 @@
 #include "CEGUI/Vector.h"
 #include "CEGUI/RefCounted.h"
 
-#include <vector>
+#include <set>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -180,7 +180,7 @@ public:
     \param buffer
         The GeometryBuffer object to be destroyed.
     */
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
+    void destroyGeometryBuffer(GeometryBuffer& buffer);
 
     /*!
     \brief
@@ -487,9 +487,9 @@ protected:
     glm::mat4 d_viewProjectionMatrix;
 private:
     //! container type used to hold GeometryBuffers created.
-    typedef std::vector<GeometryBuffer*> GeometryBufferList;
+    typedef std::set<GeometryBuffer*> GeometryBufferSet;
     //! Container used to track geometry buffers.
-    GeometryBufferList d_geometryBuffers;
+    GeometryBufferSet d_geometryBuffers;
 
 };
 
