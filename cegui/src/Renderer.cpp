@@ -40,19 +40,17 @@ Renderer::Renderer():
 //----------------------------------------------------------------------------//
 void Renderer::addGeometryBuffer(GeometryBuffer& buffer) 
 {
-    d_geometryBuffers.push_back(&buffer);
+    d_geometryBuffers.insert(&buffer);
 }
 
 //----------------------------------------------------------------------------//
-void Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
+void Renderer::destroyGeometryBuffer(GeometryBuffer& buffer)
 {
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
+    GeometryBufferSet::const_iterator findIter = d_geometryBuffers.find(&buffer);
 
-    if (d_geometryBuffers.end() != i)
+    if (findIter != d_geometryBuffers.end())
     {
-        d_geometryBuffers.erase(i);
+        d_geometryBuffers.erase(findIter);
         delete &buffer;
     }
 }
@@ -61,7 +59,7 @@ void Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 void Renderer::destroyAllGeometryBuffers()
 {
     while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(*d_geometryBuffers.back());
+        destroyGeometryBuffer(*(*d_geometryBuffers.begin()));
 }
 
 //----------------------------------------------------------------------------//
@@ -83,16 +81,14 @@ GeometryBuffer& Renderer::createGeometryBufferColoured()
 //----------------------------------------------------------------------------//
 void Renderer::invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget)
 {
-    GeometryBufferList::iterator currentIter = d_geometryBuffers.begin();
-    GeometryBufferList::iterator iterEnd = d_geometryBuffers.end();
+    GeometryBufferSet::iterator currentIter = d_geometryBuffers.begin();
+    GeometryBufferSet::iterator iterEnd = d_geometryBuffers.end();
 
-    while(currentIter != iterEnd)
+    for(; currentIter != iterEnd; ++currentIter)
     {
         GeometryBuffer* geomBuffer = *currentIter;
         if(geomBuffer->getLastRenderTarget() == renderTarget)
             geomBuffer->invalidateMatrix();
-
-        ++currentIter;
     }
 }
 
