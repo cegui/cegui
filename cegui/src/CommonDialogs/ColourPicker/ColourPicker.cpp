@@ -95,7 +95,7 @@ void ColourPicker::initialiseComponents(void)
     Window* colourRect = getColourRect();
 
     // bind handler to close button 'Click' event
-    colourRect->subscribeEvent(Window::EventPointerActivate,
+    colourRect->subscribeEvent(Window::EventCursorActivate,
         Event::Subscriber(&ColourPicker::colourRect_ColourRectClickedHandler,
                           this));
 

@@ -106,7 +106,7 @@ public:
     //! Return a pointer to the Window that is currently set as modal.
     Window* getModalWindow() const;
 
-    Window* getWindowContainingPointer() const;
+    Window* getWindowContainingCursor() const;
 
     const Sizef& getSurfaceSize() const;
 
@@ -130,7 +130,7 @@ public:
 
 
     //! Tell the context to reconsider which window it thinks the cursor is in.
-    void updateWindowContainingPointer();
+    void updateWindowContainingCursor();
 
     Window* getInputCaptureWindow() const;
     void setInputCaptureWindow(Window* window);
@@ -242,7 +242,7 @@ protected:
     Window* getInputTargetWindow() const;
     Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]
-    void notifyPointerTransition(Window* top, Window* bottom,
+    void notifyCursorTransition(Window* top, Window* bottom,
                                void (Window::*func)(CursorInputEventArgs&),
                                CursorInputEventArgs& args) const;
 
@@ -250,8 +250,8 @@ protected:
     bool windowDestroyedHandler(const EventArgs& args);
 
     //! returns whether the window containing the cursor had changed.
-    bool updateWindowContainingPointer_impl() const;
-    void resetWindowContainingPointer();
+    bool updateWindowContainingCursor_impl() const;
+    void resetWindowContainingCursor();
 
     // event trigger functions.
     virtual void onRootWindowChanged(WindowEventArgs& args);
@@ -271,11 +271,11 @@ protected:
     bool handleCutRequest(const SemanticInputEvent& event);
     bool handlePasteRequest(const SemanticInputEvent& event);
     bool handleScrollEvent(const SemanticInputEvent& event);
-    bool handlePointerMoveEvent(const SemanticInputEvent& event);
-    bool handlePointerMove_impl(CursorInputEventArgs& pa);
-    bool handlePointerLeave(const SemanticInputEvent& event);
-    bool handlePointerActivateEvent(const SemanticInputEvent& event);
-    bool handlePointerPressHoldEvent(const SemanticInputEvent& event);
+    bool handleCursorMoveEvent(const SemanticInputEvent& event);
+    bool handleCursorMove_impl(CursorInputEventArgs& pa);
+    bool handleCursorLeave(const SemanticInputEvent& event);
+    bool handleCursorActivateEvent(const SemanticInputEvent& event);
+    bool handleCursorPressHoldEvent(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;
@@ -290,12 +290,12 @@ protected:
     //! a cache of the target surface size, allows returning by ref.
     Sizef d_surfaceSize;
 
-    mutable Window* d_windowContainingPointer;
-    mutable bool    d_windowContainingPointerIsUpToDate;
+    mutable Window* d_windowContainingCursor;
+    mutable bool d_windowContainingCursorIsUpToDate;
     Window* d_modalWindow;
     Window* d_captureWindow;
 
-    CursorsState d_pointersState;
+    CursorsState d_cursorsState;
 
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_windowDestroyedEventConnection;

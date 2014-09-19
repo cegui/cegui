@@ -40,12 +40,12 @@ class MockInputEventReceiver : public InputEventReceiver
 public:
     std::string d_text;
     float d_totalScroll;
-    glm::vec2 d_pointerPosition;
+    glm::vec2 d_cursorPosition;
     std::vector<int> d_semanticValues;
 
     MockInputEventReceiver() :
         d_text(""),
-        d_pointerPosition(0.0f, 0.0f),
+        d_cursorPosition(0.0f, 0.0f),
         d_totalScroll(0)
     {}
 
@@ -86,7 +86,7 @@ public:
 
     bool handleMovementEvent(const SemanticInputEvent& event)
     {
-        d_pointerPosition = glm::vec2(event.d_payload.array[0],
+        d_cursorPosition = glm::vec2(event.d_payload.array[0],
             event.d_payload.array[1]);
         return true;
     }
@@ -130,7 +130,7 @@ public:
             new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
                 &MockInputEventReceiver::handleScrollEvent, this)));
 
-        d_semanticEventsHandlersMap.insert(std::make_pair(SV_PointerMove,
+        d_semanticEventsHandlersMap.insert(std::make_pair(SV_CursorMove,
             new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
                 &MockInputEventReceiver::handleMovementEvent, this)));
     }
@@ -186,8 +186,8 @@ BOOST_AUTO_TEST_CASE(MovementEventNoDelta)
 {
     d_inputAggregator->injectMouseMove(0, 0);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 0);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 0);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 0);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 0);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventSingleDelta)
@@ -195,8 +195,8 @@ BOOST_AUTO_TEST_CASE(MovementEventSingleDelta)
     d_inputAggregator->injectMouseMove(0, 0);
     d_inputAggregator->injectMouseMove(3, 5);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 3);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 5);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 3);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 5);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventMultipleDeltas)
@@ -204,42 +204,42 @@ BOOST_AUTO_TEST_CASE(MovementEventMultipleDeltas)
     d_inputAggregator->injectMouseMove(0, 0);
     d_inputAggregator->injectMouseMove(3, 5);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 3);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 5);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 3);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 5);
 
     d_inputAggregator->injectMouseMove(3, -3);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 6);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 2);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 6);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 2);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventZeroPosition)
 {
     d_inputAggregator->injectMousePosition(0, 0);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 0);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 0);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 0);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 0);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventNonZeroPosition)
 {
     d_inputAggregator->injectMousePosition(30, 40);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 30);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 40);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 30);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 40);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventMultiplePositions)
 {
     d_inputAggregator->injectMousePosition(3, 5);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 3);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, 5);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 3);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, 5);
 
     d_inputAggregator->injectMousePosition(3, -3);
 
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.x, 3);
-    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_pointerPosition.y, -3);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.x, 3);
+    BOOST_REQUIRE_EQUAL(d_inputEventReceiver->d_cursorPosition.y, -3);
 }
 
 BOOST_AUTO_TEST_CASE(ScrollEventNoDelta)
@@ -303,7 +303,7 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerPressHold);
+    expected_values.push_back(SV_CursorPressHold);
 
     d_inputAggregator->injectMouseButtonDown(LeftButton);
 
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndShiftToSelectMultiple)
 BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerActivate);
+    expected_values.push_back(SV_CursorActivate);
 
     d_inputAggregator->injectMouseButtonUp(LeftButton);
 
@@ -353,8 +353,8 @@ BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerPressHold);
-    expected_values.push_back(SV_PointerActivate);
+    expected_values.push_back(SV_CursorPressHold);
+    expected_values.push_back(SV_CursorActivate);
 
     d_inputAggregator->injectMouseButtonDown(LeftButton);
     d_inputAggregator->injectMouseButtonUp(LeftButton);
@@ -367,7 +367,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerActivate);
+    expected_values.push_back(SV_CursorActivate);
 
     d_inputAggregator->injectMouseButtonClick(LeftButton);
 
@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE(MouseClickAndControlToSelectCumulative)
 BOOST_AUTO_TEST_CASE(MouseClickAndShiftToSelectMultipleItems)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerActivate);
+    expected_values.push_back(SV_CursorActivate);
 
     d_inputAggregator->injectKeyDown(Key::LeftShift);
     d_inputAggregator->injectMouseButtonClick(LeftButton);

@@ -148,7 +148,7 @@ void ItemEntry::onSemanticInputEvent(SemanticEventArgs& e)
     bool cumulative_selection = e.d_semanticValue == SV_SelectCumulative;
 
     if (d_selectable &&
-        (e.d_semanticValue == SV_PointerActivate || range_selection || cumulative_selection) &&
+        (e.d_semanticValue == SV_CursorActivate || range_selection || cumulative_selection) &&
          e.d_payload.source == CIS_Left)
     {
         if (d_ownerList)

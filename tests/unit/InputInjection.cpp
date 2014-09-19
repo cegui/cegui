@@ -68,7 +68,7 @@ struct InputInjectionFixture
         System::getSingleton().getDefaultGUIContext().setRootWindow(d_window);
 
         d_windowConnections.push_back(
-            d_window->subscribeEvent(Window::EventPointerActivate,
+            d_window->subscribeEvent(Window::EventCursorActivate,
                 Event::Subscriber(&InputInjectionFixture::handleWindowEvent, this))
             );
         d_buttonConnections.push_back(

@@ -90,13 +90,13 @@ void Scrollbar::initialiseComponents(void)
 
     // set up Increase button
     getIncreaseButton()->
-    subscribeEvent(PushButton::EventPointerPressHold,
+    subscribeEvent(PushButton::EventCursorPressHold,
                    Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked,
                                      this));
 
     // set up Decrease button
     getDecreaseButton()->
-    subscribeEvent(PushButton::EventPointerPressHold,
+    subscribeEvent(PushButton::EventCursorPressHold,
                    Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked,
                                      this));
 

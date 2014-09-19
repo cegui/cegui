@@ -582,19 +582,19 @@ void ColourPickerControls::initialiseComponents()
         Event::Subscriber(&ColourPickerControls::handleAlphaSliderValueChanged, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventPointerLeavesSurface,
+        Window::EventCursorLeavesSurface,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerLeaves, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventPointerActivate,
+        Window::EventCursorActivate,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerActivate, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventPointerPressHold,
+        Window::EventCursorPressHold,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerPressHold, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventPointerMove,
+        Window::EventCursorMove,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerMove, this));
 
     initColourPicker();

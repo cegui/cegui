@@ -180,8 +180,8 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
 
     initGame();
 
-    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponLeftArrowClicked, this));
-    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponRightArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponLeftArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponRightArrowClicked, this));
 
     d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&RestaurantGameSample::handleRestartButtonClicked, this));
 
@@ -271,7 +271,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&RestaurantGameSample::handlePlateWindowActivated, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handlePlateWindowActivated, this));
     d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");

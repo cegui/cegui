@@ -73,7 +73,7 @@ bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
             (capture_wnd == this ||
             (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(cursor_pos);
     else
-	    return getGUIContext().getWindowContainingPointer() == this;
+	    return getGUIContext().getWindowContainingCursor() == this;
 }
 
 /*************************************************************************
@@ -158,7 +158,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 	Window::onCaptureLost(e);
 
 	d_pushed = false;
-    getGUIContext().updateWindowContainingPointer();
+    getGUIContext().updateWindowContainingCursor();
 	invalidate();
 
 	// event was handled by us.

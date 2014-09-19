@@ -86,8 +86,8 @@ namespace CEGUI
         decreaseButton->setCursorAutoRepeatEnabled(true);
 
         // perform event subscriptions.
-        increaseButton->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        decreaseButton->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+        increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+        decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
         editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation

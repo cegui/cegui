@@ -171,7 +171,7 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 	else
 	{
 		// if left cursor is held, clear any selection
-		if (e.pointerState.isHeld(CIS_Left))
+		if (e.state.isHeld(CIS_Left))
 		{
             clearSelections();
 		}

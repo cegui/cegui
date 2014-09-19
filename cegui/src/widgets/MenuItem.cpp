@@ -88,7 +88,7 @@ void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
     const Window* capture_wnd = getCaptureWindow();
 
     if (capture_wnd == 0)
-        d_hovering = (getGUIContext().getWindowContainingPointer() == this && isHit(cursor_pos));
+        d_hovering = (getGUIContext().getWindowContainingCursor() == this && isHit(cursor_pos));
     else
         d_hovering = (capture_wnd == this && isHit(cursor_pos));
 
