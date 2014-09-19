@@ -49,10 +49,10 @@ DefaultWindow::DefaultWindow(const String& type, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onPointerMove(CursorInputEventArgs& e)
+void DefaultWindow::onCursorMove(CursorInputEventArgs& e)
 {
     // always call the base class handler
-    Window::onPointerMove(e);
+    Window::onCursorMove(e);
     updatePointerEventHandled(e);
 }
 
@@ -65,18 +65,18 @@ void DefaultWindow::onScroll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onPointerPressHold(CursorInputEventArgs& e)
+void DefaultWindow::onCursorPressHold(CursorInputEventArgs& e)
 {
     // always call the base class handler
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
     updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onPointerActivate(CursorInputEventArgs& e)
+void DefaultWindow::onCursorActivate(CursorInputEventArgs& e)
 {
     // always call the base class handler
-    Window::onPointerActivate(e);
+    Window::onCursorActivate(e);
     updatePointerEventHandled(e);
 }
 

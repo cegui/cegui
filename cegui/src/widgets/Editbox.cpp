@@ -453,10 +453,10 @@ bool Editbox::performPaste(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onPointerPressHold(CursorInputEventArgs& e)
+void Editbox::onCursorPressHold(CursorInputEventArgs& e)
 {
     // base class handling
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
     {
@@ -480,10 +480,10 @@ void Editbox::onPointerPressHold(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onPointerActivate(CursorInputEventArgs& e)
+void Editbox::onCursorActivate(CursorInputEventArgs& e)
 {
     // base class processing
-    Window::onPointerActivate(e);
+    Window::onCursorActivate(e);
 
     if (e.source == CIS_Left)
     {
@@ -493,10 +493,10 @@ void Editbox::onPointerActivate(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onPointerMove(CursorInputEventArgs& e)
+void Editbox::onCursorMove(CursorInputEventArgs& e)
 {
     // base class processing
-    Window::onPointerMove(e);
+    Window::onCursorMove(e);
 
     if (d_dragging)
     {

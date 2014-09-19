@@ -411,10 +411,10 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_curso
 /*************************************************************************
     Handler for when cursor position changes in widget area (or captured)
 *************************************************************************/
-void ListHeaderSegment::onPointerMove(CursorInputEventArgs& e)
+void ListHeaderSegment::onCursorMove(CursorInputEventArgs& e)
 {
 	// base class processing
-	Window::onPointerMove(e);
+	Window::onCursorMove(e);
 
     // convert cursor position to something local
     const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.position));
@@ -478,10 +478,10 @@ void ListHeaderSegment::onPointerMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for when cursor is pressed
 *************************************************************************/
-void ListHeaderSegment::onPointerPressHold(CursorInputEventArgs& e)
+void ListHeaderSegment::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// base class processing
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
 	{
@@ -516,10 +516,10 @@ void ListHeaderSegment::onPointerPressHold(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for when the cursor is activated
 *************************************************************************/
-void ListHeaderSegment::onPointerActivate(CursorInputEventArgs& e)
+void ListHeaderSegment::onCursorActivate(CursorInputEventArgs& e)
 {
 	// base class processing
-    Window::onPointerActivate(e);
+    Window::onCursorActivate(e);
 
     if (e.source == CIS_Left)
 	{
@@ -546,10 +546,10 @@ void ListHeaderSegment::onPointerActivate(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for when cursor leaves the widget area (uncaptured)
 *************************************************************************/
-void ListHeaderSegment::onPointerLeaves(CursorInputEventArgs& e)
+void ListHeaderSegment::onCursorLeaves(CursorInputEventArgs& e)
 {
 	// base class processing
-    Window::onPointerLeaves(e);
+    Window::onCursorLeaves(e);
 
 	d_splitterHover = false;
 	d_dragSizing = false;

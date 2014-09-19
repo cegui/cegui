@@ -70,7 +70,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void PushButton::onPointerActivate(CursorInputEventArgs& e)
+void PushButton::onCursorActivate(CursorInputEventArgs& e)
 {
     if ((e.source == CIS_Left) && isPushed())
 	{
@@ -92,7 +92,7 @@ void PushButton::onPointerActivate(CursorInputEventArgs& e)
 	}
 
 	// default handling
-    ButtonBase::onPointerActivate(e);
+    ButtonBase::onCursorActivate(e);
 }
 
 void PushButton::onSemanticInputEvent(SemanticEventArgs& e)

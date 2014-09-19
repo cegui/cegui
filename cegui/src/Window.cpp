@@ -1299,7 +1299,7 @@ void Window::generateAutoRepeatEvent(CursorInputSource source)
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = source;
     pa.scroll = 0;
-    onPointerPressHold(pa);
+    onCursorPressHold(pa);
 }
 
 //----------------------------------------------------------------------------//
@@ -2491,7 +2491,7 @@ void Window::onCursorLeavesArea(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerEnters(CursorInputEventArgs& e)
+void Window::onCursorEnters(CursorInputEventArgs& e)
 {
     // set the cursor
     getGUIContext().getCursor().setImage(getCursor());
@@ -2505,7 +2505,7 @@ void Window::onPointerEnters(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerLeaves(CursorInputEventArgs& e)
+void Window::onCursorLeaves(CursorInputEventArgs& e)
 {
     // perform tooltip control
     const Window* const mw = getGUIContext().getWindowContainingPointer();
@@ -2517,7 +2517,7 @@ void Window::onPointerLeaves(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerMove(CursorInputEventArgs& e)
+void Window::onCursorMove(CursorInputEventArgs& e)
 {
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2531,7 +2531,7 @@ void Window::onPointerMove(CursorInputEventArgs& e)
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onPointerMove(e);
+        getParent()->onCursorMove(e);
 
         return;
     }
@@ -2562,7 +2562,7 @@ void Window::onScroll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerPressHold(CursorInputEventArgs& e)
+void Window::onCursorPressHold(CursorInputEventArgs& e)
 {
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2595,7 +2595,7 @@ void Window::onPointerPressHold(CursorInputEventArgs& e)
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onPointerPressHold(e);
+        getParent()->onCursorPressHold(e);
 
         return;
     }
@@ -2606,7 +2606,7 @@ void Window::onPointerPressHold(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerActivate(CursorInputEventArgs& e)
+void Window::onCursorActivate(CursorInputEventArgs& e)
 {
     // reset auto-repeat state
     if (d_autoRepeat && d_repeatPointerSource != CIS_None)
@@ -2622,7 +2622,7 @@ void Window::onPointerActivate(CursorInputEventArgs& e)
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onPointerActivate(e);
+        getParent()->onCursorActivate(e);
 
         return;
     }

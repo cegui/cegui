@@ -178,10 +178,10 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 /*************************************************************************
     Handler for when a cursor is pressed
 *************************************************************************/
-void Slider::onPointerPressHold(CursorInputEventArgs& e)
+void Slider::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// base class processing
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
 	{

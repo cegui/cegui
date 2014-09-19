@@ -370,7 +370,7 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    virtual void    onPointerPressHold(CursorInputEventArgs& e);
+    virtual void    onCursorPressHold(CursorInputEventArgs& e);
     virtual void    onScroll(CursorInputEventArgs& e);
 
 

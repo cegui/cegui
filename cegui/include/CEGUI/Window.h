@@ -2990,7 +2990,7 @@ protected:
     \see
         Window::onCursorEntersArea
     */
-    virtual void onPointerEnters(CursorInputEventArgs& e);
+    virtual void onCursorEnters(CursorInputEventArgs& e);
 
     /*!
     \brief
@@ -3006,7 +3006,7 @@ protected:
     \see
         Window::onCursorLeavesArea
     */
-    virtual void onPointerLeaves(CursorInputEventArgs& e);
+    virtual void onCursorLeaves(CursorInputEventArgs& e);
 
     /*!
     \brief
@@ -3015,7 +3015,7 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onPointerMove(CursorInputEventArgs& e);
+    virtual void onCursorMove(CursorInputEventArgs& e);
 
     /*!
     \brief
@@ -3034,7 +3034,7 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onPointerPressHold(CursorInputEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
 
     /*!
     \brief
@@ -3043,7 +3043,7 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onPointerActivate(CursorInputEventArgs& e);
+    virtual void onCursorActivate(CursorInputEventArgs& e);
 
     /*!
     \brief

@@ -103,10 +103,10 @@ const glm::vec2& Titlebar::getDragPoint() const
 /*************************************************************************
 	Handler for cursor movement events
 *************************************************************************/
-void Titlebar::onPointerMove(CursorInputEventArgs& e)
+void Titlebar::onCursorMove(CursorInputEventArgs& e)
 {
 	// Base class processing.
-	Window::onPointerMove(e);
+	Window::onCursorMove(e);
 
 	if (d_dragging && (d_parent != 0))
 	{
@@ -124,10 +124,10 @@ void Titlebar::onPointerMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void Titlebar::onPointerPressHold(CursorInputEventArgs& e)
+void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// Base class processing
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
 	{
@@ -170,10 +170,10 @@ void Titlebar::onPointerPressHold(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void Titlebar::onPointerActivate(CursorInputEventArgs& e)
+void Titlebar::onCursorActivate(CursorInputEventArgs& e)
 {
 	// Base class processing
-    Window::onPointerActivate(e);
+    Window::onCursorActivate(e);
 
     if (e.source == CIS_Left)
 	{

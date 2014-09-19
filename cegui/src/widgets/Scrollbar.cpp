@@ -212,10 +212,10 @@ void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onPointerPressHold(CursorInputEventArgs& e)
+void Scrollbar::onCursorPressHold(CursorInputEventArgs& e)
 {
     // base class processing
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source != CIS_Left)
         return;
