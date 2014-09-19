@@ -40,7 +40,7 @@ using namespace CEGUI;
 class TreePerformanceTest : public WindowPerformanceTest<TreeView>
 {
 public:
-    TreePerformanceTest(String const& windowType, String const& renderer)
+    TreePerformanceTest(String windowType, String renderer)
         : WindowPerformanceTest<TreeView>(windowType, renderer)
     {
         d_window->setModel(&d_model);

@@ -39,7 +39,7 @@ using namespace CEGUI;
 class ListViewPerformanceTest : public BaseListPerformanceTest<ListView>
 {
 public:
-    ListViewPerformanceTest(String const& windowType, String const& renderer)
+    ListViewPerformanceTest(String windowType, String renderer)
         : BaseListPerformanceTest<ListView>(windowType, renderer)
     {
         d_window->setModel(&d_model);
