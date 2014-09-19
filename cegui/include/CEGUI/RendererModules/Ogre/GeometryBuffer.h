@@ -37,8 +37,7 @@
 #include <OgreTexture.h>
 #include <OgreMatrix4.h>
 
-//#include <glm/core/type.hpp>
-#include <glm/common.hpp>
+#include <glm/core/type.hpp>
 
 #include <utility>
 #include <vector>
