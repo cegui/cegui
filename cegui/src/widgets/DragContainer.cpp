@@ -246,7 +246,7 @@ namespace CEGUI
     {
         Window::onPointerPressHold(e);
 
-        if (e.source == PS_Left)
+        if (e.source == CIS_Left)
         {
             // ensure all inputs come to us for now
             if (captureInput())
@@ -268,7 +268,7 @@ namespace CEGUI
     {
         Window::onPointerActivate(e);
 
-        if (e.source == PS_Left)
+        if (e.source == CIS_Left)
         {
             if (d_dragging)
             {

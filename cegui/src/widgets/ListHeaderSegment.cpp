@@ -483,7 +483,7 @@ void ListHeaderSegment::onPointerPressHold(CursorInputEventArgs& e)
 	// base class processing
     Window::onPointerPressHold(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		// ensure all inputs come to us for now
 		if (captureInput())
@@ -521,7 +521,7 @@ void ListHeaderSegment::onPointerActivate(CursorInputEventArgs& e)
 	// base class processing
     Window::onPointerActivate(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		// if we were pushed and cursor was released (activated) within our segment area
 		if (d_segmentPushed && d_segmentHover)
@@ -565,7 +565,7 @@ void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left &&
+    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left &&
         d_splitterHover)
     {
         WindowEventArgs args(this);

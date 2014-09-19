@@ -295,7 +295,7 @@ protected:
     Window* d_modalWindow;
     Window* d_captureWindow;
 
-    PointersState d_pointersState;
+    CursorsState d_pointersState;
 
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_windowDestroyedEventConnection;

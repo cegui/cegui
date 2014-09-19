@@ -224,18 +224,18 @@ enum MouseButton
     NoButton
 };
 
-static PointerSource convertToPointerSource(MouseButton button)
+static CursorInputSource convertToCursorInputSource(MouseButton button)
 {
     if (button == LeftButton)
-        return PS_Left;
+        return CIS_Left;
 
     if (button == RightButton)
-        return PS_Right;
+        return CIS_Right;
 
     if (button == MiddleButton)
-        return PS_Middle;
+        return CIS_Middle;
 
-    return PS_None;
+    return CIS_None;
 }
 
 /*!
@@ -307,11 +307,17 @@ class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 public:
     CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-    glm::vec2       position;       //!< holds current cursor position.
-    glm::vec2       moveDelta;      //!< holds variation of cursor position from last cursor input
-    PointerSource   source;         //!< one of the PointerSource enumerated values describing the source causing the event
-    float           scroll;         //!< holds the amount of the scroll
-    PointersState   pointerState;   //!< current state (hold: true/false) of cursors sources. Addressable by members of \ref PointerSource
+    //!< holds current cursor position.
+    glm::vec2 position;
+    //!< holds variation of cursor position from last cursor input
+    glm::vec2 moveDelta;
+    // one of the CursorInputSource enumerated values describing the source causing the event
+    CursorInputSource source;
+    // holds the amount of the scroll
+    float scroll;
+
+    // current state (hold: true/false) of cursors sources. Addressable by members of \ref CursorInputSource
+    CursorsState pointerState;
 };
 
 /*!

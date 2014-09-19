@@ -88,7 +88,7 @@ CursorInputEventArgs createPointerEventArgs(float x, float y, TreeView* view)
 {
     CursorInputEventArgs args(view);
 
-    args.source = PS_Left;
+    args.source = CIS_Left;
     args.position = glm::vec2(x, y);
 
     return args;

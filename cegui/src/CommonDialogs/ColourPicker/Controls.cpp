@@ -1138,7 +1138,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 {
     const CursorInputEventArgs& pointerArgs = static_cast<const CursorInputEventArgs&>(args);
 
-    if (pointerArgs.source == PS_Left)
+    if (pointerArgs.source == CIS_Left)
         d_draggingColourPickerIndicator = false;
 
     return true;
@@ -1150,7 +1150,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
 {
     const CursorInputEventArgs& pointerArgs = static_cast<const CursorInputEventArgs&>(args);
 
-    if (pointerArgs.source == PS_Left)
+    if (pointerArgs.source == CIS_Left)
     {
         d_draggingColourPickerIndicator = true;
 

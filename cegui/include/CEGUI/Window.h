@@ -3234,7 +3234,7 @@ protected:
     /*!
     \brief
     */
-    void generateAutoRepeatEvent(PointerSource source);
+    void generateAutoRepeatEvent(CursorInputSource source);
 
     /*!
     \brief
@@ -3567,7 +3567,7 @@ protected:
     //! seconds between further repeats after delay has expired.
     float d_repeatRate;
     //! Cursor source we're tracking for auto-repeat purposes.
-    PointerSource d_repeatPointerSource;
+    CursorInputSource d_repeatPointerSource;
     //! implements repeating - is true after delay has elapsed,
     bool d_repeating;
     //! implements repeating - tracks time elapsed.

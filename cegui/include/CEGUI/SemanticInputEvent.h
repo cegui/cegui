@@ -44,39 +44,39 @@ namespace CEGUI
 \brief
     Represents the source of an event that uses the cursor.
 */
-enum PointerSource
+enum CursorInputSource
 {
-    PS_None,        //!< No specific cursor source
-    PS_Left,        //!< Left cursor source
-    PS_Right,       //!< Right cursor source
-    PS_Middle,      //!< Middle cursor source
+    CIS_None,        //!< No specific cursor source
+    CIS_Left,        //!< Left cursor source
+    CIS_Right,       //!< Right cursor source
+    CIS_Middle,      //!< Middle cursor source
 };
 
 /*!
 \brief
-    Holds the state of the cursors (hold or not)
+    Holds the state of the cursors (held or not)
 */
-class PointersState
+class CursorsState
 {
 public:
-    PointersState() :
+    CursorsState() :
         d_state(0)
     {
     }
 
     uint get() const { return d_state; }
 
-    bool isHeld(PointerSource source)
+    bool isHeld(CursorInputSource source)
     {
         return (d_state & (1 << source)) != 0;
     }
 
-    void pointerHold(PointerSource source)
+    void pointerHold(CursorInputSource source)
     {
         d_state |= (1 << source);
     }
 
-    void pointerDeactivated(PointerSource source)
+    void pointerDeactivated(CursorInputSource source)
     {
         d_state &= ~(1 << source);
     }
@@ -159,7 +159,7 @@ union SemanticPayload
 {
     float array[2];
     float single;
-    PointerSource source;
+    CursorInputSource source;
 };
 
 /*!

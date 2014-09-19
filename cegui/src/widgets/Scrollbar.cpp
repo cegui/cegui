@@ -217,7 +217,7 @@ void Scrollbar::onPointerPressHold(CursorInputEventArgs& e)
     // base class processing
     Window::onPointerPressHold(e);
 
-    if (e.source != PS_Left)
+    if (e.source != CIS_Left)
         return;
 
     const float adj = getAdjustDirectionFromPoint(e.position);
@@ -255,7 +255,7 @@ bool Scrollbar::handleThumbMoved(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
-    if (((const CursorInputEventArgs&)e).source != PS_Left)
+    if (((const CursorInputEventArgs&)e).source != CIS_Left)
         return false;
 
     scrollForwardsByStep();
@@ -265,7 +265,7 @@ bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
-    if (((const CursorInputEventArgs&)e).source != PS_Left)
+    if (((const CursorInputEventArgs&)e).source != CIS_Left)
         return false;
 
     scrollBackwardsByStep();

@@ -381,7 +381,7 @@ bool ItemView::onScrollPositionChanged(const EventArgs& args)
 //----------------------------------------------------------------------------//
 void ItemView::onPointerPressHold(CursorInputEventArgs& e)
 {
-    if (e.source != PS_Left)
+    if (e.source != CIS_Left)
         return;
 
     handleSelection(e.position, true, false, false);

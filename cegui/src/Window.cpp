@@ -238,7 +238,7 @@ Window::Window(const String& type, const String& name):
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
     d_repeatRate(0.06f),
-    d_repeatPointerSource(PS_None),
+    d_repeatPointerSource(CIS_None),
     d_repeating(false),
     d_repeatElapsed(0.0f),
 
@@ -1291,7 +1291,7 @@ void Window::setDestroyedByParent(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::generateAutoRepeatEvent(PointerSource source)
+void Window::generateAutoRepeatEvent(CursorInputSource source)
 {
     CursorInputEventArgs pa(this);
     pa.position = getUnprojectedPosition(
@@ -1506,7 +1506,7 @@ void Window::setCursorAutoRepeatEnabled(bool setting)
         return;
 
     d_autoRepeat = setting;
-    d_repeatPointerSource = PS_None;
+    d_repeatPointerSource = CIS_None;
 
     // FIXME: There is a potential issue here if this setting is
     // FIXME: changed _while_ the cursor is auto-repeating, and
@@ -1561,7 +1561,7 @@ void Window::update(float elapsed)
 void Window::updateSelf(float elapsed)
 {
     // cursor autorepeat processing.
-    if (d_autoRepeat && d_repeatPointerSource != PS_None)
+    if (d_autoRepeat && d_repeatPointerSource != CIS_None)
     {
         d_repeatElapsed += elapsed;
 
@@ -2359,7 +2359,7 @@ void Window::onCaptureGained(WindowEventArgs& e)
 void Window::onCaptureLost(WindowEventArgs& e)
 {
     // reset auto-repeat state
-    d_repeatPointerSource = PS_None;
+    d_repeatPointerSource = CIS_None;
 
     // handle restore of previous capture window as required.
     if (d_restoreOldCapture && (d_oldCapture != 0)) {
@@ -2569,7 +2569,7 @@ void Window::onPointerPressHold(CursorInputEventArgs& e)
     if (tip)
         tip->setTargetWindow(0);
 
-    if ((e.source == PS_Left) && moveToFront_impl(true))
+    if ((e.source == CIS_Left) && moveToFront_impl(true))
         ++e.handled;
 
     // if auto repeat is enabled and we are not currently tracking
@@ -2577,7 +2577,7 @@ void Window::onPointerPressHold(CursorInputEventArgs& e)
     // it could be us that generated this event via auto-repeat).
     if (d_autoRepeat)
     {
-        if (d_repeatPointerSource == PS_None)
+        if (d_repeatPointerSource == CIS_None)
             captureInput();
 
         if ((d_repeatPointerSource != e.source) && isCapturedByThis())
@@ -2609,10 +2609,10 @@ void Window::onPointerPressHold(CursorInputEventArgs& e)
 void Window::onPointerActivate(CursorInputEventArgs& e)
 {
     // reset auto-repeat state
-    if (d_autoRepeat && d_repeatPointerSource != PS_None)
+    if (d_autoRepeat && d_repeatPointerSource != CIS_None)
     {
         releaseInput();
-        d_repeatPointerSource = PS_None;
+        d_repeatPointerSource = CIS_None;
     }
 
     fireEvent(EventPointerActivate, e, EventNamespace);

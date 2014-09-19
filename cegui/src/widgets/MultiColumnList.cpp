@@ -1925,7 +1925,7 @@ void MultiColumnList::onPointerPressHold(CursorInputEventArgs& e)
     // base class processing
     Window::onPointerPressHold(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
     {
         const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
         handleSelection(local_point, false, false);
