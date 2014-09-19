@@ -110,8 +110,6 @@ protected:
 
 #ifdef __ANDROID__
     void android_init();
-public:
-    void android_init2();
 #endif
 };
 
