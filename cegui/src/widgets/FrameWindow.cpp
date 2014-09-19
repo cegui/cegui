@@ -623,10 +623,10 @@ void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 	{
 		if (isSizingEnabled())
 		{
-            // get position of pointer as co-ordinates local to this window.
+            // get position of cursor as co-ordinates local to this window.
             const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
-            // if the pointer is on the sizing border
+            // if the cursor is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)
 			{
 				// ensure all inputs come to us for now

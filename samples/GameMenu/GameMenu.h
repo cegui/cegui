@@ -121,7 +121,7 @@ protected:
     bool d_interactivePlanetElementsAreEnabled;
     bool d_navigationIsEnabled;
     bool d_loginWasAccepted;
-    bool d_pointerIsHoveringNavi;
+    bool d_cursorIsHoveringNavi;
     bool d_startButtonClicked;
 
     WriteFocus d_currentWriteFocus;

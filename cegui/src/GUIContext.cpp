@@ -830,7 +830,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
     pa.source = PS_None;
     pa.pointerState = d_pointersState;
 
-    // move pointer cursor to new position
+    // move cursor to new position
     d_cursor.setPosition(new_position);
     // update position in args (since actual position may be constrained)
     pa.position = d_cursor.getPosition();

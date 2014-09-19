@@ -280,7 +280,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     return true;
 }
 /************************************************************************
-Handle click on a mine button (any pointer source)
+Handle click on a mine button (any cursor source)
 ************************************************************************/
 bool MinesweeperSample::handleMinePointerPressHold(const CEGUI::EventArgs& event)
 {

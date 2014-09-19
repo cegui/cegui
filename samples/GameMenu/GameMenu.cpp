@@ -90,7 +90,7 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
     d_interactivePlanetElementsAreEnabled = false;
     d_navigationIsEnabled = false;
     d_loginWasAccepted = false;
-    d_pointerIsHoveringNavi = false;
+    d_cursorIsHoveringNavi = false;
 
     d_currentWriteFocus = WF_BotBar;
 
@@ -362,26 +362,26 @@ bool GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::Even
     if(!d_loginWasAccepted)
         return false;
 
-    bool pointerIsHovering = false;
+    bool curcursor_is_hovering = false;
     CEGUI::Window* window;
 
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationLabel");
-    pointerIsHovering |= window->isPointerContainedInArea();
+    curcursor_is_hovering |= window->isPointerContainedInArea();
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");
-    pointerIsHovering |= window->isPointerContainedInArea();
+    curcursor_is_hovering |= window->isPointerContainedInArea();
     window = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NaviBotSelectionIcon");
-    pointerIsHovering |= window->isPointerContainedInArea();
-    pointerIsHovering |= d_botNaviRightArrowArea->isPointerContainedInArea();
-    pointerIsHovering |= d_botNaviLeftArrowArea->isPointerContainedInArea();
+    curcursor_is_hovering |= window->isPointerContainedInArea();
+    curcursor_is_hovering |= d_botNaviRightArrowArea->isPointerContainedInArea();
+    curcursor_is_hovering |= d_botNaviLeftArrowArea->isPointerContainedInArea();
 
-    //We fire an event to trigger the animation depending on if the pointer hovers a critical
+    //We fire an event to trigger the animation depending on if the cursor hovers a critical
     //window or not. Additionally we perform a check to not fire an event for an animation that is already running
-    if(d_pointerIsHoveringNavi != pointerIsHovering)
+    if(d_cursorIsHoveringNavi != curcursor_is_hovering)
     {
-        d_pointerIsHoveringNavi = pointerIsHovering;
+        d_cursorIsHoveringNavi = curcursor_is_hovering;
         CEGUI::EventArgs args;
 
-        if(pointerIsHovering)
+        if(curcursor_is_hovering)
         {
             d_navigationSelectionIcon->fireEvent("StartRotate", args);
             d_navigationTravelIcon->fireEvent("StartRotate", args);

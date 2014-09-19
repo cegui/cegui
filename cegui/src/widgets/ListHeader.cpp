@@ -911,8 +911,8 @@ bool ListHeader::segmentMovedHandler(const EventArgs& e)
 	// segment must be dropped within the window
     if (isHit(cursor_pos))
 	{
-        // get pointer position as something local
-        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, cursor_pos));
+        // get cursor position as something local
+        const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, cursor_pos));
 
 		// set up to allow for current offsets
 		float currwidth = -d_segmentOffset;
@@ -923,7 +923,7 @@ bool ListHeader::segmentMovedHandler(const EventArgs& e)
 		{
 			currwidth += d_segments[col]->getPixelSize().d_width;
 
-            if (localPointerPos.x < currwidth)
+            if (local_cursor_pos.x < currwidth)
 			{
 				// this is the column, exit loop early
 				break;
@@ -1004,19 +1004,19 @@ bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 
 
 /*************************************************************************
-    Handler called whenever the pointer moves while dragging a segment
+    Handler called whenever the cursor moves while dragging a segment
 *************************************************************************/
 bool ListHeader::segmentDragHandler(const EventArgs&)
 {
     // what we do here is monitor the position and scroll if we can when cursor is outside area.
 
-    // get pointer position as something local
-    const glm::vec2 local_cursor_Pos(CoordConverter::screenToWindow(*this,
+    // get cursor position as something local
+    const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this,
         getUnprojectedPosition(getGUIContext().
             getCursor().getPosition())));
 
 	// scroll left?
-    if (local_cursor_Pos.x < 0.0f)
+    if (local_cursor_pos.x < 0.0f)
 	{
 		if (d_segmentOffset > 0.0f)
 		{
@@ -1024,7 +1024,7 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 		}
 	}
 	// scroll right?
-    else if (local_cursor_Pos.x >= d_pixelSize.d_width)
+    else if (local_cursor_pos.x >= d_pixelSize.d_width)
 	{
 		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
 

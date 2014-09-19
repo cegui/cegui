@@ -43,7 +43,7 @@ struct InputInjectionFixture
         d_inputAggregator(new InputAggregator(d_guiContext))
     {
         d_inputAggregator->initialise();
-        // reset the pointer to (0,0)
+        // reset the cursor to (0,0)
         d_guiContext->getCursor().setPosition(glm::vec2(0, 0));
 
         System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));

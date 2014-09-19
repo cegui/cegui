@@ -535,8 +535,8 @@ public:
         return true if this is the active Window.  An active window is a window
         that may receive user inputs.
 
-        Pointer events are always sent to the window containing the pointer
-        indicator regardless of what this function reports (unless a window has
+        Cursor events are always sent to the window containing the cursor
+        regardless of what this function reports (unless a window has
         captured inputs). The active state mainly determines where send other,
         for example keyboard inputs.
 
