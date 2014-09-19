@@ -355,7 +355,7 @@ void RestaurantGameSample::updateScoreWindow()
 
 bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& args)
 {
-    const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
+    const CEGUI::CursorInputEventArgs& pointerArgs = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
     for(unsigned int i = 0; i < d_gamePlates.size(); ++i)
     {

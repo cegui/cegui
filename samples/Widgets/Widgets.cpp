@@ -82,7 +82,7 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF']";
     logMessage += CEGUI::String(" (");
 
-    if(dynamic_cast<const CEGUI::PointerEventArgs*>(&args))
+    if(dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
     {
         logMessage += "PointerEvent";
     }

@@ -212,7 +212,7 @@ void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onPointerPressHold(PointerEventArgs& e)
+void Scrollbar::onPointerPressHold(CursorInputEventArgs& e)
 {
     // base class processing
     Window::onPointerPressHold(e);
@@ -231,7 +231,7 @@ void Scrollbar::onPointerPressHold(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onScroll(PointerEventArgs& e)
+void Scrollbar::onScroll(CursorInputEventArgs& e)
 {
     // base class processing
     Window::onScroll(e);
@@ -255,7 +255,7 @@ bool Scrollbar::handleThumbMoved(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
-    if (((const PointerEventArgs&)e).source != PS_Left)
+    if (((const CursorInputEventArgs&)e).source != PS_Left)
         return false;
 
     scrollForwardsByStep();
@@ -265,7 +265,7 @@ bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
-    if (((const PointerEventArgs&)e).source != PS_Left)
+    if (((const CursorInputEventArgs&)e).source != PS_Left)
         return false;
 
     scrollBackwardsByStep();

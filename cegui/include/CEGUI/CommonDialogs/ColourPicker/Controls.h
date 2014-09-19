@@ -204,7 +204,7 @@ protected:
     void onColourIndicatorPositionChanged();
     void onColourSliderChanged();
 
-    void refreshColourPickerIndicatorPosition(const PointerEventArgs& pointerEventArgs);
+    void refreshColourPickerIndicatorPosition(const CursorInputEventArgs& pointerEventArgs);
     void refreshAlpha();
 
     void refreshOnlyColourSliderImage();

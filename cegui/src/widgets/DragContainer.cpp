@@ -242,7 +242,7 @@ namespace CEGUI
             setImage(d_dragging ? getDragIndicatorImage() : getCursor());
     }
 
-    void DragContainer::onPointerPressHold(PointerEventArgs& e)
+    void DragContainer::onPointerPressHold(CursorInputEventArgs& e)
     {
         Window::onPointerPressHold(e);
 
@@ -264,7 +264,7 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::onPointerActivate(PointerEventArgs& e)
+    void DragContainer::onPointerActivate(CursorInputEventArgs& e)
     {
         Window::onPointerActivate(e);
 
@@ -295,7 +295,7 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::onPointerMove(PointerEventArgs& e)
+    void DragContainer::onPointerMove(CursorInputEventArgs& e)
     {
         Window::onPointerMove(e);
 

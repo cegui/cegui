@@ -177,7 +177,7 @@ void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor movement events
 *************************************************************************/
-void Thumb::onPointerMove(PointerEventArgs& e)
+void Thumb::onPointerMove(CursorInputEventArgs& e)
 {
 	// default processing
 	PushButton::onPointerMove(e);
@@ -241,7 +241,7 @@ void Thumb::onPointerMove(PointerEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void Thumb::onPointerPressHold(PointerEventArgs& e)
+void Thumb::onPointerPressHold(CursorInputEventArgs& e)
 {
 	// default processing
     PushButton::onPointerPressHold(e);

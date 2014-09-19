@@ -168,9 +168,9 @@ protected:
 	/*************************************************************************
 		Overridden Event handling
 	*************************************************************************/
-	virtual void	onPointerMove(PointerEventArgs& e);
-    virtual void    onPointerPressHold(PointerEventArgs& e);
-    virtual void    onPointerActivate(PointerEventArgs& e);
+    virtual void    onPointerMove(CursorInputEventArgs& e);
+    virtual void    onPointerPressHold(CursorInputEventArgs& e);
+    virtual void    onPointerActivate(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
     virtual void    onViewContentsChanged(WindowEventArgs& e);
     virtual void    onSelectionChanged(ItemViewEventArgs& e);

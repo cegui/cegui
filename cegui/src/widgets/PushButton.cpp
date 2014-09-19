@@ -70,7 +70,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void PushButton::onPointerActivate(PointerEventArgs& e)
+void PushButton::onPointerActivate(CursorInputEventArgs& e)
 {
     if ((e.source == PS_Left) && isPushed())
 	{

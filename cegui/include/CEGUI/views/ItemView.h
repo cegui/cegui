@@ -401,9 +401,9 @@ protected:
     virtual void onSortModeChanged(WindowEventArgs& args);
     virtual void onViewContentsChanged(WindowEventArgs& args);
 
-    virtual void onScroll(PointerEventArgs& e);
-    virtual void onPointerPressHold(PointerEventArgs& e);
-    virtual void onPointerMove(PointerEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
+    virtual void onPointerPressHold(CursorInputEventArgs& e);
+    virtual void onPointerMove(CursorInputEventArgs& e);
     virtual void onSemanticInputEvent(SemanticEventArgs& e);
     virtual void onParentSized(ElementEventArgs& e);
 

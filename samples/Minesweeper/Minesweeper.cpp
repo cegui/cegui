@@ -284,7 +284,7 @@ Handle click on a mine button (any cursor source)
 ************************************************************************/
 bool MinesweeperSample::handleMinePointerPressHold(const CEGUI::EventArgs& event)
 {
-    const CEGUI::PointerEventArgs& me = static_cast<const CEGUI::PointerEventArgs&>(event);
+    const CEGUI::CursorInputEventArgs& me = static_cast<const CEGUI::CursorInputEventArgs&>(event);
     if (me.source == CEGUI::PS_Right)
     {
         CEGUI::Window* button = me.window;

@@ -553,7 +553,7 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor move events
 *************************************************************************/
-void FrameWindow::onPointerMove(PointerEventArgs& e)
+void FrameWindow::onPointerMove(CursorInputEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
 	Window::onPointerMove(e);
@@ -614,7 +614,7 @@ void FrameWindow::onPointerMove(PointerEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void FrameWindow::onPointerPressHold(PointerEventArgs& e)
+void FrameWindow::onPointerPressHold(CursorInputEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
     Window::onPointerPressHold(e);
@@ -651,7 +651,7 @@ void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void FrameWindow::onPointerActivate(PointerEventArgs& e)
+void FrameWindow::onPointerActivate(CursorInputEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
     Window::onPointerActivate(e);

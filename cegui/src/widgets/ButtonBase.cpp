@@ -79,7 +79,7 @@ bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
 /*************************************************************************
 	Handler for when the cursor moves
 *************************************************************************/
-void ButtonBase::onPointerMove(PointerEventArgs& e)
+void ButtonBase::onPointerMove(CursorInputEventArgs& e)
 {
     // this is needed to discover whether cursor is in the widget area or not.
 	// The same thing used to be done each frame in the rendering method,
@@ -98,7 +98,7 @@ void ButtonBase::onPointerMove(PointerEventArgs& e)
 /*************************************************************************
 	Handler for cursor press hold events
 *************************************************************************/
-void ButtonBase::onPointerPressHold(PointerEventArgs& e)
+void ButtonBase::onPointerPressHold(CursorInputEventArgs& e)
 {
 	// default processing
     Window::onPointerPressHold(e);
@@ -134,7 +134,7 @@ void ButtonBase::setPushedState(const bool pushed)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void ButtonBase::onPointerActivate(PointerEventArgs& e)
+void ButtonBase::onPointerActivate(CursorInputEventArgs& e)
 {
 	// default processing
     Window::onPointerActivate(e);
@@ -169,7 +169,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
     Handler for when cursor leaves the widget
 *************************************************************************/
-void ButtonBase::onPointerLeaves(PointerEventArgs& e)
+void ButtonBase::onPointerLeaves(CursorInputEventArgs& e)
 {
     // default processing
     Window::onPointerLeaves(e);

@@ -322,7 +322,7 @@ namespace CEGUI
         ************************************************************************/
         void updateSelf(float elapsed);
         void onHidden(WindowEventArgs& e);
-        void onPointerEnters(PointerEventArgs& e);
+        void onPointerEnters(CursorInputEventArgs& e);
         void onTextChanged(WindowEventArgs& e);
 
         /************************************************************************

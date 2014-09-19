@@ -49,7 +49,7 @@ DefaultWindow::DefaultWindow(const String& type, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onPointerMove(PointerEventArgs& e)
+void DefaultWindow::onPointerMove(CursorInputEventArgs& e)
 {
     // always call the base class handler
     Window::onPointerMove(e);
@@ -57,7 +57,7 @@ void DefaultWindow::onPointerMove(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onScroll(PointerEventArgs& e)
+void DefaultWindow::onScroll(CursorInputEventArgs& e)
 {
     // always call the base class handler
     Window::onScroll(e);
@@ -65,7 +65,7 @@ void DefaultWindow::onScroll(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onPointerPressHold(PointerEventArgs& e)
+void DefaultWindow::onPointerPressHold(CursorInputEventArgs& e)
 {
     // always call the base class handler
     Window::onPointerPressHold(e);
@@ -73,7 +73,7 @@ void DefaultWindow::onPointerPressHold(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onPointerActivate(PointerEventArgs& e)
+void DefaultWindow::onPointerActivate(CursorInputEventArgs& e)
 {
     // always call the base class handler
     Window::onPointerActivate(e);
@@ -81,7 +81,7 @@ void DefaultWindow::onPointerActivate(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::updatePointerEventHandled(PointerEventArgs& e) const
+void DefaultWindow::updatePointerEventHandled(CursorInputEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
     // we do /not/ mark cursor events as handled.

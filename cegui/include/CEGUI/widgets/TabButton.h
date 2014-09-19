@@ -58,12 +58,12 @@ public:
 	static const String EventClicked;
     /** Event fired when use user attempts to drag the button with middle cursor
      * source.
-     * Handlers are passed a const PointerEventArgs reference with all fields
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
 	static const String EventDragged;
     /** Event fired when a scroll action is executed on top of the button.
-     * Handlers are passed a const PointerEventArgs reference with all fields
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
 	static const String EventScrolled;
@@ -130,10 +130,10 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    virtual void onPointerActivate(PointerEventArgs& e);
-    virtual void onPointerPressHold(PointerEventArgs& e);
-    virtual void onScroll(PointerEventArgs& e);
-    virtual void onPointerMove(PointerEventArgs& e);
+    virtual void onPointerActivate(CursorInputEventArgs& e);
+    virtual void onPointerPressHold(CursorInputEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
+    virtual void onPointerMove(CursorInputEventArgs& e);
 };
 
 

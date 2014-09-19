@@ -1,4 +1,4 @@
-/***********************************************************************
+﻿/***********************************************************************
 created:    31/7/2012
 author:     Lukas E Meindl
 *************************************************************************/
@@ -544,7 +544,7 @@ bool GameMenuSample::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& ar
 
 bool GameMenuSample::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args)
 {
-    const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
+    const CEGUI::CursorInputEventArgs& pointerArgs = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
     CEGUI::Window* iconWindow = getIconWindowFromLabel(pointerArgs.window);
 
@@ -556,7 +556,7 @@ bool GameMenuSample::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args
 
 bool GameMenuSample::handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args)
 {
-    const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
+    const CEGUI::CursorInputEventArgs& pointerArgs = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
     CEGUI::Window* iconWindow = getIconWindowFromLabel(pointerArgs.window);
 

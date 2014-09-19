@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	30/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to the Multi-lien edit box base class.
 *************************************************************************/
 /***************************************************************************
@@ -221,7 +221,7 @@ public:
 	*/
 	size_t	getSelectionEndIndex(void) const;
 
-	
+
 	/*!
 	\brief
 		return the length of the current selection (in code points / characters).
@@ -370,7 +370,7 @@ public:
 		Nothing.
 	*/
 	void	setSelection(size_t start_pos, size_t end_pos);
-	
+
 
     /*!
     \brief
@@ -446,13 +446,13 @@ public:
     // selection brush image property support
     void setSelectionBrushImage(const Image* image);
     const Image* getSelectionBrushImage() const;
-    
+
     //! \copydoc Window::performCopy
     virtual bool performCopy(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performCut
     virtual bool performCut(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
 
@@ -460,7 +460,7 @@ public:
     \brief
         Format the text into lines as dictated by the formatting options.
 
-    \param update_scrollbars 
+    \param update_scrollbars
         - true if scrollbar configuration should be performed.
         - false if scrollbar configuration should not be performed.
     */
@@ -514,7 +514,7 @@ protected:
 
 	\note
 		Any single whitespace character is one token, any group of other characters is a token.
-	
+
 	\return
 		The code point length of the token.
 	*/
@@ -772,14 +772,14 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    virtual	void onPointerPressHold(PointerEventArgs& e);
-    virtual void onPointerActivate(PointerEventArgs& e);
-    virtual void onPointerMove(PointerEventArgs& e);
+    virtual void onPointerPressHold(CursorInputEventArgs& e);
+    virtual void onPointerActivate(CursorInputEventArgs& e);
+    virtual void onPointerMove(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void onCharacter(TextEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 	virtual void	onSized(ElementEventArgs& e);
-    virtual void onScroll(PointerEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
     virtual void onFontChanged(WindowEventArgs& e);
 
     virtual void onSemanticInputEvent(SemanticEventArgs& e);

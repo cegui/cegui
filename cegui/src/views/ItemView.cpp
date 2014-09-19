@@ -379,7 +379,7 @@ bool ItemView::onScrollPositionChanged(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onPointerPressHold(PointerEventArgs& e)
+void ItemView::onPointerPressHold(CursorInputEventArgs& e)
 {
     if (e.source != PS_Left)
         return;
@@ -391,7 +391,7 @@ void ItemView::onPointerPressHold(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onPointerMove(PointerEventArgs& e)
+void ItemView::onPointerMove(CursorInputEventArgs& e)
 {
     if (d_isItemTooltipsEnabled)
         setupTooltip(e.position);
@@ -642,7 +642,7 @@ void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onScroll(PointerEventArgs& e)
+void ItemView::onScroll(CursorInputEventArgs& e)
 {
     handleOnScroll(getVertScrollbar(), e.scroll);
 

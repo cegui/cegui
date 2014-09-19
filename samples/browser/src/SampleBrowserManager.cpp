@@ -124,7 +124,7 @@ bool SampleBrowserManager::handlePointerActivateSampleWindow(const CEGUI::EventA
 
 bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs& args)
 {
-    const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
+    const CursorInputEventArgs& pointerArgs(static_cast<const CursorInputEventArgs&>(args));
 
     CEGUI::Window* wnd(pointerArgs.window);
 
@@ -167,7 +167,7 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
 
 bool SampleBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
 {
-    const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
+    const CursorInputEventArgs& pointerArgs(static_cast<const CursorInputEventArgs&>(args));
 
     CEGUI::Window* wnd(pointerArgs.window);
     wnd->setCursor("SampleBrowserSkin/MouseArrow");

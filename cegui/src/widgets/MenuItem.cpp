@@ -370,7 +370,7 @@ void MenuItem::onClicked(WindowEventArgs& e)
 /*************************************************************************
     Handler for when the cursor moves
 *************************************************************************/
-void MenuItem::onPointerMove(PointerEventArgs& e)
+void MenuItem::onPointerMove(CursorInputEventArgs& e)
 {
     // this is needed to discover whether cursor is in the widget area or not.
     // The same thing used to be done each frame in the rendering method,
@@ -389,7 +389,7 @@ void MenuItem::onPointerMove(PointerEventArgs& e)
 /*************************************************************************
     Handler for cursor pressed events
 *************************************************************************/
-void MenuItem::onPointerPressHold(PointerEventArgs& e)
+void MenuItem::onPointerPressHold(CursorInputEventArgs& e)
 {
     // default processing
     ItemEntry::onPointerPressHold(e);
@@ -415,7 +415,7 @@ void MenuItem::onPointerPressHold(PointerEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void MenuItem::onPointerActivate(PointerEventArgs& e)
+void MenuItem::onPointerActivate(CursorInputEventArgs& e)
 {
     // default processing
     ItemEntry::onPointerActivate(e);
@@ -460,7 +460,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
     Handler for when cursor leaves the widget
 *************************************************************************/
-void MenuItem::onPointerLeaves(PointerEventArgs& e)
+void MenuItem::onPointerLeaves(CursorInputEventArgs& e)
 {
     // default processing
     ItemEntry::onPointerLeaves(e);

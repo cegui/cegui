@@ -178,7 +178,7 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 /*************************************************************************
     Handler for when a cursor is pressed
 *************************************************************************/
-void Slider::onPointerPressHold(PointerEventArgs& e)
+void Slider::onPointerPressHold(CursorInputEventArgs& e)
 {
 	// base class processing
     Window::onPointerPressHold(e);
@@ -201,7 +201,7 @@ void Slider::onPointerPressHold(PointerEventArgs& e)
 /*************************************************************************
 	Handler for scroll wheel changes
 *************************************************************************/
-void Slider::onScroll(PointerEventArgs& e)
+void Slider::onScroll(CursorInputEventArgs& e)
 {
 	// base class processing
 	Window::onScroll(e);

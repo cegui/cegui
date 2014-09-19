@@ -751,7 +751,7 @@ bool TabControl::handleScrollPane(const EventArgs& e)
 
 bool TabControl::handleDraggedPane(const EventArgs& e)
 {
-    const PointerEventArgs& pe = static_cast<const PointerEventArgs&>(e);
+    const CursorInputEventArgs& pe = static_cast<const CursorInputEventArgs&>(e);
 
     if (pe.source == PS_Middle)
     {
@@ -781,7 +781,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 
 bool TabControl::handleWheeledPane(const EventArgs& e)
 {
-    const PointerEventArgs& me = static_cast<const PointerEventArgs&>(e);
+    const CursorInputEventArgs& me = static_cast<const CursorInputEventArgs&>(e);
 
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;

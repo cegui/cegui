@@ -485,7 +485,7 @@ void ScrollablePane::onSized(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onScroll(PointerEventArgs& e)
+void ScrollablePane::onScroll(CursorInputEventArgs& e)
 {
     // base class processing.
     Window::onScroll(e);

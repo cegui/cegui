@@ -77,16 +77,16 @@ public:
 
 protected:
     //! helper to update cursor input handled state
-    void updatePointerEventHandled(PointerEventArgs& e) const;
+    void updatePointerEventHandled(CursorInputEventArgs& e) const;
 
     // overridden functions from Window base class
     bool moveToFront_impl(bool wasClicked);
 
     // override the cursor event handlers
-    void onPointerMove(PointerEventArgs& e);
-    void onScroll(PointerEventArgs& e);
-    void onPointerPressHold(PointerEventArgs& e);
-    void onPointerActivate(PointerEventArgs& e);
+    void onPointerMove(CursorInputEventArgs& e);
+    void onScroll(CursorInputEventArgs& e);
+    void onPointerPressHold(CursorInputEventArgs& e);
+    void onPointerActivate(CursorInputEventArgs& e);
 
     void onSemanticInputEvent(SemanticEventArgs& e);
 };

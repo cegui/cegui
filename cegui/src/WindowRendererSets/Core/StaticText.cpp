@@ -406,7 +406,7 @@ namespace CEGUI
     *************************************************************************/
     bool FalagardStaticText::onScroll(const EventArgs& event)
     {
-        const PointerEventArgs& e = static_cast<const PointerEventArgs&>(event);
+        const CursorInputEventArgs& e = static_cast<const CursorInputEventArgs&>(event);
 
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();

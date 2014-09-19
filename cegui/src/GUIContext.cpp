@@ -349,7 +349,7 @@ void GUIContext::updateWindowContainingPointer()
 //----------------------------------------------------------------------------//
 bool GUIContext::updateWindowContainingPointer_impl() const
 {
-    PointerEventArgs pa(0);
+    CursorInputEventArgs pa(0);
     const glm::vec2 cursor_pos(d_cursor.getPosition());
 
     Window* const curr_wnd_with_pointer = getTargetWindow(cursor_pos, true);
@@ -419,8 +419,8 @@ Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const
 
 //----------------------------------------------------------------------------//
 void GUIContext::notifyPointerTransition(Window* top, Window* bottom,
-                                    void (Window::*func)(PointerEventArgs&),
-                                    PointerEventArgs& args) const
+                                    void (Window::*func)(CursorInputEventArgs&),
+                                    CursorInputEventArgs& args) const
 {
     if (top == bottom)
         return;
@@ -729,7 +729,7 @@ void GUIContext::deleteSemanticEventHandlers()
 //----------------------------------------------------------------------------//
 bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 {
-    PointerEventArgs pa(0);
+    CursorInputEventArgs pa(0);
     pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = event.d_payload.source;
@@ -753,7 +753,7 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
 {
-    PointerEventArgs pa(0);
+    CursorInputEventArgs pa(0);
     pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = event.d_payload.source;
@@ -773,7 +773,7 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
-    PointerEventArgs pa(0);
+    CursorInputEventArgs pa(0);
     pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
     pa.source = PS_None;
@@ -792,7 +792,7 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handlePointerMove_impl(PointerEventArgs& pa)
+bool GUIContext::handlePointerMove_impl(CursorInputEventArgs& pa)
 {
     updateWindowContainingPointer();
 
@@ -819,7 +819,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
         event.d_payload.array[1]);
 
     // setup cursor movement event args object.
-    PointerEventArgs pa(0);
+    CursorInputEventArgs pa(0);
     pa.moveDelta = new_position - d_cursor.getPosition();
 
     // no movement means no event
@@ -844,7 +844,7 @@ bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
     if (!getWindowContainingPointer())
         return false;
 
-    PointerEventArgs pa(0);
+    CursorInputEventArgs pa(0);
     pa.position = getWindowContainingPointer()->getUnprojectedPosition(
         d_cursor.getPosition());
     pa.moveDelta = glm::vec2(0, 0);

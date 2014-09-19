@@ -243,8 +243,8 @@ protected:
     Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]
     void notifyPointerTransition(Window* top, Window* bottom,
-                               void (Window::*func)(PointerEventArgs&),
-                               PointerEventArgs& args) const;
+                               void (Window::*func)(CursorInputEventArgs&),
+                               CursorInputEventArgs& args) const;
 
     bool areaChangedHandler(const EventArgs& args);
     bool windowDestroyedHandler(const EventArgs& args);
@@ -272,7 +272,7 @@ protected:
     bool handlePasteRequest(const SemanticInputEvent& event);
     bool handleScrollEvent(const SemanticInputEvent& event);
     bool handlePointerMoveEvent(const SemanticInputEvent& event);
-    bool handlePointerMove_impl(PointerEventArgs& pa);
+    bool handlePointerMove_impl(CursorInputEventArgs& pa);
     bool handlePointerLeave(const SemanticInputEvent& event);
     bool handlePointerActivateEvent(const SemanticInputEvent& event);
     bool handlePointerPressHoldEvent(const SemanticInputEvent& event);
