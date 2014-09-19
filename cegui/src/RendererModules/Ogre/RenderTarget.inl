@@ -92,7 +92,7 @@ void OgreRenderTarget<T>::updateOgreViewportDimensions(
 template <typename T>
 void OgreRenderTarget<T>::activate()
 {
-    if (!d_matrixValid)
+    if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
     if (!d_viewportValid)
@@ -111,18 +111,18 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
                                          const glm::vec2& p_in,
                                          glm::vec2& p_out) const
 {
-    if (!d_matrixValid)
+    if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
     const OgreGeometryBuffer& gb = static_cast<const OgreGeometryBuffer&>(buff);
 
-    const Ogre::Real midx = d_area.getWidth() * 0.5f;
-    const Ogre::Real midy = d_area.getHeight() * 0.5f;
+    const Ogre::Real midx = RenderTarget::d_area.getWidth() * 0.5f;
+    const Ogre::Real midy = RenderTarget::d_area.getHeight() * 0.5f;
 
     // viewport matrix
     const Ogre::Matrix4 vpmat(
-        midx,    0,    0,    d_area.left() + midx,
-         0,    -midy,  0,    d_area.top() + midy,
+        midx,    0,    0,    RenderTarget::d_area.left() + midx,
+         0,    -midy,  0,    RenderTarget::d_area.top() + midy,
          0,      0,    1,    0,
          0,      0,    0,    1
     );
