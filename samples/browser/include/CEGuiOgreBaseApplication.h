@@ -107,6 +107,12 @@ protected:
 
     CEGuiDemoFrameListener* d_frameListener;
     WndEvtListener* d_windowEventListener;
+
+#ifdef __ANDROID__
+    void android_init();
+public:
+    void android_init2();
+#endif
 };
 
 
@@ -114,7 +120,12 @@ protected:
 \brief
     Ogre FrameListener class where we deal with input processing and the like.
 */
-class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListener, public OIS::MouseListener
+class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListener,
+#ifdef __ANDROID__
+    public OIS::MultiTouchListener
+#else
+    public OIS::MouseListener
+#endif
 {
 public:
     // Construction and Destruction
@@ -126,13 +137,21 @@ public:
     bool frameEnded(const Ogre::FrameEvent& evt);
 
     // Raw input handlers that we care about
-    bool mouseMoved(const OIS::MouseEvent &e);
     bool keyPressed(const OIS::KeyEvent &e);
     bool keyReleased(const OIS::KeyEvent &e);
+
+#ifdef __ANDROID__
+    virtual bool touchPressed (const OIS::MultiTouchEvent& evt);
+    virtual bool touchMoved (const OIS::MultiTouchEvent& evt);
+    virtual bool touchReleased (const OIS::MultiTouchEvent& evt);
+    virtual bool touchCancelled (const OIS::MultiTouchEvent & evt) {}
+#else
+    bool mouseMoved(const OIS::MouseEvent &e);
     bool mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id);
     bool mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id);
 
     OIS::Mouse* getOISMouse();
+#endif
 
 protected:
     // convert an OIS mouse button into a CEGUI mouse button
@@ -143,7 +162,12 @@ protected:
     *************************************************************************/
     OIS::InputManager* d_inputManager;
     OIS::Keyboard* d_keyboard;
+
+#ifdef __ANDROID__
+    OIS::MultiTouch* d_touch;
+#else
     OIS::Mouse* d_mouse;
+#endif
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
 
@@ -155,11 +179,27 @@ protected:
 class WndEvtListener : public Ogre::WindowEventListener
 {
 public:
+#ifdef __ANDROID__
+    WndEvtListener();
+#else
     WndEvtListener(OIS::Mouse* mouse);
+#endif
 
-    void windowResized(Ogre::RenderWindow* rw);
+    virtual void windowResized(Ogre::RenderWindow* rw) override;
+    virtual void windowClosed (Ogre::RenderWindow* rw) override {
+    }
+    virtual bool  windowClosing (Ogre::RenderWindow *rw) override {
+        return true;
+    }
+    virtual void  windowFocusChange (Ogre::RenderWindow *rw) override {
+    }
+    virtual void  windowMoved (Ogre::RenderWindow *rw) override {
+    }
+
 protected:
+#ifndef __ANDROID__
     OIS::Mouse* d_mouse;
+#endif
 };
 
 

@@ -29,28 +29,37 @@
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
-#include <ctime>
-#include <iomanip>
+#ifdef __ANDROID__
+#   include <android/log.h> 
+#else
+#   include <ctime>
+#   include <iomanip>
+#endif
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-DefaultLogger::DefaultLogger(void) :
-    d_caching(true)
+DefaultLogger::DefaultLogger(void) 
+#ifndef __ANDROID__
+   : d_caching(true)
+#endif
 {
     // create log header
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
     logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
     logEvent("+                          (http://www.cegui.org.uk/)                         +");
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+#ifndef __ANDROID__
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     logEvent("CEGUI::Logger singleton created. " + String(addr_buff));
+#endif
 }
 
 //----------------------------------------------------------------------------//
 DefaultLogger::~DefaultLogger(void)
 {
+#ifndef __ANDROID__
     if (d_ostream.is_open())
     {
         char addr_buff[32];
@@ -58,12 +67,14 @@ DefaultLogger::~DefaultLogger(void)
         logEvent("CEGUI::Logger singleton destroyed. " + String(addr_buff));
         d_ostream.close();
     }
+#endif
 }
 
 //----------------------------------------------------------------------------//
 void DefaultLogger::logEvent(const String& message,
                              LoggingLevel level /* = Standard */)
 {
+#ifndef __ANDROID__
     using namespace std;
 
     time_t et;
@@ -128,25 +139,49 @@ void DefaultLogger::logEvent(const String& message,
         // buffered.
         d_ostream.flush();
     }
+#else
+    std::string logName = "CEGUILog";
+    switch (level) {
+        case Errors:
+            __android_log_write (ANDROID_LOG_ERROR, logName.c_str(), message.c_str());
+            break;
+        case Warnings:
+            __android_log_write (ANDROID_LOG_WARN, logName.c_str(), message.c_str());
+            break;
+        case Standard:
+            __android_log_write (ANDROID_LOG_INFO, logName.c_str(), message.c_str());
+            break;
+        case Informative:
+            __android_log_write (ANDROID_LOG_DEBUG, logName.c_str(), message.c_str());
+            break;
+        case Insane:
+            __android_log_write (ANDROID_LOG_DEBUG, logName.c_str(), message.c_str());
+            break;
+        default:
+            __android_log_write (ANDROID_LOG_DEBUG, logName.c_str(), message.c_str());
+            break;
+    }
+#endif
 }
 
 //----------------------------------------------------------------------------//
 void DefaultLogger::setLogFilename(const String& filename, bool append)
 {
+#ifndef __ANDROID__
     // close current log file (if any)
     if (d_ostream.is_open())
         d_ostream.close();
 
 
-#if defined(_MSC_VER)
+#   if defined(_MSC_VER)
     d_ostream.open(System::getStringTranscoder().stringToStdWString(filename).c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
-#else
+#   else
     d_ostream.open(filename.c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
-#endif
+#   endif
 
     if (!d_ostream)
         CEGUI_THROW(FileIOException(
@@ -178,6 +213,7 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
 
         d_cache.clear();
     }
+#endif
 }
 
 //----------------------------------------------------------------------------//
