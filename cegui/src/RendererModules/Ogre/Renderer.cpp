@@ -1,5 +1,5 @@
 /***********************************************************************
-    created:    Tue Feb 17 2009
+created:    Tue Feb 17 2009
     author:     Paul D Turner, Henri I Hyyryläinen
 *************************************************************************/
 /***************************************************************************
@@ -139,6 +139,7 @@ struct OgreRenderer_impl
         d_useGLSL(false),
         d_useGLSLES(false),
         d_useGLSLCore(false),
+        d_useHLSL(false),
         d_texturedShaderWrapper(0),
         d_colouredShaderWrapper(0)
         {}
@@ -197,6 +198,8 @@ struct OgreRenderer_impl
     bool d_useGLSL;
     //! Whether shaders are glsles
     bool d_useGLSLES;
+    //! Whether shaders are hlsl 
+    bool d_useHLSL;
     //! Whether we use the ARB glsl shaders or the OpenGL 3.2 Core shader profile (140 core)
     bool d_useGLSLCore;
 
@@ -817,6 +820,8 @@ void OgreRenderer::initialiseShaders()
         isLanguageSupported("glsl");
     d_pimpl->d_useGLSLES = Ogre::HighLevelGpuProgramManager::getSingleton().
         isLanguageSupported("glsles");
+    d_pimpl->d_useHLSL = Ogre::HighLevelGpuProgramManager::getSingleton().
+        isLanguageSupported("hlsl");
 
     Ogre::String shaderLanguage;
 
@@ -828,9 +833,14 @@ void OgreRenderer::initialiseShaders()
     {
         shaderLanguage = "glsles";
     }
-    else
+    else if (d_pimpl->d_useHLSL)
     {
         shaderLanguage = "hlsl";
+    }
+    else {
+        CEGUI_THROW(RendererException("Underlying Ogre render system does not support available " 
+            "shader languages which should be one of glsl, glsles or hlsl "
+            "which are required for supporting custom shaders in this CEGUI version"));
     }
 
     // Create vertex shaders
