@@ -75,7 +75,7 @@ find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
 find_package(Fribidi)
-if (NOT WIN32)
+if (NOT WIN32 OR NOT ANDROID)
     find_package(Iconv REQUIRED)
 endif()
 
@@ -125,10 +125,22 @@ be mindful of which C/C++ runtime setting has been used to compile the various
 components - they must all match or you will get crashes, heap corruption and/or
 other issues." FALSE "WIN32 OR APPLE" FALSE)
 option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
+option( CEGUI_BUILD_DYNAMIC_CONFIGURATION "Dynamic libs to be built.  Always true except for Android" TRUE)
 option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindoFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
 # sanity check on static build option for factory method
 if (CEGUI_BUILD_STATIC_FACTORY_MODULE AND NOT CEGUI_BUILD_STATIC_CONFIGURATION)
   message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
+endif()
+if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
+    message(SEND_ERROR "You may not enable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
+endif()
+if (ANDROID)
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+        message(SEND_ERROR "CEGUI_BUILD_DYNAMIC_CONFIGURATION must be OFF set for android builds.")
+    endif()
+    if (NOT CEGUI_BUILD_STATIC_CONFIGURATION)
+        message(SEND_ERROR "CEGUI_BUILD_STATIC_CONFIGURATION must be ON for android builds.")
+    endif()
 endif()
 
 set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use

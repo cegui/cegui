@@ -109,15 +109,23 @@ endif()
 set(COMBINED_HEADER_FILES ${CORE_HEADER_FILES} ${COMMON_HEADER_FILES})
 set(COMBINED_SOURCE_FILES ${CORE_SOURCE_FILES} ${COMMON_SOURCE_FILES})
 
+message( "---------_____======================---------------")
+message( "iterating list ${SAMPLES_LIST}")
 # We iterate through all added Samples and add the sources and headers to the combined headers and sources
 foreach(CUR_SAMPLE_DIR_NAME ${SAMPLES_LIST})
+    message( "sample list ${CUR_SAMPLE_DIR_NAME}")
     # We generate the Sample's variable names for the list of headers and list of sources, based on the directory name of the sample
+    
     set(SAMPLE_HEADER_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_HEADERS")
     set(SAMPLE_SOURCE_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_SOURCES")
 
-    set(COMBINED_SOURCE_FILES ${COMBINED_SOURCE_FILES} ${${SAMPLE_HEADER_LIST_NAME}})
-    set(COMBINED_HEADER_FILES ${COMBINED_HEADER_FILES} ${${SAMPLE_SOURCE_LIST_NAME}})
+    message( "cpp list list     ${CUR_SAMPLE_DIR_NAME}_SAMPLE_SOURCES")
+    message( "cpp list list val ${${SAMPLE_SOURCE_LIST_NAME}}")
+ 
+    set(COMBINED_SOURCE_FILES ${COMBINED_SOURCE_FILES} ${${SAMPLE_SOURCE_LIST_NAME}})
+    set(COMBINED_HEADER_FILES ${COMBINED_HEADER_FILES} ${${SAMPLE_HEADER_LIST_NAME}})
 endforeach()
+message( "cpp combined list ${COMBINED_SOURCE_FILES} ")
 
 # add additional include directories; provided by sample
 include_directories(${ADDITIONAL_INCLUDE_DIRS})
@@ -126,7 +134,12 @@ include_directories(${ADDITIONAL_INCLUDE_DIRS})
 #                     Statically Linked Executable
 ###########################################################################
 if(CEGUI_BUILD_STATIC_CONFIGURATION)
-    add_executable(${CEGUI_TARGET_NAME}_Static ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
+    if (ANDROID)
+        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/dummy.cpp "int x = 0;")
+        add_library(${CEGUI_TARGET_NAME}_Static STATIC ${CMAKE_CURRENT_BINARY_DIR}/dummy.cpp)
+    else()
+        add_executable(${CEGUI_TARGET_NAME}_Static ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
+    endif()
     set_property(TARGET ${CEGUI_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
 
     # append the _d (or whatever) for debug builds as needed.
@@ -144,11 +157,24 @@ if(CEGUI_BUILD_STATIC_CONFIGURATION)
     if(APPLE)
         cegui_apple_app_setup(${CEGUI_TARGET_NAME}_Static TRUE)
     endif()
+
+    if (ANDROID)
+        include(CEGUIAndroid)
+        set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/utils")
+        set(OGRE_TEMPLATES_DIR "${CMAKE_SOURCE_DIR}/cmake/templates")
+        set(OGRE_DEPENDENCIES_DIR "${CMAKE_INSTALL_PREFIX}") 
+        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/browserdummy.cpp "int x_dummy = 0;")
+        ADD_LIBRARY(SampleBrowserDummy SHARED ${CMAKE_CURRENT_BINARY_DIR}/browserdummy.cpp)
+        target_link_libraries(SampleBrowserDummy ${CEGUI_TARGET_NAME}_Static)
+        SET(ANDROID_PROJECT_TARGET "SampleBrowserDummy")
+        create_android_proj(${ANDROID_PROJECT_TARGET})
+    endif()
 endif()
 
 ###########################################################################
 #                   Dynamically Linked Executable
 ###########################################################################
+if(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
 add_executable(${CEGUI_TARGET_NAME} ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
 
 # additional dependencies from samples
@@ -178,6 +204,7 @@ if(APPLE)
 
     cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
 endif()
+endif(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
 
 ###########################################################################
 #                    Setting up the source groups
@@ -220,7 +247,9 @@ endif()
 ###########################################################################
 #                      LIBRARY LINK SETUP
 ###########################################################################
-cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
+if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
+endif()
 
 if(CEGUI_BUILD_STATIC_CONFIGURATION)
     target_link_libraries(${CEGUI_TARGET_NAME}_Static
@@ -233,24 +262,28 @@ endif()
 ###########################################################################
 #  BUILD DEPENDENCIES FOR THE SHARED LIBRARIES USED BY THE SAMPLEBROWSER
 ###########################################################################
+if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
+        CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
+        CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC})
 
-add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
-                                      CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
-                                      CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC})
-                                      
-if(CEGUI_SAMPLES_ENABLE_COMMON_DIALOGS)
-    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
+    if (CEGUI_SAMPLES_ENABLE_COMMON_DIALOGUES_DEMO)
+        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
+    endif()
+
 endif()
 
 ###########################################################################
 #                           INSTALLATION
 ###########################################################################
-install(TARGETS ${CEGUI_TARGET_NAME}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-    BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-)
+if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+    install(TARGETS ${CEGUI_TARGET_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        )
+endif()
 
 if(CEGUI_BUILD_STATIC_CONFIGURATION)
     install(TARGETS ${CEGUI_TARGET_NAME}_Static
@@ -273,22 +306,24 @@ endif()
 
 if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE)
+    if (UNIX AND NOT APPLE AND NOT ANDROID)
+        #remove, should be in findogre for opengl libs, but not working
+        target_link_libraries(${CEGUI_TARGET_NAME}  GL )
+        target_link_libraries(${CEGUI_TARGET_NAME}_Static  GL )
+    endif()
     cegui_add_dependency(${CEGUI_TARGET_NAME} OIS)
-    
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME})
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS} )
     if (OGRE_STATIC) #if ogre is static, then must include the static plugin libs
         set(CORE_OGRE_COMPONENTS RenderSystem_Direct3D9 RenderSystem_Direct3D11 RenderSystem_GLES RenderSystem_GLES2 RenderSystem_GL RenderSystem_GL3Plus)
         foreach (comp ${CORE_OGRE_COMPONENTS})
             if (${OGRE_${comp}_FOUND})
                 include_directories(${OGRE_${comp}_INCLUDE_DIRS})
-                target_link_libraries(${CEGUI_TARGET_NAME} ${OGRE_${comp}_LIBRARIES})
-                if (CEGUI_BUILD_STATIC_CONFIGURATION)
-                    target_link_libraries(${CEGUI_TARGET_NAME}_Static ${OGRE_${comp}_LIBRARIES})
-                endif()
+                cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${OGRE_${comp}_LIBRARIES})
+                message (" LIBS!!!!! ${OGRE_${comp}_LIBRARIES} ")
             endif()
         endforeach (comp)
     endif()
-    
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS})
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)

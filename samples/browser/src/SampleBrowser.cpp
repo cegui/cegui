@@ -51,9 +51,23 @@ using namespace CEGUI;
 #include "windows.h"
 #endif
 
+#if defined(__ANDROID__)
+#   include "SampleBrowser_Android.h"
+#endif
+
 //----------------------------------------------------------------------------//
+#ifdef __ANDROID__
+#   include <android_native_app_glue.h>
+void android_main(struct android_app* state) 
+{
+    app_dummy(); // Make sure glue isn't stripped.
+    int argc = 0;
+    char* argv[0];
+    OgreBites::OgreAndroidBridge::init(state);
+#else
 int main(int argc, char* argv[])
 {
+#endif
     // Basic start-up for the sample browser application.
     // Will remain in run() until quitting
     int argidx = 1;
@@ -66,7 +80,11 @@ int main(int argc, char* argv[])
 #endif
 
     SampleBrowser sampleBrowser;
+#ifdef __ANDROID__
+    sampleBrowser.run();
+#else
     return sampleBrowser.run();
+#endif
 }
 
 //----------------------------------------------------------------------------//
