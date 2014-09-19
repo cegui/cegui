@@ -411,9 +411,9 @@ namespace CEGUI
         /*************************************************************************
         	Overrides for Event handler methods
         *************************************************************************/
-        virtual void onPointerPressHold(CursorInputEventArgs& e);
-        virtual void onPointerActivate(CursorInputEventArgs& e);
-        virtual void onPointerMove(CursorInputEventArgs& e);
+        virtual void onCursorPressHold(CursorInputEventArgs& e);
+        virtual void onCursorActivate(CursorInputEventArgs& e);
+        virtual void onCursorMove(CursorInputEventArgs& e);
         virtual void onCaptureLost(WindowEventArgs& e);
         virtual void onAlphaChanged(WindowEventArgs& e);
         virtual void onClippingChanged(WindowEventArgs& e);/*Window::drawSelf(z);*/

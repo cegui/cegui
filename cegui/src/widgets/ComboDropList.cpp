@@ -133,9 +133,9 @@ void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
 /*************************************************************************
 	Handler for cursor movement events
 *************************************************************************/
-void ComboDropList::onPointerMove(CursorInputEventArgs& e)
+void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 {
-    ListWidget::onPointerMove(e);
+    ListWidget::onCursorMove(e);
 
     // if cursor is within our area (but not our children)
 	if (isHit(e.position))
@@ -182,9 +182,9 @@ void ComboDropList::onPointerMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor pressed events
 *************************************************************************/
-void ComboDropList::onPointerPressHold(CursorInputEventArgs& e)
+void ComboDropList::onCursorPressHold(CursorInputEventArgs& e)
 {
-    ListWidget::onPointerPressHold(e);
+    ListWidget::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
 	{
@@ -206,9 +206,9 @@ void ComboDropList::onPointerPressHold(CursorInputEventArgs& e)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void ComboDropList::onPointerActivate(CursorInputEventArgs& e)
+void ComboDropList::onCursorActivate(CursorInputEventArgs& e)
 {
-    ListWidget::onPointerActivate(e);
+    ListWidget::onCursorActivate(e);
 
     if (e.source == CIS_Left)
 	{

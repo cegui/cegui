@@ -1920,10 +1920,10 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 /*************************************************************************
     Handler for when pointer is pressed
 *************************************************************************/
-void MultiColumnList::onPointerPressHold(CursorInputEventArgs& e)
+void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
 {
     // base class processing
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
     {

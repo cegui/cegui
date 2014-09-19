@@ -194,8 +194,8 @@ protected:
 	virtual void onDestructionStarted(WindowEventArgs& e);
 	virtual void onShown(WindowEventArgs& e);
 	virtual void onHidden(WindowEventArgs& e);
-    virtual void onPointerPressHold(CursorInputEventArgs& e);
-    virtual void onPointerActivate(CursorInputEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
+    virtual void onCursorActivate(CursorInputEventArgs& e);
 
 
     /*************************************************************************

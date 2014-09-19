@@ -369,7 +369,7 @@ bool GUIContext::updateWindowContainingPointer_impl() const
     {
         pa.window = oldWindow;
         pa.position = oldWindow->getUnprojectedPosition(cursor_pos);
-        oldWindow->onPointerLeaves(pa);
+        oldWindow->onCursorLeaves(pa);
     }
 
     // inform window containing cursor that cursor has entered it
@@ -378,7 +378,7 @@ bool GUIContext::updateWindowContainingPointer_impl() const
         pa.handled = 0;
         pa.window = d_windowContainingPointer;
         pa.position = d_windowContainingPointer->getUnprojectedPosition(cursor_pos);
-        d_windowContainingPointer->onPointerEnters(pa);
+        d_windowContainingPointer->onCursorEnters(pa);
     }
 
     // do the 'area' version of the events
@@ -746,7 +746,7 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
     if (d_windowNavigator != 0)
         d_windowNavigator->setCurrentFocusedWindow(pa.window);
 
-    pa.window->onPointerActivate(pa);
+    pa.window->onCursorActivate(pa);
     return pa.handled != 0;
 }
 
@@ -766,7 +766,7 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
     if (d_windowNavigator != 0)
         d_windowNavigator->setCurrentFocusedWindow(pa.window);
 
-    pa.window->onPointerPressHold(pa);
+    pa.window->onCursorPressHold(pa);
     return pa.handled != 0;
 }
 
@@ -805,7 +805,7 @@ bool GUIContext::handlePointerMove_impl(CursorInputEventArgs& pa)
     // inform window about the input.
     pa.window = getWindowContainingPointer();
     pa.handled = 0;
-    pa.window->onPointerMove(pa);
+    pa.window->onCursorMove(pa);
 
     // return whether window handled the input.
     return pa.handled != 0;
@@ -852,7 +852,7 @@ bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
     pa.scroll = 0;
     pa.window = getWindowContainingPointer();
 
-    getWindowContainingPointer()->onPointerLeaves(pa);
+    getWindowContainingPointer()->onCursorLeaves(pa);
     resetWindowContainingPointer();
 
     return pa.handled != 0;

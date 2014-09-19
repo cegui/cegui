@@ -79,7 +79,7 @@ bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
 /*************************************************************************
 	Handler for when the cursor moves
 *************************************************************************/
-void ButtonBase::onPointerMove(CursorInputEventArgs& e)
+void ButtonBase::onCursorMove(CursorInputEventArgs& e)
 {
     // this is needed to discover whether cursor is in the widget area or not.
 	// The same thing used to be done each frame in the rendering method,
@@ -88,7 +88,7 @@ void ButtonBase::onPointerMove(CursorInputEventArgs& e)
 	// more efficient anyway.
 
 	// base class processing
-	Window::onPointerMove(e);
+	Window::onCursorMove(e);
 
 	updateInternalState(e.position);
 	++e.handled;
@@ -98,10 +98,10 @@ void ButtonBase::onPointerMove(CursorInputEventArgs& e)
 /*************************************************************************
 	Handler for cursor press hold events
 *************************************************************************/
-void ButtonBase::onPointerPressHold(CursorInputEventArgs& e)
+void ButtonBase::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// default processing
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
 	{
@@ -134,10 +134,10 @@ void ButtonBase::setPushedState(const bool pushed)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void ButtonBase::onPointerActivate(CursorInputEventArgs& e)
+void ButtonBase::onCursorActivate(CursorInputEventArgs& e)
 {
 	// default processing
-    Window::onPointerActivate(e);
+    Window::onCursorActivate(e);
 
     if (e.source == CIS_Left)
 	{
@@ -169,10 +169,10 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
     Handler for when cursor leaves the widget
 *************************************************************************/
-void ButtonBase::onPointerLeaves(CursorInputEventArgs& e)
+void ButtonBase::onCursorLeaves(CursorInputEventArgs& e)
 {
     // default processing
-    Window::onPointerLeaves(e);
+    Window::onCursorLeaves(e);
 
 	d_hovering = false;
 	invalidate();

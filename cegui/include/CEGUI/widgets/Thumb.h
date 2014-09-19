@@ -294,8 +294,8 @@ protected:
 	/*************************************************************************
 		Overridden event handling routines
 	*************************************************************************/
-    virtual void    onPointerMove(CursorInputEventArgs& e);
-    virtual void    onPointerPressHold(CursorInputEventArgs& e);
+    virtual void    onCursorMove(CursorInputEventArgs& e);
+    virtual void    onCursorPressHold(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 
 

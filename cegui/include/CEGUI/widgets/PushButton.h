@@ -91,7 +91,7 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    virtual void    onPointerActivate(CursorInputEventArgs& e);
+    virtual void    onCursorActivate(CursorInputEventArgs& e);
     virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 };
 

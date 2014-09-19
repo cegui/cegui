@@ -83,10 +83,10 @@ protected:
     bool moveToFront_impl(bool wasClicked);
 
     // override the cursor event handlers
-    void onPointerMove(CursorInputEventArgs& e);
+    void onCursorMove(CursorInputEventArgs& e);
     void onScroll(CursorInputEventArgs& e);
-    void onPointerPressHold(CursorInputEventArgs& e);
-    void onPointerActivate(CursorInputEventArgs& e);
+    void onCursorPressHold(CursorInputEventArgs& e);
+    void onCursorActivate(CursorInputEventArgs& e);
 
     void onSemanticInputEvent(SemanticEventArgs& e);
 };

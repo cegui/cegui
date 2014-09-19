@@ -553,10 +553,10 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor move events
 *************************************************************************/
-void FrameWindow::onPointerMove(CursorInputEventArgs& e)
+void FrameWindow::onCursorMove(CursorInputEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onPointerMove(e);
+	Window::onCursorMove(e);
 
     // if we are not the window containing the cursor, do NOT change the indicator
 	if (getGUIContext().getWindowContainingPointer() != this)
@@ -614,10 +614,10 @@ void FrameWindow::onPointerMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void FrameWindow::onPointerPressHold(CursorInputEventArgs& e)
+void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-    Window::onPointerPressHold(e);
+    Window::onCursorPressHold(e);
 
     if (e.source == CIS_Left)
 	{
@@ -651,10 +651,10 @@ void FrameWindow::onPointerPressHold(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void FrameWindow::onPointerActivate(CursorInputEventArgs& e)
+void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-    Window::onPointerActivate(e);
+    Window::onCursorActivate(e);
 
     if (e.source == CIS_Left && isCapturedByThis())
 	{
