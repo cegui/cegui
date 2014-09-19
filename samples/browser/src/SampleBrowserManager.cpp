@@ -239,8 +239,8 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
     sampleWindow->setSize(USize(UDim(1.0f, -10.0f), cegui_absdim(1.0f)));
     sampleWindow->setCursorInputPropagationEnabled(true);
 
-    sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SampleBrowserManager::handlePointerMoveSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventCursorMove, Event::Subscriber(&SampleBrowserManager::handlePointerMoveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventCursorActivate, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventCursorLeavesArea, Event::Subscriber(&SampleBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));

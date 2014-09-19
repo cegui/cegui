@@ -317,7 +317,7 @@ public:
     float scroll;
 
     // current state (hold: true/false) of cursors sources. Addressable by members of \ref CursorInputSource
-    CursorsState pointerState;
+    CursorsState state;
 };
 
 /*!

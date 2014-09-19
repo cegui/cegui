@@ -133,7 +133,7 @@ bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
     // FrameWindow's titlebar.
     wnd->setText("Hello World!");
 
-    wnd->subscribeEvent(CEGUI::Window::EventPointerActivate,  Event::Subscriber(&HelloWorldSample::handleHelloWorldClicked, this));
+    wnd->subscribeEvent(CEGUI::Window::EventCursorActivate,  Event::Subscriber(&HelloWorldSample::handleHelloWorldClicked, this));
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.

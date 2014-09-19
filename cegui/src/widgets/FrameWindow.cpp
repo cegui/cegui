@@ -206,7 +206,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        getGUIContext().updateWindowContainingPointer();
+        getGUIContext().updateWindowContainingCursor();
     }
 
 }
@@ -559,7 +559,7 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
 	Window::onCursorMove(e);
 
     // if we are not the window containing the cursor, do NOT change the indicator
-	if (getGUIContext().getWindowContainingPointer() != this)
+	if (getGUIContext().getWindowContainingCursor() != this)
 	{
 		return;
 	}

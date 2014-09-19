@@ -84,7 +84,7 @@ struct TreeViewFixture
 };
 
 //----------------------------------------------------------------------------//
-CursorInputEventArgs createPointerEventArgs(float x, float y, TreeView* view)
+CursorInputEventArgs createCursorEventArgs(float x, float y, TreeView* view)
 {
     CursorInputEventArgs args(view);
 
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperChildSelectionIsPersisted)
     model.addRandomItemWithChildren(model.getRootIndex(), 0);
     view->prepareForRender();
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height * 3 / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height * 3 / 2, view);
     view->onCursorPressHold(args);
     // first child
     view->setSelectedIndex(model.makeIndex(0, model.makeIndex(1, model.getRootIndex())));
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(ItemAdded_InExpandedSubtree_IsRendered)
     view->prepareForRender();
 
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height / 2, view);
     view->onCursorPressHold(args);
     view->prepareForRender();
 
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(PointerMoved_OverSubtreeExpander_DoesNotTriggerExpanding)
     view->prepareForRender();
 
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height / 2, view);
     view->onCursorMove(args);
     view->prepareForRender();
 
@@ -342,7 +342,7 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseEventsFired)
     BOOST_REQUIRE_EQUAL(3, view->getRootItemState().d_renderedChildren.at(0)->d_totalChildCount);
 
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height / 2, view);
     ModelIndex target_node = model.makeIndex(0, model.getRootIndex());
     view->onCursorPressHold(args);
     BOOST_REQUIRE_INDICES_EQUAL(target_node, expanded_nodes.at(0));
@@ -369,10 +369,10 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandChild)
     model.addRandomItemWithChildren(model.makeIndex(0, model.getRootIndex()), 0, 3);
     view->prepareForRender();
 
-    CursorInputEventArgs args = createPointerEventArgs(expander_width / 2, font_height / 2, view);
+    CursorInputEventArgs args = createCursorEventArgs(expander_width / 2, font_height / 2, view);
     view->onCursorPressHold(args);
 
-    args = createPointerEventArgs(
+    args = createCursorEventArgs(
         view->getViewRenderer()->getSubtreeExpanderXIndent(1) + expander_width / 2,
         font_height + font_height / 2, view);
     view->onCursorPressHold(args);
@@ -397,7 +397,7 @@ BOOST_AUTO_TEST_CASE(SubtreeExpanded_SelectionChanges_DoesNotChangeExpandedState
     view->prepareForRender();
 
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height / 2, view);
     view->onCursorPressHold(args);
 
     const std::vector<TreeViewItemRenderingState*>& children =
@@ -418,7 +418,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_ChildInExpandedSubtree_SelectsChild)
     view->prepareForRender();
 
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height / 2, view);
     view->onCursorPressHold(args);
 
     const std::vector<TreeViewItemRenderingState*>& children =
@@ -497,7 +497,7 @@ BOOST_AUTO_TEST_CASE(GetTreeViewItemForIndex)
         static_cast<TreeViewItemRenderingState*>(0),
         view->getTreeViewItemForIndex(index0_child));
     CursorInputEventArgs args =
-        createPointerEventArgs(expander_width / 2, font_height / 2, view);
+        createCursorEventArgs(expander_width / 2, font_height / 2, view);
     view->onCursorPressHold(args);
     view->prepareForRender();
 

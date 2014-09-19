@@ -487,7 +487,7 @@ CEGUI::Window* WidgetsSample::createWidget(const CEGUI::String &widgetMapping, c
 
 void WidgetsSample::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage)
 {
-    if (eventName == CEGUI::Window::EventPointerMove)
+    if (eventName == CEGUI::Window::EventCursorMove)
     {
         d_windowLightPointerMoveEvent->enable();
     }
@@ -569,7 +569,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     CEGUI::Window* pointerMoveEventLabel = winMgr.createWindow("Vanilla/Label");
     horizontalLayout->addChild(pointerMoveEventLabel);
     pointerMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
-    pointerMoveEventLabel->setText("EventPointerMove");
+    pointerMoveEventLabel->setText("EventCursorMove");
     pointerMoveEventLabel->setFont("DejaVuSans-12-NoScale");
     pointerMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
 }

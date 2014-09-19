@@ -210,7 +210,7 @@ bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
 
     d_pointerPosition = glm::vec2(x_pos, y_pos);
 
-    SemanticInputEvent semantic_event(SV_PointerMove);
+    SemanticInputEvent semantic_event(SV_CursorMove);
     semantic_event.d_payload.array[0] = x_pos;
     semantic_event.d_payload.array[1] = y_pos;
 
@@ -271,7 +271,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
         }
     }
 
-    SemanticValue value = SV_PointerPressHold;
+    SemanticValue value = SV_CursorPressHold;
     if (isControlPressed())
         value = SV_SelectCumulative;
     else if (isShiftPressed())
@@ -287,7 +287,7 @@ bool InputAggregator::injectMouseButtonUp(MouseButton button)
     if (d_inputReceiver == 0)
         return false;
 
-    SemanticInputEvent semantic_event(SV_PointerActivate);
+    SemanticInputEvent semantic_event(SV_CursorActivate);
     semantic_event.d_payload.source = convertToCursorInputSource(button);
 
     return d_inputReceiver->injectInputEvent(semantic_event);
@@ -397,7 +397,7 @@ bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     if (d_inputReceiver == 0)
         return false;
 
-    SemanticInputEvent semantic_event(SV_PointerActivate);
+    SemanticInputEvent semantic_event(SV_CursorActivate);
 
     if (isControlPressed())
         semantic_event.d_value = SV_SelectCumulative;

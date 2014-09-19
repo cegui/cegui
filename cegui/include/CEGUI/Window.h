@@ -355,7 +355,7 @@ public:
      * For an alternative version of this event see the
      * Window::EventCursorEntersArea event.
      */
-    static const String EventPointerEntersSurface;
+    static const String EventCursorEntersSurface;
     /** Event fired when the cursor is no longer over the Window's surface
      * area.
      * Handlers are passed a const CursorInputEventArgs reference with all fields
@@ -366,12 +366,12 @@ public:
      * actually 'left' this Window's area).  For an alternative version of this
      * event see the Window::EventCursorLeavesArea event.
      */
-    static const String EventPointerLeavesSurface;
+    static const String EventCursorLeavesSurface;
     /** Event fired when the cursor moves within the area of the Window.
      * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventPointerMove;
+    static const String EventCursorMove;
     /** Event fired when there is a scroll event within the Window's area.
      * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
@@ -381,12 +381,12 @@ public:
      * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventPointerPressHold;
+    static const String EventCursorPressHold;
     /** Event fired when the cursor is activated within the Window.
      * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventPointerActivate;
+    static const String EventCursorActivate;
     /** Event fired when the Window receives a character key input event.
      * Handlers are passed a const KeyEventArgs reference with
      * WindowEventArgs::window set to the Window receiving the character input,

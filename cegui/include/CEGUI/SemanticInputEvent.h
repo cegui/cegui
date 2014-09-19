@@ -93,10 +93,10 @@ private:
 enum SemanticValue
 {
     SV_NoValue = 0x0000,
-    SV_PointerActivate,
+    SV_CursorActivate,
     SV_PointerDeactivate,
-    SV_PointerPressHold,
-    SV_PointerMove,
+    SV_CursorPressHold,
+    SV_CursorMove,
     SV_PointerLeave,
     SV_SelectRange,
     SV_SelectCumulative,
