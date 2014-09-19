@@ -129,7 +129,7 @@ void Titlebar::onPointerPressHold(CursorInputEventArgs& e)
 	// Base class processing
     Window::onPointerPressHold(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		if ((d_parent != 0) && d_dragEnabled)
 		{
@@ -175,7 +175,7 @@ void Titlebar::onPointerActivate(CursorInputEventArgs& e)
 	// Base class processing
     Window::onPointerActivate(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		releaseInput();
 		++e.handled;
@@ -190,7 +190,7 @@ void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left)
+    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left)
     {
 
         // if we do not have a parent window, then obviously nothing should happen.

@@ -72,7 +72,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 *************************************************************************/
 void PushButton::onPointerActivate(CursorInputEventArgs& e)
 {
-    if ((e.source == PS_Left) && isPushed())
+    if ((e.source == CIS_Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 

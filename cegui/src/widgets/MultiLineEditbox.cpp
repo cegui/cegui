@@ -1190,7 +1190,7 @@ void MultiLineEditbox::onPointerPressHold(CursorInputEventArgs& e)
 	// base class handling
     Window::onPointerPressHold(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		// grab inputs
 		if (captureInput())
@@ -1215,7 +1215,7 @@ void MultiLineEditbox::onPointerActivate(CursorInputEventArgs& e)
 	// base class processing
     Window::onPointerActivate(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		releaseInput();
 		++e.handled;
@@ -1650,11 +1650,11 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == PS_Left)
+    if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == CIS_Left)
     {
         handleSelectAllText(e);
     }
-    else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left)
+    else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left)
     {
         d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
             (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);

@@ -149,7 +149,7 @@ void ItemEntry::onSemanticInputEvent(SemanticEventArgs& e)
 
     if (d_selectable &&
         (e.d_semanticValue == SV_PointerActivate || range_selection || cumulative_selection) &&
-         e.d_payload.source == PS_Left)
+         e.d_payload.source == CIS_Left)
     {
         if (d_ownerList)
             d_ownerList->notifyItemActivated(this, cumulative_selection, range_selection);

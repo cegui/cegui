@@ -103,7 +103,7 @@ void ButtonBase::onPointerPressHold(CursorInputEventArgs& e)
 	// default processing
     Window::onPointerPressHold(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
         if (captureInput())
         {
@@ -139,7 +139,7 @@ void ButtonBase::onPointerActivate(CursorInputEventArgs& e)
 	// default processing
     Window::onPointerActivate(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		releaseInput();
 

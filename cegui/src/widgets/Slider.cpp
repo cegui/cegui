@@ -183,7 +183,7 @@ void Slider::onPointerPressHold(CursorInputEventArgs& e)
 	// base class processing
     Window::onPointerPressHold(e);
 
-    if (e.source == PS_Left)
+    if (e.source == CIS_Left)
 	{
 		float adj = getAdjustDirectionFromPoint(e.position);
 

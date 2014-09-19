@@ -278,17 +278,17 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
         value = SV_SelectRange;
 
     SemanticInputEvent semantic_event(value);
-    semantic_event.d_payload.source = convertToPointerSource(button);
+    semantic_event.d_payload.source = convertToCursorInputSource(button);
 
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
 bool InputAggregator::injectMouseButtonUp(MouseButton button)
 {
-    if (d_inputReceiver == 0) 
+    if (d_inputReceiver == 0)
         return false;
 
     SemanticInputEvent semantic_event(SV_PointerActivate);
-    semantic_event.d_payload.source = convertToPointerSource(button);
+    semantic_event.d_payload.source = convertToCursorInputSource(button);
 
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
@@ -402,7 +402,7 @@ bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     if (isControlPressed())
         semantic_event.d_value = SV_SelectCumulative;
 
-    semantic_event.d_payload.source = convertToPointerSource(button);
+    semantic_event.d_payload.source = convertToCursorInputSource(button);
 
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
@@ -413,7 +413,7 @@ bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
         return false;
 
     SemanticInputEvent semantic_event(SV_SelectWord);
-    semantic_event.d_payload.source = convertToPointerSource(button);
+    semantic_event.d_payload.source = convertToCursorInputSource(button);
 
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
@@ -424,7 +424,7 @@ bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
         return false;
 
     SemanticInputEvent semantic_event(SV_SelectAll);
-    semantic_event.d_payload.source = convertToPointerSource(button);
+    semantic_event.d_payload.source = convertToCursorInputSource(button);
 
     return d_inputReceiver->injectInputEvent(semantic_event);
 }

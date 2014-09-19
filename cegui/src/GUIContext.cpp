@@ -359,7 +359,7 @@ bool GUIContext::updateWindowContainingPointer_impl() const
         return false;
 
     pa.scroll = 0;
-    pa.source = PS_None;
+    pa.source = CIS_None;
 
     Window* oldWindow = d_windowContainingPointer;
     d_windowContainingPointer = curr_wnd_with_pointer;
@@ -776,7 +776,7 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
     CursorInputEventArgs pa(0);
     pa.position = d_cursor.getPosition();
     pa.moveDelta = glm::vec2(0, 0);
-    pa.source = PS_None;
+    pa.source = CIS_None;
     pa.scroll = event.d_payload.single;
     pa.window = getTargetWindow(pa.position, false);
     // make cursor position sane for this target window
@@ -827,7 +827,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
         return false;
 
     pa.scroll = 0;
-    pa.source = PS_None;
+    pa.source = CIS_None;
     pa.pointerState = d_pointersState;
 
     // move cursor to new position
@@ -848,7 +848,7 @@ bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
     pa.position = getWindowContainingPointer()->getUnprojectedPosition(
         d_cursor.getPosition());
     pa.moveDelta = glm::vec2(0, 0);
-    pa.source = PS_None;
+    pa.source = CIS_None;
     pa.scroll = 0;
     pa.window = getWindowContainingPointer();
 
