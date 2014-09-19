@@ -74,35 +74,23 @@ void CEGuiOgreBaseApplication::android_init() {
     d_ogreRoot = new Ogre::Root("", "", "Ogre.log"); //this is needed to avoid looking for plugins.cfg and failing 
 #define OGRE_STATIC_GLES2
     d_staticPluginLoader = new Ogre::StaticPluginLoader();
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------loading plugins" );
     d_staticPluginLoader->load();
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------getting rendersystem" );
     int sizer = d_ogreRoot->getAvailableRenderers().size();
-    __android_log_print (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------size = %d", sizer );
     Ogre::RenderSystem* renderSystem = d_ogreRoot->getAvailableRenderers().at (0);
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- rendersystem retrieved" );
     d_ogreRoot->setRenderSystem(renderSystem);
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- rendersystem set" );
     d_ogreRoot->initialise (false);
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- root init" );
     OgreBites::OgreAndroidBridge::initialiseFS();
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps (5); 
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- creating window" );
     d_window = OgreBites::OgreAndroidBridge::createWindow(d_ogreRoot);
     Ogre::Viewport* vp = d_window->addViewport(0);
     vp->setBackgroundColour(Ogre::ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
     vp->setClearEveryFrame(true, Ogre::FBT_COLOUR | Ogre::FBT_DEPTH | Ogre::FBT_STENCIL);
-
-    //vp->setBackgroundColour(Ogre::ColourValue (0.8, 0.8, 0.8, 1.0));
-
-    //Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+    vp->setBackgroundColour(Ogre::ColourValue (0.0f, 0.0f, 0.0f, 0.0f));
     d_window->setActive (true);
     d_window->setVisible (true);
-    usleep(3000);
     
     Ogre::SceneManager* sm = d_ogreRoot-> createSceneManager(Ogre::ST_GENERIC, "SampleSceneMgr");
     sm->setAmbientLight (Ogre::ColourValue (0.7, 0.7, 0.7)); 
-    //Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
     // Create and initialise the camera
     d_camera = sm->createCamera("SampleCam");
@@ -110,60 +98,22 @@ void CEGuiOgreBaseApplication::android_init() {
     d_camera->lookAt(Ogre::Vector3(0,0,-300));
     d_camera->setNearClipDistance(5);
 
-    /*
-    d_windowEventListener = new WndEvtListener();
-    Ogre::WindowEventUtilities::addWindowEventListener(d_window, d_windowEventListener);
-    d_ogreRoot->addFrameListener(this);
-    
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------initializing OIS " );
-    OgreBites::OgreAndroidBridge::initialiseOIS(d_frameListener, d_frameListener);
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------OIS initialized" );
-#
-    //renderer.setRenderingEnabled(false);
-    d_initialised = true;
-    */
-    android_init2();
-}
-
-void CEGuiOgreBaseApplication::android_init2() {
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- bootstrap" );
-    //CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::bootstrapSystem (*d_window);
     CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create( *d_window );
-        // CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create();
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- ogre render created" );
-        d_renderer = &renderer;
-        d_imageCodec = &renderer.createOgreImageCodec();
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- image codec created" );
-        d_resourceProvider = &renderer.createOgreResourceProvider();
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- resource provider created" );
+    d_renderer = &renderer;
+    d_imageCodec = &renderer.createOgreImageCodec();
+    d_resourceProvider = &renderer.createOgreResourceProvider();
 
-        // create frame listener
-        d_frameListener= new CEGuiDemoFrameListener(this, d_sampleApp, d_window, d_camera);
-        d_ogreRoot->addFrameListener(d_frameListener);
-#ifdef __ANDROID__
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------initializing OIS " );
-        OgreBites::OgreAndroidBridge::initialiseOIS(d_frameListener, d_frameListener);
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------OIS initialized" );
-#endif
+    // create frame listener
+    d_frameListener= new CEGuiDemoFrameListener(this, d_sampleApp, d_window, d_camera);
+    d_ogreRoot->addFrameListener(d_frameListener);
+    OgreBites::OgreAndroidBridge::initialiseOIS(d_frameListener, d_frameListener);
 
-        // add a listener for OS framework window events (for resizing)
-#ifdef __ANDROID__
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------window event listener creating " );
-        d_windowEventListener = new WndEvtListener();
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------window event listener created" );
-#else
-        d_windowEventListener = new WndEvtListener(d_frameListener->getOISMouse());
-#endif
-        Ogre::WindowEventUtilities::addWindowEventListener(d_window,
-                                                     d_windowEventListener);
-
-      
-        d_ogreRoot->addFrameListener(this);
-        renderer.setRenderingEnabled(false);
-
-        d_initialised = true;
-   
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- bootstrap complete!!" );
+    d_windowEventListener = new WndEvtListener();
+    Ogre::WindowEventUtilities::addWindowEventListener(d_window,
+            d_windowEventListener);
+    d_ogreRoot->addFrameListener(this);
+    renderer.setRenderingEnabled(false);
+    d_initialised = true;
 }
 
 #endif
@@ -357,9 +307,7 @@ void CEGuiOgreBaseApplication::run()
     CEGUI_TRY
     {
 #ifdef __ANDROID__
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- GO!!" );
         OgreBites::OgreAndroidBridge::go();
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- done go!!" );
 #else
         d_ogreRoot->startRendering();
 #endif
@@ -377,11 +325,6 @@ void CEGuiOgreBaseApplication::destroyWindow()
 //----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::beginRendering(const float elapsed)
 {
-    //d_window->invalidate();
-    //d_window->clear();
-    #ifdef __ANDROID__
-    //    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "begin rendering" );
-    #endif
     // this is nover called under Ogre, since we're not in control of the
     // rendering process.
 }
@@ -397,7 +340,6 @@ void CEGuiOgreBaseApplication::endRendering()
 void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 {
 #ifdef __ANDROID__
-    __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "--------------initialiseResourceGroupDirectories!!" );
     return;
 #endif
     using namespace Ogre;
@@ -745,9 +687,6 @@ WndEvtListener::WndEvtListener(OIS::Mouse* mouse) :
 //----------------------------------------------------------------------------//
 void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 {
-#ifdef __ANDROID__
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-----resize called!!!" );
-#endif
     CEGUI::System* const sys = CEGUI::System::getSingletonPtr();
     if (sys)
         sys->notifyDisplaySizeChanged(
