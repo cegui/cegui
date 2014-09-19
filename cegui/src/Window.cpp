@@ -609,7 +609,7 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
             // recursively scan for hit on children of this child window...
             if (Window* const wnd = (*child)->getChildAtPosition(p, hittestfunc, allow_disabled))
                 return wnd;
-            // see if this child is hit and return it's pointer if it is
+            // see if this child is hit and return it's cursor if it is
             else if (((*child)->*hittestfunc)(p, allow_disabled))
                 return *child;
         }
@@ -1413,7 +1413,7 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "CursorPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
+        "CursorPassThroughEnabled", "Property to get/set whether the window ignores cursor events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
         &Window::setCursorPassThroughEnabled, &Window::isCursorPassThroughEnabled, false
     );
 
@@ -2536,7 +2536,7 @@ void Window::onPointerMove(PointerEventArgs& e)
         return;
     }
 
-    // by default we now mark pointer events as handled
+    // by default we now mark cursor events as handled
     // (derived classes may override, of course!)
     ++e.handled;
 }
@@ -2556,7 +2556,7 @@ void Window::onScroll(PointerEventArgs& e)
         return;
     }
 
-    // by default we now mark pointer events as handled
+    // by default we now mark cursor events as handled
     // (derived classes may override, of course!)
     ++e.handled;
 }
@@ -2600,7 +2600,7 @@ void Window::onPointerPressHold(PointerEventArgs& e)
         return;
     }
 
-    // by default we now mark pointer events as handled
+    // by default we now mark cursor events as handled
     // (derived classes may override, of course!)
     ++e.handled;
 }

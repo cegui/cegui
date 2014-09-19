@@ -89,7 +89,7 @@ protected:
     bool handleRestartButtonClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
-    void createScorePopup(const glm::vec2& pointerPos, int points);
+    void createScorePopup(const glm::vec2& cursor_pos, int points);
 
     void handleLivesChanged();
 
