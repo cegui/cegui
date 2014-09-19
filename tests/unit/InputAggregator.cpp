@@ -300,7 +300,7 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
         d_inputEventReceiver->d_semanticValues.end());
 }
 
-BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
+BOOST_AUTO_TEST_CASE(MouseButtonDownToCursorHold)
 {
     std::vector<SemanticValue> expected_values;
     expected_values.push_back(SV_CursorPressHold);
@@ -338,7 +338,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndShiftToSelectMultiple)
         d_inputEventReceiver->d_semanticValues.end());
 }
 
-BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
+BOOST_AUTO_TEST_CASE(MouseButtonUpToCursorActivate)
 {
     std::vector<SemanticValue> expected_values;
     expected_values.push_back(SV_CursorActivate);
@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
         d_inputEventReceiver->d_semanticValues.end());
 }
 
-BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
+BOOST_AUTO_TEST_CASE(MouseClickToCursorActivate)
 {
     std::vector<SemanticValue> expected_values;
     expected_values.push_back(SV_CursorActivate);

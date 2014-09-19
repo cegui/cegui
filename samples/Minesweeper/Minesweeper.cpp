@@ -78,7 +78,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
-    // set default pointer image
+    // set default cursor image
     guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background

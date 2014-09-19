@@ -1136,9 +1136,9 @@ bool ColourPickerControls::handleAlphaSliderValueChanged(const EventArgs& args)
 bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
     const EventArgs& args)
 {
-    const CursorInputEventArgs& pointerArgs = static_cast<const CursorInputEventArgs&>(args);
+    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (pointerArgs.source == CIS_Left)
+    if (cursor_args.source == CIS_Left)
         d_draggingColourPickerIndicator = false;
 
     return true;
@@ -1148,13 +1148,13 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
     const EventArgs& args)
 {
-    const CursorInputEventArgs& pointerArgs = static_cast<const CursorInputEventArgs&>(args);
+    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (pointerArgs.source == CIS_Left)
+    if (cursor_args.source == CIS_Left)
     {
         d_draggingColourPickerIndicator = true;
 
-        refreshColourPickerIndicatorPosition(pointerArgs);
+        refreshColourPickerIndicatorPosition(cursor_args);
     }
 
     return true;

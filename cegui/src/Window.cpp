@@ -1293,13 +1293,13 @@ void Window::setDestroyedByParent(bool setting)
 //----------------------------------------------------------------------------//
 void Window::generateAutoRepeatEvent(CursorInputSource source)
 {
-    CursorInputEventArgs pa(this);
-    pa.position = getUnprojectedPosition(
+    CursorInputEventArgs ciea(this);
+    ciea.position = getUnprojectedPosition(
         getGUIContext().getCursor().getPosition());
-    pa.moveDelta = glm::vec2(0, 0);
-    pa.source = source;
-    pa.scroll = 0;
-    onCursorPressHold(pa);
+    ciea.moveDelta = glm::vec2(0, 0);
+    ciea.source = source;
+    ciea.scroll = 0;
+    onCursorPressHold(ciea);
 }
 
 //----------------------------------------------------------------------------//

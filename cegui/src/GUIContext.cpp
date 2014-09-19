@@ -349,7 +349,7 @@ void GUIContext::updateWindowContainingCursor()
 //----------------------------------------------------------------------------//
 bool GUIContext::updateWindowContainingCursor_impl() const
 {
-    CursorInputEventArgs pa(0);
+    CursorInputEventArgs ciea(0);
     const glm::vec2 cursor_pos(d_cursor.getPosition());
 
     Window* const window_with_cursor = getTargetWindow(cursor_pos, true);
@@ -358,8 +358,8 @@ bool GUIContext::updateWindowContainingCursor_impl() const
     if (window_with_cursor == d_windowContainingCursor)
         return false;
 
-    pa.scroll = 0;
-    pa.source = CIS_None;
+    ciea.scroll = 0;
+    ciea.source = CIS_None;
 
     Window* oldWindow = d_windowContainingCursor;
     d_windowContainingCursor = window_with_cursor;
@@ -367,28 +367,28 @@ bool GUIContext::updateWindowContainingCursor_impl() const
     // inform previous window the cursor has left it
     if (oldWindow)
     {
-        pa.window = oldWindow;
-        pa.position = oldWindow->getUnprojectedPosition(cursor_pos);
-        oldWindow->onCursorLeaves(pa);
+        ciea.window = oldWindow;
+        ciea.position = oldWindow->getUnprojectedPosition(cursor_pos);
+        oldWindow->onCursorLeaves(ciea);
     }
 
     // inform window containing cursor that cursor has entered it
     if (d_windowContainingCursor)
     {
-        pa.handled = 0;
-        pa.window = d_windowContainingCursor;
-        pa.position = d_windowContainingCursor->getUnprojectedPosition(cursor_pos);
-        d_windowContainingCursor->onCursorEnters(pa);
+        ciea.handled = 0;
+        ciea.window = d_windowContainingCursor;
+        ciea.position = d_windowContainingCursor->getUnprojectedPosition(cursor_pos);
+        d_windowContainingCursor->onCursorEnters(ciea);
     }
 
     // do the 'area' version of the events
     Window* root = getCommonAncestor(oldWindow, d_windowContainingCursor);
 
     if (oldWindow)
-        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, pa);
+        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
 
     if (d_windowContainingCursor)
-        notifyCursorTransition(root, d_windowContainingCursor, &Window::onCursorEntersArea, pa);
+        notifyCursorTransition(root, d_windowContainingCursor, &Window::onCursorEntersArea, ciea);
 
     return true;
 }
@@ -729,66 +729,66 @@ void GUIContext::deleteSemanticEventHandlers()
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs pa(0);
-    pa.position = d_cursor.getPosition();
-    pa.moveDelta = glm::vec2(0, 0);
-    pa.source = event.d_payload.source;
-    pa.scroll = 0;
-    pa.window = getTargetWindow(pa.position, false);
+    CursorInputEventArgs ciea(0);
+    ciea.position = d_cursor.getPosition();
+    ciea.moveDelta = glm::vec2(0, 0);
+    ciea.source = event.d_payload.source;
+    ciea.scroll = 0;
+    ciea.window = getTargetWindow(ciea.position, false);
     // make cursor position sane for this target window
-    if (pa.window)
-        pa.position = pa.window->getUnprojectedPosition(pa.position);
+    if (ciea.window)
+        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
 
     // if there is no target window, input can not be handled.
-    if (!pa.window)
+    if (!ciea.window)
         return false;
 
     if (d_windowNavigator != 0)
-        d_windowNavigator->setCurrentFocusedWindow(pa.window);
+        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
-    pa.window->onCursorActivate(pa);
-    return pa.handled != 0;
+    ciea.window->onCursorActivate(ciea);
+    return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs pa(0);
-    pa.position = d_cursor.getPosition();
-    pa.moveDelta = glm::vec2(0, 0);
-    pa.source = event.d_payload.source;
-    pa.scroll = 0;
-    pa.window = getTargetWindow(pa.position, false);
+    CursorInputEventArgs ciea(0);
+    ciea.position = d_cursor.getPosition();
+    ciea.moveDelta = glm::vec2(0, 0);
+    ciea.source = event.d_payload.source;
+    ciea.scroll = 0;
+    ciea.window = getTargetWindow(ciea.position, false);
     // make cursor position sane for this target window
-    if (pa.window)
-        pa.position = pa.window->getUnprojectedPosition(pa.position);
+    if (ciea.window)
+        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
 
     if (d_windowNavigator != 0)
-        d_windowNavigator->setCurrentFocusedWindow(pa.window);
+        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
-    pa.window->onCursorPressHold(pa);
-    return pa.handled != 0;
+    ciea.window->onCursorPressHold(ciea);
+    return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs pa(0);
-    pa.position = d_cursor.getPosition();
-    pa.moveDelta = glm::vec2(0, 0);
-    pa.source = CIS_None;
-    pa.scroll = event.d_payload.single;
-    pa.window = getTargetWindow(pa.position, false);
+    CursorInputEventArgs ciea(0);
+    ciea.position = d_cursor.getPosition();
+    ciea.moveDelta = glm::vec2(0, 0);
+    ciea.source = CIS_None;
+    ciea.scroll = event.d_payload.single;
+    ciea.window = getTargetWindow(ciea.position, false);
     // make cursor position sane for this target window
-    if (pa.window)
-        pa.position = pa.window->getUnprojectedPosition(pa.position);
+    if (ciea.window)
+        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
 
     // if there is no target window, input can not be handled.
-    if (!pa.window)
+    if (!ciea.window)
         return false;
 
-    pa.window->onScroll(pa);
-    return pa.handled != 0;
+    ciea.window->onScroll(ciea);
+    return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -819,23 +819,23 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
         event.d_payload.array[1]);
 
     // setup cursor movement event args object.
-    CursorInputEventArgs pa(0);
-    pa.moveDelta = new_position - d_cursor.getPosition();
+    CursorInputEventArgs ciea(0);
+    ciea.moveDelta = new_position - d_cursor.getPosition();
 
     // no movement means no event
-    if ((pa.moveDelta.x == 0) && (pa.moveDelta.y == 0))
+    if ((ciea.moveDelta.x == 0) && (ciea.moveDelta.y == 0))
         return false;
 
-    pa.scroll = 0;
-    pa.source = CIS_None;
-    pa.state = d_cursorsState;
+    ciea.scroll = 0;
+    ciea.source = CIS_None;
+    ciea.state = d_cursorsState;
 
     // move cursor to new position
     d_cursor.setPosition(new_position);
     // update position in args (since actual position may be constrained)
-    pa.position = d_cursor.getPosition();
+    ciea.position = d_cursor.getPosition();
 
-    return handleCursorMove_impl(pa);
+    return handleCursorMove_impl(ciea);
 }
 
 //----------------------------------------------------------------------------//
@@ -844,18 +844,18 @@ bool GUIContext::handleCursorLeave(const SemanticInputEvent& event)
     if (!getWindowContainingCursor())
         return false;
 
-    CursorInputEventArgs pa(0);
-    pa.position = getWindowContainingCursor()->getUnprojectedPosition(
+    CursorInputEventArgs ciea(0);
+    ciea.position = getWindowContainingCursor()->getUnprojectedPosition(
         d_cursor.getPosition());
-    pa.moveDelta = glm::vec2(0, 0);
-    pa.source = CIS_None;
-    pa.scroll = 0;
-    pa.window = getWindowContainingCursor();
+    ciea.moveDelta = glm::vec2(0, 0);
+    ciea.source = CIS_None;
+    ciea.scroll = 0;
+    ciea.window = getWindowContainingCursor();
 
-    getWindowContainingCursor()->onCursorLeaves(pa);
+    getWindowContainingCursor()->onCursorLeaves(ciea);
     resetWindowContainingCursor();
 
-    return pa.handled != 0;
+    return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//

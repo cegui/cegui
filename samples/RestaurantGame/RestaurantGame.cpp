@@ -355,13 +355,13 @@ void RestaurantGameSample::updateScoreWindow()
 
 bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& args)
 {
-    const CEGUI::CursorInputEventArgs& pointerArgs = static_cast<const CEGUI::CursorInputEventArgs&>(args);
+    const CEGUI::CursorInputEventArgs& cursor_args = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
     for(unsigned int i = 0; i < d_gamePlates.size(); ++i)
     {
         GamePlate* gamePlate = d_gamePlates[i];
 
-        if(gamePlate->d_window == pointerArgs.window)
+        if(gamePlate->d_window == cursor_args.window)
         {
             int points = gamePlate->getPoints();
             d_score += points;
@@ -383,20 +383,20 @@ bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& ar
             }
 
             gamePlate->d_isDestroyed = true;
-            createScorePopup(pointerArgs.position, points);
+            createScorePopup(cursor_args.position, points);
         }
     }
 
     return false;
 }
 
-void RestaurantGameSample::createScorePopup(const glm::vec2& pointerPos, int points)
+void RestaurantGameSample::createScorePopup(const glm::vec2& cursor_pos, int points)
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameSample/PopupLabel");
     d_rootIngame->addChild(popupWindow);
-    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(pointerPos.x), cegui_absdim(pointerPos.y)));
+    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(cursor_pos.x), cegui_absdim(cursor_pos.y)));
     popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));

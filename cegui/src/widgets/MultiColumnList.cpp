@@ -1918,7 +1918,7 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when pointer is pressed
+    Handler for when cursor is pressed
 *************************************************************************/
 void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
 {
