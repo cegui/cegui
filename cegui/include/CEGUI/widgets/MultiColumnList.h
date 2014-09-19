@@ -1657,8 +1657,8 @@ protected:
 	*************************************************************************/
 	virtual	void	onFontChanged(WindowEventArgs& e);
 	virtual void	onSized(ElementEventArgs& e);
-    virtual void    onPointerPressHold(PointerEventArgs& e);
-    virtual void    onScroll(PointerEventArgs& e);
+    virtual void    onPointerPressHold(CursorInputEventArgs& e);
+    virtual void    onScroll(CursorInputEventArgs& e);
     virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************

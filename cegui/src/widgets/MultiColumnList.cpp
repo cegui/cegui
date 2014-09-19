@@ -1920,7 +1920,7 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 /*************************************************************************
     Handler for when pointer is pressed
 *************************************************************************/
-void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
+void MultiColumnList::onPointerPressHold(CursorInputEventArgs& e)
 {
     // base class processing
     Window::onPointerPressHold(e);
@@ -1952,7 +1952,7 @@ void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
 /*************************************************************************
     Handler for scroll actions
 *************************************************************************/
-void MultiColumnList::onScroll(PointerEventArgs& e)
+void MultiColumnList::onScroll(CursorInputEventArgs& e)
 {
 	// base class processing.
 	Window::onScroll(e);

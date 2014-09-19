@@ -453,7 +453,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onPointerPressHold(PointerEventArgs& e)
+void Editbox::onPointerPressHold(CursorInputEventArgs& e)
 {
     // base class handling
     Window::onPointerPressHold(e);
@@ -480,7 +480,7 @@ void Editbox::onPointerPressHold(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onPointerActivate(PointerEventArgs& e)
+void Editbox::onPointerActivate(CursorInputEventArgs& e)
 {
     // base class processing
     Window::onPointerActivate(e);
@@ -493,7 +493,7 @@ void Editbox::onPointerActivate(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onPointerMove(PointerEventArgs& e)
+void Editbox::onPointerMove(CursorInputEventArgs& e)
 {
     // base class processing
     Window::onPointerMove(e);

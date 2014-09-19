@@ -74,7 +74,7 @@ void ToggleButton::onSelectStateChange(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ToggleButton::onPointerActivate(PointerEventArgs& e)
+void ToggleButton::onPointerActivate(CursorInputEventArgs& e)
 {
     if (e.source == PS_Left && isPushed())
     {

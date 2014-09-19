@@ -302,10 +302,10 @@ public:
     EventArgs based class that is used for objects passed to input event handlers
     concerning cursor input.
 */
-class CEGUIEXPORT PointerEventArgs : public WindowEventArgs
+class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
-    PointerEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
     glm::vec2       position;       //!< holds current cursor position.
     glm::vec2       moveDelta;      //!< holds variation of cursor position from last cursor input

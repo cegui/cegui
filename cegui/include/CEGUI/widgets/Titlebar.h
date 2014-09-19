@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface for a Titlebar Widget
 *************************************************************************/
 /***************************************************************************
@@ -108,9 +108,9 @@ protected:
 	/*************************************************************************
 		Overridden event handler functions
 	*************************************************************************/
-	virtual void	onPointerMove(PointerEventArgs& e);
-    virtual void    onPointerPressHold(PointerEventArgs& e);
-    virtual void    onPointerActivate(PointerEventArgs& e);
+    virtual void    onPointerMove(CursorInputEventArgs& e);
+    virtual void    onPointerPressHold(CursorInputEventArgs& e);
+    virtual void    onPointerActivate(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onFontChanged(WindowEventArgs &e);
     virtual void    onSemanticInputEvent(SemanticEventArgs& e);
@@ -122,7 +122,7 @@ protected:
 	/*!
 	\brief
 		Event handler called when the 'draggable' state for the title bar is changed.
-		
+
 		Note that this is for 'internal' use at the moment and as such does not add or
 		fire a public Event that can be subscribed to.
 	*/

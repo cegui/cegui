@@ -1185,7 +1185,7 @@ void MultiLineEditbox::handlePageDown(bool select)
 /*************************************************************************
     Handler for when a cursor is pressed
 *************************************************************************/
-void MultiLineEditbox::onPointerPressHold(PointerEventArgs& e)
+void MultiLineEditbox::onPointerPressHold(CursorInputEventArgs& e)
 {
 	// base class handling
     Window::onPointerPressHold(e);
@@ -1210,7 +1210,7 @@ void MultiLineEditbox::onPointerPressHold(PointerEventArgs& e)
 /*************************************************************************
     Handler for when cursor is activated
 *************************************************************************/
-void MultiLineEditbox::onPointerActivate(PointerEventArgs& e)
+void MultiLineEditbox::onPointerActivate(CursorInputEventArgs& e)
 {
 	// base class processing
     Window::onPointerActivate(e);
@@ -1225,7 +1225,7 @@ void MultiLineEditbox::onPointerActivate(PointerEventArgs& e)
 /*************************************************************************
 	Handler for when cursor moves in the window.
 *************************************************************************/
-void MultiLineEditbox::onPointerMove(PointerEventArgs& e)
+void MultiLineEditbox::onPointerMove(CursorInputEventArgs& e)
 {
 	// base class processing
 	Window::onPointerMove(e);
@@ -1355,7 +1355,7 @@ void MultiLineEditbox::onSized(ElementEventArgs& e)
 /*************************************************************************
     Handler for scroll actions
 *************************************************************************/
-void MultiLineEditbox::onScroll(PointerEventArgs& e)
+void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
 {
 	// base class processing.
 	Window::onScroll(e);

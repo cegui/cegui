@@ -86,7 +86,7 @@ void TabButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void TabButton::onPointerPressHold(PointerEventArgs& e)
+void TabButton::onPointerPressHold(CursorInputEventArgs& e)
 {
     if (e.source == PS_Middle)
     {
@@ -101,7 +101,7 @@ void TabButton::onPointerPressHold(PointerEventArgs& e)
     ButtonBase::onPointerPressHold(e);
 }
 
-void TabButton::onPointerActivate(PointerEventArgs& e)
+void TabButton::onPointerActivate(CursorInputEventArgs& e)
 {
     if ((e.source == PS_Left) && isPushed())
 	{
@@ -133,7 +133,7 @@ void TabButton::onPointerActivate(PointerEventArgs& e)
     ButtonBase::onPointerActivate(e);
 }
 
-void TabButton::onPointerMove(PointerEventArgs& e)
+void TabButton::onPointerMove(CursorInputEventArgs& e)
 {
     if (d_dragging)
     {
@@ -145,7 +145,7 @@ void TabButton::onPointerMove(PointerEventArgs& e)
 	ButtonBase::onPointerMove(e);
 }
 
-void TabButton::onScroll(PointerEventArgs& e)
+void TabButton::onScroll(CursorInputEventArgs& e)
 {
     fireEvent(EventScrolled, e, EventNamespace);
 

@@ -1293,7 +1293,7 @@ void Window::setDestroyedByParent(bool setting)
 //----------------------------------------------------------------------------//
 void Window::generateAutoRepeatEvent(PointerSource source)
 {
-    PointerEventArgs pa(this);
+    CursorInputEventArgs pa(this);
     pa.position = getUnprojectedPosition(
         getGUIContext().getCursor().getPosition());
     pa.moveDelta = glm::vec2(0, 0);
@@ -2477,21 +2477,21 @@ void Window::onChildRemoved(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorEntersArea(PointerEventArgs& e)
+void Window::onCursorEntersArea(CursorInputEventArgs& e)
 {
     d_containsPointer = true;
     fireEvent(EventCursorEntersArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorLeavesArea(PointerEventArgs& e)
+void Window::onCursorLeavesArea(CursorInputEventArgs& e)
 {
     d_containsPointer = false;
     fireEvent(EventCursorLeavesArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerEnters(PointerEventArgs& e)
+void Window::onPointerEnters(CursorInputEventArgs& e)
 {
     // set the cursor
     getGUIContext().getCursor().setImage(getCursor());
@@ -2505,7 +2505,7 @@ void Window::onPointerEnters(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerLeaves(PointerEventArgs& e)
+void Window::onPointerLeaves(CursorInputEventArgs& e)
 {
     // perform tooltip control
     const Window* const mw = getGUIContext().getWindowContainingPointer();
@@ -2517,7 +2517,7 @@ void Window::onPointerLeaves(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerMove(PointerEventArgs& e)
+void Window::onPointerMove(CursorInputEventArgs& e)
 {
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2542,7 +2542,7 @@ void Window::onPointerMove(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onScroll(PointerEventArgs& e)
+void Window::onScroll(CursorInputEventArgs& e)
 {
     fireEvent(EventScroll, e, EventNamespace);
 
@@ -2562,7 +2562,7 @@ void Window::onScroll(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerPressHold(PointerEventArgs& e)
+void Window::onPointerPressHold(CursorInputEventArgs& e)
 {
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2606,7 +2606,7 @@ void Window::onPointerPressHold(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onPointerActivate(PointerEventArgs& e)
+void Window::onPointerActivate(CursorInputEventArgs& e)
 {
     // reset auto-repeat state
     if (d_autoRepeat && d_repeatPointerSource != PS_None)

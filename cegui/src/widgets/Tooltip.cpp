@@ -338,7 +338,7 @@ namespace CEGUI
         }
     }
 
-    void Tooltip::onPointerEnters(PointerEventArgs& e)
+    void Tooltip::onPointerEnters(CursorInputEventArgs& e)
     {
         positionSelf();
 

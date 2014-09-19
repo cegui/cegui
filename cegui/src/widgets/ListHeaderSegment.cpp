@@ -411,7 +411,7 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_curso
 /*************************************************************************
     Handler for when cursor position changes in widget area (or captured)
 *************************************************************************/
-void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
+void ListHeaderSegment::onPointerMove(CursorInputEventArgs& e)
 {
 	// base class processing
 	Window::onPointerMove(e);
@@ -478,7 +478,7 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 /*************************************************************************
     Handler for when cursor is pressed
 *************************************************************************/
-void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
+void ListHeaderSegment::onPointerPressHold(CursorInputEventArgs& e)
 {
 	// base class processing
     Window::onPointerPressHold(e);
@@ -516,7 +516,7 @@ void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 /*************************************************************************
     Handler for when the cursor is activated
 *************************************************************************/
-void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
+void ListHeaderSegment::onPointerActivate(CursorInputEventArgs& e)
 {
 	// base class processing
     Window::onPointerActivate(e);
@@ -546,7 +546,7 @@ void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 /*************************************************************************
     Handler for when cursor leaves the widget area (uncaptured)
 *************************************************************************/
-void ListHeaderSegment::onPointerLeaves(PointerEventArgs& e)
+void ListHeaderSegment::onPointerLeaves(CursorInputEventArgs& e)
 {
 	// base class processing
     Window::onPointerLeaves(e);

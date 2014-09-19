@@ -1136,7 +1136,7 @@ bool ColourPickerControls::handleAlphaSliderValueChanged(const EventArgs& args)
 bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
     const EventArgs& args)
 {
-    const PointerEventArgs& pointerArgs = static_cast<const PointerEventArgs&>(args);
+    const CursorInputEventArgs& pointerArgs = static_cast<const CursorInputEventArgs&>(args);
 
     if (pointerArgs.source == PS_Left)
         d_draggingColourPickerIndicator = false;
@@ -1148,7 +1148,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
     const EventArgs& args)
 {
-    const PointerEventArgs& pointerArgs = static_cast<const PointerEventArgs&>(args);
+    const CursorInputEventArgs& pointerArgs = static_cast<const CursorInputEventArgs&>(args);
 
     if (pointerArgs.source == PS_Left)
     {
@@ -1166,7 +1166,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerMove(
 {
     if (d_colourPickerIndicator && d_draggingColourPickerIndicator)
         refreshColourPickerIndicatorPosition(
-            static_cast<const PointerEventArgs&>(args));
+            static_cast<const CursorInputEventArgs&>(args));
 
     return true;
 }
@@ -1403,7 +1403,7 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition()
 
 //----------------------------------------------------------------------------//
 void ColourPickerControls::refreshColourPickerIndicatorPosition(
-    const PointerEventArgs& pointerEventArgs)
+    const CursorInputEventArgs& pointerEventArgs)
 {
     const glm::vec2 position = pointerEventArgs.position;
 

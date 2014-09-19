@@ -133,7 +133,7 @@ void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
 /*************************************************************************
 	Handler for cursor movement events
 *************************************************************************/
-void ComboDropList::onPointerMove(PointerEventArgs& e)
+void ComboDropList::onPointerMove(CursorInputEventArgs& e)
 {
     ListWidget::onPointerMove(e);
 
@@ -182,7 +182,7 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 /*************************************************************************
     Handler for cursor pressed events
 *************************************************************************/
-void ComboDropList::onPointerPressHold(PointerEventArgs& e)
+void ComboDropList::onPointerPressHold(CursorInputEventArgs& e)
 {
     ListWidget::onPointerPressHold(e);
 
@@ -206,7 +206,7 @@ void ComboDropList::onPointerPressHold(PointerEventArgs& e)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void ComboDropList::onPointerActivate(PointerEventArgs& e)
+void ComboDropList::onPointerActivate(CursorInputEventArgs& e)
 {
     ListWidget::onPointerActivate(e);
 
