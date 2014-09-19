@@ -75,7 +75,7 @@ find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
 find_package(Fribidi)
-if (NOT WIN32 OR NOT ANDROID)
+if (NOT WIN32 AND NOT ANDROID)
     find_package(Iconv REQUIRED)
 endif()
 
