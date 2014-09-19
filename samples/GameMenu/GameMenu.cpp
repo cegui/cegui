@@ -544,9 +544,9 @@ bool GameMenuSample::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& ar
 
 bool GameMenuSample::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args)
 {
-    const CEGUI::CursorInputEventArgs& pointerArgs = static_cast<const CEGUI::CursorInputEventArgs&>(args);
+    const CEGUI::CursorInputEventArgs& cursor_args = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
-    CEGUI::Window* iconWindow = getIconWindowFromLabel(pointerArgs.window);
+    CEGUI::Window* iconWindow = getIconWindowFromLabel(cursor_args.window);
 
     CEGUI::EventArgs fireArgs;
     iconWindow->fireEvent("StartRotate", fireArgs);
@@ -556,9 +556,9 @@ bool GameMenuSample::handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args
 
 bool GameMenuSample::handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args)
 {
-    const CEGUI::CursorInputEventArgs& pointerArgs = static_cast<const CEGUI::CursorInputEventArgs&>(args);
+    const CEGUI::CursorInputEventArgs& cursor_args = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
-    CEGUI::Window* iconWindow = getIconWindowFromLabel(pointerArgs.window);
+    CEGUI::Window* iconWindow = getIconWindowFromLabel(cursor_args.window);
 
     CEGUI::EventArgs fireArgs;
     iconWindow->fireEvent("StopRotate", fireArgs);

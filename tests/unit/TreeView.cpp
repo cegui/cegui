@@ -317,7 +317,7 @@ BOOST_AUTO_TEST_CASE(InitialState_NoSubtreesOpenedAndCountIsComputedRight)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(PointerMoved_OverSubtreeExpander_DoesNotTriggerExpanding)
+BOOST_AUTO_TEST_CASE(CursorMoved_OverSubtreeExpander_DoesNotTriggerExpanding)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
     view->prepareForRender();
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(PointerMoved_OverSubtreeExpander_DoesNotTriggerExpanding)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseEventsFired)
+BOOST_AUTO_TEST_CASE(CursorPressed_ExpandAndCollapseEventsFired)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_CASE(PointerPressed_ExpandAndCollapseEventsFired)
 }
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(PointerPressed_ExpandChild)
+BOOST_AUTO_TEST_CASE(CursorPressed_ExpandChild)
 {
     model.addRandomItemWithChildren(model.getRootIndex(), 0, 3);
     model.addRandomItemWithChildren(model.makeIndex(0, model.getRootIndex()), 0, 3);

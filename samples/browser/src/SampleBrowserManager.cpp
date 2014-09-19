@@ -124,9 +124,9 @@ bool SampleBrowserManager::handlePointerActivateSampleWindow(const CEGUI::EventA
 
 bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs& args)
 {
-    const CursorInputEventArgs& pointerArgs(static_cast<const CursorInputEventArgs&>(args));
+    const CursorInputEventArgs& cursor_args(static_cast<const CursorInputEventArgs&>(args));
 
-    CEGUI::Window* wnd(pointerArgs.window);
+    CEGUI::Window* wnd(cursor_args.window);
 
     if(d_selectedWindow != wnd)
     {
@@ -137,12 +137,12 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
     const CEGUI::String& lookNFeel(wnd->getLookNFeel());
     CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
 
-    const glm::vec2& pointerPos(pointerArgs.position);
+    const glm::vec2& cursor_pos(cursor_args.position);
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 
-    const float relPosX = (pointerPos.x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
-    const float relPosY = (pointerPos.y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
+    const float relPosX = (cursor_pos.x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
+    const float relPosY = (cursor_pos.y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
 
     if (relPosX >= 0.0f && relPosX <= 1.0f && relPosY >= 0.0f && relPosY <= 1.0f)
     {
@@ -167,9 +167,9 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
 
 bool SampleBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
 {
-    const CursorInputEventArgs& pointerArgs(static_cast<const CursorInputEventArgs&>(args));
+    const CursorInputEventArgs& cursor_args(static_cast<const CursorInputEventArgs&>(args));
 
-    CEGUI::Window* wnd(pointerArgs.window);
+    CEGUI::Window* wnd(cursor_args.window);
     wnd->setCursor("SampleBrowserSkin/MouseArrow");
 
     return true;

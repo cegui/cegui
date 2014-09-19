@@ -84,7 +84,7 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 
     if(dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
     {
-        logMessage += "PointerEvent";
+        logMessage += "CursorInputEvent";
     }
     else if(dynamic_cast<const CEGUI::CursorEventArgs*>(&args))
     {
@@ -242,7 +242,7 @@ bool WidgetsSample::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 
 bool WidgetsSample::handleRenderingEnded(const CEGUI::EventArgs& args)
 {
-    d_windowLightPointerMoveEvent->disable();
+    d_windowLightCursorMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();
 
     return true;
@@ -489,7 +489,7 @@ void WidgetsSample::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI
 {
     if (eventName == CEGUI::Window::EventCursorMove)
     {
-        d_windowLightPointerMoveEvent->enable();
+        d_windowLightCursorMoveEvent->enable();
     }
     else if (eventName == CEGUI::Window::EventUpdated)
     {
@@ -560,18 +560,18 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     updateEventLabel->setFont("DejaVuSans-12-NoScale");
     updateEventLabel->setProperty("HorzFormatting", "LeftAligned");
 
-    d_windowLightPointerMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
-    horizontalLayout->addChild(d_windowLightPointerMoveEvent);
-    d_windowLightPointerMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
-    d_windowLightPointerMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
-    d_windowLightPointerMoveEvent->setProperty("LightColour", "FF77BBFF");
+    d_windowLightCursorMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
+    horizontalLayout->addChild(d_windowLightCursorMoveEvent);
+    d_windowLightCursorMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
+    d_windowLightCursorMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
+    d_windowLightCursorMoveEvent->setProperty("LightColour", "FF77BBFF");
 
-    CEGUI::Window* pointerMoveEventLabel = winMgr.createWindow("Vanilla/Label");
-    horizontalLayout->addChild(pointerMoveEventLabel);
-    pointerMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
-    pointerMoveEventLabel->setText("EventCursorMove");
-    pointerMoveEventLabel->setFont("DejaVuSans-12-NoScale");
-    pointerMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
+    CEGUI::Window* cursor_move_event_label = winMgr.createWindow("Vanilla/Label");
+    horizontalLayout->addChild(cursor_move_event_label);
+    cursor_move_event_label->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
+    cursor_move_event_label->setText("EventCursorMove");
+    cursor_move_event_label->setFont("DejaVuSans-12-NoScale");
+    cursor_move_event_label->setProperty("HorzFormatting", "LeftAligned");
 }
 
 void WidgetsSample::logFiredEvent(const CEGUI::String& logMessage)
