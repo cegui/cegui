@@ -97,7 +97,7 @@ endif ()
 
 if (WIN32 AND NOT MINGW)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} winmm debug DbgHelp)
-elseif (UNIX AND NOT APPLE)
+elseif (UNIX AND NOT APPLE AND NOT ANDROID)
     # This is intentionally not using 'cegui_target_link_libraries'
     target_link_libraries(${CEGUI_TARGET_NAME} ${CMAKE_DL_LIBS})
 elseif (MINGW)
