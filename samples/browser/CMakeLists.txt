@@ -109,8 +109,6 @@ endif()
 set(COMBINED_HEADER_FILES ${CORE_HEADER_FILES} ${COMMON_HEADER_FILES})
 set(COMBINED_SOURCE_FILES ${CORE_SOURCE_FILES} ${COMMON_SOURCE_FILES})
 
-message( "---------_____======================---------------")
-message( "iterating list ${SAMPLES_LIST}")
 # We iterate through all added Samples and add the sources and headers to the combined headers and sources
 foreach(CUR_SAMPLE_DIR_NAME ${SAMPLES_LIST})
     message( "sample list ${CUR_SAMPLE_DIR_NAME}")
@@ -119,13 +117,9 @@ foreach(CUR_SAMPLE_DIR_NAME ${SAMPLES_LIST})
     set(SAMPLE_HEADER_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_HEADERS")
     set(SAMPLE_SOURCE_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_SOURCES")
 
-    message( "cpp list list     ${CUR_SAMPLE_DIR_NAME}_SAMPLE_SOURCES")
-    message( "cpp list list val ${${SAMPLE_SOURCE_LIST_NAME}}")
- 
     set(COMBINED_SOURCE_FILES ${COMBINED_SOURCE_FILES} ${${SAMPLE_SOURCE_LIST_NAME}})
     set(COMBINED_HEADER_FILES ${COMBINED_HEADER_FILES} ${${SAMPLE_HEADER_LIST_NAME}})
 endforeach()
-message( "cpp combined list ${COMBINED_SOURCE_FILES} ")
 
 # add additional include directories; provided by sample
 include_directories(${ADDITIONAL_INCLUDE_DIRS})
@@ -320,7 +314,6 @@ if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
             if (${OGRE_${comp}_FOUND})
                 include_directories(${OGRE_${comp}_INCLUDE_DIRS})
                 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${OGRE_${comp}_LIBRARIES})
-                message (" LIBS!!!!! ${OGRE_${comp}_LIBRARIES} ")
             endif()
         endforeach (comp)
     endif()
