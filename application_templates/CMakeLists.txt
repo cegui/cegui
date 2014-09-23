@@ -1,0 +1,21 @@
+option(CEGUI_BUILD_APPLICATION_TEMPLATE_SDL2 "Build application template for SDL2" OFF)
+option(CEGUI_BUILD_APPLICATION_TEMPLATE_GLFW3 "Build application template for glfw3" OFF)
+
+if(CEGUI_BUILD_APPLICATION_TEMPLATE_SDL2 AND CEGUI_BUILD_RENDERER_OPENGL)
+    add_executable(SDL2 SDL2.cpp)
+    add_dependencies(SDL2 ${CEGUI_BASE_LIBNAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
+    list(APPEND LIBS "SDL2")
+endif()
+
+if(CEGUI_BUILD_APPLICATION_TEMPLATE_GLFW3 AND CEGUI_BUILD_RENDERER_OPENGL)
+    add_executable(glfw3 glfw3.cpp)
+    add_dependencies(glfw3 ${CEGUI_BASE_LIBNAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
+    list(APPEND LIBS "glfw3")
+endif()
+
+if(NOT "${LIBS}" STREQUAL "")
+    message(STATUS "Please make sure you have the following libs (and corresponding dependencies) installed on your system:")
+    foreach(LIB ${LIBS})
+        message(STATUS ${LIB})
+    endforeach()
+endif()
