@@ -68,58 +68,6 @@ bool OgreBites::OgreAndroidBridge::androidWindowInitialized = false;
 android_app* OgreBites::OgreAndroidBridge::d_state = NULL;
 #endif
 
-#ifdef __ANDROID__
-void CEGuiOgreBaseApplication::android_init() {
-
-    d_ogreRoot = new Ogre::Root("", "", "Ogre.log"); //this is needed to avoid looking for plugins.cfg and failing 
-#define OGRE_STATIC_GLES2
-    d_staticPluginLoader = new Ogre::StaticPluginLoader();
-    d_staticPluginLoader->load();
-    int sizer = d_ogreRoot->getAvailableRenderers().size();
-    Ogre::RenderSystem* renderSystem = d_ogreRoot->getAvailableRenderers().at (0);
-    d_ogreRoot->setRenderSystem(renderSystem);
-    d_ogreRoot->initialise (false);
-    OgreBites::OgreAndroidBridge::initialiseFS();
-    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps (5); 
-    d_window = OgreBites::OgreAndroidBridge::createWindow(d_ogreRoot);
-    Ogre::Viewport* vp = d_window->addViewport(0);
-    vp->setBackgroundColour(Ogre::ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
-    vp->setClearEveryFrame(true, Ogre::FBT_COLOUR | Ogre::FBT_DEPTH | Ogre::FBT_STENCIL);
-    vp->setBackgroundColour(Ogre::ColourValue (0.0f, 0.0f, 0.0f, 0.0f));
-    d_window->setActive (true);
-    d_window->setVisible (true);
-    
-    Ogre::SceneManager* sm = d_ogreRoot-> createSceneManager(Ogre::ST_GENERIC, "SampleSceneMgr");
-    sm->setAmbientLight (Ogre::ColourValue (0.7, 0.7, 0.7)); 
-
-    // Create and initialise the camera
-    d_camera = sm->createCamera("SampleCam");
-    d_camera->setPosition(Ogre::Vector3(0,0,500));
-    d_camera->lookAt(Ogre::Vector3(0,0,-300));
-    d_camera->setNearClipDistance(5);
-
-    CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create( *d_window );
-    d_renderer = &renderer;
-    d_imageCodec = &renderer.createOgreImageCodec();
-    d_resourceProvider = &renderer.createOgreResourceProvider();
-
-    // create frame listener
-    d_frameListener= new CEGuiDemoFrameListener(this, d_sampleApp, d_window, d_camera);
-    d_ogreRoot->addFrameListener(d_frameListener);
-    OgreBites::OgreAndroidBridge::initialiseOIS(d_frameListener, d_frameListener);
-
-    d_windowEventListener = new WndEvtListener();
-    Ogre::WindowEventUtilities::addWindowEventListener(d_window,
-            d_windowEventListener);
-    d_ogreRoot->addFrameListener(this);
-    renderer.setRenderingEnabled(false);
-    d_initialised = true;
-}
-
-#endif
-
-
-
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
     d_ogreRoot(0),
@@ -127,10 +75,6 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
     d_frameListener(0),
     d_windowEventListener(0)
 {
-#ifdef __ANDROID__
-   android_init();
-#else
- 
     using namespace Ogre;
     
 #ifdef DEBUG
@@ -141,7 +85,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 #ifndef OGRE_STATIC_LIB
     d_ogreRoot = new Ogre::Root(pluginsFileName);
 #else
-    d_ogreRoot = new Ogre::Root();
+#   ifdef __ANDROID__
+        d_ogreRoot = new Ogre::Root("", "", "Ogre.log"); //this is needed to avoid looking for plugins.cfg
+#   else
+        d_ogreRoot = new Ogre::Root();
+#   endif
     d_staticPluginLoader = new Ogre::StaticPluginLoader();
     d_staticPluginLoader->load();
 #endif
@@ -150,8 +98,16 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
     if (d_ogreRoot->showConfigDialog())
     {
+#ifdef __ANDROID__
+        d_ogreRoot->setRenderSystem(d_ogreRoot->getAvailableRenderers().at (0));
+        d_ogreRoot->initialise (false);
+        OgreBites::OgreAndroidBridge::initialiseFS();
+        Ogre::TextureManager::getSingleton().setDefaultNumMipmaps (5);
+        d_window = OgreBites::OgreAndroidBridge::createWindow(d_ogreRoot);
+#else
         // initialise system according to user options.
         d_window = d_ogreRoot->initialise(true);
+#endif
 
 #if CEGUI_OGRE_VERSION_MAJOR < 2
         // Create the scene manager
@@ -234,7 +190,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 #else
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
-        vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
+        vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
 
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
@@ -243,7 +199,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         
 
         // create ogre renderer, image codec and resource provider.
+#ifdef __ANDROID__
+        CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create(*d_window);
+#else
         CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create();
+#endif
         d_renderer = &renderer;
         d_imageCodec = &renderer.createOgreImageCodec();
         d_resourceProvider = &renderer.createOgreResourceProvider();
@@ -251,13 +211,16 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // create frame listener
         d_frameListener= new CEGuiDemoFrameListener(this, d_sampleApp, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
-
+#ifdef __ANDROID__
+        OgreBites::OgreAndroidBridge::initialiseOIS(d_frameListener, d_frameListener);
+        d_windowEventListener = new WndEvtListener();
+#else
         // add a listener for OS framework window events (for resizing)
         d_windowEventListener = new WndEvtListener(d_frameListener->getOISMouse());
+#endif
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
 
-      
         d_ogreRoot->addFrameListener(this);
         renderer.setRenderingEnabled(false);
 
@@ -270,7 +233,6 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         delete d_ogreRoot;
         d_ogreRoot = 0;
     }
-#endif
 }
 
 //----------------------------------------------------------------------------//

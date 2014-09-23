@@ -108,9 +108,6 @@ protected:
     CEGuiDemoFrameListener* d_frameListener;
     WndEvtListener* d_windowEventListener;
 
-#ifdef __ANDROID__
-    void android_init();
-#endif
 };
 
 
