@@ -8,6 +8,7 @@
     <uses-sdk android:minSdkVersion="@ANDROID_NATIVE_API_LEVEL@" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />  
+    <uses-feature android:glEsVersion="@ANDROID_GLES_VERSION@" android:required="true"/>
 
     <application android:label="@ANDROID_MOD_NAME@" android:icon="@drawable/ic_launcher" android:hasCode="@HAS_CODE@">
         <activity android:name="android.app.NativeActivity" 
