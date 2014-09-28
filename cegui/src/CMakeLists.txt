@@ -61,6 +61,11 @@ if (NOT WIN32)
     list (REMOVE_ITEM CORE_SOURCE_FILES Win32ClipboardProvider.cpp)
 endif()
 
+if (NOT ANDROID)
+    list (REMOVE_ITEM CORE_SOURCE_FILES AndroidUtils.cpp)
+    list (REMOVE_ITEM CORE_HEADER_FILES AndroidUtils.h)
+endif()
+
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.
 cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES ALL_HEADER_FILES TRUE FALSE)
