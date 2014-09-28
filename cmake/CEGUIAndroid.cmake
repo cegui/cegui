@@ -1,3 +1,30 @@
+#/*******************************************************************************
+#    Filename: CEGUIAndroid.cmake 
+#    Created:  28/9/2014
+#    Author:   David Reepmeyer <djreep81@gmail.com>
+#*******************************************************************************/
+#/***************************************************************************
+# *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
+# *
+# *   Permission is hereby granted, free of charge, to any person obtaining
+# *   a copy of this software and associated documentation files (the
+# *   "Software"), to deal in the Software without restriction, including
+# *   without limitation the rights to use, copy, modify, merge, publish,
+# *   distribute, sublicense, and/or sell copies of the Software, and to
+# *   permit persons to whom the Software is furnished to do so, subject to
+# *   the following conditions:
+# *
+# *   The above copyright notice and this permission notice shall be
+# *   included in all copies or substantial portions of the Software.
+# *
+# *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# *   OTHER DEALINGS IN THE SOFTWARE.
+# ***************************************************************************/
 
 macro(create_android_proj ANDROID_PROJECT_TARGET) 
     if (ANDROID)
@@ -31,15 +58,6 @@ macro(create_android_proj ANDROID_PROJECT_TARGET)
         file(WRITE "${NDKOUT}/default.properties" "target=${ANDROID_TARGET}")
         file(WRITE "${NDKOUT}/jni/Application.mk" 
             "APP_ABI := ${ANDROID_ABI}\nAPP_STL := gnustl_static\nAPP_CPPFLAGS := -fexceptions -frtti -std=c++11\nNDK_TOOLCHAIN_VERSION := ${ANDROID_COMPILER_VERSION}") 
-        message( "checking for gles2 or gles" )
-        if (OGRE_RenderSystem_GLES2_FOUND)
-            message( "gles2 " )
-            add_definitions(-DINCLUDE_RTSHADER_SYSTEM)
-            SET(DEPENDENCIES OgreMain RenderSystem_GLES2)
-        elseif (OGRE_RenderSystem_GLES_FOUND)
-            message( "gles " )
-            SET(DEPENDENCIES OgreMain RenderSystem_GLES)
-        endif()
         SET(ANDROID_MOD_NAME "${CEGUI_TARGET_NAME}")
         SET(JNI_PATH "${CMAKE_SOURCE_DIR}/samples/browser")
         foreach(COMBINED_SOURCE_FILE ${COMBINED_SOURCE_FILES})
@@ -47,22 +65,21 @@ macro(create_android_proj ANDROID_PROJECT_TARGET)
         endforeach()
         SET(JNI_SRC_FILES "${COMBINED_SOURCE_FILES_STRING}")
         SET(PKG_NAME "cegui.org.uk.browser")
-        # Set this variable to false if no java code will be present (google android:hasCode for more info)
         SET(HAS_CODE "false")
         SET(HEADERS "")
         SET(SAMPLE_LDLIBS "")
         SET(ANDROID_SHARED_LIB "${CEGUI_TARGET_NAME}")
         file(COPY "${CMAKE_SOURCE_DIR}/datafiles/imagesets/ic_launcher.png" DESTINATION "${NDKOUT}/res/drawable")
         file(COPY "${CMAKE_SOURCE_DIR}/datafiles" DESTINATION "${NDKOUT}/assets")
-        #file(COPY "${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml" DESTINATION 
-        #    "${NDKOUT}/assets/samples/samples.xml")
-        configure_file("${OGRE_TEMPLATES_DIR}/AndroidManifest.xml.in" "${NDKOUT}/AndroidManifest.xml" @ONLY)
         configure_file("${OGRE_TEMPLATES_DIR}/Android_resources.cfg.in" "${NDKOUT}/assets/resources.cfg" @ONLY)
-        if (OGRE_RenderSystem_GLES2_FOUND)
+        if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
+            SET(ANDROID_GLES_VERSION "0x00020000")
             configure_file("${OGRE_TEMPLATES_DIR}/Android.OgreGLES2.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
-        elseif (OGRE_RenderSystem_GLES_FOUND)
-            configure_file("${OGRE_TEMPLATES_DIR}/Android.OgreGLES1.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
+        elseif (CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+            SET(ANDROID_GLES_VERSION "0x00030000")
+            configure_file("${OGRE_TEMPLATES_DIR}/Android.GLES3.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
         endif()
+        configure_file("${OGRE_TEMPLATES_DIR}/AndroidManifest.xml.in" "${NDKOUT}/AndroidManifest.xml" @ONLY)
 
         add_custom_command(
             TARGET ${ANDROID_PROJECT_TARGET} POST_BUILD COMMAND ${ANDROID_EXECUTABLE} 
