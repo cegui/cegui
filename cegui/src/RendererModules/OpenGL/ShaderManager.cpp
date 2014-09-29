@@ -39,8 +39,9 @@
 namespace CEGUI
 {
 
-OpenGL3ShaderManager::OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger)
-    : d_glStateChanger(glStateChanger)
+OpenGL3ShaderManager::OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger,
+        ShaderVersion shaderVersion)
+    : d_glStateChanger(glStateChanger), d_shaderVersion(shaderVersion)
 {
     d_shadersInitialised = false;
 }
@@ -72,9 +73,24 @@ void OpenGL3ShaderManager::initialiseShaders()
 {
     if(!d_shadersInitialised)
     {
-        loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
-        loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
 
+        if (d_shaderVersion == SHADER_GLSL)
+        {
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
+        }
+        else if (d_shaderVersion == SHADER_GLSLES1)
+        {
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES1,
+                       StandardShaderTexturedFragGLSLES1);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES1, StandardShaderSolidFragGLSLES1);
+        }
+        else if (d_shaderVersion == SHADER_GLSLES3)
+        {
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES3,
+                       StandardShaderTexturedFragGLSLES3);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES3, StandardShaderSolidFragGLSLES3);
+        }
         if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
            !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
         {
