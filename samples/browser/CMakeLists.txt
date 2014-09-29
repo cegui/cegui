@@ -71,6 +71,17 @@ if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
 
 endif()
 
+if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+    list(APPEND CORE_SOURCE_FILES
+        ./src/CEGuiEGLSharedBase.cpp
+    )
+    if (ANDROID)
+        list(APPEND CORE_SOURCE_FILES
+            ./src/AndroidAppHelper.cpp
+        )
+    endif()
+endif()
+
 if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     # this prevents the boost auto-link dis-feature
     add_definitions(-DBOOST_ALL_NO_LIB)
@@ -78,6 +89,11 @@ if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     list(APPEND CORE_SOURCE_FILES
         ./src/CEGuiOgreBaseApplication.cpp
     )
+    if (ANDROID)
+        list(APPEND CORE_SOURCE_FILES
+            ./src/AndroidAppHelper.cpp
+        )
+    endif()
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
@@ -296,6 +312,10 @@ if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
+endif()
+
+if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGLES2_RENDERER_LIBNAME})
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
