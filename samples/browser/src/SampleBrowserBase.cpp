@@ -56,6 +56,9 @@
 #      include "CEGuiOpenGL3BaseApplication.h"
 #   endif
 #endif
+#ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
+#      include "CEGuiEGLSharedBase.h"
+#endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
 #   include "CEGuiIrrlichtBaseApplication.h"
 #endif
@@ -184,6 +187,9 @@ bool SampleBrowserBase::runApplication()
         d_rendererSelector->setRendererAvailability(OpenGL3GuiRendererType);
     #endif
 #endif
+#ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
+    d_rendererSelector->setRendererAvailability(OpenGLES2GuiRendererType);
+#endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
     d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
 #endif
@@ -226,6 +232,11 @@ bool SampleBrowserBase::runApplication()
                 d_baseApp = new CEGuiOpenGL3BaseApplication();
                 break;
     #endif
+#endif
+#ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
+            case OpenGLES2GuiRendererType:
+                d_baseApp = new CEGuiEGLSharedBase();
+                break;
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
         case IrrlichtGuiRendererType:
@@ -309,4 +320,4 @@ void SampleBrowserBase::setApplicationWindowSize(int width, int height)
 {
     d_appWindowWidth = width;
     d_appWindowHeight = height;
-}
+}  
