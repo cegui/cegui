@@ -83,6 +83,8 @@ public:
 protected:
     // override from base class since we use a non-default resource provider.
     void initialiseResourceGroupDirectories();
+    // retrieve the full path of the provided resource folder
+    CEGUI::String getResourcePath(CEGUI::String resource);
 
     // Implementation of base class abstract methods.
     void run();

@@ -54,18 +54,7 @@
 #endif //CEGUI_USE_OGRE_COMPOSITOR2
 
 #ifdef __ANDROID__
-#   include "SampleBrowser_Android.h"
-#   include <android/log.h>
-Ogre::FileSystemLayer* OgreBites::OgreAndroidBridge::mFSLayer; // File system abstraction layer
-OgreBites::AndroidInputInjector* OgreBites::OgreAndroidBridge::mInputInjector = NULL;
-OIS::MultiTouchListener* OgreBites::OgreAndroidBridge::mMultiTouchListener = NULL;
-OIS::KeyListener* OgreBites::OgreAndroidBridge::mKeyListener = NULL;
-OgreBites::AndroidMultiTouch* OgreBites::OgreAndroidBridge::mTouch = NULL;
-OgreBites::AndroidKeyboard* OgreBites::OgreAndroidBridge::mKeyboard = NULL;
-Ogre::RenderWindow* OgreBites::OgreAndroidBridge::mRenderWnd = NULL;
-Ogre::Root* OgreBites::OgreAndroidBridge::mRoot = NULL;
-bool OgreBites::OgreAndroidBridge::androidWindowInitialized = false;
-android_app* OgreBites::OgreAndroidBridge::d_state = NULL;
+#   include "AndroidAppHelper.h"
 #endif
 
 //----------------------------------------------------------------------------//
@@ -101,11 +90,10 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 #ifdef __ANDROID__
         d_ogreRoot->setRenderSystem(d_ogreRoot->getAvailableRenderers().at (0));
         d_ogreRoot->initialise (false);
-        OgreBites::OgreAndroidBridge::initialiseFS();
-        Ogre::TextureManager::getSingleton().setDefaultNumMipmaps (5);
-        d_window = OgreBites::OgreAndroidBridge::createWindow(d_ogreRoot);
+        AndroidAppHelper::createWindow();
+        d_window = AndroidAppHelper::getRenderWindow();
+        AndroidAppHelper::initialiseFS();
 #else
-        // initialise system according to user options.
         d_window = d_ogreRoot->initialise(true);
 #endif
 
@@ -191,7 +179,6 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
         vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
-
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
@@ -199,11 +186,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         
 
         // create ogre renderer, image codec and resource provider.
-#ifdef __ANDROID__
         CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create(*d_window);
-#else
-        CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create();
-#endif
         d_renderer = &renderer;
         d_imageCodec = &renderer.createOgreImageCodec();
         d_resourceProvider = &renderer.createOgreResourceProvider();
@@ -211,8 +194,9 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // create frame listener
         d_frameListener= new CEGuiDemoFrameListener(this, d_sampleApp, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
+
 #ifdef __ANDROID__
-        OgreBites::OgreAndroidBridge::initialiseOIS(d_frameListener, d_frameListener);
+        AndroidAppHelper::initialiseOIS(d_frameListener, d_frameListener);
         d_windowEventListener = new WndEvtListener();
 #else
         // add a listener for OS framework window events (for resizing)
@@ -221,6 +205,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
 
+        
         d_ogreRoot->addFrameListener(this);
         renderer.setRenderingEnabled(false);
 
@@ -269,7 +254,7 @@ void CEGuiOgreBaseApplication::run()
     CEGUI_TRY
     {
 #ifdef __ANDROID__
-        OgreBites::OgreAndroidBridge::go();
+        AndroidAppHelper::go();
 #else
         d_ogreRoot->startRendering();
 #endif
@@ -301,9 +286,6 @@ void CEGuiOgreBaseApplication::endRendering()
 //----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 {
-#ifdef __ANDROID__
-    return;
-#endif
     using namespace Ogre;
     ResourceGroupManager& rgm = ResourceGroupManager::getSingleton();
 
@@ -318,31 +300,36 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     rgm.createResourceGroup("schemas");
     rgm.createResourceGroup("samples");
 
+#ifdef __ANDROID__
+    const char* type= "APKFileSystem";
+#else
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
-
-    const char* dataPathPrefix = getDataPathPrefix();
-    char resourcePath[PATH_MAX];
+    const char* type= "FileSystem";
+#endif
         
     // for each resource type, set a resource group directory
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemes");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "samples/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "samples");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "imagesets");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "fonts");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "layouts");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "looknfeels");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "animations");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemes").c_str(), type, "schemes");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("samples").c_str(), type, "samples");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("imagesets").c_str(), type, "imagesets");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("fonts").c_str(), type, "fonts");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("layouts").c_str(), type, "layouts");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("looknfeel").c_str(), type, "looknfeels");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("lua_scripts").c_str(), type, "lua_scripts");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("animations").c_str(), type, "animations");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemas").c_str(), type, "schemas");
+}
+
+CEGUI::String CEGuiOgreBaseApplication::getResourcePath(CEGUI::String resource) {
+#ifdef __ANDROID__
+    const char* dataPathPrefix = "/datafiles";
+    const char ext[]= "";
+#else 
+    const char* dataPathPrefix = getDataPathPrefix();
+    const char[] ext= "/";
+#endif
+    CEGUI::String path = CEGUI::String(dataPathPrefix)+ "/" + resource + CEGUI::String(ext);
+    return path;
 }
 
 //----------------------------------------------------------------------------//
@@ -664,4 +651,3 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 //----------------------------------------------------------------------------//
 
 #endif
-
