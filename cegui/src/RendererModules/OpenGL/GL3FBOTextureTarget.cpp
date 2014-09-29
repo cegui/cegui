@@ -259,16 +259,16 @@ void OpenGL3FBOTextureTarget::checkFramebufferStatus()
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
             break;
         case GL_FRAMEBUFFER_UNDEFINED:
-            stringStream << "GL_FRAMEBUFFER_UNDEFINED \n";
+            stringStream << "GL_FRAMEBUFFER_UNDEFINED\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER :
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER \n";
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n";
