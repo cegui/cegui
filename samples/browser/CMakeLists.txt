@@ -73,7 +73,7 @@ endif()
 
 if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
     list(APPEND CORE_SOURCE_FILES
-        ./src/CEGuiEGLSharedBase.cpp
+        ./src/CEGuiEGLBaseApplication.cpp
     )
     if (ANDROID)
         list(APPEND CORE_SOURCE_FILES
