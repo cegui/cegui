@@ -326,7 +326,7 @@ CEGUI::String CEGuiOgreBaseApplication::getResourcePath(CEGUI::String resource) 
     const char ext[]= "";
 #else 
     const char* dataPathPrefix = getDataPathPrefix();
-    const char[] ext= "/";
+    const char ext[]= "/";
 #endif
     CEGUI::String path = CEGUI::String(dataPathPrefix)+ "/" + resource + CEGUI::String(ext);
     return path;
