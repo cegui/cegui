@@ -26,4 +26,7 @@ if (CEGUI_BUILD_RENDERER_OPENGLES)
     add_subdirectory(OpenGLES)
 endif()
 
+if (CEGUI_BUILD_RENDERER_OPENGLES2)
+    add_subdirectory(OpenGL)
+endif()
 
