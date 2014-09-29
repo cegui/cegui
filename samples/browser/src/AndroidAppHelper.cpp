@@ -27,7 +27,7 @@
 
 #include "AndroidAppHelper.h"
 #ifdef CEGUI_SAMPLES_ANDROID_GLES2
-#   include "CEGuiEGLSharedBase.h"
+#   include "CEGuiEGLBaseApplication.h"
 #   include "SampleBrowserBase.h"
 #elif defined(CEGUI_SAMPLES_ANDROID_OGRE)
 AndroidInputInjector* AndroidAppHelper::mInputInjector = NULL;
@@ -60,18 +60,18 @@ int32_t AndroidAppHelper::handleInput (struct android_app* app, AInputEvent* eve
                 {
                     float delta_x = x - prev_x;
                     float delta_y = y - prev_x;
-                    CEGuiEGLSharedBase::getSingleton().getSampleApp()->injectMousePosition (
+                    CEGuiEGLBaseApplication::getSingleton().getSampleApp()->injectMousePosition (
                         static_cast<float> (x), static_cast<float> (y));
                 }
             }
             else if (action == AMOTION_EVENT_ACTION_DOWN)
             {
-                CEGuiEGLSharedBase::getSingleton().getSampleApp()->injectMousePosition (x, y);
-                CEGuiEGLSharedBase::getSingleton().getSampleApp()->injectMouseButtonDown (CEGUI::LeftButton);
+                CEGuiEGLBaseApplication::getSingleton().getSampleApp()->injectMousePosition (x, y);
+                CEGuiEGLBaseApplication::getSingleton().getSampleApp()->injectMouseButtonDown (CEGUI::LeftButton);
             }
             else if (action == AMOTION_EVENT_ACTION_UP)
             {
-                CEGuiEGLSharedBase::getSingleton().getSampleApp()->injectMouseButtonUp (CEGUI::LeftButton);
+                CEGuiEGLBaseApplication::getSingleton().getSampleApp()->injectMouseButtonUp (CEGUI::LeftButton);
             }
             prev_x = x;
             prev_y = y;
@@ -130,24 +130,28 @@ void AndroidAppHelper::handleCmd (struct android_app* app, int32_t cmd)
         {
             if (!isWindowCreated())
             {
-                CEGuiEGLSharedBase::getSingleton().Init (app->window);
+#ifdef CEGUI_GLES3_SUPPORT
+                CEGuiEGLBaseApplication::getSingleton().init (app->window, 3);
+#else
+                CEGuiEGLBaseApplication::getSingleton().init (app->window, 2);
+#endif
                 setWindowCreated (true);
             }
             else
             {
-                CEGuiEGLSharedBase::getSingleton().Resume (app->window);
+                CEGuiEGLBaseApplication::getSingleton().resume (app->window);
             }
         }
         break;
     case APP_CMD_TERM_WINDOW:
-        CEGuiEGLSharedBase::getSingleton().Terminate();
+        CEGuiEGLBaseApplication::getSingleton().terminate();
         break;
     case APP_CMD_GAINED_FOCUS:
-        CEGuiEGLSharedBase::getSingleton().Resume (app->window);
+        CEGuiEGLBaseApplication::getSingleton().resume (app->window);
         break;
     case APP_CMD_LOST_FOCUS:
-        CEGuiEGLSharedBase::getSingleton().Suspend();
-        CEGuiEGLSharedBase::getSingleton().engine_draw_frame();
+        CEGuiEGLBaseApplication::getSingleton().suspend();
+        CEGuiEGLBaseApplication::getSingleton().clearFrame();
         break;
     }
 }

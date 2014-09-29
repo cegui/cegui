@@ -28,52 +28,50 @@ author:     David Reepmeyer
 #endif
 
 #include "CEGUISamplesConfig.h"
-#include "CEGuiEGLSharedBase.h"
+#include "CEGuiEGLBaseApplication.h"
 #include "SampleBrowserBase.h"
 #include "CEGUI/CEGUI.h"
 
 #include <stdexcept>
 #include <sstream>
 
-#ifdef __ANDROID__
-#include <android/log.h>
 #include <CEGUI/RendererModules/OpenGL/GLES2Renderer.h>
-#endif
 
 //----------------------------------------------------------------------------//
-CEGuiEGLSharedBase* CEGuiEGLSharedBase::d_appInstance = 0;
+CEGuiEGLBaseApplication* CEGuiEGLBaseApplication::d_appInstance = 0;
 
 //----------------------------------------------------------------------------//
-CEGuiEGLSharedBase::CEGuiEGLSharedBase() :
+CEGuiEGLBaseApplication::CEGuiEGLBaseApplication() :
     d_display( EGL_NO_DISPLAY ),
     d_surface( EGL_NO_SURFACE ),
     d_context( EGL_NO_CONTEXT ),
     d_width( 0 ),
     d_height( 0 ),
     d_contextInitialised( false ),
-    d_contextValid( false )
+    d_contextValid( false ),
+    d_glesVersion( 0 )
 {
     if (d_appInstance)
-        throw CEGUI::InvalidRequestException("CEGuiEGLSharedBase instance already exists!");
+        throw CEGUI::InvalidRequestException("CEGuiEGLBaseApplication instance already exists!");
     d_appInstance = this;
     AndroidAppHelper::createWindow();
     d_renderer = &CEGUI::OpenGLES2Renderer::create();
 }
 
 //----------------------------------------------------------------------------//
-CEGuiEGLSharedBase::~CEGuiEGLSharedBase()
+CEGuiEGLBaseApplication::~CEGuiEGLBaseApplication()
 {
-    Terminate();
+    terminate();
 }
 
-CEGuiEGLSharedBase& CEGuiEGLSharedBase::getSingleton()
+CEGuiEGLBaseApplication& CEGuiEGLBaseApplication::getSingleton()
 {
     return (*d_appInstance);
 }
 
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::run()
+void CEGuiEGLBaseApplication::run()
 {
 
     d_sampleApp->initialise();
@@ -81,14 +79,16 @@ void CEGuiEGLSharedBase::run()
     d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+    clock_gettime (CLOCK_MONOTONIC, &start_timespec);
     while (!d_sampleApp->isQuitting())
     {
-        engine_draw_frame();
+        drawFrame();
+
 #ifdef __ANDROID__
         if (!AndroidAppHelper::processEvents())
         {
             d_sampleApp->setQuitting(true);
-            Terminate();
+            terminate();
         }
 #endif
         if (d_windowSized)
@@ -104,32 +104,23 @@ void CEGuiEGLSharedBase::run()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::engine_draw_frame()
-{
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, d_width, d_height );
-    drawFrame();
-    Swap();
-}
-
-//----------------------------------------------------------------------------//
-SampleBrowserBase* CEGuiEGLSharedBase::getSampleApp()
+SampleBrowserBase* CEGuiEGLBaseApplication::getSampleApp()
 {
     return d_sampleApp;
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::initialiseResourceGroupDirectories()
+void CEGuiEGLBaseApplication::initialiseResourceGroupDirectories()
 {
     // initialise the required dirs for the DefaultResourceProvider
     CEGUI::DefaultResourceProvider* rp =
         static_cast<CEGUI::DefaultResourceProvider*>
         (CEGUI::System::getSingleton().getResourceProvider());
-
-    //const char* dataPathPrefix = getDataPathPrefix();
+#ifdef __ANDROID__
     const char* dataPathPrefix = "datafiles";
+#else
+    const char* dataPathPrefix = getDataPathPrefix();
+#endif
     char resourcePath[PATH_MAX];
 
     // for each resource type, set a resource group directory
@@ -152,43 +143,56 @@ void CEGuiEGLSharedBase::initialiseResourceGroupDirectories()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::destroyWindow()
+void CEGuiEGLBaseApplication::destroyWindow()
 {
-//    glfwTerminate();
+    terminate();
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::beginRendering(const float /*elapsed*/)
+void CEGuiEGLBaseApplication::beginRendering(const float /*elapsed*/)
 {
-    //glClear(GL_COLOR_BUFFER_BIT);
+    clearFrame();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, d_width, d_height );
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::endRendering()
+void CEGuiEGLBaseApplication::endRendering()
 {
-
+    swap();
+}
+//----------------------------------------------------------------------------//
+void CEGuiEGLBaseApplication::clearFrame()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+}
+ 
+//----------------------------------------------------------------------------//
+void CEGuiEGLBaseApplication::drawFrame()
+{
+   d_appInstance->renderSingleFrame(static_cast<float>(getElapsedTime()));
 }
 
-//----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::drawFrame()
-{
-    // calculate time elapsed since last frame
-    //double time_now = glfwGetTime();
-    //const double elapsed = time_now - d_frameTime;
-    //d_frameTime = time_now;
-    const double elapsed = 0.1f;
-    d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
+double CEGuiEGLBaseApplication::getElapsedTime() {
+    timespec now_timespec;
+    clock_gettime (CLOCK_MONOTONIC, &now_timespec);
+    double elapsed = (now_timespec.tv_sec - start_timespec.tv_sec);
+    elapsed += ((double) (now_timespec.tv_nsec - start_timespec.tv_nsec)) / ((double) 1000000000L );
+    start_timespec = now_timespec;
+    return elapsed;
 }
-
+ 
 //----------------------------------------------------------------------------//
-bool CEGuiEGLSharedBase::Init( ANativeWindow* window )
+bool CEGuiEGLBaseApplication::init( ANativeWindow* window, int openglesVersion = 2)
 {
+    d_glesVersion = openglesVersion;
     if( d_contextInitialised )
         return true;
 
     window_ = window;
-    InitEGLSurface();
-    InitEGLContext();
+    initEGLSurface();
+    initEGLContext();
 
     d_contextInitialised = true;
 
@@ -196,7 +200,7 @@ bool CEGuiEGLSharedBase::Init( ANativeWindow* window )
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiEGLSharedBase::InitEGLSurface()
+bool CEGuiEGLBaseApplication::initEGLSurface()
 {
     d_display = eglGetDisplay( EGL_DEFAULT_DISPLAY );
     eglInitialize( d_display, 0, 0 );
@@ -240,12 +244,11 @@ bool CEGuiEGLSharedBase::InitEGLSurface()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiEGLSharedBase::InitEGLContext()
+bool CEGuiEGLBaseApplication::initEGLContext()
 {
     const EGLint d_contextattribs[] =
     {
-        //EGL_CONTEXT_CLIENT_VERSION, 2, //Request opengl ES2
-        EGL_CONTEXT_CLIENT_VERSION, 3, //Request opengl ES3
+        EGL_CONTEXT_CLIENT_VERSION, d_glesVersion, //Request opengl es version (2/3) 
         EGL_NONE
     };
 
@@ -262,7 +265,7 @@ bool CEGuiEGLSharedBase::InitEGLContext()
 }
 
 //----------------------------------------------------------------------------//
-EGLint CEGuiEGLSharedBase::Swap()
+EGLint CEGuiEGLBaseApplication::swap()
 {
     bool b = eglSwapBuffers( d_display, d_surface );
     if( !b )
@@ -272,15 +275,15 @@ EGLint CEGuiEGLSharedBase::Swap()
         if( err == EGL_BAD_SURFACE )
         {
             //Recreate surface
-            InitEGLSurface();
+            initEGLSurface();
             return EGL_SUCCESS; //Still consider glContext is valid
         }
         else if( err == EGL_CONTEXT_LOST || err == EGL_BAD_CONTEXT )
         {
             //Context has been lost!!
             d_contextValid = false;
-            Terminate();
-            InitEGLContext();
+            terminate();
+            initEGLContext();
         }
         return err;
     }
@@ -288,7 +291,7 @@ EGLint CEGuiEGLSharedBase::Swap()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::Terminate()
+void CEGuiEGLBaseApplication::terminate()
 {
     if( d_display != EGL_NO_DISPLAY )
     {
@@ -313,11 +316,11 @@ void CEGuiEGLSharedBase::Terminate()
 }
 
 //----------------------------------------------------------------------------//
-EGLint CEGuiEGLSharedBase::Resume( ANativeWindow* window )
+EGLint CEGuiEGLBaseApplication::resume( ANativeWindow* window )
 {
     if( d_contextInitialised == false )
     {
-        Init( window );
+        init( window );
         return EGL_SUCCESS;
     }
 
@@ -346,21 +349,21 @@ EGLint CEGuiEGLSharedBase::Resume( ANativeWindow* window )
     {
         //Recreate context
         LOGI( "Re-creating egl context" );
-        InitEGLContext();
+        initEGLContext();
     }
     else
     {
         //Recreate surface
-        Terminate();
-        InitEGLSurface();
-        InitEGLContext();
+        terminate();
+        initEGLSurface();
+        initEGLContext();
     }
 
     return err;
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiEGLSharedBase::Suspend()
+void CEGuiEGLBaseApplication::suspend()
 {
     if( d_surface != EGL_NO_SURFACE )
     {
@@ -370,9 +373,9 @@ void CEGuiEGLSharedBase::Suspend()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiEGLSharedBase::Invalidate()
+bool CEGuiEGLBaseApplication::invalidate()
 {
-    Terminate();
+    terminate();
 
     d_contextInitialised = false;
     return true;

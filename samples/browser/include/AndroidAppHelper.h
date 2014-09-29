@@ -41,7 +41,7 @@ only android builds should include this file
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "GLContext", __VA_ARGS__))
 
 #ifdef CEGUI_SAMPLES_ANDROID_GLES2
-class CEGuiEGLSharedBase;
+class CEGuiEGLBaseApplication;
 #   include "SampleBrowserBase.h"
 #elif defined(CEGUI_SAMPLES_ANDROID_OGRE)
 #   include <EGL/egl.h>
