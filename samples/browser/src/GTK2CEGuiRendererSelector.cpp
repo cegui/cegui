@@ -65,6 +65,16 @@ bool GTK2CEGuiRendererSelector::invokeDialog()
         gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), OpenGLRendererName.c_str());
         renderer_types[idx++] = OpenGLGuiRendererType;
     }
+    if (d_rendererAvailability[OpenGL3GuiRendererType])
+    {
+        gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), OpenGL3RendererName.c_str());
+        renderer_types[idx++] = OpenGL3GuiRendererType;
+    }
+    if (d_rendererAvailability[OpenGLES2GuiRendererType])
+    {
+        gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), OpenGLES2RendererName.c_str());
+        renderer_types[idx++] = OpenGLES2GuiRendererType;
+    }
     if (d_rendererAvailability[IrrlichtGuiRendererType])
     {
         gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), IrrlichtRendererName.c_str());
