@@ -57,7 +57,7 @@
 #   endif
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
-#      include "CEGuiEGLSharedBase.h"
+#      include "CEGuiEGLBaseApplication.h"
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
 #   include "CEGuiIrrlichtBaseApplication.h"
@@ -235,7 +235,7 @@ bool SampleBrowserBase::runApplication()
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
             case OpenGLES2GuiRendererType:
-                d_baseApp = new CEGuiEGLSharedBase();
+                d_baseApp = new CEGuiEGLBaseApplication();
                 break;
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
