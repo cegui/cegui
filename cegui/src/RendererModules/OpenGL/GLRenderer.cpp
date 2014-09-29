@@ -440,6 +440,7 @@ RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultSha
     }
 }
 
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::initialiseShaderWrappers()
 {
     d_shaderWrapperTextured = new OpenGLShaderWrapper();
@@ -447,6 +448,20 @@ void OpenGLRenderer::initialiseShaderWrappers()
     d_shaderWrapperSolid = new OpenGLShaderWrapper();
 }
 
+//----------------------------------------------------------------------------//
+Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz) const
+{
+    Sizef out(sz);
+
+    // if we can't support non power of two sizes, get appropriate POT values.
+    if (!GLEW_ARB_texture_non_power_of_two)
+    {
+        out.d_width = getNextPOTSize(out.d_width);
+        out.d_height = getNextPOTSize(out.d_height);
+    }
+
+    return out;
+}
 
 //----------------------------------------------------------------------------//
 
