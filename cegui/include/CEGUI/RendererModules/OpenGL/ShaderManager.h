@@ -53,10 +53,18 @@ namespace CEGUI
         SHADER_ID_COUNT
     };
 
+    enum ShaderVersion
+    {
+        SHADER_GLSL,
+        SHADER_GLSLES1,
+        SHADER_GLSLES3
+    };
+
+
     class OpenGL3ShaderManager
     {
     public:
-        OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger);
+        OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger, ShaderVersion shaderVersion);
         virtual ~OpenGL3ShaderManager();
 
         OpenGL3Shader* getShader(GLuint id);
@@ -68,6 +76,8 @@ namespace CEGUI
     private:
         typedef std::map<GLuint, OpenGL3Shader*> shaderContainerType;
         shaderContainerType d_shaders;
+
+        ShaderVersion d_shaderVersion;
 
         bool d_shadersInitialised;
 
