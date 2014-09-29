@@ -24,14 +24,15 @@
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _CEGuiGLFWSharedBase_h_
-#define _CEGuiGLFWSharedBase_h_
+#ifndef _CEGuiEGLBaseApplication_h_
+#define _CEGuiEGLBaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
 #include "CEGUI/Cursor.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
-
 #include <EGL/egl.h>
+#include <ctime>
+#include <time.h>
 
 class SampleBrowserBase;
 
@@ -39,7 +40,7 @@ class SampleBrowserBase;
 #   include "AndroidAppHelper.h"
 #endif
 
-class CEGuiEGLSharedBase : public CEGuiBaseApplication
+class CEGuiEGLBaseApplication : public CEGuiBaseApplication
 {
 private:
     //EGL configurations
@@ -51,39 +52,40 @@ private:
 
     int32_t d_width;
     int32_t d_height;
+    int d_glesVersion;
 
     bool d_contextInitialised;
     bool d_contextValid;
 
-    bool InitEGLSurface();
-    bool InitEGLContext();
+    bool initEGLSurface();
+    bool initEGLContext();
+    timespec start_timespec;
 
 public:
-    CEGuiEGLSharedBase();
-    virtual ~CEGuiEGLSharedBase();
+    CEGuiEGLBaseApplication();
+    virtual ~CEGuiEGLBaseApplication();
 
-    void Terminate();
-    bool Init( ANativeWindow* window );
-    EGLint Swap();
-    bool Invalidate();
-    void Suspend();
-    EGLint Resume( ANativeWindow* window );
+    void terminate();
+    bool init( ANativeWindow* window, int openglesVersion);
+    EGLint swap();
+    bool invalidate();
+    void suspend();
+    EGLint resume( ANativeWindow* window );
     SampleBrowserBase* getSampleApp();
-    static CEGuiEGLSharedBase& getSingleton();
-    void engine_draw_frame();
+    static CEGuiEGLBaseApplication& getSingleton();
+    void clearFrame();
 protected:
-    // override from base class since we use a non-default resource provider.
+    // override from base class since 
     void initialiseResourceGroupDirectories();
-    // implementation of base class abstract functions.
     void run();
-    void destroyWindow();
+    virtual void destroyWindow();
     void beginRendering(const float elapsed);
     void endRendering();
     void drawFrame();
-    static CEGuiEGLSharedBase* d_appInstance;
+    double getElapsedTime();
+    static CEGuiEGLBaseApplication* d_appInstance;
     bool d_windowSized;
 };
 
-
-#endif  // end of guard _CEGuiGLFWSharedBase_h_
+#endif  //end of guard _CEGuiEGLBaseApplication_h_
 
