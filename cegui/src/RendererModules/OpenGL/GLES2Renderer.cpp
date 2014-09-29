@@ -129,11 +129,7 @@ void OpenGLES2Renderer::destroySystem()
 //----------------------------------------------------------------------------//
 OpenGLES2Renderer& OpenGLES2Renderer::create(const int abi)
 {
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "create version test");
-
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
-
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "create obj");
 
     return *new OpenGLES2Renderer();
 }
@@ -159,18 +155,11 @@ OpenGLES2Renderer::OpenGLES2Renderer() :
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "id string ");
     initialiseRendererIDString();
-
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "gl extensions");
     initialiseGLExtensions();
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "gl state change wrapper");
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "gl tex target factory");
     initialiseTextureTargetFactory();
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "gl shaders");
     initialiseOpenGLShaders();
-    __android_log_write (ANDROID_LOG_ERROR, "EGL", "shaders complete");
 }
 
 //----------------------------------------------------------------------------//

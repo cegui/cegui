@@ -100,26 +100,17 @@ void AndroidAppHelper::handleCmd (struct android_app* app, int32_t cmd)
     case APP_CMD_SAVE_STATE:
         break;
     case APP_CMD_INIT_WINDOW:
-        __android_log_write (ANDROID_LOG_DEBUG, "EGL", "handle command APP_CMD_INIT_WINDOW");
         if (app->window != NULL)
         {
-            __android_log_write (ANDROID_LOG_DEBUG, "EGL", "handle command APP_CMD_INIT_WINDOW win is NULL");
             if (!isWindowCreated())
             {
-                __android_log_write (ANDROID_LOG_DEBUG, "EGL", "handle command APP_CMD_INIT_WINDOW Init");
                 CEGuiEGLSharedBase::getSingleton().Init (app->window);
                 setWindowCreated (true);
             }
             else
             {
-                __android_log_write (ANDROID_LOG_DEBUG, "EGL", "handle command APP_CMD_INIT_WINDOW Resume");
                 CEGuiEGLSharedBase::getSingleton().Resume (app->window);
             }
-        }
-        else
-        {
-            __android_log_write (ANDROID_LOG_DEBUG, "EGL", "handle command APP_CMD_INIT_WINDOW win is NOT NULL");
-            __android_log_write (ANDROID_LOG_DEBUG, "EGL", "HOW ARE WE HERE?????????????");
         }
         break;
     case APP_CMD_TERM_WINDOW:
@@ -143,7 +134,6 @@ void AndroidAppHelper::handleCmd (struct android_app* app, int32_t cmd)
     case APP_CMD_SAVE_STATE:
         break;
     case APP_CMD_INIT_WINDOW:
-        __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "-------------- APP_CMD_INIT_WINDOW");
         if (app->window && Ogre::Root::getSingletonPtr())
         {
             AConfiguration* config = AConfiguration_new();
@@ -151,20 +141,16 @@ void AndroidAppHelper::handleCmd (struct android_app* app, int32_t cmd)
 
             if (!mRenderWnd)
             {
-                __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "------- create render window");
                 Ogre::NameValuePairList opt;
                 opt["externalWindowHandle"] = Ogre::StringConverter::toString ((int)app->window);
                 opt["androidConfig"] = Ogre::StringConverter::toString ((int)config);
                 mRenderWnd = Ogre::Root::getSingleton().createRenderWindow (
                                  "OgreWindow", 0, 0, false, &opt);
                 setWindowCreated (true);
-                __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "------- render window created");
             }
             else
             {
-                __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "------- create internal res");
                 static_cast<Ogre::AndroidEGLWindow*> (mRenderWnd)->_createInternalResources ( app->window, config);
-                __android_log_write (ANDROID_LOG_ERROR, "CEGUIDEMO", "------- internal res created");
             }
             AConfiguration_delete (config);
         }
