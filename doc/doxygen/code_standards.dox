@@ -30,7 +30,7 @@ This section contains some general guidelines on naming and arranging files.
     Author:   <name and email of the original file author>
 *******************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -56,6 +56,8 @@ This section contains some general guidelines on naming and arranging files.
 - All header files should have include guards implemented via preprocessor @c \#ifdef/\#endif commands.  We do not want any pragma rubbish used for this as it's worse than useless as far as being portable goes.  The macro used to control the header should be based upon the filename.
 
 - Please ensure that all files have a newline at the end of them.  Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to headers.  Plus it gives loads of annoying warnings on some compilers :)
+
+- Please use the UNIX newline - LF. A good way to accomplish this is to enable the eol extension, we have .hgeol in the repository that will set it up.
 
 - Wherever possible preprocessor macros should <em>not be used</em>.  Always prefer the use of an actual language construct (such as typedef or enum) over a preprocessor @c \#define.
 
@@ -319,5 +321,12 @@ a_ptr = &an_object;
 
 - Do not use any language or STL constructs from C++11. We intend to support
 non-c++11 compilers for the forseeable future.
+
+@subsection code_standards_sec_2_3 astyle - Artistic Style
+The following parameters for astyle may be used to get a subset of all the code standards outlined in this document. It is by no means enough to just run this on dirty source code but it will get you closer.
+
+@code
+$ astyle -s4A1wKfxpcUz2 $FILE
+@endcode
 
 */
