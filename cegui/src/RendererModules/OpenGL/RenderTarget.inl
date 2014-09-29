@@ -83,7 +83,7 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
         static_cast<GLint>(RenderTarget::d_area.getHeight())
     };
 
-    GLdouble in_x, in_y, in_z;
+    GLfloat in_x, in_y, in_z;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
     const glm::mat4& projMatrix = RenderTarget::d_matrix;
