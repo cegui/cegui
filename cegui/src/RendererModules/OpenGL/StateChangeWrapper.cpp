@@ -124,7 +124,7 @@ void OpenGL3StateChangeWrapper::BoundTexture::bindTexture(GLenum target, GLuint 
 
 
 //! constructor.
-OpenGL3StateChangeWrapper::OpenGL3StateChangeWrapper(OpenGL3Renderer& owner)
+OpenGL3StateChangeWrapper::OpenGL3StateChangeWrapper()
 {
     reset();
 }

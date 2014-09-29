@@ -29,7 +29,7 @@
 #define _CEGUIOpenGL3StateChangeWrapper_h_
 
 #include "CEGUI/RendererModules/OpenGL/GL.h"
-#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
+#include "RendererBase.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -85,7 +85,7 @@ public:
     };
 
 
-    OpenGL3StateChangeWrapper(OpenGL3Renderer& owner);
+    OpenGL3StateChangeWrapper();
     virtual ~OpenGL3StateChangeWrapper();
 
 
