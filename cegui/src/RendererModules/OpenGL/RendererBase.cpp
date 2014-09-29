@@ -357,21 +357,6 @@ void OpenGLRendererBase::restoreTextures()
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGLRendererBase::getAdjustedTextureSize(const Sizef& sz) const
-{
-    Sizef out(sz);
-
-    // if we can't support non power of two sizes, get appropriate POT values.
-    if (!GLEW_ARB_texture_non_power_of_two)
-    {
-        out.d_width = getNextPOTSize(out.d_width);
-        out.d_height = getNextPOTSize(out.d_height);
-    }
-
-    return out;
-}
-
-//----------------------------------------------------------------------------//
 float OpenGLRendererBase::getNextPOTSize(const float f)
 {
     uint size = static_cast<uint>(f);
