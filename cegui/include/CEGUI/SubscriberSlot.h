@@ -110,6 +110,33 @@ public:
 
     /*!
     \brief
+        Creates a SubscriberSlot that is bound to a member function.
+    */
+    template<typename T>
+    SubscriberSlot(void (T::*function)(const EventArgs&), T* obj) :
+        d_functor_impl(new MemberFunctionSlotVoid<T>(function, obj))
+    {}
+
+    /*!
+    \brief
+        Creates a SubscriberSlot that is bound to a member function.
+    */
+    template<typename T>
+    SubscriberSlot(bool (T::*function)(), T* obj) :
+        d_functor_impl(new MemberFunctionSlotNoArgs<T>(function, obj))
+    {}
+
+    /*!
+    \brief
+        Creates a SubscriberSlot that is bound to a member function.
+    */
+    template<typename T>
+    SubscriberSlot(void (T::*function)(), T* obj) :
+        d_functor_impl(new MemberFunctionSlotVoidNoArgs<T>(function, obj))
+    {}
+
+    /*!
+    \brief
         Creates a SubscriberSlot that is bound to a functor object reference.
     */
     template<typename T>

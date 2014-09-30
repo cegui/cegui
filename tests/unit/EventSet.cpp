@@ -98,6 +98,25 @@ public:
 
         return true;
     }
+
+    void memberMethodVoid(const CEGUI::EventArgs& args)
+    {
+        g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
+    }
+
+    // always sets the value to 32
+    bool memberMethodNoArgs()
+    {
+        g_GlobalEventValue = 32;
+
+        return true;
+    }
+
+    // always sets the value to 33
+    void memberMethodVoidNoArgs()
+    {
+        g_GlobalEventValue = 33;
+    }
 };
 
 BOOST_AUTO_TEST_CASE(Subscribing)
@@ -112,24 +131,50 @@ BOOST_AUTO_TEST_CASE(Subscribing)
 
     {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &freeFunctionSubscriber);
-        args.d_targetValue = 1;
+        args.d_targetValue = 10;
         set.fireEvent(eventName, args);
-        BOOST_CHECK_EQUAL(g_GlobalEventValue, 1);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 10);
         connection->disconnect();
     }
+
     {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriber());
-        args.d_targetValue = 2;
+        args.d_targetValue = 20;
         set.fireEvent(eventName, args);
-        BOOST_CHECK_EQUAL(g_GlobalEventValue, 2);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 20);
+        connection->disconnect();
+    }
+
+    {
+        MemberMethodSubscriber instance;
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &MemberMethodSubscriber::memberMethod, &instance);
+        args.d_targetValue = 30;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 30);
         connection->disconnect();
     }
     {
         MemberMethodSubscriber instance;
-        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &MemberMethodSubscriber::memberMethod, &instance);
-        args.d_targetValue = 3;
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &MemberMethodSubscriber::memberMethodVoid, &instance);
+        args.d_targetValue = 31;
         set.fireEvent(eventName, args);
-        BOOST_CHECK_EQUAL(g_GlobalEventValue, 3);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 31);
+        connection->disconnect();
+    }
+    {
+        MemberMethodSubscriber instance;
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &MemberMethodSubscriber::memberMethodNoArgs, &instance);
+        args.d_targetValue = 32;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 32);
+        connection->disconnect();
+    }
+    {
+        MemberMethodSubscriber instance;
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &MemberMethodSubscriber::memberMethodVoidNoArgs, &instance);
+        args.d_targetValue = 33;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 33);
         connection->disconnect();
     }
 }

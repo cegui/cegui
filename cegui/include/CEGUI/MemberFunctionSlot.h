@@ -3,7 +3,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -59,6 +59,100 @@ private:
     T* d_object;
 };
 
-} // End of  CEGUI namespace section
+/*!
+\brief
+    Slot template class that creates a functor that calls back via a class
+    member function. This variant doesn't require a handler that returns bool.
+
+\note
+    This functor always returns true to CEGUI, which means the event was
+    handled.
+*/
+template<typename T>
+class MemberFunctionSlotVoid : public SlotFunctorBase
+{
+public:
+    //! Member function slot type.
+    typedef void(T::*MemberFunctionType)(const EventArgs&);
+
+    MemberFunctionSlotVoid(MemberFunctionType func, T* obj) :
+        d_function(func),
+        d_object(obj)
+    {}
+
+    virtual bool operator()(const EventArgs& args)
+    {
+        (d_object->*d_function)(args);
+
+        return true;
+    }
+
+private:
+    MemberFunctionType d_function;
+    T* d_object;
+};
+
+/*!
+\brief
+    Slot template class that creates a functor that calls back via a class
+    member function. This variant ignores passed EventArgs.
+*/
+template<typename T>
+class MemberFunctionSlotNoArgs : public SlotFunctorBase
+{
+public:
+    //! Member function slot type.
+    typedef bool(T::*MemberFunctionType)();
+
+    MemberFunctionSlotNoArgs(MemberFunctionType func, T* obj) :
+        d_function(func),
+        d_object(obj)
+    {}
+
+    virtual bool operator()(const EventArgs& /*args*/)
+    {
+        return (d_object->*d_function)();
+    }
+
+private:
+    MemberFunctionType d_function;
+    T* d_object;
+};
+
+/*!
+\brief
+    Slot template class that creates a functor that calls back via a class
+    member function. This variant ignores passed EventArgs and the handler
+    doesn't have to return a bool.
+
+\note
+    This functor always returns true to CEGUI, which means the event was
+    handled.
+*/
+template<typename T>
+class MemberFunctionSlotVoidNoArgs : public SlotFunctorBase
+{
+public:
+    //! Member function slot type.
+    typedef void(T::*MemberFunctionType)();
+
+    MemberFunctionSlotVoidNoArgs(MemberFunctionType func, T* obj) :
+        d_function(func),
+        d_object(obj)
+    {}
+
+    virtual bool operator()(const EventArgs& /*args*/)
+    {
+        (d_object->*d_function)();
+
+        return true;
+    }
+
+private:
+    MemberFunctionType d_function;
+    T* d_object;
+};
+
+}
 
 #endif  // end of guard _CEGUIMemberFunctionSlot_h_
