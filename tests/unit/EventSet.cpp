@@ -78,6 +78,23 @@ bool freeFunctionSubscriber(const CEGUI::EventArgs& args)
     return true;
 }
 
+void freeFunctionSubscriberVoid(const CEGUI::EventArgs& args)
+{
+    g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
+}
+
+bool freeFunctionSubscriberNoArgs()
+{
+    g_GlobalEventValue = 12;
+
+    return true;
+}
+
+void freeFunctionSubscriberVoidNoArgs()
+{
+    g_GlobalEventValue = 13;
+}
+
 class FunctorSubscriber
 {
 public:
@@ -134,6 +151,27 @@ BOOST_AUTO_TEST_CASE(Subscribing)
         args.d_targetValue = 10;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 10);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &freeFunctionSubscriberVoid);
+        args.d_targetValue = 11;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 11);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &freeFunctionSubscriberNoArgs);
+        args.d_targetValue = 12;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 12);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &freeFunctionSubscriberVoidNoArgs);
+        args.d_targetValue = 13;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 13);
         connection->disconnect();
     }
 
