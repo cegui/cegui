@@ -1,6 +1,7 @@
 /***********************************************************************
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
+                David Reepmeyer (added GLES2/GLES3)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team

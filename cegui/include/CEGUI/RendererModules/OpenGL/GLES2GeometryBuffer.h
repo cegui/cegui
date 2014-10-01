@@ -1,6 +1,7 @@
 /***********************************************************************
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
+                David Reepmeyer (added GLES2/GLES3)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
@@ -60,9 +61,18 @@ protected:
     void updateOpenGLBuffers();
     //! Draws the vertex data depending on the fill rule that was set for this object.
     void drawDependingOnFillRule() const;
+    //! called each time before rendering if VAO's not used (GLES2)
+    //! called once upon setup if VAO's are used (GLES3)
+    void bindVertexAttributes() const;
 
+#ifdef CEGUI_GLES3_SUPPORT
     //! OpenGL vao used for the vertices
     GLuint d_verticesVAO;
+#endif
+    GLint d_posAttrib;
+    GLint d_texAttrib;
+    GLint d_colAttrib;
+
     //! OpenGL vbo containing all vertex data
     GLuint d_verticesVBO;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
