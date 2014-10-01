@@ -1,6 +1,7 @@
 /***********************************************************************
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
+                David Reepmeyer (added GLES2/GLES3)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -90,8 +91,13 @@ void OpenGLES2GeometryBuffer::draw() const
     // activate desired blending mode
     d_owner.setupRenderingBlendMode(d_blendMode);
 
+#if CEGUI_GLES3_SUPPORT 
     // Bind our vao
     d_glStateChanger->bindVertexArray(d_verticesVAO);
+#else
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+    bindVertexAttributes();
+#endif
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
@@ -122,8 +128,10 @@ void OpenGLES2GeometryBuffer::reset()
 //----------------------------------------------------------------------------//
 void OpenGLES2GeometryBuffer::initialiseVertexBuffers()
 {
+#if CEGUI_GLES3_SUPPORT 
     glGenVertexArrays(1, &d_verticesVAO);
     d_glStateChanger->bindVertexArray(d_verticesVAO);
+#endif
 
     // Generate and bind position vbo
     glGenBuffers(1, &d_verticesVBO);
@@ -131,8 +139,10 @@ void OpenGLES2GeometryBuffer::initialiseVertexBuffers()
 
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_STATIC_DRAW);
 
+#if CEGUI_GLES3_SUPPORT 
     // Unbind Vertex Attribute Array (VAO)
     d_glStateChanger->bindVertexArray(0);
+#endif
 
     // Unbind array and element array buffers
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
@@ -142,9 +152,23 @@ void OpenGLES2GeometryBuffer::initialiseVertexBuffers()
 //----------------------------------------------------------------------------//
 void OpenGLES2GeometryBuffer::finaliseVertexAttributes()
 {
+    const CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+    d_posAttrib = gl3_shader_wrapper->getAttributeLocation("inPosition");
+    d_colAttrib = gl3_shader_wrapper->getAttributeLocation("inColour");
+    d_texAttrib = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
+#ifdef CEGUI_GLES3_SUPPORT 
     //We need to bind both of the following calls
     d_glStateChanger->bindVertexArray(d_verticesVAO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+    bindVertexAttributes();
+#else
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+#endif
+}
+
+
+//----------------------------------------------------------------------------//
+void OpenGLES2GeometryBuffer::bindVertexAttributes() const {
 
     GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
 
@@ -159,25 +183,22 @@ void OpenGLES2GeometryBuffer::finaliseVertexAttributes()
         {
         case VAT_POSITION0:
             {
-                GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
-                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
-                glEnableVertexAttribArray(shader_pos_loc);
+                glVertexAttribPointer(d_posAttrib, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(d_posAttrib);
                 dataOffset += 3;
             }
             break;
         case VAT_COLOUR0:
             {
-                GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
-                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
-                glEnableVertexAttribArray(shader_colour_loc);
+                glVertexAttribPointer(d_colAttrib, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(d_colAttrib);
                 dataOffset += 4;
             }
             break;
         case VAT_TEXCOORD0:
             {
-                GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
-                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
-                glEnableVertexAttribArray(texture_coord_loc);
+                glVertexAttribPointer(d_texAttrib, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(d_texAttrib);
                 dataOffset += 2;
             }
             break;
@@ -191,7 +212,9 @@ void OpenGLES2GeometryBuffer::finaliseVertexAttributes()
 //----------------------------------------------------------------------------//
 void OpenGLES2GeometryBuffer::deinitialiseOpenGLBuffers()
 {
+#if CEGUI_GLES3_SUPPORT 
     glDeleteVertexArrays(1, &d_verticesVAO);
+#endif
     glDeleteBuffers(1, &d_verticesVBO);
 }
 

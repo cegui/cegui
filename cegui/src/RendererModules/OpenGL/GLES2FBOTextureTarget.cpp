@@ -1,6 +1,7 @@
 /***********************************************************************
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
+                David Reepmeyer (added GLES2/GLES3)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -155,7 +156,11 @@ void OpenGLES2FBOTextureTarget::initialiseRenderTexture()
     d_glStateChanger->bindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+#ifdef CEGUI_GLES3_SUPPORT 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+#else
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+#endif
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -207,7 +212,11 @@ void OpenGLES2FBOTextureTarget::resizeRenderTexture()
 
     // set the texture to the required size
     d_glStateChanger->bindTexture(GL_TEXTURE_2D, d_texture);
+#ifdef CEGUI_GLES3_SUPPORT 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+#else
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+#endif
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -261,9 +270,11 @@ void OpenGLES2FBOTextureTarget::checkFramebufferStatus()
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
             break;
+#ifdef CEGUI_GLES3_SUPPORT
         case GL_FRAMEBUFFER_UNDEFINED:
             stringStream << "GL_FRAMEBUFFER_UNDEFINED\n";
             break;
+#endif
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
             break;
@@ -275,9 +286,11 @@ void OpenGLES2FBOTextureTarget::checkFramebufferStatus()
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER\n";
             break;
 #endif
+#ifdef CEGUI_GLES3_SUPPORT
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n";
             break;
+#endif
         case GL_FRAMEBUFFER_UNSUPPORTED:
             stringStream << "GL_FRAMEBUFFER_UNSUPPORTED\n";
             break;

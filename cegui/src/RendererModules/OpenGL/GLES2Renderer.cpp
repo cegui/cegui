@@ -191,7 +191,11 @@ OpenGLES2Renderer::~OpenGLES2Renderer()
 void OpenGLES2Renderer::initialiseRendererIDString()
 {
     d_rendererID =
-        "CEGUI::OpenGLES2Renderer - Official OpenGL 3.2 core based "
+#ifdef CEGUI_GLES3_SUPPORT
+        "CEGUI::OpenGLES2Renderer - OpenGL ES 3.0 Renderer"
+#else
+        "CEGUI::OpenGLES2Renderer - OpenGL ES 2.0 Renderer"
+#endif
         "renderer module.";
 }
 //----------------------------------------------------------------------------//
@@ -299,7 +303,11 @@ OpenGL3StateChangeWrapper* OpenGLES2Renderer::getOpenGLStateChanger()
 void OpenGLES2Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
+#ifdef CEGUI_GLES3_SUPPORT
     d_shaderManager = new OpenGL3ShaderManager(d_openGLStateChanger, SHADER_GLSLES3);
+#else
+    d_shaderManager = new OpenGL3ShaderManager(d_openGLStateChanger, SHADER_GLSLES1);
+#endif
     d_shaderManager->initialiseShaders();
 
     initialiseStandardTexturedShaderWrapper();
@@ -309,21 +317,6 @@ void OpenGLES2Renderer::initialiseOpenGLShaders()
 //----------------------------------------------------------------------------//
 void OpenGLES2Renderer::initialiseGLExtensions()
 {
-    //glewExperimental = GL_TRUE;
-
-    //GLenum err = glewInit();
-    //if(err != GLEW_OK)
-    //{
-    //    std::ostringstream err_string;
-        //Problem: glewInit failed, something is seriously wrong.
-    //    err_string << "failed to initialise the GLEW library. "
-    //        << glewGetErrorString(err);
-
-    //    CEGUI_THROW(RendererException(err_string.str().c_str()));
-    //}
-    //Clear the useless error glew produces as of version 1.7.0, when using OGLES2.2 Core Profile
-    //glGetError();
-
     const GLubyte* pcExt = glGetString(GL_EXTENSIONS);
     String extensions = String((const char*)pcExt);
     

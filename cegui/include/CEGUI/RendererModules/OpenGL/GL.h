@@ -28,7 +28,11 @@
 #define _CEGUIOpenGL_h_
 
 #ifdef __ANDROID__
-#   include <GLES3/gl3.h>
+#   ifdef CEGUI_GLES3_SUPPORT
+#       include <GLES3/gl3.h>
+#   else
+#       include <GLES2/gl2.h>
+#   endif
 #elif !defined(__APPLE__)
 #   if (defined( __WIN32__ ) || defined( _WIN32 ))
 #       include <windows.h>
