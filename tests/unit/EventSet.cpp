@@ -106,6 +106,75 @@ public:
     }
 };
 
+class FunctorSubscriberConst
+{
+public:
+    bool operator()(const CEGUI::EventArgs& args) const
+    {
+        g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
+
+        return true;
+    }
+};
+
+class FunctorSubscriberVoid
+{
+public:
+    void operator()(const CEGUI::EventArgs& args)
+    {
+        g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
+    }
+};
+
+class FunctorSubscriberVoidConst
+{
+public:
+    void operator()(const CEGUI::EventArgs& args) const
+    {
+        g_GlobalEventValue = static_cast<const TestEventArgs&>(args).d_targetValue;
+    }
+};
+
+class FunctorSubscriberNoArgs
+{
+public:
+    bool operator()()
+    {
+        g_GlobalEventValue = 24;
+
+        return true;
+    }
+};
+
+class FunctorSubscriberNoArgsConst
+{
+public:
+    bool operator()() const
+    {
+        g_GlobalEventValue = 25;
+
+        return true;
+    }
+};
+
+class FunctorSubscriberVoidNoArgs
+{
+public:
+    void operator()()
+    {
+        g_GlobalEventValue = 26;
+    }
+};
+
+class FunctorSubscriberVoidNoArgsConst
+{
+public:
+    void operator()() const
+    {
+        g_GlobalEventValue = 27;
+    }
+};
+
 class MemberMethodSubscriber
 {
 public:
@@ -182,6 +251,55 @@ BOOST_AUTO_TEST_CASE(Subscribing)
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 20);
         connection->disconnect();
     }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberConst());
+        args.d_targetValue = 21;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 21);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberVoid());
+        args.d_targetValue = 22;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 22);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberVoidConst());
+        args.d_targetValue = 23;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 23);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberNoArgs());
+        args.d_targetValue = 24;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 24);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberNoArgsConst());
+        args.d_targetValue = 25;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 25);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberVoidNoArgs());
+        args.d_targetValue = 26;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 26);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, FunctorSubscriberVoidNoArgsConst());
+        args.d_targetValue = 27;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 27);
+        connection->disconnect();
+    }
 
     {
         MemberMethodSubscriber instance;
@@ -215,5 +333,37 @@ BOOST_AUTO_TEST_CASE(Subscribing)
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 33);
         connection->disconnect();
     }
+
+    // C++11 only!
+#   if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, [](const CEGUI::EventArgs&) { g_GlobalEventValue = 40; return true; });
+        args.d_targetValue = 40;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 40);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, [](const CEGUI::EventArgs&) { g_GlobalEventValue = 41; });
+        args.d_targetValue = 41;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 41);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, []() { g_GlobalEventValue = 42; return true; });
+        args.d_targetValue = 42;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 42);
+        connection->disconnect();
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, []() { g_GlobalEventValue = 43; });
+        args.d_targetValue = 43;
+        set.fireEvent(eventName, args);
+        BOOST_CHECK_EQUAL(g_GlobalEventValue, 43);
+        connection->disconnect();
+    }
+#endif
 }
 BOOST_AUTO_TEST_SUITE_END()
