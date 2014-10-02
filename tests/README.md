@@ -21,7 +21,7 @@ CEGUI_SAMPLE_DATAPATH=`pwd`/../datafiles/ ctest -V
 
 * Windows
 ```
-cd $cegui_folder
+cd <cegui folder>
 cd build/
 set CEGUI_SAMPLE_DATAPATH=%CD%/../datafiles/
 ctest -V -C <configuration>
