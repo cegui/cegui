@@ -38,9 +38,9 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GLES2StateChangeWrapper.h"
 #include "CEGUI/RenderMaterial.h"
-#include "CEGUI/RendererModules/OpenGL/GLES2ShaderWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
 #include <sstream>
 #include <algorithm>
@@ -73,11 +73,11 @@ template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
     TextureTarget* create(OpenGLRendererBase& r) const
-        { return new T(static_cast<OpenGLES2Renderer&>(r)); }
+        { return new T(static_cast<GLES2Renderer&>(r)); }
 };
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer& OpenGLES2Renderer::bootstrapSystem(const int abi)
+GLES2Renderer& GLES2Renderer::bootstrapSystem(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
@@ -85,7 +85,7 @@ OpenGLES2Renderer& OpenGLES2Renderer::bootstrapSystem(const int abi)
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
-    OpenGLES2Renderer& renderer(create());
+    GLES2Renderer& renderer(create());
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
@@ -93,7 +93,7 @@ OpenGLES2Renderer& OpenGLES2Renderer::bootstrapSystem(const int abi)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer& OpenGLES2Renderer::bootstrapSystem(const Sizef& display_size,
+GLES2Renderer& GLES2Renderer::bootstrapSystem(const Sizef& display_size,
                                                   const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
@@ -102,7 +102,7 @@ OpenGLES2Renderer& OpenGLES2Renderer::bootstrapSystem(const Sizef& display_size,
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
-    OpenGLES2Renderer& renderer(create(display_size));
+    GLES2Renderer& renderer(create(display_size));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
@@ -110,14 +110,14 @@ OpenGLES2Renderer& OpenGLES2Renderer::bootstrapSystem(const Sizef& display_size,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::destroySystem()
+void GLES2Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
-    OpenGLES2Renderer* renderer = static_cast<OpenGLES2Renderer*>(sys->getRenderer());
+    GLES2Renderer* renderer = static_cast<GLES2Renderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
         static_cast<DefaultResourceProvider*>(sys->getResourceProvider());
 
@@ -127,43 +127,43 @@ void OpenGLES2Renderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer& OpenGLES2Renderer::create(const int abi)
+GLES2Renderer& GLES2Renderer::create(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *new OpenGLES2Renderer();
+    return *new GLES2Renderer();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer& OpenGLES2Renderer::create(const Sizef& display_size,
+GLES2Renderer& GLES2Renderer::create(const Sizef& display_size,
                                          const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *new OpenGLES2Renderer(display_size);
+    return *new GLES2Renderer(display_size);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::destroy(OpenGLES2Renderer& renderer)
+void GLES2Renderer::destroy(GLES2Renderer& renderer)
 {
     delete &renderer;
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer::OpenGLES2Renderer() :
+GLES2Renderer::GLES2Renderer() :
     d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
-    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
+    d_openGLStateChanger = new GLES2StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer::OpenGLES2Renderer(const Sizef& display_size) :
+GLES2Renderer::GLES2Renderer(const Sizef& display_size) :
     OpenGLRendererBase(display_size),
     d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
@@ -171,13 +171,13 @@ OpenGLES2Renderer::OpenGLES2Renderer(const Sizef& display_size) :
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
-    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
+    d_openGLStateChanger = new GLES2StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2Renderer::~OpenGLES2Renderer()
+GLES2Renderer::~GLES2Renderer()
 {
     delete d_textureTargetFactory;
     delete d_openGLStateChanger;
@@ -188,30 +188,30 @@ OpenGLES2Renderer::~OpenGLES2Renderer()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::initialiseRendererIDString()
+void GLES2Renderer::initialiseRendererIDString()
 {
     d_rendererID =
 #ifdef CEGUI_GLES3_SUPPORT
-        "CEGUI::OpenGLES2Renderer - OpenGL ES 3.0 Renderer"
+        "CEGUI::GLES2Renderer - OpenGL ES 3.0 Renderer"
 #else
-        "CEGUI::OpenGLES2Renderer - OpenGL ES 2.0 Renderer"
+        "CEGUI::GLES2Renderer - OpenGL ES 2.0 Renderer"
 #endif
         "renderer module.";
 }
 //----------------------------------------------------------------------------//
-OpenGLGeometryBufferBase* OpenGLES2Renderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
+OpenGLGeometryBufferBase* GLES2Renderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    return new OpenGLES2GeometryBuffer(*this, renderMaterial);
+    return new GLES2GeometryBuffer(*this, renderMaterial);
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLES2Renderer::createTextureTarget_impl()
+TextureTarget* GLES2Renderer::createTextureTarget_impl()
 {
     return d_textureTargetFactory->create(*this);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::beginRendering()
+void GLES2Renderer::beginRendering()
 {
     // if enabled, restores a subset of the GL state back to default values.
     if (d_initExtraStates)
@@ -227,12 +227,12 @@ void OpenGLES2Renderer::beginRendering()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::endRendering()
+void GLES2Renderer::endRendering()
 {
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::setupExtraStates()
+void GLES2Renderer::setupExtraStates()
 {
     glActiveTexture(GL_TEXTURE0);
 
@@ -247,15 +247,15 @@ void OpenGLES2Renderer::setupExtraStates()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::initialiseTextureTargetFactory()
+void GLES2Renderer::initialiseTextureTargetFactory()
 {
     //Use OGL core implementation for FBOs
     d_rendererID += "  TextureTarget support enabled via FBO OGL 3.2 core implementation.";
-    d_textureTargetFactory = new OGLTemplateTargetFactory<OpenGLES2FBOTextureTarget>;
+    d_textureTargetFactory = new OGLTemplateTargetFactory<GLES2FBOTextureTarget>;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::setupRenderingBlendMode(const BlendMode mode,
+void GLES2Renderer::setupRenderingBlendMode(const BlendMode mode,
                                               const bool force)
 {
     // exit if mode is already set up (and update not forced)
@@ -275,7 +275,7 @@ void OpenGLES2Renderer::setupRenderingBlendMode(const BlendMode mode,
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGLES2Renderer::getAdjustedTextureSize(const Sizef& sz) 
+Sizef GLES2Renderer::getAdjustedTextureSize(const Sizef& sz) 
 {
     Sizef out(sz);
 
@@ -294,19 +294,19 @@ Sizef OpenGLES2Renderer::getAdjustedTextureSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3StateChangeWrapper* OpenGLES2Renderer::getOpenGLStateChanger()
+OpenGLBaseStateChangeWrapper* GLES2Renderer::getOpenGLStateChanger()
 {
     return d_openGLStateChanger;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::initialiseOpenGLShaders()
+void GLES2Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
 #ifdef CEGUI_GLES3_SUPPORT
-    d_shaderManager = new OpenGL3ShaderManager(d_openGLStateChanger, SHADER_GLSLES3);
+    d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, SHADER_GLSLES3);
 #else
-    d_shaderManager = new OpenGL3ShaderManager(d_openGLStateChanger, SHADER_GLSLES1);
+    d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, SHADER_GLSLES1);
 #endif
     d_shaderManager->initialiseShaders();
 
@@ -315,7 +315,7 @@ void OpenGLES2Renderer::initialiseOpenGLShaders()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::initialiseGLExtensions()
+void GLES2Renderer::initialiseGLExtensions()
 {
     const GLubyte* pcExt = glGetString(GL_EXTENSIONS);
     String extensions = String((const char*)pcExt);
@@ -327,13 +327,13 @@ void OpenGLES2Renderer::initialiseGLExtensions()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLES2Renderer::isS3TCSupported() const
+bool GLES2Renderer::isS3TCSupported() const
 {
     return d_s3tcSupported;
 }
 
 //----------------------------------------------------------------------------//
-RefCounted<RenderMaterial> OpenGLES2Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
+RefCounted<RenderMaterial> GLES2Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
     if(shaderType == DS_TEXTURED)
     {
@@ -357,10 +357,10 @@ RefCounted<RenderMaterial> OpenGLES2Renderer::createRenderMaterial(const Default
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::initialiseStandardTexturedShaderWrapper()
+void GLES2Renderer::initialiseStandardTexturedShaderWrapper()
 {
-    OpenGL3Shader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
-    d_shaderWrapperTextured = new OpenGL3ShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
+    OpenGLBaseShader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
+    d_shaderWrapperTextured = new OpenGLBaseShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
 
     d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
 
@@ -373,10 +373,10 @@ void OpenGLES2Renderer::initialiseStandardTexturedShaderWrapper()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2Renderer::initialiseStandardColouredShaderWrapper()
+void GLES2Renderer::initialiseStandardColouredShaderWrapper()
 {
-    OpenGL3Shader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
-    d_shaderWrapperSolid = new OpenGL3ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
+    OpenGLBaseShader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
+    d_shaderWrapperSolid = new OpenGLBaseShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
 
     d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix");
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage");

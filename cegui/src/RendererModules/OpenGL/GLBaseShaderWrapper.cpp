@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
@@ -38,36 +38,36 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-OpenGL3ShaderWrapper::OpenGL3ShaderWrapper(OpenGL3Shader& shader, OpenGL3StateChangeWrapper* stateChangeWrapper)
+OpenGLBaseShaderWrapper::OpenGLBaseShaderWrapper(OpenGLBaseShader& shader, OpenGLBaseStateChangeWrapper* stateChangeWrapper)
     : d_shader(shader)
     , d_glStateChangeWrapper(stateChangeWrapper)
 {
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3ShaderWrapper::~OpenGL3ShaderWrapper()
+OpenGLBaseShaderWrapper::~OpenGLBaseShaderWrapper()
 {
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3ShaderWrapper::addUniformVariable(const std::string& uniformName)
+void OpenGLBaseShaderWrapper::addUniformVariable(const std::string& uniformName)
 {
     GLint variable_location = d_shader.getUniformLocation(uniformName);
 
     if(variable_location == -1)
-        CEGUI_THROW(RendererException("OpenGL3ShaderWrapper::addUniformVariable - A uniform variable with "
+        CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::addUniformVariable - A uniform variable with "
                                       "the name \"" + uniformName + "\" was not found in the OpenGL shader."));
 
     d_uniformVariables.insert(std::pair<std::string, GLint>(uniformName, variable_location));
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3ShaderWrapper::addTextureUniformVariable(const std::string& uniformName, GLint textureUnitIndex)
+void OpenGLBaseShaderWrapper::addTextureUniformVariable(const std::string& uniformName, GLint textureUnitIndex)
 {
     GLint variable_location = d_shader.getUniformLocation(uniformName);
 
     if(variable_location == -1)
-        CEGUI_THROW(RendererException("OpenGL3ShaderWrapper::addTextureUniformVariable - A texture uniform variable with "
+        CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::addTextureUniformVariable - A texture uniform variable with "
                                       "the name \"" + uniformName + "\" was not found in the OpenGL shader."));
 
     d_uniformVariables.insert(std::pair<std::string, GLint>(uniformName, textureUnitIndex));
@@ -77,19 +77,19 @@ void OpenGL3ShaderWrapper::addTextureUniformVariable(const std::string& uniformN
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3ShaderWrapper::addAttributeVariable(const std::string& attributeName)
+void OpenGLBaseShaderWrapper::addAttributeVariable(const std::string& attributeName)
 {
     GLint variable_location = d_shader.getAttribLocation(attributeName);
 
     if(variable_location == -1)
-        CEGUI_THROW(RendererException("OpenGL3ShaderWrapper::addAttributeVariable- An attribute with the name \"" + 
+        CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::addAttributeVariable- An attribute with the name \"" + 
                                       attributeName + "\" was not found in the OpenGL shader."));
 
     d_attributeVariables.insert(std::pair<std::string, GLint>(attributeName, variable_location));
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3ShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
+void OpenGLBaseShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
 {
     d_shader.bind();
 
@@ -172,23 +172,23 @@ void OpenGL3ShaderWrapper::prepareForRendering(const ShaderParameterBindings* sh
 }
 
 //----------------------------------------------------------------------------//
-GLint OpenGL3ShaderWrapper::getAttributeLocation(const std::string& attributeName) const
+GLint OpenGLBaseShaderWrapper::getAttributeLocation(const std::string& attributeName) const
 {
     std::map<std::string, GLint>::const_iterator iter = d_attributeVariables.find(attributeName);
     if(iter != d_attributeVariables.end())
         return iter->second;
 
-    CEGUI_THROW(RendererException("OpenGL3ShaderWrapper::getAttributeLocation: An attribute variable with the name \"" + attributeName + "\" has not been added to the ShaderWrapper."));
+    CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::getAttributeLocation: An attribute variable with the name \"" + attributeName + "\" has not been added to the ShaderWrapper."));
 }
 
 //----------------------------------------------------------------------------//
-GLint OpenGL3ShaderWrapper::getUniformLocation(const std::string& uniformName) const
+GLint OpenGLBaseShaderWrapper::getUniformLocation(const std::string& uniformName) const
 {
     std::map<std::string, GLint>::const_iterator iter = d_uniformVariables.find(uniformName);
     if(iter != d_uniformVariables.end())
         return iter->second;
 
-    CEGUI_THROW(RendererException("OpenGL3ShaderWrapper::getUniformLocation: An uniform variable with the name \"" + uniformName + "\" has not been added to the ShaderWrapper."));
+    CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::getUniformLocation: An uniform variable with the name \"" + uniformName + "\" has not been added to the ShaderWrapper."));
 }
 
 //----------------------------------------------------------------------------//

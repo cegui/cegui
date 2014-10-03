@@ -282,7 +282,7 @@ OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
-    d_shaderManager = new OpenGL3ShaderManager(d_openGLStateChanger, SHADER_GLSL);
+    d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, SHADER_GLSL);
     d_shaderManager->initialiseShaders();
 
     initialiseStandardTexturedShaderWrapper();

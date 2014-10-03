@@ -32,7 +32,7 @@
 namespace CEGUI
 {
     class OpenGL3ShaderWrapper;
-    class OpenGL3ShaderManager;
+    class OpenGLBaseShaderManager;
     class OpenGL3StateChangeWrapper;
 
 /*!
@@ -213,7 +213,7 @@ protected:
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper* d_openGLStateChanger;
     //! The ShaderManager  takes care of the creation of standard OpenGL Shaders and their deletion
-    OpenGL3ShaderManager* d_shaderManager;
+    OpenGLBaseShaderManager* d_shaderManager;
     //! whether S3TC texture compression is supported by the context
     bool d_s3tcSupported;
     //! pointer to a helper that creates TextureTargets supported by the system.

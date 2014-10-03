@@ -1,7 +1,6 @@
 /***********************************************************************
     created:    18th July 2013
     author:     Lukas Meindl
-                David Reepmeyer (added GLES2/GLES3)
 *************************************************************************/
 /***************************************************************************
 *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -25,8 +24,8 @@
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _CEGUIOpenGL3ShaderWrapper_h_
-#define _CEGUIOpenGL3ShaderWrapper_h_
+#ifndef _CEGUIOpenGLBaseShaderWrapper_h_
+#define _CEGUIOpenGLBaseShaderWrapper_h_
 
 #include "RendererBase.h"
 
@@ -41,17 +40,17 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class OpenGL3Shader;
+    class OpenGLBaseShader;
     class ShaderParameterBindings;
-    class OpenGL3StateChangeWrapper;
+    class OpenGLBaseStateChangeWrapper;
     class ShaderParameter;
 
-class OPENGL_GUIRENDERER_API OpenGL3ShaderWrapper : public ShaderWrapper
+class OPENGL_GUIRENDERER_API OpenGLBaseShaderWrapper : public ShaderWrapper
 {
 public:
-    OpenGL3ShaderWrapper(OpenGL3Shader& shader, OpenGL3StateChangeWrapper* stateChangeWrapper);
+    OpenGLBaseShaderWrapper(OpenGLBaseShader& shader, OpenGLBaseStateChangeWrapper* stateChangeWrapper);
 
-    ~OpenGL3ShaderWrapper();
+    ~OpenGLBaseShaderWrapper();
 
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
@@ -68,13 +67,13 @@ public:
 
 protected:
     //! The underlying GLSL shader that this class wraps the access to
-    OpenGL3Shader& d_shader;
+    OpenGLBaseShader& d_shader;
     //! A map of parameter names and the related uniform variable locations
     std::map<std::string, GLint> d_uniformVariables;
     //! A map of parameter names and the related attribute variable locations
     std::map<std::string, GLint> d_attributeVariables;
     //! OpenGL state change wrapper
-    OpenGL3StateChangeWrapper* d_glStateChangeWrapper;
+    OpenGLBaseStateChangeWrapper* d_glStateChangeWrapper;
     //! Last states of the set shader parameters
     std::map<std::string, ShaderParameter*> d_shaderParameterStates;
 };

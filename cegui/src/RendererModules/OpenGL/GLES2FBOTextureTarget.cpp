@@ -43,10 +43,10 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-const float OpenGLES2FBOTextureTarget::DEFAULT_SIZE = 128.0f;
+const float GLES2FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGLES2FBOTextureTarget::OpenGLES2FBOTextureTarget(OpenGLES2Renderer& owner) :
+GLES2FBOTextureTarget::GLES2FBOTextureTarget(GLES2Renderer& owner) :
     OpenGLTextureTarget(owner),
     d_glStateChanger(owner.getOpenGLStateChanger())
 {
@@ -60,7 +60,7 @@ OpenGLES2FBOTextureTarget::OpenGLES2FBOTextureTarget(OpenGLES2Renderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2FBOTextureTarget::~OpenGLES2FBOTextureTarget()
+GLES2FBOTextureTarget::~GLES2FBOTextureTarget()
 {
     glDeleteFramebuffers(1, &d_frameBuffer);
 
@@ -68,14 +68,14 @@ OpenGLES2FBOTextureTarget::~OpenGLES2FBOTextureTarget()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::declareRenderSize(const Sizef& sz)
+void GLES2FBOTextureTarget::declareRenderSize(const Sizef& sz)
 {
     setArea(Rectf(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     resizeRenderTexture();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::activate()
+void GLES2FBOTextureTarget::activate()
 {
     // remember previously bound FBO to make sure we set it back
     // when deactivating
@@ -89,7 +89,7 @@ void OpenGLES2FBOTextureTarget::activate()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::deactivate()
+void GLES2FBOTextureTarget::deactivate()
 {
     OpenGLTextureTarget::deactivate();
 
@@ -98,7 +98,7 @@ void OpenGLES2FBOTextureTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::clear()
+void GLES2FBOTextureTarget::clear()
 {
     const Sizef sz(d_area.getSize());
     // Some drivers crash when clearing a 0x0 RTT. This is a workaround for
@@ -134,7 +134,7 @@ void OpenGLES2FBOTextureTarget::clear()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::initialiseRenderTexture()
+void GLES2FBOTextureTarget::initialiseRenderTexture()
 {
     // save old texture binding
     GLuint old_tex;
@@ -193,7 +193,7 @@ void OpenGLES2FBOTextureTarget::initialiseRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::resizeRenderTexture()
+void GLES2FBOTextureTarget::resizeRenderTexture()
 {
     // save old texture binding
     GLuint old_tex;
@@ -237,7 +237,7 @@ void OpenGLES2FBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::grabTexture()
+void GLES2FBOTextureTarget::grabTexture()
 {
     glDeleteFramebuffers(1, &d_frameBuffer);
     d_frameBuffer = 0;
@@ -246,7 +246,7 @@ void OpenGLES2FBOTextureTarget::grabTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::restoreTexture()
+void GLES2FBOTextureTarget::restoreTexture()
 {
     OpenGLTextureTarget::restoreTexture();
 
@@ -255,7 +255,7 @@ void OpenGLES2FBOTextureTarget::restoreTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2FBOTextureTarget::checkFramebufferStatus()
+void GLES2FBOTextureTarget::checkFramebufferStatus()
 {
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
@@ -263,7 +263,7 @@ void OpenGLES2FBOTextureTarget::checkFramebufferStatus()
     if(status != GL_FRAMEBUFFER_COMPLETE)
     {
         std::stringstream stringStream;
-        stringStream << "OpenGLES2Renderer: Error  Framebuffer is not complete\n";
+        stringStream << "GLES2Renderer: Error  Framebuffer is not complete\n";
 
         switch(status)
         {

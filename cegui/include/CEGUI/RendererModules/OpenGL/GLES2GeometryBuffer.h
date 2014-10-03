@@ -25,26 +25,26 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLES2GeometryBuffer_h_
-#define _CEGUIOpenGLES2GeometryBuffer_h_
+#ifndef _CEGUIGLES2GeometryBuffer_h_
+#define _CEGUIGLES2GeometryBuffer_h_
 
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 #include "CEGUI/RefCounted.h"
 
 namespace CEGUI
 {
-class OpenGL3Shader;
-class OpenGL3StateChangeWrapper;
-class OpenGLES2Renderer;
+class OpenGLBaseShader;
+class OpenGLBaseStateChangeWrapper;
+class GLES2Renderer;
 class RenderMaterial;
 
-//! OpenGLES2 based implementation of the GeometryBuffer interface.
-class OPENGL_GUIRENDERER_API OpenGLES2GeometryBuffer : public OpenGLGeometryBufferBase
+//! GLES2 based implementation of the GeometryBuffer interface.
+class OPENGL_GUIRENDERER_API GLES2GeometryBuffer : public OpenGLGeometryBufferBase
 {
 public:
     //! Constructor
-    OpenGLES2GeometryBuffer(OpenGLES2Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    virtual ~OpenGLES2GeometryBuffer();
+    GLES2GeometryBuffer(GLES2Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual ~GLES2GeometryBuffer();
 
     // Overrides of virtual and abstract methods from GeometryBuffer
     virtual void draw() const;
@@ -76,7 +76,7 @@ protected:
     //! OpenGL vbo containing all vertex data
     GLuint d_verticesVBO;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
-    OpenGL3StateChangeWrapper* d_glStateChanger;
+    OpenGLBaseStateChangeWrapper* d_glStateChanger;
     //! Size of the buffer that is currently in use
     GLuint d_bufferSize;
 };

@@ -1,7 +1,6 @@
 /***********************************************************************
     created:    Wed, 8th Feb 2012
-    author:     Lukas E Meindl (based on code by Paul D Turner)
-                David Reepmeyer (added GLES2/GLES3)
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -25,62 +24,34 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIGLES2FBOTextureTarget_h_
-#define _CEGUIGLES2FBOTextureTarget_h_
 
-#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
-#include "CEGUI/RendererModules/OpenGL/GL.h"
-#include "../../Rect.h"
+#ifndef _CEGUIGLES2StateChangeWrapper_h_
+#define _CEGUIGLES2StateChangeWrapper_h_
 
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
+#include "RendererBase.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4250)
+#   pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GLES2Texture;
-class GLES2Renderer;
-class OpenGLBaseStateChangeWrapper;
 
-//! ~GLES2FBOTextureTarget - allows rendering to an OpenGL texture via FBO.
-class OPENGL_GUIRENDERER_API GLES2FBOTextureTarget : public OpenGLTextureTarget
+/*!
+\brief
+GLES2StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
+*/
+class OPENGL_GUIRENDERER_API GLES2StateChangeWrapper : public OpenGLBaseStateChangeWrapper
 {
 public:
-    GLES2FBOTextureTarget(GLES2Renderer& owner);
-    virtual ~GLES2FBOTextureTarget();
+    GLES2StateChangeWrapper();
+    virtual ~GLES2StateChangeWrapper();
 
-    // overrides from GLES2RenderTarget
-    void activate();
-    void deactivate();
-    // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Sizef& sz);
-    // specialise functions from GLES2TextureTarget
-    void grabTexture();
-    void restoreTexture();
-
-protected:
-    //! default size of created texture objects
-    static const float DEFAULT_SIZE;
-
-    //! allocate and set up the texture used with the FBO.
-    void initialiseRenderTexture();
-    //! resize the texture
-    void resizeRenderTexture();
-    //! Checks for OpenGL framebuffer completeness
-    void checkFramebufferStatus();
-
-    //! Frame buffer object.
-    GLuint d_frameBuffer;
-    //! Stencil buffer renderbuffer object
-    GLuint d_stencilBufferRBO;
-    //! Frame buffer object that was bound before we bound this one
-    GLuint d_previousFrameBuffer;
-    //! OpenGL state changer
-    OpenGLBaseStateChangeWrapper* d_glStateChanger;
+    //! glBindVertexArray only recognized in GLES3 (not 2)
+    virtual void bindVertexArray(GLuint vertexArray);
 };
 
 } // End of  CEGUI namespace section
@@ -89,4 +60,4 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIOpenGLFBOTextureTarget_h_
+#endif

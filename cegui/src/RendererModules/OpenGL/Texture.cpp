@@ -118,7 +118,7 @@ void OpenGLTexture::initInternalPixelFormatFields(const PixelFormat fmt)
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
         break;
-
+#ifndef __ANDROID__
     case PF_RGB_DXT1:
         d_format = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
         d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
@@ -142,6 +142,7 @@ void OpenGLTexture::initInternalPixelFormatFields(const PixelFormat fmt)
         d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
+#endif
 
     default:
         CEGUI_THROW(RendererException(
@@ -264,11 +265,13 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
 GLsizei OpenGLTexture::getCompressedTextureSize(const Sizef& pixel_size) const
 {
     GLsizei blocksize = 16;
+#ifndef __ANDROID__
     if (d_format == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
         d_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
     {
         blocksize = 8;
     }
+#endif
 
     return (
         static_cast<GLsizei>(
@@ -317,7 +320,11 @@ void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
     }
     else
     {
+#if defined(__ANDROID__) && !defined(CEGUI_GLES3_SUPPORT)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+#else
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+#endif
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
                      0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
@@ -387,7 +394,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
 
     if (d_isCompressed)
     {
-        glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
+        //glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
     }
     else
     {
@@ -395,7 +402,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
         glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
 
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
+        //glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
     
         glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
     }
@@ -430,8 +437,8 @@ void OpenGLTexture::generateOpenGLTexture()
 
     // TODO: This call is OpenGL-deprecated for OpenGL 3 Core Profile and should only be called when using the regular OpenGL Renderer.
     // A better way to check for OGL vs OGL3 should be implemented (bool in OpenGLRendererBase?)
-    if (d_owner.getIdentifierString().find("CEGUI::OpenGLRenderer -") == 0)
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    //if (d_owner.getIdentifierString().find("CEGUI::OpenGLRenderer -") == 0)
+    //    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);

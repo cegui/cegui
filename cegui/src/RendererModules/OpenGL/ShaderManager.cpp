@@ -39,20 +39,20 @@
 namespace CEGUI
 {
 
-OpenGL3ShaderManager::OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger,
+OpenGLBaseShaderManager::OpenGLBaseShaderManager(OpenGLBaseStateChangeWrapper* glStateChanger,
         ShaderVersion shaderVersion)
     : d_glStateChanger(glStateChanger), d_shaderVersion(shaderVersion)
 {
     d_shadersInitialised = false;
 }
 
-OpenGL3ShaderManager::~OpenGL3ShaderManager()
+OpenGLBaseShaderManager::~OpenGLBaseShaderManager()
 {
     deinitialiseShaders();
     d_shadersInitialised = false;
 }
 
-OpenGL3Shader* OpenGL3ShaderManager::getShader(GLuint id)
+OpenGLBaseShader* OpenGLBaseShaderManager::getShader(GLuint id)
 {
     if(d_shaders.find(id) != d_shaders.end())
         return d_shaders[id];
@@ -60,16 +60,16 @@ OpenGL3Shader* OpenGL3ShaderManager::getShader(GLuint id)
         return 0;
 }
 
-void OpenGL3ShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)
+void OpenGLBaseShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)
 {
     if(d_shaders.find(id) == d_shaders.end())
     {
-        d_shaders[id] = new OpenGL3Shader(vertexShader, fragmentShader, d_glStateChanger);
+        d_shaders[id] = new OpenGLBaseShader(vertexShader, fragmentShader, d_glStateChanger);
         d_shaders[id]->link();
     }
 }
 
-void OpenGL3ShaderManager::initialiseShaders()
+void OpenGLBaseShaderManager::initialiseShaders()
 {
     if(!d_shadersInitialised)
     {
@@ -100,7 +100,7 @@ void OpenGL3ShaderManager::initialiseShaders()
             return;
         }
 
-        const CEGUI::String notify("OpenGL3Renderer: Notification - Successfully initialised OpenGL3Renderer shader programs.");
+        const CEGUI::String notify("OpenGLBaseRenderer: Notification - Successfully initialised OpenGLBaseRenderer shader programs.");
         if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
             logger->logEvent(notify);
 
@@ -108,7 +108,7 @@ void OpenGL3ShaderManager::initialiseShaders()
     }
 }
 
-void OpenGL3ShaderManager::deinitialiseShaders()
+void OpenGLBaseShaderManager::deinitialiseShaders()
 {
     for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
     {
