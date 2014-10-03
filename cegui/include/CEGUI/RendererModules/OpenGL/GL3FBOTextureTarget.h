@@ -42,7 +42,7 @@ namespace CEGUI
 {
 class OpenGL3Texture;
 class OpenGL3Renderer;
-class OpenGL3StateChangeWrapper;
+class OpenGLBaseStateChangeWrapper;
 
 //! ~OpenGL3FBOTextureTarget - allows rendering to an OpenGL texture via FBO.
 class OPENGL_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGLTextureTarget
@@ -79,7 +79,7 @@ protected:
     //! Frame buffer object that was bound before we bound this one
     GLuint d_previousFrameBuffer;
     //! OpenGL state changer
-    OpenGL3StateChangeWrapper* d_glStateChanger;
+    OpenGLBaseStateChangeWrapper* d_glStateChanger;
 };
 
 } // End of  CEGUI namespace section

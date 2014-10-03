@@ -33,7 +33,7 @@
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
-#include "CEGUI/RendererModules/OpenGL/GLES2ShaderWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -45,7 +45,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLES2GeometryBuffer::OpenGLES2GeometryBuffer(OpenGLES2Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
+GLES2GeometryBuffer::GLES2GeometryBuffer(GLES2Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
     OpenGLGeometryBufferBase(owner, renderMaterial),
     d_glStateChanger(owner.getOpenGLStateChanger()),
     d_bufferSize(0)
@@ -54,13 +54,13 @@ OpenGLES2GeometryBuffer::OpenGLES2GeometryBuffer(OpenGLES2Renderer& owner, CEGUI
 }
 
 //----------------------------------------------------------------------------//
-OpenGLES2GeometryBuffer::~OpenGLES2GeometryBuffer()
+GLES2GeometryBuffer::~GLES2GeometryBuffer()
 {
     deinitialiseOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::draw() const
+void GLES2GeometryBuffer::draw() const
 {
     if(d_vertexData.empty())
         return;
@@ -119,14 +119,14 @@ void OpenGLES2GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::reset()
+void GLES2GeometryBuffer::reset()
 {
     OpenGLGeometryBufferBase::reset();
     updateOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::initialiseVertexBuffers()
+void GLES2GeometryBuffer::initialiseVertexBuffers()
 {
 #if CEGUI_GLES3_SUPPORT 
     glGenVertexArrays(1, &d_verticesVAO);
@@ -150,9 +150,9 @@ void OpenGLES2GeometryBuffer::initialiseVertexBuffers()
 
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::finaliseVertexAttributes()
+void GLES2GeometryBuffer::finaliseVertexAttributes()
 {
-    const CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+    const CEGUI::OpenGLBaseShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGLBaseShaderWrapper*>(d_renderMaterial->getShaderWrapper());
     d_posAttrib = gl3_shader_wrapper->getAttributeLocation("inPosition");
     d_colAttrib = gl3_shader_wrapper->getAttributeLocation("inColour");
     d_texAttrib = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
@@ -168,11 +168,11 @@ void OpenGLES2GeometryBuffer::finaliseVertexAttributes()
 
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::bindVertexAttributes() const {
+void GLES2GeometryBuffer::bindVertexAttributes() const {
 
     GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
 
-    const CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+    const CEGUI::OpenGLBaseShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGLBaseShaderWrapper*>(d_renderMaterial->getShaderWrapper());
 
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
     int dataOffset = 0;
@@ -210,7 +210,7 @@ void OpenGLES2GeometryBuffer::bindVertexAttributes() const {
 
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::deinitialiseOpenGLBuffers()
+void GLES2GeometryBuffer::deinitialiseOpenGLBuffers()
 {
 #if CEGUI_GLES3_SUPPORT 
     glDeleteVertexArrays(1, &d_verticesVAO);
@@ -219,7 +219,7 @@ void OpenGLES2GeometryBuffer::deinitialiseOpenGLBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::updateOpenGLBuffers()
+void GLES2GeometryBuffer::updateOpenGLBuffers()
 {
     bool needNewBuffer = false;
     size_t vertexCount = d_vertexData.size();
@@ -251,7 +251,7 @@ void OpenGLES2GeometryBuffer::updateOpenGLBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
+void GLES2GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
 {
     OpenGLGeometryBufferBase::appendGeometry(vertex_data, array_size);
 
@@ -259,7 +259,7 @@ void OpenGLES2GeometryBuffer::appendGeometry(const float* vertex_data, std::size
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLES2GeometryBuffer::drawDependingOnFillRule() const
+void GLES2GeometryBuffer::drawDependingOnFillRule() const
 {
     if(d_polygonFillRule == PFR_NONE)
     {

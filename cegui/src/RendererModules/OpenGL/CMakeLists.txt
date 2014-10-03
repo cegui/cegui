@@ -36,12 +36,14 @@ endif()
 if (NOT CEGUI_BUILD_RENDERER_OPENGL3 AND NOT CEGUI_BUILD_RENDERER_OPENGLES2)
     list (REMOVE_ITEM CORE_SOURCE_FILES Shader.cpp
                                         ShaderManager.cpp
-                                        StateChangeWrapper.cpp)
+                                        StateChangeWrapper.cpp
+                                        GLBaseShaderWrapper.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/Shader.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/ShaderManager.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/StateChangeWrapper.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/StandardShaderFrag.h
-                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/StandardShaderVert.h)
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/StandardShaderVert.h
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h)
 endif()
 
 
@@ -49,22 +51,23 @@ if (NOT CEGUI_BUILD_RENDERER_OPENGL3)
     list (REMOVE_ITEM CORE_SOURCE_FILES GL3Renderer.cpp
                                         GL3GeometryBuffer.cpp
                                         GL3FBOTextureTarget.cpp
-                                        GL3ShaderWrapper.cpp)
+                                        GL3Shader.cpp
+                                        GL3StateChangeWrapper.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3Renderer.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3GeometryBuffer.h
-                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3FBOTextureTarget.h
-                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h)
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3Shader.h
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3StateShaderWrapper.h
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3FBOTextureTarget.h)
 endif()
 
 if (NOT CEGUI_BUILD_RENDERER_OPENGLES2)
     list (REMOVE_ITEM CORE_SOURCE_FILES GLES2Renderer.cpp
                                         GLES2GeometryBuffer.cpp
-                                        GLES2FBOTextureTarget.cpp
-                                        GLES2ShaderWrapper.cpp)
+                                        GLES2FBOTextureTarget.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2Renderer.h
         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2GeometryBuffer.h
         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2FBOTextureTarget.h
-        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2ShaderWrapper.h)
+        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2StateShaderWrapper.h)
 
 endif()
 cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES)

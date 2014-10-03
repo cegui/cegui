@@ -25,65 +25,31 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#ifndef _CEGUIOpenGLBaseShaderManager_h_
-#define _CEGUIOpenGLBaseShaderManager_h_
+#include "CEGUI/RendererModules/OpenGL/GL3StateChangeWrapper.h"
 
-#include "CEGUI/Base.h"
-#include "CEGUI/RendererModules/OpenGL/GL.h"
-
-#include <map>
-#include <string>
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    class OpenGLBaseShader;
-    class OpenGLBaseStateChangeWrapper;
 
-    enum OpenGLBaseShaderID
-    {
-        SHADER_ID_STANDARD_TEXTURED,
-        SHADER_ID_STANDARD_SOLID,
-
-        SHADER_ID_COUNT
-    };
-
-    enum ShaderVersion
-    {
-        SHADER_GLSL,
-        SHADER_GLSLES1,
-        SHADER_GLSLES3
-    };
-
-
-    class OpenGLBaseShaderManager
-    {
-    public:
-        OpenGLBaseShaderManager(OpenGLBaseStateChangeWrapper* glStateChanger, ShaderVersion shaderVersion);
-        virtual ~OpenGLBaseShaderManager();
-
-        OpenGLBaseShader* getShader(GLuint id);
-        void loadShader(GLuint id, std::string vertexShader, std::string fragmentShader);
-
-        void initialiseShaders();
-        void deinitialiseShaders();
-
-    private:
-        typedef std::map<GLuint, OpenGLBaseShader*> shaderContainerType;
-        shaderContainerType d_shaders;
-
-        ShaderVersion d_shaderVersion;
-
-        bool d_shadersInitialised;
-
-        OpenGLBaseStateChangeWrapper* d_glStateChanger;
-    };
-
+//----------------------------------------------------------------------------//
+OpenGL3StateChangeWrapper::OpenGL3StateChangeWrapper() 
+    : OpenGLBaseStateChangeWrapper() 
+{
 }
 
-#endif
+//----------------------------------------------------------------------------//
+OpenGL3StateChangeWrapper::~OpenGL3StateChangeWrapper()
+{
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
+{
+    if (vertexArray != d_vertexArrayObject)
+    {
+        glBindVertexArray(vertexArray);
+        d_vertexArrayObject = vertexArray;
+    }
+}
+
+//----------------------------------------------------------------------------//
+}

@@ -25,8 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#ifndef _CEGUIOpenGL3StateChangeWrapper_h_
-#define _CEGUIOpenGL3StateChangeWrapper_h_
+#ifndef _CEGUIOpenGLBaseStateChangeWrapper_h_
+#define _CEGUIOpenGLBaseStateChangeWrapper_h_
 
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "RendererBase.h"
@@ -42,9 +42,9 @@ namespace CEGUI
 
 /*!
 \brief
-OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
+OpenGLBaseStateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
 */
-class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper
+class OPENGL_GUIRENDERER_API OpenGLBaseStateChangeWrapper
 {
 public:
     /*!
@@ -85,8 +85,8 @@ public:
     };
 
 
-    OpenGL3StateChangeWrapper();
-    virtual ~OpenGL3StateChangeWrapper();
+    OpenGLBaseStateChangeWrapper();
+    virtual ~OpenGLBaseStateChangeWrapper();
 
 
     //! Due to unknown changes of states between each time CEGUI gets rendered, we will invalidate
@@ -95,7 +95,7 @@ public:
 
     //! Functions wrapping the gl* function calls to improve performance by storing the parameters and
     //!  only calling the OpenGL functions when actual state changes are taking place.
-    void bindVertexArray(GLuint vertexArray);
+    virtual void bindVertexArray(GLuint vertexArray) = 0;
     void useProgram(GLuint program);
     void blendFunc(GLenum sfactor, GLenum dfactor);
     void blendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
