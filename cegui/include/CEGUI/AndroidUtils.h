@@ -30,8 +30,7 @@
 #define _AndroidUtils_h_
 
 #ifndef __ANDROID__
-non-android should error during compilation
-you should not ever include this file unless compiling for android
+#   error "should not include this file unless compiling for android"
 #endif
 
 #include <android/log.h>
