@@ -30,7 +30,7 @@
 #define _AndroidUtils_h_
 
 #ifndef __ANDROID__
-#   error "should not include this file unless compiling for android"
+#   error "do not include AndroidUtils.h unless compiling for android"
 #endif
 
 #include <android/log.h>
