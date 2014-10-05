@@ -44,10 +44,6 @@ macro(create_android_proj ANDROID_PROJECT_TARGET)
             SET(SCREEN_SIZE "|screenSize")
         endif()
 
-        if(OGRE_CONFIG_ENABLE_GLES2_GLSL_OPTIMISER)
-            SET(GLES_OPTIMISER "-lglsl_optimizer -lmesa -lglcpp-library")
-        endif()
-
         SET(ANDROID_TARGET "android-${ANDROID_SDK_API_LEVEL}")
 
         SET(NDKOUT "${CMAKE_BINARY_DIR}/SampleBrowserNDK")
@@ -65,9 +61,6 @@ macro(create_android_proj ANDROID_PROJECT_TARGET)
         endforeach()
         SET(JNI_SRC_FILES "${COMBINED_SOURCE_FILES_STRING}")
         SET(PKG_NAME "cegui.org.uk.browser")
-        SET(HAS_CODE "false")
-        SET(HEADERS "")
-        SET(SAMPLE_LDLIBS "")
         SET(ANDROID_SHARED_LIB "${CEGUI_TARGET_NAME}")
         file(COPY "${CMAKE_SOURCE_DIR}/datafiles/imagesets/ic_launcher.png" DESTINATION "${NDKOUT}/res/drawable")
         file(COPY "${CMAKE_SOURCE_DIR}/datafiles" DESTINATION "${NDKOUT}/assets")
@@ -88,7 +81,7 @@ macro(create_android_proj ANDROID_PROJECT_TARGET)
 
         add_custom_command(
             TARGET ${ANDROID_PROJECT_TARGET} POST_BUILD COMMAND ${ANDROID_EXECUTABLE} 
-            update project --name ${ANDROID_MOD_NAME} --subprojects --target ${ANDROID_TARGET} --path "${NDKOUT}" WORKING_DIRECTORY ${NDKOUT})
+            update project --name ${ANDROID_PROJECT_TARGET} --subprojects --target ${ANDROID_TARGET} --path "${NDKOUT}" WORKING_DIRECTORY ${NDKOUT})
 
         if(DEBUG)
             add_custom_command( TARGET ${ANDROID_PROJECT_TARGET} POST_BUILD COMMAND 
