@@ -70,6 +70,11 @@ if ((WIN32 OR APPLE) AND NOT CMAKE_PREFIX_PATH)
     set (CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
+if(ANDROID)
+    set(CMAKE_FIND_ROOT_PATH ${CEGUI_DEPENDENCIES_DIR} "${CMAKE_FIND_ROOT_PATH}")
+    set (CMAKE_LIBRARY_ARCHITECTURE ${ANDROID_ABI})
+endif() 
+
 # Look for packages
 find_package(PCRE)
 find_package(Freetype)
@@ -131,18 +136,10 @@ option( CEGUI_BUILD_DYNAMIC_CONFIGURATION "Dynamic libs to be built.  Always tru
 option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindoFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
 # sanity check on static build option for factory method
 if (CEGUI_BUILD_STATIC_FACTORY_MODULE AND NOT CEGUI_BUILD_STATIC_CONFIGURATION)
-  message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
+    message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
 endif()
 if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
-    message(SEND_ERROR "You may not enable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
-endif()
-if (ANDROID)
-    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
-        message(SEND_ERROR "CEGUI_BUILD_DYNAMIC_CONFIGURATION must be OFF set for android builds.")
-    endif()
-    if (NOT CEGUI_BUILD_STATIC_CONFIGURATION)
-        message(SEND_ERROR "CEGUI_BUILD_STATIC_CONFIGURATION must be ON for android builds.")
-    endif()
+    message(SEND_ERROR "You may not disable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
 endif()
 
 set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
@@ -180,8 +177,8 @@ option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB r
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
 option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
-option( CEGUI_BUILD_RENDERER_OPENGLES2 "Specifies whether to build the OpenGLES2 renderer module" false)
-option( CEGUI_BUILD_RENDERER_OPENGLES2_WITH_GLES3_SUPPORT "Build the OpenGLES2 renderer module with GLES3 features" false)
+option( CEGUI_BUILD_RENDERER_OPENGLES2 "Specifies whether to build the OpenGLES2 renderer module" ${OPENGLES2_FOUND})
+option( CEGUI_BUILD_RENDERER_OPENGLES2_WITH_GLES3_SUPPORT "Build the OpenGLES2 renderer module with GLES3 features" ${OPENGLES3_FOUND})
 
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
@@ -254,6 +251,16 @@ option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample appli
 
 if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
+endif()
+
+if (ANDROID)
+    set(CEGUI_BUILD_STATIC_CONFIGURATION TRUE CACHE BOOL "Forcing static build for Android" FORCE)
+    set(CEGUI_BUILD_STATIC_FACTORY_MODULE TRUE CACHE BOOL "Forcing static factory module for Android" FORCE)
+    set(CEGUI_BUILD_DYNAMIC_CONFIGURATION FALSE CACHE BOOL "Disable dynamic build for Android" FORCE)
+    set(CEGUI_BUILD_RENDERER_OPENGLES FALSE CACHE BOOL "Disable OpenGL ES 1 RenderSystem for Android" FORCE)
+    if (CEGUI_BUILD_RENDERER_OPENGLES2 AND CEGUI_BUILD_RENDERER_OGRE)
+        message(SEND_ERROR "Either OpenGLES2 Renderer or Ogre Renderer can be built for android at once.  Please disable one of the renderers.")
+    endif()
 endif()
 
 if (WIN32 OR APPLE)
