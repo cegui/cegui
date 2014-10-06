@@ -320,4 +320,4 @@ void SampleBrowserBase::setApplicationWindowSize(int width, int height)
 {
     d_appWindowWidth = width;
     d_appWindowHeight = height;
-}  
+}
