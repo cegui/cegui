@@ -127,7 +127,6 @@ set(COMBINED_SOURCE_FILES ${CORE_SOURCE_FILES} ${COMMON_SOURCE_FILES})
 
 # We iterate through all added Samples and add the sources and headers to the combined headers and sources
 foreach(CUR_SAMPLE_DIR_NAME ${SAMPLES_LIST})
-    message( "sample list ${CUR_SAMPLE_DIR_NAME}")
     # We generate the Sample's variable names for the list of headers and list of sources, based on the directory name of the sample
     
     set(SAMPLE_HEADER_LIST_NAME "${CUR_SAMPLE_DIR_NAME}_SAMPLE_HEADERS")
@@ -172,11 +171,10 @@ if(CEGUI_BUILD_STATIC_CONFIGURATION)
         include(CEGUIAndroid)
         set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/utils")
         set(OGRE_TEMPLATES_DIR "${CMAKE_SOURCE_DIR}/cmake/templates")
-        set(OGRE_DEPENDENCIES_DIR "${CMAKE_INSTALL_PREFIX}") 
         file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/browserdummy.cpp "int x_dummy = 0;")
-        ADD_LIBRARY(CEGUISampleBrowser SHARED ${CMAKE_CURRENT_BINARY_DIR}/browserdummy.cpp)
-        target_link_libraries(CEGUISampleBrowser ${CEGUI_TARGET_NAME}_Static)
-        SET(ANDROID_PROJECT_TARGET "CEGUISampleBrowser")
+        SET(ANDROID_PROJECT_TARGET "CEGUISampleBrowserAndroid")
+        ADD_LIBRARY(${ANDROID_PROJECT_TARGET} SHARED ${CMAKE_CURRENT_BINARY_DIR}/browserdummy.cpp)
+        target_link_libraries(${ANDROID_PROJECT_TARGET} ${CEGUI_TARGET_NAME}_Static)
         create_android_proj(${ANDROID_PROJECT_TARGET})
     endif()
 endif()
