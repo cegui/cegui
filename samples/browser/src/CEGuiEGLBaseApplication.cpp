@@ -95,7 +95,6 @@ void CEGuiEGLBaseApplication::run()
         }
 
 #endif
-
         if(d_windowSized)
         {
             d_windowSized = false;
@@ -238,7 +237,6 @@ bool CEGuiEGLBaseApplication::initEGLSurface()
 
     if(!num_configs)
     {
-        CEGUI::Logger::getSingleton().logEvent("Unable to retrieve EGL config");
         return false;
     }
 
@@ -264,7 +262,6 @@ bool CEGuiEGLBaseApplication::initEGLContext()
 
     if(eglMakeCurrent(d_display, d_surface, d_surface, d_context) == EGL_FALSE)
     {
-        CEGUI::Logger::getSingleton().logEvent("Unable to eglMakeCurrent");
         return false;
     }
 
@@ -279,7 +276,6 @@ EGLint CEGuiEGLBaseApplication::swap()
 
     if(!b)
     {
-        CEGUI::Logger::getSingleton().logEvent("eglSwapBuffers failed");
         EGLint err = eglGetError();
 
         if(err == EGL_BAD_SURFACE)
@@ -347,21 +343,14 @@ EGLint CEGuiEGLBaseApplication::resume(ANativeWindow* window)
     eglQuerySurface(d_display, d_surface, EGL_WIDTH, &d_width);
     eglQuerySurface(d_display, d_surface, EGL_HEIGHT, &d_height);
 
-    if(d_width != original_widhth || d_height != original_height)
-    {
-        CEGUI::Logger::getSingleton().logEvent("Screen Resized");
-    }
-
     if(eglMakeCurrent(d_display, d_surface, d_surface, d_context) == EGL_TRUE)
         return EGL_SUCCESS;
 
     EGLint err = eglGetError();
-    CEGUI::Logger::getSingleton().logEvent("Unable to eglMakeCurrent");
 
     if(err == EGL_CONTEXT_LOST)
     {
         //Recreate context
-        CEGUI::Logger::getSingleton().logEvent("Recreating EGL context");
         initEGLContext();
     }
     else
