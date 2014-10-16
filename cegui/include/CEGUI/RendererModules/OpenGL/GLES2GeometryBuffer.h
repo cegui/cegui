@@ -65,10 +65,8 @@ protected:
     //! called once upon setup if VAO's are used (GLES3)
     void bindVertexAttributes() const;
 
-#ifdef CEGUI_GLES3_SUPPORT
     //! OpenGL vao used for the vertices
     GLuint d_verticesVAO;
-#endif
     GLint d_posAttrib;
     GLint d_texAttrib;
     GLint d_colAttrib;

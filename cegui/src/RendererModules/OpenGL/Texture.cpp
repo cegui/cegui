@@ -45,33 +45,31 @@ OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name) :
     d_owner(owner),
     d_name(name)
 {
+}
+
+//----------------------------------------------------------------------------//
+OpenGLTexture::~OpenGLTexture()
+{
+    cleanupOpenGLTexture();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLTexture::initialise() 
+{
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                             const String& filename,
-                             const String& resourceGroup) :
-    d_size(0, 0),
-    d_grabBuffer(0),
-    d_dataSize(0, 0),
-    d_owner(owner),
-    d_name(name)
+void OpenGLTexture::initialise(const String& filename, const String& resourceGroup)
 {
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
-
+ 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                             const Sizef& size) :
-    d_size(0, 0),
-    d_grabBuffer(0),
-    d_dataSize(0, 0),
-    d_owner(owner),
-    d_name(name)
+void OpenGLTexture::initialise(const Sizef& size)
 {
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
@@ -79,81 +77,13 @@ OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                             GLuint tex, const Sizef& size) :
-    d_ogltexture(tex),
-    d_size(size),
-    d_grabBuffer(0),
-    d_dataSize(size),
-    d_owner(owner),
-    d_name(name)
+void OpenGLTexture::initialise(GLuint tex, const Sizef& size) 
 {
+    d_ogltexture = tex;
+    d_size = size;
+    d_dataSize = size;
     initInternalPixelFormatFields(PF_RGBA);
     updateCachedScaleValues();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLTexture::initInternalPixelFormatFields(const PixelFormat fmt)
-{
-    d_isCompressed = false;
-
-    switch (fmt)
-    {
-    case PF_RGBA:
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
-        break;
-
-    case PF_RGB:
-        d_format = GL_RGB;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
-        break;
-
-    case PF_RGB_565:
-        d_format = GL_RGB;
-        d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
-        break;
-
-    case PF_RGBA_4444:
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
-        break;
-#ifndef __ANDROID__
-    case PF_RGB_DXT1:
-        d_format = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    case PF_RGBA_DXT1:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    case PF_RGBA_DXT3:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    case PF_RGBA_DXT5:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-#endif
-
-    default:
-        CEGUI_THROW(RendererException(
-            "invalid or unsupported CEGUI::PixelFormat."));
-    }
-}
-
-//----------------------------------------------------------------------------//
-OpenGLTexture::~OpenGLTexture()
-{
-    cleanupOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
@@ -265,14 +195,6 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
 GLsizei OpenGLTexture::getCompressedTextureSize(const Sizef& pixel_size) const
 {
     GLsizei blocksize = 16;
-#ifndef __ANDROID__
-    if (d_format == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
-        d_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
-    {
-        blocksize = 8;
-    }
-#endif
-
     return (
         static_cast<GLsizei>(
         std::ceil(pixel_size.d_width / 4) *
@@ -289,49 +211,6 @@ void OpenGLTexture::setTextureSize(const Sizef& sz)
 
     d_dataSize = d_size;
     updateCachedScaleValues();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
-{
-    const Sizef size(d_owner.getAdjustedTextureSize(sz));
-    d_size = size;
-
-    // make sure size is within boundaries
-    GLfloat maxSize;
-    glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
-    if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
-
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    // set texture to required size
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
-    {
-        const GLsizei image_size = getCompressedTextureSize(size);
-        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
-                               static_cast<GLsizei>(size.d_width),
-                               static_cast<GLsizei>(size.d_height),
-                               0, image_size, 0);
-    }
-    else
-    {
-#if defined(__ANDROID__) && !defined(CEGUI_GLES3_SUPPORT)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-#else
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-#endif
-                     static_cast<GLsizei>(size.d_width),
-                     static_cast<GLsizei>(size.d_height),
-                     0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
-    }
-
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -384,34 +263,6 @@ void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::blitToMemory(void* targetData)
-{
-    // save existing config
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
-    {
-        //glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
-    }
-    else
-    {
-        GLint old_pack;
-        glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
-
-        glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        //glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
-    
-        glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
-    }
-
-    // restore previous config.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
     // Update the scale of a texel based on the absolute size
@@ -435,13 +286,14 @@ void OpenGLTexture::generateOpenGLTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    // TODO: This call is OpenGL-deprecated for OpenGL 3 Core Profile and should only be called when using the regular OpenGL Renderer.
-    // A better way to check for OGL vs OGL3 should be implemented (bool in OpenGLRendererBase?)
-    //if (d_owner.getIdentifierString().find("CEGUI::OpenGLRenderer -") == 0)
-    //    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    setTextureEnvironment();
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
+}
+//----------------------------------------------------------------------------//
+void OpenGLTexture::setTextureEnvironment()
+{
 }
 
 //----------------------------------------------------------------------------//

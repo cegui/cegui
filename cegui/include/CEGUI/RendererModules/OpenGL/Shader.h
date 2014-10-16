@@ -97,6 +97,7 @@ private:
     GLuint d_vertexShader;
     GLuint d_fragmentShader;
     GLuint d_geometryShader;
+protected:
     GLuint d_program;
 };
 

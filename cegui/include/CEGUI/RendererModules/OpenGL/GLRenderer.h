@@ -171,7 +171,7 @@ public:
     // base class overrides / abstract function implementations
     void beginRendering();
     void endRendering();
-    Sizef getAdjustedTextureSize(const Sizef& sz) const;
+    virtual Sizef getAdjustedTextureSize(const Sizef& sz);
     bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
@@ -180,6 +180,8 @@ public:
 protected:
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     TextureTarget* createTextureTarget_impl();
+    //! creates a texture of GLTexture type
+    virtual OpenGLTexture* createTexture_impl(const String& name);
 
     //! set up renderer id string.
     void initialiseRendererIDString();

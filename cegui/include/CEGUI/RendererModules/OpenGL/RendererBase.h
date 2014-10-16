@@ -211,6 +211,9 @@ protected:
     //! return some appropriate TextureTarget subclass instance.
     virtual TextureTarget* createTextureTarget_impl() = 0;
 
+    //! return some appropriate Texture subclass instance.
+    virtual OpenGLTexture* createTexture_impl(const String& name) = 0;
+
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
