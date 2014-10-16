@@ -32,7 +32,7 @@
 #include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/GLTexture.h"
 #include "CEGUI/RendererModules/OpenGL/GLShaderWrapper.h"
 
 #include "CEGUI/System.h"
@@ -449,7 +449,7 @@ void OpenGLRenderer::initialiseShaderWrappers()
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz) const
+Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz)
 {
     Sizef out(sz);
 
@@ -462,6 +462,12 @@ Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz) const
 
     return out;
 }
+
+//----------------------------------------------------------------------------//
+OpenGLTexture* OpenGLRenderer::createTexture_impl(const String& name)
+{
+    return new OpenGL1Texture(*this, name);
+}  
 
 //----------------------------------------------------------------------------//
 

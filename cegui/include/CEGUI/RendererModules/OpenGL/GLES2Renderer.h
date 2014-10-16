@@ -168,6 +168,8 @@ public:
 protected:
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     TextureTarget* createTextureTarget_impl();
+    //! creates a texture of GLES2Texture type
+    virtual OpenGLTexture* createTexture_impl(const String& name);
 
     void initialiseRendererIDString();
 

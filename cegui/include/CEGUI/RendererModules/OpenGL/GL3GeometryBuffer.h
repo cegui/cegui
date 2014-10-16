@@ -33,7 +33,7 @@
 namespace CEGUI
 {
 class OpenGL3Shader;
-class OpenGL3StateChangeWrapper;
+class OpenGLBaseStateChangeWrapper;
 class OpenGL3Renderer;
 class RenderMaterial;
 
@@ -66,7 +66,7 @@ protected:
     //! OpenGL vbo containing all vertex data
     GLuint d_verticesVBO;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
-    OpenGL3StateChangeWrapper* d_glStateChanger;
+    OpenGLBaseStateChangeWrapper* d_glStateChanger;
     //! Size of the buffer that is currently in use
     GLuint d_bufferSize;
 };

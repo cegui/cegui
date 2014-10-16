@@ -168,7 +168,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name)
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* tex = new OpenGLTexture(*this, name);
+    OpenGLTexture* tex = createTexture_impl(name);
+    tex->initialise();
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -185,7 +186,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* tex = new OpenGLTexture(*this, name, filename, resourceGroup);
+    OpenGLTexture* tex = createTexture_impl(name);
+    tex->initialise(filename, resourceGroup);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -200,7 +202,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name, const Sizef& size
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* tex = new OpenGLTexture(*this, name, size);
+    OpenGLTexture* tex = createTexture_impl(name);
+    tex->initialise(size);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -300,7 +303,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name, GLuint tex,
         CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
-    OpenGLTexture* t = new OpenGLTexture(*this, name, tex, sz);
+    OpenGLTexture* t = createTexture_impl(name);
+    t->initialise(tex, sz);
     d_textures[name] = t;
 
     logTextureCreation(name);
