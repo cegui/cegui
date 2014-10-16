@@ -25,52 +25,20 @@ set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.inc)
 subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 # loop through samples and exclude those that should not be build 
-if (ANDROID)
-    foreach(dir ${SAMPLES_SUBDIRS})
-        if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK
-        elseif("${dir}" MATCHES "^common$") # exclude common folder; samples include files from there directly if necessary
-        elseif("${dir}" MATCHES "^samples$") # exclude this directory
-        elseif("${dir}" MATCHES "^Demo8$") # this demo doesn't work at the moment
-        elseif("${dir}" MATCHES "^browser$") # the directory has to be included at the end because it needs all samples' sources and headers
-        elseif("${dir}" MATCHES "^CommonDialogs$") # exclude this directory
-        elseif("${dir}" MATCHES "^CustomShapesDrawing$") # exclude this directory
-        elseif("${dir}" MATCHES "^Demo6$") # exclude this directory
-            #elseif("${dir}" MATCHES "^DragDrop$") # exclude this directory
-            #elseif("${dir}" MATCHES "^EditboxValidation$") # exclude this directory
-        elseif("${dir}" MATCHES "^Fonts$") # exclude this directory
-            #elseif("${dir}" MATCHES "^FormNavigation$") # exclude this directory
-            #elseif("${dir}" MATCHES "^Android$") # exclude this directory
-        elseif("${dir}" MATCHES "^GameMenu$") # exclude this directory
-            #elseif("${dir}" MATCHES "^HelloWorld$") # exclude this directory
-            #elseif("${dir}" MATCHES "^Inventory$") # exclude this directory
-            #elseif("${dir}" MATCHES "^MenuNavigation$") # exclude this directory
-            #elseif("${dir}" MATCHES "^Minesweeper$") # exclude this directory
-            #elseif("${dir}" MATCHES "^ModelView$") # exclude this directory
-        elseif("${dir}" MATCHES "^RenderEffects$") # exclude this directory
-            #elseif("${dir}" MATCHES "^RestaurantGame$") # exclude this directory
-            #elseif("${dir}" MATCHES "^ScrollablePane$") # exclude this directory
-            #elseif("${dir}" MATCHES "^SimpleGameMenu$") # exclude this directory
-        elseif("${dir}" MATCHES "^SVG$") # exclude this directory
-            #elseif("${dir}" MATCHES "^TabControl$") # exclude this directory
-            #elseif("${dir}" MATCHES "^Text$") # exclude this directory
-            #elseif("${dir}" MATCHES "^Tree$") # exclude this directory
-            #elseif("${dir}" MATCHES "^Widgets$") # exclude this directory
-        else()
-            add_subdirectory(${dir})
-        endif()
-    endforeach()
-else()
-    foreach(dir ${SAMPLES_SUBDIRS})
-        if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK
-        elseif("${dir}" MATCHES "^common$") # exclude common folder; samples include files from there directly if necessary
-        elseif("${dir}" MATCHES "^samples$") # exclude this directory
-        elseif("${dir}" MATCHES "^Demo8$") # this demo doesn't work at the moment
-        elseif("${dir}" MATCHES "^browser$")
-        else()
-            add_subdirectory(${dir})
-        endif()
-    endforeach()
-endif()
+foreach(dir ${SAMPLES_SUBDIRS})
+    if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK
+    elseif("${dir}" MATCHES "^common$") # exclude common folder; samples include files from there directly if necessary
+    elseif("${dir}" MATCHES "^samples$") # exclude this directory
+    elseif("${dir}" MATCHES "^Demo8$") # this demo doesn't work at the moment
+    elseif("${dir}" MATCHES "^browser$") # the directory has to be included at the end because it needs all samples' sources and headers
+    elseif("${dir}" MATCHES "^CommonDialogs$" AND ANDROID) # exclude this directory
+    elseif("${dir}" MATCHES "^CustomShapesDrawing$" AND ANDROID) # exclude this directory
+    elseif("${dir}" MATCHES "^RenderEffects$" AND ANDROID) # exclude this directory
+    elseif("${dir}" MATCHES "^SVG$" AND ANDROID) # exclude this directory
+    else()
+        add_subdirectory(${dir})
+    endif()
+endforeach()
 
 # add all registered samples to samples.inc and samples.h file
 file(WRITE ${SAMPLE_LIST_HEADER} "#ifndef _SamplesListHeader_h_\n#define _SamplesListHeader_h_\n\n#include \"Sample.h\"\n")
