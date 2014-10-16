@@ -133,7 +133,7 @@ protected:
     virtual ~OpenGLTexture();
 
     //! generate the OpenGL texture and set some initial options.
-    virtual void generateOpenGLTexture();
+    void generateOpenGLTexture();
 
     //! updates cached scale value used to map pixels to texture co-ords.
     void updateCachedScaleValues();

@@ -51,9 +51,6 @@ protected:
     //! Destructor.
     virtual ~OpenGL1Texture();
 
-    //! generate the OpenGL texture and set some initial options.
-    virtual void generateOpenGLTexture();
-
     //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
     virtual void setTextureEnvironment();
 
