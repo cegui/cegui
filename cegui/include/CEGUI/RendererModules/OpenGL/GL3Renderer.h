@@ -31,9 +31,9 @@
 
 namespace CEGUI
 {
-    class OpenGL3ShaderWrapper;
+    class OpenGLBaseShaderWrapper;
     class OpenGLBaseShaderManager;
-    class OpenGL3StateChangeWrapper;
+    class OpenGLBaseStateChangeWrapper;
 
 /*!
 \brief
@@ -152,12 +152,12 @@ public:
     \return
         The active OpenGL state change wrapper object.
     */
-    OpenGL3StateChangeWrapper* getOpenGLStateChanger();
+    OpenGLBaseStateChangeWrapper* getOpenGLStateChanger();
 
     // base class overrides / abstract function implementations
     void beginRendering();
     void endRendering();
-    Sizef getAdjustedTextureSize(const Sizef& sz) const;
+    virtual Sizef getAdjustedTextureSize(const Sizef& sz);
     bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
@@ -166,6 +166,8 @@ public:
 protected:
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     TextureTarget* createTextureTarget_impl();
+    //! creates a texture of GL3Texture type
+    virtual OpenGLTexture* createTexture_impl(const String& name);
 
     void initialiseRendererIDString();
 
@@ -206,12 +208,12 @@ protected:
     void setupExtraStates();
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
-    OpenGL3ShaderWrapper* d_shaderWrapperTextured;
+    OpenGLBaseShaderWrapper* d_shaderWrapperTextured;
     //! Wrapper of the OpenGL shader we will use for solid geometry
-    OpenGL3ShaderWrapper* d_shaderWrapperSolid;
+    OpenGLBaseShaderWrapper* d_shaderWrapperSolid;
 
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
-    OpenGL3StateChangeWrapper* d_openGLStateChanger;
+    OpenGLBaseStateChangeWrapper* d_openGLStateChanger;
     //! The ShaderManager  takes care of the creation of standard OpenGL Shaders and their deletion
     OpenGLBaseShaderManager* d_shaderManager;
     //! whether S3TC texture compression is supported by the context

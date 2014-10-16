@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/RendererModules/OpenGL/Shader.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
@@ -38,8 +38,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
                              const std::string& fragment_shader_source,
-                             OpenGL3StateChangeWrapper* glStateChanger) :
-    OpenGL3Shader(vertex_shader_source,fragment_shader_source, glStateChanger)
+                             OpenGLBaseStateChangeWrapper* glStateChanger) :
+    OpenGLBaseShader(vertex_shader_source,fragment_shader_source, glStateChanger)
 {
 }
 

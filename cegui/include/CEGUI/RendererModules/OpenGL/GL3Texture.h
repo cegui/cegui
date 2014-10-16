@@ -1,10 +1,9 @@
 /***********************************************************************
-    created:    Wed, 8th Feb 2012
-    author:     Lukas E Meindl
-    edited:     David Reepmeyer (GLES2/3 support)
+    created:    Sun Jan 11 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,40 +24,40 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifndef _CEGUIOpenGL3Texture_h_
+#define _CEGUIOpenGL3Texture_h_
 
-#ifndef _CEGUIOpenGL3StateChangeWrapper_h_
-#define _CEGUIOpenGL3StateChangeWrapper_h_
-
-#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
-#include "RendererBase.h"
+#include "CEGUI/RendererModules/OpenGL/GLTexture.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 #if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*!
-\brief
-OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
-*/
-class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper : public OpenGLBaseStateChangeWrapper
+//! Texture implementation for the OpenGL3Renderer.
+class OPENGL_GUIRENDERER_API OpenGL3Texture : public OpenGL1Texture 
 {
 public:
-    OpenGL3StateChangeWrapper();
-    virtual ~OpenGL3StateChangeWrapper();
+    friend OpenGL3Renderer;
 
-    //! call to glBindVertexArray
-    virtual void bindVertexArray(GLuint vertexArray);
+protected:
+    //! Basic constructor.
+    OpenGL3Texture(OpenGLRendererBase& owner, const String& name);
+   //! Destructor.
+    virtual ~OpenGL3Texture();
+
+    //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
+    virtual void setTextureEnvironment();
 };
 
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
-#   pragma warning(pop)
+#	pragma warning(pop)
 #endif
 
-#endif
+#endif // end of guard _CEGUIOpenGL3Texture_h_

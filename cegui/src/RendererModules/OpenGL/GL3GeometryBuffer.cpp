@@ -32,7 +32,7 @@
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
-#include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -149,7 +149,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
 
     GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
 
-    const CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+    const CEGUI::OpenGLBaseShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGLBaseShaderWrapper*>(d_renderMaterial->getShaderWrapper());
 
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
     int dataOffset = 0;

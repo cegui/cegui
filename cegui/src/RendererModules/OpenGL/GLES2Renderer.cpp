@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/GLES2Renderer.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/GLES2Texture.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
@@ -384,6 +384,12 @@ void GLES2Renderer::initialiseStandardColouredShaderWrapper()
     d_shaderWrapperSolid->addAttributeVariable("inPosition");
     d_shaderWrapperSolid->addAttributeVariable("inColour");
 }
+
+//----------------------------------------------------------------------------//
+OpenGLTexture* GLES2Renderer::createTexture_impl(const String& name)
+{
+    return new GLES2Texture(*this, name);
+}  
 
 //----------------------------------------------------------------------------//
 
