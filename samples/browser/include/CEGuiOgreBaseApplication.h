@@ -183,15 +183,15 @@ public:
     WndEvtListener(OIS::Mouse* mouse);
 #endif
 
-    virtual void windowResized(Ogre::RenderWindow* rw) override;
-    virtual void windowClosed (Ogre::RenderWindow* rw) override {
+    virtual void windowResized(Ogre::RenderWindow* rw) ;
+    virtual void windowClosed (Ogre::RenderWindow* rw) {
     }
-    virtual bool  windowClosing (Ogre::RenderWindow *rw) override {
+    virtual bool  windowClosing (Ogre::RenderWindow *rw) {
         return true;
     }
-    virtual void  windowFocusChange (Ogre::RenderWindow *rw) override {
+    virtual void  windowFocusChange (Ogre::RenderWindow *rw) {
     }
-    virtual void  windowMoved (Ogre::RenderWindow *rw) override {
+    virtual void  windowMoved (Ogre::RenderWindow *rw) {
     }
 
 protected:
