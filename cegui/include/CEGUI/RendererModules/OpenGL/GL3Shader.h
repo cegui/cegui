@@ -27,9 +27,7 @@ author:     Lukas E Meindl
 #ifndef _CEGUIOpenGL3Shader_h_
 #define _CEGUIOpenGL3Shader_h_
 
-#include "CEGUI/Exceptions.h"
-#include "RendererBase.h"
-#include <string>
+#include "CEGUI/RendererModules/OpenGL/Shader.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -39,7 +37,7 @@ author:     Lukas E Meindl
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class OpenGL3StateChangeWrapper;
+class OpenGLBaseStateChangeWrapper;
 
 class OPENGL_GUIRENDERER_API OpenGL3Shader : public OpenGLBaseShader
 {
@@ -51,7 +49,7 @@ public:
     */
     OpenGL3Shader(const std::string& vertex_shader_source,
                   const std::string& fragment_shader_source,
-                  OpenGL3StateChangeWrapper* glStateChanger);
+                  OpenGLBaseStateChangeWrapper* glStateChanger);
 
     ~OpenGL3Shader();
 

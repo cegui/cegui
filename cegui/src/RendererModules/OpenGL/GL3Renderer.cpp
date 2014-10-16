@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Texture.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
@@ -38,9 +38,9 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GL3StateChangeWrapper.h"
 #include "CEGUI/RenderMaterial.h"
-#include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
 #include <sstream>
 #include <algorithm>
@@ -153,7 +153,7 @@ OpenGL3Renderer::OpenGL3Renderer() :
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
-    d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
 }
@@ -167,7 +167,7 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
-    d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
 }
@@ -267,13 +267,13 @@ void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGL3Renderer::getAdjustedTextureSize(const Sizef& sz) const
+Sizef OpenGL3Renderer::getAdjustedTextureSize(const Sizef& sz)
 {
     return Sizef(sz);
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
+OpenGLBaseStateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 {
     return d_openGLStateChanger;
 }
@@ -356,8 +356,8 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 {
-    OpenGL3Shader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
-    d_shaderWrapperTextured = new OpenGL3ShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
+    OpenGLBaseShader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
+    d_shaderWrapperTextured = new OpenGLBaseShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
 
     d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
 
@@ -372,8 +372,8 @@ void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseStandardColouredShaderWrapper()
 {
-    OpenGL3Shader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
-    d_shaderWrapperSolid = new OpenGL3ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
+    OpenGLBaseShader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
+    d_shaderWrapperSolid = new OpenGLBaseShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
 
     d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix");
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage");
@@ -381,6 +381,12 @@ void OpenGL3Renderer::initialiseStandardColouredShaderWrapper()
     d_shaderWrapperSolid->addAttributeVariable("inPosition");
     d_shaderWrapperSolid->addAttributeVariable("inColour");
 }
+
+//----------------------------------------------------------------------------//
+OpenGLTexture* OpenGL3Renderer::createTexture_impl(const String& name)
+{
+    return new OpenGL3Texture(*this, name);
+}  
 
 //----------------------------------------------------------------------------//
 
