@@ -323,9 +323,7 @@ endif()
 if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE)
     if (UNIX AND NOT APPLE AND NOT ANDROID)
-        #remove, should be in findogre for opengl libs, but not working
-        target_link_libraries(${CEGUI_TARGET_NAME}  GL )
-        target_link_libraries(${CEGUI_TARGET_NAME}_Static  GL )
+        cegui_target_link_libraries(${CEGUI_TARGET_NAME}  GL )
     endif()
     cegui_add_dependency(${CEGUI_TARGET_NAME} OIS)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME})
@@ -370,6 +368,12 @@ if(APPLE)
     set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
         LINK_FLAGS ${CEGUI_EXTRA_FRAMEWORKS}
     )
+endif()
+
+if (UNIX AND NOT APPLE AND NOT ANDROID)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CMAKE_DL_LIBS})
+elseif (MINGW)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CMAKE_DL_LIBS})
 endif()
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
