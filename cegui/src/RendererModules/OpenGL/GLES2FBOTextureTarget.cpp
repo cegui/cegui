@@ -143,12 +143,11 @@ void GLES2FBOTextureTarget::initialiseRenderTexture()
     // create FBO
     glGenFramebuffers(1, &d_frameBuffer);
 
-#ifndef __ANDROID__
     // remember previously bound FBO to make sure we set it back
     GLuint previousFBO = 0;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
+    //glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING,
             reinterpret_cast<GLint*>(&previousFBO));
-#endif
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
     // set up the texture the FBO will draw to
@@ -180,10 +179,8 @@ void GLES2FBOTextureTarget::initialiseRenderTexture()
     //Check for framebuffer completeness
     checkFramebufferStatus();
 
-#ifndef __ANDROID__
     // switch from our frame buffer back to the previously bound buffer.
     glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
-#endif
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
