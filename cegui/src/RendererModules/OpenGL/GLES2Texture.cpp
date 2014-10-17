@@ -140,7 +140,8 @@ void GLES2Texture::setTextureSize_impl(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void GLES2Texture::blitToMemory(void* targetData)
 {
-
+    // TODO:
+    CEGUI_THROW(RendererException("GLES2Texture blitToMemory unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
