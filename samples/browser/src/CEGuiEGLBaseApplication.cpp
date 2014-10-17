@@ -28,7 +28,6 @@
 #endif
 
 #include "CEGUISamplesConfig.h"
-#include "CEGuiEGLBaseApplication.h"
 #include "SampleBrowserBase.h"
 #include "CEGUI/CEGUI.h"
 
@@ -36,6 +35,7 @@
 #include <sstream>
 
 #include <CEGUI/RendererModules/OpenGL/GLES2Renderer.h>
+#include "CEGuiEGLBaseApplication.h"
 
 //----------------------------------------------------------------------------//
 CEGuiEGLBaseApplication* CEGuiEGLBaseApplication::d_appInstance = 0;
@@ -55,7 +55,9 @@ CEGuiEGLBaseApplication::CEGuiEGLBaseApplication() :
         throw CEGUI::InvalidRequestException("CEGuiEGLBaseApplication instance already exists!");
 
     d_appInstance = this;
+#ifdef __ANDROID__
     AndroidAppHelper::createWindow();
+#endif
     d_renderer = &CEGUI::GLES2Renderer::create();
 }
 
@@ -190,14 +192,13 @@ double CEGuiEGLBaseApplication::getElapsedTime()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiEGLBaseApplication::init(ANativeWindow* window, int openglesVersion = 2)
+bool CEGuiEGLBaseApplication::init(int openglesVersion)
 {
     d_glesVersion = openglesVersion;
 
     if(d_contextInitialised)
         return true;
 
-    window_ = window;
     initEGLSurface();
     initEGLContext();
 
@@ -209,6 +210,7 @@ bool CEGuiEGLBaseApplication::init(ANativeWindow* window, int openglesVersion = 
 //----------------------------------------------------------------------------//
 bool CEGuiEGLBaseApplication::initEGLSurface()
 {
+
     d_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
     eglInitialize(d_display, 0, 0);
 
@@ -240,12 +242,14 @@ bool CEGuiEGLBaseApplication::initEGLSurface()
         return false;
     }
 
-    d_surface = eglCreateWindowSurface(d_display, d_config, window_, NULL);
+    d_surface = eglCreateWindowSurface(d_display, d_config, d_window, NULL);
     eglQuerySurface(d_display, d_surface, EGL_WIDTH, &d_width);
     eglQuerySurface(d_display, d_surface, EGL_HEIGHT, &d_height);
     EGLint format;
     eglGetConfigAttrib(d_display, d_config, EGL_NATIVE_VISUAL_ID, &format);
-    ANativeWindow_setBuffersGeometry(window_, 0, 0, format);
+#ifdef __ANDROID__
+    ANativeWindow_setBuffersGeometry(d_window, 0, 0, format);
+#endif
     return true;
 }
 
@@ -326,11 +330,11 @@ void CEGuiEGLBaseApplication::terminate()
 }
 
 //----------------------------------------------------------------------------//
-EGLint CEGuiEGLBaseApplication::resume(ANativeWindow* window)
+EGLint CEGuiEGLBaseApplication::resume()
 {
     if(d_contextInitialised == false)
     {
-        init(window);
+        init(d_glesVersion);
         return EGL_SUCCESS;
     }
 
@@ -338,8 +342,7 @@ EGLint CEGuiEGLBaseApplication::resume(ANativeWindow* window)
     int32_t original_height = d_height;
 
     //Create surface
-    window_ = window;
-    d_surface = eglCreateWindowSurface(d_display, d_config, window_, NULL);
+    d_surface = eglCreateWindowSurface(d_display, d_config, d_window, NULL);
     eglQuerySurface(d_display, d_surface, EGL_WIDTH, &d_width);
     eglQuerySurface(d_display, d_surface, EGL_HEIGHT, &d_height);
 
@@ -363,6 +366,14 @@ EGLint CEGuiEGLBaseApplication::resume(ANativeWindow* window)
 
     return err;
 }
+
+//----------------------------------------------------------------------------//
+#ifdef __ANDROID__
+void CEGuiEGLBaseApplication::setNativeWindow(ANativeWindow* window)
+{
+    d_window = window;
+}
+#endif
 
 //----------------------------------------------------------------------------//
 void CEGuiEGLBaseApplication::suspend()
