@@ -130,16 +130,18 @@ void AndroidAppHelper::handleCmd (struct android_app* app, int32_t cmd)
         {
             if (!isWindowCreated())
             {
+                CEGuiEGLBaseApplication::getSingleton().setNativeWindow(app->window);
 #ifdef CEGUI_GLES3_SUPPORT
-                CEGuiEGLBaseApplication::getSingleton().init (app->window, 3);
+                CEGuiEGLBaseApplication::getSingleton().init (3);
 #else
-                CEGuiEGLBaseApplication::getSingleton().init (app->window, 2);
+                CEGuiEGLBaseApplication::getSingleton().init (2);
 #endif
                 setWindowCreated (true);
             }
             else
             {
-                CEGuiEGLBaseApplication::getSingleton().resume (app->window);
+                CEGuiEGLBaseApplication::getSingleton().setNativeWindow(app->window);
+                CEGuiEGLBaseApplication::getSingleton().resume ();
             }
         }
         break;
@@ -147,7 +149,8 @@ void AndroidAppHelper::handleCmd (struct android_app* app, int32_t cmd)
         CEGuiEGLBaseApplication::getSingleton().terminate();
         break;
     case APP_CMD_GAINED_FOCUS:
-        CEGuiEGLBaseApplication::getSingleton().resume (app->window);
+        CEGuiEGLBaseApplication::getSingleton().setNativeWindow(app->window);
+        CEGuiEGLBaseApplication::getSingleton().resume ();
         break;
     case APP_CMD_LOST_FOCUS:
         CEGuiEGLBaseApplication::getSingleton().suspend();

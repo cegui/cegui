@@ -44,7 +44,9 @@ class CEGuiEGLBaseApplication : public CEGuiBaseApplication
 {
 private:
     //EGL configurations
-    ANativeWindow* window_;
+#ifdef __ANDROID__
+    ANativeWindow* d_window;
+#endif
     EGLDisplay d_display;
     EGLSurface d_surface;
     EGLContext d_context;
@@ -65,12 +67,16 @@ public:
     CEGuiEGLBaseApplication();
     virtual ~CEGuiEGLBaseApplication();
 
+#ifdef __ANDROID__
+    void setNativeWindow(ANativeWindow* window);
+#endif
+
     void terminate();
-    bool init( ANativeWindow* window, int openglesVersion);
+    bool init(int openglesVersion);
     EGLint swap();
     bool invalidate();
     void suspend();
-    EGLint resume( ANativeWindow* window );
+    EGLint resume();
     SampleBrowserBase* getSampleApp();
     static CEGuiEGLBaseApplication& getSingleton();
     void clearFrame();
