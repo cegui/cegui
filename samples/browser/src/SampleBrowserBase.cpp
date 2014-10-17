@@ -56,9 +56,6 @@
 #      include "CEGuiOpenGL3BaseApplication.h"
 #   endif
 #endif
-#ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
-#      include "CEGuiEGLBaseApplication.h"
-#endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
 #   include "CEGuiIrrlichtBaseApplication.h"
 #endif
@@ -70,12 +67,17 @@
 #       include "CEGuiD3D11BaseApplication.h"
 #   endif
 #endif
+
 // now we include the base CEGuiBaseApplication just in case someone has managed to
 // get this far without any of the renderers.  This ensures the framework will build,
 // although there will be no renderers available for selection in the samples.
 #include "CEGuiBaseApplication.h"
-
 #include "CEGUI/CEGUI.h"
+
+#ifdef CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE
+#      include "CEGuiEGLBaseApplication.h"
+#endif
+
 #include "CEGuiRendererSelector.h"
 
 // Include iostream if not on windows.
