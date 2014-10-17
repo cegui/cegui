@@ -310,14 +310,30 @@ if(CEGUI_BUILD_COMMON_DIALOGS)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
 endif()
 
-if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+if (UNIX AND NOT APPLE AND NOT ANDROID)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${X11_LIBRARIES} ${X11_Xt_LIB} 
+        ${XAW_LIBRARY} ${X11_Xrandr_LIB} pthread ${CMAKE_DL_LIBS})
+endif()
+
+if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
 endif()
 
+if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+endif()
+
 if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGLES2_RENDERER_LIBNAME})
+    if (NOT ANDROID) # LINUX GLES depends on GLEW 
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW)
+        cegui_target_link_libraries(${CEGUI_TARGET_NAME} EGL)
+    endif()
+    if (CEGUI_BUILD_RENDERER_OPENGLES2_WITH_GLES3_SUPPORT)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGLES3)
+    else()
+        cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGLES2)
+    endif()
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)

@@ -1,9 +1,4 @@
-
-if (NOT CEGUI_BUILD_RENDERER_OPENGLES2)
-    set (CEGUI_TARGET_NAME ${CEGUI_OPENGL_RENDERER_LIBNAME})
-else() 
-    set (CEGUI_TARGET_NAME ${CEGUI_OPENGLES2_RENDERER_LIBNAME})
-endif()
+set (CEGUI_TARGET_NAME ${CEGUI_OPENGL_RENDERER_LIBNAME})
 
 cegui_gather_files()
 
@@ -63,7 +58,7 @@ if (NOT CEGUI_BUILD_RENDERER_OPENGL3)
 endif()
 
 #GL and GL3 both use GLTexture via inheritance
-if (CEGUI_BUILD_RENDERER_OPENGLES2)
+if (NOT CEGUI_BUILD_RENDERER_OPENGL3 AND NOT CEGUI_BUILD_RENDERER_OPENGL)
     list (REMOVE_ITEM CORE_SOURCE_FILES GLTexture.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLTexture.h)
 endif()
@@ -90,7 +85,8 @@ if (CEGUI_BUILD_RENDERER_OPENGLES2)
     else()
         cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGLES2)
     endif()
-else()
+endif()
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW)
 endif()
