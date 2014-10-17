@@ -46,6 +46,10 @@ private:
     //EGL configurations
 #ifdef __ANDROID__
     ANativeWindow* d_window;
+#elif defined(__unix__)
+    Display* x_display;
+    Window win;
+    NativeWindowType d_window;
 #endif
     EGLDisplay d_display;
     EGLSurface d_surface;
