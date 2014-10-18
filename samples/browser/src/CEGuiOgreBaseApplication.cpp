@@ -438,6 +438,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
     paramList.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
 #endif
 
+#ifndef __ANDROID__
     // create input system
     d_inputManager = OIS::InputManager::createInputSystem(paramList);
 
@@ -461,7 +462,6 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
     if (d_inputManager->getNumberOfDevices(OIS::OISMouse) > 0)
 #endif
     {
-#ifndef __ANDROID__
         d_mouse = static_cast<OIS::Mouse*>(d_inputManager->createInputObject(OIS::OISMouse, true));
         d_mouse->setEventCallback(this);
 
@@ -472,8 +472,8 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
         const OIS::MouseState& mouseState = d_mouse->getMouseState();
         mouseState.width = width;
         mouseState.height = height;
-#endif
     }
+#endif
 
     // store inputs we want to make use of
     d_camera = camera;
@@ -488,8 +488,8 @@ CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 #ifndef __ANDROID__
         d_inputManager->destroyInputObject(d_mouse);
         d_inputManager->destroyInputObject(d_keyboard);
-#endif
         OIS::InputManager::destroyInputSystem(d_inputManager);
+#endif
     }
 }
 
