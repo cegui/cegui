@@ -217,14 +217,11 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
         CEGUI_THROW(FileIOException("AndroidUtils::android_app has not been set for CEGUI"));
     struct android_app* app = AndroidUtils::getAndroidApp();
     AAssetDir* dirp;
-    __android_log_write (ANDROID_LOG_DEBUG, "DIR looking in %s", dir_name.c_str());
     if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.c_str()))) 
     {
         const char* filename;
         while ((filename =  AAssetDir_getNextFileName(dirp)))
         {
-
-            __android_log_write (ANDROID_LOG_DEBUG, "DIR found file %s", filename);
             out_vec.push_back(filename);
             ++entries;
         }
