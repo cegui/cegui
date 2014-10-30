@@ -46,10 +46,6 @@
 #include <algorithm>
 #include <cstring>
 
-#ifdef __ANDROID__
-#include <android/log.h>
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
