@@ -272,9 +272,11 @@ void GLES2FBOTextureTarget::checkFramebufferStatus()
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n";
             break;
 #else //GLES2 ONLY
+#   ifdef __ANDROID__  //LINUX DOES NOT SEEM TO SUPPORT TYPE 
         case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS\n";
             break;
+#   endif
 #endif
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
