@@ -10,7 +10,7 @@ if (POLICY CMP0045)
     cmake_policy(SET CMP0045 OLD)
 endif()
 
-set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(CEGUIMacros)
 include(CMakeDependentOption)
 
@@ -65,7 +65,7 @@ set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION}
 ################################################################################
 # be sure to search the provided dependencies on Win32 and Mac OS X platforms
 if ((WIN32 OR APPLE) AND NOT CMAKE_PREFIX_PATH)
-    set (CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/dependencies" CACHE PATH "Path to dependencies")
+    set (CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies" CACHE PATH "Path to dependencies")
     # prefer the dylib deps in the dependencies over some other framework
     set (CMAKE_FIND_FRAMEWORK LAST)
 endif()
@@ -566,8 +566,8 @@ endif()
 ################################################################################
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Crazy Eddie's Gui System")
 set(CPACK_PACKAGE_VENDOR "CEGUI team")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_VERSION_MAJOR "${CEGUI_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${CEGUI_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${CEGUI_VERSION_PATCH}")
