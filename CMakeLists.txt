@@ -252,6 +252,9 @@ if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
 endif()
 
+# Option wether to build application templates; default off
+option(CEGUI_BUILD_APPLICATION_TEMPLATES "Enables building of application templates." OFF)
+
 if (WIN32 OR APPLE)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
 else()
@@ -544,6 +547,10 @@ add_subdirectory(cegui/src/CommonDialogs)
 if (CEGUI_SAMPLES_ENABLED)
     add_subdirectory(samples_framework)
     add_subdirectory(samples)
+endif()
+
+if (CEGUI_BUILD_APPLICATION_TEMPLATES)
+    add_subdirectory(application_templates)
 endif()
 
 add_subdirectory(datafiles)
