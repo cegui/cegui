@@ -39,13 +39,14 @@
 namespace CEGUI
 {
 //! Texture implementation for the OpenGLRenderer.
-class OPENGL_GUIRENDERER_API OpenGL1Texture : public OpenGLTexture 
+class OPENGL_GUIRENDERER_API OpenGL1Texture : public OpenGLTexture
 {
 public:
     virtual void blitToMemory(void* targetData);
-    friend OpenGLRenderer;
 
 protected:
+    friend class OpenGLRenderer;
+
     //! Basic constructor.
     OpenGL1Texture(OpenGLRendererBase& owner, const String& name);
     //! Destructor.
