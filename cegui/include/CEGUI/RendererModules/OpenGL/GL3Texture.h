@@ -38,16 +38,16 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Texture implementation for the OpenGL3Renderer.
-class OPENGL_GUIRENDERER_API OpenGL3Texture : public OpenGL1Texture 
-{
-public:
-    friend OpenGL3Renderer;
 
+//! Texture implementation for the OpenGL3Renderer.
+class OPENGL_GUIRENDERER_API OpenGL3Texture : public OpenGL1Texture
+{
 protected:
+    friend class OpenGL3Renderer;
+
     //! Basic constructor.
     OpenGL3Texture(OpenGLRendererBase& owner, const String& name);
-   //! Destructor.
+    //! Destructor.
     virtual ~OpenGL3Texture();
 
     //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
