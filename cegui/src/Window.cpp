@@ -3326,10 +3326,14 @@ void Window::initialiseClippers(const RenderingContext& ctx)
 void Window::onRotated(ElementEventArgs& e)
 {
     Element::onRotated(e);
-    
-    // if we have no surface set, enable the auto surface
-    if (!d_surface)
+
+    // TODO: Checking quaternion for equality with IDENTITY is stupid,
+    //       change this to something else, checking with tolerance.
+    if (d_rotation != Quaternion::IDENTITY && !d_surface)
     {
+        // if we have no surface set and the rotation differs from identity,
+        // enable the auto surface
+
         Logger::getSingleton().logEvent("Window::setRotation - "
             "Activating AutoRenderingSurface on Window '" + d_name +
             "' to enable rotation support.");
@@ -3348,20 +3352,23 @@ void Window::onRotated(ElementEventArgs& e)
         }
     }
 
-    // ensure surface we have is the right type
-    if (!d_surface->isRenderingWindow())
+    if (d_surface)
     {
-        Logger::getSingleton().logEvent("Window::setRotation - "
-            "Window '" + d_name + "' has a manual RenderingSurface that is not "
-            "a RenderingWindow.  Rotation will not be available.", Errors);
+        // ensure surface we have is the right type
+        if (!d_surface->isRenderingWindow())
+        {
+            Logger::getSingleton().logEvent("Window::setRotation - "
+                "Window '" + d_name + "' has a manual RenderingSurface that is not "
+                "a RenderingWindow.  Rotation will not be available.", Errors);
 
-        return;
+            return;
+        }
+
+        // Checks / setup complete!  Now we can finally set the rotation.
+        static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
+        static_cast<RenderingWindow*>(d_surface)->setPivot(
+            Vector3f(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
     }
-
-    // Checks / setup complete!  Now we can finally set the rotation.
-    static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
-    static_cast<RenderingWindow*>(d_surface)->setPivot(
-        Vector3f(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
 }
 
 //----------------------------------------------------------------------------//
