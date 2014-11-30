@@ -158,6 +158,13 @@ public:
 
     /*!
     \brief
+        Returns a semantic action matching the scan_code
+    */
+    int getSemanticAction(Key::Scan scan_code, bool shift_down, bool alt_down,
+        bool ctrl_down) const;
+    
+    /*!
+    \brief
         Passes input immediately if it is some predefined action
     \return
         True when the input was consumed
