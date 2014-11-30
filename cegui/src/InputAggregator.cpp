@@ -191,6 +191,77 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 }
 
 //----------------------------------------------------------------------------//
+bool InputAggregator::injectRawKeyDown(Key::Scan scan_code, bool shift_down,
+    bool alt_down, bool ctrl_down) const
+{
+    if (d_inputReceiver == 0)
+        return false;
+
+    int value = d_keyValuesMappings[scan_code];
+
+    // copied from injectKeyUp
+    // handle combined keys
+    if (ctrl_down && shift_down)
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_SelectPreviousWord;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_SelectNextWord;
+        else if (scan_code == Key::End)
+            value = SV_SelectToEndOfDocument;
+        else if (scan_code == Key::Home)
+            value = SV_SelectToStartOfDocument;
+    }
+    else if (ctrl_down)
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_GoToPreviousWord;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_GoToNextWord;
+        else if (scan_code == Key::End)
+            value = SV_GoToEndOfDocument;
+        else if (scan_code == Key::Home)
+            value = SV_GoToStartOfDocument;
+        else if (scan_code == Key::A)
+            value = SV_SelectAll;
+        else if (scan_code == Key::C)
+            value = SV_Copy;
+        else if (scan_code == Key::V)
+            value = SV_Paste;
+        else if (scan_code == Key::X)
+            value = SV_Cut;
+        else if (scan_code == Key::Tab)
+            value = SV_NavigateToPrevious;
+    }
+    else if (shift_down)
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_SelectPreviousCharacter;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_SelectNextCharacter;
+        else if (scan_code == Key::ArrowUp)
+            value = SV_SelectUp;
+        else if (scan_code == Key::ArrowDown)
+            value = SV_SelectDown;
+        else if (scan_code == Key::End)
+            value = SV_SelectToEndOfLine;
+        else if (scan_code == Key::Home)
+            value = SV_SelectToStartOfLine;
+        else if (scan_code == Key::PageUp)
+            value = SV_SelectPreviousPage;
+        else if (scan_code == Key::PageDown)
+            value = SV_SelectNextPage;
+    }
+
+    if (value != SV_NoValue)
+    {
+        SemanticInputEvent semantic_event(value);
+        return d_inputReceiver->injectInputEvent(semantic_event);
+    }
+
+    return false;
+}
+//----------------------------------------------------------------------------//
 void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args)
 {
     fireEvent(EventMouseMoveScalingFactorChanged, args);

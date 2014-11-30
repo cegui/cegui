@@ -156,6 +156,15 @@ public:
     void setMouseMoveScalingFactor(float factor);
     float getMouseMoveScalingFactor() const;
 
+    /*!
+    \brief
+        Passes input immediately if it is some predefined action
+    \return
+        True when the input was consumed
+    */
+    bool injectRawKeyDown(Key::Scan scan_code, bool shift_down, bool alt_down,
+        bool ctrl_down) const;
+    
     /************************************************************************/
     /* InjectedInputReceiver interface implementation                       */
     /************************************************************************/
@@ -165,6 +174,10 @@ public:
     virtual bool injectMouseButtonDown(MouseButton button);
     virtual bool injectMouseButtonUp(MouseButton button);
 
+    /*!
+      \return
+      Always true
+    */
     virtual bool injectKeyDown(Key::Scan scan_code);
     virtual bool injectKeyUp(Key::Scan scan_code);
 
