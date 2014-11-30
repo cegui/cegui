@@ -296,7 +296,9 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
     d_renderOp.vertexData = 0;
 
     // Store the hardware buffer so that other instances can use it later
-    d_owner.returnVertexBuffer(d_hwBuffer);
+    // This check should also help prevent there being nullptrs in the pool
+    if (d_hwBuffer.get())
+        d_owner.returnVertexBuffer(d_hwBuffer);
 
     d_hwBuffer.setNull();
 }
