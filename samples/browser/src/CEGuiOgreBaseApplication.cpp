@@ -430,6 +430,29 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
+    // Prevent the window from capturing mouse making debugging impossible
+    // (on Windows and Linux)
+#if defined OIS_WIN32_PLATFORM
+    paramList.insert(std::make_pair(std::string("w32_mouse"),
+            std::string("DISCL_FOREGROUND" )));
+    paramList.insert(std::make_pair(std::string("w32_mouse"),
+            std::string("DISCL_NONEXCLUSIVE")));
+    paramList.insert(std::make_pair(std::string("w32_keyboard"),
+            std::string("DISCL_FOREGROUND")));
+    paramList.insert(std::make_pair(std::string("w32_keyboard"),
+            std::string("DISCL_NONEXCLUSIVE")));
+#elif defined OIS_LINUX_PLATFORM
+    paramList.insert(std::make_pair(std::string("x11_mouse_grab"),
+            std::string("false")));
+    paramList.insert(std::make_pair(std::string("x11_mouse_hide"),
+            std::string("false")));
+    paramList.insert(std::make_pair(std::string("x11_keyboard_grab"),
+            std::string("false")));
+    paramList.insert(std::make_pair(std::string("XAutoRepeatOn"),
+            std::string("true")));
+#endif
+    
+
 #if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID && OGRE_PLATFORM != OGRE_PLATFORM_WINRT && OGRE_PLATFORM != OGRE_PLATFORM_LINUX && defined (DEBUG)
     paramList.insert(std::make_pair("x11_keyboard_grab", "false"));
     paramList.insert(std::make_pair("x11_mouse_grab", "false"));
