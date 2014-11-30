@@ -46,7 +46,7 @@
 
 ScrollablePaneSample::ScrollablePaneSample()
 {
-    Sample::d_name = "ScrollablePaneDeme";
+    Sample::d_name = "ScrollablePaneDemo";
     Sample::d_credits = "Tomas Lindquist Olsen";
     Sample::d_description =
         "The ScrollbarPane sample uses the WindowsLook, which gives it a look similar "
