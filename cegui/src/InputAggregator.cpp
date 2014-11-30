@@ -191,15 +191,11 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 }
 
 //----------------------------------------------------------------------------//
-bool InputAggregator::injectRawKeyDown(Key::Scan scan_code, bool shift_down,
+int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
     bool alt_down, bool ctrl_down) const
 {
-    if (d_inputReceiver == 0)
-        return false;
-
     int value = d_keyValuesMappings[scan_code];
 
-    // copied from injectKeyUp
     // handle combined keys
     if (ctrl_down && shift_down)
     {
@@ -253,6 +249,17 @@ bool InputAggregator::injectRawKeyDown(Key::Scan scan_code, bool shift_down,
             value = SV_SelectNextPage;
     }
 
+    return value;
+}
+//----------------------------------------------------------------------------//
+bool InputAggregator::injectRawKeyDown(Key::Scan scan_code, bool shift_down,
+    bool alt_down, bool ctrl_down) const
+{
+    if (d_inputReceiver == 0)
+        return false;
+
+    int value = getSemanticAction(scan_code, shift_down, alt_down, ctrl_down);
+    
     if (value != SV_NoValue)
     {
         SemanticInputEvent semantic_event(value);
@@ -375,60 +382,8 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     if (d_inputReceiver == 0)
         return false;
 
-    int value = d_keyValuesMappings[scan_code];
-
-    // handle combined keys
-    if (isControlPressed() && isShiftPressed())
-    {
-        if (scan_code == Key::ArrowLeft)
-            value = SV_SelectPreviousWord;
-        else if (scan_code == Key::ArrowRight)
-            value = SV_SelectNextWord;
-        else if (scan_code == Key::End)
-            value = SV_SelectToEndOfDocument;
-        else if (scan_code == Key::Home)
-            value = SV_SelectToStartOfDocument;
-    }
-    else if (isControlPressed())
-    {
-        if (scan_code == Key::ArrowLeft)
-            value = SV_GoToPreviousWord;
-        else if (scan_code == Key::ArrowRight)
-            value = SV_GoToNextWord;
-        else if (scan_code == Key::End)
-            value = SV_GoToEndOfDocument;
-        else if (scan_code == Key::Home)
-            value = SV_GoToStartOfDocument;
-        else if (scan_code == Key::A)
-            value = SV_SelectAll;
-        else if (scan_code == Key::C)
-            value = SV_Copy;
-        else if (scan_code == Key::V)
-            value = SV_Paste;
-        else if (scan_code == Key::X)
-            value = SV_Cut;
-        else if (scan_code == Key::Tab)
-            value = SV_NavigateToPrevious;
-    }
-    else if (isShiftPressed())
-    {
-        if (scan_code == Key::ArrowLeft)
-            value = SV_SelectPreviousCharacter;
-        else if (scan_code == Key::ArrowRight)
-            value = SV_SelectNextCharacter;
-        else if (scan_code == Key::ArrowUp)
-            value = SV_SelectUp;
-        else if (scan_code == Key::ArrowDown)
-            value = SV_SelectDown;
-        else if (scan_code == Key::End)
-            value = SV_SelectToEndOfLine;
-        else if (scan_code == Key::Home)
-            value = SV_SelectToStartOfLine;
-        else if (scan_code == Key::PageUp)
-            value = SV_SelectPreviousPage;
-        else if (scan_code == Key::PageDown)
-            value = SV_SelectNextPage;
-    }
+    int value = getSemanticAction(scan_code, isShiftPressed(), isAltPressed(),
+        isControlPressed());
 
     d_keysPressed[scan_code] = false;
 
