@@ -2660,7 +2660,7 @@ void Window::onSemanticInputEvent(SemanticEventArgs& e)
         return;
     }
 
-    //++e.handled;
+    // Mouse actions could be marked as handled here...
 }
 
 //----------------------------------------------------------------------------//
