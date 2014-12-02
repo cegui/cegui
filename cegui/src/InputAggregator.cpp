@@ -84,7 +84,8 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_displaySizeChangedConnection(
         System::getSingletonPtr()->subscribeEvent(System::EventDisplaySizeChanged,
             Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
-    d_keysPressed()
+    d_keysPressed(),
+    d_handleInKeyUp(true)
 {
     // Initialize the array
     memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
@@ -252,23 +253,6 @@ int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
     return value;
 }
 //----------------------------------------------------------------------------//
-bool InputAggregator::injectRawKeyDown(Key::Scan scan_code, bool shift_down,
-    bool alt_down, bool ctrl_down) const
-{
-    if (d_inputReceiver == 0)
-        return false;
-
-    int value = getSemanticAction(scan_code, shift_down, alt_down, ctrl_down);
-    
-    if (value != SV_NoValue)
-    {
-        SemanticInputEvent semantic_event(value);
-        return d_inputReceiver->injectInputEvent(semantic_event);
-    }
-
-    return false;
-}
-//----------------------------------------------------------------------------//
 void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args)
 {
     fireEvent(EventMouseMoveScalingFactorChanged, args);
@@ -373,19 +357,38 @@ bool InputAggregator::injectMouseButtonUp(MouseButton button)
 
 bool InputAggregator::injectKeyDown(Key::Scan scan_code)
 {
+    if (d_inputReceiver == 0)
+        return false;
+    
     d_keysPressed[scan_code] = true;
-    return true;
+
+    if (d_handleInKeyUp)
+        return true;
+
+    int value = getSemanticAction(scan_code, isShiftPressed(), isAltPressed(),
+        isControlPressed());
+
+    if (value != SV_NoValue)
+    {
+        SemanticInputEvent semantic_event(value);
+        return d_inputReceiver->injectInputEvent(semantic_event);
+    }
+    
+    return false;
 }
 
 bool InputAggregator::injectKeyUp(Key::Scan scan_code)
 {
     if (d_inputReceiver == 0)
         return false;
+    
+    d_keysPressed[scan_code] = false;
+
+    if (!d_handleInKeyUp)
+        return true;
 
     int value = getSemanticAction(scan_code, isShiftPressed(), isAltPressed(),
         isControlPressed());
-
-    d_keysPressed[scan_code] = false;
 
     if (value != SV_NoValue)
     {
@@ -485,8 +488,10 @@ bool InputAggregator::injectPasteRequest()
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
-void InputAggregator::initialise()
+void InputAggregator::initialise(bool handle_on_keyup /*= true*/)
 {
+    d_handleInKeyUp = handle_on_keyup;
+    
     d_keyValuesMappings[Key::Backspace] = SV_DeletePreviousCharacter;
     d_keyValuesMappings[Key::Delete] = SV_DeleteNextCharacter;
 
@@ -520,7 +525,19 @@ bool InputAggregator::isControlPressed()
 {
     return d_keysPressed[Key::LeftControl] || d_keysPressed[Key::RightControl];
 }
+//----------------------------------------------------------------------------//
+void InputAggregator::setModifierKeys(bool shift_down, bool alt_down,
+    bool ctrl_down)
+{
+    d_keysPressed[Key::LeftShift] = shift_down;
+    d_keysPressed[Key::RightShift] = shift_down;
 
+    d_keysPressed[Key::LeftAlt] = alt_down;
+    d_keysPressed[Key::RightAlt] = alt_down;
+
+    d_keysPressed[Key::LeftControl] = ctrl_down;
+    d_keysPressed[Key::RightControl] = ctrl_down;
+}
 //----------------------------------------------------------------------------//
 void InputAggregator::recomputeMultiClickAbsoluteTolerance()
 {
