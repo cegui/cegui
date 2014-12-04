@@ -96,8 +96,8 @@ public:
     \brief
         Initialises this InputAggregator with some default simple-key mappings
     \param handle_on_keyup
-        When set to true semantic actions will be registered in injectKeyUp
-        otherwise semantic actions are handled in injectKeyDown. If false
+        When set to true semantic actions will be registered on key up
+        otherwise semantic actions are handled on key down. If false
         it is recommended to call setModifierKeys before any injectKeyDown
         calls to make sure that modifiers are properly set.
     */
@@ -170,6 +170,15 @@ public:
 
     /*!
     \brief
+        Gets semantic action for scan_code and sends the event
+    \return
+        True if the semantic action was handled
+    */
+    bool handleScanCode(Key::Scan scan_code, bool shift_down, bool alt_down,
+        bool ctrl_down);
+    
+    /*!
+    \brief
         Sets the status of modifier keys to the specified values.
 
         Call this before injectKeyDown if InputAggregator is set to handle
@@ -240,7 +249,7 @@ protected:
     bool d_generateMouseClickEvents;
     MouseClickTracker* d_mouseClickTrackers;
 
-    //! When set to true will handle semantic actions in injectKeyUp
+    //! When set to true will handle semantic actions on key up
     bool d_handleInKeyUp;
     
     //! Scaling factor applied to injected cursor move deltas.
