@@ -252,6 +252,22 @@ int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
 
     return value;
 }
+
+bool InputAggregator::handleScanCode(Key::Scan scan_code, bool shift_down,
+     bool alt_down, bool ctrl_down)
+{
+
+    int value = getSemanticAction(scan_code, shift_down, alt_down,
+        ctrl_down);
+
+    if (value != SV_NoValue)
+    {
+        SemanticInputEvent semantic_event(value);
+        return d_inputReceiver->injectInputEvent(semantic_event);
+    }
+
+    return false;
+}
 //----------------------------------------------------------------------------//
 void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args)
 {
@@ -365,16 +381,8 @@ bool InputAggregator::injectKeyDown(Key::Scan scan_code)
     if (d_handleInKeyUp)
         return true;
 
-    int value = getSemanticAction(scan_code, isShiftPressed(), isAltPressed(),
+    return handleScanCode(scan_code, isShiftPressed(), isAltPressed(),
         isControlPressed());
-
-    if (value != SV_NoValue)
-    {
-        SemanticInputEvent semantic_event(value);
-        return d_inputReceiver->injectInputEvent(semantic_event);
-    }
-    
-    return false;
 }
 
 bool InputAggregator::injectKeyUp(Key::Scan scan_code)
@@ -386,17 +394,9 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
 
     if (!d_handleInKeyUp)
         return true;
-
-    int value = getSemanticAction(scan_code, isShiftPressed(), isAltPressed(),
+    
+    return handleScanCode(scan_code, isShiftPressed(), isAltPressed(),
         isControlPressed());
-
-    if (value != SV_NoValue)
-    {
-        SemanticInputEvent semantic_event(value);
-        return d_inputReceiver->injectInputEvent(semantic_event);
-    }
-
-    return false;
 }
 
 bool InputAggregator::injectChar(String::value_type code_point)
