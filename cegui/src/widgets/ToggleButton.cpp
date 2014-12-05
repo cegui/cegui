@@ -108,7 +108,11 @@ void ToggleButton::onSemanticInputEvent(SemanticEventArgs& e)
         return;
 
     if (e.d_semanticValue == SV_Confirm)
+    {
         setSelected(getPostClickSelectState());
+
+        ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//

@@ -1653,6 +1653,8 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
     if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == CIS_Left)
     {
         handleSelectAllText(e);
+
+        ++e.handled;
     }
     else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left)
     {
