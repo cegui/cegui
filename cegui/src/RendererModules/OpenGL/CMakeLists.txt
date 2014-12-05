@@ -67,7 +67,8 @@ if (NOT CEGUI_BUILD_RENDERER_OPENGLES2)
     list (REMOVE_ITEM CORE_SOURCE_FILES GLES2Renderer.cpp
                                         GLES2Texture.cpp
                                         GLES2GeometryBuffer.cpp
-                                        GLES2FBOTextureTarget.cpp)
+                                        GLES2FBOTextureTarget.cpp
+                                        GLES2StateChangeWrapper.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2Renderer.h
         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2Texture.h
         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLES2GeometryBuffer.h
