@@ -95,8 +95,13 @@ public:
     /*!
     \brief
         Initialises this InputAggregator with some default simple-key mappings
+    \param handle_on_keyup
+        When set to true semantic actions will be registered on key up
+        otherwise semantic actions are handled on key down. If false
+        it is recommended to call setModifierKeys before any injectKeyDown
+        calls to make sure that modifiers are properly set.
     */
-    virtual void initialise();
+    virtual void initialise(bool handle_on_keyup = true);
 
     /*!
     \brief
@@ -156,6 +161,31 @@ public:
     void setMouseMoveScalingFactor(float factor);
     float getMouseMoveScalingFactor() const;
 
+    /*!
+    \brief
+        Returns a semantic action matching the scan_code
+    */
+    int getSemanticAction(Key::Scan scan_code, bool shift_down, bool alt_down,
+        bool ctrl_down) const;
+
+    /*!
+    \brief
+        Gets semantic action for scan_code and sends the event
+    \return
+        True if the semantic action was handled
+    */
+    bool handleScanCode(Key::Scan scan_code, bool shift_down, bool alt_down,
+        bool ctrl_down);
+    
+    /*!
+    \brief
+        Sets the status of modifier keys to the specified values.
+
+        Call this before injectKeyDown if InputAggregator is set to handle
+        actions on keydown.
+     */
+    void setModifierKeys(bool shift_down, bool alt_down, bool ctrl_down);
+    
     /************************************************************************/
     /* InjectedInputReceiver interface implementation                       */
     /************************************************************************/
@@ -165,7 +195,17 @@ public:
     virtual bool injectMouseButtonDown(MouseButton button);
     virtual bool injectMouseButtonUp(MouseButton button);
 
+    /*!
+    \return
+        True if set to handle keys on key down and the input was consumed.
+        When not to set handle actions on key down will always return true.
+    */
     virtual bool injectKeyDown(Key::Scan scan_code);
+    /*!
+    \return
+        True if set to handle keys on key up and the input was consumed.
+        When not to set handle actions on key up will always return true.
+    */
     virtual bool injectKeyUp(Key::Scan scan_code);
 
     virtual bool injectChar(String::value_type code_point);
@@ -209,6 +249,9 @@ protected:
     bool d_generateMouseClickEvents;
     MouseClickTracker* d_mouseClickTrackers;
 
+    //! When set to true will handle semantic actions on key up
+    bool d_handleInKeyUp;
+    
     //! Scaling factor applied to injected cursor move deltas.
     float d_mouseMovementScalingFactor;
 
