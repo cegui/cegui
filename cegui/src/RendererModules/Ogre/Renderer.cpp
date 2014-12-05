@@ -1222,7 +1222,16 @@ Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t
 
     for (size_t i = d_pimpl->d_vbPool.size(); --i > 0;)
     {
-        size_t current_over = d_pimpl->d_vbPool[i]->getNumVertices()-min_size;
+        // It seems that there can be nullptrs in the pool
+        Ogre::HardwareVertexBufferSharedPtr current = d_pimpl->d_vbPool[i];
+
+        if (!current.get()){
+
+            d_pimpl->d_vbPool.erase(d_pimpl->d_vbPool.begin()+i);
+            continue;
+        }
+        
+        size_t current_over = current->getNumVertices()-min_size;
 
         // Perfect match stops searching instantly
         if (current_over == 0)

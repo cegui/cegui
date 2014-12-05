@@ -84,7 +84,8 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_displaySizeChangedConnection(
         System::getSingletonPtr()->subscribeEvent(System::EventDisplaySizeChanged,
             Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
-    d_keysPressed()
+    d_keysPressed(),
+    d_handleInKeyUp(true)
 {
     // Initialize the array
     memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
@@ -191,6 +192,83 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 }
 
 //----------------------------------------------------------------------------//
+int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
+    bool alt_down, bool ctrl_down) const
+{
+    int value = d_keyValuesMappings[scan_code];
+
+    // handle combined keys
+    if (ctrl_down && shift_down)
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_SelectPreviousWord;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_SelectNextWord;
+        else if (scan_code == Key::End)
+            value = SV_SelectToEndOfDocument;
+        else if (scan_code == Key::Home)
+            value = SV_SelectToStartOfDocument;
+    }
+    else if (ctrl_down)
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_GoToPreviousWord;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_GoToNextWord;
+        else if (scan_code == Key::End)
+            value = SV_GoToEndOfDocument;
+        else if (scan_code == Key::Home)
+            value = SV_GoToStartOfDocument;
+        else if (scan_code == Key::A)
+            value = SV_SelectAll;
+        else if (scan_code == Key::C)
+            value = SV_Copy;
+        else if (scan_code == Key::V)
+            value = SV_Paste;
+        else if (scan_code == Key::X)
+            value = SV_Cut;
+        else if (scan_code == Key::Tab)
+            value = SV_NavigateToPrevious;
+    }
+    else if (shift_down)
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_SelectPreviousCharacter;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_SelectNextCharacter;
+        else if (scan_code == Key::ArrowUp)
+            value = SV_SelectUp;
+        else if (scan_code == Key::ArrowDown)
+            value = SV_SelectDown;
+        else if (scan_code == Key::End)
+            value = SV_SelectToEndOfLine;
+        else if (scan_code == Key::Home)
+            value = SV_SelectToStartOfLine;
+        else if (scan_code == Key::PageUp)
+            value = SV_SelectPreviousPage;
+        else if (scan_code == Key::PageDown)
+            value = SV_SelectNextPage;
+    }
+
+    return value;
+}
+
+bool InputAggregator::handleScanCode(Key::Scan scan_code, bool shift_down,
+     bool alt_down, bool ctrl_down)
+{
+
+    int value = getSemanticAction(scan_code, shift_down, alt_down,
+        ctrl_down);
+
+    if (value != SV_NoValue)
+    {
+        SemanticInputEvent semantic_event(value);
+        return d_inputReceiver->injectInputEvent(semantic_event);
+    }
+
+    return false;
+}
+//----------------------------------------------------------------------------//
 void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args)
 {
     fireEvent(EventMouseMoveScalingFactorChanged, args);
@@ -295,79 +373,30 @@ bool InputAggregator::injectMouseButtonUp(MouseButton button)
 
 bool InputAggregator::injectKeyDown(Key::Scan scan_code)
 {
+    if (d_inputReceiver == 0)
+        return false;
+    
     d_keysPressed[scan_code] = true;
-    return true;
+
+    if (d_handleInKeyUp)
+        return true;
+
+    return handleScanCode(scan_code, isShiftPressed(), isAltPressed(),
+        isControlPressed());
 }
 
 bool InputAggregator::injectKeyUp(Key::Scan scan_code)
 {
     if (d_inputReceiver == 0)
         return false;
-
-    int value = d_keyValuesMappings[scan_code];
-
-    // handle combined keys
-    if (isControlPressed() && isShiftPressed())
-    {
-        if (scan_code == Key::ArrowLeft)
-            value = SV_SelectPreviousWord;
-        else if (scan_code == Key::ArrowRight)
-            value = SV_SelectNextWord;
-        else if (scan_code == Key::End)
-            value = SV_SelectToEndOfDocument;
-        else if (scan_code == Key::Home)
-            value = SV_SelectToStartOfDocument;
-    }
-    else if (isControlPressed())
-    {
-        if (scan_code == Key::ArrowLeft)
-            value = SV_GoToPreviousWord;
-        else if (scan_code == Key::ArrowRight)
-            value = SV_GoToNextWord;
-        else if (scan_code == Key::End)
-            value = SV_GoToEndOfDocument;
-        else if (scan_code == Key::Home)
-            value = SV_GoToStartOfDocument;
-        else if (scan_code == Key::A)
-            value = SV_SelectAll;
-        else if (scan_code == Key::C)
-            value = SV_Copy;
-        else if (scan_code == Key::V)
-            value = SV_Paste;
-        else if (scan_code == Key::X)
-            value = SV_Cut;
-        else if (scan_code == Key::Tab)
-            value = SV_NavigateToPrevious;
-    }
-    else if (isShiftPressed())
-    {
-        if (scan_code == Key::ArrowLeft)
-            value = SV_SelectPreviousCharacter;
-        else if (scan_code == Key::ArrowRight)
-            value = SV_SelectNextCharacter;
-        else if (scan_code == Key::ArrowUp)
-            value = SV_SelectUp;
-        else if (scan_code == Key::ArrowDown)
-            value = SV_SelectDown;
-        else if (scan_code == Key::End)
-            value = SV_SelectToEndOfLine;
-        else if (scan_code == Key::Home)
-            value = SV_SelectToStartOfLine;
-        else if (scan_code == Key::PageUp)
-            value = SV_SelectPreviousPage;
-        else if (scan_code == Key::PageDown)
-            value = SV_SelectNextPage;
-    }
-
+    
     d_keysPressed[scan_code] = false;
 
-    if (value != SV_NoValue)
-    {
-        SemanticInputEvent semantic_event(value);
-        return d_inputReceiver->injectInputEvent(semantic_event);
-    }
-
-    return false;
+    if (!d_handleInKeyUp)
+        return true;
+    
+    return handleScanCode(scan_code, isShiftPressed(), isAltPressed(),
+        isControlPressed());
 }
 
 bool InputAggregator::injectChar(String::value_type code_point)
@@ -459,8 +488,10 @@ bool InputAggregator::injectPasteRequest()
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
-void InputAggregator::initialise()
+void InputAggregator::initialise(bool handle_on_keyup /*= true*/)
 {
+    d_handleInKeyUp = handle_on_keyup;
+    
     d_keyValuesMappings[Key::Backspace] = SV_DeletePreviousCharacter;
     d_keyValuesMappings[Key::Delete] = SV_DeleteNextCharacter;
 
@@ -494,7 +525,19 @@ bool InputAggregator::isControlPressed()
 {
     return d_keysPressed[Key::LeftControl] || d_keysPressed[Key::RightControl];
 }
+//----------------------------------------------------------------------------//
+void InputAggregator::setModifierKeys(bool shift_down, bool alt_down,
+    bool ctrl_down)
+{
+    d_keysPressed[Key::LeftShift] = shift_down;
+    d_keysPressed[Key::RightShift] = shift_down;
 
+    d_keysPressed[Key::LeftAlt] = alt_down;
+    d_keysPressed[Key::RightAlt] = alt_down;
+
+    d_keysPressed[Key::LeftControl] = ctrl_down;
+    d_keysPressed[Key::RightControl] = ctrl_down;
+}
 //----------------------------------------------------------------------------//
 void InputAggregator::recomputeMultiClickAbsoluteTolerance()
 {
