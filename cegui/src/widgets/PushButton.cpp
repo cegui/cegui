@@ -101,7 +101,11 @@ void PushButton::onSemanticInputEvent(SemanticEventArgs& e)
         return;
 
     if (e.d_semanticValue == SV_Confirm)
+    {
         onClicked(e);
+
+        ++e.handled;
+    }
 }
 
 } // End of  CEGUI namespace section
