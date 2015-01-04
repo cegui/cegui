@@ -1,5 +1,5 @@
-option(CEGUI_BUILD_APPLICATION_TEMPLATE_SDL2 "Build application template for SDL2" OFF)
-option(CEGUI_BUILD_APPLICATION_TEMPLATE_GLFW3 "Build application template for glfw3" OFF)
+option(CEGUI_BUILD_APPLICATION_TEMPLATE_SDL2 "Specifies whether to build the application template for SDL2" TRUE)
+option(CEGUI_BUILD_APPLICATION_TEMPLATE_GLFW3 "Specifies whether to build the application template for GLFW3" TRUE)
 
 if(CEGUI_BUILD_APPLICATION_TEMPLATE_SDL2 AND CEGUI_BUILD_RENDERER_OPENGL)
     add_executable(SDL2 SDL2.cpp)
