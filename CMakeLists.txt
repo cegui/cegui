@@ -83,6 +83,8 @@ find_package(OpenGL)
 find_package(GLEW)
 find_package(GLM)
 find_package(GLFW)
+find_package(GLFW3)
+find_package(SDL2)
 find_package(DirectXSDK)
 find_package(D3DX11Effects)
 find_package(Irrlicht)
@@ -253,7 +255,7 @@ if (UNIX AND NOT APPLE AND NOT WIN32)
 endif()
 
 # Option wether to build application templates; default off
-option(CEGUI_BUILD_APPLICATION_TEMPLATES "Enables building of application templates." OFF)
+option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
 
 if (WIN32 OR APPLE)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
