@@ -37,7 +37,6 @@
 #include "./GroupBox.h"
 #include "./HorizontalLayoutContainer.h"
 #include "./ItemEntry.h"
-#include "./LayoutCell.h"
 #include "./ListboxItem.h"
 #include "./ListboxTextItem.h"
 #include "./ListHeader.h"

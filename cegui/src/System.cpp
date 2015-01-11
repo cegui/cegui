@@ -691,7 +691,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Tooltip>();
     WindowFactoryManager::addWindowType<GroupBox>();
     WindowFactoryManager::addWindowType<TreeWidget>();
-    WindowFactoryManager::addWindowType<LayoutCell>();
     WindowFactoryManager::addWindowType<HorizontalLayoutContainer>();
     WindowFactoryManager::addWindowType<VerticalLayoutContainer>();
     WindowFactoryManager::addWindowType<GridLayoutContainer>();
