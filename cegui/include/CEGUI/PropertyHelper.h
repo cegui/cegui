@@ -38,23 +38,12 @@
 #include "CEGUI/UDim.h"
 #include "CEGUI/Rect.h"
 
-// Macros for format conversion specifications for integer arguments of type
-// size_t or ssize_t.
+// Macros for format conversion specifications for integer arguments
 #ifdef _WIN32
-#define PRIiSIZE "Ii"
-#define PRIuSIZE "Iu"
-#define PRIxSIZE "Ix"
-#undef PRId64
 #undef PRIu64
-#define PRId64 "I64d"
 #define PRIu64 "I64u"
 #else // not _WIN32
-#define PRIiSIZE "zi"
-#define PRIuSIZE "zu"
-#define PRIxSIZE "zx"
-#undef PRId64
 #undef PRIu64
-#define PRId64 "lld"
 #define PRIu64 "llu"
 #endif // _WIN32
 
