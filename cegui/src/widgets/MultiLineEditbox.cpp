@@ -751,7 +751,7 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
     eraseSelectedText();
     
     // if there is room
-    if (getText().length() - clipboardText.length() < d_maxTextLen)
+    if (getText().length() + clipboardText.length() < d_maxTextLen)
     {
         String newText = getText();
         newText.insert(getCaretIndex(), clipboardText);
