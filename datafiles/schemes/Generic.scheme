@@ -4,6 +4,7 @@
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 
 	<FalagardMapping windowType="Generic/Label" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/Label" />
+	<FalagardMapping windowType="Generic/LabelWithOutline" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/LabelWithOutline" />
     <FalagardMapping windowType="Generic/Image" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/Image" />
     <FalagardMapping windowType="Generic/ImageButton" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="Generic/ImageButton" />
     
