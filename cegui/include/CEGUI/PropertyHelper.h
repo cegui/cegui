@@ -38,19 +38,6 @@
 #include "CEGUI/UDim.h"
 #include "CEGUI/Rect.h"
 
-// Macros for format conversion specifications for integer arguments
-#ifndef PRIu64
-
-#ifdef _WIN32
-#define CEGUI_PRIu64 "I64u"
-#else // not _WIN32
-#define CEGUI_PRIu64 "llu"
-#endif // _WIN32
-
-#else
-#define CEGUI_PRIu64 PRIu64
-#endif
-
 
 #include <cstdio>
 
@@ -337,7 +324,7 @@ public:
     static return_type fromString(const String& str)
     {
         uint64 val = 0;
-        sscanf(str.c_str(), " %" CEGUI_PRIu64 "", &val);
+        sscanf(str.c_str(), " %llu", &val);
 
         return val;
     }
@@ -345,7 +332,7 @@ public:
     static string_return_type toString(pass_type val)
     {
         char buff[64];
-        snprintf(buff, sizeof(buff), "%" CEGUI_PRIu64 "", val);
+        snprintf(buff, sizeof(buff), "%llu", val);
 
         return String(buff);
     }
