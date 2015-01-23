@@ -52,6 +52,11 @@
 #define snprintf _snprintf
 #endif
 
+#ifdef __MINGW32__
+#if __USE_MINGW_ANSI_STDIO != 1
+#warning  __USE_MINGW_ANSI_STDIO must be set to 1 for sscanf and snprintf to work with 64bit integers
+#endif
+#endif
 
 namespace CEGUI
 {
