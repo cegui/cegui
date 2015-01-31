@@ -131,7 +131,7 @@
 #   define  CEGUI_FUNCTION_NAME CEGUI::String(__FUNCSIG__)
 #elif defined(__GNUC__)
 #   define  CEGUI_FUNCTION_NAME CEGUI::String(__PRETTY_FUNCTION__)
-#elif __STDC_VERSION__ >= 199901L
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #   define  CEGUI_FUNCTION_NAME CEGUI::String(__func__)
 #else
 #   define  CEGUI_FUNCTION_NAME CEGUI::String("[Function name unavailable]")
