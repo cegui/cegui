@@ -316,6 +316,15 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 }
 
 //----------------------------------------------------------------------------//
+OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& main_window,
+    Ogre::RenderTarget &new_window)
+{
+    // Link the second renderer to the first for them to share some resources
+
+    return *new OgreRenderer(new_window);
+}
+    
+//----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 void OgreRenderer::createOgreCompositorResources()
 {

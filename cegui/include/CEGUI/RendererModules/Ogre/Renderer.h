@@ -178,6 +178,13 @@ public:
     static OgreRenderer& create(Ogre::RenderTarget& target,
                                 const int abi = CEGUI_VERSION_ABI);
 
+    /*!
+      \brief
+      Creates a new renderer that can be used to create a context on a new Ogre window
+    */
+    static OgreRenderer& registerWindow(OgreRenderer& main_window,
+        Ogre::RenderTarget &new_window);
+
     //! destroy an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);
 
