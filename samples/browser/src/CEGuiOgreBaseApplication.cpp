@@ -121,7 +121,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // The compositor has to be initialized
         if (!manager)
         {
-            d_ogreRoot->initialiseCompositor();
+            assert(false && "No function to initialize Ogre::CompositorManager2...");
             manager = d_ogreRoot->getCompositorManager2();
         }
 
