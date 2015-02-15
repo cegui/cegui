@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	8/8/2004
 	author:		Steve Streeting
-	
+
 	purpose:	Interface to base class for TabButton widget
 *************************************************************************/
 /***************************************************************************
@@ -56,14 +56,14 @@ public:
      * WindowEventArgs::window set to the TabButton that was clicked.
      */
 	static const String EventClicked;
-    /** Event fired when use user attempts to drag the button with middle mouse
-     * button.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when use user attempts to drag the button with middle cursor
+     * source.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
 	static const String EventDragged;
-    /** Event fired when the scroll wheel is used on top of the button.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when a scroll action is executed on top of the button.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
 	static const String EventScrolled;
@@ -130,10 +130,10 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    virtual void onMouseButtonUp(MouseEventArgs& e);
-    virtual void onMouseButtonDown(MouseEventArgs& e);
-    virtual void onMouseWheel(MouseEventArgs& e);
-    virtual void onMouseMove(MouseEventArgs& e);
+    virtual void onCursorActivate(CursorInputEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
+    virtual void onCursorMove(CursorInputEventArgs& e);
 };
 
 

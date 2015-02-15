@@ -376,7 +376,7 @@ The @c \<Dim\> element is intended as a container element for a single dimension
 @subsection fal_elem_ref_sec_9_3 Usage:
 <ul>
     <li>The @c \<Dim\> element may only appear within the @c \<Area\> element.</li>
-    
+
     <li>The @c \<Dim\> element may contain any of the following specialised dimension elements:</li>
     <ul>
         <li>@c \<AbsoluteDim\></li>
@@ -595,7 +595,7 @@ Note: the sub-elements should appear in the order that they are defined here.
     <li>@c \<Area\> defining the target area for this frame.</li>
     <li>Up to nine @c \<Image\> or @c \<ImageProperty\> elements specifying the
         images to be drawn and in what positions. Note that it is acceptable to
-        freely mix @c \<Image\> and @c \<ImageProperty\> in a single 
+        freely mix @c \<Image\> and @c \<ImageProperty\> in a single
         @c \<FrameComponent\> definition.</li>
 
     <li>Optionally specifying the colours for the entire frame, one of the colour elements:</li>
@@ -623,7 +623,7 @@ Note: the sub-elements should appear in the order that they are defined here.
 @subsection fal_elem_ref_sec_14_4 Examples:
 
 The following defines a full frame and background. It is taken from
-the TaharezLook skin specification for the Listbox widget:
+the TaharezLook skin specification for the ListView widget:
 
 @code
 <FrameComponent>
@@ -772,7 +772,7 @@ Optional attribute, defaults to "Background".</li>
 @subsection fal_elem_ref_sec_17_3 Usage:
 <ul>
     <li>The @c \<HorzFormatProperty\> element may not contain sub-elements.</li>
-    
+
     <li>The @c \<HorzFormatProperty\> element may appear as a sub-element within any of the following elements:</li>
     <ul>
         <li>@c \<ImageryComponent\> to specify a horizontal formatting to be used the the image.</li>
@@ -908,32 +908,32 @@ Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
     <li>@c \<Area\> defining the target area for this image.</li>
-    
+
     <li>Either one of:</li>
     <ul>
         <li>@c \<Image\> element specifying the image to be drawn.</li>
         <li>@c \<ImageProperty\> element specifying a property defining the image to be drawn.</li>
     </ul>
-    
+
     <li>Optionally specifying the colours for this single image, one of the colour elements:</li>
     <ul>
         <li>@c \<Colours\></li>
         <li>@c \<ColourProperty\></li>
         <li>@c \<ColourRectProperty\></li>
     </ul>
-    
+
     <li>Optionally, to specify the vertical formatting to use, either of:</li>
     <ul>
         <li>@c \<VertFormat\></li>
         <li>@c \<VertFormatProperty\></li>
     </ul>
-    
+
     <li>Optionally, to specify the horizontal formatting to use, either of:</li>
     <ul>
         <li>@c \<HorzFormat\></li>
         <li>@c \<HorzFormatProperty\></li>
     </ul>
-    
+
     <li>The @c \<ImageryComponent\> element may only appear as a sub-element of the element @c \<ImagerySection\>.</li>
 </ul>
 
@@ -1002,7 +1002,7 @@ Note: the sub-elements should appear in the order that they are defined here.
         <li>@c \<ColourProperty\></li>
         <li>@c \<ColourRectProperty\></li>
     </ul>
-    
+
     <li>Any number of @c \<FrameComponent\> elements may then follow.</li>
     <li>Followed by any number of @c \<ImageryComponent\> elements.</li>
     <li>Finally, any number of @c \<TextComponent\> elements may be given.</li>
@@ -1118,7 +1118,7 @@ indicating the mathematical operation to be performed. Required attribute.
         <li>@c \<Dim\></li>
         <li>@c \<OperatorDim\></li>
     </ul>
-    
+
     <li>The @c \<OperatorDim\> element must contain any of two the following dimension elements:</li>
     <ul>
         <li>@c \<AbsoluteDim\></li>
@@ -1427,7 +1427,7 @@ behaviour).  Optional attribute.
 @subsection fal_elem_ref_sec_29_3 Usage:
 <ul>
     <li>The @c \<Section\> element may only appear as a sub-element within the @c \<Layer\> element.</li>
-    
+
     <li>The @c \<Section\> element may specify colours to be modulated with any current colours used for each component within the named ImagerySection, by optionally specifying one of the colour elements as a sub-element:</li>
     <ul>
         <li>@c \<Colours\></li>

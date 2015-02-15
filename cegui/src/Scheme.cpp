@@ -186,7 +186,7 @@ void Scheme::loadImageFileImagesets()
 
         // see if image is present, and create it if not.
         if (!imgr.isDefined((*pos).name))
-            imgr.addFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
+            imgr.addBitmapImageFromFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
     }
 }
 
@@ -259,7 +259,7 @@ void Scheme::loadWindowFactories()
 #if !defined(CEGUI_STATIC)
             // load dynamic module as required
             if (!(*cmod).dynamicModule)
-                (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
+                (*cmod).dynamicModule = new DynamicModule((*cmod).name);
 
             FactoryModule& (*getWindowFactoryModuleFunc)() =
                 reinterpret_cast<FactoryModule&(*)()>(
@@ -313,7 +313,7 @@ void Scheme::loadWindowRendererFactories()
 #if !defined(CEGUI_STATIC)
             // load dynamic module as required
             if (!(*cmod).dynamicModule)
-                (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
+                (*cmod).dynamicModule = new DynamicModule((*cmod).name);
 
             FactoryModule& (*getWRFactoryModuleFunc)() =
                 reinterpret_cast<FactoryModule&(*)()>((*cmod).dynamicModule->
@@ -516,7 +516,7 @@ void Scheme::unloadWindowFactories()
         // unload dynamic module as required
         if ((*cmod).dynamicModule)
         {
-            CEGUI_DELETE_AO (*cmod).dynamicModule;
+            delete (*cmod).dynamicModule;
             (*cmod).dynamicModule = 0;
         }
 
@@ -554,7 +554,7 @@ void Scheme::unloadWindowRendererFactories()
         // unload dynamic module as required
         if ((*cmod).dynamicModule)
         {
-            CEGUI_DELETE_AO (*cmod).dynamicModule;
+            delete (*cmod).dynamicModule;
             (*cmod).dynamicModule = 0;
         }
 

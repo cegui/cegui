@@ -82,7 +82,7 @@ public:
     \brief
         Return the index of the first character of the word at \a idx.
 
-    /note
+    \note
         This currently uses DefaultWhitespace and DefaultAlphanumerical to determine groupings for what constitutes a 'word'.
 
     \param str
@@ -101,7 +101,7 @@ public:
     \brief
         Return the index of the first character of the word after the word at \a idx.
 
-    /note
+    \note
         This currently uses DefaultWhitespace and DefaultAlphanumerical to determine groupings for what constitutes a 'word'.
 
     \param str

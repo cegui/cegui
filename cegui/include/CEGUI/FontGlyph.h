@@ -39,8 +39,7 @@ namespace CEGUI
     For TrueType fonts initially all FontGlyph's are empty
     (getImage() will return 0), but they are filled by demand.
 */
-class CEGUIEXPORT FontGlyph:
-    public AllocatedObject<FontGlyph>
+class CEGUIEXPORT FontGlyph
 {
 public:
     //! Constructor.
@@ -75,7 +74,7 @@ public:
     */
     float getRenderedAdvance(float x_scale) const
     { return (d_image->getRenderedSize().d_width +
-              d_image->getRenderedOffset().d_x) * x_scale; }
+              d_image->getRenderedOffset().x) * x_scale; }
 
     /*!
     \brief

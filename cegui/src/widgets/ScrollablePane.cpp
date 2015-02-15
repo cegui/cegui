@@ -485,10 +485,10 @@ void ScrollablePane::onSized(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onMouseWheel(MouseEventArgs& e)
+void ScrollablePane::onScroll(CursorInputEventArgs& e)
 {
     // base class processing.
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
     
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -497,13 +497,13 @@ void ScrollablePane::onMouseWheel(MouseEventArgs& e)
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
         vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() +
-                            vertScrollbar->getStepSize() * -e.wheelChange);
+                            vertScrollbar->getStepSize() * -e.scroll);
     }
     else if (horzScrollbar->isEffectiveVisible() &&
              (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
         horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() +
-                            horzScrollbar->getStepSize() * -e.wheelChange);
+                            horzScrollbar->getStepSize() * -e.scroll);
     }
     
     ++e.handled;
@@ -516,13 +516,13 @@ void ScrollablePane::addScrollablePaneProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
-        "bar of the tree.  Value is either \"true\" or \"false\".",
+        "bar of the pane.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
-        "scroll bar of the tree.  Value is either \"true\" or \"false\".",
+        "scroll bar of the pane.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 

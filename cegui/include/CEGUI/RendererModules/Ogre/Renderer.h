@@ -1,6 +1,6 @@
 /***********************************************************************
     created:    Tue Feb 17 2009
-    author:     Paul D Turner
+    author:     Paul D Turner, Henri I Hyyryläinen
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
@@ -54,15 +54,23 @@ namespace Ogre
 class Root;
 class RenderSystem;
 class RenderTarget;
+class SceneManager;
 #if (CEGUI_OGRE_VERSION < ((1 << 16) | (9 << 8) | 0))
 class TexturePtr;
 #else
 template<typename T> class SharedPtr;
 class Texture;
 typedef SharedPtr<Texture> TexturePtr;
+class HardwareVertexBufferSharedPtr;
 #endif
 class Matrix4;
 }
+
+#if (CEGUI_OGRE_VERSION >= (2 << 16))
+// The new Ogre Compositor2 system has to be used since ViewPorts
+// no longer have the required functionality
+#define CEGUI_USE_OGRE_COMPOSITOR2
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -170,7 +178,14 @@ public:
     static OgreRenderer& create(Ogre::RenderTarget& target,
                                 const int abi = CEGUI_VERSION_ABI);
 
-    //! destory an OgreRenderer object.
+    /*!
+      \brief
+      Creates a new renderer that can be used to create a context on a new Ogre window
+    */
+    static OgreRenderer& registerWindow(OgreRenderer& main_window,
+        Ogre::RenderTarget &new_window);
+
+    //! destroy an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);
 
     //! function to create a CEGUI::OgreResourceProvider object
@@ -185,6 +200,21 @@ public:
     //! function to destroy a CEGUI::OgreImageCodec object.
     static void destroyOgreImageCodec(OgreImageCodec& ic);
 
+    //! Conversion function from Ogre to glm
+    static glm::mat4 ogreToGlmMatrix(const Ogre::Matrix4& matrix);
+
+    //! Conversion function from glm to Ogre
+    static Ogre::Matrix4 glmToOgreMatrix(const glm::mat4& matrix);
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    //! Function to initialize required Ogre::Compositor2 workspaces
+    static void createOgreCompositorResources();
+
+    //! Function to update the workspace render target
+    void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
     //! set whether CEGUI rendering will occur
     void setRenderingEnabled(const bool enabled);
 
@@ -196,7 +226,7 @@ public:
         Create a CEGUI::Texture that wraps an existing Ogre texture.
 
     \param name
-        The name for tne new texture being created.
+        The name for the new texture being created.
 
     \param tex
         Ogre::TexturePtr for the texture that will be used by the created
@@ -274,107 +304,82 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
+    //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
+    void bindBlendMode(BlendMode blend);
+
+    
     /*!
-    \brief
-        Returns whether the OgreRenderer is currently set to use shaders when
-        doing its rendering operations.
-
-    \return
-        - true if rendering is being done using shaders.
-        - false if rendering is being done using the fixed function pipeline
+    \brief 
+        Initialises the states for rendering textured geometry
     */
-    bool isUsingShaders() const;
-
-    /*!
-    \brief
-        Set whether the OgreRenderer shound use shaders when performing its
-        rendering operations.
-
-    \param use_shaders
-        - true if rendering shaders should be used to perform rendering.
-        - false if the fixed function pipeline should be used to perform
-          rendering.
-
-    \note
-        When compiled against Ogre 1.8 or later, shaders will automatically
-        be enabled if the render sytem does not support the fixed function
-        pipeline (such as with Direct3D 11). If you are compiling against
-        earlier releases of Ogre, you must explicity enable the use of
-        shaders by calling this function - if you are unsure what you'll be
-        compiling against, it is safe to call this function anyway.
-    */
-    void setUsingShaders(const bool use_shaders);
+    void initialiseTextureStates();
 
     /*!
-    \brief
-        Perform required operations to bind shaders (or unbind them) depending
-        on whether shader based rendering is currently enabled.
+    \brief 
+        Returns a vertex buffer larger than size if any exist
 
-        Normally you would not need to call this function directly, although
-        that might be required if you are using RenderEffect objects that
-        also use shaders.
+        This function also cleans the pool and discards large buffers that 
+        aren't used
     */
-    void bindShaders();
+    Ogre::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
 
-    /*!
-    \brief
-        Updates the shader constant parameters (i.e. uniforms).
+    //! \brief Puts a vertex buffer back in to the pool
+    void returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr buffer);
 
-        You do not normally need to call this function directly. Some may need
-        to call this function if you're doing non-standard or advanced things.
-    */
-    void updateShaderParams() const;
-
-    //! Set the current world matrix to the given matrix.
-    void setWorldMatrix(const Ogre::Matrix4& m);
-    //! Set the current view matrix to the given matrix.
-    void setViewMatrix(const Ogre::Matrix4& m);
-    //! Set the current projection matrix to the given matrix.
-    void setProjectionMatrix(const Ogre::Matrix4& m);
-    //! return a const reference to the current world matrix.
-    const Ogre::Matrix4& getWorldMatrix() const;
-    //! return a const reference to the current view matrix.
-    const Ogre::Matrix4& getViewMatrix() const;
-    //! return a const reference to the current projection matrix.
-    const Ogre::Matrix4& getProjectionMatrix() const;
-
-    /*!
-    \brief
-        Return a const reference to the final transformation matrix that
-        should be used when transforming geometry.
-
-    \note
-        The projection used when building this matrix is correctly adjusted
-        according to whether the current Ogre::RenderTarget requires textures
-        to be flipped (i.e it does the right thing for both D3D and OpenGL).
-    */
-    const Ogre::Matrix4& getWorldViewProjMatrix() const;
+    //! \brief Clears vertex buffer pool
+    void clearVertexBufferPool();
 
     // implement CEGUI::Renderer interface
-    RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
+    virtual void setViewProjectionMatrix(const glm::mat4& viewProjMatrix);
+    virtual RenderTarget& getDefaultRenderTarget();
+    virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+    virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
+
     Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name,
-                           const String& filename,
-                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const String& filename,
+        const String& resourceGroup);
     Texture& createTexture(const String& name, const Sizef& size);
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    Ogre::SceneManager& getDummyScene() const;
+#endif
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
     void destroyAllTextures();
+
     Texture& getTexture(const String& name) const;
     bool isTextureDefined(const String& name) const;
+
     void beginRendering();
     void endRendering();
+
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
+    const glm::vec2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
+
+    /*!
+    \brief
+        Returns if this OgreRenderer uses an OpenGL based RenderSystem.
+
+    \return
+        True if this OgreRenderer uses an OpenGL based RenderSystem.
+    */
+    bool usesOpenGL();
+
+    /*!
+    \brief
+        Returns if this OgreRenderer uses a Direct3D based RenderSystem.
+
+    \return
+        True if this OgreRenderer uses a Direct3D based RenderSystem.
+    */
+    bool usesDirect3D();
 
 protected:
     //! default constructor.
@@ -395,15 +400,18 @@ protected:
 
     //! common parts of constructor
     void constructor_impl(Ogre::RenderTarget& target);
+    //! Helper that switches off shader-usage
+    void switchShaderUsageOff();
     //! helper that creates and sets up shaders
     void initialiseShaders();
     //! helper to clean up shaders
     void cleanupShaders();
 
+    //! Deletes count number of largest vertex buffers
+    void cleanLargestVertexBufferPool(size_t count);
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
 };
-
 
 } // End of  CEGUI namespace section
 

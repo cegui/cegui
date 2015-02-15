@@ -324,7 +324,7 @@ public:
 
 	/*!
 	\brief
-		Destructor for Listbox base class.
+		Destructor for TabControl base class.
 	*/
 	virtual ~TabControl(void);
 
@@ -456,8 +456,7 @@ protected:
 	*************************************************************************/
     UDim        d_tabHeight;        //!< The height of the tabs in pixels
     UDim        d_tabPadding;       //!< The padding of the tabs relative to parent
-    typedef std::vector<TabButton*
-        CEGUI_VECTOR_ALLOC(TabButton*)> TabButtonVector;
+    typedef std::vector<TabButton*> TabButtonVector;
     TabButtonVector d_tabButtonVector;  //!< Sorting for tabs
     float       d_firstTabOffset;   //!< The offset in pixels of the first tab
     TabPanePosition d_tabPanePos;   //!< The position of the tab pane
@@ -494,7 +493,7 @@ protected:
 
     void    addChild_impl(Element* element);
     void    removeChild_impl(Element* element);
-    
+
     //! \copydoc Window::getChildByNamePath_impl
     virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
 

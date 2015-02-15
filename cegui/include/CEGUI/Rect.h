@@ -32,6 +32,8 @@
 #include "CEGUI/Vector.h"
 #include "CEGUI/Size.h"
 
+#include <glm/glm.hpp>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -40,8 +42,7 @@ namespace CEGUI
 	Class encapsulating operations on a Rectangle
 */
 template<typename T>
-class Rect:
-    public AllocatedObject<Rect<T> >
+class Rect
 {
 public:
     typedef T value_type;
@@ -59,9 +60,21 @@ public:
         d_max(max)
     {}
 
+    // FIXME: Temporary for glm::vec2 transition
+    inline Rect(const glm::vec2& min, const glm::vec2& max):
+        d_min(min.x, min.y),
+        d_max(max.x, max.y)
+    {}
+
     inline Rect(const Vector2<T>& pos, const Size<T>& size):
         d_min(pos),
         d_max(pos + Vector2<T>(size.d_width, size.d_height))
+    {}
+
+    // FIXME: Temporary for glm::vec2 transition
+    inline Rect(const glm::vec2& pos, const Size<T>& size):
+        d_min(pos.x, pos.y),
+        d_max(pos.x + size.d_width, pos.y + size.d_height)
     {}
 
     inline Rect(const Rect& r):
@@ -128,6 +141,14 @@ public:
         setSize(size);
     }
 
+    // FIXME: Temporary for glm::vec2 transition
+    void setPosition(const glm::vec2& min)
+    {
+        const Size<T> size = getSize();
+        d_min = Vector2<T>(min.x, min.y);
+        setSize(size);
+    }
+
     /*!
 	\brief
 		Return top-left position of Rect as a Vector2<T>
@@ -135,6 +156,12 @@ public:
 	const Vector2<T>& getPosition() const
     {
         return d_min;
+    }
+
+    // FIXME: Temporary for glm::vec2 transition
+    glm::vec2 getPositionGLM() const
+    {
+        return glm::vec2(d_min.d_x, d_min.d_y);
     }
 
     void setSize(const Size<T>& size)
@@ -226,7 +253,14 @@ public:
         d_max += v;
     }
 
-	/*!
+    // FIXME: Temporary for glm::vec2 transition
+    inline void offset(const glm::vec2& v)
+    {
+        d_min += Vector2<T>(v.x, v.y);
+        d_max += Vector2<T>(v.x, v.y);
+    }
+
+    /*!
 	\brief
 		Return true if the given Vector2 falls within this Rect
 
@@ -249,6 +283,19 @@ public:
 	    return true;
     }
 
+    // FIXME: Temporary for glm::vec2 transition
+    inline bool isPointInRect(const glm::vec2& v) const
+    {
+        if ((d_min.d_x >  v.x) ||
+            (d_max.d_x <= v.x) ||
+            (d_min.d_y >  v.y) ||
+            (d_max.d_y <= v.y))
+        {
+            return false;
+        }
+
+        return true;
+    }
 
 	/*!
 	\brief
@@ -353,6 +400,17 @@ public:
         return Rect(d_min * scalar, d_max * scalar);
     }
 
+    inline Rect operator*(Vector2<T> vector) const
+    {
+        return Rect(d_min * vector, d_max * vector);
+    }
+
+    // FIXME: Temporary for glm::vec2 transition
+    inline Rect operator*(glm::vec2 vector) const
+    {
+        return Rect(d_min * Vector2<T>(vector.x, vector.y), d_max * Vector2<T>(vector.x, vector.y));
+    }
+
     const Rect& operator*=(T scalar)
     {
         d_min *= scalar;
@@ -363,6 +421,11 @@ public:
 	Rect operator+(const Rect& r) const
     {
         return Rect(d_min + r.d_min, d_max + r.d_max);
+    }
+
+    Rect operator-(const Rect& r) const
+    {
+        return Rect(d_min - r.d_min, d_max - r.d_max);
     }
     
     inline friend std::ostream& operator << (std::ostream& s, const Rect& v)

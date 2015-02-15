@@ -18,8 +18,7 @@
     <FalagardMapping windowType="OgreTray/ProgressBar"          targetType="CEGUI/ProgressBar"      renderer="Core/ProgressBar"         lookNFeel="OgreTray/ProgressBar" />
     <FalagardMapping windowType="OgreTray/Editbox"              targetType="CEGUI/Editbox"          renderer="Core/Editbox"             lookNFeel="OgreTray/Editbox" />
     <FalagardMapping windowType="OgreTray/MultiLineEditbox"     targetType="CEGUI/MultiLineEditbox" renderer="Core/MultiLineEditbox"    lookNFeel="OgreTray/MultiLineEditbox" />
-    <FalagardMapping windowType="OgreTray/Listbox"              targetType="CEGUI/Listbox"          renderer="Core/Listbox"             lookNFeel="OgreTray/Listbox" />
-    <FalagardMapping windowType="OgreTray/ComboDropList"        targetType="CEGUI/ComboDropList"    renderer="Core/Listbox"             lookNFeel="OgreTray/Listbox" />
+    <FalagardMapping windowType="OgreTray/ComboDropList"        targetType="CEGUI/ComboDropList"    renderer="Core/ListWidget"          lookNFeel="OgreTray/ListView" />
     <FalagardMapping windowType="OgreTray/Combobox"             targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/Combobox" />
     <FalagardMapping windowType="OgreTray/DropDownMenu"         targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/DropDownMenu" />
     <FalagardMapping windowType="OgreTray/Group"                targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/Group" />
@@ -29,10 +28,9 @@
     <FalagardMapping windowType="OgreTray/StaticImage"          targetType="DefaultWindow"          renderer="Core/StaticImage"         lookNFeel="OgreTray/StaticImage" />
     <FalagardMapping windowType="OgreTray/AltStaticImage"       targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/AltStaticImage" />
     <FalagardMapping windowType="OgreTray/Tooltip"              targetType="CEGUI/Tooltip"          renderer="Core/Tooltip"             lookNFeel="OgreTray/Tooltip" />
-    <FalagardMapping windowType="OgreTray/ItemListbox"          targetType="CEGUI/ItemListbox"      renderer="Core/ItemListbox"         lookNFeel="OgreTray/ItemListbox" />
     <FalagardMapping windowType="OgreTray/ListboxItem"          targetType="CEGUI/ItemEntry"        renderer="Core/ItemEntry"           lookNFeel="OgreTray/ListboxItem" />
-    <FalagardMapping windowType="OgreTray/Spinner"              targetType="CEGUI/Spinner"          renderer="Core/Default"             lookNFeel="OgreTray/Spinner" /> 
-    <FalagardMapping windowType="OgreTray/ScrollablePane"       targetType="CEGUI/ScrollablePane"   renderer="Core/ScrollablePane"      lookNFeel="OgreTray/ScrollablePane" />  
+    <FalagardMapping windowType="OgreTray/Spinner"              targetType="CEGUI/Spinner"          renderer="Core/Default"             lookNFeel="OgreTray/Spinner" />
+    <FalagardMapping windowType="OgreTray/ScrollablePane"       targetType="CEGUI/ScrollablePane"   renderer="Core/ScrollablePane"      lookNFeel="OgreTray/ScrollablePane" />
     <FalagardMapping windowType="OgreTray/ListHeaderSegment"    targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment"  lookNFeel="OgreTray/ListHeaderSegment" />
     <FalagardMapping windowType="OgreTray/ListHeader"           targetType="CEGUI/ListHeader"       renderer="Core/ListHeader"          lookNFeel="OgreTray/ListHeader" />
     <FalagardMapping windowType="OgreTray/MultiColumnList"      targetType="CEGUI/MultiColumnList"  renderer="Core/MultiColumnList"     lookNFeel="OgreTray/MultiColumnList" />
@@ -45,5 +43,9 @@
     <FalagardMapping windowType="OgreTray/TabControl"           targetType="CEGUI/TabControl"       renderer="Core/TabControl"          lookNFeel="OgreTray/TabControl" />
 
     <FalagardMapping windowType="OgreTray/BG" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="OgreTray/BGTest" />
+
+    <!-- Views -->
+    <FalagardMapping windowType="OgreTray/ListView"             targetType="CEGUI/ListView"         renderer="Core/ListView"            lookNFeel="OgreTray/ListView" />
+    <FalagardMapping windowType="OgreTray/ListWidget"           targetType="CEGUI/ListWidget"       renderer="Core/ListView"            lookNFeel="OgreTray/ListView" />
 </GUIScheme>
 

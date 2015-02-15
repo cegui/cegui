@@ -40,8 +40,7 @@ namespace CEGUI
 \brief
 	Class that holds details of colours for the four corners of a rectangle.
 */
-class CEGUIEXPORT ColourRect :
-    public AllocatedObject<ColourRect>
+class CEGUIEXPORT ColourRect
 {
 public:
 	/*!
