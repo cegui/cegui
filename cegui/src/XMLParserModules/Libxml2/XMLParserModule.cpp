@@ -29,10 +29,10 @@
 
 CEGUI::XMLParser* createParser(void)
 {
-    return CEGUI_NEW_AO CEGUI::LibxmlParser();
+    return new CEGUI::LibxmlParser();
 }
 
 void destroyParser(CEGUI::XMLParser* parser)
 {
-    CEGUI_DELETE_AO parser;
+    delete parser;
 }

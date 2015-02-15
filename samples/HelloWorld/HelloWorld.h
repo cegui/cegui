@@ -35,9 +35,11 @@ namespace CEGUI
     class DefaultWindow;
 }
 
-class HelloWorldDemo : public Sample
+class HelloWorldSample : public Sample
 {
 public:
+    HelloWorldSample();
+
     virtual bool initialise(CEGUI::GUIContext* guiContext);
     virtual void deinitialise();
 

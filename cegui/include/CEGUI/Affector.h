@@ -52,7 +52,7 @@ namespace CEGUI
 \todo
     moveKeyFrame, this will be vital for any animation editing tools
 */
-class CEGUIEXPORT Affector : public AllocatedObject<Affector>
+class CEGUIEXPORT Affector
 {
 public:
     //! enumerates the possible methods of application
@@ -257,8 +257,7 @@ private:
     //! curently used interpolator (has to be set for the Affector to work!)
     Interpolator* d_interpolator;
 
-    typedef std::map<float, KeyFrame*, std::less<float>
-        CEGUI_MAP_ALLOC(float, KeyFrame*)> KeyFrameMap;
+    typedef std::map<float, KeyFrame*, std::less<float> > KeyFrameMap;
     /** keyframes of this affector (if there are no keyframes, this affector
      * won't do anything!)
      */

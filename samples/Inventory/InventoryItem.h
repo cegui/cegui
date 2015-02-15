@@ -72,7 +72,7 @@ public:
     bool currentDropTargetIsValid() const;
 
     // base class overrides
-    bool isHit(const Vector2f& position, const bool allow_disabled = false) const;
+    bool isHit(const glm::vec2& position, const bool allow_disabled = false) const;
     void setContentSize(int width, int height);
 
 protected:

@@ -87,7 +87,7 @@ Rectf FalagardMultiLineEditbox::getTextRenderArea(void) const
         }
         area_name += "Scroll";
 
-        if (wlf.isNamedAreaDefined(area_name))
+        if (wlf.isNamedAreaPresent(area_name))
         {
             return wlf.getNamedArea(area_name).getArea().getPixelRect(*w);
         }
@@ -104,9 +104,25 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 
     // get WidgetLookFeel for the assigned look.
     const WidgetLookFeel& wlf = getLookNFeel();
+
+    String state;
+
+    if (w->isEffectiveDisabled())
+        state = "Disabled";
+    else
+    {
+        if (w->isReadOnly())
+            state = "ReadOnly";
+        else
+            state = "Enabled";
+
+        if (w->isFocused())
+            state += "Focused";
+    }
+
     // try and get imagery for our current state
-    imagery = &wlf.getStateImagery(w->isEffectiveDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
-    // peform the rendering operation.
+    imagery = &wlf.getStateImagery(state);
+    // perform the rendering operation.
     imagery->render(*w);
 }
 
@@ -146,7 +162,7 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
             caretArea.top(textArea.top() + ypos);
             caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
             caretArea.setHeight(fnt->getLineSpacing());
-            caretArea.offset(Vector2f(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
+            caretArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), w->getVertScrollbar()->getScrollPosition()));
 
             // cache the caret image for rendering.
             caretImagery.render(*w, caretArea, 0, &textArea);
@@ -176,7 +192,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
     // text is already formatted, we just grab the lines and render them with the required alignment.
     Rectf drawArea(dest_area);
     float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-    drawArea.offset(Vector2f(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
+    drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
 
     const Font* fnt = w->getFont();
 
@@ -184,17 +200,13 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
     {
         // calculate final colours to use.
         ColourRect colours;
-        const float alpha = w->getEffectiveAlpha();
         ColourRect normalTextCol;
         setColourRectToUnselectedTextColour(normalTextCol);
-        normalTextCol.modulateAlpha(alpha);
         ColourRect selectTextCol;
         setColourRectToSelectedTextColour(selectTextCol);
-        selectTextCol.modulateAlpha(alpha);
         ColourRect selectBrushCol;
         w->hasInputFocus() ? setColourRectToActiveSelectionColour(selectBrushCol) :
                              setColourRectToInactiveSelectionColour(selectBrushCol);
-        selectBrushCol.modulateAlpha(alpha);
 
         const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
         const size_t numLines = d_lines.size();
@@ -224,8 +236,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             {
                 colours = normalTextCol;
                 // render the complete line.
-                fnt->drawText(w->getGeometryBuffer(), lineText,
-                                lineRect.getPosition(), &dest_area, colours);
+                fnt->drawText(w->getGeometryBuffers(), lineText,
+                              lineRect.getPositionGLM(), &dest_area, true, colours);
             }
             // we have at least some selection highlighting to do
             else
@@ -250,8 +262,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                     // draw this portion of the text
                     colours = normalTextCol;
-                    fnt->drawText(w->getGeometryBuffer(), sect,
-                                    lineRect.getPosition(), &dest_area, colours);
+                    fnt->drawText(w->getGeometryBuffers(), sect,
+                                    lineRect.getPositionGLM(), &dest_area, true, colours);
 
                     // set position ready for next portion of text
                     lineRect.d_min.d_x += selStartOffset;
@@ -277,12 +289,12 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                 // render the selection area brush for this line
                 colours = selectBrushCol;
-                w->getSelectionBrushImage()->render(w->getGeometryBuffer(), lineRect, &dest_area, colours);
+                w->getSelectionBrushImage()->render(w->getGeometryBuffers(), lineRect, &dest_area, true, colours);
 
                 // draw the text for this section
                 colours = selectTextCol;
-                fnt->drawText(w->getGeometryBuffer(), sect,
-                                lineRect.getPosition(), &dest_area, colours);
+                fnt->drawText(w->getGeometryBuffers(), sect,
+                                lineRect.getPositionGLM(), &dest_area, true, colours);
 
                 lineRect.top(text_top);
 
@@ -300,8 +312,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                     // render the text for this section.
                     colours = normalTextCol;
-                    fnt->drawText(w->getGeometryBuffer(), sect,
-                                    lineRect.getPosition(), &dest_area, colours);
+                    fnt->drawText(w->getGeometryBuffers(), sect,
+                                    lineRect.getPositionGLM(), &dest_area, true, colours);
                 }
             }
 

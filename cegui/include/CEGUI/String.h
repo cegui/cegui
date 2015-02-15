@@ -59,8 +59,7 @@ typedef utf8 encoded_char;
 	current locale, and also comparisons do not take into account the Unicode data tables, so are not 'correct'
 	as such.
 */
-class CEGUIEXPORT String :
-    public AllocatedObject<String>
+class CEGUIEXPORT String
 {
 public:
 	/*************************************************************************
@@ -5597,10 +5596,6 @@ typedef char encoded_char;
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
 
 typedef std::string String;
-
-#else // CEGUI_STRING_CLASS_STD_AO
-
-typedef std::basic_string<char, std::char_traits<char>, STLAllocatorWrapper<char, AllocatorConfig<STLAllocator>::Allocator> > String;
 
 #endif
 

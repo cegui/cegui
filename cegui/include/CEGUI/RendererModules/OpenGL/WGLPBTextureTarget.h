@@ -27,12 +27,12 @@
 #ifndef _CEGUIOpenGLWGLPBTextureTarget_h_
 #define _CEGUIOpenGLWGLPBTextureTarget_h_
 
-//#include <windows.h>
-#include <GL/glew.h>
-#include <GL/wglew.h>
-
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "../../Rect.h"
+
+#include <windows.h>
+#include <GL/wglew.h>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

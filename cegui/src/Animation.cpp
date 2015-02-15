@@ -107,7 +107,7 @@ Affector* Animation::createAffector(void)
 {
     // no checking needed!
 
-    Affector* ret = CEGUI_NEW_AO Affector(this);
+    Affector* ret = new Affector(this);
     d_affectors.push_back(ret);
 
     return ret;
@@ -136,7 +136,7 @@ void Animation::destroyAffector(Affector* affector)
     }
 
     d_affectors.erase(it);
-    CEGUI_DELETE_AO affector;
+    delete affector;
 }
 
 //----------------------------------------------------------------------------//

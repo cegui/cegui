@@ -32,7 +32,6 @@
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/Irrlicht/Texture.h"
 #include "CEGUI/Vertex.h"
-#include "CEGUI/Quaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -149,30 +148,30 @@ void IrrlichtGeometryBuffer::cleanupClipping() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTranslation(const Vector3f& v)
+void IrrlichtGeometryBuffer::setTranslation(const glm::vec3& v)
 {
-    d_translation.X = v.d_x;
-    d_translation.Y = v.d_y;
-    d_translation.Z = v.d_z;
+    d_translation.X = v.x;
+    d_translation.Y = v.y;
+    d_translation.Z = v.z;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
+void IrrlichtGeometryBuffer::setRotation(const glm::quat& r)
 {
-    d_rotation.W = -r.d_w;
-    d_rotation.X = r.d_x;
-    d_rotation.Y = r.d_y;
-    d_rotation.Z = r.d_z;
+    d_rotation.W = -r.w;
+    d_rotation.X = r.x;
+    d_rotation.Y = r.y;
+    d_rotation.Z = r.z;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setPivot(const Vector3f& p)
+void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
 {
-    d_pivot.X = p.d_x;
-    d_pivot.Y = p.d_y;
-    d_pivot.Z = p.d_z;
+    d_pivot.X = p.x;
+    d_pivot.Y = p.y;
+    d_pivot.Z = p.z;
     d_matrixValid = false;
 }
 

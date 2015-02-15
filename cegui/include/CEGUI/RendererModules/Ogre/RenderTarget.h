@@ -45,7 +45,7 @@ public:
 
     //! Destructor
     virtual ~OgreRenderTarget();
-
+    
     /*!
     \brief
         Set the underlying viewport area directly - bypassing what the
@@ -62,14 +62,12 @@ public:
     void setOgreViewportDimensions(const Rectf& area);
 
     // implement parts of CEGUI::RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
-    void activate();
-    void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2f& p_in, Vector2f& p_out) const;
+    virtual void activate();
+    virtual void unprojectPoint(const GeometryBuffer& buff,
+                        const glm::vec2& p_in, glm::vec2& p_out) const;
+    virtual void setArea(const Rectf& area);
+    // implementing the virtual function with a covariant return type
+    virtual OgreRenderer& getOwner();
 
 protected:
     //! helper that initialises the cached matrix
@@ -83,22 +81,18 @@ protected:
     OgreRenderer& d_owner;
     //! Ogre RendererSystem used to affect the rendering process
     Ogre::RenderSystem& d_renderSystem;
-    //! holds defined area for the RenderTarget
-    Rectf d_area;
     //! Ogre render target that we are effectively wrapping
     Ogre::RenderTarget* d_renderTarget;
+    
     //! Ogre viewport used for this target.
     Ogre::Viewport* d_viewport;
-    //! projection / view matrix cache
-    mutable Ogre::Matrix4 d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
-    //! tracks viewing distance (this is set up at the same time as d_matrix)
-    mutable float d_viewDistance;
-    //! true when d_viewport is up to date and valid.
-    bool d_viewportValid;
     //! holds set Ogre viewport dimensions
     Rectf d_ogreViewportDimensions;
+
+    //! true when d_viewport is up to date and valid.
+    //! \version Beginning from Ogre 2.0 this indicates whether the workspace is
+    //! up to date
+    bool d_viewportValid;
 };
 
 } // End of  CEGUI namespace section

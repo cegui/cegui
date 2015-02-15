@@ -36,15 +36,14 @@ namespace CEGUI
 \brief
     struct that holds some context relating to a RenderingSurface object.
 */
-struct RenderingContext :
-    public AllocatedObject<RenderingContext>
+struct RenderingContext
 {
     //! RenderingSurface to be used for drawing
     RenderingSurface* surface;
     //! The Window object that owns the RenederingSurface (0 for default root)
     const Window* owner;
     //! The offset of the owning window on the root RenderingSurface.
-    Vector2f offset;
+    glm::vec2 offset;
     //! The queue that rendering should be added to.
     RenderQueueID queue;
 };

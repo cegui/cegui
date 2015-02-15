@@ -1,0 +1,42 @@
+
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE    	:= iconv
+LOCAL_CFLAGS 		+= -std=c99
+LOCAL_C_INCLUDES 	:= @ANDROID_NDK@/sources/android/support/include
+LOCAL_C_INCLUDES 	+= @ANDROID_NDK@/sources/android/support/src/musl-multibyte
+LOCAL_SRC_FILES 	:= @ANDROID_NDK@/sources/android/support/src/musl-locale/iconv.c
+LOCAL_SRC_FILES 	+= @ANDROID_NDK@/sources/android/support/src/musl-multibyte/wctomb.c
+include $(BUILD_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE	:= @ANDROID_MOD_NAME@
+LOCAL_LDLIBS	:= -landroid -lz -lc -lm -ldl -llog -lEGL -lGLESv2
+LOCAL_LDLIBS	+= -L@CMAKE_BINARY_DIR@/lib
+LOCAL_LDLIBS 	+= -L@CEGUI_DEPENDENCIES_DIR@/lib/@ANDROID_ABI@ -L@CEGUI_DEPENDENCIES_DIR@/lib/
+LOCAL_LDLIBS	+= -lCEGUIOpenGLRenderer-@CEGUI_VERSION_MAJOR@_Static -lCEGUIBase-@CEGUI_VERSION_MAJOR@_Static -lCEGUICommonDialogs-@CEGUI_VERSION_MAJOR@_Static -lCEGUICoreWindowRendererSet_Static -lCEGUIFreeImageImageCodec_Static -lCEGUITinyXMLParser_Static -lCEGUISampleBrowser-@CEGUI_VERSION_MAJOR@.@CEGUI_VERSION_MINOR@_Static
+LOCAL_LDLIBS	+= -lfreeimage -lfreetype -ltinyxml -lzzip -lpcre
+LOCAL_LDLIBS    += @NDKOUT@/obj/local/@ANDROID_ABI@/libiconv.a 
+LOCAL_LDLIBS	+= @ANDROID_NDK@/sources/cxx-stl/gnu-libstdc++/@ANDROID_COMPILER_VERSION@/libs/@ANDROID_ABI@/libgnustl_static.a
+LOCAL_STATIC_LIBRARIES := @SAMPLE_LDLIBS@ android_native_app_glue iconv
+LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES=1
+LOCAL_CFLAGS += -fexceptions -frtti  -D___ANDROID___ -DANDROID -DZZIP_OMIT_CONFIG_H
+LOCAL_CFLAGS += -DCEGUI_SAMPLES_ANDROID_GLES2=1
+
+LOCAL_C_INCLUDES := @CMAKE_SOURCE_DIR@/samples/browser/include
+LOCAL_C_INCLUDES += @CMAKE_SOURCE_DIR@/cegui/include
+LOCAL_C_INCLUDES += @CMAKE_SOURCE_DIR@/samples/common/include
+LOCAL_C_INCLUDES += @CMAKE_BINARY_DIR@/samples/browswer/include
+LOCAL_C_INCLUDES += @CMAKE_BINARY_DIR@/cegui/include
+LOCAL_C_INCLUDES += @CMAKE_BINARY_DIR@/samples/common/include
+LOCAL_C_INCLUDES += @CEGUI_DEPENDENCIES_DIR@/include
+LOCAL_C_INCLUDES += @ANDROID_NDK@/sources/cpufeatures 
+
+LOCAL_PATH := @JNI_PATH@
+LOCAL_SRC_FILES := @JNI_SRC_FILES@
+
+include $(BUILD_SHARED_LIBRARY) 
+
+$(call import-module,android/cpufeatures) 
+$(call import-module,android/native_app_glue) 
