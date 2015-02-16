@@ -30,7 +30,9 @@
 #include "CEGUI/RenderQueue.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/constants.hpp>
+#ifndef CEGUI_GLM_HAS_0_9_6_API
+#include "glm/gtx/constants.hpp"
+#endif
 #include <glm/gtc/type_ptr.hpp>
 
 namespace CEGUI

@@ -30,7 +30,9 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Vertex.h"
+#ifndef CEGUI_GLM_HAS_0_9_6_API
 #include "glm/gtx/constants.hpp"
+#endif
 
 #include <cmath>
 

@@ -81,6 +81,12 @@ setting CMake options and regenerating, rather than editing directly.
 #cmakedefine CEGUI_TINYXML_HAS_2_6_API 1
 
 //////////////////////////////////////////////////////////////////////////
+// The following says if GLM version is 0.9.6 or greater
+//////////////////////////////////////////////////////////////////////////
+//
+#cmakedefine CEGUI_GLM_HAS_0_9_6_API 1
+
+//////////////////////////////////////////////////////////////////////////
 // The following controls the version of Lua that is going to be used.
 // Note that from 0.7.0 and up, Lua 5.0 is no longer supported.
 // 51 is for Lua 5.1.x versions (and above?)
