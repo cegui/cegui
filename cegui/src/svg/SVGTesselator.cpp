@@ -32,7 +32,9 @@
 #include "CEGUI/Vertex.h"
 #include "glm/glm.hpp"
 #if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH <= 3)
-#include <glm/gtx/constants.hpp>
+    #include <glm/gtx/constants.hpp>
+#else
+    #include <glm/gtc/constants.hpp>
 #endif
 
 #include <cmath>
