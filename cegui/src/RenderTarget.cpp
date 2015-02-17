@@ -30,6 +30,9 @@
 #include "CEGUI/RenderQueue.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH <= 3)                                      
+#include <glm/gtx/constants.hpp>                                                                                      
+#endif
 #include <glm/gtc/type_ptr.hpp>
 
 namespace CEGUI
