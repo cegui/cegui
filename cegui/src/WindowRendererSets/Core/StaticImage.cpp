@@ -40,7 +40,7 @@ namespace CEGUI
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticImage, Image*,
             "Image", "Property to get/set the image for the FalagardStaticImage widget."
-            "  Value is a pointer to an Image".",
+            "  Value is a pointer to an Image.",
             &FalagardStaticImage::setImage, &FalagardStaticImage::getImage,
             0);
     }
