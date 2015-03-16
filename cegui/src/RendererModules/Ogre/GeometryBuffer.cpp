@@ -33,6 +33,12 @@
 #include <OgreQuaternion.h>
 #include <OgreHardwareBufferManager.h>
 
+#ifdef CEGUI_USE_OGRE_HLMS
+#include <OgreHlmsSamplerblock.h>
+#include <OgreRenderTarget.h>
+#include <OgreViewport.h>
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -61,20 +67,32 @@ static const Ogre::LayerBlendModeEx S_alphaBlendMode =
 };
 
 //----------------------------------------------------------------------------//
+#ifndef CEGUI_USE_OGRE_HLMS
 static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
 {
     Ogre::TextureUnitState::TAM_CLAMP,
     Ogre::TextureUnitState::TAM_CLAMP,
     Ogre::TextureUnitState::TAM_CLAMP
 };
+#endif
 
 //----------------------------------------------------------------------------//
 // Helper to allocate a vertex buffer and initialse a Ogre::RenderOperation
-static void initialiseRenderOp(Ogre::RenderOperation& rop,
-                               Ogre::HardwareVertexBufferSharedPtr& vb,
-                               size_t count)
+static void initialiseRenderOp(
+#ifdef CEGUI_USE_OGRE_HLMS
+    Ogre::v1::RenderOperation& rop,
+    Ogre::v1::HardwareVertexBufferSharedPtr& vb,
+#else
+    Ogre::RenderOperation& rop,
+    Ogre::HardwareVertexBufferSharedPtr& vb,
+#endif
+    size_t count)
 {
     using namespace Ogre;
+
+#ifdef CEGUI_USE_OGRE_HLMS
+    using namespace Ogre::v1;
+#endif
 
     // basic initialisation of render op
     rop.vertexData = OGRE_NEW VertexData();
@@ -102,8 +120,15 @@ static void initialiseRenderOp(Ogre::RenderOperation& rop,
 
 //----------------------------------------------------------------------------//
 // Helper to cleanup what initialiseRenderOp did.
-static void cleanupRenderOp(Ogre::RenderOperation& rop,
-                            Ogre::HardwareVertexBufferSharedPtr& vb)
+static void cleanupRenderOp(
+#ifdef CEGUI_USE_OGRE_HLMS
+        Ogre::v1::RenderOperation& rop,
+        Ogre::v1::HardwareVertexBufferSharedPtr& vb
+#else
+        Ogre::RenderOperation& rop,
+        Ogre::HardwareVertexBufferSharedPtr& vb
+#endif
+    )
 {
     OGRE_DELETE rop.vertexData;
     rop.vertexData = 0;
@@ -145,6 +170,17 @@ void OgreGeometryBuffer::draw() const
     d_owner.setupRenderingBlendMode(d_blendMode);
     d_owner.updateShaderParams();
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    Ogre::Viewport* previousViewport = d_renderSystem._getViewport();
+    Ogre::Viewport* currentViewport = d_owner.getOgreRenderTarget()->getViewport(0);
+
+    Rectf previousClipRect;
+    previousClipRect.left(currentViewport->getScissorLeft());
+    previousClipRect.top(currentViewport->getScissorTop());
+    previousClipRect.right(currentViewport->getScissorWidth());
+    previousClipRect.bottom(currentViewport->getScissorHeight());
+#endif
+
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
     {
@@ -158,18 +194,48 @@ void OgreGeometryBuffer::draw() const
         for ( ; i != d_batches.end(); ++i)
         {
             // Set up clipping for this buffer
+#ifdef CEGUI_USE_OGRE_HLMS
+            if (i->clip)
+            {
+                int actualWidth = currentViewport->getActualWidth();
+                int actualHeight = currentViewport->getActualHeight();
+                float scissorsLeft = d_clipRect.left() / actualWidth;
+                float scissorsTop = d_clipRect.top() / actualHeight;
+                float scissorsWidth = (d_clipRect.right() - d_clipRect.left()) / actualWidth;
+                float scissorsHeight = (d_clipRect.bottom() - d_clipRect.top()) / actualHeight;
+                currentViewport->setScissors(scissorsLeft, scissorsTop, scissorsWidth, scissorsHeight);
+            }
+            else
+            {
+                currentViewport->setScissors(previousClipRect.left(), previousClipRect.top(),
+                                                previousClipRect.right(), previousClipRect.bottom());
+            }
+            
+            d_renderSystem._setViewport(currentViewport);
+#else
             d_renderSystem.setScissorTest(
                 i->clip, d_clipRect.left(), d_clipRect.top(),
                          d_clipRect.right(), d_clipRect.bottom());
+#endif
 
             d_renderOp.vertexData->vertexStart = pos;
             d_renderOp.vertexData->vertexCount = i->vertexCount;
+#ifdef CEGUI_USE_OGRE_HLMS
+            d_renderSystem._setTexture(0, true, i->texture.get());
+#else
             d_renderSystem._setTexture(0, true, i->texture);
+#endif
             initialiseTextureStates();
             d_renderSystem._render(d_renderOp);
             pos += i->vertexCount;
         }
     }
+
+#ifdef CEGUI_USE_OGRE_HLMS
+    currentViewport->setScissors(previousClipRect.left(), previousClipRect.top(),
+                                    previousClipRect.right(), previousClipRect.bottom());
+    d_renderSystem._setViewport(previousViewport);
+#endif
 
     // clean up RenderEffect
     if (d_effect)
@@ -353,8 +419,13 @@ void OgreGeometryBuffer::syncHardwareBuffer() const
     // copy vertex data into hw buffer
     if (required_size > 0)
     {
+#ifdef CEGUI_USE_OGRE_HLMS
+        std::memcpy(d_hwBuffer->lock(Ogre::v1::HardwareVertexBuffer::HBL_DISCARD),
+                    &d_vertices[0], sizeof(OgreVertex) * d_vertices.size());
+#else
         std::memcpy(d_hwBuffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD),
                     &d_vertices[0], sizeof(OgreVertex) * d_vertices.size());
+#endif
 
         d_hwBuffer->unlock();
     }
@@ -377,6 +448,14 @@ void OgreGeometryBuffer::initialiseTextureStates() const
     using namespace Ogre;
     d_renderSystem._setTextureCoordCalculation(0, TEXCALC_NONE);
     d_renderSystem._setTextureCoordSet(0, 0);
+#ifdef CEGUI_USE_OGRE_HLMS
+    d_renderSystem._setTextureMatrix(0, Matrix4::IDENTITY);
+    d_renderSystem._setTextureBlendMode(0, S_colourBlendMode);
+    d_renderSystem._setTextureBlendMode(0, S_alphaBlendMode);
+    d_renderSystem._disableTextureUnitsFrom(1);
+
+    d_renderSystem._setHlmsSamplerblock(0, d_owner.getHlmsSamplerblock());
+#else
     d_renderSystem._setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
     d_renderSystem._setTextureAddressingMode(0, S_textureAddressMode);
     d_renderSystem._setTextureMatrix(0, Matrix4::IDENTITY);
@@ -384,6 +463,7 @@ void OgreGeometryBuffer::initialiseTextureStates() const
     d_renderSystem._setTextureBlendMode(0, S_colourBlendMode);
     d_renderSystem._setTextureBlendMode(0, S_alphaBlendMode);
     d_renderSystem._disableTextureUnitsFrom(1);
+#endif
 }
 
 //----------------------------------------------------------------------------//

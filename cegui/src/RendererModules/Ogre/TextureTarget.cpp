@@ -72,12 +72,14 @@ void OgreTextureTarget::clear()
 {
     if (!d_viewportValid)
         updateViewport();
-
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    
+#else
     Ogre::Viewport* const saved_vp = d_renderSystem._getViewport();
 
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem.clearFrameBuffer(Ogre::FBT_COLOUR,
-                                    Ogre::ColourValue(0, 0, 0, 0));
+        Ogre::ColourValue(0, 0, 0, 0));
 
 #if OGRE_VERSION < 0x10800
     if (saved_vp)
@@ -85,6 +87,8 @@ void OgreTextureTarget::clear()
 #else
     d_renderSystem._setViewport(saved_vp);
 #endif
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
 }
 
 //----------------------------------------------------------------------------//
@@ -115,10 +119,17 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
 
     setArea(init_area);
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    // Setting this should properly change everything
+    d_renderTargetUpdated = true;
+#else
     // delete viewport and reset ptr so a new one is generated.  This is
     // required because we have changed d_renderTarget so need a new VP also.
     OGRE_DELETE d_viewport;
     d_viewport = 0;
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
+
 
     // because Texture takes ownership, the act of setting the new ogre texture
     // also ensures any previous ogre texture is released.
