@@ -61,9 +61,7 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
 template <typename T>
 OgreRenderTarget<T>::~OgreRenderTarget()
 {
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     delete d_viewport;
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 }
@@ -147,9 +145,7 @@ void OgreRenderTarget<T>::activate()
     if (!d_viewportValid)
         updateViewport();
 
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_renderSystem._setViewport(d_viewport);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
@@ -263,11 +259,7 @@ void OgreRenderTarget<T>::updateMatrix() const
 template <typename T>
 void OgreRenderTarget<T>::updateViewport()
 {
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-
-
-
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     if (!d_viewport)
     {
         d_viewport = OGRE_NEW Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
