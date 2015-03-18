@@ -105,8 +105,6 @@ void OgreRenderTarget<T>::setOgreViewportDimensions(const Rectf& area)
     if (d_viewport)
         updateOgreViewportDimensions(d_viewport->getTarget());
 
-
-
     d_viewportValid = false;
 }
 #endif
@@ -268,8 +266,6 @@ void OgreRenderTarget<T>::updateViewport()
 
     d_viewport->_updateDimensions();
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
-
-
 
     d_viewportValid = true;
 }
