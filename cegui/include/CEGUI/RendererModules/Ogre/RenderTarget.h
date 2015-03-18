@@ -99,8 +99,6 @@ protected:
 #else
     //! Ogre viewport used for this target.
     Ogre::Viewport* d_viewport;
-    //! holds set Ogre viewport dimensions
-    Rectf d_ogreViewportDimensions;
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
     //! projection / view matrix cache
@@ -113,6 +111,10 @@ protected:
     //! \version Beginning from Ogre 2.0 this indicates whether the workspace is
     //! up to date
     bool d_viewportValid;
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
+    //! holds set Ogre viewport dimensions
+    Rectf d_ogreViewportDimensions;
+#endif
 };
 
 } // End of  CEGUI namespace section

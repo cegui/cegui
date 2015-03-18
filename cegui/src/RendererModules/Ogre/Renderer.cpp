@@ -603,7 +603,7 @@ void OgreRenderer::beginRendering()
         d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
         if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
             d_pimpl->d_previousProjMatrix =
-            d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+                d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
     }
 
     //FIXME: ???
@@ -621,9 +621,7 @@ void OgreRenderer::endRendering()
 {
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_endFrame();
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     //FIXME: ???
     System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
@@ -699,9 +697,7 @@ OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
 //----------------------------------------------------------------------------//
 OgreRenderer::~OgreRenderer()
 {
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
@@ -770,9 +766,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 #endif
 
     // hook into the rendering process
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
