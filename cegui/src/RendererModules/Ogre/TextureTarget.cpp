@@ -77,7 +77,7 @@ void OgreTextureTarget::clear()
 
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem.clearFrameBuffer(Ogre::FBT_COLOUR,
-        Ogre::ColourValue(0, 0, 0, 0));
+                                    Ogre::ColourValue(0, 0, 0, 0));
 
 #if OGRE_VERSION < 0x10800
     if (saved_vp)
