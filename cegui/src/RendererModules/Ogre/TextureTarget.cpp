@@ -72,9 +72,7 @@ void OgreTextureTarget::clear()
 {
     if (!d_viewportValid)
         updateViewport();
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     Ogre::Viewport* const saved_vp = d_renderSystem._getViewport();
 
     d_renderSystem._setViewport(d_viewport);
