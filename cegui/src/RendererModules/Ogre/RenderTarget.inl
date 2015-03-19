@@ -49,7 +49,7 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
 #else
     d_viewport(0),
     d_ogreViewportDimensions(0, 0, 0, 0),
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
     d_matrix(Ogre::Matrix3::ZERO),
     d_matrixValid(false),
     d_viewportValid(false),
@@ -63,7 +63,7 @@ OgreRenderTarget<T>::~OgreRenderTarget()
 {
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     delete d_viewport;
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 }
 
 //----------------------------------------------------------------------------//
@@ -145,7 +145,7 @@ void OgreRenderTarget<T>::activate()
 
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_renderSystem._setViewport(d_viewport);
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
     d_owner.setProjectionMatrix(d_matrix);
     d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
@@ -265,7 +265,7 @@ void OgreRenderTarget<T>::updateViewport()
     }
 
     d_viewport->_updateDimensions();
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
     d_viewportValid = true;
 }
