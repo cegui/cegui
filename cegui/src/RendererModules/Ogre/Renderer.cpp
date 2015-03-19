@@ -595,9 +595,7 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     if ( !d_pimpl->d_previousVP ) 
     {
         d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
@@ -608,7 +606,7 @@ void OgreRenderer::beginRendering()
 
     //FIXME: ???
     System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif
 
     initialiseRenderStateSettings();
 
@@ -768,7 +766,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // hook into the rendering process
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif
 
 }
 
