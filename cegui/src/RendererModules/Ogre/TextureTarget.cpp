@@ -85,7 +85,7 @@ void OgreTextureTarget::clear()
 #else
     d_renderSystem._setViewport(saved_vp);
 #endif
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
 }
 
@@ -125,7 +125,7 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
     // required because we have changed d_renderTarget so need a new VP also.
     OGRE_DELETE d_viewport;
     d_viewport = 0;
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
 
 

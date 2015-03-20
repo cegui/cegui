@@ -185,7 +185,7 @@ private:
 
 } S_frameListener;
 
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 //----------------------------------------------------------------------------//
 //! container type used to hold TextureTargets we create.
 typedef std::vector<TextureTarget*> TextureTargetList;
@@ -637,7 +637,7 @@ void OgreRenderer::endRendering()
         d_pimpl->d_previousVP = 0;
         d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
     }
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 }
 
 //----------------------------------------------------------------------------//
@@ -697,7 +697,7 @@ OgreRenderer::~OgreRenderer()
 {
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
     cleanupShaders();
 
@@ -1257,6 +1257,6 @@ bool OgreGUIFrameListener::frameRenderingQueued(const Ogre::FrameEvent&)
 
     return true;
 }
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
 } // End of  CEGUI namespace section
