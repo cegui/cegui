@@ -57,7 +57,7 @@ void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
     OGRE_DELETE d_viewport;
     d_viewport = 0;
     d_viewportValid = false;
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
+#endif    
 
 
     initRenderTarget(target);
