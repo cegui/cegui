@@ -43,7 +43,7 @@ class CEGuiEGLBaseApplication;
 #   include "OIS.h" 
 #   include "Ogre.h"
 #   include "OgrePlatform.h"
-#   include "ANDROID/OgreAndroidEGLWindow.h"
+#   include "Android/OgreAndroidEGLWindow.h"
 #   include "OgreFileSystemLayer.h"
 #   include "Android/OgreAPKFileSystemArchive.h"
 #   include "Android/OgreAPKZipArchive.h"
