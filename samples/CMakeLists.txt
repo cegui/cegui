@@ -11,7 +11,6 @@ macro(subdirlist result curdir)
 endmacro()
 
 # initialize variables
-set(ADDITIONAL_LIBS "")
 set(ADDITIONAL_INCLUDE_DIRS "")
 set(SAMPLES_LIST "")
 set(SAMPLES_SUBDIRS "")

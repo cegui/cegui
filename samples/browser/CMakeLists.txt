@@ -189,9 +189,6 @@ endif()
 if(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
 add_executable(${CEGUI_TARGET_NAME} ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
 
-# additional dependencies from samples
-add_dependencies(${CEGUI_TARGET_NAME} "${ADDITIONAL_LIBS}")
-
 # append the _d (or whatever) for debug builds as needed.
 if(CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
     set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
