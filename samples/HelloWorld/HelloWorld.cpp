@@ -29,11 +29,23 @@
 
 #include <iostream>
 
+HelloWorldSample::HelloWorldSample() :
+    Sample(90)
+{
+    Sample::d_name = "HelloWorldSample";
+    Sample::d_credits = "CrazyEddie, Lukas \"Ident\" Meindl";
+    Sample::d_description =
+        "A very simple \"Hello World\" sample. It contains a single "
+        "window which will write \"Hello-World\" to the console if clicked";
+    Sample::d_summary =
+        "The Sample uses the WindowManager to create the window from code. "
+        "An event handler is used to handle the mouse clicks on the window.";
+}
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
+bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -51,13 +63,13 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // loads in a font that gets used as the system default.
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 
-    // The next thing we do is to set a default mouse cursor image.  This is
+    // The next thing we do is to set a default cursor image.  This is
     // not strictly essential, although it is nice to always have a visible
-    // cursor if a window or widget does not explicitly set one of its own.
+    // indicator if a window or widget does not explicitly set one of its own.
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
-    // the ideal thing to have as a defult mouse cursor image.
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    // the ideal thing to have as a defult cursor image.
+    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -87,8 +99,8 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
     //
-    // Create a FrameWindow in the TaharezLook style, and name it 'Demo Window'
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Demo Window");
+    // Create a FrameWindow in the TaharezLook style, and name it 'Sample Window'
+    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Sample Window");
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
@@ -121,7 +133,7 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // FrameWindow's titlebar.
     wnd->setText("Hello World!");
 
-    wnd->subscribeEvent(CEGUI::Window::EventMouseClick,  Event::Subscriber(&HelloWorldDemo::handleHelloWorldClicked, this));
+    wnd->subscribeEvent(CEGUI::Window::EventCursorActivate,  Event::Subscriber(&HelloWorldSample::handleHelloWorldClicked, this));
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.
@@ -132,22 +144,13 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void HelloWorldDemo::deinitialise()
+void HelloWorldSample::deinitialise()
 {
 }
 
-bool HelloWorldDemo::handleHelloWorldClicked(const CEGUI::EventArgs& args)
+bool HelloWorldSample::handleHelloWorldClicked(const CEGUI::EventArgs& args)
 {
     std::cout << "Hello World!" << std::endl;
 
     return false;
-}
-
-/*************************************************************************
-    Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static HelloWorldDemo sample;
-    return sample;
 }

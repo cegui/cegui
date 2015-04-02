@@ -33,11 +33,11 @@
 #include "CEGUI/widgets/Slider.h"
 #include "CEGUI/widgets/Thumb.h"
 
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/CoordConverter.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
@@ -123,7 +123,7 @@ const String ColourPickerControls::ColourPickerCursorName("__colourpickercursor_
 ColourPickerControls::ColourPickerControls(const String& type, const String& name) :
     Window(type, name),
     d_callingColourPicker(0),
-    d_colourPickerCursor(0),
+    d_colourPickerIndicator(0),
     d_sliderMode(SliderMode_Lab_L),
     d_selectedColour(0.75f, 0.75f, 0.75f),
     d_colourPickerControlsTextureTarget(0),
@@ -135,7 +135,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
     d_colourPickerAlphaSliderImageWidth(260),
     d_colourPickerAlphaSliderImageHeight(60),
     d_colourPickerControlsTextureSize(512),
-    d_draggingColourPickerCursor(false),
+    d_draggingColourPickerIndicator(false),
     d_colourPickingTexture(new RGB_Colour[d_colourPickerControlsTextureSize *
                                           d_colourPickerControlsTextureSize]),
     d_ignoreEvents(false),
@@ -148,8 +148,8 @@ ColourPickerControls::~ColourPickerControls()
 {
     deinitColourPickerControlsTexture();
 
-    if (d_colourPickerCursor)
-        WindowManager::getSingleton().destroyWindow(d_colourPickerCursor);
+    if (d_colourPickerIndicator)
+        WindowManager::getSingleton().destroyWindow(d_colourPickerIndicator);
 
     delete[] d_colourPickingTexture;
 
@@ -240,7 +240,7 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
 }
 
 //----------------------------------------------------------------------------//
-Vector2f ColourPickerControls::getColourPickingColourPosition()
+glm::vec2 ColourPickerControls::getColourPickingColourPosition()
 {
     float x = 0.0f;
     float y = 0.0f;
@@ -279,7 +279,7 @@ Vector2f ColourPickerControls::getColourPickingColourPosition()
         break;
     }
 
-    return Vector2f(x, y);
+    return glm::vec2(x, y);
 }
 
 //----------------------------------------------------------------------------//
@@ -370,33 +370,33 @@ void ColourPickerControls::initColourPickerControlsImageSet()
     const String baseName(
         d_colourPickerControlsTextureTarget->getTexture().getName());
 
-    BasicImage* image = static_cast<BasicImage*>(
-        &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+    BitmapImage* image = static_cast<BitmapImage*>(
+        &ImageManager::getSingleton().create("BitmapImage", baseName + '/' +
             ColourPickerControlsPickingTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
-        Rectf(Vector2f(0.0f, 0.0f),
+    image->setImageArea(
+        Rectf(glm::vec2(0.0f, 0.0f),
               Sizef(static_cast<float>(d_colourPickerPickingImageWidth),
                     static_cast<float>(d_colourPickerPickingImageHeight))));
 
-    image = static_cast<BasicImage*>(
-                &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+    image = static_cast<BitmapImage*>(
+                &ImageManager::getSingleton().create("BitmapImage", baseName + '/' +
                         ColourPickerControlsColourSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
-        Rectf(Vector2f(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
+    image->setImageArea(
+        Rectf(glm::vec2(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
               Sizef(static_cast<float>(d_colourPickerColourSliderImageWidth),
                     static_cast<float>(d_colourPickerColourSliderImageHeight))));
 
-    image = static_cast<BasicImage*>(
-                &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+    image = static_cast<BitmapImage*>(
+                &ImageManager::getSingleton().create("BitmapImage", baseName + '/' +
                         ColourPickerControlsAlphaSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
-        Rectf(Vector2f(0.0f, static_cast<float>(d_colourPickerPickingImageHeight + d_colourPickerImageOffset)),
+    image->setImageArea(
+        Rectf(glm::vec2(0.0f, static_cast<float>(d_colourPickerPickingImageHeight + d_colourPickerImageOffset)),
               Sizef(static_cast<float>(d_colourPickerAlphaSliderImageWidth),
                     static_cast<float>(d_colourPickerAlphaSliderImageHeight))));
 
@@ -582,20 +582,20 @@ void ColourPickerControls::initialiseComponents()
         Event::Subscriber(&ColourPickerControls::handleAlphaSliderValueChanged, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseLeavesSurface,
-        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseLeaves, this));
+        Window::EventCursorLeavesSurface,
+        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerLeaves, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseButtonUp,
-        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseButtonUp, this));
+        Window::EventCursorActivate,
+        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerActivate, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseButtonDown,
-        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseButtonDown, this));
+        Window::EventCursorPressHold,
+        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerPressHold, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseMove,
-        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseMove, this));
+        Window::EventCursorMove,
+        Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerMove, this));
 
     initColourPicker();
 
@@ -850,7 +850,7 @@ Editbox* ColourPickerControls::getAlphaEditBox()
 //----------------------------------------------------------------------------//
 Window* ColourPickerControls::getColourPickerCursorStaticImage()
 {
-    return d_colourPickerCursor;
+    return d_colourPickerIndicator;
 }
 
 //----------------------------------------------------------------------------//
@@ -1047,7 +1047,7 @@ bool ColourPickerControls::handleRadioButtonModeSelection(const EventArgs& args)
     else if (getHSVRadioButtonV() == radioButton)
         d_sliderMode = SliderMode_HSV_V;
 
-    refreshColourPickerCursorPosition();
+    refreshColourPickerIndicatorPosition();
 
     refreshColourSliderPosition();
 
@@ -1133,50 +1133,50 @@ bool ColourPickerControls::handleAlphaSliderValueChanged(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ColourPickerControls::handleColourPickerStaticImageMouseButtonUp(
+bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
     const EventArgs& args)
 {
-    const MouseEventArgs& mouseArgs = static_cast<const MouseEventArgs&>(args);
+    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (mouseArgs.button == LeftButton)
-        d_draggingColourPickerCursor = false;
+    if (cursor_args.source == CIS_Left)
+        d_draggingColourPickerIndicator = false;
 
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ColourPickerControls::handleColourPickerStaticImageMouseButtonDown(
+bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
     const EventArgs& args)
 {
-    const MouseEventArgs& mouseArgs = static_cast<const MouseEventArgs&>(args);
+    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (mouseArgs.button == LeftButton)
+    if (cursor_args.source == CIS_Left)
     {
-        d_draggingColourPickerCursor = true;
+        d_draggingColourPickerIndicator = true;
 
-        refreshColourPickerCursorPosition(mouseArgs);
+        refreshColourPickerIndicatorPosition(cursor_args);
     }
 
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ColourPickerControls::handleColourPickerStaticImageMouseMove(
+bool ColourPickerControls::handleColourPickerStaticImagePointerMove(
     const EventArgs& args)
 {
-    if (d_colourPickerCursor && d_draggingColourPickerCursor)
-        refreshColourPickerCursorPosition(
-            static_cast<const MouseEventArgs&>(args));
+    if (d_colourPickerIndicator && d_draggingColourPickerIndicator)
+        refreshColourPickerIndicatorPosition(
+            static_cast<const CursorInputEventArgs&>(args));
 
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ColourPickerControls::handleColourPickerStaticImageMouseLeaves(
+bool ColourPickerControls::handleColourPickerStaticImagePointerLeaves(
     const EventArgs&)
 {
-    if (d_colourPickerCursor)
-        d_draggingColourPickerCursor = false;
+    if (d_colourPickerIndicator)
+        d_draggingColourPickerIndicator = false;
 
     return true;
 }
@@ -1332,58 +1332,58 @@ void ColourPickerControls::initColourPicker()
     d_sliderMode = SliderMode_Lab_L;
     getLabRadioButtonL()->setSelected(true);
 
-    d_colourPickerCursor = WindowManager::getSingleton().createWindow(
+    d_colourPickerIndicator = WindowManager::getSingleton().createWindow(
         getProperty("ColourPickerCursorStyle"),
         getName() + ColourPickerCursorName);
 
-    d_colourPickerCursor->setProperty(
+    d_colourPickerIndicator->setProperty(
         "BackgroundEnabled",
         PropertyHelper<bool>::toString(false));
 
-    d_colourPickerCursor->setProperty(
+    d_colourPickerIndicator->setProperty(
         "FrameEnabled",
         PropertyHelper<bool>::toString(false));
 
-    d_colourPickerCursor->setProperty(
+    d_colourPickerIndicator->setProperty(
         "Image",
         getProperty("ColourPickerCursorImage"));
 
-    d_colourPickerCursor->setProperty(
+    d_colourPickerIndicator->setProperty(
         "ImageColours",
         PropertyHelper<ColourRect>::toString(
             ColourRect(Colour(0.0f, 0.0f, 0.0f))));
 
-    d_colourPickerCursor->setWidth(UDim(0.05f, 0));
-    d_colourPickerCursor->setHeight(UDim(0.05f, 0));
-    d_colourPickerCursor->setMousePassThroughEnabled(true);
-    d_colourPickerCursor->setClippedByParent(false);
+    d_colourPickerIndicator->setWidth(UDim(0.05f, 0));
+    d_colourPickerIndicator->setHeight(UDim(0.05f, 0));
+    d_colourPickerIndicator->setCursorPassThroughEnabled(true);
+    d_colourPickerIndicator->setClippedByParent(false);
 
     getColourPickerImageSlider()->getThumb()->setHotTracked(false);
 
-    getColourPickerStaticImage()->addChild(d_colourPickerCursor);
+    getColourPickerStaticImage()->addChild(d_colourPickerIndicator);
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::positionColourPickerCursorRelative(float x, float y)
+void ColourPickerControls::positionColourPickerIndicatorRelative(float x, float y)
 {
-    if (d_colourPickerCursor)
+    if (d_colourPickerIndicator)
     {
-        d_colourPickerCursor->setXPosition(
-            UDim(d_colourPickerCursor->getWidth().d_scale * -0.5f + x, 0.0f));
-        d_colourPickerCursor->setYPosition(
-            UDim(d_colourPickerCursor->getHeight().d_scale * -0.5f + y, 0.0f));
+        d_colourPickerIndicator->setXPosition(
+            UDim(d_colourPickerIndicator->getWidth().d_scale * -0.5f + x, 0.0f));
+        d_colourPickerIndicator->setYPosition(
+            UDim(d_colourPickerIndicator->getHeight().d_scale * -0.5f + y, 0.0f));
     }
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::positionColourPickerCursorAbsolute(float x, float y)
+void ColourPickerControls::positionColourPickerIndicatorAbsolute(float x, float y)
 {
-    if (d_colourPickerCursor)
+    if (d_colourPickerIndicator)
     {
-        d_colourPickerCursor->setXPosition(
-            UDim(d_colourPickerCursor->getWidth().d_scale * -0.5f, x));
-        d_colourPickerCursor->setYPosition(
-            UDim(d_colourPickerCursor->getHeight().d_scale * -0.5f, y));
+        d_colourPickerIndicator->setXPosition(
+            UDim(d_colourPickerIndicator->getWidth().d_scale * -0.5f, x));
+        d_colourPickerIndicator->setYPosition(
+            UDim(d_colourPickerIndicator->getHeight().d_scale * -0.5f, y));
     }
 }
 
@@ -1394,24 +1394,24 @@ RGB_Colour ColourPickerControls::getSelectedColourRGB()
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::refreshColourPickerCursorPosition()
+void ColourPickerControls::refreshColourPickerIndicatorPosition()
 {
-    Vector2f pos = getColourPickingColourPosition();
+    const glm::vec2 pos = getColourPickingColourPosition();
 
-    positionColourPickerCursorRelative(pos.d_x, pos.d_y);
+    positionColourPickerIndicatorRelative(pos.x, pos.y);
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::refreshColourPickerCursorPosition(
-    const MouseEventArgs& mouseEventArgs)
+void ColourPickerControls::refreshColourPickerIndicatorPosition(
+    const CursorInputEventArgs& pointerEventArgs)
 {
-    Vector2f position = mouseEventArgs.position;
+    const glm::vec2 position = pointerEventArgs.position;
 
-    float x = CoordConverter::screenToWindowX(
-                  *mouseEventArgs.window, position.d_x);
-    float y = CoordConverter::screenToWindowY(
-                  *mouseEventArgs.window, position.d_y);
-    positionColourPickerCursorAbsolute(x, y);
+    const float x = CoordConverter::screenToWindowX(
+                  *pointerEventArgs.window, position.x);
+    const float y = CoordConverter::screenToWindowY(
+                  *pointerEventArgs.window, position.y);
+    positionColourPickerIndicatorAbsolute(x, y);
 
     if (d_sliderMode &
         (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
@@ -1426,7 +1426,7 @@ void ColourPickerControls::refreshColourPickerCursorPosition(
         setColours(col);
     }
 
-    onColourCursorPositionChanged();
+    onColourIndicatorPositionChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -1528,7 +1528,7 @@ void ColourPickerControls::onColourSliderChanged()
 {
     refreshEditboxesAndColourRects();
 
-    refreshColourPickerCursorPosition();
+    refreshColourPickerIndicatorPosition();
 
     refreshColourPickerControlsTextures();
 }
@@ -1588,7 +1588,7 @@ void ColourPickerControls::refreshAllElements()
 
     refreshColourSliderPosition();
 
-    refreshColourPickerCursorPosition();
+    refreshColourPickerIndicatorPosition();
 
     refreshAlpha();
 
@@ -1596,7 +1596,7 @@ void ColourPickerControls::refreshAllElements()
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::onColourCursorPositionChanged()
+void ColourPickerControls::onColourIndicatorPositionChanged()
 {
     refreshEditboxesAndColourRects();
 

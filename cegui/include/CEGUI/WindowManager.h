@@ -58,8 +58,7 @@ namespace CEGUI
 	used to access those Window objects by name.
 */
 class CEGUIEXPORT WindowManager : public Singleton<WindowManager>,
-                                  public EventSet,
-                                  public AllocatedObject<WindowManager>
+                                  public EventSet
 {
 public:
     /*************************************************************************
@@ -406,8 +405,7 @@ private:
     /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    typedef std::vector<Window*
-        CEGUI_VECTOR_ALLOC(Window*)> WindowVector; //!< Type to use for a collection of Window pointers.
+    typedef std::vector<Window*> WindowVector; //!< Type to use for a collection of Window pointers.
 
     //! collection of created windows.
 	WindowVector d_windowRegistry;

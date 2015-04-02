@@ -89,8 +89,7 @@ namespace CEGUI
 \see CEGUI::USize
 \see CEGUI::URect
 */
-class CEGUIEXPORT UDim :
-    public AllocatedObject<UDim>
+class CEGUIEXPORT UDim
 {
 public:
     inline UDim()
@@ -244,8 +243,7 @@ public:
 \note
     Name taken from W3 'box model'
 */
-class CEGUIEXPORT UBox :
-    public AllocatedObject<UBox>
+class CEGUIEXPORT UBox
 {
 public:
     UBox():

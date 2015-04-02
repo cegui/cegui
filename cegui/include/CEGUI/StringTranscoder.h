@@ -38,8 +38,7 @@ namespace CEGUI
     from some other character encodings not directly supported by the
     CEGUI::String class.
 */
-class CEGUIEXPORT StringTranscoder :
-    public AllocatedObject<StringTranscoder>
+class CEGUIEXPORT StringTranscoder
 {
 public:
     /*!
