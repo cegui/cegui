@@ -189,6 +189,5 @@ typedef std::ostream OutStream;     //!< Output stream class.
 	Bring in forward references to all GUI base system classes
 *************************************************************************/
 #include "CEGUI/ForwardRefs.h"
-#include "CEGUI/MemoryAllocation.h"
 
 #endif	// end of guard _CEGUIBase_h_

@@ -385,7 +385,7 @@ protected:
                      const CEGUI::ColourRect* modColours,
                      const Rectf* clipper, bool clipToDisplay) const;
 
-    void renderImage(GeometryBuffer& buffer, const Image* image,
+    void renderImage(std::vector<GeometryBuffer*>& geometry_buffers, const Image* image,
                             VerticalFormatting vertFmt,
                             HorizontalFormatting horzFmt,
                             Rectf& destRect, const ColourRect& colours,

@@ -25,8 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Null/RenderTarget.h"
-#include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/Null/GeometryBuffer.h"
 
 // Start of CEGUI namespace section
@@ -35,8 +33,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 template<typename T>
 NullRenderTarget<T>::NullRenderTarget(NullRenderer& owner) :
-    d_owner(owner),
-    d_area(0, 0, 0, 0)
+    d_owner(owner)
 {
 }
 
@@ -48,51 +45,15 @@ NullRenderTarget<T>::~NullRenderTarget()
 
 //----------------------------------------------------------------------------//
 template<typename T>
-void NullRenderTarget<T>::draw(const GeometryBuffer& buffer)
-{
-    buffer.draw();
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::draw(const RenderQueue& queue)
-{
-    queue.draw();
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::setArea(const Rectf& area)
-{
-    d_area = area;
-
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-const Rectf& NullRenderTarget<T>::getArea() const
-{
-    return d_area;
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
 void NullRenderTarget<T>::activate()
-{
-}
-
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::deactivate()
-{
+{  
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
 template<typename T>
 void NullRenderTarget<T>::unprojectPoint(const GeometryBuffer&,
-                                      const Vector2f& p_in, Vector2f& p_out) const
+                                         const glm::vec2& p_in, glm::vec2& p_out) const
 {
 	p_out = p_in;
 }
@@ -103,5 +64,13 @@ bool NullRenderTarget<T>::isImageryCache() const
 {
 	return false;
 }
+
+//----------------------------------------------------------------------------//
+template <typename T>
+NullRenderer& NullRenderTarget<T>::getOwner()
+{
+    return d_owner;
+}
+
 
 } // End of  CEGUI namespace section

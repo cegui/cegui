@@ -5937,29 +5937,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::setWantsMultiClickEvents
-        
-            typedef void ( ::CEGUI::Window::*setWantsMultiClickEvents_function_type )( bool ) ;
-            
-            Window_exposer.def( 
-                "setWantsMultiClickEvents"
-                , setWantsMultiClickEvents_function_type( &::CEGUI::Window::setWantsMultiClickEvents )
-                , ( bp::arg("setting") )
-                , "*!\n\
-                \n\
-                    Set whether this window will receive multi-click events or multiple\n\
-                    'down' events instead.\n\
-            \n\
-                @param setting\n\
-                    - true if the Window will receive double-click and triple-click events.\n\
-                    - false if the Window will receive multiple mouse button down events\n\
-                      instead of doubletriple click events.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::setWindowRenderer
         
             typedef void ( ::CEGUI::Window::*setWindowRenderer_function_type )( ::CEGUI::String const & ) ;
@@ -6161,25 +6138,6 @@ void register_Window_class(){
                 @return\n\
                     Returns true if the given WindowRenderer class name is valid for this window.\n\
                     False if not.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::wantsMultiClickEvents
-        
-            typedef bool ( ::CEGUI::Window::*wantsMultiClickEvents_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "wantsMultiClickEvents"
-                , wantsMultiClickEvents_function_type( &::CEGUI::Window::wantsMultiClickEvents )
-                , "*!\n\
-                \n\
-                    Return whether this window will receive multi-click events or multiple\n\
-                    'down' events instead.\n\
-            \n\
-                @return\n\
-                    - true if the Window will receive double-click and triple-click events.\n\
-                    - false if the Window will receive multiple mouse button down events\n\
-                      instead of doubletriple click events.\n\
                 *\n" );
         
         }

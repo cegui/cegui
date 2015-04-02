@@ -57,8 +57,7 @@ public:
 	Property objects allow (via a PropertySet) access to certain properties of objects
 	by using simple get/set functions and the name of the property to be accessed.
 */
-class CEGUIEXPORT Property :
-    public AllocatedObject<Property>
+class CEGUIEXPORT Property
 {
 public:
     static const String XMLElementName;

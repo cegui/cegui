@@ -64,8 +64,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT System :
     public Singleton<System>,
-    public EventSet,
-    public AllocatedObject<System>
+    public EventSet
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -227,9 +226,18 @@ public:
     */
     void renderAllGUIContexts();
 
+    /*!
+    \brief
+        Renders the contexts associated with the renderer
+    \todo
+        This needs to be actually made to check if context matches the renderer
+        and for that to work all the contexts need to know their renderer
+    \see renderAllGUIContexts
+    */
+    void renderAllGUIContextsOnTarget(Renderer* contained_in);
 
-	/*!
-	\brief
+    /*!
+    \brief
 		Return a pointer to the ScriptModule being used for scripting within the GUI system.
 
 	\return
@@ -394,7 +402,7 @@ public:
         returned may not actually correspond to the module in use.
     */
     static const String getDefaultXMLParserName();
-    
+
     /*!
     \brief
         Retrieve the image codec to be used by the system.
@@ -439,7 +447,7 @@ public:
 
         Calling this function ensures that any other parts of the system that
         need to know about display size changes are notified.  This affects
-        things such as the MouseCursor default constraint area, and also the
+        things such as the Cursor default constraint area, and also the
         auto-scale functioning of Imagesets and Fonts.
 
     \note
@@ -461,7 +469,7 @@ public:
 
         If this global custom RenderedStringParser is set to 0, then all windows
         with parsing enabled and no custom RenderedStringParser set on the
-        window itself will use the systems BasicRenderedStringParser. 
+        window itself will use the systems BasicRenderedStringParser.
     */
     RenderedStringParser* getDefaultCustomRenderedStringParser() const;
 
@@ -477,7 +485,7 @@ public:
 
         If this global custom RenderedStringParser is set to 0, then all windows
         with parsing enabled and no custom RenderedStringParser set on the
-        window itself will use the systems BasicRenderedStringParser. 
+        window itself will use the systems BasicRenderedStringParser.
     */
     void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
 
@@ -487,9 +495,9 @@ public:
 
         This function will invalidate the caches used for both imagery and
         geometry for all content that is managed by the core CEGUI manager
-        objects, causing a full and total redraw of that content.  This
+        objects, causing a full and total redraw of that content. This
         includes Window object's cached geometry, rendering surfaces and
-        rendering windows and the mouse pointer geometry.
+        rendering windows and the pointer geometry.
     */
     void invalidateAllCachedRendering();
 
@@ -598,16 +606,16 @@ protected:
     //! handle cleanup of the XML parser
     void cleanupXMLParser();
 
-    //! setup image codec 
+    //! setup image codec
     void setupImageCodec(const String& codecName);
 
-    //! cleanup image codec 
+    //! cleanup image codec
     void cleanupImageCodec();
 
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
 
-	/*************************************************************************
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
@@ -615,6 +623,7 @@ protected:
 	bool d_ourResourceProvider;
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
+    NativeClipboardProvider* d_nativeClipboardProvider; //!< the default native clipboard provider (only on Win32 for now)
 
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
@@ -641,7 +650,7 @@ protected:
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
 
-    typedef std::vector<GUIContext* CEGUI_VECTOR_ALLOC(GUIContext*)> GUIContextCollection;
+    typedef std::vector<GUIContext*> GUIContextCollection;
     GUIContextCollection d_guiContexts;
     //! instance of class that can convert string encodings
 #if defined(__WIN32__) || defined(_WIN32)

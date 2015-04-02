@@ -7,7 +7,9 @@ cegui_gather_files()
 cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES)
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME} d3d11 d3dcompiler)
-cegui_target_link_libraries(${CEGUI_TARGET_NAME} optimized d3dx11 d3dx10 debug d3dx11d d3dx10d)
+
+# this is required for resolving GUID symbols such as "IID_ID3D11ShaderReflection" on older Direct3D versions, such as in June 2010 SDK
+add_definitions( -DINITGUID )
 
 cegui_add_dependency(${CEGUI_TARGET_NAME} D3DX11EFFECTS)
 

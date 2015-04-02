@@ -50,8 +50,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT SchemeManager :
         public Singleton<SchemeManager>,
-        public NamedXMLResourceManager<Scheme, Scheme_xmlHandler>,
-        public AllocatedObject<SchemeManager>
+        public NamedXMLResourceManager<Scheme, Scheme_xmlHandler>
 {
 public:
     //! Constructor.

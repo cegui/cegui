@@ -71,14 +71,14 @@ TplWindowRendererFactory<T>::TplWindowRendererFactory() :
 template <typename T>
 WindowRenderer* TplWindowRendererFactory<T>::create()
 {
-    return CEGUI_NEW_AO T(T::TypeName);
+    return new T(T::TypeName);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void TplWindowRendererFactory<T>::destroy(WindowRenderer* wr)
 {
-    CEGUI_DELETE_AO wr;
+    delete wr;
 }
 
 //----------------------------------------------------------------------------//

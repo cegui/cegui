@@ -33,7 +33,7 @@ namespace CEGUI
 ChainedXMLHandler::ChainedXMLHandler() :
     d_chainedHandler(0),
     d_completed(false),
-    d_deleteChaniedHandler(true)
+    d_deleteChainedHandler(true)
 {
 }
 
@@ -99,8 +99,8 @@ bool ChainedXMLHandler::completed() const
 //----------------------------------------------------------------------------//
 void ChainedXMLHandler::cleanupChainedHandler()
 {
-    if (d_deleteChaniedHandler)
-        CEGUI_DELETE_AO d_chainedHandler;
+    if (d_deleteChainedHandler)
+        delete d_chainedHandler;
 
     d_chainedHandler = 0;
 }
