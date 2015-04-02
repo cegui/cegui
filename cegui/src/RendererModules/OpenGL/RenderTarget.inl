@@ -92,8 +92,8 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     // unproject the ends of the ray
     glm::vec3 unprojected1;
     glm::vec3 unprojected2;
-    in_x = vp[2] * 0.5;
-    in_y = vp[3] * 0.5;
+    in_x = vp[2] * 0.5f;
+    in_y = vp[3] * 0.5f;
     in_z = -RenderTarget::d_viewDistance;
     unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = p_in.x;
@@ -150,12 +150,6 @@ OpenGLRendererBase& OpenGLRenderTarget<T>::getOwner()
 {
     return d_owner;
 }
-    //Older glm versions use degrees as parameter here by default (Unless radians are forced via GLM_FORCE_RADIANS). Newer versions of glm exlusively use radians.
-#if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH < 6)
-#else
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(30.f), aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
-#endif
-
 
 //----------------------------------------------------------------------------//
 
