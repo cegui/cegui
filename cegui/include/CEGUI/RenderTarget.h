@@ -217,6 +217,21 @@ public:
     */
     void updateMatrix(const glm::mat4& matrix) const;
     
+    /*!
+    \brief
+        Returns the vertical FOV angle of the perspective projection.
+    \return
+        The vertical FOV angle of the perspective projection. Value in Radians.
+    */
+    const float getFovY() const;
+
+    /*!
+    \brief
+        Sets the vertical FOV angle of the perspective projection.
+    \param fovY
+        The vertical FOV angle of the perspective projection. Value in Radians.
+    */
+    void setFovY(const float fovY);
 
 protected:
     /*!
@@ -236,8 +251,16 @@ protected:
 
     //! tracks viewing distance (this is set up at the same time as d_matrix)
     mutable float d_viewDistance;
+
+    /*!
+    \brief
+        The vertical FOV (field of view) angle for the perspective projection. Value in Radians.
+        This effect of this value will not visible in the projection, unless a window is rotated around the X or Y axis.
+    */
+    float d_fovY;
+
     //! The tangent of the y-axis FOV half-angle; used to calculate viewing distance.
-    static const float d_yfov_tan;
+    float d_fovY_halftan;
 };
 
 } // End of  CEGUI namespace section
