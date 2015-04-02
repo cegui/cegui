@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for FrameWindow
 *************************************************************************/
 /***************************************************************************
@@ -52,7 +52,7 @@ public:
     static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
-		Constants	
+		Constants
 	*************************************************************************/
 	// additional event names for this window
     /** Event fired when the rollup (shade) state of the window is changed.
@@ -90,10 +90,11 @@ public:
     static const String CloseButtonName;   //!< Widget name for the close button component.
 
 
-	/*!
-	\brief
-		Enumeration that defines the set of possible locations for the mouse on a frame windows sizing border.
-	*/
+    /*!
+    \brief
+        Enumeration that defines the set of possible locations for the cursor
+        on a frame windows sizing border.
+    */
 	enum SizingLocation {
 		SizingNone,			//!< Position is not a sizing location.
 		SizingTopLeft,		//!< Position will size from the top-left.
@@ -117,8 +118,8 @@ public:
 		Nothing
 	*/
 	virtual void	initialiseComponents(void);
-	
-	
+
+
 	/*!
 	\brief
 		Return whether this window is sizable.  Note that this requires that the window have an enabled frame and that sizing itself is enabled
@@ -145,7 +146,7 @@ public:
 
 	\return
 		true if the window has a title bar and it is enabled, false if the window has no title bar or if the title bar is disabled.
-	*/	
+	*/
 	bool	isTitleBarEnabled(void) const;
 
 
@@ -291,12 +292,12 @@ public:
 		This is intended for internal system use - it is the method by which the title bar moves the frame window.
 
 	\param offset
-		Vector2 object containing the offsets to apply (offsets are in screen pixels).
+        vec2 object containing the offsets to apply (offsets are in screen pixels).
 
 	\return
 		Nothing.
 	*/
-	void	offsetPixelPosition(const Vector2f& offset);
+    void offsetPixelPosition(const glm::vec2& offset);
 
 
 	/*!
@@ -324,47 +325,47 @@ public:
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the north-south
-        sizing mouse cursor.
+        Return a cursor to the currently set Image to be used for the north-south
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNSSizingCursorImage() const;
+    const Image* getNSSizingIndicatorImage() const;
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the east-west
-        sizing mouse cursor.
+        Return a cursor to the currently set Image to be used for the east-west
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getEWSizingCursorImage() const;
+    const Image* getEWSizingIndicatorImage() const;
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the northwest-southeast
-        sizing mouse cursor.
+        Return a cursor to the currently set Image to be used for the northwest-southeast
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNWSESizingCursorImage() const;
+    const Image* getNWSESizingIndicatorImage() const;
 
     /*!
     \brief
-        Return a pointer to the currently set Image to be used for the northeast-southwest
-        sizing mouse cursor.
+        Return a cursor to the currently set Image to be used for the northeast-southwest
+        sizing cursor.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNESWSizingCursorImage() const;
+    const Image* getNESWSizingIndicatorImage() const;
 
     /*!
     \brief
-        Set the Image to be used for the north-south sizing mouse cursor.
+        Set the Image to be used for the north-south sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -372,11 +373,11 @@ public:
     \return
         Nothing.
     */
-    void setNSSizingCursorImage(const Image* image);
+    void setNSSizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the Image to be used for the east-west sizing mouse cursor.
+        Set the Image to be used for the east-west sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -384,11 +385,11 @@ public:
     \return
         Nothing.
     */
-    void setEWSizingCursorImage(const Image* image);
+    void setEWSizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the Image to be used for the northwest-southeast sizing mouse cursor.
+        Set the Image to be used for the northwest-southeast sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -396,11 +397,11 @@ public:
     \return
         Nothing.
     */
-    void setNWSESizingCursorImage(const Image* image);
+    void setNWSESizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the Image to be used for the northeast-southwest sizing mouse cursor.
+        Set the Image to be used for the northeast-southwest sizing cursor.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -408,11 +409,11 @@ public:
     \return
         Nothing.
     */
-    void setNESWSizingCursorImage(const Image* image);
+    void setNESWSizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the image to be used for the north-south sizing mouse cursor.
+        Set the image to be used for the north-south sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -420,13 +421,13 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setNSSizingCursorImage(const String& name);
+    void setNSSizingIndicatorImage(const String& name);
 
     /*!
     \brief
-        Set the image to be used for the east-west sizing mouse cursor.
+        Set the image to be used for the east-west sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -434,13 +435,13 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setEWSizingCursorImage(const String& name);
+    void setEWSizingIndicatorImage(const String& name);
 
     /*!
     \brief
-        Set the image to be used for the northwest-southeast sizing mouse cursor.
+        Set the image to be used for the northwest-southeast sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -448,13 +449,13 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setNWSESizingCursorImage(const String& name);
+    void setNWSESizingIndicatorImage(const String& name);
 
     /*!
     \brief
-        Set the image to be used for the northeast-southwest sizing mouse cursor.
+        Set the image to be used for the northeast-southwest sizing cursor.
 
     \param name
         String holding the name of the Image to be used.
@@ -462,13 +463,12 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setNESWSizingCursorImage(const String& name);
+    void setNESWSizingIndicatorImage(const String& name);
 
     // overridden from Window class
-    bool isHit(const Vector2f& position, const bool /*allow_disabled*/) const
-        { return Window::isHit(position) && !d_rolledup; }
+    bool isHit(const glm::vec2& position, const bool allow_disabled) const;
 
     /*!
     \brief
@@ -562,15 +562,15 @@ protected:
 		the sizing border.
 
 	\param pt
-		Point object describing, in pixels, the window relative offset to check.
+        vec2 object describing, in pixels, the window relative offset to check.
 
 	\return
 		One of the SizingLocation enumerated values that describe which part of
 		the sizing border that \a pt corresponded to, if any.
 	*/
-	SizingLocation	getSizingBorderAtPoint(const Vector2f& pt) const;
+    SizingLocation	getSizingBorderAtPoint(const glm::vec2& pt) const;
 
- 
+
 	/*!
 	\brief
 		return true if given SizingLocation is on left edge.
@@ -630,11 +630,11 @@ protected:
 	bool	closeClickHandler(const EventArgs& e);
 
 
-	/*!
-	\brief
-		Set the appropriate mouse cursor for the given window-relative pixel point.
-	*/
-	void	setCursorForPoint(const Vector2f& pt) const;
+    /*!
+    \brief
+        Set the appropriate cursor for the given window-relative pixel point.
+    */
+    void	setIndicatorForPoint(const glm::vec2& pt) const;
 
 
 	/*!
@@ -669,9 +669,9 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
+    virtual void    onCursorMove(CursorInputEventArgs& e);
+    virtual void    onCursorPressHold(CursorInputEventArgs& e);
+    virtual void    onCursorActivate(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void    onTextChanged(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
@@ -692,7 +692,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.
 	bool	d_beingSized;		//!< true if window is being sized.
 	float	d_borderSize;		//!< thickness of the sizing border around this window
-	Vector2f d_dragPoint;		//!< point window is being dragged at.
+    glm::vec2 d_dragPoint;		//!< point window is being dragged at.
 
 	// images for cursor when on sizing border
 	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.

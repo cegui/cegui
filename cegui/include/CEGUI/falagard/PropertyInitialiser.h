@@ -37,8 +37,7 @@ namespace CEGUI
     \brief
         Class that holds information about a property and it's required initial value.
     */
-    class CEGUIEXPORT PropertyInitialiser :
-        public AllocatedObject<PropertyInitialiser>
+    class CEGUIEXPORT PropertyInitialiser
     {
     public:
         PropertyInitialiser() {};

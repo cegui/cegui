@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements common parts of the Thumb base class widget
 *************************************************************************/
 /***************************************************************************
@@ -63,7 +63,7 @@ Thumb::Thumb(const String& type, const String& name) :
 
 
 /*************************************************************************
-	Destructor for Thumb objects	
+	Destructor for Thumb objects
 *************************************************************************/
 Thumb::~Thumb(void)
 {
@@ -71,7 +71,7 @@ Thumb::~Thumb(void)
 
 
 /*************************************************************************
-	set the movement range of the thumb for the vertical axis.	
+	set the movement range of the thumb for the vertical axis.
 *************************************************************************/
 void Thumb::setVertRange(float min, float max)
 {
@@ -101,7 +101,7 @@ void Thumb::setVertRange(float min, float max)
 }
 
 /*************************************************************************
-	set the movement range of the thumb for the vertical axis.	
+	set the movement range of the thumb for the vertical axis.
 *************************************************************************/
 void Thumb::setVertRange(const std::pair<float, float> &range)
 {
@@ -148,7 +148,7 @@ void Thumb::setHorzRange(const std::pair<float, float> &range)
 
 
 /*************************************************************************
-	event triggered internally when the position of the thumb	
+	event triggered internally when the position of the thumb
 *************************************************************************/
 void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 {
@@ -157,7 +157,7 @@ void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler triggered when the user begins to drag the thumb. 	
+	Handler triggered when the user begins to drag the thumb.
 *************************************************************************/
 void Thumb::onThumbTrackStarted(WindowEventArgs& e)
 {
@@ -175,32 +175,29 @@ void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse movement events
+	Handler for cursor movement events
 *************************************************************************/
-void Thumb::onMouseMove(MouseEventArgs& e)
+void Thumb::onCursorMove(CursorInputEventArgs& e)
 {
 	// default processing
-	PushButton::onMouseMove(e);
+	PushButton::onCursorMove(e);
 
 	// only react if we are being dragged
 	if (d_beingDragged)
 	{
-        Sizef parentSize(getParentPixelSize());
+        const Sizef parentSize(getParentPixelSize());
 
-		Vector2f delta;
-		float hmin, hmax, vmin, vmax;
+        const float hmin = d_horzMin;
+        const float hmax = d_horzMax;
+        const float vmin = d_vertMin;
+        const float vmax = d_vertMax;
 
-        delta = CoordConverter::screenToWindow(*this, e.position);
+        glm::vec2 delta = CoordConverter::screenToWindow(*this, e.position);
 
-        hmin = d_horzMin;
-        hmax = d_horzMax;
-        vmin = d_vertMin;
-        vmax = d_vertMax;
-
-		// calculate amount of movement      
+        // calculate amount of movement
 		delta -= d_dragPoint;
-        delta.d_x /= parentSize.d_width;
-        delta.d_y /= parentSize.d_height;
+        delta.x /= parentSize.d_width;
+        delta.y /= parentSize.d_height;
 
 		//
 		// Calculate new (pixel) position for thumb
@@ -209,7 +206,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 
 		if (d_horzFree)
 		{
-			newPos.d_x.d_scale += delta.d_x;
+            newPos.d_x.d_scale += delta.x;
 
 			// limit value to within currently set range
 			newPos.d_x.d_scale = (newPos.d_x.d_scale < hmin) ? hmin : (newPos.d_x.d_scale > hmax) ? hmax : newPos.d_x.d_scale;
@@ -217,7 +214,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 
 		if (d_vertFree)
 		{
-			newPos.d_y.d_scale += delta.d_y;
+            newPos.d_y.d_scale += delta.y;
 
 			// limit new position to within currently set range
 			newPos.d_y.d_scale = (newPos.d_y.d_scale < vmin) ? vmin : (newPos.d_y.d_scale > vmax) ? vmax : newPos.d_y.d_scale;
@@ -234,9 +231,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 				WindowEventArgs args(this);
 				onThumbPositionChanged(args);
 			}
-
 		}
-
 	}
 
 	++e.handled;
@@ -244,14 +239,14 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button down events
+    Handler for cursor press events
 *************************************************************************/
-void Thumb::onMouseButtonDown(MouseEventArgs& e)
+void Thumb::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// default processing
-	PushButton::onMouseButtonDown(e);
+    PushButton::onCursorPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == CIS_Left)
 	{
 		// initialise the dragging state
 		d_beingDragged = true;
@@ -263,12 +258,11 @@ void Thumb::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 
 /*************************************************************************
-	Handler for event triggered when we lose capture of mouse input
+    Handler for event triggered when we lose capture of cursor input
 *************************************************************************/
 void Thumb::onCaptureLost(WindowEventArgs& e)
 {
@@ -288,7 +282,7 @@ void Thumb::onCaptureLost(WindowEventArgs& e)
 
 /*************************************************************************
 	Return a std::pair that describes the current range set for the
-	vertical movement.	
+	vertical movement.
 *************************************************************************/
 std::pair<float, float>	Thumb::getVertRange(void) const
 {
@@ -298,7 +292,7 @@ std::pair<float, float>	Thumb::getVertRange(void) const
 
 /*************************************************************************
 	Return a std::pair that describes the current range set for the
-	horizontal movement.	
+	horizontal movement.
 *************************************************************************/
 std::pair<float, float>	Thumb::getHorzRange(void) const
 {
@@ -312,15 +306,15 @@ std::pair<float, float>	Thumb::getHorzRange(void) const
 void Thumb::addThumbProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HotTracked", "Property to get/set the state of the state of the 'hot-tracked' setting for the thumb."
         "  Value is either \"true\" or \"false\".",
         &Thumb::setHotTracked, &Thumb::isHotTracked, true
     );
-    
+
     typedef std::pair<float,float> range;
-    
+
     CEGUI_DEFINE_PROPERTY(Thumb, range,
         "VertRange", "Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".",
         &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f, 1.0f)
@@ -335,7 +329,7 @@ void Thumb::addThumbProperties(void)
         "VertFree", "Property to get/set the state the setting to free the thumb vertically.  Value is either \"true\" or \"false\".",
         &Thumb::setVertFree, &Thumb::isVertFree, false
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"true\" or \"false\".",
         &Thumb::setHorzFree, &Thumb::isHorzFree, false

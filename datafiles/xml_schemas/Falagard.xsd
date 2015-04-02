@@ -185,7 +185,6 @@
         <xsd:attribute name="nameSuffix" type="xsd:string" use="required" />
 		<xsd:attribute name="type" type="xsd:string" use="required" />
 		<xsd:attribute name="renderer" type="xsd:string" use="optional" default="" />
-		<xsd:attribute name="look" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="autoWindow" type="xsd:boolean" use="optional" default="true" />
 	</xsd:complexType>
 	<xsd:complexType name="horzFormatType">
@@ -409,12 +408,12 @@
             <xsd:enumeration value="UDim" />
             <xsd:enumeration value="UVector2" />
             <xsd:enumeration value="Sizef" />
-            <xsd:enumeration value="Vector2f" />
-            <xsd:enumeration value="Vector3f" />
+            <xsd:enumeration value="vec2" />
+            <xsd:enumeration value="vec3" />
             <xsd:enumeration value="Rectf" />
             <xsd:enumeration value="Font" />
             <xsd:enumeration value="Image" />
-            <xsd:enumeration value="Quaternion" />
+            <xsd:enumeration value="quat" />
             <xsd:enumeration value="AspectMode" />
             <xsd:enumeration value="HorizontalAlignment" />
             <xsd:enumeration value="VerticalAlignment" />

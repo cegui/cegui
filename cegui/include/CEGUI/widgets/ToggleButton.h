@@ -65,7 +65,8 @@ protected:
     virtual void onSelectStateChange(WindowEventArgs& e);
 
     // base class overriddes
-    void onMouseButtonUp(MouseEventArgs& e);
+    void onCursorActivate(CursorInputEventArgs& e);
+    void onSemanticInputEvent(SemanticEventArgs& e);
 
     bool d_selected;
 };

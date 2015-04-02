@@ -11,7 +11,7 @@ at system creation time.
 @ref xml_config_font <br>
 @ref xml_config_guisheet <br>
 @ref xml_config_imagecodec <br>
-@ref xml_config_mousecursor <br>
+@ref xml_config_cursor <br>
 @ref xml_config_defaultresourcegroup <br>
 @ref xml_config_xmlparser <br>
 @ref xml_config_logging <br>
@@ -58,7 +58,7 @@ The reference for each element is arranged into sections, as described below:
         - \<DefaultXMLParser\> elements.
         - \<DefaultImageCodec\> elements.
         - \<DefaultFont\> elements.
-        - \<DefaultMouseCursor\> elements.
+        - \<DefaultCursor\> elements.
         - \<DefaultTooltip\> elements.
         - \<DefaultGUISheet\> elements.
     - No element may contain \<CEGUIConfig\> as a sub-element.
@@ -240,22 +240,22 @@ The reference for each element is arranged into sections, as described below:
 - Examples:
 
 <br>
-@section xml_config_mousecursor \<DefaultMouseCursor\>
+@section xml_config_cursor \<DefaultCursor\>
 - Purpose:
-    - Sets the system default mouse cursor image.  If this element appears
+    - Sets the system default cursor image. If this element appears
       multiple times, only the last occurence is used.
 
 - Attributes:
     - @c imageset: Specifies the name of the Imageset containing the image to
-      be used as the default mouse cursor.  Required attribute.
+      be used as the default cursor. Required attribute.
     - @c image: Specifies the name of the image in the imagset specified in
-      the @c imageset attribute to be used as the default mouse cursor image.
+      the @c imageset attribute to be used as the default cursor image.
       Required attribute.
 
 - Usage:
-    - The \<DefaultMouseCursor\> element may only appear as a sub-element of
+    - The \<DefaultCursor\> element may only appear as a sub-element of
       the \<CEGUIConfig\> element.
-    - The \<DefaultMouseCursor\> element may not contain any sub-elements.
+    - The \<DefaultCursor\> element may not contain any sub-elements.
 
 - Examples:
 

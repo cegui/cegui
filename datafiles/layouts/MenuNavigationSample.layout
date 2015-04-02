@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4">
+<Window type="DefaultWindow" name="root">
+    <Window type="TaharezLook/FrameWindow" name="FrameWindow" >
+        <Property name="Area" value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
+        <Property name="Text" value="Menu Navigation Sample" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Property name="MinSize" value="{{0,128},{0,128}}" />
+        <Property name="TitlebarFont" value="DejaVuSans-12" />
+        <AutoWindow namePath="__auto_titlebar__" >
+            <Property name="Font" value="DejaVuSans-12" />
+            <Property name="TooltipText" value="This is a demonstration of TabControl abilities." />
+        </AutoWindow>
+        <AutoWindow namePath="__auto_closebutton__" >
+            <Property name="TooltipText" value="This is a demonstration of TabControl abilities." />
+        </AutoWindow>
+        <Window type="TaharezLook/TabControl" name="TabControl" >
+            <Property name="Area" value="{{0,10},{0,10},{1,-10},{1,-10}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="TabHeight" value="{0,-1}" />
+            <Property name="TooltipText" value="This is the tab control" />
+            <Property name="TabPanePosition" value="Bottom" />
+            <AutoWindow namePath="__auto_TabPane__" >
+                <Property name="EnableTop" value="1" />
+                <Property name="TooltipText" value="This is the tab control" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_TabPane__Buttons" >
+                <Property name="TooltipText" value="This is the tab control" />
+                <Property name="EnableBottom" value="0" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_TabPane__ScrollLeft" >
+                <Property name="Visible" value="False" />
+                <Property name="TooltipText" value="This is the tab control" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_TabPane__ScrollRight" >
+                <Property name="Visible" value="False" />
+                <Property name="TooltipText" value="This is the tab control" />
+            </AutoWindow>
+        </Window>
+    </Window>
+</Window>
+</GUILayout>

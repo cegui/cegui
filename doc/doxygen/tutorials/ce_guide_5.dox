@@ -37,7 +37,6 @@ member function for each type of base input:
 - bool InjectedInputReceiver::injectKeyUp( Key::Scan scan_code );
 - bool InjectedInputReceiver::injectChar( utf32 code_point );
 - bool InjectedInputReceiver::injectMouseWheelChange( float delta );
-- bool InjectedInputReceiver::injectTimePulse( float timeElapsed );
 
 And also some optional functions for click and multi-click events (which are
 normally automatically generated internally by the system):
@@ -63,22 +62,55 @@ actually consumed the input.  If this returns false, it means that CEGUI did
 nothing useful with the input, and that your application may like to perform
 some action based on it instead.  Generally for this to work as described, you
 should have a fullscreen DefaultWindow as your layout root with the
-MousePassThroughEnabled property set to true.
+CursorPassThroughEnabled property set to true.
 
-Finally, you must know that InjectedInputReceiver is implemented by GUIContext
-and that input injection is <em>per GUIContext</em>, this is a very important
-and a very powerful concept. In the generic case, though, it simply means that
-when you come to inject inputs, you get access to the initial, default
-GUIContext and inject your inputs there:
-@code
-CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-@endcode
+Finally, you must know that InjectedInputReceiver is implemented by InputAggregator.
+In the next section you can read about the new input events system.
 
-@note There is currently an oddity in the system that requires time pulses to be
-injected both into whatever GUIContext objects you need input for and
-additionally for CEGUI::System via CEGUI::System::injectTimePulse - if you fail
-to inject into System, you may find some things -- such as animations -- not
-working quite as they should!
+<br>
+@section input_tutorial_inputevents Input Events System
+Starting with version YYY of CEGUI, the input system has changed completely.
+While previously it worked with raw injected inputs in the GUIContext, now it
+uses the concept of <strong>input event</strong>. This is a generic term for
+an event which represents the end result of a (sequence) of input(s). For example,
+the mouse buttons pressed and released can represent an activation event, the
+combination of keys CTRL and V represent a paste event; and so on. With this
+new way of getting input we can easily implement support for new devices
+without having to emulate a keyboard/mouse. We can also implement GUI
+navigation - you can check the @ref gui_navigation_tutorial for details.
+
+The input events are a central part of the new input system. In the
+default implementation the InputAggregator takes in raw input and
+generates input events based on it. There are currently two
+default input events:
+- TextInputEvent - An event with a character payload.
+- SemanticInputEvent - An event with a semantic value and a payload. This event
+tries to cover some specific input events with a certain semantic.
+
+There are a bunch of values defined by default in the SemanticValue
+enumeration. You can create your own semantic values, and in order to
+prevent collisions with the default ones, there is a value called
+SemanticValue::SV_UserDefinedSemanticValue, which signals the minimum
+value of a user-defined semantic value. The payload of a semantic input event
+is a union which covers most of the usage cases: either a single or a double
+float, or in the case of a cursor (see below), the source of the cursor (left,
+right, middle). There is also no more knowledge of a mouse. Instead the generic
+term Cursor is used, because this can represent also a touch pointer.
+
+You can create a totally different InputAggregator or you can
+inherit the default behaviour while adding new semantics. Such example
+can be consulted in the Scrollable_Pane sample. One scenario where
+you would create a new InputAggregator is when you want to support additional
+semantics or add a new type of input device: touch, Kinect, gamepad, etc.
+For example, in the case of Kinect you could generate a TextEvent with the
+spoken words or create an on-screen keyboard (sample coming soon) which
+will generate TextEvents based on activation events.
+
+You can manually inject input events into the GUIContext or you can use
+the decorator-like pattern, by creating a new InputAggregator attached
+to the GUIContext. Then, you can inject the raw input like you did before
+in the InputAggregator, which in turn will generate and inject the input
+events into the GUIContext.
 
 <br>
 @section input_tutorial_detail A little more detail: What each injector is used for
@@ -177,27 +209,13 @@ wheel (whatever you like to call it!).  Use positive values for forward movement
 (rolling the wheel away from the user), and negative values for backwards
 movement (rolling the wheel towards the user).
 
-@subsection input_tutorial_pulse bool InjectedInputReceiver::injectTimePulse( float timeElapsed )
-This function is used to keep CEGUI informed about time (CEGUI doesn't have a
-wristwatch, you see!).  The value @c timeElapsed is a floating point number that
-indicates the number of seconds - or part seconds - that have passed since the
-last time the injector was called (or since CEGUI was started).  The use of this
-function is becoming more and more important - it now controls things such as
-fades and timing for tool-tip widgets, menus, and also auto-repeat for
-mouse buttons.
-@note As mentioned above, there is currently an oddity in the system that
-requires time pulses to be injected both into whatever GUIContext objects you
-need input for and additionally for CEGUI::System via
-CEGUI::System::injectTimePulse - if you fail to inject into System, you may find
-some things -- such as animations -- not working quite as they should!
-
 @subsection input_tutorial_click bool InjectedInputReceiver::injectMouseButtonClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 click has occurred; normally that is a down -> up sequence.  Calling this
-function is only neccessary if the built-in automatic generation of click and
+function is only necessary if the built-in automatic generation of click and
 multi-click events is unsuitable for your needs.  If you decide you need to use
 this function you will normally disable the automatic event generation first by
-way of the GUIContext::setMouseClickEventGenerationEnabled function.  While it is
+way of the InputAggregator::setMouseClickEventGenerationEnabled function.  While it is
 possible to call this injection function \e without disabling the auto generated
 events, it will affect the behaviour as to the way events are marked as
 'handled' and therefore the return code from this function.
@@ -205,10 +223,10 @@ events, it will affect the behaviour as to the way events are marked as
 @subsection input_tutorial_doubleclick bool InjectedInputReceiver::injectMouseButtonDoubleClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 double-click has occurred; normally that is a down -> up -> down sequence.
-Calling this function is only neccessary if the built-in automatic generation of
+Calling this function is only necessary if the built-in automatic generation of
 click and multi-click events is unsuitable for your needs.  If you decide you
 need to use this function you will normally disable the automatic event
-generation first by way of the GUIContext::setMouseClickEventGenerationEnabled
+generation first by way of the InputAggregator::setMouseClickEventGenerationEnabled
 function.  While it is possible to call this injection function \e without
 disabling the auto generated events, it will affect the behaviour as to the way
 events are marked as 'handled' and therefore the return code from this function.
@@ -216,14 +234,41 @@ events are marked as 'handled' and therefore the return code from this function.
 @subsection input_tutorial_tripleclick bool InjectedInputReceiver::injectMouseButtonTripleClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 triple-click has occurred; normally that is a down -> up -> down -> up -> down
-sequence.  Calling this function is only neccessary if the built-in automatic
+sequence.  Calling this function is only necessary if the built-in automatic
 generation of click and multi-click events is unsuitable for your needs.  If you
 decide you need to use this function you will normally disable the automatic
 event generation first by way of the
-GUIContext::setMouseClickEventGenerationEnabled function.  While it is possible
+InputAggregator::setMouseClickEventGenerationEnabled function.  While it is possible
 to call this injection function \e without disabling the auto generated events,
 it will affect the behaviour as to the way events are marked as 'handled' and
 therefore the return code from this function.
+
+<br>
+@section input_tutorial_migration Migrating from raw injected input to input events
+The migration from the usage of GUIContext to inject input to the new input events
+is an easy one, especially if you want to use the default previous behaviour.
+
+First thing to note is that the InjectedInputReceiver interface doesn't contain
+the injectTimePulse method anymore. Time pulses are now injected directly in the 
+GUIContext. GUIContext doesn't implement InjectedInputReceiver anymore. Instead,
+a new class called InputAggregator will do that job. Thus, all calls that previously
+injected input in GUIContext will now inject in an InputAggregator instance.
+For details on what the InputAggregator does please check above. To migrate
+you need to perform the following steps - code examples are taken from the samples
+(framework):
+
+- Create an InputAggregator instance, and pass a GUIContext to its constructor
+@code
+d_inputAggregator = new InputAggregator(&CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+@endcode
+- Convert code like:
+@code
+CEGUI::System::getSingletonPtr()->injectMousePosition(x, y);
+@endcode
+to:
+@code
+d_inputAggregator->injectMousePosition(x, y);
+@endcode
 
 <br>
 @section input_tutorial_conclusion Conclusion

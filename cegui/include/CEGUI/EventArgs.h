@@ -46,8 +46,7 @@ namespace CEGUI
     the event system does not look at this value, code at a higher level can use it to determine
     how far to propagate an event.
 */
-class CEGUIEXPORT EventArgs :
-    public AllocatedObject<EventArgs>
+class CEGUIEXPORT EventArgs
 {
 public:
     /*************************************************************************

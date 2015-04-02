@@ -31,7 +31,7 @@ namespace CEGUI
 {
 
 SubscriberSlot::SubscriberSlot(FreeFunctionSlot::SlotFunction* func) :
-    d_functor_impl(CEGUI_NEW_AO FreeFunctionSlot(func))
+    d_functor_impl(new FreeFunctionSlot(func))
 {
 }
 
@@ -48,7 +48,7 @@ SubscriberSlot::~SubscriberSlot()
 
 void SubscriberSlot::cleanup()
 {
-    CEGUI_DELETE_AO d_functor_impl;
+    delete d_functor_impl;
     d_functor_impl = 0;
 }
 
