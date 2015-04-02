@@ -41,7 +41,6 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-const float RenderTarget::d_yfov_tan = 0.267949192431123f;
 
 const String RenderTarget::EventNamespace("RenderTarget");
 const String RenderTarget::EventAreaChanged("AreaChanged");
@@ -52,8 +51,12 @@ RenderTarget::RenderTarget():
     d_area(0, 0, 0, 0),
     d_matrixValid(false),
     d_viewDistance(0),
-    d_matrix(1.0f)
-{}
+    d_matrix(1.0f),
+    d_fovY(glm::radians(30.0f))
+{
+    // Call the setter function to ensure that the half-angle tangens value is set correctly
+    setFovY(d_fovY);
+}
 
 //----------------------------------------------------------------------------//
 RenderTarget::~RenderTarget()
@@ -125,20 +128,23 @@ glm::mat4 RenderTarget::createViewProjMatrixForOpenGL() const
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    RenderTarget::d_viewDistance = midx / (aspect * RenderTarget::d_yfov_tan);
+    RenderTarget::d_viewDistance = midx / (aspect * RenderTarget::d_fovY_halftan);
 
     glm::vec3 eye = glm::vec3(midx, midy, -RenderTarget::d_viewDistance);
     glm::vec3 center = glm::vec3(midx, midy, 1);
     glm::vec3 up = glm::vec3(0, -1, 0);
 
-    //Older glm versions use degrees as parameter here by default (Unless radians are forced via GLM_FORCE_RADIANS). Newer versions of glm exlusively use radians.
-#if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH < 6)
-     glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, RenderTarget::d_viewDistance * 0.5f, RenderTarget::d_viewDistance * 2.0f);
+    // Creating the perspective projection matrix based on an assumed vertical FOV angle
+
+    // Older glm versions use degrees (Unless radians are forced via GLM_FORCE_RADIANS). Newer versions of glm exlusively use radians.
+    // We need to convert the angle for older versions
+#if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH < 6) && (!defined(GLM_FORCE_RADIANS))
+    glm::mat4 projectionMatrix = glm::perspective(glm::degrees(d_fovY), aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
 #else
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(30.f), aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
+    glm::mat4 projectionMatrix = glm::perspective(d_fovY, aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
 #endif
    
-    // Projection matrix abuse!
+    // Creating the view matrix based on the eye, center and up vectors targeting the middle of the screen
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
     return projectionMatrix * viewMatrix;
@@ -158,7 +164,7 @@ glm::mat4 RenderTarget::createViewProjMatrixForDirect3D() const
     const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
     const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
     const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    RenderTarget::d_viewDistance = midx / (aspect * RenderTarget::d_yfov_tan);
+    RenderTarget::d_viewDistance = midx / (aspect * RenderTarget::d_fovY_halftan);
 
     glm::vec3 eye = glm::vec3(midx, midy, -d_viewDistance);
     glm::vec3 center = glm::vec3(midx, midy, 1);
@@ -198,6 +204,20 @@ void RenderTarget::updateMatrix(const glm::mat4& matrix) const
     d_matrixValid = true;
     //! This will trigger the RenderTarget to notify all of its GeometryBuffers to regenerate their matrices
     d_activationCounter = -1;
+}
+
+//----------------------------------------------------------------------------//
+const float RenderTarget::getFovY() const
+{
+    return d_fovY;
+}
+
+//----------------------------------------------------------------------------//
+void RenderTarget::setFovY(const float fovY)
+{
+    d_fovY = fovY;
+
+    d_fovY_halftan = std::tan(fovY * 0.5f);
 }
 
 }
