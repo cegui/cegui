@@ -3,7 +3,7 @@
     <WidgetLook name="Vanilla/VerticalImageSliderThumb">
         <PropertyDefinition initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ScrollThumbColours"/>
         <Property name="VertFree" value="true"/>
-        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -55,8 +55,7 @@
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="BottomEndColours"/>
         <PropertyLinkDefinition widget="__auto_thumb__" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" name="ScrollThumbColours" redrawOnWrite="true" targetProperty="ScrollThumbColours" type="ColourRect"/>
         <Property name="VerticalSlider" value="true"/>
-        <Property name="MouseAutoRepeatEnabled" value="true"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="CursorAutoRepeatEnabled" value="true"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -224,7 +223,7 @@
     <WidgetLook name="Vanilla/HorizontalImageSliderThumb">
         <PropertyDefinition initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ScrollThumbColours"/>
         <Property name="HorzFree" value="true"/>
-        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -276,8 +275,7 @@
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="BottomEndColours"/>
         <PropertyLinkDefinition widget="__auto_thumb__" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" name="ScrollThumbColours" redrawOnWrite="true" targetProperty="ScrollThumbColours" type="ColourRect"/>
         <Property name="VerticalSlider" value="false"/>
-        <Property name="MouseAutoRepeatEnabled" value="true"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="CursorAutoRepeatEnabled" value="true"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">

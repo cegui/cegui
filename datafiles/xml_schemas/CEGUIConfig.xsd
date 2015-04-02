@@ -13,7 +13,7 @@
                 <xsd:element name="DefaultXMLParser" type="defaultObjectType" />
                 <xsd:element name="DefaultImageCodec" type="defaultObjectType" />
                 <xsd:element name="DefaultFont" type="defaultObjectType" />
-                <xsd:element name="DefaultMouseCursor" type="defaultMouseCursorType" />
+                <xsd:element name="DefaultCursor" type="defaultCursorType" />
                 <xsd:element name="DefaultTooltip" type="defaultObjectType" />
                 <xsd:element name="DefaultGUISheet" type="defaultObjectType" />
             </xsd:choice>
@@ -74,7 +74,7 @@
         </xsd:simpleContent>
     </xsd:complexType>
 
-    <xsd:complexType name="defaultMouseCursorType">
+    <xsd:complexType name="defaultCursorType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
                 <xsd:attribute name="imageset" type="xsd:string" use="required" />

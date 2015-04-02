@@ -39,8 +39,7 @@ namespace CEGUI
 \brief
     Class used as the databuffer for loading files throughout the library.
 */
-class CEGUIEXPORT RawDataContainer :
-    public AllocatedObject<RawDataContainer>
+class CEGUIEXPORT RawDataContainer
 {
 public:
 	/*************************************************************************

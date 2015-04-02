@@ -37,9 +37,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    // This is deprecated and declared as an extern in PropertyLinkDefinition.h
-    const String S_parentIdentifier("__parent__");
-
     SectionSpecification::SectionSpecification() :
         d_usingColourOverride(false)
     {}
@@ -90,7 +87,6 @@ namespace CEGUI
             // decide what colours are to be used
             ColourRect finalColours;
             initColourRectForOverride(srcWindow, finalColours);
-            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             if (modcols)
                 finalColours *= *modcols;
@@ -121,7 +117,6 @@ namespace CEGUI
             // decide what colours are to be used
             ColourRect finalColours;
             initColourRectForOverride(srcWindow, finalColours);
-            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             if (modcols)
                 finalColours *= *modcols;

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	30/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to the Multi-lien edit box base class.
 *************************************************************************/
 /***************************************************************************
@@ -34,6 +34,7 @@
 #include "../Font.h"
 
 #include <vector>
+#include <deque>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -44,6 +45,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+// forward declaration
+class UndoHandler;
+
 /*!
 \brief
     Base class for multi-line edit box window renderer objects.
@@ -159,8 +163,7 @@ public:
         size_t  d_length;       //!< Code point length of this line.
         float   d_extent;       //!< Rendered extent of this line.
     };
-    typedef std::vector<LineInfo
-        CEGUI_VECTOR_ALLOC(LineInfo)>   LineList;   //!< Type for collection of LineInfos.
+    typedef std::vector<LineInfo>   LineList;   //!< Type for collection of LineInfos.
 
 	/*************************************************************************
 		Accessor Functions
@@ -170,8 +173,8 @@ public:
 		return true if the edit box has input focus.
 
 	\return
-		- true if the edit box has keyboard input focus.
-		- false if the edit box does not have keyboard input focus.
+        - true if the edit box has input focus.
+        - false if the edit box does not have input focus.
 	*/
 	bool	hasInputFocus(void) const;
 
@@ -218,7 +221,7 @@ public:
 	*/
 	size_t	getSelectionEndIndex(void) const;
 
-	
+
 	/*!
 	\brief
 		return the length of the current selection (in code points / characters).
@@ -367,7 +370,7 @@ public:
 		Nothing.
 	*/
 	void	setSelection(size_t start_pos, size_t end_pos);
-	
+
 
     /*!
     \brief
@@ -443,13 +446,13 @@ public:
     // selection brush image property support
     void setSelectionBrushImage(const Image* image);
     const Image* getSelectionBrushImage() const;
-    
+
     //! \copydoc Window::performCopy
     virtual bool performCopy(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performCut
     virtual bool performCut(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
 
@@ -457,11 +460,17 @@ public:
     \brief
         Format the text into lines as dictated by the formatting options.
 
-    \param update_scrollbars 
+    \param update_scrollbars
         - true if scrollbar configuration should be performed.
         - false if scrollbar configuration should not be performed.
     */
     void formatText(const bool update_scrollbars);
+
+    //! \copydoc Window::performUndo
+    virtual bool performUndo();
+
+    //! \copydoc Window::performRedo
+    virtual bool performRedo();
 
 	/*************************************************************************
 		Construction and Destruction
@@ -498,13 +507,6 @@ protected:
 	/*************************************************************************
 		Implementation Methods
 	*************************************************************************/
-	/*!
-	\brief
-		Format the text into lines as needed by the current formatting options.
-    \deprecated
-        This is deprecated in favour of the version taking a boolean.
-	*/
-	void	formatText(void);
 
 	/*!
 	\brief
@@ -512,7 +514,7 @@ protected:
 
 	\note
 		Any single whitespace character is one token, any group of other characters is a token.
-	
+
 	\return
 		The code point length of the token.
 	*/
@@ -536,7 +538,7 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
-	size_t	getTextIndexFromPosition(const Vector2f& pt) const;
+    size_t	getTextIndexFromPosition(const glm::vec2& pt) const;
 
 
 	/*!
@@ -570,95 +572,131 @@ protected:
 	void	handleDelete(void);
 
 
-	/*!
-	\brief
-		Processing to move caret one character left
-	*/
-	void	handleCharLeft(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one character left
+
+    \param select
+        when true, the left character will be also selected
+    */
+    void    handleCharLeft(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret one word left
-	*/
-	void	handleWordLeft(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one word left
+
+    \param select
+        when true, the left word will be also selected
+    */
+    void    handleWordLeft(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret one character right
-	*/
-	void	handleCharRight(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one character right
+
+    \param select
+        when true, the right character will be also selected
+    */
+    void    handleCharRight(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret one word right
-	*/
-	void	handleWordRight(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one word right
+
+    \param select
+        when true, the right word will be also selected
+    */
+    void    handleWordRight(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the start of the text.
-	*/
-	void	handleDocHome(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the start of the text.
+
+    \param select
+        when true, the text until the beginning of the document will be also selected
+    */
+    void    handleDocHome(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the end of the text
-	*/
-	void	handleDocEnd(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the end of the text
+
+    \param select
+        when true, the text until the end of the document will be also selected
+    */
+    void    handleDocEnd(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the start of the current line.
-	*/
-	void	handleLineHome(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the start of the current line.
+
+    \param select
+        when true, the text until the start of the line be also selected
+    */
+    void    handleLineHome(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the end of the current line
-	*/
-	void	handleLineEnd(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the end of the current line
+
+    \param select
+        when true, the text until the end of the line will be also selected
+    */
+    void    handleLineEnd(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret up a line.
-	*/
-	void	handleLineUp(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret up a line.
+
+    \param select
+        when true, a line up will be also selected
+    */
+    void    handleLineUp(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret down a line.
-	*/
-	void	handleLineDown(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret down a line.
+
+    \param select
+        when true, a line down will be also selected
+    */
+    void    handleLineDown(bool select);
 
 
 	/*!
 	\brief
 		Processing to insert a new line / paragraph.
 	*/
-	void	handleNewLine(uint sysKeys);
+    void    handleNewLine();
 
 
     /*!
     \brief
         Processing to move caret one page up
+
+    \param select
+        when true, a page up will be also selected
     */
-    void    handlePageUp(uint sysKeys);
+    void    handlePageUp(bool select);
 
 
     /*!
     \brief
         Processing to move caret one page down
+
+    \param select
+        when true, a page down will be also selected
     */
-    void    handlePageDown(uint sysKeys);
+    void    handlePageDown(bool select);
 
 	/*!
 	\brief
@@ -734,19 +772,17 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual	void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual	void	onMouseDoubleClicked(MouseEventArgs& e);
-	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
-	virtual void	onMouseMove(MouseEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
+    virtual void onCursorActivate(CursorInputEventArgs& e);
+    virtual void onCursorMove(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onCharacter(KeyEventArgs& e);
-	virtual void	onKeyDown(KeyEventArgs& e);
+	virtual void onCharacter(TextEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 	virtual void	onSized(ElementEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
     virtual void onFontChanged(WindowEventArgs& e);
 
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Implementation data
@@ -760,9 +796,11 @@ protected:
 	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
 	static String d_lineBreakChars;	//!< Holds what we consider to be line break characters.
-	bool		d_wordWrap;			//!< true when formatting uses word-wrapping.
-	LineList	d_lines;			//!< Holds the lines for the current formatting.
-	float		d_widestExtent;		//!< Holds the extent of the widest line as calculated in the last formatting pass.
+    bool		  d_wordWrap;		//!< true when formatting uses word-wrapping.
+	LineList	  d_lines;			//!< Holds the lines for the current formatting.
+	float         d_lastRenderWidth;  //!< Holds last render area width
+	float		  d_widestExtent;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
+	UndoHandler*  d_undoHandler;    //!< Undo handler class
 
 	// component widget settings
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
@@ -777,6 +815,8 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addMultiLineEditboxProperties(void);
+
+    void handleSelectAllText(SemanticEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

@@ -33,8 +33,7 @@ namespace CEGUI
 {
 
 //! Simple timer class.
-class CEGUIEXPORT SimpleTimer :
-    public AllocatedObject<SimpleTimer>
+class CEGUIEXPORT SimpleTimer
 {
     double d_baseTime;
 

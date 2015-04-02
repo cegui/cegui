@@ -54,7 +54,7 @@ const NamedArea& FalagardMenuItem::getContentNamedArea() const
     const WidgetLookFeel& wlf(getLookNFeel());
 
     if (static_cast<MenuItem*>(d_window)->getPopupMenu() && !parentIsMenubar() &&
-        wlf.isNamedAreaDefined("HasPopupContentSize"))
+        wlf.isNamedAreaPresent("HasPopupContentSize"))
     {
         return wlf.getNamedArea("HasPopupContentSize");
     }
