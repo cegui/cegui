@@ -2626,8 +2626,6 @@ void Window::onCursorActivate(CursorInputEventArgs& e)
 
         return;
     }
-
-    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
