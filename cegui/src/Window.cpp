@@ -2859,6 +2859,18 @@ void Window::banPropertyFromXML(const String& property_name)
 }
 
 //----------------------------------------------------------------------------//
+void Window::banPropertyFromXMLRecursive(const String& property_name)
+{
+    banPropertyFromXML(property_name);
+
+    const size_t childCount = getChildCount();
+    for(size_t i = 0; i < childCount; ++i)
+    {
+        getChildAtIdx(i)->banPropertyFromXMLRecursive(property_name);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void Window::unbanPropertyFromXML(const String& property_name)
 {
     d_bannedXMLProperties.erase(property_name);

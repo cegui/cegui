@@ -2552,6 +2552,19 @@ public:
     */
     void banPropertyFromXML(const String& property_name);
 
+    /*!
+    \brief Adds the named property to the XML ban list for this window and all of its child windows.
+
+    \param property_name Name of the property you want to ban
+
+    Essentially a property that is banned from XML will never end up being saved to it.
+    This is very useful if 2 properties overlap (XPosition and Position for example).
+
+    Please note that properties that are not writable (read-only properties) are
+    implicitly/automatically banned from XML, no need to ban them manually.
+    */
+    void banPropertyFromXMLRecursive(const String& property_name);
+
     //! Remove the named property from the XML ban list for this window.
     void unbanPropertyFromXML(const String& property_name);
 
