@@ -671,7 +671,21 @@ Window* TabControl::getTabPane() const
 
 int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
+    // This is an easy and safe workaround for not writing out the buttonPane and contentPane. While in fact
+    // we would eventually want to write these two to XML themselves, we do not want to write out their children
+    // but there is no way to control this from inside these windows and currently there is also no way to do it
+    // from the outside. This was determined to be the best solution, others would break ABI or are too hacky
+    // Negative side-effects: any changes to AutoWindows (properties etc) will be lost in the output
+    bool wasButtonPaneWritingAllowed = getTabButtonPane()->isWritingXMLAllowed();
+    bool wasContentPaneWritingAllowed = getTabPane()->isWritingXMLAllowed();
+
+    getTabButtonPane()->setWritingXMLAllowed(false);
+    getTabPane()->setWritingXMLAllowed(false);
+
     int childOutputCount = Window::writeChildWindowsXML(xml_stream);
+
+    getTabButtonPane()->setWritingXMLAllowed(wasButtonPaneWritingAllowed);
+    getTabPane()->setWritingXMLAllowed(wasContentPaneWritingAllowed);
 
     // since TabControl content is actually added to the component tab
     // content pane window, this overridden function exists to dump those
