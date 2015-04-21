@@ -11,7 +11,7 @@ add_subdirectory(GameMenu)
 add_subdirectory(RestaurantGame)
 add_subdirectory(DragDrop)
 add_subdirectory(Inventory)
-add_subdirectory(Effects)
+add_subdirectory(RenderEffects)
 add_subdirectory(Fonts)
 add_subdirectory(Demo6)
 
