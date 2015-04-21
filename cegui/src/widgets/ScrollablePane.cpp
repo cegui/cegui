@@ -3,7 +3,7 @@
     author:     Paul D Turner
  *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -235,6 +235,13 @@ void ScrollablePane::initialiseComponents(void)
     // get scrolled container widget
     ScrolledContainer* container = getScrolledContainer();
     
+    // ban properties forwarded from here
+    container->banPropertyFromXML(Window::MouseInputPropagationEnabledPropertyName);
+    container->banPropertyFromXML("ContentArea");
+    container->banPropertyFromXML("ContentPaneAutoSized");
+    horzScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
+    vertScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
+
     // do a bit of initialisation
     horzScrollbar->setAlwaysOnTop(true);
     vertScrollbar->setAlwaysOnTop(true);
@@ -620,4 +627,32 @@ NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) c
 }
 //----------------------------------------------------------------------------//
     
-} // End of  CEGUI namespace section
+int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
+{
+    // This is an easy and safe workaround for not writing out the buttonPane and contentPane. While in fact
+    // we would eventually want to write these two to XML themselves, we do not want to write out their children
+    // but there is no way to control this from inside these windows and currently there is also no way to do it
+    // from the outside. This was determined to be the best solution, others would break ABI or are too hacky
+    // Negative side-effects: any changes to AutoWindows (properties etc) will be lost in the output
+    bool wasContentPaneWritingAllowed = getScrolledContainer()->isWritingXMLAllowed();
+
+    getScrolledContainer()->setWritingXMLAllowed(false);
+
+    int childOutputCount = Window::writeChildWindowsXML(xml_stream);
+
+    getScrolledContainer()->setWritingXMLAllowed(wasContentPaneWritingAllowed);
+
+    // since TabControl content is actually added to the component tab
+    // content pane window, this overridden function exists to dump those
+    // out as if they were our own children.
+    const size_t childCount = getContentPane()->getChildCount();
+    for (size_t i = 0; i < childCount; ++i)
+    {
+        getScrolledContainer()->getChildAtIdx(i)->writeXMLToStream(xml_stream);
+        ++childOutputCount;
+    }
+
+    return childOutputCount;
+}
+
+}

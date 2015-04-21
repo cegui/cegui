@@ -20,6 +20,11 @@ set(SAMPLES_HEADERS_LIST "")
 set(SAMPLE_LIST_HEADER ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.h)
 set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.inc)
 
+
+
+
+
+
 # gather sample dirs
 subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 

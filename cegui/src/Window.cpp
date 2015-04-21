@@ -68,6 +68,37 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const String Window::AlphaPropertyName("Alpha");
+const String Window::AlwaysOnTopPropertyName("AlwaysOnTop");
+const String Window::ClippedByParentPropertyName("ClippedByParent");
+const String Window::DestroyedByParentPropertyName("DestroyedByParent");
+const String Window::DisabledPropertyName("Disabled");
+const String Window::FontPropertyName("Font");
+const String Window::IDPropertyName("ID");
+const String Window::InheritsAlphaPropertyName("InheritsAlpha");
+const String Window::MouseCursorImagePropertyName("MouseCursorImage");
+const String Window::VisiblePropertyName("Visible");
+const String Window::RestoreOldCapturePropertyName("RestoreOldCapture");
+const String Window::TextPropertyName("Text");
+const String Window::ZOrderingEnabledPropertyName("ZOrderingEnabled");
+const String Window::WantsMultiClickEventsPropertyName("WantsMultiClickEvents");
+const String Window::MouseAutoRepeatEnabledPropertyName("MouseAutoRepeatEnabled");
+const String Window::AutoRepeatDelayPropertyName("AutoRepeatDelay");
+const String Window::AutoRepeatRatePropertyName("AutoRepeatRate");
+const String Window::DistributeCapturedInputsPropertyName("DistributeCapturedInputs");
+const String Window::TooltipTypePropertyName("TooltipType");
+const String Window::TooltipTextPropertyName("TooltipText");
+const String Window::InheritsTooltipTextPropertyName("InheritsTooltipText");
+const String Window::RiseOnClickEnabledPropertyName("RiseOnClickEnabled");
+const String Window::MousePassThroughEnabledPropertyName("MousePassThroughEnabled");
+const String Window::DragDropTargetPropertyName("DragDropTarget");
+const String Window::AutoRenderingSurfacePropertyName("AutoRenderingSurface");
+const String Window::TextParsingEnabledPropertyName("TextParsingEnabled");
+const String Window::MarginPropertyName("MarginProperty");
+const String Window::UpdateModePropertyName("UpdateMode");
+const String Window::MouseInputPropagationEnabledPropertyName("MouseInputPropagationEnabled");
+const String Window::AutoWindowPropertyName("AutoWindow");
+//----------------------------------------------------------------------------//
 const String Window::EventNamespace("Window");
 const String Window::EventUpdated ("Updated");
 const String Window::EventTextChanged("TextChanged");
@@ -1212,7 +1243,7 @@ void Window::removeChild_impl(Element* element)
     if (position != d_children.end())
     {
         // unban properties window could write as a root window
-        wnd->unbanPropertyFromXML("RestoreOldCapture");
+        wnd->unbanPropertyFromXML(RestoreOldCapturePropertyName);
     }
 
     wnd->onZChange_impl();
@@ -1308,112 +1339,112 @@ void Window::addWindowProperties(void)
     const String propertyOrigin("Window");
 
     CEGUI_DEFINE_PROPERTY(Window, float,
-        "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+        AlphaPropertyName, "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window. Value is either \"true\" or \"false\".",
+        AlwaysOnTopPropertyName, "Property to get/set the 'always on top' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window. Value is either \"true\" or \"false\".",
+        ClippedByParentPropertyName, "Property to get/set the 'clipped by parent' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setClippedByParent, &Window::isClippedByParent, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window. Value is either \"true\" or \"false\".",
+        DestroyedByParentPropertyName, "Property to get/set the 'destroyed by parent' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setDestroyedByParent, &Window::isDestroyedByParent, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"true\" or \"false\".",
+        DisabledPropertyName, "Property to get/set the 'disabled state' setting for the Window.  Value is either \"true\" or \"false\".",
         &Window::setDisabled, &Window::isDisabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, Font*,
-        "Font","Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
+        FontPropertyName,"Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
         &Window::setFont, &Window::property_getFont, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, uint,
-        "ID", "Property to get/set the ID value of the Window. Value is an unsigned integer number.",
+        IDPropertyName, "Property to get/set the ID value of the Window. Value is an unsigned integer number.",
         &Window::setID, &Window::getID, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window. Value is either \"true\" or \"false\".",
+        InheritsAlphaPropertyName, "Property to get/set the 'inherits alpha' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setInheritsAlpha, &Window::inheritsAlpha, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, Image*,
-        "CursorImage","Property to get/set the cursor image for the Window.  Value should be \"<image name>\".",
+        CursorImagePropertyName,"Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
         &Window::setCursor, &Window::property_getCursor, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "Visible", "Property to get/set the 'visible state' setting for the Window. Value is either \"true\" or \"false\".",
+        VisiblePropertyName, "Property to get/set the 'visible state' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setVisible, &Window::isVisible, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window. Value is either \"true\" or \"false\".",
+        RestoreOldCapturePropertyName, "Property to get/set the 'restore old capture' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setRestoreOldCapture, &Window::restoresOldCapture, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, String,
-        "Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
+        TextPropertyName, "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
         &Window::setText, &Window::getText, ""
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "ZOrderingEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window. Value is either \"true\" or \"false\".",
+        ZOrderingEnabledPropertyName, "Property to get/set the 'z-order changing enabled' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "CursorAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat cursor press events. Value is either \"true\" or \"false\".",
+        CursorAutoRepeatEnabledPropertyName, "Property to get/set whether the window will receive autorepeat cursor press events. Value is either \"true\" or \"false\".",
         &Window::setCursorAutoRepeatEnabled, &Window::isCursorAutoRepeatEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, float,
-        "AutoRepeatDelay", "Property to get/set the autorepeat delay. Value is a floating point number indicating the delay required in seconds.",
+        AutoRepeatDelayPropertyName, "Property to get/set the autorepeat delay. Value is a floating point number indicating the delay required in seconds.",
         &Window::setAutoRepeatDelay, &Window::getAutoRepeatDelay, 0.3f
     );
 
     CEGUI_DEFINE_PROPERTY(Window, float,
-        "AutoRepeatRate", "Property to get/set the autorepeat rate. Value is a floating point number indicating the rate required in seconds.",
+        AutoRepeatRatePropertyName, "Property to get/set the autorepeat rate. Value is a floating point number indicating the rate required in seconds.",
         &Window::setAutoRepeatRate, &Window::getAutoRepeatRate, 0.06f
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "DistributeCapturedInputs", "Property to get/set whether captured inputs are passed to child windows. Value is either \"true\" or \"false\".",
+        DistributeCapturedInputsPropertyName, "Property to get/set whether captured inputs are passed to child windows. Value is either \"true\" or \"false\".",
         &Window::setDistributesCapturedInputs, &Window::distributesCapturedInputs, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, String,
-       "TooltipType", "Property to get/set the custom tooltip for the window. Value is the type name of the custom tooltip. If \"\", the default System tooltip is used.",
+        TooltipTypePropertyName, "Property to get/set the custom tooltip for the window. Value is the type name of the custom tooltip. If \"\", the default System tooltip is used.",
         &Window::setTooltipType, &Window::getTooltipType, ""
     );
 
     CEGUI_DEFINE_PROPERTY(Window, String,
-        "TooltipText", "Property to get/set the tooltip text for the window. Value is the tooltip text for the window.",
+        TooltipTextPropertyName, "Property to get/set the tooltip text for the window. Value is the tooltip text for the window.",
         &Window::setTooltipText, &Window::getTooltipText, ""
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "InheritsTooltipText", "Property to get/set whether the window inherits its parents tooltip text when it has none of its own. Value is either \"true\" or \"false\".",
+        InheritsTooltipTextPropertyName, "Property to get/set whether the window inherits its parents tooltip text when it has none of its own. Value is either \"true\" or \"false\".",
         &Window::setInheritsTooltipText, &Window::inheritsTooltipText, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "RiseOnClickEnabled", "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"true\" or \"false\".",
+        RiseOnClickEnabledPropertyName, "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"true\" or \"false\".",
         &Window::setRiseOnClickEnabled, &Window::isRiseOnPointerActivationEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "CursorPassThroughEnabled", "Property to get/set whether the window ignores cursor events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
+        CursorPassThroughEnabledPropertyName, "Property to get/set whether the window ignores cursor events and pass them through to any windows behind it. Value is either \"true\" or \"false\".",
         &Window::setCursorPassThroughEnabled, &Window::isCursorPassThroughEnabled, false
     );
 
@@ -1421,12 +1452,12 @@ void Window::addWindowProperties(void)
     addProperty(&d_lookNFeelProperty);
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "DragDropTarget", "Property to get/set whether the Window will receive drag and drop related notifications.  Value is either \"true\" or \"false\".",
+        DragDropTargetPropertyName, "Property to get/set whether the Window will receive drag and drop related notifications.  Value is either \"true\" or \"false\".",
         &Window::setDragDropTarget, &Window::isDragDropTarget, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "AutoRenderingSurface", "Property to get/set whether the Window will automatically attempt to "
+        AutoRenderingSurfacePropertyName, "Property to get/set whether the Window will automatically attempt to "
         "use a full imagery caching RenderingSurface (if supported by the "
         "renderer).  Here, full imagery caching usually will mean caching a "
         "window's representation onto a texture (although no such "
@@ -1436,33 +1467,32 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "TextParsingEnabled", "Property to get/set the text parsing setting for the Window.  "
+        TextParsingEnabledPropertyName, "Property to get/set the text parsing setting for the Window.  "
         "Value is either \"true\" or \"false\".",
         &Window::setTextParsingEnabled, &Window::isTextParsingEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, UBox,
-        "Margin", "Property to get/set margin for the Window. Value format:"
+        MarginPropertyName, "Property to get/set margin for the Window. Value format:"
         "{top:{[tops],[topo]},left:{[lefts],[lefto]},bottom:{[bottoms],[bottomo]},right:{[rights],[righto]}}.",
         &Window::setMargin, &Window::getMargin, UBox(UDim(0, 0))
     );
 
     CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
-        "UpdateMode", "Property to get/set the window update mode setting.  "
+        UpdateModePropertyName, "Property to get/set the window update mode setting.  "
         "Value is one of \"Always\", \"Never\" or \"Visible\".",
         &Window::setUpdateMode,&Window::getUpdateMode, WUM_VISIBLE
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "CursorInputPropagationEnabled", "Property to get/set whether unhandled cursor inputs should be "
+        CursorInputPropagationEnabledPropertyName, "Property to get/set whether unhandled cursor inputs should be "
         "propagated back to the Window's parent.  "
         "Value is either \"true\" or \"false\".",
         &Window::setCursorInputPropagationEnabled, &Window::isCursorInputPropagationEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "AutoWindow",
-        "Property to access whether the system considers this window to be an "
+        AutoWindowPropertyName, "Property to access whether the system considers this window to be an "
         "automatically created sub-component window."
         "Value is either \"true\" or \"false\".",
         &Window::setAutoWindow, &Window::isAutoWindow, false
@@ -1803,6 +1833,12 @@ void Window::setTooltipText(const String& tip)
 
 //----------------------------------------------------------------------------//
 const String& Window::getTooltipText(void) const
+{
+    return d_tooltipText;
+}
+
+//----------------------------------------------------------------------------//
+const String& Window::getTooltipTextIncludingInheritance(void) const
 {
     if (d_inheritsTipText && d_parent && d_tooltipText.empty())
         return getParent()->getTooltipText();
@@ -2774,9 +2810,33 @@ void Window::banPropertyFromXML(const String& property_name)
 }
 
 //----------------------------------------------------------------------------//
+void Window::banPropertyFromXMLRecursive(const String& property_name)
+{
+    banPropertyFromXML(property_name);
+
+    const size_t childCount = getChildCount();
+    for(size_t i = 0; i < childCount; ++i)
+    {
+        getChildAtIdx(i)->banPropertyFromXMLRecursive(property_name);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void Window::unbanPropertyFromXML(const String& property_name)
 {
     d_bannedXMLProperties.erase(property_name);
+}
+
+//----------------------------------------------------------------------------//
+void Window::unbanPropertyFromXMLRecursive(const String& property_name)
+{
+    unbanPropertyFromXML(property_name);
+
+    const size_t childCount = getChildCount();
+    for(size_t i = 0; i < childCount; ++i)
+    {
+        getChildAtIdx(i)->unbanPropertyFromXMLRecursive(property_name);
+    }
 }
 
 //----------------------------------------------------------------------------//

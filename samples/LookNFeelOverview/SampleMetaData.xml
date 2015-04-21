@@ -1,0 +1,6 @@
+<SampleDefinition
+    name      = "CEGUILookNFeelOverviewDemo"
+    type      = "C++ Module"
+    summary         = "This sample gives a quick overview of the available stock LookNFeels (Skins) and their skinned widgets. Most widgets and most skins are shown here and can be directly interacted with."
+    credits         = "Lukas &quot;Ident&quot; Meindl"
+/>

@@ -3,7 +3,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -112,6 +112,8 @@ public:
 
     //! Destructor for the ScrollablePane base class.
     ~ScrollablePane(void);
+
+    virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
 
     /*!
     \brief
