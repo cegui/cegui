@@ -83,8 +83,8 @@ void ComboDropList::initialiseComponents(void)
 	getHorzScrollbar()->setRestoreOldCapture(true);
 
     // ban these properties from being written
-    getVertScrollbar()->banPropertyFromXMLRecursive("RestoreOldCapture");
-    getHorzScrollbar()->banPropertyFromXMLRecursive("RestoreOldCapture");
+    getVertScrollbar()->banPropertyFromXMLRecursive(Window::RestoreOldCapturePropertyName);
+    getHorzScrollbar()->banPropertyFromXMLRecursive(Window::RestoreOldCapturePropertyName);
 }
 
 //----------------------------------------------------------------------------//
