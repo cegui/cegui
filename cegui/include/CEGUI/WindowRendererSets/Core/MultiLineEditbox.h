@@ -74,13 +74,13 @@ class COREWRSET_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRend
 public:
     static const String TypeName;     //! type name for this widget.
 
-    //! Name of property to use to obtain unselected text rendering colour.
+    //! Name of the optional property to access for the unselected text colour.
     static const String UnselectedTextColourPropertyName;
-    //! Name of property to use to obtain selected text rendering colour.
+    //! Name of the optional property to access for the selected text colour.
     static const String SelectedTextColourPropertyName;
-    //! Name of property to use to obtain active selection rendering colour.
+    //! Name of the optional property to access to obtain active selection rendering colour.
     static const String ActiveSelectionColourPropertyName;
-    //! Name of property to use to obtain inactive selection rendering colour.
+    //! Name of the optional property to access to obtain inactive selection rendering colour.
     static const String InactiveSelectionColourPropertyName;
     //! The default timeout (in seconds) used when blinking the caret.
     static const float DefaultCaretBlinkTimeout;
