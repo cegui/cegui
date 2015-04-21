@@ -5,22 +5,27 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlHeader.xml DEMO_META_DATA
 file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
 
 add_subdirectory(HelloWorld)
-add_subdirectory(Widgets)
-add_subdirectory(RenderEffects)
-add_subdirectory(Fonts)
+add_subdirectory(LookNFeelOverview)
 
-add_subdirectory(Demo6)
-add_subdirectory(DragDrop)
-add_subdirectory(EditboxValidation)
 add_subdirectory(GameMenu)
 add_subdirectory(RestaurantGame)
+add_subdirectory(DragDrop)
 add_subdirectory(Inventory)
+add_subdirectory(Effects)
+add_subdirectory(Fonts)
+add_subdirectory(Demo6)
+
+add_subdirectory(EditboxValidation)
 add_subdirectory(Minesweeper)
 add_subdirectory(ScrollablePane)
 add_subdirectory(TabControl)
+add_subdirectory(CommonDialogs)
+add_subdirectory(Widgets)
 add_subdirectory(Text)
 add_subdirectory(Tree)
-add_subdirectory(CommonDialogs)
+
+
+
 
 if (CEGUI_BUILD_LUA_MODULE)
     # add_subdirectory(Demo8)
