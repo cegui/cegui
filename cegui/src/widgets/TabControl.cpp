@@ -5,7 +5,7 @@
 	purpose:	Implementation of Tab Control widget base class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -100,6 +100,20 @@ TabControl::~TabControl(void)
 *************************************************************************/
 void TabControl::initialiseComponents(void)
 {
+    // ban properties forwarded from here
+    if (isChild(ButtonScrollLeft))
+    {
+        CEGUI::Window* buttonScrollLeft = getChild(ButtonScrollLeft);
+        buttonScrollLeft->banPropertyFromXML(Window::VisiblePropertyName);
+        buttonScrollLeft->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
+    }
+    if (isChild(ButtonScrollRight))
+    {
+        CEGUI::Window* buttonScrollRight = getChild(ButtonScrollRight);
+        buttonScrollRight->banPropertyFromXML(Window::VisiblePropertyName);
+        buttonScrollRight->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
+    }
+
 	performChildWindowLayout();
 
     if (isChild(ButtonScrollLeft))
