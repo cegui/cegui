@@ -27,7 +27,7 @@
 #ifndef _Demo6Sample_h_
 #define _Demo6Sample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 #include "CEGUI/String.h"
 

@@ -27,7 +27,7 @@
 #ifndef _EditboxValidationSample_h_
 #define _EditboxValidationSample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "CEGUI/EventArgs.h"
 
 class EditboxValidationSample : public Sample

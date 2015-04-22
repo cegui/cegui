@@ -27,7 +27,7 @@
 #ifndef _Sample_Hello_World_h_
 #define _Sample_Hello_World_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 namespace CEGUI
 {

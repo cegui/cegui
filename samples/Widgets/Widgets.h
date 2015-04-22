@@ -27,7 +27,7 @@ author:     Lukas E Meindl
 #ifndef _Widget_Sample_
 #define _Widget_Sample_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 #include <vector>
 #include <map>

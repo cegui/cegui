@@ -27,7 +27,7 @@
 #ifndef _SampleCustomShapesDrawingSample_h_
 #define _SampleCustomShapesDrawingSample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 #include "CEGUI/ForwardRefs.h"
 #include "glm/glm.hpp"

@@ -27,7 +27,7 @@
 #ifndef _Sample_InventorySample_h_
 #define _Sample_InventorySample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "CEGUI/CEGUI.h"
 
 class InventorySample : public Sample

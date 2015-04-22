@@ -27,7 +27,7 @@ author:     Lukas E Meindl
 #ifndef _Restaurant_Game_h
 #define _Restaurant_Game_h
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include <glm/glm.hpp>
 #include <vector>
 

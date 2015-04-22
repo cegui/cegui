@@ -27,7 +27,7 @@ author:     Lukas E Meindl
 #ifndef _FontsSample_h_
 #define _FontsSample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 #include <vector>
 #include <map>

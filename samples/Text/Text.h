@@ -27,7 +27,7 @@
 #ifndef _Sample_Text_h_
 #define _Sample_Text_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 namespace CEGUI
 {

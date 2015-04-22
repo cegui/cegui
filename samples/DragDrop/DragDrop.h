@@ -27,7 +27,7 @@
 #ifndef _DragDropSample_h_
 #define _DragDropSample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 namespace CEGUI
 {

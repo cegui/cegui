@@ -27,7 +27,7 @@
 #ifndef _Effects_Sample_
 #define _Effects_Sample_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "CEGUI/CEGUI.h"
 
 class WobblyWindowEffect : public CEGUI::RenderEffect
@@ -166,18 +166,6 @@ protected:
     CEGUI::StandardItem* d_listItemEffectNone;
 
     CEGUI::GUIContext* d_guiContext;
-};
-
-
-// Sample sub-class for ListboxTextItem that auto-sets the selection brush
-// image.  This saves doing it manually every time in the code.
-class MyListItem : public CEGUI::ListboxTextItem
-{
-public:
-    MyListItem(const CEGUI::String& text) : ListboxTextItem(text)
-    {
-        setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
-    }
 };
 
 
