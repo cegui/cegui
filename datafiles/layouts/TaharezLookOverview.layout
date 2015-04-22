@@ -11,40 +11,29 @@
                 <Property name="Area" value="{{0.00390625,0},{0.00694444,0},{0.0976563,0},{0.0347222,0}}" />
                 <Property name="Text" value="Button" />
             </Window>
-            <Window type="TaharezLook/Listbox" name="disabledListbox" >
+            <Window type="TaharezLook/ListWidget" name="disabledListbox" >
                 <Property name="Area" value="{{0.00390625,0},{0.583333,0},{0.160156,0},{0.666666,0}}" />
                 <Property name="Disabled" value="true" />
                 <Window type="TaharezLook/ListboxItem" name="ListboxItem" >
-                    <Property name="Area" value="{{0,0},{0,0},{1,0},{0.333333,0}}" />
                     <Property name="Text" value="Item 1" />
                     <Property name="Selected" value="true" />
                 </Window>
                 <Window type="TaharezLook/ListboxItem" name="ListboxItem2" >
-                    <Property name="Area" value="{{0,0},{0.333333,0},{1,0},{0.666666,0}}" />
                     <Property name="Text" value="Item 2" />
                 </Window>
                 <Window type="TaharezLook/ListboxItem" name="ListboxItem3" >
-                    <Property name="Area" value="{{0,0},{0.666667,0},{1,0},{1,0}}" />
                     <Property name="Text" value="Item 3" />
-                    <Property name="AutoRenderingSurface" value="true" />
                 </Window>
             </Window>
-            <Window type="TaharezLook/Listbox" name="listbox" >
+            <Window type="TaharezLook/ListWidget" name="listbox" >
                 <Property name="Area" value="{{0.00390625,0},{0.465278,0},{0.160156,0},{0.576389,0}}" />
-                <Property name="ForceHorzScrollbar" value="true" />
-                <Property name="ForceVertScrollbar" value="true" />
                 <Window type="TaharezLook/ListboxItem" name="ListboxItem" >
-                    <Property name="Area" value="{{0,0},{0,0},{1,0},{0.25,0}}" />
                     <Property name="Text" value="Item 1" />
-                    <Property name="AutoRenderingSurface" value="true" />
                 </Window>
                 <Window type="TaharezLook/ListboxItem" name="ListboxItem2" >
-                    <Property name="Area" value="{{0,0},{0.25,0},{1,0},{0.5,0}}" />
                     <Property name="Text" value="Item 2" />
-                    <Property name="AutoRenderingSurface" value="true" />
                 </Window>
                 <Window type="TaharezLook/ListboxItem" name="ListboxItem3" >
-                    <Property name="Area" value="{{0,0},{0.5,0},{1,0},{0.75,0}}" />
                     <Property name="Text" value="Item 3" />
                 </Window>
             </Window>
@@ -341,11 +330,9 @@
                     </Window>
                 </Window>
             </Window>
-            <Window type="TaharezLook/Tree" name="Tree" >
+            <Window type="TaharezLook/TreeWidget" name="Tree" >
                 <Property name="Area" value="{{0.492188,0},{0.458333,0},{0.648438,0},{0.680555,0}}" />
                 <Property name="Text" value="Tree" />
-                <Property name="ForceHorzScrollbar" value="true" />
-                <Property name="ForceVertScrollbar" value="true" />
             </Window>
             <Window type="TaharezLook/FrameWindow" name="FrameWindow" >
                 <Property name="Area" value="{{0.269531,0},{0.0833333,0},{0.425781,0},{0.277778,0}}" />
