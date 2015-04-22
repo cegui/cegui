@@ -33,10 +33,30 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+
+LookNFeelOverviewSample class
+
+*************************************************************************/
+
+LookNFeelOverviewSample::LookNFeelOverviewSample()
+{
+    Sample::d_name = "LookNFeelOverviewSample";
+    Sample::d_credits = "Lukas &quot;Ident&quot; Meindl";
+    Sample::d_description =
+        "This sample gives a quick overview of the available stock LookNFeels (Skins) and their skinned widgets."
+        "Most widgets and most skins are shown here and can be directly interacted with.";
+    Sample::d_summary =
+        "The demo uses loads several layouts, each showing a set of widgets from a single skin. "
+        "A combobox is used for selection. It also shows how font and widget scaling works on different resolutions";
+    Sample::d_priority = 99;
+}
+
 /*************************************************************************
 Sample specific initialisation goes here.
 *************************************************************************/
-bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
+bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -51,7 +71,7 @@ bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
-    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load all Fonts we are going to use and which are not loaded via scheme
     d_fontForTaharez = &FontManager::getSingleton().createFromFile("Jura-10.font");
@@ -91,15 +111,15 @@ bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
     skinSelectionCombobox->setSize(CEGUI::USize(cegui_reldim(0.15f), cegui_reldim(0.3f)));
     skinSelectionCombobox->setReadOnly(true);
     skinSelectionCombobox->setSortingEnabled(false);
-    skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&LookNFeelOverviewDemo::handleSkinSelectionAccepted, this));
+    skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&LookNFeelOverviewSample::handleSkinSelectionAccepted, this));
 
-    d_taharezLookListboxItem = new CEGUI::ListboxTextItem("TaharezLook");
+    d_taharezLookListboxItem = new CEGUI::StandardItem("TaharezLook");
     skinSelectionCombobox->addItem(d_taharezLookListboxItem);
-    d_taharezLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
+    //d_taharezLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
 
-    d_vanillaLookListboxItem = new CEGUI::ListboxTextItem("Vanilla");
+    d_vanillaLookListboxItem = new CEGUI::StandardItem("Vanilla");
     skinSelectionCombobox->addItem(d_vanillaLookListboxItem);
-    d_vanillaLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
+    //d_vanillaLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
 
     CEGUI::ListboxTextItem* blaLookListboxItem = new CEGUI::ListboxTextItem("TaharezLook");
 
@@ -110,19 +130,19 @@ bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
 Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void LookNFeelOverviewDemo::deinitialise()
+void LookNFeelOverviewSample::deinitialise()
 {
 }
 
 /*************************************************************************
 An event handler to handle selections
 *************************************************************************/
-bool LookNFeelOverviewDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
+bool LookNFeelOverviewSample::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 {
     const CEGUI::WindowEventArgs& winEventArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
     CEGUI::Combobox* skinSelectionCombobox = static_cast<CEGUI::Combobox*>(winEventArgs.window);
 
-    ListboxItem* selectedItem = skinSelectionCombobox->getSelectedItem();
+    StandardItem* selectedItem = skinSelectionCombobox->getSelectedItem();
 
     while(d_loadedLayoutContainer->getChildCount() > 0)
         d_loadedLayoutContainer->removeChild(d_loadedLayoutContainer->getChildAtIdx(0));
@@ -140,13 +160,4 @@ bool LookNFeelOverviewDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& 
     }
 
     return false;
-}
-
-/*************************************************************************
-Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static LookNFeelOverviewDemo sample;
-    return sample;
 }
