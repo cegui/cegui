@@ -105,13 +105,11 @@ void TabControl::initialiseComponents(void)
     {
         CEGUI::Window* buttonScrollLeft = getChild(ButtonScrollLeft);
         buttonScrollLeft->banPropertyFromXML(Window::VisiblePropertyName);
-        buttonScrollLeft->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
     }
     if (isChild(ButtonScrollRight))
     {
         CEGUI::Window* buttonScrollRight = getChild(ButtonScrollRight);
         buttonScrollRight->banPropertyFromXML(Window::VisiblePropertyName);
-        buttonScrollRight->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
     }
 
 	performChildWindowLayout();
