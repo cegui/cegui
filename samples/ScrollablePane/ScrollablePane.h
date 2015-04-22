@@ -43,7 +43,7 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #include "CEGUI/widgets/ScrollablePane.h"
 #include "CEGUI/widgets/ScrolledContainer.h"
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 
 /*************************************************************************

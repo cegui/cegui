@@ -255,12 +255,3 @@ void ModelViewSample::initListWidgetItems(ListWidget* list_widget)
         ++itor;
     }
 }
-
-/*************************************************************************
-    Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static ModelViewSample sample;
-    return sample;
-}

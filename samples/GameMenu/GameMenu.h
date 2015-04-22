@@ -27,7 +27,7 @@ author:     Lukas E Meindl
 #ifndef _Game_Menu_Sample_
 #define _Game_Menu_Sample_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 namespace CEGUI
 {

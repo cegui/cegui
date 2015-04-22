@@ -27,7 +27,7 @@
 #ifndef _Sample_SimpleGameMenu_h_
 #define _Sample_SimpleGameMenu_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "NavigationStrategies.h"
 #include <vector>
 

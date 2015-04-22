@@ -27,7 +27,7 @@
 #ifndef _SVG_Sample_h_
 #define _SVG_Sample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 #include "CEGUI/ForwardRefs.h"
 

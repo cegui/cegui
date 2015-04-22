@@ -27,7 +27,7 @@
 #ifndef _Sample_Menu_Navigation_h_
 #define _Sample_Menu_Navigation_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "NavigationStrategies.h"
 
 class MenuNavigationSample : public Sample

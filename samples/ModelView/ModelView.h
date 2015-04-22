@@ -27,7 +27,7 @@
 #ifndef _Sample_Model_View_h_
 #define _Sample_Model_View_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "InventoryModel.h"
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/views/TreeView.h"
