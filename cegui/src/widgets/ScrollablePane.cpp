@@ -236,7 +236,7 @@ void ScrollablePane::initialiseComponents(void)
     ScrolledContainer* container = getScrolledContainer();
     
     // ban properties forwarded from here
-    container->banPropertyFromXML(Window::MouseInputPropagationEnabledPropertyName);
+    container->banPropertyFromXML(Window::CursorInputPropagationEnabledPropertyName);
     container->banPropertyFromXML("ContentArea");
     container->banPropertyFromXML("ContentPaneAutoSized");
     horzScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);

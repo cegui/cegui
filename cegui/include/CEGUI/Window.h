@@ -169,7 +169,7 @@ public:
     //! Name of property to access for the get/set the 'inherits alpha' setting for the Window.
     static const String InheritsAlphaPropertyName;
     //! Name of property to access for the the mouse cursor image for the Window.
-    static const String MouseCursorImagePropertyName;
+    static const String CursorImagePropertyName;
     //! Name of property to access for the the 'visible state' setting for the Window.
     static const String VisiblePropertyName;
     //! Name of property to access for the 'restore old capture' setting for the Window.
@@ -178,10 +178,8 @@ public:
     static const String TextPropertyName;
     //! Name of property to access for the 'z-order changing enabled' setting for the Window. 
     static const String ZOrderingEnabledPropertyName;
-    //! Name of property to access for whether the window will receive double-click and triple-click events.
-    static const String WantsMultiClickEventsPropertyName;
     //! Name of property to access for whether the window will receive autorepeat mouse button down events.
-    static const String MouseAutoRepeatEnabledPropertyName;
+    static const String CursorAutoRepeatEnabledPropertyName;
     //! Name of property to access for the autorepeat delay.
     static const String AutoRepeatDelayPropertyName;
     //! Name of property to access for the autorepeat rate.
@@ -197,7 +195,7 @@ public:
     //! Name of property to access for the window will come to the top of the Z-order when clicked.
     static const String RiseOnClickEnabledPropertyName;
     //! Name of property to access for the window ignores mouse events and pass them through to any windows behind it.
-    static const String MousePassThroughEnabledPropertyName;
+    static const String CursorPassThroughEnabledPropertyName;
     //! Name of property to access for the Window will receive drag and drop related notifications.
     static const String DragDropTargetPropertyName;
     //! Name of property to access for the Window will automatically attempt to use a full imagery caching RenderingSurface (if supported by the renderer).
@@ -209,7 +207,7 @@ public:
     //! Name of property to access for the window update mode setting.
     static const String UpdateModePropertyName;
     //! Name of property to access whether unhandled mouse inputs should be propagated back to the Window's parent. 
-    static const String MouseInputPropagationEnabledPropertyName;
+    static const String CursorInputPropagationEnabledPropertyName;
     //! Name of property to access whether the system considers this window to be an automatically created sub-component window.
     static const String AutoWindowPropertyName;
 

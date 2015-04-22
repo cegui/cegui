@@ -84,10 +84,8 @@ namespace CEGUI
         // ban properties forwarded from here
         editbox->banPropertyFromXML(Window::TextPropertyName);
         editbox->banPropertyFromXML("ValidationString");
-        increaseButton->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
-        increaseButton->banPropertyFromXML(Window::MouseAutoRepeatEnabledPropertyName);
-        decreaseButton->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
-        decreaseButton->banPropertyFromXML(Window::MouseAutoRepeatEnabledPropertyName);
+        increaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
+        decreaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
 
         // setup component controls
         increaseButton->setCursorAutoRepeatEnabled(true);
