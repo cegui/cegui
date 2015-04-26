@@ -56,6 +56,7 @@ const String Editbox::EventCaretMoved( "CaretMoved" );
 const String Editbox::EventTextSelectionChanged( "TextSelectionChanged" );
 const String Editbox::EventEditboxFull("EditboxFull");
 const String Editbox::EventTextAccepted("TextAccepted");
+const String Editbox::ReadOnlyMouseCursorImagePropertyName( "ReadOnlyMouseCursorImage" );
 
 //----------------------------------------------------------------------------//
 Editbox::Editbox(const String& type, const String& name) :
@@ -134,6 +135,18 @@ void Editbox::setReadOnly(bool setting)
         d_readOnly = setting;
         WindowEventArgs args(this);
         onReadOnlyChanged(args);
+        
+        // Update the mouse cursor according to the read only state.
+        if (setting)
+        {
+            setMouseCursor(d_readOnlyMouseCursorImage.empty() ?
+                getProperty(Window::MouseCursorImagePropertyName) :
+                d_readOnlyMouseCursorImage);
+        }
+        else
+        {
+            setMouseCursor(getProperty(Window::MouseCursorImagePropertyName));
+        }
     }
 
 }
@@ -950,6 +963,12 @@ void Editbox::addEditboxProperties(void)
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
           &Editbox::setMaxTextLength, &Editbox::getMaxTextLength, String().max_size()
+    );
+    CEGUI_DEFINE_PROPERTY(Editbox, String,
+        "ReadOnlyMouseCursorImage", "Property to get/set the mouse cursor image "
+        "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
+        "Value is a String indicating the image to use.",
+        &Editbox::setReadOnlyMouseCursorImage, &Editbox::getReadOnlyMouseCursorImage, ""
     );
 }
 
