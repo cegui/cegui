@@ -41,6 +41,9 @@ Since we now know what states are required for the widget, it's a good idea to a
   <StateImagery name="Pushed">
   </StateImagery>
 
+  <StateImagery name="PushedOff">
+  </StateImagery>
+
   <StateImagery name="Disabled">
   </StateImagery>
 
@@ -69,6 +72,9 @@ For our button, we will have an imagery section for each of the button states. W
   </StateImagery>
 
   <StateImagery name="Pushed">
+  </StateImagery>
+
+  <StateImagery name="PushedOff">
   </StateImagery>
 
   <StateImagery name="Disabled">
@@ -496,6 +502,6 @@ And for Disabled we again specify some additional colours:
 </StateImagery>
 @endcode
 
-This concludes the introduction tutorial. For full examples of this, and all the other WidgetLook specifications, see the example 'looknfeel' files in the CEGUI distribution, in the directory: @e cegui_mk2/datafiles/looknfeel/ 
+This concludes the introduction tutorial. For full examples of this, and all the other WidgetLook specifications, see the example 'looknfeel' files in the CEGUI distribution, in the directory: @e cegui/datafiles/looknfeel/ 
 
 */
