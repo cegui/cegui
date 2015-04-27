@@ -104,12 +104,6 @@ void Direct3D11TextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool Direct3D11TextureTarget::isRenderingInverted() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 void Direct3D11TextureTarget::initialiseRenderTexture()
 {
     // Create the render target texture

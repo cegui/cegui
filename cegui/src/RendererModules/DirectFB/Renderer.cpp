@@ -329,5 +329,11 @@ DirectFBRenderer::~DirectFBRenderer()
 }
 
 //----------------------------------------------------------------------------//
+bool DirectFBRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

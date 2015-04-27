@@ -179,30 +179,32 @@ public:
     void bindRasterizerState(bool scissorEnabled);
 
     // Implement interface from Renderer
-    RenderTarget& getDefaultRenderTarget();
-    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
-    GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    TextureTarget* createTextureTarget();
-    void destroyTextureTarget(TextureTarget* target);
-    void destroyAllTextureTargets();
-    Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name,
+    virtual RenderTarget& getDefaultRenderTarget();
+    virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+    virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual TextureTarget* createTextureTarget();
+    virtual void destroyTextureTarget(TextureTarget* target);
+    virtual void destroyAllTextureTargets();
+    virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Sizef& size);
-    void destroyTexture(Texture& texture);
-    void destroyTexture(const String& name);
-    void destroyAllTextures();
-    Texture& getTexture(const String& name) const;
-    bool isTextureDefined(const String& name) const;
-    void beginRendering();
-    void endRendering();
-    void setDisplaySize(const Sizef& sz);
-    const Sizef& getDisplaySize() const;
-    const glm::vec2& getDisplayDPI() const;
-    uint getMaxTextureSize() const;
-    const String& getIdentifierString() const;
+    virtual Texture& createTexture(const String& name, const Sizef& size);
+    virtual void destroyTexture(Texture& texture);
+    virtual void destroyTexture(const String& name);
+    virtual void destroyAllTextures();
+    virtual Texture& getTexture(const String& name) const;
+    virtual bool isTextureDefined(const String& name) const;
+    virtual void beginRendering();
+    virtual void endRendering();
+    virtual void setDisplaySize(const Sizef& sz);
+    virtual const Sizef& getDisplaySize() const;
+    virtual const glm::vec2& getDisplayDPI() const;
+    virtual uint getMaxTextureSize() const;
+    virtual const String& getIdentifierString() const;
+    virtual bool isTexCoordSystemFlipped() const;
+
 protected:
     //! constructor
     Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext* context);

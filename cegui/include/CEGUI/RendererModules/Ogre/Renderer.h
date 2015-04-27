@@ -336,26 +336,27 @@ public:
     virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
-    TextureTarget* createTextureTarget();
-    void destroyTextureTarget(TextureTarget* target);
-    void destroyAllTextureTargets();
+    virtual TextureTarget* createTextureTarget();
+    virtual void destroyTextureTarget(TextureTarget* target);
+    virtual void destroyAllTextureTargets();
+    virtual bool isTexCoordSystemFlipped() const;
 
-    Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name, const String& filename,
+    virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name, const String& filename,
         const String& resourceGroup);
-    Texture& createTexture(const String& name, const Sizef& size);
+    virtual Texture& createTexture(const String& name, const Sizef& size);
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     Ogre::SceneManager& getDummyScene() const;
 #endif
-    void destroyTexture(Texture& texture);
-    void destroyTexture(const String& name);
-    void destroyAllTextures();
+    virtual void destroyTexture(Texture& texture);
+    virtual void destroyTexture(const String& name);
+    virtual void destroyAllTextures();
 
-    Texture& getTexture(const String& name) const;
-    bool isTextureDefined(const String& name) const;
+    virtual Texture& getTexture(const String& name) const;
+    virtual bool isTextureDefined(const String& name) const;
 
-    void beginRendering();
-    void endRendering();
+    virtual void beginRendering();
+    virtual void endRendering();
 
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;

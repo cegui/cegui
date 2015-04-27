@@ -80,12 +80,6 @@ void NullTextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool NullTextureTarget::isRenderingInverted() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 String NullTextureTarget::generateTextureName()
 {
     String tmp("_null_tt_tex_");

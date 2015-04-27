@@ -179,7 +179,7 @@ void SampleHandler::setTextureTargetImageArea(float height, float width)
 {
     if(d_textureTarget)
     {
-        bool isTextureTargetVerticallyFlipped = d_textureTarget->isRenderingInverted();
+        bool isTextureTargetVerticallyFlipped = d_textureTarget->getOwner().isTexCoordSystemFlipped();
         CEGUI::Rectf renderArea;
         if(isTextureTargetVerticallyFlipped)
             renderArea = CEGUI::Rectf(0.0f, height, width, 0.0f);

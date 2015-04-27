@@ -135,12 +135,6 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool OgreTextureTarget::isRenderingInverted() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 String OgreTextureTarget::generateTextureName()
 {
     String tmp("_ogre_tt_tex_");

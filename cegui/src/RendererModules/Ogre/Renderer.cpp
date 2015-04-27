@@ -1354,6 +1354,12 @@ bool OgreRenderer::usesDirect3D()
 }
 
 //----------------------------------------------------------------------------//
+bool OgreRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) :
     d_enabled(true), d_owner(owner)

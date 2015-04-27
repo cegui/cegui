@@ -625,7 +625,7 @@ void Direct3D11Renderer::initialiseDepthStencilState()
 }
 
 //----------------------------------------------------------------------------//
-void CEGUI::Direct3D11Renderer::initialiseSamplerStates()
+void Direct3D11Renderer::initialiseSamplerStates()
 {
     D3D11_SAMPLER_DESC samplerDescription;
     ZeroMemory( &samplerDescription, sizeof(samplerDescription) );
@@ -642,8 +642,11 @@ void CEGUI::Direct3D11Renderer::initialiseSamplerStates()
         CEGUI_THROW(RendererException("SamplerDescription creation failed"));
 }
 
-
 //----------------------------------------------------------------------------//
+bool Direct3D11Renderer::isTexCoordSystemFlipped() const
+{
+    return false;
+}
 
-} // End of  CEGUI namespace section
+}
 
