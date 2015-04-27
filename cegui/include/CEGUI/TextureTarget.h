@@ -77,26 +77,6 @@ public:
 
     /*!
     \brief
-        Return whether rendering done on the target texture is inverted in
-        relation to regular textures.
-
-        This is intended to be used when generating geometry for rendering the
-        TextureTarget onto another surface.
-
-    \return
-        - true if the texture content should be considered as inverted
-        vertically in comparison with other regular textures.
-        - false if the texture content has the same orientation as regular
-        textures.
-        
-            
-    \deprecated
-        This function is deprecated.    
-    */
-    virtual bool isRenderingInverted() const = 0;
-
-    /*!
-    \brief
         Return whether this TextureTarget has a stencil buffer attached or not.
     \return 
         - true if a stencil buffer is attached

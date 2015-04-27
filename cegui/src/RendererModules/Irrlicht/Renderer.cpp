@@ -435,5 +435,11 @@ const IrrlichtEventPusher* IrrlichtRenderer::getEventPusher() const
 }
 
 //----------------------------------------------------------------------------//
+bool IrrlichtRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

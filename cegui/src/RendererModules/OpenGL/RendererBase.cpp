@@ -388,6 +388,12 @@ const CEGUI::Rectf& OpenGLRendererBase::getActiveViewPort()
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLRendererBase::isTexCoordSystemFlipped() const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 }
 

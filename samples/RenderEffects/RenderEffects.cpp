@@ -87,16 +87,19 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
                                CEGUI::GeometryBuffer& geometry)
 {
     using namespace CEGUI;
-    Texture& tex = window.getTextureTarget().getTexture();
+    TextureTarget& textarget = window.getTextureTarget();
+    Texture& tex = textarget.getTexture();
 
     static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
+
+    bool isTexCoordSysFlipped = textarget.getOwner().isTexCoordSystemFlipped();
 
     // qw is the width of one subdivision "box", qh is the height of it
     const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
     const float qh = window.getSize().d_height / (ds_yPivotCount - 1);
     const float tcx = qw * tex.getTexelScaling().x;
     const float tcy =
-        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
+        (isTexCoordSysFlipped ? -qh : qh) *
             tex.getTexelScaling().y;
 
     const glm::vec3 windowPosition = glm::vec3(window.getPosition(), 0);
@@ -250,15 +253,18 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
                                CEGUI::GeometryBuffer& geometry)
 {
     using namespace CEGUI;
-    Texture& tex = window.getTextureTarget().getTexture();
+    TextureTarget& textarget = window.getTextureTarget();
+    Texture& tex = textarget.getTexture();
 
     static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
+
+    bool isTexCoordSysFlipped = textarget.getOwner().isTexCoordSystemFlipped();
 
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
     const float tcx = qw * tex.getTexelScaling().x;
     const float tcy =
-        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
+        (isTexCoordSysFlipped ? -qh : qh) *
             tex.getTexelScaling().y;
 
     for (int j = 0; j < tess_y; ++j)
@@ -435,12 +441,15 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
                                CEGUI::GeometryBuffer& geometry)
 {
     using namespace CEGUI;
-    Texture& tex = window.getTextureTarget().getTexture();
+    TextureTarget& textarget = window.getTextureTarget();
+    Texture& tex = textarget.getTexture();
 
     static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
-    float uvTop = window.getTextureTarget().isRenderingInverted() ? 1.0f : 0.0f;
-    float uvBot = window.getTextureTarget().isRenderingInverted() ? 0.0f : 1.0f;
+    bool isTexCoordSysFlipped = textarget.getOwner().isTexCoordSystemFlipped();
+
+    float uvTop = isTexCoordSysFlipped ? 1.0f : 0.0f;
+    float uvBot = isTexCoordSysFlipped ? 0.0f : 1.0f;
 
     const glm::vec3 windowPosition = glm::vec3(window.getPosition(), 0);
     const glm::vec2& currentTopLeft = d_currentPosition ;

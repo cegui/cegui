@@ -372,6 +372,12 @@ void NullRenderer::setDisplaySize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
+bool NullRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 

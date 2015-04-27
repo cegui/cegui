@@ -623,6 +623,12 @@ float OpenGLESRenderer::getNextPOTSize(const float f)
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLESRenderer::isTexCoordSystemFlipped() const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 

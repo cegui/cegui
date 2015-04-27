@@ -251,10 +251,12 @@ void RenderingWindow::realiseGeometry()
 void RenderingWindow::realiseGeometry_impl()
 {
     Texture& tex = d_textarget.getTexture();
+    
+    bool isTexCoordSysFlipped = d_textarget.getOwner().isTexCoordSystemFlipped();
 
     const float tu = d_size.d_width * tex.getTexelScaling().x;
     const float tv = d_size.d_height * tex.getTexelScaling().y;
-    const Rectf tex_rect(d_textarget.isRenderingInverted() ?
+    const Rectf tex_rect(isTexCoordSysFlipped ?
                           Rectf(0, 1, tu, 1 - tv) :
                           Rectf(0, 0, tu, tv));
 
