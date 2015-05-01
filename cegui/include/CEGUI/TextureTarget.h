@@ -88,6 +88,9 @@ public:
         vertically in comparison with other regular textures.
         - false if the texture content has the same orientation as regular
         textures.
+        
+    \deprecated
+        This function is deprecated.
     */
     virtual bool isRenderingInverted() const = 0;
 };
