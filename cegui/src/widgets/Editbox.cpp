@@ -143,7 +143,7 @@ void Editbox::setReadOnly(bool setting)
             if (d_readOnlyMouseCursorImage)
                 setMouseCursor(d_readOnlyMouseCursorImage);
             else
-                setMouseCursor(getProperty(Window::MouseCursorImagePropertyName));
+                setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
         }
         else
         {
