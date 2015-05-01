@@ -617,7 +617,7 @@ protected:
     /*!
     \brief
         Set the read only mouse cursor image.
-    \param image_string
+    \param image
         The Image* to be used.
     \return
         Nothing.
