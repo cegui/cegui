@@ -95,6 +95,53 @@ static Ogre::String S_hlsl_ps_source(
     "}"
 );
 
+#ifdef CEGUI_USE_OGRE_HLMS
+static Ogre::String S_hlsl_d3d11_vs_source(
+    "cbuffer MatrixBuffer\n"
+    "{\n"
+	"    matrix worldViewProjMatrix;\n"
+    "};\n"
+    "\n"
+    "struct VertOut\n"
+    "{\n"
+    "	float4 pos : SV_Position;\n"
+    "	float4 colour : COLOR;\n"
+    "	float2 texcoord0 : TEXCOORD;\n"
+    "};\n"
+    "\n"
+    "// Vertex shader\n"
+    "VertOut main(float3 inPos : POSITION, float4 inColour : COLOR, float2 inTexCoord0 : TEXCOORD)\n"
+    "{\n"
+    "	VertOut output;\n"
+    "\n"
+    "   output.pos = mul(worldViewProjMatrix, float4(inPos, 1.0));\n"
+    "   output.texcoord0 = inTexCoord0;\n"
+    "	output.colour = inColour;\n"
+    "\n"
+    "	return output;\n"
+    "}\n"
+);
+
+static Ogre::String S_hlsl_d3d11_ps_source(
+    "Texture2D texture0 : register(t0);\n"
+    "SamplerState textureSamplerState : register(s0);\n"
+    "\n"
+    "struct VertOut\n"
+    "{\n"
+    "	float4 pos : SV_Position;\n"
+    "	float4 colour : COLOR;\n"
+    "	float2 texcoord0 : TEXCOORD;\n"
+    "};\n"
+    "\n"
+    "float4 main(VertOut input) : SV_Target\n"
+    "{\n"
+    "	float4 colour = texture0.Sample(textureSamplerState, input.texcoord0) * input.colour;\n"
+    "	return colour;\n"
+    "}\n"
+    "\n"
+);
+#endif
+
 static Ogre::String S_glsl_compat_vs_source(
     "void main(void)"
     "{"
@@ -813,7 +860,7 @@ void OgreRenderer::initialiseShaders()
     samplerblock.mU = Ogre::TAM_CLAMP;
     samplerblock.mV = Ogre::TAM_CLAMP;
     samplerblock.mW = Ogre::TAM_CLAMP;
-    samplerblock.mCompareFunction = Ogre::CMPF_ALWAYS_PASS;
+    samplerblock.mCompareFunction = Ogre::NUM_COMPARE_FUNCTIONS;
     d_pimpl->d_hlmsSamplerblock = hlmsManager->getSamplerblock(samplerblock);
 #endif
 
@@ -857,6 +904,10 @@ void OgreRenderer::initialiseShaders()
     }
     else // else we use a hlsl shader with an available syntax code
     {
+#ifdef CEGUI_USE_OGRE_HLMS
+        d_pimpl->d_vertexShader->setParameter("target", "vs_4_1");
+        d_pimpl->d_vertexShader->setSource(S_hlsl_d3d11_vs_source);
+#else
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
         {
             d_pimpl->d_vertexShader->setParameter("target", "vs_4_0");
@@ -874,6 +925,7 @@ void OgreRenderer::initialiseShaders()
                 "OgreRenderer::initialiseShaders: No supported syntax - "
                 "unable to compile '__cegui_internal_vs__'"));
         }
+#endif
     }
 
     d_pimpl->d_vertexShader->load();
@@ -903,6 +955,10 @@ void OgreRenderer::initialiseShaders()
     else
     {
         // D3D shaders
+#ifdef CEGUI_USE_OGRE_HLMS
+        d_pimpl->d_pixelShader->setParameter("target", "ps_4_1");
+        d_pimpl->d_pixelShader->setSource(S_hlsl_d3d11_ps_source);
+#else
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_4_0"))
         {    
             d_pimpl->d_pixelShader->setParameter("target", "ps_4_0");
@@ -922,6 +978,7 @@ void OgreRenderer::initialiseShaders()
                 "OgreRenderer::initialiseShaders: No supported syntax - "
                 "unable to compile '__cegui_internal_ps__'"));
         }
+#endif
     }
 
     d_pimpl->d_pixelShader->load();
@@ -1050,11 +1107,18 @@ void OgreRenderer::bindShaders()
 {
     if (isUsingShaders())
     {
+#ifdef CEGUI_USE_OGRE_HLMS
+        Ogre::HlmsCache hlmsCache;
+        hlmsCache.vertexShader = d_pimpl->d_vertexShader;
+        hlmsCache.pixelShader = d_pimpl->d_pixelShader;
+        d_pimpl->d_renderSystem->_setProgramsFromHlms(&hlmsCache);
+#else
         if (Ogre::GpuProgram* prog = d_pimpl->d_vertexShader->_getBindingDelegate())
             d_pimpl->d_renderSystem->bindGpuProgram(prog);
 
         if (Ogre::GpuProgram* prog = d_pimpl->d_pixelShader->_getBindingDelegate())
             d_pimpl->d_renderSystem->bindGpuProgram(prog);
+#endif
     }
     else
     {
