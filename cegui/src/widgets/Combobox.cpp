@@ -113,8 +113,9 @@ void Combobox::initialiseComponents(void)
     editbox->setFont(d_font);
 
     // ban properties forwarded from here
-    droplist->banPropertyFromXML("Visible");
+    droplist->banPropertyFromXML(Window::VisiblePropertyName);
     editbox->banPropertyFromXML("MaxTextLength");
+    editbox->banPropertyFromXML("ReadOnly");
 
 	// internal event wiring
 	button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));

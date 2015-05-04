@@ -157,8 +157,12 @@ protected:
 
             // only try to set property if target is currently valid.
             if (target_wnd)
-                target_wnd->setProperty(i->second.empty() ?
-                    TypedProperty<T>::d_name : i->second, Helper::toString(value));
+            {
+                const CEGUI::String& propertyName = i->second.empty() ? TypedProperty<T>::d_name : i->second;
+                CEGUI::String propertyValue = Helper::toString(value);
+                target_wnd->setProperty(propertyName, propertyValue);
+                target_wnd->banPropertyFromXML(propertyName);
+            }
         }
     }
 

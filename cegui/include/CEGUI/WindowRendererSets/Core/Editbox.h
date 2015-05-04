@@ -78,10 +78,14 @@ public:
     //! type name for this widget.
     static const String TypeName;
 
-    //! Name of property to access for unselected text colour.
+    //! Name of the optional property to access for the unselected text colour.
     static const String UnselectedTextColourPropertyName;
-    //! Name of property to access for selected text colour.
+    //! Name of the optional property to access for the selected text colour.
     static const String SelectedTextColourPropertyName;
+    //! Name of the optional property to access to obtain active selection rendering colour.
+    static const String ActiveSelectionColourPropertyName;
+    //! Name of the optional property to access to obtain inactive selection rendering colour.
+    static const String InactiveSelectionColourPropertyName;
     //! The default timeout (in seconds) used when blinking the caret.
     static const float DefaultCaretBlinkTimeout;
 
