@@ -46,17 +46,17 @@ EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
 //----------------------------------------------------------------------------//
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
-const String Editbox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
-const String Editbox::EventMaskedRenderingModeChanged( "MaskedRenderingModeChanged" );
-const String Editbox::EventMaskCodePointChanged( "MaskCodePointChanged" );
-const String Editbox::EventValidationStringChanged( "ValidationStringChanged" );
-const String Editbox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
-const String Editbox::EventTextValidityChanged( "TextValidityChanged" );
-const String Editbox::EventCaretMoved( "CaretMoved" );
-const String Editbox::EventTextSelectionChanged( "TextSelectionChanged" );
+const String Editbox::EventReadOnlyModeChanged("ReadOnlyModeChanged");
+const String Editbox::EventMaskedRenderingModeChanged("MaskedRenderingModeChanged");
+const String Editbox::EventMaskCodePointChanged("MaskCodePointChanged");
+const String Editbox::EventValidationStringChanged("ValidationStringChanged");
+const String Editbox::EventMaximumTextLengthChanged("MaximumTextLengthChanged");
+const String Editbox::EventTextValidityChanged("TextValidityChanged");
+const String Editbox::EventCaretMoved("CaretMoved");
+const String Editbox::EventTextSelectionChanged("TextSelectionChanged");
 const String Editbox::EventEditboxFull("EditboxFull");
 const String Editbox::EventTextAccepted("TextAccepted");
-const String Editbox::ReadOnlyMouseCursorImagePropertyName( "ReadOnlyMouseCursorImage" );
+const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorImage");
 
 //----------------------------------------------------------------------------//
 Editbox::Editbox(const String& type, const String& name) :
@@ -139,18 +139,22 @@ void Editbox::setReadOnly(bool setting)
         
         // Update the mouse cursor according to the read only state.
         if (setting)
-        {
-            if (d_readOnlyMouseCursorImage)
-                setMouseCursor(d_readOnlyMouseCursorImage);
-            else
-                setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
-        }
+            setMouseCursor(d_readOnlyMouseCursorImage);
         else
-        {
-            setMouseCursor(getProperty(Window::MouseCursorImagePropertyName));
-        }
+            setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
     }
+}
 
+//----------------------------------------------------------------------------//
+void Editbox::setEnabled(bool enabled)
+{
+    Window::setEnabled(enabled);
+
+    // Update the mouse cursor according to the read only state.
+    if (enabled)
+        setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
+    else
+        setMouseCursor(d_readOnlyMouseCursorImage);
 }
 
 //----------------------------------------------------------------------------//

@@ -461,6 +461,9 @@ public:
     
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
+
+    //! \copydoc Window::setEnabled
+    virtual void setEnabled(bool enabled);
     
     //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
@@ -612,15 +615,13 @@ protected:
         The read-only mouse cursor image.
     */
     const Image* getReadOnlyMouseCursorImage(void) const
-        {return d_readOnlyMouseCursorImage;}
+        { return d_readOnlyMouseCursorImage; }
 
     /*!
     \brief
         Set the read only mouse cursor image.
     \param image
         The Image* to be used.
-    \return
-        Nothing.
     */
     void setReadOnlyMouseCursorImage(const Image* image)
         { d_readOnlyMouseCursorImage = image; }
