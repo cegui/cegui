@@ -64,6 +64,19 @@ typedef SharedPtr<Texture> TexturePtr;
 class Matrix4;
 }
 
+#if (CEGUI_OGRE_VERSION >= (2 << 16))
+// The new Ogre Compositor2 system has to be used since ViewPorts 
+// no longer have the required functionality
+#define CEGUI_USE_OGRE_COMPOSITOR2
+#endif
+
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))
+// The HLMS has to be used since fixed pipeline is disabled
+#define CEGUI_USE_OGRE_HLMS
+#include <OgreRenderOperation.h>
+#include <OgreHlmsSamplerblock.h>
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -78,6 +91,7 @@ struct OgreRenderer_impl;
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
 {
 public:
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -104,7 +118,7 @@ public:
         use the overload that takes an Ogre::RenderTarget as input.
     */
     static OgreRenderer& bootstrapSystem(const int abi = CEGUI_VERSION_ABI);
-
+#endif
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -150,6 +164,7 @@ public:
     */
     static void destroySystem();
 
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     /*!
     \brief
         Create an OgreRenderer object that uses the default Ogre rendering
@@ -161,6 +176,7 @@ public:
         use the overload that takes an Ogre::RenderTarget as input.
     */
     static OgreRenderer& create(const int abi = CEGUI_VERSION_ABI);
+#endif
 
     /*!
     \brief
@@ -349,6 +365,28 @@ public:
         to be flipped (i.e it does the right thing for both D3D and OpenGL).
     */
     const Ogre::Matrix4& getWorldViewProjMatrix() const;
+    
+    /*!
+    \brief
+        Returns if the texture coordinate system is vertically flipped or not. The original of a
+        texture coordinate system is typically located either at the the top-left or the bottom-left.
+        CEGUI, Direct3D and most rendering engines assume it to be on the top-left. OpenGL assumes it to
+        be at the bottom left.        
+ 
+        This function is intended to be used when generating geometry for rendering the TextureTarget
+        onto another surface. It is also intended to be used when trying to use a custom texture (RTT)
+        inside CEGUI using the Image class, in order to determine the Image coordinates correctly.
+
+    \return
+        - true if flipping is required: the texture coordinate origin is at the bottom left
+        - false if flipping is not required: the texture coordinate origin is at the top left
+    */
+    bool isTexCoordSystemFlipped() const { return false; }
+
+#ifdef CEGUI_USE_OGRE_HLMS
+    Ogre::RenderTarget* getOgreRenderTarget();
+    const Ogre::HlmsSamplerblock* getHlmsSamplerblock();
+#endif
 
     // implement CEGUI::Renderer interface
     RenderTarget& getDefaultRenderTarget();

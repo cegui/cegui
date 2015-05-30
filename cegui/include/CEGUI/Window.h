@@ -55,7 +55,7 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 
@@ -150,6 +150,70 @@ class CEGUIEXPORT Window :
     public NamedElement
 {
 public:
+    /*************************************************************************
+        Property name constants
+    *************************************************************************/
+    //! Name of property to access for the alpha value of the Window.
+    static const String AlphaPropertyName;
+    //! Name of property to access for the 'always on top' setting for the Window
+    static const String AlwaysOnTopPropertyName;
+    //! Name of property to access for the 'clipped by parent' setting for the Window
+    static const String ClippedByParentPropertyName;
+    //! Name of property to access for the 'destroyed by parent' setting for the Window
+    static const String DestroyedByParentPropertyName;
+    //! Name of property to access for the 'disabled state' setting for the Window
+    static const String DisabledPropertyName;
+    //! Name of property to access for the font for the Window.
+    static const String FontPropertyName;
+    //! Name of property to access for the ID value of the Window.
+    static const String IDPropertyName;
+    //! Name of property to access for the get/set the 'inherits alpha' setting for the Window.
+    static const String InheritsAlphaPropertyName;
+    //! Name of property to access for the the mouse cursor image for the Window.
+    static const String MouseCursorImagePropertyName;
+    //! Name of property to access for the the 'visible state' setting for the Window.
+    static const String VisiblePropertyName;
+    //! Name of property to access for the 'restore old capture' setting for the Window.
+    static const String RestoreOldCapturePropertyName;
+    //! Name of property to access for the text / caption for the Window.
+    static const String TextPropertyName;
+    //! Name of property to access for the 'z-order changing enabled' setting for the Window. 
+    static const String ZOrderingEnabledPropertyName;
+    //! Name of property to access for whether the window will receive double-click and triple-click events.
+    static const String WantsMultiClickEventsPropertyName;
+    //! Name of property to access for whether the window will receive autorepeat mouse button down events.
+    static const String MouseAutoRepeatEnabledPropertyName;
+    //! Name of property to access for the autorepeat delay.
+    static const String AutoRepeatDelayPropertyName;
+    //! Name of property to access for the autorepeat rate.
+    static const String AutoRepeatRatePropertyName;
+    //! Name of property to access for the whether captured inputs are passed to child windows.
+    static const String DistributeCapturedInputsPropertyName;
+    //! Name of property to access for the custom tooltip for the window. 
+    static const String TooltipTypePropertyName;
+    //! Name of property to access for the tooltip text for the window.
+    static const String TooltipTextPropertyName;
+    //! Name of property to access for the window inherits its parents tooltip text when it has none of its own.
+    static const String InheritsTooltipTextPropertyName;
+    //! Name of property to access for the window will come to the top of the Z-order when clicked.
+    static const String RiseOnClickEnabledPropertyName;
+    //! Name of property to access for the window ignores mouse events and pass them through to any windows behind it.
+    static const String MousePassThroughEnabledPropertyName;
+    //! Name of property to access for the Window will receive drag and drop related notifications.
+    static const String DragDropTargetPropertyName;
+    //! Name of property to access for the Window will automatically attempt to use a full imagery caching RenderingSurface (if supported by the renderer).
+    static const String AutoRenderingSurfacePropertyName;
+    //! Name of property to access for the text parsing setting for the Window.
+    static const String TextParsingEnabledPropertyName;
+    //! Name of property to access for the margin for the Window.
+    static const String MarginPropertyName;
+    //! Name of property to access for the window update mode setting.
+    static const String UpdateModePropertyName;
+    //! Name of property to access whether unhandled mouse inputs should be propagated back to the Window's parent. 
+    static const String MouseInputPropagationEnabledPropertyName;
+    //! Name of property to access whether the system considers this window to be an automatically created sub-component window.
+    static const String AutoWindowPropertyName;
+
     /*************************************************************************
         Event name constants
     *************************************************************************/
@@ -798,12 +862,18 @@ public:
 
     \param useDefault
         Specifies whether to return the default font if this Window has no
-        preferred font set.
+        preferred font set. This is typically set to true but whenever we
+        want to know if a default font would be used, this will be set to
+        false, and if the returned Font is a zero pointer we know that this
+        means a default font would be used otherwise.
 
     \return
         Pointer to the Font being used by this Window.  If the window has no
         assigned font, and \a useDefault is true, then the default system font
         is returned.
+    */
+    /*!  \deprecated This function is deprecated, as the parameter will be removed in the next major version. Separate functions
+         will be added with proper function names to replicate the functionality for useDefault=false.
     */
     const Font* getFont(bool useDefault = true) const;
 
@@ -1191,6 +1261,18 @@ public:
         String object holding the current tooltip text set for this window.
      */
     const String& getTooltipText(void) const;
+
+    /*!
+    \brief
+        Return the current tooltip text set for this Window or the inherited one.
+        If the tooltip text of this window is empty then the inherited value will
+        be used instead.
+
+    \return
+        String object holding the current tooltip text of this window or the 
+        tooltip text this window inherited.
+     */
+    const String& getTooltipTextIncludingInheritance(void) const;
 
     /*!
     \brief
@@ -2540,20 +2622,59 @@ public:
         {return d_bidiVisualMapping;}
 
     /*!
-    \brief Add the named property to the XML ban list for this window.
+    \brief
+        Adds the named property to the XML ban list for this window
+        Essentially a property that is banned from XML will never end up being saved to it.
+        This is very useful if 2 properties overlap (XPosition and Position for example).
 
-    \param property_name Name of the property you want to ban
+        Please note that properties that are not writable (read-only properties) are
+        implicitly/automatically banned from XML, no need to ban them manually.
 
-    Essentially a property that is banned from XML will never end up being saved to it.
-    This is very useful if 2 properties overlap (XPosition and Position for example).
-
-    Please note that properties that are not writable (read-only properties) are
-    implicitly/automatically banned from XML, no need to ban them manually.
+    \param property_name 
+        Name of the property you want to ban
     */
     void banPropertyFromXML(const String& property_name);
 
-    //! Remove the named property from the XML ban list for this window.
+    /*!
+    \brief
+        Adds the named property to the XML ban list for this window and all of its child windows.
+        Essentially a property that is banned from XML will never end up being saved to it.
+        This is very useful if 2 properties overlap (XPosition and Position for example).
+
+        Please note that properties that are not writable (read-only properties) are
+        implicitly/automatically banned from XML, no need to ban them manually.
+
+    \param property_name 
+        Name of the property you want to ban
+    */
+    void banPropertyFromXMLRecursive(const String& property_name);
+
+    /*!
+    \brief
+        Removes the named property from the XML ban list for this window.
+        Essentially a property that is banned from XML will never end up being saved to it.
+
+        Please note that properties that are not writable (read-only properties) are
+        implicitly/automatically banned from XML.
+
+    \param property_name 
+        Name of the property you want to unban
+    */
     void unbanPropertyFromXML(const String& property_name);
+
+    /*!
+    \brief
+        Removes the named property from the XML ban list for this window and all of its child windows.
+        Essentially a property that is banned from XML will never end up being saved to it.
+
+        Please note that properties that are not writable (read-only properties) are
+        implicitly/automatically banned from XML.
+
+    \param property_name 
+        Name of the property you want to unban
+    */
+    void unbanPropertyFromXMLRecursive(const String& property_name);
+    
 
     /*!
     \brief

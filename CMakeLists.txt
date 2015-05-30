@@ -108,7 +108,14 @@ find_package(PVRTools)
 find_package(Lua51)
 find_package(TOLUAPP)
 find_package(PythonInterp)
-find_package(PythonLibs)
+
+## ensure python3 not picked up as default
+find_package(PythonVersion)
+if (UNIX AND PYTHON_VERSION_FOUND)
+  find_package(PythonLibs ${PYTHON_VERSION_STRING} EXACT)
+else()
+  find_package(PythonLibs)
+endif()
 find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system timer)
 
 find_package(Doxygen)

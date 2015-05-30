@@ -4,7 +4,7 @@ http://www.cegui.org.uk
 
 Copyright ©2004 - 2014 Paul D Turner, The CEGUI Development Team and Contributing Authors
 
-The majority of the auxiliary files for CEGUI, that used to be plain text, are now kept in a "doxygenised" format within the doc/doxygen directory - please see those files, or generate the documentation for a more friendly format. Alternativelly, visit http://static.cegui.org.uk/docs for all your documentation needs!
+The majority of the auxiliary files for CEGUI, that used to be plain text, are now kept in a "doxygenised" format within the doc/doxygen directory - please see those files, or generate the documentation for a more friendly format. Alternatively, visit http://static.cegui.org.uk/docs for all your documentation needs!
 
 What follows is just a quick-start guide, go to our doxygen docs for more detailed documentation.
 
@@ -82,25 +82,28 @@ cd build/bin/
 CEGUI_SAMPLE_DATAPATH=../../datafiles ./CEGUISampleFramework-0 ../datafiles/samples/samples.xml
 ```
 
-## We want to clarify some common misconceptions about CEGUI:
+## We want to answer some questions and misconceptions:
 
-### "It causes a DLL hell" or "Oh no, so many dll files!"
-First off, the term "DLL hell" is used wrongly by users in this context. It does not mean "I see many DLL files, this must be hell!". Dynamically linking the CEGUI library is the best way to have things working as they are supposed to and guaranteeing good compatibility and a low chance of issues arising with dependencies. On Windows we heavily recommend to never use static linking with CEGUI and past experience has proven us right. A short summary of static vs dynamic linking can be found here: http://stackoverflow.com/questions/1993390/static-linking-vs-dynamic-linking
+### Why are there so many dependencies?
+CEGUI has relatively few **required** dependencies (currently only glm) and many **optional** dependencies. The fact that it supports many different rendering libraries and engines, many different image loaders/codecs (with pass through options) and many different xml parsers is a good thing and only an uninformed person would tell you otherwise.
 
-### "It has useless version numbers in the dlls and executables"
+### CMake tells me something was not found, is this a problem?
+If CMake tells you that **something** was not found, you **shall not panic** ;) ! Most probably it's a harmless message. You should only worry if a dependency you know you need is not found or if no dependencies are found at all. In the latter case, on Windows and Mac OS X, you probably did not put the "dependencies" folder (including the dependencies compiled in Debug/Release/whatever-else-you-need) into the folder containing all CEGUI files and folders. You can also specify another folder in CMake using the variable CMAKE_PREFIX_PATH.
+
+### What are the version numbers in the dlls and executables good for?
 This numbering system does actually serve a very important purpose! Please let us keep them. It allows Linux distributions (and others) to install multiple CEGUI API versions alongside which eases migration and speeds up adoption of new CEGUI versions. On Windows this will allow us to provide you with precompiled CEGUI dependencies using Nuget in the future.
 
-### "It has a killion dependencies"
-CEGUI has relatively few **required** dependencies (currently only glm) and many optional dependencies. The fact that it supports many different rendering libraries and engines, many different image loaders/codecs (with pass through options) and many different xml parsers is a good thing and only an uninformed person would tell you otherwise.
+### In my application, the OS cursors that is shown above the CEGUI cursor is a lot faster, why?
+This is expected behaviour. First of all you should always test performance in Release mode, but even there the cursor will be slower. The reason is simply that it is very unlikely any application will have a cursor as fast as the OS cursor. Also remember that the speed is closely tied to your frame rate, so if you run the HelloWorld demo at 5000 FPS, the difference will be less but still noticable. Any game, simulation or other application out there that renders its own cursor via OpenGL/Direct3D functions similarly. However, the cursor speed is not an issue for users if your application runs at rasonable frame rates (>60 FPS) without frame drops and will not be perceived as such. Once you hide the OS cursor then the delay will probably not be noticable to you anymore.
 
-### "CMake tells me something was not found"
-If CMake tells you that **something** was not found, you **shall not panic** ;) ! Most probably it's a harmless message. You should only worry if not a single dependency was found. On Windows and Mac OS X, you should however make sure you placed the dependency folder correctly before running Cmake.
+### So many DLLs, why does CEGUI cause a "DLL hell"? / Why is static linking on Windows recommended against?
+First off, the term "DLL hell" is used wrongly in this context. It does not mean "I see many DLL files, this must be hell!". Dynamically linking the CEGUI library is the best way to have things working as they are supposed to and guaranteeing good compatibility and a low chance of issues arising with dependencies. On Windows we heavily recommend to use dynamic linking with CEGUI rather than static linking, and past experience has proven us right on this matter. In the upcoming 1.0 version we will reduce the amount of DLLs CEGUI produces. The Renderers will always be separate, however. A short summary of static vs dynamic linking can be found here: http://stackoverflow.com/questions/1993390/static-linking-vs-dynamic-linking
 
-### "It is slow"
-Whenever users complained in the forums about CEGUI's speed it turned out to be that they either ran the application in Debug configuration (which, clearly, the compiler does not compile with full optimisations) or did something wrong (such as updating CEGUI the wrong way or causing unnecessary amounts of events or creating event handling functions that cause the issues on the user's side). Only occasionally it can be tracked down to a bug, but mostly that is connected to specific usage.
+### Is CEGUI slower/faster than other libraries? Why is it slow in my case?
+Mostly when users complained in the forums about CEGUI's speed, it turned out to be that they either ran the application in Debug config or did something wrong: It can be slow if you are loading layout resources/files every frame or causing unnecessary updates and events. Or it can be slow if you are unnecessarily updating CEGUI multiple times per frame in your program. If you cannot find the issue then it is best to perform a forum/google search and - if you do not find anything helpful - to describe your setup in detail and what issues you have. When CEGUI gets slow it can also be due to a very specific usage of specific features, which we did not expect or test. In this case we would like you to describe your use-case in the forum so we can find a solution or, if you are capable of solving the issue yourself, create a pull-request on bitbucket.
 
-While no complex library out there will ever be perfectly optimised, CEGUI is still to be considered highly performant. CEGUI can easily compete with other GUI libraries in speed. This is true for the computations done on the CPU as well as those on the GPU and the resulting rendering speed. It still runs optimally when hundreds of windows are opened and rendered at the same time.
+In general CEGUI is very fast and can easily compete with other GUI libraries in speed (especially Flash-based ones, since they do not access OpenGL or Direct3D directly). While no complex library out there will ever be perfectly optimised, CEGUI can be considered highly performant. This is true for the computations done on the CPU as well as those on the GPU. It still runs optimally when hundreds of windows are opened and rendered at the same time.
 
-The best proof that CEGUI is fast is that big proprietary games, which displays hundreds of widgets and use complex hierarchies, have been made using CEGUI (Torchlight 1, Torchlight 2, Venetica, etc.). CEGUI is definitely not *too slow to use*. It could be too slow if you are doing something wrong - like loading layout files every frame or causing unnecessary updates and events. In this case it is best to do a forum search and - if you do not find anything helpful - to describe your setup in detail and what issues you have.
+The best proof that CEGUI is fast is that big proprietary games, which displays hundreds of widgets and use complex hierarchies, have been made using CEGUI (Torchlight 1, Torchlight 2, Venetica, etc.).
 
-We expect CEGUI to perform very well, and in a lot of cases faster than other libraries. This is epecially true for GUI libraries and toolkits that depend on Flash or similar techniques for rendering and do not access OpenGL or Direct3D directly. Most of our samples, if started in Release mode, will render at speeds above 3000 frames per second on a modern CPU and GPU. As an additional note for people who like to cite or look at benchmarks, we want you to keep in mind that benchmarks are often very situation-dependent and could easily misrepresent a library's actual speed by wrong or unusual usage.
+Most of our samples, if started in Release mode, will render at speeds above 3000 frames per second on a modern CPU and GPU. As an additional note for some people who liked to cite dubious benchmarks regarding such speed comparisons: benchmarks are situation-dependent and could easily misrepresent a library's actual speed by wrong, inefficient or unusual usage. If used correctly and inside the bounds of expected usage, CEGUI performs extremely well.
