@@ -60,12 +60,6 @@ Texture& OpenGLTextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLTextureTarget::isRenderingInverted() const
-{
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLTextureTarget::grabTexture()
 {
     if (d_CEGUITexture)

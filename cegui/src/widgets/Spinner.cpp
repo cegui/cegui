@@ -84,20 +84,16 @@ namespace CEGUI
         // ban properties forwarded from here
         editbox->banPropertyFromXML(Window::TextPropertyName);
         editbox->banPropertyFromXML("ValidationString");
-        increaseButton->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
-        increaseButton->banPropertyFromXML(Window::MouseAutoRepeatEnabledPropertyName);
-        decreaseButton->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
-        decreaseButton->banPropertyFromXML(Window::MouseAutoRepeatEnabledPropertyName);
+        increaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
+        decreaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
 
         // setup component controls
-        increaseButton->setWantsMultiClickEvents(false);
-        increaseButton->setMouseAutoRepeatEnabled(true);
-        decreaseButton->setWantsMultiClickEvents(false);
-        decreaseButton->setMouseAutoRepeatEnabled(true);
+        increaseButton->setCursorAutoRepeatEnabled(true);
+        decreaseButton->setCursorAutoRepeatEnabled(true);
 
         // perform event subscriptions.
-        increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+        increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+        decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
         editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation
@@ -216,22 +212,22 @@ namespace CEGUI
             "CurrentValue", "Property to get/set the current value of the spinner.  Value is a float.",
             &Spinner::setCurrentValue, &Spinner::getCurrentValue, 0.0f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, double,
             "StepSize", "Property to get/set the step size of the spinner.  Value is a float.",
             &Spinner::setStepSize, &Spinner::getStepSize, 1.0f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, double,
             "MinimumValue", "Property to get/set the minimum value setting of the spinner.  Value is a float.",
             &Spinner::setMinimumValue, &Spinner::getMinimumValue, -32768.000000f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, double,
             "MaximumValue", "Property to get/set the maximum value setting of the spinner.  Value is a float.",
             &Spinner::setMaximumValue, &Spinner::getMaximumValue, 32767.000000f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, Spinner::TextInputMode,
             "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
             &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::Integer
@@ -414,7 +410,7 @@ namespace CEGUI
 
     bool Spinner::handleIncreaseButton(const EventArgs& e)
     {
-        if (((const MouseEventArgs&)e).button == LeftButton)
+        if (((const CursorInputEventArgs&)e).source == CIS_Left)
         {
             setCurrentValue(d_currentValue + d_stepSize);
             return true;
@@ -425,7 +421,7 @@ namespace CEGUI
 
     bool Spinner::handleDecreaseButton(const EventArgs& e)
     {
-        if (((const MouseEventArgs&)e).button == LeftButton)
+        if (((const CursorInputEventArgs&)e).source == CIS_Left)
         {
             setCurrentValue(d_currentValue - d_stepSize);
             return true;

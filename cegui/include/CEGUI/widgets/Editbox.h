@@ -41,6 +41,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class UndoHandler;
+
 //! Base class for the EditboxWindowRenderer class
 class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
 {
@@ -60,7 +62,7 @@ public:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    virtual size_t getTextIndexFromPosition(const Vector2f& pt) const = 0;
+    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
 };
 
 //----------------------------------------------------------------------------//
@@ -148,15 +150,15 @@ public:
     /** Mouse cursor image property name to use when the edit box is
      * in read-only mode.
      */
-    static const String ReadOnlyMouseCursorImagePropertyName;
+    static const String ReadOnlyCursorImagePropertyName;
 
     /*!
     \brief
         return true if the Editbox has input focus.
 
     \return
-        - true if the Editbox has keyboard input focus.
-        - false if the Editbox does not have keyboard input focus.
+        - true if the Editbox has input focus.
+        - false if the Editbox does not have input focus.
     */
     bool hasInputFocus(void) const;
 
@@ -458,7 +460,7 @@ public:
 
     //! \copydoc Window::performCut
     virtual bool performCut(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
 
@@ -470,6 +472,12 @@ public:
 
     //! Destructor for Editbox class.
     virtual ~Editbox(void);
+
+    //! \copydoc Window::performUndo
+    virtual bool performUndo();
+
+    //! \copydoc Window::performRedo
+    virtual bool performRedo();
 
 protected:
     /*!
@@ -484,7 +492,7 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    size_t getTextIndexFromPosition(const Vector2f& pt) const;
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const;
 
     //! Clear the currently defined selection (just the region, not the text).
     void clearSelection(void);
@@ -522,23 +530,23 @@ protected:
     //! Processing for Delete key
     void handleDelete(void);
 
-    //! Processing to move caret one character left
-    void handleCharLeft(uint sysKeys);
+    //! Processing to move caret one character left (and optionally select it)
+    void handleCharLeft(bool select);
 
-    //! Processing to move caret one word left
-    void handleWordLeft(uint sysKeys);
+    //! Processing to move caret one word left (and optionally select it)
+    void handleWordLeft(bool select);
 
-    //! Processing to move caret one character right
-    void handleCharRight(uint sysKeys);
+    //! Processing to move caret one character right (and optionally select it)
+    void handleCharRight(bool select);
 
-    //! Processing to move caret one word right
-    void handleWordRight(uint sysKeys);
+    //! Processing to move caret one word right (and optionally select it)
+    void handleWordRight(bool select);
 
-    //! Processing to move caret to the start of the text.
-    void handleHome(uint sysKeys);
+    //! Processing to move caret to the start of the text. (and optionally select it)
+    void handleHome(bool select);
 
-    //! Processing to move caret to the end of the text
-    void handleEnd(uint sysKeys);
+    //! Processing to move caret to the end of the text (and optionally select it)
+    void handleEnd(bool select);
 
     //! validate window renderer
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
@@ -614,8 +622,8 @@ protected:
     \return
         The read-only mouse cursor image.
     */
-    const Image* getReadOnlyMouseCursorImage(void) const
-        { return d_readOnlyMouseCursorImage; }
+    const Image* getReadOnlyCursorImage(void) const
+        { return d_readOnlyCursorImage; }
 
     /*!
     \brief
@@ -623,24 +631,23 @@ protected:
     \param image
         The Image* to be used.
     */
-    void setReadOnlyMouseCursorImage(const Image* image)
-        { d_readOnlyMouseCursorImage = image; }
+    void setReadOnlyCursorImage(const Image* image)
+        { d_readOnlyCursorImage = image; }
 
     // Overridden event handlers
-    void onMouseButtonDown(MouseEventArgs& e);
-    void onMouseButtonUp(MouseEventArgs& e);
-    void onMouseDoubleClicked(MouseEventArgs& e);
-    void onMouseTripleClicked(MouseEventArgs& e);
-    void onMouseMove(MouseEventArgs& e);
+    void onCursorPressHold(CursorInputEventArgs& e);
+    void onCursorActivate(CursorInputEventArgs& e);
+    void onCursorMove(CursorInputEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);
-    void onCharacter(KeyEventArgs& e);
-    void onKeyDown(KeyEventArgs& e);
+    void onCharacter(TextEventArgs& e);
     void onTextChanged(WindowEventArgs& e);
+
+    void onSemanticInputEvent(SemanticEventArgs& e);
 
     //! True if the editbox is in read-only mode
     bool d_readOnly;
     //! The read only mouse cursor image.
-    const Image* d_readOnlyMouseCursorImage;
+    const Image* d_readOnlyCursorImage;
     //! True if the editbox text should be rendered masked.
     bool d_maskText;
     //! Code point to use when rendering masked text.
@@ -667,6 +674,8 @@ protected:
     MatchState d_validatorMatchState;
     //! Previous match state change response
     bool d_previousValidityChangeResponse;
+    //! Undo handler
+    UndoHandler *d_undoHandler;
 
 private:
 

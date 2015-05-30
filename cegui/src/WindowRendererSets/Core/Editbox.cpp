@@ -119,8 +119,22 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
-    const StateImagery* imagery = &wlf.getStateImagery(
-        w->isEffectiveDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
+    String state;
+
+    if (w->isEffectiveDisabled())
+        state = "Disabled";
+    else
+    {
+        if (w->isReadOnly())
+            state = "ReadOnly";
+        else
+            state = "Enabled";
+
+        if (w->isFocused())
+            state += "Focused";
+    }
+
+    const StateImagery* imagery = &wlf.getStateImagery(state);
 
     imagery->render(*w);
 }
@@ -236,7 +250,6 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
-    const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
     ColourRect unselectedColours;
     setColourRectToUnselectedTextColour(unselectedColours);
@@ -266,25 +279,22 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     // draw pre-highlight text
     String sect = text.substr(0, w->getSelectionStartIndex());
     colours = unselectedColours;
-    colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffer(), sect,
-                       text_part_rect.getPosition(), &text_area, colours);
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
+                       &text_area, true, colours);
 
     // draw highlight text
     sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
-    colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffer(), sect,
-                       text_part_rect.getPosition(), &text_area, colours);
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
+                       &text_area, true, colours);
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
     colours = unselectedColours;
-    colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &text_area, colours);
+    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
+                   &text_area, true, colours);
 }
 
 //----------------------------------------------------------------------------//
@@ -304,7 +314,6 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
-    const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
     ColourRect unselectedColour;
     setColourRectToUnselectedTextColour(unselectedColour);
@@ -316,9 +325,8 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     {
         // no highlighted text - we can draw the whole thing
         colours = unselectedColour;
-        colours.modulateAlpha(alpha_comp);
         text_part_rect.d_min.d_x =
-            font->drawText(w->getGeometryBuffer(), text,
+            font->drawText(w->getGeometryBuffers(), text,
                            text_part_rect.getPosition(), &text_area, colours);
     }
     else
@@ -350,7 +358,6 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             if (highlighted)
             {
                 setColourRectToSelectedTextColour(colours);
-                colours.modulateAlpha(alpha_comp);
 
                 {
 
@@ -369,9 +376,8 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             else
             {
                 colours = unselectedColour;
-                colours.modulateAlpha(alpha_comp);
             }
-            font->drawText(w->getGeometryBuffer(), currChar,
+            font->drawText(w->getGeometryBuffers(), currChar,
                            text_part_rect.getPosition(), &text_area, colours);
 
             // adjust rect for next section
@@ -412,12 +418,12 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getTextIndexFromPosition(const Vector2f& pt) const
+size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
     // calculate final window position to be checked
-    float wndx = CoordConverter::screenToWindowX(*w, pt.d_x);
+    float wndx = CoordConverter::screenToWindowX(*w, pt.x);
 
     wndx -= d_lastTextOffset;
 
