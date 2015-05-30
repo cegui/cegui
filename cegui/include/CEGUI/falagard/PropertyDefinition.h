@@ -63,7 +63,7 @@ public:
     //------------------------------------------------------------------------//
     Property* clone() const
     {
-        return CEGUI_NEW_AO PropertyDefinition<T>(*this);
+        return new PropertyDefinition<T>(*this);
     }
 
 protected:

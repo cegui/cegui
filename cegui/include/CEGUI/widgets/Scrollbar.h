@@ -75,7 +75,7 @@ public:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    virtual float getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
+    virtual float getAdjustDirectionFromPoint(const glm::vec2& pt) const  = 0;
 };
 
 /*!
@@ -493,7 +493,7 @@ protected:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    float getAdjustDirectionFromPoint(const Vector2f& pt) const;
+    float getAdjustDirectionFromPoint(const glm::vec2& pt) const;
 
     /** implementation func that updates scroll position value, returns true if
      * value was changed.  NB: Fires no events and does no other updates.
@@ -538,8 +538,8 @@ protected:
     virtual void onScrollConfigChanged(WindowEventArgs& e);
 
     // Overridden event handlers
-    virtual void onMouseButtonDown(MouseEventArgs& e);
-    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
 
     // base class overrides
     void banPropertiesForAutoWindow();

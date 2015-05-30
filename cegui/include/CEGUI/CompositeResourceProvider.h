@@ -28,7 +28,6 @@ Author:   Hans Mackowiak (Hanmac) hanmac@gmx.de
 #define _CEGUICompositeResourceProvider_h_
 #include "CEGUI/Base.h"
 #include "CEGUI/IteratorBase.h"
-#include "CEGUI/MemoryAllocation.h"
 #include "CEGUI/ResourceProvider.h"
 #include <map>
 
@@ -74,7 +73,7 @@ public:
       */
   template<typename T>void add(const String& name)
   {
-    add(CEGUI_NEW_AO T,name);
+    add(new T,name);
   }
   /*!
       \brief

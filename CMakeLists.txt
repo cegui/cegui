@@ -31,8 +31,8 @@ project(cegui)
 ################################################################################
 # Set up version information
 ################################################################################
-set( CEGUI_VERSION_MAJOR 0)
-set( CEGUI_VERSION_MINOR 9999)
+set( CEGUI_VERSION_MAJOR 9999)
+set( CEGUI_VERSION_MINOR 0)
 set( CEGUI_VERSION_PATCH 0)
 set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION_PATCH} )
 
@@ -70,26 +70,32 @@ if ((WIN32 OR APPLE) AND NOT CMAKE_PREFIX_PATH)
     set (CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
+if(ANDROID)
+    set(CMAKE_FIND_ROOT_PATH ${CEGUI_DEPENDENCIES_DIR} "${CMAKE_FIND_ROOT_PATH}")
+    set (CMAKE_LIBRARY_ARCHITECTURE ${ANDROID_ABI})
+endif() 
+
 # Look for packages
 find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
 find_package(Fribidi)
-if (NOT WIN32)
+if (NOT WIN32 AND NOT ANDROID)
     find_package(Iconv REQUIRED)
 endif()
 
 find_package(OpenGL)
 find_package(GLEW)
-find_package(GLM)
+find_package(GLM REQUIRED)
 find_package(GLFW)
 find_package(DirectXSDK)
-find_package(D3DX11Effects)
 find_package(Irrlicht)
 find_package(Ogre)
 find_package(OIS)
 find_package(DirectFB)
 find_package(OpenGLES)
+find_package(OpenGLES2)
+find_package(OpenGLES3)
 
 find_package(EXPAT)
 find_package(XercesC)
@@ -133,32 +139,28 @@ be mindful of which C/C++ runtime setting has been used to compile the various
 components - they must all match or you will get crashes, heap corruption and/or
 other issues." FALSE "WIN32 OR APPLE" FALSE)
 option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
+option( CEGUI_BUILD_DYNAMIC_CONFIGURATION "Dynamic libs to be built.  Always true except for Android" TRUE)
 option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindoFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
 # sanity check on static build option for factory method
 if (CEGUI_BUILD_STATIC_FACTORY_MODULE AND NOT CEGUI_BUILD_STATIC_CONFIGURATION)
-  message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
+    message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
 endif()
-option( CEGUI_CUSTOM_ALLOCATORS "If checked, CEGUI can use custom allocation. (for experienced developers only!)" FALSE )
-cmake_dependent_option( CEGUI_CUSTOM_ALLOCATORS_DEBUG "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" FALSE "CEGUI_CUSTOM_ALLOCATORS" FALSE )
-set( CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUI/MemoryStdAllocator.h" CACHE STRING "Which include file contains memory allocators and allocation configuration. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)
-We have bundled 2 allocators, mostly for demonstrational purposes.
-CEGUI/MemoryStdAllocator.h contains malloc allocator, use it as a starting point for your own allocators
-CEGUI/MemoryOgreAllocator.h delegates allocation to Ogre, which may be useful to Ogre users (you will have to manually change linking options of CEGUIBase!)" )
+if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
+    message(SEND_ERROR "You may not disable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
+endif()
 
 set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
 1 - utf8 and utf32 aware inbuilt string,
-2 - std::string without custom allocation,
-3 - std::basic_string allocated according to allocator config" )
+2 - regular std::string"
+)
 
-# sanity check std::basic_string and allocator and allocators actually being used
-if (${CEGUI_STRING_CLASS} MATCHES 3 AND NOT CEGUI_CUSTOM_ALLOCATORS)
-    message(SEND_ERROR "You requested std::basic_string allocated according to allocator as CEGUI::String even though CEGUI is not being built with custom allocators enabled!")
-endif()
 
 option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
 option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
+
+option( CEGUI_BUILD_COMMON_DIALOGS "Specifies whether to build the CommonDialogs library, which contains the code for the ColourPicker and other dialogs" TRUE)
 
 option( CEGUI_BUILD_XMLPARSER_EXPAT "Specifies whether to build the Expat based XMLParser module" ${EXPAT_FOUND} )
 option( CEGUI_BUILD_XMLPARSER_XERCES "Specifies whether to build the Xerces-C++ based XMLParser module" ${XERCESC_FOUND} )
@@ -174,16 +176,16 @@ option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based Ima
 option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" FALSE )
 option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" ${PVRTOOLS_FOUND} )
 
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND")
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLEW_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" "OPENGL_FOUND;GLEW_FOUND")
 option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" ${OGRE_FOUND} )
 option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" ${IRRLICHT_FOUND} )
 option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module (not supported!)" FALSE )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to build the Direct3D 9 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 9" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
 option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
+option( CEGUI_BUILD_RENDERER_OPENGLES2 "Specifies whether to build the OpenGLES2 renderer module" ${OPENGLES2_FOUND})
+option( CEGUI_BUILD_RENDERER_OPENGLES2_WITH_GLES3_SUPPORT "Build the OpenGLES2 renderer module with GLES3 features" ${OPENGLES3_FOUND})
 
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
@@ -223,30 +225,34 @@ else()
 endif()
 set (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE ${CEGUI_BUILD_RENDERER_OGRE})
 set (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE ${CEGUI_BUILD_RENDERER_IRRLICHT})
-set (CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D9})
-set (CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D10})
 set (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D11})
 set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
+set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE ${CEGUI_BUILD_RENDERER_OPENGLES2})
 
-# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the SampleBrowser won't support the respective Renderers and the option to choose them won't show up
+#Only build the opengles2 sample renderer for Android
+if (NOT ANDROID) 
+    set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE FALSE)
+endif()
+
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
 if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
     if (NOT OIS_FOUND)
-        message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (OIS not found). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
+        message(WARNING "The SampleFramework is deactivated due to missing Ogre dependencies (OIS not found)")
     else()
-        message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (boost libraries). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
+        message(WARNING "The SampleFramework is deactivated due to missing Ogre dependencies (boost libraries)")
     endif()
-    set (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE FALSE)
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
     if(NOT GLFW_FOUND)
         set (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE FALSE)
-        message(STATUS "Info: The OpenGL- and/or OpenGL3 Renderers are disabled in the SampleBrowser because of missing dependencies (GLFW library).  Please add the GFLW dependency and run 'Configure' in CMake again, in case you want to run the SampleBrowser using the OpenGL or OpenGL3 Renderers.")
+        message(WARNING "Info: The OpenGL- and/or OpenGL3 Renderers are disabled in the SampleBrowser because of missing dependencies (GLFW library).  Please add the GFLW dependency and run 'Configure' in CMake again, in case you want to run the SampleBrowser using the OpenGL or OpenGL3 Renderers.")
     endif()
 endif()
 
 # If we use a Renderer then our samples should be ON by default
-if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE OR CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE)
+if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE OR CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE OR CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
@@ -257,6 +263,16 @@ option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample appli
 
 if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
+endif()
+
+if (ANDROID)
+    set(CEGUI_BUILD_STATIC_CONFIGURATION TRUE CACHE BOOL "Forcing static build for Android" FORCE)
+    set(CEGUI_BUILD_STATIC_FACTORY_MODULE TRUE CACHE BOOL "Forcing static factory module for Android" FORCE)
+    set(CEGUI_BUILD_DYNAMIC_CONFIGURATION FALSE CACHE BOOL "Disable dynamic build for Android" FORCE)
+    set(CEGUI_BUILD_RENDERER_OPENGLES FALSE CACHE BOOL "Disable OpenGL ES 1 RenderSystem for Android" FORCE)
+    if (CEGUI_BUILD_RENDERER_OPENGLES2 AND CEGUI_BUILD_RENDERER_OGRE)
+        message(SEND_ERROR "Either OpenGLES2 Renderer or Ogre Renderer can be built for android at once.  Please disable one of the renderers.")
+    endif()
 endif()
 
 if (WIN32 OR APPLE)
@@ -305,11 +321,10 @@ cegui_set_library_name( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
 cegui_set_library_name( CEGUI_OPENGL3_RENDERER_LIBNAME CEGUIOpenGL3Renderer )
 cegui_set_library_name( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
 cegui_set_library_name( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
-cegui_set_library_name( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
-cegui_set_library_name( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
 cegui_set_library_name( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
 cegui_set_library_name( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
 cegui_set_library_name( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
+cegui_set_library_name( CEGUI_OPENGLES2_RENDERER_LIBNAME CEGUIOpenGLES2Renderer )
 cegui_set_library_name( CEGUI_DIRECTFB_RENDERER_LIBNAME CEGUIDirectFBRenderer )
 
 # XML parser module names
@@ -341,7 +356,7 @@ set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
 set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 
 # SampleFramework executable related names
-cegui_set_executable_name( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework )
+cegui_set_executable_name( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleBrowser )
 
 # Additional lib names
 cegui_set_library_name( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
@@ -437,6 +452,12 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/cegui/include
 )
 
+################################################################################
+# Add GLM header locations (global dependency, required)
+################################################################################
+include_directories(
+    ${GLM_H_PATH}
+)
 
 ################################################################################
 # Adjust configuration based on option settings
@@ -546,10 +567,11 @@ add_subdirectory(cegui/src/ImageCodecModules)
 add_subdirectory(cegui/src/WindowRendererSets)
 add_subdirectory(cegui/src/ScriptModules)
 
-add_subdirectory(cegui/src/CommonDialogs)
+if(CEGUI_BUILD_COMMON_DIALOGS)
+    add_subdirectory(cegui/src/CommonDialogs)
+endif()
 
 if (CEGUI_SAMPLES_ENABLED)
-    add_subdirectory(samples_framework)
     add_subdirectory(samples)
 endif()
 

@@ -50,7 +50,7 @@ EventSet::~EventSet(void)
 //----------------------------------------------------------------------------//
 void EventSet::addEvent(const String& name)
 {
-    addEvent(*CEGUI_NEW_AO Event(name));
+    addEvent(*new Event(name));
 }
 
 //----------------------------------------------------------------------------//
@@ -60,7 +60,7 @@ void EventSet::addEvent(Event& event)
 
     if (isEventPresent(name))
     {
-        CEGUI_DELETE_AO &event;
+        delete &event;
 
         CEGUI_THROW(AlreadyExistsException(
             "An event named '" + name + "' already exists in the EventSet."));
@@ -76,7 +76,7 @@ void EventSet::removeEvent(const String& name)
 
 	if (pos != d_events.end())
 	{
-		CEGUI_DELETE_AO pos->second;
+		delete pos->second;
 		d_events.erase(pos);
 	}
 }
@@ -94,7 +94,7 @@ void EventSet::removeAllEvents(void)
 	EventMap::const_iterator end = d_events.end()	;
 
 	for (; pos != end; ++pos)
-		CEGUI_DELETE_AO pos->second;
+		delete pos->second;
 
     d_events.clear();
 }

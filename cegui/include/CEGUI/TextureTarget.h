@@ -77,22 +77,16 @@ public:
 
     /*!
     \brief
-        Return whether rendering done on the target texture is inverted in
-        relation to regular textures.
-
-        This is intended to be used when generating geometry for rendering the
-        TextureTarget onto another surface.
-
-    \return
-        - true if the texture content should be considered as inverted
-        vertically in comparison with other regular textures.
-        - false if the texture content has the same orientation as regular
-        textures.
-        
-    \deprecated
-        This function is deprecated.
+        Return whether this TextureTarget has a stencil buffer attached or not.
+    \return 
+        - true if a stencil buffer is attached
+        - false if no stencil buffer is attached
     */
-    virtual bool isRenderingInverted() const = 0;
+    bool getUsesStencil() const {return d_usesStencil;}
+
+protected:
+    //! Determines if the instance has a stencil buffer attached or not
+    bool d_usesStencil;
 };
 
 } // End of  CEGUI namespace section
