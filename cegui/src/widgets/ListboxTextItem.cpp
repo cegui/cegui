@@ -188,10 +188,10 @@ void ListboxTextItem::parseTextString() const
 {
     if (d_textParsingEnabled)
         d_renderedString =
-            d_stringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
+            d_stringParser.parse(getTextVisual(), 0, &d_textCols);
     else
         d_renderedString =
-            d_noTagsStringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
+            d_noTagsStringParser.parse(getTextVisual(), 0, &d_textCols);
 
     d_renderedStringValid = true;
 }
