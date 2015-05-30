@@ -178,11 +178,11 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="NormalTextColour" value="FFFFFFFF" />
                 <Property name="DisabledTextColour" value="FFFFFFFF" />
-                <Window type="Vanilla/Button" name="Button" >
-                    <Property name="Area" value="{{0.261983,0},{0.54314,0},{0.788484,0},{0.860601,0}}" />
-                    <Property name="Text" value="I inherit tooltips" />
-                    <Property name="TooltipType" value="Vanilla/Tooltip" />
-                </Window>
+            <Window type="Vanilla/Button" name="Button" >
+                <Property name="Area" value="{{0.261983,0},{0.54314,0},{0.788484,0},{0.860601,0}}" />
+                <Property name="Text" value="I inherit tooltips" />
+                <Property name="TooltipType" value="Vanilla/Tooltip" />
+            </Window>
             </Window>
                 <Window type="Vanilla/StaticText" name="StaticText2" >
                 <Property name="Area" value="{{0.519531,0},{0.0819444,0},{0.648438,0},{0.169444,0}}" />
