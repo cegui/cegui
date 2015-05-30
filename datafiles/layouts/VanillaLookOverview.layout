@@ -128,19 +128,6 @@
             <Window type="Vanilla/Combobox" name="combobox" >
                 <Property name="Area" value="{{0.429688,0},{0.0416667,0},{0.523438,0},{0.208333,0}}" />
             </Window>
-            <Window type="Vanilla/StaticImage" name="StaticImage" >
-                <Property name="Area" value="{{0.429688,0},{0.118056,0},{0.529688,0},{0.241667,0}}" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            </Window>
-            <Window type="Vanilla/StaticText" name="StaticText" >
-                <Property name="Area" value="{{0.535156,0},{0.0833333,0},{0.691406,0},{0.243056,0}}" />
-                <Property name="Text" value="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorzScrollPageSize" value="188" />
-                <Property name="VertScrollPageSize" value="103" />
-                <Property name="HorzScrollDocumentSize" value="4009" />
-                <Property name="VertScrollDocumentSize" value="13.6796" />
-            </Window>
             <Window type="Vanilla/MultiLineEditbox" name="MultiLineEditbox" >
                 <Property name="Area" value="{{0.328125,0},{0.291667,0},{0.484375,0},{0.402778,0}}" />
                 <Property name="Text" >
@@ -198,6 +185,44 @@
                     <Property name="Text" value="I inherit tooltips" />
                     <Property name="TooltipType" value="Vanilla/Tooltip" />
                 </Window>
+            </Window>
+                <Window type="Vanilla/StaticText" name="StaticText2" >
+                <Property name="Area" value="{{0.519531,0},{0.0819444,0},{0.648438,0},{0.169444,0}}" />
+                <Property name="Text" value="Testing StaticText without scrollbars" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="HorzScrollPageSize" value="153" />
+                <Property name="VertScrollPageSize" value="51" />
+                <Property name="HorzScrollDocumentSize" value="152" />
+                <Property name="VertScrollDocumentSize" value="145.484" />
+            </Window>
+            <Window type="Vanilla/StaticText" name="StaticText" >
+                <Property name="Area" value="{{0.519531,0},{0.173611,0},{0.648438,0},{0.277778,0}}" />
+                <Property name="Text" value="Testing the Formatting Tags: It is [colour=&apos;FF00FF00&apos;]possible[colour=&apos;FFFFFFFF&apos;] to embed images [image=&apos;Vanilla-Images/MouseArrow&apos;] or change the [font=&apos;DejaVuSans-12&apos;]Font type and [font=&apos;&apos;]many more things (see the docu or CEGUI wiki) [colour=&apos;FF00FF00&apos;][image=&apos;Vanilla-Images/MouseArrow&apos;]" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorzScrollbar" value="true" />
+                <Property name="VertScrollbar" value="true" />
+                <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+                <Property name="HorzScrollPageSize" value="147" />
+                <Property name="VertScrollPageSize" value="63" />
+                <Property name="HorzScrollDocumentSize" value="146" />
+                <Property name="VertScrollDocumentSize" value="165.539" />
+            </Window>
+            <Window type="Generic/Label" name="Label2" >
+                <Property name="Area" value="{{0.436719,0},{0.119445,0},{0.514844,0},{0.1625,0}}" />
+                <Property name="Text" value="StaticImage with an Image:" />
+                <Property name="HorzFormatting" value="WordWrapCentreAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="NormalTextColour" value="FFFFFFFF" />
+                <Property name="DisabledTextColour" value="FFFFFFFF" />
+            </Window>
+            <Window type="TaharezLook/StaticImage" name="StaticImage" >
+                <Property name="Area" value="{{0.450782,0},{0.163889,0},{0.501563,0},{0.227778,0}}" />
+                <Property name="Image" value="Vanilla-Images/ColourPickerCursor" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorzFormatting" value="CentreAligned" />
+                <Property name="VertFormatting" value="CentreAligned" />
             </Window>
         </Window>
     </Window>
