@@ -5,7 +5,7 @@
 	purpose:	Implementation of Tab Control widget base class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -100,6 +100,20 @@ TabControl::~TabControl(void)
 *************************************************************************/
 void TabControl::initialiseComponents(void)
 {
+    // ban properties forwarded from here
+    if (isChild(ButtonScrollLeft))
+    {
+        CEGUI::Window* buttonScrollLeft = getChild(ButtonScrollLeft);
+        buttonScrollLeft->banPropertyFromXML(Window::VisiblePropertyName);
+        buttonScrollLeft->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
+    }
+    if (isChild(ButtonScrollRight))
+    {
+        CEGUI::Window* buttonScrollRight = getChild(ButtonScrollRight);
+        buttonScrollRight->banPropertyFromXML(Window::VisiblePropertyName);
+        buttonScrollRight->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
+    }
+
 	performChildWindowLayout();
 
     if (isChild(ButtonScrollLeft))
@@ -671,7 +685,21 @@ Window* TabControl::getTabPane() const
 
 int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
+    // This is an easy and safe workaround for not writing out the buttonPane and contentPane. While in fact
+    // we would eventually want to write these two to XML themselves, we do not want to write out their children
+    // but there is no way to control this from inside these windows and currently there is also no way to do it
+    // from the outside. This was determined to be the best solution, others would break ABI or are too hacky
+    // Negative side-effects: any changes to AutoWindows (properties etc) will be lost in the output
+    bool wasButtonPaneWritingAllowed = getTabButtonPane()->isWritingXMLAllowed();
+    bool wasContentPaneWritingAllowed = getTabPane()->isWritingXMLAllowed();
+
+    getTabButtonPane()->setWritingXMLAllowed(false);
+    getTabPane()->setWritingXMLAllowed(false);
+
     int childOutputCount = Window::writeChildWindowsXML(xml_stream);
+
+    getTabButtonPane()->setWritingXMLAllowed(wasButtonPaneWritingAllowed);
+    getTabPane()->setWritingXMLAllowed(wasContentPaneWritingAllowed);
 
     // since TabControl content is actually added to the component tab
     // content pane window, this overridden function exists to dump those

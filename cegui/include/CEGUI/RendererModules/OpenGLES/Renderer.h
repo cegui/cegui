@@ -295,6 +295,23 @@ public:
         next power of two up from \a f if it's not.
     */
     static float getNextPOTSize(const float f);
+    
+    /*!
+    \brief
+        Returns if the texture coordinate system is vertically flipped or not. The original of a
+        texture coordinate system is typically located either at the the top-left or the bottom-left.
+        CEGUI, Direct3D and most rendering engines assume it to be on the top-left. OpenGL assumes it to
+        be at the bottom left.        
+ 
+        This function is intended to be used when generating geometry for rendering the TextureTarget
+        onto another surface. It is also intended to be used when trying to use a custom texture (RTT)
+        inside CEGUI using the Image class, in order to determine the Image coordinates correctly.
+
+    \return
+        - true if flipping is required: the texture coordinate origin is at the bottom left
+        - false if flipping is not required: the texture coordinate origin is at the top left
+    */
+    bool isTexCoordSystemFlipped() const { return true; }
 
 private:
     /*!

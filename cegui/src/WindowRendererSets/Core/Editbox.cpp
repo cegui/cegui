@@ -42,8 +42,11 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 const String FalagardEditbox::TypeName("Core/Editbox");
 
-const String FalagardEditbox::UnselectedTextColourPropertyName("NormalTextColour");
-const String FalagardEditbox::SelectedTextColourPropertyName("SelectedTextColour");
+const String FalagardEditbox::UnselectedTextColourPropertyName( "NormalTextColour" );
+const String FalagardEditbox::SelectedTextColourPropertyName( "SelectedTextColour" );
+const String FalagardEditbox::ActiveSelectionColourPropertyName( "ActiveSelectionColour" );
+const String FalagardEditbox::InactiveSelectionColourPropertyName( "InactiveSelectionColour" );
+
 const float FalagardEditbox::DefaultCaretBlinkTimeout(0.66f);
 
 //----------------------------------------------------------------------------//
