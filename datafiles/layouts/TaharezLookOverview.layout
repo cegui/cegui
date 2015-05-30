@@ -201,7 +201,7 @@
                 <Property name="Disabled" value="true" />
             </Window>
             <Window type="TaharezLook/StaticImage" name="StaticImage" >
-                <Property name="Area" value="{{0.429688,27},{0.118056,33},{0.529688,-36},{0.241667,-10}}" />
+                <Property name="Area" value="{{0.450782,0},{0.163889,0},{0.501563,0},{0.227778,0}}" />
                 <Property name="Image" value="TaharezLook/MouseMoveCursor" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="CentreAligned" />
@@ -232,13 +232,13 @@
                 <Property name="AutoRenderingSurface" value="true" />
             </Window>
             <Window type="TaharezLook/StaticText" name="HoverText" >
-                <Property name="Area" value="{{0.348437,0},{0.677778,0},{0.442187,0},{0.705556,0}}" />
+                <Property name="Area" value="{{0.348437,0},{0.677778,0},{0.442187,0},{0.708334,0}}" />
                 <Property name="Text" value="Hover for tooltip" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Hi, I am a tooltip." />
                 <Property name="TooltipType" value="TaharezLook/Tooltip" />
                 <Property name="HorzScrollPageSize" value="108" />
-                <Property name="VertScrollPageSize" value="8" />
+                <Property name="VertScrollPageSize" value="10" />
                 <Property name="HorzScrollDocumentSize" value="107" />
                 <Property name="VertScrollDocumentSize" value="13.6796" />
             </Window>
@@ -367,7 +367,7 @@
                 </Window>
             </Window>
             <Window type="TaharezLook/AlternateProgressBar" name="AlternateProgressBar" >
-                <Property name="Area" value="{{-0.0078125,220},{0.0111111,291},{0.156251,220},{0.0319441,291}}" />
+                <Property name="Area" value="{{0.164063,0},{0.415278,0},{0.328125,0},{0.436111,0}}" />
                 <Property name="StepSize" value="0.01" />
                 <Property name="CurrentProgress" value="0.5" />
             </Window>
@@ -381,10 +381,10 @@
                 <Property name="VertScrollPageSize" value="51" />
                 <Property name="HorzScrollDocumentSize" value="152" />
                 <Property name="VertScrollDocumentSize" value="145.484" />
-            </Window>            
+            </Window>
             <Window type="TaharezLook/StaticText" name="StaticText" >
                 <Property name="Area" value="{{0.519531,0},{0.173611,0},{0.648438,0},{0.277778,0}}" />
-                <Property name="Text" value="Testing the Formatting Tags: It is [colour=&apos;FF00FF00&apos;]possible[colour=&apos;FFFFFFFF&apos;] to embed images [image=&apos;TaharezLook/MouseArrow&apos;] or change the [font=&apos;DejaVuSans-12&apos;]Font type and [font=&apos;&apos;]many more things (see the docu or CEGUI wiki)" />
+                <Property name="Text" value="Testing the Formatting Tags: It is [colour=&apos;FF00FF00&apos;]possible[colour=&apos;FFFFFFFF&apos;] to embed images [image=&apos;TaharezLook/MouseArrow&apos;] or change the [font=&apos;DejaVuSans-12&apos;]Font type and [font=&apos;&apos;]many more things (see the docu or CEGUI wiki) [colour=&apos;FF00FF00&apos;][image=&apos;TaharezLook/MouseArrow&apos;]" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzScrollbar" value="true" />
                 <Property name="VertScrollbar" value="true" />
@@ -394,9 +394,8 @@
                 <Property name="HorzScrollDocumentSize" value="146" />
                 <Property name="VertScrollDocumentSize" value="165.539" />
             </Window>
-
             <Window type="Generic/Label" name="Label2" >
-                <Property name="Area" value="{{0.2375,255},{0.755556,-458},{0.458594,72},{0.843056,-490}}" />
+                <Property name="Area" value="{{0.436719,0},{0.119445,0},{0.514844,0},{0.1625,0}}" />
                 <Property name="Text" value="StaticImage with an Image:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="This tooltip will be inherited to children windows" />
