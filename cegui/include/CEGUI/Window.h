@@ -862,7 +862,10 @@ public:
 
     \param useDefault
         Specifies whether to return the default font if this Window has no
-        preferred font set.
+        preferred font set. This is typically set to true but whenever we
+        want to know if a default font would be used, this will be set to
+        false, and if the returned Font is a zero pointer we know that this
+        means a default font would be used otherwise.
 
     \return
         Pointer to the Font being used by this Window.  If the window has no
