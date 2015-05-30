@@ -688,13 +688,13 @@ void Window::setAlwaysOnTop(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setEnabled(bool setting)
+void Window::setEnabled(bool enabled)
 {
     // only react if setting has changed
-    if (d_enabled == setting)
+    if (d_enabled == enabled)
         return;
 
-    d_enabled = setting;
+    d_enabled = enabled;
     WindowEventArgs args(this);
 
     if (d_enabled)
@@ -712,12 +712,6 @@ void Window::setEnabled(bool setting)
     }
 
     getGUIContext().updateWindowContainingCursor();
-}
-
-//----------------------------------------------------------------------------//
-void Window::setDisabled(bool setting)
-{
-    setEnabled(!setting);
 }
 
 //----------------------------------------------------------------------------//
@@ -3352,7 +3346,7 @@ const RenderedString& Window::getRenderedString() const
     if (!d_renderedStringValid)
     {
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), getFont(), 0);
+            getTextVisual(), 0, 0);
         d_renderedStringValid = true;
     }
 

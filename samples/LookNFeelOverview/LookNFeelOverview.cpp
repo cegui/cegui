@@ -79,7 +79,7 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load all layouts we want to use later
     d_taharezOverviewLayout = winMgr.loadLayoutFromFile("TaharezLookOverview.layout");
-
+    d_vanillaOverviewLayout = winMgr.loadLayoutFromFile("VanillaLookOverview.layout");
 
     // create a root window
     Window* root = winMgr.createWindow("DefaultWindow", "root");
@@ -156,7 +156,8 @@ bool LookNFeelOverviewSample::handleSkinSelectionAccepted(const CEGUI::EventArgs
     }
     else if(selectedItem == d_vanillaLookListboxItem)
     {
-
+        d_loadedLayoutContainer->addChild(d_vanillaOverviewLayout);
+        d_guiContext->setDefaultFont(d_fontForTaharez); 
     }
 
     return false;

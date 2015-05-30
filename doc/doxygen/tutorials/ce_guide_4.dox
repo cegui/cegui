@@ -54,10 +54,19 @@ WindowManager& wmgr = WindowManager::getSingleton();
 @endcode
 
 In general, you will be using what is known as a DefaultWindow as the 'root'
-window in your GUI layouts.  This is not required, but has a couple of useful
-benefits as regards to input handling, is the accepted pattern of usage for
-CEGUI and, once you start adding more top-level windows, helps simplify laying
-things out.
+window in your GUI layouts.  This is not required, but heavily recommended as
+it has a couple of useful
+benefits regarding input handling and fits the generally accepted pattern of usage for
+CEGUI. Also, once you start adding more top-level windows, it helps simplify laying
+things out. 
+
+The recommended root window for any CEGUI application (and also for your layout files) is
+a DefaultWindow that covers the entire application window. You can make it cover the entire
+window simply by setting the window's size to 1.0 relative width and height and setting the
+position to the origin (0,0). This is the default for newly created DefaultWindows and therefore
+does not have to be set specifically such a window. The window can be set as root window anytime
+once it has been created. There can always only be one root window. All other windows should be
+attached to this window.
 
 So, to get the ball rolling, we'll create a DefaultWindow as set it as the root
 window for the initial, default GUIContext:
