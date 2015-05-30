@@ -862,12 +862,18 @@ public:
 
     \param useDefault
         Specifies whether to return the default font if this Window has no
-        preferred font set.
+        preferred font set. This is typically set to true but whenever we
+        want to know if a default font would be used, this will be set to
+        false, and if the returned Font is a zero pointer we know that this
+        means a default font would be used otherwise.
 
     \return
         Pointer to the Font being used by this Window.  If the window has no
         assigned font, and \a useDefault is true, then the default system font
         is returned.
+    */
+    /*!  \deprecated This function is deprecated, as the parameter will be removed in the next major version. Separate functions
+         will be added with proper function names to replicate the functionality for useDefault=false.
     */
     const Font* getFont(bool useDefault = true) const;
 

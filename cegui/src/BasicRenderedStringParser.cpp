@@ -94,8 +94,8 @@ BasicRenderedStringParser::~BasicRenderedStringParser()
 
 //----------------------------------------------------------------------------//
 RenderedString BasicRenderedStringParser::parse(const String& input_string,
-                                                const Font* initial_font,
-                                                const ColourRect* initial_colours)
+                                                const Font* active_font,
+                                                const ColourRect* active_colours)
 {
     // first-time initialisation (due to issues with static creation order)
     if (!d_initialised)
@@ -103,13 +103,13 @@ RenderedString BasicRenderedStringParser::parse(const String& input_string,
 
     initialiseDefaultState();
 
-    // maybe override initial font.
-    if (initial_font)
-        d_fontName = initial_font->getName();
+    // Override active font if necessary
+    if (active_font)
+        d_fontName = active_font->getName();
 
-    // maybe override initial colours.
-    if (initial_colours)
-        d_colours = *initial_colours;
+    // Override active font if necessary
+    if (active_colours)
+        d_colours = *active_colours;
 
     RenderedString rs;
     String curr_section, tag_string;
@@ -219,16 +219,26 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 
     char var_buf[128];
     char val_buf[128];
-    sscanf(ctrl_str.c_str(), " %127[^ =] = '%127[^']", var_buf, val_buf);
+    int successfullyFilledItems = sscanf(ctrl_str.c_str(), " %127[^ =] = '%127[^']", var_buf, val_buf);
 
     const String var_str(var_buf);
-    const String val_str(val_buf);
-
     // look up handler function
     TagHandlerMap::iterator i = d_tagHandlers.find(var_str);
-    // despatch handler, or log error
-    if (i != d_tagHandlers.end())
-        (this->*(*i).second)(rs, val_str);
+    // dispatch handler, or log error
+    if (successfullyFilledItems >= 1 && i != d_tagHandlers.end())
+    {
+        // If both variables were read correctly, proceed as usual
+        if(successfullyFilledItems == 2)
+        {
+            const String val_str(val_buf);
+            (this->*(*i).second)(rs, val_str);
+        }
+        // Otherwise, since the handler was found, we are sure that the
+        // second variable couldn't be read, meaning it was empty. We will supply
+        // and empty string
+        else
+            (this->*(*i).second)(rs, "");
+    }
     else
         Logger::getSingleton().logEvent(
             "BasicRenderedStringParser::processControlString: unknown "
@@ -239,7 +249,9 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 void BasicRenderedStringParser::initialiseDefaultState()
 {
     d_padding = Rectf(0, 0, 0, 0);
+    //!  \deprecated This assignment is deprecated and will be replaced by assignment to "" in the next major version */
     d_colours = d_initialColours;
+    //!  \deprecated This assignment is deprecated and will be replaced by assignment Colour 0xFFFFFFFF in the next major version */
     d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
     d_vertAlignment = VF_BOTTOM_ALIGNED;

@@ -3430,9 +3430,8 @@ const RenderedString& Window::getRenderedString() const
 {
     if (!d_renderedStringValid)
     {
-		// FIXME: Evil const cast!
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), const_cast<Font*>(getFont()), 0);
+            getTextVisual(), 0, 0);
         d_renderedStringValid = true;
     }
 
