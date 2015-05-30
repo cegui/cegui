@@ -52,6 +52,8 @@ protected:
     // We want to change the default font later so we store some fonts in variables
     CEGUI::Font* d_fontForTaharez;
     CEGUI::Window* d_taharezOverviewLayout;
+    // We want to change the default font later so we store some fonts in variables
+    CEGUI::Window* d_vanillaOverviewLayout;
 
     CEGUI::Window* d_loadedLayoutContainer;
     CEGUI::GUIContext* d_guiContext;

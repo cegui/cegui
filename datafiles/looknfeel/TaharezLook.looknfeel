@@ -424,10 +424,10 @@
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
-                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
-                <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
-                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-5" type="RightEdge" /></Dim>
-                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-5" type="BottomEdge" /></Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="3" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-3" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-3" type="BottomEdge" /></Dim>
             </Area>
         </NamedArea>
         <ImagerySection name="container_normal">
@@ -2033,35 +2033,20 @@
         <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-5" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-5" type="BottomEdge" /></Dim>
             </Area>
         </NamedArea>
         <NamedArea name="WithFrameTextRenderAreaHScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-5" type="RightEdge" /></Dim>
                 <Dim type="BottomEdge" >
                     <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <UnifiedDim scale="1.0" offset="-5" type="BottomEdge" />
                         <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
                     </OperatorDim>
                 </Dim>
@@ -2069,17 +2054,17 @@
         </NamedArea>
         <NamedArea name="WithFrameTextRenderAreaVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
                 <Dim type="RightEdge" >
                     <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
+                        <UnifiedDim scale="1.0" offset="-5" type="RightEdge" />
                         <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
                     </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <UnifiedDim scale="1.0" offset="-5" type="BottomEdge" />
                         <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
                     </OperatorDim>
                 </Dim>
@@ -2087,17 +2072,17 @@
         </NamedArea>
         <NamedArea name="WithFrameTextRenderAreaHVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
                 <Dim type="RightEdge" >
                     <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
+                        <UnifiedDim scale="1.0" offset="-5" type="RightEdge" />
                         <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
                     </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <UnifiedDim scale="1.0" offset="-5" type="BottomEdge" />
                         <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
                     </OperatorDim>
                 </Dim>
