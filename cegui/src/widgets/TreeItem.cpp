@@ -361,7 +361,7 @@ void TreeItem::setText( const String& text )
 void TreeItem::parseTextString() const
 {
     d_renderedString =
-        d_stringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
+        d_stringParser.parse(getTextVisual(), 0, &d_textCols);
     d_renderedStringValid = true;
 }
 
