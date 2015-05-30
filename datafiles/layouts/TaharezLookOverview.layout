@@ -76,8 +76,8 @@
                 <Property name="Area" value="{{0.101563,0},{0.0416667,0},{0.257813,0},{0.0694445,0}}" />
                 <Property name="Text" value="Title Bar" />
                 <Property name="AlwaysOnTop" value="true" />
-                <Property name="MousePassThroughEnabled" value="true" />
-                <Property name="MouseInputPropagationEnabled" value="true" />
+                <Property name="CursorPassThroughEnabled" value="true" />
+                <Property name="CursorInputPropagationEnabled" value="true" />
             </Window>
             <Window type="TaharezLook/Editbox" name="disabledEditbox" >
                 <Property name="Area" value="{{0.296875,0},{0.00694444,0},{0.390625,0},{0.0347222,0}}" />
@@ -188,13 +188,6 @@
                 <Property name="Area" value="{{0.476563,0},{0.0833333,0},{0.515626,0},{0.111111,0}}" />
                 <Property name="Text" value="0" />
                 <Property name="Disabled" value="true" />
-            </Window>
-            <Window type="TaharezLook/StaticImage" name="StaticImage" >
-                <Property name="Area" value="{{0.450782,0},{0.163889,0},{0.501563,0},{0.227778,0}}" />
-                <Property name="Image" value="TaharezLook/MouseMoveCursor" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorzFormatting" value="CentreAligned" />
-                <Property name="VertFormatting" value="CentreAligned" />
             </Window>
             <Window type="TaharezLook/MultiLineEditbox" name="MultiLineEditbox" >
                 <Property name="Area" value="{{0.328125,0},{0.291667,0},{0.484375,0},{0.402778,0}}" />
@@ -393,5 +386,12 @@
                 <Property name="DisabledTextColour" value="FFFFFFFF" />
             </Window>
         </Window>
+            <Window type="TaharezLook/StaticImage" name="StaticImage2" >
+                <Property name="Area" value="{{0.450782,0},{0.163889,0},{0.501563,0},{0.227778,0}}" />
+                <Property name="Image" value="TaharezLook/UpArrow" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorzFormatting" value="CentreAligned" />
+                <Property name="VertFormatting" value="CentreAligned" />
+            </Window>        
     </Window>
 </GUILayout>
