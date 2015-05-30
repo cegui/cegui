@@ -150,7 +150,7 @@ public:
     /** Mouse cursor image property name to use when the edit box is
      * in read-only mode.
      */
-    static const String ReadOnlyMouseCursorImagePropertyName;
+    static const String ReadOnlyCursorImagePropertyName;
 
     /*!
     \brief
@@ -622,8 +622,8 @@ protected:
     \return
         The read-only mouse cursor image.
     */
-    const Image* getReadOnlyMouseCursorImage(void) const
-        { return d_readOnlyMouseCursorImage; }
+    const Image* getReadOnlyCursorImage(void) const
+        { return d_readOnlyCursorImage; }
 
     /*!
     \brief
@@ -631,8 +631,8 @@ protected:
     \param image
         The Image* to be used.
     */
-    void setReadOnlyMouseCursorImage(const Image* image)
-        { d_readOnlyMouseCursorImage = image; }
+    void setReadOnlyCursorImage(const Image* image)
+        { d_readOnlyCursorImage = image; }
 
     // Overridden event handlers
     void onCursorPressHold(CursorInputEventArgs& e);
@@ -647,7 +647,7 @@ protected:
     //! True if the editbox is in read-only mode
     bool d_readOnly;
     //! The read only mouse cursor image.
-    const Image* d_readOnlyMouseCursorImage;
+    const Image* d_readOnlyCursorImage;
     //! True if the editbox text should be rendered masked.
     bool d_maskText;
     //! Code point to use when rendering masked text.

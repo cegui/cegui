@@ -58,13 +58,13 @@ const String Editbox::EventCaretMoved("CaretMoved");
 const String Editbox::EventTextSelectionChanged("TextSelectionChanged");
 const String Editbox::EventEditboxFull("EditboxFull");
 const String Editbox::EventTextAccepted("TextAccepted");
-const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorImage");
+const String Editbox::ReadOnlyCursorImagePropertyName("ReadOnlyCursorImage");
 
 //----------------------------------------------------------------------------//
 Editbox::Editbox(const String& type, const String& name) :
     Window(type, name),
     d_readOnly(false),
-    d_readOnlyMouseCursorImage(0),
+    d_readOnlyCursorImage(0),
     d_maskText(false),
     d_maskCodePoint('*'),
     d_maxTextLen(String().max_size()),
@@ -143,11 +143,11 @@ void Editbox::setReadOnly(bool setting)
         WindowEventArgs args(this);
         onReadOnlyChanged(args);
         
-        // Update the mouse cursor according to the read only state.
+        // Update the cursor according to the read only state.
         if (setting)
-            setMouseCursor(d_readOnlyMouseCursorImage);
+            setCursor(d_readOnlyCursorImage);
         else
-            setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
+            setCursor(getProperty<Image*>(Window::CursorImagePropertyName));
     }
 }
 
@@ -158,9 +158,9 @@ void Editbox::setEnabled(bool enabled)
 
     // Update the mouse cursor according to the read only state.
     if (enabled)
-        setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
+        setCursor(getProperty<Image*>(Window::CursorImagePropertyName));
     else
-        setMouseCursor(d_readOnlyMouseCursorImage);
+        setCursor(d_readOnlyCursorImage);
 }
 
 //----------------------------------------------------------------------------//
@@ -916,10 +916,10 @@ void Editbox::addEditboxProperties(void)
           &Editbox::setMaxTextLength, &Editbox::getMaxTextLength, String().max_size()
     );
     CEGUI_DEFINE_PROPERTY(Editbox, Image*,
-        "ReadOnlyMouseCursorImage", "Property to get/set the mouse cursor image "
+        "ReadOnlyCursorImage", "Property to get/set the mouse cursor image "
         "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
         "Value is the image to use.",
-        &Editbox::setReadOnlyMouseCursorImage, &Editbox::getReadOnlyMouseCursorImage, 0
+        &Editbox::setReadOnlyCursorImage, &Editbox::getReadOnlyCursorImage, 0
     );
 }
 
