@@ -872,6 +872,9 @@ public:
         assigned font, and \a useDefault is true, then the default system font
         is returned.
     */
+    /*!  \deprecated This function is deprecated, as the parameter will be removed in the next major version. Separate functions
+         will be added with proper function names to replicate the functionality for useDefault=false.
+    */
     const Font* getFont(bool useDefault = true) const;
 
     /*!
