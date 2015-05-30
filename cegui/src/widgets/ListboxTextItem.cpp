@@ -74,12 +74,9 @@ const Font* ListboxTextItem::getFont(void) const
 	{
 		return d_owner->getFont();
 	}
-	// no owner, just use the default (which may be NULL anyway)
-	else
-	{
-        return System::getSingleton().getDefaultGUIContext().getDefaultFont();   
-	}
-
+    // no owner, so the default font is ambiguous (it could be of any context)
+    else
+        return 0;  
 }
 
 
