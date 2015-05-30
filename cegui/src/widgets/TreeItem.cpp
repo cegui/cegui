@@ -158,9 +158,9 @@ const Font* TreeItem::getFont(void) const
     // (may be null if owner uses non existant default font)
     else if (d_owner != 0)
         return d_owner->getFont();
-    // no owner, just use the default (which may be NULL anyway)
+    // no owner, so the default font is ambiguous (it could be of any context)
     else
-        return System::getSingleton().getDefaultGUIContext().getDefaultFont();   
+        return 0;  
 }
 
 /*************************************************************************
@@ -361,7 +361,7 @@ void TreeItem::setText( const String& text )
 void TreeItem::parseTextString() const
 {
     d_renderedString =
-        d_stringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
+        d_stringParser.parse(getTextVisual(), 0, &d_textCols);
     d_renderedStringValid = true;
 }
 
