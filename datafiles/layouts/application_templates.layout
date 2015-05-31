@@ -11,6 +11,9 @@
                 <Property name="Area" value="{{1,-160},{1,-43},{1,-15},{1,-11}}" />
                 <Property name="Text" value="DemoButton" />
             </Window>
+            <Window type="TaharezLook/Editbox" name="Editbox" >
+                <Property name="Area" value="{{0,10},{0,8},{1,-10},{0,40}}" />
+            </Window>
         </Window>
     </Window>
 </GUILayout>
