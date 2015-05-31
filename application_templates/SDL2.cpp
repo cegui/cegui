@@ -91,7 +91,7 @@ void initCEGUI()
     cegui_renderer.enableExtraStateSettings(true);
 
     // create CEGUI system object
-    CEGUI::System::create(cegui_renderer);
+    System::create(cegui_renderer);
 
     // setup resource directories
     DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(System::getSingleton().getResourceProvider());
