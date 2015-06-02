@@ -1,9 +1,9 @@
 /***********************************************************************
 created:    Sep 11 2014
-author:     Luca Ebach <lucaebach@gmail.com>
+author:     Luca Ebach <bitbucket@lucebac.net>
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
+*   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -31,7 +31,7 @@ author:     Luca Ebach <lucaebach@gmail.com>
 * CEGUIOpenGLRenderer
 * CEGUICoreWindowRendererSet
 * default CEGUI xml parser (and dependencies)
-* SDL2main
+* SDL2main (windows only)
 * SDL2
 * OpengGL
 * glm headers (as part of CEGUIBase)
