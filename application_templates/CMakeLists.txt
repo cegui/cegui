@@ -12,7 +12,7 @@ if(CEGUI_BUILD_RENDERER_OPENGL)
         cegui_target_link_libraries(CEGUITemplate_SDL2 ${CEGUI_OPENGL_RENDERER_LIBNAME})
         
         include_directories(CEGUITemplate_SDL2 ${SDL2_INCLUDE_DIR})
-        cegui_target_link_libraries(CEGUITemplate_SDL2 ${SDL2_LIBRARY})
+        cegui_target_link_libraries(CEGUITemplate_SDL2 ${SDL2_LIBRARIES})
     endif()
 
     if(${CEGUI_BUILD_APPLICATION_TEMPLATE_GLFW3})
@@ -23,8 +23,8 @@ if(CEGUI_BUILD_RENDERER_OPENGL)
         
         cegui_add_dependency(CEGUITemplate_GLFW3 ${CEGUI_OPENGL_RENDERER_LIBNAME})
         cegui_target_link_libraries(CEGUITemplate_GLFW3 ${CEGUI_OPENGL_RENDERER_LIBNAME})
-        
-        include_directories(CEGUITemplate_GLFW3 ${GLFW3_H_PATH})
-        cegui_target_link_libraries(CEGUITemplate_GLFW3 ${GLFW3_LIBRARY})
+
+        include_directories(CEGUITemplate_GLFW3 ${GLFW3_INCLUDE_DIR})
+        cegui_target_link_libraries(CEGUITemplate_GLFW3 ${GLFW3_LIBRARIES})
     endif()
 endif()
