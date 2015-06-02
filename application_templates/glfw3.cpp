@@ -1,6 +1,6 @@
 /***********************************************************************
 created:    Sep 15 2014
-author:     Luca Ebach <bitcket@lucebac.net>
+author:     Luca Ebach <bitbucket@lucebac.net>
 *************************************************************************/
 /***************************************************************************
 *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
