@@ -39,7 +39,7 @@ author:     Luca Ebach <bitcket@lucebac.net>
 #include <iostream>
 
 #include <CEGUI/CEGUI.h>
-#include <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
+#include <CEGUI/RendererModules/OpenGL/GLRenderer.h>
 
 #include <GLFW/glfw3.h>
 
@@ -241,7 +241,7 @@ void initCEGUI()
     using namespace CEGUI;
 
     // create renderer and enable extra states
-    OpenGL3Renderer& cegui_renderer = OpenGL3Renderer::create(Sizef(800.f, 600.f));
+    OpenGLRenderer& cegui_renderer = OpenGLRenderer::create(Sizef(800.f, 600.f));
     cegui_renderer.enableExtraStateSettings(true);
 
     // create CEGUI system object
@@ -324,7 +324,7 @@ int main(int argc, char* argv[])
 
     float time = glfwGetTime();
 
-    OpenGL3Renderer* renderer = static_cast<OpenGL3Renderer*>(System::getSingleton().getRenderer());
+    OpenGLRenderer* renderer = static_cast<OpenGLRenderer*>(System::getSingleton().getRenderer());
 
     // repeat until a quit is requested
     while (glfwWindowShouldClose(window) == GL_FALSE)
@@ -353,7 +353,7 @@ int main(int argc, char* argv[])
 
     // destroy system and renderer
     System::destroy();
-    OpenGL3Renderer::destroy(*renderer);
+    OpenGLRenderer::destroy(*renderer);
     renderer = 0;
 
     // destroy glfw window
