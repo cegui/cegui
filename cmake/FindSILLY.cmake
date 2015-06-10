@@ -13,7 +13,7 @@ if (WIN32 OR APPLE)
     find_library(SILLY_LIB_STATIC_DBG NAMES SILLY_d libSILLY_d PATH_SUFFIXES static)
 
     cegui_find_libraries(SILLY_LIB_STATIC "libpng;jpeg;zlib" static)
-    cegui_find_libraries(SILLY_LIB_STATIC_DBG "libpng_d;jpeg_d;zlib" static)
+    cegui_find_libraries(SILLY_LIB_STATIC_DBG "libpng_d;jpeg_d;zlib_d" static)
 
     set( SILLY_DEFINITIONS_STATIC "SILLY_STATIC" CACHE STRING "preprocessor definitions" )
     mark_as_advanced(SILLY_DEFINITIONS_STATIC SILLY_LIB_STATIC SILLY_LIB_STATIC_DBG)
