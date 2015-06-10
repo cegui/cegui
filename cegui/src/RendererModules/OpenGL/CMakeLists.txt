@@ -2,6 +2,10 @@ set (CEGUI_TARGET_NAME ${CEGUI_OPENGL_RENDERER_LIBNAME})
 
 cegui_gather_files()
 
+if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+    add_definitions( -DGLEW_STATIC )
+endif()
+
 if (NOT APPLE OR NOT CEGUI_BUILD_RENDERER_OPENGL)
     list (REMOVE_ITEM CORE_SOURCE_FILES ApplePBTextureTarget.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/ApplePBTextureTarget.h)
