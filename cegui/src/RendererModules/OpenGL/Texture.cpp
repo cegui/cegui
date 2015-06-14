@@ -323,7 +323,7 @@ void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
         glTexImage2D(GL_TEXTURE_2D, 0, d_format,
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
-                     0, d_format , d_subpixelFormat, 0);
+                     0, d_format, d_subpixelFormat, 0);
     }
 
     // restore previous texture binding.
