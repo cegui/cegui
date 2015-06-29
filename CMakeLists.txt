@@ -88,6 +88,8 @@ find_package(OpenGL)
 find_package(GLEW)
 find_package(GLM REQUIRED)
 find_package(GLFW)
+find_package(GLFW3)
+find_package(SDL2)
 find_package(DirectXSDK)
 find_package(Irrlicht)
 find_package(Ogre)
@@ -264,6 +266,9 @@ option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample appli
 if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
 endif()
+
+# Option wether to build application templates; default off
+option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
 
 if (ANDROID)
     set(CEGUI_BUILD_STATIC_CONFIGURATION TRUE CACHE BOOL "Forcing static build for Android" FORCE)
@@ -573,6 +578,10 @@ endif()
 
 if (CEGUI_SAMPLES_ENABLED)
     add_subdirectory(samples)
+endif()
+
+if (CEGUI_BUILD_APPLICATION_TEMPLATES)
+    add_subdirectory(application_templates)
 endif()
 
 add_subdirectory(datafiles)
