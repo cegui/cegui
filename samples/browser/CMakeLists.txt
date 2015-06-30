@@ -29,7 +29,8 @@ file(GLOB COMMON_SOURCE_FILES "${CMAKE_SOURCE_DIR}/samples/common/*.cpp")
 include_directories(${CMAKE_SOURCE_DIR}/samples/browser/include
                     ${CMAKE_BINARY_DIR}/samples/common/include
                     ${CMAKE_SOURCE_DIR}/samples/common/include
-                    ${CMAKE_SOURCE_DIR}/cegui/include)
+                    ${CMAKE_SOURCE_DIR}/cegui/include
+                    ${CMAKE_SOURCE_DIR}/samples)
 
 if(WIN32)
     list(APPEND CORE_SOURCE_FILES
@@ -118,6 +119,14 @@ endif()
 if(CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
     include_directories(${DIRECTXSDK_INCLUDE_DIR})
     link_directories(${DIRECTXSDK_LIBRARY_DIR})
+endif()
+
+if(CEGUI_SAMPLES_ENABLED)
+    list (APPEND CORE_HEADER_FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/../common/include/samples.inc
+        ${CMAKE_CURRENT_BINARY_DIR}/../common/include/CEGUISamplesConfig.h
+        ${CMAKE_CURRENT_BINARY_DIR}/../common/include/samples.h
+        )
 endif()
 
 
