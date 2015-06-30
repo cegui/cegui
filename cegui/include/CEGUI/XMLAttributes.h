@@ -173,7 +173,7 @@ namespace CEGUI
         \return
             String object containing the value of attribute \a attrName if present, or \a def if not.
          */
-        const String getValueAsString(const String& attrName, const String def = "") const;
+        String getValueAsString(const String& attrName, const String& def = "") const;
 
         /*!
         \brief

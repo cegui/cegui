@@ -104,7 +104,7 @@ namespace CEGUI
         }
     }
 
-    const String XMLAttributes::getValueAsString(const String& attrName, const String def) const
+    String XMLAttributes::getValueAsString(const String& attrName, const String& def) const
     {
         return (exists(attrName)) ? getValue(attrName) : def;
     }
