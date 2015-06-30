@@ -221,8 +221,6 @@ void OpenGL3Renderer::beginRendering()
     if (d_initExtraStates)
         setupExtraStates();
 
-    d_shaderStandard->bind();
-
     d_openGLStateChanger->reset();
 }
 
