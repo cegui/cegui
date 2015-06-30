@@ -1467,7 +1467,7 @@ namespace CEGUI
             throwExceptionNotChildOfNode(d_widgetlook, ChildElement, d_childcomponent->getWidgetName(), WidgetLookElement);
         }
 
-        CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
+        CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getTargetType() + ".");
         d_widgetlook->addWidgetComponent(*d_childcomponent);
         delete d_childcomponent;
         d_childcomponent = 0;
