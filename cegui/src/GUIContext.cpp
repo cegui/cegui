@@ -669,7 +669,7 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
         return (*(*itor).second)(event);
     }
 
-    Window* targetWindow = getTargetWindow(d_cursor.getPosition(), false);
+    Window* targetWindow = getInputTargetWindow();
     // window navigator's window takes precedence
     if (d_windowNavigator != 0)
         targetWindow = d_windowNavigator->getCurrentFocusedWindow();
