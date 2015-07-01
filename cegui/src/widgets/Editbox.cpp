@@ -116,7 +116,7 @@ Editbox::MatchState Editbox::getTextMatchState() const
 }
 
 //----------------------------------------------------------------------------//
-size_t Editbox::getSelectionStartIndex(void) const
+size_t Editbox::getSelectionStart(void) const
 {
     return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caretPos;
 }
@@ -257,7 +257,7 @@ void Editbox::setSelectionStart(size_t start_pos)
 //----------------------------------------------------------------------------//
 void Editbox::setSelectionLength(size_t length)
 {
-	this->setSelection(this->getSelectionStartIndex(),this->getSelectionStartIndex() + length);
+	this->setSelection(this->getSelectionStart(),this->getSelectionStart() + length);
 }
 
 
@@ -330,11 +330,11 @@ void Editbox::eraseSelectedText(bool modify_text)
             String newText = getText();
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_DELETE;
-            undo.d_startIdx = getSelectionStartIndex();
-            undo.d_text = newText.substr(getSelectionStartIndex(), getSelectionLength());
+            undo.d_startIdx = getSelectionStart();
+            undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
 
-            newText.erase(getSelectionStartIndex(), getSelectionLength());
+            newText.erase(getSelectionStart(), getSelectionLength());
             setText(newText);
 
             // trigger notification that text has changed.
@@ -377,7 +377,7 @@ bool Editbox::performCopy(Clipboard& clipboard)
         return false;
 
     const String selectedText = getText().substr(
-        getSelectionStartIndex(), getSelectionLength());
+        getSelectionStart(), getSelectionLength());
 
     clipboard.setText(selectedText);
     return true;
@@ -433,10 +433,10 @@ bool Editbox::performPaste(Clipboard& clipboard)
 
     UndoHandler::UndoAction undoSelection;
     undoSelection.d_type = UndoHandler::UAT_DELETE;
-    undoSelection.d_startIdx = getSelectionStartIndex();
-    undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+    undoSelection.d_startIdx = getSelectionStart();
+    undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
-    tmp.erase(getSelectionStartIndex(), getSelectionLength());
+    tmp.erase(getSelectionStart(), getSelectionLength());
 
     // if there is room
     if (tmp.length() < d_maxTextLen)
@@ -446,7 +446,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
         undo.d_startIdx = getCaretIndex();
         undo.d_text = clipboardText;
 
-        tmp.insert(getSelectionStartIndex(), clipboardText);
+        tmp.insert(getSelectionStart(), clipboardText);
 
         if (handleValidityChangeForString(tmp))
         {
@@ -563,20 +563,20 @@ void Editbox::onCharacter(TextEventArgs& e)
 
         UndoHandler::UndoAction undoSelection;
         undoSelection.d_type = UndoHandler::UAT_DELETE;
-        undoSelection.d_startIdx = getSelectionStartIndex();
-        undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+        undoSelection.d_startIdx = getSelectionStart();
+        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
-        tmp.erase(getSelectionStartIndex(), getSelectionLength());
+        tmp.erase(getSelectionStart(), getSelectionLength());
 
         // if there is room
         if (tmp.length() < d_maxTextLen)
         {
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_INSERT;
-            undo.d_startIdx = getSelectionStartIndex();
+            undo.d_startIdx = getSelectionStart();
             undo.d_text = e.character;
 
-            tmp.insert(getSelectionStartIndex(), 1, e.character);
+            tmp.insert(getSelectionStart(), 1, e.character);
 
             if (handleValidityChangeForString(tmp))
             {
@@ -621,10 +621,10 @@ void Editbox::handleBackspace(void)
         {
             UndoHandler::UndoAction undoSelection;
             undoSelection.d_type = UndoHandler::UAT_DELETE;
-            undoSelection.d_startIdx = getSelectionStartIndex();
-            undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+            undoSelection.d_startIdx = getSelectionStart();
+            undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
-            tmp.erase(getSelectionStartIndex(), getSelectionLength());
+            tmp.erase(getSelectionStart(), getSelectionLength());
 
             if (handleValidityChangeForString(tmp))
             {
@@ -671,10 +671,10 @@ void Editbox::handleDelete(void)
         {
             UndoHandler::UndoAction undoSelection;
             undoSelection.d_type = UndoHandler::UAT_DELETE;
-            undoSelection.d_startIdx = getSelectionStartIndex();
-            undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+            undoSelection.d_startIdx = getSelectionStart();
+            undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
-            tmp.erase(getSelectionStartIndex(), getSelectionLength());
+            tmp.erase(getSelectionStart(), getSelectionLength());
 
             if (handleValidityChangeForString(tmp))
             {
@@ -903,7 +903,7 @@ void Editbox::addEditboxProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
-          &Editbox::setSelectionStart, &Editbox::getSelectionStartIndex, 0 /* TODO: getter inconsistency */
+          &Editbox::setSelectionStart, &Editbox::getSelectionStart, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,

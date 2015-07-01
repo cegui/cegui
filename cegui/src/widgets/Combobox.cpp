@@ -229,7 +229,7 @@ size_t Combobox::getCaretIndex(void) const
 *************************************************************************/
 size_t Combobox::getSelectionStartIndex(void) const
 {
-	return getEditbox()->getSelectionStartIndex();
+	return getEditbox()->getSelectionStart();
 }
 
 

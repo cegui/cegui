@@ -245,7 +245,7 @@ public:
         If no selection is defined this function returns the position of the
         caret.
     */
-    size_t getSelectionStartIndex(void) const;
+    size_t getSelectionStart(void) const;
 
     /*!
     \brief
