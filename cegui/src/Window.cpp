@@ -752,11 +752,14 @@ void Window::activate(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::deactivate(void)
+void Window::deactivate()
 {
-    ActivationEventArgs args(this);
-    args.otherWindow = 0;
-    onDeactivated(args);
+    if (isActive())
+    {
+        ActivationEventArgs args(this);
+        args.otherWindow = 0;
+        onDeactivated(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1217,6 +1220,9 @@ void Window::addChild_impl(Element* element)
 void Window::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
+
+    //! A removed window cannot receive inputs
+    wnd->deactivate();
 
     Window* const capture_wnd = getCaptureWindow();
     if ((capture_wnd && wnd) &&
