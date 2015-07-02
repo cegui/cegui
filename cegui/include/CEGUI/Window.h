@@ -1558,14 +1558,11 @@ public:
 
     /*!
     \brief
-        Deactivate the window.  No further inputs will be received by the window
+        Deactivate the window. No further inputs will be received by the window
         until it is re-activated either programmatically or by the user
         interacting with the gui.
-
-    \return
-        Nothing.
     */
-    void deactivate(void);
+    void deactivate();
 
     /*!
     \brief
