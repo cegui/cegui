@@ -238,7 +238,7 @@ size_t Combobox::getSelectionStartIndex(void) const
 *************************************************************************/
 size_t Combobox::getSelectionEndIndex(void) const
 {
-	return getEditbox()->getSelectionEndIndex();
+	return getEditbox()->getSelectionEnd();
 }
 
 

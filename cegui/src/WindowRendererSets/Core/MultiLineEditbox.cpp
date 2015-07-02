@@ -230,8 +230,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             lineRect.d_min.d_y += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
 
             // if it is a simple 'no selection area' case
-            if ((currLine.d_startIdx >= w->getSelectionEndIndex()) ||
-                ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStartIndex()) ||
+            if ((currLine.d_startIdx >= w->getSelectionEnd()) ||
+                ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStart()) ||
                 (w->getSelectionBrushImage() == 0))
             {
                 colours = normalTextCol;
@@ -248,10 +248,10 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 float selStartOffset = 0.0f, selAreaWidth = 0.0f;
 
                 // render any text prior to selected region of line.
-                if (currLine.d_startIdx < w->getSelectionStartIndex())
+                if (currLine.d_startIdx < w->getSelectionStart())
                 {
                     // calculate length of text section
-                    sectLen = w->getSelectionStartIndex() - currLine.d_startIdx;
+                    sectLen = w->getSelectionStart() - currLine.d_startIdx;
 
                     // get text for this section
                     sect = lineText.substr(sectIdx, sectLen);
@@ -270,7 +270,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 }
 
                 // calculate the length of the selected section
-                sectLen = ceguimin(w->getSelectionEndIndex() - currLine.d_startIdx, currLine.d_length) - sectIdx;
+                sectLen = ceguimin(w->getSelectionEnd() - currLine.d_startIdx, currLine.d_length) - sectIdx;
 
                 // get the text for this section
                 sect = lineText.substr(sectIdx, sectLen);

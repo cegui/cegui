@@ -261,9 +261,9 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     {
         // calculate required start and end offsets of selection imagery.
         float selStartOffset =
-            font->getTextAdvance(text.substr(0, w->getSelectionStartIndex()));
+            font->getTextAdvance(text.substr(0, w->getSelectionStart()));
         float selEndOffset =
-            font->getTextAdvance(text.substr(0, w->getSelectionEndIndex()));
+            font->getTextAdvance(text.substr(0, w->getSelectionEnd()));
 
         // calculate area for selection imagery.
         Rectf hlarea(text_area);
@@ -277,21 +277,21 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     }
 
     // draw pre-highlight text
-    String sect = text.substr(0, w->getSelectionStartIndex());
+    String sect = text.substr(0, w->getSelectionStart());
     colours = unselectedColours;
     text_part_rect.d_min.d_x =
         font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
                        &text_area, true, colours);
 
     // draw highlight text
-    sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
+    sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
     text_part_rect.d_min.d_x =
         font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
                        &text_area, true, colours);
 
     // draw post-highlight text
-    sect = text.substr(w->getSelectionEndIndex());
+    sect = text.substr(w->getSelectionEnd());
     colours = unselectedColours;
     font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
                    &text_area, true, colours);
@@ -350,8 +350,8 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
 
             // check if it is in the highlighted region
             bool highlighted =
-                realPos >= w->getSelectionStartIndex() &&
-                realPos < w->getSelectionStartIndex() + w->getSelectionLength();
+                realPos >= w->getSelectionStart() &&
+                realPos < w->getSelectionStart() + w->getSelectionLength();
 
             float charAdvance = font->getGlyphData(currChar[0])->getAdvance(1.0f);
 
