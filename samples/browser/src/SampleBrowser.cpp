@@ -355,7 +355,10 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     CEGUI::GUIContext* sampleContext(correspondingSampleData->getGuiContext());
     sampleContext->setRenderTarget(defaultRenderTarget);
 
+    //! We add the exit button to the sample
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
+
+    //! We manually set the cursor to where it was in the overview
     sampleContext->getCursor().setPosition(
         CEGUI::System::getSingleton().getDefaultGUIContext().getCursor().
             getPosition());
@@ -408,7 +411,7 @@ bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
 {
     d_quittingSampleView = true;
 
-    return true;
+    return false;
 }
 
 //----------------------------------------------------------------------------//
