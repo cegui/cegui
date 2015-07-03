@@ -1221,9 +1221,6 @@ void Window::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
 
-    //! A removed window cannot receive inputs
-    wnd->deactivate();
-
     Window* const capture_wnd = getCaptureWindow();
     if ((capture_wnd && wnd) &&
         (capture_wnd == wnd || capture_wnd->isAncestor(wnd)))
@@ -1246,6 +1243,11 @@ void Window::removeChild_impl(Element* element)
     }
 
     wnd->onZChange_impl();
+
+    // There can be issues if a removed window is activated and then added to a parent that has other
+    // active children. In general there is no reason why a removed window should still be active anymore
+    // anyways. Upon or before adding them, they may be reactivated manually if desired.
+    wnd->deactivate();
 }
 
 //----------------------------------------------------------------------------//
