@@ -70,8 +70,7 @@ public:
 \see
     Animation
 */
-class CEGUIEXPORT AnimationInstance :
-    public AllocatedObject<AnimationInstance>
+class CEGUIEXPORT AnimationInstance
 {
 public:
     //! Namespace for animation instance events
@@ -435,15 +434,13 @@ private:
     //! true if auto stepping is enabled
     bool d_autoSteppingEnabled;
 
-    typedef std::map<String, String, std::less<String>
-        CEGUI_MAP_ALLOC(String, String)> PropertyValueMap;
+    typedef std::map<String, String, std::less<String> > PropertyValueMap;
     /** cached saved values, used for relative application method
      *  and keyframe property source, see Affector and KeyFrame classes
      */
     PropertyValueMap d_savedPropertyValues;
 
-    typedef std::vector<Event::Connection
-        CEGUI_VECTOR_ALLOC(Event::Connection)> ConnectionTracker;
+    typedef std::vector<Event::Connection> ConnectionTracker;
     //! tracks auto event connections we make.
     ConnectionTracker d_autoConnections;
 };

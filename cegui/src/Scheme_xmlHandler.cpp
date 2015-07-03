@@ -81,7 +81,7 @@ Scheme_xmlHandler::Scheme_xmlHandler():
 Scheme_xmlHandler::~Scheme_xmlHandler()
 {
     if (!d_objectRead)
-        CEGUI_DELETE_AO d_scheme;
+        delete d_scheme;
 }
 
 //----------------------------------------------------------------------------//
@@ -167,7 +167,7 @@ void Scheme_xmlHandler::elementGUISchemeStart(const XMLAttributes& attributes)
     validateSchemeFileVersion(attributes);
 
     // create empty scheme with desired name
-    d_scheme = CEGUI_NEW_AO Scheme(name);
+    d_scheme = new Scheme(name);
 }
 
 //----------------------------------------------------------------------------//

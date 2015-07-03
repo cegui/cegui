@@ -59,8 +59,7 @@ namespace CEGUI
     with the window renderers and all.
 */
 class CEGUIEXPORT WindowFactoryManager :
-    public Singleton<WindowFactoryManager>,
-    public AllocatedObject<WindowFactoryManager>
+    public Singleton<WindowFactoryManager>
 {
 public:
     /*!
@@ -119,8 +118,7 @@ public:
 	private:
 		friend class WindowFactoryManager;
 
-		typedef std::vector<String
-            CEGUI_VECTOR_ALLOC(String)> TargetTypeStack; //!< Type used to implement stack of target type names.
+		typedef std::vector<String> TargetTypeStack; //!< Type used to implement stack of target type names.
 
 		TargetTypeStack	d_targetStack; //!< Container holding the target types.
 	};
@@ -457,15 +455,11 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, WindowFactory*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, WindowFactory*)> WindowFactoryRegistry; //!< Type used to implement registry of WindowFactory objects
-	typedef std::map<String, AliasTargetStack, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, AliasTargetStack)> TypeAliasRegistry; //!< Type used to implement registry of window type aliases.
-    typedef std::map<String, FalagardWindowMapping, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, FalagardWindowMapping)> FalagardMapRegistry; //!< Type used to implement registry of falagard window mappings.
+	typedef	std::map<String, WindowFactory*, StringFastLessCompare> WindowFactoryRegistry; //!< Type used to implement registry of WindowFactory objects
+	typedef std::map<String, AliasTargetStack, StringFastLessCompare> TypeAliasRegistry; //!< Type used to implement registry of window type aliases.
+    typedef std::map<String, FalagardWindowMapping, StringFastLessCompare> FalagardMapRegistry; //!< Type used to implement registry of falagard window mappings.
     //! Type used for list of WindowFacory objects that we created ourselves
-    typedef std::vector<WindowFactory*
-        CEGUI_VECTOR_ALLOC(WindowFactory*)> OwnedWindowFactoryList;
+    typedef std::vector<WindowFactory*> OwnedWindowFactoryList;
 
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
 	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.
@@ -507,7 +501,7 @@ template <typename T>
 void WindowFactoryManager::addFactory()
 {
     // create the factory object
-    WindowFactory* factory = CEGUI_NEW_AO T;
+    WindowFactory* factory = new T;
 
     // only do the actual add now if our singleton has already been created
     if (WindowFactoryManager::getSingletonPtr())
@@ -526,7 +520,7 @@ void WindowFactoryManager::addFactory()
                                             factory->getTypeName() +
                                             "' windows.");
             // delete the factory object
-            CEGUI_DELETE_AO factory;
+            delete factory;
             CEGUI_RETHROW;
         }
     }

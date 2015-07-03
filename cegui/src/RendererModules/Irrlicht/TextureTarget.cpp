@@ -132,12 +132,6 @@ void IrrlichtTextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool IrrlichtTextureTarget::isRenderingInverted() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::cleanupTargetTexture()
 {
     if (d_texture)

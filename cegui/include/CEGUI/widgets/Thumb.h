@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface for a 'Thumb' widget.  Intended to be used as
 				part of other widgets such as scrollers and sliders.
 *************************************************************************/
@@ -48,7 +48,7 @@ namespace CEGUI
 /*!
 \brief
 	Base class for Thumb widget.
-	
+
 	The thumb widget is used to compose other widgets (like sliders and scroll bars).  You would
 	not normally need to use this widget directly unless you are making a new widget of some type.
 */
@@ -83,7 +83,7 @@ public:
 
 	/*************************************************************************
 		Accessor Functions
-	*************************************************************************/ 
+	*************************************************************************/
 	/*!
 	\brief
 		return whether hot-tracking is enabled or not.
@@ -176,7 +176,7 @@ public:
 		nothing.
 	*/
 	void	setHorzFree(bool setting)						{d_horzFree = setting;}
-	
+
 
 	/*!
 	\brief
@@ -278,7 +278,7 @@ protected:
 
 	/*!
 	\brief
-		Handler triggered when the user begins to drag the thumb. 
+		Handler triggered when the user begins to drag the thumb.
 	*/
 	virtual void	onThumbTrackStarted(WindowEventArgs& e);
 
@@ -294,8 +294,8 @@ protected:
 	/*************************************************************************
 		Overridden event handling routines
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
+    virtual void    onCursorMove(CursorInputEventArgs& e);
+    virtual void    onCursorPressHold(CursorInputEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 
 
@@ -313,7 +313,7 @@ protected:
 
 	// internal state
 	bool	d_beingDragged;				//!< true if thumb is being dragged
-	Vector2f d_dragPoint;				//!< point where we are being dragged at.
+    glm::vec2 d_dragPoint;				//!< point where we are being dragged at.
 
 
 private:
