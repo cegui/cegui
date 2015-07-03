@@ -1,7 +1,0 @@
-<SampleDefinition
-    name      = "CEGUISample_Tree"
-    type      = "C++ Module"
-    summary         = "The Tree sample contains a tree of items that can be expanded and collapsed."
-    description     = "The sample showcases the &quot;CEGUI/Tree&quot; functionality. The &quot;TaharezLook/Tree&quot; widget is used for this purpose."
-    credits         = "David Durant"
-/>

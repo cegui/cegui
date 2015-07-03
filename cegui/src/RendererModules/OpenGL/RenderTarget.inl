@@ -25,129 +25,79 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
-#include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <cmath>
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const double OpenGLRenderTarget<T>::d_yfov_tan = 0.267949192431123;
-
-//----------------------------------------------------------------------------//
-template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
-    d_owner(owner),
-    d_area(0, 0, 0, 0),
-    d_matrix(0),
-    d_matrixValid(false),
-    d_viewDistance(0)
+    d_owner(owner)
 {
-    d_matrix = new mat4Pimpl();
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 OpenGLRenderTarget<T>::~OpenGLRenderTarget()
 {
-    delete d_matrix;
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::draw(const GeometryBuffer& buffer)
-{
-    buffer.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::draw(const RenderQueue& queue)
-{
-    queue.draw();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::setArea(const Rectf& area)
-{
-    d_area = area;
-    d_matrixValid = false;
-
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-const Rectf& OpenGLRenderTarget<T>::getArea() const
-{
-    return d_area;
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void OpenGLRenderTarget<T>::activate()
 {
-    glViewport(static_cast<GLsizei>(d_area.left()),
-               static_cast<GLsizei>(d_area.top()),
-               static_cast<GLsizei>(d_area.getWidth()),
-               static_cast<GLsizei>(d_area.getHeight()));
+    glViewport(static_cast<GLsizei>(RenderTarget::d_area.left()),
+               static_cast<GLsizei>(RenderTarget::d_area.top()),
+               static_cast<GLsizei>(RenderTarget::d_area.getWidth()),
+               static_cast<GLsizei>(RenderTarget::d_area.getHeight()));
 
-    if (!d_matrixValid)
+    if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
-    d_owner.setViewProjectionMatrix(d_matrix);
+    d_owner.setViewProjectionMatrix(RenderTarget::d_matrix);
 
-    d_owner.setActiveRenderTarget(this);
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::deactivate()
-{
+    RenderTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2f& p_in, Vector2f& p_out) const
+    const glm::vec2& p_in, glm::vec2& p_out) const
 {
-    if (!d_matrixValid)
+    if (!RenderTarget::d_matrixValid)
         updateMatrix();
 
     const OpenGLGeometryBufferBase& gb =
         static_cast<const OpenGLGeometryBufferBase&>(buff);
 
     const GLint vp[4] = {
-        static_cast<GLint>(d_area.left()),
-        static_cast<GLint>(d_area.top()),
-        static_cast<GLint>(d_area.getWidth()),
-        static_cast<GLint>(d_area.getHeight())
+        static_cast<GLint>(RenderTarget::d_area.left()),
+        static_cast<GLint>(RenderTarget::d_area.top()),
+        static_cast<GLint>(RenderTarget::d_area.getWidth()),
+        static_cast<GLint>(RenderTarget::d_area.getHeight())
     };
 
-    GLdouble in_x, in_y, in_z = 0.0;
+    GLfloat in_x, in_y, in_z;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
-    const glm::mat4& projMatrix = d_matrix->d_matrix;
-    const glm::mat4& modelMatrix = gb.getMatrix()->d_matrix;
+    const glm::mat4& projMatrix = RenderTarget::d_matrix;
+    const glm::mat4& modelMatrix = gb.getModelMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
     glm::vec3 unprojected2;
-    in_x = vp[2] * 0.5;
-    in_y = vp[3] * 0.5;
-    in_z = -d_viewDistance;
+    in_x = vp[2] * 0.5f;
+    in_y = vp[3] * 0.5f;
+    in_z = -RenderTarget::d_viewDistance;
     unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
-    in_x = p_in.d_x;
-    in_y = vp[3] - p_in.d_y;
+    in_x = p_in.x;
+    in_y = vp[3] - p_in.y;
     in_z = 0.0;
     unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
@@ -182,46 +132,23 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const double is_x = unprojected1.x - rv.x * tmp1;
     const double is_y = unprojected1.y - rv.y * tmp1;
 
-    p_out.d_x = static_cast<float>(is_x);
-    p_out.d_y = static_cast<float>(is_y);
-
-    p_out = p_in; // CrazyEddie wanted this
+    p_out.x = static_cast<float>(is_x);
+    p_out.y = static_cast<float>(is_y);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void OpenGLRenderTarget<T>::updateMatrix() const
 {
-    const float w = d_area.getWidth();
-    const float h = d_area.getHeight();
+    RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
+}
 
-    // We need to check if width or height are zero and act accordingly to prevent running into issues
-    // with divisions by zero which would lead to undefined values, as well as faulty clipping planes
-    // This is mostly important for avoiding asserts
-    const bool widthAndHeightNotZero = ( w != 0.0f ) && ( h != 0.0f);
 
-    const float aspect = widthAndHeightNotZero ? w / h : 1.0f;
-    const float midx = widthAndHeightNotZero ? w * 0.5f : 0.5f;
-    const float midy = widthAndHeightNotZero ? h * 0.5f : 0.5f;
-    d_viewDistance = midx / (aspect * d_yfov_tan);
-
-    glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
-    glm::vec3 center = glm::vec3(midx, midy, 1);
-    glm::vec3 up = glm::vec3(0, -1, 0);
-
-    //Older glm versions use degrees as parameter here by default (Unless radians are forced via GLM_FORCE_RADIANS). Newer versions of glm exlusively use radians.
-#if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH < 6) && (!defined(GLM_FORCE_RADIANS))
-    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
-#else
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(30.f), aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
-#endif
-
-    // Projection matrix abuse!
-    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
-  
-    d_matrix->d_matrix = projectionMatrix * viewMatrix;
-
-    d_matrixValid = true;
+//----------------------------------------------------------------------------//
+template <typename T>
+OpenGLRendererBase& OpenGLRenderTarget<T>::getOwner()
+{
+    return d_owner;
 }
 
 //----------------------------------------------------------------------------//

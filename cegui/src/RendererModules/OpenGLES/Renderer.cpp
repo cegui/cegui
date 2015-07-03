@@ -477,7 +477,7 @@ const Sizef& OpenGLESRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLESRenderer::getDisplayDPI() const
+const glm::vec2& OpenGLESRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -620,6 +620,12 @@ float OpenGLESRenderer::getNextPOTSize(const float f)
     }
 
     return static_cast<float>(size);
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGLESRenderer::isTexCoordSystemFlipped() const
+{
+    return true;
 }
 
 //----------------------------------------------------------------------------//

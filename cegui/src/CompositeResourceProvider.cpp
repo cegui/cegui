@@ -37,7 +37,7 @@ CompositeResourceProvider::~CompositeResourceProvider(void)
   ProviderIterator it=getIterator();
   for(it.toStart(); !it.isAtEnd(); ++it)
   {
-    CEGUI_DELETE_AO it.getCurrentValue();
+    delete it.getCurrentValue();
     d_providerlist.erase (it.getCurrentKey());
   }
 }

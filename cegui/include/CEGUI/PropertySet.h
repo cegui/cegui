@@ -314,8 +314,7 @@ public:
     String getPropertyDefault(const String& name) const;
 
 private:
-    typedef std::map<String, Property*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Property*)> PropertyRegistry;
+    typedef std::map<String, Property*, StringFastLessCompare> PropertyRegistry;
     PropertyRegistry	d_properties;
 
 

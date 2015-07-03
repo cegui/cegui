@@ -239,12 +239,6 @@ void OpenGLESFBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLESFBOTextureTarget::isRenderingInverted() const
-{
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLESFBOTextureTarget::initializedFBOExtension()
 {
 	if (!OpenGLESRenderer::isGLExtensionSupported("GL_OES_framebuffer_object"))

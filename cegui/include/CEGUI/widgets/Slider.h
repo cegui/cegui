@@ -84,7 +84,7 @@ public:
         -  0 to indicate slider should not be moved.
         - +1 to indicate slider should be moved to a higher setting.
     */
-    virtual float   getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
+    virtual float   getAdjustDirectionFromPoint(const glm::vec2& pt) const  = 0;
 };
 
 
@@ -284,7 +284,7 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual float	getAdjustDirectionFromPoint(const Vector2f& pt) const;
+    virtual float	getAdjustDirectionFromPoint(const glm::vec2& pt) const;
 
 
     /*!
@@ -370,8 +370,8 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
+    virtual void    onCursorPressHold(CursorInputEventArgs& e);
+    virtual void    onScroll(CursorInputEventArgs& e);
 
 
 	/*************************************************************************

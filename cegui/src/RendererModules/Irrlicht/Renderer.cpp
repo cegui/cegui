@@ -342,7 +342,7 @@ const Sizef& IrrlichtRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& IrrlichtRenderer::getDisplayDPI() const
+const glm::vec2& IrrlichtRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -432,6 +432,12 @@ float IrrlichtRenderer::getNextPOTSize(const float f)
 const IrrlichtEventPusher* IrrlichtRenderer::getEventPusher() const
 {
     return d_eventPusher;
+}
+
+//----------------------------------------------------------------------------//
+bool IrrlichtRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
 }
 
 //----------------------------------------------------------------------------//
