@@ -56,7 +56,7 @@ The reference for each element is arranged into sections, as described below:
       be registered with the system.  Stock interpolators are provided for the
       following:
         - @c "bool"
-        - @c "colour"
+        - @c "Colour"
         - @c "ColourRect"
         - @c "float"
         - @c "int"
