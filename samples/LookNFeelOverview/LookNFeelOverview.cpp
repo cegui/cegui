@@ -74,7 +74,8 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load all Fonts we are going to use and which are not loaded via scheme
-    d_fontForTaharez = &FontManager::getSingleton().createFromFile("Jura-10.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-10.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load all layouts we want to use later

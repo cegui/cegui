@@ -60,8 +60,9 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     WindowManager& win_mgr = WindowManager::getSingleton();
     d_root = (DefaultWindow*)win_mgr.createWindow("DefaultWindow", "Root");
 
-    Font& default_font = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    gui_context->setDefaultFont(&default_font);
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+    gui_context->setDefaultFont(defaultFont);
 
     gui_context->setRootWindow(d_root);
 

@@ -60,8 +60,9 @@ bool ModelViewSample::initialise(GUIContext* gui_context)
 
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    gui_context->setDefaultFont(&defaultFont);
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+    gui_context->setDefaultFont(defaultFont);
     gui_context->setRootWindow(d_root);
     gui_context->setDefaultTooltipType("TaharezLook/Tooltip");
 

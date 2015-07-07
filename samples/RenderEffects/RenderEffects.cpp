@@ -603,9 +603,10 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )

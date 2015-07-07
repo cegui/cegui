@@ -66,13 +66,14 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
 
     // Create a DefaultWindow called 'Root'.
     d_root = static_cast<DefaultWindow*>(winMgr.createWindow("DefaultWindow", "Root"));
 
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // Set the root window as root of our GUI Context
     guiContext->setRootWindow(d_root);

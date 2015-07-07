@@ -106,10 +106,12 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("Image", "WindowsLook/Background");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // Set the root window as root of our GUI Context
     guiContext->setRootWindow(d_root);

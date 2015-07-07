@@ -89,8 +89,9 @@ bool SimpleGameMenuSample::initialise(CEGUI::GUIContext* gui_context)
     gui_context->setWindowNavigator(d_windowNavigator);
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    gui_context->setDefaultFont(&defaultFont);
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+    gui_context->setDefaultFont(defaultFont);
 
     d_layout = win_mgr.loadLayoutFromFile("SimpleGameMenuSample.layout");
     d_root->addChild(d_layout);
