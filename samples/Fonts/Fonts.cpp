@@ -195,9 +195,10 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     // Create a custom font which we use to draw the list items. This custom
     // font won't get effected by the scaler and such.
     FontManager& fontManager(FontManager::getSingleton());
-    CEGUI::Font& font(fontManager.createFromFile("DejaVuSans-12.font"));
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set it as the default
-    d_guiContext->setDefaultFont(&font);
+    d_guiContext->setDefaultFont(defaultFont);
 
     // load all the fonts (if they are not loaded yet)
     fontManager.createAll("*.font", "fonts");
@@ -469,17 +470,20 @@ void FontsSample::initialiseAutoScaleOptionsArray()
 void FontsSample::retrieveLoadedFontNames(bool areEditable)
 {
     FontManager& fontManager(FontManager::getSingleton());
-    FontManager::FontIterator fi = fontManager.getIterator();
+    FontManager::FontRegistry registeredFonts = fontManager.getRegisteredFonts();
 
-    while (!fi.isAtEnd())
+    FontManager::FontRegistry::const_iterator curIter = registeredFonts.begin();
+    FontManager::FontRegistry::const_iterator iterEnd = registeredFonts.end();
+    while (curIter != iterEnd)
     {
-        CEGUI::Font& font(fontManager.get(fi.getCurrentKey()));
+        Font* curFont = curIter->second;
 
-        if (d_fontNameOptions.find(font.getName()) == d_fontNameOptions.end())
+        if (d_fontNameOptions.find(curFont->getName()) == d_fontNameOptions.end())
         {
-            d_fontNameOptions[font.getName()] = areEditable;
+            d_fontNameOptions[curFont->getName()] = areEditable;
         }
-        ++fi;
+
+        ++curIter;
     }
 }
 

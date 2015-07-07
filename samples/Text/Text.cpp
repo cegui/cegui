@@ -53,9 +53,10 @@ bool TextSample::initialise(CEGUI::GUIContext* guiContext)
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
@@ -130,7 +131,7 @@ void TextSample::initSingleLineEdit()
         Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextSample/SingleLineGroup/editPasswd"));
         passwd->setValidationString("[A-Za-z0-9]*");
         // Render masked
-        passwd->setTextMasked(true);
+        passwd->setTextMaskingEnabled(true);
     }
 }
 

@@ -138,10 +138,10 @@ void SampleBrowser::deinitialise()
 //----------------------------------------------------------------------------//
 void SampleBrowser::initialiseLoadScreenLayout()
 {
-    CEGUI::Font& font =
-        FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(&font);
+    CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(defaultFont);
 
     SchemeManager::getSingleton().createFromFile("SampleBrowser.scheme");
 
@@ -445,11 +445,6 @@ void SampleBrowser::initialiseSampleBrowserLayout()
         createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
-
-    CEGUI::FontManager::getSingleton().
-        createFromFile("DejaVuSans-10-NoScale.font");
-    CEGUI::FontManager::getSingleton().
-        createFromFile("Junicode-13.font");
 
     CEGUI::SchemeManager::getSingleton().createFromFile("Generic.scheme");
 

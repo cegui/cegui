@@ -71,9 +71,10 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->getCursor().setDefaultImage("GameMenuSampleImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-13.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    d_guiContext->setDefaultFont(&defaultFont);
+    d_guiContext->setDefaultFont(defaultFont);
 
     FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
