@@ -144,8 +144,8 @@ void FalagardEditbox::setupVisualString(String& visual) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
-    if (w->isTextMasked())
-        visual.assign(w->getText().length(), w->getMaskCodePoint());
+    if (w->isTextMaskingEnabled())
+        visual.assign(w->getText().length(), w->getTextMaskingCodepoint());
     else
         visual.assign(w->getTextVisual());
 }
@@ -428,9 +428,9 @@ size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     wndx -= d_lastTextOffset;
 
     // Return the proper index
-    if (w->isTextMasked())
+    if (w->isTextMaskingEnabled())
         return w->getFont()->getCharAtPixel(
-                String(w->getTextVisual().length(), w->getMaskCodePoint()),
+                String(w->getTextVisual().length(), w->getTextMaskingCodepoint()),
                 wndx);
     else
         return w->getFont()->getCharAtPixel(w->getTextVisual(), wndx);

@@ -43,8 +43,8 @@ namespace CEGUI
 const String EditboxBase::EventNamespace("EditboxBase");
 const String EditboxBase::WidgetTypeName("CEGUI/EditboxBase");
 const String EditboxBase::EventReadOnlyModeChanged("ReadOnlyModeChanged");
-const String EditboxBase::EventMaskedRenderingModeChanged("MaskedRenderingModeChanged");
-const String EditboxBase::EventMaskCodePointChanged("MaskCodePointChanged");
+const String EditboxBase::EventTextMaskingEnabledChanged("TextMaskingEnabledChanged");
+const String EditboxBase::EventTextMaskingCodepointChanged("TextMaskingCodepointChanged");
 const String EditboxBase::EventValidationStringChanged("ValidationStringChanged");
 const String EditboxBase::EventMaximumTextLengthChanged("MaximumTextLengthChanged");
 const String EditboxBase::EventTextValidityChanged("TextValidityChanged");
@@ -59,8 +59,8 @@ EditboxBase::EditboxBase(const String& type, const String& name) :
     Window(type, name),
     d_readOnly(false),
     d_readOnlyCursorImage(0),
-    d_maskText(false),
-    d_maskCodePoint('*'),
+    d_textMaskingEnabled(false),
+    d_textMaskingCodepoint('*'),
     d_maxTextLen(String().max_size()),
     d_caretPos(0),
     d_selectionStart(0),
@@ -138,14 +138,14 @@ void EditboxBase::setEnabled(bool enabled)
 }
 
 
-void EditboxBase::setTextMasked(bool setting)
+void EditboxBase::setTextMaskingEnabled(bool setting)
 {
     // if setting is changed
-    if (d_maskText != setting)
+    if (d_textMaskingEnabled != setting)
     {
-        d_maskText = setting;
+        d_textMaskingEnabled = setting;
         WindowEventArgs args(this);
-        onMaskedRenderingModeChanged(args);
+        onTextMaskingEnabledChanged(args);
     }
 
 }
@@ -214,15 +214,15 @@ void EditboxBase::setSelectionLength(size_t length)
 	this->setSelection(this->getSelectionStart(), this->getSelectionStart() + length);
 }
 
-void EditboxBase::setMaskCodePoint(String::value_type code_point)
+void EditboxBase::setTextMaskingCodepoint(String::value_type code_point)
 {
-    if (code_point != d_maskCodePoint)
+    if (code_point != d_textMaskingCodepoint)
     {
-        d_maskCodePoint = code_point;
+        d_textMaskingCodepoint = code_point;
 
         // Trigger "mask code point changed" event
         WindowEventArgs args(this);
-        onMaskCodePointChanged(args);
+        onTextMaskingCodepointChanged(args);
     }
 
 }
@@ -487,20 +487,20 @@ void EditboxBase::onReadOnlyChanged(WindowEventArgs& e)
 }
 
 
-void EditboxBase::onMaskedRenderingModeChanged(WindowEventArgs& e)
+void EditboxBase::onTextMaskingEnabledChanged(WindowEventArgs& e)
 {
     invalidate();
-    fireEvent(EventMaskedRenderingModeChanged , e, EventNamespace);
+    fireEvent(EventTextMaskingEnabledChanged , e, EventNamespace);
 }
 
 
-void EditboxBase::onMaskCodePointChanged(WindowEventArgs& e)
+void EditboxBase::onTextMaskingCodepointChanged(WindowEventArgs& e)
 {
     // if we are in masked mode, trigger a GUI redraw.
-    if (isTextMasked())
+    if (isTextMaskingEnabled())
         invalidate();
 
-    fireEvent(EventMaskCodePointChanged , e, EventNamespace);
+    fireEvent(EventTextMaskingCodepointChanged , e, EventNamespace);
 }
 
 
@@ -540,14 +540,14 @@ void EditboxBase::addEditboxBaseProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
-        "MaskText","Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
-        &EditboxBase::setTextMasked, &EditboxBase::isTextMasked, false /* TODO: Inconsistency */
+        "TextMaskingEnabled","Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
+        &EditboxBase::setTextMaskingEnabled, &EditboxBase::isTextMaskingEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(EditboxBase, String::value_type,
-        "MaskCodepoint","Property to get/set the utf32 codepoint value used for masking text. "
+        "TextMaskingCodepoint","Property to get/set the utf32 codepoint value used for masking text. "
         "Value is either \"[uint]\" (number = codepoint) if CEGUI is compiled with utf32 string or \"[char]\" (just the symbol) if CEGUI is compiled with std::string.",
-        &EditboxBase::setMaskCodePoint, &EditboxBase::getMaskCodePoint, 42
+        &EditboxBase::setTextMaskingCodepoint, &EditboxBase::getTextMaskingCodepoint, 42
     );
 
     CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
