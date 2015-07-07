@@ -528,7 +528,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
     else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left)
     {
         // if masked, set up to select all
-        if (isTextMasked())
+        if (isTextMaskingEnabled())
         {
             d_dragAnchorIdx = 0;
             setCaretIndex(getText().length());
