@@ -220,7 +220,7 @@ void Scheme_xmlHandler::elementFontStart(const XMLAttributes& attributes)
     font.filename = attributes.getValueAsString(FilenameAttribute);
     font.resourceGroup = attributes.getValueAsString(ResourceGroupAttribute);
 
-    d_scheme->d_fonts.push_back(font);
+    d_scheme->d_fontFiles.push_back(font);
 }
 
 //----------------------------------------------------------------------------//

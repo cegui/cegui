@@ -64,14 +64,14 @@ public:
      * WindowEventArgs::window set to the Editbox that has been put into or
      * taken out of masked text (password) mode.
      */
-    static const String EventMaskedRenderingModeChanged;
+    static const String EventTextMaskingEnabledChanged;
     /** Event fired whrn the code point (character) used for masked text is
      * changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose text masking codepoint
      * has been changed.
      */
-    static const String EventMaskCodePointChanged;
+    static const String EventTextMaskingCodepointChanged;
     /** Event fired when the validation string is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose validation string has
@@ -165,7 +165,7 @@ public:
         mask code point, false if the Editbox text will be rendered as ordinary
         text.
     */
-    bool isTextMasked() const { return d_maskText; }
+    bool isTextMaskingEnabled() const { return d_textMaskingEnabled; }
 
 
     /*!
@@ -218,7 +218,7 @@ public:
         the Unicode code point that will be rendered instead of the Editbox text
         when rendering in masked mode.
     */
-    String::value_type getMaskCodePoint() const { return d_maskCodePoint; }
+    String::value_type getTextMaskingCodepoint() const { return d_textMaskingCodepoint; }
 
     /*!
     \brief
@@ -260,7 +260,7 @@ public:
     \return
         Nothing.
     */
-    void setTextMasked(bool setting);
+    void setTextMaskingEnabled(bool setting);
 
     /*!
     \brief
@@ -332,7 +332,7 @@ public:
     \return
         Nothing.
     */
-    void setMaskCodePoint(String::value_type code_point);
+    void setTextMaskingCodepoint(String::value_type code_point);
 
     /*!
     \brief
@@ -482,14 +482,14 @@ protected:
         Handler called when the masked rendering mode (password mode) has been
         changed.
     */
-    virtual void onMaskedRenderingModeChanged(WindowEventArgs& e);
+    virtual void onTextMaskingEnabledChanged(WindowEventArgs& e);
 
     /*!
     \brief
         Handler called when the code point to use for masked rendering has been
         changed.
     */
-    virtual void onMaskCodePointChanged(WindowEventArgs& e);
+    virtual void onTextMaskingCodepointChanged(WindowEventArgs& e);
 
     /*!
     \brief
@@ -559,9 +559,9 @@ protected:
     //! The read only mouse cursor image.
     const Image* d_readOnlyCursorImage;
     //! True if the editbox text should be rendered masked.
-    bool d_maskText;
+    bool d_textMaskingEnabled;
     //! Code point to use when rendering masked text.
-    String::value_type d_maskCodePoint;
+    String::value_type d_textMaskingCodepoint;
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
     //! Position of the caret / insert-point.
