@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Fonts version="4">
+    <Font name="DejaVuSans-10-NoScale" filename="DejaVuSans.ttf" type="FreeType" size="10" nativeHorzRes="1280" nativeVertRes="720" autoScaled="false"/>
+    <Font name="Junicode-13" filename="Junicode.ttf" type="FreeType" size="13" nativeHorzRes="1280" nativeVertRes="720" autoScaled="false"/>
+    <Font autoScaled="false" filename="DejaVuSans.ttf" name="DejaVuSans-14-NoScale" nativeHorzRes="1280" nativeVertRes="720" size="14" type="FreeType" />
+</Fonts>
