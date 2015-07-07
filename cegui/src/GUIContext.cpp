@@ -617,9 +617,11 @@ Font* GUIContext::getDefaultFont() const
 
     // if no explicit default, we will return the first font we can get from
     // the font manager
-    FontManager::FontIterator iter = FontManager::getSingleton().getIterator();
+    const FontManager::FontRegistry& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
 
-    return (!iter.isAtEnd()) ? *iter : 0;
+    FontManager::FontRegistry::const_iterator iter = registeredFonts.begin();
+
+    return (iter != registeredFonts.end()) ? iter->second : 0;
 }
 
 //----------------------------------------------------------------------------//

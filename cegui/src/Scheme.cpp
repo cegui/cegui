@@ -197,34 +197,13 @@ void Scheme::loadFonts()
 {
     FontManager& fntmgr = FontManager::getSingleton();
 
-    // check fonts
-    for (LoadableUIElementList::iterator pos = d_fonts.begin();
-        pos != d_fonts.end(); ++pos)
+    // load Fonts
+    // A font file may contain multiple fonts so we cannot check if any of them are
+    // already loaded upfront, so we just load then as usual
+    for (LoadableUIElementList::iterator pos = d_fontFiles.begin();
+        pos != d_fontFiles.end(); ++pos)
     {
-        // skip if a font with this name is already loaded
-        if (!(*pos).name.empty() && fntmgr.isDefined((*pos).name))
-            continue;
-
-        // create font using specified xml file.
-        Font& font = fntmgr.createFromFile((*pos).filename, (*pos).resourceGroup);
-        const String realname(font.getName());
-
-        // if name was not in scheme, set it now and proceed to next font
-        if ((*pos).name.empty())
-        {
-            (*pos).name = realname;
-            continue;
-        }
-
-        // confirm the font loaded has same name specified in scheme
-        if (realname != (*pos).name)
-        {
-            fntmgr.destroy(font);
-            CEGUI_THROW(InvalidRequestException(
-                "The Font created by file '" + (*pos).filename +
-                "' is named '" + realname + "', not '" + (*pos).name +
-                "' as required by Scheme '" + d_name + "'."));
-        }
+        fntmgr.createFromFile((*pos).filename, (*pos).resourceGroup);
     }
 }
 
@@ -233,7 +212,7 @@ void Scheme::loadFonts()
 *************************************************************************/
 void Scheme::loadLookNFeels()
 {
-    WidgetLookManager& wlfMgr   = WidgetLookManager::getSingleton();
+    WidgetLookManager& wlfMgr = WidgetLookManager::getSingleton();
 
     // load look'n'feels
     // (we can't actually check these, at the moment, so we just re-parse data;
@@ -468,8 +447,8 @@ void Scheme::unloadFonts()
     FontManager& fontManager = FontManager::getSingleton();
 
     // unload all loaded fonts
-    for (LoadableUIElementList::iterator iter = d_fonts.begin();
-        iter != d_fonts.end(); ++iter)
+    for (LoadableUIElementList::iterator iter = d_fontFiles.begin();
+        iter != d_fontFiles.end(); ++iter)
     {
         if (!(*iter).name.empty())
             fontManager.destroy((*iter).name);
@@ -664,8 +643,8 @@ bool Scheme::areFontsLoaded() const
     FontManager& fntmgr = FontManager::getSingleton();
 
     // check fonts
-    for (LoadableUIElementList::const_iterator pos = d_fonts.begin();
-        pos != d_fonts.end(); ++pos)
+    for (LoadableUIElementList::const_iterator pos = d_fontFiles.begin();
+        pos != d_fontFiles.end(); ++pos)
     {
         if ((*pos).name.empty() || !fntmgr.isDefined((*pos).name))
             return false;
@@ -832,7 +811,7 @@ Scheme::LoadableUIElementIterator Scheme::getImageFileImagesets() const
 
 Scheme::LoadableUIElementIterator Scheme::getFonts() const
 {
-    return LoadableUIElementIterator(d_fonts.begin(), d_fonts.end());
+    return LoadableUIElementIterator(d_fontFiles.begin(), d_fontFiles.end());
 }
 
 
