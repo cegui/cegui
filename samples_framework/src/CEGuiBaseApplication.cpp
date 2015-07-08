@@ -41,6 +41,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/AnimationManager.h"
+#include "CEGUI/FontManager.h"
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
