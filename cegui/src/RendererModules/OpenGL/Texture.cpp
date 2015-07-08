@@ -24,11 +24,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/ImageCodec.h"
+
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -43,33 +45,31 @@ OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name) :
     d_owner(owner),
     d_name(name)
 {
+}
+
+//----------------------------------------------------------------------------//
+OpenGLTexture::~OpenGLTexture()
+{
+    cleanupOpenGLTexture();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLTexture::initialise() 
+{
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                             const String& filename,
-                             const String& resourceGroup) :
-    d_size(0, 0),
-    d_grabBuffer(0),
-    d_dataSize(0, 0),
-    d_owner(owner),
-    d_name(name)
+void OpenGLTexture::initialise(const String& filename, const String& resourceGroup)
 {
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
-
+ 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                             const Sizef& size) :
-    d_size(0, 0),
-    d_grabBuffer(0),
-    d_dataSize(0, 0),
-    d_owner(owner),
-    d_name(name)
+void OpenGLTexture::initialise(const Sizef& size)
 {
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
@@ -77,80 +77,13 @@ OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                             GLuint tex, const Sizef& size) :
-    d_ogltexture(tex),
-    d_size(size),
-    d_grabBuffer(0),
-    d_dataSize(size),
-    d_owner(owner),
-    d_name(name)
+void OpenGLTexture::initialise(GLuint tex, const Sizef& size) 
 {
+    d_ogltexture = tex;
+    d_size = size;
+    d_dataSize = size;
     initInternalPixelFormatFields(PF_RGBA);
     updateCachedScaleValues();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLTexture::initInternalPixelFormatFields(const PixelFormat fmt)
-{
-    d_isCompressed = false;
-
-    switch (fmt)
-    {
-    case PF_RGBA:
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
-        break;
-
-    case PF_RGB:
-        d_format = GL_RGB;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
-        break;
-
-    case PF_RGB_565:
-        d_format = GL_RGB;
-        d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
-        break;
-
-    case PF_RGBA_4444:
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
-        break;
-
-    case PF_RGB_DXT1:
-        d_format = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    case PF_RGBA_DXT1:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    case PF_RGBA_DXT3:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    case PF_RGBA_DXT5:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
-        d_isCompressed = true;
-        break;
-
-    default:
-        CEGUI_THROW(RendererException(
-            "invalid or unsupported CEGUI::PixelFormat."));
-    }
-}
-
-//----------------------------------------------------------------------------//
-OpenGLTexture::~OpenGLTexture()
-{
-    cleanupOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
@@ -172,7 +105,7 @@ const Sizef& OpenGLTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLTexture::getTexelScaling() const
+const glm::vec2& OpenGLTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -189,17 +122,12 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     // load file to memory via resource provider
     RawDataContainer texFile;
-    System::getSingleton().getResourceProvider()->
+    CEGUI::System& system = System::getSingleton();
+
+    system.getResourceProvider()->
         loadRawDataContainer(filename, texFile, resourceGroup);
 
-    // get and check existence of CEGUI::System (needed to access ImageCodec)
-    System* sys = System::getSingletonPtr();
-    if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created: "
-            "unable to access ImageCodec."));
-
-    Texture* res = sys->getImageCodec().load(texFile, this);
+    Texture* res = system.getImageCodec().load(texFile, this);
 
     // unload file data buffer
     System::getSingleton().getResourceProvider()->
@@ -208,7 +136,7 @@ void OpenGLTexture::loadFromFile(const String& filename,
     if (!res)
         // It's an error
         CEGUI_THROW(RendererException(
-            sys->getImageCodec().getIdentifierString() +
+            system.getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
 
@@ -227,7 +155,7 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
+    blitFromMemory(buffer, Rectf(glm::vec2(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -267,12 +195,6 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
 GLsizei OpenGLTexture::getCompressedTextureSize(const Sizef& pixel_size) const
 {
     GLsizei blocksize = 16;
-    if (d_format == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
-        d_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
-    {
-        blocksize = 8;
-    }
-
     return (
         static_cast<GLsizei>(
         std::ceil(pixel_size.d_width / 4) *
@@ -289,45 +211,6 @@ void OpenGLTexture::setTextureSize(const Sizef& sz)
 
     d_dataSize = d_size;
     updateCachedScaleValues();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
-{
-    const Sizef size(d_owner.getAdjustedTextureSize(sz));
-    d_size = size;
-
-    // make sure size is within boundaries
-    GLfloat maxSize;
-    glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
-    if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
-
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    // set texture to required size
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
-    {
-        const GLsizei image_size = getCompressedTextureSize(size);
-        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
-                               static_cast<GLsizei>(size.d_width),
-                               static_cast<GLsizei>(size.d_height),
-                               0, image_size, 0);
-    }
-    else
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, d_format,
-                     static_cast<GLsizei>(size.d_width),
-                     static_cast<GLsizei>(size.d_height),
-                     0, d_format, d_subpixelFormat, 0);
-    }
-
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -353,10 +236,10 @@ void OpenGLTexture::restoreTexture()
     generateOpenGLTexture();
     setTextureSize_impl(d_size);
 
-    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), d_size));
+    blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), d_size));
 
     // free the grabbuffer
-    delete [] d_grabBuffer;
+    delete[] d_grabBuffer;
     d_grabBuffer = 0;
 }
 
@@ -380,65 +263,11 @@ void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::blitToMemory(void* targetData)
-{
-    // save existing config
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
-    {
-        glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
-    }
-    else
-    {
-        GLint old_pack;
-        glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
-
-        glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
-    
-        glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
-    }
-
-    // restore previous config.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
-    //
-    // calculate what to use for x scale
-    //
-    const float orgW = d_dataSize.d_width;
-    const float texW = d_size.d_width;
-
-    // if texture and original data width are the same, scale is based
-    // on the original size.
-    // if texture is wider (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    if(orgW == texW && orgW == 0.0f)
-        d_texelScaling.d_x = 0.0f;
-    else
-        d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
-
-    //
-    // calculate what to use for y scale
-    //
-    const float orgH = d_dataSize.d_height;
-    const float texH = d_size.d_height;
-
-    // if texture and original data height are the same, scale is based
-    // on the original size.
-    // if texture is taller (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    if(orgH == texH && orgH == 0.0f)
-        d_texelScaling.d_x = 0.0f;
-    else
-        d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    // Update the scale of a texel based on the absolute size
+    d_texelScaling.x = (d_size.d_width != 0.0f) ? (1.0f / d_size.d_width) : 0.0f;
+    d_texelScaling.y = (d_size.d_height != 0.0f) ? (1.0f / d_size.d_height) : 0.0f;
 }
 
 //----------------------------------------------------------------------------//
@@ -454,16 +283,17 @@ void OpenGLTexture::generateOpenGLTexture()
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    // FIXME: This hack was needed to fix #980 in a way that maintains binary
-    // compatibility in v0-8 branch.
-    if (d_owner.getIdentifierString().find("CEGUI::OpenGLRenderer -") == 0)
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    setTextureEnvironment();
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
+}
+//----------------------------------------------------------------------------//
+void OpenGLTexture::setTextureEnvironment()
+{
 }
 
 //----------------------------------------------------------------------------//

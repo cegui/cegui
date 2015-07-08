@@ -117,7 +117,7 @@ void OpenGLWGLPBTextureTarget::deactivate()
 {
     // grab what we rendered into the texture
     glBindTexture(GL_TEXTURE_2D, d_texture);
-    glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+    glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                      0, 0,
                      static_cast<GLsizei>(d_area.right()),
                      static_cast<GLsizei>(d_area.bottom()), 0);

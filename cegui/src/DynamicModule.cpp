@@ -58,8 +58,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-struct DynamicModule::Impl :
-    public AllocatedObject<DynamicModule::Impl>
+struct DynamicModule::Impl
 {
     Impl(const String& name) :
         d_moduleName(name),
@@ -188,7 +187,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 
 //----------------------------------------------------------------------------//
 DynamicModule::DynamicModule(const String& name) :
-    d_pimpl(CEGUI_NEW_AO Impl(name))
+    d_pimpl(new Impl(name))
 {
 	if (name.empty())
 		return;
@@ -225,7 +224,7 @@ DynamicModule::DynamicModule(const String& name) :
 //----------------------------------------------------------------------------//
 DynamicModule::~DynamicModule()
 {
-    CEGUI_DELETE_AO d_pimpl;
+    delete d_pimpl;
 }
 
 //----------------------------------------------------------------------------//

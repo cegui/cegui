@@ -36,7 +36,7 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ScriptModule.h"
@@ -54,10 +54,15 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
+#include "CEGUI/views/All.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
+#include "CEGUI/svg/SVGDataManager.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
+#endif
+#if defined(__WIN32__) || defined(_WIN32)
+#	include "CEGUI/Win32ClipboardProvider.h"
 #endif
 #include <ctime>
 #include <clocale>
@@ -120,7 +125,8 @@ System::System(Renderer& renderer,
 : d_renderer(&renderer),
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
-  d_clipboard(CEGUI_NEW_AO Clipboard()),
+  d_clipboard(new Clipboard()),
+  d_nativeClipboardProvider(0),
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
   d_ourXmlParser(false),
@@ -144,7 +150,13 @@ System::System(Renderer& renderer,
     // seeing its configuration overwritten by this.
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     if (d_ourLogger)
-        CEGUI_NEW_AO DefaultLogger();
+        new DefaultLogger();
+#endif
+
+#if defined(__WIN32__) || defined(_WIN32)
+    d_nativeClipboardProvider = new Win32ClipboardProvider;
+    // set the default win 32 clipboard provider
+    d_clipboard->setNativeProvider(d_nativeClipboardProvider);
 #endif
 
     Logger& logger(Logger::getSingleton());
@@ -152,7 +164,7 @@ System::System(Renderer& renderer,
     // create default resource provider, unless one was already provided
     if (!d_resourceProvider)
     {
-        d_resourceProvider = CEGUI_NEW_AO DefaultResourceProvider();
+        d_resourceProvider = new DefaultResourceProvider();
         d_ourResourceProvider = true;
     }
 
@@ -173,7 +185,7 @@ System::System(Renderer& renderer,
         {
             // cleanup XML stuff
             d_xmlParser->cleanup();
-            CEGUI_DELETE_AO d_xmlParser;
+            delete d_xmlParser;
             CEGUI_RETHROW;
         }
     }
@@ -224,7 +236,7 @@ System::System(Renderer& renderer,
 
     // set up defaults
     config.initialiseDefaultFont();
-    config.initialiseDefaultMouseCursor();
+    config.initialiseDefaultCursor();
     config.initialiseDefaulTooltip();
 
     // scripting available?
@@ -254,6 +266,9 @@ System::~System(void)
 		CEGUI_CATCH (...) {}  // catch all exceptions and continue system shutdown
 
 	}
+
+    if (d_nativeClipboardProvider != 0)
+        delete d_nativeClipboardProvider;
 
     cleanupImageCodec();
 
@@ -286,12 +301,12 @@ System::~System(void)
          i != d_guiContexts.end();
          ++i)
     {
-        CEGUI_DELETE_AO *i;
+        delete *i;
     }
 
     // cleanup resource provider if we own it
     if (d_ourResourceProvider)
-        CEGUI_DELETE_AO d_resourceProvider;
+        delete d_resourceProvider;
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -302,10 +317,10 @@ System::~System(void)
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     // delete the Logger object only if we created it.
     if (d_ourLogger)
-        CEGUI_DELETE_AO Logger::getSingletonPtr();
+        delete Logger::getSingletonPtr();
 #endif
-    
-    CEGUI_DELETE_AO d_clipboard;
+
+    delete d_clipboard;
 }
 
 //---------------------------------------------------------------------------//
@@ -421,6 +436,24 @@ void System::renderAllGUIContexts()
     WindowManager::getSingleton().cleanDeadPool();
 }
 
+void System::renderAllGUIContextsOnTarget(Renderer* contained_in)
+{
+    d_renderer->beginRendering();
+
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+        i != d_guiContexts.end();
+        ++i)
+    {
+        // Add a check here to see if the renderer of context matches
+        // contained_in
+        (*i)->draw();
+    }
+
+    d_renderer->endRendering();
+
+    // do final destruction on dead-pool windows
+    WindowManager::getSingleton().cleanDeadPool();
+}
 
 /*************************************************************************
 	Return a pointer to the ScriptModule being used for scripting within
@@ -630,7 +663,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<DefaultWindow>();
     WindowFactoryManager::addWindowType<DragContainer>();
     WindowFactoryManager::addWindowType<ScrolledContainer>();
-    WindowFactoryManager::addWindowType<ClippedContainer>();
     WindowFactoryManager::addWindowType<PushButton>();
     WindowFactoryManager::addWindowType<RadioButton>();
     WindowFactoryManager::addWindowType<Combobox>();
@@ -638,9 +670,9 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Editbox>();
     WindowFactoryManager::addWindowType<FrameWindow>();
     WindowFactoryManager::addWindowType<ItemEntry>();
-    WindowFactoryManager::addWindowType<Listbox>();
     WindowFactoryManager::addWindowType<ListHeader>();
     WindowFactoryManager::addWindowType<ListHeaderSegment>();
+    WindowFactoryManager::addWindowType<ListWidget>();
     WindowFactoryManager::addWindowType<Menubar>();
     WindowFactoryManager::addWindowType<PopupMenu>();
     WindowFactoryManager::addWindowType<MenuItem>();
@@ -657,42 +689,46 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Titlebar>();
     WindowFactoryManager::addWindowType<ToggleButton>();
     WindowFactoryManager::addWindowType<Tooltip>();
-    WindowFactoryManager::addWindowType<ItemListbox>();
     WindowFactoryManager::addWindowType<GroupBox>();
-    WindowFactoryManager::addWindowType<Tree>();
-    WindowFactoryManager::addWindowType<LayoutCell>();
+    WindowFactoryManager::addWindowType<TreeWidget>();
     WindowFactoryManager::addWindowType<HorizontalLayoutContainer>();
     WindowFactoryManager::addWindowType<VerticalLayoutContainer>();
     WindowFactoryManager::addWindowType<GridLayoutContainer>();
+
+    // views
+    WindowFactoryManager::addWindowType<ListView>();
+    WindowFactoryManager::addWindowType<TreeView>();
 }
 
 void System::createSingletons()
 {
     // cause creation of other singleton objects
-    CEGUI_NEW_AO ImageManager();
-    CEGUI_NEW_AO FontManager();
-    CEGUI_NEW_AO WindowFactoryManager();
-    CEGUI_NEW_AO WindowManager();
-    CEGUI_NEW_AO SchemeManager();
-    CEGUI_NEW_AO GlobalEventSet();
-    CEGUI_NEW_AO AnimationManager();
-    CEGUI_NEW_AO WidgetLookManager();
-    CEGUI_NEW_AO WindowRendererManager();
-    CEGUI_NEW_AO RenderEffectManager();
+    new ImageManager();
+    new FontManager();
+    new WindowFactoryManager();
+    new WindowManager();
+    new SchemeManager();
+    new GlobalEventSet();
+    new AnimationManager();
+    new WidgetLookManager();
+    new WindowRendererManager();
+    new RenderEffectManager();
+    new SVGDataManager();
 }
 
 void System::destroySingletons()
 {
-    CEGUI_DELETE_AO SchemeManager::getSingletonPtr();
-    CEGUI_DELETE_AO WindowManager::getSingletonPtr();
-    CEGUI_DELETE_AO WindowFactoryManager::getSingletonPtr();
-    CEGUI_DELETE_AO WidgetLookManager::getSingletonPtr();
-    CEGUI_DELETE_AO WindowRendererManager::getSingletonPtr();
-    CEGUI_DELETE_AO AnimationManager::getSingletonPtr();
-    CEGUI_DELETE_AO RenderEffectManager::getSingletonPtr();
-    CEGUI_DELETE_AO FontManager::getSingletonPtr();
-    CEGUI_DELETE_AO ImageManager::getSingletonPtr();
-    CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
+    delete SchemeManager::getSingletonPtr();
+    delete WindowManager::getSingletonPtr();
+    delete WindowFactoryManager::getSingletonPtr();
+    delete WidgetLookManager::getSingletonPtr();
+    delete WindowRendererManager::getSingletonPtr();
+    delete AnimationManager::getSingletonPtr();
+    delete RenderEffectManager::getSingletonPtr();
+    delete FontManager::getSingletonPtr();
+    delete ImageManager::getSingletonPtr();
+    delete GlobalEventSet::getSingletonPtr();
+    delete SVGDataManager::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -740,7 +776,7 @@ void System::cleanupXMLParser()
         deleteFunc(d_xmlParser);
 
         // delete the dynamic module for the xml parser
-        CEGUI_DELETE_AO d_parserModule;
+        delete d_parserModule;
         d_parserModule = 0;
     }
 #ifdef CEGUI_STATIC
@@ -758,7 +794,7 @@ void System::setXMLParser(const String& parserName)
 #ifndef CEGUI_STATIC
     cleanupXMLParser();
     // load dynamic module
-    d_parserModule = CEGUI_NEW_AO DynamicModule(String("CEGUI") + parserName);
+    d_parserModule = new DynamicModule(String("CEGUI") + parserName);
     // get pointer to parser creation function
     XMLParser* (*createFunc)(void) =
         (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
@@ -828,8 +864,8 @@ void System::setupImageCodec(const String& codecName)
 #    else
         // load the appropriate image codec module
         d_imageCodecModule = codecName.empty() ?
-            CEGUI_NEW_AO DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
-            CEGUI_NEW_AO DynamicModule(String("CEGUI") + codecName);
+            new DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
+            new DynamicModule(String("CEGUI") + codecName);
 
         // use function from module to create the codec object.
         d_imageCodec = ((ImageCodec*(*)(void))d_imageCodecModule->
@@ -852,7 +888,7 @@ void System::cleanupImageCodec()
         ((void(*)(ImageCodec*))d_imageCodecModule->
             getSymbolAddress("destroyImageCodec"))(d_imageCodec);
 
-        CEGUI_DELETE_AO d_imageCodecModule;
+        delete d_imageCodecModule;
         d_imageCodecModule = 0;
     }
 #if defined(CEGUI_STATIC)
@@ -883,7 +919,7 @@ System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
 {
     performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO System(renderer, resourceProvider, xmlParser, imageCodec,
+    return *new System(renderer, resourceProvider, xmlParser, imageCodec,
                        scriptModule, configFile, logFile);
 }
 
@@ -905,7 +941,7 @@ void System::performVersionTest(const int expected, const int received,
 //----------------------------------------------------------------------------//
 void System::destroy()
 {
-    CEGUI_DELETE_AO System::getSingletonPtr();
+    delete System::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -920,7 +956,7 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
     if (parser != d_customRenderedStringParser)
     {
         d_customRenderedStringParser = parser;
-        
+
         // fire event
         EventArgs args;
         fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
@@ -931,7 +967,6 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
 void System::invalidateAllCachedRendering()
 {
     invalidateAllWindows();
-    //MouseCursor::getSingleton().invalidate();
 }
 
 //----------------------------------------------------------------------------//
@@ -956,7 +991,7 @@ void System::invalidateAllWindows()
 RegexMatcher* System::createRegexMatcher() const
 {
 #ifdef CEGUI_HAS_PCRE_REGEX
-    return CEGUI_NEW_AO PCRERegexMatcher();
+    return new PCRERegexMatcher();
 #else
     return 0;
 #endif
@@ -965,7 +1000,7 @@ RegexMatcher* System::createRegexMatcher() const
 //----------------------------------------------------------------------------//
 void System::destroyRegexMatcher(RegexMatcher* rm) const
 {
-    CEGUI_DELETE_AO rm;
+    delete rm;
 }
 
 //----------------------------------------------------------------------------//
@@ -981,7 +1016,7 @@ GUIContext& System::getDefaultGUIContext() const
 //----------------------------------------------------------------------------//
 GUIContext& System::createGUIContext(RenderTarget& rt)
 {
-    GUIContext* c = CEGUI_NEW_AO GUIContext(rt);
+    GUIContext* c = new GUIContext(rt);
     d_guiContexts.push_back(c);
 
     return *c;
@@ -996,7 +1031,7 @@ void System::destroyGUIContext(GUIContext& context)
     {
         if (*i == &context)
         {
-            CEGUI_DELETE_AO *i;
+            delete *i;
             d_guiContexts.erase(i);
             return;
         }

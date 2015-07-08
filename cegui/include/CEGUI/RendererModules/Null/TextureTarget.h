@@ -53,7 +53,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 protected:
     //! helper to generate unique texture names
