@@ -45,6 +45,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/AnimationManager.h"
+#include "CEGUI/FontManager.h"
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -307,7 +308,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         {
             d_FPSValue = d_FPSFrames;
 
-            CEGUI::Font* fnt = CEGUI::System::getSingleton().getDefaultGUIContext().getDefaultFont();
+            CEGUI::Font* fnt = &CEGUI::FontManager::getSingleton().get("DejaVuSans-12");
             if (!fnt)
                 return;
 
