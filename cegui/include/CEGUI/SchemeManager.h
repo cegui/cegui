@@ -39,7 +39,7 @@
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/System.h"
 #include "CEGUI/ResourceEventSet.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -69,7 +69,7 @@ public:
     ~SchemeManager();
 
     //! type of collection used to store and manage instances
-    typedef std::map<String, Scheme*, StringFastLessCompare> SchemeRegistry;
+    typedef std::unordered_map<String, Scheme*> SchemeRegistry;
 
     /*!
     \brief

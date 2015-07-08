@@ -47,7 +47,8 @@
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include <vector>
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -3569,9 +3570,9 @@ protected:
     //! definition of type used for the list of child windows to be drawn
     typedef std::vector<Window*> ChildDrawList;
     //! definition of type used for the UserString dictionary.
-    typedef std::map<String, String, StringFastLessCompare> UserStringMap;
+    typedef std::unordered_map<String, String> UserStringMap;
     //! definition of type used to track properties banned from writing XML.
-    typedef std::set<String, StringFastLessCompare> BannedXMLPropertySet;
+    typedef std::unordered_set<String> BannedXMLPropertySet;
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;

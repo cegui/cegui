@@ -33,6 +33,8 @@
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/ResourceEventSet.h"
 
+#include <unordered_map>
+
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4275)
@@ -67,7 +69,7 @@ public:
     ~FontManager();
 
     //! Map container that maps Font names (String) to Font pointers
-    typedef std::map<String, Font*, StringFastLessCompare> FontRegistry;
+    typedef std::unordered_map<String, Font*> FontRegistry;
 
     //! List of fonts
     typedef std::vector<Font*> FontList;

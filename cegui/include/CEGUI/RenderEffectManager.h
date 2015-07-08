@@ -33,6 +33,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderEffectFactory.h"
 #include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -52,7 +53,7 @@ class CEGUIEXPORT RenderEffectManager :
 {
 private:
     //! Collection type used for the render effect registry
-    typedef std::map<String, RenderEffectFactory*, StringFastLessCompare> RenderEffectRegistry;
+    typedef std::unordered_map<String, RenderEffectFactory*> RenderEffectRegistry;
 
     //! Collection type to track which effects we created with which factories
     typedef std::map<RenderEffect*, RenderEffectFactory*, std::less<RenderEffect*> > EffectCreatorMap;
