@@ -294,7 +294,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         {
             d_FPSValue = d_FPSFrames;
 
-            CEGUI::Font* fnt = CEGUI::System::getSingleton().getDefaultGUIContext().getDefaultFont();
+            CEGUI::Font* fnt = &CEGUI::FontManager::getSingleton().get("DejaVuSans-12");
             if (!fnt)
                 return;
 
