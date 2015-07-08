@@ -204,6 +204,12 @@ TextureTarget* OpenGL3Renderer::createTextureTarget_impl()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::beginRendering()
 {
+    // Deprecated OpenGL 2 client states may mess up rendering. They are not added here
+    // since they are deprecated and thus do not fit in a OpenGL Core renderer. However
+    // this information may be relevant for people combining deprecated and modern
+    // functions. In that case disable client states like this: glDisableClientState(GL_VERTEX_ARRAY);
+
+
     // do required set-up.  yes, it really is this minimal ;)
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_BLEND);
@@ -223,13 +229,24 @@ void OpenGL3Renderer::beginRendering()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::endRendering()
 {
-    d_shaderStandard->unbind();
+    glUseProgram(0);
+
+    if (d_initExtraStates)
+    {
+        glDisable(GL_SCISSOR_TEST);
+    
+        glBlendFunc(GL_ONE, GL_ZERO);
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::setupExtraStates()
 {
     glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

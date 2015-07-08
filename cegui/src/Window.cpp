@@ -1256,6 +1256,9 @@ void Window::removeChild_impl(Element* element)
     }
     
     wnd->onZChange_impl();
+
+    // Removed windows should not be active anymore
+    wnd->deactivate();
 }
 
 //----------------------------------------------------------------------------//
