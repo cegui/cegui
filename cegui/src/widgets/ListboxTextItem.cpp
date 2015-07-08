@@ -32,6 +32,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GeometryBuffer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -128,33 +129,34 @@ Sizef ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
+void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                            float alpha, const Rectf* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->render(buffer, targetRect, clipper,
-                            getModulateAlphaColourRect(d_selectCols, alpha));
+    {
+        d_selectBrush->render(geometry_buffers, targetRect, clipper, true,
+                            d_selectCols, alpha);
+    }
 
     const Font* font = getFont();
 
     if (!font)
         return;
 
-    Vector2f draw_pos(targetRect.getPosition());
+    glm::vec2 draw_pos(targetRect.getPositionGLM());
 
-    draw_pos.d_y += CoordConverter::alignToPixels(
+    draw_pos.y += CoordConverter::alignToPixels(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    const ColourRect final_colours(
-        getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
+    const ColourRect final_colours(ColourRect(0xFFFFFFFF));
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
-        draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
+        d_renderedString.draw(d_owner, i, geometry_buffers, draw_pos, &final_colours, clipper, 0.0f);
+        draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }
 
