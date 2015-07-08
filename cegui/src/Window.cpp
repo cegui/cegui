@@ -3818,14 +3818,22 @@ const Image* Window::property_getMouseCursor() const
 GUIContext& Window::getGUIContext() const
 {
     // GUIContext is always the one on the root window, we do not allow parts
-    // of a hierarchy to be drawn to seperate contexts (which is not much of
+    // of a hierarchy to be drawn to separate contexts (which is not much of
     // a limitation).
     //
     // ISSUE: if root has no GUIContext set for it, should we return 0 or
     //        System::getDefaultGUIContext?  Come to IRC and argue about it!
-    return getParent() ? getParent()->getGUIContext() :
-                         d_guiContext ? *d_guiContext :
-                                        System::getSingleton().getDefaultGUIContext();
+    if (getParent() != 0)
+    {
+        return getParent()->getGUIContext();
+    }
+    else
+    {
+        if (d_guiContext)
+            return *d_guiContext;
+        else
+            return System::getSingleton().getDefaultGUIContext();
+    }
 }
 
 //----------------------------------------------------------------------------//

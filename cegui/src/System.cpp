@@ -971,6 +971,10 @@ void System::destroyRegexMatcher(RegexMatcher* rm) const
 //----------------------------------------------------------------------------//
 GUIContext& System::getDefaultGUIContext() const
 {
+    if (d_guiContexts.empty())
+        CEGUI_THROW(InvalidRequestException("Requesting the DefaultGUIContext, but no DefaultGUIContext is available. "
+        "The list of GUIContexts is empty."));
+
     return *d_guiContexts.front();
 }
 
