@@ -32,9 +32,10 @@
 #include "CEGUI/Base.h"
 #include <cstring>
 #include <stdexcept>
-#include <cstddef>
+#include <cstdlib>
+#include <functional>
 
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 /*************************************************************************
@@ -5570,24 +5571,6 @@ CEGUIEXPORT std::ostream& operator<<(std::ostream& s, const String& str);
 */
 void CEGUIEXPORT swap(String& str1, String& str2);
 
-/*!
-\brief
-    Functor that can be used as comparator in a std::map with String keys.
-    It's faster than using the default, but the map will no longer be sorted alphabetically.
-*/
-struct StringFastLessCompare
-{
-    bool operator() (const String& a, const String& b) const
-    {
-        const size_t la = a.length();
-        const size_t lb = b.length();
-        if (la == lb)
-            return (memcmp(a.ptr(), b.ptr(), la * sizeof(utf32)) < 0);
-
-        return (la < lb);
-    }
-};
-
 #else
 
 /// encoded char signifies that it's a char (8bit) with encoding (in this case ASCII)
@@ -5599,31 +5582,29 @@ typedef std::string String;
 
 #endif
 
-/*!
-\brief
-    Functor that can be used as comparator in a std::map with String keys.
-    It's faster than using the default, but the map will no longer be sorted alphabetically.
-*/
-struct StringFastLessCompare
-{
-    bool operator() (const String& a, const String& b) const
-    {
-        const size_t la = a.length();
-        const size_t lb = b.length();
-        if (la == lb)
-            return (memcmp(a.c_str(), b.c_str(), la * sizeof(String::value_type)) < 0);
-
-        return (la < lb);
-    }
-};
-
 #if defined(_MSC_VER)
 #	pragma warning(disable : 4251)
 #endif
 
 #endif
 
-} // End of  CEGUI namespace section
+}
 
+namespace std
+{
 
-#endif	// end of guard _CEGUIString_h_
+template<>
+struct hash<CEGUI::String>
+{
+    typedef std::size_t result_type;
+
+    result_type operator()(CEGUI::String const& string) const
+    {
+        result_type const hashVal(std::hash<std::string>()(string.c_str()));
+        return hashVal;
+    }
+};
+
+}
+
+#endif

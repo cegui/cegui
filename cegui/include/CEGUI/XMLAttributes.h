@@ -29,7 +29,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -233,7 +233,7 @@ namespace CEGUI
         float getValueAsFloat(const String& attrName, float def = 0.0f) const;
 
     protected:
-        typedef std::map<String, String, StringFastLessCompare> AttributeMap;
+        typedef std::unordered_map<String, String> AttributeMap;
         AttributeMap    d_attrs;
     };
 

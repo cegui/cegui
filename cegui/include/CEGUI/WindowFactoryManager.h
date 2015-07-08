@@ -37,7 +37,7 @@
 #include "CEGUI/WindowFactory.h"
 #include "CEGUI/TplWindowFactory.h"
 #include "CEGUI/Exceptions.h"
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -455,9 +455,9 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, WindowFactory*, StringFastLessCompare> WindowFactoryRegistry; //!< Type used to implement registry of WindowFactory objects
-	typedef std::map<String, AliasTargetStack, StringFastLessCompare> TypeAliasRegistry; //!< Type used to implement registry of window type aliases.
-    typedef std::map<String, FalagardWindowMapping, StringFastLessCompare> FalagardMapRegistry; //!< Type used to implement registry of falagard window mappings.
+	typedef	std::unordered_map<String, WindowFactory*> WindowFactoryRegistry; //!< Type used to implement registry of WindowFactory objects
+	typedef std::unordered_map<String, AliasTargetStack> TypeAliasRegistry; //!< Type used to implement registry of window type aliases.
+    typedef std::unordered_map<String, FalagardWindowMapping> FalagardMapRegistry; //!< Type used to implement registry of falagard window mappings.
     //! Type used for list of WindowFacory objects that we created ourselves
     typedef std::vector<WindowFactory*> OwnedWindowFactoryList;
 

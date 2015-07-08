@@ -39,7 +39,7 @@
 // we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/Exceptions.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -314,7 +314,7 @@ public:
     String getPropertyDefault(const String& name) const;
 
 private:
-    typedef std::map<String, Property*, StringFastLessCompare> PropertyRegistry;
+    typedef std::unordered_map<String, Property*> PropertyRegistry;
     PropertyRegistry	d_properties;
 
 

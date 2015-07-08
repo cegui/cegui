@@ -35,7 +35,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/IteratorBase.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -189,7 +189,7 @@ public:
     typedef std::pair<Image*, ImageFactory*> ImagePair;
 
     //! container type used to hold the images.
-    typedef std::map<String, ImagePair, StringFastLessCompare> ImageMap;
+    typedef std::unordered_map<String, ImagePair> ImageMap;
 
     //! ConstBaseIterator type definition.
     typedef ConstMapIterator<ImageMap> ImageIterator;
@@ -207,7 +207,7 @@ private:
     void elementEndLocal(const String& element);
 
     //! container type used to hold the registered Image types.
-    typedef std::map<String, ImageFactory*, StringFastLessCompare> ImageFactoryRegistry;
+    typedef std::unordered_map<String, ImageFactory*> ImageFactoryRegistry;
 
     //! helper to delete an image given an map iterator.
     void destroy(ImageMap::iterator& iter);
