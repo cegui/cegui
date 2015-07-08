@@ -41,6 +41,7 @@ LookNFeelOverviewSample class
 *************************************************************************/
 
 LookNFeelOverviewSample::LookNFeelOverviewSample()
+    : d_fontForTaharez(0)
 {
     Sample::d_name = "LookNFeelOverviewSample";
     Sample::d_credits = "Lukas &quot;Ident&quot; Meindl";
@@ -75,8 +76,9 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load all Fonts we are going to use and which are not loaded via scheme
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-10.font");
-    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+    d_fontForTaharez = loadedFonts.empty() ? 0 : loadedFonts.front();
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+
 
     // load all layouts we want to use later
     d_taharezOverviewLayout = winMgr.loadLayoutFromFile("TaharezLookOverview.layout");
