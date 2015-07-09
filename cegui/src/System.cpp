@@ -378,15 +378,17 @@ const String& System::getVerboseVersion()
 #if _MSC_VER < 1500
         ret += "(Note: Compiler version is old and not officially supported)";
 #elif _MSC_VER == 1500
-        ret += "9.0";
+        ret += "9.0 (2008)";
 #elif _MSC_VER == 1600
-        ret += "10.0";
+        ret += "10.0 (2010)";
 #elif _MSC_VER == 1700
-        ret += "11.0";
+        ret += "11.0 (2012)";
 #elif _MSC_VER == 1800
-        ret += "12.0";
-#elif _MSC_VER > 1800
-        ret += "Great Scott!";
+        ret += "12.0 (2013)";
+#elif _MSC_VER == 1900
+        ret += "14.0 (2015)";
+#elif _MSC_VER > 1900
+        ret += "Unknown MSVC++ version";
 #endif
 
 #ifdef _WIN64
