@@ -154,14 +154,14 @@ bool ImageManager::isImageTypeAvailable(const String& name) const
 Image& ImageManager::create(const String& type, const String& name)
 {
     if (d_images.find(name) != d_images.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "Image already exists: " + name));
+        throw AlreadyExistsException(
+            "Image already exists: " + name);
 
     ImageFactoryRegistry::iterator i(d_factories.find(type));
 
     if (i == d_factories.end())
-        CEGUI_THROW(UnknownObjectException(
-            "Unknown Image type: " + type));
+        throw UnknownObjectException(
+            "Unknown Image type: " + type);
 
     ImageFactory* factory = i->second;
     Image& image = factory->create(name);
@@ -183,18 +183,18 @@ Image& ImageManager::create(const XMLAttributes& attributes)
     const String& name(attributes.getValueAsString(ImageNameAttribute));
 
     if (name.empty())
-        CEGUI_THROW(InvalidRequestException(
-            "Invalid (empty) image name passed to create."));
+        throw InvalidRequestException(
+            "Invalid (empty) image name passed to create.");
 
     if (d_images.find(name) != d_images.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "Image already exists: " + name));
+        throw AlreadyExistsException(
+            "Image already exists: " + name);
 
     ImageFactoryRegistry::iterator i(d_factories.find(s_imagesetType));
 
     if (i == d_factories.end())
-        CEGUI_THROW(UnknownObjectException(
-            "Unknown Image type: " + s_imagesetType));
+        throw UnknownObjectException(
+            "Unknown Image type: " + s_imagesetType);
 
     ImageFactory* factory = i->second;
     Image& image = factory->create(attributes);
@@ -209,7 +209,7 @@ Image& ImageManager::create(const XMLAttributes& attributes)
             
         factory->destroy(image);
 
-        CEGUI_THROW(InvalidRequestException(message));
+        throw InvalidRequestException(message);
     }
 
     d_images[name] = std::make_pair(&image, factory);
@@ -264,8 +264,8 @@ Image& ImageManager::get(const String& name) const
     ImageMap::const_iterator i = d_images.find(name);
     
     if (i == d_images.end())
-        CEGUI_THROW(UnknownObjectException(
-            "Image not defined: " + name));
+        throw UnknownObjectException(
+            "Image not defined: " + name);
 
     return *i->second.first;
 }
@@ -413,7 +413,7 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
     else
     {
         CEGUI::String message = "Imageset type: \"" + s_imagesetType + "\" is unknown.";
-        CEGUI_THROW(UnknownObjectException(message));
+        throw UnknownObjectException(message);
     }
             
 
@@ -436,11 +436,11 @@ void ImageManager::validateImagesetFileVersion(const XMLAttributes& attrs)
     if (version == NativeVersion)
         return;
 
-    CEGUI_THROW(InvalidRequestException(
+    throw InvalidRequestException(
         "You are attempting to load an imageset of version '" + version +
         "' but this CEGUI version is only meant to load imagesets of version '" +
         NativeVersion + "'. Consider using the migrate.py script bundled with "
-        "CEGUI Unified Editor to migrate your data."));
+        "CEGUI Unified Editor to migrate your data.");
 }
 
 //----------------------------------------------------------------------------//

@@ -398,8 +398,8 @@ Window* Window::getChild(uint ID) const
 
     char strbuf[16];
     sprintf(strbuf, "%X", ID);
-    CEGUI_THROW(UnknownObjectException("A Window with ID: '" +
-        String(strbuf) + "' is not attached to Window '" + d_name + "'."));
+    throw UnknownObjectException("A Window with ID: '" +
+        String(strbuf) + "' is not attached to Window '" + d_name + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -1009,7 +1009,7 @@ void Window::setRestoreOldCapture(bool setting)
 void Window::setAlpha(const float alpha)
 {
     // clamp this to the valid range [0.0, 1.0]
-    float clampedAlpha = ceguimax(ceguimin(alpha, 1.0f), 0.0f);
+    float clampedAlpha = std::max(std::min(alpha, 1.0f), 0.0f);
 
     // Ensure that the new alpha value is actually different from the currently set one
     // to avoid unnecessary invalidating and re-caching of textures and children
@@ -1199,9 +1199,9 @@ void Window::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
 
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window can only have Elements of type Window added as children "
-            "(Window path: " + getNamePath() + ")."));
+            "(Window path: " + getNamePath() + ").");
 
     // if the element is already a child of this Window, this is a NOOP
     if (isChild(element))
@@ -1799,7 +1799,7 @@ void Window::setTooltipType(const String& tooltipType)
     }
     else
     {
-        CEGUI_TRY
+        try
         {
             d_customTip = static_cast<Tooltip*>(
                 WindowManager::getSingleton().createWindow(
@@ -1807,7 +1807,7 @@ void Window::setTooltipType(const String& tooltipType)
             d_customTip->setAutoWindow(true);
             d_weOwnTip = true;
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             d_customTip = 0;
             d_weOwnTip = false;
@@ -1897,9 +1897,9 @@ void Window::setLookNFeel(const String& look)
         return;
 
     if (!d_windowRenderer)
-        CEGUI_THROW(NullObjectException("There must be a "
+        throw NullObjectException("There must be a "
             "window renderer assigned to the window '" + d_name +
-            "' to set its look'n'feel"));
+            "' to set its look'n'feel");
 
     WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
     if (!d_lookName.empty())
@@ -1971,12 +1971,12 @@ void Window::layoutLookNFeelChildWidgets()
     if (d_lookName.empty())
         return;
 
-    CEGUI_TRY
+    try
     {
         WidgetLookManager::getSingleton().
             getWidgetLook(d_lookName).layoutChildWidgets(*this);
     }
-    CEGUI_CATCH (UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         Logger::getSingleton().logEvent(
             "Window::layoutLookNFeelChildWidgets: "
@@ -1990,9 +1990,9 @@ const String& Window::getUserString(const String& name) const
     UserStringMap::const_iterator iter = d_userStrings.find(name);
 
     if (iter == d_userStrings.end())
-        CEGUI_THROW(UnknownObjectException(
+        throw UnknownObjectException(
             "a user string named '" + name + "' is not defined for Window '" +
-            d_name + "'."));
+            d_name + "'.");
 
     return (*iter).second;
 }
@@ -2044,7 +2044,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
         // first we check to make sure the property is'nt banned from XML
         if (!isPropertyBannedFromXML(iter.getCurrentValue()))
         {
-            CEGUI_TRY
+            try
             {
                 // only write property if it's not at the default state
                 if (!isPropertyAtDefault(iter.getCurrentValue()))
@@ -2053,7 +2053,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                     ++propertiesWritten;
                 }
             }
-            CEGUI_CATCH (InvalidRequestException&)
+            catch (InvalidRequestException&)
             {
                 // This catches errors from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent(
@@ -2741,9 +2741,9 @@ void Window::setWindowRenderer(const String& name)
         onWindowRendererAttached(e);
     }
     else
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Attempt to assign a 'null' window renderer to window '" +
-            d_name + "'."));
+            d_name + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -2756,9 +2756,9 @@ WindowRenderer* Window::getWindowRenderer(void) const
 void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer))
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "The window renderer '" + d_windowRenderer->getName() + "' is not "
-            "compatible with this widget type (" + getType() + ")"));
+            "compatible with this widget type (" + getType() + ")");
 
     d_windowRenderer->d_window = this;
     d_windowRenderer->onAttach();
@@ -3664,8 +3664,8 @@ size_t Window::getZIndex() const
         this);
 
     if (i == getParent()->d_drawList.end())
-        CEGUI_THROW(InvalidRequestException(
-            "Window is not in its parent's draw list."));
+        throw InvalidRequestException(
+            "Window is not in its parent's draw list.");
 
     return std::distance(getParent()->d_drawList.begin(), i);
 }

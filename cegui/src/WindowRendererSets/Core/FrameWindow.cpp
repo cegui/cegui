@@ -54,14 +54,14 @@ namespace CEGUI
 
         const StateImagery* imagery;
 
-        CEGUI_TRY
+        try
         {
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = getLookNFeel();
             // try and get imagery for our current state
             imagery = &wlf.getStateImagery(stateName);
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             // log error so we know imagery is missing, and then quit.
             return;

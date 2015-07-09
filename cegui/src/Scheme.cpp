@@ -246,10 +246,10 @@ void Scheme::loadWindowFactories()
                         getSymbolAddress("getWindowFactoryModule"));
 
             if (!getWindowFactoryModuleFunc)
-                CEGUI_THROW(InvalidRequestException(
+                throw InvalidRequestException(
                     "Required function export "
                     "'FactoryModule& ""getWindowFactoryModule()' "
-                    "was not found in module '" + (*cmod).name + "'."));
+                    "was not found in module '" + (*cmod).name + "'.");
 
             // get the WindowRendererModule object for this module.
             (*cmod).factoryModule = &getWindowFactoryModuleFunc();
@@ -299,10 +299,10 @@ void Scheme::loadWindowRendererFactories()
                     getSymbolAddress("getWindowRendererFactoryModule"));
 
             if (!getWRFactoryModuleFunc)
-                CEGUI_THROW(InvalidRequestException(
+                throw InvalidRequestException(
                     "Required function export "
                     "'FactoryModule& getWindowRendererFactoryModule()' "
-                    "was not found in module '" + (*cmod).name + "'."));
+                    "was not found in module '" + (*cmod).name + "'.");
 
             // get the WindowRendererModule object for this module.
             (*cmod).factoryModule = &getWRFactoryModuleFunc();

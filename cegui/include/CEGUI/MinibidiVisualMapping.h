@@ -24,8 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIMinibidiVisualMapping_h_
-#define _CEGUIMinibidiVisualMapping_h_
+#ifndef _std::minibidiVisualMapping_h_
+#define _std::minibidiVisualMapping_h_
 
 #include "CEGUI/BidiVisualMapping.h"
 
@@ -44,4 +44,4 @@ public:
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIMinibidiVisualMapping_h_
+#endif  // end of guard _std::minibidiVisualMapping_h_

@@ -200,8 +200,8 @@ void PixmapFont::defineMapping(const String& value)
     utf32 codepoint;
     float adv;
     if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
-        CEGUI_THROW(InvalidRequestException(
-            "Bad glyph Mapping specified: " + value));
+        throw InvalidRequestException(
+            "Bad glyph Mapping specified: " + value);
     
     defineMapping(codepoint, img, adv);
 }

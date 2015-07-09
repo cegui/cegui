@@ -99,10 +99,10 @@ Font_xmlHandler::~Font_xmlHandler()
 std::vector<Font*>& Font_xmlHandler::getObjects()
 {
     if (d_loadedFonts.empty())
-        CEGUI_THROW(InvalidRequestException("Attempting to return the loaded Fonts but the container of loaded Fonts is empty."));
+        throw InvalidRequestException("Attempting to return the loaded Fonts but the container of loaded Fonts is empty.");
 
     if (d_loadedFonts.empty())
-        CEGUI_THROW(InvalidRequestException("Attempting to return the loaded Fonts but loading of font \"" + d_font->getName() + "\" has not been finished."));
+        throw InvalidRequestException("Attempting to return the loaded Fonts but loading of font \"" + d_font->getName() + "\" has not been finished.");
 
     d_isFontLoadingDone = true;
     return d_loadedFonts;
@@ -158,9 +158,9 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 {
     if (d_font != 0)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Attempting to load a new font but the loading of the "
-            "previous font \"" + d_font->getName() + "\" has not been completed."));
+            "previous font \"" + d_font->getName() + "\" has not been completed.");
     }
 
     // get type of font being created
@@ -175,8 +175,8 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
     else if (font_type == FontTypePixmap)
         createPixmapFont(attributes);
     else
-        CEGUI_THROW(InvalidRequestException(
-        "Encountered unknown font type of '" + font_type + "'"));
+        throw InvalidRequestException(
+        "Encountered unknown font type of '" + font_type + "'");
 }
 
 //----------------------------------------------------------------------------//
@@ -188,11 +188,11 @@ void Font_xmlHandler::validateFontFileVersion(const XMLAttributes& attrs)
     if (version == NativeVersion)
         return;
 
-    CEGUI_THROW(InvalidRequestException(
+    throw InvalidRequestException(
         "You are attempting to load a font of version '" + version + "' but "
         "this CEGUI version is only meant to load fonts of version '" +
         NativeVersion + "'. Consider using the migrate.py script bundled with "
-        "CEGUI Unified Editor to migrate your data."));
+        "CEGUI Unified Editor to migrate your data.");
 }
 
 //----------------------------------------------------------------------------//
@@ -210,8 +210,8 @@ void Font_xmlHandler::elementFontEnd()
 void Font_xmlHandler::elementFontsEnd()
 {
     if (d_font != 0)
-        CEGUI_THROW(InvalidRequestException(
-        "The Fonts node was closed but the loading for the last font has not been completed."));
+        throw InvalidRequestException(
+        "The Fonts node was closed but the loading for the last font has not been completed.");
 
     Logger::getSingleton().logEvent("Finished Fonts loading. Number of loaded fonts: " + d_loadedFonts.size(), Informative);
 }
@@ -219,8 +219,8 @@ void Font_xmlHandler::elementFontsEnd()
 void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
 {
     if (!d_font)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to access null object."));
+        throw InvalidRequestException(
+            "Attempt to access null object.");
 
     // double-check font type just in case - report issues as 'soft' errors
     if (d_font->getTypeName() != FontTypePixmap)
@@ -244,9 +244,9 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
 #ifdef CEGUI_HAS_FREETYPE
     if (d_font != 0)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Attempting to create a FreeTypeFont but loading of a " 
-            " previous font has not been finished."));
+            " previous font has not been finished.");
     }
 
     CEGUI_LOGINSANE("---- CEGUI font name: " + name);
@@ -267,8 +267,8 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
               attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f)),
         attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f));
 #else
-    CEGUI_THROW(InvalidRequestException(
-        "CEGUI was compiled without freetype support."));
+    throw InvalidRequestException(
+        "CEGUI was compiled without freetype support.");
 #endif
 }
 
@@ -281,9 +281,9 @@ void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
 
     if (d_font != 0)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Attempting to create a PixmapFont but loading of a "
-            " previous font has not been finished."));
+            " previous font has not been finished.");
     }
 
     CEGUI_LOGINSANE("---- CEGUI font name: " + name);

@@ -266,7 +266,7 @@ GenericItemModel<TGenericItem>::GenericItemModel(TGenericItem* root) :
 d_root(root)
 {
     if (root == 0)
-        CEGUI_THROW(InvalidRequestException("Root cannot be null"));
+        throw InvalidRequestException("Root cannot be null");
 }
 
 //----------------------------------------------------------------------------//
@@ -415,7 +415,7 @@ template <typename TGenericItem>
 void GenericItemModel<TGenericItem>::addItem(GenericItem* item)
 {
     if (item == 0)
-        CEGUI_THROW(InvalidRequestException("Cannot add a NULL item to the model!"));
+        throw InvalidRequestException("Cannot add a NULL item to the model!");
 
     addItemAtPosition(item,
         d_root->getChildren().empty() ? 0 : d_root->getChildren().size());
@@ -437,7 +437,7 @@ void GenericItemModel<TGenericItem>::addItemAtPosition(GenericItem* new_item,
 
     GenericItem* parent = static_cast<GenericItem*>(parent_index.d_modelData);
     if (position > parent->getChildren().size())
-        CEGUI_THROW(InvalidRequestException("The specified position is out of range."));
+        throw InvalidRequestException("The specified position is out of range.");
 
     new_item->setParent(parent);
     parent->getChildren().insert(parent->getChildren().begin() + position, new_item);
@@ -529,7 +529,7 @@ void CEGUI::GenericItemModel<TGenericItem>::deleteChildren(GenericItem* item,
     bool notify)
 {
     if (item == 0)
-        CEGUI_THROW(InvalidRequestException("Cannot delete children of a NULL item!"));
+        throw InvalidRequestException("Cannot delete children of a NULL item!");
 
     size_t items_count = item->getChildren().size();
     std::vector<GenericItem*>::iterator itor = item->getChildren().begin();

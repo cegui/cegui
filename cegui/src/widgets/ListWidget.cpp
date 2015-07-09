@@ -55,8 +55,8 @@ void ListWidget::setIndexSelectionState(size_t item_index, bool state)
 {
     if (item_index > getItemCount())
     {
-        CEGUI_THROW(InvalidRequestException(
-            "the value passed in the 'item_index' parameter is out of range for this ListWidget."));
+        throw InvalidRequestException(
+            "the value passed in the 'item_index' parameter is out of range for this ListWidget.");
     }
 
     ListView::setIndexSelectionState(
@@ -68,7 +68,7 @@ void ListWidget::setIndexSelectionState(StandardItem* item, bool state)
 {
     if (item == 0)
     {
-        CEGUI_THROW(InvalidRequestException("the item passed was null."));
+        throw InvalidRequestException("the item passed was null.");
     }
 
     ListView::setSelectedIndex(d_itemModel.getIndexForItem(item));

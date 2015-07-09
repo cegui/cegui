@@ -65,8 +65,8 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner) :
     d_prevDC(0)
 {
     if (!WGLEW_ARB_pbuffer)
-        CEGUI_THROW(RendererException("WGL_ARB_pbuffer extension is needed to "
-            "use OpenGLWGLPBTextureTarget!"));
+        throw RendererException("WGL_ARB_pbuffer extension is needed to "
+            "use OpenGLWGLPBTextureTarget!");
 
     HDC hdc = wglGetCurrentDC();
 
@@ -74,8 +74,8 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner) :
     wglChoosePixelFormatARB(hdc, pbAttrs, 0, 1, &d_pixfmt, &fmtcnt);
 
     if (!fmtcnt)
-        CEGUI_THROW(RendererException(
-            "pbuff creation failure, no suitable pixel formats."));
+        throw RendererException(
+            "pbuff creation failure, no suitable pixel formats.");
 
     initialiseTexture();
 
@@ -185,24 +185,24 @@ void OpenGLWGLPBTextureTarget::initialisePBuffer()
                                     creation_attrs);
 
     if (!d_pbuffer)
-        CEGUI_THROW(RendererException(
-            "pbuffer creation failure, wglCreatePbufferARB() call failed."));
+        throw RendererException(
+            "pbuffer creation failure, wglCreatePbufferARB() call failed.");
 
     d_hdc = wglGetPbufferDCARB(d_pbuffer);
 
     if (!d_hdc)
-        CEGUI_THROW(RendererException(
-            "pbuffer creation failure, wglGetPbufferDCARB() call failed."));
+        throw RendererException(
+            "pbuffer creation failure, wglGetPbufferDCARB() call failed.");
 
     d_context= wglCreateContext(d_hdc);
 
     if (!d_hdc)
-        CEGUI_THROW(RendererException(
-            "pbuffer creation failure, wglCreateContext() call failed."));
+        throw RendererException(
+            "pbuffer creation failure, wglCreateContext() call failed.");
 
     if(!wglShareLists(wglGetCurrentContext(), d_context))
-        CEGUI_THROW(RendererException(
-            "pbuffer creation failure, wglShareLists() call failed."));
+        throw RendererException(
+            "pbuffer creation failure, wglShareLists() call failed.");
 
     // extract the actual size of the created bufer
     int actual_width, actual_height;

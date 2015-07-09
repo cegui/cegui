@@ -94,8 +94,8 @@ void OpenGL1Texture::initInternalPixelFormatFields(const PixelFormat fmt)
         break;
 
     default:
-        CEGUI_THROW(RendererException(
-                        "invalid or unsupported CEGUI::PixelFormat."));
+        throw RendererException(
+                        "invalid or unsupported CEGUI::PixelFormat.");
     }
 }
 
@@ -133,7 +133,7 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
     glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
 
     if((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
+        throw RendererException("size too big");
 
     // save old texture binding
     GLuint old_tex;

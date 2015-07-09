@@ -90,8 +90,8 @@ void ComboDropList::initialiseComponents(void)
 void ComboDropList::resizeToContent(bool fit_width, bool fit_height)
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException(
-            "Function requires a valid WindowRenderer object to be set."));
+        throw InvalidRequestException(
+            "Function requires a valid WindowRenderer object to be set.");
 
     static_cast<ItemViewWindowRenderer*>(d_windowRenderer)->
         resizeViewToContent(fit_width, fit_height);

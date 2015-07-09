@@ -215,7 +215,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
         size_t sidx,eidx;
         sidx = static_cast<size_t>(vertScrollPos / fnt->getLineSpacing());
         eidx = 1 + sidx + static_cast<size_t>(dest_area.getHeight() / fnt->getLineSpacing());
-        eidx = ceguimin(eidx, numLines);
+        eidx = std::min(eidx, numLines);
         drawArea.d_min.d_y += fnt->getLineSpacing()*static_cast<float>(sidx);
 
         // for each formatted line.
@@ -270,7 +270,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 }
 
                 // calculate the length of the selected section
-                sectLen = ceguimin(w->getSelectionEnd() - currLine.d_startIdx, currLine.d_length) - sectIdx;
+                sectLen = std::min(w->getSelectionEnd() - currLine.d_startIdx, currLine.d_length) - sectIdx;
 
                 // get the text for this section
                 sect = lineText.substr(sectIdx, sectLen);

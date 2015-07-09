@@ -292,7 +292,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
 
     float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
         getViewRenderer()->getSubtreeExpanderSize().d_width;
-    rendered_max_width = ceguimax(rendered_max_width, item.d_size.d_width + indent);
+    rendered_max_width = std::max(rendered_max_width, item.d_size.d_width + indent);
     rendered_total_height += item.d_size.d_height;
 
     item.d_isSelected = isIndexSelected(index);
@@ -584,7 +584,7 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
 Rectf TreeView::getIndexRect(const ModelIndex& index)
 {
     //TODO: implement for tree view. What do we do for indices in closed subtrees?
-    CEGUI_THROW(InvalidRequestException("Not implemented for tree view yet."));
+    throw InvalidRequestException("Not implemented for tree view yet.");
 }
 
 #if defined(_MSC_VER)

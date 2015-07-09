@@ -123,24 +123,24 @@ SampleBrowserBase::~SampleBrowserBase()
 *************************************************************************/
 int SampleBrowserBase::run()
 {
-    CEGUI_TRY
+    try
     {
         if(runApplication())
             cleanup();
     }
-    CEGUI_CATCH (CEGUI::Exception& exc)
+    catch (CEGUI::Exception& exc)
     {
         outputExceptionMessage(exc.getMessage().c_str());
     }
-    CEGUI_CATCH (std::exception& exc)
+    catch (std::exception& exc)
     {
         outputExceptionMessage(exc.what());
     }
-    CEGUI_CATCH (const char* exc)
+    catch (const char* exc)
     {
         outputExceptionMessage(exc);
     }
-    CEGUI_CATCH(...)
+    catch (...)
     {
         outputExceptionMessage("Unknown exception was caught!");
     }
@@ -252,7 +252,7 @@ bool SampleBrowserBase::runApplication()
 #endif
 
         default:
-            CEGUI_THROW(CEGUI::GenericException("No renderer was selected!"));
+            throw CEGUI::GenericException("No renderer was selected!");
             break;
         }
 

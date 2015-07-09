@@ -73,7 +73,7 @@ namespace CEGUI
             // exception safety
             System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
 
-            CEGUI_RETHROW;
+            throw;
         }
 
         // Release resource
@@ -100,7 +100,7 @@ namespace CEGUI
         	rawXMLData.setData(0);
 			rawXMLData.setSize(0);
 
-			CEGUI_RETHROW;
+			throw;
         }
 
         // !!! We must not allow DataContainer to delete String owned data,

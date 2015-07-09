@@ -348,13 +348,12 @@ void Element::setRotation(const glm::quat& rotation)
 void Element::addChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
-                InvalidRequestException("Can't add NULL to Element as a child!"));
+        throw 
+                InvalidRequestException("Can't add NULL to Element as a child!");
 
     if (element == this)
-        CEGUI_THROW(
-                InvalidRequestException("Can't make element its own child - "
-                                        "this->addChild(this); is forbidden."));
+        throw InvalidRequestException("Can't make element its own child - "
+                                       "this->addChild(this); is forbidden.");
 
     addChild_impl(element);
     ElementEventArgs args(element);
@@ -365,10 +364,10 @@ void Element::addChild(Element* element)
 void Element::removeChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
+        throw 
                 InvalidRequestException("NULL can't be a child of any Element, "
                                         "it makes little sense to ask for its "
-                                        "removal"));
+                                        "removal");
 
     removeChild_impl(element);
     ElementEventArgs args(element);

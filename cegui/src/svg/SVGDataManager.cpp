@@ -65,8 +65,8 @@ SVGDataManager*	SVGDataManager::getSingletonPtr(void)
 SVGData& SVGDataManager::create(const String& name)
 {
     if (d_svgDataMap.find(name) != d_svgDataMap.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "An SVGData object named " + name + " already exists."));
+        throw AlreadyExistsException(
+            "An SVGData object named " + name + " already exists.");
 
     SVGData* svg_data = new SVGData(name);
     d_svgDataMap[name] = svg_data;
@@ -82,8 +82,8 @@ SVGData& SVGDataManager::create(const String& name,
                                 const String& resourceGroup)
 {
     if (d_svgDataMap.find(name) != d_svgDataMap.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "An SVGData object named " + name + " already exists."));
+        throw AlreadyExistsException(
+            "An SVGData object named " + name + " already exists.");
 
     SVGData* svg_data = new SVGData(name, filename, resourceGroup);
     d_svgDataMap[name] = svg_data;
@@ -99,8 +99,8 @@ SVGData& SVGDataManager::getSVGData(const String& name) const
     SVGDataMap::const_iterator i = d_svgDataMap.find(name);
 
     if (i == d_svgDataMap.end())
-        CEGUI_THROW(UnknownObjectException(
-        "No SVGData named '" + name + "' is available."));
+        throw UnknownObjectException(
+        "No SVGData named '" + name + "' is available.");
 
     return *i->second;
 }

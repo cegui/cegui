@@ -135,9 +135,9 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             system.getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -145,8 +145,8 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                     PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     initInternalPixelFormatFields(pixel_format);
     setTextureSize_impl(buffer_size);

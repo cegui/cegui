@@ -172,43 +172,43 @@ namespace CEGUI
     //! Throws an exception message for a node added as a child of a node of same type
     void throwExceptionChildOfSameNode(const WidgetLookFeel* widgetLook, const String& nodeType, const String& elementNameOrValue)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             getStartTextForException(widgetLook) +
             nodeType +  " nodes may not be children of other " + nodeType +
             " nodes. This was not the case for a " + nodeType + " with name or value \"" +
             elementNameOrValue + "\"."
-            ));
+            );
     }
 
     //! Throws an exception message for a node added as a child of a node of same type
     void throwExceptionChildOfSameNode(const WidgetLookFeel* widgetLook, const String& nodeType)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             getStartTextForException(widgetLook) +
             nodeType +  " nodes may not be children of other " + nodeType +
             " nodes. This was not the case for a " + nodeType + " node."
-            ));
+            );
     }
 
     //! Throws an exception message for a node which is not part of the required parent node
     void throwExceptionNotChildOfNode(const WidgetLookFeel* widgetLook, const String& childNodeType, const String& childElementName, const String& parentNodeType)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             getStartTextForException(widgetLook) +
             childNodeType +  " nodes must be part of a " + parentNodeType +
             " node. This was not the case for a " + childNodeType + " with name or value \"" +
             childElementName + "\"."
-            ));
+            );
     }
 
     //! Throws an exception message for a node which is not part of the required parent node
     void throwExceptionNotChildOfNode(const WidgetLookFeel* widgetLook, const String& childNodeType, const String& parentNodeType)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             getStartTextForException(widgetLook) +
             childNodeType +  " nodes must be part of a " + parentNodeType +
             " node. This was not the case for a " + childNodeType + " node."
-            ));
+            );
     }
 
 
@@ -385,8 +385,8 @@ namespace CEGUI
                 d_area->d_bottom_or_height = dim;
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException(
-                    "Invalid DimensionType specified for area component."));
+                throw InvalidRequestException(
+                    "Invalid DimensionType specified for area component.");
             }
         }
     }
@@ -440,11 +440,11 @@ namespace CEGUI
 
         if (version != NativeVersion)
         {
-            CEGUI_THROW(InvalidRequestException(
+            throw InvalidRequestException(
                 "You are attempting to load a looknfeel of version '" + version +
                 "' but this CEGUI version is only meant to load looknfeels of "
                 "version '" + NativeVersion + "'. Consider using the migrate.py "
-                "script bundled with CEGUI Unified Editor to migrate your data."));
+                "script bundled with CEGUI Unified Editor to migrate your data.");
         }
     }
 
@@ -710,12 +710,12 @@ namespace CEGUI
                     d_framecomponent->setBackgroundVerticalFormatting(fmt);
                     break;
                 default:
-                    CEGUI_THROW(InvalidRequestException(
+                    throw InvalidRequestException(
                         VertFormatElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "LeftEdge, RightEdge or Background components. "
                         "Received: " +
-                        attributes.getValueAsString(ComponentAttribute)));
+                        attributes.getValueAsString(ComponentAttribute));
             }
         }
         else if (d_imagerycomponent)
@@ -758,12 +758,12 @@ namespace CEGUI
                     d_framecomponent->setBackgroundHorizontalFormatting(fmt);
                     break;
                 default:
-                    CEGUI_THROW(InvalidRequestException(
+                    throw InvalidRequestException(
                         HorzFormatElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "TopEdge, BottomEdge or Background components. "
                         "Received: " +
-                        attributes.getValueAsString(ComponentAttribute)));
+                        attributes.getValueAsString(ComponentAttribute));
             }
         }
         else if (d_imagerycomponent)
@@ -1300,12 +1300,12 @@ namespace CEGUI
                     d_framecomponent->setBackgroundVerticalFormatting(fmt);
                     break;
                 default:
-                    CEGUI_THROW(InvalidRequestException(
+                    throw InvalidRequestException(
                         VertFormatPropertyElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "LeftEdge, RightEdge or Background components. "
                         "Received: " +
-                        attributes.getValueAsString(ComponentAttribute)));
+                        attributes.getValueAsString(ComponentAttribute));
             }
         }
         else if (d_imagerycomponent)
@@ -1340,12 +1340,12 @@ namespace CEGUI
                     d_framecomponent->setBackgroundHorizontalFormatting(fmt);
                     break;
                 default:
-                    CEGUI_THROW(InvalidRequestException(
+                    throw InvalidRequestException(
                         HorzFormatPropertyElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "TopEdge, BottomEdge or Background components. "
                         "Received: " +
-                        attributes.getValueAsString(ComponentAttribute)));
+                        attributes.getValueAsString(ComponentAttribute));
             }
         }
         else if (d_imagerycomponent)

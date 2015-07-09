@@ -244,30 +244,30 @@ namespace CEGUI
         {
             compRect = (*frame).getComponentArea().getPixelRect(wnd);
 
-            bounds.left(ceguimin(bounds.left(), compRect.left()));
-            bounds.top(ceguimin(bounds.top(), compRect.top()));
-            bounds.right(ceguimax(bounds.right(), compRect.right()));
-            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
+            bounds.left(std::min(bounds.left(), compRect.left()));
+            bounds.top(std::min(bounds.top(), compRect.top()));
+            bounds.right(std::max(bounds.right(), compRect.right()));
+            bounds.bottom(std::max(bounds.bottom(), compRect.bottom()));
         }
         // measure all imagery components
         for(ImageryComponentList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
             compRect = (*image).getComponentArea().getPixelRect(wnd);
 
-            bounds.left(ceguimin(bounds.left(), compRect.left()));
-            bounds.top(ceguimin(bounds.top(), compRect.top()));
-            bounds.right(ceguimax(bounds.right(), compRect.right()));
-            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
+            bounds.left(std::min(bounds.left(), compRect.left()));
+            bounds.top(std::min(bounds.top(), compRect.top()));
+            bounds.right(std::max(bounds.right(), compRect.right()));
+            bounds.bottom(std::max(bounds.bottom(), compRect.bottom()));
         }
         // measure all text components
         for(TextComponentList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
             compRect = (*text).getComponentArea().getPixelRect(wnd);
 
-            bounds.left(ceguimin(bounds.left(), compRect.left()));
-            bounds.top(ceguimin(bounds.top(), compRect.top()));
-            bounds.right(ceguimax(bounds.right(), compRect.right()));
-            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
+            bounds.left(std::min(bounds.left(), compRect.left()));
+            bounds.top(std::min(bounds.top(), compRect.top()));
+            bounds.right(std::max(bounds.right(), compRect.right()));
+            bounds.bottom(std::max(bounds.bottom(), compRect.bottom()));
         }
 
         return bounds;
@@ -286,30 +286,30 @@ namespace CEGUI
         {
             compRect = (*frame).getComponentArea().getPixelRect(wnd, rect);
 
-            bounds.left(ceguimin(bounds.left(), compRect.left()));
-            bounds.top(ceguimin(bounds.top(), compRect.top()));
-            bounds.right(ceguimax(bounds.right(), compRect.right()));
-            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
+            bounds.left(std::min(bounds.left(), compRect.left()));
+            bounds.top(std::min(bounds.top(), compRect.top()));
+            bounds.right(std::max(bounds.right(), compRect.right()));
+            bounds.bottom(std::max(bounds.bottom(), compRect.bottom()));
         }
         // measure all imagery components
         for(ImageryComponentList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
             compRect = (*image).getComponentArea().getPixelRect(wnd, rect);
 
-            bounds.left(ceguimin(bounds.left(), compRect.left()));
-            bounds.top(ceguimin(bounds.top(), compRect.top()));
-            bounds.right(ceguimax(bounds.right(), compRect.right()));
-            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
+            bounds.left(std::min(bounds.left(), compRect.left()));
+            bounds.top(std::min(bounds.top(), compRect.top()));
+            bounds.right(std::max(bounds.right(), compRect.right()));
+            bounds.bottom(std::max(bounds.bottom(), compRect.bottom()));
         }
         // measure all text components
         for(TextComponentList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
             compRect = (*text).getComponentArea().getPixelRect(wnd, rect);
 
-            bounds.left(ceguimin(bounds.left(), compRect.left()));
-            bounds.top(ceguimin(bounds.top(), compRect.top()));
-            bounds.right(ceguimax(bounds.right(), compRect.right()));
-            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
+            bounds.left(std::min(bounds.left(), compRect.left()));
+            bounds.top(std::min(bounds.top(), compRect.top()));
+            bounds.right(std::max(bounds.right(), compRect.right()));
+            bounds.bottom(std::max(bounds.bottom(), compRect.bottom()));
         }
 
         return bounds;

@@ -43,7 +43,7 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
     OpenGLTextureTarget(owner)
 {
     if (!GLEW_EXT_framebuffer_object)
-        CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
+        throw InvalidRequestException("Hardware does not support FBO");
 
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()

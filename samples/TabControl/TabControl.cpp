@@ -262,12 +262,12 @@ bool TabControlSample::handleAddTab(const EventArgs&)
             Window* pg = 0;
 
             pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-            CEGUI_TRY
+            try
             {
                 pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
                 pg->setName(String(pgname.str().c_str()));
             }
-            CEGUI_CATCH(CEGUI::Exception&)
+            catch (CEGUI::Exception&)
             {
                 Logger::getSingleton().logEvent("Some error occured while adding a tabpage. Please see the logfile.");
                 break;

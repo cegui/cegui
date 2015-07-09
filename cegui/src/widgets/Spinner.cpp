@@ -132,7 +132,7 @@ namespace CEGUI
         if (value != d_currentValue)
         {
             // limit input value to within valid range for spinner
-            value = ceguimax(ceguimin(value, d_maxValue), d_minValue);
+            value = std::max(std::min(value, d_maxValue), d_minValue);
 
             d_currentValue = value;
 
@@ -193,8 +193,8 @@ namespace CEGUI
                 getEditbox()->setValidationString(OctalValidator);
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException(
-                    "An unknown TextInputMode was specified."));
+                throw InvalidRequestException(
+                    "An unknown TextInputMode was specified.");
             }
 
             d_inputMode = mode;
@@ -266,8 +266,8 @@ namespace CEGUI
             val = static_cast<double>(utmp);
             break;
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown TextInputMode was encountered."));
+            throw InvalidRequestException(
+                "An unknown TextInputMode was encountered.");
         }
 
         if (res)
@@ -275,9 +275,9 @@ namespace CEGUI
             return val;
         }
 
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "The string '" + getEditbox()->getText() +
-            "' can not be converted to numerical representation."));
+            "' can not be converted to numerical representation.");
     }
 
     String Spinner::getTextFromValue(void) const
@@ -299,8 +299,8 @@ namespace CEGUI
             tmp << std::oct << static_cast<int>(d_currentValue);
             break;
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown TextInputMode was encountered."));
+            throw InvalidRequestException(
+                "An unknown TextInputMode was encountered.");
         }
 
         return String(tmp.str().c_str());

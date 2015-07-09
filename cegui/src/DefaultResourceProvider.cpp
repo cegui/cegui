@@ -54,17 +54,17 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
                                                    const String& resourceGroup)
 {
     if (filename.empty())
-        CEGUI_THROW(InvalidRequestException(
-            "Filename supplied for data loading must be valid"));
+        throw InvalidRequestException(
+            "Filename supplied for data loading must be valid");
 
     const String final_filename(getFinalFilename(filename, resourceGroup));
 
 #ifdef __ANDROID__
     if (AndroidUtils::getAndroidApp() == 0)
-        CEGUI_THROW(FileIOException("AndroidUtils::android_app has not been set for CEGUI"));
+        throw FileIOException("AndroidUtils::android_app has not been set for CEGUI");
     struct android_app* app = AndroidUtils::getAndroidApp();
     if (!app->activity->assetManager)
-        CEGUI_THROW(FileIOException("Android AAssetManager is not valid "));
+        throw FileIOException("Android AAssetManager is not valid ");
     //AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_BUFFER);
     AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_UNKNOWN);
 #else
@@ -75,7 +75,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #   endif
 #endif
     if (file == 0)
-        CEGUI_THROW(FileIOException(final_filename + " does not exist"));
+        throw FileIOException(final_filename + " does not exist");
 
 #ifdef __ANDROID__
     size_t size = AAsset_getLength(file);
@@ -99,8 +99,8 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     {
         delete[] buffer;
 
-        CEGUI_THROW(FileIOException(
-            "A problem occurred while reading file: " + final_filename));
+        throw FileIOException(
+            "A problem occurred while reading file: " + final_filename);
     }
 
     output.setData(buffer);
@@ -214,7 +214,7 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
     }
 #elif defined(__ANDROID__)
     if (AndroidUtils::getAndroidApp() == 0)
-        CEGUI_THROW(FileIOException("AndroidUtils::android_app has not been set for CEGUI"));
+        throw FileIOException("AndroidUtils::android_app has not been set for CEGUI");
     struct android_app* app = AndroidUtils::getAndroidApp();
     AAssetDir* dirp;
     if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.c_str()))) 

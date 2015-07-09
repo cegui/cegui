@@ -196,7 +196,7 @@ float Font::getTextExtent(const String& text, float x_scale) const
         }
     }
 
-    return ceguimax(adv_extent, cur_extent);
+    return std::max(adv_extent, cur_extent);
 }
 
 //----------------------------------------------------------------------------//

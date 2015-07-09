@@ -114,8 +114,8 @@ ListHeaderSegment& ListHeader::getSegmentFromColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "requested column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -138,8 +138,8 @@ ListHeaderSegment& ListHeader::getSegmentFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no segment with the requested ID is attached to this ListHeader."));
+	throw InvalidRequestException(
+        "no segment with the requested ID is attached to this ListHeader.");
 }
 
 
@@ -150,8 +150,8 @@ ListHeaderSegment& ListHeader::getSortSegment(void) const
 {
 	if (!d_sortSegment)
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "Sort segment was invalid!  (No segments are attached to the ListHeader?)"));
+		throw InvalidRequestException(
+            "Sort segment was invalid!  (No segments are attached to the ListHeader?)");
 	}
 	else
 	{
@@ -182,8 +182,8 @@ uint ListHeader::getColumnFromSegment(const ListHeaderSegment& segment) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "the given ListHeaderSegment is not attached to this ListHeader."));
+	throw InvalidRequestException(
+        "the given ListHeaderSegment is not attached to this ListHeader.");
 }
 
 
@@ -202,8 +202,8 @@ uint ListHeader::getColumnFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no column with the requested ID is available on this ListHeader."));
+	throw InvalidRequestException(
+        "no column with the requested ID is available on this ListHeader.");
 }
 
 
@@ -232,8 +232,8 @@ uint ListHeader::getColumnWithText(const String& text) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no column with the text '" + text + "' is attached to this ListHeader."));
+	throw InvalidRequestException(
+        "no column with the text '" + text + "' is attached to this ListHeader.");
 }
 
 
@@ -255,8 +255,8 @@ float ListHeader::getPixelOffsetToSegment(const ListHeaderSegment& segment) cons
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "the given ListHeaderSegment is not attached to this ListHeader."));
+	throw InvalidRequestException(
+        "the given ListHeaderSegment is not attached to this ListHeader.");
 }
 
 
@@ -267,8 +267,8 @@ float ListHeader::getPixelOffsetToColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "requested column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -308,8 +308,8 @@ UDim ListHeader::getColumnWidth(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "requested column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -417,8 +417,8 @@ void ListHeader::setSortColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -548,8 +548,8 @@ void ListHeader::removeColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -599,8 +599,8 @@ void ListHeader::moveColumn(uint column, uint position)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -699,8 +699,8 @@ void ListHeader::setColumnWidth(uint column, const UDim& width)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -1020,19 +1020,19 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 	{
 		if (d_segmentOffset > 0.0f)
 		{
-			setSegmentOffset(ceguimax(0.0f, d_segmentOffset - ScrollSpeed));
+			setSegmentOffset(std::max(0.0f, d_segmentOffset - ScrollSpeed));
 		}
 	}
 	// scroll right?
     else if (local_cursor_pos.x >= d_pixelSize.d_width)
 	{
-		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
+		float maxOffset = std::max(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
 
 		// if we have not scrolled to the limit
 		if (d_segmentOffset < maxOffset)
 		{
 			// scroll, but never beyond the limit
-			setSegmentOffset(ceguimin(maxOffset, d_segmentOffset + ScrollSpeed));
+			setSegmentOffset(std::min(maxOffset, d_segmentOffset + ScrollSpeed));
 		}
 	}
 
@@ -1086,8 +1086,8 @@ ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
     else
     {
         //return createNewSegment_impl(name);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -1104,8 +1104,8 @@ void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
     else
     {
         //return destroyListSegment_impl(segment);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 

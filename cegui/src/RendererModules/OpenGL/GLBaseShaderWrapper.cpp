@@ -56,8 +56,8 @@ void OpenGLBaseShaderWrapper::addUniformVariable(const std::string& uniformName)
     GLint variable_location = d_shader.getUniformLocation(uniformName);
 
     if(variable_location == -1)
-        CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::addUniformVariable - A uniform variable with "
-                                      "the name \"" + uniformName + "\" was not found in the OpenGL shader."));
+        throw RendererException("OpenGLBaseShaderWrapper::addUniformVariable - A uniform variable with "
+                                      "the name \"" + uniformName + "\" was not found in the OpenGL shader.");
 
     d_uniformVariables.insert(std::pair<std::string, GLint>(uniformName, variable_location));
 }
@@ -68,8 +68,8 @@ void OpenGLBaseShaderWrapper::addTextureUniformVariable(const std::string& unifo
     GLint variable_location = d_shader.getUniformLocation(uniformName);
 
     if(variable_location == -1)
-        CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::addTextureUniformVariable - A texture uniform variable with "
-                                      "the name \"" + uniformName + "\" was not found in the OpenGL shader."));
+        throw RendererException("OpenGLBaseShaderWrapper::addTextureUniformVariable - A texture uniform variable with "
+                                      "the name \"" + uniformName + "\" was not found in the OpenGL shader.");
 
     d_uniformVariables.insert(std::pair<std::string, GLint>(uniformName, textureUnitIndex));
 
@@ -83,8 +83,8 @@ void OpenGLBaseShaderWrapper::addAttributeVariable(const std::string& attributeN
     GLint variable_location = d_shader.getAttribLocation(attributeName);
 
     if(variable_location == -1)
-        CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::addAttributeVariable- An attribute with the name \"" + 
-                                      attributeName + "\" was not found in the OpenGL shader."));
+        throw RendererException("OpenGLBaseShaderWrapper::addAttributeVariable- An attribute with the name \"" + 
+                                      attributeName + "\" was not found in the OpenGL shader.");
 
     d_attributeVariables.insert(std::pair<std::string, GLint>(attributeName, variable_location));
 }
@@ -179,7 +179,7 @@ GLint OpenGLBaseShaderWrapper::getAttributeLocation(const std::string& attribute
     if(iter != d_attributeVariables.end())
         return iter->second;
 
-    CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::getAttributeLocation: An attribute variable with the name \"" + attributeName + "\" has not been added to the ShaderWrapper."));
+    throw RendererException("OpenGLBaseShaderWrapper::getAttributeLocation: An attribute variable with the name \"" + attributeName + "\" has not been added to the ShaderWrapper.");
 }
 
 //----------------------------------------------------------------------------//
@@ -189,7 +189,7 @@ GLint OpenGLBaseShaderWrapper::getUniformLocation(const std::string& uniformName
     if(iter != d_uniformVariables.end())
         return iter->second;
 
-    CEGUI_THROW(RendererException("OpenGLBaseShaderWrapper::getUniformLocation: An uniform variable with the name \"" + uniformName + "\" has not been added to the ShaderWrapper."));
+    throw RendererException("OpenGLBaseShaderWrapper::getUniformLocation: An uniform variable with the name \"" + uniformName + "\" has not been added to the ShaderWrapper.");
 }
 
 //----------------------------------------------------------------------------//

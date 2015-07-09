@@ -88,9 +88,9 @@ void Editbox::setValidationString(const String& validation_string)
         return;
 
     if (!d_validator)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Unable to set validation string on Editbox '" + getNamePath() +
-            "' because it does not currently have a RegexMatcher validator."));
+            "' because it does not currently have a RegexMatcher validator.");
 
     d_validationString = validation_string;
     d_validator->setRegexString(validation_string);
@@ -507,8 +507,8 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
     }
     else
     {
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer");
     }
 }
 

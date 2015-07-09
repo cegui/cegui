@@ -304,15 +304,15 @@ void ScrollablePane::configureScrollbars(void)
     // set up vertical scroll bar values
     vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
     vertScrollbar->setPageSize(viewableArea.getHeight());
-    vertScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertStep));
-    vertScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertOverlap));
+    vertScrollbar->setStepSize(std::max(1.0f, viewableArea.getHeight() * d_vertStep));
+    vertScrollbar->setOverlapSize(std::max(1.0f, viewableArea.getHeight() * d_vertOverlap));
     vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
     
     // set up horizontal scroll bar values
     horzScrollbar->setDocumentSize(fabsf(d_contentRect.getWidth()));
     horzScrollbar->setPageSize(viewableArea.getWidth());
-    horzScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzStep));
-    horzScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzOverlap));
+    horzScrollbar->setStepSize(std::max(1.0f, viewableArea.getWidth() * d_horzStep));
+    horzScrollbar->setOverlapSize(std::max(1.0f, viewableArea.getWidth() * d_horzOverlap));
     horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
@@ -442,10 +442,10 @@ void ScrollablePane::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "ScrollablePane can only have Elements of "
             "type Window added as children (Window path: " +
-            getNamePath() + ")."));
+            getNamePath() + ").");
     
     if (wnd->isAutoWindow())
     {
@@ -596,8 +596,8 @@ ScrolledContainer* ScrollablePane::getScrolledContainer() const
 Rectf ScrollablePane::getViewableArea() const
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     
     ScrollablePaneWindowRenderer* wr =
         static_cast<ScrollablePaneWindowRenderer*>(d_windowRenderer);
