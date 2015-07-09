@@ -55,7 +55,6 @@ public:
     bool isImageryCache() const;
     // implementation of parts of TextureTarget interface
     Texture& getTexture() const;
-    bool isRenderingInverted() const;
 
     /*!
     \brief

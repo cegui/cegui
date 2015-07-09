@@ -286,7 +286,7 @@ const Sizef& DirectFBRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& DirectFBRenderer::getDisplayDPI() const
+const glm::vec2& DirectFBRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -326,6 +326,12 @@ DirectFBRenderer::~DirectFBRenderer()
     destroyAllGeometryBuffers();
 
     delete d_defaultTarget;
+}
+
+//----------------------------------------------------------------------------//
+bool DirectFBRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
 }
 
 //----------------------------------------------------------------------------//

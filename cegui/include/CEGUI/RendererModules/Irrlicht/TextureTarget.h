@@ -61,7 +61,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 protected:
     //! default / initial size for the underlying texture.

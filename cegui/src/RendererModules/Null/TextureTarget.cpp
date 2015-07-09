@@ -75,14 +75,8 @@ void NullTextureTarget::declareRenderSize(const Sizef& sz)
 {
 	Rectf r;
 	r.setSize(sz);
-	r.setPosition(Vector2f(0, 0));
+    r.setPosition(glm::vec2(0, 0));
     setArea(r);
-}
-
-//----------------------------------------------------------------------------//
-bool NullTextureTarget::isRenderingInverted() const
-{
-    return false;
 }
 
 //----------------------------------------------------------------------------//

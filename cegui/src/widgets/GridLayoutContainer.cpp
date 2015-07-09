@@ -522,9 +522,9 @@ void GridLayoutContainer::addChild_impl(Element* element)
     
     if (!wnd)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "GridLayoutContainer can only have Elements of type Window added "
-            "as children (Window path: " + getNamePath() + ")."));
+            "as children (Window path: " + getNamePath() + ").");
     }
     
     if (isDummy(wnd))
@@ -545,10 +545,10 @@ void GridLayoutContainer::addChild_impl(Element* element)
             if ((d_nextGridX == std::numeric_limits<size_t>::max()) &&
                 (d_nextGridY == std::numeric_limits<size_t>::max()))
             {
-                CEGUI_THROW(InvalidRequestException(
+                throw InvalidRequestException(
                     "Unable to add child without explicit grid position "
                     "because auto positioning is disabled.  Consider using the "
-                    "GridLayoutContainer::addChildToPosition functions."));
+                    "GridLayoutContainer::addChildToPosition functions.");
             }
 
             idx = mapFromGridToIdx(d_nextGridX, d_nextGridY,

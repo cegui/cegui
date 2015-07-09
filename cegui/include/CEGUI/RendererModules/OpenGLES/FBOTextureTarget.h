@@ -59,7 +59,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 	//! initialize FBO extension functions pointers
 	static void initializedFBOExtension();
