@@ -113,8 +113,8 @@ void IrrlichtRenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void IrrlichtRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-                                          const Vector2f& p_in,
-                                          Vector2f& p_out) const
+                                             const glm::vec& p_in,
+                                             glm::vec& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();

@@ -5,7 +5,7 @@
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
 			<xsd:element name="Imageset" type="NamedDataType" />
             <xsd:element name="ImagesetFromImage" type="NamedDataType" />
-			<xsd:element name="Font" type="NamedDataType" />
+			<xsd:element name="Font" type="FileDataType" />
             <xsd:element name="LookNFeel" type="FileDataType" />
 			<xsd:element name="WindowSet" type="WindowSetType" />
 			<xsd:element name="WindowRendererSet" type="WindowRendererSetType" />

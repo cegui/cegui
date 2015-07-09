@@ -34,12 +34,6 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// String holding parent link identifier
-// This is deprecated and declared as an extern in PropertyLinkDefinition.h
-static const String S_parentIdentifier("__parent__");
-
-
-//----------------------------------------------------------------------------//
 EventLinkDefinition::EventLinkDefinition(const String& event_name) :
     d_eventName(event_name)
 {
@@ -66,7 +60,7 @@ void EventLinkDefinition::clearLinkTargets()
 //----------------------------------------------------------------------------//
 void EventLinkDefinition::initialiseWidget(Window& window) const
 {
-    LinkedEvent* e = CEGUI_NEW_AO LinkedEvent(d_eventName, &window);
+    LinkedEvent* e = new LinkedEvent(d_eventName, &window);
 
     LinkTargetCollection::const_iterator i = d_targets.begin();
     for ( ; i != d_targets.end(); ++i)
