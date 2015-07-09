@@ -95,7 +95,7 @@ void OpenGLBaseShaderManager::initialiseShaders()
            !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
         {
             const CEGUI::String errorString("Critical Error - One or multiple shader programs weren't created successfully");
-            CEGUI_THROW(RendererException(errorString));
+            throw RendererException(errorString);
 
             return;
         }

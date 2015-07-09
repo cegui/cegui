@@ -207,7 +207,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
         rendered_string.getHorizontalExtent(this),
         rendered_string.getVerticalExtent(this));
 
-    max_width = ceguimax(item.d_size.d_width, max_width);
+    max_width = std::max(item.d_size.d_width, max_width);
 
     total_height += item.d_size.d_height;
 

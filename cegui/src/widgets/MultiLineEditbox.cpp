@@ -246,12 +246,12 @@ void MultiLineEditbox::configureScrollbars(void)
 
 	vertScrollbar->setDocumentSize(static_cast<float>(d_lines.size()) * lspc);
 	vertScrollbar->setPageSize(renderArea.getHeight());
-	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
 	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
 	horzScrollbar->setDocumentSize(d_widestExtent);
 	horzScrollbar->setPageSize(renderArea.getWidth());
-	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
 	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
@@ -429,7 +429,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     wndPt.y += getVertScrollbar()->getScrollPosition();
 
 	size_t lineNumber = static_cast<size_t>(
-        ceguimax(0.0f, wndPt.y) / getFont()->getLineSpacing());
+        std::max(0.0f, wndPt.y) / getFont()->getLineSpacing());
 
 	if (lineNumber >= d_lines.size())
 	{
@@ -479,8 +479,8 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 
 	}
 
-	CEGUI_THROW(InvalidRequestException(
-        "Unable to identify a line from the given, invalid, index."));
+	throw InvalidRequestException(
+        "Unable to identify a line from the given, invalid, index.");
 }
 
 
@@ -998,8 +998,8 @@ Rectf MultiLineEditbox::getTextRenderArea() const
     else
     {
         //return getTextRenderArea_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 

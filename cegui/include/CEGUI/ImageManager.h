@@ -239,8 +239,8 @@ template <typename T>
 void ImageManager::addImageType(const String& name)
 {
     if (isImageTypeAvailable(name))
-        CEGUI_THROW(AlreadyExistsException(
-            "Image type already exists: " + name));
+        throw AlreadyExistsException(
+            "Image type already exists: " + name);
 
     d_factories[name] = new TplImageFactory<T>;
 

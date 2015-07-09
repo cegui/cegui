@@ -463,11 +463,11 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& args)
     CEGUI::uint id = atoi(idbox->getText().c_str());
 
     // attempt to delete the column, ignoring any errors.
-    CEGUI_TRY
+    try
     {
         mcl->removeColumnWithID(id);
     }
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {}
 
     // reset the delete column ID box.
@@ -501,12 +501,12 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& args)
     item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to add a new row, using the new ListboxTextItem as the initial content for one of the columns
-    CEGUI_TRY
+    try
     {
         mcl->addRow(item, id);
     }
     // something went wrong, so cleanup the ListboxTextItem
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {
         delete item;
     }
@@ -527,11 +527,11 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& args)
     CEGUI::uint idx = atoi(idxbox->getText().c_str());
 
     // attempt to delete the row, ignoring any errors.
-    CEGUI_TRY
+    try
     {
         mcl->removeRow(idx);
     }
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {}
 
     // clear the row index box
@@ -569,12 +569,12 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& args)
     item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to set the new item in place
-    CEGUI_TRY
+    try
     {
         mcl->setItem(item, id, row);
     }
     // something went wrong, so cleanup the ListboxTextItem.
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {
         delete item;
     }

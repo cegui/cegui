@@ -37,7 +37,7 @@ WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
     d_window(dynamic_cast<CEGUI::FrameWindow*>(window))
 {
     if (!d_window)
-        CEGUI_THROW(CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!"));
+        throw CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!");
 }
 
 //----------------------------------------------------------------------------//

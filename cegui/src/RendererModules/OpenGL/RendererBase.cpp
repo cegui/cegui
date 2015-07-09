@@ -165,8 +165,8 @@ void OpenGLRendererBase::destroyAllTextureTargets()
 Texture& OpenGLRendererBase::createTexture(const String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* tex = createTexture_impl(name);
     tex->initialise();
@@ -183,8 +183,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
                                        const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* tex = createTexture_impl(name);
     tex->initialise(filename, resourceGroup);
@@ -199,8 +199,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
 Texture& OpenGLRendererBase::createTexture(const String& name, const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* tex = createTexture_impl(name);
     tex->initialise(size);
@@ -259,8 +259,8 @@ Texture& OpenGLRendererBase::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No texture named '" + name + "' is available."));
+        throw UnknownObjectException(
+            "No texture named '" + name + "' is available.");
 
     return *i->second;
 }
@@ -300,8 +300,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name, GLuint tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* t = createTexture_impl(name);
     t->initialise(tex, sz);

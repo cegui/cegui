@@ -78,8 +78,8 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const int abi)
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGL3Renderer& renderer(create());
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -95,8 +95,8 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGL3Renderer& renderer(create(display_size));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -110,8 +110,8 @@ void OpenGL3Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     OpenGL3Renderer* renderer = static_cast<OpenGL3Renderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
@@ -320,7 +320,7 @@ void OpenGL3Renderer::initialiseGLExtensions()
         err_string << "failed to initialise the GLEW library. "
             << glewGetErrorString(err);
 
-        CEGUI_THROW(RendererException(err_string.str().c_str()));
+        throw RendererException(err_string.str().c_str());
     }
     //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
     glGetError();
@@ -364,8 +364,8 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
     }
     else
     {
-        CEGUI_THROW(RendererException(
-            "A default shader of this type does not exist."));
+        throw RendererException(
+            "A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }

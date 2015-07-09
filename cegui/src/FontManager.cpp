@@ -92,8 +92,8 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
     return doExistingObjectAction(newFont, action);
 
 #else
-    CEGUI_THROW(InvalidRequestException(
-        "CEGUI was compiled without freetype support."));
+    throw InvalidRequestException(
+        "CEGUI was compiled without freetype support.");
 #endif
 }
 
@@ -207,9 +207,9 @@ Font& FontManager::get(const String& font_name) const
     FontRegistry::const_iterator i(d_registeredFonts.find(font_name));
 
     if (i == d_registeredFonts.end())
-        CEGUI_THROW(UnknownObjectException(
+        throw UnknownObjectException(
         "No object of type '" + d_resourceType + "' named '" + font_name +
-        "' is present in the collection."));
+        "' is present in the collection.");
 
     return *i->second;
 }
@@ -265,14 +265,14 @@ Font& FontManager::doExistingObjectAction(Font* font_instance, const XMLResource
 
         case XREA_THROW:
             delete font_instance;
-            CEGUI_THROW(AlreadyExistsException(
+            throw AlreadyExistsException(
                 "an object of type '" + d_resourceType + "' named '" +
-                fontName + "' already exists in the collection."));
+                fontName + "' already exists in the collection.");
 
         default:
             delete font_instance;
-            CEGUI_THROW(InvalidRequestException(
-                "Invalid CEGUI::XMLResourceExistsAction was specified."));
+            throw InvalidRequestException(
+                "Invalid CEGUI::XMLResourceExistsAction was specified.");
         }
     }
     else

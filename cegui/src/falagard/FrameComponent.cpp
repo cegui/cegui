@@ -211,11 +211,11 @@ void FrameComponent::setImage(FrameImageComponent part, const Image* image)
 void FrameComponent::setImage(FrameImageComponent part, const String& name)
 {
     const Image* image;
-    CEGUI_TRY
+    try
     {
         image = &ImageManager::getSingleton().get(name);
     }
-    CEGUI_CATCH (UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         image = 0;
     }
@@ -608,8 +608,8 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown HorizontalFormatting value was specified."));
+            throw InvalidRequestException(
+                "An unknown HorizontalFormatting value was specified.");
     }
 
     // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -643,8 +643,8 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown VerticalFormatting value was specified."));
+            throw InvalidRequestException(
+                "An unknown VerticalFormatting value was specified.");
     }
 
     // perform final rendering (actually is now a caching of the images which will be drawn)

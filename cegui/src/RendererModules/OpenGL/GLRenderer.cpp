@@ -89,8 +89,8 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGLRenderer& renderer(create(tt_type));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -107,8 +107,8 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const Sizef& display_size,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGLRenderer& renderer(create(display_size, tt_type));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -122,8 +122,8 @@ void OpenGLRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     OpenGLRenderer* renderer = static_cast<OpenGLRenderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
@@ -387,7 +387,7 @@ void OpenGLRenderer::initialiseGLExtensions()
         err_string << "OpenGLRenderer failed to initialise the GLEW library. "
         << glewGetErrorString(err);
 
-        CEGUI_THROW(RendererException(err_string.str().c_str()));
+        throw RendererException(err_string.str().c_str());
     }
 
     // GL 1.3 has multi-texture support natively
@@ -433,8 +433,8 @@ RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultSha
     }
     else
     {
-        CEGUI_THROW(RendererException(
-            "A default shader of this type does not exist."));
+        throw RendererException(
+            "A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }

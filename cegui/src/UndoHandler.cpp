@@ -108,7 +108,7 @@ void UndoHandler::setUndoLimit(int limit)
 {
     if (limit < 0)
     {
-        CEGUI_THROW(InvalidRequestException("Invalid undo limit. Limit cannot be less then zero."));
+        throw InvalidRequestException("Invalid undo limit. Limit cannot be less then zero.");
     }
 
     d_undoLimit = limit;

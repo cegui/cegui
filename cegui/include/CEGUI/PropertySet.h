@@ -223,7 +223,7 @@ public:
 
         if (pos == d_properties.end())
         {
-            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+            throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
         }
 
         Property* baseProperty = pos->second;
@@ -269,7 +269,7 @@ public:
 
         if (pos == d_properties.end())
         {
-            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+            throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
         }
 
         Property* baseProperty = pos->second;

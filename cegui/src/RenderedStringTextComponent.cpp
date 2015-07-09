@@ -192,8 +192,8 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
         break;
 
     default:
-        CEGUI_THROW(InvalidRequestException(
-            "unknown VerticalFormatting option specified."));
+        throw InvalidRequestException(
+            "unknown VerticalFormatting option specified.");
     }
 
     // apply padding to position:
@@ -260,8 +260,8 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.
     if (!fnt)
-        CEGUI_THROW(InvalidRequestException(
-            "unable to split with no font set."));
+        throw InvalidRequestException(
+            "unable to split with no font set.");
 
     // create 'left' side of split and clone our basic configuration
     RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
@@ -290,7 +290,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             // if it was the first token, split the token itself
             if (first_component && left_len == 0)
                 left_len =
-                    ceguimax(static_cast<size_t>(1),
+                    std::max(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
                                 d_text.substr(0, token_len), split_point));
             

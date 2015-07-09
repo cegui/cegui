@@ -326,13 +326,13 @@ namespace CEGUI
 
     const Font* TextComponent::getFontObject(const Window& window) const
     {
-        CEGUI_TRY
+        try
         {
             return d_fontPropertyName.empty() ?
                 (d_font.empty() ? window.getFont() : &FontManager::getSingleton().get(d_font))
                 : &FontManager::getSingleton().get(window.getProperty(d_fontPropertyName));
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             return 0;
         }

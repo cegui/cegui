@@ -88,8 +88,8 @@ Scheme_xmlHandler::~Scheme_xmlHandler()
 const String& Scheme_xmlHandler::getObjectName() const
 {
     if (!d_scheme)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to access null object."));
+        throw InvalidRequestException(
+            "Attempt to access null object.");
 
     return d_scheme->getName();
 }
@@ -98,8 +98,8 @@ const String& Scheme_xmlHandler::getObjectName() const
 Scheme& Scheme_xmlHandler::getObject() const
 {
     if (!d_scheme)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to access null object."));
+        throw InvalidRequestException(
+            "Attempt to access null object.");
 
     d_objectRead = true;
     return *d_scheme;
@@ -179,11 +179,11 @@ void Scheme_xmlHandler::validateSchemeFileVersion(const XMLAttributes& attrs)
     if (version == NativeVersion)
         return;
 
-    CEGUI_THROW(InvalidRequestException(
+    throw InvalidRequestException(
         "You are attempting to load a GUI scheme of version '" + version +
         "' but this CEGUI version is only meant to load GUI schemes of version '" +
         NativeVersion + "'. Consider using the migrate.py script bundled with "
-        "CEGUI Unified Editor to migrate your data."));
+        "CEGUI Unified Editor to migrate your data.");
 }
 
 //----------------------------------------------------------------------------//
@@ -302,8 +302,8 @@ void Scheme_xmlHandler::elementLookNFeelStart(const XMLAttributes& attributes)
 void Scheme_xmlHandler::elementGUISchemeEnd()
 {
     if (!d_scheme)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to access null object."));
+        throw InvalidRequestException(
+            "Attempt to access null object.");
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(d_scheme));

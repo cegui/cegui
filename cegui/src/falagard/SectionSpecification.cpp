@@ -78,7 +78,7 @@ namespace CEGUI
         if (!shouldBeDrawn(srcWindow))
             return;
 
-        CEGUI_TRY
+        try
         {
             // get the imagery section object with the name we're set up to use
             const ImagerySection* sect =
@@ -95,7 +95,7 @@ namespace CEGUI
             sect->render(srcWindow, &finalColours, clipper, clipToDisplay);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
-        CEGUI_CATCH (Exception&)
+        catch (Exception&)
         {}
     }
 
@@ -108,7 +108,7 @@ namespace CEGUI
         if (!shouldBeDrawn(srcWindow))
             return;
 
-        CEGUI_TRY
+        try
         {
             // get the imagery section object with the name we're set up to use
             const ImagerySection* sect =
@@ -125,7 +125,7 @@ namespace CEGUI
             sect->render(srcWindow, baseRect, &finalColours, clipper, clipToDisplay);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
-        CEGUI_CATCH (Exception&)
+        catch (Exception&)
         {}
     }
 

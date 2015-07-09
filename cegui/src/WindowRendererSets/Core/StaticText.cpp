@@ -359,11 +359,11 @@ namespace CEGUI
         // Set up scroll bar values
         vertScrollbar->setDocumentSize(documentSize.d_height);
         vertScrollbar->setPageSize(renderAreaSize.d_height);
-        vertScrollbar->setStepSize(ceguimax(1.0f, renderAreaSize.d_height / 10.0f));
+        vertScrollbar->setStepSize(std::max(1.0f, renderAreaSize.d_height / 10.0f));
 
         horzScrollbar->setDocumentSize(documentSize.d_width);
         horzScrollbar->setPageSize(renderAreaSize.d_width);
-        horzScrollbar->setStepSize(ceguimax(1.0f, renderAreaSize.d_width / 10.0f));
+        horzScrollbar->setStepSize(std::max(1.0f, renderAreaSize.d_width / 10.0f));
     }
 
     /*************************************************************************

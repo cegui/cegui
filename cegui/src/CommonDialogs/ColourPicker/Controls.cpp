@@ -216,7 +216,7 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
         colour.H = angle;
 
         float length = std::sqrt(xCoord * xCoord + yCoord * yCoord);
-        float value = ceguimin(length, 1.0f);
+        float value = std::min(length, 1.0f);
 
         if (d_sliderMode != SliderMode_HSV_S)
         {
@@ -936,9 +936,9 @@ bool ColourPickerControls::handleLABEditboxTextChanged(const EventArgs&)
     float LabColourA = PropertyHelper<float>::fromString(LabAString);
     float LabColourB = PropertyHelper<float>::fromString(LabBString);
 
-    LabColourL = ceguimin(ceguimax(LabColourL, LAB_L_MIN), LAB_L_MAX);
-    LabColourA = ceguimin(ceguimax(LabColourA, LAB_A_MIN), LAB_A_MAX);
-    LabColourB = ceguimin(ceguimax(LabColourB, LAB_B_MIN), LAB_B_MAX);
+    LabColourL = std::min(std::max(LabColourL, LAB_L_MIN), LAB_L_MAX);
+    LabColourA = std::min(std::max(LabColourA, LAB_A_MIN), LAB_A_MAX);
+    LabColourB = std::min(std::max(LabColourB, LAB_B_MIN), LAB_B_MAX);
 
     Lab_Colour newColour(LabColourL, LabColourA, LabColourB);
 
@@ -974,9 +974,9 @@ bool ColourPickerControls::handleHSVEditboxTextChanged(const EventArgs&)
     float Saturation = PropertyHelper<float>::fromString(SString);
     float Value = PropertyHelper<float>::fromString(VString);
 
-    Hue = ceguimin(ceguimax(Hue, 0.0f), 1.0f);
-    Saturation = ceguimin(ceguimax(Saturation, 0.0f), 1.0f);
-    Value = ceguimin(ceguimax(Value, 0.0f), 1.0f);
+    Hue = std::min(std::max(Hue, 0.0f), 1.0f);
+    Saturation = std::min(std::max(Saturation, 0.0f), 1.0f);
+    Value = std::min(std::max(Value, 0.0f), 1.0f);
 
     HSV_Colour newColour(Hue, Saturation, Value);
 
@@ -1004,7 +1004,7 @@ bool ColourPickerControls::handleAlphaEditboxTextChanged(const EventArgs&)
 
     float value = PropertyHelper<float>::fromString(ValueString);
 
-    value = ceguimax(ceguimin(value, 1.0f), 0.0f);
+    value = std::max(std::min(value, 1.0f), 0.0f);
 
     setColourAlpha(value);
 

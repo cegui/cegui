@@ -127,7 +127,7 @@ GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
     {
         std::stringstream stringStream;
         stringStream << "Critical Error - Could not create shader object of type:" << type << ".";
-        CEGUI_THROW(RendererException(stringStream.str().c_str()));
+        throw RendererException(stringStream.str().c_str());
         return 0;
     }
 
@@ -207,7 +207,7 @@ void OpenGLBaseShader::outputProgramLog(GLuint program)
     {
         std::stringstream sstream;
         sstream << "OpenGLBaseShader linking has failed.\n" << logBuffer;
-        CEGUI_THROW(RendererException(sstream.str().c_str()));
+        throw RendererException(sstream.str().c_str());
     }
 };
 
@@ -224,7 +224,7 @@ void OpenGLBaseShader::outputShaderLog(GLuint shader)
     {
         std::stringstream ss;
         ss << "OpenGLBaseShader compilation has failed.\n" << logBuffer;
-          CEGUI_THROW(RendererException(ss.str().c_str()));
+          throw RendererException(ss.str().c_str());
     }
 };
 

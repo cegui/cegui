@@ -150,9 +150,9 @@ Scheme& SchemeManager::get(const String& object_name) const
     SchemeRegistry::const_iterator i(d_registeredSchemes.find(object_name));
 
     if (i == d_registeredSchemes.end())
-        CEGUI_THROW(UnknownObjectException(
+        throw UnknownObjectException(
         "No object of type '" + d_resourceType + "' named '" + object_name +
-        "' is present in the collection."));
+        "' is present in the collection.");
 
     return *i->second;
 }
@@ -213,14 +213,14 @@ Scheme& SchemeManager::doExistingObjectAction(
 
         case XREA_THROW:
             delete object;
-            CEGUI_THROW(AlreadyExistsException(
+            throw AlreadyExistsException(
                 "an object of type '" + d_resourceType + "' named '" +
-                object_name + "' already exists in the collection."));
+                object_name + "' already exists in the collection.");
 
         default:
             delete object;
-            CEGUI_THROW(InvalidRequestException(
-                "Invalid CEGUI::XMLResourceExistsAction was specified."));
+            throw InvalidRequestException(
+                "Invalid CEGUI::XMLResourceExistsAction was specified.");
         }
     }
     else

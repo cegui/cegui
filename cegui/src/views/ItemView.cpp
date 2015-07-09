@@ -569,7 +569,7 @@ void ItemView::updateScrollbar(Scrollbar* scrollbar, float available_area,
 {
     scrollbar->setDocumentSize(rendered_area);
     scrollbar->setPageSize(available_area);
-    scrollbar->setStepSize(ceguimax(1.0f, rendered_area / 10.0f));
+    scrollbar->setStepSize(std::max(1.0f, rendered_area / 10.0f));
     scrollbar->setScrollPosition(scrollbar->getScrollPosition());
 
     if (display_mode == SDM_Hidden)
@@ -619,8 +619,8 @@ ItemViewWindowRenderer* ItemView::getViewRenderer()
 {
     if (d_windowRenderer == 0)
     {
-        CEGUI_THROW(InvalidRequestException(
-            "The view should have a window renderer attached!"));
+        throw InvalidRequestException(
+            "The view should have a window renderer attached!");
     }
 
     return static_cast<ItemViewWindowRenderer*>(d_windowRenderer);

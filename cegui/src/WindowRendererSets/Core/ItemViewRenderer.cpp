@@ -79,7 +79,7 @@ Rectf ItemViewRenderer::getViewRenderArea(const ItemView* item_view,
         }
     }
 
-    CEGUI_THROW(UnknownObjectException("There is no item rendering area defined!"));
+    throw UnknownObjectException("There is no item rendering area defined!");
 }
 
 //----------------------------------------------------------------------------//
@@ -147,7 +147,7 @@ void ItemViewRenderer::resizeViewToContent(ItemView* view, bool fit_width,
     if (fit_height && requiredSize.d_height > maxSize.d_height)
     {
         requiredSize.d_height = maxSize.d_height;
-        requiredSize.d_width = ceguimin(
+        requiredSize.d_width = std::min(
             maxSize.d_width,
             requiredSize.d_width - frameSize.d_width + withScrollFrameSize.d_width);
     }
@@ -155,7 +155,7 @@ void ItemViewRenderer::resizeViewToContent(ItemView* view, bool fit_width,
     if (fit_width && requiredSize.d_width > maxSize.d_width)
     {
         requiredSize.d_width = maxSize.d_width;
-        requiredSize.d_height = ceguimin(
+        requiredSize.d_height = std::min(
             maxSize.d_height,
             requiredSize.d_height - frameSize.d_height + withScrollFrameSize.d_height);
     }
