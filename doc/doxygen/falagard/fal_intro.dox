@@ -2,7 +2,7 @@
 @page fal_intro Introduction and overview
 
 @section fal_whatis What is the Falagard Skinning System?
-The Falagard skinning system for CEGUI consists partly of a set of enhancements to the CEGUI base library, and partly of a window renderer module called "CEGUIFalagardWRBase". Combined, these elements are intended to make it easier to create custom skins or 'looks' for CEGUI window and widget elements.
+The Falagard skinning system for CEGUI consists partly of a set of enhancements to the CEGUI base library, and partly of a window renderer module called "CEGUICoreWindowRendererSet". Combined, these elements are intended to make it easier to create custom skins or 'looks' for CEGUI window and widget elements.
 
 The Falagard system is designed to allow widget imagery specification, sub-widget layout, and default property initialisers to be specified via XML files rather than in C++ or scripted code (which, before now, was the only way to do these things).
 
@@ -237,18 +237,18 @@ Where these setting values correspond to the similar values in the HorizontalAli
 @section fal_schemes Falagard in Schemes
 The CEGUI scheme system is the means by which you to specify how the system is to load your XML skin definition files, known as 'looknfeel' files, and how these skins are to be mapped to window renderers and widget base classes to create new concrete widget types.
 
-@subsection fal_wr_modules The CEGUIFalagardWRBase module
-One of the main parts of the Falagard system is the window renderer module known as CEGUIFalagardWRBase
-(which will be named libCEGUIFalagardWRBase.so on linux style systems and CEGUIFalagardWRBase.dll on Win32 systems). This module contains a set of predefined window renderer classes that take actions to transform skinning data loaded from skin definition XML files into the rendering operations and layout adjustments required to output the widget visual representation to the display.
+@subsection fal_wr_modules The CEGUICoreWindowRendererSet module
+One of the main parts of the Falagard system is the window renderer module known as CEGUICoreWindowRendererSet
+(which will be named libCEGUICoreWindowRendererSet.so on linux style systems and CEGUICoreWindowRendererSet.dll on Win32 systems). This module contains a set of predefined window renderer classes that take actions to transform skinning data loaded from skin definition XML files into the rendering operations and layout adjustments required to output the widget visual representation to the display.
 
-Before you can make use of the CEGUIFalagardWRBase module it must be loaded into the system. To achieve this, you will usually specify it in one of your scheme XML files so that it's available to the system.  This can be done with a single line of XML in a scheme file, such as:
+Before you can make use of the CEGUICoreWindowRendererSet module it must be loaded into the system. To achieve this, you will usually specify it in one of your scheme XML files so that it's available to the system.  This can be done with a single line of XML in a scheme file, such as:
 @code
-<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
 @endcode
 
 Some users, having previously employed the WindowSet 'look' modules, may be used to specifying a list of widgets which are to be made available from the module, this is not required when loading a WindowRenderer module (actually, such lists of widgets are no longer needed for the old style 'look' modules either, as long as the module has been updated to provide the required entry point); by employing XML such as that shown above, the module will register all widget types it has available.
 
-The key thing about the CEGUIFalagardWRBase module is that for each widget base type, it defines various required elements and states.  These required items need to be defined within the widget look definitions of your looknfeel XML files; they enable the system to make use of your skin imagery and related data in a logical fashion. All of the required elements for each widget can be found in the reference sections @ref fal_baseclass_ref "CEGUI Widget Base Type Requirements" and @ref fal_wr_ref "Falagard Window Renderer Requirements".
+The key thing about the CEGUICoreWindowRendererSet module is that for each widget base type, it defines various required elements and states.  These required items need to be defined within the widget look definitions of your looknfeel XML files; they enable the system to make use of your skin imagery and related data in a logical fashion. All of the required elements for each widget can be found in the reference sections @ref fal_baseclass_ref "CEGUI Widget Base Type Requirements" and @ref fal_wr_ref "Falagard Window Renderer Requirements".
 
 @subsection fal_looknfeel_elements LookNFeel Elements
 The @c \<LookNFeel\> XML element for schemes is the means by which you will usually get CEGUI to load the XML 'looknfeel' files containing your widget skin definitions.  It is possible to load these files manually via code, but it is expected that the majority of users will be using the scheme system. The LookNFeel element should appear after any Font or Imageset elements, but before any WindowSet elements.
@@ -263,7 +263,7 @@ Here we can see a single 'Filename' attribute which specifies the name the file 
 It is acceptable to specify as many LookNFeel elements as is required.  This allows you to configure your XML files in the way that best suits your application. This might mean that all skin definitions for all widget elements will go into a single file, it might mean that you have multiple files with a single widget skin definition in each, or it could be any place in between the two extremes - it's up to you.
 
 @subsection fal_mappings FalagardMapping Elements
-The CEGUI scheme system supports a @c \<FalagardMapping\> element that creates a new concrete window or widget type within the system. This is achieved by creating a named alias that ties together a base widget type, a window renderer type, and a named widget 'LookNFeel'.  Here, 'LookNFeel' refers to an individual widget skin as opposed to an entire 'looknfeel' XML file.  The base widget type will generally be one of the core system widgets provided by the CEGUI library, although any window type that has a concrete WindowFactory registered in the system is a candidate, which allows the system to be extended with custom widgets.  The window renderer type will usually be the name of one of the window renderers registered when the CEGUIFalagardWRBase module was loaded, again this is not a requirement - the window renderer used could just as easily be one you have written yourself.  The named 'LookNFeel' is what you specify in your XML looknfeel files (via WidgetLook elements).
+The CEGUI scheme system supports a @c \<FalagardMapping\> element that creates a new concrete window or widget type within the system. This is achieved by creating a named alias that ties together a base widget type, a window renderer type, and a named widget 'LookNFeel'.  Here, 'LookNFeel' refers to an individual widget skin as opposed to an entire 'looknfeel' XML file.  The base widget type will generally be one of the core system widgets provided by the CEGUI library, although any window type that has a concrete WindowFactory registered in the system is a candidate, which allows the system to be extended with custom widgets.  The window renderer type will usually be the name of one of the window renderers registered when the CEGUICoreWindowRendererSet module was loaded, again this is not a requirement - the window renderer used could just as easily be one you have written yourself.  The named 'LookNFeel' is what you specify in your XML looknfeel files (via WidgetLook elements).
 
 An example mapping:
 @code
