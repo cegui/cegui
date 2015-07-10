@@ -315,21 +315,13 @@ public:
 	\brief
 		Constant reverse iterator class for String objects
 	*/
-#if defined(_MSC_VER) && ((_MSC_VER <= 1200) || ((_MSC_VER <= 1300) && defined(_STLPORT_VERSION)))
-	typedef	std::reverse_iterator<const_iterator, const_pointer, const_reference, difference_type>	const_reverse_iterator;
-#else
 	typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
-#endif
 
 	/*!
 	\brief
 		Reverse iterator class for String objects
 	*/
-#if defined(_MSC_VER) && ((_MSC_VER <= 1200) || ((_MSC_VER <= 1300) && defined(_STLPORT_VERSION)))
-	typedef std::reverse_iterator<iterator, pointer, reference, difference_type>			reverse_iterator;
-#else
 	typedef std::reverse_iterator<iterator>			reverse_iterator;
-#endif
 
 public:
 	//////////////////////////////////////////////////////////////////////////

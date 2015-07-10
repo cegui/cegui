@@ -57,13 +57,6 @@
 #       define CEGUIPRIVATE
 #endif
 
-
-// totally kill this warning (debug info truncated to 255 chars etc...) on <= VC6
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-#   pragma warning(disable : 4786)
-#endif
-
-
 // Detect macros for min / max and undefine (with a warning where possible)
 #if defined(max)
 #   if defined(_MSC_VER)
@@ -88,7 +81,7 @@
 
 // fix to undefine _STLP_DEBUG if STLport is not actually being used
 // (resolves some unresolved externals concerning boost)
-#if defined(_STLP_DEBUG) && defined(_MSC_VER) && (_MSC_VER >= 1200)
+#if defined(_STLP_DEBUG) && defined(_MSC_VER)
 #   if !defined(_STLPORT_VERSION)
 #       undef _STLP_DEBUG
 #   endif

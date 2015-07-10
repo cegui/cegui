@@ -390,10 +390,8 @@ const String& System::getVerboseVersion()
 
 #elif defined(_MSC_VER)
         ret += " MSVC++ ";
-#if _MSC_VER < 1500
+#if _MSC_VER < 1600
         ret += "(Note: Compiler version is old and not officially supported)";
-#elif _MSC_VER == 1500
-        ret += "9.0 (2008)";
 #elif _MSC_VER == 1600
         ret += "10.0 (2010)";
 #elif _MSC_VER == 1700
