@@ -32,7 +32,7 @@
 #include "CEGUI/Vector.h"
 #include <directfb.h>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -118,7 +118,7 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, DirectFBTexture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, DirectFBTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
 };

@@ -34,7 +34,7 @@
 #include <glm/glm.hpp>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIDIRECT3D11RENDERER_EXPORTS
@@ -271,7 +271,7 @@ protected:
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
     //! container type used to hold Textures we create.
-    typedef std::map<String, Direct3D11Texture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, Direct3D11Texture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
 

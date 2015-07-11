@@ -32,7 +32,7 @@
 #include "../../Vector.h"
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUINULLRENDERER_EXPORTS
@@ -165,7 +165,7 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, NullTexture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, NullTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.

@@ -64,6 +64,8 @@
 
 #include "glm/gtc/type_ptr.hpp"
 
+#include <unordered_map>
+
 #define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           60
 
 // Start of CEGUI namespace section
@@ -115,7 +117,7 @@ typedef std::vector<TextureTarget*> TextureTargetList;
 //! container type used to hold GeometryBuffers we create.
 typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
 //! container type used to hold Textures we create.
-typedef std::map<String, OgreTexture*, StringFastLessCompare> TextureMap;
+typedef std::unordered_map<String, OgreTexture*> TextureMap;
 
 //----------------------------------------------------------------------------//
 // Implementation data for the OgreRenderer
