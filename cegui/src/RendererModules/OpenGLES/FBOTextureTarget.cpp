@@ -242,7 +242,7 @@ void OpenGLESFBOTextureTarget::resizeRenderTexture()
 void OpenGLESFBOTextureTarget::initializedFBOExtension()
 {
 	if (!OpenGLESRenderer::isGLExtensionSupported("GL_OES_framebuffer_object"))
-	    CEGUI_THROW(InvalidRequestException("This platform does not support FBO"));
+	    throw InvalidRequestException("This platform does not support FBO");
 
 #ifndef __APPLE__
 	glIsRenderbufferEXT =

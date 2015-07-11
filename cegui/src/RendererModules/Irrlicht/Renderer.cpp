@@ -50,8 +50,8 @@ IrrlichtRenderer& IrrlichtRenderer::bootstrapSystem(irr::IrrlichtDevice& device,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     IrrlichtRenderer& renderer = IrrlichtRenderer::create(device);
     IrrlichtResourceProvider& rp =
@@ -67,8 +67,8 @@ void IrrlichtRenderer::destroySystem()
 {
     System* const sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     IrrlichtRenderer* const renderer =
         static_cast<IrrlichtRenderer*>(sys->getRenderer());
@@ -246,8 +246,8 @@ Texture& IrrlichtRenderer::createTexture(const String& name, const Sizef& size)
 void IrrlichtRenderer::throwIfNameExists(const String& name) const
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "[IrrlichtRenderer] Texture already exists: " + name));
+        throw AlreadyExistsException(
+            "[IrrlichtRenderer] Texture already exists: " + name);
 }
 
 //----------------------------------------------------------------------------//
@@ -298,8 +298,8 @@ Texture& IrrlichtRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "[IrrlichtRenderer] Texture does not exist: " + name));
+        throw UnknownObjectException(
+            "[IrrlichtRenderer] Texture does not exist: " + name);
 
     return *i->second;
 }

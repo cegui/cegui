@@ -78,8 +78,8 @@ GLES2Renderer& GLES2Renderer::bootstrapSystem(const int abi)
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     GLES2Renderer& renderer(create());
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -95,8 +95,8 @@ GLES2Renderer& GLES2Renderer::bootstrapSystem(const Sizef& display_size,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     GLES2Renderer& renderer(create(display_size));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -110,8 +110,8 @@ void GLES2Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     GLES2Renderer* renderer = static_cast<GLES2Renderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
@@ -345,8 +345,8 @@ RefCounted<RenderMaterial> GLES2Renderer::createRenderMaterial(const DefaultShad
     }
     else
     {
-        CEGUI_THROW(RendererException(
-            "A default shader of this type does not exist."));
+        throw RendererException(
+            "A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }

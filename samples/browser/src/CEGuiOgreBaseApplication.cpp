@@ -251,7 +251,7 @@ void CEGuiOgreBaseApplication::run()
     d_sampleApp->initialise();
 
     // start rendering via Ogre3D engine.
-    CEGUI_TRY
+    try
     {
 #ifdef __ANDROID__
         AndroidAppHelper::go();
@@ -259,7 +259,7 @@ void CEGuiOgreBaseApplication::run()
         d_ogreRoot->startRendering();
 #endif
     }
-    CEGUI_CATCH(...)
+    catch (...)
     {}
 }
 

@@ -104,21 +104,21 @@ void Direct3D11Shader::createVertexShader(const std::string& vertexShaderSource)
 		std::string msg(static_cast<const char*>(errorMessage->GetBufferPointer()), errorMessage->GetBufferSize());
 
 		errorMessage->Release();
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
     }
 
     result = d_device->CreateVertexShader(d_vertexShaderBuffer->GetBufferPointer(), d_vertexShaderBuffer->GetBufferSize(), 0, &d_vertShader);
     if(FAILED(result))
     {
         std::string msg("Direct3D11Shader: Failed to create the vertex shader");
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
     }
 
     result = D3DReflect(d_vertexShaderBuffer->GetBufferPointer(), d_vertexShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, reinterpret_cast<void**>(&d_vertexShaderReflection));
     if(FAILED(result))
     {
         std::string msg("D3DReflect: Shader reflection failed");
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
     }
 }
 
@@ -143,7 +143,7 @@ void Direct3D11Shader::createPixelShader(const std::string& pixelShaderSource)
 		std::string msg(static_cast<const char*>(errorMessage->GetBufferPointer()), errorMessage->GetBufferSize());
 
 		errorMessage->Release();
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
     }
 
 
@@ -151,14 +151,14 @@ void Direct3D11Shader::createPixelShader(const std::string& pixelShaderSource)
     if(FAILED(result))
     {
         std::string msg("Direct3D11Shader: Failed to create the pixel shader");
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
     }
 
     result = D3DReflect(d_pixelShaderBuffer->GetBufferPointer(), d_pixelShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, reinterpret_cast<void**>(&d_pixelShaderReflection));
     if(FAILED(result))
     {
         std::string msg("D3DReflect: Shader reflection failed");
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
     }
 }
 
@@ -239,7 +239,7 @@ D3D11_SHADER_INPUT_BIND_DESC Direct3D11Shader::getTextureBindingDesc(const std::
     if(FAILED(result))
     {
         std::string errorMessage("ID3D11ShaderReflection::GetDesc() call failed. Could not retrieve shader description.");
-		CEGUI_THROW(RendererException(errorMessage));
+		throw RendererException(errorMessage);
     }
 
     UINT resourceCount = shaderDescription.BoundResources;
@@ -257,7 +257,7 @@ D3D11_SHADER_INPUT_BIND_DESC Direct3D11Shader::getTextureBindingDesc(const std::
     }
 
     std::string errorMessage = std::string("Variable was not found in shader for variable of name \"") + variableName + "\"";
-    CEGUI_THROW(RendererException(errorMessage));
+    throw RendererException(errorMessage);
 
     return shaderInputBindDesc;
 }
@@ -275,7 +275,7 @@ D3D11_SHADER_VARIABLE_DESC Direct3D11Shader::getUniformVariableDescription(const
     D3D11_SHADER_VARIABLE_DESC varDesc;
     result = shaderReflectVariable->GetDesc(&varDesc);
     if(FAILED(result))
-        CEGUI_THROW(RendererException("Could not retrieve variable \"" + variableName + "\" from the buffer \"$Globals\""));
+        throw RendererException("Could not retrieve variable \"" + variableName + "\" from the buffer \"$Globals\"");
 
     return varDesc;
 }
@@ -296,12 +296,12 @@ ID3D11ShaderReflectionConstantBuffer* Direct3D11Shader::getShaderReflectionConst
     if(FAILED(result))
     {
         std::string errorMessage("ID3D11ShaderReflection::GetDesc() call failed. Could not retrieve shader description.");
-		CEGUI_THROW(RendererException(errorMessage));
+		throw RendererException(errorMessage);
     }
 
     ID3D11ShaderReflectionConstantBuffer* shaderReflectConstBufferGlobals = shaderReflection->GetConstantBufferByName("$Globals");
     if(shaderReflectConstBufferGlobals == 0)
-        CEGUI_THROW(RendererException("Could not retrieve constant buffer \"$Globals\" from the shader"));
+        throw RendererException("Could not retrieve constant buffer \"$Globals\" from the shader");
     
     return shaderReflectConstBufferGlobals;
 }

@@ -183,7 +183,7 @@ void OgreRenderTarget<T>::updateMatrix() const
     else if (d_owner.usesDirect3D())
         RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForDirect3D() );
     else
-        CEGUI_THROW(RendererException("An unsupported RenderSystem is being used by Ogre. Please contact the CEGUI team."));
+        throw RendererException("An unsupported RenderSystem is being used by Ogre. Please contact the CEGUI team.");
 }
 
 //----------------------------------------------------------------------------//

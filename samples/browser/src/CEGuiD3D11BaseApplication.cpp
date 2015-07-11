@@ -83,8 +83,8 @@ CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
         MessageBox(0, Win32AppHelper::CREATE_WINDOW_ERROR,
                    Win32AppHelper::APPLICATION_NAME, MB_ICONERROR|MB_OK);
 
-    CEGUI_THROW(std::runtime_error(
-        "Windows Direct3D 11 application failed to initialise."));
+    throw std::runtime_error(
+        "Windows Direct3D 11 application failed to initialise.");
 }
 
 //----------------------------------------------------------------------------//
