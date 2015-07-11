@@ -106,7 +106,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         if(foundIter == d_uniformVariables.end())
         {
             std::string errorMessage = std::string("Variable was not found in the set of uniform variables of the shader. Variable name was: \"") + iter->first + "\"";
-            CEGUI_THROW(RendererException(errorMessage));
+            throw RendererException(errorMessage);
         }
 
         const Direct3D11ParamDesc& parameterDescription = foundIter->second;
@@ -114,7 +114,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         if(parameterType != parameterDescription.d_shaderParamType)
         {
             std::string errorMessage = std::string("Supplied parameter type doesn't match the shader parameter type for variable \"") + iter->first + "\"";
-            CEGUI_THROW(RendererException(errorMessage));
+            throw RendererException(errorMessage);
         }
 
         std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterStates.find(iter->first);
@@ -125,7 +125,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             if(last_shader_parameter->getType() != parameterDescription.d_shaderParamType)
             {
                 std::string errorMessage = std::string("The last shader parameter type doesn't match the shader parameter type for variable \"") + iter->first + "\"";
-                CEGUI_THROW(RendererException(errorMessage));
+                throw RendererException(errorMessage);
             }
 
             if(parameter->equal(last_shader_parameter))
@@ -250,7 +250,7 @@ void Direct3D11ShaderWrapper::prepareUniformVariableMapping(unsigned char*& reso
         D3D11_MAPPED_SUBRESOURCE mappedResourceVertShader;
         HRESULT result = d_deviceContext->Map(d_perObjectUniformVarBufferVert, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResourceVertShader);
         if(FAILED(result))
-            CEGUI_THROW(RendererException("Failed to map constant shader buffer.\n"));
+            throw RendererException("Failed to map constant shader buffer.\n");
 
         resourceDataVS = static_cast<unsigned char*>(mappedResourceVertShader.pData);
     }
@@ -261,7 +261,7 @@ void Direct3D11ShaderWrapper::prepareUniformVariableMapping(unsigned char*& reso
         D3D11_MAPPED_SUBRESOURCE mappedResourcePixelShader;
         HRESULT result = d_deviceContext->Map(d_perObjectUniformVarBufferPixel, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResourcePixelShader);
         if(FAILED(result))
-            CEGUI_THROW(RendererException("Failed to map constant shader buffer.\n"));
+            throw RendererException("Failed to map constant shader buffer.\n");
 
         resourceDataPS = static_cast<unsigned char*>(mappedResourcePixelShader.pData);
     }

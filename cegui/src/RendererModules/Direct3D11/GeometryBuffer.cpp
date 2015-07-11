@@ -189,7 +189,7 @@ void Direct3D11GeometryBuffer::allocateVertexBuffer(const UINT dataSize) const
     buffer_desc.MiscFlags      = 0;
 
     if (FAILED(d_device->CreateBuffer(&buffer_desc, 0, &d_vertexBuffer)))
-        CEGUI_THROW(RendererException("failed to allocate vertex buffer."));
+        throw RendererException("failed to allocate vertex buffer.");
 }
 
 //----------------------------------------------------------------------------//
@@ -262,8 +262,8 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
     }
 
     if(vertexLayoutVector.size() == 0)
-                CEGUI_THROW(RendererException(
-            "The empty vertex layout is invalid because it is empty."));
+                throw RendererException(
+            "The empty vertex layout is invalid because it is empty.");
 
 
     const CEGUI::Direct3D11ShaderWrapper* shaderWrapper = static_cast<const CEGUI::Direct3D11ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
@@ -276,8 +276,8 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
                                             shaderWrapper->getVertShaderBufferSize(),
                                             &d_inputLayout)))
     {
-        CEGUI_THROW(RendererException(
-            "Failed to create D3D InputLayout."));
+        throw RendererException(
+            "Failed to create D3D InputLayout.");
     }
 }
 

@@ -183,8 +183,8 @@ void Direct3D11Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created!"));
+        throw RendererException(
+            "CEGUI::System object has not been created!");
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -198,9 +198,9 @@ void Direct3D11Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -209,8 +209,8 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
                                        PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     cleanupDirect3D11Texture();
 
@@ -256,8 +256,8 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
         delete[] img_src;
 
     if (FAILED(hr))
-        CEGUI_THROW(RendererException(
-            "Failed to create texture from memory buffer."));
+        throw RendererException(
+            "Failed to create texture from memory buffer.");
 
     initialiseShaderResourceView();
 
@@ -333,7 +333,7 @@ void Direct3D11Texture::blitToMemory(void* targetData)
             "ID3D11Device::CreateTexture2D failed for 'offscreen'.");
 
     if (!exception_msg.empty())
-        CEGUI_THROW(RendererException(exception_msg));
+        throw RendererException(exception_msg);
 }
 
 //----------------------------------------------------------------------------//
@@ -452,8 +452,8 @@ Direct3D11Texture::Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& 
     tex_desc.MipLevels = 1;
 
     if (FAILED(d_device.CreateTexture2D(&tex_desc, 0, &d_texture)))
-        CEGUI_THROW(RendererException(
-            "Failed to create texture with specified size."));
+        throw RendererException(
+            "Failed to create texture with specified size.");
 
     initialiseShaderResourceView();
 

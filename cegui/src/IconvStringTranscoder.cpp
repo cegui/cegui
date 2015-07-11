@@ -48,9 +48,9 @@ public:
         d_cd(iconv_open(d_toCode.c_str(), d_fromCode.c_str()))
     {
         if (d_cd == reinterpret_cast<iconv_t>(-1))
-            CEGUI_THROW(InvalidRequestException(String(
+            throw InvalidRequestException(String(
                 "Failed to create conversion descriptor from \"") +
-                d_fromCode.c_str() + "\" to \"" + d_toCode.c_str() + "\"."));
+                d_fromCode.c_str() + "\" to \"" + d_toCode.c_str() + "\".");
     }
 
     //------------------------------------------------------------------------//
@@ -83,9 +83,9 @@ public:
         else
             reason = "Unknown error.";
 
-        CEGUI_THROW(InvalidRequestException(String(
+        throw InvalidRequestException(String(
             "Failed to convert from \"") + d_fromCode.c_str() +
-            "\" to \"" + d_toCode.c_str() + "\": " + reason.c_str()));
+            "\" to \"" + d_toCode.c_str() + "\": " + reason.c_str());
     }
 
     //------------------------------------------------------------------------//
@@ -279,7 +279,7 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) co
                               &buf[0], &buf[buf.size()], to_next);
 
     if (result == Converter::error || result == Converter::partial)
-        CEGUI_THROW(InvalidRequestException("conversion failed."));
+        throw InvalidRequestException("conversion failed.");
 #else
     const std::ctype<wchar_t>& facet = 
         std::use_facet<std::ctype<wchar_t> >(conv_locale);

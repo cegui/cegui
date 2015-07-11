@@ -62,7 +62,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,
 	if(!device || !deviceContext) 
 	{
 		std::string msg("In Order To Use Direct3D11 Module, You Must Provide Both Device And Context");
-		CEGUI_THROW(RendererException(msg));
+		throw RendererException(msg);
 	}
 
 	d_displaySize = getViewportSize();
@@ -101,8 +101,8 @@ Direct3D11Renderer& Direct3D11Renderer::bootstrapSystem(ID3D11Device* device,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     Direct3D11Renderer& renderer(create(device, context));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -116,8 +116,8 @@ void Direct3D11Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     Direct3D11Renderer* renderer =
         static_cast<Direct3D11Renderer*>(sys->getRenderer());
@@ -228,8 +228,8 @@ Texture& Direct3D11Renderer::createTexture(const String& name,
 void Direct3D11Renderer::throwIfNameExists(const String& name) const
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "[Direct3D11Renderer] Texture already exists: " + name));
+        throw AlreadyExistsException(
+            "[Direct3D11Renderer] Texture already exists: " + name);
 }
 
 //----------------------------------------------------------------------------//
@@ -280,7 +280,7 @@ Texture& Direct3D11Renderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException("Texture does not exist: " + name));
+        throw UnknownObjectException("Texture does not exist: " + name);
 
     return *i->second;
 }
@@ -378,9 +378,9 @@ Sizef Direct3D11Renderer::getViewportSize()
     d_deviceContext->RSGetViewports(&vp_count, &vp);
 
     if (vp_count != 1)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             "Unable to access required view port information from "
-            "ID3D11Device."));
+            "ID3D11Device.");
     else
         return Sizef(static_cast<float>(vp.Width),
                       static_cast<float>(vp.Height));
@@ -430,7 +430,7 @@ RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const Defaul
     }
     else
     {
-        CEGUI_THROW(RendererException("A default shader of this type does not exist."));
+        throw RendererException("A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }
@@ -505,7 +505,7 @@ void Direct3D11Renderer::initialiseBlendStates()
 
     result = d_device->CreateBlendState(&blendDesc, &d_blendStateNormal);
     if(FAILED(result))
-        CEGUI_THROW(RendererException("Creation of BlendState failed"));
+        throw RendererException("Creation of BlendState failed");
 
     ZeroMemory(&blendDesc, sizeof(blendDesc));
     ZeroMemory(&rtbd, sizeof(rtbd));
@@ -525,7 +525,7 @@ void Direct3D11Renderer::initialiseBlendStates()
 
     result = d_device->CreateBlendState(&blendDesc, &d_blendStatePreMultiplied);
     if(FAILED(result))
-        CEGUI_THROW(RendererException("Creation of BlendState failed"));
+        throw RendererException("Creation of BlendState failed");
 }
 
 //----------------------------------------------------------------------------//
@@ -621,7 +621,7 @@ void Direct3D11Renderer::initialiseDepthStencilState()
  
     HRESULT result = d_device->CreateDepthStencilState(&depthStencilDesc, &d_depthStencilStateDefault);
     if(FAILED(result))
-        CEGUI_THROW(RendererException("SamplerDescription creation failed"));
+        throw RendererException("SamplerDescription creation failed");
 }
 
 //----------------------------------------------------------------------------//
@@ -639,7 +639,7 @@ void Direct3D11Renderer::initialiseSamplerStates()
 
     HRESULT result = d_device->CreateSamplerState( &samplerDescription, &d_samplerState );
     if(FAILED(result))
-        CEGUI_THROW(RendererException("SamplerDescription creation failed"));
+        throw RendererException("SamplerDescription creation failed");
 }
 
 //----------------------------------------------------------------------------//

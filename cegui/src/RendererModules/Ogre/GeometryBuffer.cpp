@@ -253,8 +253,8 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
         break;
     }
     default:
-        CEGUI_THROW(RendererException(
-            "Unknown d_expectedData type."));
+        throw RendererException(
+            "Unknown d_expectedData type.");
     }
 
 }
@@ -282,8 +282,8 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 
     if (d_hwBuffer.isNull())
     {
-        CEGUI_THROW(RendererException("Failed to create Ogre vertex buffer, "
-            "probably because the vertex layout is invalid."));
+        throw RendererException("Failed to create Ogre vertex buffer, "
+            "probably because the vertex layout is invalid.");
     }
 
     // bind the vertex buffer for rendering

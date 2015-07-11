@@ -102,11 +102,11 @@ void LibxmlParser::parseXML(XMLHandler& handler,
     {
         xmlError* err = xmlGetLastError();
 
-        CEGUI_THROW(GenericException(
+        throw GenericException(
             String("xmlParseMemory failed in file: '") +
             err->file + "' at line number" +
             PropertyHelper<uint>::toString(err->line) + ".  Error is:" +
-            err->message));
+            err->message);
     }
 
     // get root element
