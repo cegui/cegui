@@ -403,7 +403,7 @@ Sizef IrrlichtRenderer::getAdjustedTextureSize(const Sizef& sz) const
 
     // if we can't support non square textures, make size square.
     if (!d_supportsNSquareTextures)
-        out.d_width = out.d_height = ceguimax(out.d_width, out.d_height);
+        out.d_width = out.d_height = std::max(out.d_width, out.d_height);
 
     return out;
 }
