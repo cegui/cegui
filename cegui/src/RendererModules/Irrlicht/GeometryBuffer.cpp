@@ -178,10 +178,10 @@ void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
+    d_clipRect.top(std::max(0.0f, region.top()));
+    d_clipRect.bottom(std::max(0.0f, region.bottom()));
+    d_clipRect.left(std::max(0.0f, region.left()));
+    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
