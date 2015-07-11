@@ -558,7 +558,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     horizontalLayout->addChild(updateEventLabel);
     updateEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
     updateEventLabel->setText("EventUpdated");
-    updateEventLabel->setFont("DejaVuSans-12-NoScale");
+    updateEventLabel->setFont("DejaVuSans-12");
     updateEventLabel->setProperty("HorzFormatting", "LeftAligned");
 
     d_windowLightCursorMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
@@ -571,7 +571,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     horizontalLayout->addChild(cursor_move_event_label);
     cursor_move_event_label->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
     cursor_move_event_label->setText("EventCursorMove");
-    cursor_move_event_label->setFont("DejaVuSans-12-NoScale");
+    cursor_move_event_label->setFont("DejaVuSans-12");
     cursor_move_event_label->setProperty("HorzFormatting", "LeftAligned");
 }
 
