@@ -71,7 +71,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load the default font
-    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12-NoScale.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     d_font = loadedFonts.empty() ? 0 : loadedFonts.front();
     d_guiContext->setDefaultFont(d_font);
 
