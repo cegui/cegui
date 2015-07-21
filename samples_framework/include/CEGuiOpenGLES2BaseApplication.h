@@ -1,9 +1,9 @@
 /***********************************************************************
-created:    24/9/2004
+created:    12/2/2012
 author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+*   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -24,18 +24,18 @@ author:     Paul D Turner
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _CEGuiOpenGL3BaseApplication_h_
-#define _CEGuiOpenGL3BaseApplication_h_
+#ifndef _CEGuiOpenGLES2BaseApplication_h_
+#define _CEGuiOpenGLES2BaseApplication_h_
 
 #include "CEGuiGLFWSharedBase.h"
 
-class CEGuiOpenGL3BaseApplication : public CEGuiGLFWSharedBase
+class CEGuiOpenGLES2BaseApplication : public CEGuiGLFWSharedBase
 {
 public:
-    CEGuiOpenGL3BaseApplication();
+    CEGuiOpenGLES2BaseApplication();
 
 protected:
     static void setGLFWWindowCreationHints();
 };
 
-#endif  // end of guard _CEGuiOpenGL3BaseApplication_h_
+#endif  // end of guard _CEGuiOpenGLES2BaseApplication_h_

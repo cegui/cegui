@@ -51,6 +51,8 @@ public:
     //! Destructor.
     ~CEGuiD3D9BaseApplication();
 
+    void rendererDestroy();
+
 protected:
     /*************************************************************************
         Implementation Methods

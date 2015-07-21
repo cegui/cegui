@@ -55,6 +55,9 @@
 #   ifdef CEGUI_BUILD_RENDERER_OPENGL3
 #      include "CEGuiOpenGL3BaseApplication.h"
 #   endif
+#   ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
+#      include "CEGuiOpenGLES2BaseApplication.h"
+#   endif
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
 #   include "CEGuiIrrlichtBaseApplication.h"
@@ -193,6 +196,9 @@ bool SamplesFrameworkBase::runApplication()
     #ifdef CEGUI_BUILD_RENDERER_OPENGL3
         d_rendererSelector->setRendererAvailability(OpenGL3GuiRendererType);
     #endif
+    #ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
+	d_rendererSelector->setRendererAvailability(OpenGLES2GuiRendererType);
+    #endif
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
     d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
@@ -244,6 +250,11 @@ bool SamplesFrameworkBase::runApplication()
     #ifdef CEGUI_BUILD_RENDERER_OPENGL3
             case OpenGL3GuiRendererType:
                 d_baseApp = new CEGuiOpenGL3BaseApplication();
+                break;
+    #endif
+    #ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
+            case OpenGLES2GuiRendererType:
+                d_baseApp = new CEGuiOpenGLES2BaseApplication();
                 break;
     #endif
 #endif

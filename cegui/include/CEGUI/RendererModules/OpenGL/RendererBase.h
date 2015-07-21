@@ -38,16 +38,6 @@
 #include <vector>
 #include <map>
 
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef CEGUIOPENGLRENDERER_EXPORTS
-#       define OPENGL_GUIRENDERER_API __declspec(dllexport)
-#   else
-#       define OPENGL_GUIRENDERER_API __declspec(dllimport)
-#   endif
-#else
-#   define OPENGL_GUIRENDERER_API
-#endif
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -59,7 +49,7 @@ class OpenGLTexture;
 class OpenGLGeometryBufferBase;
 struct mat4Pimpl;
 
-//! Common base class used for other OpenGL based renderer modules.
+//! Common base class used for other OpenGL(ES) based renderer modules.
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
@@ -212,6 +202,8 @@ public:
     */
     RenderTarget* getActiveRenderTarget();
 
+    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
+
     /*!
     \brief
         Returns if the texture coordinate system is vertically flipped or not. The original of a
@@ -240,6 +232,21 @@ protected:
         Size object describing the initial display resolution.
     */
     OpenGLRendererBase(const Sizef& display_size);
+    
+    OpenGLRendererBase(bool set_glew_experimental);
+
+    /*!
+    \brief
+        Constructor.
+
+    \param display_size
+        Size object describing the initial display resolution.
+    \param set_glew_experimental
+        If true, set "glewExperimental = GL_TRUE" before calling "glewInit".
+    */
+    OpenGLRendererBase(const Sizef& display_size, bool set_glew_experimental);
+    
+    void init (bool init_glew=false, bool set_glew_experimental=false);
 
     //! Destructor!
     virtual ~OpenGLRendererBase();

@@ -24,20 +24,13 @@ author:     Paul D Turner
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-# include <unistd.h>
-#endif
-
-#include "CEGUISamplesConfig.h"
 #include "CEGuiGLFWSharedBase.h"
 #include "SamplesFrameworkBase.h"
 #include "CEGUI/CEGUI.h"
 
-#include <stdexcept>
-#include <sstream>
-
 //----------------------------------------------------------------------------//
 CEGuiGLFWSharedBase* CEGuiGLFWSharedBase::d_appInstance = 0;
+const char CEGuiGLFWSharedBase::d_windowTitle[] = "Crazy Eddie's GUI Mk-2 - Sample Application";
 double  CEGuiGLFWSharedBase::d_frameTime = 0;
 int CEGuiGLFWSharedBase::d_modifiers = 0;
 bool CEGuiGLFWSharedBase::d_windowSized = false;
@@ -45,8 +38,8 @@ int CEGuiGLFWSharedBase::d_newWindowWidth = CEGuiGLFWSharedBase::s_defaultWindow
 int CEGuiGLFWSharedBase::d_newWindowHeight = CEGuiGLFWSharedBase::s_defaultWindowWidth;
 bool CEGuiGLFWSharedBase::d_mouseLeftWindow = false;
 bool CEGuiGLFWSharedBase::d_mouseDisableCalled = false;
-int CEGuiGLFWSharedBase::d_oldMousePosX = 0;
-int CEGuiGLFWSharedBase::d_oldMousePosY = 0;
+double CEGuiGLFWSharedBase::d_oldMousePosX = 0.,
+       CEGuiGLFWSharedBase::d_oldMousePosY = 0.;
 
 //----------------------------------------------------------------------------//
 CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
@@ -56,51 +49,13 @@ CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
         "CEGuiGLFWSharedBase instance already exists!");
 
     d_appInstance = this;
+
+#if defined CEGUI_OPENGL_VER_MAJOR_FORCE
+    CEGUI::OpenGL_API::getSingleton().verForce(CEGUI_OPENGL_VER_MAJOR_FORCE,
+                                                 CEGUI_OPENGL_VER_MINOR_FORCE);
+#endif
 }
 
-//----------------------------------------------------------------------------//
-CEGuiGLFWSharedBase::~CEGuiGLFWSharedBase()
-{
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::run()
-{
-    d_sampleApp->initialise();
-
-    // Input callbacks of glfw for CEGUI
-    glfwSetKeyCallback(glfwKeyCallback);
-    glfwSetCharCallback(glfwCharCallback);
-    glfwSetMouseButtonCallback(glfwMouseButtonCallback);
-    glfwSetMouseWheelCallback(glfwMouseWheelCallback);
-    glfwSetMousePosCallback(glfwMousePosCallback);
-
-    //Window callbacks
-    glfwSetWindowCloseCallback(glfwWindowCloseCallback);
-    glfwSetWindowSizeCallback(glfwWindowResizeCallback);
-    d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-    // set starting time
-    d_frameTime = glfwGetTime();
-
-    while (!d_sampleApp->isQuitting() &&
-        glfwGetWindowParam(GLFW_OPENED))
-    {
-        if (d_windowSized)
-        {
-            d_windowSized = false;
-            CEGUI::System::getSingleton().
-                notifyDisplaySizeChanged(
-                CEGUI::Sizef(static_cast<float>(d_newWindowWidth),
-                static_cast<float>(d_newWindowHeight)));
-        }
-
-        drawFrame();
-    }
-
-    d_sampleApp->deinitialise();
-}
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::destroyWindow()
 {
@@ -114,12 +69,6 @@ void CEGuiGLFWSharedBase::beginRendering(const float /*elapsed*/)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::endRendering()
-{
-    glfwSwapBuffers();
-}
-
-//----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::drawFrame()
 {
     // calculate time elapsed since last frame
@@ -128,68 +77,6 @@ void CEGuiGLFWSharedBase::drawFrame()
     d_frameTime = time_now;
 
     d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
-}
-
-//----------------------------------------------------------------------------//
-int CEGuiGLFWSharedBase::glfwWindowCloseCallback(void)
-{
-    d_sampleApp->setQuitting(true);
-    return GL_TRUE;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwWindowResizeCallback(int w, int h)
-{
-    // We cache this in order to minimise calls to notifyDisplaySizeChanged,
-    // which happens in the main loop whenever d_windowSized is set to true.
-    d_windowSized = true;
-    d_newWindowWidth = w;
-    d_newWindowHeight = h;
-}
-
-//----------------------------------------------------------------------------//
-CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
-{
-    switch(glfwKey)
-    {
-    case GLFW_KEY_ESC       : return CEGUI::Key::Escape;
-    case GLFW_KEY_F1        : return CEGUI::Key::F1;
-    case GLFW_KEY_F2        : return CEGUI::Key::F2;
-    case GLFW_KEY_F3        : return CEGUI::Key::F3;
-    case GLFW_KEY_F4        : return CEGUI::Key::F4;
-    case GLFW_KEY_F5        : return CEGUI::Key::F5;
-    case GLFW_KEY_F6        : return CEGUI::Key::F6;
-    case GLFW_KEY_F7        : return CEGUI::Key::F7;
-    case GLFW_KEY_F8        : return CEGUI::Key::F8;
-    case GLFW_KEY_F9        : return CEGUI::Key::F9;
-    case GLFW_KEY_F10       : return CEGUI::Key::F10;
-    case GLFW_KEY_F11       : return CEGUI::Key::F11;
-    case GLFW_KEY_F12       : return CEGUI::Key::F12;
-    case GLFW_KEY_F13       : return CEGUI::Key::F13;
-    case GLFW_KEY_F14       : return CEGUI::Key::F14;
-    case GLFW_KEY_F15       : return CEGUI::Key::F15;
-    case GLFW_KEY_UP        : return CEGUI::Key::ArrowUp;
-    case GLFW_KEY_DOWN      : return CEGUI::Key::ArrowDown;
-    case GLFW_KEY_LEFT      : return CEGUI::Key::ArrowLeft;
-    case GLFW_KEY_RIGHT     : return CEGUI::Key::ArrowRight;
-    case GLFW_KEY_LSHIFT    : return CEGUI::Key::LeftShift;
-    case GLFW_KEY_RSHIFT    : return CEGUI::Key::RightShift;
-    case GLFW_KEY_LCTRL     : return CEGUI::Key::LeftControl;
-    case GLFW_KEY_RCTRL     : return CEGUI::Key::RightControl;
-    case GLFW_KEY_LALT      : return CEGUI::Key::LeftAlt;
-    case GLFW_KEY_RALT      : return CEGUI::Key::RightAlt;
-    case GLFW_KEY_TAB       : return CEGUI::Key::Tab;
-    case GLFW_KEY_ENTER     : return CEGUI::Key::Return;
-    case GLFW_KEY_BACKSPACE : return CEGUI::Key::Backspace;
-    case GLFW_KEY_INSERT    : return CEGUI::Key::Insert;
-    case GLFW_KEY_DEL       : return CEGUI::Key::Delete;
-    case GLFW_KEY_PAGEUP    : return CEGUI::Key::PageUp;
-    case GLFW_KEY_PAGEDOWN  : return CEGUI::Key::PageDown;
-    case GLFW_KEY_HOME      : return CEGUI::Key::Home;
-    case GLFW_KEY_END       : return CEGUI::Key::End;
-    case GLFW_KEY_KP_ENTER  : return CEGUI::Key::NumpadEnter;
-    default                 : return CEGUI::Key::Unknown;
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -205,44 +92,11 @@ CEGUI::MouseButton CEGuiGLFWSharedBase::GlfwToCeguiMouseButton(int glfwButton)
 }
 
 //----------------------------------------------------------------------------//
-void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
-{
-    CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
-
-    if(action == GLFW_PRESS)
-        d_sampleApp->injectKeyDown(ceguiKey);
-    else if (action == GLFW_RELEASE)
-        d_sampleApp->injectKeyUp(ceguiKey);
-}
-
-//----------------------------------------------------------------------------//
-void GLFWCALL CEGuiGLFWSharedBase::glfwCharCallback(int character, int action)
-{
-    if(action == GLFW_PRESS)
-        d_sampleApp->injectChar(character);
-}
-
-//----------------------------------------------------------------------------//
-void GLFWCALL CEGuiGLFWSharedBase::glfwMouseButtonCallback(int key, int action)
-{
-    CEGUI::MouseButton ceguiMouseButton = GlfwToCeguiMouseButton(key);
-
-    if(action == GLFW_PRESS)
-        d_sampleApp->injectMouseButtonDown(ceguiMouseButton);
-    else if (action == GLFW_RELEASE)
-        d_sampleApp->injectMouseButtonUp(ceguiMouseButton);
-}
-
-//----------------------------------------------------------------------------//
-void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
-{
-    static int lastPosition = 0;
-    d_sampleApp->injectMouseWheelChange(static_cast<float>(position - lastPosition));
-    lastPosition = position;
-}
-
-//----------------------------------------------------------------------------//
+#if GLFW_VERSION_MAJOR >= 3
+void CEGuiGLFWSharedBase::glfwCursorPosCallback(GLFWwindow* window, double x, double y)
+#else // GLFW_VERSION_MAJOR <= 2
 void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
+#endif
 {
     if (!d_mouseDisableCalled)
     {
@@ -255,7 +109,11 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
         // because glfw beams the cursor to the middle of the window if 
         // the cursor is disabled
         d_sampleApp->injectMousePosition(static_cast<float>(d_oldMousePosX), static_cast<float>(d_oldMousePosY));
-        glfwSetMousePos(d_oldMousePosX, d_oldMousePosY);
+#if GLFW_VERSION_MAJOR >= 3
+        glfwSetCursorPos(d_window, d_oldMousePosX, d_oldMousePosY);
+#else // GLFW_VERSION_MAJOR <= 2
+        glfwSetMousePos(static_cast<int>(d_oldMousePosX), static_cast<int>(d_oldMousePosY));
+#endif
         d_mouseDisableCalled = false;
     }
 
@@ -299,35 +157,6 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::initGLFW()
 {
-    if(!glfwInit())
-        CEGUI_THROW(CEGUI::RendererException("Failed to initialise GLFW."));
+    if (glfwInit() != GL_TRUE)
+        CEGUI_THROW(RendererException("Failed to initialise GLFW."));
 }
-
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::createGLFWWindow()
-{
-    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
-    {
-        CEGUI_THROW(CEGUI::RendererException("Failed to open GLFW window."));
-        glfwTerminate();
-    }
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
-{
-    glfwSetWindowTitle("Crazy Eddie's GUI Mk-2 - Sample Application");
-
-    //Deactivate VSYNC
-    glfwSwapInterval(0);
-
-    // Disable the mouse position in Non_Debug mode
-#ifndef DEBUG
-    glfwDisable(GLFW_MOUSE_CURSOR);
-#endif
-    // Clear Errors by GLFW, even if Setup is correct.
-    glGetError();
-}
-
-//----------------------------------------------------------------------------//
-

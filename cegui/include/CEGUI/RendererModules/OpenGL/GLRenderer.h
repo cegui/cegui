@@ -34,7 +34,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL
 */
 class OPENGL_GUIRENDERER_API OpenGLRenderer : public OpenGLRendererBase
 {

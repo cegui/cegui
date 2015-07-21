@@ -27,16 +27,170 @@
 #ifndef _CEGUIOpenGL_h_
 #define _CEGUIOpenGL_h_
 
+#include "CEGUI/Config.h"
+
+#if defined CEGUI_USE_EPOXY
+
+#include <epoxy/gl.h>
+
+#elif defined CEGUI_USE_GLEW
+
+#include <GL/glew.h>
+
+// When using GLEW, there's no need to "#include" the OpenGL headers.
 #ifndef __APPLE__
 #   if (defined( __WIN32__ ) || defined( _WIN32 ))
 #       include <windows.h>
 #   endif
-#   include <GL/gl.h>
 #   include <GL/glu.h>
 #else
-#   include <OpenGL/gl.h>
 #   include <OpenGL/glu.h>
 #endif
 
+#else
+#error "You muse define exactly one of CEGUI_USE_EPOXY and CEGUI_USE_GLEW".
+#endif
+
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
+#   if defined(CEGUIOPENGLRENDERER_EXPORTS) || defined(CEGUIOPENGLES2RENDERER_EXPORTS)
+#       define OPENGL_GUIRENDERER_API __declspec(dllexport)
+#   else
+#       define OPENGL_GUIRENDERER_API __declspec(dllimport)
+#   endif
+#else
+#   define OPENGL_GUIRENDERER_API
+#endif
+
+namespace CEGUI {
+
+/*!
+\brief
+    Provides information about the type of OpenGL used by an OpenGL(ES) context
+    (desktop OpenGL or OpenGL ES), the OpenGL(ES) version, and the OpenGL(ES)
+    extensions.
+*/
+class OPENGL_GUIRENDERER_API OpenGL_API
+{
+
+public:
+    /*!
+    \brief
+        Type of the OpenGL(ES) context
+    */
+    enum Type
+    {
+        TYPE_NONE, /*!< Not initalized yet */
+        TYPE_DESKTOP, /*!< Desktop OpenGL */
+        TYPE_ES /*!< OpenGL ES */
+    };
+
+    static OpenGL_API& getSingleton() { return s_instance; }
+
+    /*!
+    \brief
+        Must be called before any other method.
+
+        Note that the information returned by other methods is with respect to
+        the OpenGL(ES) context that was current when this method was called.
+    */
+    void init();
+    
+    /*!
+    \brief
+        Type of the OpenGL(ES) context
+    */
+    Type type() const { return d_type; }
+    
+    /*!
+    \brief
+        Returns true iff using Desktop OpenGL.
+    */
+    bool isDesktop() const { return type() == TYPE_DESKTOP; }
+    
+    /*!
+    \brief
+        Returns true iff using OpenGL ES.
+    */
+    bool is_ES() const { return type() == TYPE_ES; }
+
+    /*!
+    \brief
+        Returns OpenGL(ES) major version. Only supports Epoxy!
+        Otherwise returns -1;
+    */
+    GLint verMajor() const { return d_verMajor; }
+    
+    /*!
+    \brief
+        Returns OpenGL(ES) minor version. Only supports Epoxy!
+        Otherwise returns -1;
+    */
+    GLint verMinor() const { return d_verMinor; }
+
+    /*!
+    \brief
+        Returns true off the Open(ES) version is at least "major.minor".
+        Only supports Epoxy! Otherwise returns false.
+    */
+    bool verAtLeast(GLint major, GLint minor) {
+        return verMajor() > major  ||  (verMajor() == major && verMinor() >= minor); }
+
+    /*!
+    \brief
+        Returns true iff "S3TC" texture compression is supported.
+    */
+    bool s3tc_supported() const { return d_S3TC_supported; }
+
+    /*!
+    \brief
+        Returns true iff NPOT (non-power-of-two) textures are supported.
+    */
+    bool textures_NPOT_supported() const { return d_textures_NPOT_supported; }
+
+    /*!
+    \brief
+        Returns true iff "glReadBuffer" is supported.
+    */
+    bool glReadBuffer_supported() const
+      { return d_glReadBuffer_supported; }
+
+    /*!
+    \brief
+        Returns true iff "glPolygonMode" is supported.
+    */
+    bool glPolygonMode_supported() const
+      { return d_glPolygonMode_supported; }
+
+    /*!
+    \brief
+        Returns true iff VAO-s (Vertex Array Objects) are supported.
+    */
+    bool vaos_supported() const { return d_VAOs_supported; }
+
+    /*!
+    \brief
+        Returns true iff working with the read/draw framebuffers seperately is
+        supported.
+    */
+    bool seperateReadAndDrawFramebuffersSupported() const
+      { return d_seperateReadAndDrawFramebuffersSupported; }
+
+    void verForce(GLint verMajor_, GLint verMinor_);
+      
+private:
+
+    static OpenGL_API s_instance;
+    OpenGL_API();
+    
+    Type d_type;
+    GLint d_verMajor, d_verMinor, d_verMajorForce, d_verMinorForce;
+    bool d_S3TC_supported, d_textures_NPOT_supported,
+         d_glReadBuffer_supported, d_glPolygonMode_supported,
+         d_seperateReadAndDrawFramebuffersSupported, d_VAOs_supported;
+    void initTypeAndVer();
+    void initSupportedFeatures();
+};
+
+} // namespace CEGUI
 
 #endif  // end of guard _CEGUIOpenGL_h_
