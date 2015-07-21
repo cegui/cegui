@@ -26,17 +26,17 @@ author:     Paul D Turner
 ***************************************************************************/
 
 // We need to include windows.h here before glfw is included (via
-// CEGuiOpenGL3BaseApplication.h) or there will be a warning when GL.h includes
+// CEGuiOpenGLES2BaseApplication.h) or there will be a warning when GL.h includes
 // windows.h (via GL3Renderer.h)
-#if defined(CEGUI_USE_GLEW)  &&  (defined( __WIN32__ ) || defined( _WIN32 ))
+#if defined( __WIN32__ ) || defined( _WIN32 )
 #include "windows.h"
 #endif
 
-#include "CEGuiOpenGL3BaseApplication.h"
+#include "CEGuiOpenGLES2BaseApplication.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 //----------------------------------------------------------------------------//
-CEGuiOpenGL3BaseApplication::CEGuiOpenGL3BaseApplication()
+CEGuiOpenGLES2BaseApplication::CEGuiOpenGLES2BaseApplication()
 {
     initGLFW();
     setGLFWWindowCreationHints();
@@ -47,17 +47,11 @@ CEGuiOpenGL3BaseApplication::CEGuiOpenGL3BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOpenGL3BaseApplication::setGLFWWindowCreationHints()
+void CEGuiOpenGLES2BaseApplication::setGLFWWindowCreationHints()
 {
-#if GLFW_VERSION_MAJOR >= 3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#else // GLFW_VERSION_MAJOR <= 2
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#endif
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 }
 
 //----------------------------------------------------------------------------//

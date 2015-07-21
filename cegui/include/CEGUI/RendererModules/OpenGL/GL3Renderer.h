@@ -37,7 +37,8 @@ namespace CEGUI
 
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL version >= 3.2 or OpenGL ES
+    version >= 2.
 */
 class OPENGL_GUIRENDERER_API OpenGL3Renderer : public OpenGLRendererBase
 {
@@ -211,7 +212,7 @@ public:
     void beginRendering();
     void endRendering();
     Sizef getAdjustedTextureSize(const Sizef& sz) const;
-    bool isS3TCSupported() const;
+    bool isS3TCSupported() const { return openGL_API()->s3tc_supported(); }
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
 
@@ -224,10 +225,6 @@ private:
     /*!
     \brief
         Constructor for OpenGL Renderer objects
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
     OpenGL3Renderer();
 
@@ -237,15 +234,12 @@ private:
 
     \param display_size
         Size object describing the initial display resolution.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
     OpenGL3Renderer(const Sizef& display_size);
 
+    void init();
+
     void initialiseOpenGLShaders();
-    void initialiseGLExtensions();
 
 protected:
     /*!
@@ -274,8 +268,6 @@ private:
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper* d_openGLStateChanger;
     OpenGL3ShaderManager* d_shaderManager;
-    //! whether S3TC texture compression is supported by the context
-    bool d_s3tcSupported;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
 };

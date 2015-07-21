@@ -60,6 +60,8 @@ public:
     void grabTexture();
     void restoreTexture();
 
+    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
+
 protected:
     //! default size of created texture objects
     static const float DEFAULT_SIZE;

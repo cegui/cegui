@@ -175,6 +175,13 @@ void CEGuiBaseApplication::cleanup()
     d_renderer->destroyGeometryBuffer(*d_logoGeometry);
     d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
     CEGUI::System::destroy();
+    rendererDestroy ();
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::rendererDestroy ()
+{
+    CEGUI_DELETE_AO d_renderer;
 }
 
 //----------------------------------------------------------------------------//

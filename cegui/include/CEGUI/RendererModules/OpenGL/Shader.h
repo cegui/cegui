@@ -39,6 +39,7 @@ author:     Lukas E Meindl
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 class OPENGL_GUIRENDERER_API OpenGL3Shader :
     public AllocatedObject<OpenGL3Shader>
 {
@@ -52,6 +53,8 @@ public:
                   const std::string& fragment_shader_source);
 
     ~OpenGL3Shader();
+    
+    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
 
     /*!
     \brief

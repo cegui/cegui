@@ -44,6 +44,7 @@ public:
     virtual ~OpenGL3GeometryBuffer();
 
     void initialiseOpenGLBuffers();
+    void vertexArrayConfigure() const;
     void deinitialiseOpenGLBuffers();
     void updateOpenGLBuffers();
 
@@ -51,6 +52,8 @@ public:
     void draw() const;
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void reset();
+
+    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
 
 protected:
     //! OpenGL vao used for the vertices

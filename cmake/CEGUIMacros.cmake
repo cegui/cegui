@@ -120,7 +120,11 @@ endmacro()
 # add a dependency to a target (and it's static equivalent, if it exists)
 #
 macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
-    include_directories(${${_DEP_NAME}_INCLUDE_DIR})
+    if (${ARGC} GREATER 2)
+        target_include_directories(${_TARGET_NAME} ${ARGV2} ${${_DEP_NAME}_INCLUDE_DIR})
+    else ()
+        target_include_directories(${_TARGET_NAME} PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
+    endif ()
 
     ###########################################################################
     #                    NON-STATIC VERSION OF TARGET
