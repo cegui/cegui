@@ -47,7 +47,8 @@ namespace CEGUI
 String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!");
 
 //----------------------------------------------------------------------------//
-OpenGLRendererBase::OpenGLRendererBase()
+OpenGLRendererBase::OpenGLRendererBase() :
+    d_viewProjectionMatrix(0)
 {
     init();
     initialiseDisplaySizeWithViewportSize();
@@ -56,14 +57,16 @@ OpenGLRendererBase::OpenGLRendererBase()
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
-    d_displaySize(display_size)
+    d_displaySize(display_size),
+    d_viewProjectionMatrix(0)
 {
     init();
     d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental)
+OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
+    d_viewProjectionMatrix(0)
 {
     init(true, set_glew_experimental);
     initialiseDisplaySizeWithViewportSize();
@@ -73,7 +76,8 @@ OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental)
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
-    d_displaySize(display_size)
+    d_displaySize(display_size),
+    d_viewProjectionMatrix(0)
 {
     init(true, set_glew_experimental);
     d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);

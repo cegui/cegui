@@ -348,5 +348,11 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGL3Renderer::isS3TCSupported() const
+{
+    return openGL_API()->s3tc_supported();
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
