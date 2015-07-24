@@ -53,7 +53,7 @@ public:
                   const std::string& fragment_shader_source);
 
     ~OpenGL3Shader();
-    
+
     const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
 
     /*!

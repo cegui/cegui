@@ -101,7 +101,8 @@ protected:
 
     static bool d_mouseLeftWindow;
     static bool d_mouseDisableCalled;
-    static double d_oldMousePosX, d_oldMousePosY;
+    static double d_oldMousePosX;
+    static double d_oldMousePosY;
     
     static const char d_windowTitle[];
     

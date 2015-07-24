@@ -212,7 +212,7 @@ public:
     void beginRendering();
     void endRendering();
     Sizef getAdjustedTextureSize(const Sizef& sz) const;
-    bool isS3TCSupported() const { return openGL_API()->s3tc_supported(); }
+    bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
 

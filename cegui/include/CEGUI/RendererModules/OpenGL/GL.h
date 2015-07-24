@@ -48,7 +48,7 @@
 #endif
 
 #else
-#error "You muse define exactly one of CEGUI_USE_EPOXY and CEGUI_USE_GLEW".
+#error Either "CEGUI_USE_EPOXY" or "CEGUI_USE_GLEW" must be defined. Defining both or none is invalid.
 #endif
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
@@ -103,13 +103,13 @@ public:
     
     /*!
     \brief
-        Returns true iff using Desktop OpenGL.
+        Returns true if using Desktop OpenGL.
     */
     bool isDesktop() const { return type() == TYPE_DESKTOP; }
     
     /*!
     \brief
-        Returns true iff using OpenGL ES.
+        Returns true if using OpenGL ES.
     */
     bool is_ES() const { return type() == TYPE_ES; }
 
@@ -137,39 +137,39 @@ public:
 
     /*!
     \brief
-        Returns true iff "S3TC" texture compression is supported.
+        Returns true if "S3TC" texture compression is supported.
     */
     bool s3tc_supported() const { return d_S3TC_supported; }
 
     /*!
     \brief
-        Returns true iff NPOT (non-power-of-two) textures are supported.
+        Returns true if NPOT (non-power-of-two) textures are supported.
     */
     bool textures_NPOT_supported() const { return d_textures_NPOT_supported; }
 
     /*!
     \brief
-        Returns true iff "glReadBuffer" is supported.
+        Returns true if "glReadBuffer" is supported.
     */
     bool glReadBuffer_supported() const
       { return d_glReadBuffer_supported; }
 
     /*!
     \brief
-        Returns true iff "glPolygonMode" is supported.
+        Returns true if "glPolygonMode" is supported.
     */
     bool glPolygonMode_supported() const
       { return d_glPolygonMode_supported; }
 
     /*!
     \brief
-        Returns true iff VAO-s (Vertex Array Objects) are supported.
+        Returns true if VAO-s (Vertex Array Objects) are supported.
     */
     bool vaos_supported() const { return d_VAOs_supported; }
 
     /*!
     \brief
-        Returns true iff working with the read/draw framebuffers seperately is
+        Returns true if working with the read/draw framebuffers seperately is
         supported.
     */
     bool seperateReadAndDrawFramebuffersSupported() const
@@ -181,14 +181,20 @@ private:
 
     static OpenGL_API s_instance;
     OpenGL_API();
-    
-    Type d_type;
-    GLint d_verMajor, d_verMinor, d_verMajorForce, d_verMinorForce;
-    bool d_S3TC_supported, d_textures_NPOT_supported,
-         d_glReadBuffer_supported, d_glPolygonMode_supported,
-         d_seperateReadAndDrawFramebuffersSupported, d_VAOs_supported;
     void initTypeAndVer();
     void initSupportedFeatures();
+    
+    Type d_type;
+    GLint d_verMajor;
+    GLint d_verMinor;
+    GLint d_verMajorForce;
+    GLint d_verMinorForce;
+    bool d_S3TC_supported;
+    bool d_textures_NPOT_supported;
+    bool d_glReadBuffer_supported;
+    bool d_glPolygonMode_supported;
+    bool d_seperateReadAndDrawFramebuffersSupported;
+    bool d_VAOs_supported;
 };
 
 } // namespace CEGUI

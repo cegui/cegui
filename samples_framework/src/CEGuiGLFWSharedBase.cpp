@@ -38,8 +38,8 @@ int CEGuiGLFWSharedBase::d_newWindowWidth = CEGuiGLFWSharedBase::s_defaultWindow
 int CEGuiGLFWSharedBase::d_newWindowHeight = CEGuiGLFWSharedBase::s_defaultWindowWidth;
 bool CEGuiGLFWSharedBase::d_mouseLeftWindow = false;
 bool CEGuiGLFWSharedBase::d_mouseDisableCalled = false;
-double CEGuiGLFWSharedBase::d_oldMousePosX = 0.,
-       CEGuiGLFWSharedBase::d_oldMousePosY = 0.;
+double CEGuiGLFWSharedBase::d_oldMousePosX = 0.;
+double CEGuiGLFWSharedBase::d_oldMousePosY = 0.;
 
 //----------------------------------------------------------------------------//
 CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
