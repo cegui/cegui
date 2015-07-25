@@ -144,14 +144,20 @@ void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer() :
-    OpenGLRendererBase(true)
+    OpenGLRendererBase(true),
+    d_shaderStandard(0),
+    d_openGLStateChanger(0),
+    d_shaderManager(0)
 {
     init();
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
-    OpenGLRendererBase(display_size, true)
+    OpenGLRendererBase(display_size, true),
+    d_shaderStandard(0),
+    d_openGLStateChanger(0),
+    d_shaderManager(0)
 {
     init();
 }
@@ -159,12 +165,10 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::init()
 {
-    if (openGL_API()->is_ES()  &&  openGL_API()->verMajor() < 2)
+    if (      OpenGLInfo::getSingleton().is_ES()
+          &&  OpenGLInfo::getSingleton().verMajor() < 2)
         CEGUI_THROW(RendererException("Only version 2 and up of OpenGL ES is "
                                       "supported by this type of renderer."));
-    d_shaderStandard = 0;
-    d_openGLStateChanger = 0;
-    d_shaderManager = 0;
     initialiseRendererIDString();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
@@ -182,7 +186,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseRendererIDString()
 {
-    d_rendererID = openGL_API()->isDesktop()
+    d_rendererID = OpenGLInfo::getSingleton().isDesktop()
         ?  "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
            "renderer module."
         :  "CEGUI::OpenGL3Renderer - OpenGL ES 2 renderer module.";
@@ -234,7 +238,7 @@ void OpenGL3Renderer::endRendering()
         glDisable(GL_SCISSOR_TEST);
     
         glBlendFunc(GL_ONE, GL_ZERO);
-        if (openGL_API()->vaos_supported())
+        if (OpenGLInfo::getSingleton().vaos_supported())
             glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -247,7 +251,7 @@ void OpenGL3Renderer::setupExtraStates()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    if (openGL_API()->glPolygonMode_supported())
+    if (OpenGLInfo::getSingleton().glPolygonMode_supported())
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glDisable(GL_CULL_FACE);
@@ -350,7 +354,7 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 //----------------------------------------------------------------------------//
 bool OpenGL3Renderer::isS3TCSupported() const
 {
-    return openGL_API()->s3tc_supported();
+    return OpenGLInfo::getSingleton().s3tc_supported();
 }
 
 //----------------------------------------------------------------------------//

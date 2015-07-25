@@ -135,14 +135,14 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
 
     // remember previously bound FBO-s to make sure we set them back
     GLint previousFBO_read(-1), previousFBO_draw(-1), previousFBO(-1);
-    if (openGL_API()->seperateReadAndDrawFramebuffersSupported())
+    if (OpenGLInfo::getSingleton().seperateReadAndDrawFramebuffersSupported())
     {
         glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &previousFBO_read);
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previousFBO_draw);
     }
     else
-        glGetIntegerv(openGL_API()->is_ES() ? GL_FRAMEBUFFER_BINDING
-                        : GL_FRAMEBUFFER_BINDING_EXT,
+        glGetIntegerv(OpenGLInfo::getSingleton().is_ES() ?
+                        GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
                       &previousFBO);
 
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
@@ -163,7 +163,7 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     checkFramebufferStatus();
 
     // switch from our frame buffers back to the previously bound buffers.
-    if (openGL_API()->seperateReadAndDrawFramebuffersSupported())
+    if (OpenGLInfo::getSingleton().seperateReadAndDrawFramebuffersSupported())
     {
         glBindFramebuffer(GL_READ_FRAMEBUFFER, static_cast<GLuint>(previousFBO_read));
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, static_cast<GLuint>(previousFBO_draw));

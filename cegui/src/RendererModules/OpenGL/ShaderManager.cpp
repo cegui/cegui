@@ -72,16 +72,18 @@ namespace CEGUI
     {
         if(!d_shadersInitialised)
         {
-            if      (openGL_API()->isDesktop())
+            if (OpenGLInfo::getSingleton().isDesktop())
                 loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGL3,
                            StandardShaderFrag_OpenGL3);
             else // OpenGL ES
-                if (openGL_API()->verMajor() <= 2)
+            {
+                if (OpenGLInfo::getSingleton().verMajor() <= 2)
                     loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGLES2,
                                StandardShaderFrag_OpenGLES2);
                 else
                     loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGLES3,
                                StandardShaderFrag_OpenGLES3);
+            }
             if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
             {
                 const CEGUI::String errorString("Critical Error - One or "

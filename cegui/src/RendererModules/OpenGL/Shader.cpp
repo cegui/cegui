@@ -197,7 +197,7 @@ void OpenGL3Shader::link()
     d_createdSucessfully = true;
     checkGLErrors();
 
-    if (openGL_API()->isDesktop())
+    if (OpenGLInfo::getSingleton().isDesktop())
     {
         glBindFragDataLocation(d_program, 0, "out0"); // GL_COLOR_ATTACHMENT0
         glBindFragDataLocation(d_program, 1, "out1"); // GL_COLOR_ATTACHMENT1

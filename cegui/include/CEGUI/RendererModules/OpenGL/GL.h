@@ -69,7 +69,7 @@ namespace CEGUI {
     (desktop OpenGL or OpenGL ES), the OpenGL(ES) version, and the OpenGL(ES)
     extensions.
 */
-class OPENGL_GUIRENDERER_API OpenGL_API
+class OPENGL_GUIRENDERER_API OpenGLInfo
 {
 
 public:
@@ -84,7 +84,7 @@ public:
         TYPE_ES /*!< OpenGL ES */
     };
 
-    static OpenGL_API& getSingleton() { return s_instance; }
+    static OpenGLInfo& getSingleton() { return s_instance; }
 
     /*!
     \brief
@@ -129,7 +129,7 @@ public:
 
     /*!
     \brief
-        Returns true off the Open(ES) version is at least "major.minor".
+        Returns true off the OpenGL(ES) version is at least "major.minor".
         Only supports Epoxy! Otherwise returns false.
     */
     bool verAtLeast(GLint major, GLint minor) {
@@ -179,8 +179,8 @@ public:
       
 private:
 
-    static OpenGL_API s_instance;
-    OpenGL_API();
+    static OpenGLInfo s_instance;
+    OpenGLInfo();
     void initTypeAndVer();
     void initSupportedFeatures();
     

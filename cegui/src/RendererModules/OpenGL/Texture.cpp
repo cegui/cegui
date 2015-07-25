@@ -338,7 +338,7 @@ void OpenGLTexture::grabTexture()
         return;
 
     std::size_t buffer_size(0);
-    if (openGL_API()->is_ES())
+    if (OpenGLInfo::getSingleton().is_ES())
     {
         /* OpenGL ES 3.1 or below doesn't support
            "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
@@ -372,7 +372,7 @@ void OpenGLTexture::restoreTexture()
     Sizef blit_size;
     /* In OpenGL ES we used "glReadPixels" to grab the texture, reading just the
        relevant rectangle. */
-    blit_size = openGL_API()->is_ES() ? d_dataSize : d_size;
+    blit_size = OpenGLInfo::getSingleton().is_ES() ? d_dataSize : d_size;
     blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), blit_size));
 
     // free the grabbuffer
@@ -402,7 +402,7 @@ void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::blitToMemory(void* targetData)
 {
-    if (openGL_API()->is_ES())
+    if (OpenGLInfo::getSingleton().is_ES())
     {
         /* OpenGL ES 3.1 or below doesn't support
            "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
@@ -414,7 +414,8 @@ void OpenGLTexture::blitToMemory(void* targetData)
         GLint framebuffer_old(0), pack_alignment_old(0);
         glGenFramebuffers(1, &texture_framebuffer);
         GLenum framebuffer_target(0), framebuffer_param(0);
-        if (openGL_API()->seperateReadAndDrawFramebuffersSupported())
+        if (OpenGLInfo::getSingleton()
+              .seperateReadAndDrawFramebuffersSupported())
         {
             framebuffer_param = GL_READ_FRAMEBUFFER_BINDING;
             framebuffer_target = GL_READ_FRAMEBUFFER;
@@ -428,7 +429,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
         glBindFramebuffer(framebuffer_target, texture_framebuffer);
         glFramebufferTexture2D(framebuffer_target, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, d_ogltexture, 0);
         GLint read_buffer_old(0), pixel_pack_buffer_old(0);
-        if (openGL_API()->glReadBuffer_supported())
+        if (OpenGLInfo::getSingleton().glReadBuffer_supported())
         {
             glGetIntegerv(GL_READ_BUFFER, &read_buffer_old);
             glReadBuffer(GL_COLOR_ATTACHMENT0);
@@ -440,7 +441,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
         glReadPixels(0, 0, static_cast<GLsizei>(d_dataSize.d_width),
           static_cast<GLsizei>(d_dataSize.d_height), GL_RGBA, GL_UNSIGNED_BYTE, targetData);
         glPixelStorei(GL_PACK_ALIGNMENT, pack_alignment_old);
-        if (openGL_API()->glReadBuffer_supported())
+        if (OpenGLInfo::getSingleton().glReadBuffer_supported())
         {
             glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_pack_buffer_old);
             glReadBuffer(read_buffer_old);

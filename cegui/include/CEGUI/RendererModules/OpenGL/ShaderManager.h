@@ -58,8 +58,6 @@ namespace CEGUI
         OpenGL3ShaderManager();
         virtual ~OpenGL3ShaderManager();
 
-        const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
-
         OpenGL3Shader* getShader(GLuint id);
         void loadShader(GLuint id, std::string vertexShader, std::string fragmentShader);
 

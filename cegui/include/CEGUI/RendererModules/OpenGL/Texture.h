@@ -109,7 +109,6 @@ public:
     void blitFromMemory(const void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
     bool isPixelFormatSupported(const PixelFormat fmt) const;
-    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
 
 protected:
     // Friends (to allow construction and destruction)

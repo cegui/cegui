@@ -85,7 +85,7 @@ void OpenGL3GeometryBuffer::draw() const
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
 
-    if (openGL_API()->vaos_supported())
+    if (OpenGLInfo::getSingleton().vaos_supported())
     {
         // Bind our vao
         d_glStateChanger->bindVertexArray(d_verticesVAO);
@@ -149,7 +149,7 @@ void OpenGL3GeometryBuffer::reset()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 {
-    if (openGL_API()->vaos_supported())
+    if (OpenGLInfo::getSingleton().vaos_supported())
     {
         glGenVertexArrays(1, &d_verticesVAO);
         glBindVertexArray(d_verticesVAO);
@@ -163,7 +163,7 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
     d_shader->unbind();
 
-    if (openGL_API()->vaos_supported())
+    if (OpenGLInfo::getSingleton().vaos_supported())
     {
         // Unbind Vertex Attribute Array (VAO)
         glBindVertexArray(0);
@@ -192,7 +192,7 @@ void OpenGL3GeometryBuffer::vertexArrayConfigure() const
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 {
-    if (openGL_API()->vaos_supported())
+    if (OpenGLInfo::getSingleton().vaos_supported())
         glDeleteVertexArrays(1, &d_verticesVAO);
     glDeleteBuffers(1, &d_verticesVBO);
 }

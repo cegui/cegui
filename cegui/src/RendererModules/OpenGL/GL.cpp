@@ -39,31 +39,39 @@
 namespace CEGUI
 {
 
-OpenGL_API OpenGL_API::s_instance;
+OpenGLInfo OpenGLInfo::s_instance;
 
 //----------------------------------------------------------------------------//
-OpenGL_API::OpenGL_API() :
-    d_type(TYPE_NONE), d_verMajor(-1), d_verMinor(-1),
-    d_verMajorForce(-1), d_verMinorForce(-1),
-    d_S3TC_supported(false), d_textures_NPOT_supported(false),
-    d_glReadBuffer_supported(false), d_glPolygonMode_supported(false),
-    d_seperateReadAndDrawFramebuffersSupported(false), d_VAOs_supported(false) {}
+OpenGLInfo::OpenGLInfo() :
+    d_type(TYPE_NONE),
+    d_verMajor(-1),
+    d_verMinor(-1),
+    d_verMajorForce(-1),
+    d_verMinorForce(-1),
+    d_S3TC_supported(false),
+    d_textures_NPOT_supported(false),
+    d_glReadBuffer_supported(false),
+    d_glPolygonMode_supported(false),
+    d_seperateReadAndDrawFramebuffersSupported(false),
+    d_VAOs_supported(false)
+{
+}
 
 //----------------------------------------------------------------------------//
-void OpenGL_API::init()
+void OpenGLInfo::init()
 {
     initTypeAndVer();
     initSupportedFeatures();
 }
 
-void OpenGL_API::verForce(GLint verMajor_, GLint verMinor_)
+void OpenGLInfo::verForce(GLint verMajor_, GLint verMinor_)
 {
     d_verMajorForce = verMajor_;
     d_verMinorForce = verMinor_;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL_API::initTypeAndVer()
+void OpenGLInfo::initTypeAndVer()
 {
 #if defined CEGUI_USE_EPOXY
     d_type = epoxy_is_desktop_gl() ? TYPE_DESKTOP : TYPE_ES;
@@ -88,7 +96,7 @@ void OpenGL_API::initTypeAndVer()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL_API::initSupportedFeatures()
+void OpenGLInfo::initSupportedFeatures()
 {
 
 #if defined CEGUI_USE_EPOXY
@@ -128,12 +136,12 @@ void OpenGL_API::initSupportedFeatures()
     }
     
     d_textures_NPOT_supported =
-          GLEW_VERSION_2_0 == GL_TRUE
-      ||  GLEW_ARB_texture_non_power_of_two == GL_TRUE;
+          (GLEW_VERSION_2_0 == GL_TRUE)
+      ||  (GLEW_ARB_texture_non_power_of_two == GL_TRUE);
     d_glPolygonMode_supported
-      = GLEW_VERSION_1_3 == GL_TRUE;
-    d_seperateReadAndDrawFramebuffersSupported = GLEW_VERSION_3_1 == GL_TRUE;
-    d_VAOs_supported = GLEW_VERSION_3_2 == GL_TRUE;
+      = (GLEW_VERSION_1_3 == GL_TRUE);
+    d_seperateReadAndDrawFramebuffersSupported = (GLEW_VERSION_3_1 == GL_TRUE);
+    d_VAOs_supported = (GLEW_VERSION_3_2 == GL_TRUE);
     
 #endif
 
