@@ -98,7 +98,7 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-CEGuiD3D10BaseApplication::rendererDestroy()
+void CEGuiD3D10BaseApplication::destroyRenderer()
 {
     Win32AppHelper::mouseLeaves();
 

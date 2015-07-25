@@ -413,7 +413,7 @@ Sizef OpenGLRendererBase::getAdjustedTextureSize(const Sizef& sz) const
     Sizef out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
-    if (!OpenGLInfo::getSingleton().textures_NPOT_supported())
+    if (!OpenGLInfo::getSingleton().areTexturesNpotSupported())
     {
         out.d_width = getNextPOTSize(out.d_width);
         out.d_height = getNextPOTSize(out.d_height);

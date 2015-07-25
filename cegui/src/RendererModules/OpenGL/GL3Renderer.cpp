@@ -165,7 +165,7 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::init()
 {
-    if (      OpenGLInfo::getSingleton().is_ES()
+    if (      OpenGLInfo::getSingleton().isUsingOpenglEs()
           &&  OpenGLInfo::getSingleton().verMajor() < 2)
         CEGUI_THROW(RendererException("Only version 2 and up of OpenGL ES is "
                                       "supported by this type of renderer."));
@@ -186,7 +186,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseRendererIDString()
 {
-    d_rendererID = OpenGLInfo::getSingleton().isDesktop()
+    d_rendererID = OpenGLInfo::getSingleton().isUsingDesktopOpengl()
         ?  "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
            "renderer module."
         :  "CEGUI::OpenGL3Renderer - OpenGL ES 2 renderer module.";
@@ -238,7 +238,7 @@ void OpenGL3Renderer::endRendering()
         glDisable(GL_SCISSOR_TEST);
     
         glBlendFunc(GL_ONE, GL_ZERO);
-        if (OpenGLInfo::getSingleton().vaos_supported())
+        if (OpenGLInfo::getSingleton().areVaosSupported())
             glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -251,7 +251,7 @@ void OpenGL3Renderer::setupExtraStates()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    if (OpenGLInfo::getSingleton().glPolygonMode_supported())
+    if (OpenGLInfo::getSingleton().isPolygonModeSupported())
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glDisable(GL_CULL_FACE);
@@ -354,7 +354,7 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 //----------------------------------------------------------------------------//
 bool OpenGL3Renderer::isS3TCSupported() const
 {
-    return OpenGLInfo::getSingleton().s3tc_supported();
+    return OpenGLInfo::getSingleton().isS3tcSupported();
 }
 
 //----------------------------------------------------------------------------//

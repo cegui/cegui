@@ -65,8 +65,8 @@ namespace CEGUI {
 
 /*!
 \brief
-    Provides information about the type of OpenGL used by an OpenGL(ES) context
-    (desktop OpenGL or OpenGL ES), the OpenGL(ES) version, and the OpenGL(ES)
+    Provides information about the type of OpenGL used by an OpenGL context
+    (desktop OpenGL or OpenGL ES), the OpenGL version, and the OpenGL
     extensions.
 */
 class OPENGL_GUIRENDERER_API OpenGLInfo
@@ -75,7 +75,7 @@ class OPENGL_GUIRENDERER_API OpenGLInfo
 public:
     /*!
     \brief
-        Type of the OpenGL(ES) context
+        Type of the OpenGL (desktop or ES) context
     */
     enum Type
     {
@@ -91,13 +91,13 @@ public:
         Must be called before any other method.
 
         Note that the information returned by other methods is with respect to
-        the OpenGL(ES) context that was current when this method was called.
+        the OpenGL (desktop or ES) context that was current when this method was called.
     */
     void init();
     
     /*!
     \brief
-        Type of the OpenGL(ES) context
+        Type of the OpenGL (desktop or ES) context
     */
     Type type() const { return d_type; }
     
@@ -105,31 +105,31 @@ public:
     \brief
         Returns true if using Desktop OpenGL.
     */
-    bool isDesktop() const { return type() == TYPE_DESKTOP; }
+    bool isUsingDesktopOpengl() const { return type() == TYPE_DESKTOP; }
     
     /*!
     \brief
         Returns true if using OpenGL ES.
     */
-    bool is_ES() const { return type() == TYPE_ES; }
+    bool isUsingOpenglEs() const { return type() == TYPE_ES; }
 
     /*!
     \brief
-        Returns OpenGL(ES) major version. Only supports Epoxy!
+        Returns OpenGL (desktop or ES) major version. Only supports Epoxy!
         Otherwise returns -1;
     */
     GLint verMajor() const { return d_verMajor; }
     
     /*!
     \brief
-        Returns OpenGL(ES) minor version. Only supports Epoxy!
+        Returns OpenGL (desktop or ES) minor version. Only supports Epoxy!
         Otherwise returns -1;
     */
     GLint verMinor() const { return d_verMinor; }
 
     /*!
     \brief
-        Returns true off the OpenGL(ES) version is at least "major.minor".
+        Returns true if the OpenGL (desktop or ES) version is at least "major.minor".
         Only supports Epoxy! Otherwise returns false.
     */
     bool verAtLeast(GLint major, GLint minor) {
@@ -139,42 +139,49 @@ public:
     \brief
         Returns true if "S3TC" texture compression is supported.
     */
-    bool s3tc_supported() const { return d_S3TC_supported; }
+    bool isS3tcSupported() const { return d_isS3tcSupported; }
 
     /*!
     \brief
         Returns true if NPOT (non-power-of-two) textures are supported.
     */
-    bool textures_NPOT_supported() const { return d_textures_NPOT_supported; }
+    bool areTexturesNpotSupported() const { return d_areTexturesNpotSupported; }
 
     /*!
     \brief
         Returns true if "glReadBuffer" is supported.
     */
-    bool glReadBuffer_supported() const
-      { return d_glReadBuffer_supported; }
+    bool isReadBufferSupported() const
+      { return d_isReadBufferSupported; }
 
     /*!
     \brief
         Returns true if "glPolygonMode" is supported.
     */
-    bool glPolygonMode_supported() const
-      { return d_glPolygonMode_supported; }
+    bool isPolygonModeSupported() const
+      { return d_isPolygonModeSupported; }
 
     /*!
     \brief
         Returns true if VAO-s (Vertex Array Objects) are supported.
     */
-    bool vaos_supported() const { return d_VAOs_supported; }
+    bool areVaosSupported() const { return d_areVaosSupported; }
 
     /*!
     \brief
         Returns true if working with the read/draw framebuffers seperately is
         supported.
     */
-    bool seperateReadAndDrawFramebuffersSupported() const
-      { return d_seperateReadAndDrawFramebuffersSupported; }
+    bool areSeperateReadAndDrawFramebuffersSupported() const
+      { return d_areSeperateReadAndDrawFramebuffersSupported; }
 
+    /* For internal use. Used to force the object to act is if we're using a
+       context of the specificed "verMajor_.verMinor_". This is useful to
+       check that an OpenGL (desktop/ES) version lower than the actual one
+       works correctly. Of course, this should work only if the actual
+       version is compatible with the forced version. For example this can be
+       used to check OpenGL ES 2.0 when the context is actually OpenGL ES 3.0
+       (which is compatible with OpenGL ES 2.0). */
     void verForce(GLint verMajor_, GLint verMinor_);
       
 private:
@@ -189,12 +196,12 @@ private:
     GLint d_verMinor;
     GLint d_verMajorForce;
     GLint d_verMinorForce;
-    bool d_S3TC_supported;
-    bool d_textures_NPOT_supported;
-    bool d_glReadBuffer_supported;
-    bool d_glPolygonMode_supported;
-    bool d_seperateReadAndDrawFramebuffersSupported;
-    bool d_VAOs_supported;
+    bool d_isS3tcSupported;
+    bool d_areTexturesNpotSupported;
+    bool d_isReadBufferSupported;
+    bool d_isPolygonModeSupported;
+    bool d_areSeperateReadAndDrawFramebuffersSupported;
+    bool d_areVaosSupported;
 };
 
 } // namespace CEGUI

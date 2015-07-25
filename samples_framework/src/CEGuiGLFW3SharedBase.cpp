@@ -78,6 +78,36 @@ void CEGuiGLFWSharedBase::endRendering()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiGLFWSharedBase::createGLFWWindow()
+{
+    glfwWindowHint(GLFW_RED_BITS,   GLFW_DONT_CARE);
+    glfwWindowHint(GLFW_GREEN_BITS, GLFW_DONT_CARE);
+    glfwWindowHint(GLFW_BLUE_BITS,  GLFW_DONT_CARE);
+    glfwWindowHint(GLFW_ALPHA_BITS, 0);
+    if (!(d_window = glfwCreateWindow(s_defaultWindowWidth,
+            s_defaultWindowHeight, d_windowTitle, 0, 0)))
+    {
+        CEGUI_THROW(RendererException("Failed to open GLFW window."));
+        glfwTerminate();
+    }
+    glfwMakeContextCurrent (d_window);
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
+{
+    //Deactivate VSYNC
+    glfwSwapInterval(0);
+
+    // Disable the mouse position in Non_Debug mode
+#ifndef DEBUG
+    glfwSetInputMode(d_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+#endif
+    // Clear Errors by GLFW, even if Setup is correct.
+    glGetError();
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::glfwWindowCloseCallback(GLFWwindow* window)
 {
     d_sampleApp->setQuitting(true);
@@ -173,31 +203,56 @@ void CEGuiGLFWSharedBase::glfwScrollCallback(GLFWwindow* window, double xoffset,
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::createGLFWWindow()
+void CEGuiGLFWSharedBase::glfwCursorPosCallback(GLFWwindow* window, double x, double y)
 {
-    glfwWindowHint(GLFW_RED_BITS,   GLFW_DONT_CARE);
-    glfwWindowHint(GLFW_GREEN_BITS, GLFW_DONT_CARE);
-    glfwWindowHint(GLFW_BLUE_BITS,  GLFW_DONT_CARE);
-    glfwWindowHint(GLFW_ALPHA_BITS, 0);
-    if (!(d_window = glfwCreateWindow(s_defaultWindowWidth,
-            s_defaultWindowHeight, d_windowTitle, 0, 0)))
+    if (!d_mouseDisableCalled)
     {
-        CEGUI_THROW(RendererException("Failed to open GLFW window."));
-        glfwTerminate();
+        // if cursor didn't leave the window nothing changes
+        d_sampleApp->injectMousePosition(static_cast<float>(x), static_cast<float>(y));
     }
-    glfwMakeContextCurrent (d_window);
-}
+    else
+    {
+        // if the cursor left the window, we need to use the saved position
+        // because glfw beams the cursor to the middle of the window if 
+        // the cursor is disabled
+        d_sampleApp->injectMousePosition(static_cast<float>(d_oldMousePosX), static_cast<float>(d_oldMousePosY));
+        glfwSetCursorPos(d_window, d_oldMousePosX, d_oldMousePosY);
+        d_mouseDisableCalled = false;
+    }
 
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
-{
-    //Deactivate VSYNC
-    glfwSwapInterval(0);
-
-    // Disable the mouse position in Non_Debug mode
 #ifndef DEBUG
-    glfwDisable(GLFW_MOUSE_CURSOR);
+    if (x < 0 || y < 0
+        || x > d_newWindowWidth
+        || y > d_newWindowHeight)
+    {
+        // show cursor
+        glfwSetInputMode(d_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+        // move the cursor to the position where it left the window
+        glfwSetCursorPos(d_window, x, y);
+        
+        // "note down" that the cursor left the window
+        d_mouseLeftWindow = true;
+    }
+    else
+    {
+        if (d_mouseLeftWindow)
+        {
+            // get cursor position to restore afterwards
+            glfwGetCursorPos(d_window, &d_oldMousePosX, &d_oldMousePosY);
+
+            // we need to inject the previous cursor position because
+            // glfw moves the cursor to the centre of the render 
+            // window if it gets disabled. therefore notify the 
+            // next MousePosCallback invocation of the "mouse disabled" event.
+            d_mouseDisableCalled = true;
+
+            // disable cursor
+            glfwSetInputMode(d_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+            // "note down" that the cursor is back in the render window
+            d_mouseLeftWindow = false;
+        }
+    }
 #endif
-    // Clear Errors by GLFW, even if Setup is correct.
-    glGetError();
 }

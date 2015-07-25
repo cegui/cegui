@@ -99,7 +99,7 @@ public:
     */
     void cleanup();
 
-    virtual void rendererDestroy();
+    virtual void destroyRenderer();
 
     /*!
     \brief

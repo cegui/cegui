@@ -48,7 +48,7 @@ public:
     //! Destructor.
     ~CEGuiD3D10BaseApplication();
 
-    void rendererDestroy();
+    void destroyRenderer();
 
 protected:
     /*************************************************************************

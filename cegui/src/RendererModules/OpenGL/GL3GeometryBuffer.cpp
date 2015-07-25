@@ -85,7 +85,7 @@ void OpenGL3GeometryBuffer::draw() const
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
 
-    if (OpenGLInfo::getSingleton().vaos_supported())
+    if (OpenGLInfo::getSingleton().areVaosSupported())
     {
         // Bind our vao
         d_glStateChanger->bindVertexArray(d_verticesVAO);
@@ -93,7 +93,7 @@ void OpenGL3GeometryBuffer::draw() const
     else
     {
         // We need to emulate a VAO.
-        vertexArrayConfigure();
+        configureVertexArray();
     }
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
@@ -149,7 +149,7 @@ void OpenGL3GeometryBuffer::reset()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 {
-    if (OpenGLInfo::getSingleton().vaos_supported())
+    if (OpenGLInfo::getSingleton().areVaosSupported())
     {
         glGenVertexArrays(1, &d_verticesVAO);
         glBindVertexArray(d_verticesVAO);
@@ -159,11 +159,11 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
     glGenBuffers(1, &d_verticesVBO);
 
     d_shader->bind();
-    vertexArrayConfigure();
+    configureVertexArray();
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
     d_shader->unbind();
 
-    if (OpenGLInfo::getSingleton().vaos_supported())
+    if (OpenGLInfo::getSingleton().areVaosSupported())
     {
         // Unbind Vertex Attribute Array (VAO)
         glBindVertexArray(0);
@@ -174,7 +174,7 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::vertexArrayConfigure() const
+void OpenGL3GeometryBuffer::configureVertexArray() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
     GLsizei stride = 9 * sizeof(GLfloat);
@@ -192,7 +192,7 @@ void OpenGL3GeometryBuffer::vertexArrayConfigure() const
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 {
-    if (OpenGLInfo::getSingleton().vaos_supported())
+    if (OpenGLInfo::getSingleton().areVaosSupported())
         glDeleteVertexArrays(1, &d_verticesVAO);
     glDeleteBuffers(1, &d_verticesVBO);
 }
