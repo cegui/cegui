@@ -48,7 +48,8 @@ String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!"
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase() :
-    d_viewProjectionMatrix(0)
+    d_viewProjectionMatrix(0),
+    d_activeRenderTarget(0)
 {
     init();
     initialiseDisplaySizeWithViewportSize();
@@ -58,7 +59,8 @@ OpenGLRendererBase::OpenGLRendererBase() :
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displaySize(display_size),
-    d_viewProjectionMatrix(0)
+    d_viewProjectionMatrix(0),
+    d_activeRenderTarget(0)
 {
     init();
     d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
@@ -66,7 +68,8 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
-    d_viewProjectionMatrix(0)
+    d_viewProjectionMatrix(0),
+    d_activeRenderTarget(0)
 {
     init(true, set_glew_experimental);
     initialiseDisplaySizeWithViewportSize();
@@ -77,7 +80,8 @@ OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
     d_displaySize(display_size),
-    d_viewProjectionMatrix(0)
+    d_viewProjectionMatrix(0),
+    d_activeRenderTarget(0)
 {
     init(true, set_glew_experimental);
     d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
@@ -90,7 +94,6 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
     d_initExtraStates = false;
     d_activeBlendMode = BM_INVALID;
     d_viewProjectionMatrix = new mat4Pimpl();
-    d_activeRenderTarget = 0;
 #if defined CEGUI_USE_GLEW
     if (init_glew)
     {
@@ -110,7 +113,7 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
         glGetError();
     }
 #endif
-    OpenGL_API::getSingleton().init();
+    OpenGLInfo::getSingleton().init();
     initialiseMaxTextureSize();
 }
 
@@ -410,7 +413,7 @@ Sizef OpenGLRendererBase::getAdjustedTextureSize(const Sizef& sz) const
     Sizef out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
-    if (!openGL_API()->textures_NPOT_supported())
+    if (!OpenGLInfo::getSingleton().textures_NPOT_supported())
     {
         out.d_width = getNextPOTSize(out.d_width);
         out.d_height = getNextPOTSize(out.d_height);

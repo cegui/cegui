@@ -202,8 +202,6 @@ public:
     */
     RenderTarget* getActiveRenderTarget();
 
-    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
-
     /*!
     \brief
         Returns if the texture coordinate system is vertically flipped or not. The original of a

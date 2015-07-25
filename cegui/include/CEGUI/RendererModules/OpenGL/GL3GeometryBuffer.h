@@ -53,8 +53,6 @@ public:
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void reset();
 
-    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
-
 protected:
     //! OpenGL vao used for the vertices
     GLuint d_verticesVAO;

@@ -51,8 +51,8 @@ CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
     d_appInstance = this;
 
 #if defined CEGUI_OPENGL_VER_MAJOR_FORCE
-    CEGUI::OpenGL_API::getSingleton().verForce(CEGUI_OPENGL_VER_MAJOR_FORCE,
-                                                 CEGUI_OPENGL_VER_MINOR_FORCE);
+    CEGUI::OpenGLInfo::getSingleton().verForce(CEGUI_OPENGL_VER_MAJOR_FORCE,
+                                               CEGUI_OPENGL_VER_MINOR_FORCE);
 #endif
 }
 

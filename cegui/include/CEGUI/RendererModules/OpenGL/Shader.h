@@ -54,8 +54,6 @@ public:
 
     ~OpenGL3Shader();
 
-    const OpenGL_API *openGL_API () const { return &OpenGL_API::getSingleton(); }
-
     /*!
     \brief
         Bind the shader to the OGL state-machine
