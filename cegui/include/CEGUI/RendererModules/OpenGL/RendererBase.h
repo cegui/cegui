@@ -49,7 +49,7 @@ class OpenGLTexture;
 class OpenGLGeometryBufferBase;
 struct mat4Pimpl;
 
-//! Common base class used for other OpenGL(ES) based renderer modules.
+//! Common base class used for other OpenGL (desktop or ES) based renderer modules.
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:

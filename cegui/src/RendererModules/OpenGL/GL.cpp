@@ -48,12 +48,12 @@ OpenGLInfo::OpenGLInfo() :
     d_verMinor(-1),
     d_verMajorForce(-1),
     d_verMinorForce(-1),
-    d_S3TC_supported(false),
-    d_textures_NPOT_supported(false),
-    d_glReadBuffer_supported(false),
-    d_glPolygonMode_supported(false),
-    d_seperateReadAndDrawFramebuffersSupported(false),
-    d_VAOs_supported(false)
+    d_isS3tcSupported(false),
+    d_areTexturesNpotSupported(false),
+    d_isReadBufferSupported(false),
+    d_isPolygonModeSupported(false),
+    d_areSeperateReadAndDrawFramebuffersSupported(false),
+    d_areVaosSupported(false)
 {
 }
 
@@ -84,7 +84,14 @@ void OpenGLInfo::initTypeAndVer()
     {
         int ver(epoxy_gl_version());
         if (!ver)
-            CEGUI_THROW(RendererException("Failed to obtain OpenGL(ES) version."));
+        {
+            if (isUsingDesktopOpengl())
+                CEGUI_THROW(RendererException
+                  ("Failed to obtain desktop OpenGL version."));
+            else
+                CEGUI_THROW(RendererException
+                  ("Failed to obtain OpenGL ES version."));
+        }
         d_verMajor = ver / 10;
         d_verMinor = ver % 10;
     }
@@ -101,24 +108,24 @@ void OpenGLInfo::initSupportedFeatures()
 
 #if defined CEGUI_USE_EPOXY
 
-    d_S3TC_supported = epoxy_has_gl_extension("GL_EXT_texture_compression_s3tc");
-    d_textures_NPOT_supported =
-          (isDesktop()  &&  verMajor() >= 2)
-      ||  (is_ES() && verMajor() >= 3)
+    d_isS3tcSupported = epoxy_has_gl_extension("GL_EXT_texture_compression_s3tc");
+    d_areTexturesNpotSupported =
+          (isUsingDesktopOpengl()  &&  verMajor() >= 2)
+      ||  (isUsingOpenglEs() && verMajor() >= 3)
       ||  epoxy_has_gl_extension("GL_ARB_texture_non_power_of_two");
-    d_glReadBuffer_supported =
-          (isDesktop() && verAtLeast(1, 3))
-      ||  (is_ES() && verMajor() >= 3);
-    d_glPolygonMode_supported = isDesktop() && verAtLeast(1, 3);
-    d_seperateReadAndDrawFramebuffersSupported =
-          (isDesktop() && verAtLeast(3, 1))
-      ||  (is_ES() && verMajor() >= 3);
-    d_VAOs_supported =     (isDesktop() && verAtLeast(3, 2))
-                       ||  (is_ES() && verMajor() >= 3);
+    d_isReadBufferSupported =
+          (isUsingDesktopOpengl() && verAtLeast(1, 3))
+      ||  (isUsingOpenglEs() && verMajor() >= 3);
+    d_isPolygonModeSupported = isUsingDesktopOpengl() && verAtLeast(1, 3);
+    d_areSeperateReadAndDrawFramebuffersSupported =
+          (isUsingDesktopOpengl() && verAtLeast(3, 1))
+      ||  (isUsingOpenglEs() && verMajor() >= 3);
+    d_areVaosSupported =     (isUsingDesktopOpengl() && verAtLeast(3, 2))
+                       ||  (isUsingOpenglEs() && verMajor() >= 3);
       
 #elif defined CEGUI_USE_GLEW
 
-    d_S3TC_supported = false;
+    d_isS3tcSupported = false;
 
     // Why do we do this and not use GLEW_EXT_texture_compression_s3tc?
     // Because of glewExperimental, of course!
@@ -130,18 +137,18 @@ void OpenGLInfo::initSupportedFeatures()
                 reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)),
                                               "GL_EXT_texture_compression_s3tc"))
         {
-            d_S3TC_supported = true;
+            d_isS3tcSupported = true;
             break;
         }
     }
     
-    d_textures_NPOT_supported =
+    d_areTexturesNpotSupported =
           (GLEW_VERSION_2_0 == GL_TRUE)
       ||  (GLEW_ARB_texture_non_power_of_two == GL_TRUE);
-    d_glPolygonMode_supported
+    d_isPolygonModeSupported
       = (GLEW_VERSION_1_3 == GL_TRUE);
-    d_seperateReadAndDrawFramebuffersSupported = (GLEW_VERSION_3_1 == GL_TRUE);
-    d_VAOs_supported = (GLEW_VERSION_3_2 == GL_TRUE);
+    d_areSeperateReadAndDrawFramebuffersSupported = (GLEW_VERSION_3_1 == GL_TRUE);
+    d_areVaosSupported = (GLEW_VERSION_3_2 == GL_TRUE);
     
 #endif
 

@@ -72,7 +72,7 @@ namespace CEGUI
     {
         if(!d_shadersInitialised)
         {
-            if (OpenGLInfo::getSingleton().isDesktop())
+            if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
                 loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGL3,
                            StandardShaderFrag_OpenGL3);
             else // OpenGL ES

@@ -77,6 +77,34 @@ void CEGuiGLFWSharedBase::endRendering()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiGLFWSharedBase::createGLFWWindow()
+{
+    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 0, 0, 0, 0,
+          24, 8, GLFW_WINDOW) != GL_TRUE)
+    {
+        CEGUI_THROW(RendererException("Failed to open GLFW window."));
+        glfwTerminate();
+    }
+    glfwEnable (GLFW_KEY_REPEAT);
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
+{
+    glfwSetWindowTitle(d_windowTitle);
+
+    //Deactivate VSYNC
+    glfwSwapInterval(0);
+
+    // Disable the mouse position in Non_Debug mode
+#ifndef DEBUG
+    glfwDisable(GLFW_MOUSE_CURSOR);
+#endif
+    // Clear Errors by GLFW, even if Setup is correct.
+    glGetError();
+}
+
+//----------------------------------------------------------------------------//
 int CEGuiGLFWSharedBase::glfwWindowCloseCallback(void)
 {
     d_sampleApp->setQuitting(true);
@@ -176,31 +204,62 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::createGLFWWindow()
+void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
 {
-    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 0, 0, 0, 0,
-          24, 8, GLFW_WINDOW) != GL_TRUE)
+    if (!d_mouseDisableCalled)
     {
-        CEGUI_THROW(RendererException("Failed to open GLFW window."));
-        glfwTerminate();
+        // if cursor didn't leave the window nothing changes
+        d_sampleApp->injectMousePosition(static_cast<float>(x), static_cast<float>(y));
     }
-    glfwEnable (GLFW_KEY_REPEAT);
-}
+    else
+    {
+        // if the cursor left the window, we need to use the saved position
+        // because glfw beams the cursor to the middle of the window if 
+        // the cursor is disabled
+        d_sampleApp->injectMousePosition(static_cast<float>(d_oldMousePosX), static_cast<float>(d_oldMousePosY));
+        glfwSetMousePos(static_cast<int>(d_oldMousePosX), static_cast<int>(d_oldMousePosY));
+        d_mouseDisableCalled = false;
+    }
 
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
-{
-    glfwSetWindowTitle(d_windowTitle);
-
-    //Deactivate VSYNC
-    glfwSwapInterval(0);
-
-    // Disable the mouse position in Non_Debug mode
 #ifndef DEBUG
-    glfwDisable(GLFW_MOUSE_CURSOR);
+    if (x < 0 || y < 0
+        || x > d_newWindowWidth
+        || y > d_newWindowHeight)
+    {
+        // show cursor
+        glfwEnable(GLFW_MOUSE_CURSOR);
+
+        // move the cursor to the position where it left the window
+        glfwSetMousePos(x, y);
+        
+        // "note down" that the cursor left the window
+        d_mouseLeftWindow = true;
+    }
+    else
+    {
+        if (d_mouseLeftWindow)
+        {
+            // get cursor position to restore afterwards
+            int mouse_x_int(0);
+            int mouse_y_int(0);
+            glfwGetMousePos(&mouse_x_int, &mouse_y_int);
+            d_oldMousePosX = mouse_x_int;
+            d_oldMousePosY = mouse_y_int;
+
+            // we need to inject the previous cursor position because
+            // glfw moves the cursor to the centre of the render 
+            // window if it gets disabled. therefore notify the 
+            // next MousePosCallback invocation of the "mouse disabled" event.
+            d_mouseDisableCalled = true;
+
+            // disable cursor
+            glfwDisable(GLFW_MOUSE_CURSOR);
+
+            // "note down" that the cursor is back in the render window
+            d_mouseLeftWindow = false;
+        }
+    }
 #endif
-    // Clear Errors by GLFW, even if Setup is correct.
-    glGetError();
 }
 
 //----------------------------------------------------------------------------//

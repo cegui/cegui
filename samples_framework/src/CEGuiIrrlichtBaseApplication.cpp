@@ -110,7 +110,7 @@ CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiIrrlichtBaseApplication::rendererDestroy()
+void CEGuiIrrlichtBaseApplication::destroyRenderer()
 {
     CEGUI::IrrlichtRenderer& renderer =
         *static_cast<CEGUI::IrrlichtRenderer*>(d_renderer);

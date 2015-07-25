@@ -128,7 +128,7 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::rendererDestroy()
+void CEGuiOgreBaseApplication::destroyRenderer()
 {
     delete d_frameListener;
 
