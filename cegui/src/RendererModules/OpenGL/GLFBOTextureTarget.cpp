@@ -24,7 +24,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
 #include "CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
@@ -44,7 +43,7 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
     OpenGLTextureTarget(owner)
 {
     if (!GLEW_EXT_framebuffer_object)
-        CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
+        throw InvalidRequestException("Hardware does not support FBO");
 
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()

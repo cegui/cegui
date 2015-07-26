@@ -53,7 +53,7 @@ namespace CEGUI
         return d_initialised;
     }
 
-    void XMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    void XMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup, bool allowXmlValidation)
     {
         // Acquire resource using CEGUI ResourceProvider
         RawDataContainer rawXMLData;
@@ -62,7 +62,7 @@ namespace CEGUI
         try
         {
             // The actual parsing action (this is overridden and depends on the specific parser)
-            parseXML(handler, rawXMLData, schemaName);
+            parseXML(handler, rawXMLData, schemaName, allowXmlValidation);
         }
         catch (const Exception&)
         {
@@ -73,14 +73,14 @@ namespace CEGUI
             // exception safety
             System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
 
-            CEGUI_RETHROW;
+            throw;
         }
 
         // Release resource
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
 
-    void XMLParser::parseXMLString(XMLHandler& handler, const String& source, const String& schemaName)
+    void XMLParser::parseXMLString(XMLHandler& handler, const String& source, const String& schemaName, bool allowXmlValidation)
     {
         // Put the source string into a RawDataContainer
         RawDataContainer rawXMLData;
@@ -92,7 +92,7 @@ namespace CEGUI
         try
         {
         	// The actual parsing action (this is overridden and depends on the specific parser)
-        	parseXML(handler, rawXMLData, schemaName);
+        	parseXML(handler, rawXMLData, schemaName, allowXmlValidation);
         }
         catch(...)
         {
@@ -100,7 +100,7 @@ namespace CEGUI
         	rawXMLData.setData(0);
 			rawXMLData.setSize(0);
 
-			CEGUI_RETHROW;
+			throw;
         }
 
         // !!! We must not allow DataContainer to delete String owned data,

@@ -33,14 +33,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-NullGeometryBuffer::NullGeometryBuffer() :
-    d_activeTexture(0),
-    d_clipRect(0, 0, 0, 0),
-    d_clippingActive(true),
-    d_translation(0, 0, 0),
-    d_rotation(),
-    d_pivot(0, 0, 0),
-    d_effect(0)
+NullGeometryBuffer::NullGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial)
+    : GeometryBuffer(renderMaterial)
 {
 }
 
@@ -66,101 +60,20 @@ void NullGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setTranslation(const Vector3f& v)
-{
-    d_translation = v;
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::setRotation(const Quaternion& r)
-{
-    d_rotation = r;
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::setPivot(const Vector3f& p)
-{
-    d_pivot = p;
-}
-
-//----------------------------------------------------------------------------//
 void NullGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
+    d_clipRect.top(std::max(0.0f, region.top()));
+    d_clipRect.bottom(std::max(0.0f, region.bottom()));
+    d_clipRect.left(std::max(0.0f, region.left()));
+    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::appendVertex(const Vertex& vertex)
+void NullGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
 {
-    appendGeometry(&vertex, 1);
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-                                        uint vertex_count)
-{
-    // buffer these vertices
-    for (uint i = 0; i < vertex_count; ++i)
-    {
-        d_vertices.push_back(vbuff[i]);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::setActiveTexture(Texture* texture)
-{
-    d_activeTexture = static_cast<NullTexture*>(texture);
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::reset()
-{
-    d_vertices.clear();
-}
-
-//----------------------------------------------------------------------------//
-Texture* NullGeometryBuffer::getActiveTexture() const
-{
-    return d_activeTexture;
-}
-
-//----------------------------------------------------------------------------//
-uint NullGeometryBuffer::getVertexCount() const
-{
-    return d_vertices.size();
-}
-
-//----------------------------------------------------------------------------//
-uint NullGeometryBuffer::getBatchCount() const
-{
-    return 1;
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::setRenderEffect(RenderEffect* effect)
-{
-    d_effect = effect;
-}
-
-//----------------------------------------------------------------------------//
-RenderEffect* NullGeometryBuffer::getRenderEffect()
-{
-    return d_effect;
-}
-
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::setClippingActive(const bool active)
-{
-    d_clippingActive = active;
-}
-
-//----------------------------------------------------------------------------//
-bool NullGeometryBuffer::isClippingActive() const
-{
-    return d_clippingActive;
+    d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
+    // Update size of geometry buffer
+    d_vertexCount = d_vertexData.size();
 }
 
 //----------------------------------------------------------------------------//

@@ -127,16 +127,16 @@ BOOST_AUTO_TEST_CASE(HitTesting)
      * We know where the windows are so lets check whether CEGUI reports correct hits for them
      */
 
-    BOOST_CHECK(d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150)));
+    BOOST_CHECK(d_insideInsideRoot->isHit(glm::vec2(300, 150)));
 
     d_insideInsideRoot->setDisabled(true);
-    BOOST_CHECK(!d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), false));
-    BOOST_CHECK(d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), true));
+    BOOST_CHECK(!d_insideInsideRoot->isHit(glm::vec2(300, 150), false));
+    BOOST_CHECK(d_insideInsideRoot->isHit(glm::vec2(300, 150), true));
     d_insideInsideRoot->setDisabled(false);
 
     d_root->setDisabled(true);
-    BOOST_CHECK(!d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), false));
-    BOOST_CHECK(d_insideInsideRoot->isHit(CEGUI::Vector2f(300, 150), true));
+    BOOST_CHECK(!d_insideInsideRoot->isHit(glm::vec2(300, 150), false));
+    BOOST_CHECK(d_insideInsideRoot->isHit(glm::vec2(300, 150), true));
     d_root->setDisabled(false);
 }
 
