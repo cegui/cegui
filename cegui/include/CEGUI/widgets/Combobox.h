@@ -172,7 +172,9 @@ public:
      * been hidden.
      */
 	static const String EventDropListRemoved;
-    /** Event fired when the user accepts a selection from the drop-down list
+    /** Event fired when a selection from the drop-down list is accepted. This occurs
+     * whenever an item in the list is selected either manually through input or if
+     * on of the selection setting functions are called and successful select an item.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Combobox in which the user has
      * confirmed a selection from the drop down list.
@@ -630,7 +632,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelection(size_t start_pos, size_t end_pos);
+	void	setTextSelection(size_t start_pos, size_t end_pos);
 	/*!
 	\brief
 		Define the current selection start for the Editbox
@@ -642,7 +644,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelectionStart(size_t start_pos);
+	void	setTextSelectionStart(size_t start_pos);
 
 	/*!
 	\brief
@@ -654,7 +656,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelectionLength(size_t length);
+	void	setTextSelectionLength(size_t length);
 
 	/*!
 	\brief
