@@ -227,7 +227,7 @@ size_t Combobox::getCaretIndex(void) const
 /*************************************************************************
 	return the current selection start point.
 *************************************************************************/
-size_t Combobox::getSelectionStartIndex(void) const
+size_t Combobox::getTextSelectionStart(void) const
 {
 	return getEditbox()->getSelectionStart();
 }
@@ -236,7 +236,7 @@ size_t Combobox::getSelectionStartIndex(void) const
 /*************************************************************************
 	return the current selection end point.
 *************************************************************************/
-size_t Combobox::getSelectionEndIndex(void) const
+size_t Combobox::getTextSelectionEnd(void) const
 {
 	return getEditbox()->getSelectionEnd();
 }
@@ -245,7 +245,7 @@ size_t Combobox::getSelectionEndIndex(void) const
 /*************************************************************************
 	return the length of the current selection (in code points / characters).
 *************************************************************************/
-size_t Combobox::getSelectionLength(void) const
+size_t Combobox::getTextSelectionLength(void) const
 {
 	return getEditbox()->getSelectionLength();
 }
@@ -302,6 +302,7 @@ void Combobox::setTextSelectionStart(size_t start_pos)
 {
 	getEditbox()->setSelectionStart(start_pos);
 }
+
 /*************************************************************************
 	Define the current selectionLength for the Editbox
 *************************************************************************/
@@ -877,12 +878,12 @@ void Combobox::addComboboxProperties(void)
           &Combobox::setCaretIndex, &Combobox::getCaretIndex, 0
     );
     CEGUI_DEFINE_PROPERTY(Combobox, size_t,
-          "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
-          &Combobox::setTextSelectionStart, &Combobox::getSelectionStartIndex, 0
+          "TextSelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
+          &Combobox::setTextSelectionStart, &Combobox::getTextSelectionStart, 0
     );
     CEGUI_DEFINE_PROPERTY(Combobox, size_t,
-          "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
-          &Combobox::setTextSelectionLength, &Combobox::getSelectionLength, 0
+          "TextSelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
+          &Combobox::setTextSelectionLength, &Combobox::getTextSelectionLength, 0
     );
     CEGUI_DEFINE_PROPERTY(Combobox, size_t,
           "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
