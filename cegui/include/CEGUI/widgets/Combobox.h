@@ -331,7 +331,7 @@ public:
 		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
 		the position of the caret.
 	*/
-	size_t	getSelectionStartIndex(void) const;
+	size_t	getTextSelectionStart(void) const;
 
 
 	/*!
@@ -342,7 +342,7 @@ public:
 		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
 		the position of the caret.
 	*/
-	size_t	getSelectionEndIndex(void) const;
+	size_t	getTextSelectionEnd(void) const;
 
 
 	/*!
@@ -352,7 +352,7 @@ public:
 	\return
 		Number of code points (or characters) contained within the currently defined selection.
 	*/
-	size_t	getSelectionLength(void) const;
+	size_t	getTextSelectionLength(void) const;
 
 
 	/*!
