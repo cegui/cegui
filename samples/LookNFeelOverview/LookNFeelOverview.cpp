@@ -103,7 +103,8 @@ bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
     d_vanillaLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
 
     skinSelectionCombobox->setItemSelectState(d_taharezLookListboxItem, true);
-    skinSelectionCombobox->fireEvent(Combobox::EventListSelectionAccepted, WindowEventArgs(skinSelectionCombobox));
+    WindowEventArgs winArgs(skinSelectionCombobox);
+    skinSelectionCombobox->fireEvent(Combobox::EventListSelectionAccepted, winArgs);
 
     // success!
     return true;
