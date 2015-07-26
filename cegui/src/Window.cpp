@@ -788,6 +788,9 @@ void Window::setText(const String& text)
 //----------------------------------------------------------------------------//
 void Window::setFont(const Font* font)
 {
+    if (d_font == font)
+        return;
+
     d_font = font;
     d_renderedStringValid = false;
     WindowEventArgs args(this);
