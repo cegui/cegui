@@ -54,8 +54,8 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     video::IImage* image = d_driver.createImageFromFile(&imf);
 
     if (!image)
-        CEGUI_THROW(FileIOException(
-            "Irrlicht failed to create irr::video::IImage from file data."));
+        throw FileIOException(
+            "Irrlicht failed to create irr::video::IImage from file data.");
 
     // get format of image
     Texture::PixelFormat format;
@@ -74,8 +74,8 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
 
         default:
             image->drop();
-            CEGUI_THROW(FileIOException(
-                "File data was of an unsupported format."));
+            throw FileIOException(
+                "File data was of an unsupported format.");
     }
 
     const core::dimension2d<s32> sz(image->getDimension());
@@ -100,18 +100,18 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     }
 
     // load the resulting image into the texture
-    CEGUI_TRY
+    try
     {
         result->loadFromMemory(image_data, Sizef(static_cast<float>(sz.Width),
                                                   static_cast<float>(sz.Height)),
                                format);
     }
-    CEGUI_CATCH (...)
+    catch  (...)
     {
         // cleanup when there's an exception
         image->unlock();
         image->drop();
-        CEGUI_RETHROW;
+        throw;
     }
 
     // cleanup.

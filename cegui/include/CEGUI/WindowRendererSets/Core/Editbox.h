@@ -48,7 +48,11 @@ namespace CEGUI
     States:
         - Enabled: Rendering for when the editbox is in enabled and is in
                    read-write mode.
+        - EnabledFocused: Rendering for when the editbox is focused and is in
+                   read-write mode.
         - ReadOnly: Rendering for when the editbox is in enabled and is in
+                    read-only mode.
+        - ReadOnlyFocused: Rendering for when the editbox is focused and is in
                     read-only mode.
         - Disabled: Rendering for when the editbox is disabled.
         - ActiveSelection: additional state rendered for text selection
@@ -150,7 +154,7 @@ public:
     void render();
 
     // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const Vector2f& pt) const;
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const;
     // overridden from WindowRenderer class
     void update(float elapsed);
     bool handleFontRenderSizeChange(const Font* const font);

@@ -33,7 +33,7 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Event.h"
 #include "CEGUI/IteratorBase.h"
-#include <map>
+#include <unordered_map>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -433,8 +433,7 @@ protected:
         return *this;
     }
 
-    typedef std::map<String, Event*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Event*)> EventMap;
+    typedef std::unordered_map<String, Event*> EventMap;
     EventMap    d_events;
 
     bool d_muted;    //!< true if events for this EventSet have been muted.

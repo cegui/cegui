@@ -27,13 +27,21 @@
 #ifndef _CEGUIOpenGL_h_
 #define _CEGUIOpenGL_h_
 
-#ifndef __APPLE__
+#ifdef __ANDROID__
+#   ifdef CEGUI_GLES3_SUPPORT
+#       include <GLES3/gl3.h>
+#   else
+#       include <GLES2/gl2.h>
+#   endif
+#elif !defined(__APPLE__)
 #   if (defined( __WIN32__ ) || defined( _WIN32 ))
 #       include <windows.h>
 #   endif
+#   include <GL/glew.h>
 #   include <GL/gl.h>
 #   include <GL/glu.h>
 #else
+#   include <GL/glew.h>
 #   include <OpenGL/gl.h>
 #   include <OpenGL/glu.h>
 #endif

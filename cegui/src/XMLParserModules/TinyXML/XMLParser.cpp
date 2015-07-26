@@ -81,23 +81,23 @@ namespace CEGUI
             delete[] buf;
 
             // throw exception
-            CEGUI_THROW(FileIOException("an error occurred while "
-                "parsing the XML document - check it for potential errors!."));
+            throw FileIOException("an error occurred while "
+                "parsing the XML document - check it for potential errors!.");
         }
 
         const TiXmlElement* currElement = doc.RootElement();
         if (currElement)
         {
-            CEGUI_TRY
+            try
             {
                 // function called recursively to parse xml data
                 processElement(currElement);
             }
-            CEGUI_CATCH(...)
+            catch (...)
             {
                 delete [] buf;
 
-                CEGUI_RETHROW;
+                throw;
             }
         } // if (currElement)
 
@@ -152,7 +152,7 @@ namespace CEGUI
     TinyXMLParser::~TinyXMLParser(void)
     {}
 
-    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/)
     {
       TinyXMLDocument doc(handler, source, schemaName);
     }
