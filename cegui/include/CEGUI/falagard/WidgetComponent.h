@@ -53,6 +53,16 @@ namespace CEGUI
                         const String& renderer,
                         bool autoWindow);
 
+        //! Default value for the HorzAlignment elements of the WidgetComponent
+        static const HorizontalAlignment HorizontalAlignmentDefault;
+        //! Default value for the VertAlignment elements of the WidgetComponent
+        static const VerticalAlignment VerticalAlignmentDefault;
+
+        //! List of PropertyInitialisers of this WidgetComponent
+        typedef std::vector<PropertyInitialiser> PropertyInitialiserList;
+        //! List of EventActions of this WidgetComponent
+        typedef std::vector<EventAction> EventActionList;
+
         /*!
         \brief
             Create an instance of this widget component adding it as a child to
@@ -124,33 +134,23 @@ namespace CEGUI
         //! perform any processing required due to the given font having changed.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
-        //! Default value for the HorzAlignment elements of the WidgetComponent
-        static const HorizontalAlignment HorizontalAlignmentDefault;
-        //! Default value for the VertAlignment elements of the WidgetComponent
-        static const VerticalAlignment VerticalAlignmentDefault;
+        /*!
+        \brief
+            Returns the collection of PropertyInitialisers of this WidgetComponent
 
-    private:
-        typedef std::vector<PropertyInitialiser> PropertiesList;
-        typedef std::vector<EventAction> EventActionList;
-
-    public:
-        /*************************************************************************
-            Iterator stuff
-        *************************************************************************/
-        typedef ConstVectorIterator<PropertiesList> PropertyIterator;
-        typedef ConstVectorIterator<EventActionList> EventActionIterator;
+        \param propertyName
+            A list of PropertyInitialiser instances owned by this WidgetComponent.
+        */
+        const PropertyInitialiserList& getPropertyInitialisers() const;
 
         /*!
-         * Return a WidgetComponent::PropertyIterator that iterates over the
-         * PropertyInitialiser inside this WidgetComponent.
-         */
-        PropertyIterator getPropertyIterator() const;
+        \brief
+            Returns the collection of EventActionList of this WidgetComponent
 
-        /*!
-         * Return a WidgetComponent::EventActionIterator that iterates over the
-         * EventAction definitions for this WidgetComponent.
-         */
-        EventActionIterator getEventActionIterator() const;
+        \return
+            A list of EventAction instances owned by this WidgetComponent.
+        */
+        const EventActionList& getEventActions() const;
 
     private:
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
@@ -160,7 +160,7 @@ namespace CEGUI
         bool     d_autoWindow;               //!< Specifies whether to mark component as an auto-window.
         VerticalAlignment    d_vertAlign;    //!< Vertical alignment to be used for this widget.
         HorizontalAlignment  d_horzAlign;    //!< Horizontal alignment to be used for this widget.
-        PropertiesList  d_properties;        //!< Collection of PropertyInitialisers to be applied the the widget upon creation.
+        PropertyInitialiserList  d_propertyInitialisers;//!< Collection of PropertyInitialisers to be applied the the widget upon creation.
         EventActionList d_eventActions;      //!< EventActions added to the WidgetComponent
     };
 
