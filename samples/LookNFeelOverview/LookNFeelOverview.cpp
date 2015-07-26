@@ -101,6 +101,8 @@ bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
     skinSelectionCombobox->addItem(d_vanillaLookListboxItem);
     d_vanillaLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
 
+    d_taharezLookListboxItem->setSelected(true);
+
     // success!
     return true;
 }
