@@ -473,14 +473,6 @@ void Combobox::setItemSelectState(StandardItem* item, bool state)
     getDropList()->setIndexSelectionState(item, state);
 
     itemSelectChangeTextUpdate(item, state, was_selected);
-
-    bool is_selected = getDropList()->isItemSelected(item);
-    if (is_selected)
-    {
-        // Fire off a selection event to inform subscribers
-        WindowEventArgs args(this);
-        onListSelectionAccepted(args);
-    }
 }
 
 
