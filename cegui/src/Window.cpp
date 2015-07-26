@@ -696,13 +696,13 @@ void Window::setAlwaysOnTop(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setEnabled(bool setting)
+void Window::setEnabled(bool enabled)
 {
     // only react if setting has changed
-    if (d_enabled == setting)
+    if (d_enabled == enabled)
         return;
 
-    d_enabled = setting;
+    d_enabled = enabled;
     WindowEventArgs args(this);
 
     if (d_enabled)
@@ -720,12 +720,6 @@ void Window::setEnabled(bool setting)
     }
 
     getGUIContext().updateWindowContainingMouse();
-}
-
-//----------------------------------------------------------------------------//
-void Window::setDisabled(bool setting)
-{
-    setEnabled(!setting);
 }
 
 //----------------------------------------------------------------------------//
