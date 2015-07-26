@@ -150,7 +150,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
         return d_font;
 
     if (window)
-        return window->getGUIContext().getDefaultFont();
+        return window->getFont();
 
     return 0;
 }
