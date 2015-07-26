@@ -26,8 +26,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _std::minizipResourceProvider_h_
-#define _std::minizipResourceProvider_h_
+#ifndef _CEGUIMinizipResourceProvider_h_
+#define _CEGUIMinizipResourceProvider_h_
 
 #include "CEGUI/Base.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -87,5 +87,5 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _std::minizipResourceProvider_h_
+#endif
 
