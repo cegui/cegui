@@ -27,6 +27,7 @@ author:     Lukas E Meindl
 #include "LookNFeelOverview.h"
 
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/InputEvent.h"
 
 #include <cmath>
 
