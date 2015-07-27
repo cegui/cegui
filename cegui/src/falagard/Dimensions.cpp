@@ -448,7 +448,7 @@ void ImagePropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream)
 //----------------------------------------------------------------------------//
 WidgetDim::WidgetDim(const String& name, DimensionType dim) :
     d_widgetName(name),
-    d_what(dim)
+    d_dimensionType(dim)
 {}
 
 //----------------------------------------------------------------------------//
@@ -466,13 +466,13 @@ void WidgetDim::setWidgetName(const String& name)
 //----------------------------------------------------------------------------//
 DimensionType WidgetDim::getSourceDimension() const
 {
-    return d_what;
+    return d_dimensionType;
 }
 
 //----------------------------------------------------------------------------//
 void WidgetDim::setSourceDimension(DimensionType dim)
 {
-    d_what = dim;
+    d_dimensionType = dim;
 }
 
 //----------------------------------------------------------------------------//
@@ -488,13 +488,17 @@ float WidgetDim::getValue(const Window& wnd) const
     // name not empty, so find window with required name
     else
     {
-        widget = wnd.getChild(d_widgetName);
+        if (wnd.isChild(d_widgetName))
+            widget = wnd.getChild(d_widgetName);
+        else
+            throw InvalidRequestException(
+                "A WidgetDim in window \"" + wnd.getName() + "\" requested window \"" + d_widgetName + "\" as WidgetDim-source, but this is not a child of the window");
     }
 
     // get size of parent; required to extract pixel values
     Sizef parentSize(widget->getParentPixelSize());
 
-    switch (d_what)
+    switch (d_dimensionType)
     {
         case DT_WIDTH:
             return widget->getPixelSize().d_width;
@@ -542,7 +546,7 @@ float WidgetDim::getValue(const Window& wnd) const
 //----------------------------------------------------------------------------//
 float WidgetDim::getValue(const Window& wnd, const Rectf&) const
 {
-    // This dimension type does not alter when whithin a container Rect.
+    // This dimension type does not alter when within a container Rect.
     return getValue(wnd);
 }
 
@@ -564,7 +568,7 @@ void WidgetDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     if (!d_widgetName.empty())
         xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_widgetName);
 
-    xml_stream.attribute(Falagard_xmlHandler::DimensionAttribute, FalagardXMLHelper<DimensionType>::toString(d_what));
+    xml_stream.attribute(Falagard_xmlHandler::DimensionAttribute, FalagardXMLHelper<DimensionType>::toString(d_dimensionType));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

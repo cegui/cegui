@@ -391,7 +391,7 @@ private:
     //! Holds target window name suffix.
     String d_widgetName;
     //! the dimension of the target window that we are to represent.
-    DimensionType d_what;
+    DimensionType d_dimensionType;
 };
 
 /*!
