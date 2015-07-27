@@ -268,6 +268,8 @@ private:
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper* d_openGLStateChanger;
     OpenGL3ShaderManager* d_shaderManager;
+    //! \deprecated This attribute and associated functionality has been moved/replaced to/by the OpenGLInfo class
+    bool d_s3tcSupported;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
 };
