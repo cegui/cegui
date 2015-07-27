@@ -154,7 +154,7 @@ public:
     virtual void setupRenderingBlendMode(const BlendMode mode,
                                          const bool force = false) = 0;
 
-    //! Return whether EXT_texture_compression_s3tc is supported
+    //! \deprecated - the OpenGL Info class should be used in the future for this purpose
     virtual bool isS3TCSupported() const = 0;
 
     /*!
