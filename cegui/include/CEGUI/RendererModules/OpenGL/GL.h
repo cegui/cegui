@@ -165,7 +165,7 @@ public:
     \brief
         Returns true if VAO-s (Vertex Array Objects) are supported.
     */
-    bool isVaoSupported() const { return d_areVaosSupported; }
+    bool isVaoSupported() const { return d_isVaoSupported; }
 
     /*!
     \brief
@@ -201,7 +201,7 @@ private:
     bool d_isReadBufferSupported;
     bool d_isPolygonModeSupported;
     bool d_isSeperateReadAndDrawFramebufferSupported;
-    bool d_areVaosSupported;
+    bool d_isVaoSupported;
 };
 
 } // namespace CEGUI
