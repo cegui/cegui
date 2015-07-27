@@ -217,6 +217,7 @@ public:
                                  const bool force = false);
 
 private:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl();
     TextureTarget* createTextureTarget_impl();
 
@@ -267,6 +268,7 @@ private:
     GLint d_shaderStandardMatrixLoc;
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper* d_openGLStateChanger;
+    //! Wrapper for creating and handling shaders
     OpenGL3ShaderManager* d_shaderManager;
     //! \deprecated This attribute and associated functionality has been moved/replaced to/by the OpenGLInfo class
     bool d_s3tcSupported;
