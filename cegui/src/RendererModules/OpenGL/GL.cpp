@@ -53,7 +53,7 @@ OpenGLInfo::OpenGLInfo() :
     d_isReadBufferSupported(false),
     d_isPolygonModeSupported(false),
     d_isSeperateReadAndDrawFramebufferSupported(false),
-    d_areVaosSupported(false)
+    d_isVaoSupported(false)
 {
 }
 
@@ -120,7 +120,7 @@ void OpenGLInfo::initSupportedFeatures()
     d_isSeperateReadAndDrawFramebufferSupported =
           (isUsingDesktopOpengl() && verAtLeast(3, 1))
       ||  (isUsingOpenglEs() && verMajor() >= 3);
-    d_areVaosSupported =     (isUsingDesktopOpengl() && verAtLeast(3, 2))
+    d_isVaoSupported =     (isUsingDesktopOpengl() && verAtLeast(3, 2))
                        ||  (isUsingOpenglEs() && verMajor() >= 3);
       
 #elif defined CEGUI_USE_GLEW
@@ -148,7 +148,7 @@ void OpenGLInfo::initSupportedFeatures()
     d_isPolygonModeSupported
       = (GLEW_VERSION_1_3 == GL_TRUE);
     d_isSeperateReadAndDrawFramebufferSupported = (GLEW_VERSION_3_1 == GL_TRUE);
-    d_areVaosSupported = (GLEW_VERSION_3_2 == GL_TRUE);
+    d_isVaoSupported = (GLEW_VERSION_3_2 == GL_TRUE);
     
 #endif
 
