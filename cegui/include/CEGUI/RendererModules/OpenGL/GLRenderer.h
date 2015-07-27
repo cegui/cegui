@@ -176,10 +176,10 @@ public:
     void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
 
 protected:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl();
     TextureTarget* createTextureTarget_impl();
 
-    //! set up renderer id string.
     void initialiseRendererIDString();
 
     /*!
