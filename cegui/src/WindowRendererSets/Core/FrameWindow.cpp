@@ -79,7 +79,12 @@ namespace CEGUI
 
         // build name of area to fetch
         String areaName("Client");
-        areaName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
+
+        if (w->isChild(FrameWindow::TitlebarName))
+            areaName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
+        else
+            areaName += "NoTitle";
+
         areaName += w->isFrameEnabled() ? "WithFrame" : "NoFrame";
 
         // get WidgetLookFeel for the assigned look.
