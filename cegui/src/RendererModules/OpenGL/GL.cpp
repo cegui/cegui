@@ -49,10 +49,10 @@ OpenGLInfo::OpenGLInfo() :
     d_verMajorForce(-1),
     d_verMinorForce(-1),
     d_isS3tcSupported(false),
-    d_areNpotTexturesSupported(false),
+    d_isNpotTextureSupported(false),
     d_isReadBufferSupported(false),
     d_isPolygonModeSupported(false),
-    d_areSeperateReadAndDrawFramebuffersSupported(false),
+    d_isSeperateReadAndDrawFramebufferSupported(false),
     d_areVaosSupported(false)
 {
 }
@@ -109,7 +109,7 @@ void OpenGLInfo::initSupportedFeatures()
 #if defined CEGUI_USE_EPOXY
 
     d_isS3tcSupported = epoxy_has_gl_extension("GL_EXT_texture_compression_s3tc");
-    d_areNpotTexturesSupported =
+    d_isNpotTextureSupported =
           (isUsingDesktopOpengl()  &&  verMajor() >= 2)
       ||  (isUsingOpenglEs() && verMajor() >= 3)
       ||  epoxy_has_gl_extension("GL_ARB_texture_non_power_of_two");
@@ -117,7 +117,7 @@ void OpenGLInfo::initSupportedFeatures()
           (isUsingDesktopOpengl() && verAtLeast(1, 3))
       ||  (isUsingOpenglEs() && verMajor() >= 3);
     d_isPolygonModeSupported = isUsingDesktopOpengl() && verAtLeast(1, 3);
-    d_areSeperateReadAndDrawFramebuffersSupported =
+    d_isSeperateReadAndDrawFramebufferSupported =
           (isUsingDesktopOpengl() && verAtLeast(3, 1))
       ||  (isUsingOpenglEs() && verMajor() >= 3);
     d_areVaosSupported =     (isUsingDesktopOpengl() && verAtLeast(3, 2))
@@ -142,12 +142,12 @@ void OpenGLInfo::initSupportedFeatures()
         }
     }
     
-    d_areNpotTexturesSupported =
+    d_isNpotTextureSupported =
           (GLEW_VERSION_2_0 == GL_TRUE)
       ||  (GLEW_ARB_texture_non_power_of_two == GL_TRUE);
     d_isPolygonModeSupported
       = (GLEW_VERSION_1_3 == GL_TRUE);
-    d_areSeperateReadAndDrawFramebuffersSupported = (GLEW_VERSION_3_1 == GL_TRUE);
+    d_isSeperateReadAndDrawFramebufferSupported = (GLEW_VERSION_3_1 == GL_TRUE);
     d_areVaosSupported = (GLEW_VERSION_3_2 == GL_TRUE);
     
 #endif

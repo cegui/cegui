@@ -415,7 +415,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
         glGenFramebuffers(1, &texture_framebuffer);
         GLenum framebuffer_target(0), framebuffer_param(0);
         if (OpenGLInfo::getSingleton()
-              .areSeperateReadAndDrawFramebuffersSupported())
+              .isSeperateReadAndDrawFramebufferSupported())
         {
             framebuffer_param = GL_READ_FRAMEBUFFER_BINDING;
             framebuffer_target = GL_READ_FRAMEBUFFER;

@@ -238,7 +238,7 @@ void OpenGL3Renderer::endRendering()
         glDisable(GL_SCISSOR_TEST);
     
         glBlendFunc(GL_ONE, GL_ZERO);
-        if (OpenGLInfo::getSingleton().areVaosSupported())
+        if (OpenGLInfo::getSingleton().isVaoSupported())
             glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
