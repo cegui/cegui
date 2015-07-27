@@ -145,7 +145,7 @@ public:
     \brief
         Returns true if NPOT (non-power-of-two) textures are supported.
     */
-    bool areTexturesNpotSupported() const { return d_areTexturesNpotSupported; }
+    bool areNpotTexturesSupported() const { return d_areNpotTexturesSupported; }
 
     /*!
     \brief
@@ -197,7 +197,7 @@ private:
     GLint d_verMajorForce;
     GLint d_verMinorForce;
     bool d_isS3tcSupported;
-    bool d_areTexturesNpotSupported;
+    bool d_areNpotTexturesSupported;
     bool d_isReadBufferSupported;
     bool d_isPolygonModeSupported;
     bool d_areSeperateReadAndDrawFramebuffersSupported;

@@ -49,7 +49,7 @@ OpenGLInfo::OpenGLInfo() :
     d_verMajorForce(-1),
     d_verMinorForce(-1),
     d_isS3tcSupported(false),
-    d_areTexturesNpotSupported(false),
+    d_areNpotTexturesSupported(false),
     d_isReadBufferSupported(false),
     d_isPolygonModeSupported(false),
     d_areSeperateReadAndDrawFramebuffersSupported(false),
@@ -109,7 +109,7 @@ void OpenGLInfo::initSupportedFeatures()
 #if defined CEGUI_USE_EPOXY
 
     d_isS3tcSupported = epoxy_has_gl_extension("GL_EXT_texture_compression_s3tc");
-    d_areTexturesNpotSupported =
+    d_areNpotTexturesSupported =
           (isUsingDesktopOpengl()  &&  verMajor() >= 2)
       ||  (isUsingOpenglEs() && verMajor() >= 3)
       ||  epoxy_has_gl_extension("GL_ARB_texture_non_power_of_two");
@@ -142,7 +142,7 @@ void OpenGLInfo::initSupportedFeatures()
         }
     }
     
-    d_areTexturesNpotSupported =
+    d_areNpotTexturesSupported =
           (GLEW_VERSION_2_0 == GL_TRUE)
       ||  (GLEW_ARB_texture_non_power_of_two == GL_TRUE);
     d_isPolygonModeSupported
