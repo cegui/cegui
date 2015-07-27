@@ -145,7 +145,7 @@ public:
     \brief
         Returns true if NPOT (non-power-of-two) textures are supported.
     */
-    bool areNpotTexturesSupported() const { return d_areNpotTexturesSupported; }
+    bool isNpotTextureSupported() const { return d_isNpotTextureSupported; }
 
     /*!
     \brief
@@ -165,15 +165,15 @@ public:
     \brief
         Returns true if VAO-s (Vertex Array Objects) are supported.
     */
-    bool areVaosSupported() const { return d_areVaosSupported; }
+    bool isVaoSupported() const { return d_areVaosSupported; }
 
     /*!
     \brief
         Returns true if working with the read/draw framebuffers seperately is
         supported.
     */
-    bool areSeperateReadAndDrawFramebuffersSupported() const
-      { return d_areSeperateReadAndDrawFramebuffersSupported; }
+    bool isSeperateReadAndDrawFramebufferSupported() const
+      { return d_isSeperateReadAndDrawFramebufferSupported; }
 
     /* For internal use. Used to force the object to act is if we're using a
        context of the specificed "verMajor_.verMinor_". This is useful to
@@ -197,10 +197,10 @@ private:
     GLint d_verMajorForce;
     GLint d_verMinorForce;
     bool d_isS3tcSupported;
-    bool d_areNpotTexturesSupported;
+    bool d_isNpotTextureSupported;
     bool d_isReadBufferSupported;
     bool d_isPolygonModeSupported;
-    bool d_areSeperateReadAndDrawFramebuffersSupported;
+    bool d_isSeperateReadAndDrawFramebufferSupported;
     bool d_areVaosSupported;
 };
 
