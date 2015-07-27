@@ -480,7 +480,7 @@
         <NamedArea name="ClientNoTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim widget="0" /></Dim>
                 <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
                 <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
             </Area>
