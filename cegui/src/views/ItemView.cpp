@@ -381,23 +381,22 @@ bool ItemView::onScrollPositionChanged(const EventArgs& args)
 //----------------------------------------------------------------------------//
 void ItemView::onCursorPressHold(CursorInputEventArgs& e)
 {
+    Window::onCursorPressHold(e);
     if (e.source != CIS_Left)
         return;
 
     handleSelection(e.position, true, false, false);
-
     ++e.handled;
-    Window::onCursorPressHold(e);
 }
 
 //----------------------------------------------------------------------------//
 void ItemView::onCursorMove(CursorInputEventArgs& e)
 {
+    Window::onCursorMove(e);
     if (d_isItemTooltipsEnabled)
         setupTooltip(e.position);
 
     ++e.handled;
-    Window::onCursorMove(e);
 }
 
 static void disconnectIfNotNull(Event::Connection& connection)
