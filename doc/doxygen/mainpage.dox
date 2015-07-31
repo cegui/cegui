@@ -37,6 +37,7 @@ The documentation for CEGUI is split into the following sections:
     - @ref input_tutorial
 
 - Porting Guides
+    - @ref porting7to8
     - @ref porting6to7
 
 - Additional reference material
