@@ -13,19 +13,19 @@ somewhere along the line some things have been missed out.  In those cases,
 please visit the <a href="http://forums.cegui.org.uk/">CEGUI forums</a>. Also
 consider looking at AND editing the wiki page for these porting tips: http://cegui.org.uk/wiki/Porting_tips_and_changes_from_0.7.X_to_0.8.X
 
-If you build your own version of ceed (see this guide for Windows: http://cegui.org.uk/wiki/Building_CEED_for_Windows and this for other OS: http://cegui.org.uk/wiki/CEED), you can then use the ceed-migrate tool to automate and batch all of the changes discussed in this section. See here for a quick guide to using ceed-migrate - http://cegui.org.uk/wiki/Using_CEED-Migrate
+
+@note Also note that f you build your own version of ceed (see this guide for Windows: http://cegui.org.uk/wiki/Building_CEED_for_Windows and this for other OS: http://cegui.org.uk/wiki/CEED), you can then use the ceed-migrate tool to automate and batch all of the changes discussed in this section. See here for a quick guide to using ceed-migrate - http://cegui.org.uk/wiki/Using_CEED-Migrate
 
 
-<br>
 
-
-<b> Major renames/API changes </b>
+<b> Major renames/API changes </b> 
 - FalagardWRBase was renamed to CoreWindowRendererSet
 - Windows now don't have absolute names! Every window's name only has to be unique in it's parent window. Therefore WindowManager::getSingleton().getWindow no longer made sense and was removed. If root's name was "Root" and your the window name was "Root/Stuff/After/Root/Name", you can emulate its behaviour with root->getChild("Stuff/After/Root/Name"). It's recommended to migrate to a more encapsulated model.
 - CEGUI::GUIContext class has been created that is responsible for injecting input and event handling, setting the default font, setting the root window, setting a default tooltip object and type, and manipulating the mouse cursor.
 - CEGUI::GUIContext needs time impulses injected separately! You should also inject time pulses into CEGUI::System. This API "wart" may disappear in future versions.
 - CEGUI::MouseCursor is no longer a singleton, and can be accessed and manipulated from CEGUI::GUIContext.
-<b> General </b> 
+
+<b> General </b>  
 - All XML attributes must now be in lowercase, e.g. <WidgetLook Name="TaharezLook/FrameWindow"> must be <WidgetLook name="TaharezLook/FrameWindow">
 - PropertyHelper has been turned into a template class, instead of PropertyHelper::uintToString you do PropertyHelper<uint>::toString, instead of PropertyHelper::stringToUint you do PropertyHelper<uint>::fromString
 - All instances of the word caret that were incorrectly spelt 'carat' have been corrected.  This affects all APIs, properties, events and datafiles.
@@ -52,6 +52,7 @@ If you build your own version of ceed (see this guide for Windows: http://cegui.
 - CEGUI::ProgressBar::getStep renamed to getStepSize for consistency with setStepSize
 - CEGUI::WidgetLookManager::parseLookNFeelSpecification is now called parseLookNFeelSpecificationFromFile, variants for loading from string and raw data container have been added
 - XRotation, YRotation, ZRotation properties merged into the new Rotation property, which is a Quaternion.
+
 <b> Property Name Changes </b> 
 - Property from Window called "ZOrderChangeEnabled" renamed to "ZOrderingEnabled"
 - Property from Window called "MouseButtonDownAutoRepeat" renamed to "MouseAutoRepeatEnabled"
@@ -60,39 +61,42 @@ If you build your own version of ceed (see this guide for Windows: http://cegui.
 - Property from Window called "RiseOnClick" renamed to "RiseOnClickEnabled"
 - Property from Window called "UnifiedAreaRect" renamed to "Area", "UnifiedSize" renamed to "Size", etc...
 - Property "MaxEditTextLength" renamed to "MaxTextLength"
-<b> Event Name Changes </b> 
+
+<b>Event Name Changes </b>  
 - EventMouseEnters renamed to EventMouseEntersSurface (old name removed)
 - EventMouseLeaves renamed to EventMouseLeavesSurface (old name removed)
 - CheckStateChanged renamed to SelectStateChanged (for ToggleButton (old Checkbox))
-<b> Image and ImageManager </b> 
+
+<b>Image and ImageManager </b>  
 - Image::draw renamed to Image::render
 - Image class is now an abstract interface.  BasicImage implementation is provided, and used for internally created Image objects.
 - Imageset class is removed. It remains a CEGUI format that allows to conveniently define multiple images on one texture but the data is no longer stored in any class. When Imageset is loaded, the ImageManager creates a new BasicImage for each of the images in the imageset. Only the images themselves will remain after imageset is loaded. You now use the new ImageManager to access defined images.
 - ImagesetManager class is removed.  You now use the new ImageManager.
 - Images belonging to a certain imageset can be accessed like so: "ImageSetName/ImageName" (ex. "AlfiskoSkin/MouseArrow").
-<b> GUIContext </b> 
+
+<b>GUIContext </b>
+
 A lot of API has been moved from CEGUI::System to CEGUI::GUIContext. CEGUI now allows you to create multiple independent GUI contexts with their own input injection.
-
+ 
 As a rule of thumb, whenever you see "There is no CEGUI::System::some_foobar_method method", it is likely that you can replace the call with CEGUI::System::getSingleton().getDefaultGUIContext().someFoobarMethod(). This holds for all the System::inject- methods for example.
-
+ 
 Exceptions from the rule:
 - CEGUI::System::getSingleton().renderGUI() &rarr; CEGUI::System::getSingleton().renderAllGUIContexts()
 - CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow") ? CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow")
 - CEGUI::System::getSingleton().setGUISheet(root) &rarr; CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(root)
-
+ 
 WindowManager::getSingleton().getWindow() was removed. You can emulate its behaviour with root->getChild("Stuff/After/Root/Name").
 To get Root Window you can call GUIContext::getRootWindow();
-
+ 
 SIDE NOTE: The chain call of methods CEGUI::System::getSingleton().getDefaultGUIContext() should be called as rarely as possible, instead one should keep it's result in appropriate variable.
 
-<b> PyCEGUI </b> 
+ <b> PyCEGUI </b>  
 - EventSet.subscribeEvent now has a different, more pythonic syntax, any python callable (bound member function, free function, lambda, functor, ...) is allowed (EventSet.subscribeEvent("EventName", instance, "someMethodInIt") is now EventSet.subscribeEvent("EventName", instance.someMethodInIt)
 
-<b> Datafiles </b> 
+ <b> Datafiles </b>  
 - All XML datafiles must specify a version attribute. Example: <GUILayout '''version="4"'''>
 - All attributes in datafiles must begin with a lower-case letter. Example: <Property '''n'''ame="Alpha"               '''v'''alue="1.0" />
 - See '''Property Name Changes''' and '''Event Name Changes''' above
-
 - <b>.looknfeel:</b>
     - <Falagard version="7">
     - old: <Image '''type'''="TopEdge" '''imageset'''="TaharezLook" '''image'''="TitlebarTop" /> <br />new: <Image '''component'''="TopEdge" '''name'''="TaharezLook/TitlebarTop" />
@@ -115,19 +119,6 @@ SIDE NOTE: The chain call of methods CEGUI::System::getSingleton().getDefaultGUI
     - <Imageset version="2" ... />
 - <b>.font:</b>
     - <Font version="3" ... />
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
