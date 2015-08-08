@@ -39,6 +39,7 @@ author:     Lukas E Meindl
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 class OPENGL_GUIRENDERER_API OpenGL3Shader :
     public AllocatedObject<OpenGL3Shader>
 {

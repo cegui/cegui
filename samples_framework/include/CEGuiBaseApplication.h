@@ -99,6 +99,8 @@ public:
     */
     void cleanup();
 
+    virtual void destroyRenderer();
+
     /*!
     \brief
         Render a single display frame.  This should be called by subclasses to

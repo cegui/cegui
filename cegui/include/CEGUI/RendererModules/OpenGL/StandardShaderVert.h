@@ -30,26 +30,56 @@
 
 namespace CEGUI
 {
- const char StandardShaderVert[] = 
-    "#version 150 core\n"
 
-    "uniform mat4 modelViewPerspMatrix;\n"
+const char
+    StandardShaderVert_OpenGL3[] =
+        "#version 150 core\n"
 
-    "in vec3 inPosition;\n"
-    "in vec2 inTexCoord;\n"
-    "in vec4 inColour;\n"
+        "uniform mat4 modelViewPerspMatrix;\n"
+        "in vec3 inPosition;\n"
+        "in vec2 inTexCoord;\n"
+        "in vec4 inColour;\n"
+        "out vec2 exTexCoord;\n"
+        "out vec4 exColour;\n"
 
-    "out vec2 exTexCoord;\n"
-    "out vec4 exColour;\n"
+        "void main(void)\n"
+        "{\n"
+            "exTexCoord = inTexCoord;\n"
+            "exColour = inColour;\n"
+            "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
+        "}",
+    StandardShaderVert_OpenGLES2[] =
+        "#version 100\n"
+        "uniform mat4 modelViewPerspMatrix;\n"
+        "attribute vec3 inPosition;\n"
+        "attribute vec2 inTexCoord;\n"
+        "attribute vec4 inColour;\n"
+        "varying vec2 exTexCoord;\n"
+        "varying vec4 exColour;\n"
 
-    "void main(void)\n"
-    "{\n"
-        "   exTexCoord = inTexCoord;\n"
-        "   exColour = inColour;\n"
+        "void main(void)\n"
+        "{\n"
+            "exTexCoord = inTexCoord;\n"
+            "exColour = inColour;\n"
+            "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
+        "}",
+    StandardShaderVert_OpenGLES3[] =
+        "#version 300 es\n"
 
-        "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
-    "}"
-    ;
+        "uniform mat4 modelViewPerspMatrix;\n"
+        "in vec3 inPosition;\n"
+        "in vec2 inTexCoord;\n"
+        "in vec4 inColour;\n"
+        "out vec2 exTexCoord;\n"
+        "out vec4 exColour;\n"
+
+        "void main(void)\n"
+        "{\n"
+            "exTexCoord = inTexCoord;\n"
+            "exColour = inColour;\n"
+            "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
+        "}";
+
 }
 
 #endif

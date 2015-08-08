@@ -24,9 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
-#include <GL/glew.h>
-
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"  
 
 namespace CEGUI
@@ -157,8 +155,8 @@ void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
         glBindVertexArray(vertexArray);
         d_vertexArrayObject = vertexArray;
     }
-
 }
+
 void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 {
     bool callIsRedundant = d_blendFuncParams.equal(sfactor, dfactor);
