@@ -281,7 +281,7 @@ void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
     }
     else
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
                      0, d_format , d_subpixelFormat, 0);
