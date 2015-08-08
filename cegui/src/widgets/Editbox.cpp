@@ -47,14 +47,8 @@ EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
 
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
-const String Editbox::EventReadOnlyModeChanged("ReadOnlyModeChanged");
-const String Editbox::EventMaskedRenderingModeChanged("MaskedRenderingModeChanged");
-const String Editbox::EventMaskCodePointChanged("MaskCodePointChanged");
 const String Editbox::EventValidationStringChanged("ValidationStringChanged");
-const String Editbox::EventMaximumTextLengthChanged("MaximumTextLengthChanged");
 const String Editbox::EventTextValidityChanged("TextValidityChanged");
-const String Editbox::EventCaretMoved("CaretMoved");
-const String Editbox::EventTextSelectionChanged("TextSelectionChanged");
 const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorImage");
 
 
@@ -89,17 +83,6 @@ Editbox::MatchState Editbox::getTextMatchState() const
     return d_validatorMatchState;
 }
 
-        
-//----------------------------------------------------------------------------//
-void Editbox::setEnabled(bool enabled)
-{
-    Window::setEnabled(enabled);
-
-    // Update the mouse cursor according to the read only state.
-    if (enabled)
-        setMouseCursor(getProperty<Image*>(Window::MouseCursorImagePropertyName));
-    else
-        setMouseCursor(d_readOnlyMouseCursorImage);
 
 void Editbox::setValidationString(const String& validation_string)
 {
@@ -530,13 +513,6 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
             "This function must be implemented by the window renderer");
     }
 }
-
-    );
-    CEGUI_DEFINE_PROPERTY(Editbox, Image*,
-        "ReadOnlyMouseCursorImage", "Property to get/set the mouse cursor image "
-        "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
-        "Value is the image to use.",
-        &Editbox::setReadOnlyMouseCursorImage, &Editbox::getReadOnlyMouseCursorImage, 0
 
 void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
