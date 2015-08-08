@@ -24,11 +24,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
-
 
 #include <sstream>
 #include <iostream>
@@ -192,6 +192,8 @@ void OpenGLBaseShader::link()
 
     d_createdSuccessfully = true;
     checkGLErrors();
+
+
 }
 
 //----------------------------------------------------------------------------//

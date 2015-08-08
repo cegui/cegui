@@ -42,16 +42,6 @@
 #include <vector>
 #include <unordered_map>
 
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef CEGUIOPENGLRENDERER_EXPORTS
-#       define OPENGL_GUIRENDERER_API __declspec(dllexport)
-#   else
-#       define OPENGL_GUIRENDERER_API __declspec(dllimport)
-#   endif
-#else
-#   define OPENGL_GUIRENDERER_API
-#endif
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -63,7 +53,7 @@ class OpenGLTexture;
 class OpenGLGeometryBufferBase;
 class RenderMaterial;
 
-//! Common base class used for other OpenGL based renderer modules.
+//! Common base class used for other OpenGL (desktop or ES) based renderer modules.
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
@@ -168,7 +158,7 @@ public:
     virtual void setupRenderingBlendMode(const BlendMode mode,
                                          const bool force = false) = 0;
 
-    //! Return whether EXT_texture_compression_s3tc is supported
+    //! \deprecated - the OpenGL Info class should be used in the future for this purpose
     virtual bool isS3TCSupported() const = 0;
 
     /*!
@@ -191,6 +181,21 @@ protected:
         Size object describing the initial display resolution.
     */
     OpenGLRendererBase(const Sizef& display_size);
+    
+    OpenGLRendererBase(bool set_glew_experimental);
+
+    /*!
+    \brief
+        Constructor.
+
+    \param display_size
+        Size object describing the initial display resolution.
+    \param set_glew_experimental
+        If true, set "glewExperimental = GL_TRUE" before calling "glewInit".
+    */
+    OpenGLRendererBase(const Sizef& display_size, bool set_glew_experimental);
+    
+    void init (bool init_glew=false, bool set_glew_experimental=false);
 
     //! Destructor!
     virtual ~OpenGLRendererBase();

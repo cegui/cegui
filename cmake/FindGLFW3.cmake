@@ -3,9 +3,9 @@
 ################################################################################
 include(FindPackageHandleStandardArgs)
 
-find_path(GLFW3_H_PATH NAMES GL/glfw3.h glfw3.h)
-find_library(GLFW3_LIB NAMES glfw3 PATH_SUFFIXES dynamic)
-find_library(GLFW3_LIB_DBG NAMES glfw3_d PATH_SUFFIXES dynamic)
+find_path(GLFW3_H_PATH NAMES GLFW/glfw3.h)
+find_library(GLFW3_LIB NAMES glfw3 glfw PATH_SUFFIXES dynamic)
+find_library(GLFW3_LIB_DBG NAMES glfw3_d glfw_d PATH_SUFFIXES dynamic)
 mark_as_advanced(GLFW3_H_PATH GLFW3_LIB GLFW3_LIB_DBG)
 
 if (WIN32)
@@ -14,8 +14,8 @@ if (WIN32)
 endif()
 
 if (WIN32 OR APPLE)
-    find_library(GLFW3_LIB_STATIC NAMES glfw3 PATH_SUFFIXES static)
-    find_library(GLFW3_LIB_STATIC_DBG NAMES glfw3_d PATH_SUFFIXES static)
+    find_library(GLFW3_LIB_STATIC NAMES glfw3 glfw PATH_SUFFIXES static)
+    find_library(GLFW3_LIB_STATIC_DBG NAMES glfw3_d glfw_d PATH_SUFFIXES static)
     mark_as_advanced(GLFW3_LIB_STATIC GLFW3_LIB_STATIC_DBG)
 endif()
 

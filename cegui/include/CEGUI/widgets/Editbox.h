@@ -94,6 +94,10 @@ public:
      * WindowEventArgs::window set to the Editbox whose current insertion point
      * has changed.
      */
+    /** Mouse cursor image property name to use when the edit box is
+     * in read-only mode.
+     */
+    static const String ReadOnlyMouseCursorImagePropertyName;
 
     //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
@@ -203,7 +207,9 @@ protected:
     virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     //! validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;    
+
+    
 
 
     /*!
@@ -245,7 +251,27 @@ protected:
 
 
 
+    /*!
+    \brief
+        return the the read-only mouse cursor image.
+    \return
+        The read-only mouse cursor image.
+    */
+    const Image* getReadOnlyMouseCursorImage(void) const
+        { return d_readOnlyMouseCursorImage; }
 
+    /*!
+    \brief
+        Set the read only mouse cursor image.
+    \param image
+        The Image* to be used.
+    */
+    void setReadOnlyMouseCursorImage(const Image* image)
+        { d_readOnlyMouseCursorImage = image; }
+
+
+    //! The read only mouse cursor image.
+    const Image* d_readOnlyMouseCursorImage;
     //! Copy of validation reg-ex string.
     String d_validationString;
     //! Pointer to class used for validation of text.

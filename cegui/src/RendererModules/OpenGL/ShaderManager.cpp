@@ -30,6 +30,7 @@
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 
 #include "Shaders.inl"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
@@ -73,39 +74,51 @@ void OpenGLBaseShaderManager::initialiseShaders()
 {
     if(!d_shadersInitialised)
     {
-
-        if (d_shaderVersion == SHADER_GLSL)
+        if (OpenGLInfo::getSingleton().isUsingDesktopOpengl()
         {
             loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
             loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
         }
-        else if (d_shaderVersion == SHADER_GLSLES1)
+        else if (OpenGLInfo::getSingleton().verMajor() == 1)
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES1,
-                       StandardShaderTexturedFragGLSLES1);
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES1, StandardShaderTexturedFragGLSLES1);
             loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES1, StandardShaderSolidFragGLSLES1);
         }
-        else if (d_shaderVersion == SHADER_GLSLES3)
+        else if (OpenGLInfo::getSingleton().verMajor() == 2)
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES3,
-                       StandardShaderTexturedFragGLSLES3);
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES2, StandardShaderTexturedFragGLSLES2);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES2, StandardShaderSolidFragGLSLES2);
+        }
+        else
+        {
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES3, StandardShaderTexturedFragGLSLES3);
             loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES3, StandardShaderSolidFragGLSLES3);
         }
+
+            
         if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
            !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
         {
-            const CEGUI::String errorString("Critical Error - One or multiple shader programs weren't created successfully");
-            throw RendererException(errorString);
+            const CEGUI::String errorString("Critical Error - One or "
+              "multiple shader programs weren't created successfully");
+            CEGUI_THROW(RendererException(errorString));
 
             return;
         }
 
-        const CEGUI::String notify("OpenGLBaseRenderer: Notification - Successfully initialised OpenGLBaseRenderer shader programs.");
+        const CEGUI::String notify("OpenGL3Renderer: Notification - "
+          "Successfully initialised OpenGL3Renderer shader programs.");
         if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
             logger->logEvent(notify);
-
-        return;
     }
+
+     
+
+
+
+   
+  
+
 }
 
 void OpenGLBaseShaderManager::deinitialiseShaders()
