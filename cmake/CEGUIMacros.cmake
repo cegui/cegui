@@ -117,10 +117,20 @@ macro (cegui_add_dependency_static_libs _TARGET_NAME _DEP_NAME)
 endmacro()
 
 #
-# add a dependency to a target (and it's static equivalent, if it exists)
+# add a dependency to a target (and it's static equivalent, if it exists).
+# An optional "scope" 3rd argument can be specified to determine the "scope"
+# argument passed to "target_include_directories". This argument can be one of
+# "INTERFACE", "PUBLIC" and "PRIVATE", the default being "PRIVATE". In general,
+# u should use "PUBLIC" if every target that depends on "_TARGET_NAME" should also
+# compile with "_DEP_NAME"'s include directories. Please refer to the
+# documentation of "target_include_directories" for more details.
 #
 macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
-    include_directories(${${_DEP_NAME}_INCLUDE_DIR})
+    if (${ARGC} GREATER 2)
+        target_include_directories(${_TARGET_NAME} ${ARGV2} ${${_DEP_NAME}_INCLUDE_DIR})
+    else ()
+        target_include_directories(${_TARGET_NAME} PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
+    endif ()
 
     ###########################################################################
     #                    NON-STATIC VERSION OF TARGET

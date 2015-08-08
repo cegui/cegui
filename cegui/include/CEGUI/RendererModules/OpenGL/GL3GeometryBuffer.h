@@ -44,6 +44,7 @@ public:
     virtual ~OpenGL3GeometryBuffer();
 
     void initialiseOpenGLBuffers();
+    void configureVertexArray() const;
     void deinitialiseOpenGLBuffers();
     void updateOpenGLBuffers();
 

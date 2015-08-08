@@ -27,6 +27,7 @@ author:     Lukas E Meindl
 #include "LookNFeelOverview.h"
 
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/InputEvent.h"
 
 #include <cmath>
 
@@ -100,6 +101,10 @@ bool LookNFeelOverviewDemo::initialise(CEGUI::GUIContext* guiContext)
     d_vanillaLookListboxItem = new CEGUI::ListboxTextItem("Vanilla");
     skinSelectionCombobox->addItem(d_vanillaLookListboxItem);
     d_vanillaLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
+
+    skinSelectionCombobox->setItemSelectState(d_taharezLookListboxItem, true);
+    WindowEventArgs winArgs(skinSelectionCombobox);
+    skinSelectionCombobox->fireEvent(Combobox::EventListSelectionAccepted, winArgs);
 
     // success!
     return true;

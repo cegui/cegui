@@ -24,8 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
-
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/GL3FBOTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
@@ -134,10 +133,17 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     // create FBO
     glGenFramebuffers(1, &d_frameBuffer);
 
-    // remember previously bound FBO to make sure we set it back
-    GLuint previousFBO = 0;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
-            reinterpret_cast<GLint*>(&previousFBO));
+    // remember previously bound FBO-s to make sure we set them back
+    GLint previousFBO_read(-1), previousFBO_draw(-1), previousFBO(-1);
+    if (OpenGLInfo::getSingleton().isSeperateReadAndDrawFramebufferSupported())
+    {
+        glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &previousFBO_read);
+        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previousFBO_draw);
+    }
+    else
+        glGetIntegerv(OpenGLInfo::getSingleton().isUsingOpenglEs() ?
+                        GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
+                      &previousFBO);
 
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
@@ -156,8 +162,14 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     //Check for framebuffer completeness
     checkFramebufferStatus();
 
-    // switch from our frame buffer back to the previously bound buffer.
-    glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
+    // switch from our frame buffers back to the previously bound buffers.
+    if (OpenGLInfo::getSingleton().isSeperateReadAndDrawFramebufferSupported())
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, static_cast<GLuint>(previousFBO_read));
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, static_cast<GLuint>(previousFBO_draw));
+    }
+    else
+        glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(previousFBO));
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
