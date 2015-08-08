@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 
 namespace CEGUI
@@ -159,7 +159,6 @@ void OpenGLBaseStateChangeWrapper::useProgram(GLuint program)
         d_shaderProgram = program;
     }
 }
-
 GLuint OpenGLBaseStateChangeWrapper::getUsedProgram() const
 {
     return d_shaderProgram;

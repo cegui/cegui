@@ -24,6 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Texture.h"
@@ -42,9 +43,7 @@
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
-#include <sstream>
 #include <algorithm>
-#include <cstring>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -147,26 +146,33 @@ void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer() :
+    OpenGLRendererBase(true),
     d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
-    initialiseRendererIDString();
-    initialiseGLExtensions();
+    init();
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
-    initialiseTextureTargetFactory();
-    initialiseOpenGLShaders();
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
-    OpenGLRendererBase(display_size),
+    OpenGLRendererBase(display_size, true),
     d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
+    init();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::init()
+{
+    if (      OpenGLInfo::getSingleton().isUsingOpenglEs()
+          &&  OpenGLInfo::getSingleton().verMajor() < 2)
+        CEGUI_THROW(RendererException("Only version 2 and up of OpenGL ES is "
+                                      "supported by this type of renderer."));
     initialiseRendererIDString();
-    initialiseGLExtensions();
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
@@ -186,9 +192,10 @@ OpenGL3Renderer::~OpenGL3Renderer()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseRendererIDString()
 {
-    d_rendererID =
-        "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
-        "renderer module.";
+    d_rendererID = OpenGLInfo::getSingleton().isUsingDesktopOpengl()
+        ?  "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
+           "renderer module."
+        :  "CEGUI::OpenGL3Renderer - OpenGL ES 2 renderer module.";
 }
 //----------------------------------------------------------------------------//
 OpenGLGeometryBufferBase* OpenGL3Renderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
@@ -234,7 +241,8 @@ void OpenGL3Renderer::endRendering()
         glDisable(GL_SCISSOR_TEST);
     
         glBlendFunc(GL_ONE, GL_ZERO);
-        glBindVertexArray(0);
+        if (OpenGLInfo::getSingleton().isVaoSupported())
+            glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -246,7 +254,8 @@ void OpenGL3Renderer::setupExtraStates()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    if (OpenGLInfo::getSingleton().isPolygonModeSupported())
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
@@ -341,11 +350,7 @@ void OpenGL3Renderer::initialiseGLExtensions()
     }
 }
 
-//----------------------------------------------------------------------------//
-bool OpenGL3Renderer::isS3TCSupported() const
-{
-    return d_s3tcSupported;
-}
+
 
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
@@ -362,7 +367,6 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 
         return render_material;
     }
-    else
     {
         throw RendererException(
             "A default shader of this type does not exist.");

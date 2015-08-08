@@ -23,6 +23,9 @@ set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.inc)
 # gather sample dirs
 subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
+
+
+
 # loop through samples and exclude those that should not be build 
 foreach(dir ${SAMPLES_SUBDIRS})
     if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK

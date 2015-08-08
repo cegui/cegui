@@ -35,7 +35,7 @@ namespace CEGUI
     class OpenGLShaderWrapper;
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL
 */
 class OPENGL_GUIRENDERER_API OpenGLRenderer : public OpenGLRendererBase
 {
@@ -178,12 +178,12 @@ public:
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
 protected:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     TextureTarget* createTextureTarget_impl();
     //! creates a texture of GLTexture type
     virtual OpenGLTexture* createTexture_impl(const String& name);
 
-    //! set up renderer id string.
     void initialiseRendererIDString();
 
     /*!

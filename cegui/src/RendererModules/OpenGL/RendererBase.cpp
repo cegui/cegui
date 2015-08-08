@@ -25,6 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
@@ -45,27 +46,69 @@ namespace CEGUI
 String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!");
 
 //----------------------------------------------------------------------------//
-OpenGLRendererBase::OpenGLRendererBase() :
-    d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID)
+OpenGLRendererBase::OpenGLRendererBase()
 {
-    initialiseMaxTextureSize();
+    init();
     initialiseDisplaySizeWithViewportSize();
-
     d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
-    d_displaySize(display_size),
-    d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID)
+    d_displaySize(display_size)
 {
-    initialiseMaxTextureSize();
-
+    init();
     d_defaultTarget = new OpenGLViewportTarget(*this);
+}
+
+//----------------------------------------------------------------------------//
+OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
+    d_viewProjectionMatrix(0),
+    d_activeRenderTarget(0)
+{
+    init(true, set_glew_experimental);
+    initialiseDisplaySizeWithViewportSize();
+    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+}
+
+//----------------------------------------------------------------------------//
+OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
+                                       bool set_glew_experimental) :
+    d_displaySize(display_size),
+    d_viewProjectionMatrix(0),
+    d_activeRenderTarget(0)
+{
+    init(true, set_glew_experimental);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
+{
+    d_displayDPI.d_x = d_displayDPI.d_y = 96;
+    d_initExtraStates = false;
+    d_activeBlendMode = BM_INVALID;
+    d_viewProjectionMatrix = new mat4Pimpl();
+#if defined CEGUI_USE_GLEW
+    if (init_glew)
+    {
+        if (set_glew_experimental)
+            glewExperimental = GL_TRUE;
+        GLenum err = glewInit();
+        if(err != GLEW_OK)
+        {
+            std::ostringstream err_string;
+            //Problem: glewInit failed, something is seriously wrong.
+            err_string << "failed to initialise the GLEW library. "
+                << glewGetErrorString(err);
+
+            CEGUI_THROW(RendererException(err_string.str().c_str()));
+        }
+        //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
+        glGetError();
+    }
+#endif
+    OpenGLInfo::getSingleton().init();
+    initialiseMaxTextureSize();
 }
 
 //----------------------------------------------------------------------------//
@@ -361,6 +404,7 @@ void OpenGLRendererBase::restoreTextures()
 }
 
 //----------------------------------------------------------------------------//
+ 
 float OpenGLRendererBase::getNextPOTSize(const float f)
 {
     uint size = static_cast<uint>(f);
