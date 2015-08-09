@@ -248,8 +248,8 @@ uint MultiColumnList::getItemRowIndex(const ListboxItem* item) const
 	}
 
 	// item is not attached to the list box, throw...
-	CEGUI_THROW(InvalidRequestException(
-        "the given ListboxItem is not attached to this MultiColumnList."));
+	throw InvalidRequestException(
+        "the given ListboxItem is not attached to this MultiColumnList.");
 }
 
 
@@ -268,8 +268,8 @@ uint MultiColumnList::getItemColumnIndex(const ListboxItem* item) const
 	}
 
 	// item is not attached to the list box, throw...
-	CEGUI_THROW(InvalidRequestException(
-        "the given ListboxItem is not attached to this MultiColumnList."));
+	throw InvalidRequestException(
+        "the given ListboxItem is not attached to this MultiColumnList.");
 }
 
 
@@ -291,13 +291,13 @@ ListboxItem* MultiColumnList::getItemAtGridReference(const MCLGridRef& grid_ref)
 	// check for invalid grid ref
 	if (grid_ref.column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the column given in the grid reference is out of range."));
+		throw InvalidRequestException(
+            "the column given in the grid reference is out of range.");
 	}
 	else if (grid_ref.row >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the row given in the grid reference is out of range."));
+		throw InvalidRequestException(
+            "the row given in the grid reference is out of range.");
 	}
 	else
 	{
@@ -315,8 +315,8 @@ bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, uint col_id
 	// check for invalid index
 	if (col_idx >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the column index given is out of range."));
+		throw InvalidRequestException(
+            "the column index given is out of range.");
 	}
 	else
 	{
@@ -344,8 +344,8 @@ bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, uint row_idx) 
 	// check for invalid index
 	if (row_idx >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the row index given is out of range."));
+		throw InvalidRequestException(
+            "the row index given is out of range.");
 	}
 	else
 	{
@@ -397,8 +397,8 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	// ensure column is valid
 	if (col_idx >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range."));
+		throw InvalidRequestException(
+            "specified column index is out of range.");
 	}
 
 	// find start position for search
@@ -429,8 +429,8 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 	// ensure row is valid
 	if (row_idx >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified row index is out of range."));
+		throw InvalidRequestException(
+            "specified row index is out of range.");
 	}
 
 	// find start position for search
@@ -776,8 +776,8 @@ void MultiColumnList::removeColumn(uint col_idx)
 	// ensure index is valid, and throw if not.
 	if (col_idx >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified column index is out of range."));
+		throw InvalidRequestException(
+            "the specified column index is out of range.");
 	}
 	else
 	{
@@ -799,7 +799,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 			// delete the ListboxItem as needed.
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				CEGUI_DELETE_AO item;
+				delete item;
 			}
 
 		}
@@ -962,8 +962,8 @@ void MultiColumnList::removeRow(uint row_idx)
 	// ensure row exists
 	if (row_idx >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "The specified row index is out of range."));
+		throw InvalidRequestException(
+            "The specified row index is out of range.");
 	}
 	else
 	{
@@ -974,7 +974,7 @@ void MultiColumnList::removeRow(uint row_idx)
 
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				CEGUI_DELETE_AO item;
+				delete item;
 			}
 
 		}
@@ -1005,13 +1005,13 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	// validate grid ref
 	if (position.column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified column index is invalid."));
+		throw InvalidRequestException(
+            "the specified column index is invalid.");
 	}
 	else if (position.row >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified row index is invalid."));
+		throw InvalidRequestException(
+            "the specified row index is invalid.");
 	}
 
 	// delete old item as required
@@ -1019,7 +1019,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 
 	if ((oldItem != 0) && oldItem->isAutoDeleted())
 	{
-		CEGUI_DELETE_AO oldItem;
+		delete oldItem;
 	}
 
 	// set new item.
@@ -1139,8 +1139,8 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			break;
 
 		default:
-			CEGUI_THROW(InvalidRequestException(
-                "invalid or unknown SelectionMode value supplied."));
+			throw InvalidRequestException(
+                "invalid or unknown SelectionMode value supplied.");
 			break;
 
 		}
@@ -1408,12 +1408,12 @@ void MultiColumnList::configureScrollbars(void)
 
 	vertScrollbar->setDocumentSize(totalHeight);
 	vertScrollbar->setPageSize(renderArea.getHeight());
-	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
 	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
 	horzScrollbar->setDocumentSize(fullWidth);
 	horzScrollbar->setPageSize(renderArea.getWidth());
-	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
 	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
@@ -1484,8 +1484,8 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 {
 	if (col_idx >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column is out of range."));
+		throw InvalidRequestException(
+            "specified column is out of range.");
 	}
 	else
 	{
@@ -1526,8 +1526,8 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 {
 	if (row_idx >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified row is out of range."));
+		throw InvalidRequestException(
+            "specified row is out of range.");
 	}
 	else
 	{
@@ -1595,10 +1595,10 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
 {
     const ListHeader* header = getListHeader();
-    Rectf listArea(getListRenderArea());
+    const Rectf listArea(getListRenderArea());
 
     float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
@@ -1608,7 +1608,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
         y += getHighestRowItemHeight(i);
 
         // have we located the row?
-        if (pt.d_y < y)
+        if (pt.y < y)
         {
             // scan across to find column that was clicked
             for (uint j = 0; j < getColumnCount(); ++j)
@@ -1617,7 +1617,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (pt.d_x < x)
+                if (pt.x < x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
@@ -1640,13 +1640,13 @@ bool MultiColumnList::setItemSelectState_impl(const MCLGridRef grid_ref, bool st
 	// validate grid ref
 	if (grid_ref.column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified column index is invalid."));
+		throw InvalidRequestException(
+            "the specified column index is invalid.");
 	}
 	else if (grid_ref.row >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified row index is invalid."));
+		throw InvalidRequestException(
+            "the specified row index is invalid.");
 	}
 
 	// only do this if the setting is changing
@@ -1738,8 +1738,8 @@ void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
 	// ensure index is valid, and throw if not.
 	if (col_idx >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified source column index is out of range."));
+		throw InvalidRequestException(
+            "the specified source column index is out of range.");
 	}
 	else
 	{
@@ -1918,80 +1918,97 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is pressed
+    Handler for when cursor is pressed
 *************************************************************************/
-void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
+void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
 {
-	// base class processing
-	Window::onMouseButtonDown(e);
+    // base class processing
+    Window::onCursorPressHold(e);
 
-	if (e.button == LeftButton)
-	{
-		bool modified = false;
+    if (e.source == CIS_Left)
+    {
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
+        handleSelection(local_point, false, false);
 
-		Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
-		ListboxItem* item = getItemAtPoint(localPos);
-
-		if (item)
-		{
-            // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiSelect)
-            {
-                modified = clearAllSelections_impl();
-            }
-
-			modified = true;
-
-			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
-			{
-				modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
-			}
-			else
-			{
-				modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
-			}
-
-			// update last selected item
-			d_lastSelected = item->isSelected() ? item : 0;
-		}
-
-		// fire event if needed
-		if (modified)
-		{
-			WindowEventArgs args(this);
-			onSelectionChanged(args);
-		}
-
-		++e.handled;
-	}
-
+        ++e.handled;
+    }
 }
 
+void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool cumulative = e.d_semanticValue == SV_SelectCumulative;
+    bool range = e.d_semanticValue == SV_SelectRange;
+
+    if (cumulative || range)
+    {
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
+            getGUIContext().getCursor().getPosition());
+        handleSelection(local_point, cumulative, range);
+
+        ++ e.handled;
+    }
+}
 
 /*************************************************************************
-	Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
-void MultiColumnList::onMouseWheel(MouseEventArgs& e)
+void MultiColumnList::onScroll(CursorInputEventArgs& e)
 {
 	// base class processing.
-	Window::onMouseWheel(e);
+	Window::onScroll(e);
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
 	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
 	}
 
 	++e.handled;
 }
 
+void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative, bool range)
+{
+    bool modified = false;
+
+    ListboxItem* item = getItemAtPoint(position);
+
+    if (item)
+    {
+        // clear old selections if not a cumulative selection or if multi-select is off
+        if (!cumulative || !d_multiSelect)
+        {
+            modified = clearAllSelections_impl();
+        }
+
+        modified = true;
+
+        // select range or item, depending upon state and last selected item
+        if (range && (d_lastSelected != 0) && d_multiSelect)
+        {
+            modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
+        }
+        else
+        {
+            modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
+        }
+
+        // update last selected item
+        d_lastSelected = item->isSelected() ? item : 0;
+    }
+
+    // fire event if needed
+    if (modified)
+    {
+        WindowEventArgs args(this);
+        onSelectionChanged(args);
+    }
+}
 
 /*************************************************************************
 	Event handler for header offset changes (scrolling)
@@ -2153,8 +2170,8 @@ uint MultiColumnList::getRowID(uint row_idx) const
 	// check for invalid index
 	if (row_idx >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the row index given is out of range."));
+		throw InvalidRequestException(
+            "the row index given is out of range.");
 	}
 	else
 	{
@@ -2177,8 +2194,8 @@ uint MultiColumnList::getRowWithID(uint row_id) const
 	}
 
 	// No such row found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no row with the requested ID is present."));
+	throw InvalidRequestException(
+        "no row with the requested ID is present.");
 }
 
 
@@ -2225,7 +2242,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
         "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"true\" or \"false\".",
         &MultiColumnList::setUserColumnDraggingEnabled, &MultiColumnList::isUserColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction."
         "  Value is either \"true\" or \"false\".",
@@ -2243,7 +2260,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
         "  Value is either \"true\" or \"false\".",
         &MultiColumnList::setShowVertScrollbar, &MultiColumnList::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal scroll bar of the list box."
         "  Value is either \"true\" or \"false\".",
@@ -2262,7 +2279,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
 
     CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, uint,
         "RowCount", "Property to access the number of rows in the list (read only)",
-        0, &MultiColumnList::getRowCount, 0 
+        0, &MultiColumnList::getRowCount, 0
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, MultiColumnList::SelectionMode,
@@ -2306,7 +2323,7 @@ bool MultiColumnList::resetList_impl(void)
 				// delete item as needed.
 				if ((item != 0) && item->isAutoDeleted())
 				{
-					CEGUI_DELETE_AO item;
+					delete item;
 				}
 
 			}
@@ -2335,13 +2352,13 @@ void MultiColumnList::autoSizeColumnHeader(uint col_idx)
 	// check for invalid index
 	if (col_idx >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the column index given is out of range."));
+		throw InvalidRequestException(
+            "the column index given is out of range.");
 	}
 	else
 	{
 		// get the width of the widest item in the column.
-		float width = ceguimax(getWidestColumnItemWidth(col_idx), ListHeader::MinimumSegmentPixelWidth);
+		float width = std::max(getWidestColumnItemWidth(col_idx), ListHeader::MinimumSegmentPixelWidth);
 
 		// set new column width
 		setColumnHeaderWidth(col_idx, cegui_absdim(width));
@@ -2358,8 +2375,8 @@ void MultiColumnList::setRowID(uint row_idx, uint row_id)
 	// check for invalid index
 	if (row_idx >= getRowCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the row index given is out of range."));
+		throw InvalidRequestException(
+            "the row index given is out of range.");
 	}
 	else
 	{
@@ -2437,7 +2454,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     }
 
     // write out SortColumnID property, if any(!)
-		CEGUI_TRY
+		try
 		{
 			uint sortColumnID = getColumnWithID(getSortColumn());
 			if (sortColumnID != 0)
@@ -2450,7 +2467,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			    ++propCnt;
 			}
 		}
-		CEGUI_CATCH (InvalidRequestException&)
+		catch (InvalidRequestException&)
 		{
 			// This catches error(s) from the MultiLineColumnList for example
 			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", Errors);
@@ -2474,8 +2491,8 @@ Rectf MultiColumnList::getListRenderArea() const
     else
     {
         //return getListRenderArea_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -2691,7 +2708,6 @@ void MultiColumnList::resortList()
     }
     // else no (or invalid) direction, so do not sort.
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************

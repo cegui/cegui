@@ -37,8 +37,7 @@ namespace CEGUI
     Interface for factory objects that create RenderEffect instances.
     Currently this interface is intended for internal use only.
 */
-class RenderEffectFactory : public
-    AllocatedObject<RenderEffectFactory>
+class RenderEffectFactory
 {
 public:
     //! base class virtual destructor.
@@ -65,14 +64,14 @@ public:
 template <typename T>
 RenderEffect& TplRenderEffectFactory<T>::create(Window* window)
 {
-    return *CEGUI_NEW_AO T(window);
+    return *new T(window);
 }
 
 //---------------------------------------------------------------------------//
 template <typename T>
 void TplRenderEffectFactory<T>::destroy(RenderEffect& effect)
 {
-    CEGUI_DELETE_AO &effect;
+    delete &effect;
 }
 
 //---------------------------------------------------------------------------//

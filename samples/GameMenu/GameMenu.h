@@ -24,10 +24,10 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Game_Menu_Demo_
-#define _Game_Menu_Demo_
+#ifndef _Game_Menu_Sample_
+#define _Game_Menu_Sample_
 
-#include "SampleBase.h"
+#include "Sample.h"
 
 namespace CEGUI
 {
@@ -44,9 +44,11 @@ enum WriteFocus
 
 
 // Sample class
-class GameMenuDemo : public Sample
+class GameMenuSample : public Sample
 {
 public:
+    GameMenuSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
@@ -56,7 +58,6 @@ public:
     virtual void onEnteringSample();
 
     virtual void update(float timeSinceLastUpdate);
-
 
 protected:
     void setupWindows();
@@ -85,10 +86,10 @@ protected:
     bool handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args);
     bool handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args);
 
-    bool handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& args);
-    bool handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& args);
-    bool handleMouseEntersRightArrowArea(const CEGUI::EventArgs& args);
-    bool handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerEntersRightArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& args);
 
     bool handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args);
     bool handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args);
@@ -120,7 +121,7 @@ protected:
     bool d_interactivePlanetElementsAreEnabled;
     bool d_navigationIsEnabled;
     bool d_loginWasAccepted;
-    bool d_mouseIsHoveringNavi;
+    bool d_cursorIsHoveringNavi;
     bool d_startButtonClicked;
 
     WriteFocus d_currentWriteFocus;
