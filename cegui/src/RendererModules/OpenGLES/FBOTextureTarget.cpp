@@ -194,10 +194,10 @@ void OpenGLESFBOTextureTarget::initialiseRenderTexture()
     glBindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA8, GL_UNSIGNED_BYTE, 0);
 	
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES,
                               GL_TEXTURE_2D, d_texture, 0);
@@ -225,10 +225,10 @@ void OpenGLESFBOTextureTarget::resizeRenderTexture()
 
     // set the texture to the required size
     glBindTexture(GL_TEXTURE_2D, d_texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA8, GL_UNSIGNED_BYTE, 0);
     clear();
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size

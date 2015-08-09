@@ -2,7 +2,7 @@ set (CEGUI_TARGET_NAME ${CEGUI_OPENGL_RENDERER_LIBNAME})
 
 cegui_gather_files()
 
-if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES AND CEGUI_USE_GLEW)
     add_definitions( -DGLEW_STATIC )
 endif()
 
@@ -48,9 +48,14 @@ if (NOT CEGUI_BUILD_RENDERER_OPENGL3)
 endif()
 
 cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES)
-cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
-cegui_add_dependency(${CEGUI_TARGET_NAME} GLM)
-cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW)
+if (${CEGUI_USE_EPOXY})
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLM)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} EPOXY)
+elseif (${CEGUI_USE_GLEW})
+    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLM)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW PUBLIC)
+endif ()
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 

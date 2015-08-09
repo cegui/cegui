@@ -34,7 +34,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL
 */
 class OPENGL_GUIRENDERER_API OpenGLRenderer : public OpenGLRendererBase
 {
@@ -176,10 +176,10 @@ public:
     void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
 
 protected:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl();
     TextureTarget* createTextureTarget_impl();
 
-    //! set up renderer id string.
     void initialiseRendererIDString();
 
     /*!

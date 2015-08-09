@@ -19,10 +19,12 @@ The following is a list of all libraries that CEGUI can make use of:
     - Required for minizip based resource provider.
 
 @subsection dependencies_rendering Rendering
-- OpenGL (http://www.opengl.org/)
-    - Required for GL and GL3 renderer modules.
-- GLEW (http://glew.sourceforge.net/)
-    - Required for GL and GL3 renderer modules
+- OpenGL loading libraries:
+  - GLEW (http://glew.sourceforge.net/)
+  - Epoxy (https://github.com/yaronct/libepoxy), major version 1.
+  - Either GLEW or Epoxy is required for the desktop OpenGL 3.2 renderer module.
+  - Epoxy is required for the OpenGL ES 2.0 renderer module.
+  - GLEW is required for the old desktop OpenGL 1.2 renderer module.
 - GLM (http://glm.g-truc.net/)
     - Required for GL and GL3 renderer modules.
 - DirectXSDK (http://www.microsoft.com/en-us/download/details.aspx?id=6812)
@@ -35,8 +37,11 @@ The following is a list of all libraries that CEGUI can make use of:
     - Required for Ogre renderer module.
 - DirectFB (http://directfb.org/)
     - Required for DirectFB support (broken - do not use)
-- OpenGLES (http://www.opengl.org/)
-    - Required for GLES 1.1 renderer module. (work in progress)
+- OpenGL ES emulators:
+  - PowerVR's (http://community.imgtec.com/developers/powervr/graphics-sdk/)
+  - There are others, but PowerVR's seems to be the best.
+  - An OpenGL ES emulator is recommended (and on some platforms, necessary) to
+    use OpenGL ES 2.0 together with EGL on a desktop OS.
 
 @subsection dependencies_parsers XML Parsers
 - EXPAT (http://expat.sourceforge.net/)
@@ -76,7 +81,9 @@ The following is a list of all libraries that CEGUI can make use of:
 
 @subsection dependencies_samples Samples Framework
 - GLFW (http://www.glfw.org/)
-    - Required for GL/GL3 support in samples
+    - Required for OpenGL support in samples.
+    - For desktop OpenGL rendering, either version 2 or 3 is required.
+    - For OpenGL ES 2.0 rendering, version 3 is required.
 - OIS (http://sourceforge.net/projects/wgois/)
     - Required for Ogre support in samples
 - GTK2 (http://www.gtk.org/)

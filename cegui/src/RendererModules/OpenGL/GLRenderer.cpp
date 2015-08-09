@@ -25,8 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
-
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
@@ -163,7 +162,8 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type)
+OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
+    OpenGLRendererBase(false)
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
@@ -179,7 +179,7 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type)
 //----------------------------------------------------------------------------//
 OpenGLRenderer::OpenGLRenderer(const Sizef& display_size,
                                const TextureTargetType tt_type) :
-    OpenGLRendererBase(display_size)
+    OpenGLRendererBase(display_size, false)
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
@@ -386,17 +386,6 @@ void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::initialiseGLExtensions()
 {
-    // initialise GLEW
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-    {
-        std::ostringstream err_string;
-        err_string << "OpenGLRenderer failed to initialise the GLEW library. "
-        << glewGetErrorString(err);
-
-        CEGUI_THROW(RendererException(err_string.str().c_str()));
-    }
-
     // GL 1.3 has multi-texture support natively
     if (GLEW_VERSION_1_3)
     {
@@ -420,7 +409,7 @@ void OpenGLRenderer::initialiseGLExtensions()
 //----------------------------------------------------------------------------//
 bool OpenGLRenderer::isS3TCSupported() const
 {
-    return GLEW_EXT_texture_compression_s3tc > 0;
+    return OpenGLInfo::getSingleton().isS3tcSupported();
 }
 
 //----------------------------------------------------------------------------//

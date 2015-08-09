@@ -27,17 +27,23 @@
 #ifndef _CEGuiGLFWSharedBase_h_
 #define _CEGuiGLFWSharedBase_h_
 
+#include "CEGUISamplesConfig.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
+#if CEGUI_USE_GLFW_VER == 3
+#   include <GLFW/glfw3.h>
+#elif CEGUI_USE_GLFW_VER == 2
+#   include <GL/glfw.h>
+#else
+#   error Unsupported "CEGUI_GLFW_VER".
+#endif
 #include "CEGuiBaseApplication.h"
 #include "CEGUI/MouseCursor.h"
-#include <GL/glfw.h>
-
-class SamplesFrameworkBase;
 
 class CEGuiGLFWSharedBase : public CEGuiBaseApplication
 {
 public:
     CEGuiGLFWSharedBase();
-    ~CEGuiGLFWSharedBase();
 
 protected:
     // implementation of base class abstract functions.
@@ -55,6 +61,19 @@ protected:
 
     void drawFrame();
 
+#if GLFW_VERSION_MAJOR >= 3
+    
+    static void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void glfwCharCallback(GLFWwindow* window, unsigned codepoint);
+    static void glfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+    static void glfwScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+    static void glfwCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+
+    static void glfwWindowCloseCallback(GLFWwindow* window);
+    static void glfwWindowResizeCallback(GLFWwindow* window, int width, int height);
+
+#else // GLFW_VERSION_MAJOR <= 2
+
     static void GLFWCALL glfwKeyCallback(int key, int action);
     static void GLFWCALL glfwCharCallback(int character, int action);
     static void GLFWCALL glfwMouseButtonCallback(int key, int action);
@@ -63,6 +82,8 @@ protected:
 
     static int GLFWCALL glfwWindowCloseCallback(void);
     static void GLFWCALL glfwWindowResizeCallback(int width, int height);
+    
+#endif
 
     static CEGUI::Key::Scan GlfwToCeguiKey(int glfwKey);
     static CEGUI::MouseButton GlfwToCeguiMouseButton(int glfwButton);
@@ -80,10 +101,14 @@ protected:
 
     static bool d_mouseLeftWindow;
     static bool d_mouseDisableCalled;
-    static int d_oldMousePosX;
-    static int d_oldMousePosY;
+    static double d_oldMousePosX;
+    static double d_oldMousePosY;
+    
+    static const char d_windowTitle[];
+    
+#if GLFW_VERSION_MAJOR >= 3
+    static GLFWwindow* d_window;
+#endif
 };
 
-
 #endif  // end of guard _CEGuiGLFWSharedBase_h_
-

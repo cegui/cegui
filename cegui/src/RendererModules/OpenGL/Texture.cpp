@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <GL/glew.h>
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
@@ -313,7 +313,7 @@ void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
     if (d_isCompressed)
     {
         const GLsizei image_size = getCompressedTextureSize(size);
-        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format,
                                static_cast<GLsizei>(size.d_width),
                                static_cast<GLsizei>(size.d_height),
                                0, image_size, 0);
@@ -337,7 +337,23 @@ void OpenGLTexture::grabTexture()
     if (d_grabBuffer)
         return;
 
-    d_grabBuffer = new uint8[static_cast<int>(4*d_size.d_width*d_size.d_height)];
+    std::size_t buffer_size(0);
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs())
+    {
+        /* OpenGL ES 3.1 or below doesn't support
+           "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
+           with "glReadPixels", which will return the data in (umcompressed)
+           format (GL_RGBA8, GL_UNSIGNED_BYTE). */
+        buffer_size = static_cast<std::size_t>(d_dataSize.d_width)
+          *static_cast<std::size_t>(d_dataSize.d_height) *4;
+        d_isCompressed = false;
+        d_format = GL_RGBA;
+        d_subpixelFormat = GL_UNSIGNED_BYTE;
+    }
+    else // Desktop OpenGL
+        buffer_size = static_cast<std::size_t>(d_size.d_width)
+          *static_cast<std::size_t>(d_size.d_height) *4;
+    d_grabBuffer = new uint8[buffer_size];
 
     blitToMemory(d_grabBuffer);
 
@@ -353,7 +369,11 @@ void OpenGLTexture::restoreTexture()
     generateOpenGLTexture();
     setTextureSize_impl(d_size);
 
-    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), d_size));
+    Sizef blit_size;
+    /* In OpenGL ES we used "glReadPixels" to grab the texture, reading just the
+       relevant rectangle. */
+    blit_size = OpenGLInfo::getSingleton().isUsingOpenglEs() ? d_dataSize : d_size;
+    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), blit_size));
 
     // free the grabbuffer
     delete [] d_grabBuffer;
@@ -382,63 +402,89 @@ void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::blitToMemory(void* targetData)
 {
-    // save existing config
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs())
     {
-        glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
-    }
-    else
-    {
+        /* OpenGL ES 3.1 or below doesn't support
+           "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
+           using "glReadPixels". */
+        
         GLint old_pack;
         glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
-
+        GLuint texture_framebuffer(0);
+        GLint framebuffer_old(0), pack_alignment_old(0);
+        glGenFramebuffers(1, &texture_framebuffer);
+        GLenum framebuffer_target(0), framebuffer_param(0);
+        if (OpenGLInfo::getSingleton()
+              .isSeperateReadAndDrawFramebufferSupported())
+        {
+            framebuffer_param = GL_READ_FRAMEBUFFER_BINDING;
+            framebuffer_target = GL_READ_FRAMEBUFFER;
+        }
+        else
+        {
+            framebuffer_param = GL_FRAMEBUFFER_BINDING;
+            framebuffer_target = GL_FRAMEBUFFER;
+        }
+        glGetIntegerv(framebuffer_param, &framebuffer_old);
+        glBindFramebuffer(framebuffer_target, texture_framebuffer);
+        glFramebufferTexture2D(framebuffer_target, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, d_ogltexture, 0);
+        GLint read_buffer_old(0), pixel_pack_buffer_old(0);
+        if (OpenGLInfo::getSingleton().isReadBufferSupported())
+        {
+            glGetIntegerv(GL_READ_BUFFER, &read_buffer_old);
+            glReadBuffer(GL_COLOR_ATTACHMENT0);
+            glGetIntegerv(GL_PIXEL_PACK_BUFFER_BINDING, &pixel_pack_buffer_old);
+            glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+        }
+        glGetIntegerv(GL_PACK_ALIGNMENT, &pack_alignment_old);
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
-    
-        glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
-    }
+        glReadPixels(0, 0, static_cast<GLsizei>(d_dataSize.d_width),
+          static_cast<GLsizei>(d_dataSize.d_height), GL_RGBA8, GL_UNSIGNED_BYTE, targetData);
+        glPixelStorei(GL_PACK_ALIGNMENT, pack_alignment_old);
+        if (OpenGLInfo::getSingleton().isReadBufferSupported())
+        {
+            glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_pack_buffer_old);
+            glReadBuffer(read_buffer_old);
+        }
+  	glBindFramebuffer(framebuffer_target, framebuffer_old);
+        glDeleteFramebuffers(1, &texture_framebuffer);
 
-    // restore previous config.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+    }
+    else // Desktop OpenGL
+    {
+
+        // save existing config
+        GLuint old_tex;
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
+        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+
+        if (d_isCompressed)
+        {
+            glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
+        }
+        else
+        {
+            GLint old_pack;
+            glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
+
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+            glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
+
+            glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
+        }
+
+        // restore previous config.
+        glBindTexture(GL_TEXTURE_2D, old_tex);
+
+    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
-    //
-    // calculate what to use for x scale
-    //
-    const float orgW = d_dataSize.d_width;
-    const float texW = d_size.d_width;
-
-    // if texture and original data width are the same, scale is based
-    // on the original size.
-    // if texture is wider (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    if(orgW == texW && orgW == 0.0f)
-        d_texelScaling.d_x = 0.0f;
-    else
-        d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
-
-    //
-    // calculate what to use for y scale
-    //
-    const float orgH = d_dataSize.d_height;
-    const float texH = d_size.d_height;
-
-    // if texture and original data height are the same, scale is based
-    // on the original size.
-    // if texture is taller (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    if(orgH == texH && orgH == 0.0f)
-        d_texelScaling.d_x = 0.0f;
-    else
-        d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    d_texelScaling.d_x = d_size.d_width  == 0.f  ?  0.f  :  1.f / d_size.d_width;
+    d_texelScaling.d_y = d_size.d_height == 0.f  ?  0.f  :  1.f / d_size.d_height;
 }
 
 //----------------------------------------------------------------------------//
@@ -454,8 +500,8 @@ void OpenGLTexture::generateOpenGLTexture()
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     // FIXME: This hack was needed to fix #980 in a way that maintains binary
     // compatibility in v0-8 branch.

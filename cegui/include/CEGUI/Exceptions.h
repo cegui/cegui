@@ -464,7 +464,7 @@ public:
     VS2003.
 */
 #define RendererException(message)  \
-    RendererException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
+    ::CEGUI::RendererException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 

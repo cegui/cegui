@@ -47,17 +47,15 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-CEGuiOpenGLBaseApplication::~CEGuiOpenGLBaseApplication()
-{
-    CEGUI::OpenGLRenderer::destroy(static_cast<CEGUI::OpenGLRenderer&>(*d_renderer));
-}
-
-//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::setGLFWWindowCreationHints()
 {
+#if GLFW_VERSION_MAJOR >= 3
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+#else // GLFW_VERSION_MAJOR <= 2
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 1);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+#endif
 }
 
 //----------------------------------------------------------------------------//
-

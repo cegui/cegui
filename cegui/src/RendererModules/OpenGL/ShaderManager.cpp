@@ -31,6 +31,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/StandardShaderVert.h"
 #include "CEGUI/RendererModules/OpenGL/StandardShaderFrag.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
@@ -71,18 +72,29 @@ namespace CEGUI
     {
         if(!d_shadersInitialised)
         {
-            loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert, StandardShaderFrag);
-
-
+            if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
+                loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGL3,
+                           StandardShaderFrag_OpenGL3);
+            else // OpenGL ES
+            {
+                if (OpenGLInfo::getSingleton().verMajor() <= 2)
+                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGLES2,
+                               StandardShaderFrag_OpenGLES2);
+                else
+                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGLES3,
+                               StandardShaderFrag_OpenGLES3);
+            }
             if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
             {
-                const CEGUI::String errorString("Critical Error - One or multiple shader programs weren't created successfully");
+                const CEGUI::String errorString("Critical Error - One or "
+                  "multiple shader programs weren't created successfully");
                 CEGUI_THROW(RendererException(errorString));
 
                 return;
             }
 
-            const CEGUI::String notify("OpenGL3Renderer: Notification - Successfully initialised OpenGL3Renderer shader programs.");
+            const CEGUI::String notify("OpenGL3Renderer: Notification - "
+              "Successfully initialised OpenGL3Renderer shader programs.");
             if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
                 logger->logEvent(notify);
 
