@@ -61,7 +61,7 @@ public:
     virtual RenderTarget& getDefaultRenderTarget();
     virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const String& name);
@@ -212,7 +212,7 @@ protected:
     virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl(RefCounted<RenderMaterial> renderMaterial) = 0;
 
     //! return some appropriate TextureTarget subclass instance.
-    virtual TextureTarget* createTextureTarget_impl() = 0;
+    virtual TextureTarget* createTextureTarget_impl(bool addStencilBuffer) = 0;
 
     //! return some appropriate Texture subclass instance.
     virtual OpenGLTexture* createTexture_impl(const String& name) = 0;

@@ -40,6 +40,8 @@ namespace CEGUI
 class CEGUIEXPORT TextureTarget : public RenderTarget
 {
 public:
+    TextureTarget(bool usesStencil) : d_usesStencil(usesStencil) {}
+
     /*!
     \brief
         Clear the surface of the underlying texture.
@@ -61,12 +63,12 @@ public:
         next set of incoming rendering operations.
 
     \note
-        The main purpose of this is to allow for the implemenatation to resize
+        The main purpose of this is to allow for the implementation to resize
         the underlying texture so that it can hold the imagery that will be
         drawn.
 
     \param sz
-        Size object describing the largest area that will be rendererd in the
+        Size object describing the largest area that will be rendered in the
         next batch of rendering operations.
 
     \exception InvalidRequestException
@@ -86,7 +88,7 @@ public:
 
 protected:
     //! Determines if the instance has a stencil buffer attached or not
-    bool d_usesStencil;
+    bool d_usesStencil = false;
 };
 
 } // End of  CEGUI namespace section

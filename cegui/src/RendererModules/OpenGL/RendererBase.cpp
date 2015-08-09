@@ -174,9 +174,9 @@ GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCount
 
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLRendererBase::createTextureTarget()
+TextureTarget* OpenGLRendererBase::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* t = createTextureTarget_impl();
+    TextureTarget* t = createTextureTarget_impl(addStencilBuffer);
 
     if (t)
         d_textureTargets.push_back(t);

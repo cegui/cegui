@@ -38,7 +38,9 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
-    d_owner(owner)
+    TextureTarget(addStencilBuffer)
+    d_owner(owner),
+    
 {
 }
 
