@@ -157,6 +157,7 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 
     // Generate position vbo
     glGenBuffers(1, &d_verticesVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
     d_shader->bind();
     configureVertexArray();
