@@ -140,9 +140,6 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
-    // create FBO
-    glGenFramebuffers(1, &d_frameBuffer);
-
     // remember previously bound FBO-s to make sure we set them back
     GLint previousFBO_read(-1), previousFBO_draw(-1), previousFBO(-1);
     if (OpenGLInfo::getSingleton().isSeperateReadAndDrawFramebufferSupported())
@@ -152,8 +149,11 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     }
     else
         glGetIntegerv(OpenGLInfo::getSingleton().isUsingOpenglEs() ?
-                        GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
-                      &previousFBO);
+            GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
+            &previousFBO);
+
+    // create FBO
+    glGenFramebuffers(1, &d_frameBuffer);
 
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
@@ -265,7 +265,7 @@ void OpenGL3FBOTextureTarget::checkFramebufferStatus()
     if(status != GL_FRAMEBUFFER_COMPLETE)
     {
         std::stringstream stringStream;
-        stringStream << "OpenGL3Renderer: Error  Framebuffer is not complete\n";
+        stringStream << "OpenGL3Renderer: Error - The Framebuffer is incomplete: ";
 
         switch(status)
         {
