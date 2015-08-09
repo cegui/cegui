@@ -28,6 +28,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -112,8 +113,8 @@ void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
 
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(const Window* ref_wnd,
-                                        GeometryBuffer& buffer,
-                                        const Vector2f& position,
+                                        std::vector<GeometryBuffer*>& geometry_buffers,
+                                        const glm::vec2& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect,
                                         const float vertical_space,
@@ -122,7 +123,7 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (!d_image)
         return;
 
-    CEGUI::Rectf dest(position.d_x, position.d_y, 0, 0);
+    Rectf dest(position.x, position.y, 0, 0);
     float y_scale = 1.0f;
 
     // handle formatting options
@@ -145,8 +146,8 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
         break;
 
     default:
-        CEGUI_THROW(InvalidRequestException(
-            "unknown VerticalFormatting option specified."));
+        throw InvalidRequestException(
+            "unknown VerticalFormatting option specified.");
     }
 
     Sizef sz(d_image->getRenderedSize());
@@ -165,7 +166,7 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-        d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
+        d_selectionImage->render(geometry_buffers, select_area, clip_rect, true, ColourRect(0xFF002FFF));
     }
 
     // apply modulative colours if needed.
@@ -173,8 +174,8 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (mod_colours)
         final_cols *= *mod_colours;
 
-    // draw the image.
-    d_image->render(buffer, dest, clip_rect, final_cols);
+    // draw the image. 
+    d_image->render(geometry_buffers, dest, clip_rect, true, final_cols);
 }
 
 //----------------------------------------------------------------------------//
@@ -206,14 +207,14 @@ bool RenderedStringImageComponent::canSplit() const
 RenderedStringImageComponent* RenderedStringImageComponent::split(
     const Window* /*ref_wnd*/ ,float /*split_point*/, bool /*first_component*/)
 {
-    CEGUI_THROW(InvalidRequestException(
-        "this component does not support being split."));
+    throw InvalidRequestException(
+        "this component does not support being split.");
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent* RenderedStringImageComponent::clone() const
 {
-    return CEGUI_NEW_AO RenderedStringImageComponent(*this);
+    return new RenderedStringImageComponent(*this);
 }
 
 //----------------------------------------------------------------------------//
