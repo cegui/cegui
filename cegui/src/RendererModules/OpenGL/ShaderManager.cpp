@@ -74,20 +74,15 @@ void OpenGLBaseShaderManager::initialiseShaders()
 {
     if(!d_shadersInitialised)
     {
-        if (OpenGLInfo::getSingleton().isUsingDesktopOpengl()
+        if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
         {
             loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
             loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
         }
-        else if (OpenGLInfo::getSingleton().verMajor() == 1)
+        else if (OpenGLInfo::getSingleton().verMajor() <= 2)
         {
             loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES1, StandardShaderTexturedFragGLSLES1);
             loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES1, StandardShaderSolidFragGLSLES1);
-        }
-        else if (OpenGLInfo::getSingleton().verMajor() == 2)
-        {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES2, StandardShaderTexturedFragGLSLES2);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES2, StandardShaderSolidFragGLSLES2);
         }
         else
         {
@@ -99,9 +94,8 @@ void OpenGLBaseShaderManager::initialiseShaders()
         if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
            !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
         {
-            const CEGUI::String errorString("Critical Error - One or "
-              "multiple shader programs weren't created successfully");
-            CEGUI_THROW(RendererException(errorString));
+            throw RendererException("Critical Error - One or multiple shader "
+                                    "programs weren't created successfully");
 
             return;
         }

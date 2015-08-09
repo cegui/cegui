@@ -402,12 +402,6 @@ void OpenGLRenderer::initialiseGLExtensions()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLRenderer::isS3TCSupported() const
-{
-    return OpenGLInfo::getSingleton().isS3tcSupported();
-}
-
-//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
     if(shaderType == DS_TEXTURED)
@@ -445,7 +439,7 @@ Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz)
     Sizef out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
-    if (!GLEW_ARB_texture_non_power_of_two)
+    if (!OpenGLInfo::getSingleton().isNpotTextureSupported())
     {
         out.d_width = getNextPOTSize(out.d_width);
         out.d_height = getNextPOTSize(out.d_height);

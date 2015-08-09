@@ -257,7 +257,7 @@ void OpenGLTexture::restoreTexture()
     /* In OpenGL ES we used "glReadPixels" to grab the texture, reading just the
        relevant rectangle. */
     Sizef blit_size = OpenGLInfo::getSingleton().isUsingOpenglEs() ? d_dataSize : d_size;
-    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), blit_size));
+    blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), blit_size));
 
     // free the grabbuffer
     delete[] d_grabBuffer;
@@ -284,59 +284,6 @@ void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 }
 
 //----------------------------------------------------------------------------//
-    if (OpenGLInfo::getSingleton().isUsingOpenglEs())
-    {
-        /* OpenGL ES 3.1 or below doesn't support
-           "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
-           using "glReadPixels". */
-        
-        GLint old_pack;
-        glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
-        GLuint texture_framebuffer(0);
-        GLint framebuffer_old(0), pack_alignment_old(0);
-        glGenFramebuffers(1, &texture_framebuffer);
-        GLenum framebuffer_target(0), framebuffer_param(0);
-        if (OpenGLInfo::getSingleton()
-              .isSeperateReadAndDrawFramebufferSupported())
-        {
-            framebuffer_param = GL_READ_FRAMEBUFFER_BINDING;
-            framebuffer_target = GL_READ_FRAMEBUFFER;
-        }
-        else
-        {
-            framebuffer_param = GL_FRAMEBUFFER_BINDING;
-            framebuffer_target = GL_FRAMEBUFFER;
-        }
-        glGetIntegerv(framebuffer_param, &framebuffer_old);
-        glBindFramebuffer(framebuffer_target, texture_framebuffer);
-        glFramebufferTexture2D(framebuffer_target, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, d_ogltexture, 0);
-        GLint read_buffer_old(0), pixel_pack_buffer_old(0);
-        if (OpenGLInfo::getSingleton().isReadBufferSupported())
-        {
-            glGetIntegerv(GL_READ_BUFFER, &read_buffer_old);
-            glReadBuffer(GL_COLOR_ATTACHMENT0);
-            glGetIntegerv(GL_PIXEL_PACK_BUFFER_BINDING, &pixel_pack_buffer_old);
-            glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
-        }
-        glGetIntegerv(GL_PACK_ALIGNMENT, &pack_alignment_old);
-        glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        glReadPixels(0, 0, static_cast<GLsizei>(d_dataSize.d_width),
-          static_cast<GLsizei>(d_dataSize.d_height), GL_RGBA, GL_UNSIGNED_BYTE, targetData);
-        glPixelStorei(GL_PACK_ALIGNMENT, pack_alignment_old);
-        if (OpenGLInfo::getSingleton().isReadBufferSupported())
-        {
-            glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_pack_buffer_old);
-            glReadBuffer(read_buffer_old);
-        }
-  	glBindFramebuffer(framebuffer_target, framebuffer_old);
-        glDeleteFramebuffers(1, &texture_framebuffer);
-
-    }
-    else // Desktop OpenGL
-    {
-
-
-    }
 void OpenGLTexture::updateCachedScaleValues()
 {
     // Update the scale of a texel based on the absolute size
@@ -423,7 +370,7 @@ bool OpenGLTexture::isPixelFormatSupported(const PixelFormat fmt) const
     case PF_RGBA_DXT1:
     case PF_RGBA_DXT3:
     case PF_RGBA_DXT5:
-        return d_owner.isS3TCSupported();
+        return OpenGLInfo::getSingleton().isS3tcSupported();
 
     default:
         return false;

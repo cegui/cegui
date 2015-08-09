@@ -158,9 +158,6 @@ public:
     virtual void setupRenderingBlendMode(const BlendMode mode,
                                          const bool force = false) = 0;
 
-    //! \deprecated - the OpenGL Info class should be used in the future for this purpose
-    virtual bool isS3TCSupported() const = 0;
-
     /*!
     \brief
         Helper to get the viewport.

@@ -168,10 +168,10 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::init()
 {
-    if (      OpenGLInfo::getSingleton().isUsingOpenglEs()
-          &&  OpenGLInfo::getSingleton().verMajor() < 2)
-        CEGUI_THROW(RendererException("Only version 2 and up of OpenGL ES is "
-                                      "supported by this type of renderer."));
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs()
+        &&  OpenGLInfo::getSingleton().verMajor() < 2)
+        throw RendererException("Only version 2 and up of OpenGL ES is "
+                                "supported by this type of renderer.");
     initialiseRendererIDString();
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
@@ -317,42 +317,6 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::initialiseGLExtensions()
-{
-    glewExperimental = GL_TRUE;
-
-    GLenum err = glewInit();
-    if(err != GLEW_OK)
-    {
-        std::ostringstream err_string;
-        //Problem: glewInit failed, something is seriously wrong.
-        err_string << "failed to initialise the GLEW library. "
-            << glewGetErrorString(err);
-
-        throw RendererException(err_string.str().c_str());
-    }
-    //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
-    glGetError();
-
-    // Why do we do this and not use GLEW_EXT_texture_compression_s3tc?
-    // Because of glewExperimental, of course!
-    int ext_count;
-    glGetIntegerv(GL_NUM_EXTENSIONS, &ext_count);
-    for(int i = 0; i < ext_count; ++i)
-    {
-        if (!std::strcmp(
-                reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)),
-                                              "GL_EXT_texture_compression_s3tc"))
-        {
-            d_s3tcSupported = true;
-            break;
-        }
-    }
-}
-
-
-
-//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
     if(shaderType == DS_TEXTURED)
@@ -367,6 +331,7 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 
         return render_material;
     }
+    else
     {
         throw RendererException(
             "A default shader of this type does not exist.");
