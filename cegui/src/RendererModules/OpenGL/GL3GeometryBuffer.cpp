@@ -98,8 +98,7 @@ void OpenGL3GeometryBuffer::draw() const
     }
     else
     {
-        // We need to emulate a VAO.
-        configureVertexArray();
+        d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
     }
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
@@ -160,8 +159,13 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::finaliseVertexAttributes()
 {
-    //We need to bind both of the following calls
-    d_glStateChanger->bindVertexArray(d_verticesVAO);
+    //On OpenGL desktop versions we want to bind both of the following calls, otherwise vbos are enough as the following calls
+    //only affect the vbo (which may be tied to a vao)
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+    {
+        d_glStateChanger->bindVertexArray(d_verticesVAO);
+    }
+
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
     GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);

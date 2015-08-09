@@ -327,7 +327,7 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
 void CEGuiGLFWSharedBase::initGLFW()
 {
     if(!glfwInit())
-        throw CEGUI::RendererException("Failed to initialise GLFW.");
+        throw RendererException("Failed to initialise GLFW.");
 }
 
 //----------------------------------------------------------------------------//
@@ -335,7 +335,7 @@ void CEGuiGLFWSharedBase::createGLFWWindow()
 {
     if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 8, 8, 8, 0, 24, 0, GLFW_WINDOW) != GL_TRUE)
     {
-        throw CEGUI::RendererException("Failed to open GLFW window.");
+        throw RendererException("Failed to open GLFW window.");
         glfwTerminate();
     }
 }

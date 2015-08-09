@@ -46,7 +46,8 @@ namespace CEGUI
 String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!");
 
 //----------------------------------------------------------------------------//
-OpenGLRendererBase::OpenGLRendererBase()
+OpenGLRendererBase::OpenGLRendererBase() :
+    d_defaultTarget(0)
 {
     init();
     initialiseDisplaySizeWithViewportSize();
@@ -55,6 +56,7 @@ OpenGLRendererBase::OpenGLRendererBase()
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
+    d_defaultTarget(0),
     d_displaySize(display_size)
 {
     init();
@@ -63,31 +65,30 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
-    d_viewProjectionMatrix(0),
-    d_activeRenderTarget(0)
+    d_defaultTarget(0)
 {
     init(true, set_glew_experimental);
     initialiseDisplaySizeWithViewportSize();
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
-    d_displaySize(display_size),
-    d_viewProjectionMatrix(0),
-    d_activeRenderTarget(0)
+    d_defaultTarget(0),
+    d_displaySize(display_size)
 {
     init(true, set_glew_experimental);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 {
-    d_displayDPI.d_x = d_displayDPI.d_y = 96;
+    d_displayDPI.x = 96;
+    d_displayDPI.y = 96;
     d_initExtraStates = false;
     d_activeBlendMode = BM_INVALID;
-    d_viewProjectionMatrix = new mat4Pimpl();
 #if defined CEGUI_USE_GLEW
     if (init_glew)
     {
@@ -101,7 +102,7 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
             err_string << "failed to initialise the GLEW library. "
                 << glewGetErrorString(err);
 
-            CEGUI_THROW(RendererException(err_string.str().c_str()));
+            throw RendererException(err_string.str().c_str());
         }
         //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
         glGetError();

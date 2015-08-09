@@ -54,7 +54,6 @@ public:
     void finaliseVertexAttributes();
 
 protected:
-    void configureVertexArray() const;
     void initialiseVertexBuffers();
     void deinitialiseOpenGLBuffers();
     //! Update the OpenGL buffer objects containing the vertex data.
