@@ -152,7 +152,6 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_shaderManager(0)
 {
     init();
-    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
 }
 
 //----------------------------------------------------------------------------//
