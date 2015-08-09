@@ -155,7 +155,7 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
-                 0, GL_RGBA8, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_TEXTURE_2D, d_texture, 0);
 
@@ -201,7 +201,7 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
-                 0, GL_RGBA8, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     clear();
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
