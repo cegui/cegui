@@ -198,8 +198,12 @@ public:
     \return
         Pointer to a TextureTarget object that is suitable for caching imagery,
         or 0 if the renderer is unable to offer such a thing.
+
+   \param addStencilBuffer
+        A boolean that defines whether a stencil buffer should be attached to the
+        TextureTarget or not.
     */
-    virtual TextureTarget* createTextureTarget() = 0;
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer) = 0;
 
     /*!
     \brief

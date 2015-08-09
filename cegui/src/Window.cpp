@@ -92,6 +92,7 @@ const String Window::RiseOnClickEnabledPropertyName("RiseOnClickEnabled");
 const String Window::CursorPassThroughEnabledPropertyName("CursorPassThroughEnabled");
 const String Window::DragDropTargetPropertyName("DragDropTarget");
 const String Window::AutoRenderingSurfacePropertyName("AutoRenderingSurface");
+const String Window::AutoRenderingSurfaceStencilEnabledPropertyName("AutoRenderingSurfaceStencilEnabled");
 const String Window::TextParsingEnabledPropertyName("TextParsingEnabled");
 const String Window::MarginPropertyName("MarginProperty");
 const String Window::UpdateModePropertyName("UpdateMode");
@@ -225,6 +226,7 @@ Window::Window(const String& type, const String& name):
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
+    d_autoRenderingSurfaceStencilEnabled(false),
     d_cursor(0),
 
     // alpha transparency set up
@@ -1469,6 +1471,13 @@ void Window::addWindowProperties(void)
         "  Value is either \"true\" or \"false\".",
         &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false /* TODO: Inconsistency*/
     );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        AutoRenderingSurfaceStencilEnabledPropertyName, "Property to get/set whether the Window's texture caching (if activated) "
+        "will have a stencil buffer attached. This may be required for proper rendering of SVG images and Custom Shapes."
+        "  Value is either \"true\" or \"false\".",
+        &Window::setAutoRenderingSurfaceStencilEnabled, &Window::isAutoRenderingSurfaceStencilEnabled, false
+        );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         TextParsingEnabledPropertyName, "Property to get/set the text parsing setting for the Window.  "
@@ -3182,12 +3191,18 @@ bool Window::isUsingAutoRenderingSurface() const
     return d_autoRenderingWindow;
 }
 
+bool Window::isAutoRenderingSurfaceStencilEnabled() const
+{
+    return d_autoRenderingSurfaceStencilEnabled;
+}
+
+
 //----------------------------------------------------------------------------//
 void Window::setUsingAutoRenderingSurface(bool setting)
 {
     if (setting)
     {
-        allocateRenderingWindow();
+        allocateRenderingWindow(d_autoRenderingSurfaceStencilEnabled);
     }
     else
     {
@@ -3198,20 +3213,40 @@ void Window::setUsingAutoRenderingSurface(bool setting)
         d_autoRenderingWindow = setting;
     }
 
-    // while the actal area on screen may not have changed, the arrangement of
+    // while the actual area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
     notifyScreenAreaChanged();
 }
 
+void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
+{
+    if (d_autoRenderingSurfaceStencilEnabled != setting)
+    {
+        d_autoRenderingSurfaceStencilEnabled = setting;
+
+        if (!d_autoRenderingWindow)
+            return;
+
+        // We need to recreate the auto rendering window since we just changed a crucial setting for it
+        releaseRenderingWindow();
+        allocateRenderingWindow(setting);
+        d_autoRenderingWindow = true;
+
+        // while the actual area on screen may not have changed, the arrangement of
+        // surfaces and geometry did...
+        notifyScreenAreaChanged();
+    }
+}
+
 //----------------------------------------------------------------------------//
-void Window::allocateRenderingWindow()
+void Window::allocateRenderingWindow(bool addStencilBuffer)
 {
     if (!d_autoRenderingWindow)
     {
         d_autoRenderingWindow = true;
 
         TextureTarget* const t =
-            System::getSingleton().getRenderer()->createTextureTarget();
+            System::getSingleton().getRenderer()->createTextureTarget(addStencilBuffer);
 
         // TextureTargets may not be available, so check that first.
         if (!t)
