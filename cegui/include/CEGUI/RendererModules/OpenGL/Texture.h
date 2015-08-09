@@ -162,7 +162,7 @@ protected:
     Sizef d_size;
     //! cached image data for restoring the texture.
     uint8* d_grabBuffer;
-    //! original pixel of size data loaded into texture
+    //! original size of pixel data loaded into texture
     Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2f d_texelScaling;

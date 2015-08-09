@@ -72,6 +72,8 @@ public:
     //! Destructor.
     ~CEGuiOgreBaseApplication();
 
+    void destroyRenderer();
+
     //! called by the frame listener to perform requried per-frame updates.
     void doFrameUpdate(float elapsed);
 

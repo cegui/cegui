@@ -92,6 +92,7 @@ find_package(Ogre)
 find_package(OIS)
 find_package(DirectFB)
 find_package(OpenGLES)
+find_package(Epoxy)
 
 find_package(EXPAT)
 find_package(XercesC)
@@ -123,6 +124,11 @@ find_package(GTK2 COMPONENTS gtk)
 # set for consistency with other deps
 set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
+if (GLEW_FOUND OR EPOXY_FOUND)
+    set (OPENGL_LOADER_FOUND TRUE)
+else ()
+    set (OPENGL_LOADER_FOUND FALSE)
+endif ()
 
 ################################################################################
 # Define the configurable options
@@ -176,8 +182,8 @@ option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based Ima
 option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" FALSE )
 option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" ${PVRTOOLS_FOUND} )
 
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND" )
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND")
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the old OpenGL renderer module" "OPENGL_gl_LIBRARY;GLM_FOUND;GLEW_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the renderer module that supports OpenGL 3.2 (core profile) and OpenGL ES 2.0." "OPENGL_gl_LIBRARY;GLM_FOUND;OPENGL_LOADER_FOUND")
 option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" ${OGRE_FOUND} )
 option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" ${IRRLICHT_FOUND} )
 option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module (not supported!)" FALSE )
@@ -185,8 +191,7 @@ cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to bui
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" )
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
-option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
-
+option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGL ES 1 renderer module" ${OPENGLES_FOUND} )
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
@@ -202,10 +207,48 @@ if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
     message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
 endif()
 
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+    if (GLEW_FOUND AND EPOXY_FOUND)
+        option (CEGUI_USE_GLEW "Specifies whether to use GLEW as an OpenGL loading library." TRUE)
+        option (CEGUI_USE_EPOXY "Specifies whether to use Epoxy as an OpenGL loading library." FALSE)
+        if (CEGUI_USE_GLEW AND CEGUI_USE_EPOXY)
+            message (FATAL_ERROR "You may not enable both \"CEGUI_USE_GLEW\" and \"CEGUI_USE_EPOXY\". Please choose only one of these options.")
+        endif ()           
+    else ()
+        set (CEGUI_USE_GLEW "${GLEW_FOUND}")
+        set (CEGUI_USE_EPOXY "${EPOXY_FOUND}")
+    endif ()
+    if (CEGUI_BUILD_RENDERER_OPENGL AND NOT CEGUI_USE_GLEW)
+        message (FATAL_ERROR "Building the old OpenGL renderer module is only supported using GLEW.")
+    endif ()
+    set (CEGUI_GLFW_VER "" CACHE STRING "Specifies which major version of GLFW to use for the samples (2 or 3). The default is to look for both, giving priority to version 2.")
+    if (((CEGUI_GLFW_VER STREQUAL "2") OR (CEGUI_GLFW_VER STREQUAL "")) AND GLFW_FOUND)
+        set (CEGUI_USE_GLFW_VER "2")
+    elseif (((CEGUI_GLFW_VER STREQUAL "3")  OR (CEGUI_GLFW_VER STREQUAL "")) AND GLFW3_FOUND)
+        set (CEGUI_USE_GLFW_VER "3")
+    endif ()
+endif ()
+
+if (CEGUI_BUILD_RENDERER_OPENGL3 AND CEGUI_USE_EPOXY)
+    set (CEGUI_SUPPORT_RENDERER_OPENGLES2 TRUE)
+    set (CEGUI_OPENGL_VER_MAJOR_FORCE "" CACHE STRING "Run the samples as if a specific OpenGL (desktop or ES) major version is used. Useful for testing.")
+    mark_as_advanced (CEGUI_OPENGL_VER_MAJOR_FORCE)
+    set (CEGUI_OPENGL_VER_MINOR_FORCE "0" CACHE STRING "Run the samples as if a specific OpenGL (desktop or ES) minor version is used. Useful for testing.")
+    mark_as_advanced (CEGUI_OPENGL_VER_MINOR_FORCE)
+else ()
+    set (CEGUI_SUPPORT_RENDERER_OPENGLES2 FALSE)
+endif ()
+
+if (CEGUI_SUPPORT_RENDERER_OPENGLES2 AND (CEGUI_USE_GLFW_VER STREQUAL "3"))
+    set (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2 TRUE)
+else ()
+    set (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2 FALSE)
+endif ()
+
+
 # Here we check if Ogre is built to use boost, and if yes, if the necessary dependencies are available and found by CEGUI
 set (CEGUI_OGRE_DEPS_AVAILABLE FALSE)
 set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
-
 if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
     if (NOT Boost_VERSION LESS 105000 AND "${OGRE_THREAD_PROVIDER}" STREQUAL "1") #Check additionally if we use boost as thread provider at all
         if (Boost_SYSTEM_FOUND)
@@ -241,9 +284,9 @@ if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
-    if(NOT GLFW_FOUND)
+    if(NOT CEGUI_USE_GLFW_VER)
         set (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE FALSE)
-        message(STATUS "Info: The OpenGL- and/or OpenGL3 Renderers are disabled in the SampleBrowser because of missing dependencies (GLFW library).  Please add the GFLW dependency and run 'Configure' in CMake again, in case you want to run the SampleBrowser using the OpenGL or OpenGL3 Renderers.")
+        message(STATUS "Info: The OpenGL-, OpenGL3 and/or OpenGL ES 2 Renderers are disabled in the SampleBrowser because of missing dependencies (GLFW 2/3 library).  Please add the GFLW dependency and run 'Configure' in CMake again, in case you want to run the SampleBrowser using the OpenGL, OpenGL3 or OpenGL ES 2 Renderers.")
     endif()
 endif()
 
@@ -307,7 +350,6 @@ cegui_set_library_name( CEGUI_BASE_LIBNAME CEGUIBase )
 
 # Renderer module names.
 cegui_set_library_name( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
-cegui_set_library_name( CEGUI_OPENGL3_RENDERER_LIBNAME CEGUIOpenGL3Renderer )
 cegui_set_library_name( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
 cegui_set_library_name( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
 cegui_set_library_name( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )

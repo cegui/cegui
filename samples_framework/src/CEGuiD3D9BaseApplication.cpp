@@ -85,11 +85,6 @@ pimpl(new CEGuiBaseApplication9Impl),
 //----------------------------------------------------------------------------//
 CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
 {
-    Win32AppHelper::mouseLeaves();
-
-    CEGUI::Direct3D9Renderer::destroy(
-        *static_cast<CEGUI::Direct3D9Renderer*>(d_renderer));
-
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
     // cleanup direct 3d systems
@@ -99,6 +94,15 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
     DestroyWindow(pimpl->d_window);
 
     delete pimpl;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiD3D9BaseApplication::destroyRenderer()
+{
+    Win32AppHelper::mouseLeaves();
+
+    CEGUI::Direct3D9Renderer::destroy(
+        *static_cast<CEGUI::Direct3D9Renderer*>(d_renderer));
 }
 
 //----------------------------------------------------------------------------//

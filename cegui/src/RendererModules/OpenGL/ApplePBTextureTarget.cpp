@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "GL/glew.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/ApplePBTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
@@ -173,7 +173,7 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Sizef& sz)
 
     CGLError err;
     if (err = CGLCreatePBuffer(d_area.getWidth(), d_area.getHeight(),
-                                GL_TEXTURE_2D, GL_RGBA, 0, &d_pbuffer))
+                                GL_TEXTURE_2D, GL_RGBA8, 0, &d_pbuffer))
     {
         CEGUI_THROW(RendererException(
             "CGLCreatePBuffer failed: " + String(CGLErrorString(err))));

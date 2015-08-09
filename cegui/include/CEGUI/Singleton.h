@@ -80,7 +80,7 @@ public:
         {  return ( ms_Singleton );  }
 
 private:
-    Singleton& operator=(const Singleton&) { return this; }
+    Singleton& operator=(const Singleton&) { return *this; }
     Singleton(const Singleton&) {}
 };
 

@@ -37,7 +37,19 @@ namespace CEGUI
 
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL version >= 3.2 or OpenGL ES
+    version >= 2.
+
+    Note: to use this renderer with OpenGL ES 2.0, the Epoxy OpenGL loading
+    library (https://github.com/yaronct/libepoxy, major version 1)
+    must first be installed, and CEGUI must be configured with
+    "-DCEGUI_BUILD_RENDERER_OPENGL=OFF -DCEGUI_BUILD_RENDERER_OPENGL3=ON
+    -DCEGUI_USE_EPOXY=ON -DCEGUI_USE_GLEW=OFF".
+
+    Note: Your OpenGL context must already be initialised when you call this;
+    CEGUI will not create the OpenGL context itself. Nothing special has to be
+    done to choose between desktop OpenGL and OpenGL ES: the type is
+    automatically determined by the type of the current OpenGL context.
 */
 class OPENGL_GUIRENDERER_API OpenGL3Renderer : public OpenGLRendererBase
 {
@@ -216,6 +228,7 @@ public:
                                  const bool force = false);
 
 private:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl();
     TextureTarget* createTextureTarget_impl();
 
@@ -224,10 +237,6 @@ private:
     /*!
     \brief
         Constructor for OpenGL Renderer objects
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
     OpenGL3Renderer();
 
@@ -237,15 +246,12 @@ private:
 
     \param display_size
         Size object describing the initial display resolution.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
     OpenGL3Renderer(const Sizef& display_size);
 
+    void init();
+
     void initialiseOpenGLShaders();
-    void initialiseGLExtensions();
 
 protected:
     /*!
@@ -273,8 +279,9 @@ private:
     GLint d_shaderStandardMatrixLoc;
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper* d_openGLStateChanger;
+    //! Wrapper for creating and handling shaders
     OpenGL3ShaderManager* d_shaderManager;
-    //! whether S3TC texture compression is supported by the context
+    //! \deprecated This attribute and associated functionality has been moved/replaced to/by the OpenGLInfo class
     bool d_s3tcSupported;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;

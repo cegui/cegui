@@ -29,6 +29,21 @@ Specifies whether bi-directional text will be supported via the embedded
 minibidi.
 @note You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please
 choose only one of these options.
+@subsection build_options_use_glew CEGUI_USE_GLEW
+Specifies whether to use GLEW as an OpenGL loading library.
+@note You may not enable both "CEGUI_USE_GLEW" and "CEGUI_USE_EPOXY". Please
+choose only one of these options.
+@subsection build_options_use_epoxy CEGUI_USE_EPOXY
+Specifies whether to use Epoxy as an OpenGL loading library.
+@note You may not enable both "CEGUI_USE_GLEW" and "CEGUI_USE_EPOXY". Please
+choose only one of these options.
+@subsection build_options_glfw_ver CEGUI_GLFW_VER
+Specifies which major version of GLFW to use for the samples (2 or 3). The
+default is to look for both, giving priority to version 2.
+@note For desktop OpenGL rendering, either version 2 or 3 is required. For
+OpenGL ES 2.0 renderering, version 3 is required. To use OpenGL ES 2.0 with EGL,
+GLFW 3 must be used, and GLFW 3 must be built configured with
+"-DGLFW_USE_EGL=ON -DGLFW_CLIENT_LIBRARY=glesv2".
 @subsection build_options_string_class CEGUI_STRING_CLASS
 Which string class should CEGUI use:
 - 1 - utf8 and utf32 aware inbuilt string,
@@ -70,10 +85,10 @@ Specifies whether to build the regression and performance tests.
 @section build_options_renderers Renderer Modules
 @subsection build_options_gl_renderer CEGUI_BUILD_RENDERER_OPENGL
 Specifies whether to include OpenGLRenderer (supports older fixed function
-pipeline) in the OpenGL renderer module
+pipeline desktop OpenGL 1.2) in the OpenGL renderer module
 @subsection build_options_gl3_renderer CEGUI_BUILD_RENDERER_OPENGL3
-Specifies whether to include OpenGL3Renderer OpenGL 3+ (core profile) in
-the OpenGL renderer module
+Specifies whether to include OpenGL3Renderer (supports desktop OpenGL 3.2 (core
+profile) and OpenGL ES 2.0) in the OpenGL renderer module
 @subsection build_options_ogre_renderer CEGUI_BUILD_RENDERER_OGRE
 Specifies whether to build the Ogre renderer module
 @subsection build_options_irr_renderer CEGUI_BUILD_RENDERER_IRRLICHT
@@ -151,23 +166,6 @@ Specifies whether to build the Python extension module(s)
 
 @section build_options_samples Sample Framework and Samples
 @subsection build_options_samples_enabled CEGUI_SAMPLES_ENABLED
-Specifies whether to build the CEGUI sample applications
-@subsection build_options_samples_use_gl CEGUI_SAMPLES_USE_OPENGL
-Specifies whether the sample applications will use OpenGLRenderer
-@subsection build_options_samples_use_gl3 CEGUI_SAMPLES_USE_OPENGL3
-Specifies whether the sample applications will use OpenGL3Renderer.
-@subsection build_options_samples_use_ogre CEGUI_SAMPLES_USE_OGRE
-Specifies whether the sample applications will use the Ogre renderer
-@subsection build_options_samples_use_irr CEGUI_SAMPLES_USE_IRRLICHT
-Specifies whether the sample applications will use the Irrlicht renderer
-@subsection build_options_samples_use_dfb CEGUI_SAMPLES_USE_DIRECTFB
-Specifies whether the sample applications will use the DirectFB renderer
-@subsection build_options_samples_use_d3d9 CEGUI_SAMPLES_USE_DIRECT3D9
-Specifies whether the sample applications will use the Direct3D 9 renderer
-@subsection build_options_samples_use_d3d10 CEGUI_SAMPLES_USE_DIRECT3D10
-Specifies whether the sample applications will use the Direct3D 10 renderer
-@subsection build_options_samples_use_d3d11 CEGUI_SAMPLES_USE_DIRECT3D11
-Specifies whether the sample applications will use the Direct3D 11 renderer
 @subsection build_options_samples_use_gtk2 CEGUI_SAMPLES_USE_GTK2
 Specifies whether the sample applications will make use of the GTK2 UI for
 renderer selection.
