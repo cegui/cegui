@@ -82,7 +82,7 @@ uint OpenGLESFBOTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner) :
-    OpenGLESRenderTarget<TextureTarget>(owner),
+    OpenGLESRenderTarget(owner),
     d_texture(0)
 {
     // this essentially creates a 'null' CEGUI::Texture
@@ -239,16 +239,10 @@ void OpenGLESFBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLESFBOTextureTarget::isRenderingInverted() const
-{
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLESFBOTextureTarget::initializedFBOExtension()
 {
 	if (!OpenGLESRenderer::isGLExtensionSupported("GL_OES_framebuffer_object"))
-	    CEGUI_THROW(InvalidRequestException("This platform does not support FBO"));
+	    throw InvalidRequestException("This platform does not support FBO");
 
 #ifndef __APPLE__
 	glIsRenderbufferEXT =
@@ -304,7 +298,4 @@ void OpenGLESFBOTextureTarget::initializedFBOExtension()
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

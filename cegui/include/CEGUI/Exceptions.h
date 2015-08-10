@@ -44,8 +44,7 @@ namespace CEGUI
 {
 //! Root exception class used within the GUI system.
 class  CEGUIEXPORT Exception :
-    public std::exception,
-    public AllocatedObject<Exception>
+    public std::exception
 {
 public:
     //! Virtual destructor.
@@ -771,6 +770,63 @@ public:
 #define ScriptException(message)  \
     ScriptException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
+//----------------------------------------------------------------------------//
+
+//! Exception class used for issues in scripting subsystem.
+class CEGUIEXPORT SVGParsingException : public Exception
+{
+public:
+    /*!
+    \brief
+        Constructor that is responsible for logging the script exception by
+        calling the base class.
+
+    \param message
+        String object describing the reason for the script exception being
+        thrown.
+
+    \param filename
+        String object containing the name of the file where the script exception
+        occurred.
+
+    \param line
+        Integer representing the line number where the script exception
+        occurred.
+
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
+    \remarks
+        The script exception name is automatically passed to the base class as
+        "CEGUI::ScriptException".
+    */
+    SVGParsingException(const String& message,
+                    const String& file = "unknown", int line = 0,
+                    const String& function = "unknown") :
+        Exception(message, "CEGUI::SVGParsingException", file, line, function)
+    {}
+};
+
+/*!
+\brief
+    This helper macro ensures the correct filename and line number where the
+    script exception occurred are passed to the exception itself.
+
+\remarks
+    There's a bug in Visual Studio 7.1
+    (see http://support.microsoft.com/kb/199057/en) and lower which leads to
+    incorrect __LINE__ macro expansion if used inside a function and compiled
+    with "Program Database for Edit & Continue" (/ZI) where instead of a
+    constant expressing line number you'll get the following:
+    (__LINE__Var+constant).  The workaround consists in using compiler option
+    "Program Database" (/Zi) instead --> Project Properties\C/C++\General\Debug
+    Information Format\Program Database (/Zi).  Visual Studio 2005 corrects the
+    problem. Premake files were modified to contemplate this for VS2002 and
+    VS2003.
+*/
+#define SVGParsingException(message)  \
+    SVGParsingException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 

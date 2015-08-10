@@ -47,13 +47,11 @@ enum BidiCharType
 };
 
 //! Abstract class to wrap a Bidi visual mapping of a text string.
-class CEGUIEXPORT BidiVisualMapping :
-    public AllocatedObject<BidiVisualMapping>
+class CEGUIEXPORT BidiVisualMapping
 {
 public:
     //! type definition for collection used to hold mapping index lists.
-    typedef std::vector<int
-        CEGUI_VECTOR_ALLOC(int)> StrIndexList;
+    typedef std::vector<int> StrIndexList;
 
     //! Destructor.
     virtual ~BidiVisualMapping();

@@ -35,10 +35,10 @@ namespace CEGUI
 {
 /*!
 \brief
-    OpenGL implementation of a RenderTarget that represents am on-scren
+    OpenGL implementation of a RenderTarget that represents an on-screen
     viewport.
 */
-class OPENGL_GUIRENDERER_API OpenGLViewportTarget : public OpenGLRenderTarget<RenderTarget>
+class OPENGL_GUIRENDERER_API OpenGLViewportTarget : public OpenGLRenderTarget
 {
 public:
     /*!
@@ -48,18 +48,18 @@ public:
     */
     OpenGLViewportTarget(OpenGLRendererBase& owner);
 
-    virtual ~OpenGLViewportTarget();
-
     /*!
     \brief
-        Construct a OpenGLViewportTarget that uses the specified Rect as it's
-        initial area.
+    Construct a OpenGLViewportTarget that uses the specified Rect as it's
+    initial area.
 
     \param area
-        Rect object describing the initial viewport area that should be used for
-        the RenderTarget.
+    Rect object describing the initial viewport area that should be used for
+    the RenderTarget.
     */
     OpenGLViewportTarget(OpenGLRendererBase& owner, const Rectf& area);
+
+    virtual ~OpenGLViewportTarget();
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

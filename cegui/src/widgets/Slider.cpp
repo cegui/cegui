@@ -176,14 +176,14 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when a mouse button is pressed
+    Handler for when a cursor is pressed
 *************************************************************************/
-void Slider::onMouseButtonDown(MouseEventArgs& e)
+void Slider::onCursorPressHold(CursorInputEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onCursorPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == CIS_Left)
 	{
 		float adj = getAdjustDirectionFromPoint(e.position);
 
@@ -195,20 +195,19 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 
 /*************************************************************************
 	Handler for scroll wheel changes
 *************************************************************************/
-void Slider::onMouseWheel(MouseEventArgs& e)
+void Slider::onScroll(CursorInputEventArgs& e)
 {
 	// base class processing
-	Window::onMouseWheel(e);
+	Window::onScroll(e);
 
-	// scroll by e.wheelChange * stepSize
-	setCurrentValue(d_value + d_step * e.wheelChange);
+	// scroll by vertical scroll * stepSize
+	setCurrentValue(d_value + d_step * e.scroll);
 
 	// ensure the message does not go to our parent.
 	++e.handled;
@@ -263,12 +262,12 @@ void Slider::addSliderProperties(void)
         "CurrentValue", "Property to get/set the current value of the slider.  Value is a float.",
         &Slider::setCurrentValue, &Slider::getCurrentValue, 0.0f
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "MaximumValue", "Property to get/set the maximum value of the slider.  Value is a float.",
         &Slider::setMaxValue, &Slider::getMaxValue, 1.0f /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "ClickStepSize", "Property to get/set the click-step size for the slider.  Value is a float.",
         &Slider::setClickStep, &Slider::getClickStep, 0.01f /* TODO: Inconsistency */
@@ -297,8 +296,8 @@ void Slider::updateThumb(void)
     else
     {
         //updateThumb_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -316,8 +315,8 @@ float Slider::getValueFromThumb(void) const
     else
     {
         //return getValueFromThumb_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -325,7 +324,7 @@ float Slider::getValueFromThumb(void) const
     Given window location 'pt', return a value indicating what change
     should be made to the scroll bar.
 *************************************************************************/
-float Slider::getAdjustDirectionFromPoint(const Vector2f& pt) const
+float Slider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 {
     if (d_windowRenderer != 0)
     {
@@ -335,8 +334,8 @@ float Slider::getAdjustDirectionFromPoint(const Vector2f& pt) const
     else
     {
         //return getAdjustDirectionFromPoint_impl(pt);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
