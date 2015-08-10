@@ -365,7 +365,7 @@ HSV_Colour ColourPickerControls::getColourSliderPositionColourHSV(float value)
 void ColourPickerControls::initColourPickerControlsImageSet()
 {
     d_colourPickerControlsTextureTarget =
-        System::getSingleton().getRenderer()->createTextureTarget();
+        System::getSingleton().getRenderer()->createTextureTarget(false);
 
     const String baseName(
         d_colourPickerControlsTextureTarget->getTexture().getName());

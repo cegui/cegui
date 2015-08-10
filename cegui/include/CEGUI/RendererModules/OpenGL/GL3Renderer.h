@@ -177,7 +177,7 @@ public:
 protected:
     //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    TextureTarget* createTextureTarget_impl();
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer);
     //! creates a texture of GL3Texture type
     virtual OpenGLTexture* createTexture_impl(const String& name);
 
