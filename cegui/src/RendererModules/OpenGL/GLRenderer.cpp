@@ -213,7 +213,7 @@ OpenGLGeometryBufferBase* OpenGLRenderer::createGeometryBuffer_impl(CEGUI::RefCo
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLRenderer::createTextureTarget_impl()
+TextureTarget* OpenGLRenderer::createTextureTarget_impl(bool addStencilBuffer)
 {
     return d_textureTargetFactory->create(*this);
 }

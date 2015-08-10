@@ -231,7 +231,7 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
     CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
 
     //! Creating a texcture target to render the GUIContext onto
-    d_textureTarget = system.getRenderer()->createTextureTarget();
+    d_textureTarget = system.getRenderer()->createTextureTarget(false);
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
     d_textureTarget->declareRenderSize(size);
 

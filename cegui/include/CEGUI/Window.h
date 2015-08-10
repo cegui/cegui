@@ -199,8 +199,10 @@ public:
     static const String CursorPassThroughEnabledPropertyName;
     //! Name of property to access for the Window will receive drag and drop related notifications.
     static const String DragDropTargetPropertyName;
-    //! Name of property to access for the Window will automatically attempt to use a full imagery caching RenderingSurface (if supported by the renderer).
+    //! Name of property to access for the Window whether texture caching should be activated or not. Will only have an effect if the Renderer supports texture caching.
     static const String AutoRenderingSurfacePropertyName;
+    //! Name of property to access for the Window whether texture caching should have a stencil buffer attached for stencil operations, as used in SVG and Custom Shape rendering.
+    static const String AutoRenderingSurfaceStencilEnabledPropertyName;
     //! Name of property to access for the text parsing setting for the Window.
     static const String TextParsingEnabledPropertyName;
     //! Name of property to access for the margin for the Window.
@@ -1412,6 +1414,18 @@ public:
 
     /*!
     \brief
+        Returns whether the Window's texture caching (if activated) will have a stencil buffer
+        attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
+        For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
+
+    \return
+    - true to provide stencil buffer functionality with the texture caching.
+    - false to not provide a stencil buffer functionality with the texture caching.
+    */
+    bool isAutoRenderingSurfaceStencilEnabled() const;
+
+    /*!
+    \brief
         Returns the window at the root of the hierarchy starting at this
         Window.  The root window is defined as the first window back up the
         hierarchy that has no parent window.
@@ -2522,6 +2536,19 @@ public:
     */
     void setUsingAutoRenderingSurface(bool setting);
 
+    /*!
+    \brief
+        Sets whether the Window's texture caching (if activated) will have a stencil buffer
+        attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
+        For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
+
+    \param setting
+        - true to provide stencil buffer functionality with the texture caching.
+        - false to not provide a stencil buffer functionality with the texture caching.
+    */
+    void setAutoRenderingSurfaceStencilEnabled(bool setting);
+  
+
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
     //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
@@ -3373,7 +3400,7 @@ protected:
     void notifyClippingChanged(void);
 
     //! helper to create and setup the auto RenderingWindow surface
-    void allocateRenderingWindow();
+    void allocateRenderingWindow(bool addStencilBuffer);
 
     //! helper to clean up the auto RenderingWindow surface
     void releaseRenderingWindow();
@@ -3612,6 +3639,8 @@ protected:
     mutable bool d_needsRedraw;
     //! holds setting for automatic creation of of surface (RenderingWindow)
     bool d_autoRenderingWindow;
+    //! holds setting for stencil buffer usage in texture caching
+    bool d_autoRenderingSurfaceStencilEnabled;
 
     //! Holds pointer to the Window objects current cursor image.
     const Image* d_cursor;

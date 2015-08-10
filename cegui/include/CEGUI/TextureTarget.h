@@ -40,8 +40,8 @@ namespace CEGUI
 class CEGUIEXPORT TextureTarget : virtual public RenderTarget
 {
 public:
+    TextureTarget(bool usesStencil) : d_usesStencil(usesStencil) {}
     virtual ~TextureTarget();
-
 
     /*!
     \brief
