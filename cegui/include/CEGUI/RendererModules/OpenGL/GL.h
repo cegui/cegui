@@ -175,6 +175,9 @@ public:
     bool isSeperateReadAndDrawFramebufferSupported() const
       { return d_isSeperateReadAndDrawFramebufferSupported; }
 
+    bool isSizedInternalFormatSupported() const
+      { return d_isSizedInternalFormatSupported; }
+
     /* For internal use. Used to force the object to act is if we're using a
        context of the specificed "verMajor_.verMinor_". This is useful to
        check that an OpenGL (desktop/ES) version lower than the actual one
@@ -202,6 +205,7 @@ private:
     bool d_isPolygonModeSupported;
     bool d_isSeperateReadAndDrawFramebufferSupported;
     bool d_isVaoSupported;
+    bool d_isSizedInternalFormatSupported;
 };
 
 } // namespace CEGUI
