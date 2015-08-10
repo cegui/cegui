@@ -52,7 +52,7 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner);
+    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer);
     virtual ~OpenGLWGLPBTextureTarget();
 
     // overrides from OpenGLRenderTarget

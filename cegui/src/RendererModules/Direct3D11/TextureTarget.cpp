@@ -36,8 +36,9 @@ const float Direct3D11TextureTarget::DEFAULT_SIZE = 128.0f;
 uint Direct3D11TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-Direct3D11TextureTarget::Direct3D11TextureTarget(Direct3D11Renderer& owner) :
+Direct3D11TextureTarget::Direct3D11TextureTarget(Direct3D11Renderer& owner, bool addStencilBuffer) :
     Direct3D11RenderTarget(owner),
+    TextureTarget(addStencilBuffer),
     d_texture(0),
     d_renderTargetView(0),
     d_previousRenderTargetView(0),

@@ -43,7 +43,7 @@ class NULL_GUIRENDERER_API NullTextureTarget : public NullRenderTarget, public T
 {
 public:
     //! Constructor.
-    NullTextureTarget(NullRenderer& owner);
+    NullTextureTarget(NullRenderer& owner, bool addStencilBuffer);
     //! Destructor.
     virtual ~NullTextureTarget();
 

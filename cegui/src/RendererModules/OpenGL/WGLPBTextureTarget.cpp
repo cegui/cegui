@@ -55,8 +55,8 @@ int pbAttrs[] =
 };
 
 //----------------------------------------------------------------------------//
-OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLTextureTarget(owner),
+OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer),
     d_pixfmt(0),
     d_pbuffer(0),
     d_context(0),

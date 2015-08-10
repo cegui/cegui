@@ -169,12 +169,12 @@ void IrrlichtRenderer::destroyAllGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* IrrlichtRenderer::createTextureTarget()
+TextureTarget* IrrlichtRenderer::createTextureTarget(bool addStencilBuffer)
 {
     if (!d_driver->queryFeature(irr::video::EVDF_RENDER_TO_TARGET))
         return 0;
 
-    TextureTarget* tt = new IrrlichtTextureTarget(*this, *d_driver);
+    TextureTarget* tt = new IrrlichtTextureTarget(*this, *d_driver, addStencilBuffer);
     d_textureTargets.push_back(tt);
     return tt;
 }

@@ -44,8 +44,10 @@ uint OgreTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
-                                     Ogre::RenderSystem& rs) :
+                                     Ogre::RenderSystem& rs,
+                                     bool addStencilBuffer) :
     OgreRenderTarget(owner, rs),
+    TextureTarget(addStencilBuffer),
     d_CEGUITexture(0)
 {
     d_CEGUITexture = static_cast<OgreTexture*>(

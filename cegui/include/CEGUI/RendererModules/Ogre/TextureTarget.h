@@ -43,7 +43,7 @@ class OGRE_GUIRENDERER_API OgreTextureTarget : public OgreRenderTarget, public T
 {
 public:
     //! Constructor.
-    OgreTextureTarget(OgreRenderer& owner, Ogre::RenderSystem& rs);
+    OgreTextureTarget(OgreRenderer& owner, Ogre::RenderSystem& rs, bool addStencilBuffer);
     //! Destructor.
     virtual ~OgreTextureTarget();
 

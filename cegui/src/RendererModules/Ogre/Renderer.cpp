@@ -454,9 +454,9 @@ RenderTarget& OgreRenderer::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OgreRenderer::createTextureTarget()
+TextureTarget* OgreRenderer::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem);
+    TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem, addStencilBuffer);
     d_pimpl->d_textureTargets.push_back(tt);
     return tt;
 }

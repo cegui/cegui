@@ -36,8 +36,9 @@ uint NullTextureTarget::s_textureNumber = 0;
 const float NullTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-NullTextureTarget::NullTextureTarget(NullRenderer& owner) :
+NullTextureTarget::NullTextureTarget(NullRenderer& owner, bool addStencilBuffer) :
     NullRenderTarget(owner),
+    TextureTarget(addStencilBuffer),
     d_CEGUITexture(0)
 {
     d_CEGUITexture = static_cast<NullTexture*>(

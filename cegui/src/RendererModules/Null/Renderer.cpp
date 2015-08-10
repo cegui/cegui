@@ -155,9 +155,9 @@ GeometryBuffer& NullRenderer::createGeometryBufferColoured(RefCounted<RenderMate
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* NullRenderer::createTextureTarget()
+TextureTarget* NullRenderer::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* tt = new NullTextureTarget(*this);
+    TextureTarget* tt = new NullTextureTarget(*this, addStencilBuffer);
     d_textureTargets.push_back(tt);
     return tt;
 }

@@ -35,10 +35,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    TextureTarget(addStencilBuffer)
-    d_owner(owner),
+
     
 OpenGLRenderTarget::OpenGLRenderTarget(OpenGLRendererBase& owner) :
+    d_owner(owner)
 {
 }
 

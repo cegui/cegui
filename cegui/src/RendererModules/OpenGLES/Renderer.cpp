@@ -284,9 +284,9 @@ void OpenGLESRenderer::destroyAllGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLESRenderer::createTextureTarget()
+TextureTarget* OpenGLESRenderer::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* t = d_textureTargetFactory->create(*this);
+    TextureTarget* t = d_textureTargetFactory->create(*this, addStencilBuffer);
     d_textureTargets.push_back(t);
     return t;
 }

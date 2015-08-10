@@ -79,8 +79,8 @@ static void APIENTRY activeTextureDummy(GLenum) {}
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    virtual TextureTarget* create(OpenGLRendererBase& r) const
-        { return new T(r); }
+    virtual TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const
+        { return new T(r, addStencilBuffer); }
 };
 
 //----------------------------------------------------------------------------//
@@ -215,7 +215,7 @@ OpenGLGeometryBufferBase* OpenGLRenderer::createGeometryBuffer_impl(CEGUI::RefCo
 //----------------------------------------------------------------------------//
 TextureTarget* OpenGLRenderer::createTextureTarget_impl(bool addStencilBuffer)
 {
-    return d_textureTargetFactory->create(*this);
+    return d_textureTargetFactory->create(*this, addStencilBuffer);
 }
 
 //----------------------------------------------------------------------------//
