@@ -79,15 +79,15 @@ namespace CEGUI
         Falagard_xmlHandler handler(this);
 
         // perform parse of XML data
-        CEGUI_TRY
+        try
         {
             System::getSingleton().getXMLParser()->parseXML(
                 handler, source, FalagardSchemaName);
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecificationFromContainer - loading of look and feel data from raw data container has failed.", Errors);
-            CEGUI_RETHROW;
+            throw;
         }
     }
     
@@ -96,24 +96,24 @@ namespace CEGUI
         // valid filenames are required!
         if (filename.empty())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "Filename supplied for look & feel file must be valid"));
+            throw InvalidRequestException(
+                "Filename supplied for look & feel file must be valid");
         }
 
         // create handler object
         Falagard_xmlHandler handler(this);
 
         // perform parse of XML data
-        CEGUI_TRY
+        try
         {
             System::getSingleton().getXMLParser()->parseXMLFile(
                 handler, filename, FalagardSchemaName,
                 resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from file '" + filename +"' has failed.", Errors);
-            CEGUI_RETHROW;
+            throw;
         }
     }
     
@@ -123,15 +123,15 @@ namespace CEGUI
         Falagard_xmlHandler handler(this);
 
         // perform parse of XML data
-        CEGUI_TRY
+        try
         {
             System::getSingleton().getXMLParser()->parseXMLString(
                 handler, source, FalagardSchemaName);
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from string has failed.", Errors);
-            CEGUI_RETHROW;
+            throw;
         }
     }
 
@@ -149,8 +149,8 @@ namespace CEGUI
             return (*wlf).second;
         }
 
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLook '" + widget + "' does not exist."));
+        throw UnknownObjectException(
+            "WidgetLook '" + widget + "' does not exist.");
     }
 
     void WidgetLookManager::eraseWidgetLook(const String& widget)
@@ -193,12 +193,12 @@ namespace CEGUI
         xml.openTag(Falagard_xmlHandler::FalagardElement);
         xml.attribute(Falagard_xmlHandler::VersionAttribute, Falagard_xmlHandler::NativeVersion);
         
-        CEGUI_TRY
+        try
         {
             // output the desired widget look data
             getWidgetLook(name).writeXMLToStream(xml);
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::writeWidgetLookToStream - Failed to write widget look XML data to stream.", Errors);
         }
@@ -261,12 +261,6 @@ namespace CEGUI
         writeWidgetLookSetToStream(widgetLookNameSet, str);
 
         return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
-    }
-
-    WidgetLookManager::WidgetLookIterator
-    WidgetLookManager::getWidgetLookIterator() const
-    {
-        return WidgetLookIterator(d_widgetLooks.begin(),d_widgetLooks.end());
     }
 
     WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookPointerMap()

@@ -65,8 +65,8 @@ namespace CEGUI
     {
         if (index >= d_attrs.size())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "The specified index is out of range for this XMLAttributes block."));
+            throw InvalidRequestException(
+                "The specified index is out of range for this XMLAttributes block.");
         }
 
         AttributeMap::const_iterator iter = d_attrs.begin();
@@ -79,8 +79,8 @@ namespace CEGUI
     {
         if (index >= d_attrs.size())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "The specified index is out of range for this XMLAttributes block."));
+            throw InvalidRequestException(
+                "The specified index is out of range for this XMLAttributes block.");
         }
 
         AttributeMap::const_iterator iter = d_attrs.begin();
@@ -99,12 +99,12 @@ namespace CEGUI
         }
         else
         {
-            CEGUI_THROW(UnknownObjectException(
-                "no value exists for an attribute named '" + attrName + "'."));
+            throw UnknownObjectException(
+                "no value exists for an attribute named '" + attrName + "'.");
         }
     }
 
-    const String& XMLAttributes::getValueAsString(const String& attrName, const String& def) const
+    String XMLAttributes::getValueAsString(const String& attrName, const String& def) const
     {
         return (exists(attrName)) ? getValue(attrName) : def;
     }
@@ -129,8 +129,8 @@ namespace CEGUI
         }
         else
         {
-            CEGUI_THROW(InvalidRequestException(
-                "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to bool."));
+            throw InvalidRequestException(
+                "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to bool.");
         }
     }
 
@@ -149,8 +149,8 @@ namespace CEGUI
         // Check for success and end-of-file
         if(strm.fail() || !strm.eof())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to integer."));
+            throw InvalidRequestException(
+                "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to integer.");
         }
 
         return val;
@@ -171,8 +171,8 @@ namespace CEGUI
         // Check for success and end-of-file
         if(strm.fail() || !strm.eof())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to float."));
+            throw InvalidRequestException(
+                "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to float.");
         }
 
         return val;

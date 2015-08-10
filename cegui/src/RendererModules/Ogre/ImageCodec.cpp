@@ -108,8 +108,8 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // load the resulting image into the texture
     result->loadFromMemory(image.getData(),
-                           Sizef(image.getWidth(),
-                                  image.getHeight()),
+                           Sizef(static_cast<float>(image.getWidth()),
+                                 static_cast<float>(image.getHeight()) ),
                            cegui_pf);
 
     return result;

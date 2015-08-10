@@ -1,8 +1,9 @@
 /***********************************************************************
-    created:    Wed May 5 2010
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -23,12 +24,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
+
 #include <d3d11.h>
-#include <d3dx11effect.h>
 
 
 // Start of CEGUI namespace section
@@ -169,7 +171,7 @@ const Sizef& Direct3D11Texture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& Direct3D11Texture::getTexelScaling() const
+const glm::vec2& Direct3D11Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -181,8 +183,8 @@ void Direct3D11Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created!"));
+        throw RendererException(
+            "CEGUI::System object has not been created!");
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -196,9 +198,9 @@ void Direct3D11Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -207,8 +209,8 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
                                        PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     cleanupDirect3D11Texture();
 
@@ -248,14 +250,14 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
     data.pSysMem = img_src;
     data.SysMemPitch = calculateDataWidth(tex_desc.Width, pixel_format);
 
-    HRESULT hr = d_device.d_device->CreateTexture2D(&tex_desc, &data, &d_texture);
+    HRESULT hr = d_device.CreateTexture2D(&tex_desc, &data, &d_texture);
 
     if (pixel_format == PF_RGB)
         delete[] img_src;
 
     if (FAILED(hr))
-        CEGUI_THROW(RendererException(
-            "Failed to create texture from memory buffer."));
+        throw RendererException(
+            "Failed to create texture from memory buffer.");
 
     initialiseShaderResourceView();
 
@@ -282,9 +284,9 @@ void Direct3D11Texture::blitFromMemory(const void* sourceData, const Rectf& area
                          static_cast<UINT>(area.bottom()),
                          1};
 
-    d_device.d_context->UpdateSubresource(d_texture, 0, &dst_box, buff,
-                                          static_cast<UINT>(area.getWidth()) * 4,
-                                          0);
+    d_deviceContext.UpdateSubresource(d_texture, 0, &dst_box, buff,
+                                       static_cast<UINT>(area.getWidth()) * 4,
+                                       0);
 
     delete[] buff;
 }
@@ -305,12 +307,12 @@ void Direct3D11Texture::blitToMemory(void* targetData)
     tex_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 
     ID3D11Texture2D* offscreen;
-    if (SUCCEEDED(d_device.d_device->CreateTexture2D(&tex_desc, 0, &offscreen)))
+    if (SUCCEEDED(d_device.CreateTexture2D(&tex_desc, 0, &offscreen)))
     {
-        d_device.d_context->CopyResource(offscreen, d_texture);
+        d_deviceContext.CopyResource(offscreen, d_texture);
 
         D3D11_MAPPED_SUBRESOURCE mapped_tex;
-        if (SUCCEEDED(d_device.d_context->Map(offscreen, 0, D3D11_MAP_READ,
+        if (SUCCEEDED(d_deviceContext.Map(offscreen, 0, D3D11_MAP_READ,
                                               0, &mapped_tex)))
         {
             blitFromSurface(static_cast<uint32*>(mapped_tex.pData),
@@ -319,7 +321,7 @@ void Direct3D11Texture::blitToMemory(void* targetData)
                                    static_cast<float>(tex_desc.Height)),
                             mapped_tex.RowPitch);
 
-            d_device.d_context->Unmap(offscreen, 0);
+            d_deviceContext.Unmap(offscreen, 0);
         }
         else
             exception_msg.assign("ID3D11Texture2D::Map failed.");
@@ -331,7 +333,7 @@ void Direct3D11Texture::blitToMemory(void* targetData)
             "ID3D11Device::CreateTexture2D failed for 'offscreen'.");
 
     if (!exception_msg.empty())
-        CEGUI_THROW(RendererException(exception_msg));
+        throw RendererException(exception_msg);
 }
 
 //----------------------------------------------------------------------------//
@@ -363,7 +365,7 @@ void Direct3D11Texture::updateCachedScaleValues()
     // on the original size.
     // if texture is wider (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
+    d_texelScaling.x = 1.0f / ((orgW == texW) ? orgW : texW);
 
     //
     // calculate what to use for y scale
@@ -375,7 +377,7 @@ void Direct3D11Texture::updateCachedScaleValues()
     // on the original size.
     // if texture is taller (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    d_texelScaling.y = 1.0f / ((orgH == texH) ? orgH : texH);
 }
 
 //----------------------------------------------------------------------------//
@@ -393,8 +395,9 @@ void Direct3D11Texture::updateTextureSize()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name) :
+Direct3D11Texture::Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name) :
     d_device(device),
+    d_deviceContext(deviceContext),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
@@ -405,10 +408,12 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
+Direct3D11Texture::Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext,
+                                     const String& name,
                                      const String& filename,
                                      const String& resourceGroup) :
     d_device(device),
+    d_deviceContext(deviceContext),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
@@ -420,9 +425,11 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
+Direct3D11Texture::Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext,
+                                     const String& name,
                                      const Sizef& sz) :
     d_device(device),
+    d_deviceContext(deviceContext),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
@@ -444,9 +451,9 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
     tex_desc.MiscFlags = 0;
     tex_desc.MipLevels = 1;
 
-    if (FAILED(d_device.d_device->CreateTexture2D(&tex_desc, 0, &d_texture)))
-        CEGUI_THROW(RendererException(
-            "Failed to create texture with specified size."));
+    if (FAILED(d_device.CreateTexture2D(&tex_desc, 0, &d_texture)))
+        throw RendererException(
+            "Failed to create texture with specified size.");
 
     initialiseShaderResourceView();
 
@@ -456,9 +463,11 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
+Direct3D11Texture::Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext,
+                                     const String& name,
                                      ID3D11Texture2D* tex) :
     d_device(device),
+    d_deviceContext(deviceContext),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
@@ -493,7 +502,7 @@ void Direct3D11Texture::initialiseShaderResourceView()
     srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
     srvd.Texture2D.MostDetailedMip = 0;
     srvd.Texture2D.MipLevels = tex_desc.MipLevels;
-    d_device.d_device->CreateShaderResourceView(resource, &srvd, &d_resourceView);
+    d_device.CreateShaderResourceView(resource, &srvd, &d_resourceView);
     resource->Release();
 }
 
