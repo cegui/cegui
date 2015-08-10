@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Tue Mar 10 2009
-    author:     Paul D Turner (parts based on code by Keith Mok)
+    created:    10th August 2015
+    author:     Lukas Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,45 +24,19 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIDirectFBRenderTarget_h_
-#define _CEGUIDirectFBRenderTarget_h_
+#include "CEGUI/TextureTarget.h"
 
-#include "../../RenderTarget.h"
-#include "../../Rect.h"
-#include <directfb.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-class DirectFBRenderer;
 
-//! Implementation of CEGUI::RenderTarget for DirectFB
-class DirectFBRenderTarget : virtual public RenderTarget
+TextureTarget::~TextureTarget()
+{}
+
+bool TextureTarget::getUsesStencil() const
 {
-public:
-    //! Constructor.
-    DirectFBRenderTarget(DirectFBRenderer& owner, IDirectFBSurface& target);
+    return d_usesStencil;
+}
 
-    // Implement RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
-    bool isImageryCache() const;
-    void activate();
-    void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in, glm::vec2& p_out) const;
 
-protected:
-    //! DirectFBRenderer that created and owns this RenderTarget.
-    DirectFBRenderer& d_owner;
-    //! IDirectFBSurface targetted by this RenderTarget.
-    IDirectFBSurface& d_target;
-    //! holds defined area for the RenderTarget
-    Rectf d_area;
-};
-
-} // End of  CEGUI namespace section
-
-#endif  // end of guard _CEGUIDirectFBRenderTarget_h_
+}

@@ -323,12 +323,6 @@ void GLES2Renderer::initialiseGLExtensions()
 }
 
 //----------------------------------------------------------------------------//
-bool GLES2Renderer::isS3TCSupported() const
-{
-    return d_s3tcSupported;
-}
-
-//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> GLES2Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
     if(shaderType == DS_TEXTURED)

@@ -35,22 +35,17 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-template <typename T>
-OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
+
+OpenGLRenderTarget::OpenGLRenderTarget(OpenGLRendererBase& owner) :
     d_owner(owner)
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-OpenGLRenderTarget<T>::~OpenGLRenderTarget()
+OpenGLRenderTarget::~OpenGLRenderTarget()
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::activate()
+void OpenGLRenderTarget::activate()
 {
     glViewport(static_cast<GLsizei>(RenderTarget::d_area.left()),
                static_cast<GLsizei>(RenderTarget::d_area.top()),
@@ -65,9 +60,8 @@ void OpenGLRenderTarget<T>::activate()
     RenderTarget::activate();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+
+void OpenGLRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!RenderTarget::d_matrixValid)
@@ -136,21 +130,16 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     p_out.y = static_cast<float>(is_y);
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLRenderTarget<T>::updateMatrix() const
+
+void OpenGLRenderTarget::updateMatrix() const
 {
     RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
 }
 
-
-//----------------------------------------------------------------------------//
-template <typename T>
-OpenGLRendererBase& OpenGLRenderTarget<T>::getOwner()
+OpenGLRendererBase& OpenGLRenderTarget::getOwner()
 {
     return d_owner;
 }
 
-//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

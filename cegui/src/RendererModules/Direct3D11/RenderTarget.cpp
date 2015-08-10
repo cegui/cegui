@@ -34,18 +34,15 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-template <typename T>
-Direct3D11RenderTarget<T>::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
+
+Direct3D11RenderTarget::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
     d_owner(owner),
     d_device(*d_owner.getDirect3DDevice()),
     d_deviceContext(*d_owner.getDirect3DDeviceContext())
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::activate()
+void Direct3D11RenderTarget::activate()
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -59,9 +56,7 @@ void Direct3D11RenderTarget<T>::activate()
     RenderTarget::activate();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+void Direct3D11RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!d_matrixValid)
@@ -132,16 +127,12 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     p_out = p_in; // CrazyEddie wanted this
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::updateMatrix() const
+void Direct3D11RenderTarget::updateMatrix() const
 {
     RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForDirect3D() );
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void Direct3D11RenderTarget<T>::setupViewport(D3D11_VIEWPORT& vp) const
+void Direct3D11RenderTarget::setupViewport(D3D11_VIEWPORT& vp) const
 {
     vp.TopLeftX = static_cast<FLOAT>(d_area.left());
     vp.TopLeftY = static_cast<FLOAT>(d_area.top());
@@ -151,13 +142,9 @@ void Direct3D11RenderTarget<T>::setupViewport(D3D11_VIEWPORT& vp) const
     vp.MaxDepth = 1.0f;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-Direct3D11Renderer& Direct3D11RenderTarget<T>::getOwner()
+Direct3D11Renderer& Direct3D11RenderTarget::getOwner()
 {
     return d_owner;
 }
-
-//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

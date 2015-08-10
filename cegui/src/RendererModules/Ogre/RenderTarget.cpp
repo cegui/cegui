@@ -40,9 +40,8 @@
 namespace CEGUI
 {
 
-//----------------------------------------------------------------------------//
-template <typename T>
-OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
+
+OgreRenderTarget::OgreRenderTarget(OgreRenderer& owner,
                                       Ogre::RenderSystem& rs) :
     d_owner(owner),
     d_renderSystem(rs),
@@ -53,16 +52,14 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-OgreRenderTarget<T>::~OgreRenderTarget()
+
+OgreRenderTarget::~OgreRenderTarget()
 {
     delete d_viewport;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::setOgreViewportDimensions(const Rectf& area)
+
+void OgreRenderTarget::setOgreViewportDimensions(const Rectf& area)
 {
     d_ogreViewportDimensions = area;
 
@@ -72,9 +69,8 @@ void OgreRenderTarget<T>::setOgreViewportDimensions(const Rectf& area)
     d_viewportValid = false;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::updateOgreViewportDimensions(
+
+void OgreRenderTarget::updateOgreViewportDimensions(
                                             const Ogre::RenderTarget* const rt)
 {
     if (rt)
@@ -88,9 +84,8 @@ void OgreRenderTarget<T>::updateOgreViewportDimensions(
     }
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::activate()
+
+void OgreRenderTarget::activate()
 {
     if (!RenderTarget::d_matrixValid)
         updateMatrix();
@@ -105,9 +100,8 @@ void OgreRenderTarget<T>::activate()
     RenderTarget::activate();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+
+void OgreRenderTarget::unprojectPoint(const GeometryBuffer& buff,
                                          const glm::vec2& p_in,
                                          glm::vec2& p_out) const
 {
@@ -174,9 +168,8 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     p_out.y = static_cast<float>(r1.y - rv.y * tmp);
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::updateMatrix() const
+
+void OgreRenderTarget::updateMatrix() const
 {
     if (d_owner.usesOpenGL())
         RenderTarget::updateMatrix( RenderTarget::createViewProjMatrixForOpenGL() );
@@ -186,9 +179,8 @@ void OgreRenderTarget<T>::updateMatrix() const
         throw RendererException("An unsupported RenderSystem is being used by Ogre. Please contact the CEGUI team.");
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::updateViewport()
+
+void OgreRenderTarget::updateViewport()
 {
     if (!d_viewport)
     {
@@ -207,16 +199,14 @@ void OgreRenderTarget<T>::updateViewport()
     d_viewportValid = true;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-OgreRenderer& OgreRenderTarget<T>::getOwner()
+
+OgreRenderer& OgreRenderTarget::getOwner()
 {
     return d_owner;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OgreRenderTarget<T>::setArea(const Rectf& area)
+
+void OgreRenderTarget::setArea(const Rectf& area)
 {
     setOgreViewportDimensions(area);
 

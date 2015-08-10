@@ -44,7 +44,7 @@ class OpenGLESTexture;
 
 //! OpenGLESFBOTextureTarget - allows rendering to an OpenGLES texture via FBO.
 class OPENGLES_GUIRENDERER_API OpenGLESFBOTextureTarget :
-    public OpenGLESRenderTarget<TextureTarget>
+    public OpenGLESRenderTarget
 {
 public:
     OpenGLESFBOTextureTarget(OpenGLESRenderer& owner);

@@ -33,13 +33,11 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-template <typename T>
-const double OpenGLESRenderTarget<T>::d_yfov_tan = 0.267949192431123;
 
-//----------------------------------------------------------------------------//
-template <typename T>
-OpenGLESRenderTarget<T>::OpenGLESRenderTarget(OpenGLESRenderer& owner) :
+const double OpenGLESRenderTarget::d_yfov_tan = 0.267949192431123;
+
+
+OpenGLESRenderTarget::OpenGLESRenderTarget(OpenGLESRenderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
     d_viewDistance(0),
@@ -50,23 +48,20 @@ OpenGLESRenderTarget<T>::OpenGLESRenderTarget(OpenGLESRenderer& owner) :
     //    d_matrix[i]=0.0;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::draw(const GeometryBuffer& buffer)
+
+void OpenGLESRenderTarget::draw(const GeometryBuffer& buffer)
 {
     buffer.draw();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::draw(const RenderQueue& queue)
+
+void OpenGLESRenderTarget::draw(const RenderQueue& queue)
 {
     queue.draw();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::setArea(const Rectf& area)
+
+void OpenGLESRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
@@ -75,16 +70,14 @@ void OpenGLESRenderTarget<T>::setArea(const Rectf& area)
     T::fireEvent(RenderTarget::EventAreaChanged, args);
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-const Rectf& OpenGLESRenderTarget<T>::getArea() const
+
+const Rectf& OpenGLESRenderTarget::getArea() const
 {
     return d_area;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::activate()
+
+void OpenGLESRenderTarget::activate()
 {
 	glViewport(static_cast<GLsizei>(d_area.left()),
                static_cast<GLsizei>(d_area.top()),
@@ -98,9 +91,8 @@ void OpenGLESRenderTarget<T>::activate()
     glLoadMatrixf(d_matrix);
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::deactivate()
+
+void OpenGLESRenderTarget::deactivate()
 {
 }
 
@@ -125,9 +117,8 @@ gluLookAt(GLdouble eyex, GLdouble eyey, GLdouble eyez, GLdouble centerx,
 static void
 gluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+
+void OpenGLESRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!d_matrixValid)
@@ -216,9 +207,8 @@ void OpenGLESRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     p_out.d_y = static_cast<float>(is_y);
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void OpenGLESRenderTarget<T>::updateMatrix() const
+
+void OpenGLESRenderTarget::updateMatrix() const
 {
     const double w = d_area.getWidth();
     const double h = d_area.getHeight();

@@ -172,7 +172,6 @@ public:
     void beginRendering();
     void endRendering();
     virtual Sizef getAdjustedTextureSize(const Sizef& sz);
-    bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
