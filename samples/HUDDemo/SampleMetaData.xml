@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUIHUDDemo"
+    type      = "C++ Module"
+    summary         = "The HUD Demo presents a game that using head-up display. This shows that CEGUI has full capabilities for rendering HUD's for first person shooters or other any other types of games. The interface consists of a health bar, lives, switchable weapons and power-ups. The game itself consists of moving dishes that have to be clicked on to receive points. When clicked, the points appear in red or green text as a pop-up text that moves upwards and vanishes after some seconds."
+    description     = "The HUD uses very basic &quot;Generic/Label&quot; and &quot;Generic/Image&quot; windows to display most of the elements. For some windows event handlers are registered to react to user interaction. A CEGUI/Progressbar with custom skinning was made for this demo to display the life bar. For the pop-up points a window with animations directly defined in the look n' feel file was made. The animations are triggered by firing events and when the pop-up animation is over the event handler will react to this and subsequently the window will be deleted as defined in the C++ code."
+    credits         = "Lukas &quot;Ident&quot; Meindl, graphics: Charles &quot;Syg&quot; Mattei"
+/>

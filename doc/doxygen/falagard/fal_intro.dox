@@ -1,0 +1,298 @@
+/**
+@page fal_intro Introduction and overview
+
+@section fal_whatis What is the Falagard Skinning System?
+The Falagard skinning system for CEGUI consists partly of a set of enhancements to the CEGUI base library, and partly of a window renderer module called "CEGUICoreWindowRendererSet". Combined, these elements are intended to make it easier to create custom skins or 'looks' for CEGUI window and widget elements.
+
+The Falagard system is designed to allow widget imagery specification, sub-widget layout, and default property initialisers to be specified via XML files rather than in C++ or scripted code (which, before now, was the only way to do these things).
+
+The system is named "Falagard" after the forum name of the person who initially suggested the feature (as is the trend in all things CEGUI), although it was designed and implemented by the core CEGUI team.
+
+The Falagard extensions are not limited to the 'looknfeel' XML files only; there are supporting elements within the core library, as well as extensions to the GUI scheme system to allow you to create what are essentially new widget types. This is achieved by mapping a named widget 'look' and a named window renderer to a named widget base type.  I've probably just about lost you now, the best thing is to not worry about all these details for the time being!
+
+Once your new type has been defined in a scheme and loaded, you can specify the name of that new type name when creating windows or widgets via the WindowManager singleton as you would for any other widget type. There are no additional issues to be considered when using a 'skinned' widget than when using one of the old 'programmed' widget types.
+
+@section fal_intro_contents Section Contents
+- @ref fal_unifiedsystem "The Unified Co-ordinate System"
+- @ref fal_udim "The UDim type"
+- @ref fal_uvector2 "The UVector2 type"
+- @ref fal_urect "The URect type"
+- @ref fal_window_alignments "Window Alignments"
+- @ref fal_schemes "Falagard in Schemes"
+- @ref fal_conclusion "Conclusion"
+
+@section fal_unifiedsystem The Unified Co-ordinate System
+As part of the Falagard system, CEGUI has effectively replaced the old either/or approach to relative and absolute co-ordinates with a new 'unified' co-ordinate system. Using this new system, each co-ordinate can specify both a parent-relative and absolute-pixel component. Since most people baulk at the idea of this, I'll use examples to introduce these concepts.
+
+@subsection fal_udim UDim
+@subsubsection fal_udim_def UDim Definition
+The basic building block of the unified system is the UDim. This type represents a single dimension of some kind, and is defined as:
+@code
+UDim(scale, offset)
+@endcode
+
+where:
+@arg @c 'scale' represents some proportion of the parent element, where the parent element is either some other Window or the total available display, and is usually a value between 0 and 1.0. The scale value corresponds to relative coordinates under the pre-unified system.
+@arg @c 'offset' represents an arbitrary number of pixels. For positional values, offset represents a pixel offset, for size values, offset represents a number of additional pixels (basically like a padding value).  The offset value corresponds to absolute coordinates under the pre-unified system.
+
+Still confused? On to the examples!
+
+@subsubsection fal_udim_examples Simple UDim Examples
+@paragraph fal_udim_example1 Example 1
+@code
+UDim(0, 10)
+@endcode
+Here we see a UDim with a scale of 0, and an offset of 10. This simply represents an absolute value of 10, if you used such a UDim to set a window width, then under the old system it's the equivalent of:
+@code
+myWindow->setWidth(Absolute, 10);
+@endcode
+
+@paragraph fal_udim_example2 Example 2
+@code
+UDim(0.25f, 0)
+@endcode
+Here we see a UDim with a scale of 0.25 and an offset of 0. This represents a simple relative co-ordinate. If you were to set the y position of a window using this UDim, then the window would be a quarter of the way down it's parent, and it's the same as the following under the old system:
+@code
+myWindow->setYPosition(Relative, 0.25f);
+@endcode
+
+@paragraph fal_udim_example3 Example 3
+@code
+UDim(0.33f, -15)
+@endcode
+Here we see the power of UDim. We have a scale of 0.33 and an offset of -15. If we used this as the height of a window, you would get a height that is approximately one third of the height of the window's parent, minus 15 pixels. There is no simple equivalent for this under the old system.
+
+@subsubsection fal_udim_prop_fmt UDim Property Format
+The format of a UDim to be used in the window property strings is as follows:
+@code
+{s,o}
+@endcode
+
+where:
+@arg @c 's' is the scale value.
+@arg @c 'o' is the pixel offset.
+
+@subsection fal_uvector2 UVector2
+@subsubsection fal_uvector2_def UVector2 Definition
+There is a UVector2 type which consists of two UDim elements; one for the x axis, and one for the y axis. Note that the UVector2 is used to specify both positional points and also sizes; that is, there is no such thing as USize to correspond to the CEGUI::Size type that used to be used for specifying a size.
+
+The UVector2 is defined as:
+@code
+UVector2(x_udim, y_udim)
+@endcode
+where:
+@arg @c 'x_udim' is a UDim value that specifies the x co-ordinate or width.
+@arg @c 'y_udim' is a UDim value that specifies the y co-ordinate or height.
+
+@subsubsection fal_uvector2_examples Simple UVector2 Examples
+@paragraph fal_uvec2_example1 Example 1
+@code
+UVector2( UDim(0, 25), UDim(0.2f, 12) )
+@endcode
+The above example specifies a point that is 25 pixels along the x-axis and one fifth of the way down the parent window plus twelve pixels.
+
+@paragraph fal_uvec2_example2 Example 2
+@code
+UVector2( UDim(1.0f, -25), UDim(1.0f, -25) )
+@endcode
+This example, intended as a size for a window, would give the window the same width as its parent, minus 25 pixels, and the same height as its parent, minus 25 pixels.
+
+@subsubsection fal_uvector2_prop_fmt UVector2 Property Format
+The format of a UVector2 to be used in the window property strings is as follows:
+@code
+{{sx,ox},{sy,oy}}
+@endcode
+
+where:
+@arg @c 'sx' is the scale value for the x-axis
+@arg @c 'ox' is the pixel offset for the x-axis.
+@arg @c 'sy' is the scale value for the y-axis
+@arg @c 'oy' is the pixel offset for the y-axis.
+
+@subsection fal_urect URect
+@subsubsection fal_urect_def URect Definition
+The last of the Unified co-ordinate types is URect. The URect defines four sides of a rectangle using UDim elements. You generally access the URect as you would the normal 'Rect' type, except that each edge of the rectangle is represented by a UDim rather than a float, or any other type you may be used to seeing!
+@code
+URect(left_udim, top_udim, right_udim, bottom_udim)
+@endcode
+
+where:
+@arg @c 'left_udim' is a UDim defining the left edge.
+@arg @c 'top_udim' is a UDim defining the top edge.
+@arg @c 'right_udim' is a UDim defining the right edge.
+@arg @c 'bottom_udim' is a UDim defining the bottom edge.
+
+It is also possible to define a URect with two UVector2 objects; the first describes the top-left corner, and the second the bottom-right corner:
+@code
+URect(tl_uvec2, br_uvec2)
+@endcode
+
+where:
+@arg @c 'tl_uvec2' is a UVector2 that describes the top-left point of the rect area.
+@arg @c 'br_uvec2' is a UVector2 that describes the bottom-right point of the rect area.  Don't confuse this with the size of the area.
+
+@subsubsection fal_urect_examples Simple URect Example
+@code
+URect( UDim(0, 25),
+       UDim(0, 25),
+       UDim(1.0f, -25),
+       UDim(1.0f, -25)
+     )
+@endcode
+
+If we used the URect defined here to specify the area for a window, we would get a window that was 25 pixels smaller than its parent on each edge.
+
+@subsubsection fal_urect_prop_fmt URect Property format
+The format of a URect to be used in the window property strings is as follows:
+@code
+{{sl,ol},{st,ot},{sr,or},{sb,ob}}
+@endcode
+
+where:
+@arg @c 'sl' is the scale value for the left edge.
+@arg @c 'ol' is the pixel offset for the left edge.
+@arg @c 'st' is the scale value for the top edge.
+@arg @c 'ot' is the pixel offset for the top edge.
+@arg @c 'sr' is the scale value for the right edge.
+@arg @c 'or' is the pixel offset for the right edge.
+@arg @c 'sb' is the scale value for the bottom edge.
+@arg @c 'ob' is the pixel offset for the bottom edge.
+
+@section fal_window_alignments Window Alignments
+
+The Falagard enhancements also include settings to specify alignments for windows. This gives the possibility to position child windows from the right edge, bottom edge and centre positions of their parents, as well as the previous left edge and top edge possibilities.
+
+It is possible to set the alignment options in C++ code by using methods in the Window class, and also via the properties system which is used by XML layouts system.
+
+@subsection fal_vert_alignments Vertical Alignments
+To set the vertical alignment use the Window class member function:
+@code
+void setVerticalAlignment(const VerticalAlignment alignment);
+@endcode
+
+This function takes one of the VerticalAlignment enumerated values
+as its input. The VerticalAlignment enumeration is defined as:
+@code
+enum VerticalAlignment
+{
+    VA_TOP,
+    VA_CENTRE,
+    VA_BOTTOM
+};
+@endcode
+
+Where:
+@arg @c VA_TOP specifies that y-axis positions specify an offset for a window's top edge from the top edge of it's parent window.
+@arg @c VA_CENTRE specifies that y-axis positions specify an offset for a window's centre point from the centre point of it's parent window.
+@arg @c VA_BOTTOM specifies that y-axis positions specify an offset for a window's bottom edge from the bottom edge of it's parent window.
+
+The window property to access the vertical alignment setting is:
+@code
+"VerticalAlignment"
+@endcode
+This property takes a simple string as its value, which should be one of the following options:
+@code
+"Top"
+"Centre"
+"Bottom"
+@endcode
+
+Where these setting values correspond to the similar values in the VerticalAlignment enumeration.
+
+@subsection fal_horz_alignments Horizontal Alignments
+To set the horizontal alignment use the Window class member function:
+@code
+void setHorizontalAlignment(const HorizontalAlignment alignment);
+@endcode
+
+This function takes one of the HorizontalAlignment enumerated values as its input. The HorizontalAlignment enumeration is defined as:
+@code
+enum HorizontalAlignment
+{
+    HA_LEFT,
+    HA_CENTRE,
+    HA_RIGHT
+};
+@endcode
+
+Where:
+@arg @c HA_LEFT specifies that x-axis positions specify an offset for a window's left edge from the left edge of it's parent window.
+@arg @c HA_CENTRE specifies that x-axis positions specify an offset for a window's centre point from the centre point of it's parent window.
+@arg @c HA_RIGHT specifies that x-axis positions specify an offset for a window's right edge from the right edge of it's parent window.
+
+The window property to access the horizontal alignment setting is:
+@code
+"HorizontalAlignment"
+@endcode
+
+This property takes a simple string as its value, which should be one of the following options:
+@code
+"Left"
+"Centre"
+"Right"
+@endcode
+
+Where these setting values correspond to the similar values in the HorizontalAlignment enumeration.
+
+@section fal_schemes Falagard in Schemes
+The CEGUI scheme system is the means by which you to specify how the system is to load your XML skin definition files, known as 'looknfeel' files, and how these skins are to be mapped to window renderers and widget base classes to create new concrete widget types.
+
+@subsection fal_wr_modules The CEGUICoreWindowRendererSet module
+One of the main parts of the Falagard system is the window renderer module known as CEGUICoreWindowRendererSet
+(which will be named libCEGUICoreWindowRendererSet.so on linux style systems and CEGUICoreWindowRendererSet.dll on Win32 systems). This module contains a set of predefined window renderer classes that take actions to transform skinning data loaded from skin definition XML files into the rendering operations and layout adjustments required to output the widget visual representation to the display.
+
+Before you can make use of the CEGUICoreWindowRendererSet module it must be loaded into the system. To achieve this, you will usually specify it in one of your scheme XML files so that it's available to the system.  This can be done with a single line of XML in a scheme file, such as:
+@code
+<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
+@endcode
+
+Some users, having previously employed the WindowSet 'look' modules, may be used to specifying a list of widgets which are to be made available from the module, this is not required when loading a WindowRenderer module (actually, such lists of widgets are no longer needed for the old style 'look' modules either, as long as the module has been updated to provide the required entry point); by employing XML such as that shown above, the module will register all widget types it has available.
+
+The key thing about the CEGUICoreWindowRendererSet module is that for each widget base type, it defines various required elements and states.  These required items need to be defined within the widget look definitions of your looknfeel XML files; they enable the system to make use of your skin imagery and related data in a logical fashion. All of the required elements for each widget can be found in the reference sections @ref fal_baseclass_ref "CEGUI Widget Base Type Requirements" and @ref fal_wr_ref "Falagard Window Renderer Requirements".
+
+@subsection fal_looknfeel_elements LookNFeel Elements
+The @c \<LookNFeel\> XML element for schemes is the means by which you will usually get CEGUI to load the XML 'looknfeel' files containing your widget skin definitions.  It is possible to load these files manually via code, but it is expected that the majority of users will be using the scheme system. The LookNFeel element should appear after any Font or Imageset elements, but before any WindowSet elements.
+
+The following is an example of how to use the LookNFeel element:
+@code
+<LookNFeel Filename="FunkyWidgets.looknfeel" />
+@endcode
+
+Here we can see a single 'Filename' attribute which specifies the name the file to be loaded.
+
+It is acceptable to specify as many LookNFeel elements as is required.  This allows you to configure your XML files in the way that best suits your application. This might mean that all skin definitions for all widget elements will go into a single file, it might mean that you have multiple files with a single widget skin definition in each, or it could be any place in between the two extremes - it's up to you.
+
+@subsection fal_mappings FalagardMapping Elements
+The CEGUI scheme system supports a @c \<FalagardMapping\> element that creates a new concrete window or widget type within the system. This is achieved by creating a named alias that ties together a base widget type, a window renderer type, and a named widget 'LookNFeel'.  Here, 'LookNFeel' refers to an individual widget skin as opposed to an entire 'looknfeel' XML file.  The base widget type will generally be one of the core system widgets provided by the CEGUI library, although any window type that has a concrete WindowFactory registered in the system is a candidate, which allows the system to be extended with custom widgets.  The window renderer type will usually be the name of one of the window renderers registered when the CEGUICoreWindowRendererSet module was loaded, again this is not a requirement - the window renderer used could just as easily be one you have written yourself.  The named 'LookNFeel' is what you specify in your XML looknfeel files (via WidgetLook elements).
+
+An example mapping:
+@code
+<FalagardMapping
+    WindowType="FunkyLook/Button"
+    TargetType="CEGUI/PushButton"
+    Renderer="Falagard/Button"
+    LookNFeel="MyButtonSkin"
+/>
+@endcode
+
+In this example, a new widget type named "FunkyLook/Button" is being created. The new widget is based upon the "CEGUI/PushButton" base type, uses the window renderer named "Falagard/Button" and applies the skin defined by the loaded WidgetLook named "MyButtonSkin".  Once the scheme with this mapping has been loaded, you can then use the new type within the system:
+@code
+// Get access to the main window manager
+CEGUI::WindowManager wMgr& = CEGUI::WindowManager::getSingleton();
+
+// Create a new widget
+Window* wnd = wMgr.createWindow("FunkyLook/Button", "myFunkyButton");
+@endcode
+
+Here we create an instance of the new widget, and name it "myFunkyButton".  The widget can now be attached to other windows and generally used as you would any 'normal' widget.
+
+@section fal_conclusion Conclusion
+This concludes the overview of the new parts of the CEGUI system.
+
+You have seen how the new unified coordinate system works, and how to make use of the new window alignment options.
+
+You have also learned the basics of how to set up your scheme files to initialise the Falagard window renderer module, and how to map skins defined in XML files to the Falagard to create new widget types.
+
+The next section of this document will introduce the XML format and elements used in the 'looknfeel' files.
+
+*/

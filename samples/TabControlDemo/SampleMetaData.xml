@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUITabControlDemo"
+    type      = "C++ Module"
+    summary         = "The TabControl demo contains a window that has multiple pages, which can be switching by clicking the tabs. Tabs can be adjusted and created with the widgets on the 1st page."
+    description     = "The tab window is of type &quot;TaharezLook/TabControl&quot;. For the seperate pages CEGUI layouts are loaded and attached."
+    credits         = "Andrew Zabolotny"
+/>
