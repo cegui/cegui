@@ -226,7 +226,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
     std::vector<D3D11_INPUT_ELEMENT_DESC> vertexLayoutVector;
 
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
-    int dataOffset = 0;
+    UINT dataOffset = 0;
     const size_t attribute_count = d_vertexAttributes.size();
     for (size_t i = 0; i < attribute_count; ++i)
     {
