@@ -93,6 +93,7 @@ void OpenGL3GeometryBuffer::draw() const
     else
     {
         // We need to emulate a VAO.
+        // This binds and sets up a vbo for rendering
         configureVertexArray();
     }
 
@@ -157,12 +158,10 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 
     // Generate position vbo
     glGenBuffers(1, &d_verticesVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    d_shader->bind();
+    // This binds and sets up a vbo. The 
     configureVertexArray();
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
-    d_shader->unbind();
 
     if (OpenGLInfo::getSingleton().isVaoSupported())
     {
