@@ -34,8 +34,9 @@ namespace CEGUI
 uint OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner) :
+OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
     OpenGLRenderTarget(owner),
+    TextureTarget(addStencilBuffer),
     d_texture(0)
 {
     createCEGUITexture();

@@ -152,9 +152,9 @@ RenderTarget& Direct3D11Renderer::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* Direct3D11Renderer::createTextureTarget()
+TextureTarget* Direct3D11Renderer::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* t = new Direct3D11TextureTarget(*this);
+    TextureTarget* t = new Direct3D11TextureTarget(*this, addStencilBuffer);
     d_textureTargets.push_back(t);
     return t;
 }

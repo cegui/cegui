@@ -253,7 +253,7 @@ class OGLTextureTargetFactory
 public:
     OGLTextureTargetFactory() {}
     virtual ~OGLTextureTargetFactory() {}
-    virtual TextureTarget* create(OpenGLRendererBase&) const
+    virtual TextureTarget* create(OpenGLRendererBase&, bool addStencilBuffer) const
         { return 0; }
 };
 

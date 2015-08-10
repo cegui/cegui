@@ -78,19 +78,33 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
     // Set the root window as root of our GUI Context
     guiContext->setRootWindow(d_root);
 
-    // Load our SVG-based imageset via the ImageManager
+    // Load our SVG-based Imageset via the ImageManager
     CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
     ImageManager::getSingleton().loadImageset("SVGSampleImageset.imageset");
 
     // We get our loaded sample SVGImage and save it to a variable
     d_svgSampleImage = static_cast<CEGUI::SVGImage*>( &ImageManager::getSingleton().get("SVGSampleImageset/SVGTestImage1") );
 
-    // We create a sizeable and movable FrameWindow that will contain our Image window
+    // We create a sizable and movable FrameWindow that will contain our Image window
     Window* svgSampleFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow", "SvgSampleFrameWindow");
+
+    // This is very important. Since our FrameWindow contains our SVGImage, we want the FrameWindow to have
+    // a stencil buffer attached. This allows to render SVGs properly, which have overlapping parts in their polygons.
+    // Without it, we cannot ensure that areas that have even-degree polygon overlaps (for example two time overlaps) will
+    // be erased properly. Almost all vector graphics formats and programs erase such areas. Only odd-degree overlaps (1 + 2*n)
+    // are rendered.
+    // The SVG Image renders its polygons directly onto the FrameBuffer (or "RenderSurface", however you wanna call it) it is contained.
+    // The SVG Image Window could also act as an AutoRenderingSurface (by switching it on) and lead to the same result by having its Stencil enabled.
+    // If you just want the isolated SVG Image to render correctly you can do this. In our case this is not necessary - we already use a FrameWindow with
+    // an AutoRenderingSurface so we can just use this one and the SVG Image Window will render its SVG Image into this FrameBuffer with the stencil on.
+    // If you want to see how it looks without Stencil, just deactivate it and look at the result.
+    svgSampleFrameWindow->setAutoRenderingSurfaceStencilEnabled(true);
+    svgSampleFrameWindow->setUsingAutoRenderingSurface(true);
+
     svgSampleFrameWindow->setPosition(CEGUI::UVector2(cegui_absdim(50.0f), cegui_absdim(50.0f)));
     svgSampleFrameWindow->setSize(CEGUI::USize(cegui_absdim(300.0f), cegui_absdim(300.0f)));
     d_root->addChild(svgSampleFrameWindow);
-
+    
     // We create a window that displays images and apply our SVGImage pointer to its "Image" property. Our sample SVGImage will be displayed by the window.
     d_svgImageWindow = winMgr.createWindow("Generic/Image");
     d_svgImageWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));

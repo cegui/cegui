@@ -103,7 +103,7 @@ public:
     */
     static NullRenderer& create(const int abi = CEGUI_VERSION_ABI);
 
-    //! destory an NullRenderer object.
+    //! destroy an NullRenderer object.
     static void destroy(NullRenderer& renderer);
 
     // implement CEGUI::Renderer interface
@@ -111,7 +111,7 @@ public:
     virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
     virtual GeometryBuffer& createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial);
     virtual GeometryBuffer& createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial);
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const String& name);

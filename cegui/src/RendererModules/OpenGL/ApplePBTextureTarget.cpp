@@ -50,8 +50,8 @@ static CGLPixelFormatAttribute fmtAttrs[] =
 };
 
 //----------------------------------------------------------------------------//
-OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLTextureTarget(owner),
+OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer),
     d_pbuffer(0),
     d_context(0)
 {

@@ -47,7 +47,7 @@ class OPENGL_GUIRENDERER_API OpenGLTextureTarget : public OpenGLRenderTarget, pu
 {
 public:
     //! constructor.
-    OpenGLTextureTarget(OpenGLRendererBase& owner);
+    OpenGLTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer);
     //! destructor
     virtual ~OpenGLTextureTarget();
 

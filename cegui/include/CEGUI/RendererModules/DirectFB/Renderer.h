@@ -62,7 +62,7 @@ public:
     virtual GeometryBuffer& createGeometryBuffer();
     virtual void destroyGeometryBuffer(const GeometryBuffer& buffer);
     virtual void destroyAllGeometryBuffers();
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const CEGUI::String& name);

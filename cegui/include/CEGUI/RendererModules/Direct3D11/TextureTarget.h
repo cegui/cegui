@@ -50,7 +50,7 @@ class Direct3D11Texture;
 class D3D11_GUIRENDERER_API Direct3D11TextureTarget : public Direct3D11RenderTarget, public TextureTarget
 {
 public:
-    Direct3D11TextureTarget(Direct3D11Renderer& owner);
+    Direct3D11TextureTarget(Direct3D11Renderer& owner, bool addStencilBuffer);
     virtual ~Direct3D11TextureTarget();
 
     // overrides from the superclass

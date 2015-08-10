@@ -48,7 +48,8 @@ class IRR_GUIRENDERER_API IrrlichtTextureTarget : public IrrlichtRenderTarget, p
 public:
     //! Constructor.
     IrrlichtTextureTarget(IrrlichtRenderer& owner,
-                          irr::video::IVideoDriver& driver);
+                          irr::video::IVideoDriver& driver,
+                          bool addStencilBuffer);
     //! Destructor.
     virtual ~IrrlichtTextureTarget();
 

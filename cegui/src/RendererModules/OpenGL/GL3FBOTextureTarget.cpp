@@ -46,8 +46,8 @@ namespace CEGUI
 const float OpenGL3FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
-    OpenGLTextureTarget(owner),
+OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer),
     d_glStateChanger(owner.getOpenGLStateChanger())
 {
     // no need to initialise d_previousFrameBuffer here, it will be

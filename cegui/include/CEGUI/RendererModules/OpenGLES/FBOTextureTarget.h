@@ -47,7 +47,7 @@ class OPENGLES_GUIRENDERER_API OpenGLESFBOTextureTarget :
     public OpenGLESRenderTarget
 {
 public:
-    OpenGLESFBOTextureTarget(OpenGLESRenderer& owner);
+    OpenGLESFBOTextureTarget(OpenGLESRenderer& owner, bool addStencilBuffer);
     virtual ~OpenGLESFBOTextureTarget();
 
     // overrides from OpenGLESRenderTarget

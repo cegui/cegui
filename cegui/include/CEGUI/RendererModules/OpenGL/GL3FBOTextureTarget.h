@@ -48,7 +48,7 @@ class OpenGLBaseStateChangeWrapper;
 class OPENGL_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGL3FBOTextureTarget(OpenGL3Renderer& owner);
+    OpenGL3FBOTextureTarget(OpenGL3Renderer& owner, bool addStencilBuffer);
     virtual ~OpenGL3FBOTextureTarget();
 
     // overrides from OpenGL3RenderTarget

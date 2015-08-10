@@ -81,8 +81,8 @@ const float OpenGLESFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 uint OpenGLESFBOTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner) :
-    OpenGLESRenderTarget(owner),
+OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner, bool addStencilBuffer) :
+    OpenGLESRenderTarget(owner, addStencilBuffer),
     d_texture(0)
 {
     // this essentially creates a 'null' CEGUI::Texture

@@ -107,7 +107,7 @@ void DirectFBRenderer::destroyAllGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* DirectFBRenderer::createTextureTarget()
+TextureTarget* DirectFBRenderer::createTextureTarget(bool addStencilBuffer)
 {
     // TODO:
     return 0;
