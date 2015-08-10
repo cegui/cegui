@@ -343,7 +343,7 @@ void OpenGLTexture::grabTexture()
         /* OpenGL ES 3.1 or below doesn't support
            "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
            with "glReadPixels", which will return the data in (umcompressed)
-           format (GL_RGBA8, GL_UNSIGNED_BYTE). */
+           format (GL_RGBA, GL_UNSIGNED_BYTE). */
         buffer_size = static_cast<std::size_t>(d_dataSize.d_width)
           *static_cast<std::size_t>(d_dataSize.d_height) *4;
         d_isCompressed = false;
@@ -439,7 +439,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
         glGetIntegerv(GL_PACK_ALIGNMENT, &pack_alignment_old);
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
         glReadPixels(0, 0, static_cast<GLsizei>(d_dataSize.d_width),
-          static_cast<GLsizei>(d_dataSize.d_height), GL_RGBA8, GL_UNSIGNED_BYTE, targetData);
+          static_cast<GLsizei>(d_dataSize.d_height), GL_RGBA, GL_UNSIGNED_BYTE, targetData);
         glPixelStorei(GL_PACK_ALIGNMENT, pack_alignment_old);
         if (OpenGLInfo::getSingleton().isReadBufferSupported())
         {

@@ -173,7 +173,7 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Sizef& sz)
 
     CGLError err;
     if (err = CGLCreatePBuffer(d_area.getWidth(), d_area.getHeight(),
-                                GL_TEXTURE_2D, GL_RGBA8, 0, &d_pbuffer))
+                                GL_TEXTURE_2D, GL_RGBA, 0, &d_pbuffer))
     {
         CEGUI_THROW(RendererException(
             "CGLCreatePBuffer failed: " + String(CGLErrorString(err))));
