@@ -57,9 +57,9 @@ void PCRERegexMatcher::setRegexString(const String& regex)
 
     // handle failure
     if (!d_regex)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Bad RegEx set: '" + regex + "'.  Additional Information: " +
-            prce_error));
+            prce_error);
 
     // set this last so that upon failure object is in consistant state.
     d_string = regex;
@@ -77,8 +77,8 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 {
     // if the regex is not valid, then an exception is thrown
     if (!d_regex)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to use invalid RegEx '" + d_string + "'."));
+        throw InvalidRequestException(
+            "Attempt to use invalid RegEx '" + d_string + "'.");
 
     int match[3];
     const char* utf8_str = str.c_str();
@@ -112,10 +112,10 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
         return MS_INVALID;
 
     // anything else is an error
-    CEGUI_THROW(InvalidRequestException(
+    throw InvalidRequestException(
         "PCRE Error: " + PropertyHelper<int>::toString(result) +
         " occurred while attempting to match the RegEx '" +
-        d_string + "'."));
+        d_string + "'.");
 }
 
 //----------------------------------------------------------------------------//

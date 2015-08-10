@@ -48,8 +48,8 @@ void FactoryModule::registerFactory(const String& type_name)
         }
     }
 
-    CEGUI_THROW(UnknownObjectException("No factory for type '" +
-        type_name + "' in this module."));
+    throw UnknownObjectException("No factory for type '" +
+        type_name + "' in this module.");
 }
 
 //----------------------------------------------------------------------------//

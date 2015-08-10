@@ -35,7 +35,7 @@ uint OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLRenderTarget<TextureTarget>(owner),
+    OpenGLRenderTarget(owner),
     d_texture(0)
 {
     createCEGUITexture();
@@ -57,12 +57,6 @@ bool OpenGLTextureTarget::isImageryCache() const
 Texture& OpenGLTextureTarget::getTexture() const
 {
     return *d_CEGUITexture;
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLTextureTarget::isRenderingInverted() const
-{
-    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -103,9 +97,4 @@ String OpenGLTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-//----------------------------------------------------------------------------//
-// Implementation of base class
-#include "./RenderTarget.inl"
-
 

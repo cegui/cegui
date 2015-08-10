@@ -43,7 +43,7 @@ namespace CEGUI
 class IrrlichtTexture;
 
 //! CEGUI::TextureTarget implementation for the Irrlicht engine.
-class IRR_GUIRENDERER_API IrrlichtTextureTarget : public IrrlichtRenderTarget<TextureTarget>
+class IRR_GUIRENDERER_API IrrlichtTextureTarget : public IrrlichtRenderTarget, public TextureTarget
 {
 public:
     //! Constructor.
@@ -61,7 +61,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 protected:
     //! default / initial size for the underlying texture.
