@@ -42,7 +42,7 @@ uint IrrlichtTextureTarget::s_textureNumber = 0;
 //----------------------------------------------------------------------------//
 IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
                                              irr::video::IVideoDriver& driver) :
-    IrrlichtRenderTarget<TextureTarget>(owner, driver),
+    IrrlichtRenderTarget(owner, driver),
     d_texture(0),
     d_CEGUITexture(static_cast<IrrlichtTexture*>(
         &d_owner.createTexture(generateTextureName())))
@@ -132,12 +132,6 @@ void IrrlichtTextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool IrrlichtTextureTarget::isRenderingInverted() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::cleanupTargetTexture()
 {
     if (d_texture)
@@ -161,7 +155,4 @@ String IrrlichtTextureTarget::generateTextureName()
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

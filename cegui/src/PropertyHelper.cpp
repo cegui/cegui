@@ -63,11 +63,11 @@ PropertyHelper<Image*>::fromString(const String& str)
 
     PropertyHelper<Image*>::return_type image;
 
-    CEGUI_TRY
+    try
     {
         image = &ImageManager::getSingleton().get(str);
     }
-    CEGUI_CATCH(UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         image = 0;
     }
@@ -94,11 +94,11 @@ PropertyHelper<Font*>::fromString(const String& str)
 
     PropertyHelper<Font*>::return_type image;
 
-    CEGUI_TRY
+    try
     {
         image = &FontManager::getSingleton().get(str);
     }
-    CEGUI_CATCH(UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         image = 0;
     }

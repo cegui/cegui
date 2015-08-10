@@ -67,9 +67,9 @@ void NamedElement::setName(const String& name)
 
         if (parent && parent->isChild(name))
         {
-            CEGUI_THROW(AlreadyExistsException("Failed to rename "
+            throw AlreadyExistsException("Failed to rename "
                 "NamedElement at: " + getNamePath() + " as: " + name + ". A Window "
-                "with that name is already attached as a sibling."));
+                "with that name is already attached as a sibling.");
         }
     }
 
@@ -145,9 +145,9 @@ NamedElement* NamedElement::getChildElement(const String& name_path) const
     if (e)
         return e;
 
-    CEGUI_THROW(UnknownObjectException("The Element object "
+    throw UnknownObjectException("The Element object "
         "referenced by '" + name_path + "' is not attached to Element at '"
-        + getNamePath() + "'."));
+        + getNamePath() + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -164,9 +164,9 @@ void NamedElement::removeChild(const String& name_path)
     if (e)
         removeChild(e);
     else
-        CEGUI_THROW(UnknownObjectException("The Element object "
+        throw UnknownObjectException("The Element object "
             "referenced by '" + name_path + "' is not attached to Element at '"
-            + getNamePath() + "'."));
+            + getNamePath() + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -179,10 +179,10 @@ void NamedElement::addChild_impl(Element* element)
         const NamedElement* const existing = getChildByNamePath_impl(named_element->getName());
 
         if (existing && named_element != existing)
-            CEGUI_THROW(AlreadyExistsException("Failed to add "
+            throw AlreadyExistsException("Failed to add "
                 "Element named: " + named_element->getName() + " to element at: " +
                 getNamePath() + " since an Element with that name is already "
-                "attached."));
+                "attached.");
     }
 
     Element::addChild_impl(element);
