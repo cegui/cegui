@@ -39,7 +39,7 @@
 namespace CEGUI
 {
 //! CEGUI::TextureTarget implementation for the Ogre engine.
-class OGRE_GUIRENDERER_API OgreTextureTarget : public OgreRenderTarget<TextureTarget>
+class OGRE_GUIRENDERER_API OgreTextureTarget : public OgreRenderTarget, public TextureTarget
 {
 public:
     //! Constructor.

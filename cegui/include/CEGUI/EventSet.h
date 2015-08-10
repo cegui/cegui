@@ -35,6 +35,8 @@
 #include "CEGUI/IteratorBase.h"
 #include <unordered_map>
 
+#include <iostream>
+
 #if defined (_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -427,7 +429,7 @@ protected:
     ScriptModule* getScriptModule() const;
 
     // Do not allow copying, assignment, or any other usage than simple creation.
-    EventSet(EventSet&) {}
+    EventSet(const EventSet&) {}
     EventSet& operator=(EventSet&)
     {
         return *this;

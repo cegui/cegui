@@ -354,7 +354,7 @@ void NullRenderer::constructor_impl()
     d_shaderWrapperSolid = new NullShaderWrapper();
 
     // create default target & rendering root (surface) that uses it
-    d_defaultTarget = new NullRenderTarget<>(*this);
+    d_defaultTarget = new NullRenderTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -381,7 +381,4 @@ bool NullRenderer::isTexCoordSystemFlipped() const
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

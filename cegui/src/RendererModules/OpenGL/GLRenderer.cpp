@@ -57,7 +57,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// The following are some GL extension / version dependant related items.
+// The following are some GL extension / version dependent related items.
 // This is all done totally internally here; no need for external interface
 // to show any of this.
 //----------------------------------------------------------------------------//

@@ -32,9 +32,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-template <typename T>
-IrrlichtRenderTarget<T>::IrrlichtRenderTarget(IrrlichtRenderer& owner,
+
+IrrlichtRenderTarget::IrrlichtRenderTarget(IrrlichtRenderer& owner,
                                            irr::video::IVideoDriver& driver) :
     d_owner(owner),
     d_driver(driver),
@@ -49,29 +48,25 @@ IrrlichtRenderTarget<T>::IrrlichtRenderTarget(IrrlichtRenderer& owner,
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-IrrlichtRenderTarget<T>::~IrrlichtRenderTarget()
+
+IrrlichtRenderTarget::~IrrlichtRenderTarget()
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::draw(const GeometryBuffer& buffer)
+
+void IrrlichtRenderTarget::draw(const GeometryBuffer& buffer)
 {
     buffer.draw();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::draw(const RenderQueue& queue)
+
+void IrrlichtRenderTarget::draw(const RenderQueue& queue)
 {
     queue.draw();
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::setArea(const Rectf& area)
+
+void IrrlichtRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
@@ -80,16 +75,14 @@ void IrrlichtRenderTarget<T>::setArea(const Rectf& area)
     T::fireEvent(RenderTarget::EventAreaChanged, args);
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-const Rectf& IrrlichtRenderTarget<T>::getArea() const
+
+const Rectf& IrrlichtRenderTarget::getArea() const
 {
     return d_area;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::activate()
+
+void IrrlichtRenderTarget::activate()
 {
     irr::core::rect<irr::s32> vp(static_cast<irr::s32>(d_area.left()),
                                  static_cast<irr::s32>(d_area.top()),
@@ -104,15 +97,13 @@ void IrrlichtRenderTarget<T>::activate()
     d_driver.setTransform(irr::video::ETS_VIEW, irr::core::matrix4());
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::deactivate()
+
+void IrrlichtRenderTarget::deactivate()
 {
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+
+void IrrlichtRenderTarget::unprojectPoint(const GeometryBuffer& buff,
                                              const glm::vec& p_in,
                                              glm::vec& p_out) const
 {
@@ -189,9 +180,8 @@ void IrrlichtRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     p_out.d_y = static_cast<float>(r1.Y - rv.Y * tmp) * d_viewDistance;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-void IrrlichtRenderTarget<T>::updateMatrix() const
+
+void IrrlichtRenderTarget::updateMatrix() const
 {
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();

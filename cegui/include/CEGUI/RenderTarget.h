@@ -55,16 +55,16 @@ public:
 
 /*!
 \brief
-    Defines interface to some surface that can be rendered to.  Concrete
-    instances of objects that implement the RenderTarget interface are
-    normally created via the Renderer object.
+    Defines a virtual RenderTarget class serving different render target classes
+    as base. Concrete instances of objects that implement the RenderTarget interface are
+    normally created via the Renderer object. This class should be inherited
+    only using virtual inheritance.
 */
 class CEGUIEXPORT RenderTarget :
     public EventSet
 {
 public:
     RenderTarget();
-
     virtual ~RenderTarget();
 
     //! Namespace for global events

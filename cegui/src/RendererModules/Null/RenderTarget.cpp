@@ -30,44 +30,38 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-template<typename T>
-NullRenderTarget<T>::NullRenderTarget(NullRenderer& owner) :
+
+NullRenderTarget::NullRenderTarget(NullRenderer& owner) :
     d_owner(owner)
 {
 }
 
-//----------------------------------------------------------------------------//
-template<typename T>
-NullRenderTarget<T>::~NullRenderTarget()
+
+NullRenderTarget::~NullRenderTarget()
 {
 }
 
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::activate()
+
+void NullRenderTarget::activate()
 {  
     RenderTarget::activate();
 }
 
-//----------------------------------------------------------------------------//
-template<typename T>
-void NullRenderTarget<T>::unprojectPoint(const GeometryBuffer&,
+
+void NullRenderTarget::unprojectPoint(const GeometryBuffer&,
                                          const glm::vec2& p_in, glm::vec2& p_out) const
 {
 	p_out = p_in;
 }
 
-//----------------------------------------------------------------------------//
-template<typename T>
-bool NullRenderTarget<T>::isImageryCache() const 
+
+bool NullRenderTarget::isImageryCache() const 
 {
 	return false;
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-NullRenderer& NullRenderTarget<T>::getOwner()
+
+NullRenderer& NullRenderTarget::getOwner()
 {
     return d_owner;
 }

@@ -37,7 +37,7 @@ uint Direct3D11TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D11TextureTarget::Direct3D11TextureTarget(Direct3D11Renderer& owner) :
-    Direct3D11RenderTarget<TextureTarget>(owner),
+    Direct3D11RenderTarget(owner),
     d_texture(0),
     d_renderTargetView(0),
     d_previousRenderTargetView(0),
@@ -189,8 +189,3 @@ String Direct3D11TextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
-
