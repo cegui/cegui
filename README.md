@@ -2,7 +2,7 @@
 [![CEGUI logo](https://bitbucket.org/cegui/cegui-promo/raw/default/logo/ceguilogo.png)](http://www.cegui.org.uk)
 http://www.cegui.org.uk
 
-Copyright ©2004 - 2014 Paul D Turner, The CEGUI Development Team and Contributing Authors
+Copyright ©2004 - 2015 Paul D Turner, The CEGUI Development Team and Contributing Authors
 
 The majority of the auxiliary files for CEGUI, that used to be plain text, are now kept in a "doxygenised" format within the doc/doxygen directory - please see those files, or generate the documentation for a more friendly format. Alternatively, visit http://static.cegui.org.uk/docs for all your documentation needs!
 
@@ -11,9 +11,9 @@ What follows is just a quick-start guide, go to our doxygen docs for more detail
 ## Available branches and versions
 
 - The CEGUI repository consists of multiple branches:
-    - `v0-8` provides the latest stable ABI compatible (to 0.8.X releases) version of CEGUI. Based on the C++03 standard and compatible with most common compilers, including Visual Studio 2008-2013. As this branch is ABI compatible, it is possible to replace CEGUI dynamic libraries of version 0.8.X with newer 0.8.X versions, or vice-versa, without having to recompile project. This branch is also the base for new 0.8.X releases.
-    - `v0` Provides the latest stable API compatible version of CEGUI and contains changes that break the ABI. Based on the C++03 standard and compatible with most common compilers, including Visual Studio 2008-2013. Versions from this branch will be used for the next minor version release.
-    - `default` contains changes that will only be used in the next major version. Based on the C++11 standard and compatible with most common compilers, including Visual Studio 2010 or newer. This branch is highly unstable, will introduce fundamental changes and **breaks ABI and API** compatibility. We do not recommend you to use this in production, unless you heavily depend on a feature and discussed this with a developer of CEGUI before: This is recommended so that you are aware of all potential risks. In the general case you are advised to use one of the stable branches, to save you a lot of headache. 
+    - `v0-8` provides the latest stable ABI compatible (to 0.8.X releases) version of CEGUI. Based on the C++03 standard and compatible with most common compilers, including Visual Studio 2008-2015. As this branch is ABI compatible, it is possible to replace CEGUI dynamic libraries of version 0.8.X with newer 0.8.X versions, or vice-versa, without having to recompile project. This branch is also the base for new 0.8.X releases.
+    - `v0` Provides the latest stable API compatible version of CEGUI and contains changes that break the ABI. Based on the C++03 standard and compatible with most common compilers, including Visual Studio 2008-2015. Versions from this branch will be used for the next minor version release.
+    - `default` contains changes that will only be used in the next major version. Based on the C++11 standard and compatible with most common up-to date compilers, including Visual Studio 2013 or newer. This branch is highly unstable, will introduce fundamental changes and **breaks ABI and API** compatibility. We do not recommend you to use this in production, unless you heavily depend on a feature and discussed this with a developer of CEGUI before: This is recommended so that you are aware of all potential risks. In the general case you are advised to use one of the stable branches, to save you a lot of headache. 
 
 The `v0-8` and `v0` branches are considered stable but do undergo bug-fixes and small changes, which do not break ABI and API respectively. These changes of course introduce a small risk that there might be temporary issues for the moment in the branches. If you notice any bugs in those branches, please report them to us as soon as possible - use the [forum](http://cegui.org.uk/forum/index.php) and/or our IRC channels `#cegui` and `#cegui-devel` on `irc.freenode.net` to inform us. Please consider that we are not available on IRC 24 hours per day, but feel free to idle there until we respond. If in doubt which branch to use, also feel free to ask us this way. For production usage we generally recommend to use a stable release version. A list of releases can be found on the [on our website](cegui.org.uk/download).
 
