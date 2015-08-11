@@ -32,7 +32,7 @@ namespace CEGUI
 {
 
 const char
-    StandardShaderFrag_OpenGL3[] = 
+    StandardShaderFrag_Opengl3[] = 
         "#version 150 core\n"
         
         "uniform sampler2D texture0;\n"
@@ -44,11 +44,11 @@ const char
         "{\n"
             "out0 = texture(texture0, exTexCoord) * exColour;\n"
         "}",
-    StandardShaderFrag_OpenGLES2[] = 
+    StandardShaderFrag_OpenglEs2[] = 
         "#version 100\n"
 
         "uniform sampler2D texture0;\n"
-        "precision highp float;\n"
+        "precision mediump float;\n"
         "varying vec2 exTexCoord;\n"
         "varying vec4 exColour;\n"
 
@@ -56,7 +56,7 @@ const char
         "{\n"
             "gl_FragColor = texture2D(texture0, exTexCoord) * exColour;\n"
         "}",
-    StandardShaderFrag_OpenGLES3[] = 
+    StandardShaderFrag_OpenglEs3[] = 
         "#version 300 es\n"
 
         "uniform sampler2D texture0;\n"
