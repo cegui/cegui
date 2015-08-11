@@ -49,4 +49,5 @@
     <Image height="40" name="DropDownButtonNormal" width="40" xPos="23" yPos="87" />
     <Image height="40" name="DropDownButtonHover" width="40" xPos="23" yPos="128" />
     <Image height="40" name="DropDownButtonPushed" width="40" xPos="23" yPos="169" />
+    <Image height="26" name="Caret" width="7" xPos="86" yPos="73" />
 </Imageset>
