@@ -141,6 +141,8 @@ protected:
     //! clean up the GL texture, or the grab buffer if it had been grabbed
     void cleanupOpenGLTexture();
 
+    GLint internalFormat() const;
+
     //! initialise the internal format flags for the given CEGUI::PixelFormat.
     virtual void initInternalPixelFormatFields(const PixelFormat fmt) = 0;
 
