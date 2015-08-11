@@ -51,6 +51,10 @@
 #error Either "CEGUI_USE_EPOXY" or "CEGUI_USE_GLEW" must be defined. Defining both or none is invalid.
 #endif
 
+#ifndef GL_RGB565
+#define GL_RGB565  0x8D62
+#endif
+
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   if defined(CEGUIOPENGLRENDERER_EXPORTS) || defined(CEGUIOPENGLES2RENDERER_EXPORTS)
 #       define OPENGL_GUIRENDERER_API __declspec(dllexport)
