@@ -46,14 +46,14 @@ ExpatParser::~ExpatParser(void)
 {
 }
 
-void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/)
+void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/, bool /*allowXmlValidation*/)
 {
     // All stuff goes here
     XML_Parser parser = XML_ParserCreate(0); // Create a parser
 
     if (!parser)
     {
-        CEGUI_THROW(GenericException("Unable to create a new Expat Parser"));
+        throw GenericException("Unable to create a new Expat Parser");
     }
 
     XML_SetUserData(parser, (void*)&handler); // Initialise user data
@@ -69,7 +69,7 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
                           PropertyHelper<uint>::toString(XML_GetCurrentLineNumber(parser)));
         // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
         XML_ParserFree(parser);
-        CEGUI_THROW(GenericException(exception));
+        throw GenericException(exception);
     }
 
     // (We know it is a valid pointer, otherwise an exception would have been thrown above.)

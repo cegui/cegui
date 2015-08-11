@@ -1,8 +1,9 @@
 /***********************************************************************
-    created:    Wed May 5 2010
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,19 +32,19 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
-    Direct3D11RenderTarget<>(owner)
+    Direct3D11RenderTarget(owner)
 {
     // initialise renderer size
     D3D11_VIEWPORT vp;
     UINT vp_count = 1;
-    d_device.d_context->RSGetViewports(&vp_count, &vp);
+    d_deviceContext.RSGetViewports(&vp_count, &vp);
     if (vp_count != 1)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             "Unable to access required view port information from "
-            "ID3D11Device."));
+            "ID3D11Device.");
 
     Rectf area(
-        Vector2f(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
+        glm::vec2(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
         Sizef(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 
@@ -53,7 +54,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner,
                                                    const Rectf& area) :
-    Direct3D11RenderTarget<>(owner)
+    Direct3D11RenderTarget(owner)
 {
     setArea(area);
 }
@@ -68,7 +69,4 @@ bool Direct3D11ViewportTarget::isImageryCache() const
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

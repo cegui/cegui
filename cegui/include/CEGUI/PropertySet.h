@@ -39,7 +39,7 @@
 // we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/Exceptions.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -223,7 +223,7 @@ public:
 
         if (pos == d_properties.end())
         {
-            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+            throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
         }
 
         Property* baseProperty = pos->second;
@@ -269,7 +269,7 @@ public:
 
         if (pos == d_properties.end())
         {
-            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+            throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
         }
 
         Property* baseProperty = pos->second;
@@ -314,8 +314,7 @@ public:
     String getPropertyDefault(const String& name) const;
 
 private:
-    typedef std::map<String, Property*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Property*)> PropertyRegistry;
+    typedef std::unordered_map<String, Property*> PropertyRegistry;
     PropertyRegistry	d_properties;
 
 

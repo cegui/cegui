@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of ListHeader widget base class
 *************************************************************************/
 /***************************************************************************
@@ -114,8 +114,8 @@ ListHeaderSegment& ListHeader::getSegmentFromColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "requested column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -138,8 +138,8 @@ ListHeaderSegment& ListHeader::getSegmentFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no segment with the requested ID is attached to this ListHeader."));
+	throw InvalidRequestException(
+        "no segment with the requested ID is attached to this ListHeader.");
 }
 
 
@@ -150,8 +150,8 @@ ListHeaderSegment& ListHeader::getSortSegment(void) const
 {
 	if (!d_sortSegment)
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "Sort segment was invalid!  (No segments are attached to the ListHeader?)"));
+		throw InvalidRequestException(
+            "Sort segment was invalid!  (No segments are attached to the ListHeader?)");
 	}
 	else
 	{
@@ -182,8 +182,8 @@ uint ListHeader::getColumnFromSegment(const ListHeaderSegment& segment) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "the given ListHeaderSegment is not attached to this ListHeader."));
+	throw InvalidRequestException(
+        "the given ListHeaderSegment is not attached to this ListHeader.");
 }
 
 
@@ -202,8 +202,8 @@ uint ListHeader::getColumnFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no column with the requested ID is available on this ListHeader."));
+	throw InvalidRequestException(
+        "no column with the requested ID is available on this ListHeader.");
 }
 
 
@@ -232,8 +232,8 @@ uint ListHeader::getColumnWithText(const String& text) const
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "no column with the text '" + text + "' is attached to this ListHeader."));
+	throw InvalidRequestException(
+        "no column with the text '" + text + "' is attached to this ListHeader.");
 }
 
 
@@ -255,8 +255,8 @@ float ListHeader::getPixelOffsetToSegment(const ListHeaderSegment& segment) cons
 	}
 
 	// No such segment found, throw exception
-	CEGUI_THROW(InvalidRequestException(
-        "the given ListHeaderSegment is not attached to this ListHeader."));
+	throw InvalidRequestException(
+        "the given ListHeaderSegment is not attached to this ListHeader.");
 }
 
 
@@ -267,8 +267,8 @@ float ListHeader::getPixelOffsetToColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "requested column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -308,8 +308,8 @@ UDim ListHeader::getColumnWidth(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "requested column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -417,8 +417,8 @@ void ListHeader::setSortColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -548,8 +548,8 @@ void ListHeader::removeColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -599,8 +599,8 @@ void ListHeader::moveColumn(uint column, uint position)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -683,7 +683,7 @@ void ListHeader::setSegmentOffset(float offset)
 		d_segmentOffset = offset;
 		layoutSegments();
 		invalidate();
-	
+
 		// Fire event.
 		WindowEventArgs args(this);
 		onSegmentOffsetChanged(args);
@@ -699,8 +699,8 @@ void ListHeader::setColumnWidth(uint column, const UDim& width)
 {
 	if (column >= getColumnCount())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "specified column index is out of range for this ListHeader."));
+		throw InvalidRequestException(
+            "specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -905,14 +905,14 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 *************************************************************************/
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
-	const Vector2f mousePos(getUnprojectedPosition(
-        getGUIContext().getMouseCursor().getPosition()));
+    const glm::vec2 cursor_pos(getUnprojectedPosition(
+        getGUIContext().getCursor().getPosition()));
 
 	// segment must be dropped within the window
-	if (isHit(mousePos))
+    if (isHit(cursor_pos))
 	{
-		// get mouse position as something local
-		Vector2f localMousePos(CoordConverter::screenToWindow(*this, mousePos));
+        // get cursor position as something local
+        const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, cursor_pos));
 
 		// set up to allow for current offsets
 		float currwidth = -d_segmentOffset;
@@ -923,7 +923,7 @@ bool ListHeader::segmentMovedHandler(const EventArgs& e)
 		{
 			currwidth += d_segments[col]->getPixelSize().d_width;
 
-			if (localMousePos.d_x < currwidth)
+            if (local_cursor_pos.x < currwidth)
 			{
 				// this is the column, exit loop early
 				break;
@@ -944,7 +944,7 @@ bool ListHeader::segmentMovedHandler(const EventArgs& e)
 
 
 /*************************************************************************
-	Hanlder for when a segment is clicked (to change sort segment / direction)
+    Handler for when a segment is clicked (to change sort segment / direction)
 *************************************************************************/
 bool ListHeader::segmentClickedHandler(const EventArgs& e)
 {
@@ -1004,37 +1004,36 @@ bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 
 
 /*************************************************************************
-	Handler called whenever the mouse moves while dragging a segment
+    Handler called whenever the cursor moves while dragging a segment
 *************************************************************************/
 bool ListHeader::segmentDragHandler(const EventArgs&)
 {
-	// what we do here is monitor the position and scroll if we can when mouse is outside area.
+    // what we do here is monitor the position and scroll if we can when cursor is outside area.
 
-	// get mouse position as something local
-    const Vector2f localMousePos(CoordConverter::screenToWindow(*this,
+    // get cursor position as something local
+    const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this,
         getUnprojectedPosition(getGUIContext().
-            getMouseCursor().getPosition())));
+            getCursor().getPosition())));
 
 	// scroll left?
-	if (localMousePos.d_x < 0.0f)
+    if (local_cursor_pos.x < 0.0f)
 	{
 		if (d_segmentOffset > 0.0f)
 		{
-			setSegmentOffset(ceguimax(0.0f, d_segmentOffset - ScrollSpeed));
+			setSegmentOffset(std::max(0.0f, d_segmentOffset - ScrollSpeed));
 		}
 	}
 	// scroll right?
-	else if (localMousePos.d_x >= d_pixelSize.d_width)
+    else if (local_cursor_pos.x >= d_pixelSize.d_width)
 	{
-		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
+		float maxOffset = std::max(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
 
 		// if we have not scrolled to the limit
 		if (d_segmentOffset < maxOffset)
 		{
 			// scroll, but never beyond the limit
-			setSegmentOffset(ceguimin(maxOffset, d_segmentOffset + ScrollSpeed));
+			setSegmentOffset(std::min(maxOffset, d_segmentOffset + ScrollSpeed));
 		}
-
 	}
 
 	return true;
@@ -1052,22 +1051,22 @@ void ListHeader::addHeaderProperties(void)
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"true\" or \"false\".",
         &ListHeader::setSortingEnabled, &ListHeader::isSortingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"true\" or \"false\".",
         &ListHeader::setColumnSizingEnabled, &ListHeader::isColumnSizingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"true\" or \"false\".",
         &ListHeader::setColumnDraggingEnabled, &ListHeader::isColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, uint,
         "SortColumnID", "Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.",
         &ListHeader::setSortColumnFromID, &ListHeader::getSortSegmentID, 0 /* TODO: Inconsistency */
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ListHeader, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.",
         &ListHeader::setSortDirection, &ListHeader::getSortDirection, ListHeaderSegment::None
@@ -1087,8 +1086,8 @@ ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
     else
     {
         //return createNewSegment_impl(name);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -1105,8 +1104,8 @@ void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
     else
     {
         //return destroyListSegment_impl(segment);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 

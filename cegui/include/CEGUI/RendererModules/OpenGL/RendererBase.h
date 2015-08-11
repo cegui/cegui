@@ -34,9 +34,13 @@
 #include "../../Vector.h"
 #include "../../Rect.h"
 #include "../../TextureTarget.h"
+#include "../../RefCounted.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
+
+#include "glm/glm.hpp"
+
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -47,35 +51,35 @@ namespace CEGUI
 {
 class OpenGLTexture;
 class OpenGLGeometryBufferBase;
-struct mat4Pimpl;
+class RenderMaterial;
 
 //! Common base class used for other OpenGL (desktop or ES) based renderer modules.
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
     // implement Renderer interface
-    RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
-    TextureTarget* createTextureTarget();
-    void destroyTextureTarget(TextureTarget* target);
-    void destroyAllTextureTargets();
-    Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name,
+    virtual RenderTarget& getDefaultRenderTarget();
+    virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
+    virtual void destroyTextureTarget(TextureTarget* target);
+    virtual void destroyAllTextureTargets();
+    virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Sizef& size);
-    void destroyTexture(Texture& texture);
-    void destroyTexture(const String& name);
-    void destroyAllTextures();
-    Texture& getTexture(const String& name) const;
-    bool isTextureDefined(const String& name) const;
-    void setDisplaySize(const Sizef& sz);
-    const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
-    uint getMaxTextureSize() const;
-    const String& getIdentifierString() const;
+    virtual Texture& createTexture(const String& name, const Sizef& size);
+    virtual void destroyTexture(Texture& texture);
+    virtual void destroyTexture(const String& name);
+    virtual void destroyAllTextures();
+    virtual Texture& getTexture(const String& name) const;
+    virtual bool isTextureDefined(const String& name) const;
+    virtual void setDisplaySize(const Sizef& sz);
+    virtual const Sizef& getDisplaySize() const;
+    virtual const glm::vec2& getDisplayDPI() const;
+    virtual uint getMaxTextureSize() const;
+    virtual const String& getIdentifierString() const;
+    virtual bool isTexCoordSystemFlipped() const;
 
     /*!
     \brief
@@ -141,7 +145,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    virtual Sizef getAdjustedTextureSize(const Sizef& sz) const;
+    virtual Sizef getAdjustedTextureSize(const Sizef& sz) = 0;
 
     /*!
     \brief
@@ -154,27 +158,6 @@ public:
     virtual void setupRenderingBlendMode(const BlendMode mode,
                                          const bool force = false) = 0;
 
-    //! \deprecated - the OpenGL Info class should be used in the future for this purpose
-    virtual bool isS3TCSupported() const = 0;
-
-    /*!
-    \brief
-        Helper to return view projection matrix.
-
-    \return
-        The view projection matrix.
-    */
-    virtual const mat4Pimpl* getViewProjectionMatrix();
-
-    /*!
-    \brief
-        Helper to set the view projection matrix.
-
-    \param viewProjectionMatrix
-        The view projection matrix.
-    */
-    virtual void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
-
     /*!
     \brief
         Helper to get the viewport.
@@ -183,41 +166,6 @@ public:
         The viewport.
     */
     const CEGUI::Rectf& getActiveViewPort();
-
-    /*!
-    \brief
-        Helper to set the active render target.
-
-    \param renderTarget
-        The active RenderTarget.
-    */
-    void setActiveRenderTarget(RenderTarget* renderTarget);
-        
-    /*!
-    \brief
-        Helper to get the active render target.
-
-    \return
-        The active RenderTarget.
-    */
-    RenderTarget* getActiveRenderTarget();
-
-    /*!
-    \brief
-        Returns if the texture coordinate system is vertically flipped or not. The original of a
-        texture coordinate system is typically located either at the the top-left or the bottom-left.
-        CEGUI, Direct3D and most rendering engines assume it to be on the top-left. OpenGL assumes it to
-        be at the bottom left.        
- 
-        This function is intended to be used when generating geometry for rendering the TextureTarget
-        onto another surface. It is also intended to be used when trying to use a custom texture (RTT)
-        inside CEGUI using the Image class, in order to determine the Image coordinates correctly.
-
-    \return
-        - true if flipping is required: the texture coordinate origin is at the bottom left
-        - false if flipping is not required: the texture coordinate origin is at the top left
-    */
-    bool isTexCoordSystemFlipped() const { return true; }
 
 protected:
     OpenGLRendererBase();
@@ -261,30 +209,28 @@ protected:
     void initialiseDisplaySizeWithViewportSize();
 
     //! return some appropriate OpenGLGeometryBufferBase subclass instance.
-    virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl() = 0;
+    virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl(RefCounted<RenderMaterial> renderMaterial) = 0;
 
     //! return some appropriate TextureTarget subclass instance.
-    virtual TextureTarget* createTextureTarget_impl() = 0;
+    virtual TextureTarget* createTextureTarget_impl(bool addStencilBuffer) = 0;
+
+    //! return some appropriate Texture subclass instance.
+    virtual OpenGLTexture* createTexture_impl(const String& name) = 0;
 
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2f d_displayDPI;
+    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
-    //! container type used to hold GeometryBuffers created.
-    typedef std::vector<OpenGLGeometryBufferBase*> GeometryBufferList;
-    //! Container used to track geometry buffers.
-    GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, OpenGLTexture*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, OpenGLTexture*)> TextureMap;
+    typedef std::unordered_map<String, OpenGLTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
@@ -293,10 +239,6 @@ protected:
     bool d_initExtraStates;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
-    //! View projection matrix
-    mat4Pimpl* d_viewProjectionMatrix;
-    //! The active RenderTarget
-    RenderTarget* d_activeRenderTarget;
 };
 
 /**
@@ -306,13 +248,12 @@ protected:
     TextureTarget based on what the host system can provide - or use the
     default 'null' factory if no suitable TextureTargets are available.
 */
-class OGLTextureTargetFactory :
-    public AllocatedObject<OGLTextureTargetFactory>
+class OGLTextureTargetFactory
 {
 public:
     OGLTextureTargetFactory() {}
     virtual ~OGLTextureTargetFactory() {}
-    virtual TextureTarget* create(OpenGLRendererBase&) const
+    virtual TextureTarget* create(OpenGLRendererBase&, bool addStencilBuffer) const
         { return 0; }
 };
 
