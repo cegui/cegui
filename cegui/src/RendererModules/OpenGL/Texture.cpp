@@ -69,6 +69,34 @@ void OpenGLTexture::initialise(const String& filename, const String& resourceGro
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
+//----------------------------------------------------------------------------//
+GLint OpenGLTexture::internalFormat() const
+{
+    if (OpenGLInfo::getSingleton().isSizedInternalFormatSupported())
+    {
+        const char* err = "Invalid or unsupported OpenGL pixel format.";
+        switch (d_format)
+        {
+        case GL_RGBA:
+            switch (d_subpixelFormat)
+            {
+            case GL_UNSIGNED_BYTE:           return GL_RGBA8;
+            case GL_UNSIGNED_SHORT_4_4_4_4:  return GL_RGBA4;
+            default:  CEGUI_THROW(RendererException(err));
+            }
+        case GL_RGB:
+            switch (d_subpixelFormat)
+            {
+            case GL_UNSIGNED_BYTE:           return GL_RGB8;
+            case GL_UNSIGNED_SHORT_5_6_5:    return GL_RGB565;
+            default:  CEGUI_THROW(RendererException(err));
+            }
+        default:  CEGUI_THROW(RendererException(err));
+        }
+    }
+    else
+        return d_format;
+}
  
 //----------------------------------------------------------------------------//
 void OpenGLTexture::initialise(const Sizef& size)
