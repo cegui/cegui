@@ -87,5 +87,5 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIMinizipResourceProvider_h_
+#endif
 

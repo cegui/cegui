@@ -39,11 +39,11 @@
 namespace CEGUI
 {
 //! CEGUI::TextureTarget implementation for the Null engine.
-class NULL_GUIRENDERER_API NullTextureTarget : public NullRenderTarget<TextureTarget>
+class NULL_GUIRENDERER_API NullTextureTarget : public NullRenderTarget, public TextureTarget
 {
 public:
     //! Constructor.
-    NullTextureTarget(NullRenderer& owner);
+    NullTextureTarget(NullRenderer& owner, bool addStencilBuffer);
     //! Destructor.
     virtual ~NullTextureTarget();
 
@@ -53,7 +53,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 protected:
     //! helper to generate unique texture names

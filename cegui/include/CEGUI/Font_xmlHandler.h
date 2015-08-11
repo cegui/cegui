@@ -30,6 +30,13 @@
 #include "CEGUI/XMLHandler.h"
 #include "CEGUI/String.h"
 
+#include <vector>
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -39,6 +46,8 @@ class CEGUIEXPORT Font_xmlHandler : public XMLHandler
 public:
     //! Filename of the XML schema used for validating Font files.
     static const String FontSchemaName;
+    //! Tag name for Font elements.
+    static const String FontsElement;
     //! Tag name for Font elements.
     static const String FontElement;
     //! Tag name for Mapping elements.
@@ -82,11 +91,8 @@ public:
     //! Destructor.
     ~Font_xmlHandler();
 
-    //! Return string holding the name of the created Font.
-    const String& getObjectName() const;
-
     //! Return reference to the created Font object.
-    Font& getObject() const;
+    std::vector<Font*>& getObjects();
 
     // XMLHandler overrides
     const String& getSchemaName() const;
@@ -96,10 +102,15 @@ public:
     void elementEnd(const String& element);
 
 private:
-    //! handles the opening Font XML element.
+    //! handles the opening Fonts XML element.
+    void elementFontsStart(const XMLAttributes& attributes);
+    //! handles the closing Fonts XML element.
+    void elementFontsEnd();
+    //! handles the opening Fonts XML element.
     void elementFontStart(const XMLAttributes& attributes);
-    //! handles the closing Font XML element.
+    //! handles the closing Fonts XML element.
     void elementFontEnd();
+
     //! handles the opening Mapping XML element.
     void elementMappingStart(const XMLAttributes& attributes);
     //! creates a FreeTypeFont
@@ -110,12 +121,19 @@ private:
     //! throw exception if file version is not supported.
     void validateFontFileVersion(const XMLAttributes& attrs);
 
-    //! Font object that we are constructing.
+    //! Font object that we are currently loading
     Font* d_font;
-    //! inidcates whether client read the created object
-    mutable bool d_objectRead;
+    //! List of font objects that we loaded and constructed.
+    std::vector<Font*> d_loadedFonts;
+    //! Indicates whether the fonts have all been loaded
+    mutable bool d_isFontLoadingDone;
 };
 
-} // End of  CEGUI namespace section
+}
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
+
 
 #endif

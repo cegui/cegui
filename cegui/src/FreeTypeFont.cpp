@@ -36,7 +36,7 @@
 #include "CEGUI/Font_xmlHandler.h"
 #include <cmath>
 #include <cstdio>
-#include <cstdlib>
+#include <stddef.h>
 #include <cstring>
 
 #ifdef _MSC_VER
@@ -195,7 +195,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         d_glyphTextures.push_back(&texture);
 
         // Create a memory buffer where we will render our glyphs
-        argb_t* mem_buffer = CEGUI_NEW_ARRAY_PT(argb_t, texsize * texsize, BufferAllocator);
+        argb_t* mem_buffer = new argb_t[texsize * texsize];
         memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
 
         // Go ahead, line by line, top-left to bottom-right
@@ -232,11 +232,11 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Logger::getSingleton().logEvent(err.str().c_str(), Errors);
 
                     // Create a 'null' image for this glyph so we do not seg later
-                    Rectf area(0, 0, 0, 0);
-                    Vector2f offset(0, 0);
+                    const Rectf area(0, 0, 0, 0);
+                    const glm::vec2 offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
-                    BasicImage* img =
-                        CEGUI_NEW_AO BasicImage(name, &texture, area, offset, ASM_Disabled,
+                    BitmapImage* img =
+                        new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
@@ -265,16 +265,17 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
                     // Create a new image in the imageset
                     const Rectf area(static_cast<float>(x),
-                                      static_cast<float>(y),
-                                      static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
-                                      static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
+                                     static_cast<float>(y),
+                                     static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
+                                     static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
 
-                    Vector2f offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
-                                    -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
+                    const glm::vec2 offset(
+                        d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
+                        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
-                    BasicImage* img =
-                        CEGUI_NEW_AO BasicImage(name, &texture, area, offset, ASM_Disabled,
+                    BitmapImage* img =
+                        new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
@@ -304,7 +305,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
         // Copy our memory buffer into the texture and free it
         texture.loadFromMemory(mem_buffer, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PF_RGBA);
-        CEGUI_DELETE_ARRAY_PT(mem_buffer, argb_t, texsize * texsize, BufferAllocator);
+        delete[] mem_buffer;
 
         if (finished)
             break;
@@ -341,9 +342,9 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
+            throw InvalidRequestException(
                 "The glyph could not be drawn because the pixel mode is "
-                "unsupported."));
+                "unsupported.");
             break;
         }
 
@@ -360,7 +361,7 @@ void FreeTypeFont::free()
     d_cp_map.clear();
 
     for (size_t i = 0; i < d_glyphImages.size(); ++i)
-        CEGUI_DELETE_AO d_glyphImages[i];
+        delete d_glyphImages[i];
     d_glyphImages.clear();
 
     for (size_t i = 0; i < d_glyphTextures.size(); i++)
@@ -387,22 +388,22 @@ void FreeTypeFont::updateFont()
     if ((error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
                            static_cast<FT_Long>(d_fontData.getSize()), 0,
                            &d_fontFace)) != 0)
-        CEGUI_THROW(GenericException("Failed to create face from font file '" +
+        throw GenericException("Failed to create face from font file '" +
             d_filename + "' error was: " +
-            ((error < FT_Err_Max) ? ft_errors[error] : "unknown error")));
+            ((error < FT_Err_Max) ? ft_errors[error] : "unknown error"));
 
     // check that default Unicode character map is available
     if (!d_fontFace->charmap)
     {
         FT_Done_Face(d_fontFace);
         d_fontFace = 0;
-        CEGUI_THROW(GenericException(
+        throw GenericException(
             "The font '" + d_name + "' does not have a Unicode charmap, and "
-            "cannot be used."));
+            "cannot be used.");
     }
 
-    uint horzdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().d_x);
-    uint vertdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().d_y);
+    const uint horzdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().x);
+    const uint vertdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().y);
 
     float hps = d_ptSize * 64;
     float vps = d_ptSize * 64;
@@ -435,9 +436,9 @@ void FreeTypeFont::updateFont()
         {
             char size [20];
             snprintf(size, sizeof(size), "%g", d_ptSize);
-            CEGUI_THROW(GenericException("The font '" + d_name + "' cannot be "
+            throw GenericException("The font '" + d_name + "' cannot be "
                 "rasterised at a size of " + size + " points, and cannot be "
-                "used."));
+                "used.");
         }
     }
 

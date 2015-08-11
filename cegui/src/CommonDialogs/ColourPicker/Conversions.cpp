@@ -360,7 +360,7 @@ HSV_Colour ColourPickerConversions::toHSV(RGB_Colour colour)
         max_comp = g;
     }
 
-    float min_comp = ceguimin(ceguimin(r, g), b);
+    float min_comp = std::min(std::min(r, g), b);
     float h;
     float s;
     float v = max_comp;
