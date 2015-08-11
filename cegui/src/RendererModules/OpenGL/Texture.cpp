@@ -92,10 +92,8 @@ GLint OpenGLTexture::internalFormat() const
             {
             case GL_UNSIGNED_BYTE:
                 return GL_RGB8;
-#ifdef GL_RGB565
             case GL_UNSIGNED_SHORT_5_6_5:
                 return GL_RGB565;
-#endif
             default:
                 throw RendererException(err);
             }
