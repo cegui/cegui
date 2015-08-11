@@ -32,7 +32,7 @@ namespace CEGUI
 {
 
 const char
-    StandardShaderVert_OpenglEs3[] =
+    StandardShaderVert_Opengl3[] =
         "#version 150 core\n"
 
         "uniform mat4 modelViewPerspMatrix;\n"

@@ -100,16 +100,24 @@ GLint OpenGLTexture::internalFormat() const
         case GL_RGBA:
             switch (d_subpixelFormat)
             {
-            case GL_UNSIGNED_BYTE:           return GL_RGBA8;
-            case GL_UNSIGNED_SHORT_4_4_4_4:  return GL_RGBA4;
-            default:  CEGUI_THROW(RendererException(err));
+            case GL_UNSIGNED_BYTE:
+                return GL_RGBA8;
+            case GL_UNSIGNED_SHORT_4_4_4_4:
+                return GL_RGBA4;
+            default:
+                CEGUI_THROW(RendererException(err));
             }
         case GL_RGB:
             switch (d_subpixelFormat)
             {
-            case GL_UNSIGNED_BYTE:           return GL_RGB8;
-            case GL_UNSIGNED_SHORT_5_6_5:    return GL_RGB565;
-            default:  CEGUI_THROW(RendererException(err));
+            case GL_UNSIGNED_BYTE:
+                return GL_RGB8;
+#ifdef GL_RGB565
+            case GL_UNSIGNED_SHORT_5_6_5:
+                return GL_RGB565;
+#endif
+            default:
+                CEGUI_THROW(RendererException(err));
             }
         default:  CEGUI_THROW(RendererException(err));
         }
