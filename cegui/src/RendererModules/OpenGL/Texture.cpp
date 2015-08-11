@@ -85,7 +85,7 @@ GLint OpenGLTexture::internalFormat() const
             case GL_UNSIGNED_SHORT_4_4_4_4:
                 return GL_RGBA4;
             default:
-                CEGUI_THROW(RendererException(err));
+                throw RendererException(err);
             }
         case GL_RGB:
             switch (d_subpixelFormat)
@@ -97,9 +97,10 @@ GLint OpenGLTexture::internalFormat() const
                 return GL_RGB565;
 #endif
             default:
-                CEGUI_THROW(RendererException(err));
+                throw RendererException(err);
             }
-        default:  CEGUI_THROW(RendererException(err));
+        default:
+            throw RendererException(err);
         }
     }
     else
