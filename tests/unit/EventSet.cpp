@@ -271,23 +271,23 @@ BOOST_AUTO_TEST_CASE(Subscribing)
     }
     // C++11 only!
 #   if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
-    /*{
+    {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, std::bind(&freeFunctionSubscriberOtherArgs, std::placeholders::_1, 14));
         args.d_targetValue = 14;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 14);
         connection->disconnect();
-    }*/
-    /*{
-        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, std::bind<bool>(&freeFunctionSubscriberFirstOtherArgs, 15, std::placeholders::_1));
+    }
+    {
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, std::bind<void>(&freeFunctionSubscriberFirstOtherArgs, 15, std::placeholders::_1));
         args.d_targetValue = 15;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 15);
         connection->disconnect();
-    }*/
+    }
     {
         // TODO: why do we need to tell std::bind about the return type when boost::bind can figure it out?
-        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, std::bind<void>(&freeFunctionSubscriberJustOtherArgs, 16));
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, std::bind<bool>(&freeFunctionSubscriberJustOtherArgs, 16));
         args.d_targetValue = 16;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 16);
@@ -296,20 +296,26 @@ BOOST_AUTO_TEST_CASE(Subscribing)
 #   endif
 
 #   ifdef CEGUI_TEST_BOOST_BIND
-    /*{
+    // broken on g++ 5.1.1
+#   ifndef __GNUC__
+    {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, boost::bind(&freeFunctionSubscriberOtherArgs, _1, 17));
         args.d_targetValue = 17;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 17);
         connection->disconnect();
-    }*/
-    /*{
+    }
+#   endif
+    // broken on g++ 5.1.1
+#   ifndef __GNUC__
+    {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, boost::bind(&freeFunctionSubscriberFirstOtherArgs, 18, _1));
         args.d_targetValue = 18;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 18);
         connection->disconnect();
-    }*/
+    }
+#   endif
     {
         CEGUI::Event::Connection connection = set.subscribeEvent(eventName, boost::bind(&freeFunctionSubscriberJustOtherArgs, 19));
         args.d_targetValue = 19;
