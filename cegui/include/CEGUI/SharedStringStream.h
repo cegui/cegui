@@ -41,7 +41,9 @@ public:
 
     std::stringstream d_sharedStream;
     
-    static thread_local SharedStringstream s_sharedStreamInstance;
+    // TODO: make this "static thread_local" in the future once supported on all major compilers,
+    // currently only supported on VS 2015 apparently
+    static SharedStringstream s_sharedStreamInstance;
 };
 
 }
