@@ -35,12 +35,7 @@
 #include "CEGUI/StreamHelper.h"
 #include "CEGUI/SharedStringStream.h"
 
-#include <cstdio>
 #include <sstream>
-
-#ifdef _MSC_VER
-#define snprintf _snprintf
-#endif
 
 namespace CEGUI
 {
@@ -257,8 +252,9 @@ PropertyHelper<UDim>::fromString(const String& str)
     if (str.empty())
         return ud;
 
+    std::stringstream& sstream = getPreparedStream(str);
+
     // Format is: " { %g , %g } " but we are lenient regarding the format, so this is also allowed: " %g %g "
-    std::stringstream sstream(str.c_str());
     sstream >> optionalChar<'{'> >> ud.d_scale >> optionalChar<','> >> ud.d_offset;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -269,10 +265,10 @@ PropertyHelper<UDim>::fromString(const String& str)
 PropertyHelper<UDim>::string_return_type PropertyHelper<UDim>::toString(
     PropertyHelper<UDim>::pass_type val)
 {
-    char buff[128];
-    snprintf(buff, sizeof(buff), "{%g,%g}", val.d_scale, val.d_offset);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "{" << val.d_scale << "," << val.d_offset << "}";
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<UVector2>::getDataTypeName()
@@ -290,8 +286,8 @@ PropertyHelper<UVector2>::fromString(const String& str)
     if (str.empty())
         return uv;
 
+    std::stringstream& sstream = getPreparedStream(str);
     // Format is: " { { %g , %g } , { %g , %g } } " but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } "
-    std::stringstream sstream(str.c_str());
     sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> uv.d_x.d_scale >> optionalChar<','> >> uv.d_x.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> uv.d_y.d_scale >> optionalChar<','> >> uv.d_y.d_offset;
     if (sstream.fail())
@@ -303,11 +299,11 @@ PropertyHelper<UVector2>::fromString(const String& str)
 PropertyHelper<UVector2>::string_return_type PropertyHelper<UVector2>::toString(
     PropertyHelper<UVector2>::pass_type val)
 {
-    char buff[256];
-    snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
-        val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "{{" << val.d_x.d_scale << "," << val.d_x.d_offset << "},{" <<
+        val.d_y.d_scale << "," << val.d_y.d_offset << "}}";
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<USize>::getDataTypeName()
@@ -325,8 +321,8 @@ PropertyHelper<USize>::fromString(const String& str)
     if (str.empty())
         return uv;
 
+    std::stringstream& sstream = getPreparedStream(str);
     // Format is: " { { %g , %g } , { %g , %g } } " but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } "
-    std::stringstream sstream(str.c_str());
     sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> uv.d_width.d_scale >> optionalChar<','> >> uv.d_width.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> uv.d_height.d_scale >> optionalChar<','> >> uv.d_height.d_offset;
     if (sstream.fail())
@@ -338,11 +334,11 @@ PropertyHelper<USize>::fromString(const String& str)
 PropertyHelper<USize>::string_return_type PropertyHelper<USize>::toString(
     PropertyHelper<USize>::pass_type val)
 {
-    char buff[256];
-    snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
-        val.d_width.d_scale, val.d_width.d_offset, val.d_height.d_scale, val.d_height.d_offset);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "{{" << val.d_width.d_scale << "," << val.d_width.d_offset << "},{" <<
+        val.d_height.d_scale << "," << val.d_height.d_offset << "}}";
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<URect>::getDataTypeName()
@@ -360,9 +356,9 @@ PropertyHelper<URect>::fromString(const String& str)
     if (str.empty())
         return ur;
 
+    std::stringstream& sstream = getPreparedStream(str);
     // Format is:  { { %g , %g } , { %g , %g } , { %g , %g } , { %g , %g } }" 
     // but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } { %g %g } { %g %g }"
-    std::stringstream sstream(str.c_str());
     sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> ur.d_min.d_x.d_scale >> optionalChar<','> >> ur.d_min.d_x.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_min.d_y.d_scale >> optionalChar<','> >> ur.d_min.d_y.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_max.d_x.d_scale >> optionalChar<','> >> ur.d_max.d_x.d_offset >>
@@ -376,14 +372,13 @@ PropertyHelper<URect>::fromString(const String& str)
 PropertyHelper<URect>::string_return_type PropertyHelper<URect>::toString(
     PropertyHelper<URect>::pass_type val)
 {
-    char buff[512];
-    snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g},{%g,%g},{%g,%g}}",
-        val.d_min.d_x.d_scale, val.d_min.d_x.d_offset,
-        val.d_min.d_y.d_scale, val.d_min.d_y.d_offset,
-        val.d_max.d_x.d_scale, val.d_max.d_x.d_offset,
-        val.d_max.d_y.d_scale, val.d_max.d_y.d_offset);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "{{" << val.d_min.d_x.d_scale << "," << val.d_min.d_x.d_offset << "},{" <<
+        val.d_min.d_y.d_scale << "," << val.d_min.d_y.d_offset << "},{" <<
+        val.d_max.d_x.d_scale << "," << val.d_max.d_x.d_offset << "},{" <<
+        val.d_max.d_y.d_scale << "," << val.d_max.d_y.d_offset << "}}";
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<UBox>::getDataTypeName()
@@ -401,9 +396,9 @@ PropertyHelper<UBox>::fromString(const String& str)
     if (str.empty())
         return ret;
 
+    std::stringstream& sstream = getPreparedStream(str);
     // Format is:  { top: { %g , %g } , left: { %g , %g } , bottom: { %g , %g } , right: { %g , %g } }",
     // but we are lenient regarding the format, so this is also allowed: " top : { %g %g } left : { %g %g } bottom : { %g %g } right : { %g %g } "
-    std::stringstream sstream(str.c_str());
     sstream >> optionalChar<'{'> >> MandatoryString(" top : {") >> ret.d_top.d_scale >> optionalChar<','> >> ret.d_top.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" left : {") >> ret.d_left.d_scale >> optionalChar<','> >> ret.d_left.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" bottom : {") >> ret.d_bottom.d_scale >> optionalChar<','> >> ret.d_bottom.d_offset >>
@@ -417,14 +412,13 @@ PropertyHelper<UBox>::fromString(const String& str)
 PropertyHelper<UBox>::string_return_type PropertyHelper<UBox>::toString(
     PropertyHelper<UBox>::pass_type val)
 {
-    char buff[512];
-    snprintf(buff, sizeof(buff), "{top:{%g,%g},left:{%g,%g},bottom:{%g,%g},right:{%g,%g}}",
-        val.d_top.d_scale, val.d_top.d_offset,
-        val.d_left.d_scale, val.d_left.d_offset,
-        val.d_bottom.d_scale, val.d_bottom.d_offset,
-        val.d_right.d_scale, val.d_right.d_offset);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "{top:{" << val.d_top.d_scale << "," << val.d_top.d_offset << "},left:{" <<
+        val.d_left.d_scale << "," << val.d_left.d_offset << "},bottom:{" <<
+        val.d_bottom.d_scale << "," << val.d_bottom.d_offset << "},right:{" <<
+        val.d_right.d_scale << "," << val.d_right.d_offset << "}}";
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<ColourRect>::getDataTypeName()
@@ -443,8 +437,7 @@ PropertyHelper<ColourRect>::fromString(const String& str)
     {
         argb_t all = 0xFF000000;
 
-        std::stringstream sstream;
-        sstream.clear();
+        std::stringstream& sstream = getPreparedStream();
         sstream << std::hex << str.c_str();
         sstream >> all;
         if (sstream.fail())
@@ -457,7 +450,7 @@ PropertyHelper<ColourRect>::fromString(const String& str)
     {
         argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
 
-        std::stringstream originalStrStream(str.c_str());
+        std::stringstream& originalStrStream = getPreparedStream(str);
         std::stringstream sstream;
         sstream << std::hex;
         std::string hexadecimalString;
@@ -518,10 +511,12 @@ PropertyHelper<ColourRect>::fromString(const String& str)
 PropertyHelper<ColourRect>::string_return_type PropertyHelper<ColourRect>::toString(
     PropertyHelper<ColourRect>::pass_type val)
 {
-    char buff[64];
-    sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
+    std::stringstream& sstream = getPreparedStream();
+    sstream << std::hex;
+    sstream << "tl:" << val.d_top_left.getARGB() << " tr:" << val.d_top_right.getARGB() << " bl:" << val.d_bottom_left.getARGB() << " br:" << val.d_bottom_right.getARGB();
+    sstream << std::dec;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<Colour>::getDataTypeName()
@@ -539,8 +534,7 @@ PropertyHelper<Colour>::fromString(const String& str)
     if (str.empty())
         return Colour(val);
 
-    std::stringstream sstream;
-    sstream.clear();
+    std::stringstream& sstream = getPreparedStream();
     sstream << std::hex << str.c_str();
     sstream >> val;
     if (sstream.fail())
@@ -553,10 +547,12 @@ PropertyHelper<Colour>::fromString(const String& str)
 PropertyHelper<Colour>::string_return_type PropertyHelper<Colour>::toString(
     PropertyHelper<Colour>::pass_type val)
 {
-    char buff[16];
-    sprintf(buff, "%.8X", val.getARGB());
+    std::stringstream& sstream = getPreparedStream();
+    sstream << std::hex;
+    sstream << val.getARGB();
+    sstream << std::dec;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<Rectf>::getDataTypeName()
@@ -574,7 +570,7 @@ PropertyHelper<Rectf>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" l :") >> val.d_min.d_x >> MandatoryString(" t :") >> val.d_min.d_y >> MandatoryString(" r :") >> val.d_max.d_x >> MandatoryString(" b :") >> val.d_max.d_y;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -585,11 +581,10 @@ PropertyHelper<Rectf>::fromString(const String& str)
 PropertyHelper<Rectf>::string_return_type PropertyHelper<Rectf>::toString(
     PropertyHelper<Rectf>::pass_type val)
 {
-    char buff[256];
-    snprintf(buff, sizeof(buff), "l:%g t:%g r:%g b:%g",
-        val.d_min.d_x, val.d_min.d_y, val.d_max.d_x, val.d_max.d_y);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "l:" << val.d_min.d_x << " t:" << val.d_min.d_y << " r:" << val.d_max.d_x << " b:" << val.d_max.d_y;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<Sizef>::getDataTypeName()
@@ -607,7 +602,7 @@ PropertyHelper<Sizef>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" w :") >> val.d_width >> MandatoryString(" h :") >> val.d_height;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -618,10 +613,10 @@ PropertyHelper<Sizef>::fromString(const String& str)
 PropertyHelper<Sizef>::string_return_type PropertyHelper<Sizef>::toString(
     PropertyHelper<Sizef>::pass_type val)
 {
-    char buff[128];
-    snprintf(buff, sizeof(buff), "w:%g h:%g", val.d_width, val.d_height);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "w:" << val.d_width << " h:" << val.d_height;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<double>::getDataTypeName()
@@ -639,7 +634,7 @@ PropertyHelper<double>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -651,10 +646,10 @@ PropertyHelper<double>::fromString(const String& str)
 PropertyHelper<double>::string_return_type PropertyHelper<double>::toString(
     PropertyHelper<double>::pass_type val)
 {
-    char buff[64];
-    snprintf(buff, sizeof(buff), "%g", val);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 
@@ -673,7 +668,7 @@ PropertyHelper<int>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -685,10 +680,10 @@ PropertyHelper<int>::fromString(const String& str)
 PropertyHelper<int>::string_return_type PropertyHelper<int>::toString(
     PropertyHelper<int>::pass_type val)
 {
-    char buff[64];
-    snprintf(buff, sizeof(buff), "%d", val);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 
@@ -707,7 +702,7 @@ PropertyHelper<uint64>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -719,10 +714,10 @@ PropertyHelper<uint64>::fromString(const String& str)
 PropertyHelper<uint64>::string_return_type PropertyHelper<uint64>::toString(
     PropertyHelper<uint64>::pass_type val)
 {
-    char buff[64];
-    snprintf(buff, sizeof(buff), "%llu", val);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 
@@ -741,7 +736,7 @@ PropertyHelper<unsigned long>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -752,10 +747,10 @@ PropertyHelper<unsigned long>::fromString(const String& str)
 PropertyHelper<unsigned long>::string_return_type PropertyHelper<unsigned long>::toString(
     PropertyHelper<unsigned long>::pass_type val)
 {
-    char buff[64];
-    snprintf(buff, sizeof(buff), "%lu", val);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<glm::vec2>::getDataTypeName()
@@ -773,7 +768,7 @@ PropertyHelper<glm::vec2>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -784,10 +779,10 @@ PropertyHelper<glm::vec2>::fromString(const String& str)
 PropertyHelper<glm::vec2>::string_return_type PropertyHelper<glm::vec2>::toString(
     PropertyHelper<glm::vec2>::pass_type val)
 {
-    char buff[128];
-    snprintf(buff, sizeof(buff), "x:%g y:%g", val.x, val.y);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "x:" << val.x << " y:" << val.y;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<glm::vec3>::getDataTypeName()
@@ -805,7 +800,7 @@ PropertyHelper<glm::vec3>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y >> MandatoryString(" z :") >> val.z;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -816,10 +811,10 @@ PropertyHelper<glm::vec3>::fromString(const String& str)
 PropertyHelper<glm::vec3>::string_return_type PropertyHelper<glm::vec3>::toString(
     PropertyHelper<glm::vec3>::pass_type val)
 {
-    char buff[128];
-    snprintf(buff, sizeof(buff), "x:%g y:%g z:%g", val.x, val.y, val.z);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "x:" << val.x << " y:" << val.y << " z:" << val.z;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 const String& PropertyHelper<glm::quat>::getDataTypeName()
@@ -838,7 +833,7 @@ PropertyHelper<glm::quat>::fromString(const String& str)
         return val;
     else if (strchr(str.c_str(), 'w') || strchr(str.c_str(), 'W'))
     {
-        std::stringstream sstream(str.c_str());
+        std::stringstream& sstream = getPreparedStream(str);
         sstream >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y >> MandatoryString(" z :") >> val.z >> MandatoryString(" w :") >> val.w;
         if (sstream.fail())
             logParsingError(getDataTypeName(), str);
@@ -848,7 +843,7 @@ PropertyHelper<glm::quat>::fromString(const String& str)
     {
         float x, y, z;
         // CEGUI takes degrees because it's easier to work with
-        std::stringstream sstream(str.c_str());
+        std::stringstream& sstream = getPreparedStream(str);
         sstream >> MandatoryString(" x :") >> x >> MandatoryString(" y :") >> y >> MandatoryString(" z :") >> z;
         if (sstream.fail())
             logParsingError(getDataTypeName(), str);
@@ -861,10 +856,10 @@ PropertyHelper<glm::quat>::fromString(const String& str)
 PropertyHelper<glm::quat>::string_return_type PropertyHelper<glm::quat>::toString(
     PropertyHelper<glm::quat>::pass_type val)
 {
-    char buff[128];
-    snprintf(buff, sizeof(buff), "w:%g x:%g y:%g z:%g", val.w, val.x, val.y, val.z);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << "w:" << val.w << " x:" << val.x << " y:" << val.y << " z:" << val.z;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 
@@ -883,7 +878,7 @@ PropertyHelper<uint>::fromString(const String& str)
     if (str.empty())
         return val;
 
-    std::stringstream sstream(str.c_str());
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
         logParsingError(getDataTypeName(), str);
@@ -895,10 +890,10 @@ PropertyHelper<uint>::fromString(const String& str)
 PropertyHelper<uint>::string_return_type PropertyHelper<uint>::toString(
     PropertyHelper<uint>::pass_type val)
 {
-    char buff[64];
-    snprintf(buff, sizeof(buff), "%u", val);
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
 
-    return String(buff);
+    return String(sstream.str());
 }
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
