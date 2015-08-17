@@ -439,6 +439,14 @@ std::ostream& operator<<(std::ostream& s, const String& str)
 	return s << str.c_str();
 }
 
+std::istream& operator>>(std::istream& inputStream, String& str)
+{
+    std::string inputString;
+    inputStream >> inputString;
+    str.assign(inputString);
+    return inputStream;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Modifying operations
 //////////////////////////////////////////////////////////////////////////

@@ -5539,11 +5539,11 @@ String CEGUIEXPORT	operator+(const String& str, const char* c_str);
 String CEGUIEXPORT	operator+(const char* c_str, const String& str);
 
 
-//////////////////////////////////////////////////////////////////////////
-// Output (stream) functions
-//////////////////////////////////////////////////////////////////////////
+// Output (stream) function
 CEGUIEXPORT std::ostream& operator<<(std::ostream& s, const String& str);
 
+// Input (stream) function
+CEGUIEXPORT std::istream& operator>>(std::istream& inputStream, String& str);
 
 //////////////////////////////////////////////////////////////////////////
 // Modifying operations
