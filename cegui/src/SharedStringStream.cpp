@@ -29,7 +29,8 @@
 namespace CEGUI
 {
 
-thread_local SharedStringstream SharedStringstream::s_sharedStreamInstance;
+// TODO make thread_local once supported on all major compilers
+SharedStringstream SharedStringstream::s_sharedStreamInstance;
 
 SharedStringstream::SharedStringstream()
 {
