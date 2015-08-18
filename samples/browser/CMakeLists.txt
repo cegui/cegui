@@ -53,10 +53,19 @@ endif()
 
 
 if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
-    # Append OpenGL and OpenGL3 files
+    # Append OpenGL, OpenGL3 and OpenGL ES 2 files
     list(APPEND CORE_SOURCE_FILES
         ./src/CEGuiGLFWSharedBase.cpp
     )
+    if (CEGUI_USE_GLFW_VER STREQUAL "3")
+        list (APPEND CORE_SOURCE_FILES
+            ./src/CEGuiGLFW3SharedBase.cpp
+        )
+    else() # CEGUI_USE_GLFW_VER STREQUAL "2"
+        list (APPEND CORE_SOURCE_FILES
+            ./src/CEGuiGLFW2SharedBase.cpp
+        )
+    endif()
 
     if(CEGUI_BUILD_RENDERER_OPENGL)
         list(APPEND CORE_SOURCE_FILES
@@ -70,9 +79,15 @@ if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
         )
     endif()
 
+    if (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2)
+        list (APPEND CORE_SOURCE_FILES
+            ./src/CEGuiOpenGLES2BaseApplication.cpp
+        )
+    endif()
+
 endif()
 
-if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE)
     list(APPEND CORE_SOURCE_FILES
         ./src/CEGuiEGLBaseApplication.cpp
     )
@@ -321,16 +336,24 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
         ${XAW_LIBRARY} ${X11_Xrandr_LIB} pthread ${CMAKE_DL_LIBS})
 endif()
 
-if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
-endif()
+    if (CEGUI_USE_EPOXY)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} EPOXY)
+    elseif (CEGUI_USE_GLEW)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
+    endif ()  
+    if (CEGUI_USE_GLFW_VER STREQUAL "3")
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW3)
+    else () # CEGUI_USE_GLFW_VER STREQUAL "2"
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+    endif ()
+endif ()
 
-if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE)
     if (NOT ANDROID) # LINUX GLES depends on GLEW 
         cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} EGL)

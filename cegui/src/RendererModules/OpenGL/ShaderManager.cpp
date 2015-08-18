@@ -76,18 +76,18 @@ void OpenGLBaseShaderManager::initialiseShaders()
     {
         if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVert, StandardShaderTexturedFrag);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVert, StandardShaderSolidFrag);
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertDesktopOpengl3, StandardShaderTexturedFragDesktopOpengl3);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertDesktopOpengl3, StandardShaderSolidFragDesktopOpengl3);
         }
-        else if (OpenGLInfo::getSingleton().verMajor() <= 2)
+        else if (OpenGLInfo::getSingleton().verMajor() <= 2) // Open GL ES < 3
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES1, StandardShaderTexturedFragGLSLES1);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES1, StandardShaderSolidFragGLSLES1);
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs2, StandardShaderTexturedFragOpenglEs2);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertOpenglEs2, StandardShaderSolidFragOpenglEs2);
         }
-        else
+        else // OpenGL ES >= 3
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertGLSLES3, StandardShaderTexturedFragGLSLES3);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertGLSLES3, StandardShaderSolidFragGLSLES3);
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs3, StandardShaderTexturedFragOpenglEs3);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertOpenglEs3, StandardShaderSolidFragOpenglEs3);
         }
 
             

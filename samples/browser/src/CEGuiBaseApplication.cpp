@@ -179,6 +179,13 @@ void CEGuiBaseApplication::cleanup()
     d_FPSGeometry.clear();
 
     CEGUI::System::destroy();
+    destroyRenderer ();
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::destroyRenderer ()
+{
+    delete d_renderer;
 }
 
 //----------------------------------------------------------------------------//

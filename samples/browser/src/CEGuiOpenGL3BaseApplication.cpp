@@ -28,7 +28,7 @@ author:     Paul D Turner
 // We need to include windows.h here before glfw is included (via
 // CEGuiOpenGL3BaseApplication.h) or there will be a warning when GL.h includes
 // windows.h (via GL3Renderer.h)
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if defined(CEGUI_USE_GLEW)  &&  (defined( __WIN32__ ) || defined( _WIN32 ))
 #include "windows.h"
 #endif
 
@@ -47,18 +47,17 @@ CEGuiOpenGL3BaseApplication::CEGuiOpenGL3BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-CEGuiOpenGL3BaseApplication::~CEGuiOpenGL3BaseApplication()
-{
-    CEGUI::OpenGL3Renderer::destroy(static_cast<CEGUI::OpenGL3Renderer&>(*d_renderer));
-}
-
-//----------------------------------------------------------------------------//
 void CEGuiOpenGL3BaseApplication::setGLFWWindowCreationHints()
 {
+#if GLFW_VERSION_MAJOR >= 3
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#else // GLFW_VERSION_MAJOR <= 2
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#endif
 }
 
 //----------------------------------------------------------------------------//
-

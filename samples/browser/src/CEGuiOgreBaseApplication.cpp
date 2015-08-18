@@ -223,6 +223,17 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 {
+#ifdef OGRE_STATIC_LIB
+    d_staticPluginLoader->unload();
+    delete d_staticPluginLoader;
+#endif
+    delete d_ogreRoot;
+    delete d_windowEventListener;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::destroyRenderer()
+{
     delete d_frameListener;
 
     CEGUI::OgreRenderer& renderer =
@@ -234,10 +245,6 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
     CEGUI::OgreRenderer::destroy(renderer);
     delete d_ogreRoot;
     delete d_windowEventListener;
-#ifdef OGRE_STATIC_LIB
-    d_staticPluginLoader->unload();
-    delete d_staticPluginLoader;
-#endif
 }
 
 //----------------------------------------------------------------------------//
