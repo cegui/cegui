@@ -428,6 +428,11 @@ public:
         return Rect(d_min - r.d_min, d_max - r.d_max);
     }
 
+    inline friend std::ostream& operator << (std::ostream& s, const Rect& val)
+    {
+        s << "{" << val.d_min << "," << val.d_min << "}";
+        return s;
+    }
     
     //! \brief finger saving alias for zero sized, zero positioned rect
     inline static Rect zero()

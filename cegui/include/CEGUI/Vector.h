@@ -159,8 +159,7 @@ public:
     */
     inline friend std::ostream& operator << (std::ostream& s, const Vector2& val)
     {
-        s << "{{" << val.d_x.d_scale << "," << val.d_x.d_offset << "},{" <<
-            val.d_y.d_scale << "," << val.d_y.d_offset << "}}";
+        s << "{" << val.d_x << "},{" << val.d_y << "}";
         return s;
     }
 
@@ -170,9 +169,7 @@ public:
     inline friend std::istream& operator >> (std::istream& s, Vector2& val)
     {
         // Format is: " { { % , % } , { % , % } } " but we are lenient regarding the format, so this is also allowed: " { % % } { % % } "
-        s >> optionalChar<'{'> >> mandatoryChar<'{'> >> val.d_x.d_scale >> optionalChar<','> >> val.d_x.d_offset >>
-            mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> val.d_y.d_scale >> optionalChar<','> >> val.d_y.d_offset >>
-            optionalChar<'}'> >> optionalChar<'}'>;
+        s >> mandatoryChar<'{'> >> val.d_x >> optionalChar<','> >> val.d_y >> mandatoryChar<'}'>;
         return s;
     }
 
