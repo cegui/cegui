@@ -51,7 +51,7 @@ const CEGUI::String PropertyHelper<AspectMode>::Ignore("Ignore");
 
 
 //! Helper function for throwing errors
-static void logParsingError(const String& typeName, const String& parsedstring)
+static void throwParsingException(const String& typeName, const String& parsedstring)
 {
     throw InvalidRequestException("PropertyHelper::fromString could not parse the type " + typeName + " from the string: \"" + parsedstring + "\"");
 }
@@ -159,6 +159,7 @@ PropertyHelper<Image*>::fromString(const String& str)
     catch (UnknownObjectException&)
     {
         image = 0;
+        throwParsingException(getDataTypeName(), str);
     }
 
     return image;
@@ -193,6 +194,7 @@ PropertyHelper<Font*>::fromString(const String& str)
     catch (UnknownObjectException&)
     {
         image = 0;
+        throwParsingException(getDataTypeName(), str);
     }
 
     return image;
@@ -223,7 +225,7 @@ PropertyHelper<float>::fromString(const String& str)
 
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -253,11 +255,9 @@ PropertyHelper<UDim>::fromString(const String& str)
         return ud;
 
     std::stringstream& sstream = getPreparedStream(str);
-
-    // Format is: " { %g , %g } " but we are lenient regarding the format, so this is also allowed: " %g %g "
-    sstream >> optionalChar<'{'> >> ud.d_scale >> optionalChar<','> >> ud.d_offset;
+    sstream >> ud;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return ud;
 }
@@ -266,7 +266,7 @@ PropertyHelper<UDim>::string_return_type PropertyHelper<UDim>::toString(
     PropertyHelper<UDim>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "{" << val.d_scale << "," << val.d_offset << "}";
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -287,11 +287,9 @@ PropertyHelper<UVector2>::fromString(const String& str)
         return uv;
 
     std::stringstream& sstream = getPreparedStream(str);
-    // Format is: " { { %g , %g } , { %g , %g } } " but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } "
-    sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> uv.d_x.d_scale >> optionalChar<','> >> uv.d_x.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> uv.d_y.d_scale >> optionalChar<','> >> uv.d_y.d_offset;
+    sstream >> uv;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return uv;
 }
@@ -300,8 +298,7 @@ PropertyHelper<UVector2>::string_return_type PropertyHelper<UVector2>::toString(
     PropertyHelper<UVector2>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "{{" << val.d_x.d_scale << "," << val.d_x.d_offset << "},{" <<
-        val.d_y.d_scale << "," << val.d_y.d_offset << "}}";
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -326,7 +323,7 @@ PropertyHelper<USize>::fromString(const String& str)
     sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> uv.d_width.d_scale >> optionalChar<','> >> uv.d_width.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> uv.d_height.d_scale >> optionalChar<','> >> uv.d_height.d_offset;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return uv;
 }
@@ -364,7 +361,7 @@ PropertyHelper<URect>::fromString(const String& str)
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_max.d_x.d_scale >> optionalChar<','> >> ur.d_max.d_x.d_offset >>
         mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_max.d_y.d_scale >> optionalChar<','> >> ur.d_max.d_y.d_offset;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return ur;
 }
@@ -397,14 +394,9 @@ PropertyHelper<UBox>::fromString(const String& str)
         return ret;
 
     std::stringstream& sstream = getPreparedStream(str);
-    // Format is:  { top: { %g , %g } , left: { %g , %g } , bottom: { %g , %g } , right: { %g , %g } }",
-    // but we are lenient regarding the format, so this is also allowed: " top : { %g %g } left : { %g %g } bottom : { %g %g } right : { %g %g } "
-    sstream >> optionalChar<'{'> >> MandatoryString(" top : {") >> ret.d_top.d_scale >> optionalChar<','> >> ret.d_top.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" left : {") >> ret.d_left.d_scale >> optionalChar<','> >> ret.d_left.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" bottom : {") >> ret.d_bottom.d_scale >> optionalChar<','> >> ret.d_bottom.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" right : {") >> ret.d_right.d_scale >> optionalChar<','> >> ret.d_right.d_offset;
+    sstream >> ret;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return ret;
 }
@@ -413,10 +405,7 @@ PropertyHelper<UBox>::string_return_type PropertyHelper<UBox>::toString(
     PropertyHelper<UBox>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "{top:{" << val.d_top.d_scale << "," << val.d_top.d_offset << "},left:{" <<
-        val.d_left.d_scale << "," << val.d_left.d_offset << "},bottom:{" <<
-        val.d_bottom.d_scale << "," << val.d_bottom.d_offset << "},right:{" <<
-        val.d_right.d_scale << "," << val.d_right.d_offset << "}}";
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -431,90 +420,41 @@ const String& PropertyHelper<ColourRect>::getDataTypeName()
 PropertyHelper<ColourRect>::return_type
 PropertyHelper<ColourRect>::fromString(const String& str)
 {
+    ColourRect val(Colour(0xFF000000));
+
     if (str.empty())
-        return ColourRect(Colour(0xFF000000));
-    else if (str.length() == 8)
+         return val;
+
+    std::stringstream& sstream = getPreparedStream(str);
+
+    if (str.length() == 8)
     {
-        argb_t all = 0xFF000000;
+        argb_t colourForEntireRect = 0xFF000000;
 
-        std::stringstream& sstream = getPreparedStream();
-        sstream << std::hex << str.c_str();
-        sstream >> all;
+        sstream >> std::hex >> colourForEntireRect;
         if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
-        sstream << std::dec;
+            throwParsingException(getDataTypeName(), str);
+        sstream >> std::dec;
 
-        return ColourRect(all);
+        return ColourRect(colourForEntireRect);
     }
     else
     {
-        argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
-
-        std::stringstream& originalStrStream = getPreparedStream(str);
-        std::stringstream sstream;
-        sstream << std::hex;
-        std::string hexadecimalString;
-
-        // Match and remove the preceding string and all trailing whitespaces
-        originalStrStream >> MandatoryString(" tl : ");
-        if (originalStrStream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        std::getline(originalStrStream, hexadecimalString, ' ');
-        sstream << hexadecimalString;
-        sstream >> topLeft;
+        sstream >> val;
         if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
+            throwParsingException(getDataTypeName(), str);
 
-        originalStrStream >> MandatoryString(" tr : ");
-        if (originalStrStream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        std::getline(originalStrStream, hexadecimalString, ' ');
-        sstream.str(std::string());
-        sstream.clear();
-        sstream << hexadecimalString;
-        sstream >> topRight;
-        if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        originalStrStream >> MandatoryString(" bl : ");
-        if (originalStrStream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        std::getline(originalStrStream, hexadecimalString, ' ');
-        sstream.str(std::string());
-        sstream.clear();
-        sstream << hexadecimalString;
-        sstream >> bottomLeft;
-        if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        originalStrStream >> MandatoryString(" br : ");
-        if (originalStrStream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        std::getline(originalStrStream, hexadecimalString, ' ');
-        sstream.str(std::string());
-        sstream.clear();
-        sstream << hexadecimalString;
-        sstream >> bottomRight;
-        if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
-
-        sstream << std::dec;
-
-        return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
+        return val;
     }
+
+    return val;
 }
 
 PropertyHelper<ColourRect>::string_return_type PropertyHelper<ColourRect>::toString(
     PropertyHelper<ColourRect>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << std::hex;
-    sstream << "tl:" << val.d_top_left.getARGB() << " tr:" << val.d_top_right.getARGB() << " bl:" << val.d_bottom_left.getARGB() << " br:" << val.d_bottom_right.getARGB();
-    sstream << std::dec;
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -529,17 +469,16 @@ const String& PropertyHelper<Colour>::getDataTypeName()
 PropertyHelper<Colour>::return_type
 PropertyHelper<Colour>::fromString(const String& str)
 {
-    argb_t val = 0xFF000000;
+    Colour val(0xFF000000);
 
     if (str.empty())
-        return Colour(val);
+        return val;
 
-    std::stringstream& sstream = getPreparedStream();
-    sstream << std::hex << str.c_str();
+    std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
-    sstream << std::dec;
+        throwParsingException(getDataTypeName(), str);
+    
 
     return Colour(val);
 }
@@ -548,9 +487,7 @@ PropertyHelper<Colour>::string_return_type PropertyHelper<Colour>::toString(
     PropertyHelper<Colour>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << std::hex;
-    sstream << val.getARGB();
-    sstream << std::dec;
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -571,9 +508,10 @@ PropertyHelper<Rectf>::fromString(const String& str)
         return val;
 
     std::stringstream& sstream = getPreparedStream(str);
-    sstream >> MandatoryString(" l :") >> val.d_min.d_x >> MandatoryString(" t :") >> val.d_min.d_y >> MandatoryString(" r :") >> val.d_max.d_x >> MandatoryString(" b :") >> val.d_max.d_y;
+    sstream >> MandatoryString(" l :") >> val.d_min.d_x >> MandatoryString(" t :") >> val.d_min.d_y >>
+        MandatoryString(" r :") >> val.d_max.d_x >> MandatoryString(" b :") >> val.d_max.d_y;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -582,7 +520,7 @@ PropertyHelper<Rectf>::string_return_type PropertyHelper<Rectf>::toString(
     PropertyHelper<Rectf>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "l:" << val.d_min.d_x << " t:" << val.d_min.d_y << " r:" << val.d_max.d_x << " b:" << val.d_max.d_y;
+    sstream << "l:" << val.d_min.d_x << " t:" << val.d_min.d_y << " r:" << val.d_max.d_x << " b:" << val.d_max.d_y;;
 
     return String(sstream.str());
 }
@@ -605,7 +543,7 @@ PropertyHelper<Sizef>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" w :") >> val.d_width >> MandatoryString(" h :") >> val.d_height;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -614,7 +552,7 @@ PropertyHelper<Sizef>::string_return_type PropertyHelper<Sizef>::toString(
     PropertyHelper<Sizef>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "w:" << val.d_width << " h:" << val.d_height;
+    sstream << "w:" << val.d_width << " h:" << val.d_height;;
 
     return String(sstream.str());
 }
@@ -637,7 +575,7 @@ PropertyHelper<double>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -671,7 +609,7 @@ PropertyHelper<int>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -705,7 +643,7 @@ PropertyHelper<uint64>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -739,7 +677,7 @@ PropertyHelper<unsigned long>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -771,7 +709,7 @@ PropertyHelper<glm::vec2>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -803,7 +741,7 @@ PropertyHelper<glm::vec3>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y >> MandatoryString(" z :") >> val.z;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }
@@ -834,9 +772,9 @@ PropertyHelper<glm::quat>::fromString(const String& str)
     else if (strchr(str.c_str(), 'w') || strchr(str.c_str(), 'W'))
     {
         std::stringstream& sstream = getPreparedStream(str);
-        sstream >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y >> MandatoryString(" z :") >> val.z >> MandatoryString(" w :") >> val.w;
+        sstream >> MandatoryString(" w :") >> val.w >> MandatoryString(" x :") >> val.x >> MandatoryString(" y :") >> val.y >> MandatoryString(" z :") >> val.z;
         if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
+            throwParsingException(getDataTypeName(), str);
         return val;
     }
     else
@@ -846,7 +784,7 @@ PropertyHelper<glm::quat>::fromString(const String& str)
         std::stringstream& sstream = getPreparedStream(str);
         sstream >> MandatoryString(" x :") >> x >> MandatoryString(" y :") >> y >> MandatoryString(" z :") >> z;
         if (sstream.fail())
-            logParsingError(getDataTypeName(), str);
+            throwParsingException(getDataTypeName(), str);
 
         // glm::radians converts from degrees to radians
         return glm::quat(glm::vec3(glm::radians(x), glm::radians(y), glm::radians(z)));
@@ -881,7 +819,7 @@ PropertyHelper<uint>::fromString(const String& str)
     std::stringstream& sstream = getPreparedStream(str);
     sstream >> val;
     if (sstream.fail())
-        logParsingError(getDataTypeName(), str);
+        throwParsingException(getDataTypeName(), str);
 
     return val;
 }

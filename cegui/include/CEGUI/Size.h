@@ -5,7 +5,7 @@
 	purpose:	Defines interface for Size class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -32,7 +32,6 @@
 #include "CEGUI/UDim.h"
 #include "CEGUI/Vector.h"
 #include <typeinfo>
-#include <ostream>
 
 #include <glm/glm.hpp>
 
@@ -156,15 +155,6 @@ public:
         {
             d_height = d_width / ratio;
         }
-    }
-    
-    /*!
-    \brief allows writing the size to std ostream
-    */
-    inline friend std::ostream& operator << (std::ostream& s, const Size& v)
-    {
-        s << "CEGUI::Size<" << typeid(T).name() << ">(" << v.d_width << ", " << v.d_height << ")";
-        return s;
     }
 
     //! \brief finger saving alias for Size(side, side)

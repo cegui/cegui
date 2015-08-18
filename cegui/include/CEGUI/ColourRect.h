@@ -6,7 +6,7 @@
 				rectangle
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -32,6 +32,9 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Colour.h"
+#include "CEGUI/StreamHelper.h"
+
+#include <sstream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -215,6 +218,33 @@ public:
             d_bottom_left + val.d_bottom_left,
             d_bottom_right + val.d_bottom_right 
         );  
+    }
+
+    /*!
+    \brief Writes a ColourRect to a stream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const ColourRect& val)
+    {
+        s << std::hex;
+        s << "tl:" << val.d_top_left.getARGB() << " tr:" << val.d_top_right.getARGB() << " bl:" << val.d_bottom_left.getARGB() << " br:" << val.d_bottom_right.getARGB();
+        s << std::dec;
+        return s;
+    }
+
+    /*!
+    \brief Extracts a ColourRect from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& inStream, ColourRect& val)
+    {
+        std::stringstream currentColourStream;
+
+        // Match and remove the preceding string and all trailing whitespaces
+        inStream >> MandatoryString(" tl : ") >> val.d_top_left >>
+            MandatoryString(" tr : ") >> val.d_top_right >>
+            MandatoryString(" bl : ") >> val.d_bottom_left >>
+            MandatoryString(" br : ") >> val.d_bottom_right;
+
+        return inStream;
     }
 
 

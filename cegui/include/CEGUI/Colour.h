@@ -6,7 +6,7 @@
 				colour values within the system
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -275,6 +275,29 @@ public:
 	inline bool operator!=(const Colour& rhs) const
     {
         return !(*this == rhs);
+    }
+
+    /*!
+    \brief Writes a Colour to a stream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Colour& val)
+    {
+        s << std::hex;
+        s << val.getARGB();
+        s << std::dec;
+        return s;
+    }
+
+    /*!
+    \brief Extracts a Colour from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& inStream, Colour& val)
+    {
+        argb_t value = 0xFF000000;
+        inStream >> std::hex >> value;
+        val.setARGB(value);
+        inStream >> std::dec;
+        return inStream;
     }
 
 	//
