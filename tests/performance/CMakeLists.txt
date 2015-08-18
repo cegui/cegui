@@ -1,0 +1,1 @@
+cegui_add_test_executable(CEGUIPerformanceTests)

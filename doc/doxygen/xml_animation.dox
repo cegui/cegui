@@ -1,0 +1,197 @@
+/**
+@page xml_animation Animation XML files.
+@author Paul D Turner
+
+Animation XML files allow the specification of animations for CEGUI, which can
+later be instantiated and targetted to specific GUI elements.  The same system
+and XML formats are also valid as part of Falagard WidgetLook definitions.
+
+@section xml_animation_contents Animation XML Element List:
+@ref xml_animation_affector <br>
+@ref xml_animation_animationdefinition <br>
+@ref xml_animation_animations <br>
+@ref xml_animation_keyframe <br>
+@ref xml_animation_subscription <br>
+
+<br>
+@section xml_animation_overview Overview
+The reference for each element is arranged into sections, as described below:
+- Purpose:
+    - This section describes what the elements general purpose is within the
+      specifications.
+
+- Attributes:
+    - This section describes available attributes for the elements, and whether
+      they are required or optional.
+
+- Usage:
+    - Describes where the element may appear, whether the element may have
+      sub-elements, and other important usage information.
+
+- Examples:
+    - For many elements, this section will contain brief examples showing the
+      element used in context.
+
+<br>
+@section xml_animation_affector \<Affector\> Element
+- Purpose:
+    - The \<Affector\> element specifies the name of a property that will be
+      affected (have it's value changed) as part of the animation and how
+      the changes are to be applied to that property over time.
+
+- Attributes:
+    - @c property: Required attribute that specifies the name of the property
+      that will be changed by this affector.
+    - @c applicationMethod: Optional attribute that specifies how interpolated
+      property values are to be applied.  Valid options are:
+        - @c "absolute": The interpolated value is set as the new property value
+          (default setting).
+        - @c "relative": The interpolated value is added to the starting value
+          of the property.
+        - @c "relative multiply": The interpolated value is multiplied with the
+          starting value of the property.
+    - @c interpolator: Required attribute that specifies the name of the
+      interpolator that will interpret the property value to smoothly transition
+      from one key frame value to another.  The interpolator name specified must
+      be registered with the system.  Stock interpolators are provided for the
+      following:
+        - @c "bool"
+        - @c "Colour"
+        - @c "ColourRect"
+        - @c "float"
+        - @c "int"
+        - @c "Point"
+        - @c "Rect"
+        - @c "Size"
+        - @c "String"
+        - @c "UBox"
+        - @c "UDim"
+        - @c "uint"
+        - @c "URect"
+        - @c "UVector2"
+        - @c "Vector3"
+
+- Usage:
+    - The \<Affector\> element may only appear as a sub-element of the
+      \<AnimationDefinition\> element.
+    - The \<Affector\> element may contain one or more \<KeyFrame\>
+      elements.
+
+- Examples:
+    - TODO
+
+<br>
+@section xml_animation_animationdefinition \<AnimationDefinition\> Element
+- Purpose:
+    - The \<AnimationDefinition\> element is used to define a single named
+      animation that can be instantiated and applied to GUI elements.
+
+- Attributes:
+    - @c name: Required attribute that specifies a system-unique name for the
+      animation.
+    - @c duration: Required attribute that specifies the overall duration of the
+      animation in seconds.
+    - @c replayMode: Optional attribute that specifies if and how the animation
+      will be replayed / repeated.  Acceptable values are:
+        - @c "loop": Animation plays through, then restarts from the beginning
+          (default setting).
+        - @c "once": Animation plays one time and then stops.
+        - @c "bounce": Animation plays forwards and then backwards in a
+          continual cycle.
+    - @c autoStart: Optional boolean attribute that specifies whether the
+      animation will start playing immediately.  Default value is 'false'
+      which means some external event must trigger the animation if it is
+      to be seen.
+
+- Usage:
+    - The \<AnimationDefinition\> element may appear as a sub-element of either
+      a root \<Animations\> element, or within a Falagard system \<WidgetLook\>
+      element.
+    - The \<AnimationDefinition\> element must contain at least one
+      \<Affector\> sub-element.
+    - The \<AnimationDefinition\> element may then contain zero or more
+      \<Subscription\> sub-elements.
+
+- Examples:
+    - TODO
+
+<br>
+@section xml_animation_animations \<Animations\> Element
+- Purpose:
+    - The \<Animations\> element is the root element in an animations XML
+      file and it's purpose is to contain any number of \<AnimationDefinition\>
+      elements.
+
+- Attributes:
+    - None.
+
+- Usage:
+    - The \<Animations\> element may not appear as a sub-element of any other
+      elements.
+    - The \<Animations\> element may contain only \<AnimationDefinition\>
+      elements as sub-elements (any number).
+
+- Examples:
+    - TODO
+
+<br>
+@section xml_animation_keyframe \<KeyFrame\> Element
+- Purpose:
+    - The \<KeyFrame\> element is used to specify the value of the affected
+    property at a given time position.  Key frames can use values of properties
+    of the affected window.  If the source property is not empty, the properties
+    value is saved when animation starts and used as the value for this key frame.
+
+- Attributes:
+    - @c position: Required attribute that specifies the time interval within
+      the animation at which point the value for this key frame should be reached.
+      This value should be between zero and the total duration of the animation
+      being defined.
+    - @c value: Optional attribute that specifies a value for the affected
+      property that should be in effect at the specified position within the
+      animation.  If this attribute is not given, you should specify the
+      @c sourceProperty attribute.
+    - @c sourceProperty: Optional attribute specifying the name of a property
+      from which the target value of this key frame will be fetched.  If this
+      attribute is not specified, you should specify the @c value attribute.
+    - @c progression: Optional attribute indicating the method of progression
+      towards this key frame value over time.  The available options are:
+        - @c "linear" (default value(.
+        - @c "discrete"
+        - @c "quadratic accelerating"
+        - @c "quadratic decelerating"
+
+- Usage:
+    - The \<KeyFrame\> element may only appear as sub-elements of the
+      \<Affector\> element.
+    - The \<KeyFrame\> element may not contain any sub-elements.
+
+- Examples:
+    - TODO
+
+<br>
+@section xml_animation_subscription \<Subscription\> Element
+- Purpose:
+    - The \<Subscription\> element defines a subscription to an event on the
+      target EventSet that will trigger a specified action for the animation.
+
+- Attributes:
+    - @c event: Required attribute that specifies the event that will trigger
+      the given action.
+    - @c action: Required attribute that specifies the action that will be
+      taken when the specified event is fired.  Possible values are:
+        - @c "Start"
+        - @c "Stop"
+        - @c "Pause"
+        - @c "Unpause"
+        - @c "TogglePause"
+
+- Usage:
+    - The \<Subscription\> element may only appear as a sub-element of the
+      \<AnimationDefinition\> element.
+    - The \<Subscription\> element may not contain any sub-elements.
+
+- Examples:
+    - TODO
+
+*/

@@ -1,0 +1,73 @@
+/**
+@page datafile_licensing CEGUI Data File and Media Licensing
+@author Paul D Turner
+
+@section data_lic_overview Overview
+Various data and media files are present in the CEGUI distribution.  Largely
+these files are intended as examples for demonstration purposes only, as such
+the files beneath the datafiles directory may not be covered by the blanket MIT
+license that covers the library code itself.
+
+This said, it is believed that @em all files beneath the datafiles directory are
+at least freely distributable for <em>non commercial purposes</em>, and are
+included with CEGUI - as example material - in good faith.  Any disputes as
+regards to the legal status of any of the sample data files included within
+the CEGUI distribution should be directed to team@cegui.org.uk.
+
+<br>
+@section data_lic_XML The XML and .XSD files
+All of the XML files and the .xsd XML schema files were specifically created for
+CEGUI either by myself or other CEGUI team members and are released under the
+same MIT license as the library code.
+
+<br>
+@section data_lic_scripts The Lua script files
+Any script code files in the lua_scripts directory were created for the
+CEGUI project and are released under the same license as the CEGUI library.
+
+<br>
+@section data_lic_imagesets Imageset imagery files
+The following list covers the tga and png image files within the imagsets
+directory.
+- @b DriveIcons.png: Imagery created by Paul D Turner and made available
+under the same license as the CEGUI library (does not apply to version in
+releases up to and including 0.7.1 which appeared to contain non-free imagery
+and so was removed).
+- @b FairChar.tga: File contributed by Andrew Zabolotny.  Original author is
+unknown.  If you know, or indeed are, the original creator plase contacts us!
+- @b GPN-2000-001437.tga: Original photograph was obtained from GRIN
+(http://grin.hq.nasa.gov/), and is free of copyright.
+- @b OgreTrayImages.png: Imagery created by Zi Ye for the the OgreSDKTrays
+component of the Ogre library (http://www.ogre3d.org/).  Redistributed with
+permission.
+- @b TaharezLook.tga: Imagery created by Lars Rinde.  Lars has stated that this
+imagery is free to use as long as you don't claim you created it.
+- @b WindowsLook.tga: Imagery created by Paul D Turner and made available under
+the same license as the CEGUI library.
+- @b logo.png: Created by Paul D Turner based on an original logo donated to the
+CEGUI project by Andrew Ireland in 2004.  This image is made available under
+the same license as the CEGUI library.
+- @b vanilla.tga: Original "Vanilla GUI" imagery by Shane Parker.  Redistributed
+with permission.
+
+<br>
+@section data_lic_fonts Font files
+The following covers the .ttf and .pcf files in the fonts directory.
+- @b DejaVuSans.ttf: DejaVuSans.ttf is a international TrueType font from the
+excellent DejaVu font package, which is distributed under the conditions of the
+Bitstream Vera Fonts Copyright, which can be found in the DejaVu package.
+DejaVu fonts 2.2 (c)2004-2006 Stepan Roh and DejaVu fonts team
+- @b batang.ttf: Copyright (c) 1986-2002 Kim Jeong-Hwan All rights reserved.
+Permission to use, copy, modify and distribute this font is hereby granted,
+provided that both the copyright notice and this permission notice appear in all
+copies of the font, derivative works or modified versions, and that the
+following acknowledgement appear in supporting documentation:
+Baekmuk Batang, Baekmuk Dotum, Baekmuk Gulim, and Baekmuk Headline are
+registered trademarks owned by Kim Jeong-Hwan.
+- @b fkp.de.pcf: A X11 bitmap font, taken from the artwiz font collection:
+http://artwizaleczapka.sourceforge.net.  artwiz-aleczapka is released under the
+terms of GNU General Public License (GPL) version 2. Read file 'COPYING' from
+the artwiz package for detailed info.
+
+*/
+

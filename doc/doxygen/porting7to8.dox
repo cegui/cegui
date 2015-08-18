@@ -1,0 +1,126 @@
+namespace CEGUI {
+/**
+@page porting7to8 Porting from CEGUI 0.7.x to CEGUI 0.8.x
+@author Lukas Meindl
+
+This page lists the major breaking changes, and other related changes, made to
+the library for the 0.8.x series of releases.
+
+
+@note Note that while attempts have been made to see that most of the major
+changes are listed on this page, it's entirely possible - even likely - that
+somewhere along the line some things have been missed out.  In those cases,
+please visit the <a href="http://forums.cegui.org.uk/">CEGUI forums</a>. Also
+consider looking at AND editing the wiki page for these porting tips: http://cegui.org.uk/wiki/Porting_tips_and_changes_from_0.7.X_to_0.8.X
+
+
+@note Also note that f you build your own version of ceed (see this guide for Windows: http://cegui.org.uk/wiki/Building_CEED_for_Windows and this for other OS: http://cegui.org.uk/wiki/CEED), you can then use the ceed-migrate tool to automate and batch all of the changes discussed in this section. See here for a quick guide to using ceed-migrate - http://cegui.org.uk/wiki/Using_CEED-Migrate
+
+
+
+<b> Major renames/API changes </b> 
+- FalagardWRBase was renamed to CoreWindowRendererSet
+- Windows now don't have absolute names! Every window's name only has to be unique in it's parent window. Therefore WindowManager::getSingleton().getWindow no longer made sense and was removed. If root's name was "Root" and your the window name was "Root/Stuff/After/Root/Name", you can emulate its behaviour with root->getChild("Stuff/After/Root/Name"). It's recommended to migrate to a more encapsulated model.
+- CEGUI::GUIContext class has been created that is responsible for injecting input and event handling, setting the default font, setting the root window, setting a default tooltip object and type, and manipulating the mouse cursor.
+- CEGUI::GUIContext needs time impulses injected separately! You should also inject time pulses into CEGUI::System. This API "wart" may disappear in future versions.
+- CEGUI::MouseCursor is no longer a singleton, and can be accessed and manipulated from CEGUI::GUIContext.
+
+<b> General </b>  
+- All XML attributes must now be in lowercase, e.g. <WidgetLook Name="TaharezLook/FrameWindow"> must be <WidgetLook name="TaharezLook/FrameWindow">
+- PropertyHelper has been turned into a template class, instead of PropertyHelper::uintToString you do PropertyHelper<uint>::toString, instead of PropertyHelper::stringToUint you do PropertyHelper<uint>::fromString
+- All instances of the word caret that were incorrectly spelt 'carat' have been corrected.  This affects all APIs, properties, events and datafiles.
+- Window::EventWindowUpdated renamed to Window::EventUpdated and the associated string is changed from "WindowUpdate" to "Updated"
+- ListHeader::SegmentNameSuffix changed type from character array to CEGUI::String
+- BiDiVisualMapping renamed to BidiVisualMapping.  Also renamed the files, so CEGUIBiDiVisualMapping.h is now CEGUIBidiVisualMapping.h
+- class colour renamed to Colour, as a side effect the "colour" interpolator is now "Colour" interpolator, this breaks animation definitions!
+- Point typedef removed, please use Vector2 instead
+- Many event string values changed to match the C++ name (but without the Event prefix).  A list of which strings changed value will appear here soon.
+- Window::setRestoreCapture renamed to Window::setRestoreOldCapture
+- CEGUI now supports custom memory allocation, see [[Memory Allocation]] to check if this concerns you or not.
+- Window::addChildWindow renamed to Window::addChild, Window::removeChildWindow renamed to Window::removeChild, several other methods (mostly in layout containers) changed from *ChildWindow- to *Child*
+- CEGUI::String can now be just a typedef or a class, depending on String configuration (CEGUI can now use std::string as CEGUI::String for apps not requiring unicode)
+- Window::getChild_impl method completely removed, it was only used by Window::getParentPixelSize, shouldn't be hard to replace
+- Vector2, Vector3, Size and Rect are now templated, you should use Vector2<float> (or just Vector2<> as a shortcut since float is the default type) instead of Vector2, UVector2 class was removed, UVector2 is now just a typedef to Vector2<UDim>. Same with Vector3, Size and Rect.
+- Texture::saveToMemory is renamed Texture::blitToMemory.
+- Renderer and Texture interfaces changed in order to support named textures.
+- Window::isDisabled(localOnly) is now split into Window::isDisabled (= old isDisabled(true) and Window::isEffectiveDisabled (= old isDisabled(false))
+- Window::isVisible(localOnly) is now split into Window::isVisible (= old isDisabled(true) and Window::isEffectiveVisible (= old isVisible(false))
+- WindowManager::loadWindowLayout is renamed to WindowManager::loadLayoutFromFile
+- NamedXMLResourceManager::create is renamed to NamedXMLResourceManager::createFromFile  (Ex. CEGUI::SchemeManager::createFromFile)
+- CEGUI::DefaultLogger no longer throws const char- but a real exception in setLogFilename - http://www.cegui.org.uk/mantis/view.php?id=443
+- CEGUI now has inbuilt copy, cut, paste support, if you used a custom solution, you might want to check CEGUI::Clipboard and System::inject{Copy,Cut,Paste}Request
+- CEGUI::ProgressBar::getStep renamed to getStepSize for consistency with setStepSize
+- CEGUI::WidgetLookManager::parseLookNFeelSpecification is now called parseLookNFeelSpecificationFromFile, variants for loading from string and raw data container have been added
+- XRotation, YRotation, ZRotation properties merged into the new Rotation property, which is a Quaternion.
+
+<b> Property Name Changes </b> 
+- Property from Window called "ZOrderChangeEnabled" renamed to "ZOrderingEnabled"
+- Property from Window called "MouseButtonDownAutoRepeat" renamed to "MouseAutoRepeatEnabled"
+- Property from Window called "CustomTooltipType" renamed to "TooltipType"
+- Property from Window called "Tooltip" renamed to "TooltipText"
+- Property from Window called "RiseOnClick" renamed to "RiseOnClickEnabled"
+- Property from Window called "UnifiedAreaRect" renamed to "Area", "UnifiedSize" renamed to "Size", etc...
+- Property "MaxEditTextLength" renamed to "MaxTextLength"
+
+<b>Event Name Changes </b>  
+- EventMouseEnters renamed to EventMouseEntersSurface (old name removed)
+- EventMouseLeaves renamed to EventMouseLeavesSurface (old name removed)
+- CheckStateChanged renamed to SelectStateChanged (for ToggleButton (old Checkbox))
+
+<b>Image and ImageManager </b>  
+- Image::draw renamed to Image::render
+- Image class is now an abstract interface.  BasicImage implementation is provided, and used for internally created Image objects.
+- Imageset class is removed. It remains a CEGUI format that allows to conveniently define multiple images on one texture but the data is no longer stored in any class. When Imageset is loaded, the ImageManager creates a new BasicImage for each of the images in the imageset. Only the images themselves will remain after imageset is loaded. You now use the new ImageManager to access defined images.
+- ImagesetManager class is removed.  You now use the new ImageManager.
+- Images belonging to a certain imageset can be accessed like so: "ImageSetName/ImageName" (ex. "AlfiskoSkin/MouseArrow").
+
+<b>GUIContext </b>
+
+A lot of API has been moved from CEGUI::System to CEGUI::GUIContext. CEGUI now allows you to create multiple independent GUI contexts with their own input injection.
+ 
+As a rule of thumb, whenever you see "There is no CEGUI::System::some_foobar_method method", it is likely that you can replace the call with CEGUI::System::getSingleton().getDefaultGUIContext().someFoobarMethod(). This holds for all the System::inject- methods for example.
+ 
+Exceptions from the rule:
+- CEGUI::System::getSingleton().renderGUI() &rarr; CEGUI::System::getSingleton().renderAllGUIContexts()
+- CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow") ? CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow")
+- CEGUI::System::getSingleton().setGUISheet(root) &rarr; CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(root)
+ 
+WindowManager::getSingleton().getWindow() was removed. You can emulate its behaviour with root->getChild("Stuff/After/Root/Name").
+To get Root Window you can call GUIContext::getRootWindow();
+ 
+SIDE NOTE: The chain call of methods CEGUI::System::getSingleton().getDefaultGUIContext() should be called as rarely as possible, instead one should keep it's result in appropriate variable.
+
+ <b> PyCEGUI </b>  
+- EventSet.subscribeEvent now has a different, more pythonic syntax, any python callable (bound member function, free function, lambda, functor, ...) is allowed (EventSet.subscribeEvent("EventName", instance, "someMethodInIt") is now EventSet.subscribeEvent("EventName", instance.someMethodInIt)
+
+ <b> Datafiles </b>  
+- All XML datafiles must specify a version attribute. Example: <GUILayout '''version="4"'''>
+- All attributes in datafiles must begin with a lower-case letter. Example: <Property '''n'''ame="Alpha"               '''v'''alue="1.0" />
+- See '''Property Name Changes''' and '''Event Name Changes''' above
+- <b>.looknfeel:</b>
+    - <Falagard version="7">
+    - old: <Image '''type'''="TopEdge" '''imageset'''="TaharezLook" '''image'''="TitlebarTop" /> <br />new: <Image '''component'''="TopEdge" '''name'''="TaharezLook/TitlebarTop" />
+    - Change: MaxEditTextLength &rarr; MaxTextLength
+    - Change: MouseButtonDownAutoRepeat &rarr; MouseAutoRepeatEnabled
+    - Change: DimOperator &rarr; OperatorDim. Please compare [http://static.cegui.org.uk/docs/0.7.9/fal_element_ref.html#fal_elem_ref_sec_10 0.7.9] with [http://static.cegui.org.uk/docs/current/fal_element_ref.html#fal_elem_ref_sec_operatordim latest] for functional change description
+        - old formatting: VALUE1 { DIMOPERATOR() { VALUE2 } }<br /> new formatting: OPERATORDIM() { VALUE1, VALUE2 }
+- <b>.scheme:</b>
+    - <GUIScheme name="MySkin" version="5">
+    - Change: <WindowRendererSet Filename="CEGUIFalagardWRBase" /> &rarr; <WindowRendererSet filename="CEGUICoreWindowRendererSet" />
+    - Change: renderer="Falagard/... &rarr; renderer="Core/...
+    - Change: "Core/SystemButton" &rarr; "Core/Button"
+    - Change: "CEGUI/Checkbox" &rarr; "CEGUI/ToggleButton"
+- <b>.layout:</b>
+    - <GUILayout version="4">
+    - UnifiedPosition, UnifiedAreaRect, UnifiedSize, UnifiedMinSize, UnifiedMaxSize &rarr; Position, Area, Size, MinSize, MaxSize
+    - Tooltip &rarr; TooltipText
+    - old: <Property name="Image" value="set:Buttons image:Settings" /><br />new: <Property name="Image" value="Buttons/Settings" />
+- <b>.imageset:</b>
+    - <Imageset version="2" ... />
+- <b>.font:</b>
+    - <Font version="3" ... />
+
+
+
+*/
+}
