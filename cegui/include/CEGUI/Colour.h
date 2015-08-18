@@ -31,6 +31,8 @@
 #define _CEGUIColour_h_
 
 #include "CEGUI/Base.h"
+#include <istream>
+#include <ostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
