@@ -53,9 +53,6 @@ public:
     // Overrides of virtual and abstract methods inherited from GeometryBuffer
     virtual void draw() const;
 
-    // Overrides of virtual and abstract methods inherited from GeometryBufferBase
-    virtual void finaliseVertexAttributes();
-
     /*
     \brief
         Updates the fixed-function vertex data pointers based on the defined vertex attributes

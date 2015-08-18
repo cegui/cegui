@@ -205,8 +205,8 @@ option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB r
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
 option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGL ES 1 renderer module" ${OPENGLES_FOUND} )
-option( CEGUI_BUILD_RENDERER_OPENGLES2 "Specifies whether to build the OpenGLES2 renderer module" ${OPENGLES2_FOUND})
-option( CEGUI_BUILD_RENDERER_OPENGLES2_WITH_GLES3_SUPPORT "Build the OpenGLES2 renderer module with GLES3 features" ${OPENGLES3_FOUND})
+option( CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE "Specifies whether to build the alternate OpenGL ES 2.0 renderer module" ${OPENGLES2_FOUND})
+option( CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE_WITH_GLES3_SUPPORT "Specifies whether to build build the alternate OpenGL ES 2.0 renderer module with OpenGL ES 3.0 features" ${OPENGLES3_FOUND})
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
@@ -285,11 +285,11 @@ set (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE ${CEGUI_BUILD_RENDERER_OGRE})
 set (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE ${CEGUI_BUILD_RENDERER_IRRLICHT})
 set (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECT3D11})
 set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
-set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE ${CEGUI_BUILD_RENDERER_OPENGLES2})
+set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE ${CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE})
 
 #Only build the opengles2 sample renderer for Android
 if (NOT ANDROID) 
-    set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE FALSE)
+    set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE FALSE)
 endif()
 
 # Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
@@ -310,7 +310,7 @@ if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
 endif()
 
 # If we use a Renderer then our samples should be ON by default
-if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE OR CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE OR CEGUI_SAMPLES_RENDERER_OPENGLES2_ACTIVE)
+if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE OR CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE OR CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE OR CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
@@ -331,7 +331,7 @@ if (ANDROID)
     set(CEGUI_BUILD_STATIC_FACTORY_MODULE TRUE CACHE BOOL "Forcing static factory module for Android" FORCE)
     set(CEGUI_BUILD_DYNAMIC_CONFIGURATION FALSE CACHE BOOL "Disable dynamic build for Android" FORCE)
     set(CEGUI_BUILD_RENDERER_OPENGLES FALSE CACHE BOOL "Disable OpenGL ES 1 RenderSystem for Android" FORCE)
-    if (CEGUI_BUILD_RENDERER_OPENGLES2 AND CEGUI_BUILD_RENDERER_OGRE)
+    if (CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE AND CEGUI_BUILD_RENDERER_OGRE)
         message(SEND_ERROR "Either OpenGLES2 Renderer or Ogre Renderer can be built for android at once.  Please disable one of the renderers.")
     endif()
 endif()
@@ -383,8 +383,8 @@ cegui_set_library_name( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
 cegui_set_library_name( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
 cegui_set_library_name( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
 cegui_set_library_name( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
-cegui_set_library_name( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
-cegui_set_library_name( CEGUI_OPENGLES2_RENDERER_LIBNAME CEGUIOpenGLES2Renderer )
+cegui_set_library_name( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenglEsRenderer )
+cegui_set_library_name( CEGUI_OPENGLES2_RENDERER_ALTERNATE_LIBNAME CEGUIOpenglEs2RendererAlternate )
 cegui_set_library_name( CEGUI_DIRECTFB_RENDERER_LIBNAME CEGUIDirectFBRenderer )
 
 # XML parser module names
