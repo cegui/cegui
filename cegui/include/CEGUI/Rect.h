@@ -5,7 +5,7 @@
 	purpose:	Defines 'Rect' class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -427,12 +427,7 @@ public:
     {
         return Rect(d_min - r.d_min, d_max - r.d_max);
     }
-    
-    inline friend std::ostream& operator << (std::ostream& s, const Rect& v)
-    {
-        s << "CEGUI::Rect<" << typeid(T).name() << ">(" << v.d_min.d_x << ", " << v.d_min.d_y << ", " << v.d_max.d_x << ", " << v.d_max.d_y << ")";
-        return s;
-    }
+
     
     //! \brief finger saving alias for zero sized, zero positioned rect
     inline static Rect zero()

@@ -5,7 +5,7 @@
 	purpose:	Defines interfaces for Vector classes
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,6 +30,8 @@
 #define _CEGUIVector_h_
 
 #include "CEGUI/UDim.h"
+#include "CEGUI/StreamHelper.h"
+
 #include <typeinfo>
 #include <ostream>
 
@@ -153,11 +155,24 @@ public:
     }
     
     /*!
-    \brief allows writing the vector2 to std ostream
+    \brief Writes a Vector2 to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const Vector2& v)
+    inline friend std::ostream& operator << (std::ostream& s, const Vector2& val)
     {
-        s << "CEGUI::Vector2<" << typeid(T).name() << ">(" << v.d_x << ", " << v.d_y << ")";
+        s << "{{" << val.d_x.d_scale << "," << val.d_x.d_offset << "},{" <<
+            val.d_y.d_scale << "," << val.d_y.d_offset << "}}";
+        return s;
+    }
+
+    /*!
+    \brief Extracts a Vector2 from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& s, Vector2& val)
+    {
+        // Format is: " { { % , % } , { % , % } } " but we are lenient regarding the format, so this is also allowed: " { % % } { % % } "
+        s >> optionalChar<'{'> >> mandatoryChar<'{'> >> val.d_x.d_scale >> optionalChar<','> >> val.d_x.d_offset >>
+            mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> val.d_y.d_scale >> optionalChar<','> >> val.d_y.d_offset >>
+            optionalChar<'}'> >> optionalChar<'}'>;
         return s;
     }
 
