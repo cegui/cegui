@@ -117,6 +117,15 @@ public:
         return Size(d_width - s.d_width, d_height - s.d_height);
     }
 
+    /*!
+    \brief Writes a Size to a stream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Size& val)
+    {
+        s << "{" << val.d_width << "," << val.d_height << "}";
+        return s;
+    }
+
     inline void clamp(const Size& min, const Size& max)
     {
         assert(min.d_width <= max.d_width);
