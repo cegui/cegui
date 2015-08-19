@@ -247,14 +247,14 @@ void OpenGLRenderer::beginRendering()
     glDisableClientState(GL_EDGE_FLAG_ARRAY);
 
     // if enabled, restores a subset of the GL state back to default values.
-    if (d_initExtraStates)
+    if (d_restoreDefaultStates)
         setupExtraStates();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::endRendering()
 {
-    if (d_initExtraStates)
+    if (d_restoreDefaultStates)
         cleanupExtraStates();
 
     // restore former matrices
