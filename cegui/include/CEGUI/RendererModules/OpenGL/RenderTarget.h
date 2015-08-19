@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "../../RenderTarget.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

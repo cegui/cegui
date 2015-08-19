@@ -30,12 +30,14 @@
 #define _CEGUIPropertyHelper_h_
 
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/UDim.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/URect.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 
@@ -297,20 +299,6 @@ public:
 };
 
 template<>
-class CEGUIEXPORT PropertyHelper<Sizef>
-{
-public:
-    typedef Sizef return_type;
-    typedef return_type safe_method_return_type;
-    typedef const Sizef& pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName();
-    static return_type fromString(const String& str);
-    static string_return_type toString(pass_type val);
-};
-
-template<>
 class CEGUIEXPORT PropertyHelper<glm::vec2>
 {
 public:
@@ -345,20 +333,6 @@ public:
     typedef glm::quat return_type;
     typedef return_type safe_method_return_type;
     typedef const glm::quat& pass_type;
-    typedef String string_return_type;
-    
-    static const String& getDataTypeName();
-    static return_type fromString(const String& str);
-    static string_return_type toString(pass_type val);
-};
-
-template<>
-class CEGUIEXPORT PropertyHelper<Rectf>
-{
-public:
-    typedef Rectf return_type;
-    typedef return_type safe_method_return_type;
-    typedef const Rectf& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName();
@@ -465,6 +439,35 @@ public:
 };
 
 template<>
+class CEGUIEXPORT PropertyHelper<Sizef>
+{
+public:
+    typedef Sizef return_type;
+    typedef return_type safe_method_return_type;
+    typedef const Sizef& pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<Rectf>
+{
+public:
+    typedef Rectf return_type;
+    typedef return_type safe_method_return_type;
+    typedef const Rectf& pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+
+template<>
 class CEGUIEXPORT PropertyHelper<UBox>
 {
 public:
@@ -507,16 +510,16 @@ extern template CEGUIEXPORT class PropertyHelper<String::value_type>;
 extern template CEGUIEXPORT class PropertyHelper<unsigned long>;
 extern template CEGUIEXPORT class PropertyHelper<bool>;
 extern template CEGUIEXPORT class PropertyHelper<AspectMode>;
-extern template CEGUIEXPORT class PropertyHelper<Sizef>;
 extern template CEGUIEXPORT class PropertyHelper<glm::vec2>;
 extern template CEGUIEXPORT class PropertyHelper<glm::vec3>;
 extern template CEGUIEXPORT class PropertyHelper<glm::quat>;
-extern template CEGUIEXPORT class PropertyHelper<Rectf>;
 extern template CEGUIEXPORT class PropertyHelper<Image*>;
 extern template CEGUIEXPORT class PropertyHelper<Colour>;
 extern template CEGUIEXPORT class PropertyHelper<ColourRect>;
 extern template CEGUIEXPORT class PropertyHelper<UDim>;
 extern template CEGUIEXPORT class PropertyHelper<UVector2>;
+extern template CEGUIEXPORT class PropertyHelper<Rectf>;
+extern template CEGUIEXPORT class PropertyHelper<Sizef>;
 extern template CEGUIEXPORT class PropertyHelper<URect>;
 extern template CEGUIEXPORT class PropertyHelper<USize>;
 extern template CEGUIEXPORT class PropertyHelper<UBox>;

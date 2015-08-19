@@ -33,8 +33,8 @@
 #include "../String.h"
 #include "../ColourRect.h"
 #include "../TextUtils.h"
-#include "../Size.h"
-#include "../Rect.h"
+#include "../Sizef.h"
+#include "../Rectf.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)

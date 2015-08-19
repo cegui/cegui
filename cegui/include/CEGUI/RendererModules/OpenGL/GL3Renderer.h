@@ -221,7 +221,7 @@ private:
     void initialiseTextureTargetFactory();
 
     //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    void restoreChangedStatesToDefaults();
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
     OpenGLBaseShaderWrapper* d_shaderWrapperTextured;

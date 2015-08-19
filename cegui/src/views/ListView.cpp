@@ -136,7 +136,7 @@ ModelIndex ListView::indexAt(const glm::vec2& position)
     glm::vec2 window_position = CoordConverter::screenToWindow(*this, position);
     Rectf render_area(getViewRenderer()->getViewRenderArea());
 
-    if (!render_area.isPointInRect(window_position))
+    if (!render_area.isPointInRectf(window_position))
         return ModelIndex();
 
     float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();

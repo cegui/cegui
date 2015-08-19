@@ -30,7 +30,7 @@
 #include "./Enums.h"
 #include "../String.h"
 #include "../UDim.h"
-#include "../Rect.h"
+#include "../Rectf.h"
 #include "../XMLSerializer.h"
 
 // Start of CEGUI namespace section

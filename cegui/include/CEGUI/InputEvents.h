@@ -34,7 +34,6 @@
 #include "CEGUI/SlotFunctorBase.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)

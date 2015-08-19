@@ -28,7 +28,7 @@
 #define _CEGUIOpenGLFBOTextureTarget_h_
 
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 
 #if defined(_MSC_VER)

@@ -30,7 +30,7 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #include "CEGUI/RefCounted.h"
 

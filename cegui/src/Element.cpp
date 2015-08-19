@@ -34,6 +34,9 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/URect.h"
 
 #include <algorithm>
 

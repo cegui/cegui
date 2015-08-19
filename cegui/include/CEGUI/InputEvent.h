@@ -33,7 +33,7 @@
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/SemanticInputEvent.h"
 
 #if defined(_MSC_VER)

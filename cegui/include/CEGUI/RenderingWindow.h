@@ -29,8 +29,8 @@
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>

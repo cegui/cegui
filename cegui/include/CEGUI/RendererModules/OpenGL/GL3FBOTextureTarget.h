@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 
 #if defined(_MSC_VER)

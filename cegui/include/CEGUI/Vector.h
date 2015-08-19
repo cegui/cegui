@@ -159,7 +159,7 @@ public:
     */
     inline friend std::ostream& operator << (std::ostream& s, const Vector2& val)
     {
-        s << "{" << val.d_x << "},{" << val.d_y << "}";
+        s << "{" << val.d_x << "," << val.d_y << "}";
         return s;
     }
 
