@@ -82,4 +82,41 @@ BOOST_AUTO_TEST_CASE(Double)
     BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<double>::fromString("-123.1"), -123.1);
 }
 
+
+BOOST_AUTO_TEST_CASE(Colour)
+{
+    // to string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::toString(CEGUI::Colour(0xFFAA00C9)), "ffaa00c9");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::toString(CEGUI::Colour(0x00000000)), "00000000");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::toString(CEGUI::Colour(0xFFFFFFFF)), "ffffffff");
+    // from string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::fromString("ffaa00c9"), CEGUI::Colour(0xFFAA00C9));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::fromString("00000000"), CEGUI::Colour(0x00000000));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::fromString("ffffffff"), CEGUI::Colour(0xFFFFFFFF));
+    // read out and back in
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::fromString(CEGUI::PropertyHelper<CEGUI::Colour>::toString(CEGUI::Colour(0xFFAA00C9))), CEGUI::Colour(0xFFAA00C9));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::fromString(CEGUI::PropertyHelper<CEGUI::Colour>::toString(CEGUI::Colour(0xFFFFFFFF))), CEGUI::Colour(0xFFFFFFFF));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Colour>::fromString(CEGUI::PropertyHelper<CEGUI::Colour>::toString(CEGUI::Colour(0x00000000))), CEGUI::Colour(0x00000000));
+}
+
+BOOST_AUTO_TEST_CASE(ColourRect)
+{
+    // to string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(CEGUI::Colour(0xFFAA00C9), CEGUI::Colour(0xAAC9FF00), CEGUI::Colour(0x00000000), CEGUI::Colour(0x12345678))),
+        "tl:ffaa00c9 tr:aac9ff00 bl:00000000 br:12345678");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(CEGUI::Colour(0x00000000))), "00000000");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(CEGUI::Colour(0xFFFFFFFF))), "ffffffff");
+    // from string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString("tl:ffaa00c9 tr:aac9ff00 bl:00000000 br:12345678"),
+        CEGUI::ColourRect(CEGUI::Colour(0xFFAA00C9), CEGUI::Colour(0xAAC9FF00), CEGUI::Colour(0x00000000), CEGUI::Colour(0x12345678)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString("00000000"), CEGUI::ColourRect(CEGUI::Colour(0x00000000)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString("ffffffff"), CEGUI::ColourRect(CEGUI::Colour(0xFFFFFFFF)));
+    // read out and back in
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(CEGUI::Colour(0xFFAA00C9), CEGUI::Colour(0xAAC9FF00), CEGUI::Colour(0x00000000), CEGUI::Colour(0x12345678)))),
+        CEGUI::ColourRect(CEGUI::Colour(0xFFAA00C9), CEGUI::Colour(0xAAC9FF00), CEGUI::Colour(0x00000000), CEGUI::Colour(0x12345678)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(0xFFFFFFFF))), CEGUI::ColourRect(0xFFFFFFFF));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(0x00000000))), CEGUI::ColourRect(0x00000000));
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()

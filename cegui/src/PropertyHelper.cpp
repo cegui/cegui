@@ -429,14 +429,15 @@ PropertyHelper<ColourRect>::fromString(const String& str)
 
     if (str.length() == 8)
     {
-        argb_t colourForEntireRect = 0xFF000000;
+        CEGUI::Colour colourForEntireRect(0xFF000000);
 
-        sstream >> std::hex >> colourForEntireRect;
+        sstream >> colourForEntireRect;
         if (sstream.fail())
             throwParsingException(getDataTypeName(), str);
-        sstream >> std::dec;
 
-        return ColourRect(colourForEntireRect);
+        val = ColourRect(colourForEntireRect);
+
+        return val;
     }
     else
     {
@@ -454,7 +455,11 @@ PropertyHelper<ColourRect>::string_return_type PropertyHelper<ColourRect>::toStr
     PropertyHelper<ColourRect>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << val;
+
+    if(val.isMonochromatic())
+        sstream << val.d_top_left;
+    else
+        sstream << val;
 
     return String(sstream.str());
 }

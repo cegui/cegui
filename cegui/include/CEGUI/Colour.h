@@ -33,6 +33,7 @@
 #include "CEGUI/Base.h"
 #include <istream>
 #include <ostream>
+#include <iomanip>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -284,9 +285,16 @@ public:
     */
     inline friend std::ostream& operator << (std::ostream& s, const Colour& val)
     {
+        s.fill('0');
+        s.width(8);
         s << std::hex;
         s << val.getARGB();
+
+        // Reset sticky manipulators
         s << std::dec;
+        // Reset to default fill character
+        s.fill(s.widen(' '));
+
         return s;
     }
 
