@@ -224,8 +224,8 @@ void OpenGL3Renderer::beginRendering()
     setupRenderingBlendMode(BM_NORMAL, true);
 
     // if enabled, restores a subset of the GL state back to default values.
-    if (d_initExtraStates)
-        setupExtraStates();
+    if (d_restoreDefaultStates)
+        restoreChangedStatesToDefaults();
 
     d_openGLStateChanger->reset();
 }
@@ -235,7 +235,7 @@ void OpenGL3Renderer::endRendering()
 {
     glUseProgram(0);
 
-    if (d_initExtraStates)
+    if (d_restoreDefaultStates)
     {
         glDisable(GL_SCISSOR_TEST);
     
@@ -248,7 +248,7 @@ void OpenGL3Renderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::setupExtraStates()
+void OpenGL3Renderer::restoreChangedStatesToDefaults()
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
