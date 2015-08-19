@@ -221,13 +221,30 @@ public:
     }
 
     /*!
+        \brief Compares two ColourRects for equality
+    */
+    inline bool operator==(const ColourRect& rhs) const
+    {
+        return (d_top_left == rhs.d_top_left) &&
+               (d_top_right == rhs.d_top_right) &&
+               (d_bottom_left == rhs.d_bottom_left) &&
+               (d_bottom_right == rhs.d_bottom_right);
+    }
+
+    /*!
+        \brief Compares two ColourRects for inequality
+    */
+    inline bool operator!=(const ColourRect& rhs) const
+    {
+        return !(*this == rhs);
+    }
+
+    /*!
     \brief Writes a ColourRect to a stream
     */
     inline friend std::ostream& operator << (std::ostream& s, const ColourRect& val)
     {
-        s << std::hex;
-        s << "tl:" << val.d_top_left.getARGB() << " tr:" << val.d_top_right.getARGB() << " bl:" << val.d_bottom_left.getARGB() << " br:" << val.d_bottom_right.getARGB();
-        s << std::dec;
+        s << "tl:" << val.d_top_left << " tr:" << val.d_top_right << " bl:" << val.d_bottom_left << " br:" << val.d_bottom_right;
         return s;
     }
 
