@@ -29,7 +29,7 @@
 
 #include "CEGUI/RenderedStringParser.h"
 
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
 #include "CEGUI/falagard/Enums.h"

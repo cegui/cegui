@@ -244,7 +244,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
 	if (isSizingEnabled() && isFrameEnabled())
 	{
 		// point must be inside the outer edge
-		if (frame.isPointInRect(pt))
+		if (frame.isPointInRectf(pt))
 		{
 			// adjust rect to get inner edge
 			frame.d_min.d_x += d_borderSize;

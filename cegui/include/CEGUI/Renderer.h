@@ -31,9 +31,9 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/RefCounted.h"
+#include "CEGUI/Sizef.h"
 
 #include <set>
 

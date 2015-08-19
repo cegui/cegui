@@ -31,7 +31,7 @@
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

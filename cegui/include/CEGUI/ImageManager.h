@@ -30,7 +30,7 @@
 #include "CEGUI/Singleton.h"
 #include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/ImageFactory.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"

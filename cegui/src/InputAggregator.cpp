@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/InputAggregator.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/System.h"
@@ -320,7 +320,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
     // TODO: re-add the check for different windows?
     // if multi-click requirements are not met
     if (((d_mouseButtonMultiClickTimeout > 0) && (tkr.d_timer.elapsed() > d_mouseButtonMultiClickTimeout)) ||
-        (!tkr.d_click_area.isPointInRect(d_pointerPosition)) ||
+        (!tkr.d_click_area.isPointInRectf(d_pointerPosition)) ||
         (tkr.d_click_count > 3))
     {
         // reset to single down event.

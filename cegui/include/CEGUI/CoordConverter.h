@@ -29,8 +29,10 @@
 
 #include "CEGUI/UDim.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/URect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -102,18 +104,18 @@ public:
 
 	/*!
     \brief
-        converts given Size<UDim> to absolute Sizef
+        converts given USize to absolute Sizef
     */
-    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static Sizef asAbsolute(const USize& v, const Sizef& base, bool pixelAlign = true)
     {
         return Sizef(asAbsolute(v.d_width, base.d_width, pixelAlign), asAbsolute(v.d_height, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Size<UDim> to relative Sizef
+        converts given USize to relative Sizef
     */
-    inline static Sizef asRelative(const Size<UDim>& v, const Sizef& base)
+    inline static Sizef asRelative(const USize& v, const Sizef& base)
     {
         return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
     }

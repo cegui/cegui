@@ -29,7 +29,7 @@
 
 #include "../../Texture.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "../../Size.h"
+#include "../../Sizef.h"
 #include "../../Vector.h"
 
 // d3d forward refs

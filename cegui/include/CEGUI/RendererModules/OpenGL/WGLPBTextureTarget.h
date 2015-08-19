@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #include <windows.h>
 #include <GL/wglew.h>

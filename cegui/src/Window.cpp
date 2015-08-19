@@ -610,7 +610,7 @@ bool Window::isHit(const glm::vec2& position, const bool allow_disabled) const
     if ((test_area.getWidth() == 0.0f) || (test_area.getHeight() == 0.0f))
         return false;
 
-    return test_area.isPointInRect(position);
+    return test_area.isPointInRectf(position);
 }
 
 //----------------------------------------------------------------------------//

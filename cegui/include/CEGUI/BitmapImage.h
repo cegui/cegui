@@ -29,7 +29,7 @@
 
 #include "CEGUI/Image.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

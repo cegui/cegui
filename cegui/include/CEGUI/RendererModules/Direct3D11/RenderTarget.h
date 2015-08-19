@@ -29,7 +29,7 @@
 
 #include "../../RenderTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 
 #if defined(_MSC_VER)

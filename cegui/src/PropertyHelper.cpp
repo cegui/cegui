@@ -320,8 +320,7 @@ PropertyHelper<USize>::fromString(const String& str)
 
     std::stringstream& sstream = getPreparedStream(str);
     // Format is: " { { %g , %g } , { %g , %g } } " but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } "
-    sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> uv.d_width.d_scale >> optionalChar<','> >> uv.d_width.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> uv.d_height.d_scale >> optionalChar<','> >> uv.d_height.d_offset;
+    sstream >> mandatoryChar<'{'> >> uv.d_width >> optionalChar<','> >> uv.d_height;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
 
@@ -332,8 +331,7 @@ PropertyHelper<USize>::string_return_type PropertyHelper<USize>::toString(
     PropertyHelper<USize>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "{{" << val.d_width.d_scale << "," << val.d_width.d_offset << "},{" <<
-        val.d_height.d_scale << "," << val.d_height.d_offset << "}}";
+    sstream << "{" << val.d_width << "," << val.d_height << "}";
 
     return String(sstream.str());
 }
@@ -893,18 +891,18 @@ template class PropertyHelper<String::value_type>;
 template class PropertyHelper<unsigned long>;
 template class PropertyHelper<bool>;
 template class PropertyHelper<AspectMode>;
+template class PropertyHelper<USize>;
 template class PropertyHelper<Sizef>;
 template class PropertyHelper<glm::vec2>;
 template class PropertyHelper<glm::vec3>;
 template class PropertyHelper<glm::quat>;
-template class PropertyHelper<Rectf>;
 template class PropertyHelper<Image*>;
 template class PropertyHelper<Colour>;
 template class PropertyHelper<ColourRect>;
 template class PropertyHelper<UDim>;
 template class PropertyHelper<UVector2>;
 template class PropertyHelper<URect>;
-template class PropertyHelper<USize>;
+template class PropertyHelper<Rectf>;
 template class PropertyHelper<UBox>;
 template class PropertyHelper<Font*>;
 

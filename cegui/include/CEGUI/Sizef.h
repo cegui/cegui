@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	14/3/2004
-	author:		Paul D Turner
-	
-	purpose:	Defines interface for Size class
+    created:    19th August 2015
+    author:     Lukas Meindl (based on code by Paul D Turner)
+    
+    purpose:    Defines interface for Sizef class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
@@ -26,11 +26,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUISize_h_
-#define _CEGUISize_h_
+#ifndef _CEGUISizef_h_
+#define _CEGUISizef_h_
 
-#include "CEGUI/UDim.h"
 #include "CEGUI/Vector.h"
+#include "CEGUI/AspectMode.h"
 #include <typeinfo>
 
 #include <glm/glm.hpp>
@@ -38,95 +38,94 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*
 
-/*!
+/ *!
 \brief
     How aspect ratio should be maintained
-*/
+* /
 enum AspectMode
 {
     //! Ignores the target aspect (default)
     AM_IGNORE,
-    /*!
+    / *!
     Satisfies the aspect ratio by shrinking the size as little
     as possible to fit inside it
-    */
+    * /
     AM_SHRINK,
-    /*!
+    / *!
     Satisfies the aspect ratio by expanding the widget as little
     as possible outside it
-    */
+    * /
     AM_EXPAND
 };
+*/
 
 /*!
 \brief
-	Class that holds the size (width & height) of something.
+    Class that holds a size (width & height) in float values.
 */
-template<typename T>
-class Size
+class Sizef
 {
 public:
-    typedef T value_type;
-
-    inline Size()
+    inline Sizef()
     {}
 
-    inline Size(const T width, const T height):
+    inline Sizef(const float width, const float height):
         d_width(width),
         d_height(height)
     {}
 
-    inline Size(const Size& v):
+    inline Sizef(const Sizef& v):
         d_width(v.d_width),
         d_height(v.d_height)
     {}
 
-    inline bool operator==(const Size& other) const
+    inline bool operator==(const Sizef& other) const
     {
         return d_width == other.d_width && d_height == other.d_height;
     }
 
-    inline bool operator!=(const Size& other) const
+    inline bool operator!=(const Sizef& other) const
     {
         return !operator==(other);
     }
 
-    inline Size operator*(const T c) const
+    inline Sizef operator*(const float c) const
     {
-        return Size(d_width * c, d_height * c);
+        return Sizef(d_width * c, d_height * c);
     }
 
-    inline Size operator*(const Size& s) const
+    inline Sizef operator*(const Sizef& s) const
     {
-        return Size(d_width * s.d_width, d_height * s.d_height);
+        return Sizef(d_width * s.d_width, d_height * s.d_height);
     }
 
-    inline Size operator*(const glm::vec2& vec) const
+    inline Sizef operator*(const glm::vec2& vec) const
     {
-        return Size(d_width * vec.x, d_height * vec.y);
+        return Sizef(d_width * vec.x, d_height * vec.y);
     }
 
-    inline Size operator+(const Size& s) const
+    inline Sizef operator+(const Sizef& s) const
     {
-        return Size(d_width + s.d_width, d_height + s.d_height);
+        return Sizef(d_width + s.d_width, d_height + s.d_height);
     }
 
-    inline Size operator-(const Size& s) const
+    inline Sizef operator-(const Sizef& s) const
     {
-        return Size(d_width - s.d_width, d_height - s.d_height);
+        return Sizef(d_width - s.d_width, d_height - s.d_height);
     }
 
     /*!
     \brief Writes a Size to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const Size& val)
+    inline friend std::ostream& operator << (std::ostream& s, const Sizef& val)
     {
         s << "{" << val.d_width << "," << val.d_height << "}";
         return s;
     }
 
-    inline void clamp(const Size& min, const Size& max)
+    inline void clamp(const Sizef& min, const Sizef& max)
     {
         assert(min.d_width <= max.d_width);
         assert(min.d_height <= max.d_height);
@@ -142,7 +141,7 @@ public:
             d_height = max.d_height;
     }
 
-    inline void scaleToAspect(AspectMode mode, T ratio)
+    inline void scaleToAspect(AspectMode mode, float ratio)
     {
         if (mode == AM_IGNORE)
             return;
@@ -152,7 +151,7 @@ public:
 
         assert(ratio > 0);
 
-        const T expectedWidth = d_height * ratio;
+        const float expectedWidth = d_height * ratio;
         const bool keepHeight = (mode == AM_SHRINK) ?
                 expectedWidth <= d_width : expectedWidth >= d_width;
 
@@ -166,49 +165,41 @@ public:
         }
     }
 
-    //! \brief finger saving alias for Size(side, side)
-    inline static Size square(const T side)
+    //! \brief finger saving alias for Sizef(side, side)
+    inline static Sizef square(const float side)
     {
-        return Size(side, side);
+        return Sizef(side, side);
     }
 
-    //! \brief finger saving alias for Size(0, 0)
-    inline static Size zero()
+    //! \brief finger saving alias for Sizef(0, 0)
+    inline static Sizef zero()
     {
-        return square(TypeSensitiveZero<T>());
+        return square(TypeSensitiveZero<float>());
     }
     
-    //! \brief finger saving alias for Size(1, 1)
-    inline static Size one()
+    //! \brief finger saving alias for Sizef(1, 1)
+    inline static Sizef one()
     {
-        return square(TypeSensitiveOne<T>());
+        return square(TypeSensitiveOne<float>());
     }
     
-    //! \brief finger saving alias for Size(1, 0)
-    inline static Size one_width()
+    //! \brief finger saving alias for Sizef(1, 0)
+    inline static Sizef one_width()
     {
-        return Size(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+        return Sizef(TypeSensitiveOne<float>(), TypeSensitiveZero<float>());
     }
     
-    //! \brief finger saving alias for Size(0, 1)
-    inline static Size one_height()
+    //! \brief finger saving alias for Sizef(0, 1)
+    inline static Sizef one_height()
     {
-        return Size(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+        return Sizef(TypeSensitiveOne<float>(), TypeSensitiveZero<float>());
     }
 
-    T d_width;
-    T d_height;
+    float d_width;
+    float d_height;
 };
 
-// the main reason for this is to keep C++ API in sync with other languages
-typedef Size<float> Sizef;
-typedef Size<UDim> USize;
-
-inline USize operator*(const USize& i, float x)
-{
-    return i * UDim(x,x);
-}
 
 } // End of  CEGUI namespace section
 
-#endif	// end of guard _CEGUISize_h_
+#endif

@@ -29,7 +29,7 @@
 
 #include "../../RenderTarget.h"
 #include "CEGUI/RendererModules/Null/Renderer.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

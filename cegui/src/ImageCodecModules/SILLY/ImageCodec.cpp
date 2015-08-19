@@ -30,7 +30,7 @@
 #include "CEGUI/ImageCodecModules/SILLY/ImageCodec.h"
 #include <SILLY.h>
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

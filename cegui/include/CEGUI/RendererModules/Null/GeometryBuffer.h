@@ -29,7 +29,7 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Null/Renderer.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/Vertex.h"
 

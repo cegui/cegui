@@ -1,11 +1,11 @@
 /***********************************************************************
-	created:	8/3/2004
-	author:		Paul D Turner
+	created:	19th August 2015
+	author:		Lukas Meindl (based on code by Paul D Turner)
 	
-	purpose:	Implements 'Rect' class
+	purpose:	Defines the AspectMode enum
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -26,10 +26,35 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/Rect.h"
+#ifndef _CEGUIAspectMode_h_
+#define _CEGUIAspectMode_h_
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    
+/*
+\brief
+    How aspect ratio should be maintained
+*/
+enum AspectMode
+{
+    //! Ignores the target aspect (default)
+    AM_IGNORE,
+    /*!
+    Satisfies the aspect ratio by shrinking the size as little
+    as possible to fit inside it
+    */
+    AM_SHRINK,
+    /*!
+    Satisfies the aspect ratio by expanding the widget as little
+    as possible outside it
+    */
+    AM_EXPAND
+};
+
 
 } // End of  CEGUI namespace section
+
+#endif

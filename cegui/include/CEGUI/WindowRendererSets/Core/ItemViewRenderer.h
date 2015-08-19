@@ -30,7 +30,7 @@
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
 #include "CEGUI/views/ItemView.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 namespace CEGUI
 {

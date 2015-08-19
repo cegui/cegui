@@ -28,7 +28,7 @@
 #define _CEGUIDirect3D11Renderer_h_
 
 #include "../../Renderer.h"
-#include "../../Size.h"
+#include "../../Sizef.h"
 #include "../../Vector.h"
 
 #include <glm/glm.hpp>
