@@ -438,7 +438,12 @@ public:
     /*!
     \brief Extracts a Rectf from a stream
     */
-    friend std::istream& operator >> (std::istream& s, Rectf& val);
+    inline friend std::istream& operator >> (std::istream& s, Rectf& val)
+    {
+        s >> MandatoryString(" l :") >> val.d_min.d_x >> MandatoryString(" t :") >> val.d_min.d_y >>
+            MandatoryString(" r :") >> val.d_max.d_x >> MandatoryString(" b :") >> val.d_max.d_y;
+        return s;
+    }
     
     //! \     finger saving alias for zero sized, zero positioned rect
     inline static Rectf zero()
