@@ -1,6 +1,6 @@
 /***********************************************************************
-	created:	16th August 2015
-	author:		Lukas Meindl
+    created:    16th August 2015
+    author:     Lukas Meindl
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
@@ -36,8 +36,17 @@ SharedStringstream::SharedStringstream()
 {
     // We only want to use the "C" locale for our stringstreams internally in CEGUI
     d_sharedStream.imbue(std::locale("C"));
-    d_sharedStream << std::skipws;
-    d_sharedStream >> std::skipws;
+    d_sharedStream.setf(std::ios_base::skipws);
+
+    d_sharedStream >> std::defaultfloat;
+    d_sharedStream.precision(8);
+    d_sharedStream.unsetf(std::ios_base::showpoint);
+}
+
+// TODO make thread_local once supported on all major compilers
+void SharedStringstream::setPrecision(int precision)
+{
+    d_sharedStream.precision(precision);
 }
 
 }
