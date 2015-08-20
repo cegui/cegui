@@ -425,11 +425,20 @@ public:
         return Rectf(d_min - r.d_min, d_max - r.d_max);
     }
 
+    /*!
+    \brief Writes a Rectf to a stream
+    */
     inline friend std::ostream& operator << (std::ostream& s, const Rectf& val)
     {
-        s << "{" << val.d_min << "," << val.d_min << "}";
+        s << "l:" << val.d_min.d_x << " t:" << val.d_min.d_y << " r:" << val.d_max.d_x << " b:" << val.d_max.d_y;
+        
         return s;
     }
+
+    /*!
+    \brief Extracts a Rectf from a stream
+    */
+    friend std::istream& operator >> (std::istream& s, Rectf& val);
     
     //! \     finger saving alias for zero sized, zero positioned rect
     inline static Rectf zero()
