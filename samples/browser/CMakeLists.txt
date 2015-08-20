@@ -249,16 +249,17 @@ endforeach()
 #                    MSVC PROJ USER FILE TEMPLATES
 ###########################################################################
 if(MSVC)
-    configure_file(
-        ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcproj.user.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcproj.user
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcxproj.user.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcxproj.user
-        @ONLY
-    )
+    # Older than minimally supported version of Visual Studio 2013
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 18.0) 
+        message(FATAL_ERROR "Detected a Visual Studio version older than Visual Studio 2013. Please use Visual Studio 2013, 2015 or newer. Older versions are not supported")
+    else ()
+    # Visual Studio 2013 or higher
+        configure_file(
+            ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcxproj.user.in
+            ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcxproj.user
+            @ONLY
+            )
+    endif ()
 endif()
 
 
