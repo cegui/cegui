@@ -117,13 +117,19 @@ public:
     }
 
     /*!
-    \brief Writes a Size to a stream
+    \brief Writes a Sizef to a stream
     */
     inline friend std::ostream& operator << (std::ostream& s, const Sizef& val)
     {
-        s << "{" << val.d_width << "," << val.d_height << "}";
+        s << "w:" << val.d_width << " h:" << val.d_height;
+        
         return s;
     }
+
+    /*!
+    \brief Extracts a Sizef from a stream
+    */
+    friend std::istream& operator >> (std::istream& s, Sizef& val);
 
     inline void clamp(const Sizef& min, const Sizef& max)
     {

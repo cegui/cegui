@@ -28,7 +28,6 @@
 #define _CEGUIUDim_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/StreamHelper.h"
 
 #include <ostream>
 
@@ -192,12 +191,7 @@ public:
     /*!
     \brief Extracts a UDim from a stream
     */
-    inline friend std::istream& operator >> (std::istream& s, UDim& val)
-    {
-        // Format is: " { %g , %g } " but we are lenient regarding the format, so this is also allowed: " %g %g "
-        s >> optionalChar<'{'> >> val.d_scale >> optionalChar<','> >> val.d_offset >> optionalChar<'}'>;
-        return s;
-    }
+    friend std::istream& operator >> (std::istream& s, UDim& val);
     
     /*!
     \brief finger saving convenience method returning UDim(0, 0)
@@ -348,16 +342,7 @@ public:
     /*!
     \brief Extracts a UBox from a stream
     */
-    inline friend std::istream& operator >> (std::istream& inStream, UBox& val)
-    {
-        // Format is:  { top: { %g , %g } , left: { %g , %g } , bottom: { %g , %g } , right: { %g , %g } }",
-        // but we are lenient regarding the format, so this is also allowed: " top : { %g %g } left : { %g %g } bottom : { %g %g } right : { %g %g } "
-        inStream >> optionalChar<'{'> >> MandatoryString(" top : {") >> val.d_top.d_scale >> optionalChar<','> >> val.d_top.d_offset >>
-            mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" left : {") >> val.d_left.d_scale >> optionalChar<','> >> val.d_left.d_offset >>
-            mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" bottom : {") >> val.d_bottom.d_scale >> optionalChar<','> >> val.d_bottom.d_offset >>
-            mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" right : {") >> val.d_right.d_scale >> optionalChar<','> >> val.d_right.d_offset;
-        return inStream;
-    }
+    friend std::istream& operator >> (std::istream& inStream, UBox& val);
 
     /*************************************************************************
         Data Fields
