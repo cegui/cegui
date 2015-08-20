@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include "PVRTGlobal.h"
 #include "PVRTTexture.h"
