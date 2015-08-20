@@ -38,7 +38,7 @@ SharedStringstream::SharedStringstream()
     d_sharedStream.imbue(std::locale("C"));
     d_sharedStream.setf(std::ios_base::skipws);
 
-    d_sharedStream >> std::defaultfloat;
+    d_sharedStream.unsetf(std::ios_base::floatfield);
     d_sharedStream.precision(8);
     d_sharedStream.unsetf(std::ios_base::showpoint);
 }

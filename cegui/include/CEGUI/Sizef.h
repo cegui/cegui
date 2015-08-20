@@ -31,6 +31,7 @@
 
 #include "CEGUI/Vector.h"
 #include "CEGUI/AspectMode.h"
+#include "CEGUI/PropertyHelper.h"
 #include <typeinfo>
 
 #include <glm/glm.hpp>
@@ -129,7 +130,12 @@ public:
     /*!
     \brief Extracts a Sizef from a stream
     */
-    friend std::istream& operator >> (std::istream& s, Sizef& val);
+    inline friend std::istream& operator >> (std::istream& s, Sizef& val)
+    {
+        s >> MandatoryString(" w :") >> PropertyHelper<float>::toString(val.d_width) >> MandatoryString(" h :") >> PropertyHelper<float>::toString(val.d_height);
+
+        return s;
+    }
 
     inline void clamp(const Sizef& min, const Sizef& max)
     {
