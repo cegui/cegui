@@ -31,7 +31,7 @@
 
 #include "CEGUI/Vector.h"
 #include "CEGUI/AspectMode.h"
-#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/StreamHelper.h"
 #include <typeinfo>
 
 #include <glm/glm.hpp>
@@ -132,7 +132,7 @@ public:
     */
     inline friend std::istream& operator >> (std::istream& s, Sizef& val)
     {
-        s >> MandatoryString(" w :") >> PropertyHelper<float>::toString(val.d_width) >> MandatoryString(" h :") >> PropertyHelper<float>::toString(val.d_height);
+        s >> MandatoryString(" w :") >> val.d_width >> MandatoryString(" h :") >> val.d_height;
 
         return s;
     }
