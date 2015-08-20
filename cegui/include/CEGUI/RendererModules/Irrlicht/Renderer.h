@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 #include "../../Renderer.h"
-#include "../../Size.h"
+#include "../../Sizef.h"
 #include "../../Vector.h"
 
 #include <vector>

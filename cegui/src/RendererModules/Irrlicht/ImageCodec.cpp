@@ -27,7 +27,7 @@
 #include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RendererModules/Irrlicht/MemoryFile.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

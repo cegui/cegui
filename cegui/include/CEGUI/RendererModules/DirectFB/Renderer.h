@@ -28,7 +28,7 @@
 #define _CEGUIDirectFBRenderer_h_
 
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Vector.h"
 #include <directfb.h>
 #include <vector>
