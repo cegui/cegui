@@ -39,6 +39,14 @@ class SharedStringstream
 public:
     SharedStringstream();
 
+ 
+    /*!
+    \brief
+        Changes the precision of the stream (the amount of decimal numbers after the decimal
+        separator, in case of std::fixed, which is our default)
+    */
+    void setPrecision(int precision);
+
     std::stringstream d_sharedStream;
     
     // TODO: make this "static thread_local" in the future once supported on all major compilers,
