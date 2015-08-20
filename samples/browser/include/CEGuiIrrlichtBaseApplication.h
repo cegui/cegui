@@ -46,7 +46,7 @@
 #endif
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include <irrlicht.h>
 

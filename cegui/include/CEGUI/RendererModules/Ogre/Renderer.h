@@ -28,7 +28,7 @@
 #define _CEGUIOgreRenderer_h_
 
 #include "../../Renderer.h"
-#include "../../Size.h"
+#include "../../Sizef.h"
 #include "../../Vector.h"
 #include "CEGUI/Config.h"
 

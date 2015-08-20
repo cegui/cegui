@@ -29,7 +29,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <vector>

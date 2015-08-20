@@ -27,7 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/DevIL/ImageCodec.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Exceptions.h"
 #include <IL/il.h>
 #include <string.h>
