@@ -31,6 +31,7 @@
 
 #include "CEGUI/Vector.h"
 #include "CEGUI/Sizef.h"
+#include "CEGUI/StreamHelper.h"
 
 #include <glm/glm.hpp>
 

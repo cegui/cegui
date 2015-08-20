@@ -348,7 +348,7 @@ public:
     /*!
     \brief Extracts a UBox from a stream
     */
-    friend std::istream& operator >> (std::istream& inStream, UBox& val)
+    inline friend std::istream& operator >> (std::istream& inStream, UBox& val)
     {
         // Format is:  { top: { %g , %g } , left: { %g , %g } , bottom: { %g , %g } , right: { %g , %g } }",
         // but we are lenient regarding the format, so this is also allowed: " top : { %g %g } left : { %g %g } bottom : { %g %g } right : { %g %g } "
