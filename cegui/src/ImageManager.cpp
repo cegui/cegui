@@ -486,11 +486,11 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 
     if (!rw_attrs.exists(ImagesetNativeHorzResAttribute))
         rw_attrs.add(ImagesetNativeHorzResAttribute,
-                     PropertyHelper<float>::toString(s_nativeResolution.d_width));
+                     PropertyHelper<uint>::toString(static_cast<uint>(s_nativeResolution.d_width)));
 
     if (!rw_attrs.exists(ImagesetNativeVertResAttribute))
         rw_attrs.add(ImagesetNativeVertResAttribute,
-                     PropertyHelper<float>::toString(s_nativeResolution.d_height));
+                     PropertyHelper<uint>::toString(static_cast<uint>(s_nativeResolution.d_height)));
 
     d_deleteChainedHandler = false;
     d_chainedHandler = &create(rw_attrs);
