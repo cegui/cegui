@@ -52,6 +52,10 @@ std::istream& optionalChar(std::istream& inputStream)
     // Peek into the next character, if it is equal to the skipping-character, extract/ignore this character
     if (inputStream.peek() == matchingCharacter)
         inputStream.ignore();
+    else
+        // If peek is executed but no further characters remain, the failbit will be set, we want to undo this
+        inputStream.clear(inputStream.rdstate() & ~std::ios::failbit);
+
     return inputStream;
 }
 
