@@ -48,8 +48,6 @@ const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
 const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");
 const CEGUI::String PropertyHelper<AspectMode>::Ignore("Ignore");
 
-
-
 //! Helper function for throwing errors
 static void throwParsingException(const String& typeName, const String& parsedstring)
 {
@@ -222,7 +220,6 @@ PropertyHelper<float>::fromString(const String& str)
         return val;
 
     std::stringstream& sstream = getPreparedStream(str);
-
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -319,8 +316,7 @@ PropertyHelper<USize>::fromString(const String& str)
         return uv;
 
     std::stringstream& sstream = getPreparedStream(str);
-    // Format is: " { { %g , %g } , { %g , %g } } " but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } "
-    sstream >> mandatoryChar<'{'> >> uv.d_width >> optionalChar<','> >> uv.d_height;
+    sstream >> uv;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
 
@@ -331,7 +327,7 @@ PropertyHelper<USize>::string_return_type PropertyHelper<USize>::toString(
     PropertyHelper<USize>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "{" << val.d_width << "," << val.d_height << "}";
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -352,12 +348,7 @@ PropertyHelper<URect>::fromString(const String& str)
         return ur;
 
     std::stringstream& sstream = getPreparedStream(str);
-    // Format is:  { { %g , %g } , { %g , %g } , { %g , %g } , { %g , %g } }" 
-    // but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } { %g %g } { %g %g }"
-    sstream >> optionalChar<'{'> >> mandatoryChar<'{'> >> ur.d_min.d_x.d_scale >> optionalChar<','> >> ur.d_min.d_x.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_min.d_y.d_scale >> optionalChar<','> >> ur.d_min.d_y.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_max.d_x.d_scale >> optionalChar<','> >> ur.d_max.d_x.d_offset >>
-        mandatoryChar<'}'> >> optionalChar<','> >> mandatoryChar<'{'> >> ur.d_max.d_y.d_scale >> optionalChar<','> >> ur.d_max.d_y.d_offset;
+    sstream >> ur;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
 
@@ -368,10 +359,7 @@ PropertyHelper<URect>::string_return_type PropertyHelper<URect>::toString(
     PropertyHelper<URect>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "{{" << val.d_min.d_x.d_scale << "," << val.d_min.d_x.d_offset << "},{" <<
-        val.d_min.d_y.d_scale << "," << val.d_min.d_y.d_offset << "},{" <<
-        val.d_max.d_x.d_scale << "," << val.d_max.d_x.d_offset << "},{" <<
-        val.d_max.d_y.d_scale << "," << val.d_max.d_y.d_offset << "}}";
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -511,8 +499,7 @@ PropertyHelper<Rectf>::fromString(const String& str)
         return val;
 
     std::stringstream& sstream = getPreparedStream(str);
-    sstream >> MandatoryString(" l :") >> val.d_min.d_x >> MandatoryString(" t :") >> val.d_min.d_y >>
-        MandatoryString(" r :") >> val.d_max.d_x >> MandatoryString(" b :") >> val.d_max.d_y;
+    sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
 
@@ -523,7 +510,7 @@ PropertyHelper<Rectf>::string_return_type PropertyHelper<Rectf>::toString(
     PropertyHelper<Rectf>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "l:" << val.d_min.d_x << " t:" << val.d_min.d_y << " r:" << val.d_max.d_x << " b:" << val.d_max.d_y;;
+    sstream << val;
 
     return String(sstream.str());
 }
@@ -544,7 +531,7 @@ PropertyHelper<Sizef>::fromString(const String& str)
         return val;
 
     std::stringstream& sstream = getPreparedStream(str);
-    sstream >> MandatoryString(" w :") >> val.d_width >> MandatoryString(" h :") >> val.d_height;
+    sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
 
@@ -555,7 +542,7 @@ PropertyHelper<Sizef>::string_return_type PropertyHelper<Sizef>::toString(
     PropertyHelper<Sizef>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
-    sstream << "w:" << val.d_width << " h:" << val.d_height;;
+    sstream << val;
 
     return String(sstream.str());
 }

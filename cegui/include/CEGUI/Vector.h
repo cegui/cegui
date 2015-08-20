@@ -159,7 +159,7 @@ public:
     */
     inline friend std::ostream& operator << (std::ostream& s, const Vector2& val)
     {
-        s << "{" << val.d_x << "," << val.d_y << "}";
+        s << val.d_x << "," << val.d_y;
         return s;
     }
 
@@ -168,8 +168,7 @@ public:
     */
     inline friend std::istream& operator >> (std::istream& s, Vector2& val)
     {
-        // Format is: " { { % , % } , { % , % } } " but we are lenient regarding the format, so this is also allowed: " { % % } { % % } "
-        s >> mandatoryChar<'{'> >> val.d_x >> optionalChar<','> >> val.d_y >> mandatoryChar<'}'>;
+        s >> optionalChar<'{'> >> val.d_x >> optionalChar<','> >> val.d_y >> optionalChar<'}'>;
         return s;
     }
 
