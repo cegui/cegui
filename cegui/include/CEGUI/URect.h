@@ -241,9 +241,23 @@ public:
         return URect(d_min - r.d_min, d_max - r.d_max);
     }
 
+    /*!
+    \brief Writes a URect to a stream
+    */
     inline friend std::ostream& operator << (std::ostream& s, const URect& val)
     {
-        s << "{" << val.d_min << "," << val.d_min << "}";
+        s << "{" << val.d_min << "," << val.d_max << "}";
+        return s;
+    }
+
+    /*!
+    \brief Extracts a URect from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& s, URect& val)
+    {
+        // Format is:  { { %g , %g } , { %g , %g } , { %g , %g } , { %g , %g } }" 
+        // but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } { %g %g } { %g %g }"
+        s >> optionalChar<'{'> >> val.d_min >> optionalChar<','> >> val.d_max >> optionalChar<'}'>;
         return s;
     }
     

@@ -107,6 +107,16 @@ public:
         return s;
     }
 
+    /*!
+    \brief Extracts a USize from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& s, USize& val)   
+    {
+        // Format is: " { { %g , %g } , { %g , %g } } " but we are lenient regarding the format, so this is also allowed: " { %g %g } { %g %g } "
+        s >> mandatoryChar<'{'> >> val.d_width >> optionalChar<','> >> val.d_height >> optionalChar<'}'>;
+        return s;
+    }
+
     //! \brief finger saving alias for USize(side, side)
     inline static USize square(const UDim side)
     {
