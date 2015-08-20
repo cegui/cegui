@@ -123,6 +123,35 @@ BOOST_AUTO_TEST_CASE(ColourRect)
     BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::ColourRect>::fromString(CEGUI::PropertyHelper<CEGUI::ColourRect>::toString(CEGUI::ColourRect(0x00000000))), CEGUI::ColourRect(0x00000000));
 }
 
+BOOST_AUTO_TEST_CASE(UDim)
+{
+    // to string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(0.25f, 0.0f)), "{0.25,0}");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(0.0078125f, 15)), "{0.0078125,15}");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(0, 0)), "{0,0}");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(-123456.25f, 1234567)),
+        "{-123456.25,1234567}");
+
+    // from string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString("{0.25,0}"), CEGUI::UDim(0.25f, 0.0f));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString("{0.0078125,15}"), CEGUI::UDim(0.0078125f, 15));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString("{0.0,0}"), CEGUI::UDim(0, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString("-1234567.25 1234567"),
+        CEGUI::UDim(-1234567.25f, 1234567));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString(""), CEGUI::UDim(0, 0));
+
+
+    // read out and back in
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(0.75f, 0.0f))),
+        CEGUI::UDim(0.75f, 0.0f));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(0.0078125f, 15))),
+        CEGUI::UDim(0.0078125f, 15));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(0, 0))),
+        CEGUI::UDim(0, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::UDim>::fromString(CEGUI::PropertyHelper<CEGUI::UDim>::toString(CEGUI::UDim(-123456.25f, 1234567))),
+        CEGUI::UDim(-123456.25f, 1234567));
+}
+
 BOOST_AUTO_TEST_CASE(URect)
 {
     // to string
@@ -150,6 +179,83 @@ BOOST_AUTO_TEST_CASE(URect)
         CEGUI::URect(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0), CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
     BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::URect>::fromString(CEGUI::PropertyHelper<CEGUI::URect>::toString(CEGUI::URect(CEGUI::UDim(-123456.25f, 1234567), CEGUI::UDim(1234567, 1234567), CEGUI::UDim(1234567, 1234567), CEGUI::UDim(1234567, 1234567)))),
         CEGUI::URect(CEGUI::UDim(-123456.25f, 1234567), CEGUI::UDim(1234567, 1234567), CEGUI::UDim(1234567, 1234567), CEGUI::UDim(1234567, 1234567)));
+}
+
+
+BOOST_AUTO_TEST_CASE(USize)
+{
+    // to string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.75f, 0.0f))), "{{0.25,0},{0.75,0}}");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(0.25f, 222), CEGUI::UDim(0.0078125f, 15))), "{{0.25,222},{0.0078125,15}}");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0))), "{{0,0},{0,0}}");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(-123456.25f, 1234567), CEGUI::UDim(1234567, 1234567))),
+        "{{-123456.25,1234567},{1234567,1234567}}");
+
+    // from string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString("{{0.25,0},{0.75,0}}"), CEGUI::USize(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.75f, 0.0f)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString("{{0.25,222},{0.0078125,15}}"), CEGUI::USize(CEGUI::UDim(0.25f, 222), CEGUI::UDim(0.0078125f, 15)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString("{{0.0,0},{0,0.0}}"), CEGUI::USize(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString("{-1234567.25 1234567} {1234567 1234567}"),
+        CEGUI::USize(CEGUI::UDim(-1234567.25f, 1234567), CEGUI::UDim(1234567, 1234567)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString(""), CEGUI::USize(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
+
+
+    // read out and back in
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.75f, 0.0f)))),
+        CEGUI::USize(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.75f, 0.0f)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(0.25f, 222), CEGUI::UDim(0.0078125f, 15)))),
+        CEGUI::USize(CEGUI::UDim(0.25f, 222), CEGUI::UDim(0.0078125f, 15)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)))),
+        CEGUI::USize(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::USize>::fromString(CEGUI::PropertyHelper<CEGUI::USize>::toString(CEGUI::USize(CEGUI::UDim(-123456.25f, 1234567), CEGUI::UDim(1234567, 1234567)))),
+        CEGUI::USize(CEGUI::UDim(-123456.25f, 1234567), CEGUI::UDim(1234567, 1234567)));
+}
+
+
+BOOST_AUTO_TEST_CASE(Rectf)
+{
+    // to string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(0.25f, 0.25f, 0.75f, 0.75f)), "l:0.25 t:0.25 r:0.75 b:0.75");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(0, 0.0078125f, 0.75f, 0)), "l:0 t:0.0078125 r:0.75 b:0");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(0, 0, 0, 0)), "l:0 t:0 r:0 b:0");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(-123456.25f, 1234567, 1234567, 1234567)), "l:-123456.25 t:1234567 r:1234567 b:1234567");
+
+    // from string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString("l:0.25 t:0.25 r:0.75 b:0.75"), CEGUI::Rectf(0.25f, 0.25f, 0.75f, 0.75f));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString("l:0 t:0.0078125 r:0.75 b:0"), CEGUI::Rectf(0, 0.0078125f, 0.75f, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString("l:0 t:0 r:0 b:0"), CEGUI::Rectf(0, 0, 0, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString("l:-123456.25 t:1234567 r:1234567 b:1234567"), CEGUI::Rectf(-123456.25f, 1234567, 1234567, 1234567));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString(""), CEGUI::Rectf(0, 0, 0, 0));
+
+
+    // read out and back in
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(0.25f, 0.25f, 0.75f, 0.75f))), CEGUI::Rectf(0.25f, 0.25f, 0.75f, 0.75f));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(0, 0.0078125f, 0.75f, 0))), CEGUI::Rectf(0, 0.0078125f, 0.75f, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(0, 0, 0, 0))), CEGUI::Rectf(0, 0, 0, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Rectf>::fromString(CEGUI::PropertyHelper<CEGUI::Rectf>::toString(CEGUI::Rectf(-123456.25f, 1234567, 1234567, 1234567))), CEGUI::Rectf(-123456.25f, 1234567, 1234567, 1234567));
+}
+
+BOOST_AUTO_TEST_CASE(Sizef)
+{
+    // to string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(0.25f, 0.75f)), "w:0.25 h:0.75");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(0.0078125f, 0)), "w:0.0078125 h:0");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(0, 0)), "w:0 h:0");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(-123456.25f, 1234567)), "w:-123456.25 h:1234567");
+
+    // from string
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString("w:0.25 h:0.75"), CEGUI::Sizef(0.25f,0.75f));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString("w:0.0078125 h:0"), CEGUI::Sizef(0.0078125f, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString("w:0 h:0"), CEGUI::Sizef(0, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString("w:-123456.25 h:1234567"), CEGUI::Sizef(-123456.25f, 1234567));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString(""), CEGUI::Sizef(0, 0));
+
+
+    // read out and back in
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(0.25f, 0.75f))), CEGUI::Sizef(0.25f, 0.75f));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(0.0078125f, 0))), CEGUI::Sizef(0.0078125f, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(0, 0))), CEGUI::Sizef(0, 0));
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<CEGUI::Sizef>::fromString(CEGUI::PropertyHelper<CEGUI::Sizef>::toString(CEGUI::Sizef(-123456.25f, 1234567))), CEGUI::Sizef(-123456.25f, 1234567));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
