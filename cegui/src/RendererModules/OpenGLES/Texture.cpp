@@ -113,7 +113,7 @@ const Sizef& OpenGLESTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLESTexture::getTexelScaling() const
+const glm::vec2& OpenGLESTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -136,9 +136,9 @@ void OpenGLESTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System (needed to access ImageCodec)
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             "CEGUI::System object has not been created: "
-            "unable to access ImageCodec."));
+            "unable to access ImageCodec.");
 
     Texture* res = sys->getImageCodec().load(texFile, this);
 
@@ -148,9 +148,9 @@ void OpenGLESTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -159,8 +159,8 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
                                      PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
     
     initPixelFormatFields(pixel_format);
     setTextureSize_impl(buffer_size);
@@ -169,7 +169,7 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
+    blitFromMemory(buffer, Rectf(glm::vec2(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -239,7 +239,7 @@ void OpenGLESTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 void OpenGLESTexture::blitToMemory(void* targetData)
 {
     // TODO:
-    CEGUI_THROW(RendererException("unimplemented!"));
+    throw RendererException("unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
@@ -262,7 +262,7 @@ void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
     // make sure size is within boundaries
     GLfloat maxSize = static_cast<GLfloat>(d_owner.getMaxTextureSize());
     if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
+        throw RendererException("size too big");
 
     // save old texture binding
     GLuint old_tex;
@@ -294,13 +294,13 @@ void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::grabTexture()
 {
-    CEGUI_THROW(RendererException("unimplemented!"));
+    throw RendererException("unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::restoreTexture()
 {
-    CEGUI_THROW(RendererException("unimplemented!"));
+    throw RendererException("unimplemented!");
 }
 
 //----------------------------------------------------------------------------//

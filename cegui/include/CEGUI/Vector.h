@@ -5,7 +5,7 @@
 	purpose:	Defines interfaces for Vector classes
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,6 +30,8 @@
 #define _CEGUIVector_h_
 
 #include "CEGUI/UDim.h"
+#include "CEGUI/StreamHelper.h"
+
 #include <typeinfo>
 #include <ostream>
 
@@ -44,14 +46,9 @@ namespace CEGUI
 \par
     This class is templated now, this allows us to use it as a Vector2 of floats,
     ints or even UDims without replicating the code all over the place.
-
-\par
-    For a simple Vector2 of floats (what was called Vector2 before), use Vector2f
-    as the T template parameter defaults to float to save fingertips.
 */
 template<typename T>
-class Vector2:
-    public AllocatedObject<Vector2<T> >
+class Vector2
 {
 public:
     typedef T value_type;
@@ -139,6 +136,14 @@ public:
         return Vector2(d_x / c, d_y / c);
     }
 
+    inline Vector2 operator/=(const T c)
+    {
+        d_x /= c;
+        d_y /= c;
+
+        return *this;
+    }
+
     inline bool operator==(const Vector2& vec) const
     {
         return ((d_x == vec.d_x) && (d_y == vec.d_y));
@@ -150,11 +155,20 @@ public:
     }
     
     /*!
-    \brief allows writing the vector2 to std ostream
+    \brief Writes a Vector2 to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const Vector2& v)
+    inline friend std::ostream& operator << (std::ostream& s, const Vector2& val)
     {
-        s << "CEGUI::Vector2<" << typeid(T).name() << ">(" << v.d_x << ", " << v.d_y << ")";
+        s << val.d_x << "," << val.d_y;
+        return s;
+    }
+
+    /*!
+    \brief Extracts a Vector2 from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& s, Vector2& val)
+    {
+        s >> optionalChar<'{'> >> val.d_x >> optionalChar<','> >> val.d_y >> optionalChar<'}'>;
         return s;
     }
 
@@ -186,9 +200,6 @@ public:
     T d_y;
 };
 
-// the main reason for this is to keep C++ API in sync with other languages
-typedef Vector2<float> Vector2f;
-
 // we need to allow UVector2 to be multiplied by floats, this is the most elegant way to do that
 inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
 {
@@ -196,118 +207,6 @@ inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
 }
 
 typedef Vector2<UDim> UVector2;
-
-/*!
-\brief
-    Class used as a three dimensional vector
-
-\par
-    This class is templated now, this allows us to use it as a Vector3 of floats,
-    ints or even UDims without replicating the code all over the place.
-
-\par
-    For a simple Vector3 of floats (what was called Vector3 before), use Vector3f
-    as the T template parameter defaults to float to save fingertips.
-*/
-template<typename T>
-class Vector3:
-    public AllocatedObject<Vector3<T> >
-{
-public:
-    typedef T value_type;
-
-    inline Vector3()
-    {}
-
-    inline Vector3(const T x, const T y, const T z):
-        d_x(x),
-        d_y(y),
-        d_z(z)
-    {}
-
-    inline explicit Vector3(const Vector2<T>& v, const T z):
-        d_x(v.d_x),
-        d_y(v.d_y),
-        d_z(z)
-    {}
-
-    inline Vector3(const Vector3& v):
-        d_x(v.d_x),
-        d_y(v.d_y),
-        d_z(v.d_z)
-    {}
-
-    inline bool operator==(const Vector3& vec) const
-    {
-        return ((d_x == vec.d_x) && (d_y == vec.d_y) && (d_z == vec.d_z));
-    }
-
-    inline bool operator!=(const Vector3& vec) const
-    {
-        return !(operator==(vec));
-    }
-
-    inline Vector3 operator*(const T c) const
-    {
-        return Vector3(d_x * c, d_y * c, d_z * c);
-    }
-
-    inline Vector3 operator+(const Vector3& v) const
-    {
-        return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
-    }
-
-    inline Vector3 operator-(const Vector3& v) const
-    {
-        return Vector3(d_x - v.d_x, d_y - v.d_y, d_z - v.d_z);
-    }
-    
-    /*!
-    \brief allows writing the vector3 to std ostream
-    */
-    inline friend std::ostream& operator << (std::ostream& s, const Vector3& v)
-    {
-        s << "CEGUI::Vector3<" << typeid(T).name() << ">(" << v.d_x << ", " << v.d_y << ", " << v.d_z << ")";
-        return s;
-    }
-
-    //! \brief finger saving alias for Vector3(0, 0, 0)
-    inline static Vector3 zero()
-    {
-        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
-    }
-
-    //! \brief finger saving alias for Vector3(1, 1, 1)
-    inline static Vector3 one()
-    {
-        return Vector3(TypeSensitiveOne<T>(), TypeSensitiveOne<T>(), TypeSensitiveOne<T>());
-    }
-    
-    //! \brief finger saving alias for Vector3(1, 0, 0)
-    inline static Vector3 one_x()
-    {
-        return Vector3(TypeSensitiveOne<T>(), TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
-    }
-    
-    //! \brief finger saving alias for Vector3(0, 1, 0)
-    inline static Vector3 one_y()
-    {
-        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
-    }
-
-    //! \brief finger saving alias for Vector3(0, 0, 1)
-    inline static Vector3 one_z()
-    {
-        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
-    }
-    
-    T d_x;
-    T d_y;
-    T d_z;
-};
-
-// the main reason for this is to keep C++ API in sync with other languages
-typedef Vector3<float> Vector3f;
 
 } // End of  CEGUI namespace section
 

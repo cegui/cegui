@@ -155,9 +155,9 @@ void LayoutContainer::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "LayoutContainer can only have Elements of type Window added as "
-            "children (Window path: " + getNamePath() + ")."));
+            "children (Window path: " + getNamePath() + ").");
     
     Window::addChild_impl(wnd);
 

@@ -39,11 +39,11 @@
 namespace CEGUI
 {
 //! CEGUI::TextureTarget implementation for the Ogre engine.
-class OGRE_GUIRENDERER_API OgreTextureTarget : public OgreRenderTarget<TextureTarget>
+class OGRE_GUIRENDERER_API OgreTextureTarget : public OgreRenderTarget, public TextureTarget
 {
 public:
     //! Constructor.
-    OgreTextureTarget(OgreRenderer& owner, Ogre::RenderSystem& rs);
+    OgreTextureTarget(OgreRenderer& owner, Ogre::RenderSystem& rs, bool addStencilBuffer);
     //! Destructor.
     virtual ~OgreTextureTarget();
 
@@ -53,7 +53,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 protected:
     //! default / initial size for the underlying texture.

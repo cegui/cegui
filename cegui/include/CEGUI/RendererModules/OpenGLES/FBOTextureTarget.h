@@ -44,10 +44,10 @@ class OpenGLESTexture;
 
 //! OpenGLESFBOTextureTarget - allows rendering to an OpenGLES texture via FBO.
 class OPENGLES_GUIRENDERER_API OpenGLESFBOTextureTarget :
-    public OpenGLESRenderTarget<TextureTarget>
+    public OpenGLESRenderTarget
 {
 public:
-    OpenGLESFBOTextureTarget(OpenGLESRenderer& owner);
+    OpenGLESFBOTextureTarget(OpenGLESRenderer& owner, bool addStencilBuffer);
     virtual ~OpenGLESFBOTextureTarget();
 
     // overrides from OpenGLESRenderTarget
@@ -59,7 +59,6 @@ public:
     void clear();
     Texture& getTexture() const;
     void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
 
 	//! initialize FBO extension functions pointers
 	static void initializedFBOExtension();

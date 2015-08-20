@@ -29,7 +29,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodecModules/STB/ImageCodec.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #define STBI_HEADER_FILE_ONLY
 #include "stb_image.cpp"
 

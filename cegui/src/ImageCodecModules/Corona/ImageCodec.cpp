@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/Corona/ImageCodec.h" 
 #include "CEGUI/Logger.h" 
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include <corona.h> 
 
