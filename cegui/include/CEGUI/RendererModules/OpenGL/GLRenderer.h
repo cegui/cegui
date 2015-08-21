@@ -216,11 +216,11 @@ protected:
     */
     virtual ~OpenGLRenderer();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    //! initialise several additional OpenGL states to their defaults
+    void restoreOpenGLStatesToDefaults();
 
-    //! cleanup the extra GL states enabled via enableExtraStateSettings
-    void cleanupExtraStates();
+    //! clean up the texture matrix stack if state restoring is enabled
+    void cleanupMatrixStack();
 
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory(const TextureTargetType tt_type);

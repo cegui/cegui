@@ -220,8 +220,8 @@ private:
     //! initialise OGL3TextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void restoreChangedStatesToDefaults();
+    //! restores all relevant OpenGL States CEGUI touches to their default value
+    void restoreChangedStatesToDefaults(bool isAfterRendering);
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
     OpenGLBaseShaderWrapper* d_shaderWrapperTextured;

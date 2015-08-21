@@ -107,14 +107,24 @@ public:
 
     /*!
     \brief
-        Tells the renderer to reset most states used by CEGUI to their default
-        values (OpenGL3Renderer) or their initial values (OpenGLRenderer)
+        Tells the renderer to enable/disable the resetting of most states used by
+        CEGUI to their default values (OpenGL3Renderer) or their previously set
+        values (OpenGLRenderer).
 
         Since the amount of states used by CEGUI is very large and we can't
         store a temporary for each of them and restore them, the user is responsible
-        for setting the states to the expectes ones once CEGUI is done rendering.
+        for setting the states to the expects ones once CEGUI is done rendering.
     */
-    void enableStateResetting(bool setting);
+    void setStateResettingEnabled(bool setting);
+
+    /*!
+    \brief
+        Returns if state resetting is enabled or disabled in this Renderer.
+
+    \return
+        True if state resetting is enabled, False if state resetting is disabled.
+    */
+    bool getStateResettingEnabled();
 
     /*!
     \brief
@@ -234,7 +244,7 @@ protected:
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
-    bool d_restoreDefaultStates;
+    bool d_isStateResettingEnabled;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
 };

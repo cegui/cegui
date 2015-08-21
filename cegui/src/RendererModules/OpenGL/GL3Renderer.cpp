@@ -216,52 +216,54 @@ void OpenGL3Renderer::beginRendering()
     // this information may be relevant for people combining deprecated and modern
     // functions. In that case disable client states like this: glDisableClientState(GL_VERTEX_ARRAY);
 
-    
-    glEnable(GL_SCISSOR_TEST);
-    glEnable(GL_BLEND);
+    d_openGLStateChanger->reset();
+
+    // if enabled, restores a subset of the GL state back to default values.
+    if (d_isStateResettingEnabled)
+        restoreChangedStatesToDefaults(false);
+
+    d_openGLStateChanger->enable(GL_SCISSOR_TEST);
+    d_openGLStateChanger->enable(GL_BLEND);
 
     // force set blending ops to get to a known state.
     setupRenderingBlendMode(BM_NORMAL, true);
-
-    // if enabled, restores a subset of the GL state back to default values.
-    if (d_restoreDefaultStates)
-        restoreChangedStatesToDefaults();
-
-    d_openGLStateChanger->reset();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::endRendering()
 {
-    glUseProgram(0);
-
-    if (d_restoreDefaultStates)
-    {
-        glDisable(GL_SCISSOR_TEST);
-    
-        glBlendFunc(GL_ONE, GL_ZERO);
-        if (OpenGLInfo::getSingleton().isVaoSupported())
-            glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+    if (d_isStateResettingEnabled)
+        restoreChangedStatesToDefaults(true);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::restoreChangedStatesToDefaults()
+void OpenGL3Renderer::restoreChangedStatesToDefaults(bool isAfterRendering)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //Resetting to initial values of the functions
+    d_openGLStateChanger->activeTexture(GL_TEXTURE0);
+    d_openGLStateChanger->bindTexture(GL_TEXTURE_2D, 0);
 
     if (OpenGLInfo::getSingleton().isPolygonModeSupported())
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+ 
+    d_openGLStateChanger->disable(GL_CULL_FACE);
+    d_openGLStateChanger->disable(GL_DEPTH_TEST);
 
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+    // During the preparation before rendering, these states will be changed anyways
+    // so we do not want to change them extra
+    if(isAfterRendering)
+    { 
+        d_openGLStateChanger->disable(GL_BLEND);
+        d_openGLStateChanger->disable(GL_SCISSOR_TEST);
+    }
 
-    glUseProgram(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    d_openGLStateChanger->blendFunc(GL_ONE, GL_ZERO);
+
+    d_openGLStateChanger->useProgram(0);
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+        d_openGLStateChanger->bindVertexArray(0);
+    d_openGLStateChanger->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 //----------------------------------------------------------------------------//

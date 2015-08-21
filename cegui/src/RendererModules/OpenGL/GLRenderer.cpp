@@ -247,15 +247,15 @@ void OpenGLRenderer::beginRendering()
     glDisableClientState(GL_EDGE_FLAG_ARRAY);
 
     // if enabled, restores a subset of the GL state back to default values.
-    if (d_restoreDefaultStates)
-        setupExtraStates();
+    if (d_isStateResettingEnabled)
+        restoreOpenGLStatesToDefaults();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::endRendering()
 {
-    if (d_restoreDefaultStates)
-        cleanupExtraStates();
+    if (d_isStateResettingEnabled)
+        cleanupMatrixStack();
 
     // restore former matrices
     // FIXME: If the push ops failed, the following could mess things up!
@@ -268,7 +268,7 @@ void OpenGLRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::setupExtraStates()
+void OpenGLRenderer::restoreOpenGLStatesToDefaults()
 {
     CEGUI_activeTexture(GL_TEXTURE0);
     CEGUI_clientActiveTexture(GL_TEXTURE0);
@@ -294,7 +294,7 @@ void OpenGLRenderer::setupExtraStates()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::cleanupExtraStates()
+void OpenGLRenderer::cleanupMatrixStack()
 {
     glMatrixMode(GL_TEXTURE);
     glPopMatrix();
