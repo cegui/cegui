@@ -27,7 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/DevIL/ImageCodec.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Exceptions.h"
 #include <IL/il.h>
 #include <string.h>
@@ -115,8 +115,8 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "Unsupported DXTC data format returned."));
+            throw InvalidRequestException(
+                "Unsupported DXTC data format returned.");
         }
 
         // delete DevIL image
@@ -124,14 +124,14 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         ilPopAttrib();
 
         // create cegui texture
-        CEGUI_TRY
+        try
         {
             result->loadFromMemory(pixel_data, Sizef(width, height), cefmt);
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             delete[] pixel_data;
-            CEGUI_RETHROW;
+            throw;
         }
 
         // free temp buffer

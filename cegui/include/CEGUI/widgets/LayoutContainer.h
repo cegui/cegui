@@ -109,13 +109,13 @@ public:
 
     virtual void notifyScreenAreaChanged(bool recursive);
 
+    size_t getIdxOfChild(Window* wnd) const;
+
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
     
     Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
-
-    size_t getIdxOfChild(Window* wnd) const;
 
     /// @copydoc Window::addChild_impl
     virtual void addChild_impl(Element* element);

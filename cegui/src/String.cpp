@@ -59,20 +59,20 @@ bool String::grow(size_type new_size)
 {
     // check for too big
     if (max_size() <= new_size)
-        CEGUI_THROW(
-            std::length_error("Resulting CEGUI::String would be too big"));
+        throw 
+            std::length_error("Resulting CEGUI::String would be too big");
 
     // increase, as we always null-terminate the buffer.
     ++new_size;
 
     if (new_size > d_reserve)
     {
-        utf32* temp = CEGUI_NEW_ARRAY_PT(utf32, new_size, String);
+        utf32* temp = new utf32[new_size];
 
         if (d_reserve > CEGUI_STR_QUICKBUFF_SIZE)
         {
             memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
-            CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
+            delete[] d_buffer;
         }
         else
         {
@@ -100,15 +100,15 @@ void String::trim(void)
         if (min_size <= CEGUI_STR_QUICKBUFF_SIZE)
         {
             memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
-            CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
+            delete[] d_buffer;
             d_reserve = CEGUI_STR_QUICKBUFF_SIZE;
         }
         // re-allocate buffer
         else
         {
-            utf32* temp = CEGUI_NEW_ARRAY_PT(utf32, min_size, String);
+            utf32* temp = new utf32[min_size];
             memcpy(temp, d_buffer, min_size * sizeof(utf32));
-            CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
+            delete[] d_buffer;
             d_buffer = temp;
             d_reserve = min_size;
         }
@@ -126,10 +126,10 @@ utf8* String::build_utf8_buff(void) const
 
         if (d_encodedbufflen > 0)
         {
-            CEGUI_DELETE_ARRAY_PT(d_encodedbuff, utf8, d_encodedbufflen, String);
+            delete[] d_encodedbuff;
         }
 
-        d_encodedbuff = CEGUI_NEW_ARRAY_PT(utf8, buffsize, String);
+        d_encodedbuff = new utf8[buffsize];
         d_encodedbufflen = buffsize;
     }
 
@@ -437,6 +437,14 @@ String operator+(const char* c_str, const String& str)
 std::ostream& operator<<(std::ostream& s, const String& str)
 {
 	return s << str.c_str();
+}
+
+std::istream& operator>>(std::istream& inputStream, String& str)
+{
+    std::string inputString;
+    inputStream >> inputString;
+    str.assign(inputString);
+    return inputStream;
 }
 
 //////////////////////////////////////////////////////////////////////////

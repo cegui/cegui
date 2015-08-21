@@ -103,7 +103,7 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
     }
     else if (element == AnimationDefinitionHandler::ElementName)
     {
-        d_chainedHandler = CEGUI_NEW_AO AnimationDefinitionHandler(attributes, "");
+        d_chainedHandler = new AnimationDefinitionHandler(attributes, "");
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementStart: "
@@ -169,9 +169,9 @@ void AnimationDefinitionHandler::elementStartLocal(
                                             const XMLAttributes& attributes)
 {
     if (element == AnimationAffectorHandler::ElementName)
-        d_chainedHandler = CEGUI_NEW_AO AnimationAffectorHandler(attributes, *d_anim);
+        d_chainedHandler = new AnimationAffectorHandler(attributes, *d_anim);
     else if (element == AnimationSubscriptionHandler::ElementName)
-        d_chainedHandler = CEGUI_NEW_AO AnimationSubscriptionHandler(attributes, *d_anim);
+        d_chainedHandler = new AnimationSubscriptionHandler(attributes, *d_anim);
     else
         Logger::getSingleton().logEvent(
             "AnimationDefinitionHandler::elementStart: "
@@ -232,7 +232,7 @@ void AnimationAffectorHandler::elementStartLocal(
                                         const XMLAttributes& attributes)
 {
     if (element == AnimationKeyFrameHandler::ElementName)
-        d_chainedHandler = CEGUI_NEW_AO AnimationKeyFrameHandler(attributes, *d_affector);
+        d_chainedHandler = new AnimationKeyFrameHandler(attributes, *d_affector);
     else
         Logger::getSingleton().logEvent(
             "AnimationAffectorHandler::elementStart: "

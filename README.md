@@ -79,7 +79,7 @@ If you have no installed system-wide, it's a bit more involved and complicated.
 ```bash
 cd $cegui_folder
 cd build/bin/
-CEGUI_SAMPLE_DATAPATH=../../datafiles ./CEGUISampleFramework-0 ../datafiles/samples/samples.xml
+CEGUI_SAMPLE_DATAPATH=../../datafiles ./CEGUISampleFramework-0
 ```
 
 ## We want to answer some questions and misconceptions:

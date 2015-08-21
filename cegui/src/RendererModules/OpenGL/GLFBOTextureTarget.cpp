@@ -40,11 +40,11 @@ namespace CEGUI
 const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLTextureTarget(owner)
+OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer)
 {
     if (!GLEW_EXT_framebuffer_object)
-        CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
+        throw InvalidRequestException("Hardware does not support FBO");
 
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()

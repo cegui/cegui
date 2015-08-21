@@ -40,7 +40,6 @@ Clipboard::Clipboard():
     d_mimeType("text/plain"), // reasonable default I think
     d_buffer(0),
     d_bufferSize(0),
-    
     d_nativeProvider(0)
 {}
 
@@ -49,7 +48,7 @@ Clipboard::~Clipboard()
 {
     if (d_buffer != 0)
     {
-        CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
+        delete[] d_buffer;
     }
 }
 
@@ -74,12 +73,12 @@ void Clipboard::setData(const String& mimeType, const void* buffer, size_t size)
     {
         if (d_buffer != 0)
         {
-            CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
+            delete[] d_buffer;
             d_buffer = 0;
         }
         
         d_bufferSize = size;
-        d_buffer = CEGUI_NEW_ARRAY_PT(BufferElement, d_bufferSize, Clipboard);
+        d_buffer = new BufferElement[d_bufferSize];
     }
     
     memcpy(d_buffer, buffer, d_bufferSize);
@@ -108,12 +107,12 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
         {
             if (d_buffer != 0)
             {
-                CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
+                delete[] d_buffer;
                 d_buffer = 0;
             }
             
             d_bufferSize = retrievedSize;
-            d_buffer = CEGUI_NEW_ARRAY_PT(BufferElement, d_bufferSize, Clipboard);
+            d_buffer = new BufferElement[d_bufferSize];
         }
         
         memcpy(d_buffer, retrievedBuffer, retrievedSize);
