@@ -47,6 +47,7 @@
 #   include <OpenGL/glu.h>
 #endif
 
+
 #else
 #error Either "CEGUI_USE_EPOXY" or "CEGUI_USE_GLEW" must be defined. Defining both or none is invalid.
 #endif

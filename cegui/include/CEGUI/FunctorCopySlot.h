@@ -256,7 +256,7 @@ namespace FunctorCopySlot_detail
     functor object.
 */
 template<typename T>
-class FunctorCopySlot : public SlotFunctorBase
+class FunctorCopySlot : public SlotFunctorBase<EventArgs>
 {
 public:
     FunctorCopySlot(const T& functor):

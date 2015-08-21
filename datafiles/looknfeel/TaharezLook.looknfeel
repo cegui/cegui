@@ -56,7 +56,7 @@
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
-        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />  
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
@@ -112,6 +112,18 @@
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
         </ImagerySection>
+        <ImagerySection name="focused">
+            <FrameComponent>
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftFocused" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightFocused" />
+                <Image component="Background" name="TaharezLook/ButtonMiddleFocused" />
+            </FrameComponent>
+            <ImageryComponent>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -151,6 +163,14 @@
                 </Section>
                 <Section section="label">
                     <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Focused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -307,6 +327,13 @@
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
         </ImagerySection>
+        <ImagerySection name="focused">
+            <ImageryComponent>
+                <Image name="TaharezLook/CheckboxFocused" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="LeftAligned" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -364,6 +391,23 @@
                 </Section>
             </Layer>
         </StateImagery>
+        <StateImagery name="SelectedFocused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="select_mark" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Focused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
     </WidgetLook>
 
     <!--
@@ -376,7 +420,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="CursorImage" value="TaharezLook/MouseTextBar" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -424,7 +468,17 @@
                 <Section section="container_normal" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
@@ -1192,7 +1246,7 @@
     -->
     <WidgetLook name="TaharezLook/SliderThumb">
         <Property name="VertFree" value="true" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Image name="TaharezLook/VertSliderThumbNormal" />
@@ -1238,8 +1292,7 @@
     -->
     <WidgetLook name="TaharezLook/Slider">
         <Property name="VerticalSlider" value="true" />
-        <Property name="MouseAutoRepeatEnabled" value="true" />
-        <Property name="WantsMultiClickEvents" value="false" />
+        <Property name="CursorAutoRepeatEnabled" value="true" />
         <Property name="Size" value="{{0, 16}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea" />
         <Child  type="TaharezLook/SliderThumb" nameSuffix="__auto_thumb__">
@@ -1263,6 +1316,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -1279,7 +1337,7 @@
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="true" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 48}, {0, 16}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1381,6 +1439,13 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF0FD538" topRight="FF0FD538" bottomLeft="FF0FD538" bottomRight="FF0FD538" />
+                </Section>
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -1397,7 +1462,7 @@
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="true" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 16}, {0, 48}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1500,124 +1565,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
-        <StateImagery name="Disabled">
+        <StateImagery name="EnabledFocused">
             <Layer>
                 <Section section="main">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                    <Colours topLeft="FF0FD538" topRight="FF0FD538" bottomLeft="FF0FD538" bottomRight="FF0FD538" />
                 </Section>
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
-
-    <!--
-    ***************************************************
-        TaharezLook/Listbox
-    ***************************************************
-    -->
-    <WidgetLook name="TaharezLook/Listbox">
-        <Property name="Size" value="{{0, 256}, {0, 256}}" />
-        <NamedArea name="ItemRenderingArea">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderingAreaHScroll">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderingAreaVScroll">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderingAreaHVScroll">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
-            <Area>
-                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
-                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
-            </Area>
-            <VertAlignment type="BottomAligned" />
-        </Child>
-        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
-            <Area>
-                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
-                <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
-            </Area>
-            <HorzAlignment type="RightAligned" />
-        </Child>
-        <ImagerySection name="main">
-            <FrameComponent>
-                <Image component="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
-                <Image component="TopRightCorner" name="TaharezLook/ListboxTopRight" />
-                <Image component="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
-                <Image component="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
-                <Image component="LeftEdge" name="TaharezLook/ListboxLeft" />
-                <Image component="RightEdge" name="TaharezLook/ListboxRight" />
-                <Image component="TopEdge" name="TaharezLook/ListboxTop" />
-                <Image component="BottomEdge" name="TaharezLook/ListboxBottom" />
-                <Image component="Background" name="TaharezLook/ListboxBackdrop" />
-            </FrameComponent>
-        </ImagerySection>
-        <StateImagery name="Enabled">
-            <Layer>
-                <Section section="main" />
             </Layer>
         </StateImagery>
         <StateImagery name="Disabled">
@@ -1636,6 +1588,7 @@
     -->
     <WidgetLook name="TaharezLook/ComboDropList">
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="TaharezLook/GenericBrush"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
@@ -1759,7 +1712,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="CursorImage" value="TaharezLook/MouseTextBar" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -2228,7 +2181,7 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="TaharezLook/MouseMoveCursor" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 192}, {0, 32}}" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
@@ -2390,7 +2343,7 @@
     -->
     <WidgetLook name="TaharezLook/ListHeader">
         <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -2520,6 +2473,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -2539,7 +2497,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="CursorImage" value="TaharezLook/MouseTextBar" />
         <Property name="SelectionBrushImage" value="TaharezLook/MultiLineEditboxSelectionBrush" />
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
@@ -2656,7 +2614,17 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="main" />
             </Layer>
@@ -2744,16 +2712,16 @@
                 <Section section="label" />
             </Layer>
         </StateImagery>
-        
+
         <AnimationDefinition name="FadeIn" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="1" progression="linear" />
             </Affector>
-            
+
             <Subscription event="TooltipActive" action="Start" />
         </AnimationDefinition>
-        
+
         <AnimationDefinition name="FadeOut" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
@@ -2763,7 +2731,7 @@
                 <KeyFrame position="0" sourceProperty="Visible" />
                 <KeyFrame position="0.33" value="false" progression="discrete" />
             </Affector>
-            
+
             <Subscription event="TooltipInactive" action="Start" />
         </AnimationDefinition>
     </WidgetLook>
@@ -2929,6 +2897,22 @@
             </Layer>
         </StateImagery>
         <StateImagery name="BottomNormal">
+            <Layer>
+                <Section section="bot_normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="TopFocused">
+            <Layer>
+                <Section section="top_normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="BottomFocused">
             <Layer>
                 <Section section="bot_normal" />
                 <Section section="label">
@@ -3255,7 +3239,6 @@
         <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="WantsMultiClickEvents" value="false" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
@@ -3610,7 +3593,7 @@
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbarThumb">
         <Property name="VertFree" value="true" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 10}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -3878,115 +3861,6 @@
 
     <!--
     ***************************************************
-        TaharezLook/ItemListbox
-    ***************************************************
-    -->
-    <WidgetLook name="TaharezLook/ItemListbox">
-        <Property name="Size" value="{{0, 256}, {0, 256}}" />
-        <NamedArea name="ItemRenderArea">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderAreaHScroll">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" offset="-12" type="BottomEdge" />
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderAreaVScroll">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" offset="-12" type="RightEdge" />
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge" />
-                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderAreaHVScroll">
-            <Area>
-                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" offset="-12" type="RightEdge" />
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" offset="-12" type="BottomEdge" />
-                </Dim>
-            </Area>
-        </NamedArea>
-        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
-            <Area>
-                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
-                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
-            </Area>
-            <VertAlignment type="BottomAligned" />
-            <Property name="NonClient" value="true" />
-        </Child>
-        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
-            <Area>
-                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
-                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-            </Area>
-            <HorzAlignment type="RightAligned" />
-            <Property name="NonClient" value="true" />
-        </Child>
-        <ImagerySection name="main">
-            <FrameComponent>
-                <Image component="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
-                <Image component="TopRightCorner" name="TaharezLook/ListboxTopRight" />
-                <Image component="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
-                <Image component="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
-                <Image component="LeftEdge" name="TaharezLook/ListboxLeft" />
-                <Image component="RightEdge" name="TaharezLook/ListboxRight" />
-                <Image component="TopEdge" name="TaharezLook/ListboxTop" />
-                <Image component="BottomEdge" name="TaharezLook/ListboxBottom" />
-                <Image component="Background" name="TaharezLook/ListboxBackdrop" />
-            </FrameComponent>
-        </ImagerySection>
-        <StateImagery name="Enabled">
-            <Layer>
-                <Section section="main" />
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Disabled">
-            <Layer>
-                <Section section="main" />
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
-
-
-    <!--
-    ***************************************************
         TaharezLook/ListboxItem
     ***************************************************
     -->
@@ -3996,7 +3870,7 @@
         <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Selectable" value="true" />
-        <Property name="MouseInputPropagationEnabled" value="true" />
+        <Property name="CursorInputPropagationEnabled" value="true" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
@@ -4060,13 +3934,141 @@
         </StateImagery>
     </WidgetLook>
 
-<!--
-/**********************************************************************************************************
-	TaharezLook/Tree
-***********************************************************************************************************/
--->
-<WidgetLook name="TaharezLook/Tree">
+    <!--
+    ***************************************************
+        TaharezLook/ListView
+    ***************************************************
+    -->
+    <WidgetLook name="TaharezLook/ListView">
+        <Property name="Size" value="{{1, 0}, {1, 0}}" />
+        <Property name="SelectionBrushImage" value="TaharezLook/GenericBrush"/>
+        <NamedArea name="ItemRenderingArea">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+        </Child>
+        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+        </Child>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/ListboxTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/ListboxLeft" />
+                <Image component="RightEdge" name="TaharezLook/ListboxRight" />
+                <Image component="TopEdge" name="TaharezLook/ListboxTop" />
+                <Image component="BottomEdge" name="TaharezLook/ListboxBottom" />
+                <Image component="Background" name="TaharezLook/ListboxBackdrop" />
+            </FrameComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <!--
+    ***************************************************
+        TaharezLook/TreeView
+    ***************************************************
+    -->
+    <WidgetLook name="TaharezLook/TreeView">
         <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <Property name="Size" value="{{1, 0}, {1, 0}}" />
+        <Property name="SelectionBrushImage" value="TaharezLook/GenericBrush"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowLeftEdge" dimension="Width" /></Dim>
@@ -4074,43 +4076,93 @@
                 <Dim type="RightEdge" >
                     <OperatorDim op="Subtract">
                         <UnifiedDim scale="1" type="RightEdge" />
-                        <ImageDim name="TaharezLook/WindowRightEdge" dimension="Width" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
                     </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <OperatorDim op="Subtract">
                         <UnifiedDim scale="1" type="BottomEdge" />
-                        <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowLeftEdge" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/WindowTopEdge" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowLeftEdge" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/WindowTopEdge" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowLeftEdge" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/WindowTopEdge" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
                     </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
             <Area>
-                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
-                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="Width" ><UnifiedDim scale="1" offset="-25" type="Width" /></Dim>
-                <Dim type="Height" ><AbsoluteDim value="10" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
         </Child>
         <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
             <Area>
-                <Dim type="LeftEdge" ><AbsoluteDim value="-5" /></Dim>
-                <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
-                <Dim type="Width" ><AbsoluteDim value="10" /></Dim>
-                <Dim type="Height" ><UnifiedDim scale="1" offset="-10" type="Height" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
         </Child>
-        <ImagerySection name="OpenTreeButton">
+        <ImagerySection name="SubtreeExpander">
             <ImageryComponent>
                 <Image name="TaharezLook/TreeListClosed" />
-              <!--  <VertFormat type="Stretched" />
-                <HorzFormat type="Stretched" /> -->
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <ImagerySection name="CloseTreeButton">
+        <ImagerySection name="SubtreeCollapser">
             <ImageryComponent>
                 <Image name="TaharezLook/TreeListOpened" />
                 <VertFormat type="Stretched" />
@@ -4132,8 +4184,6 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-
-
 </Falagard>
 
 

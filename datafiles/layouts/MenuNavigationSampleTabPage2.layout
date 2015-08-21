@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="List selection" >
+        <Property name="Area" value="{{-0.00078125,0},{-0.00138889,0},{0.999219,0},{0.998611,0}}" />
+        <Property name="Text" value="Page two" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="TaharezLook/ListWidget" name="ClassesList" >
+            <Property name="Area" value="{{0,141},{0,76},{0,357},{0,353}}" />
+        </Window>
+        <Window type="TaharezLook/Button" name="SelectButton" >
+            <Property name="Area" value="{{0,400},{0,265},{0,496},{0,297}}" />
+            <Property name="Text" value="Select" />
+        </Window>
+        <Window type="TaharezLook/StaticText" name="StaticText" >
+            <Property name="Area" value="{{0,400},{0,308},{0,703},{0,351}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="HorzScrollPageSize" value="291" />
+            <Property name="VertScrollPageSize" value="31" />
+        </Window>
+        <Window type="WindowsLook/StaticText" name="StaticText2" >
+            <Property name="Area" value="{{0.384375,0},{0.0944444,0},{0.384375,256},{0.0944444,128}}" />
+            <Property name="Text" value="Use &apos;Tab&apos; to switch between the list focus and the button. When on list, use &apos;up&apos;/&apos;down&apos; keys to select an item. &apos;Enter&apos; activates the button when it&apos;s focused." />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+            <Property name="HorzScrollPageSize" value="251.2" />
+            <Property name="VertScrollPageSize" value="123.2" />
+            <Property name="HorzScrollDocumentSize" value="239" />
+            <Property name="VertScrollDocumentSize" value="68.3978" />
+        </Window>
+    </Window>
+</GUILayout>

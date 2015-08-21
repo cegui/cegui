@@ -82,7 +82,7 @@ public:
         if (isWritable())
             setNative_impl(receiver,value);
         else
-            CEGUI_THROW(InvalidRequestException(String("Property ") + d_origin + ":" + d_name + " is not writable!"));
+            throw InvalidRequestException(String("Property ") + d_origin + ":" + d_name + " is not writable!");
     }
     /*!
     \brief native get method, returns the native type by copy
@@ -93,7 +93,7 @@ public:
         if (isReadable())
             return getNative_impl(receiver);
         else
-            CEGUI_THROW(InvalidRequestException(String("Property ") + d_origin + ":" + d_name+" is not readable!"));
+            throw InvalidRequestException(String("Property ") + d_origin + ":" + d_name+" is not readable!");
     }
 protected:
     virtual void setNative_impl(PropertyReceiver* receiver, typename Helper::pass_type value) = 0;

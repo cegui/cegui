@@ -34,7 +34,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/TplWindowRendererFactory.h"
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -46,8 +46,7 @@
 namespace CEGUI
 {
 class CEGUIEXPORT WindowRendererManager :
-    public Singleton<WindowRendererManager>,
-    public AllocatedObject<WindowRendererManager>
+    public Singleton<WindowRendererManager>
 {
 public:
     /*************************************************************************
@@ -121,12 +120,11 @@ private:
     /*************************************************************************
         Implementation data
     *************************************************************************/
-    typedef std::map<String, WindowRendererFactory*, StringFastLessCompare> WR_Registry;
+    typedef std::unordered_map<String, WindowRendererFactory*> WR_Registry;
     WR_Registry d_wrReg;
 
     //! Container type to hold WindowRenderFacory objects that we created.
-    typedef std::vector<WindowRendererFactory*
-        CEGUI_VECTOR_ALLOC(WindowRendererFactory*)> OwnedFactoryList;
+    typedef std::vector<WindowRendererFactory*> OwnedFactoryList;
     //! Container that tracks WindowFactory objects we created ourselves.
     static OwnedFactoryList d_ownedFactories;
 };
@@ -136,7 +134,7 @@ template <typename T>
 void WindowRendererManager::addFactory()
 {
     // create the factory object
-    WindowRendererFactory* factory = CEGUI_NEW_AO T;
+    WindowRendererFactory* factory = new T;
 
     // only do the actual add now if our singleton has already been created
     if (WindowRendererManager::getSingletonPtr())
@@ -145,18 +143,18 @@ void WindowRendererManager::addFactory()
                                         factory->getName() +
                                         "' WindowRenderers.");
         // add the factory we just created
-        CEGUI_TRY
+        try
         {
             WindowRendererManager::getSingleton().addFactory(factory);
         }
-        CEGUI_CATCH (Exception&)
+        catch (Exception&)
         {
             Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
                                             "'" + factory->getName() +
                                             "' WindowRenderers.");
             // delete the factory object
-            CEGUI_DELETE_AO factory;
-            CEGUI_RETHROW;
+            delete factory;
+            throw;
         }
     }
 

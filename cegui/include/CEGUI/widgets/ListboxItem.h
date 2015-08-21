@@ -33,8 +33,8 @@
 #include "../String.h"
 #include "../ColourRect.h"
 #include "../TextUtils.h"
-#include "../Size.h"
-#include "../Rect.h"
+#include "../Sizef.h"
+#include "../Rectf.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -48,8 +48,7 @@ namespace CEGUI
 \brief
     Base class for list box items
 */
-class CEGUIEXPORT ListboxItem :
-    public AllocatedObject<ListboxItem>
+class CEGUIEXPORT ListboxItem
 {
 public:
     /*************************************************************************
@@ -371,7 +370,7 @@ public:
         Perform any updates needed because the given font's render size has
         changed.
 
-    /note
+    \note
         The base implementation just returns false.
 
     \param font
@@ -412,7 +411,7 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
+    virtual void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                       float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************
@@ -436,14 +435,6 @@ protected:
     /*************************************************************************
         Implementation methods
     *************************************************************************/
-    /*!
-    \brief
-        Return a ColourRect object describing the colours in \a cols after having their alpha
-        component modulated by the value \a alpha.
-    */
-    ColourRect getModulateAlphaColourRect(const ColourRect& cols, float alpha) const;
-
-
     /*!
     \brief
         Return a colour value describing the colour specified by \a col after having its alpha
