@@ -44,6 +44,7 @@ class CEGuiD3D11BaseApplication : public CEGuiBaseApplication
 public:
     CEGuiD3D11BaseApplication();
     ~CEGuiD3D11BaseApplication();
+    void destroyRenderer();
 
 protected:
     bool initialiseDirect3D(unsigned int width, unsigned int height,

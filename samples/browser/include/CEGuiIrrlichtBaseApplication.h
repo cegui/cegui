@@ -61,6 +61,7 @@ class CEGuiIrrlichtBaseApplication : public CEGuiBaseApplication,
 public:
     CEGuiIrrlichtBaseApplication();
     ~CEGuiIrrlichtBaseApplication();
+    void destroyRenderer();
 
     // irrlicht event listener
 #if CEGUI_IRR_SDK_VERSION >= 14

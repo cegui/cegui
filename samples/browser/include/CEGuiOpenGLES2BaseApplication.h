@@ -1,9 +1,9 @@
 /***********************************************************************
-created:    12/2/2012
-author:     Paul D Turner
+created:    18/8/2015
+author:     Yaron Cohen-Tal
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+*   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
