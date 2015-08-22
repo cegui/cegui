@@ -86,9 +86,9 @@ protected:
 
     void initialiseSampleBrowserLayout();
 
-    bool initialiseSampleStepwise(int sampleNumber);
+    bool initialiseSampleStepwise(std::int32_t sampleNumber);
 
-    void displaySampleLoadProgress(int sampleNumber);
+    void displaySampleLoadProgress(std::int32_t sampleNumber);
     void initialisationFinalisation();
     void unloadSamples();
 

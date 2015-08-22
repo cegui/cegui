@@ -67,7 +67,7 @@ AnimationManager::AnimationManager(void)
     // create and add basic interpolators shipped with CEGUI
     addBasicInterpolator(new TplDiscreteRelativeInterpolator<String>("String"));
     addBasicInterpolator(new TplLinearInterpolator<float>("float"));
-    addBasicInterpolator(new TplLinearInterpolator<int>("int"));
+    addBasicInterpolator(new TplLinearInterpolator<std::int32_t>("int32"));
     addBasicInterpolator(new TplLinearInterpolator<std::uint32_t>("uint32"));
     addBasicInterpolator(new TplDiscreteInterpolator<bool>("bool"));
     addBasicInterpolator(new TplLinearInterpolator<Sizef>("Sizef"));

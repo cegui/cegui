@@ -74,7 +74,7 @@ public:
     void updateItemName(const CEGUI::ModelIndex& index, const CEGUI::String& newName);
 
 private:
-    int d_randomItemsCount;
+    std::int32_t d_randomItemsCount;
 };
 
 #endif

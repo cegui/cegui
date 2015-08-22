@@ -930,8 +930,8 @@ void System::performVersionTest(const int expected, const int received,
     if (expected != received)
         throw InvalidRequestException("Version mismatch detected! "
             "Called from function: " + func +
-            " Expected abi: " + PropertyHelper<int>::toString(expected) +
-            " received abi: " + PropertyHelper<int>::toString(received) +
+            " Expected abi: " + PropertyHelper<std::int32_t>::toString(expected) +
+            " received abi: " + PropertyHelper<std::int32_t>::toString(received) +
             ". This means that the code calling the function was compiled "
             "against a CEGUI version that is incompatible with the library "
             "containing the function. Usually this means that you have "

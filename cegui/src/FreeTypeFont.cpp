@@ -189,7 +189,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
             break;
 
         const String texture_name(d_name + "_auto_glyph_images_" +
-                                   PropertyHelper<int>::toString(s->first));
+                                   PropertyHelper<std::uint32_t>::toString(s->first));
         Texture& texture = System::getSingleton().getRenderer()->createTexture(
             texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
         d_glyphTextures.push_back(&texture);

@@ -581,17 +581,17 @@ PropertyHelper<double>::string_return_type PropertyHelper<double>::toString(
 }
 
 
-const String& PropertyHelper<int>::getDataTypeName()
+const String& PropertyHelper<std::int16_t>::getDataTypeName()
 {
-    static const String type("int");
+    static const String type("int16");
 
     return type;
 }
 
-PropertyHelper<int>::return_type
-PropertyHelper<int>::fromString(const String& str)
+PropertyHelper<std::int16_t>::return_type
+PropertyHelper<std::int16_t>::fromString(const String& str)
 {
-    int val = 0;
+    std::int16_t val = 0;
 
     if (str.empty())
         return val;
@@ -605,14 +605,82 @@ PropertyHelper<int>::fromString(const String& str)
 }
 
 
-PropertyHelper<int>::string_return_type PropertyHelper<int>::toString(
-    PropertyHelper<int>::pass_type val)
+PropertyHelper<std::int16_t>::string_return_type PropertyHelper<std::int16_t>::toString(
+    PropertyHelper<std::int16_t>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
     sstream << val;
 
     return String(sstream.str());
 }
+
+
+const String& PropertyHelper<std::int32_t>::getDataTypeName()
+{
+    static const String type("int32");
+
+    return type;
+}
+
+PropertyHelper<std::int32_t>::return_type
+PropertyHelper<std::int32_t>::fromString(const String& str)
+{
+    std::int32_t val = 0;
+
+    if (str.empty())
+        return val;
+
+    std::stringstream& sstream = getPreparedStream(str);
+    sstream >> val;
+    if (sstream.fail())
+        throwParsingException(getDataTypeName(), str);
+
+    return val;
+}
+
+
+PropertyHelper<std::int32_t>::string_return_type PropertyHelper<std::int32_t>::toString(
+    PropertyHelper<std::int32_t>::pass_type val)
+{
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
+
+    return String(sstream.str());
+}
+
+const String& PropertyHelper<std::int64_t>::getDataTypeName()
+{
+    static const String type("int64");
+
+    return type;
+}
+
+PropertyHelper<std::int64_t>::return_type
+PropertyHelper<std::int64_t>::fromString(const String& str)
+{
+    std::int64_t val = 0;
+
+    if (str.empty())
+        return val;
+
+    std::stringstream& sstream = getPreparedStream(str);
+    sstream >> val;
+    if (sstream.fail())
+        throwParsingException(getDataTypeName(), str);
+
+    return val;
+}
+
+
+PropertyHelper<std::int64_t>::string_return_type PropertyHelper<std::int64_t>::toString(
+    PropertyHelper<std::int64_t>::pass_type val)
+{
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
+
+    return String(sstream.str());
+}
+
 
 const String& PropertyHelper<std::uint32_t>::getDataTypeName()
 {
@@ -835,7 +903,9 @@ PropertyHelper<String>::string_return_type PropertyHelper<String>::toString(
 template class PropertyHelper<String>;
 template class PropertyHelper<float>;
 template class PropertyHelper<double>;
-template class PropertyHelper<int>;
+template class PropertyHelper<std::int16_t>;
+template class PropertyHelper<std::int32_t>;
+template class PropertyHelper<std::int64_t>;
 template class PropertyHelper<std::uint32_t>;
 template class PropertyHelper<std::uint64_t>;
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE

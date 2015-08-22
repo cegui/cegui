@@ -86,7 +86,7 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 
 #ifdef PCRE_PARTIAL_SOFT
     // we are using a new version of pcre
-    const int result = pcre_exec(d_regex, 0, utf8_str, len, 0,
+    const std::int32_t result = pcre_exec(d_regex, 0, utf8_str, len, 0,
                                  PCRE_PARTIAL_SOFT | PCRE_ANCHORED, match, 3);
 #else
     // PCRE_PARTIAL is a backwards compatible synonym for PCRE_PARTIAL_SOFT
@@ -113,7 +113,7 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 
     // anything else is an error
     throw InvalidRequestException(
-        "PCRE Error: " + PropertyHelper<int>::toString(result) +
+        "PCRE Error: " + PropertyHelper<std::int32_t>::toString(result) +
         " occurred while attempting to match the RegEx '" +
         d_string + "'.");
 }
