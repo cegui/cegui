@@ -78,7 +78,7 @@ PFNGLGENERATEMIPMAPOES glGenerateMipmapEXT = 0;
 const float OpenGLESFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-uint OpenGLESFBOTextureTarget::s_textureNumber = 0;
+std::uint32_t OpenGLESFBOTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner, bool addStencilBuffer) :
@@ -99,7 +99,7 @@ OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner, bool
 String OpenGLESFBOTextureTarget::generateTextureName()
 {
     String tmp("_gles_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }

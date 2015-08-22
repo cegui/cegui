@@ -114,9 +114,9 @@ float ceguiLua_PropertyHelper::stringToFloat(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-unsigned int ceguiLua_PropertyHelper::stringToUint(const String& str)
+unsigned int ceguiLua_PropertyHelper::stringToUint32(const String& str)
 {
-    return PropertyHelper<uint>::fromString(str);
+    return PropertyHelper<std::uint32_t>::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -198,9 +198,9 @@ String ceguiLua_PropertyHelper::floatToString(float val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::uintToString(unsigned int val)
+String ceguiLua_PropertyHelper::uint32ToString(unsigned int val)
 {
-    return PropertyHelper<uint>::toString(val);
+    return PropertyHelper<std::uint32_t>::toString(val);
 }
 
 //----------------------------------------------------------------------------//

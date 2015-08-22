@@ -355,9 +355,9 @@ const String& System::getVerboseVersion()
 
     if (ret.empty())
     {
-        ret = PropertyHelper<uint>::toString(CEGUI_VERSION_MAJOR) + "." +
-              PropertyHelper<uint>::toString(CEGUI_VERSION_MINOR) + "." +
-              PropertyHelper<uint>::toString(CEGUI_VERSION_PATCH);
+        ret = PropertyHelper<std::uint32_t>::toString(CEGUI_VERSION_MAJOR) + "." +
+              PropertyHelper<std::uint32_t>::toString(CEGUI_VERSION_MINOR) + "." +
+              PropertyHelper<std::uint32_t>::toString(CEGUI_VERSION_PATCH);
 
         ret += " (Build: " __DATE__;
 

@@ -200,20 +200,6 @@ public:
 };
 
 template<>
-class CEGUIEXPORT PropertyHelper<uint>
-{
-public:
-    typedef uint return_type;
-    typedef return_type safe_method_return_type;
-    typedef const uint pass_type;
-    typedef String string_return_type;
-    
-    static const String& getDataTypeName();
-    static return_type fromString(const String& str);
-    static string_return_type toString(pass_type val);
-};
-
-template<>
 class CEGUIEXPORT PropertyHelper<std::uint64_t>
 {
 public:
@@ -226,6 +212,21 @@ public:
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
 };
+
+template<>
+class CEGUIEXPORT PropertyHelper<std::uint32_t>
+{
+public:
+    typedef std::uint32_t return_type;
+    typedef return_type safe_method_return_type;
+    typedef const std::uint32_t pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 
@@ -244,20 +245,6 @@ public:
 };
 
 #endif
-
-template<>
-class CEGUIEXPORT PropertyHelper<unsigned long>
-{
-public:
-    typedef unsigned long return_type;
-    typedef return_type safe_method_return_type;
-    typedef const unsigned long pass_type;
-    typedef String string_return_type;
-    
-    static const String& getDataTypeName();
-    static return_type fromString(const String& str);
-    static string_return_type toString(pass_type val);
-};
 
 template<> 
 class CEGUIEXPORT PropertyHelper<bool>
@@ -502,12 +489,11 @@ extern template CEGUIEXPORT class PropertyHelper<String>;
 extern template CEGUIEXPORT class PropertyHelper<float>;
 extern template CEGUIEXPORT class PropertyHelper<double>;
 extern template CEGUIEXPORT class PropertyHelper<int>;
-extern template CEGUIEXPORT class PropertyHelper<uint>;
+extern template CEGUIEXPORT class PropertyHelper<std::uint32_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint64_t>;
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 extern template CEGUIEXPORT class PropertyHelper<String::value_type>;
 #endif
-extern template CEGUIEXPORT class PropertyHelper<unsigned long>;
 extern template CEGUIEXPORT class PropertyHelper<bool>;
 extern template CEGUIEXPORT class PropertyHelper<AspectMode>;
 extern template CEGUIEXPORT class PropertyHelper<glm::vec2>;

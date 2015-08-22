@@ -31,7 +31,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-uint OpenGLTextureTarget::s_textureNumber = 0;
+std::uint32_t OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
@@ -90,7 +90,7 @@ void OpenGLTextureTarget::createCEGUITexture()
 String OpenGLTextureTarget::generateTextureName()
 {
     String tmp("_ogl_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }

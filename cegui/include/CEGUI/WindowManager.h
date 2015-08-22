@@ -411,7 +411,7 @@ private:
 	WindowVector d_windowRegistry;
     WindowVector d_deathrow; //!< Collection of 'destroyed' windows.
 
-    unsigned long   d_uid_counter;  //!< Counter used to generate unique window names.
+    std::uint32_t d_uid_counter;  //!< Counter used to generate unique window names.
     static String d_defaultResourceGroup;   //!< holds default resource group
     //! count of times WM is locked against new window creation.
     uint    d_lockCount;

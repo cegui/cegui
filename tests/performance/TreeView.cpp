@@ -53,14 +53,14 @@ public:
         for (size_t parent = 0; parent < 200; ++parent, ++id)
         {
             StandardItem* item = new StandardItem(
-                PropertyHelper<uint>::toString(id));
+                PropertyHelper<std::uint32_t>::toString(id));
             d_model.addItem(item);
 
             ModelIndex index = d_model.getIndexForItem(item);
             for (size_t child = 0; child < 50; ++child, ++id)
             {
                 d_model.addItemAtPosition(
-                    new StandardItem(PropertyHelper<uint>::toString(child)),
+                    new StandardItem(PropertyHelper<std::uint32_t>::toString(child)),
                     index, 0);
                 d_window->render();
             }

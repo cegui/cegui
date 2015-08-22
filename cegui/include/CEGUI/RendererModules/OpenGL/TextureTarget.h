@@ -76,7 +76,7 @@ protected:
     //! helper to generate unique texture names
     static String generateTextureName();
     //! static data used for creating texture names
-    static uint s_textureNumber;
+    static std::uint32_t s_textureNumber;
 
     //! helper to create CEGUI::Texture d_CEGUITexture;
     void createCEGUITexture();

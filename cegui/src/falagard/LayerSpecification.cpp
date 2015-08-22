@@ -79,7 +79,7 @@ void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     xml_stream.openTag(Falagard_xmlHandler::LayerElement);
 
     if (d_layerPriority != 0)
-        xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<uint>::toString(d_layerPriority));
+        xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<std::uint32_t>::toString(d_layerPriority));
 
     // ouput all sections in this layer
     for(SectionSpecificationList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)

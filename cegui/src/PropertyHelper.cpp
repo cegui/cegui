@@ -614,10 +614,42 @@ PropertyHelper<int>::string_return_type PropertyHelper<int>::toString(
     return String(sstream.str());
 }
 
+const String& PropertyHelper<std::uint32_t>::getDataTypeName()
+{
+    static const String type("std::uint32_t");
+
+    return type;
+}
+
+PropertyHelper<std::uint32_t>::return_type
+PropertyHelper<std::uint32_t>::fromString(const String& str)
+{
+    std::uint32_t val = 0;
+
+    if (str.empty())
+        return val;
+
+    std::stringstream& sstream = getPreparedStream(str);
+    sstream >> val;
+    if (sstream.fail())
+        throwParsingException(getDataTypeName(), str);
+
+    return val;
+}
+
+
+PropertyHelper<std::uint32_t>::string_return_type PropertyHelper<std::uint32_t>::toString(
+    PropertyHelper<std::uint32_t>::pass_type val)
+{
+    std::stringstream& sstream = getPreparedStream();
+    sstream << val;
+
+    return String(sstream.str());
+}
 
 const String& PropertyHelper<std::uint64_t>::getDataTypeName()
 {
-    static const String type("uint64");
+    static const String type("std::uint64_t");
 
     return type;
 }
@@ -641,39 +673,6 @@ PropertyHelper<std::uint64_t>::fromString(const String& str)
 
 PropertyHelper<std::uint64_t>::string_return_type PropertyHelper<std::uint64_t>::toString(
     PropertyHelper<std::uint64_t>::pass_type val)
-{
-    std::stringstream& sstream = getPreparedStream();
-    sstream << val;
-
-    return String(sstream.str());
-}
-
-
-const String& PropertyHelper<unsigned long>::getDataTypeName()
-{
-    static const String type("unsigned long");
-
-    return type;
-}
-
-PropertyHelper<unsigned long>::return_type
-PropertyHelper<unsigned long>::fromString(const String& str)
-{
-    unsigned long val = 0;
-
-    if (str.empty())
-        return val;
-
-    std::stringstream& sstream = getPreparedStream(str);
-    sstream >> val;
-    if (sstream.fail())
-        throwParsingException(getDataTypeName(), str);
-
-    return val;
-}
-
-PropertyHelper<unsigned long>::string_return_type PropertyHelper<unsigned long>::toString(
-    PropertyHelper<unsigned long>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
     sstream << val;
@@ -791,39 +790,6 @@ PropertyHelper<glm::quat>::string_return_type PropertyHelper<glm::quat>::toStrin
 }
 
 
-const String& PropertyHelper<uint>::getDataTypeName()
-{
-    static const String type("uint");
-
-    return type;
-}
-
-PropertyHelper<uint>::return_type
-PropertyHelper<uint>::fromString(const String& str)
-{
-    uint val = 0;
-
-    if (str.empty())
-        return val;
-
-    std::stringstream& sstream = getPreparedStream(str);
-    sstream >> val;
-    if (sstream.fail())
-        throwParsingException(getDataTypeName(), str);
-
-    return val;
-}
-
-
-PropertyHelper<uint>::string_return_type PropertyHelper<uint>::toString(
-    PropertyHelper<uint>::pass_type val)
-{
-    std::stringstream& sstream = getPreparedStream();
-    sstream << val;
-
-    return String(sstream.str());
-}
-
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 
 const String& PropertyHelper<String::value_type>::getDataTypeName()
@@ -870,12 +836,11 @@ template class PropertyHelper<String>;
 template class PropertyHelper<float>;
 template class PropertyHelper<double>;
 template class PropertyHelper<int>;
-template class PropertyHelper<uint>;
+template class PropertyHelper<std::uint32_t>;
 template class PropertyHelper<std::uint64_t>;
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 template class PropertyHelper<String::value_type>;
 #endif
-template class PropertyHelper<unsigned long>;
 template class PropertyHelper<bool>;
 template class PropertyHelper<AspectMode>;
 template class PropertyHelper<USize>;

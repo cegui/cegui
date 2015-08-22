@@ -66,7 +66,7 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
         String exception (String((const encoded_char*)"XML Parsing error '") +
                           String((const encoded_char*)XML_ErrorString(XML_GetErrorCode(parser))) +
                           String((const encoded_char*)"' at line ") +
-                          PropertyHelper<uint>::toString(XML_GetCurrentLineNumber(parser)));
+                          PropertyHelper<std::uint32_t>::toString(XML_GetCurrentLineNumber(parser)));
         // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
         XML_ParserFree(parser);
         throw GenericException(exception);

@@ -68,7 +68,7 @@ AnimationManager::AnimationManager(void)
     addBasicInterpolator(new TplDiscreteRelativeInterpolator<String>("String"));
     addBasicInterpolator(new TplLinearInterpolator<float>("float"));
     addBasicInterpolator(new TplLinearInterpolator<int>("int"));
-    addBasicInterpolator(new TplLinearInterpolator<uint>("uint"));
+    addBasicInterpolator(new TplLinearInterpolator<std::uint32_t>("uint32"));
     addBasicInterpolator(new TplDiscreteInterpolator<bool>("bool"));
     addBasicInterpolator(new TplLinearInterpolator<Sizef>("Sizef"));
     addBasicInterpolator(new TplLinearInterpolator<glm::vec2>("vec2"));
@@ -416,7 +416,7 @@ String AnimationManager::getAnimationDefinitionAsString(const Animation& animati
 String AnimationManager::generateUniqueAnimationName()
 {
     const String ret = GeneratedAnimationNameBase +
-        PropertyHelper<unsigned long>::toString(d_uid_counter);
+        PropertyHelper<std::uint32_t>::toString(d_uid_counter);
 
     // update counter for next time
     unsigned long old_uid = d_uid_counter;

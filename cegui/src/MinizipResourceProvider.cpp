@@ -189,7 +189,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
             "' error opening file");
     }
 
-    ulong size = file_info.uncompressed_size;
+    std::uint64_t size = file_info.uncompressed_size;
     std::uint8_t* buffer = new std::uint8_t[size];
 
     if (unzReadCurrentFile(d_pimpl->d_zfile, buffer, size) < 0)

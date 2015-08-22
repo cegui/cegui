@@ -37,7 +37,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float IrrlichtTextureTarget::DEFAULT_SIZE = 128.0f;
-uint IrrlichtTextureTarget::s_textureNumber = 0;
+std::uint32_t IrrlichtTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
@@ -148,7 +148,7 @@ void IrrlichtTextureTarget::cleanupTargetTexture()
 String IrrlichtTextureTarget::generateTextureName()
 {
     String tmp("_irr_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }

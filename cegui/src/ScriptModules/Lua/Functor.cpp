@@ -236,7 +236,7 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
                 if (!lua_istable(L,-1))
                 {
                     lua_settop(L,top);
-                    throw ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper<uint>::toString(uint(vi+1))+" ("+parts[vi]+") is not a table");
+                    throw ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper<std::uint32_t>::toString(std::uint32_t(vi+1))+" ("+parts[vi]+") is not a table");
                 }
                 // get rid of the last table and move on
                 lua_remove(L,-2);

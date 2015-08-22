@@ -105,7 +105,7 @@ void LibxmlParser::parseXML(XMLHandler& handler,
         throw GenericException(
             String("xmlParseMemory failed in file: '") +
             err->file + "' at line number" +
-            PropertyHelper<uint>::toString(err->line) + ".  Error is:" +
+            PropertyHelper<std::uint32_t>::toString(err->line) + ".  Error is:" +
             err->message);
     }
 
