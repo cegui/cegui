@@ -41,9 +41,9 @@ namespace CEGUI
 /*************************************************************************
 Basic Types
 *************************************************************************/
-typedef		uint8	utf8;
-//typedef		uint16	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
-typedef		uint32	utf32;
+typedef		std::uint8_t	utf8;
+//typedef		std::uint16_t	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
+typedef		std::uint32_t	utf32;
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 

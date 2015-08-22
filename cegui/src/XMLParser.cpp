@@ -106,7 +106,7 @@ namespace CEGUI
         RawDataContainer rawXMLData;
 
         const char* c_str = source.c_str();
-        rawXMLData.setData((uint8*)c_str);
+        rawXMLData.setData((std::uint8_t*)c_str);
         rawXMLData.setSize(strlen(c_str));
 
         try

@@ -181,7 +181,7 @@ bool is_big_endian(void)
 {
     union
     {
-        uint32 i;
+        std::uint32_t i;
         char c[4];
     } bint = {0x01020304};
 
@@ -195,10 +195,10 @@ IconvStringTranscoder::IconvStringTranscoder()
 }
 
 //----------------------------------------------------------------------------//
-uint16* IconvStringTranscoder::stringToUTF16(const String& input) const
+std::uint16_t* IconvStringTranscoder::stringToUTF16(const String& input) const
 {
     IconvHelper ich(UTF16PE, "UTF-8");
-    return iconvTranscode<uint16>(
+    return iconvTranscode<std::uint16_t>(
         ich, input.c_str(), getStringLength(input.c_str()));
 }
 
@@ -211,13 +211,13 @@ std::wstring IconvStringTranscoder::stringToStdWString(const String& input) cons
 }
 
 //----------------------------------------------------------------------------//
-String IconvStringTranscoder::stringFromUTF16(const uint16* input) const
+String IconvStringTranscoder::stringFromUTF16(const std::uint16_t* input) const
 {
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     IconvHelper ich("UTF-8", UTF16PE);
     return iconvTranscode<String, utf8>(
         ich, reinterpret_cast<const char*>(input),
-        getStringLength(input) * sizeof(uint16));
+        getStringLength(input) * sizeof(std::uint16_t));
 #else
     IconvHelper ich("WCHAR_T", UTF16PE);
     return stringFromStdWString(iconvTranscode<std::wstring, wchar_t>(
@@ -292,7 +292,7 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) co
 }
 
 //----------------------------------------------------------------------------//
-void IconvStringTranscoder::deleteUTF16Buffer(uint16* input) const
+void IconvStringTranscoder::deleteUTF16Buffer(std::uint16_t* input) const
 {
     deleteTranscodeBuffer(input);
 }

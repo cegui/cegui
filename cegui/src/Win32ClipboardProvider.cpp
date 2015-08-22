@@ -72,8 +72,8 @@ void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buff
 #else
          String str(static_cast<const char*>(buffer), size);
 #endif
-         uint16* str_utf16 = System::getSingleton().getStringTranscoder().stringToUTF16(str);
-         size_t size_in_bytes = (str.size() + 1) * sizeof(uint16);
+         std::uint16_t* str_utf16 = System::getSingleton().getStringTranscoder().stringToUTF16(str);
+         size_t size_in_bytes = (str.size() + 1) * sizeof(std::uint16_t);
 
          // Copy to clipboard
          EmptyClipboard();
@@ -97,7 +97,7 @@ void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buf
    {
       // Open & read UTF-16 clipboard data
       HGLOBAL clipboard_data = GetClipboardData(CF_UNICODETEXT);
-      const uint16* clipboard = static_cast<const uint16*>(GlobalLock(clipboard_data));
+      const std::uint16_t* clipboard = static_cast<const std::uint16_t*>(GlobalLock(clipboard_data));
       if(clipboard)
       {
          // Transcode UTF-16 to native format and copy to local buffer

@@ -32,13 +32,16 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
+
+#include <cstdint>
+
 #include <irrlicht.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint32 IrrlichtTexture::d_textureNumber = 0;
+std::uint32_t IrrlichtTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 void IrrlichtTexture::setIrrlichtTexture(irr::video::ITexture* tex)
@@ -162,8 +165,8 @@ void IrrlichtTexture::blitFromMemory(const void* sourceData, const Rectf& area)
         return;
 
     const size_t pitch = d_texture->getPitch();
-    const uint32* src = static_cast<const uint32*>(sourceData);
-    uint32* dst = static_cast<uint32*>(d_texture->lock());
+    const std::uint32_t* src = static_cast<const std::uint32_t*>(sourceData);
+    std::uint32_t* dst = static_cast<std::uint32_t*>(d_texture->lock());
 
     if (!dst)
         throw RendererException(

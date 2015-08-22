@@ -96,7 +96,7 @@ protected:
     void updateCachedScaleValues();
 
     //! Counter used to provide unique texture names.
-    static uint32 d_textureNumber;
+    static std::uint32_t d_textureNumber;
     //!< The underlying Ogre texture.
     Ogre::TexturePtr d_texture;
     //! specifies whether d_texture was created externally (not owned by us).

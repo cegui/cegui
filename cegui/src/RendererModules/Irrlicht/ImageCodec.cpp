@@ -79,8 +79,8 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     }
 
     const core::dimension2d<s32> sz(image->getDimension());
-    uchar* dat = static_cast<uchar*>(image->lock());
-    const uchar* const image_data = dat;
+    std::uint8_t* dat = static_cast<std::uint8_t*>(image->lock());
+    const std::uint8_t* const image_data = dat;
 
     // ONLY for RGBA, switch R and B components
     // (we should probably check the R and B masks and decide based on those)
@@ -90,7 +90,7 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
         {
             for (uint i = 0; i < sz.Width; ++i)
             {
-                const uchar tmp = dat[i * components + 0];
+                const std::uint8_t tmp = dat[i * components + 0];
                 dat[i * components + 0] = dat[i * components + 2];
                 dat[i * components + 2] = tmp;
             }

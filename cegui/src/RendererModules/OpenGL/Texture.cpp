@@ -273,7 +273,7 @@ void OpenGLTexture::grabTexture()
     else // Desktop OpenGL
         buffer_size = static_cast<std::size_t>(d_size.d_width)
           *static_cast<std::size_t>(d_size.d_height) *4;
-    d_grabBuffer = new uint8[buffer_size];
+    d_grabBuffer = new std::uint8_t[buffer_size];
 
     blitToMemory(d_grabBuffer);
 
