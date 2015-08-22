@@ -265,34 +265,34 @@ void RenderingWindow::realiseGeometry_impl()
     TexturedColouredVertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].d_position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[0].d_position   = glm::vec3(area.d_min.x, area.d_min.y, 0.0f);
     vbuffer[0].d_colour = colour;
-    vbuffer[0].d_texCoords = glm::vec2(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
+    vbuffer[0].d_texCoords = glm::vec2(tex_rect.d_min.x, tex_rect.d_min.y);
 
     // vertex 1
-    vbuffer[1].d_position   = glm::vec3(area.d_min.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[1].d_position   = glm::vec3(area.d_min.x, area.d_max.y, 0.0f);
     vbuffer[1].d_colour = colour;
-    vbuffer[1].d_texCoords = glm::vec2(tex_rect.d_min.d_x, tex_rect.d_max.d_y);
+    vbuffer[1].d_texCoords = glm::vec2(tex_rect.d_min.x, tex_rect.d_max.y);
 
     // vertex 2
-    vbuffer[2].d_position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[2].d_position   = glm::vec3(area.d_max.x, area.d_max.y, 0.0f);
     vbuffer[2].d_colour = colour;
-    vbuffer[2].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
+    vbuffer[2].d_texCoords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
     // vertex 3
-    vbuffer[3].d_position   = glm::vec3(area.d_max.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[3].d_position   = glm::vec3(area.d_max.x, area.d_min.y, 0.0f);
     vbuffer[3].d_colour = colour;
-    vbuffer[3].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_min.d_y);
+    vbuffer[3].d_texCoords = glm::vec2(tex_rect.d_max.x, tex_rect.d_min.y);
 
     // vertex 4
-    vbuffer[4].d_position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[4].d_position   = glm::vec3(area.d_min.x, area.d_min.y, 0.0f);
     vbuffer[4].d_colour = colour;
-    vbuffer[4].d_texCoords = glm::vec2(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
+    vbuffer[4].d_texCoords = glm::vec2(tex_rect.d_min.x, tex_rect.d_min.y);
 
     // vertex 5
-    vbuffer[5].d_position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[5].d_position   = glm::vec3(area.d_max.x, area.d_max.y, 0.0f);
     vbuffer[5].d_colour = colour;
-    vbuffer[5].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
+    vbuffer[5].d_texCoords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
     d_geometryBuffer.setTexture("texture0", &tex);
     d_geometryBuffer.appendGeometry(vbuffer, 6);

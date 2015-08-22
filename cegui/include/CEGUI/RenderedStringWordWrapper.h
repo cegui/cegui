@@ -29,7 +29,6 @@
 
 #include "CEGUI/FormattedRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
-#include "CEGUI/Vector.h"
 #include <vector>
 
 // Start of CEGUI namespace section

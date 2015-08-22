@@ -31,7 +31,6 @@
 #include "../../Base.h"
 #include "../../Renderer.h"
 #include "../../Sizef.h"
-#include "../../Vector.h"
 #include "../../Rectf.h"
 #include "../../TextureTarget.h"
 #include "../../RefCounted.h"

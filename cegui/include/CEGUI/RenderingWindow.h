@@ -28,7 +28,6 @@
 #define _CEGUIRenderingWindow_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/Rectf.h"
 

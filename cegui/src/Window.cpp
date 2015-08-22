@@ -2978,7 +2978,7 @@ void Window::updateGeometryRenderSettings()
     if (ctx.owner == this && ctx.surface->isRenderingWindow())
     {
         static_cast<RenderingWindow*>(ctx.surface)->
-            setPosition(getUnclippedOuterRect().get().getPositionGLM());
+            setPosition(getUnclippedOuterRect().get().getPosition());
         static_cast<RenderingWindow*>(d_surface)->setPivot(
             glm::vec3(
                 d_pixelSize.d_width / 2.0f,
@@ -2995,8 +2995,8 @@ void Window::updateGeometryRenderSettings()
         // position is the offset of the window on the dest surface.
         const Rectf ucrect(getUnclippedOuterRect().get());
 
-        d_translation = glm::vec3(ucrect.d_min.d_x - ctx.offset.x,
-                                  ucrect.d_min.d_y - ctx.offset.y,
+        d_translation = glm::vec3(ucrect.d_min.x - ctx.offset.x,
+                                  ucrect.d_min.y - ctx.offset.y,
                                   0.0f);
     }
     initialiseClippers(ctx);
@@ -3109,7 +3109,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     {
         ctx.surface = d_surface;
         ctx.owner = this;
-        ctx.offset = getUnclippedOuterRect().get().getPositionGLM();
+        ctx.offset = getUnclippedOuterRect().get().getPosition();
         ctx.queue = RQ_BASE;
     }
     else if (d_parent)
@@ -3265,7 +3265,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
         // set size and position of RenderingWindow
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
         static_cast<RenderingWindow*>(d_surface)->
-            setPosition(getUnclippedOuterRect().get().getPositionGLM());
+            setPosition(getUnclippedOuterRect().get().getPosition());
 
         getGUIContext().markAsDirty();
     }

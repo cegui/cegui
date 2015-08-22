@@ -32,7 +32,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/USize.h"

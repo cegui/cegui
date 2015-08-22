@@ -28,7 +28,6 @@
 #define _SVGBasicShape_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/Vector.h"
 
 #include "CEGUI/svg/SVGPaintStyle.h"
 #include "CEGUI/svg/SVGImage.h"

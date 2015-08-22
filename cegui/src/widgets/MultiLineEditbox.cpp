@@ -422,7 +422,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 
 	Rectf textArea(getTextRenderArea());
 
-    wndPt -= glm::vec2(textArea.d_min.d_x, textArea.d_min.d_y);
+    wndPt -= glm::vec2(textArea.d_min.x, textArea.d_min.y);
 
 	// factor in scroll bar values
     wndPt.x += getHorzScrollbar()->getScrollPosition();

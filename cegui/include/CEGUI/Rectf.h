@@ -29,7 +29,6 @@
 #ifndef _CEGUIRectf_h_
 #define _CEGUIRectf_h_
 
-#include "CEGUI/Vector.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/StreamHelper.h"
 
@@ -53,20 +52,9 @@ public:
         d_max(right, bottom)
     {}
 
-    inline Rectf(const Vector2<float>& min, const Vector2<float>& max):
+    inline Rectf(const glm::vec2& min, const glm::vec2& max):
         d_min(min),
         d_max(max)
-    {}
-
-    // FIXME: Temporary for glm::vec2 transition
-    inline Rectf(const glm::vec2& min, const glm::vec2& max):
-        d_min(min.x, min.y),
-        d_max(max.x, max.y)
-    {}
-
-    inline Rectf(const Vector2<float>& pos, const Sizef& size):
-        d_min(pos),
-        d_max(pos + Vector2<float>(size.d_width, size.d_height))
     {}
 
     // FIXME: Temporary for glm::vec2 transition
@@ -90,81 +78,67 @@ public:
 
     inline void left(const float& v)
     {
-        d_min.d_x = v;
+        d_min.x = v;
     }
 
     inline const float& left() const
     {
-        return d_min.d_x;
+        return d_min.x;
     }
 
     inline void top(const float& v)
     {
-        d_min.d_y = v;
+        d_min.y = v;
     }
 
     inline const float& top() const
     {
-        return d_min.d_y;
+        return d_min.y;
     }
 
     inline void right(const float& v)
     {
-        d_max.d_x = v;
+        d_max.x = v;
     }
 
     inline const float& right() const
     {
-        return d_max.d_x;
+        return d_max.x;
     }
 
     inline void bottom(const float& v)
     {
-        d_max.d_y = v;
+        d_max.y = v;
     }
 
     inline const float& bottom() const
     {
-        return d_max.d_y;
+        return d_max.y;
     }
 
     /*!
     \    
         set the position of the Rectf (leaves size in tact)
     */
-    void setPosition(const Vector2<float>& min)
+    void setPosition(const glm::vec2& min)
     {
         const Sizef size = getSize();
         d_min = min;
         setSize(size);
     }
 
-    // FIXME: Temporary for glm::vec2 transition
-    void setPosition(const glm::vec2& min)
-    {
-        const Sizef size = getSize();
-        d_min = Vector2<float>(min.x, min.y);
-        setSize(size);
-    }
-
     /*!
     \    
-        Return top-left position of Rectf as a Vector2<float>
+        Return top-left position of Rectf as a glm::vec2
     */
-    const Vector2<float>& getPosition() const
+    const glm::vec2& getPosition() const
     {
         return d_min;
     }
 
-    // FIXME: Temporary for glm::vec2 transition
-    glm::vec2 getPositionGLM() const
-    {
-        return glm::vec2(d_min.d_x, d_min.d_y);
-    }
-
     void setSize(const Sizef& size)
     {
-        d_max = d_min + Vector2<float>(size.d_width, size.d_height);
+        d_max = d_min + glm::vec2(size.d_width, size.d_height);
     }
 
     /*!
@@ -178,7 +152,7 @@ public:
 
     void setWidth(const float& w)
     {
-        d_max.d_x = d_min.d_x + w;
+        d_max.x = d_min.x + w;
     }
 
     /*!
@@ -187,12 +161,12 @@ public:
     */
     inline float getWidth() const
     {
-        return d_max.d_x - d_min.d_x;
+        return d_max.x - d_min.x;
     }
 
     void setHeight(const float& h)
     {
-        d_max.d_y = d_min.d_y + h;
+        d_max.y = d_min.y + h;
     }
 
     /*!
@@ -201,7 +175,7 @@ public:
     */
     inline float getHeight() const
     {
-        return d_max.d_y - d_min.d_y;
+        return d_max.y - d_min.y;
     }
 
     /*!
@@ -214,18 +188,18 @@ public:
     */
     inline Rectf getIntersection(const Rectf& rect) const
     {
-        if ((d_max.d_x > rect.d_min.d_x) &&
-            (d_min.d_x < rect.d_max.d_x) &&
-            (d_max.d_y > rect.d_min.d_y) &&
-            (d_min.d_y < rect.d_max.d_y))
+        if ((d_max.x > rect.d_min.x) &&
+            (d_min.x < rect.d_max.x) &&
+            (d_max.y > rect.d_min.y) &&
+            (d_min.y < rect.d_max.y))
         {
             Rectf ret;
 
             // fill in ret with the intersection
-            ret.d_min.d_x = (d_min.d_x > rect.d_min.d_x) ? d_min.d_x : rect.d_min.d_x;
-            ret.d_max.d_x = (d_max.d_x < rect.d_max.d_x) ? d_max.d_x : rect.d_max.d_x;
-            ret.d_min.d_y = (d_min.d_y > rect.d_min.d_y) ? d_min.d_y : rect.d_min.d_y;
-            ret.d_max.d_y = (d_max.d_y < rect.d_max.d_y) ? d_max.d_y : rect.d_max.d_y;
+            ret.d_min.x = (d_min.x > rect.d_min.x) ? d_min.x : rect.d_min.x;
+            ret.d_max.x = (d_max.x < rect.d_max.x) ? d_max.x : rect.d_max.x;
+            ret.d_min.y = (d_min.y > rect.d_min.y) ? d_min.y : rect.d_min.y;
+            ret.d_max.y = (d_max.y < rect.d_max.y) ? d_max.y : rect.d_max.y;
 
             return ret;
         }
@@ -245,17 +219,10 @@ public:
     \return
         this Rectf after the offset is performed
     */
-    inline void offset(const Vector2<float>& v)
+    inline void offset(const glm::vec2& v)
     {
         d_min += v;
         d_max += v;
-    }
-
-    // FIXME: Temporary for glm::vec2 transition
-    inline void offset(const glm::vec2& v)
-    {
-        d_min += Vector2<float>(v.x, v.y);
-        d_max += Vector2<float>(v.x, v.y);
     }
 
     /*!
@@ -268,26 +235,12 @@ public:
     \return
         true if position \a pt is within this Rectf's area, else false
     */
-    inline bool isPointInRectf(const Vector2<float>& v) const
-    {
-        if ((d_min.d_x >  v.d_x) ||
-            (d_max.d_x <= v.d_x) ||
-            (d_min.d_y >  v.d_y) ||
-            (d_max.d_y <= v.d_y))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    // FIXME: Temporary for glm::vec2 transition
     inline bool isPointInRectf(const glm::vec2& v) const
     {
-        if ((d_min.d_x >  v.x) ||
-            (d_max.d_x <= v.x) ||
-            (d_min.d_y >  v.y) ||
-            (d_max.d_y <= v.y))
+        if ((d_min.x >  v.x) ||
+            (d_max.x <= v.x) ||
+            (d_min.y >  v.y) ||
+            (d_max.y <= v.y))
         {
             return false;
         }
@@ -398,15 +351,9 @@ public:
         return Rectf(d_min * scalar, d_max * scalar);
     }
 
-    inline Rectf operator*(Vector2<float> vector) const
-    {
-        return Rectf(d_min * vector, d_max * vector);
-    }
-
-    // FIXME: Temporary for glm::vec2 transition
     inline Rectf operator*(glm::vec2 vector) const
     {
-        return Rectf(d_min * Vector2<float>(vector.x, vector.y), d_max * Vector2<float>(vector.x, vector.y));
+        return Rectf(d_min * vector, d_max * vector);
     }
 
     const Rectf& operator*=(float scalar)
@@ -431,7 +378,7 @@ public:
     */
     inline friend std::ostream& operator << (std::ostream& s, const Rectf& val)
     {
-        s << "l:" << val.d_min.d_x << " t:" << val.d_min.d_y << " r:" << val.d_max.d_x << " b:" << val.d_max.d_y;
+        s << "l:" << val.d_min.x << " t:" << val.d_min.y << " r:" << val.d_max.x << " b:" << val.d_max.y;
         
         return s;
     }
@@ -441,27 +388,22 @@ public:
     */
     inline friend std::istream& operator >> (std::istream& s, Rectf& val)
     {
-        s >> MandatoryString(" l :") >> val.d_min.d_x >> MandatoryString(" t :") >> val.d_min.d_y >>
-            MandatoryString(" r :") >> val.d_max.d_x >> MandatoryString(" b :") >> val.d_max.d_y;
+        s >> MandatoryString(" l :") >> val.d_min.x >> MandatoryString(" t :") >> val.d_min.y >>
+            MandatoryString(" r :") >> val.d_max.x >> MandatoryString(" b :") >> val.d_max.y;
         return s;
     }
     
     //! \     finger saving alias for zero sized, zero positioned rect
     inline static Rectf zero()
     {
-        return Rectf(Vector2<float>::zero(), Sizef::zero());
+        return Rectf(glm::vec2(0.0f, 0.0f), Sizef::zero());
     }
     
     /*************************************************************************
         Data Fields
     *************************************************************************/
-    Vector2<float> d_min;
-    Vector2<float> d_max;
-
-    // d_min.d_x is former d_left
-    // d_min.d_y is former d_top
-    // d_max.d_x is former d_right
-    // d_max.d_y is former d_bottom
+    glm::vec2 d_min; // x is former d_left, y is former d_top
+    glm::vec2 d_max; // x is former d_right, y is former d_bottom
 };
 
 }

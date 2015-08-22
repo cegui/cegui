@@ -29,7 +29,7 @@
 #ifndef _CEGUIURect_h_
 #define _CEGUIURect_h_
 
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector.h"
 #include "CEGUI/USize.h"
 #include "CEGUI/UDim.h"
 
@@ -53,14 +53,14 @@ public:
         d_max(right, bottom)
     {}
 
-    inline URect(const Vector2<UDim>& min, const Vector2<UDim>& max):
+    inline URect(const UVector2& min, const UVector2& max):
         d_min(min),
         d_max(max)
     {}
 
-    inline URect(const Vector2<UDim>& pos, const USize& size):
+    inline URect(const UVector2& pos, const USize& size):
         d_min(pos),
-        d_max(pos + Vector2<UDim>(size.d_width, size.d_height))
+        d_max(pos + UVector2(size.d_width, size.d_height))
     {}
 
     inline URect(const URect& r):
@@ -120,7 +120,7 @@ public:
     \brief
         set the position of the URect (leaves size in tact)
     */
-    void setPosition(const Vector2<UDim>& min)
+    void setPosition(const UVector2& min)
     {
         const USize size = getSize();
         d_min = min;
@@ -129,16 +129,16 @@ public:
 
     /*!
     \brief
-        Return top-left position of URect as a Vector2<UDim>
+        Return top-left position of URect as a Vector2
     */
-    const Vector2<UDim>& getPosition() const
+    const UVector2& getPosition() const
     {
         return d_min;
     }
 
     void setSize(const USize& size)
     {
-        d_max = d_min + Vector2<UDim>(size.d_width, size.d_height);
+        d_max = d_min + UVector2(size.d_width, size.d_height);
     }
 
     /*!
@@ -188,7 +188,7 @@ public:
     \return
         this URect after the offset is performed
     */
-    inline void offset(const Vector2<UDim>& v)
+    inline void offset(const UVector2& v)
     {
         d_min += v;
         d_max += v;
@@ -214,7 +214,7 @@ public:
         return URect(d_min * scalar, d_max * scalar);
     }
 
-    inline URect operator*(Vector2<UDim> vector) const
+    inline URect operator*(UVector2 vector) const
     {
         return URect(d_min * vector.d_x, d_max * vector.d_y);
     }
@@ -264,14 +264,14 @@ public:
     //! \brief finger saving alias for zero sized, zero positioned rect
     inline static URect zero()
     {
-        return URect(Vector2<UDim>::zero(), USize::zero());
+        return URect(UVector2::zero(), USize::zero());
     }
     
     /*************************************************************************
         Data Fields
     *************************************************************************/
-    Vector2<UDim> d_min;
-    Vector2<UDim> d_max;
+    UVector2 d_min;
+    UVector2 d_max;
 
     // d_min.d_x is former d_left
     // d_min.d_y is former d_top

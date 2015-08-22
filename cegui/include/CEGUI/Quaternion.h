@@ -32,7 +32,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Interpolator.h"
-#include "CEGUI/Vector.h"
 #include <cmath>
 
 #include <glm/glm.hpp>

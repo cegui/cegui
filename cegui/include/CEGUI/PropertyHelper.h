@@ -32,7 +32,7 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/USize.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/UDim.h"

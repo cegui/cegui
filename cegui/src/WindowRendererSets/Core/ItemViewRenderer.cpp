@@ -96,7 +96,7 @@ void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_str
             view->getSelectionColourRect());
     }
 
-    glm::vec2 draw_pos(draw_rect.getPositionGLM());
+    glm::vec2 draw_pos(draw_rect.getPosition());
     for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
     {
         draw_pos.y += CoordConverter::alignToPixels(

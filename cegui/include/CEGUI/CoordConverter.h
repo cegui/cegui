@@ -28,7 +28,7 @@
 #define _CEGUICoordConverter_h_
 
 #include "CEGUI/UDim.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/USize.h"
 #include "CEGUI/Rectf.h"
@@ -86,18 +86,18 @@ public:
 
     /*!
     \brief
-        converts given Vector2<UDim> to absolute glm::vec2
+        converts given UVector2 to absolute glm::vec2
     */
-    inline static glm::vec2 asAbsolute(const Vector2<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
     {
         return glm::vec2(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Vector2<UDim> to relative glm::vec2
+        converts given UVector2 to relative glm::vec2
     */
-    inline static glm::vec2 asRelative(const Vector2<UDim>& v, const Sizef& base)
+    inline static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
     {
         return glm::vec2(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }

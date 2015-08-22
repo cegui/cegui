@@ -38,7 +38,6 @@ author:     Lukas E Meindl
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/InputAggregator.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/Vector.h"
 
 using namespace CEGUI;
 

@@ -216,7 +216,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
         sidx = static_cast<size_t>(vertScrollPos / fnt->getLineSpacing());
         eidx = 1 + sidx + static_cast<size_t>(dest_area.getHeight() / fnt->getLineSpacing());
         eidx = std::min(eidx, numLines);
-        drawArea.d_min.d_y += fnt->getLineSpacing()*static_cast<float>(sidx);
+        drawArea.d_min.y += fnt->getLineSpacing()*static_cast<float>(sidx);
 
         // for each formatted line.
         for (size_t i = sidx; i < eidx; ++i)
@@ -227,7 +227,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
             // offset the font little down so that it's centered within its own spacing
             const float old_top = lineRect.top();
-            lineRect.d_min.d_y += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
+            lineRect.d_min.y += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
 
             // if it is a simple 'no selection area' case
             if ((currLine.d_startIdx >= w->getSelectionEnd()) ||
@@ -237,7 +237,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 colours = normalTextCol;
                 // render the complete line.
                 fnt->drawText(w->getGeometryBuffers(), lineText,
-                              lineRect.getPositionGLM(), &dest_area, true, colours);
+                              lineRect.getPosition(), &dest_area, true, colours);
             }
             // we have at least some selection highlighting to do
             else
@@ -263,10 +263,10 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                     // draw this portion of the text
                     colours = normalTextCol;
                     fnt->drawText(w->getGeometryBuffers(), sect,
-                                    lineRect.getPositionGLM(), &dest_area, true, colours);
+                                    lineRect.getPosition(), &dest_area, true, colours);
 
                     // set position ready for next portion of text
-                    lineRect.d_min.d_x += selStartOffset;
+                    lineRect.d_min.x += selStartOffset;
                 }
 
                 // calculate the length of the selected section
@@ -294,7 +294,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 // draw the text for this section
                 colours = selectTextCol;
                 fnt->drawText(w->getGeometryBuffers(), sect,
-                                lineRect.getPositionGLM(), &dest_area, true, colours);
+                                lineRect.getPosition(), &dest_area, true, colours);
 
                 lineRect.top(text_top);
 
@@ -302,7 +302,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 if (sectIdx < currLine.d_length)
                 {
                     // update render position to the end of the selected area.
-                    lineRect.d_min.d_x += selAreaWidth;
+                    lineRect.d_min.x += selAreaWidth;
 
                     // calculate length of this section
                     sectLen = currLine.d_length - sectIdx;
@@ -313,12 +313,12 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                     // render the text for this section.
                     colours = normalTextCol;
                     fnt->drawText(w->getGeometryBuffers(), sect,
-                                    lineRect.getPositionGLM(), &dest_area, true, colours);
+                                    lineRect.getPosition(), &dest_area, true, colours);
                 }
             }
 
             // update master position for next line in paragraph.
-            drawArea.d_min.d_y += fnt->getLineSpacing();
+            drawArea.d_min.y += fnt->getLineSpacing();
         }
     }
 }

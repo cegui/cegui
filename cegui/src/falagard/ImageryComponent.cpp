@@ -243,12 +243,12 @@ namespace CEGUI
                 // add geometry for image to the target window.
                 img->render(srcWindow.getGeometryBuffers(), finalRect, clippingRect, !clip_to_display, finalColours);
 
-                finalRect.d_min.d_x += imgSz.d_width;
-                finalRect.d_max.d_x += imgSz.d_width;
+                finalRect.d_min.x += imgSz.d_width;
+                finalRect.d_max.x += imgSz.d_width;
             }
 
-            finalRect.d_min.d_y += imgSz.d_height;
-            finalRect.d_max.d_y += imgSz.d_height;
+            finalRect.d_min.y += imgSz.d_height;
+            finalRect.d_max.y += imgSz.d_height;
         }
     }
 

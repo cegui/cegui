@@ -141,8 +141,8 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 
-    const float relPosX = (cursor_pos.x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
-    const float relPosY = (cursor_pos.y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
+    const float relPosX = (cursor_pos.x - windowDimensions.left() - innerRectangle.getPosition().x) / innerRectangle.getWidth();
+    const float relPosY = (cursor_pos.y - windowDimensions.top()  - innerRectangle.getPosition().y) / innerRectangle.getHeight();
 
     if (relPosX >= 0.0f && relPosX <= 1.0f && relPosY >= 0.0f && relPosY <= 1.0f)
     {

@@ -30,7 +30,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Rectf.h"
 
 #if defined(_MSC_VER)

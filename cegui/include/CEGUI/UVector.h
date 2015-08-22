@@ -2,7 +2,7 @@
 	created:	13/2/2011
 	author:		Martin Preisler (reworked from code by Paul D Turner)
 	
-	purpose:	Defines interfaces for Vector classes
+	purpose:	Defines interfaces for UVector classes
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
@@ -26,8 +26,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIVector_h_
-#define _CEGUIVector_h_
+#ifndef _CEGUIUVector_h_
+#define _CEGUIUVector_h_
 
 #include "CEGUI/UDim.h"
 #include "CEGUI/StreamHelper.h"
@@ -44,29 +44,25 @@ namespace CEGUI
     Class used as a two dimensional vector (aka a Point)
 
 \par
-    This class is templated now, this allows us to use it as a Vector2 of floats,
-    ints or even UDims without replicating the code all over the place.
+    A Vector class featuring two UDims as elements.
 */
-template<typename T>
-class Vector2
+class UVector2
 {
 public:
-    typedef T value_type;
-
-    inline Vector2()
+    inline UVector2()
     {}
     
-    inline Vector2(const T x, const T y):
+    inline UVector2(const UDim x, const UDim y):
         d_x(x),
         d_y(y)
     {}
 
-    inline Vector2(const Vector2& v):
+    inline UVector2(const UVector2& v):
         d_x(v.d_x),
         d_y(v.d_y)
     {}
 
-    inline Vector2& operator*=(const Vector2& vec)
+    inline UVector2& operator*=(const UVector2& vec)
     {
         d_x *= vec.d_x;
         d_y *= vec.d_y;
@@ -74,7 +70,7 @@ public:
         return *this;
     }
 
-    inline Vector2& operator/=(const Vector2& vec)
+    inline UVector2& operator/=(const UVector2& vec)
     {
         d_x /= vec.d_x;
         d_y /= vec.d_y;
@@ -82,7 +78,7 @@ public:
         return *this;
     }
 
-    inline Vector2& operator+=(const Vector2& vec)
+    inline UVector2& operator+=(const UVector2& vec)
     {
         d_x += vec.d_x;
         d_y += vec.d_y;
@@ -90,7 +86,7 @@ public:
         return *this;
     }
 
-    inline Vector2& operator-=(const Vector2& vec)
+    inline UVector2& operator-=(const UVector2& vec)
     {
         d_x -= vec.d_x;
         d_y -= vec.d_y;
@@ -98,32 +94,37 @@ public:
         return *this;
     }
 
-    inline Vector2 operator+(const Vector2& vec) const
+    inline UVector2 operator+(const UVector2& vec) const
     {
-        return Vector2(d_x + vec.d_x, d_y + vec.d_y);
+        return UVector2(d_x + vec.d_x, d_y + vec.d_y);
     }
 
-    inline Vector2 operator-(const Vector2& vec) const
+    inline UVector2 operator-(const UVector2& vec) const
     {
-        return Vector2(d_x - vec.d_x, d_y - vec.d_y);
+        return UVector2(d_x - vec.d_x, d_y - vec.d_y);
     }
 
-    inline Vector2 operator*(const Vector2& vec) const
+    inline UVector2 operator*(const UVector2& vec) const
     {
-        return Vector2(d_x * vec.d_x, d_y * vec.d_y);
+        return UVector2(d_x * vec.d_x, d_y * vec.d_y);
     }
 
-    inline Vector2 operator/(const Vector2& vec) const
+    inline UVector2 operator* (const float c)
     {
-        return Vector2(d_x / vec.d_x, d_y / vec.d_y);
+        return UVector2(d_x * c, d_y * c);
     }
 
-    inline Vector2 operator*(const T c) const
+    inline UVector2 operator/(const UVector2& vec) const
     {
-        return Vector2(d_x * c, d_y * c);
+        return UVector2(d_x / vec.d_x, d_y / vec.d_y);
     }
 
-    inline Vector2& operator*=(const T c)
+    inline UVector2 operator*(const UDim c) const
+    {
+        return UVector2(d_x * c, d_y * c);
+    }
+
+    inline UVector2& operator*=(const UDim c)
     {
         d_x *= c;
         d_y *= c;
@@ -131,12 +132,12 @@ public:
         return *this;
     }
 
-    inline Vector2 operator/(const T c) const
+    inline UVector2 operator/(const UDim c) const
     {
-        return Vector2(d_x / c, d_y / c);
+        return UVector2(d_x / c, d_y / c);
     }
 
-    inline Vector2 operator/=(const T c)
+    inline UVector2 operator/=(const UDim c)
     {
         d_x /= c;
         d_y /= c;
@@ -144,12 +145,12 @@ public:
         return *this;
     }
 
-    inline bool operator==(const Vector2& vec) const
+    inline bool operator==(const UVector2& vec) const
     {
         return ((d_x == vec.d_x) && (d_y == vec.d_y));
     }
 
-    inline bool operator!=(const Vector2& vec) const
+    inline bool operator!=(const UVector2& vec) const
     {
         return !(operator==(vec));
     }
@@ -157,57 +158,49 @@ public:
     /*!
     \brief Writes a Vector2 to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const Vector2& val)
+    inline friend std::ostream& operator << (std::ostream& s, const UVector2& val)
     {
         s << val.d_x << "," << val.d_y;
         return s;
     }
 
     /*!
-    \brief Extracts a Vector2 from a stream
+    \brief Extracts a UVector2 from a stream
     */
-    inline friend std::istream& operator >> (std::istream& s, Vector2& val)
+    inline friend std::istream& operator >> (std::istream& s, UVector2& val)
     {
         s >> optionalChar<'{'> >> val.d_x >> optionalChar<','> >> val.d_y >> optionalChar<'}'>;
         return s;
     }
 
-    //! \brief finger saving alias for Vector2(0, 0)
-    inline static Vector2 zero()
+    //! \brief finger saving alias for UVector2(0, 0)
+    inline static UVector2 zero()
     {
-        return Vector2(TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
+        return UVector2(TypeSensitiveZero<UDim>(), TypeSensitiveZero<UDim>());
     }
 
-    //! \brief finger saving alias for Vector2(1, 1)
-    inline static Vector2 one()
+    //! \brief finger saving alias for UVector2(1, 1)
+    inline static UVector2 one()
     {
-        return Vector2(TypeSensitiveOne<T>(), TypeSensitiveOne<T>());
+        return UVector2(TypeSensitiveOne<UDim>(), TypeSensitiveOne<UDim>());
     }
     
-    //! \brief finger saving alias for Vector2(1, 0)
-    inline static Vector2 one_x()
+    //! \brief finger saving alias for UVector2(1, 0)
+    inline static UVector2 one_x()
     {
-        return Vector2(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+        return UVector2(TypeSensitiveOne<UDim>(), TypeSensitiveZero<UDim>());
     }
     
-    //! \brief finger saving alias for Vector2(0, 1)
-    inline static Vector2 one_y()
+    //! \brief finger saving alias for UVector2(0, 1)
+    inline static UVector2 one_y()
     {
-        return Vector2(TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
+        return UVector2(TypeSensitiveZero<UDim>(), TypeSensitiveOne<UDim>());
     }
 
-    T d_x;
-    T d_y;
+    UDim d_x;
+    UDim d_y;
 };
-
-// we need to allow UVector2 to be multiplied by floats, this is the most elegant way to do that
-inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
-{
-    return Vector2<UDim>(v.d_x * c, v.d_y * c);
-}
-
-typedef Vector2<UDim> UVector2;
 
 } // End of  CEGUI namespace section
 
-#endif	// end of guard _CEGUIVector_h_
+#endif

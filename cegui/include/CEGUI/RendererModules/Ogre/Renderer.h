@@ -29,7 +29,6 @@
 
 #include "../../Renderer.h"
 #include "../../Sizef.h"
-#include "../../Vector.h"
 #include "CEGUI/Config.h"
 
 #include <vector>

@@ -29,7 +29,6 @@
 
 #include "../../Renderer.h"
 #include "../../Sizef.h"
-#include "../../Vector.h"
 
 #include <glm/glm.hpp>
 
