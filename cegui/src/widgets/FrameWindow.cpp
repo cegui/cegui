@@ -246,17 +246,17 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
 		// point must be inside the outer edge
 		if (frame.isPointInRectf(pt))
 		{
-			// adjust rect to get inner edge
-			frame.d_min.d_x += d_borderSize;
-			frame.d_min.d_y += d_borderSize;
-			frame.d_max.d_x -= d_borderSize;
-			frame.d_max.d_y -= d_borderSize;
+            // adjust rect to get inner edge
+            frame.d_min.x += d_borderSize;
+            frame.d_min.y += d_borderSize;
+            frame.d_max.x -= d_borderSize;
+            frame.d_max.y -= d_borderSize;
 
 			// detect which edges we are on
-            bool top = (pt.y < frame.d_min.d_y);
-            bool bottom = (pt.y >= frame.d_max.d_y);
-            bool left = (pt.x < frame.d_min.d_x);
-            bool right = (pt.x >= frame.d_max.d_x);
+            bool top = (pt.y < frame.d_min.y);
+            bool bottom = (pt.y >= frame.d_max.y);
+            bool left = (pt.x < frame.d_min.x);
+            bool right = (pt.x >= frame.d_max.x);
 
 			// return appropriate 'SizingLocation' value
 			if (top && left)

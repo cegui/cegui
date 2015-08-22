@@ -1600,8 +1600,8 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
     const ListHeader* header = getListHeader();
     const Rectf listArea(getListRenderArea());
 
-    float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
-    float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
+    float y = listArea.d_min.y - getVertScrollbar()->getScrollPosition();
+    float x = listArea.d_min.x - getHorzScrollbar()->getScrollPosition();
 
     for (uint i = 0; i < getRowCount(); ++i)
     {

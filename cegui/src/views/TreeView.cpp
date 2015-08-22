@@ -319,7 +319,7 @@ ModelIndex TreeView::indexAtWithAction(const glm::vec2& position,
     if (!render_area.isPointInRectf(window_position))
         return ModelIndex();
 
-    float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
+    float cur_height = render_area.d_min.y - getVertScrollbar()->getScrollPosition();
     bool handled = false;
     return indexAtRecursive(d_rootItemState, cur_height, window_position,
         handled, action);

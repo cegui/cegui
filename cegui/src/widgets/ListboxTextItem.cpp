@@ -143,7 +143,7 @@ void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const
     if (!font)
         return;
 
-    glm::vec2 draw_pos(targetRect.getPositionGLM());
+    glm::vec2 draw_pos(targetRect.getPosition());
 
     draw_pos.y += CoordConverter::alignToPixels(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);

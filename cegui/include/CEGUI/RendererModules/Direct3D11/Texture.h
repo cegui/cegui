@@ -30,7 +30,6 @@
 #include "../../Texture.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
 #include "../../Sizef.h"
-#include "../../Vector.h"
 
 // d3d forward refs
 struct ID3D11Device;

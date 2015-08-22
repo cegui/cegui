@@ -366,28 +366,28 @@ void BasicRenderedStringParser::handlePadding(RenderedString&,
 void BasicRenderedStringParser::handleTopPadding(RenderedString&,
                                                  const String& value)
 {
-    d_padding.d_min.d_y = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleBottomPadding(RenderedString&,
                                                     const String& value)
 {
-    d_padding.d_max.d_y = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleLeftPadding(RenderedString&,
                                                   const String& value)
 {
-    d_padding.d_min.d_x = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleRightPadding(RenderedString&,
                                                    const String& value)
 {
-    d_padding.d_max.d_x = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

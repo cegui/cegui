@@ -32,7 +32,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/SemanticInputEvent.h"
 

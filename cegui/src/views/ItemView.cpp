@@ -947,13 +947,13 @@ void ItemView::ensureIndexIsVisible(const ModelIndex& index)
     const float right = left + rect.getWidth();
 
     // if left is left of the view area, or if item too big
-    if ((left < render_area.d_min.d_x) || ((right - left) > view_width))
+    if ((left < render_area.d_min.x) || ((right - left) > view_width))
     {
         // scroll item to left
         horz_scroll->setScrollPosition(currPos + left);
     }
     // if right is right of the view area
-    else if (right >= render_area.d_max.d_x)
+    else if (right >= render_area.d_max.x)
     {
         // scroll item to right of list
         horz_scroll->setScrollPosition(currPos + right - view_width);

@@ -30,7 +30,6 @@
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 #include "../../Renderer.h"
 #include "../../Sizef.h"
-#include "../../Vector.h"
 
 #include <vector>
 #include <unordered_map>

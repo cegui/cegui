@@ -67,25 +67,25 @@ void RenderedStringComponent::setPadding(const Rectf& padding)
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setLeftPadding(const float padding)
 {
-    d_padding.d_min.d_x = padding;
+    d_padding.d_min.x = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setRightPadding(const float padding)
 {
-    d_padding.d_max.d_x = padding;
+    d_padding.d_max.x = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setTopPadding(const float padding)
 {
-    d_padding.d_min.d_y = padding;
+    d_padding.d_min.y = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setBottomPadding(const float padding)
 {
-    d_padding.d_max.d_x = padding;
+    d_padding.d_max.x = padding;
 }
 
 //----------------------------------------------------------------------------//
@@ -97,25 +97,25 @@ const Rectf& RenderedStringComponent::getPadding() const
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getLeftPadding() const
 {
-    return d_padding.d_min.d_x;
+    return d_padding.d_min.x;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getRightPadding() const
 {
-    return d_padding.d_max.d_x;
+    return d_padding.d_max.x;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getTopPadding() const
 {
-    return d_padding.d_min.d_y;
+    return d_padding.d_min.y;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getBottomPadding() const
 {
-    return d_padding.d_max.d_y;
+    return d_padding.d_max.y;
 }
 
 //----------------------------------------------------------------------------//

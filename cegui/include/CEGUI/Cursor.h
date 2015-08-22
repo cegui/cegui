@@ -31,7 +31,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
 #include "CEGUI/EventSet.h"

@@ -32,7 +32,6 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/Vector.h"
 
 namespace CEGUI
 {

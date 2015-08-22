@@ -197,7 +197,7 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
     }
 
     // apply padding to position:
-    final_pos += d_padding.getPositionGLM();
+    final_pos += d_padding.getPosition();
 
     // apply modulative colours if needed.
     ColourRect final_cols(d_colours);
@@ -231,8 +231,8 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
 {
     const Font* fnt = getEffectiveFont(ref_wnd);
 
-    Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
-               d_padding.d_min.d_y + d_padding.d_max.d_y);
+    Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
+               d_padding.d_min.y + d_padding.d_max.y);
 
     if (fnt)
     {

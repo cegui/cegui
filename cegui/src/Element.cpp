@@ -607,7 +607,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     const Sizef parent_size = parent_rect.getSize();
 
-    glm::vec2 offset = glm::vec2(parent_rect.d_min.d_x, parent_rect.d_min.d_y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
+    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {

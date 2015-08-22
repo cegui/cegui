@@ -119,10 +119,10 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     const Rectf tex_rect((d_imageArea + ((final_rect - dest) * tex_per_pix)) * texel_scale);
 
     // URGENT FIXME: Shouldn't this be in the hands of the user?
-    final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);
-    final_rect.d_min.d_y = CoordConverter::alignToPixels(final_rect.d_min.d_y);
-    final_rect.d_max.d_x = CoordConverter::alignToPixels(final_rect.d_max.d_x);
-    final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
+    final_rect.d_min.x = CoordConverter::alignToPixels(final_rect.d_min.x);
+    final_rect.d_min.y = CoordConverter::alignToPixels(final_rect.d_min.y);
+    final_rect.d_max.x = CoordConverter::alignToPixels(final_rect.d_max.x);
+    final_rect.d_max.y = CoordConverter::alignToPixels(final_rect.d_max.y);
 
     TexturedColouredVertex vbuffer[6];
     const CEGUI::ColourRect&  colours = render_settings.d_multiplyColours;

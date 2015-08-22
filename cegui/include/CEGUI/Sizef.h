@@ -29,7 +29,6 @@
 #ifndef _CEGUISizef_h_
 #define _CEGUISizef_h_
 
-#include "CEGUI/Vector.h"
 #include "CEGUI/AspectMode.h"
 #include "CEGUI/StreamHelper.h"
 #include <typeinfo>
@@ -186,25 +185,25 @@ public:
     //! \brief finger saving alias for Sizef(0, 0)
     inline static Sizef zero()
     {
-        return square(TypeSensitiveZero<float>());
+        return square(0.0f);
     }
     
     //! \brief finger saving alias for Sizef(1, 1)
     inline static Sizef one()
     {
-        return square(TypeSensitiveOne<float>());
+        return square(1.0f);
     }
     
     //! \brief finger saving alias for Sizef(1, 0)
     inline static Sizef one_width()
     {
-        return Sizef(TypeSensitiveOne<float>(), TypeSensitiveZero<float>());
+        return Sizef(1.0f, 0.0f);
     }
     
     //! \brief finger saving alias for Sizef(0, 1)
     inline static Sizef one_height()
     {
-        return Sizef(TypeSensitiveOne<float>(), TypeSensitiveZero<float>());
+        return Sizef(0.0f, 1.0f);
     }
 
     float d_width;

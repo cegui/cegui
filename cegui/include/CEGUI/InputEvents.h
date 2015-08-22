@@ -33,7 +33,6 @@
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/SlotFunctorBase.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)

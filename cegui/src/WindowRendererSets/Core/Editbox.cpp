@@ -245,9 +245,9 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);
     // allow for scroll position
-    text_part_rect.d_min.d_x += text_offset;
+    text_part_rect.d_min.x += text_offset;
     // centre text vertically within the defined text area
-    text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
+    text_part_rect.d_min.y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
     // get unhighlighted text colour (saves accessing property twice)
@@ -267,8 +267,8 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
 
         // calculate area for selection imagery.
         Rectf hlarea(text_area);
-        hlarea.d_min.d_x += text_offset + selStartOffset;
-        hlarea.d_max.d_x = hlarea.d_min.d_x + (selEndOffset - selStartOffset);
+        hlarea.d_min.x += text_offset + selStartOffset;
+        hlarea.d_max.x = hlarea.d_min.x + (selEndOffset - selStartOffset);
 
         // render the selection imagery.
         wlf.getStateImagery(active ? "ActiveSelection" :
@@ -279,21 +279,21 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     // draw pre-highlight text
     String sect = text.substr(0, w->getSelectionStart());
     colours = unselectedColours;
-    text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
+    text_part_rect.d_min.x =
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                        &text_area, true, colours);
 
     // draw highlight text
     sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
-    text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
+    text_part_rect.d_min.x =
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                        &text_area, true, colours);
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEnd());
     colours = unselectedColours;
-    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPositionGLM(),
+    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                    &text_area, true, colours);
 }
 
@@ -411,7 +411,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
     if ((!d_blinkCaret || d_showCaret) && editboxIsFocussed() && !editboxIsReadOnly())
     {
         Rectf caretRect(text_area);
-        caretRect.d_min.d_x += extent_to_caret + text_offset;
+        caretRect.d_min.x += extent_to_caret + text_offset;
 
         imagery.render(*d_window, caretRect, 0, &text_area);
     }

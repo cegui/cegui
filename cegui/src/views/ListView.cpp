@@ -139,7 +139,7 @@ ModelIndex ListView::indexAt(const glm::vec2& position)
     if (!render_area.isPointInRectf(window_position))
         return ModelIndex();
 
-    float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
+    float cur_height = render_area.d_min.y - getVertScrollbar()->getScrollPosition();
     //TODO: start only on the visible area
     for (size_t index = 0; index < d_sortedItems.size(); ++index)
     {

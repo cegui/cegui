@@ -30,7 +30,6 @@
 #define _CEGUIUSize_h_
 
 #include "CEGUI/UDim.h"
-#include "CEGUI/Vector.h"
 #include <typeinfo>
 
 #include <glm/glm.hpp>
@@ -144,7 +143,7 @@ public:
     //! \brief finger saving alias for USize(0, 1)
     inline static USize one_height()
     {
-        return USize(TypeSensitiveOne<UDim>(), TypeSensitiveZero<UDim>());
+        return USize(TypeSensitiveZero<UDim>(), TypeSensitiveOne<UDim>());
     }
 
     UDim d_width;
