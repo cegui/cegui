@@ -189,15 +189,11 @@ endif()
 #                    MSVC PROJ USER FILE TEMPLATES
 ###########################################################################
 if(MSVC)
-    # Visual Studio 2008 or less
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16.0) 
-        configure_file(
-            ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcproj.user.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcproj.user
-            @ONLY
-        )
-    else ()
-    # Visual Studio 2010 or higher
+    # Visual Studio 2013 or less
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 18.0)
+        message(FATAL_ERROR "Error: This version of CEGUI requires Visual Studio 2013 as minimum version of Visual Studio.")
+    # Visual Studio 2013 or higher
+    else()
         configure_file(
             ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcxproj.user.in
             ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcxproj.user
