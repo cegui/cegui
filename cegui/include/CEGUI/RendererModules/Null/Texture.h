@@ -76,7 +76,7 @@ protected:
     void updateCachedScaleValues();
 
     //! Counter used to provide unique texture names.
-    static uint32 d_textureNumber;
+    static std::uint32_t d_textureNumber;
     //! Size of the texture.
     Sizef d_size;
     //! original pixel of size data loaded into texture

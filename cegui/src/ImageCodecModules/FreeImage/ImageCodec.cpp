@@ -84,7 +84,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
 
     try
     {
-        mem = FreeImage_OpenMemory(static_cast<BYTE*>(const_cast<uint8*>(data.getDataPtr())), len);
+        mem = FreeImage_OpenMemory(static_cast<BYTE*>(const_cast<std::uint8_t*>(data.getDataPtr())), len);
         if (mem == 0)
             throw MemoryException("Unable to open memory stream, FreeImage_OpenMemory failed");
 
@@ -132,7 +132,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         uint pitch = FreeImage_GetPitch(img);
         uint height = FreeImage_GetHeight(img);
         uint width = FreeImage_GetWidth(img);
-        uint8 *rawBuf = new uint8[width * height << 2];
+        std::uint8_t *rawBuf = new std::uint8_t[width * height << 2];
 
         // convert the bitmap to raw bits (top-left pixel first) 
         FreeImage_ConvertToRawBits(rawBuf, img, pitch, 32,

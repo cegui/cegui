@@ -31,6 +31,8 @@
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
 
+#include <cstdint>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -69,7 +71,7 @@ static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 }
 
 //----------------------------------------------------------------------------//
-uint32 OgreTexture::d_textureNumber = 0;
+std::uint32_t OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name) :
@@ -212,11 +214,11 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     char* bufferCopy = new char[byte_size];
     memcpy(bufferCopy, buffer, byte_size);
 
-    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<uint32>(buffer_size.d_width), static_cast<uint32>(buffer_size.d_height),
+    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<std::uint32_t>(buffer_size.d_width), static_cast<std::uint32_t>(buffer_size.d_height),
                                                         1, toOgrePixelFormat(pixel_format), bufferCopy);
     d_texture->freeInternalResources();
-    d_texture->setWidth(static_cast<uint32>(buffer_size.d_width));
-    d_texture->setHeight(static_cast<uint32>(buffer_size.d_height));
+    d_texture->setWidth(static_cast<std::uint32_t>(buffer_size.d_width));
+    d_texture->setHeight(static_cast<std::uint32_t>(buffer_size.d_height));
     d_texture->setDepth(1);
     d_texture->createInternalResources();
     d_texture->getBuffer(0,0).get()->blitFromMemory(*pixelBox);
@@ -259,7 +261,7 @@ void OgreTexture::blitToMemory(void* targetData)
     if (d_texture.isNull()) // TODO: exception?
         return;
 
-    Ogre::PixelBox pb(static_cast<uint32>(d_size.d_width), static_cast<uint32>(d_size.d_height),
+    Ogre::PixelBox pb(static_cast<std::uint32_t>(d_size.d_width), static_cast<std::uint32_t>(d_size.d_height),
                       1, Ogre::PF_A8R8G8B8, targetData);
     d_texture->getBuffer()->blitToMemory(pb);
 }

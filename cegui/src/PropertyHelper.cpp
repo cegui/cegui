@@ -615,17 +615,17 @@ PropertyHelper<int>::string_return_type PropertyHelper<int>::toString(
 }
 
 
-const String& PropertyHelper<uint64>::getDataTypeName()
+const String& PropertyHelper<std::uint64_t>::getDataTypeName()
 {
     static const String type("uint64");
 
     return type;
 }
 
-PropertyHelper<uint64>::return_type
-PropertyHelper<uint64>::fromString(const String& str)
+PropertyHelper<std::uint64_t>::return_type
+PropertyHelper<std::uint64_t>::fromString(const String& str)
 {
-    uint64 val = 0;
+    std::uint64_t val = 0;
 
     if (str.empty())
         return val;
@@ -639,8 +639,8 @@ PropertyHelper<uint64>::fromString(const String& str)
 }
 
 
-PropertyHelper<uint64>::string_return_type PropertyHelper<uint64>::toString(
-    PropertyHelper<uint64>::pass_type val)
+PropertyHelper<std::uint64_t>::string_return_type PropertyHelper<std::uint64_t>::toString(
+    PropertyHelper<std::uint64_t>::pass_type val)
 {
     std::stringstream& sstream = getPreparedStream();
     sstream << val;
@@ -871,7 +871,7 @@ template class PropertyHelper<float>;
 template class PropertyHelper<double>;
 template class PropertyHelper<int>;
 template class PropertyHelper<uint>;
-template class PropertyHelper<uint64>;
+template class PropertyHelper<std::uint64_t>;
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 template class PropertyHelper<String::value_type>;
 #endif

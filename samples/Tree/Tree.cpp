@@ -34,6 +34,7 @@
 #endif
 
 #include <ctime>
+#include <cstdint>
 #include <stddef.h>
 
 
@@ -63,11 +64,11 @@ const unsigned int TreeSample::EditBoxID = 2;
 int randInt(int low, int high)
    {
    int   num;
-   CEGUI::uint32 range;
+   std::uint32_t range;
 
    range = high - low + 1;
    if (range > RAND_MAX)
-      num = (int)(((CEGUI::uint32)rand() * (CEGUI::uint32)rand()) % range);
+      num = (int)(((std::uint32_t)rand() * (std::uint32_t)rand()) % range);
    else
       num = (rand()) % range;
 

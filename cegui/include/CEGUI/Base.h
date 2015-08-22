@@ -8,7 +8,7 @@
 				headers will include this file.
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,6 +40,7 @@
 
 #include <cassert>
 #include <algorithm>
+#include <cstdint>
 
 /*************************************************************************
 	Dynamic Library import / export control conditional
@@ -116,20 +117,7 @@ namespace CEGUI
 	Simplification of some 'unsigned' types
 *************************************************************************/
 typedef	unsigned long	ulong;
-typedef unsigned short	ushort;
 typedef unsigned int	uint;
-typedef unsigned char	uchar;
-
-typedef long long    int64;
-typedef int          int32;
-typedef short        int16;
-typedef signed char  int8;
-
-typedef unsigned long long  uint64;
-typedef unsigned int        uint32;
-typedef unsigned short      uint16;
-typedef unsigned char       uint8;
-
 
 /*************************************************************************
 	System wide constants

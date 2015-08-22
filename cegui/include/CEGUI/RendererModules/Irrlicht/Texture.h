@@ -111,7 +111,7 @@ protected:
     void updateCachedScaleValues();
 
     //! Counter used to provide unique texture names.
-    static uint32 d_textureNumber;
+    static std::uint32_t d_textureNumber;
     //! Irrlicht video driver we're to use.
     irr::video::IVideoDriver& d_driver;
     //! ptr to underlying irrlicht texture.

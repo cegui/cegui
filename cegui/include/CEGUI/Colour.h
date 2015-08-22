@@ -38,7 +38,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-typedef uint32 argb_t;    //!< 32 bit ARGB representation of a colour.
+typedef std::uint32_t argb_t;    //!< 32 bit ARGB representation of a colour.
 
 /*!
 \brief

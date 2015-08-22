@@ -319,12 +319,12 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
 
     for (int i = 0; i < glyph_bitmap->rows; ++i)
     {
-        uchar *src = glyph_bitmap->buffer + (i * glyph_bitmap->pitch);
+        std::uint8_t *src = glyph_bitmap->buffer + (i * glyph_bitmap->pitch);
         switch (glyph_bitmap->pixel_mode)
         {
         case FT_PIXEL_MODE_GRAY:
         {
-            uchar *dst = reinterpret_cast<uchar*>(buffer);
+            std::uint8_t *dst = reinterpret_cast<std::uint8_t*>(buffer);
             for (int j = 0; j < glyph_bitmap->width; ++j)
             {
                 // RGBA

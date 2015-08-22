@@ -83,7 +83,7 @@ void TGAImageCodec::flipVertImageTGA(ImageTGA* img)
 
 		for (int colBit = 0; colBit < pitch; ++colBit)
 		{
-			uchar tmp = img->data[dstOffest + colBit];
+			std::uint8_t tmp = img->data[dstOffest + colBit];
 			img->data[dstOffest + colBit] = img->data[srcOffset + colBit];
 			img->data[srcOffset + colBit] = tmp;
 		}
@@ -105,7 +105,7 @@ void TGAImageCodec::flipHorzImageTGA(ImageTGA* img)
 		{
             for (int c = 0; c < img->channels; ++c)
             {
-                const uchar tmp = img->data[dstOffest + c];
+                const std::uint8_t tmp = img->data[dstOffest + c];
                 img->data[dstOffest + c] = img->data[srcOffset + c];
                 img->data[srcOffset + c] = tmp;
             }

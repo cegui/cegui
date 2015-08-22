@@ -214,12 +214,12 @@ public:
 };
 
 template<>
-class CEGUIEXPORT PropertyHelper<uint64>
+class CEGUIEXPORT PropertyHelper<std::uint64_t>
 {
 public:
-    typedef uint64 return_type;
+    typedef std::uint64_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const uint64 pass_type;
+    typedef const std::uint64_t pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName();
@@ -503,7 +503,7 @@ extern template CEGUIEXPORT class PropertyHelper<float>;
 extern template CEGUIEXPORT class PropertyHelper<double>;
 extern template CEGUIEXPORT class PropertyHelper<int>;
 extern template CEGUIEXPORT class PropertyHelper<uint>;
-extern template CEGUIEXPORT class PropertyHelper<uint64>;
+extern template CEGUIEXPORT class PropertyHelper<std::uint64_t>;
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 extern template CEGUIEXPORT class PropertyHelper<String::value_type>;
 #endif

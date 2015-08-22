@@ -43,8 +43,8 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-const CEGUI::uint32 SampleBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
-const CEGUI::uint32 SampleBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
+const std::uint32_t SampleBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
+const std::uint32_t SampleBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
 
 SampleBrowserManager::SampleBrowserManager(SampleBrowser* owner, CEGUI::Window* samplesWindow)
     : d_owner(owner),

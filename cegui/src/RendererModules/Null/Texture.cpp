@@ -29,11 +29,13 @@
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/System.h"
 
+#include <cstdint>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint32 NullTexture::d_textureNumber = 0;
+std::uint32_t NullTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 const String& NullTexture::getName() const
