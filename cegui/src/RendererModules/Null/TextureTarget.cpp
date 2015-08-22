@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint NullTextureTarget::s_textureNumber = 0;
+std::uint32_t NullTextureTarget::s_textureNumber = 0;
 const float NullTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
@@ -84,7 +84,7 @@ void NullTextureTarget::declareRenderSize(const Sizef& sz)
 String NullTextureTarget::generateTextureName()
 {
     String tmp("_null_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }

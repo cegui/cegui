@@ -67,7 +67,7 @@ protected:
     //! default / initial size for the underlying texture.
     static const float DEFAULT_SIZE;
     //! static data used for creating texture names
-    static uint s_textureNumber;
+    static std::uint32_t s_textureNumber;
     //! helper to generate unique texture names
     static String generateTextureName();
 

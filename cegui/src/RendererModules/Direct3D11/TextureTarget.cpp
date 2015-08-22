@@ -182,7 +182,7 @@ void Direct3D11TextureTarget::disableRenderTexture()
 String Direct3D11TextureTarget::generateTextureName()
 {
     String tmp("_d3d11_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }

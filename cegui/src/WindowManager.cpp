@@ -387,10 +387,10 @@ void WindowManager::saveLayoutToFile(const Window& window,
 String WindowManager::generateUniqueWindowName()
 {
     const String ret = GeneratedWindowNameBase +
-        PropertyHelper<unsigned long>::toString(d_uid_counter);
+        PropertyHelper<std::uint32_t>::toString(d_uid_counter);
 
     // update counter for next time
-    unsigned long old_uid = d_uid_counter;
+    std::uint32_t old_uid = d_uid_counter;
     ++d_uid_counter;
 
     // log if we ever wrap-around (which should be pretty unlikely)

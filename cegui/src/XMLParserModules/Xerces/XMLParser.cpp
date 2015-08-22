@@ -105,7 +105,7 @@ namespace CEGUI
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message("An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
+                String message("An error occurred at line nr. " + PropertyHelper<std::uint32_t>::toString((std::uint32_t)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
@@ -118,7 +118,7 @@ namespace CEGUI
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message("An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
+            String message("An error occurred at line nr. " + PropertyHelper<std::uint32_t>::toString((std::uint32_t)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 

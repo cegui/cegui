@@ -723,7 +723,7 @@ void MultiColumnList::addColumn(const String& value)
     }
 
     // add the column accordingly
-    addColumn(caption, PropertyHelper<uint>::fromString(id), PropertyHelper<UDim>::fromString(width));
+    addColumn(caption, PropertyHelper<std::uint32_t>::fromString(id), PropertyHelper<UDim>::fromString(width));
 }
 /*************************************************************************
 	Insert a column into the table.
@@ -2444,7 +2444,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
         propString += PropertyHelper<UDim>::toString(seg.getWidth());
         // column id
         propString += " id:";
-        propString += PropertyHelper<uint>::toString(seg.getID());
+        propString += PropertyHelper<std::uint32_t>::toString(seg.getID());
         // create the tag
         xml_stream.openTag(Property::XMLElementName)
             .attribute(Property::NameXMLAttributeName, "ColumnHeader")
@@ -2456,13 +2456,13 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     // write out SortColumnID property, if any(!)
 		try
 		{
-			uint sortColumnID = getColumnWithID(getSortColumn());
+			std::uint32_t sortColumnID = getColumnWithID(getSortColumn());
 			if (sortColumnID != 0)
 			{
                 xml_stream.openTag(Property::XMLElementName)
                     .attribute(Property::NameXMLAttributeName, "SortColumnID")
                     .attribute(Property::ValueXMLAttributeName,
-                               PropertyHelper<uint>::toString(sortColumnID))
+                               PropertyHelper<std::uint32_t>::toString(sortColumnID))
                     .closeTag();
 			    ++propCnt;
 			}

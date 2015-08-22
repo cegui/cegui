@@ -83,7 +83,7 @@ protected:
     //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
     OpenGLESTexture* d_CEGUITexture;
     //! static member var used to generate unique texture names.
-    static uint s_textureNumber;
+    static std::uint32_t s_textureNumber;
 };
 
 } // End of  CEGUI namespace section

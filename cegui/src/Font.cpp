@@ -342,11 +342,11 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 
     if (d_nativeResolution.d_width != DefaultNativeHorzRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeHorzResAttribute,
-            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeResolution.d_width)));
+            PropertyHelper<std::uint32_t>::toString(static_cast<std::uint32_t>(d_nativeResolution.d_width)));
 
     if (d_nativeResolution.d_height != DefaultNativeVertRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
-            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeResolution.d_height)));
+            PropertyHelper<std::uint32_t>::toString(static_cast<std::uint32_t>(d_nativeResolution.d_height)));
 
     if (d_autoScaled != ASM_Disabled)
         xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute,

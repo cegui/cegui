@@ -234,7 +234,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     // Create a 'null' image for this glyph so we do not seg later
                     const Rectf area(0, 0, 0, 0);
                     const glm::vec2 offset(0, 0);
-                    const String name(PropertyHelper<unsigned long>::toString(s->first));
+                    const String name(PropertyHelper<std::uint32_t>::toString(s->first));
                     BitmapImage* img =
                         new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
@@ -273,7 +273,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                         d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
                         -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
-                    const String name(PropertyHelper<unsigned long>::toString(s->first));
+                    const String name(PropertyHelper<std::uint32_t>::toString(s->first));
                     BitmapImage* img =
                         new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
