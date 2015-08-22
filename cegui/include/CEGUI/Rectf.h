@@ -57,7 +57,6 @@ public:
         d_max(max)
     {}
 
-    // FIXME: Temporary for glm::vec2 transition
     inline Rectf(const glm::vec2& pos, const Sizef& size):
         d_min(pos.x, pos.y),
         d_max(pos.x + size.d_width, pos.y + size.d_height)
