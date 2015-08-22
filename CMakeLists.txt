@@ -73,7 +73,14 @@ endif()
 if(ANDROID)
     set(CMAKE_FIND_ROOT_PATH ${CEGUI_DEPENDENCIES_DIR} "${CMAKE_FIND_ROOT_PATH}")
     set (CMAKE_LIBRARY_ARCHITECTURE ${ANDROID_ABI})
-endif() 
+endif()
+
+if ((CMAKE_C_COMPILER_ID STREQUAL "GNU") OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsigned-char")
+endif ()
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsigned-char")
+endif ()
 
 # Look for packages
 find_package(PCRE)
