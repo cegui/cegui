@@ -89,7 +89,7 @@ protected:
     bool handleRestartButtonClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
-    void createScorePopup(const glm::vec2& cursor_pos, int points);
+    void createScorePopup(const glm::vec2& cursor_pos, std::int32_t points);
 
     void handleLivesChanged();
 
@@ -103,7 +103,7 @@ protected:
 
     CEGUI::Window* d_cursorWnd;
 
-    int d_score;
+    std::int32_t d_score;
 
     std::vector<GamePlate*> d_gamePlates;
     std::vector<CEGUI::Window*> d_delayDestroyWindows;

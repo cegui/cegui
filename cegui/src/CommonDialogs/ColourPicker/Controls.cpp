@@ -896,11 +896,11 @@ bool ColourPickerControls::handleRGBEditboxTextChanged(const EventArgs&)
     if (d_ignoreEvents == true)
         return true;
 
-    int colourR = PropertyHelper<int>::fromString(
+    int colourR = PropertyHelper<std::int32_t>::fromString(
                       getColourEditBoxR()->getText());
-    int colourG = PropertyHelper<int>::fromString(
+    int colourG = PropertyHelper<std::int32_t>::fromString(
                       getColourEditBoxG()->getText());
-    int colourB = PropertyHelper<int>::fromString(
+    int colourB = PropertyHelper<std::int32_t>::fromString(
                       getColourEditBoxB()->getText());
     RGB_Colour newColour(colourR, colourG, colourB);
 
@@ -1541,11 +1541,11 @@ void ColourPickerControls::refreshEditboxesAndColourRects()
     d_ignoreEvents = true;
 
     getColourEditBoxR()->setText(
-        PropertyHelper<int>::toString(d_selectedColourRGB.r));
+        PropertyHelper<std::int32_t>::toString(d_selectedColourRGB.r));
     getColourEditBoxG()->setText(
-        PropertyHelper<int>::toString(d_selectedColourRGB.g));
+        PropertyHelper<std::int32_t>::toString(d_selectedColourRGB.g));
     getColourEditBoxB()->setText(
-        PropertyHelper<int>::toString(d_selectedColourRGB.b));
+        PropertyHelper<std::int32_t>::toString(d_selectedColourRGB.b));
 
     std::stringstream floatStringStream;
     floatStringStream.precision(3);

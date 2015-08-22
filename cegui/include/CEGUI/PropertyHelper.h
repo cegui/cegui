@@ -186,12 +186,12 @@ public:
 };
 
 template<>
-class CEGUIEXPORT PropertyHelper<int>
+class CEGUIEXPORT PropertyHelper<std::int16_t>
 {
 public:
-    typedef int return_type;
+    typedef std::int16_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const int pass_type;
+    typedef const std::int16_t pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName();
@@ -200,14 +200,28 @@ public:
 };
 
 template<>
-class CEGUIEXPORT PropertyHelper<std::uint64_t>
+class CEGUIEXPORT PropertyHelper<std::int32_t>
 {
 public:
-    typedef std::uint64_t return_type;
+    typedef std::int32_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const std::uint64_t pass_type;
+    typedef const std::int32_t pass_type;
     typedef String string_return_type;
-    
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<std::int64_t>
+{
+public:
+    typedef std::int64_t return_type;
+    typedef return_type safe_method_return_type;
+    typedef const std::int64_t pass_type;
+    typedef String string_return_type;
+
     static const String& getDataTypeName();
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
@@ -220,6 +234,20 @@ public:
     typedef std::uint32_t return_type;
     typedef return_type safe_method_return_type;
     typedef const std::uint32_t pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<std::uint64_t>
+{
+public:
+    typedef std::uint64_t return_type;
+    typedef return_type safe_method_return_type;
+    typedef const std::uint64_t pass_type;
     typedef String string_return_type;
 
     static const String& getDataTypeName();
@@ -488,7 +516,9 @@ public:
 extern template CEGUIEXPORT class PropertyHelper<String>;
 extern template CEGUIEXPORT class PropertyHelper<float>;
 extern template CEGUIEXPORT class PropertyHelper<double>;
-extern template CEGUIEXPORT class PropertyHelper<int>;
+extern template CEGUIEXPORT class PropertyHelper<std::int16_t>;
+extern template CEGUIEXPORT class PropertyHelper<std::int32_t>;
+extern template CEGUIEXPORT class PropertyHelper<std::int64_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint32_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint64_t>;
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE

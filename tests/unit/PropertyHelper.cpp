@@ -34,14 +34,14 @@ BOOST_AUTO_TEST_SUITE(PropertyHelper)
 BOOST_AUTO_TEST_CASE(Integer)
 {
     // --- toString
-    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<int>::toString(0), "0");
-    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<int>::toString(1230), "1230");
-    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<int>::toString(-1230), "-1230");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<std::int32_t>::toString(0), "0");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<std::int32_t>::toString(1230), "1230");
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<std::int32_t>::toString(-1230), "-1230");
 
     // --- fromString
-    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<int>::fromString("0"), 0);
-    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<int>::fromString("1230"), 1230);
-    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<int>::fromString("-1230"), -1230);
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<std::int32_t>::fromString("0"), 0);
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<std::int32_t>::fromString("1230"), 1230);
+    BOOST_CHECK_EQUAL(CEGUI::PropertyHelper<std::int32_t>::fromString("-1230"), -1230);
 }
 
 BOOST_AUTO_TEST_CASE(Float)

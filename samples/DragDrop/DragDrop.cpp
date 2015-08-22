@@ -109,7 +109,7 @@ void DragDropSample::subscribeEvents()
         {
             // get the window pointer for this slot
             Window* wnd =
-                root->getChild(base_name + PropertyHelper<int>::toString(i));
+                root->getChild(base_name + PropertyHelper<std::int32_t>::toString(i));
 
             // subscribe the handler.
             wnd->subscribeEvent(

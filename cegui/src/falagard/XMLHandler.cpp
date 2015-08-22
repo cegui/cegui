@@ -1064,8 +1064,12 @@ namespace CEGUI
             prop = new PropertyDefinition<std::uint32_t>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<std::uint64_t>::getDataTypeName())
             prop = new PropertyDefinition<std::uint64_t>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<int>::getDataTypeName())
-            prop = new PropertyDefinition<int>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if (type == PropertyHelper<std::int16_t>::getDataTypeName())
+            prop = new PropertyDefinition<std::int16_t>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == PropertyHelper<std::int32_t>::getDataTypeName())
+            prop = new PropertyDefinition<std::int32_t>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if (type == PropertyHelper<std::int64_t>::getDataTypeName())
+            prop = new PropertyDefinition<std::int64_t>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<float>::getDataTypeName())
             prop = new PropertyDefinition<float>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<double>::getDataTypeName())
@@ -1202,9 +1206,15 @@ namespace CEGUI
             d_propertyLink = new PropertyLinkDefinition<std::uint64_t>(
                     name, widget, target, init, d_widgetlook->getName(), redraw,
                     layout, eventName, d_widgetlook->getName());
-        else if (type == PropertyHelper<int>::getDataTypeName())
-            d_propertyLink = new PropertyLinkDefinition<int>(name, widget,
+        else if (type == PropertyHelper<std::int16_t>::getDataTypeName())
+            d_propertyLink = new PropertyLinkDefinition<std::int16_t>(name, widget,
+                target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if (type == PropertyHelper<std::int32_t>::getDataTypeName())
+            d_propertyLink = new PropertyLinkDefinition<std::int32_t>(name, widget,
                     target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if (type == PropertyHelper<std::int64_t>::getDataTypeName())
+            d_propertyLink = new PropertyLinkDefinition<std::int64_t>(name, widget,
+                target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == PropertyHelper<float>::getDataTypeName())
             d_propertyLink = new PropertyLinkDefinition<float>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -1750,8 +1760,12 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<std::uint32_t>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<std::uint64_t>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<std::uint64_t>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<int>::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<int>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if (type == PropertyHelper<std::int16_t>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<std::int16_t>*>(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == PropertyHelper<std::int32_t>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<std::int32_t>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if (type == PropertyHelper<std::int64_t>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<std::int64_t>*>(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<float>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<float>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<double>::getDataTypeName())
