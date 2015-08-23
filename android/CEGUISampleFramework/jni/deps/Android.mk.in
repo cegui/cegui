@@ -1,0 +1,56 @@
+LOCAL_PATH := $(call my-dir)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ndk-missing
+LOCAL_SRC_FILES := '"$ndkMissing_libFilePath"'
+include $(PREBUILT_SHARED_LIBRARY)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := tinyxml
+LOCAL_SRC_FILES := '"$tinyxmlLibFilePath"'
+LOCAL_EXPORT_C_INCLUDES := '"$tinyxmlIncludePath"'
+include $(PREBUILT_SHARED_LIBRARY)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := freeimage
+LOCAL_SRC_FILES := '"$freeimageLibFilePath"'
+LOCAL_EXPORT_C_INCLUDES := '"$freeimageIncludePath"'
+include $(PREBUILT_SHARED_LIBRARY)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := pcre
+LOCAL_SRC_FILES := '"$pcreLibFilePath"'
+LOCAL_EXPORT_C_INCLUDES := '"$pcreIncludePath"'
+include $(PREBUILT_SHARED_LIBRARY)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := freetype
+LOCAL_SRC_FILES := '"$freetypeLibFilePath"'
+LOCAL_EXPORT_C_INCLUDES := '"$freetypeIncludePath"'
+include $(PREBUILT_SHARED_LIBRARY)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := epoxy
+LOCAL_SRC_FILES := '"$epoxyLibFilePath"'
+LOCAL_EXPORT_C_INCLUDES := '"$epoxyIncludePath"'
+include $(PREBUILT_SHARED_LIBRARY)
+
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := fribidi
+LOCAL_SRC_FILES := '"$fribidiLibFilePath"'
+LOCAL_EXPORT_C_INCLUDES := '"$fribidiIncludePath"'
+include $(PREBUILT_SHARED_LIBRARY)

@@ -1,0 +1,9 @@
+<SampleDefinition
+    name      = "CEGUIFontDemo"
+    type      = "C++ Module"
+    summary         = "Showcase of different fonts packaged with CEGUI. A selection of fonts and predefined texts, with characters from a variety of languages, is given. It is possible to edit the demonstration text and create or edit fonts the font editor window."
+    description     = "The demo displays the usage of CEGUI::Font&apos;s using the fonts from the datafiles folder. For the special characters, UTF-8 character encoding is supported by CEGUI and is used in the demo. All &quot;.font&quot; files found in the datafiles' font folder are loaded into the demo. Additionally, some of the supported font file endings (.ttf, .pcf, .otf) are added to the list in the font editor window using the CEGUI ResourceProvider. CEGUI Fonts have size and autoscale settings that can be adjusted in the demo. In CEGUI fonts can be loaded using the &quot;.font&quot; files or can be created in run-time using the CEGUI::FontManager. They can be edited at any time.
+
+When characters are requested to be displayed for the first time, CEGUI might need a short time to create them. This load-time only occurs once and is only significant for big character sets, such as for Asian languages with a broad set of characters."
+    credits         = "Lukas &quot;Ident&quot; Meindl"
+/>

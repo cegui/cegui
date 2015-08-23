@@ -1,0 +1,50 @@
+diff -rupN orig/sysroot/usr/include/crystax/freebsd/include/mangled-string.h new/sysroot/usr/include/crystax/freebsd/include/mangled-string.h
+--- orig/sysroot/usr/include/crystax/freebsd/include/mangled-string.h	2015-08-25 21:46:30.670286841 +0300
++++ new/sysroot/usr/include/crystax/freebsd/include/mangled-string.h	2015-08-25 21:49:25.074987710 +0300
+@@ -123,6 +123,8 @@ char	*strtok_r(char *, const char *, cha
+ size_t	 strxfrm(char * __restrict, const char * __restrict, size_t);
+ #if __BSD_VISIBLE
+ 
++#if 0
++
+ #ifndef _SWAB_DECLARED
+ #define _SWAB_DECLARED
+ 
+@@ -134,6 +136,8 @@ typedef	__ssize_t	ssize_t;
+ void	 swab(const void * __restrict, void * __restrict, ssize_t);
+ #endif /* _SWAB_DECLARED */
+ 
++#endif
++
+ #endif /* __BSD_VISIBLE */
+ 
+ #if __POSIX_VISIBLE >= 200809 || defined(_XLOCALE_H_)
+diff -rupN orig/sysroot/usr/include/crystax/freebsd.h new/sysroot/usr/include/crystax/freebsd.h
+--- orig/sysroot/usr/include/crystax/freebsd.h	2015-08-25 21:46:30.670286841 +0300
++++ new/sysroot/usr/include/crystax/freebsd.h	2015-08-25 21:49:25.074987710 +0300
+@@ -135,11 +135,11 @@ int __crystax_isthreaded();
+ #endif
+ 
+ #ifndef MIN
+-#define MIN(a,b) (((a)<(b))?(a):(b))
++//#define MIN(a,b) (((a)<(b))?(a):(b))
+ #endif
+ 
+ #ifndef MAX
+-#define MAX(a,b) (((a)>(b))?(a):(b))
++//#define MAX(a,b) (((a)>(b))?(a):(b))
+ #endif
+ 
+ #ifndef powerof2
+diff -rupN orig/sysroot/usr/include/crystax/google/unistd.h new/sysroot/usr/include/crystax/google/unistd.h
+--- orig/sysroot/usr/include/crystax/google/unistd.h	2015-08-25 21:46:30.670286841 +0300
++++ new/sysroot/usr/include/crystax/google/unistd.h	2015-08-25 21:49:25.074987710 +0300
+@@ -197,6 +197,8 @@ extern int   tcsetpgrp(int fd, pid_t _pi
+     } while (_rc == -1 && errno == EINTR); \
+     _rc; })
+ 
++extern void swab(const void* bfrom, void* bto, ssize_t n);
++
+ #if defined(__BIONIC_FORTIFY)
+ extern ssize_t __read_chk(int, void*, size_t, size_t);
+ __errordecl(__read_dest_size_error, "read called with size bigger than destination");

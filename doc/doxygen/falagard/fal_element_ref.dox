@@ -1,0 +1,1834 @@
+/**
+@page fal_element_ref Falagard XML Element Reference
+The following pages contain reference material for the XML elements defined for the Falagard skin definition files.
+
+@section fal_elem_ref_sec_0 Section Contents
+@ref fal_elem_ref_sec_1 <br>
+@ref fal_elem_ref_sec_2 <br>
+@ref fal_elem_ref_sec_3 <br>
+@ref fal_elem_ref_sec_4 <br>
+@ref fal_elem_ref_sec_5 <br>
+@ref fal_elem_ref_sec_6 <br>
+@ref fal_elem_ref_sec_7 <br>
+@ref fal_elem_ref_sec_8 <br>
+@ref fal_elem_ref_sec_9 <br>
+@ref fal_elem_ref_eventaction <br>
+@ref fal_elem_ref_eventlinkdefintion <br>
+@ref fal_elem_ref_eventlinktarget <br>
+@ref fal_elem_ref_sec_11 <br>
+@ref fal_elem_ref_sec_12 <br>
+@ref fal_elem_ref_sec_13 <br>
+@ref fal_elem_ref_sec_14 <br>
+@ref fal_elem_ref_sec_15 <br>
+@ref fal_elem_ref_sec_16 <br>
+@ref fal_elem_ref_sec_17 <br>
+@ref fal_elem_ref_sec_18 <br>
+@ref fal_elem_ref_sec_19 <br>
+@ref fal_elem_ref_sec_imagepropertydim <br>
+@ref fal_elem_ref_sec_20 <br>
+@ref fal_elem_ref_sec_21 <br>
+@ref fal_elem_ref_sec_22 <br>
+@ref fal_elem_ref_sec_23 <br>
+@ref fal_elem_ref_sec_24 <br>
+@ref fal_elem_ref_sec_operatordim <br>
+@ref fal_elem_ref_sec_25 <br>
+@ref fal_elem_ref_sec_26 <br>
+@ref fal_elem_ref_sec_27 <br>
+@ref fal_elem_propertylinktarget <br>
+@ref fal_elem_ref_sec_28 <br>
+@ref fal_elem_ref_sec_29 <br>
+@ref fal_elem_ref_sec_30 <br>
+@ref fal_elem_ref_sec_31 <br>
+@ref fal_elem_ref_sec_32 <br>
+@ref fal_elem_ref_sec_33 <br>
+@ref fal_elem_ref_sec_34 <br>
+@ref fal_elem_ref_sec_35 <br>
+@ref fal_elem_ref_sec_36 <br>
+@ref fal_elem_ref_sec_37 <br>
+@ref fal_elem_ref_sec_38 <br>
+@ref fal_elem_ref_sec_39 <br>
+
+@section fal_elem_ref_sec_1 Overview
+The reference for each element is arranged into sections, as described below:
+
+@subsection fal_elem_ref_sec_1_1 Purpose:
+This section describes what the elements general purpose is within the specifications.
+
+@subsection fal_elem_ref_sec_1_2 Attributes:
+This section describes available attributes for the elements, and whether they are required or optional.
+
+@subsection fal_elem_ref_sec_1_3 Usage:
+Describes where the element may appear, whether the element may have sub-elements, and other important usage information.
+
+@subsection fal_elem_ref_sec_1_4 Examples:
+For many elements, this section will contain brief examples showing the element used in context.
+
+
+@section fal_elem_ref_sec_2 \<AbsoluteDim\> Element
+
+@subsection fal_elem_ref_sec_2_1 Purpose:
+The @c \<AbsoluteDim\> element is used to define a component dimension for an area rectangle. @c \<AbsoluteDim\> is used to specify absolute pixel values for a dimension.
+
+@subsection fal_elem_ref_sec_2_2 Attributes:
+@arg @c value  specifies the a number of pixels. Required attribute.
+
+@subsection fal_elem_ref_sec_2_3 Usage:
+@li The @c \<AbsoluteDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.
+@li The @c \<AbsoluteDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify an operand for a dimension calculation.
+
+@subsection fal_elem_ref_sec_2_4 Examples:
+The following shows @c \<AbsoluteDim\> used to define an area rectangle. In the example, all four component dimensions of the area rectangle are specified using @c \<AbsoluteDim\>:
+@code
+<Area>
+  <Dim type="LeftEdge" >
+    <AbsoluteDim value="10" />
+  </Dim>
+  <Dim type="TopEdge" >
+    <AbsoluteDim value="50" />
+  </Dim>
+  <Dim type="Width" >
+    <AbsoluteDim value="290" />
+  </Dim>
+  <Dim type="Height" >
+    <AbsoluteDim value="250" />
+  </Dim>
+</Area>
+@endcode
+
+The following shows @c \<AbsoluteDim\> in use as part of a dimension calculation sequence. In the example the left edge is being set to the width of the child widget 'myWidget' minus two pixels:
+@code
+<Area>
+  <Dim type="LeftEdge" >
+    <OperatorDim op="Subtract" >
+      <WidgetDim widget="myWidget" dimension="Width" />
+      <AbsoluteDim value="2" />
+    </OperatorDim>
+  </Dim>
+  ...
+</Area>
+@endcode
+
+Finally, we see @c \<AbsoluteDim\> as part of a dimension calculation sequence. In the example, we are adding the value of some window property to the starting absolute value of six:
+@code
+<Area>
+  ...
+  <Dim type="Height" >
+    <OperatorDim op="Add" >
+      <AbsoluteDim value="6" />
+      <PropertyDim name="someHeightProperty" />
+    </OperatorDim>
+  </Dim>
+</Area>
+@endcode
+
+
+
+@section fal_elem_ref_sec_3 \<Area\> Element
+
+@subsection fal_elem_ref_sec_3_1 Purpose:
+The @c \<Area\> element is a simple container element for the @c \<Dim\> dimension elements, or a single @c \<AreaProperty\> element, in order to form a rectangular area. @c \<Area\> is generally used to define target regions which are to be used for rendering imagery, text, to place a component child widget, or to form 'named' areas required by the base widget.
+
+@subsection fal_elem_ref_sec_3_2 Attributes:
+@c \<Area\> has no attributes.
+
+@subsection fal_elem_ref_sec_3_3 Usage:
+
+<ul>
+    <li>The @c \<Area\> element must contain either:</li>
+    <ul>
+        <li>A single @c \<AreaProperty\> element that describes a URect type property where the final area can be obtained.</li>
+
+        <li>Four @c \<Dim\> elements:</li>
+        <ul>
+            <li>One @c \<Dim\> element must define the left edge or x position.</li>
+            <li>One @c \<Dim\> element must define the top edge or y position.</li>
+            <li>One @c \<Dim\> element must define either the right edge or width.</li>
+            <li>One @c \<Dim\> element must define either the bottom edge or height.</li>
+        </ul>
+    </ul>
+
+    <li>The @c \<Area\> element may appear in any of the following elements:</li>
+    <ul>
+        <li>@c \<Child\> to define the target area to be occupied by a child widget.</li>
+        <li>@c \<ImageryComponent\> to define the target rendering area of an image.</li>
+        <li>@c \<NamedArea\> to define an area which can be retrieved by name.</li>
+        <li>@c \<TextComponent\> to define the target rendering area of some text.</li>
+        <li>@c \<FrameComponent\> to define the target rendering area for a frame.</li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_3_4 Examples:
+In this example we can see a named area being defined:
+@code
+<NamedArea name="exampleArea" >
+  <Area>
+    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width"><UnifiedDim scale="1.0" /></Dim>
+    <Dim type="Height"><UnifiedDim scale="1.0" /></Dim>
+  </Area>
+</NamedArea>
+@endcode
+
+@section fal_elem_ref_sec_4 \<AreaProperty\> Element
+
+@subsection fal_elem_ref_sec_4_1 Purpose:
+The @c \<AreaProperty\> element is intended to allow the system to access a property on the target window to obtain the final target area of a component being defined.
+
+@subsection fal_elem_ref_sec_4_2 Attributes:
+@arg @c name  specifies the name of the property to access. The named property must access a URect value. Required attribute.
+
+@subsection fal_elem_ref_sec_4_3 Usage:
+@li The @c \<AreaProperty\> element may not contain sub-elements.
+@li The @c \<AreaProperty\> element may appear as a sub-element only within the main @c \<Area\> element.
+
+@subsection fal_elem_ref_sec_4_4 Examples:
+
+
+@section fal_elem_ref_sec_5 \<Child\> Element
+
+@subsection fal_elem_ref_sec_5_1 Purpose:
+The @c \<Child\> element defines a component widget that will be created and
+added to each instance of any window using the @c \<WidgetLook\> being defined.
+Some base widgets have requirements for @c \<Child\> element definition that
+must be provided.
+
+@subsection fal_elem_ref_sec_5_2 Attributes:
+@arg @c type  specifies the widget type to create. Required attribute.
+@arg @c nameSuffix  specifies a suffix which will be used when naming the
+widget. The final name of the child widget will be that of the parent with
+this suffix appended. Required attribute.
+@arg @c look  specifies the name of a widget look to apply to the child widget.
+You should only use this if 'type' specifies a Falagard base widget type.
+Optional attribute.
+@arg @c autoWindow specifies whether this child window is to be flagged as an
+auto-window. Optional attribute, default value is @c true.
+
+@subsection fal_elem_ref_sec_5_3 Usage:
+Note: the sub-elements should appear in the order that they are defined here.
+
+<ul>
+    <li>The @c \<Child\> element may contain any number of @c \<EventAction\>
+        elements that define actions to be taken by the containing widget in
+        response to events being fired on the child widget being defined.</li>
+    <li>The @c \<Child\> element must contain an @c \<Area\> element that defines the location of the child widget in relation to the component being defined.</li>
+    <li>You may optionally specify a single @c \<VertAlignment\> element to set the vertical alignment for the child.</li>
+    <li>You may optionally specify a single @c \<HorzAlignment\> element to set the horizontal alignment for the child.</li>
+    <li>You may specify any number of @c \<Property\> elements to set default values for any property supported by the widget type being used for the child.</li>
+    <li>The @c \<Child\> element may only appear within the @c \<WidgetLook\> element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_5_4 Examples:
+
+In this example, taken from TaharezLook.looknfeel, we see how the title bar child widget required by the frame window type is defined:
+@code
+<WidgetLook name="TaharezLook/FrameWindow">
+  ...
+  <Child type="TaharezLook/Titlebar" nameSuffix="__auto_titlebar__">
+    <Area>
+      <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+      <Dim type="Height" >
+        <OperatorDim op="Multiply">
+          <FontDim type="LineSpacing" />
+          <AbsoluteDim value="1.5" />
+        </OperatorDim>
+      </Dim>
+    </Area>
+    <Property name="AlwaysOnTop" value="False" />
+  </Child>
+  ...
+</WidgetLook>
+@endcode
+
+@section fal_elem_ref_sec_6 \<ColourProperty\> Element
+
+@subsection fal_elem_ref_sec_6_1 Purpose:
+The @c \<ColourProperty\> element is intended to allow the system to access a property on the target window to obtain colour information to be used when drawing some part of the component being defined.
+
+@subsection fal_elem_ref_sec_6_2 Attributes:
+@arg @c name  specifies the name of the property to access. The named property must access a single colour value. Required attribute.
+
+@subsection fal_elem_ref_sec_6_3 Usage:
+<ul>
+    <li>The @c \<ColourProperty\> element may not contain sub-elements.</li>
+
+    <li>The @c \<ColourProperty\> element may appear as a sub-element within any of the following elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\> to specify a modulating colour to be applied when rendering the image.</li>
+        <li>@c \<ImagerySection\> to specify a modulating colour to be applied to all imagery components within the imagery section as it is rendered.</li>
+        <li>@c \<Section\> to specify a modulating colour to be applied to all imagery in the named section as it is rendered.</li>
+        <li>@c \<TextComponent\> to specify a colour to use when rendering the text component.</li>
+        <li>@c \<FrameComponent\> to specify a colour to use when rendering the text frame.</li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_6_4 Examples:
+
+The following example, listing imagery for a button in the "Normal" state, shows the @c \<ColourProperty\> element in use to specify a property where colours to be used when rendering the ImagerySection named 'label' can be found:
+@code
+<StateImagery name="Normal">
+  <Layer>
+    <Section section="normal" />
+    <Section section="label">
+      <ColourProperty name="NormalTextColour" />
+    </Section>
+  </Layer>
+</StateImagery>
+@endcode
+
+@section fal_elem_ref_sec_7 \<ColourRectProperty\> Element
+
+@subsection fal_elem_ref_sec_7_1 Purpose:
+The @c \<ColourRectProperty \> element is intended to allow the system to access a property on the target window to obtain colour information to be used when drawing some part of the component being defined.
+
+@subsection fal_elem_ref_sec_7_2 Attributes:
+@arg @c name  specifies the name of the property to access. The named property must access a ColourRect value. Required attribute.
+
+@subsection fal_elem_ref_sec_7_3 Usage:
+<ul>
+    <li>The @c \<ColourRectProperty\> element may not contain sub-elements.</li>
+
+    <li>The @c \<ColourRectProperty\> element may appear as a sub-element within any of the following elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\> to specify a modulating ColourRect to be applied when rendering the image.</li>
+        <li>@c \<ImagerySection\> to specify a modulating ColourRect to be applied to all imagery components within the imagery section as it is rendered.</li>
+        <li>@c \<Section\> to specify a modulating ColourRect to be applied to all imagery in the named section as it is rendered.</li>
+        <li>@c \<TextComponent\> to specify a ColourRect to use when rendering the text component.</li>
+        <li>@c \<FrameComponent\> to specify a colour to use when rendering the text frame.</li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_7_4 Examples:
+
+@code
+...
+<StateImagery name="SpecialState">
+  <Layer>
+    <Section section="special_main">
+      <ColourRectProperty name="SpecialColours" />
+    </Section>
+  </Layer>
+</StateImagery>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_8 \<Colours\> Element
+
+@subsection fal_elem_ref_sec_8_1 Purpose:
+The @c \<Colours\> element is used to explicitly specify values for a ColourRect that should be used when rendering some part of the component being defined.
+
+@subsection fal_elem_ref_sec_8_2 Attributes:
+@arg @c topLeft  specifies a hex colour value, of the form "AARRGGBB", to be used for the top-left corner of the ColourRect. Required attribute.
+@arg @c topRight  specifies a hex colour value, of the form "AARRGGBB", to be used for the top-right corner of the ColourRect. Required attribute.
+@arg @c bottomLeft  specifies a hex colour value, of the form "AARRGGBB", to be used for the bottom-left corner of the ColourRect. Required attribute.
+@arg @c bottomRight  specifies a hex colour value of the form "AARRGGBB", to be used for the bottom-right corner of the ColourRect. Required attribute.
+
+@subsection fal_elem_ref_sec_8_3 Usage:
+<ul>
+    <li>The @c \<Colours\> element may not contain sub-elements.</li>
+
+    <li>The @c \<Colours\> element may appear as a sub-element within any of the following elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\> to specify a modulating ColourRect to be applied when rendering the image.</li>
+        <li>@c \<ImagerySection\> to specify a modulating ColourRect to be applied to all imagery components within the imagery section as it is rendered.</li>
+        <li>@c \<Section\> to specify a modulating ColourRect to be applied to all imagery in the named section as it is rendered.</li>
+        <li>@c \<TextComponent\> to specify a ColourRect to use when rendering the text component.</li>
+        <li>@c \<FrameComponent\> to specify a colour to use when rendering the text frame.</li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_8_4 Examples:
+In this example, we see the @c \<Colours\> element used to specify the value 'FFFFFF00' as the colour for all four corners of the colour rect to be used when rendering the image being defined:
+@code
+...
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+    <Dim type="Height" ><AbsoluteDim value="24" /></Dim>
+  </Area>
+  <Image imageset="newImageset" image="FunkyComponent" />
+  <Colours
+    topLeft="FFFFFF00"
+    topRight="FFFFFF00"
+    bottomLeft="FFFFFF00"
+    bottomRight="FFFFFF00"
+  />
+  <VertFormat type="Stretched" />
+  <HorzFormat type="Stretched" />
+</ImageryComponent>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_9 \<Dim\> Element
+
+@subsection fal_elem_ref_sec_9_1 Purpose:
+The @c \<Dim\> element is intended as a container element for a single dimension of an area rectangle.
+
+@subsection fal_elem_ref_sec_9_2 Attributes:
+@arg @c type  specifies what the dimension being defined represents. This attribute should be set to one of the values defined for the DimensionType enumeration (see below). Required attribute.
+
+@subsection fal_elem_ref_sec_9_3 Usage:
+<ul>
+    <li>The @c \<Dim\> element may only appear within the @c \<Area\> element.</li>
+    
+    <li>The @c \<Dim\> element may contain any of the following specialised dimension elements:</li>
+    <ul>
+        <li>@c \<AbsoluteDim\></li>
+        <li>@c \<FontDim\></li>
+        <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
+        <li>@c \<PropertyDim\></li>
+        <li>@c \<UnifiedDim\></li>
+        <li>@c \<WidgetDim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_9_4 Examples:
+
+
+@section fal_elem_ref_eventaction \<EventAction\> Element
+
+@subsection fal_elem_ref_eventaction_1 Purpose:
+The @c \<EventAction\> element is used to specify a predefined action that
+should be performed by the containing widget for the child widget being
+defined, in response to a specified event being fired by the child widget.
+@par This is useful in situations where the containing widget has imagery or
+other content that is tied to some state on the child wiget.  By using the
+facilities provided by \<EventAction\> the containing widget is updated on
+demand in response to changes on the child.
+
+@subsection fal_elem_ref_eventaction_2 Attributes:
+@arg @c event specifies the name of the event on the Child component being
+defined that will trigger the action.  Required attribute.
+@arg @c action specifies one of the values defined for the
+@ref fal_enum_ref_sec_12 "ChildEventAction" enumeration. Required attribute.
+
+@subsection fal_elem_ref_eventaction_3 Usage:
+<ul>
+    <li>The @c \<EventAction\> element may not conatin any sub-elements.</li>
+    <li>The @c \<EventAction\> element may only appear as a sub-element
+        within @c \<Child\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventaction_4 Examples:
+In this example, an EventAction is defined for the thumb of a slider widget.
+The definition indicates that when the @c Moved is fired for the thumb
+widget, the containing slider should redraw itself.  This is useful in scenarios
+where the slider has imagery whose position is dependent upon the position of
+the thumb - by using the \<EventAction\> system, the required updates are fully
+automated.
+@code
+<Falagard>
+  <WidgetLook name="ANewLook/Slider">
+  ...
+    <Child  type="ANewLook/SliderThumb" nameSuffix="__auto_thumb__">
+      <EventAction event="Moved" action="Redraw" />
+      <Area>
+        <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+        ...
+      </Area>
+      ...
+  </WidgetLook>
+  ...
+</Falagard>
+@endcode
+
+
+@section fal_elem_ref_eventlinkdefintion \<EventLinkDefinition\> Element
+
+@subsection fal_elem_ref_eventlinkdefintion_1 Purpose:
+The @c \<EventLinkDefinition\> element is used to define an event on a window
+using the @c \<WidgetLook\> being defined.  The new event can be linked to
+other events on the window, or to events on child windows.  For child windows,
+the window must exist, and the facility is largely intended to be able to link
+to events on windows defined via the @c \<Child\> element.
+
+@subsection fal_elem_ref_eventlinkdefintion_2 Attributes:
+@arg @c name specifies the unique name to use for the new event.  Required attribute.
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined.  Optional attribute.
+@arg @c event specifies the name of an event on widget identified via @cwidget that
+is to be linked to the new event being defined. If this is omitted but @c widget is
+specified, it will be assumed that the event to link to has the same name as the
+event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinkdefintion_3 Usage:
+<ul>
+    <li>The @c \<EventLinkDefinition\> element may contain any number of @c \<EventLinkTarget\> sub-elements.</li>
+    <li>The @c \<EventLinkDefinition\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinkdefintion_4 Examples:
+TODO
+
+
+@section fal_elem_ref_eventlinktarget \<EventLinkTarget\> Element
+
+@subsection fal_elem_ref_eventlinktarget_1 Purpose:
+The @c \<EventLinkTarget\> element specifies a target widget suffix and
+event name to be used with a @c \<EventLinkDefinition\>.  Whenever the
+event specified here fires, the event defined by the
+enclosing @c \<EventLinkDefinition\> will also fire.
+
+@subsection fal_elem_ref_eventlinktarget_2 Attributes:
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined by the enclosing @c \<EventLinkDefinition\>.
+Optional attribute.
+@arg @c event specifies the name of an event on the widget identified via @cwidget that
+is to be linked to the event being defined by the enclosing @c \<EventLinkDefinition\>.
+If this is omitted but @c widget is specified, it will be assumed that the event to link
+to has the same name as the event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinktarget_3 Usage:
+<ul>
+    <li>The @c \<EventLinkTarget\> element may not contain sub-elements.</li>
+    <li>The @c \<EventLinkTarget\> element may only appear as a sub-element within @c \<EventLinkDefinition\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinktarget_4 Examples:
+TODO
+
+
+@section fal_elem_ref_sec_11 \<Falagard\> Element
+
+@subsection fal_elem_ref_sec_11_1 Purpose:
+The @c \<Falagard\> element is the root element in Falagard XML skin definition files. The element serves mainly as a container for @c \<WidgetLook\> elements
+
+@subsection fal_elem_ref_sec_11_2 Attributes:
+@arg @c version  specifies the version of the resource file. Should be specified for all files, current CEGUI falagard version is: 7
+
+@subsection fal_elem_ref_sec_11_3 Usage:
+<ul>
+    <li>The @c \<Falagard\> element is the root element for Falagard skin files.</li>
+    <li>The @c \<Falagard\> element may contain any number of @c \<WidgetLook\> elements.</li>
+    <li>No element may contain @c \<Falagard\> elements as a sub-element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_11_4 Examples:
+Here we just see the general structure of a Falagard XML file, notice that the @c \<Falagard\> element just serves as a container for multiple @c \<WidgetLook\> elements:
+@code
+<?xml version="1.0" ?>
+<Falagard>
+  <WidgetLook name="TaharezLook/Button">
+  ...
+  </WidgetLook>
+  <WidgetLook ... >
+  ...
+  </WidgetLook>
+  ...
+</Falagard>
+@endcode
+
+
+@section fal_elem_ref_sec_12 \<FontDim\> Element
+
+@subsection fal_elem_ref_sec_12_1 Purpose:
+The @c \<FontDim\> element is used to take some measurement of a Font, and use it as a dimension component of an area rectangle.
+
+@subsection fal_elem_ref_sec_12_2 Attributes:
+@arg @c widget  specifies the name suffix of a child window to access when automatically obtaining the font or text string to be used when calculating the dimension's value. The final name used to access the widget will be that of the target window with this suffix appended.  If this suffix is not specified, the target window itself is used. Optional attribute.
+@arg @c type  specifies the type of font metric / measurement to use for this dimension. This should be set to one of the values from the FontMetricType enumeration. Required attribute.
+@arg @c font  specifies the name of a font. If no font is given, the font will be taken from the target window at the time the dimension's value is taken. Optional attribute.
+@arg @c string  For horizontal extents measurement, specifies the string to be measured. If no explicit string is given, the window text for the target window at the time the dimension's value is taken will be used instead. Optional attribute.
+@arg @c padding  an absolute pixel 'padding' value to be added to the font metric value. Optional attribute.
+
+@subsection fal_elem_ref_sec_12_3 Usage:
+<ul>
+    <li>The @c \<FontDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<FontDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_12_4 Examples:
+This first example just gets the line spacing for the window's current font:
+@code
+<Dim type="Height">
+  <FontDim type="LineSpacing" />
+</Dim>
+@endcode
+
+Now we take an extents measurement of the windows current text, using a specified font, and pad the result by ten pixels:
+@code
+<Dim type="Width">
+  <FontDim type="HorzExtent" font="Roman-14" padding="10" />
+</Dim>
+@endcode
+
+
+@section fal_elem_ref_sec_13 \<FontProperty\> Element
+
+@subsection fal_elem_ref_sec_13_1 Purpose:
+The @c \<FontProperty\> element is intended to allow the system to access a property on the target window to obtain the font to be used when rendering the TextComponent being defined.
+
+@subsection fal_elem_ref_sec_13_2 Attributes:
+@arg @c name  specifies the name of the property to access. Required attribute.  The value of the named property is taken as being the name of a Font.
+
+@subsection fal_elem_ref_sec_13_3 Usage:
+<ul>
+    <li>The @c \<FontProperty\> element may not contain sub-elements.</li>
+    <li>The @c \<FontProperty\> element may appear as a sub-element only within the @c \<TextComponent\> element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_13_4 Examples:
+
+
+@section fal_elem_ref_sec_14 \<FrameComponent\> Element
+
+@subsection fal_elem_ref_sec_14_1 Purpose:
+The @c \<FrameComponent\> element is used to define an imagery frame using a
+maximum of eight images for the corners and edges, and a single, formatted,
+image for the background. Any of the images may be omitted if not required.
+
+@subsection fal_elem_ref_sec_14_2 Attributes:
+No attributes are currently defined for the @c \<FrameComponent\> element.
+
+@subsection fal_elem_ref_sec_14_3 Usage:
+Note: the sub-elements should appear in the order that they are defined here.
+
+<ul>
+    <li>@c \<Area\> defining the target area for this frame.</li>
+    <li>Up to nine @c \<Image\> or @c \<ImageProperty\> elements specifying the
+        images to be drawn and in what positions. Note that it is acceptable to
+        freely mix @c \<Image\> and @c \<ImageProperty\> in a single 
+        @c \<FrameComponent\> definition.</li>
+
+    <li>Optionally specifying the colours for the entire frame, one of the colour elements:</li>
+    <ul>
+        <li>@c \<Colours\></li>
+        <li>@c \<ColourProperty\></li>
+        <li>@c \<ColourRectProperty\></li>
+    </ul>
+
+    <li>Optionally, to specify the vertical formatting to use for the frame background, either of:</li>
+    <ul>
+        <li>@c \<VertFormat\></li>
+        <li>@c \<VertFormatProperty\></li>
+    </ul>
+
+    <li>Optionally, to specify the horizontal formatting to use for the frame background, either of:</li>
+    <ul>
+        <li>@c \<HorzFormat\></li>
+        <li>@c \<HorzFormatProperty\></li>
+    </ul>
+
+    <li>The @c \<FrameComponent\> element may only appear as a sub-element of the element @c \<ImagerySection\>.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_14_4 Examples:
+
+The following defines a full frame and background. It is taken from
+the TaharezLook skin specification for the Listbox widget:
+
+@code
+<FrameComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+  <Image type="TopLeftCorner"
+    imageset="TaharezLook" image="ListboxTopLeft"
+  />
+  <Image type="TopRightCorner"
+    imageset="TaharezLook" image="ListboxTopRight"
+  />
+  <Image type="BottomLeftCorner"
+    imageset="TaharezLook" image="ListboxBottomLeft"
+  />
+  <Image type="BottomRightCorner"
+    imageset="TaharezLook" image="ListboxBottomRight"
+  />
+  <Image type="LeftEdge"
+    imageset="TaharezLook" image="ListboxLeft"
+  />
+  <Image type="RightEdge"
+    imageset="TaharezLook" image="ListboxRight"
+  />
+  <Image type="TopEdge"
+    imageset="TaharezLook" image="ListboxTop"
+  />
+  <Image type="BottomEdge"
+    imageset="TaharezLook" image="ListboxBottom"
+  />
+  <Image type="Background"
+    imageset="TaharezLook" image="ListboxBackdrop"
+  />
+</FrameComponent>
+@endcode
+
+
+@section fal_elem_ref_sec_15 \<HorzAlignment\> Element
+
+@subsection fal_elem_ref_sec_15_1 Purpose:
+The @c \<HorzAlignment\> element is used to specify the horizontal alignment option required for a child window element.
+
+@subsection fal_elem_ref_sec_15_2 Attributes:
+@arg @c type  specifies one of the values from the HorizontalAlignment enumeration indicating the desired horizontal alignment.
+
+@subsection fal_elem_ref_sec_15_3 Usage:
+<ul>
+    <li>The @c \<HorzAlignment\> element may only appear as a sub-element of the @c \<Child\> element.</li>
+    <li>The @c \<HorzAlignment\> element may not contain any sub-elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_15_4 Examples:
+This example defines a scrollbar type child widget. We have used the @c \<HorzAlignment\> element to specify that the scrollbar appear on the far right edge of the component being defined:
+@code
+...
+<Child type="MyLook/VertScrollbar" nameSuffix="__auto_vscrollbar__">
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+  <HorzAlignment type="RightAligned" />
+</Child>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_16 \<HorzFormat\> Element
+
+@subsection fal_elem_ref_sec_16_1 Purpose:
+The @c \<HorzFormat\> element is used to specify the required horizontal formatting for an image, frame, or text component.
+
+@subsection fal_elem_ref_sec_16_2 Attributes:
+<ul>
+    <li>@c type  specifies the required horizontal formatting option.</li>
+    <ul>
+        <li>For use in ImageryComponents or FrameComponents, this will be one of the values from the HorizontalFormat enumeration.</li>
+        <li>For use in TextComponents, this will one of the values form the HorizontalTextFormat enumeration.</li>
+    </ul>
+    <li>@c component  Only for FrameComponent. Specifies the part of the frame
+        that this formatting is to be used for. Should be "TopEdge",
+        "BottomEdge" or "Background" from the FrameImageComponent enumeration.
+        Optional attribute, defaults to "Background".</li>
+</ul>
+
+@subsection fal_elem_ref_sec_16_3 Usage:
+<ul>
+    <li>The @c \<HorzFormat\> element may only appear as a sub-element of the following elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\></li>
+        <li>@c \<FrameComponent\></li>
+        <li>@c \<TextComponent\></li>
+    </ul>
+
+    <li>The @c \<HorzFormat\> element may not contain any sub-elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_16_4 Examples:
+This first example shows an ImageryComponent definition. We use @c \<HorzFormat\> to specify that we want the image stretched to cover the entire width of the designated target area:
+@code
+...
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><AbsoluteDim value="25" /></Dim>
+    <Dim type="Height" ><AbsoluteDim value="25" /></Dim>
+  </Area>
+  <Image imageset="myImageset" image="coolImage" />
+  <VertFormat type="Stretched" />
+  <HorzFormat type="Stretched" />
+</ImageryComponent>
+...
+@endcode
+
+This second example is for a TextComponent. You can see @c \<HorzFormat\> used here to specify that we want the text centred within the target area, and word-wrapped where required:
+@code
+<TextComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="RightEdge" ><UnifiedDim scale="1" type="Width" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+  <HorzFormat type="WordWrapLeftAligned" />
+</TextComponent>
+@endcode
+
+
+@section fal_elem_ref_sec_17 \<HorzFormatProperty\> Element
+
+@subsection fal_elem_ref_sec_17_1 Purpose:
+The @c \<HorzFormatProperty\> element is intended to allow the system to access a property on the target window to obtain the horizontal formatting to be used when drawing the component being defined.
+
+@subsection fal_elem_ref_sec_17_2 Attributes:
+@arg @c name  specifies the name of the property to access. The named property must access a string value that will be set to one of the enumeration values appropriate for the component being defined (HorizontalTextFormat for TextComponent, and HorizontalFormat for either FrameComponent or ImageryComponent). Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame
+that this formatting is to be used for. Should be "TopEdge",
+"BottomEdge" or "Background" from the FrameImageComponent enumeration.
+Optional attribute, defaults to "Background".</li>
+
+@subsection fal_elem_ref_sec_17_3 Usage:
+<ul>
+    <li>The @c \<HorzFormatProperty\> element may not contain sub-elements.</li>
+    
+    <li>The @c \<HorzFormatProperty\> element may appear as a sub-element within any of the following elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\> to specify a horizontal formatting to be used the the image.</li>
+        <li>@c \<FrameComponent\> to specify a horizontal formatting to be used for the frame background.</li>
+        <li>@c \<TextComponent\> to specify a horizontal formatting to be used for the text.</li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_17_4 Examples:
+
+
+@section fal_elem_ref_sec_18 \<Image\> Element
+
+@subsection fal_elem_ref_sec_18_1 Purpose:
+The @c \<Image\> element is used to specify an Imageset and Image pair, and for FrameComponent images, how the image is to be used.
+
+@subsection fal_elem_ref_sec_18_2 Attributes:
+@arg @c imageset  specifies the name of an Imageset which contains the image to be used. Required attribute.
+@arg @c image  specifies the name of the image from the specified Imageset to be used. Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame that this image is to be used for. One of the values from the FrameImageComponent enumeration. Required attribute.
+
+@subsection fal_elem_ref_sec_18_3 Usage:
+<ul>
+    <li>The @c \<Image\> element may only appear as a sub-element of the @c \<ImageryComponent\> or @c \<FrameComponent\> elements.</li>
+    <li>The @c \<Image\> element may not contain any sub-elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_18_4 Examples:
+Here you can see the @c \<Image\> element used to specify the image to render for an ImageryComponent being defined:
+@code
+...
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+  </Area>
+  <Image imageset="FunkyLook" image="ButtonIcon" />
+  <VertFormat type="CentreAligned" />
+  <HorzFormat type="CentreAligned" />
+</ImageryComponent>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_19 \<ImageDim\> Element
+
+@subsection fal_elem_ref_sec_19_1 Purpose:
+The @c \<ImageDim\> element is used to define a component dimension for an area
+rectangle. @c \<ImageDim\> is used to specify some dimension of an image for use
+as an area dimension.
+
+@subsection fal_elem_ref_sec_19_2 Attributes:
+@arg @c name  specifies the name of the image to be used. Required attribute.
+@arg @c dimension  specifies the image dimension to be used. This should be set
+to one of the values defined in the DimensionType enumeration.
+Required attribute.
+
+@subsection fal_elem_ref_sec_19_3 Usage:
+<ul>
+    <li>The @c \<ImageDim\> element can appear as a sub-element in @c \<Dim\>
+        to form a dimension specification for an area.</li>
+    <li>The @c \<ImageDim\> element can appear as a sub-element of
+        @c \<OperatorDim\> to specify one of the operands for a dimension
+        calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_19_4 Examples:
+This example shows a dimension that uses @c \<ImageDim\> to fetch the width of a
+specified image for use as the dimensions value:
+@code
+...
+<Area>
+  <Dim type="LeftEdge">
+    <ImageDim name="myImages/leftImage" dimension="Width" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_imagepropertydim \<ImagePropertyDim\> Element
+
+@subsection fal_elem_ref_sec_imagepropertydim_1 Purpose:
+The @c \<ImagePropertyDim\> element is used to define a component dimension for
+an area rectangle. @c \<ImagePropertyDim\> is used to specify some dimension of
+an image that is named by a property for use as an area dimension.
+
+@subsection fal_elem_ref_sec_imagepropertydim_2 Attributes:
+@arg @c name  specifies the name of the property that will fetch the name of the
+Image to be used. Required attribute.
+@arg @c dimension  specifies the image dimension to be used. This should be set
+to one of the values defined in the DimensionType enumeration.
+Required attribute.
+
+@subsection fal_elem_ref_sec_imagepropertydim_3 Usage:
+<ul>
+    <li>The @c \<ImagePropertyDim\> element can appear as a sub-element in
+        @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<ImagePropertyDim\> element can appear as a sub-element of
+        @c \<OperatorDim\> to specify one of the operands for a dimension
+        calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_imagepropertydim_4 Examples:
+This example shows a dimension that uses @c \<ImagePropertyDim\> to fetch the
+Height of the image specified in the property @c FrameTopImage for use as the
+dimension's value:
+@code
+...
+<Area>
+  <Dim type="TopEdge">
+    <ImagePropertyDim name="FrameTopImage" dimension="Height" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_20 \<ImageryComponent\> Element
+
+@subsection fal_elem_ref_sec_20_1 Purpose:
+The @c \<ImageryComponent\> element defines a single image to be drawn within a given ImagerySection. The ImageryComponent contains all information about which image is to be drawn, where it should be drawn, which colours are to be used and how the image should be formatted.
+
+@subsection fal_elem_ref_sec_20_2 Attributes:
+No attributes are defined for the @c \<ImageryComponent\> element.
+
+@subsection fal_elem_ref_sec_20_3 Usage:
+Note: the sub-elements should appear in the order that they are defined here.
+
+<ul>
+    <li>@c \<Area\> defining the target area for this image.</li>
+    
+    <li>Either one of:</li>
+    <ul>
+        <li>@c \<Image\> element specifying the image to be drawn.</li>
+        <li>@c \<ImageProperty\> element specifying a property defining the image to be drawn.</li>
+    </ul>
+    
+    <li>Optionally specifying the colours for this single image, one of the colour elements:</li>
+    <ul>
+        <li>@c \<Colours\></li>
+        <li>@c \<ColourProperty\></li>
+        <li>@c \<ColourRectProperty\></li>
+    </ul>
+    
+    <li>Optionally, to specify the vertical formatting to use, either of:</li>
+    <ul>
+        <li>@c \<VertFormat\></li>
+        <li>@c \<VertFormatProperty\></li>
+    </ul>
+    
+    <li>Optionally, to specify the horizontal formatting to use, either of:</li>
+    <ul>
+        <li>@c \<HorzFormat\></li>
+        <li>@c \<HorzFormatProperty\></li>
+    </ul>
+    
+    <li>The @c \<ImageryComponent\> element may only appear as a sub-element of the element @c \<ImagerySection\>.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_20_4 Examples:
+The following was taken from TaharezLook.looknfeel and shows a full ImageryComponent definition:
+@code
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge" ><UnifiedDim scale="0" type="LeftEdge" /></Dim>
+    <Dim type="TopEdge" ><UnifiedDim scale="0.2" type="TopEdge" /></Dim>
+    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="0.3" type="Height" /></Dim>
+  </Area>
+  <Image imageset="TaharezLook" image="TextSelectionBrush" />
+  <Colours
+    topLeft="FFFFFF00"
+    topRight="FFFFFF00"
+    bottomLeft="FFFFFF00"
+    bottomRight="FFFFFF00"
+  />
+  <VertFormat type="Tiled" />
+  <HorzFormat type="Stretched" />
+</ImageryComponent>
+@endcode
+
+
+@section fal_elem_ref_sec_21 \<ImageProperty\> Element
+
+@subsection fal_elem_ref_sec_21_1 Purpose:
+The @c \<ImageProperty\> element is intended to allow the system to access a
+property on the target window to obtain the final image to be used when
+rendering the component being defined.
+
+@subsection fal_elem_ref_sec_21_2 Attributes:
+@arg @c name  specifies the name of the property to access that will provide the
+name of the Image to be used. Required attribute.
+@arg @c component  Only for @c \<FrameComponent\>. Specifies the part of the frame
+that this image is to be used for. One of the values from the
+FrameImageComponent enumeration. Required attribute.
+
+@subsection fal_elem_ref_sec_21_3 Usage:
+<ul>
+    <li>The @c \<ImageProperty\> element may not contain sub-elements.</li>
+    <li>The @c \<ImageProperty\> element may appear as a sub-element within
+        either @c \<ImageryComponent\> or @c \<FrameComponent\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_21_4 Examples:
+
+
+@section fal_elem_ref_sec_22 \<ImagerySection\> Element
+
+@subsection fal_elem_ref_sec_22_1 Purpose:
+The @c \<ImagerySection\> element is used to group multiple @c \<ImageryComponent\> and @c \<TextComponent\> definitions into named sections which can then be specified for use as imagery in state definitions.
+
+@subsection fal_elem_ref_sec_22_2 Attributes:
+@arg @c name  specifies the name to be given to this ImagerySection. Names are per-WidgetLook, and specifying the same name more than once will replace the previous definition. Required attribute.
+
+@subsection fal_elem_ref_sec_22_3 Usage:
+Note: the sub-elements should appear in the order that they are defined here.
+
+<ul>
+    <li>To optionally specify colours to be modulated with the individual component's colours, the @c \<ImagerySection\> may contain one of the colour definition elements:</li>
+    <ul>
+        <li>@c \<Colours\></li>
+        <li>@c \<ColourProperty\></li>
+        <li>@c \<ColourRectProperty\></li>
+    </ul>
+    
+    <li>Any number of @c \<FrameComponent\> elements may then follow.</li>
+    <li>Followed by any number of @c \<ImageryComponent\> elements.</li>
+    <li>Finally, any number of @c \<TextComponent\> elements may be given.</li>
+    <li>The @c \<ImagerySection\> element may only appear as a sub-element of the @c \<WidgetLook\> element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_22_4 Examples:
+@code
+<ImagerySection name="example">
+  <ImageryComponent>
+    <Area>
+      <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+      <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+    </Area>
+    <Image imageset="sillyImages" image="anotherImage" />
+    <VertFormat type="Stretched" />
+    <HorzFormat type="Stretched" />
+  </ImageryComponent>
+  <TextComponent>
+    <Area>
+      <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+      <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+    </Area>
+  </TextComponent>
+</ImagerySection>
+@endcode
+
+
+@section fal_elem_ref_sec_23 \<Layer\> Element
+
+@subsection fal_elem_ref_sec_23_1 Purpose:
+The @c \<Layer\> element is used to define layers of imagery within the definition of a StateImagery section.
+
+@subsection fal_elem_ref_sec_23_2 Attributes:
+@arg @c priority  specifies the priority for the layer. Higher priorities appear in front of lower priorities. Default priority is 0. Optional attribute.
+
+@subsection fal_elem_ref_sec_23_3 Usage:
+<ul>
+    <li>The @c \<Layer\> element may only appear as a sub-element of the @c \<StateImagery\> element.</li>
+    <li>The @c \<Layer\> element may contain any number of @c \<Section\> sub-elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_23_4 Examples:
+Here we see a single layer with multiple sections included. This example was taken from the TaharezLook skin XML file (ListHeaderSegment widget):
+@code
+<StateImagery name="Normal">
+  <Layer>
+    <Section section="segment_normal" />
+    <Section section="splitter_normal" />
+    <Section section="label" />
+  </Layer>
+</StateImagery>
+@endcode
+
+
+@section fal_elem_ref_sec_24 \<NamedArea\> Element
+
+@subsection fal_elem_ref_sec_24_1 Purpose:
+Defines an area that can be accessed via it's name. Generally this this used by base widgets to obtain skin supplied areas for use in rendering or other widget specific operations.
+
+@subsection fal_elem_ref_sec_24_2 Attributes:
+@arg @c name  specifies a name for the area being defined. Required attribute.
+
+@subsection fal_elem_ref_sec_24_3 Usage:
+<ul>
+    <li>The @c \<NamedArea\> element must contain only an @c \<Area\> sub-element defining the area rectangle for the named area.</li>
+    <li>The @c \<NamedArea\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_24_4 Examples:
+This example defines a named area called 'TextArea'. It is defined as being an area seven pixels inside the total area of the widget being defined:
+@code
+<NamedArea name="TextArea">
+  <Area>
+    <Dim type="LeftEdge" >
+      <AbsoluteDim value="7" />
+    </Dim>
+    <Dim type="TopEdge" >
+      <AbsoluteDim value="7" />
+    </Dim>
+    <Dim type="RightEdge" >
+      <UnifiedDim scale="1.0" offset="-7" type="RightEdge" />
+    </Dim>
+    <Dim type="BottomEdge" >
+      <UnifiedDim scale="1.0" offset="-7" type="BottomEdge" />
+    </Dim>
+  </Area>
+</NamedArea>
+@endcode
+
+
+@section fal_elem_ref_sec_operatordim \<OperatorDim\> Element
+
+@subsection fal_elem_ref_sec_operatordim_1 Purpose:
+The @c \<OperatorDim\> element allows you to use the result of performing a
+mathematical calculation on two two dimension elements. Since either dimension
+used as operands may also be an @c \<OperatorDim\> it is possible to create
+expression trees to perform any mathematical calculation that can be expressed
+using the supported operators.
+
+@subsection fal_elem_ref_sec_operatordim_2 Attributes:
+@arg @c op  specifies one of the vales from the DimensionOperator enumeration
+indicating the mathematical operation to be performed. Required attribute.
+
+@subsection fal_elem_ref_sec_operatordim_3 Usage:
+<ul>
+    <li>A single @c \<OperatorDim\> element may appear as a sub-element within the following:</li>
+    <ul>
+        <li>@c \<Dim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+    
+    <li>The @c \<OperatorDim\> element must contain any of two the following dimension elements:</li>
+    <ul>
+        <li>@c \<AbsoluteDim\></li>
+        <li>@c \<FontDim\></li>
+        <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
+        <li>@c \<PropertyDim\></li>
+        <li>@c \<UnifiedDim\></li>
+        <li>@c \<WidgetDim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_operatordim_4 Examples:
+The following multiplies two simple AbsoluteDim dimensions:
+@code
+...
+<OperatorDim op="Multiply">
+  <AbsoluteDim value="10" />
+  <AbsoluteDim value="4" />
+</OperatorDim>
+...
+@endcode
+
+The next example takes the height of the font used for the target window, adds four pixels and multiplies the result by two.
+
+The operation performed will be:
+
+@f$ (LineSpacing + 4) {*} 2 @f$
+
+@code
+...
+<OperatorDim op="Multiply">
+  <OperatorDim op="Add">
+    <FontDim type="LineSpacing" />
+    <AbsoluteDim value="4" />
+  </OperatorDim>
+  <AbsoluteDim value="2" />
+</OperatorDim>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_25 \<Property\> Element
+
+@subsection fal_elem_ref_sec_25_1 Purpose:
+The @c \<Property\> element is used to initialise a property on a window or widget being defined.
+
+@subsection fal_elem_ref_sec_25_2 Attributes:
+@arg @c name  specifies the name of the property to be initialised. Required attribute.
+@arg @c value  specifies the value string to be used when initialising the property. Required attribute.
+
+@subsection fal_elem_ref_sec_25_3 Usage:
+<ul>
+    <li>The @c \<Property\> element may not contain any sub-elements.</li>
+    <li>The @c \<Property\> element may appear as a sub-element in @c \<WidgetLook\> elements to define property initialisers for the type being defined.</li>
+    <li>The @c \<Property\> element may appear as a sub-element in @c \<Child\> elements to define property initialisers for the child widget being defined.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_25_4 Examples:
+In this extract from the definition for TaharezLook/Titlebar, we can see the @c \<Property\> element used to set the 'CaptionColour' property; this establishes a default for all instances of this widget:
+@code
+<WidgetLook name="TaharezLook/Titlebar">
+  <Property name="CaptionColour" value="FFFFFFFF" />
+  <ImagerySection name="main">
+    <ImageryComponent>
+      <Area>
+        <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+        ...
+      </Area>
+      ...
+    </ImageryComponent>
+  </ImagerySection>
+  ...
+</WidgetLook>
+@endcode
+
+
+@section fal_elem_ref_sec_26 \<PropertyDefinition\> Element
+
+@subsection fal_elem_ref_sec_26_1 Purpose:
+The @c \<PropertyDefinition\> element creates a new named property for the widget being defined. The defined property may be accessed via any means that a 'normal' property may.
+
+@subsection fal_elem_ref_sec_26_2 Attributes:
+@arg @c name  specifies the name to use for the new property. Required attribute.
+@arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
+@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Defaults to @c Generic. Optional attribute.
+@arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
+@arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. Optional attribute.
+
+@subsection fal_elem_ref_sec_26_3 Usage:
+<ul>
+    <li>The @c \<PropertyDefinition\> element may not contain sub-elements.</li>
+    <li>The @c \<PropertyDefinition\> element must appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_26_4 Examples:
+In this example, within the WidgetLook we create a new property named 'ScrollbarWidth'. We then use this property to control the width of a component child widget. This effectively gives the user control over the width of the child scrollbar via the property:
+@code
+<WidgetLook name="PropertyDefExample">
+  <PropertyDefinition
+    name="ScrollbarWidth"
+    initialValue="12"
+    layoutOnWrite="true"
+  />
+  ...
+  <Child type="MyVertScrollbar" nameSuffix="__auto_vscrollbar__">
+    <Area>
+      <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+      <Dim type="Width" ><PropertyDim name="ScrollbarWidth" /></Dim>
+      <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+    </Area>
+    <HorzAlignment type="RightAligned" />
+  </Child>
+  ...
+</WidgetLook>
+@endcode
+
+
+@section fal_elem_ref_sec_27 \<PropertyLinkDefinition\> Element
+
+@subsection fal_elem_ref_sec_27_1 Purpose:
+The @c \<PropertyLinkDefinition\> element creates a new named property for the
+widget being defined that is linked to one or more properties on either child
+widget components, or on the parent widget.  The target widgets and properties
+can be specified either as attributes (for example if the link is to be a one to
+one mapping), or via \<PropertyLinkTarget\> elements (if there is to be a one to
+many mapping).  This allows properties on child widgets to be directly exposed
+to clients of the widget being defined, as well as allowing the widget being
+defined to make use of properties defined on a parent widget.  The defined
+property may be accessed via any means that a 'normal' property may.
+
+@subsection fal_elem_ref_sec_27_2 Attributes:
+@arg @c name  specifies the name to use for the new property. Required attribute.
+@arg @c widget  specifies either the name suffix of the child widget containing
+the first property to be linked to the property being defined, or the special
+value @c "__parent__" to indicate a back-link to the parent. Optional attribute.
+@arg @c targetProperty  specifies the name of the property on the child widget that is to be the first property linked to the new property being defined. If this is omitted but @c widget is specified, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
+@arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
+@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Defaults to @c Generic. Optional attribute.
+@arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
+@arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. It is the responsibility of the WidgetLook
+author to ensure that collisions with predefined events are avoided.
+Optional attribute.
+
+@subsection fal_elem_ref_sec_27_3 Usage:
+<ul>
+    <li>The @c \<PropertyLinkDefinition\> element may contain any number of @c \<PropertyLinkTarget\> sub-elements.</li>
+    <li>The @c \<PropertyLinkDefinition\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_27_4 Examples:
+In this example we create a new property named 'CaptionTextColour'.  This is linked to a property named 'CaptionColour' on the child widget with name suffix '__auto_titlebar__'. Any access of the 'CaptionTextColour' property on the widget will actually access the 'CaptionColour' property on the specified child widget:
+@code
+<WidgetLook name="PropertyLinkExample">
+  <PropertyLinkDefinition
+    name="CaptionTextColour"
+    widget="__auto_titlebar__"
+    targetProperty="CaptionColour"
+    initialValue="FFFF3333"
+    layoutOnWrite="true"
+  />
+  ...
+</WidgetLook>
+@endcode
+
+
+@section fal_elem_propertylinktarget \<PropertyLinkTarget\> Element
+
+@subsection fal_elem_propertylinktargetr_1 Purpose:
+The @c \<PropertyLinkTarget\> element specifies a target widget suffix and
+property name to be used with a @c \<PropertyLinkDefinition\>.  Whenever the
+property defined by the enclosing @c \<PropertyLinkDefinition\> is written to,
+the property specified in the @c \<PropertyLinkTarget\> will be written also.
+If the @c \<PropertyLinkTarget\> is the first linked target it will also be used
+as the 'master linked target' and will be used as the source for read accesses
+to the property defined by the enclosing @c \<PropertyLinkDefinition\> element.
+
+@subsection fal_elem_propertylinktarget_2 Attributes:
+@arg @c widget specifies either the name suffix of the child widget containing
+the property that is to be linked to the property being defined by the enclosing
+@c \<PropertyLinkDefinition\> element, or the special value @c "__parent__" to
+indicate a back-link to the parent. Required attribute.
+@arg @c property specifies the name of the property on the child widget that is to be linked to the property being defined by the enclosing @c \<PropertyLinkDefinition\>. If this is omitted, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
+
+@subsection fal_elem_propertylinktarget_3 Usage:
+<ul>
+    <li>The @c \<PropertyLinkTarget\> element may not contain sub-elements.</li>
+    <li>The @c \<PropertyLinkTarget\> element may only appear as a sub-element within @c \<PropertyLinkDefinition\> elements.</li>
+</ul>
+
+@subsection fal_elem_propertylinktarget_4 Examples:
+In this example we create a new property named 'TextColour'.  This is linked to separate properties on two different child components.  A property named 'LabelColour' on a child widget with name suffix '__auto_button1__', and a property named 'ContentColour' on a child widget with name suffix '__auto_content_panel__.  Writing to the property 'TextColour' will cause both 'LabelColour' and 'ContentColour' to be updated, while reading the property 'TextColour' will fetch the value of 'LabelColour' (because it appears first, it is treated as the master target).
+@code
+<WidgetLook name="PropertyLinkTargetExample">
+  <PropertyLinkDefinition name="TextColour" initialValue="FFFF00FF" >
+    <PropertyLinkTarget widget="__auto_button1__" property="LabelColour" />
+    <PropertyLinkTarget widget="__auto_content_panel__" property="ContentColour" />
+  </PropertyLinkDefinition>
+  ...
+</WidgetLook>
+@endcode
+
+
+@section fal_elem_ref_sec_28 \<PropertyDim\> Element
+
+@subsection fal_elem_ref_sec_28_1 Purpose:
+The @c \<PropertyDim\> element is used to define a component dimension for an area rectangle.
+@c \<PropertyDim\> is used to specify either a UDim or a simple floating point
+value - accessed via a window property - for use as an area dimension.
+
+
+@subsection fal_elem_ref_sec_28_2 Attributes:
+@arg @c widget  specifies the name suffix of a child window to access the property for. The final name used to access the widget will be that of the target window with this suffix appended. If this suffix is not specified, the target window itself is used. Optional attribute.
+@arg @c name  specifies the name of the property that will provide the
+value for this dimension. The property named should access either a
+UDim value or a simple floating point numerical value - the system
+determines which type of value to expect based upon the usage (or not)
+of the optional @c type attribute.
+@arg @c type specifies the dimension for which the relative scale value
+of a UDim value is a portion of, and as such should be set to either
+@c "Width" or @c "Height".  If the property specified by the
+attribute @c name is intended to access a simple floating point
+value rather than a UDim value, this attribute should be omitted.
+Optional attribute.
+
+
+@subsection fal_elem_ref_sec_28_3 Usage:
+<ul>
+    <li>The @c \<PropertyDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<PropertyDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_28_4 Examples:
+This example shows a dimension that uses @c \<PropertyDim\>
+to fetch a property value to use as the dimension value. We are accessing
+the 'AbsoluteWidth' property, from an attached widget with the name
+suffix '__auto_button__', that accesses a simple floating point value:
+
+@code
+...
+<Area>
+  <Dim type="LeftEdge">
+    <PropertyDim widget="__auto_button__" name="AbsoluteWidth" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+Here we show a dimension that uses @c \<PropertyDim\> to access a property
+named 'UserWidth' on the target window.  We have specified the @c type
+attribute to be 'Width', which indicates to the system that the property will
+access a UDim value and that the scale part of the UDim is relative to the
+width of the target window.
+
+@code
+...
+<Area>
+  ...
+  <Dim type="Width">
+    <PropertyDim name="UserWidth" type="Width" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_29 \<Section\> Element
+
+@subsection fal_elem_ref_sec_29_1 Purpose:
+The @c \<Section\> element is used to name an ImagerySection to be included for rendering within a StateImagery Layer definition.
+
+@subsection fal_elem_ref_sec_29_2 Attributes:
+@arg @c look  specifies the name of a WidgetLook that contains the ImagerySection to be referenced. If this is omitted, the WidgetLook currently being defined is used. Optional attribute.
+@arg @c section  specifies the name of an ImagerySection from the chosen WidgetLook to be referenced. Required attribute.
+@arg @c controlProperty  specifies the name of a property that will be accessed
+to determine whether or not to render this section (see @c controlValue below
+for details of how it is determined whether or not the secion will be drawn).
+Optional attribute.
+@arg @c controlValue  specifies a value that will be compared to the value
+fetched from @c controlProperty in order to decide whether to draw the section.
+If @c controlValue is not specified, or is specified as the empty string, then
+the property named in @c controlProperty is treated as a boolean value. Otherwise
+the value fetched from the property named in @c controlPropery must exactly match
+the value specified in @c controlValue for the imagery section to be drawn.
+Optional attribute.
+@arg @c controlWidget  specifies either the name suffix of a child widget, or
+the special value @c "__parent__", to indicate a widget that will be used as the
+source of the property named in @c controlProperty.  If @c controlWidget is not
+specified, or is specified as the empty string, then the widget with WidgetLook
+assigned to it will be used as the source (matching the previous / default
+behaviour).  Optional attribute.
+
+@subsection fal_elem_ref_sec_29_3 Usage:
+<ul>
+    <li>The @c \<Section\> element may only appear as a sub-element within the @c \<Layer\> element.</li>
+    
+    <li>The @c \<Section\> element may specify colours to be modulated with any current colours used for each component within the named ImagerySection, by optionally specifying one of the colour elements as a sub-element:</li>
+    <ul>
+        <li>@c \<Colours\></li>
+        <li>@c \<ColourProperty\></li>
+        <li>@c \<ColourRectProperty\></li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_29_4 Examples:
+Here we see a state definition from a button widget. The state specifies to use the 'normal' imagery section, and also the 'label' imagery section. The 'label' section is only drawn if the 'DrawText' property of the target window is 'True'. Colours for 'label' will be modulated with the colour obtained from the 'NormalTextColour' property of the target window:
+@code
+...
+<StateImagery name="Normal">
+  <Layer>
+    <Section section="normal" />
+    <Section section="label" controlProperty="DrawText">
+      <ColourProperty name="NormalTextColour" />
+    </Section>
+  </Layer>
+</StateImagery>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_30 \<StateImagery\> Element
+
+@subsection fal_elem_ref_sec_30_1 Purpose:
+The @c \<StateImagery\> element defines imagery to be used when rendering a named state. The base widget type intended as a target for the WidgetLook being defined will specify which states are required to be defined.
+
+@subsection fal_elem_ref_sec_30_2 Attributes:
+@arg @c name  specifies the name of the state being defined. Required attribute.
+@arg @c clipped  boolean setting that states whether imagery defined within this state should be clipped to the target window's defined area.  If this is specified and set to false, the state imagery will only be clipped to the display area. Optional attribute.
+
+@subsection fal_elem_ref_sec_30_3 Usage:
+<ul>
+    <li>The @c \<StateImagery\>element may contain any number of @c \<Layer\> sub-elements.</li>
+    <li>The @c \<StateImagery\> element may only appear as a sub-element of the @c \<WidgetLook\> element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_30_4 Examples:
+The following is an extract of the MenuItem definition from TaharezLook.looknfeel.  The except defines some of the states required for that widget. Note that, although not shown here, a required state can be empty if no rendering is needed for that state:
+@code
+...
+<StateImagery name="EnabledNormal">
+  <Layer>
+    <Section section="label" />
+  </Layer>
+</StateImagery>
+<StateImagery name="EnabledHover">
+  <Layer>
+    <Section section="frame" />
+    <Section section="label" />
+  </Layer>
+</StateImagery>
+<StateImagery name="EnabledPushed">
+  <Layer>
+    <Section section="frame" />
+    <Section section="label" />
+  </Layer>
+</StateImagery>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_31 \<Text\> Element
+
+@subsection fal_elem_ref_sec_31_1 Purpose:
+The @c \<Text\> element is used to define font and text string information within a TextComponent.
+
+@subsection fal_elem_ref_sec_31_2 Attributes:
+@arg @c font  specifies the name of a font to use for this text. If this is omitted, the current font of the target window will be used instead.  Optional attribute.
+@arg @c string  specifies a text string to be rendered. If this is omitted, the current window text for the target window will be used instead.  Optional attribute.
+
+@subsection fal_elem_ref_sec_31_3 Usage:
+<ul>
+    <li>The @c \<Text\> element may not contain any sub-elements.</li>
+    <li>The @c \<Text\> element should only appear as a sub-element within @c \<TextComponent\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_31_4 Examples:
+In this simple example, we define a TextComponent that renders some static text. The @c \<Text\> element is used to specify the font and string to be used:
+@code
+...
+<TextComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+  <Text font="Roman-18" string="Render this text!" />
+</TextComponent>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_32 \<TextComponent\> Element
+
+@subsection fal_elem_ref_sec_32_1 Purpose:
+The @c \<TextComponent\> element defines a single item of text to be drawn within a given ImagerySection. The TextComponent contains all information about the text that is to be drawn, where it should be drawn, which colours are to be used and how the text should be formatted within its area.
+
+Note that if the @c \<Text\> element appears in addition to either of the @c \<TextProperty\> or @c \<FontProperty\> elements, the string and font specified within the @c \<Text\> element will act as default values if the properties referenced in @c \<TextProperty\> or @c \<FontProperty\> evaluate to empty strings.
+
+@subsection fal_elem_ref_sec_32_2 Attributes:
+The @c \<TextComponent\> element has no attributes defined.
+
+@subsection fal_elem_ref_sec_32_3 Usage:
+Note: the sub-elements should appear in the order that they are defined here.
+
+<ul>
+    <li>@c \<Area\> defining the target area for the text.</li>
+    <li>@c \<Text\> optional element specifying the font to be used and text string to be drawn.</li>
+    <li>@c \<TextProperty\> optional element specifying the name of a property that contains the text to be drawn.</li>
+    <li>@c \<FontProperty\> optional element specifying the name of a property that contains the name of the font to use when drawing the text.</li>
+
+    <li>Optionally specifying the colours for this text, one of the colour elements:</li>
+    <ul>
+        <li>@c \<Colours\></li>
+        <li>@c \<ColourProperty\></li>
+        <li>@c \<ColourRectProperty\></li>
+    </ul>
+
+    <li>Optionally, to specify the vertical formatting to use, either of:</li>
+    <ul>
+        <li>@c \<VertFormat\></li>
+        <li>@c \<VertFormatProperty\></li>
+    </ul>
+
+    <li>Optionally, to specify the horizontal formatting to use, either of:</li>
+    <ul>
+        <li>@c \<HorzFormat\></li>
+        <li>@c \<HorzFormatProperty\></li>
+    </ul>
+
+    <li>The @c \<TextComponent\> element may only appear as a sub-element of the element @c \<ImagerySection\>.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_32_4 Examples:
+The following example could be used to specify the caption text to appear within a Titlebar style widget:
+@code
+...
+<ImagerySection name="caption">
+  <TextComponent>
+    <Area>
+      <Dim type="LeftEdge" ><AbsoluteDim value="10" /></Dim>
+      <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+      <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+      <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+    </Area>
+    <ColourProperty name="CaptionColour" />
+    <VertFormat type="CentreAligned" />
+    <HorzFormat type="WordWrapLeftAligned" />
+  </TextComponent>
+</ImagerySection>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_33 \<TextProperty\> Element
+
+@subsection fal_elem_ref_sec_33_1 Purpose:
+The @c \<TextProperty\> element is intended to allow the system to access a property on the target window to obtain the text to be used when rendering the TextComponent being defined.
+
+@subsection fal_elem_ref_sec_33_2 Attributes:
+@arg @c name specifies the name of the property to access.  The value of the named property is taken as a string to be rendered.  Required attribute.
+
+@subsection fal_elem_ref_sec_33_3 Usage:
+<ul>
+    <li>The @c \<TextProperty\> element may not contain sub-elements.</li>
+    <li>The @c \<TextProperty\> element may appear as a sub-element only within the @c \<TextComponent\> element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_33_4 Examples:
+
+
+@section fal_elem_ref_sec_34 \<UnifiedDim\> Element
+
+@subsection fal_elem_ref_sec_34_1 Purpose:
+The @c \<UnifiedDim\> element is used to define a component dimension for an area rectangle. @c \<UnifiedDim\> is used to specify a value using the 'unified' co-ordinate system.
+
+@subsection fal_elem_ref_sec_34_2 Attributes:
+@arg @c scale specifies the relative scale component of the UDim. Optional attribute.
+@arg @c offset specifies the absolute pixel component of the UDim. Optional attribute.
+@arg @c type  specifies what the dimension represents. This is needed so that the system knows how to interpret the 'scale' component.  Required attribute.
+
+@subsection fal_elem_ref_sec_34_3 Usage:
+<ul>
+    <li>The @c \<UnifiedDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<UnifiedDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_34_4 Examples:
+This example shows a dimension that uses @c \<UnifiedDim\> to specify a UDim value to use as the dimension's value:
+@code
+...
+<Area>
+  <Dim type="LeftEdge">
+    <UnfiedDim scale="0.5" offset="-8" type="LeftEdge" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_35 \<VertAlignment\> Element
+
+@subsection fal_elem_ref_sec_35_1 Purpose:
+The @c \<VertAlignment\> element is used to specify the vertical alignment option required for a child window element.
+
+@subsection fal_elem_ref_sec_35_2 Attributes:
+@arg @c type  specifies one of the values from the VerticalAlignment enumeration indicating the desired vertical alignment.
+
+@subsection fal_elem_ref_sec_35_3 Usage:
+<ul>
+    <li>The @c \<VertAlignment\> element may only appear as a sub-element of the @c \<Child\> element.</li>
+    <li>The @c \<VertAlignment\> element may not contain any sub-elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_35_4 Examples:
+This example defines a scrollbar type child widget. We have used the @c \<VertAlignment\> element to specify that the scrollbar appear on the bottom edge of the component being defined:
+@code
+...
+<Child type="MyLook/HorzScrollbar" nameSuffix="__auto_hscrollbar__">
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><UnifiedDim scale="1" type="Width? /></Dim>
+    <Dim type="Height" ><AbsoluteDim value="15" /></Dim>
+  </Area>
+  <VertAlignment type="BottomAligned" />
+</Child>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_36 \<VertFormat\> Element
+
+@subsection fal_elem_ref_sec_36_1 Purpose:
+The @c \<VertFormat\> element is used to specify the required vertical formatting for an image, frame, or text component.
+
+@subsection fal_elem_ref_sec_36_2 Attributes:
+<ul>
+    <li>@c type specifies the required vertical formatting option.</li>
+    <ul>
+        <li>For use in ImageryComponents and FrameComponents, this will be one of the values from the VerticalFormat enumeration.</li>
+        <li>For use in TextComponents, this will one of the values form the VerticalTextFormat enumeration.</li>
+    </ul>
+    <li>@c component  Only for FrameComponent. Specifies the part of the frame
+        that this formatting is to be used for. Should be "LeftEdge",
+        "RightEdge" or "Background" from the FrameImageComponent enumeration.
+        Optional attribute, defaults to "Background".</li>
+</ul>
+
+@subsection fal_elem_ref_sec_36_3 Usage:
+<ul>
+    <li>The @c \<VertFormat\> element may only appear as a sub-element of the elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\></li>
+        <li>@c \<FrameComponent\></li>
+        <li>@c \<TextComponent\></li>
+    </ul>
+
+    <li>The @c \<VertFormat\> element may not contain any sub-elements.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_36_4 Examples:
+This first example shows an ImageryComponent definition. We use @c \<VertFormat\> to specify that we want the image tiled to cover the entire width of the designated target area:
+@code
+...
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width" ><AbsoluteDim value="25" /></Dim>
+    <Dim type="Height" ><AbsoluteDim value="25" /></Dim>
+  </Area>
+  <Image imageset="myImageset" image="coolImage" />
+  <VertFormat type="Tiled" />
+  <HorzFormat type="Stretched" />
+</ImageryComponent>
+...
+@endcode
+
+This second example is for a TextComponent. You can see @c \<VertFormat\> used here to specify that we want the text centred within the target area:
+@code
+...
+<TextComponent>
+  <Area>
+    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+    <Dim type="RightEdge" ><UnifiedDim scale="1" type="Width" /></Dim>
+    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+  <VertFormat type="CentreAligned" />
+</TextComponent>
+...
+@endcode
+
+@section fal_elem_ref_sec_37 \<VertFormatProperty\> Element
+
+@subsection fal_elem_ref_sec_37_1 Purpose:
+The @c \<VertFormatProperty\> element is intended to allow the system to access a property on the target window to obtain the vertical formatting to be used when drawing the component being defined.
+
+@subsection fal_elem_ref_sec_37_2 Attributes:
+@arg @c name  specifies the name of the property to access. The named property must access a string value that will be set to one of the enumeration values appropriate for the component being defined (VerticalTextFormat for TextComponent, and VerticalFormat for FrameComponent and ImageryComponent).  Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame
+that this formatting is to be used for. Should be "LeftEdge",
+"RightEdge" or "Background" from the FrameImageComponent enumeration.
+Optional attribute, defaults to "Background".</li>
+
+@subsection fal_elem_ref_sec_37_3 Usage:
+<ul>
+    <li>The @c \<VertFormatProperty\> element may not contain sub-elements.</li>
+
+    <li>The @c \<VertFormatProperty\> element may appear as a sub-element within any of the following elements:</li>
+    <ul>
+        <li>@c \<ImageryComponent\> to specify a vertical formatting to be used the the image.</li>
+        <li>@c \<FrameComponent\> to specify a vertical formatting to be used for the frame background.</li>
+        <li>@c \<TextComponent\> to specify a vertical formatting to be used for the text.</li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_37_4 Examples:
+
+
+@section fal_elem_ref_sec_38 \<WidgetDim\> Element
+
+@subsection fal_elem_ref_sec_38_1 Purpose:
+The @c \<WidgetDim\> element is used to define a component dimension for an area rectangle. @c \<WidgetDim\> is used to specify some dimension of an attached child widget for use as an area dimension.
+
+@subsection fal_elem_ref_sec_38_2 Attributes:
+@arg @c widget  specifies a suffix which will be used when building the name of the widget to access. The final name of the child widget will be that of the parent with this suffix appended. If this is not specified, the target window itself is used. Optional attribute.
+@arg @c dimension  specifies the widget dimension to be used. This should be set to one of the values defined in the DimensionType enumeration.  Required attribute.
+
+@subsection fal_elem_ref_sec_38_3 Usage:
+<ul>
+    <li>The @c \<WidgetDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<WidgetDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_38_4 Examples:
+This example shows using @c \<WidgetDim\> to obtain dimensions from an attached child widget '__auto_titlebar__', and also from the target window itself:
+@code
+...
+<Area>
+  <Dim type="LeftEdge" >
+    <AbsoluteDim value="0" />
+  </Dim>
+  <Dim type="TopEdge" >
+    <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" />
+  </Dim>
+  <Dim type="Width" >
+    <UnifiedDim scale="1" type="Width" />
+  </Dim>
+  <Dim type="BottomEdge" >
+    <WidgetDim dimension="BottomEdge" />
+  </Dim>
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_39 \<WidgetLook\> Element
+
+@subsection fal_elem_ref_sec_39_1 Purpose:
+The @c \<WidgetLook\> element is the most important element within the system. It defines a complete widget 'look' which can be assigned to one of the Falagard base widget classes to create what is essentially a new widget type.
+
+@subsection fal_elem_ref_sec_39_2 Attributes:
+@arg @c name  specifies the name of the WidgetLook being defined. If a WidgetLook with this name already exists within the system, it will be replaced with the new definition. Required attribute.
+
+@subsection fal_elem_ref_sec_39_3 Usage:
+Note: the sub-elements should appear in the order that they are defined here.
+
+<ul>
+    <li>The @c \<WidgetLook\> element can contain the following sub-elements:</li>
+    <ul>
+        <li>Any number of @c \<PropertyDefinition\> sub-elements defining new properties.</li>
+        <li>Any number of @c \<PropertyLinkDefinition\> sub-elements defining new linked properties.</li>
+        <li>Any number of @c \<Property\> sub-elements specifying default property values.</li>
+        <li>Any number of @c \<NamedArea\> sub-elements defining areas within the widget.</li>
+        <li>Any number of @c \<Child\> sub-elements defining component child widgets.</li>
+        <li>Any number of @c \<ImagerySection\> sub-elements defining imagery for the widget.</li>
+        <li>Any number of @c \<StateImagery\> sub-elements defining what to draw for widget states.</li>
+        <li>Any number of @c \<AnimationDefinition\> sub-elements defining animations for the WidgetLook.  See: @ref xml_animation</li>
+    </ul>
+
+    <li>The @c \<WidgetLook\> element may only appear as sub-elements of the root @c \<Falagard\> element.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_39_4 Examples:
+The following example is the complete definition for 'TaharezLook/ListHeader'.  This is a trivial example that actually does no rendering, it just specifies a required property:
+@code
+<WidgetLook name="TaharezLook/ListHeader">
+  <Property
+    name="SegmentWidgetType"
+    value="TaharezLook/ListHeaderSegment"
+  />
+  <StateImagery name="Enabled" />
+  <StateImagery name="Disabled" />
+</WidgetLook>
+@endcode
+
+*/

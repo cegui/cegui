@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUIMinesweeper"
+    type      = "C++ Module"
+    summary         = "The Minesweeper demo is a fully functional replication of the well known game using CEGUI"
+    description     = "The demo uses event handlers and the Vanilla and Taharez skins"
+    credits         = "Olivier &quot;Dalfy&quot; Delannoy"
+/>

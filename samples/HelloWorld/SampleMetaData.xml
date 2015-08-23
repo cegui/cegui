@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUIHelloWorldDemo"
+    type      = "C++ Module"
+    summary         = "A very simple &quot;Hello World&quot; demo. It contains a single window which will write &quot;Hello-World&quot; to the console if clicked"
+    description     = "The demo uses the WindowManager to create the window from code. An event handler is used to handle the mouse clicks on the window."
+    credits         = "CrazyEddie, Lukas &quot;Ident&quot; Meindl"
+/>

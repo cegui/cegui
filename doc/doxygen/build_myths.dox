@@ -1,0 +1,31 @@
+/**
+@page build_myths Crazy Eddie's GUI Build Mythbusting!
+@author Paul D Turner
+@tableofcontents
+
+Firstly, I will take the opportunity to clear away a couple of prevalent
+'myths' that surround the building and use of the CEGUI library.
+@section compiling_mythbusting_1 Myth number one: CEGUI is a nightmare to build!
+Nothing is further from the truth than this. The fact is that CEGUI is far,
+far easier to build than the vast majority of free and open source libraries
+out there. On an average PC you can download and build CEGUI - including its
+dependencies on platforms where those are used – in under ten minutes. Now,
+don't think I misunderstand; over the years there have been those people who
+have spent 'weeks' trying to build CEGUI, but I can say, hand on heart, that
+in every single one of those cases, the user in question had set some option
+without fully understanding the implications or had otherwise 'tinkered'
+with either the CEGUI build set up or, worse, their build environment,
+effectively rendering successful compilation of CEGUI impossible and, in
+some cases, rendering the successful compilation of anything impossible!
+@section compiling_mythbusting_2 Myth number two: CEGUI has too many dependencies!
+False! While people may look at the quantity of libraries in the dependency
+pack and think “Oh, my! All those dependencies!”, the more astute developer
+realises that these are either options or outright optional. It is, in fact,
+possible to build CEGUI with no external dependencies at all – I will not
+misrepresent that CEGUI is realistically usable in that state, but it is
+possible. Generally CEGUI relies on some other libraries to get things done
+– typically a rendering system of some kind, something to parse XML files
+and something to load images. The myth arises from the fact that CEGUI has
+many options for each of these roles, and misinformed people assume that
+you require all of the options all of the time!
+
