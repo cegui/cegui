@@ -483,7 +483,7 @@ const glm::vec2& OpenGLESRenderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLESRenderer::getMaxTextureSize() const
+unsigned int OpenGLESRenderer::getMaxTextureSize() const
 {
     return d_maxTextureSize;
 }
@@ -604,7 +604,7 @@ Sizef OpenGLESRenderer::getAdjustedTextureSize(const Sizef& sz) const
 //----------------------------------------------------------------------------//
 float OpenGLESRenderer::getNextPOTSize(const float f)
 {
-    uint size = static_cast<uint>(f);
+    unsigned int size = static_cast<unsigned int>(f);
 
     // if not power of 2
     if ((size & (size - 1)) || !size)

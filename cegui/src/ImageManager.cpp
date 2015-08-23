@@ -277,9 +277,9 @@ bool ImageManager::isDefined(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
-uint ImageManager::getImageCount() const
+unsigned int ImageManager::getImageCount() const
 {
-    return static_cast<uint>(d_images.size());
+    return static_cast<unsigned int>(d_images.size());
 }
 
 //----------------------------------------------------------------------------//

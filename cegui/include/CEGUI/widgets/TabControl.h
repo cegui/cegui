@@ -151,7 +151,7 @@ public:
 		Also ensures that the tab is made visible (tab pane is scrolled if required).
     \exception	InvalidRequestException	thrown if \a index is out of range.
     */
-    void    setSelectedTab(uint ID);
+    void    setSelectedTab(unsigned int ID);
 
     /*!
     \brief
@@ -173,7 +173,7 @@ public:
         Ensure that the tab by the ID of the root window within it is visible.
     \exception	InvalidRequestException	thrown if \a index is out of range.
     */
-    void    makeTabVisible(uint ID);
+    void    makeTabVisible(unsigned int ID);
 
     /*!
     \brief
@@ -222,7 +222,7 @@ public:
 
     \exception	InvalidRequestException	thrown if content is not found.
     */
-    Window*	getTabContents(uint ID) const;
+    Window*	getTabContents(unsigned int ID) const;
 
     /*!
 	\brief
@@ -309,7 +309,7 @@ public:
     \par
     The tab content will be destroyed.
     */
-    void removeTab(uint ID);
+    void removeTab(unsigned int ID);
 
 
 	/*************************************************************************

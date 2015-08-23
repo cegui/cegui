@@ -245,7 +245,7 @@ namespace CEGUI
         }
 
         int res, tmp;
-        uint utmp;
+        unsigned int utmp;
         double val;
 
         switch (d_inputMode)

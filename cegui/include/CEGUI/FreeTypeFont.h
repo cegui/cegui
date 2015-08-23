@@ -130,7 +130,7 @@ protected:
     \return
         Nothing.
     */
-    void drawGlyphToBuffer(argb_t* buffer, uint buf_width) const;
+    void drawGlyphToBuffer(argb_t* buffer, unsigned int buf_width) const;
 
     /*!
     \brief
@@ -141,7 +141,7 @@ protected:
     \param e
         The last glyph in set
     */
-    uint getTextureSize(CodepointMap::const_iterator s,
+    unsigned int getTextureSize(CodepointMap::const_iterator s,
                         CodepointMap::const_iterator e) const;
 
     //! Register all properties of this class.

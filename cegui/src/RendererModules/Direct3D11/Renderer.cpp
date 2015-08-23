@@ -334,7 +334,7 @@ const glm::vec2& Direct3D11Renderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint Direct3D11Renderer::getMaxTextureSize() const
+unsigned int Direct3D11Renderer::getMaxTextureSize() const
 {
     //Values taken from http://msdn.microsoft.com/en-us/library/windows/desktop/ff476876%28v=vs.85%29.aspx
     D3D_FEATURE_LEVEL featureLevel = d_device->GetFeatureLevel();

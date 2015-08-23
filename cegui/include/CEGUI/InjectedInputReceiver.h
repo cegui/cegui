@@ -96,7 +96,7 @@ public:
         Function that injects a key down event into the receiver.
 
     \param key_code
-        uint value indicating which key was pressed.
+        Key::Scan value indicating which key was pressed.
 
     \return
         - true if the input was processed by the receiver.

@@ -64,7 +64,7 @@ public:
     \brief
         base class constructor
     */
-    ListboxItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
+    ListboxItem(const String& text, unsigned int item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
 
 
     /*!
@@ -104,7 +104,7 @@ public:
     \return
         ID code currently assigned to this list box item
     */
-    uint    getID(void) const           {return d_itemID;}
+    unsigned int    getID(void) const           {return d_itemID;}
 
 
     /*!
@@ -218,7 +218,7 @@ public:
     \return
         Nothing.
     */
-    void    setID(uint item_id)     {d_itemID = item_id;}
+    void    setID(unsigned int item_id)     {d_itemID = item_id;}
 
 
     /*!
@@ -452,7 +452,7 @@ protected:
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
     String  d_tooltipText;  //!< Text for the individual tooltip of this item
-    uint    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
+    unsigned int    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
     void*   d_itemData;     //!< Pointer to some client code data.  This has no meaning within the GUI system.
     bool    d_selected;     //!< true if this item is selected.  false if the item is not selected.
     bool    d_disabled;     //!< true if this item is disabled.  false if the item is not disabled.

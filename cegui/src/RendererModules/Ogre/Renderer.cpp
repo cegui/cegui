@@ -162,7 +162,7 @@ struct OgreRenderer_impl
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! OGRE root object ptr
     Ogre::Root* d_ogreRoot;
     //! Pointer to the render system for Ogre.
@@ -665,7 +665,7 @@ const glm::vec2& OgreRenderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint OgreRenderer::getMaxTextureSize() const
+unsigned int OgreRenderer::getMaxTextureSize() const
 {
     return d_pimpl->d_maxTextureSize;
 }

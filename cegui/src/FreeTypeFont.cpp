@@ -118,18 +118,18 @@ void FreeTypeFont::addFreeTypeFontProperties ()
 }
 
 //----------------------------------------------------------------------------//
-uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
+unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
                                   CodepointMap::const_iterator e) const
 {
-    uint texsize = 32; // start with 32x32
-    uint max_texsize = System::getSingleton().getRenderer()->getMaxTextureSize();
-    uint glyph_count = 0;
+    unsigned int texsize = 32; // start with 32x32
+    unsigned int max_texsize = System::getSingleton().getRenderer()->getMaxTextureSize();
+    unsigned int glyph_count = 0;
 
     // Compute approximatively the optimal texture size for font
     while (texsize < max_texsize)
     {
-        uint x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
-        uint yb = INTER_GLYPH_PAD_SPACE;
+        unsigned int x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
+        unsigned int yb = INTER_GLYPH_PAD_SPACE;
         for (CodepointMap::const_iterator c = s; c != e; ++c)
         {
             // skip glyphs that are already rendered
@@ -141,9 +141,9 @@ uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
                              FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
                 continue;
 
-            uint glyph_w = int (ceil(d_fontFace->glyph->metrics.width * FT_POS_COEF)) +
+            unsigned int glyph_w = int (ceil(d_fontFace->glyph->metrics.width * FT_POS_COEF)) +
                            INTER_GLYPH_PAD_SPACE;
-            uint glyph_h = int (ceil(d_fontFace->glyph->metrics.height * FT_POS_COEF)) +
+            unsigned int glyph_h = int (ceil(d_fontFace->glyph->metrics.height * FT_POS_COEF)) +
                            INTER_GLYPH_PAD_SPACE;
 
             x += glyph_w;
@@ -152,7 +152,7 @@ uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
                 x = INTER_GLYPH_PAD_SPACE;
                 y = yb;
             }
-            uint yy = y + glyph_h;
+            unsigned int yy = y + glyph_h;
             if (yy > texsize)
                 goto too_small;
 
@@ -183,7 +183,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
     while (true)
     {
         // Create a new Imageset for glyphs
-        uint texsize = getTextureSize(s, e);
+        unsigned int texsize = getTextureSize(s, e);
         // If all glyphs were already rendered, do nothing
         if (!texsize)
             break;
@@ -199,8 +199,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
 
         // Go ahead, line by line, top-left to bottom-right
-        uint x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
-        uint yb = INTER_GLYPH_PAD_SPACE;
+        unsigned int x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
+        unsigned int yb = INTER_GLYPH_PAD_SPACE;
 
         // Set to true when we finish rendering all glyphs we were asked to
         bool finished = false;
@@ -243,11 +243,11 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                 }
                 else
                 {
-                    uint glyph_w = d_fontFace->glyph->bitmap.width + INTER_GLYPH_PAD_SPACE;
-                    uint glyph_h = d_fontFace->glyph->bitmap.rows + INTER_GLYPH_PAD_SPACE;
+                    unsigned int glyph_w = d_fontFace->glyph->bitmap.width + INTER_GLYPH_PAD_SPACE;
+                    unsigned int glyph_h = d_fontFace->glyph->bitmap.rows + INTER_GLYPH_PAD_SPACE;
 
                     // Check if glyph right margin does not exceed texture size
-                    uint x_next = x + glyph_w;
+                    unsigned int x_next = x + glyph_w;
                     if (x_next > texsize)
                     {
                         x = INTER_GLYPH_PAD_SPACE;
@@ -256,7 +256,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     }
 
                     // Check if glyph bottom margine does not exceed texture size
-                    uint y_bot = y + glyph_h;
+                    unsigned int y_bot = y + glyph_h;
                     if (y_bot > texsize)
                         break;
 
@@ -313,7 +313,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
+void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, unsigned int buf_width) const
 {
     FT_Bitmap *glyph_bitmap = &d_fontFace->glyph->bitmap;
 
@@ -402,8 +402,8 @@ void FreeTypeFont::updateFont()
             "cannot be used.");
     }
 
-    const uint horzdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().x);
-    const uint vertdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().y);
+    const unsigned int horzdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDPI().x);
+    const unsigned int vertdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDPI().y);
 
     float hps = d_ptSize * 64;
     float vps = d_ptSize * 64;

@@ -81,9 +81,9 @@ static size_t calculateDataWidth(const size_t width, Texture::PixelFormat fmt)
 static void blitToSurface(const std::uint32_t* src, std::uint32_t* dst,
                    const Sizef& sz, size_t dest_pitch)
 {
-    for (uint i = 0; i < sz.d_height; ++i)
+    for (unsigned int i = 0; i < sz.d_height; ++i)
     {
-        for (uint j = 0; j < sz.d_width; ++j)
+        for (unsigned int j = 0; j < sz.d_width; ++j)
         {
             const std::uint32_t pixel = src[j];
             const std::uint32_t tmp = pixel & 0x00FF00FF;
@@ -101,9 +101,9 @@ static void blitToSurface(const std::uint32_t* src, std::uint32_t* dst,
 static void blitFromSurface(const std::uint32_t* src, std::uint32_t* dst,
                      const Sizef& sz, size_t source_pitch)
 {
-    for (uint i = 0; i < sz.d_height; ++i)
+    for (unsigned int i = 0; i < sz.d_height; ++i)
     {
-        for (uint j = 0; j < sz.d_width; ++j)
+        for (unsigned int j = 0; j < sz.d_width; ++j)
         {
             const std::uint32_t pixel = src[j];
             const std::uint32_t tmp = pixel & 0x00FF00FF;

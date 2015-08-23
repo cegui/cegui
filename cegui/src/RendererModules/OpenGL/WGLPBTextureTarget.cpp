@@ -70,7 +70,7 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bo
 
     HDC hdc = wglGetCurrentDC();
 
-    uint fmtcnt;
+    unsigned int fmtcnt;
     wglChoosePixelFormatARB(hdc, pbAttrs, 0, 1, &d_pixfmt, &fmtcnt);
 
     if (!fmtcnt)

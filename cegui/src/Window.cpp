@@ -366,7 +366,7 @@ bool Window::isActive(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isChild(uint ID) const
+bool Window::isChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -378,7 +378,7 @@ bool Window::isChild(uint ID) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isChildRecursive(uint ID) const
+bool Window::isChildRecursive(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -390,7 +390,7 @@ bool Window::isChildRecursive(uint ID) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChild(uint ID) const
+Window* Window::getChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -405,7 +405,7 @@ Window* Window::getChild(uint ID) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChildRecursive(uint ID) const
+Window* Window::getChildRecursive(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -471,7 +471,7 @@ const Window* Window::getActiveChild(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isAncestor(uint ID) const
+bool Window::isAncestor(unsigned int ID) const
 {
     // return false if we have no ancestor
     if (!d_parent)
@@ -806,7 +806,7 @@ void Window::setFont(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild(uint ID)
+void Window::removeChild(unsigned int ID)
 {
     const size_t child_count = getChildCount();
 
@@ -1304,7 +1304,7 @@ void Window::setCursor(const Image* image)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setID(uint ID)
+void Window::setID(unsigned int ID)
 {
     if (d_ID == ID)
         return;
@@ -1374,7 +1374,7 @@ void Window::addWindowProperties(void)
         &Window::setFont, &Window::property_getFont, 0
     );
 
-    CEGUI_DEFINE_PROPERTY(Window, uint,
+    CEGUI_DEFINE_PROPERTY(Window, unsigned int,
         IDPropertyName, "Property to get/set the ID value of the Window. Value is an unsigned integer number.",
         &Window::setID, &Window::getID, 0
     );
@@ -2085,7 +2085,7 @@ int Window::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
     int windowsWritten = 0;
 
-    for (uint i = 0; i < getChildCount(); ++i)
+    for (unsigned int i = 0; i < getChildCount(); ++i)
     {
         const Window* const child = getChildAtIdx(i);
 

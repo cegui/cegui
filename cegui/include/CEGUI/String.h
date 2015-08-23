@@ -4798,7 +4798,7 @@ private:
 		size_type destCapacity = dest_len;
 
 		// while there is data in the source buffer,
-		for (uint idx = 0; idx < src_len; ++idx)
+		for (unsigned int idx = 0; idx < src_len; ++idx)
 		{
 			utf32	cp = src[idx];
 
@@ -4851,7 +4851,7 @@ private:
 		size_type destCapacity = dest_len;
 
 		// while there is data in the source buffer, and space in the dest buffer
-		for (uint idx = 0; ((idx < src_len) && (destCapacity > 0));)
+		for (unsigned int idx = 0; ((idx < src_len) && (destCapacity > 0));)
 		{
 			utf32	cp;
 			utf8	cu = src[idx++];

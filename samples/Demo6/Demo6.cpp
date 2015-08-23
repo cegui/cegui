@@ -429,7 +429,7 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/NewColTextBox"));
 
     // get ID for new column
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
     // get width to use for new column (in pixels)
     float width = static_cast<float>(atof(widthbox->getText().c_str()));
     // get column label text
@@ -460,7 +460,7 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& args)
     Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/DelColIDBox"));
 
     // obtain the id of the column to be deleted
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
 
     // attempt to delete the column, ignoring any errors.
     try
@@ -487,7 +487,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/RowTextBox"));
 
     // get the ID of the initial column item to set
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
     // get the text that is to be set initially into the specified column of the new row
     String text = textbox->getText();
 
@@ -524,7 +524,7 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& args)
     Editbox* idxbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/DelRowIdxBox"));
 
     // get index of row to delete.
-    CEGUI::uint idx = atoi(idxbox->getText().c_str());
+    unsigned int idx = atoi(idxbox->getText().c_str());
 
     // attempt to delete the row, ignoring any errors.
     try
@@ -552,9 +552,9 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SetItemTextBox"));
 
     // get ID of column to be affected
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
     // get index of row to be affected
-    CEGUI::uint row = atoi(rowbox->getText().c_str());
+    unsigned int row = atoi(rowbox->getText().c_str());
     // get new text for item
     String text = textbox->getText();
 

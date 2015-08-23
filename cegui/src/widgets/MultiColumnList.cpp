@@ -139,7 +139,7 @@ bool MultiColumnList::isUserColumnDraggingEnabled(void) const
 /*************************************************************************
 	Return the number of columns in the multi-column list
 *************************************************************************/
-uint MultiColumnList::getColumnCount(void) const
+unsigned int MultiColumnList::getColumnCount(void) const
 {
 	return d_columnCount;
 }
@@ -148,9 +148,9 @@ uint MultiColumnList::getColumnCount(void) const
 /*************************************************************************
 	Return the number of rows in the multi-column list.
 *************************************************************************/
-uint MultiColumnList::getRowCount(void) const
+unsigned int MultiColumnList::getRowCount(void) const
 {
-	return (uint)d_grid.size();
+	return (unsigned int)d_grid.size();
 }
 
 
@@ -158,12 +158,12 @@ uint MultiColumnList::getRowCount(void) const
 	Return the zero based index of the current sort column.  There must
 	be at least one column to successfully call this method.
 *************************************************************************/
-uint MultiColumnList::getSortColumn(void) const
+unsigned int MultiColumnList::getSortColumn(void) const
 {
 	return getListHeader()->getSortColumn();
 }
 
-uint MultiColumnList::getSortColumnID(void) const
+unsigned int MultiColumnList::getSortColumnID(void) const
 {
     if (getColumnCount() > 0)
     {
@@ -175,7 +175,7 @@ uint MultiColumnList::getSortColumnID(void) const
 /*************************************************************************
 	Return the zero based column index of the column with the specified ID.
 *************************************************************************/
-uint MultiColumnList::getColumnWithID(uint col_id) const
+unsigned int MultiColumnList::getColumnWithID(unsigned int col_id) const
 {
 	return getListHeader()->getColumnFromID(col_id);
 }
@@ -185,7 +185,7 @@ uint MultiColumnList::getColumnWithID(uint col_id) const
 	Return the zero based index of the column whos header text matches
 	the specified text.
 *************************************************************************/
-uint MultiColumnList::getColumnWithHeaderText(const String& text) const
+unsigned int MultiColumnList::getColumnWithHeaderText(const String& text) const
 {
 	return getListHeader()->getColumnWithText(text);
 }
@@ -199,7 +199,7 @@ UDim MultiColumnList::getTotalColumnHeadersWidth(void) const
     const ListHeader* header = getListHeader();
     UDim width(0,0);
 
-    for (uint i = 0; i < getColumnCount(); ++i)
+    for (unsigned int i = 0; i < getColumnCount(); ++i)
         width += header->getColumnWidth(i);
 
     return width;
@@ -209,7 +209,7 @@ UDim MultiColumnList::getTotalColumnHeadersWidth(void) const
 /*************************************************************************
 	Return the width of the specified column header.
 *************************************************************************/
-UDim MultiColumnList::getColumnHeaderWidth(uint col_idx) const
+UDim MultiColumnList::getColumnHeaderWidth(unsigned int col_idx) const
 {
 	return getListHeader()->getColumnWidth(col_idx);
 }
@@ -227,7 +227,7 @@ ListHeaderSegment::SortDirection MultiColumnList::getSortDirection(void) const
 /*************************************************************************
 	Return the ListHeaderSegment object for the specified column
 *************************************************************************/
-ListHeaderSegment& MultiColumnList::getHeaderSegmentForColumn(uint col_idx) const
+ListHeaderSegment& MultiColumnList::getHeaderSegmentForColumn(unsigned int col_idx) const
 {
 	return getListHeader()->getSegmentFromColumn(col_idx);
 }
@@ -236,9 +236,9 @@ ListHeaderSegment& MultiColumnList::getHeaderSegmentForColumn(uint col_idx) cons
 /*************************************************************************
 	return index of row containing the given ListboxItem
 *************************************************************************/
-uint MultiColumnList::getItemRowIndex(const ListboxItem* item) const
+unsigned int MultiColumnList::getItemRowIndex(const ListboxItem* item) const
 {
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
 		if (isListboxItemInRow(item, i))
 		{
@@ -256,9 +256,9 @@ uint MultiColumnList::getItemRowIndex(const ListboxItem* item) const
 /*************************************************************************
 	return the index of the column containing the given ListboxItem
 *************************************************************************/
-uint MultiColumnList::getItemColumnIndex(const ListboxItem* item) const
+unsigned int MultiColumnList::getItemColumnIndex(const ListboxItem* item) const
 {
-	for (uint i = 0; i < getColumnCount(); ++i)
+	for (unsigned int i = 0; i < getColumnCount(); ++i)
 	{
 		if (isListboxItemInColumn(item, i))
 		{
@@ -310,7 +310,7 @@ ListboxItem* MultiColumnList::getItemAtGridReference(const MCLGridRef& grid_ref)
 /*************************************************************************
 	return true if the given item is in the given column.
 *************************************************************************/
-bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, uint col_idx) const
+bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, unsigned int col_idx) const
 {
 	// check for invalid index
 	if (col_idx >= getColumnCount())
@@ -320,7 +320,7 @@ bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, uint col_id
 	}
 	else
 	{
-		for (uint i = 0; i < getRowCount(); ++i)
+		for (unsigned int i = 0; i < getRowCount(); ++i)
 		{
 			if (d_grid[i][col_idx] == item)
 			{
@@ -339,7 +339,7 @@ bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, uint col_id
 /*************************************************************************
 	return true if the given item is in the given row.
 *************************************************************************/
-bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, uint row_idx) const
+bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, unsigned int row_idx) const
 {
 	// check for invalid index
 	if (row_idx >= getRowCount())
@@ -349,7 +349,7 @@ bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, uint row_idx) 
 	}
 	else
 	{
-		for (uint i = 0; i < getColumnCount(); ++i)
+		for (unsigned int i = 0; i < getColumnCount(); ++i)
 		{
 			if (d_grid[row_idx][i] == item)
 			{
@@ -370,9 +370,9 @@ bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, uint row_idx) 
 *************************************************************************/
 bool MultiColumnList::isListboxItemInList(const ListboxItem* item) const
 {
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
-		for (uint j = 0; j < getColumnCount(); ++j)
+		for (unsigned int j = 0; j < getColumnCount(); ++j)
 		{
 			if (d_grid[i][j] == item)
 			{
@@ -392,7 +392,7 @@ bool MultiColumnList::isListboxItemInList(const ListboxItem* item) const
 	'start_item' that matches the specified text.  If 'start_item' is NULL
 	searching start at (and includes) the first item in the column.
 *************************************************************************/
-ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint col_idx, const ListboxItem* start_item) const
+ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, unsigned int col_idx, const ListboxItem* start_item) const
 {
 	// ensure column is valid
 	if (col_idx >= getColumnCount())
@@ -402,7 +402,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	}
 
 	// find start position for search
-	uint i = (!start_item) ? 0 : getItemRowIndex(start_item) + 1;
+	unsigned int i = (!start_item) ? 0 : getItemRowIndex(start_item) + 1;
 
 	for ( ; i < getRowCount(); ++i)
 	{
@@ -424,7 +424,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	'start_item' that matches the specified text.  If 'start_item' is NULL
 	searching start at (and includes) the first item in the row.
 *************************************************************************/
-ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_idx, const ListboxItem* start_item) const
+ListboxItem* MultiColumnList::findRowItemWithText(const String& text, unsigned int row_idx, const ListboxItem* start_item) const
 {
 	// ensure row is valid
 	if (row_idx >= getRowCount())
@@ -434,7 +434,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 	}
 
 	// find start position for search
-	uint i = (!start_item) ? 0 : getItemColumnIndex(start_item) + 1;
+	unsigned int i = (!start_item) ? 0 : getItemColumnIndex(start_item) + 1;
 
 	for ( ; i < getColumnCount(); ++i)
 	{
@@ -470,9 +470,9 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 	}
 
 	// perform the search
-	for (uint i = startRef.row; i < getRowCount(); ++i)
+	for (unsigned int i = startRef.row; i < getRowCount(); ++i)
 	{
-		for (uint j = startRef.column; j < getColumnCount(); ++j)
+		for (unsigned int j = startRef.column; j < getColumnCount(); ++j)
 		{
 			// does this item match?
 			if (d_grid[i][j]->getText() == text)
@@ -522,9 +522,9 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	}
 
 	// perform the search
-	for (uint i = startRef.row; i < getRowCount(); ++i)
+	for (unsigned int i = startRef.row; i < getRowCount(); ++i)
 	{
-		for (uint j = startRef.column; j < getColumnCount(); ++j)
+		for (unsigned int j = startRef.column; j < getColumnCount(); ++j)
 		{
 			// does this item match?
 			ListboxItem* item = d_grid[i][j];
@@ -546,13 +546,13 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 /*************************************************************************
 	Return the total number of selected items
 *************************************************************************/
-uint MultiColumnList::getSelectedCount(void) const
+unsigned int MultiColumnList::getSelectedCount(void) const
 {
-	uint count = 0;
+	unsigned int count = 0;
 
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
-		for (uint j = 0; j < getColumnCount(); ++j)
+		for (unsigned int j = 0; j < getColumnCount(); ++j)
 		{
 			ListboxItem* item = d_grid[i][j];
 
@@ -589,7 +589,7 @@ bool MultiColumnList::isItemSelected(const MCLGridRef& grid_ref) const
 /*************************************************************************
 	Return the ID of the nominated selection column
 *************************************************************************/
-uint MultiColumnList::getNominatedSelectionColumnID(void) const
+unsigned int MultiColumnList::getNominatedSelectionColumnID(void) const
 {
     if (getColumnCount() > 0)
     {
@@ -602,7 +602,7 @@ uint MultiColumnList::getNominatedSelectionColumnID(void) const
 /*************************************************************************
 	Return the nominated selection column
 *************************************************************************/
-uint MultiColumnList::getNominatedSelectionColumn(void) const
+unsigned int MultiColumnList::getNominatedSelectionColumn(void) const
 {
 	return d_nominatedSelectCol;
 }
@@ -611,7 +611,7 @@ uint MultiColumnList::getNominatedSelectionColumn(void) const
 /*************************************************************************
 	Return the nominated selection row.
 *************************************************************************/
-uint MultiColumnList::getNominatedSelectionRow(void) const
+unsigned int MultiColumnList::getNominatedSelectionRow(void) const
 {
 	return d_nominatedSelectRow;
 }
@@ -673,7 +673,7 @@ void MultiColumnList::resetList(void)
 /*************************************************************************
 	Add a column to the table.
 *************************************************************************/
-void MultiColumnList::addColumn(const String& text, uint col_id, const UDim& width)
+void MultiColumnList::addColumn(const String& text, unsigned int col_id, const UDim& width)
 {
 	insertColumn(text, col_id, width, getColumnCount());
 }
@@ -728,7 +728,7 @@ void MultiColumnList::addColumn(const String& value)
 /*************************************************************************
 	Insert a column into the table.
 *************************************************************************/
-void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& width, uint position)
+void MultiColumnList::insertColumn(const String& text, unsigned int col_id, const UDim& width, unsigned int position)
 {
 	// if position is out of range, add item to end of current columns.
 	if (position > getColumnCount())
@@ -749,7 +749,7 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& 
     segment.banPropertyFromXML("Font");
 
 	// Insert a blank entry at the appropriate position in each row.
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
         d_grid[i].d_items.insert(
             d_grid[i].d_items.begin() + position,
@@ -771,7 +771,7 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& 
 /*************************************************************************
 	Remove a column from the table.
 *************************************************************************/
-void MultiColumnList::removeColumn(uint col_idx)
+void MultiColumnList::removeColumn(unsigned int col_idx)
 {
 	// ensure index is valid, and throw if not.
 	if (col_idx >= getColumnCount())
@@ -788,7 +788,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 		}
 
 		// remove the column from each row
-		for (uint i = 0; i < getRowCount(); ++i)
+		for (unsigned int i = 0; i < getRowCount(); ++i)
 		{
 			// extract the item pointer.
 			ListboxItem* item = d_grid[i][col_idx];
@@ -819,7 +819,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 /*************************************************************************
 	Remove a column from the table (via ID)
 *************************************************************************/
-void MultiColumnList::removeColumnWithID(uint col_id)
+void MultiColumnList::removeColumnWithID(unsigned int col_id)
 {
 	removeColumn(getColumnWithID(col_id));
 }
@@ -828,7 +828,7 @@ void MultiColumnList::removeColumnWithID(uint col_id)
 /*************************************************************************
 	Move a column within the table
 *************************************************************************/
-void MultiColumnList::moveColumn(uint col_idx, uint position)
+void MultiColumnList::moveColumn(unsigned int col_idx, unsigned int position)
 {
 	// move the segment on the header, events will ensure the items get moved also.
 	getListHeader()->moveColumn(col_idx, position);
@@ -838,7 +838,7 @@ void MultiColumnList::moveColumn(uint col_idx, uint position)
 /*************************************************************************
 	Move a column (with specified ID) within the table.
 *************************************************************************/
-void MultiColumnList::moveColumnWithID(uint col_id, uint position)
+void MultiColumnList::moveColumnWithID(unsigned int col_id, unsigned int position)
 {
 	moveColumn(getColumnWithID(col_id), position);
 }
@@ -847,7 +847,7 @@ void MultiColumnList::moveColumnWithID(uint col_id, uint position)
 /*************************************************************************
 	Add a row to the bottom of the table
 *************************************************************************/
-uint MultiColumnList::addRow(uint row_id)
+unsigned int MultiColumnList::addRow(unsigned int row_id)
 {
 	return addRow(0, 0, row_id);
 }
@@ -856,9 +856,9 @@ uint MultiColumnList::addRow(uint row_id)
 /*************************************************************************
 	Add a row to the bottom of the table
 *************************************************************************/
-uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
+unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, unsigned int row_id)
 {
-	uint col_idx = 0;
+	unsigned int col_idx = 0;
 
 	// Build the new row
 	ListRow row;
@@ -876,7 +876,7 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 		row[col_idx] = item;
 	}
 
-	uint pos;
+	unsigned int pos;
 
 	// if sorting is enabled, insert at an appropriate position
     const ListHeaderSegment::SortDirection dir = getSortDirection();
@@ -889,7 +889,7 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
         // insert item and get final inserted position.
         ListItemGrid::iterator final_pos = d_grid.insert(ins_pos, row);
 		// get final inserted position as an uint.
-		pos = (uint)std::distance(d_grid.begin(), final_pos);
+		pos = (unsigned int)std::distance(d_grid.begin(), final_pos);
 	}
 	// not sorted, just stick it on the end.
 	else
@@ -909,7 +909,7 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 /*************************************************************************
 	Insert a row into the table
 *************************************************************************/
-uint MultiColumnList::insertRow(uint row_idx, uint row_id)
+unsigned int MultiColumnList::insertRow(unsigned int row_idx, unsigned int row_id)
 {
 	return insertRow(0, 0, row_idx, row_id);
 }
@@ -918,7 +918,7 @@ uint MultiColumnList::insertRow(uint row_idx, uint row_id)
 /*************************************************************************
 	Insert a row into the table
 *************************************************************************/
-uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx, uint row_id)
+unsigned int MultiColumnList::insertRow(ListboxItem* item, unsigned int col_id, unsigned int row_idx, unsigned int row_id)
 {
 	// if sorting is enabled, use add instead of insert
 	if (getSortDirection() != ListHeaderSegment::None)
@@ -957,7 +957,7 @@ uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx, ui
 /*************************************************************************
 	Remove a row from the list.
 *************************************************************************/
-void MultiColumnList::removeRow(uint row_idx)
+void MultiColumnList::removeRow(unsigned int row_idx)
 {
 	// ensure row exists
 	if (row_idx >= getRowCount())
@@ -968,7 +968,7 @@ void MultiColumnList::removeRow(uint row_idx)
 	else
 	{
 		// delete items we are supposed to
-		for (uint i = 0; i < getColumnCount(); ++i)
+		for (unsigned int i = 0; i < getColumnCount(); ++i)
 		{
 			ListboxItem* item = d_grid[row_idx][i];
 
@@ -1039,7 +1039,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	Replace the item in row 'row_idx', in the column with ID 'col_id'
 	with 'item'.  The old item is deleted as required.
 *************************************************************************/
-void MultiColumnList::setItem(ListboxItem* item, uint col_id, uint row_idx)
+void MultiColumnList::setItem(ListboxItem* item, unsigned int col_id, unsigned int row_idx)
 {
 	setItem(item, MCLGridRef(row_idx, getColumnWithID(col_id)));
 }
@@ -1156,7 +1156,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 /*************************************************************************
 	Set the nominated column for 'NominatedColumn*' selections (by ID)
 *************************************************************************/
-void MultiColumnList::setNominatedSelectionColumnID(uint col_id)
+void MultiColumnList::setNominatedSelectionColumnID(unsigned int col_id)
 {
 	setNominatedSelectionColumn(getColumnWithID(col_id));
 }
@@ -1165,7 +1165,7 @@ void MultiColumnList::setNominatedSelectionColumnID(uint col_id)
 /*************************************************************************
 	Set the nominated column for 'NominatedColumn*' selections (by Index)
 *************************************************************************/
-void MultiColumnList::setNominatedSelectionColumn(uint col_idx)
+void MultiColumnList::setNominatedSelectionColumn(unsigned int col_idx)
 {
 	if (d_nominatedSelectCol != col_idx)
 	{
@@ -1184,7 +1184,7 @@ void MultiColumnList::setNominatedSelectionColumn(uint col_idx)
 /*************************************************************************
 	Set the nominated row for 'NominatedRow*' selections
 *************************************************************************/
-void MultiColumnList::setNominatedSelectionRow(uint row_idx)
+void MultiColumnList::setNominatedSelectionRow(unsigned int row_idx)
 {
 	if (d_nominatedSelectRow != row_idx)
 	{
@@ -1217,7 +1217,7 @@ void MultiColumnList::setSortDirection(ListHeaderSegment::SortDirection directio
 /*************************************************************************
 	Set the current sort column (by index)
 *************************************************************************/
-void MultiColumnList::setSortColumn(uint col_idx)
+void MultiColumnList::setSortColumn(unsigned int col_idx)
 {
 	if (getSortColumn() != col_idx)
 	{
@@ -1231,7 +1231,7 @@ void MultiColumnList::setSortColumn(uint col_idx)
 /*************************************************************************
 	Set the current sort column (by ID)
 *************************************************************************/
-void MultiColumnList::setSortColumnByID(uint col_id)
+void MultiColumnList::setSortColumnByID(unsigned int col_id)
 {
     ListHeader* header = getListHeader();
 
@@ -1339,7 +1339,7 @@ void MultiColumnList::handleUpdatedItemData(void)
 	Set the width of the specified column header (and therefore the
 	column itself).
 *************************************************************************/
-void MultiColumnList::setColumnHeaderWidth(uint col_idx, const UDim& width)
+void MultiColumnList::setColumnHeaderWidth(unsigned int col_idx, const UDim& width)
 {
     getListHeader()->setColumnWidth(col_idx, width);
 }
@@ -1442,9 +1442,9 @@ bool MultiColumnList::selectRange(const MCLGridRef& start, const MCLGridRef& end
 	bool modified = false;
 
 	// loop through all items selecting them.
-	for (uint i = tmpStart.row; i <= tmpEnd.row; ++i)
+	for (unsigned int i = tmpStart.row; i <= tmpEnd.row; ++i)
 	{
-		for (uint j = tmpStart.column; j <= tmpEnd.column; ++j)
+		for (unsigned int j = tmpStart.column; j <= tmpEnd.column; ++j)
 		{
 			ListboxItem* item = d_grid[i][j];
 
@@ -1468,7 +1468,7 @@ float MultiColumnList::getTotalRowsHeight(void) const
 {
 	float height = 0.0f;
 
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
 		height += getHighestRowItemHeight(i);
 	}
@@ -1480,7 +1480,7 @@ float MultiColumnList::getTotalRowsHeight(void) const
 /*************************************************************************
 	Return the width of the widest item in the given column
 *************************************************************************/
-float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
+float MultiColumnList::getWidestColumnItemWidth(unsigned int col_idx) const
 {
 	if (col_idx >= getColumnCount())
 	{
@@ -1492,7 +1492,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 		float width = 0.0f;
 
 		// check each item in the column
-		for (uint i = 0; i < getRowCount(); ++i)
+		for (unsigned int i = 0; i < getRowCount(); ++i)
 		{
 			ListboxItem* item = d_grid[i][col_idx];
 
@@ -1522,7 +1522,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 /*************************************************************************
 	Return the height of the highest item in the given row.
 *************************************************************************/
-float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
+float MultiColumnList::getHighestRowItemHeight(unsigned int row_idx) const
 {
 	if (row_idx >= getRowCount())
 	{
@@ -1534,7 +1534,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 		float height = 0.0f;
 
 		// check each item in the column
-		for (uint i = 0; i < getColumnCount(); ++i)
+		for (unsigned int i = 0; i < getColumnCount(); ++i)
 		{
 			ListboxItem* item = d_grid[row_idx][i];
 
@@ -1569,9 +1569,9 @@ bool MultiColumnList::clearAllSelections_impl(void)
 	// flag used so we can track if we did anything.
 	bool modified = false;
 
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
-		for (uint j = 0; j < getColumnCount(); ++j)
+		for (unsigned int j = 0; j < getColumnCount(); ++j)
 		{
 			ListboxItem* item = d_grid[i][j];
 
@@ -1603,7 +1603,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
     float y = listArea.d_min.y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.x - getHorzScrollbar()->getScrollPosition();
 
-    for (uint i = 0; i < getRowCount(); ++i)
+    for (unsigned int i = 0; i < getRowCount(); ++i)
     {
         y += getHighestRowItemHeight(i);
 
@@ -1611,7 +1611,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
         if (pt.y < y)
         {
             // scan across to find column that was clicked
-            for (uint j = 0; j < getColumnCount(); ++j)
+            for (unsigned int j = 0; j < getColumnCount(); ++j)
             {
                 const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
@@ -1693,9 +1693,9 @@ bool MultiColumnList::setItemSelectState_impl(const MCLGridRef grid_ref, bool st
 /*************************************************************************
 	Select all items in the given row
 *************************************************************************/
-void MultiColumnList::setSelectForItemsInRow(uint row_idx, bool state)
+void MultiColumnList::setSelectForItemsInRow(unsigned int row_idx, bool state)
 {
-	for (uint i = 0; i < getColumnCount(); ++i)
+	for (unsigned int i = 0; i < getColumnCount(); ++i)
 	{
 		ListboxItem* item = d_grid[row_idx][i];
 
@@ -1712,9 +1712,9 @@ void MultiColumnList::setSelectForItemsInRow(uint row_idx, bool state)
 /*************************************************************************
 	Select all items in the given column
 *************************************************************************/
-void MultiColumnList::setSelectForItemsInColumn(uint col_idx, bool state)
+void MultiColumnList::setSelectForItemsInColumn(unsigned int col_idx, bool state)
 {
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
 		ListboxItem* item = d_grid[i][col_idx];
 
@@ -1733,7 +1733,7 @@ void MultiColumnList::setSelectForItemsInColumn(uint col_idx, bool state)
 	Implementation version which does not move the header segment
 	(since that may have already happned).
 *************************************************************************/
-void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
+void MultiColumnList::moveColumn_impl(unsigned int col_idx, unsigned int position)
 {
 	// ensure index is valid, and throw if not.
 	if (col_idx >= getColumnCount())
@@ -1764,7 +1764,7 @@ void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
 		}
 
 		// move column entry in each row.
-		for (uint i = 0; i < getRowCount(); ++i)
+		for (unsigned int i = 0; i < getRowCount(); ++i)
 		{
 			// store entry.
 			ListboxItem* item = d_grid[i][col_idx];
@@ -1894,7 +1894,7 @@ void MultiColumnList::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
     // Set the font equal to that of our list
-    for (uint col = 0; col < getColumnCount(); col++)
+    for (unsigned int col = 0; col < getColumnCount(); col++)
     {
         getHeaderSegmentForColumn(col).setFont(d_font);
     }
@@ -2079,10 +2079,10 @@ bool MultiColumnList::handleVertScrollbar(const EventArgs&)
 *************************************************************************/
 bool MultiColumnList::handleSortColumnChange(const EventArgs&)
 {
-	uint col = getSortColumn();
+	unsigned int col = getSortColumn();
 
 	// set new sort column on all rows
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
 		d_grid[i].d_sortColumn = col;
 	}
@@ -2117,7 +2117,7 @@ bool MultiColumnList::handleSortDirectionChange(const EventArgs&)
 bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 {
 	// get the column index for the segment that was double-clicked
-	uint col = getListHeader()->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
+	unsigned int col = getListHeader()->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
 
 	autoSizeColumnHeader(col);
 
@@ -2156,7 +2156,7 @@ void MultiColumnList::setUserColumnDraggingEnabled(bool setting)
 /*************************************************************************
 	Return the ID code assigned to the requested column.
 *************************************************************************/
-uint MultiColumnList::getColumnID(uint col_idx) const
+unsigned int MultiColumnList::getColumnID(unsigned int col_idx) const
 {
 	return getListHeader()->getSegmentFromColumn(col_idx).getID();
 }
@@ -2165,7 +2165,7 @@ uint MultiColumnList::getColumnID(uint col_idx) const
 /*************************************************************************
 	Return the ID code assigned to the requested row.
 *************************************************************************/
-uint MultiColumnList::getRowID(uint row_idx) const
+unsigned int MultiColumnList::getRowID(unsigned int row_idx) const
 {
 	// check for invalid index
 	if (row_idx >= getRowCount())
@@ -2183,9 +2183,9 @@ uint MultiColumnList::getRowID(uint row_idx) const
 /*************************************************************************
 	Return the zero based row index of the row with the specified ID.
 *************************************************************************/
-uint MultiColumnList::getRowWithID(uint row_id) const
+unsigned int MultiColumnList::getRowWithID(unsigned int row_id) const
 {
-	for (uint i = 0; i < getRowCount(); ++i)
+	for (unsigned int i = 0; i < getRowCount(); ++i)
 	{
 		if (d_grid[i].d_rowID == row_id)
 		{
@@ -2267,17 +2267,17 @@ void MultiColumnList::addMultiColumnListProperties(void)
         &MultiColumnList::setShowHorzScrollbar, &MultiColumnList::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 
-    CEGUI_DEFINE_PROPERTY(MultiColumnList, uint,
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, unsigned int,
         "NominatedSelectionColumnID", "Property to get/set the nominated selection column (via ID).  Value is an unsigned integer number.",
         &MultiColumnList::setNominatedSelectionColumn, &MultiColumnList::getNominatedSelectionColumnID, 0 /* TODO: Inconsistency */
     );
 
-    CEGUI_DEFINE_PROPERTY(MultiColumnList, uint,
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, unsigned int,
         "NominatedSelectionRow", "Property to get/set the nominated selection row.  Value is an unsigned integer number.",
         &MultiColumnList::setNominatedSelectionRow, &MultiColumnList::getNominatedSelectionRow, 0
     );
 
-    CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, uint,
+    CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, unsigned int,
         "RowCount", "Property to access the number of rows in the list (read only)",
         0, &MultiColumnList::getRowCount, 0
     );
@@ -2314,9 +2314,9 @@ bool MultiColumnList::resetList_impl(void)
 	// we have items to be removed and possible deleted
 	else
 	{
-		for (uint i = 0; i < getRowCount(); ++i)
+		for (unsigned int i = 0; i < getRowCount(); ++i)
 		{
-			for (uint j = 0; j < getColumnCount(); ++j)
+			for (unsigned int j = 0; j < getColumnCount(); ++j)
 			{
 				ListboxItem* item = d_grid[i][j];
 
@@ -2347,7 +2347,7 @@ bool MultiColumnList::resetList_impl(void)
 	Automatically determines the "best fit" size for the specified column
 	and sets the column width to the same.
 *************************************************************************/
-void MultiColumnList::autoSizeColumnHeader(uint col_idx)
+void MultiColumnList::autoSizeColumnHeader(unsigned int col_idx)
 {
 	// check for invalid index
 	if (col_idx >= getColumnCount())
@@ -2370,7 +2370,7 @@ void MultiColumnList::autoSizeColumnHeader(uint col_idx)
 /*************************************************************************
 	Set the ID code assigned to a given row.
 *************************************************************************/
-void MultiColumnList::setRowID(uint row_idx, uint row_id)
+void MultiColumnList::setRowID(unsigned int row_idx, unsigned int row_id)
 {
 	// check for invalid index
 	if (row_idx >= getRowCount())
@@ -2432,7 +2432,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     int propCnt = Window::writePropertiesXML(xml_stream);
 
     // create an dump <ColumnHeader> elements
-    for (uint i = 0; i < getColumnCount(); ++i)
+    for (unsigned int i = 0; i < getColumnCount(); ++i)
     {
         ListHeaderSegment& seg = getHeaderSegmentForColumn(i);
 
@@ -2525,9 +2525,9 @@ void MultiColumnList::ensureItemColumnIsVisible(const ListboxItem* item)
 }
 
 //----------------------------------------------------------------------------//
-void MultiColumnList::ensureRowIsVisible(uint row_idx)
+void MultiColumnList::ensureRowIsVisible(unsigned int row_idx)
 {
-    uint rows = getRowCount();
+    unsigned int rows = getRowCount();
 
     Scrollbar* vertScrollbar = getVertScrollbar();
 
@@ -2545,7 +2545,7 @@ void MultiColumnList::ensureRowIsVisible(uint row_idx)
         float listHeight = getListRenderArea().getHeight();
 
         // get distance to top of item
-        uint row;
+        unsigned int row;
         for (row = 0; row < row_idx; ++row)
             top += getHighestRowItemHeight(row);
 
@@ -2573,9 +2573,9 @@ void MultiColumnList::ensureRowIsVisible(uint row_idx)
 }
 
 //----------------------------------------------------------------------------//
-void MultiColumnList::ensureColumnIsVisible(uint col_idx)
+void MultiColumnList::ensureColumnIsVisible(unsigned int col_idx)
 {
-    uint cols = getColumnCount();
+    unsigned int cols = getColumnCount();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
     // handle horizontal scrolling
@@ -2592,7 +2592,7 @@ void MultiColumnList::ensureColumnIsVisible(uint col_idx)
         float listWidth = getListRenderArea().getWidth();
 
         // get distance to left edge of item
-        uint col;
+        unsigned int col;
         for (col = 0; col < col_idx; ++col)
             left += CoordConverter::asAbsolute(getColumnHeaderWidth(col),
                                                getParentPixelSize().d_width);

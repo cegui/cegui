@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 
-LayerSpecification::LayerSpecification(uint priority) :
+LayerSpecification::LayerSpecification(unsigned int priority) :
     d_layerPriority(priority)
 {}
 
@@ -64,12 +64,12 @@ void LayerSpecification::clearSectionSpecifications()
     d_sections.clear();
 }
 
-uint LayerSpecification::getLayerPriority() const
+unsigned int LayerSpecification::getLayerPriority() const
 {
     return d_layerPriority;
 }
 
-void LayerSpecification::setLayerPriority(uint priority)
+void LayerSpecification::setLayerPriority(unsigned int priority)
 {
     d_layerPriority = priority;
 }

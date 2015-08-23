@@ -627,9 +627,9 @@ public:
         return the ID code currently assigned to this Window by client code.
 
     \return
-        uint value equal to the currently assigned ID code for this Window.
+        unsigned int value equal to the currently assigned ID code for this Window.
     */
-    uint getID(void) const {return d_ID;}
+    unsigned int getID(void) const {return d_ID;}
 
     using NamedElement::isChild;
     /*!
@@ -642,13 +642,13 @@ public:
         the return from this function will only have meaning to the client code.
 
     \param ID
-        uint ID code to look for.
+        unsigned int ID code to look for.
 
     \return
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChild(uint ID) const;
+    bool isChild(unsigned int ID) const;
 
     /*!
     \brief
@@ -664,13 +664,13 @@ public:
         make sure the window hierarchy from the entry point is small.
 
     \param ID
-        uint ID code to look for.
+        unsigned int ID code to look for.
 
     \return
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChildRecursive(uint ID) const;
+    bool isChildRecursive(unsigned int ID) const;
 
 
     /*!
@@ -758,7 +758,7 @@ public:
         functions for checking if a given window is attached.
 
     \param ID
-        uint value specifying the ID code of the window to return a pointer to.
+        unsigned int value specifying the ID code of the window to return a pointer to.
 
     \return
         Pointer to the (first) Window object attached to this window that has
@@ -767,7 +767,7 @@ public:
     \exception UnknownObjectException
         thrown if no window with the ID code \a ID is attached to this Window.
     */
-    Window* getChild(uint ID) const;
+    Window* getChild(unsigned int ID) const;
 
     /*!
     \brief
@@ -783,14 +783,14 @@ public:
         make sure the window hierarchy from the entry point is small.
 
     \param ID
-        uint value specifying the ID code of the window to return a pointer to.
+        unsigned int value specifying the ID code of the window to return a pointer to.
 
     \return
         Pointer to the (first) Window object attached to this window that has
         the ID code \a ID.
         If no child is found with the ID code \a ID, 0 is returned.
     */
-    Window* getChildRecursive(uint ID) const;
+    Window* getChildRecursive(unsigned int ID) const;
 
     /*!
     \brief
@@ -814,14 +814,14 @@ public:
         Window.
 
     \param ID
-        uint value specifying the ID to look for.
+        unsigned int value specifying the ID to look for.
 
     \return
         - true if an ancestor (parent, or parent of parent, etc) was found with
           the ID code \a ID.
         - false if no ancestor window has the ID code \a ID.
     */
-    bool isAncestor(uint ID) const;
+    bool isAncestor(unsigned int ID) const;
 
     /*!
     \brief
@@ -1604,7 +1604,7 @@ public:
     \return
         Nothing
     */
-    void setID(uint ID);
+    void setID(unsigned int ID);
 
     /*!
     \brief
@@ -1687,7 +1687,7 @@ public:
     \return
         Nothing.
     */
-    void removeChild(uint ID);
+    void removeChild(unsigned int ID);
 
     /*!
     \brief
@@ -3682,7 +3682,7 @@ protected:
     UBox d_margin;
 
     //! User ID assigned to this Window
-    uint d_ID;
+    unsigned int d_ID;
     //! Holds pointer to some user assigned data.
     void* d_userData;
     //! Holds a collection of named user string values.

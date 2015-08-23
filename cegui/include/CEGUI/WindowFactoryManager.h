@@ -112,7 +112,7 @@ public:
 		\return
 			number of target types stacked for this alias.
 		*/
-		uint	getStackedTargetCount(void) const;
+		unsigned int	getStackedTargetCount(void) const;
 
 
 	private:

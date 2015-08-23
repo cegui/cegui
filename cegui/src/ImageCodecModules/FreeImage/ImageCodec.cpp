@@ -129,9 +129,9 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         // BLUE_MASK	0x00FF0000
         // ALPHA_MASK	0xFF000000
 
-        uint pitch = FreeImage_GetPitch(img);
-        uint height = FreeImage_GetHeight(img);
-        uint width = FreeImage_GetWidth(img);
+        unsigned int pitch = FreeImage_GetPitch(img);
+        unsigned int height = FreeImage_GetHeight(img);
+        unsigned int width = FreeImage_GetWidth(img);
         std::uint8_t *rawBuf = new std::uint8_t[width * height << 2];
 
         // convert the bitmap to raw bits (top-left pixel first) 
@@ -141,17 +141,17 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         // We need to convert pixel format a little
         // NB: little endian only - I think(!)
 #if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_BGR
-        for (uint i = 0; i < height; ++i)
+        for (unsigned int i = 0; i < height; ++i)
         {
-            for (uint j = 0; j < width; ++j)
+            for (unsigned int j = 0; j < width; ++j)
             {
-                uint p = *(((uint*)(rawBuf + i * pitch)) + j);
-                uint r = (p >> 16) & 0x000000FF;
-                uint b = (p << 16) & 0x00FF0000;
+                unsigned int p = *(((unsigned int*)(rawBuf + i * pitch)) + j);
+                unsigned int r = (p >> 16) & 0x000000FF;
+                unsigned int b = (p << 16) & 0x00FF0000;
                 p &= 0xFF00FF00;
                 p |= r | b;
                 // write the adjusted pixel back
-                *(((uint*)(rawBuf + i * pitch)) + j) = p;
+                *(((unsigned int*)(rawBuf + i * pitch)) + j) = p;
             }
         }
 #endif

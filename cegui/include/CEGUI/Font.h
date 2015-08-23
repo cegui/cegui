@@ -493,7 +493,7 @@ protected:
         This array is big enough to hold at least max_codepoint bits.
         If this member is NULL, all glyphs are considered pre-rasterised.
     */
-    uint* d_glyphPageLoaded;
+    unsigned int* d_glyphPageLoaded;
 
     //! Definition of CodepointMap type.
     typedef std::map<utf32, FontGlyph, std::less<utf32> > CodepointMap;

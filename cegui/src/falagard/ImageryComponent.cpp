@@ -134,7 +134,7 @@ namespace CEGUI
         const HorizontalFormatting horzFormatting = d_horzFormatting.get(srcWindow);
         const VerticalFormatting vertFormatting = d_vertFormatting.get(srcWindow);
 
-        uint horzTiles, vertTiles;
+        unsigned int horzTiles, vertTiles;
         float xpos, ypos;
 
         Sizef imgSz(img->getRenderedSize());
@@ -220,12 +220,12 @@ namespace CEGUI
         finalRect.top(ypos);
         finalRect.bottom(ypos + imgSz.d_height);
 
-        for (uint row = 0; row < vertTiles; ++row)
+        for (unsigned int row = 0; row < vertTiles; ++row)
         {
             finalRect.left(xpos);
             finalRect.right(xpos + imgSz.d_width);
 
-            for (uint col = 0; col < horzTiles; ++col)
+            for (unsigned int col = 0; col < horzTiles; ++col)
             {
                 // use custom clipping for right and bottom edges when tiling the imagery
                 if (((vertFormatting == VF_TILED) && row == vertTiles - 1) ||

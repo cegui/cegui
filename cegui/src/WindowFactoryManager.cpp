@@ -429,9 +429,9 @@ const String& WindowFactoryManager::AliasTargetStack::getActiveTarget(void) cons
 }
 
 
-uint WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
+unsigned int WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
 {
-	return (uint)d_targetStack.size();
+	return (unsigned int)d_targetStack.size();
 }
 
 

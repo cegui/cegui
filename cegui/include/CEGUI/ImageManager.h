@@ -139,7 +139,7 @@ public:
     Image& get(const String& name) const;
     bool isDefined(const String& name) const;
 
-    uint getImageCount() const;
+    unsigned int getImageCount() const;
 
     void loadImageset(const String& filename, const String& resource_group = "");
     void loadImagesetFromString(const String& source);

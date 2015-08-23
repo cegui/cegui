@@ -402,7 +402,7 @@ public:
     \return
         Size of the maximum supported texture in pixels.
     */
-    virtual uint getMaxTextureSize() const = 0;
+    virtual unsigned int getMaxTextureSize() const = 0;
 
     /*!
     \brief

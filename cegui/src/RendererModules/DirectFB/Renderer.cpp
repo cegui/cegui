@@ -292,7 +292,7 @@ const glm::vec2& DirectFBRenderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint DirectFBRenderer::getMaxTextureSize() const
+unsigned int DirectFBRenderer::getMaxTextureSize() const
 {
     return 2048;
 }

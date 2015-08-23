@@ -348,7 +348,7 @@ const glm::vec2& IrrlichtRenderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint IrrlichtRenderer::getMaxTextureSize() const
+unsigned int IrrlichtRenderer::getMaxTextureSize() const
 {
     return d_maxTextureSize;
 }
@@ -411,7 +411,7 @@ Sizef IrrlichtRenderer::getAdjustedTextureSize(const Sizef& sz) const
 //----------------------------------------------------------------------------//
 float IrrlichtRenderer::getNextPOTSize(const float f)
 {
-    uint size = static_cast<uint>(f);
+    unsigned int size = static_cast<unsigned int>(f);
 
     // if not power of 2
     if ((size & (size - 1)) || !size)
