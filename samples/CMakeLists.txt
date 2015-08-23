@@ -37,7 +37,6 @@ foreach(dir ${SAMPLES_SUBDIRS})
     elseif("${dir}" MATCHES "^CustomShapesDrawing$" AND ANDROID) # exclude this directory
     elseif("${dir}" MATCHES "^RenderEffects$" AND ANDROID) # exclude this directory
     elseif("${dir}" MATCHES "^SVG$" AND ANDROID) # exclude this directory
-    elseif(dir STREQUAL "EditboxValidationDemo")
     else()
         add_subdirectory(${dir})
     endif()
