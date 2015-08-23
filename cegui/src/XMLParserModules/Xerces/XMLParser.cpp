@@ -173,7 +173,7 @@ namespace CEGUI
         String attributeName;
         String attributeValue;
 
-        for (uint i = 0; i < src.getLength(); ++i)
+        for ((unsigned int i = 0; i < src.getLength(); ++i)
         {
             // TODO dalfy: Optimize this using temporary value. 
             attributeName = transcodeXmlCharToString(src.getLocalName(i), XMLString::stringLen(src.getLocalName(i)));

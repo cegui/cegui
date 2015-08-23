@@ -314,7 +314,7 @@ const glm::vec2& NullRenderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint NullRenderer::getMaxTextureSize() const
+unsigned int NullRenderer::getMaxTextureSize() const
 {
     return d_maxTextureSize;
 }

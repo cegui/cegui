@@ -141,7 +141,7 @@ Window*	TabControl::getTabContents(const String& name) const
 /*************************************************************************
 Get the tab at a given ID
 *************************************************************************/
-Window*	TabControl::getTabContents(uint ID) const
+Window*	TabControl::getTabContents(unsigned int ID) const
 {
     return getTabPane()->getChild(ID);
 }
@@ -186,7 +186,7 @@ void TabControl::setSelectedTab(const String &name)
 /*************************************************************************
 Set the selected tab by window ID
 *************************************************************************/
-void TabControl::setSelectedTab(uint ID)
+void TabControl::setSelectedTab(unsigned int ID)
 {
     selectTab_impl(getTabPane()->getChild(ID));
 }
@@ -208,7 +208,7 @@ void TabControl::makeTabVisible(const String &name)
 /*************************************************************************
 Make the tab by window ID visible
 *************************************************************************/
-void TabControl::makeTabVisible(uint ID)
+void TabControl::makeTabVisible(unsigned int ID)
 {
     makeTabVisible_impl(getTabPane()->getChild(ID));
 }
@@ -290,7 +290,7 @@ void TabControl::removeTab(const String& name)
 /*************************************************************************
 Remove a tab by ID
 *************************************************************************/
-void TabControl::removeTab(uint ID)
+void TabControl::removeTab(unsigned int ID)
 {
     // do nothing if given window is not attached as a tab.
     if (getTabPane()->isChild(ID))

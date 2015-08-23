@@ -328,7 +328,7 @@ const glm::vec2& OpenGLRendererBase::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLRendererBase::getMaxTextureSize() const
+unsigned int OpenGLRendererBase::getMaxTextureSize() const
 {
     return d_maxTextureSize;
 }
@@ -412,7 +412,7 @@ void OpenGLRendererBase::restoreTextures()
  
 float OpenGLRendererBase::getNextPOTSize(const float f)
 {
-    uint size = static_cast<uint>(f);
+    unsigned int size = static_cast<unsigned int>(f);
 
     // if not power of 2
     if ((size & (size - 1)) || !size)

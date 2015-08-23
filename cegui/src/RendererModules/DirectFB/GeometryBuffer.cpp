@@ -140,7 +140,7 @@ void DirectFBGeometryBuffer::appendVertex(const Vertex& vertex)
 
 //----------------------------------------------------------------------------//
 void DirectFBGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-                                            uint vertex_count)
+                                            unsigned int vertex_count)
 {
     IDirectFBSurface* t =
         d_activeTexture ? d_activeTexture->getDirectFBSurface() : 0;
@@ -161,7 +161,7 @@ void DirectFBGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     DFBVertex vd;
     const Vertex* vs = vbuff;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    for (unsigned int i = 0; i < vertex_count; ++i, ++vs)
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by DirectFB as needed.
@@ -197,13 +197,13 @@ Texture* DirectFBGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-uint DirectFBGeometryBuffer::getVertexCount() const
+unsigned int DirectFBGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint DirectFBGeometryBuffer::getBatchCount() const
+unsigned int DirectFBGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }

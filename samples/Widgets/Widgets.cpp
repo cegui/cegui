@@ -41,7 +41,7 @@ using namespace CEGUI;
 class MyListItem : public ListboxTextItem
 {
 public:
-    MyListItem(const String& text, CEGUI::uint item_id = 0) :
+    MyListItem(const String& text, unsigned int item_id = 0) :
       ListboxTextItem(text, item_id)
       {
           setSelectionBrushImage("Vanilla-Images/GenericBrush");

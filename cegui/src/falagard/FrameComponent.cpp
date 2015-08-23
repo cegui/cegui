@@ -572,7 +572,7 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
                                  Rectf& destRect, const ColourRect& colours,
                                  const Rectf* clipper, bool clip_to_display) const
 {
-    uint horzTiles, vertTiles;
+    unsigned int horzTiles, vertTiles;
     float xpos, ypos;
 
     Sizef imgSz(image->getRenderedSize());
@@ -654,12 +654,12 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
     finalRect.d_min.y = ypos;
     finalRect.d_max.y = ypos + imgSz.d_height;
 
-    for (uint row = 0; row < vertTiles; ++row)
+    for (unsigned int row = 0; row < vertTiles; ++row)
     {
         finalRect.d_min.x = xpos;
         finalRect.d_max.x = xpos + imgSz.d_width;
 
-        for (uint col = 0; col < horzTiles; ++col)
+        for (unsigned int col = 0; col < horzTiles; ++col)
         {
             // use custom clipping for right and bottom edges when tiling the imagery
             if (((vertFmt == VF_TILED) && row == vertTiles - 1) ||

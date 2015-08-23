@@ -192,7 +192,7 @@ void IrrlichtGeometryBuffer::appendVertex(const Vertex& vertex)
 
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-                                            uint vertex_count)
+                                            unsigned int vertex_count)
 {
     // see if we should start a new batch
     irr::video::ITexture* t =
@@ -209,7 +209,7 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     const irr::u16 idx_start = d_batches.back().vertexCount;
     irr::video::S3DVertex v;
-    for (uint i = 0; i < vertex_count; ++i)
+    for (unsigned int i = 0; i < vertex_count; ++i)
     {
         const Vertex& vs = vbuff[i];
         v.Pos.X     = vs.position.d_x + d_texelOffset;
@@ -248,13 +248,13 @@ Texture* IrrlichtGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-uint IrrlichtGeometryBuffer::getVertexCount() const
+unsigned int IrrlichtGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint IrrlichtGeometryBuffer::getBatchCount() const
+unsigned int IrrlichtGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }

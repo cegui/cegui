@@ -92,12 +92,12 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
     // do the old switcharoo on R and B if needed
     if (rbswap)
     {
-        std::uint8_t* dat = image.getData();
-        for (uint j = 0; j < image.getHeight(); ++j)
+        std::(unsigned int8_t* dat = image.getData();
+        for ((unsigned int j = 0; j < image.getHeight(); ++j)
         {
-            for (uint i = 0; i < image.getWidth(); ++i)
+            for ((unsigned int i = 0; i < image.getWidth(); ++i)
             {
-                std::uint8_t tmp = dat[i * components + 0];
+                std::(unsigned int8_t tmp = dat[i * components + 0];
                 dat[i * components + 0] = dat[i * components + 2];
                 dat[i * components + 2] = tmp;
             }

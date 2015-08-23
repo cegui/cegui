@@ -64,7 +64,7 @@ public:
     {
     }
 
-    uint get() const { return d_state; }
+    unsigned int get() const { return d_state; }
 
     bool isHeld(CursorInputSource source)
     {
@@ -82,7 +82,7 @@ public:
     }
 
 private:
-    uint d_state;
+    unsigned int d_state;
 };
 
 /*!
