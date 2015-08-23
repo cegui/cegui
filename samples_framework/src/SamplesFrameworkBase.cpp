@@ -137,7 +137,6 @@ SamplesFrameworkBase::~SamplesFrameworkBase()
 *************************************************************************/
 int SamplesFrameworkBase::run()
 {
-    bool caught_exception(false);
     CEGUI_TRY
     {
         if (initialise("CEGUI.log", CEGUI::String()))

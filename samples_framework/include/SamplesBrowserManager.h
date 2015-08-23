@@ -55,7 +55,7 @@ private:
     SamplesBrowserManager(const SamplesBrowserManager&) {}
 
     void init();
-    SamplesBrowserManager& operator=(const SamplesBrowserManager&) {}
+    SamplesBrowserManager& operator=(const SamplesBrowserManager&) { return *this; }
 
     static const CEGUI::uint32 d_sampleWindowFrameNormal;
     static const CEGUI::uint32 d_sampleWindowFrameSelected;

@@ -130,7 +130,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    virtual bool operator()(const EventArgs& /*args*/)
     {
         d_function();
 

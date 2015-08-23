@@ -48,12 +48,14 @@ OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
     d_renderTargetUpdated(false),
 #else
     d_viewport(0),
-    d_ogreViewportDimensions(0, 0, 0, 0),
 #endif    
     d_matrix(Ogre::Matrix3::ZERO),
     d_matrixValid(false),
-    d_viewportValid(false),
-    d_viewDistance(0)
+    d_viewDistance(0),
+    d_viewportValid(false)
+#ifndef CEGUI_USE_OGRE_COMPOSITOR2
+    , d_ogreViewportDimensions(0, 0, 0, 0)
+#endif
 {
 }
 

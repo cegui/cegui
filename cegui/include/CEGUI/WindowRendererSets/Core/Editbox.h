@@ -160,7 +160,7 @@ protected:
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
     //! helper to set 'visual' to the string we will render (part of)
     void setupVisualString(String& visual) const;
-    size_t getCaretIndex(const String& visual_string) const;
+    size_t getCaretIndex(const String& visual_text) const;
     float calculateTextOffset(const Rectf& text_area,
                               const float text_extent,
                               const float caret_width,

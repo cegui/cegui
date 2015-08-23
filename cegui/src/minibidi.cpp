@@ -85,8 +85,8 @@ enum
 #define leastGreaterEven(x) odd(x) ? (x+1) : (x+2)
 
 /* Shaping Helpers */
-#define STYPE(xh) ((xh >= SHAPE_FIRST) && (xh <= SHAPE_LAST)) ? \
-                   shapetypes[xh-SHAPE_FIRST].type : SU
+#define STYPE(xh) ((xh >= SHAPE_FIRST) && (xh <= SHAPE_LAST) ? \
+                   shapetypes[xh-SHAPE_FIRST].type : static_cast<unsigned char>(SU))
 #define SISOLATED(xh) shapetypes[xh-SHAPE_FIRST].form_b
 #define SFINAL(xh) xh+1
 #define SINITIAL(xh) xh+2
@@ -1118,7 +1118,7 @@ int doBidi(BLOCKTYPE line, int count, int applyShape, int reorderCombining, int 
    unsigned char* levels;
    unsigned char paragraphLevel;
    unsigned char tempType, tempTypeSec;
-   int i, j, imax, fX, fAL, fET, fNSM, tempInt;
+   int i, j, fX, fAL, fET, fNSM, tempInt;
    CHARTYPE* shapeTo;
 
    if (v2l)
@@ -1589,7 +1589,6 @@ int doBidi(BLOCKTYPE line, int count, int applyShape, int reorderCombining, int 
     * level or higher
     */
    /* we flip the character string and leave the level array */
-   imax = 0;
    i=0;
    tempType = levels[0];
    while(i < count)
@@ -1597,11 +1596,10 @@ int doBidi(BLOCKTYPE line, int count, int applyShape, int reorderCombining, int 
        if(levels[i] > tempType)
 	 {
 	   tempType = levels[i];
-	   imax=i;
 	 }
        i++;
      }
-   /* maximum level in tempType, its index in imax. */
+   /* maximum level in tempType */
    while(tempType > 0)		/* loop from highest level to the least odd, */
      {				/* which i assume is 1 */
        flipThisRun(line, levels, tempType, count, v2l);

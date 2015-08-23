@@ -481,7 +481,7 @@ void HUDDemo::selectedWeapon(SelectedWeapon weapon)
     }
 }
 
-bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
+bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& /*args*/)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     weaponIndex = (weaponIndex - 1) % 3;
@@ -492,7 +492,7 @@ bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool HUDDemo::handleRestartButtonClicked(const CEGUI::EventArgs& args)
+bool HUDDemo::handleRestartButtonClicked(const CEGUI::EventArgs& /*args*/)
 {
     d_root->removeChild(d_rootGameOver);
     d_rootIngame->addChild(d_mouseCursorWnd);
@@ -502,7 +502,7 @@ bool HUDDemo::handleRestartButtonClicked(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool HUDDemo::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args)
+bool HUDDemo::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& /*args*/)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );

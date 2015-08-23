@@ -291,8 +291,8 @@ void GameMenuDemo::update(float timeSinceLastUpdate)
     {
         d_timeSinceLoginAccepted += timeSinceLastUpdate;
 
-        updateLoginWelcomeText(timeSinceLastUpdate);
-        updateLoginStartButtonText(timeSinceLastUpdate);
+        updateLoginWelcomeText();
+        updateLoginStartButtonText();
     }
 
     if(d_timeSinceStart >= s_loginDisplayStartDelay && !d_loginContainer->isVisible())
@@ -305,7 +305,7 @@ void GameMenuDemo::update(float timeSinceLastUpdate)
     }
 }
 
-bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& /*args*/)
 {
     d_startButtonClickArea->setAlpha(0.0f);
     d_startButtonBlendInAnimInst->start();
@@ -327,7 +327,7 @@ bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_interactivePlanetElementsAreEnabled)
         enableInteractivePlanetElements();
@@ -341,7 +341,7 @@ bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& ar
 }
 
 
-bool GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_loginWasAccepted)
         return false;
@@ -405,7 +405,7 @@ bool GameMenuDemo::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& /*args*/)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -414,7 +414,7 @@ bool GameMenuDemo::handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool GameMenuDemo::handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& /*args*/)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -423,7 +423,7 @@ bool GameMenuDemo::handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool GameMenuDemo::handleMouseEntersRightArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleMouseEntersRightArrowArea(const CEGUI::EventArgs& /*args*/)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -432,7 +432,7 @@ bool GameMenuDemo::handleMouseEntersRightArrowArea(const CEGUI::EventArgs& args)
     return false;
 }
 
-bool GameMenuDemo::handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& /*args*/)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -442,7 +442,7 @@ bool GameMenuDemo::handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& args)
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_startButtonClicked)
         return false;
@@ -457,7 +457,7 @@ bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_startButtonClicked)
         return false;
@@ -472,7 +472,7 @@ bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_startButtonClicked)
         return false;
@@ -491,7 +491,7 @@ bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_startButtonClicked)
         return false;
@@ -509,7 +509,7 @@ bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& a
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args)
+bool GameMenuDemo::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& /*args*/)
 {
     if(!d_startButtonClicked)
         return false;
@@ -693,7 +693,7 @@ void GameMenuDemo::updateIntroText()
     d_botBarLabel->setText(finalText);
 }
 
-void GameMenuDemo::updateLoginWelcomeText(float passedTime)
+void GameMenuDemo::updateLoginWelcomeText()
 {
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
@@ -719,7 +719,7 @@ void GameMenuDemo::updateLoginWelcomeText(float passedTime)
 }
 
 
-void GameMenuDemo::updateLoginStartButtonText(float passedTime)
+void GameMenuDemo::updateLoginStartButtonText()
 {
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;

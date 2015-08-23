@@ -427,8 +427,8 @@ protected:
     ScriptModule* getScriptModule() const;
 
     // Do not allow copying, assignment, or any other usage than simple creation.
-    EventSet(EventSet&) {}
-    EventSet& operator=(EventSet&)
+    EventSet(const EventSet&) {}
+    EventSet& operator=(const EventSet&)
     {
         return *this;
     }

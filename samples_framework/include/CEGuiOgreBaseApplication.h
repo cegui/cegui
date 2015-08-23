@@ -113,7 +113,6 @@ protected:
     WndEvtListener* d_windowEventListener;
 };
 
-
 /*!
 \brief
     Ogre FrameListener class where we deal with input processing and the like.
@@ -122,7 +121,7 @@ class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListen
 {
 public:
     // Construction and Destruction
-    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
+    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam);
     ~CEGuiDemoFrameListener();
 
     // Processing to be done at start and end of each frame.

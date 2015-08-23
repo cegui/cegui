@@ -75,8 +75,7 @@ public:
 
 
     SampleDataHandler(const XMLAttributes& attributes,
-                               const String& name_prefix,
-                               SamplesFramework* samplesFramework);
+                      SamplesFramework* samplesFramework);
     virtual ~SampleDataHandler();
 
 protected:
