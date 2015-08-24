@@ -94,11 +94,6 @@ void OpenGLGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::finaliseVertexAttributes()
-{
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::setupVertexDataPointers() const
 {
     int dataOffset = 0;

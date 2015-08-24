@@ -66,7 +66,7 @@ public:
         The update function that is to be called when all the vertex attributes
         are set.
     */
-    virtual void finaliseVertexAttributes() = 0;
+    virtual void finaliseVertexAttributes() const {}
 
 protected:
     //! Update the cached matrices

@@ -33,7 +33,6 @@ class CEGuiOpenGL3BaseApplication : public CEGuiGLFWSharedBase
 {
 public:
     CEGuiOpenGL3BaseApplication();
-    ~CEGuiOpenGL3BaseApplication();
 
 protected:
     static void setGLFWWindowCreationHints();

@@ -98,8 +98,8 @@ void OpenGL3GeometryBuffer::draw() const
     }
     else
     {
-        d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
         // This binds and sets up a vbo for rendering
+        finaliseVertexAttributes();
     }
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
@@ -158,7 +158,7 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::finaliseVertexAttributes()
+void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
 {
     //On OpenGL desktop versions we want to bind both of the following calls, otherwise vbos are enough as the following calls
     //only affect the vbo (which may be tied to a vao)
@@ -181,7 +181,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
         case VAT_POSITION0:
             {
                 GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
-                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
                 glEnableVertexAttribArray(shader_pos_loc);
                 dataOffset += 3;
             }
@@ -189,7 +189,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
         case VAT_COLOUR0:
             {
                 GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
-                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
                 glEnableVertexAttribArray(shader_colour_loc);
                 dataOffset += 4;
             }
@@ -197,7 +197,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
         case VAT_TEXCOORD0:
             {
                 GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
-                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
                 glEnableVertexAttribArray(texture_coord_loc);
                 dataOffset += 2;
             }
