@@ -51,7 +51,7 @@ public:
     virtual void reset();
 
     // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
-    void finaliseVertexAttributes();
+    void finaliseVertexAttributes() const;
 
 protected:
     void initialiseVertexBuffers();

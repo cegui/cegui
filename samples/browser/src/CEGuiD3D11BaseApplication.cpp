@@ -90,11 +90,6 @@ CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
 //----------------------------------------------------------------------------//
 CEGuiD3D11BaseApplication::~CEGuiD3D11BaseApplication()
 {
-    Win32AppHelper::mouseLeaves();
-
-    CEGUI::Direct3D11Renderer::destroy(
-        *static_cast<CEGUI::Direct3D11Renderer*>(d_renderer));
-
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
     cleanupDirect3D();
@@ -102,6 +97,15 @@ CEGuiD3D11BaseApplication::~CEGuiD3D11BaseApplication()
     DestroyWindow(pimpl->d_window);
 
     delete pimpl;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiD3D11BaseApplication::destroyRenderer()
+{
+    Win32AppHelper::mouseLeaves();
+
+    CEGUI::Direct3D11Renderer::destroy(
+        *static_cast<CEGUI::Direct3D11Renderer*>(d_renderer));
 }
 
 //----------------------------------------------------------------------------//

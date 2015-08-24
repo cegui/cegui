@@ -148,9 +148,6 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
 //----------------------------------------------------------------------------//
 CEGuiDirectFBBaseApplication::~CEGuiDirectFBBaseApplication()
 {
-    CEGUI::DirectFBRenderer::destroy(
-        *static_cast<CEGUI::DirectFBRenderer*>(d_renderer));
-
     cleanupDirectFB();
 
     delete pimpl;
