@@ -48,38 +48,52 @@ else()
     )
 endif()
 
+if (ANDROID)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/SamplesFrameworkAndroid.cpp
+    )
+endif ()
 
 if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
-    # Append OpenGL, OpenGL3 and OpenGL ES 2 files
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiGLFWSharedBase.cpp
-    )
-    if (CEGUI_USE_GLFW_VER STREQUAL "3")
+    if (NOT ANDROID)
+    
         list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiGLFW3SharedBase.cpp
+            ./src/CEGuiGLFWSharedBase.cpp
         )
-    else() # CEGUI_USE_GLFW_VER STREQUAL "2"
-        list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiGLFW2SharedBase.cpp
-        )
-    endif()
+        if (CEGUI_USE_GLFW_VER STREQUAL "3")
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiGLFW3SharedBase.cpp
+            )
+        else() # CEGUI_USE_GLFW_VER STREQUAL "2"
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiGLFW2SharedBase.cpp
+            )
+        endif()
 
-    if (CEGUI_BUILD_RENDERER_OPENGL)
-        list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiOpenGLBaseApplication.cpp
-        )
-    endif()
+        if (CEGUI_BUILD_RENDERER_OPENGL)
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiOpenGLBaseApplication.cpp
+            )
+        endif()
 
-    if (CEGUI_BUILD_RENDERER_OPENGL3)
-        list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiOpenGL3BaseApplication.cpp
-        )
-    endif()
+        if (CEGUI_BUILD_RENDERER_OPENGL3)
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiOpenGL3BaseApplication.cpp
+            )
+        endif()
+  
+    endif ()
 
     if (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2)
-        list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiOpenGLES2BaseApplication.cpp
-        )
+        if (ANDROID)
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiAndroidOpenglEs2BaseApplication.cpp
+            )
+        else ()
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiOpenGLES2BaseApplication.cpp
+            )
+        endif ()
     endif()
 
 endif()
@@ -158,7 +172,11 @@ endif()
 ###########################################################################
 #                   Dynamically Linked Executable
 ###########################################################################
-add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+if (ANDROID)
+    add_library (${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES})
+else ()   
+    add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+endif ()
 
 # append the _d (or whatever) for debug builds as needed.
 if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
