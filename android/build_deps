@@ -1,0 +1,358 @@
+#!/usr/bin/env bash
+myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. "$myScriptsDir/common"
+
+"$myScriptsDir/prepare_ndk"
+
+if [ $? -eq 0 ]; then
+
+    mkdir -p "$ceguiDepsDownloadsDir" "$ceguiDepsSrcDir" "$ceguiDepsBuildDir"
+    dirRequiresSudo "$ceguiDepsInstallDir" depsInstallDirMaybeSudo
+
+    buildNdkMissing()
+    {
+
+        if [ ! -d "$ndkMissing_installDir" ]; then
+
+            if [ ! -d "$ndkMissing_buildDir" ]; then
+                mkdir -p "$ndkMissing_buildDir"
+                cd "$ndkMissing_buildDir"
+                eval myCmake '""' $androidCmakeOptions \
+                  '-DCMAKE_INSTALL_PREFIX="$ndkMissing_installDir"' \
+                  '-DCMAKE_BUILD_TYPE="$ceguiDepsBuildType"' \
+                  '"$ndkMissing_srcDir"'
+            fi
+
+            cd "$ndkMissing_buildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+
+    }
+
+    installNdkMissing()
+    {
+        if [ ! -d "$ndkMissing_installDir" ]; then
+            cd "$ndkMissing_buildDir"
+            myMake "$depsInstallDirMaybeSudo" install
+        fi
+    }
+
+    buildTinyxml()
+    {
+
+        if [ ! -d "$tinyxmlInstallDir" ]; then
+
+            if [ ! -d "$tinyxmlSrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$tinyxmlPackageArchive" ]; \
+                  then
+                    myWget "" "$ceguiDepsDownloadsDir/$tinyxmlPackageArchive" \
+                              "$tinyxmlPackageUri"
+                fi
+                myUnpackTarGz "" "$ceguiDepsDownloadsDir/$tinyxmlPackageArchive"
+                mv "$tinyxmlPackageDir" "$tinyxmlSrcDir"
+                cp "$myScriptsDir/tinyxml-CMakeLists.txt" \
+                   "$tinyxmlSrcDir/CMakeLists.txt"
+            fi
+
+            if [ ! -d "$tinyxmlBuildDir" ]; then
+                mkdir -p "$tinyxmlBuildDir"
+                cd "$tinyxmlBuildDir"
+                eval myCmake '""' $androidCmakeOptions \
+                  '-DCMAKE_INSTALL_PREFIX="$tinyxmlInstallDir"' \
+                  '-DCMAKE_BUILD_TYPE="$ceguiDepsBuildType"' \
+                  '"$tinyxmlSrcDir"'
+            fi
+
+            cd "$tinyxmlBuildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+
+    }
+
+    installTinyxml()
+    {
+        if [ ! -d "$tinyxmlInstallDir" ]; then       
+            cd "$tinyxmlBuildDir"
+            myMake "$depsInstallDirMaybeSudo" install
+        fi
+    }
+
+    freeimageMakeParams="-f Makefile.gnu $androidToolchainConfiguration $androidBuildOptions DESTDIR=\"\$freeimageInstallDir\" ndkMissing_dir=\"\$ndkMissing_installDir\""
+
+    buildFreeimage()
+    {
+
+        addToolchainToPath
+
+        if [ ! -d "$freeimageInstallDir" ]; then
+
+            if [ ! -d "$freeimageSrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$freeimagePackageArchive" ]; \
+                  then
+                    myWget "" \
+                           "$ceguiDepsDownloadsDir/$freeimagePackageArchive" \
+                            "$freeimagePackageUri"
+                fi
+                myUnpackZip "" "$ceguiDepsDownloadsDir/$freeimagePackageArchive"
+                mv "$freeimagePackageDir" "$freeimageSrcDir"
+                myPatchDir "" "$freeimageSrcDir" "$myScriptsDir/freeimage.patch"
+            fi
+
+            if [ ! -d "$freeimageBuildDir" ]; then
+                cp -r "$freeimageSrcDir" "$freeimageBuildDir"
+            fi
+
+            cd "$freeimageBuildDir"
+            eval myMake '""' "-j$buildNumOfProcesses" $freeimageMakeParams
+
+        fi
+    }
+
+    installFreeimage()
+    {
+        addToolchainToPath
+        if [ ! -d "$freeimageInstallDir" ]; then
+            cd "$freeimageBuildDir"
+            eval myMake '"$depsInstallDirMaybeSudo"' $freeimageMakeParams \
+                 install
+        fi
+    }
+
+    buildGlm()
+    {
+
+        if [ ! -d "$glmInstallDir" ]; then
+
+            if [ ! -d "$glmSrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$glmPackageArchive" ]; then
+                    myWget "" "$ceguiDepsDownloadsDir/$glmPackageArchive" \
+                              "$glmPackageUri"
+                fi
+                myUnpack7z "" "$ceguiDepsDownloadsDir/$glmPackageArchive"
+                mv "$glmPackageDir" "$glmSrcDir"
+            fi
+
+            if [ ! -d "$glmBuildDir" ]; then
+                mkdir -p "$glmBuildDir"
+                cd "$glmBuildDir"
+                eval myCmake '""' $androidCmakeOptions \
+                  '-DCMAKE_INSTALL_PREFIX="$glmInstallDir"' \
+                  '-DCMAKE_BUILD_TYPE="$ceguiDepsBuildType"' \
+                  '"$glmSrcDir"'
+            fi
+
+            cd "$glmBuildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+
+    }
+
+    installGlm()
+    {
+        if [ ! -d "$glmInstallDir" ]; then
+            cd "$glmBuildDir"
+            myMake "$depsInstallDirMaybeSudo" install
+        fi
+    }
+
+    buildPcre()
+    {
+
+        addToolchainToPath
+
+        if [ ! -d "$pcreInstallDir" ]; then
+
+            if [ ! -d "$pcreSrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$pcrePackageArchive" ]; then
+                    myWget "" "$ceguiDepsDownloadsDir/$pcrePackageArchive" \
+                              "$pcrePackageUri"
+                fi
+                myUnpackTarBz2 "" "$ceguiDepsDownloadsDir/$pcrePackageArchive"
+                mv "$pcrePackageDir" "$pcreSrcDir"
+            fi
+
+            if [ ! -d "$pcreBuildDir" ]; then
+                mkdir -p "$pcreBuildDir"
+                cd "$pcreBuildDir"
+                eval '"$pcreSrcDir/configure" --prefix="$pcreInstallDir"' \
+                  '--host="$androidToolchainName" --enable-unicode-properties'
+                  '--disable-rebuild-chartables' $androidAutotoolsOptions
+            fi
+
+            cd "$pcreBuildDir"
+            myMake "" "-j$buildNumOfProcesses" V=1
+
+        fi
+
+    }
+
+    installPcre()
+    {
+        addToolchainToPath
+        if [ ! -d "$pcreInstallDir" ]; then
+            cd "$pcreBuildDir"
+            myMake "$depsInstallDirMaybeSudo" install V=1
+        fi
+    }
+
+    buildFreetype()
+    {
+
+        addToolchainToPath
+
+        if [ ! -d "$freetypeInstallDir" ]; then
+
+            if [ ! -d "$freetypeSrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$freetypePackageArchive" ]; \
+                  then
+                    myWget "" "$ceguiDepsDownloadsDir/$freetypePackageArchive" \
+                              "$freetypePackageUri"
+                fi
+                myUnpackTarBz2 "" \
+                               "$ceguiDepsDownloadsDir/$freetypePackageArchive"
+                mv "$freetypePackageDir" "$freetypeSrcDir"
+            fi
+
+            if [ ! -d "$freetypeBuildDir" ]; then
+                mkdir -p "$freetypeBuildDir"
+                cd "$freetypeBuildDir"
+                eval '"$freetypeSrcDir/configure"' \
+                  '--prefix="$freetypeInstallDir"' \
+                  '--host="$androidToolchainName" --with-zlib=yes' \
+                  '--with-bzip2=no --with-png=no --with-harfbuzz=no' \
+                  $androidAutotoolsOptions
+            fi
+
+            cd "$freetypeBuildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+
+    }
+
+    installFreetype()
+    {
+        addToolchainToPath
+        if [ ! -d "$freetypeInstallDir" ]; then
+            cd "$freetypeBuildDir"
+            myMake "$depsInstallDirMaybeSudo" install
+        fi
+    }
+
+    buildEpoxy()
+    {
+
+        if [ ! -d "$epoxyInstallDir" ]; then
+
+            if [ ! -d "$epoxySrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$epoxyPackageArchive" ]; then
+                    myWget "" "$ceguiDepsDownloadsDir/$epoxyPackageArchive" \
+                              "$epoxyPackageUri"
+                fi
+                myUnpackTarGz "" "$ceguiDepsDownloadsDir/$epoxyPackageArchive"
+                mv "$epoxyPackageDir" "$epoxySrcDir"
+            fi
+
+            if [ ! -d "$epoxyBuildDir" ]; then
+                mkdir -p "$epoxyBuildDir"
+                cd "$epoxyBuildDir"
+                eval myCmake '""' $androidCmakeOptions \
+                  '-DCMAKE_INSTALL_PREFIX="$epoxyInstallDir"' \
+                  '-DCMAKE_BUILD_TYPE="$ceguiDepsBuildType" "$epoxySrcDir"'
+            fi
+
+            cd "$epoxyBuildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+    }
+
+    installEpoxy()
+    {
+        if [ ! -d "$epoxyInstallDir" ]; then
+            cd "$epoxyBuildDir"
+            myMake "$depsInstallDirMaybeSudo" install
+        fi
+    }
+
+    buildFribidi()
+    {
+
+        addToolchainToPath
+
+        if [ ! -d "$fribidiInstallDir" ]; then
+
+            if [ ! -d "$fribidiSrcDir" ]; then
+                cd "$ceguiDepsSrcDir"
+                if [ ! -f "$ceguiDepsDownloadsDir/$fribidiPackageArchive" ]; \
+                  then
+                    myWget "" "$ceguiDepsDownloadsDir/$fribidiPackageArchive" \
+                              "$fribidiPackageUri"
+                fi
+                myUnpackTarBz2 "" \
+                               "$ceguiDepsDownloadsDir/$fribidiPackageArchive"
+                mv "$fribidiPackageDir" "$fribidiSrcDir"
+            fi
+
+            if [ ! -d "$fribidiBuildDir" ]; then
+                mkdir -p "$fribidiBuildDir"
+                cd "$fribidiBuildDir"
+                eval '"$fribidiSrcDir/configure"' \
+                  '--prefix="$fribidiInstallDir"' \
+                  '--host="$androidToolchainName" --with-glib=no' \
+                  $androidAutotoolsOptions
+            fi
+
+            cd "$fribidiBuildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+
+    }
+
+    installFribidi()
+    {
+        addToolchainToPath
+        if [ ! -d "$fribidiInstallDir" ]; then
+            cd "$fribidiBuildDir"
+            myMake "$depsInstallDirMaybeSudo" install
+        fi
+    }
+
+
+    : \
+        &&  (buildNdkMissing) \
+        &&  (installNdkMissing) \
+        &&  (buildTinyxml) \
+        &&  (buildFreeimage) \
+        &&  (buildGlm) \
+        &&  (buildPcre) \
+        &&  (buildFreetype) \
+        &&  (buildEpoxy) \
+        &&  (buildFribidi) \
+        &&  (installTinyxml) \
+        &&  (installFreeimage) \
+        &&  (installGlm) \
+        &&  (installPcre) \
+        &&  (installFreetype) \
+        &&  (installEpoxy) \
+        &&  (installFribidi)
+
+    if [ $? -eq 0 ]; then
+        echo $'\n'"Building CEGUI dependencies succeeded!"
+        true;
+    else
+        echo $'\n'"Building CEGUI dependencies failed!"
+        false;
+    fi
+
+fi
