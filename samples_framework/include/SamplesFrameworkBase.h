@@ -32,6 +32,7 @@ class CEGuiBaseApplication;
 class CEGuiRendererSelector;
 
 #include "CEGUI/InputEvent.h"
+#include "CEGUI/Exceptions.h"
 
 /*!
 \brief
@@ -55,7 +56,6 @@ public:
     */
     virtual ~SamplesFrameworkBase();
 
-
     /*!
     \brief
         Application entry point.
@@ -65,23 +65,18 @@ public:
     */
     int run();
 
-
     /*!
     \brief
-        Sample specific initialisation goes here.  This method is called by the application base object created
-        as part of the initialise call.
+        Initialises the sample system, this includes asking the user for a render to use and
+        the subsequent creation of the required systems to support that renderer.
 
     \return
-        false if something went wrong.
+        false if anything went wrong.
     */
-    virtual bool initialise()  = 0;
-
-
-    /*!
-    \brief
-        deinitialise the resources allocated in the initialise if needed.
-    */
-    virtual void deinitialise() = 0;
+    virtual bool initialise(const CEGUI::String &logFile,
+                            const CEGUI::String &dataPathPrefixOverride);
+    
+    virtual void cleanup();
 
     /*!
     \brief
@@ -94,6 +89,8 @@ public:
     Update function for window size changes
     */
     virtual void handleNewWindowSize(float width, float height) = 0;
+
+    void renderSingleFrame(float elapsed);
 
     /*!
     \brief
@@ -177,30 +174,13 @@ public:
     */
     void setApplicationWindowSize(int width, int height);
 
-protected:
-    /*!
-    \brief
-        Initialises the sample system, this includes asking the user for a render to use and
-        the subsequent creation of the required systems to support that renderer.
-
-    \return
-        false if anything went wrong.
-    */
-    virtual bool runApplication();
-
-
-    /*!
-    \brief
-        Cleans up all resources allocated by the initialise call.
-    */
-    virtual void cleanup();
-
-
     /*!
     \brief
         Output a message to the user in some OS independant way.
     */
     static void outputExceptionMessage(const char* message);
+
+protected:
 
     /*************************************************************************
         Data fields
@@ -213,5 +193,35 @@ protected:
     int                     d_appWindowWidth;            //!< Int defining the application window's width.
     int                     d_appWindowHeight;           //!< Int defining the application window's height.
 };
+
+#define SAMPLES_FRAMEWORK_DO_AND_CATCH(operation) \
+    do \
+    { \
+        caught_exception = true; \
+        CEGUI_TRY \
+        { \
+            operation; \
+            caught_exception = false; \
+        } \
+        CEGUI_CATCH(CEGUI::Exception& exc) \
+        { \
+            SamplesFrameworkBase::outputExceptionMessage \
+              (exc.getMessage().c_str()); \
+        } \
+        CEGUI_CATCH(std::exception& exc) \
+        { \
+            SamplesFrameworkBase::outputExceptionMessage(exc.what()); \
+        } \
+        CEGUI_CATCH(const char* exc) \
+        { \
+            SamplesFrameworkBase::outputExceptionMessage(exc); \
+        } \
+        CEGUI_CATCH(...) \
+        { \
+            SamplesFrameworkBase::outputExceptionMessage \
+              ("Unknown exception was caught!"); \
+        } \
+    } \
+    while (false)
 
 #endif  // end of guard _SamplesFrameworkBase_h_
