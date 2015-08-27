@@ -1,0 +1,2 @@
+java.target=$javaVerMajor.$javaVerMinor
+java.source=$javaVerMajor.$javaVerMinor
