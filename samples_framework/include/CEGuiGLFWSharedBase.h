@@ -91,7 +91,6 @@ protected:
     /*************************************************************************
     Data fields
     *************************************************************************/
-    static CEGuiGLFWSharedBase* d_appInstance;
     static double  d_frameTime;
     static int  d_modifiers;
 

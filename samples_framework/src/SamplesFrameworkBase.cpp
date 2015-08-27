@@ -44,6 +44,16 @@
 #   include "MacCEGuiRendererSelector.h"
 #endif
 
+#ifdef __ANDROID__
+
+#include <android/log.h>
+
+#   ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
+#       include "CEGuiAndroidOpenglEs2BaseApplication.h"
+#   endif
+
+#else
+
 // includes for application types
 #ifdef CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE
 #   include "CEGuiOgreBaseApplication.h"
@@ -65,6 +75,9 @@
 #ifdef CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE
 #   include "CEGuiDirectFBBaseApplication.h"
 #endif
+
+#endif
+
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
 #       include "CEGuiD3D9BaseApplication.h"
@@ -76,6 +89,7 @@
 #       include "CEGuiD3D11BaseApplication.h"
 #   endif
 #endif
+
 // now we include the base CEGuiBaseApplication just in case someone has managed to
 // get this far without any of the renderers.  This ensures the framework will build,
 // although there will be no renderers available for selection in the samples.
@@ -84,11 +98,9 @@
 #include "CEGUI/CEGUI.h"
 
 // Include iostream if not on windows.
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#else
-#    include <iostream>
+#if !defined( __WIN32__ ) && !defined( _WIN32 )
+#   include <iostream>
 #endif
-
 
 /*************************************************************************
     Constructor
@@ -120,42 +132,27 @@ SamplesFrameworkBase::~SamplesFrameworkBase()
 
 }
 
-
 /*************************************************************************
     Application entry point
 *************************************************************************/
 int SamplesFrameworkBase::run()
 {
-    CEGUI_TRY
-    {
-        if(runApplication())
+    bool caught_exception(false);
+    SAMPLES_FRAMEWORK_DO_AND_CATCH(
+        do
+        {
+            if (initialise("CEGUI.log", CEGUI::String()))
+                d_baseApp->run();
             cleanup();
-    }
-    CEGUI_CATCH (CEGUI::Exception& exc)
-    {
-        outputExceptionMessage(exc.getMessage().c_str());
-    }
-    CEGUI_CATCH (std::exception& exc)
-    {
-        outputExceptionMessage(exc.what());
-    }
-    CEGUI_CATCH (const char* exc)
-    {
-        outputExceptionMessage(exc);
-    }
-    CEGUI_CATCH(...)
-    {
-        outputExceptionMessage("Unknown exception was caught!");
-    }
-
+        } while (false));
     return 0;
 }
-
 
 /*************************************************************************
     Start the SamplesFramework application
 *************************************************************************/
-bool SamplesFrameworkBase::runApplication()
+bool SamplesFrameworkBase::initialise
+  (const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
 {
     // Setup renderer selection dialog for Win32
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -172,7 +169,6 @@ bool SamplesFrameworkBase::runApplication()
     d_rendererSelector->setRendererAvailability(Direct3D11GuiRendererType);
 #endif
 
-
 #elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // decide which method to use for renderer selection
 #   ifdef CEGUI_SAMPLES_USE_GTK2
@@ -184,6 +180,16 @@ bool SamplesFrameworkBase::runApplication()
 #elif defined(__APPLE__)
      d_rendererSelector = new MacCEGuiRendererSelector();
 #endif
+
+#if defined __ANDROID__
+
+#   if defined CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE
+#       if defined CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
+            d_baseApp = new CEGuiAndroidOpenglEs2BaseApplication();
+#       endif
+#   endif
+
+#else
 
     // enable available renderer types
 #ifdef CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE
@@ -211,7 +217,7 @@ bool SamplesFrameworkBase::runApplication()
     if (d_rendererSelector->invokeDialog())
     {
         // create appropriate application type based upon users selection
-        switch(d_rendererSelector->getSelectedRendererType())
+        switch (d_rendererSelector->getSelectedRendererType())
         {
 #ifdef CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE
         case OgreGuiRendererType:
@@ -225,38 +231,42 @@ bool SamplesFrameworkBase::runApplication()
             break;
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
+#   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE
         case Direct3D9GuiRendererType:
             d_baseApp = new CEGuiD3D9BaseApplication();
             break;
-#endif // DX9
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE
+#   endif // DX9
+#   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE
         case Direct3D10GuiRendererType:
             d_baseApp = new CEGuiD3D10BaseApplication();
             break;
-#endif // DX10
-#ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
+#   endif // DX10
+#   ifdef CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE
         case Direct3D11GuiRendererType:
             d_baseApp = new CEGuiD3D11BaseApplication();
             break;
-#endif // DX11
+#   endif // DX11
 #endif // Win32
 #ifdef CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE
-    #ifdef CEGUI_BUILD_RENDERER_OPENGL
-            case OpenGLGuiRendererType:
-                d_baseApp = new CEGuiOpenGLBaseApplication();
-                break;
-    #endif
-    #ifdef CEGUI_BUILD_RENDERER_OPENGL3
-            case OpenGL3GuiRendererType:
-                d_baseApp = new CEGuiOpenGL3BaseApplication();
-                break;
-    #endif
-    #ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
-            case OpenGLES2GuiRendererType:
-                d_baseApp = new CEGuiOpenGLES2BaseApplication();
-                break;
-    #endif
+#   ifdef CEGUI_BUILD_RENDERER_OPENGL
+                case OpenGLGuiRendererType:
+                    d_baseApp = new CEGuiOpenGLBaseApplication();
+                    break;
+#   endif
+#   ifdef CEGUI_BUILD_RENDERER_OPENGL3
+                case OpenGL3GuiRendererType:
+                    d_baseApp = new CEGuiOpenGL3BaseApplication();
+                    break;
+#   endif
+#   ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
+                case OpenglEs2GuiRendererType:
+#       if defined __ANDROID__
+                    d_baseApp = new CEGuiAndroidOpenglEs2BaseApplication();
+#       else
+                    d_baseApp = new CEGuiOpenGLES2BaseApplication();
+#       endif
+                    break;
+#   endif
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
         case IrrlichtGuiRendererType:
@@ -269,49 +279,37 @@ bool SamplesFrameworkBase::runApplication()
             break;
 #endif
 
-        default:
-            CEGUI_THROW(CEGUI::GenericException("No renderer was selected!"));
-            break;
+        default:  break;
         }
-
-        // run the base application (which sets up the demo via 'this' and runs it.
-        if (d_baseApp->execute(this))
-        {
-            // signal that app initialised and ran
-            return true;
-        }
-
-        // sample app did not initialise, delete the object.
-        delete d_baseApp;
-        d_baseApp = 0;
-    }
-
-    // delete renderer selector object
+        
     delete d_rendererSelector;
     d_rendererSelector = 0;
 
-    // signal app did not initialise and run.
-    return false;
+#endif
+
+    if (!d_baseApp)
+        CEGUI_THROW(CEGUI::GenericException("No renderer was selected!"));
+
+    return d_baseApp->init(this, logFile, dataPathPrefixOverride);
 }
 
-
-/*************************************************************************
-    Cleanup the sample application.
-*************************************************************************/
 void SamplesFrameworkBase::cleanup()
-{   
+{
+    d_baseApp->cleanup();
     delete d_baseApp;
     d_baseApp = 0;
-
 
     if (d_rendererSelector)
     {
         delete d_rendererSelector;
         d_rendererSelector = 0;
     }
-
 }
 
+void SamplesFrameworkBase::renderSingleFrame(float elapsed)
+{
+    d_baseApp->renderSingleFrame(elapsed);
+}
 
 /*************************************************************************
     Output a message to the user in some OS independant way.
@@ -320,6 +318,11 @@ void SamplesFrameworkBase::outputExceptionMessage(const char* message)
 {
 #if defined(__WIN32__) || defined(_WIN32)
     MessageBoxA(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
+#elif defined(__ANDROID__)
+    __android_log_write (ANDROID_LOG_ERROR, "CEGUISampleFramework_NDK",
+      "An exception was thrown within the sample framework:");
+    __android_log_write (ANDROID_LOG_ERROR, "CEGUISampleFramework_NDK",
+      message);
 #else
     std::cout << "An exception was thrown within the sample framework:" << std::endl;
     std::cout << message << std::endl;

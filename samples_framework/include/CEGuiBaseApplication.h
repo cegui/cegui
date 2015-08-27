@@ -27,6 +27,8 @@
 #ifndef _CEGuiBaseApplication_h_
 #define _CEGuiBaseApplication_h_
 
+#include "CEGUI/String.h"
+
 // If this looks wanky, it's becase it is!  Behold that this is not as fullblown
 // as it could be though.
 #ifndef PATH_MAX
@@ -75,29 +77,35 @@ public:
 
     /*!
     \brief
-        Start the base application
+        Initialize the base application.
 
         This will fully initialise the application, finish initialisation of the
         demo via calls to 'sampleApp', and finally control execution of the
         sample.  This calls calls the virtual run function.
+
+        Classes that override this method must first call the implementation of
+        the superclass!
 
     \param sampleApp
         Pointer to the CEGuiSample object that the CEGuiBaseApplication is being
         invoked for.
 
     \return
-        - true if the application initialised and ran okay (cleanup function
-          will be called).
-        - false if the application failed to initialise (cleanup function will
-          not be called).
+        - true if the application initialised okay (cleanup function will be
+          called).
     */
-    bool execute(SamplesFrameworkBase* sampleApp);
+    virtual bool init(SamplesFrameworkBase* sampleApp,
+                      const CEGUI::String &logFile,
+                      const CEGUI::String &dataPathPrefixOverride);
 
     /*!
     \brief
         Performs any required cleanup of the base application system.
+
+        Classes that override this method must, lastly, call the implementation
+        of the superclass!
     */
-    void cleanup();
+    virtual void cleanup();
 
     virtual void destroyRenderer();
 
@@ -125,7 +133,9 @@ public:
         if the variable is not set, a default will be used depending on the
         build system in use.
         */
-    const char* getDataPathPrefix() const;
+    CEGUI::String getDataPathPrefix() const { return d_dataPathPrefix; }
+
+    void initDataPathPrefix(const CEGUI::String &override);
 
     /*!
     \brief
@@ -133,13 +143,13 @@ public:
     */
     void registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
 
+    //! The abstract function for running the application.
+    virtual void run() = 0;
 
 protected:
     //! name of env var that holds the path prefix to the data files.
     static const char DATAPATH_VAR_NAME[];
 
-    //! The abstract function for initialising and running the application.
-    virtual void run() = 0;
     //! The abstract function for destroying the renderer and the window.
     virtual void destroyWindow() = 0;
     //! Implementation function to perform required pre-render operations.
@@ -153,7 +163,8 @@ protected:
         the CEGUI::DefaultResourceProvider - override if the sample base app
         being implemented uses something else!
     */
-    virtual void initialiseResourceGroupDirectories();
+    virtual void initialiseResourceGroupDirectories
+      (const CEGUI::String& dataPathPrefixOverride);
 
     //! initialise the standard default resource groups used by the samples.
     virtual void initialiseDefaultResourceGroups();
@@ -200,6 +211,10 @@ protected:
     int d_FPSValue;
     //! whether to spin the logo
     bool d_spinLogo;
+
+private:
+    CEGUI::String d_dataPathPrefix;
+
 };
 
 #endif  // end of guard _CEGuiBaseApplication_h_

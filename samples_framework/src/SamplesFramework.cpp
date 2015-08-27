@@ -39,20 +39,21 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/ProgressBar.h"
 
-
 #include <string>
 #include <iostream>
 
 using namespace CEGUI;
 
 //platform-dependant DLL delay-loading includes
-#if (defined( __WIN32__ ) || defined( _WIN32 )) 
+#if (defined( __WIN32__ ) || defined( _WIN32 ))
 #include "windows.h"
 #endif
 
 //----------------------------------------------------------------------------//
 // Name of the xsd schema file used to validate samples XML files.
 const String SamplesFramework::XMLSchemaName("Samples.xsd");
+
+#if !defined __ANDROID__
 
 //----------------------------------------------------------------------------//
 int main(int argc, char* argv[])
@@ -71,6 +72,8 @@ int main(int argc, char* argv[])
     SamplesFramework sampleFramework(argc > 1 ? argv[argidx] : "");
     return sampleFramework.run();
 }
+
+#endif // !defined __ANDROID__
 
 //----------------------------------------------------------------------------//
 SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
@@ -91,24 +94,23 @@ SamplesFramework::~SamplesFramework()
         delete d_metaDataWinMgr;
 }
 
-
-
 //----------------------------------------------------------------------------//
-bool SamplesFramework::initialise()
+bool SamplesFramework::initialise(const CEGUI::String &logFile,
+                                  const CEGUI::String &dataPathPrefixOverride)
 {
-    using namespace CEGUI;
-
-    initialiseLoadScreenLayout();
-
-    // return true to signalize the initialisation was sucessful and run the
-    // SamplesFramework
-    return true;
+    if (SamplesFrameworkBase::initialise(logFile, dataPathPrefixOverride))
+    {
+        initialiseLoadScreenLayout();
+        return true;
+    }
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::deinitialise()
+void SamplesFramework::cleanup()
 {
     unloadSamples();
+    SamplesFrameworkBase::cleanup();
 }
 
 //----------------------------------------------------------------------------//
@@ -534,7 +536,7 @@ bool SamplesFramework::updateInitialisationStep()
     case 0:
     {
         const String filename(d_samplesXMLFilename.empty() ?
-            String(d_baseApp->getDataPathPrefix()) + "/samples/samples.xml" :
+            d_baseApp->getDataPathPrefix() + "/samples/samples.xml" :
             d_samplesXMLFilename);
 
         loadSamplesDataFromXML(filename);
