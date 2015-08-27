@@ -137,6 +137,12 @@
 #   define  CEGUI_FUNCTION_NAME CEGUI::String("[Function name unavailable]")
 #endif
 
+/*! 
+\brief
+    Mark "var" as an unused variable to eliminate a warning about an
+    unused variable. */
+#define CEGUI_UNUSED(var) (static_cast<void>(var))
+
 /*************************************************************************
 	Documentation for the CEGUI namespace itself
 *************************************************************************/
