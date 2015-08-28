@@ -3,7 +3,7 @@
 ################################################################################
 include(FindPackageHandleStandardArgs)
 
-find_path(FREETYPE_H_PATH_ft2build NAMES ft2build.h PATH_SUFFIXES freetype2)
+find_path(FREETYPE_H_PATH_ft2build NAMES ft2build.h PATH_SUFFIXES include/freetype2 include freetype2)
 find_path(FREETYPE_H_PATH_ftconfig NAMES freetype/config/ftconfig.h PATH_SUFFIXES freetype2)
 if (NOT FREETYPE_H_PATH_ftconfig)
     find_path(FREETYPE_H_PATH_ftconfig NAMES config/ftconfig.h PATH_SUFFIXES freetype2)
