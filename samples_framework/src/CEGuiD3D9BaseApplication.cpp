@@ -108,7 +108,6 @@ void CEGuiD3D9BaseApplication::destroyRenderer()
 //----------------------------------------------------------------------------//
 void CEGuiD3D9BaseApplication::run()
 {
-    d_sampleApp->initialise();
     Win32AppHelper::setSamplesFramework(d_sampleApp);
 
     //

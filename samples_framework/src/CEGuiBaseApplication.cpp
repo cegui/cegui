@@ -168,12 +168,15 @@ bool CEGuiBaseApplication::init(SamplesFrameworkBase* sampleApp,
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::cleanup()
 {
-    CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
-    d_renderer->destroyGeometryBuffer(*d_logoGeometry);
-    d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
-    CEGUI::System::destroy();
-    destroyRenderer();
-    destroyWindow();
+    if (d_renderer)
+    {
+        CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
+        d_renderer->destroyGeometryBuffer(*d_logoGeometry);
+        d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
+        CEGUI::System::destroy();
+        destroyRenderer();
+        destroyWindow();
+    }
 }
 
 //----------------------------------------------------------------------------//

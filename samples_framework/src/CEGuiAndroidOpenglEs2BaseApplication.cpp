@@ -43,11 +43,6 @@ bool CEGuiAndroidOpenglEs2BaseApplication::init(SamplesFrameworkBase* sampleApp,
     return true;
 }
 
-void CEGuiAndroidOpenglEs2BaseApplication::cleanup()
-{
-    CEGuiBaseApplication::cleanup();
-}
-
 void CEGuiAndroidOpenglEs2BaseApplication::beginRendering(const float elapsed)
 {
     CEGUI_UNUSED(elapsed);

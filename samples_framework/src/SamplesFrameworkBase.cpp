@@ -203,7 +203,7 @@ bool SamplesFrameworkBase::initialise
         d_rendererSelector->setRendererAvailability(OpenGL3GuiRendererType);
     #endif
     #ifdef CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2
-	d_rendererSelector->setRendererAvailability(OpenGLES2GuiRendererType);
+	d_rendererSelector->setRendererAvailability(OpenglEs2GuiRendererType);
     #endif
 #endif
 #ifdef CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE
@@ -281,7 +281,9 @@ bool SamplesFrameworkBase::initialise
 
         default:  break;
         }
-        
+
+    }
+
     delete d_rendererSelector;
     d_rendererSelector = 0;
 
@@ -295,14 +297,11 @@ bool SamplesFrameworkBase::initialise
 
 void SamplesFrameworkBase::cleanup()
 {
-    d_baseApp->cleanup();
-    delete d_baseApp;
-    d_baseApp = 0;
-
-    if (d_rendererSelector)
+    if (d_baseApp)
     {
-        delete d_rendererSelector;
-        d_rendererSelector = 0;
+        d_baseApp->cleanup();
+        delete d_baseApp;
+        d_baseApp = 0;
     }
 }
 

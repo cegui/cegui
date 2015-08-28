@@ -36,10 +36,6 @@ public:
     CEGuiAndroidOpenglEs2BaseApplication();
     bool init(SamplesFrameworkBase* sampleApp, const CEGUI::String &logFile,
               const CEGUI::String &dataPathPrefixOverride);
-    void cleanup();
-
-    // Never called, because in android we're not in control of the main loop.
-    void run() {}
 protected:
     void destroyWindow() {}
     void beginRendering(const float elapsed);
