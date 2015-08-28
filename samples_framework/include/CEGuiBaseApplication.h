@@ -144,7 +144,7 @@ public:
     void registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
 
     //! The abstract function for running the application.
-    virtual void run() = 0;
+    virtual void run() {}
 
 protected:
     //! name of env var that holds the path prefix to the data files.

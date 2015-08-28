@@ -110,7 +110,6 @@ void CEGuiD3D11BaseApplication::destroyRenderer()
 //----------------------------------------------------------------------------//
 void CEGuiD3D11BaseApplication::run()
 {
-    d_sampleApp->initialise();
     Win32AppHelper::setSamplesFramework(d_sampleApp);
 
     float clear_colour[4] = {0.0f, 0.0f, 0.0f, 0.0f};

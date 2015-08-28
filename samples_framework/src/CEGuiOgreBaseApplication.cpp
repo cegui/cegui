@@ -128,6 +128,30 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
+bool CEGuiOgreBaseApplication::init(SamplesFrameworkBase* sampleApp,
+  const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
+{
+    if (!CEGuiBaseApplication::init(sampleApp, logFile, dataPathPrefixOverride))
+        return false;
+
+    // if base initialisation failed or app was cancelled by user, bail out now.
+    if (!d_ogreRoot || !d_initialised)
+        return false;
+
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+    // start rendering via Ogre3D engine.
+    CEGUI_TRY
+    {
+        d_ogreRoot->startRendering();
+    }
+    CEGUI_CATCH(...)
+    {}
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::destroyRenderer()
 {
     delete d_frameListener;
@@ -139,25 +163,6 @@ void CEGuiOgreBaseApplication::destroyRenderer()
     renderer.destroyOgreImageCodec(
         *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
     CEGUI::OgreRenderer::destroy(renderer);
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::run()
-{
-    // if base initialisation failed or app was cancelled by user, bail out now.
-    if (!d_ogreRoot || !d_initialised)
-        return;
-
-    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-    d_sampleApp->initialise();
-
-    // start rendering via Ogre3D engine.
-    CEGUI_TRY
-    {
-        d_ogreRoot->startRendering();
-    }
-    CEGUI_CATCH(...)
-    {}
 }
 
 //----------------------------------------------------------------------------//
@@ -201,28 +206,36 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
 
-    const char* dataPathPrefix = getDataPathPrefix();
-    char resourcePath[PATH_MAX];
+    CEGUI::String dataPathPrefix(getDataPathPrefix());
         
     // for each resource type, set a resource group directory
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemes");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "samples/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "samples");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "imagesets");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "fonts");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "layouts");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "looknfeels");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "animations");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/schemes/")).c_str(),
+      "FileSystem", "schemes");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/samples/")).c_str(),
+      "FileSystem", "samples");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/imagesets/")).c_str(),
+      "FileSystem", "imagesets");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/fonts/")).c_str(),
+      "FileSystem", "fonts");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/layouts/")).c_str(),
+      "FileSystem", "layouts");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/looknfeel/")).c_str(),
+      "FileSystem", "looknfeels");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/lua_scripts/")).c_str(),
+      "FileSystem", "lua_scripts");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/animations/")).c_str(),
+      "FileSystem", "animations");
+    ResourceGroupManager::getSingleton().addResourceLocation((dataPathPrefix
+      +reinterpret_cast<const CEGUI::utf8*>("/xml_schemas/")).c_str(),
+      "FileSystem", "schemas");
 }
 
 //----------------------------------------------------------------------------//
