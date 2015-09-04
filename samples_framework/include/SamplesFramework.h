@@ -53,8 +53,8 @@ public:
 
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
 
-    bool initialise(const CEGUI::String &logFile,
-                    const CEGUI::String &dataPathPrefixOverride);
+    bool initialise(const CEGUI::String& logFile,
+                    const CEGUI::String& dataPathPrefixOverride);
     void cleanup();
 
     void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary,

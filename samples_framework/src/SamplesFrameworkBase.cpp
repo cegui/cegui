@@ -152,7 +152,7 @@ int SamplesFrameworkBase::run()
     Start the SamplesFramework application
 *************************************************************************/
 bool SamplesFrameworkBase::initialise
-  (const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
+  (const CEGUI::String& logFile, const CEGUI::String& dataPathPrefixOverride)
 {
     // Setup renderer selection dialog for Win32
 #if defined( __WIN32__ ) || defined( _WIN32 )
