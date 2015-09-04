@@ -73,8 +73,8 @@ public:
     \return
         false if anything went wrong.
     */
-    virtual bool initialise(const CEGUI::String &logFile,
-                            const CEGUI::String &dataPathPrefixOverride);
+    virtual bool initialise(const CEGUI::String& logFile,
+                            const CEGUI::String& dataPathPrefixOverride);
     
     virtual void cleanup();
 

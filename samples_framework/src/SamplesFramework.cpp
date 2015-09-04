@@ -95,8 +95,8 @@ SamplesFramework::~SamplesFramework()
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::initialise(const CEGUI::String &logFile,
-                                  const CEGUI::String &dataPathPrefixOverride)
+bool SamplesFramework::initialise(const CEGUI::String& logFile,
+                                  const CEGUI::String& dataPathPrefixOverride)
 {
     if (SamplesFrameworkBase::initialise(logFile, dataPathPrefixOverride))
     {

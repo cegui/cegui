@@ -108,7 +108,7 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 
 //----------------------------------------------------------------------------//
 bool CEGuiBaseApplication::init(SamplesFrameworkBase* sampleApp,
-  const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
+  const CEGUI::String& logFile, const CEGUI::String& dataPathPrefixOverride)
 {
     d_sampleApp = sampleApp;
 

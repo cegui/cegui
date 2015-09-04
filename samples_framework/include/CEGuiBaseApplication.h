@@ -95,8 +95,8 @@ public:
           called).
     */
     virtual bool init(SamplesFrameworkBase* sampleApp,
-                      const CEGUI::String &logFile,
-                      const CEGUI::String &dataPathPrefixOverride);
+                      const CEGUI::String& logFile,
+                      const CEGUI::String& dataPathPrefixOverride);
 
     /*!
     \brief
