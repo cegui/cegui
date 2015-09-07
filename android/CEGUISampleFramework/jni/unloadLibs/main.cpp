@@ -27,10 +27,8 @@ extern "C"
 */
 
 JNIEXPORT void JNICALL Java_sample_1framework_cegui_MainActivity_unloadLibs
-  (JNIEnv* env, jclass class_, jobjectArray libs)
+  (JNIEnv* env, jclass /*class_*/, jobjectArray libs)
 {
-    CEGUI_UNUSED(env);
-    CEGUI_UNUSED(class_);
     jsize libs_n(env->GetArrayLength(libs));
     for (jsize lib_idx(0);  lib_idx < libs_n;  ++lib_idx)
     {

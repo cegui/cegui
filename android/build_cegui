@@ -6,7 +6,6 @@ myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 if [ $? -eq 0 ]; then
 
-    mySudo rm -rf "$ceguiBuildDir" "$ceguiInstallDir"
     dirRequiresSudo "$ceguiInstallDir" ceguiInstallDirMaybeSudo
 
     depsInstallDirsElements=('$tinyxmlInstallDir' \
@@ -53,6 +52,8 @@ if [ $? -eq 0 ]; then
                 echo "Error: CEGUI source dir \"$ceguiSrcDir\" doesn't exist."
                 exit -1
             fi
+
+            ls /home/yaronct/build/android/cegui_0_8_5 
 
             if [ ! -d "$ceguiBuildDir" ]; then
                 mkdir -p "$ceguiBuildDir"

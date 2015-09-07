@@ -45,3 +45,7 @@ android/CEGUISampleFramework/obj/**
 android/CEGUISampleFramework/jni/Android.mk
 android/CEGUISampleFramework/jni/Application.mk
 android/CEGUISampleFramework/jni/deps/Android.mk
+android/CEGUISampleFramework/res/drawable-hdpi/logo.png
+android/CEGUISampleFramework/res/drawable-mdpi/logo.png
+android/CEGUISampleFramework/res/drawable-xhdpi/logo.png
+android/CEGUISampleFramework/res/drawable-xxhdpi/logo.png

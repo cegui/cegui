@@ -43,8 +43,7 @@ bool CEGuiAndroidOpenglEs2BaseApplication::init(SamplesFrameworkBase* sampleApp,
     return true;
 }
 
-void CEGuiAndroidOpenglEs2BaseApplication::beginRendering(const float elapsed)
+void CEGuiAndroidOpenglEs2BaseApplication::beginRendering(const float /*elapsed*/)
 {
-    CEGUI_UNUSED(elapsed);
     glClear(GL_COLOR_BUFFER_BIT);
 }

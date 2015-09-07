@@ -8,6 +8,11 @@ eval echo -n "\"$(<ant.properties.in)\"" >ant.properties
 eval echo -n "\"$(<jni/Application.mk.in)\"" >jni/Application.mk
 eval echo -n "\"$(<jni/Android.mk.in)\"" >jni/Android.mk
 eval echo -n "'$(<jni/deps/Android.mk.in)'" >jni/deps/Android.mk
+for resolution in h m xh xxh; do
+    dest="res/drawable-${resolution}dpi"
+    mkdir -p "$dest"
+    cp "$ceguiSrcDir/datafiles/imagesets/logo.png" "$dest/"
+done
 if [ -f project.properties ] && [ -f local.properties ]; then
     ant clean
     ndk-build clean
