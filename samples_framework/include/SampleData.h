@@ -68,8 +68,7 @@ public:
     virtual void clearRTTTexture();
 
     virtual void onEnteringSample() = 0;
-    virtual void update(float timeSinceLastUpdate)
-      { CEGUI_UNUSED(timeSinceLastUpdate); }
+    virtual void update(float /*timeSinceLastUpdate*/) {}
 
     void setSampleWindow(CEGUI::Window* sampleWindow);
     CEGUI::Window* getSampleWindow();

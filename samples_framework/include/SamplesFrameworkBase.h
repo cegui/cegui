@@ -178,7 +178,7 @@ public:
     \brief
         Output a message to the user in some OS independant way.
     */
-    static void outputExceptionMessage(const char* message);
+    void outputExceptionMessage(const char* message);
 
 protected:
 
@@ -193,35 +193,5 @@ protected:
     int                     d_appWindowWidth;            //!< Int defining the application window's width.
     int                     d_appWindowHeight;           //!< Int defining the application window's height.
 };
-
-#define SAMPLES_FRAMEWORK_DO_AND_CATCH(operation) \
-    do \
-    { \
-        caught_exception = true; \
-        CEGUI_TRY \
-        { \
-            operation; \
-            caught_exception = false; \
-        } \
-        CEGUI_CATCH(CEGUI::Exception& exc) \
-        { \
-            SamplesFrameworkBase::outputExceptionMessage \
-              (exc.getMessage().c_str()); \
-        } \
-        CEGUI_CATCH(std::exception& exc) \
-        { \
-            SamplesFrameworkBase::outputExceptionMessage(exc.what()); \
-        } \
-        CEGUI_CATCH(const char* exc) \
-        { \
-            SamplesFrameworkBase::outputExceptionMessage(exc); \
-        } \
-        CEGUI_CATCH(...) \
-        { \
-            SamplesFrameworkBase::outputExceptionMessage \
-              ("Unknown exception was caught!"); \
-        } \
-    } \
-    while (false)
 
 #endif  // end of guard _SamplesFrameworkBase_h_

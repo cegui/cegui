@@ -2,6 +2,8 @@
 myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 . "$myScriptsDir/common"
 
+#rm -rf /usr/local/android/cegui_deps /home/yaronct/build/android/cegui_deps /home/yaronct/src/android.toolchain.cmake
+
 maybeSudo cp "$myScriptsDir/android-ndk-r10e_RELEASE.TXT" \
              "$androidNdkDir/RELEASE.TXT"
 

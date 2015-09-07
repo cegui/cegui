@@ -138,13 +138,25 @@ SamplesFrameworkBase::~SamplesFrameworkBase()
 int SamplesFrameworkBase::run()
 {
     bool caught_exception(false);
-    SAMPLES_FRAMEWORK_DO_AND_CATCH(
-        do
-        {
-            if (initialise("CEGUI.log", CEGUI::String()))
-                d_baseApp->run();
-            cleanup();
-        } while (false));
+    CEGUI_TRY
+    {
+        if (initialise("CEGUI.log", CEGUI::String()))
+            d_baseApp->run();
+        cleanup();
+    }
+    CEGUI_CATCH(const std::exception& exc)
+    {
+        outputExceptionMessage(exc.what()); \
+    }
+    CEGUI_CATCH(const char* exc)
+    {
+        SamplesFrameworkBase::outputExceptionMessage(exc); \
+    }
+    CEGUI_CATCH(...)
+    {
+        SamplesFrameworkBase::outputExceptionMessage
+          ("Unknown exception was caught!");
+    }
     return 0;
 }
 

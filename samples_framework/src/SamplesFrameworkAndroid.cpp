@@ -54,60 +54,65 @@ extern "C"
 
 JNIEXPORT void JNICALL
   Java_sample_1framework_cegui_MainActivity_nativeFinish
-  (JNIEnv* env, jclass class_, AndroidActivity activity)
+  (JNIEnv* env, jclass /*class_*/, AndroidActivity activity)
 {
     bool caught_exception(false);
-    SAMPLES_FRAMEWORK_DO_AND_CATCH(
-        do
-        {
-            CEGUI_UNUSED(class_);
-            assert(G_sampleFramework);
-            G_sampleFramework->cleanup();
-            CEGUI_DELETE_AO G_sampleFramework;
-            G_sampleFramework = 0;
-        } while (false));
-    if (caught_exception)
+    CEGUI_TRY
+    {
+        assert(G_sampleFramework);
+        G_sampleFramework->cleanup();
+        CEGUI_DELETE_AO G_sampleFramework;
+        G_sampleFramework = 0;
+    }
+    CEGUI_CATCH(const std::exception& exception)
+    {
+        G_sampleFramework->outputExceptionMessage(exception.what());
         finishAndroidActivity(env, activity);
+    }
 }
 
 JNIEXPORT void JNICALL
-  Java_sample_1framework_cegui_MainActivity_init (JNIEnv* env, jclass class_,
-  AndroidActivity activity, jstring log_file_java,
+  Java_sample_1framework_cegui_MainActivity_init (JNIEnv* env,
+  jclass /*class_*/, AndroidActivity activity, jstring log_file_java,
   jstring data_path_prefix_java)
 {
     bool caught_exception(false);
-    SAMPLES_FRAMEWORK_DO_AND_CATCH(
-        do
-        {
-            CEGUI_UNUSED(class_);
-            assert(!G_sampleFramework);
-            G_sampleFramework = new SamplesFramework("");
-            const char* log_file(env->GetStringUTFChars(log_file_java, 0));
-            const char* data_path_prefix(env->GetStringUTFChars(data_path_prefix_java, 0));
-            G_sampleFramework->initialise(
-              CEGUI::String(reinterpret_cast<const CEGUI::utf8*>(log_file)),
-              CEGUI::String(reinterpret_cast<const CEGUI::utf8*>(data_path_prefix)));
-            env->ReleaseStringUTFChars(log_file_java, log_file);
-            env->ReleaseStringUTFChars(data_path_prefix_java, data_path_prefix);
-        } while (false));
-    if (caught_exception)
+    CEGUI_TRY
+    {
+        assert(!G_sampleFramework);
+        G_sampleFramework = new SamplesFramework("");
+        const char* log_file(env->GetStringUTFChars(log_file_java, 0));
+        const char* data_path_prefix
+          (env->GetStringUTFChars(data_path_prefix_java, 0));
+        G_sampleFramework->initialise(
+          CEGUI::String(reinterpret_cast<const CEGUI::utf8*>(log_file)),
+          CEGUI::String(
+            reinterpret_cast<const CEGUI::utf8*>(data_path_prefix)));
+        env->ReleaseStringUTFChars(log_file_java, log_file);
+        env->ReleaseStringUTFChars(data_path_prefix_java, data_path_prefix);
+    }
+    CEGUI_CATCH(const std::exception& exception)
+    {
+        G_sampleFramework->outputExceptionMessage(exception.what());
         finishAndroidActivity(env, activity);
+    }
 }
 
 JNIEXPORT void JNICALL
   Java_sample_1framework_cegui_MainActivity_render
-  (JNIEnv* env, jclass class_, AndroidActivity activity)
+  (JNIEnv* env, jclass /*class_*/, AndroidActivity activity)
 {
     bool caught_exception(false);
-    SAMPLES_FRAMEWORK_DO_AND_CATCH(
-        do
-        {
-            CEGUI_UNUSED(class_);
-            glClear(GL_COLOR_BUFFER_BIT);
-            G_sampleFramework->renderSingleFrame(0);
-        } while (false));
-    if (caught_exception)
+    CEGUI_TRY
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        G_sampleFramework->renderSingleFrame(0);
+    }
+    CEGUI_CATCH(const std::exception& exception)
+    {
+        G_sampleFramework->outputExceptionMessage(exception.what());
         finishAndroidActivity(env, activity);
+    }
 }
 
 } // extern "C"
