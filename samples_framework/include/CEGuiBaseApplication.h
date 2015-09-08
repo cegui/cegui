@@ -77,7 +77,7 @@ public:
 
     /*!
     \brief
-        Initialize the base application.
+        Initialise the base application.
 
         This will fully initialise the application, finish initialisation of the
         demo via calls to 'sampleApp', and finally control execution of the

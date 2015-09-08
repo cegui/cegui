@@ -180,7 +180,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
         handle = DYNLIB_LOAD(name);
 
     // finally, try using the compiled-in module directory
-    #if defined CEGUI_MODULE_DIR
+    #if defined(CEGUI_MODULE_DIR)
     if (!handle)
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
     #endif

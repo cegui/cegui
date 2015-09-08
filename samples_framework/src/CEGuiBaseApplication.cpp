@@ -196,15 +196,26 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories
     initDataPathPrefix(dataPathPrefixOverride);
     CEGUI::String dataPathPrefix(getDataPathPrefix());
 
-    // for each resource type, set a resource group directory
-    rp->setResourceGroupDirectory("schemes", dataPathPrefix +"/schemes/");
-    rp->setResourceGroupDirectory("imagesets", dataPathPrefix +"/imagesets/");
-    rp->setResourceGroupDirectory("fonts", dataPathPrefix +"/fonts/");
-    rp->setResourceGroupDirectory("layouts", dataPathPrefix +"/layouts/");
-    rp->setResourceGroupDirectory("looknfeels", dataPathPrefix +"/looknfeel/");
-    rp->setResourceGroupDirectory("lua_scripts", dataPathPrefix +"/lua_scripts/");
-    rp->setResourceGroupDirectory("schemas", dataPathPrefix +"/xml_schemas/");   
-    rp->setResourceGroupDirectory("animations", dataPathPrefix +"/animations/"); 
+    /* for each resource type, set a resource group directory. We cast strings
+       to "const CEGUI::utf8*" in order to support general Unicode strings,
+       rather than only ASCII strings (even though currently they're all ASCII).
+       */
+    rp->setResourceGroupDirectory("schemes",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/schemes/"));
+    rp->setResourceGroupDirectory("imagesets",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/imagesets/"));
+    rp->setResourceGroupDirectory("fonts",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/fonts/"));
+    rp->setResourceGroupDirectory("layouts",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/layouts/"));
+    rp->setResourceGroupDirectory("looknfeels",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/looknfeel/"));
+    rp->setResourceGroupDirectory("lua_scripts",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/lua_scripts/"));
+    rp->setResourceGroupDirectory("schemas",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/xml_schemas/"));   
+    rp->setResourceGroupDirectory("animations",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/animations/"));
 }
 
 //----------------------------------------------------------------------------//

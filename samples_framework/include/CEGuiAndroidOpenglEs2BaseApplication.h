@@ -27,7 +27,6 @@
 #ifndef _CEGuiAndroidOpenglEs2BaseApplication_h_
 #define _CEGuiAndroidOpenglEs2BaseApplication_h_
 
-//#include "CEGUISamplesConfig.h"
 #include "CEGuiBaseApplication.h"
 
 class CEGuiAndroidOpenglEs2BaseApplication : public CEGuiBaseApplication
