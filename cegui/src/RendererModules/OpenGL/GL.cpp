@@ -50,7 +50,8 @@ OpenGLInfo::OpenGLInfo() :
     d_isReadBufferSupported(false),
     d_isPolygonModeSupported(false),
     d_isSeperateReadAndDrawFramebufferSupported(false),
-    d_isVaoSupported(false)
+    d_isVaoSupported(false),
+    d_isSizedInternalFormatSupported(false)
 {
 }
 
@@ -110,7 +111,7 @@ void OpenGLInfo::initSupportedFeatures()
           (isUsingDesktopOpengl()  &&  verMajor() >= 2)
       ||  (isUsingOpenglEs() && verMajor() >= 3)
       ||  epoxy_has_gl_extension("GL_ARB_texture_non_power_of_two");
-    d_isReadBufferSupported =
+    d_isReadBufferSupported = d_isSizedInternalFormatSupported =
           (isUsingDesktopOpengl() && verAtLeast(1, 3))
       ||  (isUsingOpenglEs() && verMajor() >= 3);
     d_isPolygonModeSupported = isUsingDesktopOpengl() && verAtLeast(1, 3);
@@ -142,7 +143,7 @@ void OpenGLInfo::initSupportedFeatures()
     d_isNpotTextureSupported =
           (GLEW_VERSION_2_0 == GL_TRUE)
       ||  (GLEW_ARB_texture_non_power_of_two == GL_TRUE);
-    d_isPolygonModeSupported
+    d_isPolygonModeSupported = d_isSizedInternalFormatSupported
       = (GLEW_VERSION_1_3 == GL_TRUE);
     d_isSeperateReadAndDrawFramebufferSupported = (GLEW_VERSION_3_1 == GL_TRUE);
     d_isVaoSupported = (GLEW_VERSION_3_2 == GL_TRUE);

@@ -39,6 +39,17 @@ namespace CEGUI
 \brief
     Renderer class to interface with desktop OpenGL version >= 3.2 or OpenGL ES
     version >= 2.
+
+    Note: to use this renderer with OpenGL ES 2.0, the Epoxy OpenGL loading
+    library (https://github.com/yaronct/libepoxy, major version 1)
+    must first be installed, and CEGUI must be configured with
+    "-DCEGUI_BUILD_RENDERER_OPENGL=OFF -DCEGUI_BUILD_RENDERER_OPENGL3=ON
+    -DCEGUI_USE_EPOXY=ON -DCEGUI_USE_GLEW=OFF".
+
+    Note: Your OpenGL context must already be initialised when you call this;
+    CEGUI will not create the OpenGL context itself. Nothing special has to be
+    done to choose between desktop OpenGL and OpenGL ES: the type is
+    automatically determined by the type of the current OpenGL context.
 */
 class OPENGL_GUIRENDERER_API OpenGL3Renderer : public OpenGLRendererBase
 {

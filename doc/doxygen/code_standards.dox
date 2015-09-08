@@ -30,7 +30,7 @@ This section contains some general guidelines on naming and arranging files.
     Author:   <name and email of the original file author>
 *******************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -110,7 +110,7 @@ The following details the general code style and layout that should be used.
 
 - Parameter names are treated the same as other local variables, so should be named all lower case with an underscore between words, such as in @b char_count.
 
-- Boolean getter functions should always start with "is". Please think of meaningful names in that context, e.g. for plural, instead of "areCatsFuzzy" do NOT use "isCatsFuzzy" but use "isEachCatFuzzy" or "isEveryCatFuzzy", instead of "areSupportingCats" you could use "isSupportingCats". Whatever you choose, make it both readable and grammatically correct. Sometimes opening a thesaurus may help you find the right words.
+- Boolean getter functions should always start with "is". Please think of meaningful names in that context, e.g. for plural, instead of "areCatsFuzzy" do NOT use "isCatsFuzzy" but use "isEachCatFuzzy" or "isEveryCatFuzzy", instead of "areVaosSupported" you could use "isVaoSupported", etc. Whatever you choose, make it both readable and grammatically correct. Sometimes opening a thesaurus may help you find the right words.
 
 @subsection code_standards_sec_2_2 Code Formatting Style and Other Tips
 - Generally speaking no line in any file - whether code or just plain

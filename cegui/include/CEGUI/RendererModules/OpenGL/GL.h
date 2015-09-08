@@ -51,6 +51,10 @@
 #error Either "CEGUI_USE_EPOXY" or "CEGUI_USE_GLEW" must be defined. Defining both or none is invalid.
 #endif
 
+#ifndef GL_RGB565
+#define GL_RGB565  0x8D62
+#endif
+
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   if defined(CEGUIOPENGLRENDERER_EXPORTS) || defined(CEGUIOPENGLES2RENDERER_EXPORTS)
 #       define OPENGL_GUIRENDERER_API __declspec(dllexport)
@@ -175,6 +179,9 @@ public:
     bool isSeperateReadAndDrawFramebufferSupported() const
       { return d_isSeperateReadAndDrawFramebufferSupported; }
 
+    bool isSizedInternalFormatSupported() const
+      { return d_isSizedInternalFormatSupported; }
+
     /* For internal use. Used to force the object to act is if we're using a
        context of the specificed "verMajor_.verMinor_". This is useful to
        check that an OpenGL (desktop/ES) version lower than the actual one
@@ -202,6 +209,7 @@ private:
     bool d_isPolygonModeSupported;
     bool d_isSeperateReadAndDrawFramebufferSupported;
     bool d_isVaoSupported;
+    bool d_isSizedInternalFormatSupported;
 };
 
 } // namespace CEGUI

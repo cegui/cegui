@@ -152,7 +152,9 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     glBindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0,
+                 OpenGLInfo::getSingleton().isSizedInternalFormatSupported() ?
+                   GL_RGBA8 : GL_RGBA,
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -198,7 +200,9 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
 
     // set the texture to the required size
     glBindTexture(GL_TEXTURE_2D, d_texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0,
+                 OpenGLInfo::getSingleton().isSizedInternalFormatSupported() ?
+                   GL_RGBA8 : GL_RGBA,
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
