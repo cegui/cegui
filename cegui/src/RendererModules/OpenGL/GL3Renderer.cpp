@@ -211,21 +211,19 @@ void OpenGL3Renderer::beginRendering()
     // this information may be relevant for people combining deprecated and modern
     // functions. In that case disable client states like this: glDisableClientState(GL_VERTEX_ARRAY);
 
+    d_openGLStateChanger->reset();
 
-    // do required set-up.  yes, it really is this minimal ;)
+    // if enabled, restores a subset of the GL state back to default values.
+    if (d_initExtraStates)
+        setupExtraStates();
+
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_BLEND);
 
     // force set blending ops to get to a known state.
     setupRenderingBlendMode(BM_NORMAL, true);
 
-    // if enabled, restores a subset of the GL state back to default values.
-    if (d_initExtraStates)
-        setupExtraStates();
-
     d_shaderStandard->bind();
-
-    d_openGLStateChanger->reset();
 }
 
 //----------------------------------------------------------------------------//
@@ -234,15 +232,10 @@ void OpenGL3Renderer::endRendering()
     glUseProgram(0);
 
     if (d_initExtraStates)
-    {
-        glDisable(GL_SCISSOR_TEST);
-    
-        glBlendFunc(GL_ONE, GL_ZERO);
-        if (OpenGLInfo::getSingleton().isVaoSupported())
-            glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+        setupExtraStates();
+
+    glDisable(GL_BLEND);
+    glDisable(GL_SCISSOR_TEST);
 }
 
 //----------------------------------------------------------------------------//
@@ -256,10 +249,14 @@ void OpenGL3Renderer::setupExtraStates()
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
+    
+    d_openGLStateChanger->blendFunc(GL_ONE, GL_ZERO);
 
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+        d_openGLStateChanger->bindVertexArray(0);
     glUseProgram(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    d_openGLStateChanger->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 //----------------------------------------------------------------------------//

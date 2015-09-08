@@ -135,6 +135,7 @@ void SystemKeys::updatePressedStateForKey(Key::Scan key, bool state)
 
     case Key::RightControl:
         d_rightCtrl = state;
+        break;
 
     case Key::LeftAlt:
         d_leftAlt = state;

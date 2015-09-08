@@ -73,16 +73,16 @@ namespace CEGUI
         if(!d_shadersInitialised)
         {
             if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
-                loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGL3,
-                           StandardShaderFrag_OpenGL3);
+                loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_Opengl3,
+                           StandardShaderFrag_Opengl3);
             else // OpenGL ES
             {
                 if (OpenGLInfo::getSingleton().verMajor() <= 2)
-                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGLES2,
-                               StandardShaderFrag_OpenGLES2);
+                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenglEs2,
+                               StandardShaderFrag_OpenglEs2);
                 else
-                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenGLES3,
-                               StandardShaderFrag_OpenGLES3);
+                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenglEs3,
+                               StandardShaderFrag_OpenglEs3);
             }
             if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
             {

@@ -32,7 +32,7 @@ namespace CEGUI
 {
 
 const char
-    StandardShaderVert_OpenGL3[] =
+    StandardShaderVert_Opengl3[] =
         "#version 150 core\n"
 
         "uniform mat4 modelViewPerspMatrix;\n"
@@ -48,7 +48,7 @@ const char
             "exColour = inColour;\n"
             "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
         "}",
-    StandardShaderVert_OpenGLES2[] =
+    StandardShaderVert_OpenglEs2[] =
         "#version 100\n"
         "uniform mat4 modelViewPerspMatrix;\n"
         "attribute vec3 inPosition;\n"
@@ -63,7 +63,7 @@ const char
             "exColour = inColour;\n"
             "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
         "}",
-    StandardShaderVert_OpenGLES3[] =
+    StandardShaderVert_OpenglEs3[] =
         "#version 300 es\n"
 
         "uniform mat4 modelViewPerspMatrix;\n"

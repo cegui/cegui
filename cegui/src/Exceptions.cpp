@@ -115,7 +115,7 @@ static void dumpBacktrace(size_t frames)
         if (SymFromAddr(GetCurrentProcess(), symbol->Address, &displacement, symbol))
             UnDecorateSymbolName(symbol->Name, signature, sizeof(signature), UNDNAME_COMPLETE);
         else
-            sprintf_s(signature, sizeof(signature), "%p", symbol->Address);
+            sprintf_s(signature, sizeof(signature), "%p", ULongToPtr(symbol->Address));
  
         IMAGEHLP_MODULE64 modinfo;
         modinfo.SizeOfStruct = sizeof(modinfo);
