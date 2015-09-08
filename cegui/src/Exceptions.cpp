@@ -57,9 +57,13 @@ bool Exception::d_stdErrEnabled(true);
 //----------------------------------------------------------------------------//
 static void dumpBacktrace(size_t frames)
 {
-#if defined __ANDROID__
+
+#if defined(__ANDROID__)
+
     // Not implemented yet.
+
 #else
+
 #if defined(_DEBUG) || defined(DEBUG)
 #if defined(_MSC_VER)
     SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES);
@@ -173,6 +177,7 @@ static void dumpBacktrace(size_t frames)
     logger.logEvent("==========  End of Backtrace  ==========", Errors);
 #endif
 #endif
+
 #endif
 }
 

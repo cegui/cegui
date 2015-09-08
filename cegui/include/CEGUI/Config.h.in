@@ -198,7 +198,7 @@ setting CMake options and regenerating, rather than editing directly.
 // this can be changed at runtime via the CEGUI_MODULE_DIR environment var.
 #if defined(_WIN32) || defined(__WIN32__)
 #   define CEGUI_MODULE_DIR "${CMAKE_BINARY_DIR}/bin/"
-#elif !defined __ANDROID__
+#elif !defined(__ANDROID__)
 #   define CEGUI_MODULE_DIR "${CMAKE_INSTALL_PREFIX}/${CEGUI_MODULE_INSTALL_DIR}/"
 #endif
 

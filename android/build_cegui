@@ -53,8 +53,6 @@ if [ $? -eq 0 ]; then
                 exit -1
             fi
 
-            ls /home/yaronct/build/android/cegui_0_8_5 
-
             if [ ! -d "$ceguiBuildDir" ]; then
                 mkdir -p "$ceguiBuildDir"
                 cd "$ceguiBuildDir"
