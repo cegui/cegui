@@ -5,7 +5,7 @@
 	purpose:	Defines string class used within the GUI system.
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -34,6 +34,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <functional>
+#include <array>
 
 
 namespace CEGUI
@@ -87,8 +88,8 @@ private:
 	mutable size_type	d_encodeddatlen;	//!< holds length of encoded data (in case it's smaller than buffer).
 	mutable size_type	d_encodedbufflen;	//!< length of above buffer (since buffer can be bigger then the data it holds to save re-allocations).
 
-	utf32		d_quickbuff[CEGUI_STR_QUICKBUFF_SIZE]; //!< This is a integrated 'quick' buffer to save allocations for smallish strings
-	utf32*		d_buffer;							//!< Pointer the the main buffer memory.  This is only valid when quick-buffer is not being used
+	std::array<utf32, CEGUI_STR_QUICKBUFF_SIZE> d_quickbuff;    //!< This is a integrated 'quick' buffer to save allocations for smallish strings
+	utf32*		d_buffer;						                //!< Pointer the the main buffer memory.  This is only valid when quick-buffer is not being used
 
 public:
 	/*************************************************************************
@@ -340,7 +341,7 @@ public:
 	\brief
 		Destructor for String objects
 	*/
-	~String(void);
+	~String();
 
 	//////////////////////////////////////////////////////////////////////////
 	// Construction via CEGUI::String
@@ -587,6 +588,28 @@ public:
 		assign(chars, chars_len);
 	}
 
+
+	/*!
+	\brief
+		 Move constructor.
+    */
+
+    String(String&& other)
+        : d_cplength(other.d_cplength)
+        , d_reserve(other.d_reserve)
+        , d_buffer(other.d_buffer)
+        , d_quickbuff(other.d_quickbuff)
+        , d_encodedbuff(other.d_encodedbuff)
+        , d_encodedbufflen(other.d_encodedbufflen)
+    {
+        // Reset the other String to initial sizes
+        other.d_reserve = CEGUI_STR_QUICKBUFF_SIZE;
+        other.d_encodedbuff = 0;
+        other.d_encodedbufflen = 0;
+        other.d_encodeddatlen = 0;
+        other.d_buffer = 0;
+        other.d_cplength = 0;
+    }
 
 	//////////////////////////////////////////////////////////////////////////
 	// Size operations
@@ -1161,7 +1184,7 @@ public:
     */
 	utf32*	ptr(void)
 	{
-		return (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
+		return (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff.data();
 	}
 
 	/*!
@@ -1170,7 +1193,7 @@ public:
     */
 	const utf32*	ptr(void) const
 	{
-		return (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
+		return (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff.data();
 	}
 
 	// copy, at most, 'len' code-points of the string, begining with code-point 'idx', into the array 'buf' as valid utf8 encoded data
@@ -1553,28 +1576,28 @@ public:
 	\return
 		Nothing
 	*/
-	void	swap(String& str)
+	void	swap(String& other)
 	{
 		size_type	temp_len	= d_cplength;
-		d_cplength = str.d_cplength;
-		str.d_cplength = temp_len;
+		d_cplength = other.d_cplength;
+		other.d_cplength = temp_len;
 
 		size_type	temp_res	= d_reserve;
-		d_reserve = str.d_reserve;
-		str.d_reserve = temp_res;
+		d_reserve = other.d_reserve;
+		other.d_reserve = temp_res;
 
 		utf32*		temp_buf	= d_buffer;
-		d_buffer = str.d_buffer;
-		str.d_buffer = temp_buf;
+		d_buffer = other.d_buffer;
+		other.d_buffer = temp_buf;
 
 		// see if we need to swap 'quick buffer' data
 		if (temp_res <= CEGUI_STR_QUICKBUFF_SIZE)
 		{
-			utf32		temp_qbf[CEGUI_STR_QUICKBUFF_SIZE];
+            std::array<utf32, CEGUI_STR_QUICKBUFF_SIZE> temporaryQuickBuff; 
 
-			memcpy(temp_qbf, d_quickbuff, CEGUI_STR_QUICKBUFF_SIZE * sizeof(utf32));
-			memcpy(d_quickbuff, str.d_quickbuff, CEGUI_STR_QUICKBUFF_SIZE * sizeof(utf32));
-			memcpy(str.d_quickbuff, temp_qbf, CEGUI_STR_QUICKBUFF_SIZE * sizeof(utf32));
+			temporaryQuickBuff = d_quickbuff;
+			d_quickbuff = other.d_quickbuff;
+			other.d_quickbuff = temporaryQuickBuff;
 		}
 
 	}
