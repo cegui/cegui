@@ -305,7 +305,7 @@ void GameMenuDemo::update(float timeSinceLastUpdate)
     }
 }
 
-bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs&)
 {
     d_startButtonClickArea->setAlpha(0.0f);
     d_startButtonBlendInAnimInst->start();
@@ -327,7 +327,7 @@ bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& /*args
     return false;
 }
 
-bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs&)
 {
     if(!d_interactivePlanetElementsAreEnabled)
         enableInteractivePlanetElements();
@@ -341,7 +341,7 @@ bool GameMenuDemo::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& /*
 }
 
 
-bool GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs&)
 {
     if(!d_loginWasAccepted)
         return false;
@@ -405,7 +405,7 @@ bool GameMenuDemo::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuDemo::handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleMouseEntersLeftArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -414,7 +414,7 @@ bool GameMenuDemo::handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& /*args
     return false;
 }
 
-bool GameMenuDemo::handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -423,7 +423,7 @@ bool GameMenuDemo::handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& /*args
     return false;
 }
 
-bool GameMenuDemo::handleMouseEntersRightArrowArea(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleMouseEntersRightArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -432,7 +432,7 @@ bool GameMenuDemo::handleMouseEntersRightArrowArea(const CEGUI::EventArgs& /*arg
     return false;
 }
 
-bool GameMenuDemo::handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleMouseLeavesRightArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -442,7 +442,7 @@ bool GameMenuDemo::handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& /*arg
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -457,7 +457,7 @@ bool GameMenuDemo::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& /*ar
     return false;
 }
 
-bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -472,7 +472,7 @@ bool GameMenuDemo::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& /*ar
     return false;
 }
 
-bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -491,7 +491,7 @@ bool GameMenuDemo::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -509,7 +509,7 @@ bool GameMenuDemo::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& /
 }
 
 
-bool GameMenuDemo::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& /*args*/)
+bool GameMenuDemo::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
