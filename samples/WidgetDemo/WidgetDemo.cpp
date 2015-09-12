@@ -210,7 +210,7 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& /*args*/)
+bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs&)
 {
     d_windowLightMouseMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();

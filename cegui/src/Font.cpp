@@ -77,7 +77,7 @@ Font::~Font()
     {
         const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
             + BITS_PER_UINT - 1) / BITS_PER_UINT;
-        #if !defined(CEGUI_CUSTOM_ALLOCATORS)
+        #ifndef CEGUI_CUSTOM_ALLOCATORS
             CEGUI_UNUSED(old_size);
         #endif
         CEGUI_DELETE_ARRAY_PT(d_glyphPageLoaded, uint, old_size, Font);
@@ -132,7 +132,7 @@ void Font::setMaxCodepoint(utf32 codepoint)
     {
         const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
             + BITS_PER_UINT - 1) / BITS_PER_UINT;
-        #if !defined(CEGUI_CUSTOM_ALLOCATORS)
+        #ifndef CEGUI_CUSTOM_ALLOCATORS
             CEGUI_UNUSED(old_size);
         #endif
         CEGUI_DELETE_ARRAY_PT(d_glyphPageLoaded, uint, old_size, Font);

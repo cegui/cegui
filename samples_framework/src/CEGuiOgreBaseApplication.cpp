@@ -417,7 +417,7 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& /*evt*/)
+bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent&)
 {
     return true;
 }
@@ -451,7 +451,7 @@ bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent& e)
 
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mousePressed
-  (const OIS::MouseEvent& /*e*/, OIS::MouseButtonID id)
+  (const OIS::MouseEvent&, OIS::MouseButtonID id)
 {
     d_sampleApp->injectMouseButtonDown(convertOISButtonToCegui(id));
     return true;
@@ -459,7 +459,7 @@ bool CEGuiDemoFrameListener::mousePressed
 
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseReleased
-  (const OIS::MouseEvent& /*e*/, OIS::MouseButtonID id)
+  (const OIS::MouseEvent&, OIS::MouseButtonID id)
 {
     d_sampleApp->injectMouseButtonUp(convertOISButtonToCegui(id));
     return true;
