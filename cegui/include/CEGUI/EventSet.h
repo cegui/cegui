@@ -427,11 +427,10 @@ protected:
     ScriptModule* getScriptModule() const;
 
     // Do not allow copying, assignment, or any other usage than simple creation.
+    EventSet(EventSet&) {}
     EventSet(const EventSet&) {}
-    EventSet& operator=(const EventSet&)
-    {
-        return *this;
-    }
+    EventSet& operator=(EventSet&) { return *this; }
+    EventSet& operator=(const EventSet&) { return *this; }
 
     typedef std::map<String, Event*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, Event*)> EventMap;
