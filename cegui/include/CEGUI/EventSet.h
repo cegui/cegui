@@ -427,9 +427,9 @@ protected:
     ScriptModule* getScriptModule() const;
 
     // Do not allow copying, assignment, or any other usage than simple creation.
-    EventSet(EventSet&) {}
+    EventSet(EventSet&) {} //! \deprecated
     EventSet(const EventSet&) {}
-    EventSet& operator=(EventSet&) { return *this; }
+    EventSet& operator=(EventSet&) { return *this; } //! \deprecated
     EventSet& operator=(const EventSet&) { return *this; }
 
     typedef std::map<String, Event*, StringFastLessCompare
