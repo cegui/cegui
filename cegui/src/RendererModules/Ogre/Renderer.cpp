@@ -264,13 +264,13 @@ struct OgreRenderer_impl :
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
         d_useShaders(false),
+        d_useGLSL(false),
+        d_useGLSLCore(false),
         d_worldMatrix(Ogre::Matrix4::IDENTITY),
         d_viewMatrix(Ogre::Matrix4::IDENTITY),
         d_projectionMatrix(Ogre::Matrix4::IDENTITY),
         d_worldViewProjMatrix(Ogre::Matrix4::IDENTITY),
-        d_combinedMatrixValid(true),
-        d_useGLSL(false),
-        d_useGLSLCore(false)
+        d_combinedMatrixValid(true)
         {}
 
     //! String holding the renderer identification text.

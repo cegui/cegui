@@ -57,8 +57,6 @@ namespace CEGUI
 #ifndef APIENTRY
 #   define APIENTRY
 #endif
-//! Dummy function for if real ones are not present (saves testing each render)
-static void APIENTRY activeTextureDummy(GLenum) {}
 
 //----------------------------------------------------------------------------//
 // template specialised class that does the real work for us
@@ -172,7 +170,7 @@ void OpenGL3Renderer::init()
     initialiseRendererIDString();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
-    d_openGLStateChanger = CEGUI_NEW_AO OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = CEGUI_NEW_AO OpenGL3StateChangeWrapper();
 }
 
 //----------------------------------------------------------------------------//

@@ -188,6 +188,10 @@ namespace CEGUI
             case VTF_BOTTOM_ALIGNED:
                 absarea.d_min.d_y = absarea.d_max.d_y - textHeight;
                 break;
+
+            case VTF_TOP_ALIGNED: // TODO: What should we do in this case?
+            default:
+                break;
             }
 
         // calculate final colours

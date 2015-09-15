@@ -112,6 +112,9 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
         //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
         glGetError();
     }
+#else
+    CEGUI_UNUSED(init_glew);
+    CEGUI_UNUSED(set_glew_experimental);
 #endif
     OpenGLInfo::getSingleton().init();
     initialiseMaxTextureSize();

@@ -75,7 +75,7 @@ void Samples_xmlHandler::elementStartLocal(const String& element,
     }
     else if (element == SampleDataHandler::ElementName)
     {
-        d_chainedHandler = new SampleDataHandler(attributes, "", d_samplesFramework);
+        d_chainedHandler = new SampleDataHandler(attributes, d_samplesFramework);
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementStart: "
@@ -98,7 +98,6 @@ void Samples_xmlHandler::elementEndLocal(const String& element)
 //----------------------------------------------------------------------------//
 SampleDataHandler::SampleDataHandler(
     const XMLAttributes& attributes,
-    const String& name_prefix,
     SamplesFramework* samplesFramework)
     : d_samplesFramework(samplesFramework)
 {
@@ -141,7 +140,7 @@ SampleDataHandler::~SampleDataHandler()
 //----------------------------------------------------------------------------//
 void SampleDataHandler::elementStartLocal(
     const String& element,
-    const XMLAttributes& attributes)
+    const XMLAttributes& /*attributes*/)
 {
     Logger::getSingleton().logEvent(
         "AnimationDefinitionHandler::elementStart: "
