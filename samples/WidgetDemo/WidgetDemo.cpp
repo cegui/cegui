@@ -210,7 +210,7 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
+bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs&)
 {
     d_windowLightMouseMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();
@@ -558,9 +558,9 @@ void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)
     eventsLog = eventsLog.substr(pos, len);
     if(len == 2056)
     {
-        int newlinePos = eventsLog.find_first_of("\n");
-        if(newlinePos != std::string::npos)
-            eventsLog = eventsLog.substr(newlinePos, std::string::npos);
+        String::size_type newlinePos = eventsLog.find_first_of("\n");
+        if(newlinePos != String::npos)
+            eventsLog = eventsLog.substr(newlinePos, String::npos);
     }
     d_widgetsEventsLog->setText(eventsLog);
 

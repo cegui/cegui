@@ -46,7 +46,7 @@ public:
 
 private:
     MetaDataWindowManager(const MetaDataWindowManager&) {}
-    MetaDataWindowManager& operator=(const MetaDataWindowManager&) {}
+    MetaDataWindowManager& operator=(const MetaDataWindowManager&) { return *this; }
 
     void init();
 

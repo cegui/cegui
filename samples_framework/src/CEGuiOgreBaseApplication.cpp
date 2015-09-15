@@ -172,7 +172,7 @@ void CEGuiOgreBaseApplication::destroyWindow()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::beginRendering(const float elapsed)
+void CEGuiOgreBaseApplication::beginRendering(const float /*elapsed*/)
 {
     // this is nover called under Ogre, since we're not in control of the
     // rendering process.
@@ -242,9 +242,10 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
+void CEGuiOgreBaseApplication::doFrameUpdate(const float /*elapsed*/)
 {
 }
+
 //----------------------------------------------------------------------------//
 bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args)
 {
@@ -324,7 +325,7 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
 
 //----------------------------------------------------------------------------//
 CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp,
-    Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
+    Ogre::RenderWindow* window, Ogre::Camera* camera)
     : d_baseApp(baseApp),
     d_sampleApp(sampleApp)
 {
@@ -416,7 +417,7 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
+bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent&)
 {
     return true;
 }
@@ -441,7 +442,7 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
+bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent& e)
 {
     d_sampleApp->injectKeyUp(static_cast<CEGUI::Key::Scan>(e.key));
 
@@ -449,18 +450,18 @@ bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
+bool CEGuiDemoFrameListener::mousePressed
+  (const OIS::MouseEvent&, OIS::MouseButtonID id)
 {
     d_sampleApp->injectMouseButtonDown(convertOISButtonToCegui(id));
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
+bool CEGuiDemoFrameListener::mouseReleased
+  (const OIS::MouseEvent&, OIS::MouseButtonID id)
 {
-   d_sampleApp->injectMouseButtonUp(convertOISButtonToCegui(id));
-
+    d_sampleApp->injectMouseButtonUp(convertOISButtonToCegui(id));
     return true;
 }
 

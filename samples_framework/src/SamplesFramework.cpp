@@ -443,7 +443,8 @@ SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-bool SamplesFramework::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
+bool SamplesFramework::handleSampleExitButtonClicked
+  (const CEGUI::EventArgs&)
 {
     d_quittingSampleView = true;
 

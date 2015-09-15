@@ -221,8 +221,8 @@ SampleDataModule::SampleDataModule(CEGUI::String sampleName,
                                    SampleType sampleTypeEnum,
                                    CEGUI::String credits)
     : SampleData(sampleName, summary, description, sampleTypeEnum, credits)
-    , d_sample(0)
     , d_dynamicModule(0)
+    , d_sample(0)
 {
 }
 

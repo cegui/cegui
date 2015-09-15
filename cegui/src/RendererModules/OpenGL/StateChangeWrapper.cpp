@@ -124,16 +124,16 @@ namespace CEGUI
         return equal;
     }
 
-
-
-
-
-//! constructor.
-OpenGL3StateChangeWrapper::OpenGL3StateChangeWrapper(OpenGL3Renderer& owner)
+OpenGL3StateChangeWrapper::OpenGL3StateChangeWrapper()
 {
     reset();
 }
-//! destructor
+
+OpenGL3StateChangeWrapper::OpenGL3StateChangeWrapper(OpenGL3Renderer& /*owner*/)
+{
+    reset();
+}
+
 OpenGL3StateChangeWrapper::~OpenGL3StateChangeWrapper()
 {
 }
