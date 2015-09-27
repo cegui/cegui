@@ -73,7 +73,7 @@ public:
     //! Destructor.
     ~CEGuiOgreBaseApplication();
 
-    bool init(SamplesFrameworkBase* sampleApp, const CEGUI::String &logFile,
+    bool init(SampleBrowserBase* sampleApp, const CEGUI::String &logFile,
               const CEGUI::String &dataPathPrefixOverride);
 
     void destroyRenderer();

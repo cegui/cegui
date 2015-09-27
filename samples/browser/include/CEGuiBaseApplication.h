@@ -95,7 +95,7 @@ public:
         - true if the application initialised okay (cleanup function will be
           called).
     */
-    virtual bool init(SampleBrowser* sampleApp,
+    virtual bool init(SampleBrowserBase* sampleApp,
                       const CEGUI::String& logFile,
                       const CEGUI::String& dataPathPrefixOverride);
 
