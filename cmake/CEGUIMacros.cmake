@@ -253,7 +253,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         # Do not version modules, since we dlopen these directly and need to know
         # the name is what we think it will be (and not rely on symlinks which will
         # not be installed always, but usually only as part of *-dev packages).
-        if (NOT ${_IS_MODULE})
+        if (NOT ${_IS_MODULE} AND NOT ANDROID)
             if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
                 set_target_properties(${_LIB_NAME} PROPERTIES
                     VERSION ${CEGUI_ABI_VERSION}

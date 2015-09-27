@@ -57,8 +57,9 @@ public:
 
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
 
-    bool initialise();
-    void deinitialise();
+    bool initialise(const CEGUI::String& logFile,
+                    const CEGUI::String& dataPathPrefixOverride);
+    void cleanup();
 
     void loadSamples();
 

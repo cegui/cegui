@@ -29,7 +29,6 @@ author:     Paul D Turner
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-CEGuiGLFWSharedBase* CEGuiGLFWSharedBase::d_appInstance = 0;
 const char CEGuiGLFWSharedBase::d_windowTitle[] = "Crazy Eddie's GUI Mk-2 - Sample Application";
 double  CEGuiGLFWSharedBase::d_frameTime = 0;
 int CEGuiGLFWSharedBase::d_modifiers = 0;
@@ -44,12 +43,6 @@ double CEGuiGLFWSharedBase::d_oldMousePosY = 0.;
 //----------------------------------------------------------------------------//
 CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
 {
-    if (d_appInstance)
-        throw CEGUI::InvalidRequestException(
-        "CEGuiGLFWSharedBase instance already exists!");
-
-    d_appInstance = this;
-
 #if defined CEGUI_OPENGL_VER_MAJOR_FORCE
     CEGUI::OpenGLInfo::getSingleton().verForce(CEGUI_OPENGL_VER_MAJOR_FORCE,
                                                CEGUI_OPENGL_VER_MINOR_FORCE);
@@ -75,8 +68,7 @@ void CEGuiGLFWSharedBase::drawFrame()
     double time_now = glfwGetTime();
     const double elapsed = time_now - d_frameTime;
     d_frameTime = time_now;
-
-    d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
+    d_sampleApp->renderSingleFrame(static_cast<float>(elapsed));
 }
 
 //----------------------------------------------------------------------------//

@@ -69,6 +69,9 @@ endif()
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.
 cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES ALL_HEADER_FILES TRUE FALSE)
+if (ANDROID)
+    target_link_libraries (${CEGUI_TARGET_NAME} log)
+endif ()
 
 source_group("Source Files\\view" FILES ${VIEW_SOURCE_FILES})
 source_group("Source Files\\widget" FILES ${WIDGET_SOURCE_FILES})
@@ -80,7 +83,7 @@ source_group("Header Files\\widget" FILES ${WIDGET_HEADER_FILES})
 source_group("Header Files\\falagard" FILES ${FALAGARD_HEADER_FILES})
 source_group("Header Files\\svg" FILES ${SVG_HEADER_FILES})
 
-if (NOT WIN32)
+if (NOT WIN32 AND NOT ANDROID)
     cegui_add_dependency(${CEGUI_TARGET_NAME} ICONV)
 endif()
 

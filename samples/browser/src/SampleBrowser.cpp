@@ -39,7 +39,6 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/ProgressBar.h"
 
 #include "samples.h"
-
 #include <string>
 #include <iostream>
 #include <vector>
@@ -54,6 +53,8 @@ using namespace CEGUI;
 #ifdef __ANDROID__
 #   include "CEGUI/AndroidUtils.h"
 #endif
+
+#if !defined __ANDROID__
 
 //----------------------------------------------------------------------------//
 #ifdef __ANDROID__
@@ -87,6 +88,8 @@ int main(int argc, char* argv[])
 #endif
 }
 
+#endif // !defined __ANDROID__
+
 //----------------------------------------------------------------------------//
 SampleBrowser::SampleBrowser() :
     d_sampleExitButton(0),
@@ -106,25 +109,25 @@ SampleBrowser::~SampleBrowser()
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::initialise()
+bool SampleBrowser::initialise(const CEGUI::String& logFile,
+                               const CEGUI::String& dataPathPrefixOverride)
 {
-    using namespace CEGUI;
+    if (SamplesFrameworkBase::initialise(logFile, dataPathPrefixOverride))
+    {
+        initialiseLoadScreenLayout();
+        loadSamples();
 
-    initialiseLoadScreenLayout();
+        d_systemInputAggregator = new InputAggregator(
+            &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+        d_systemInputAggregator->initialise();
 
-    loadSamples();
-
-    d_systemInputAggregator = new InputAggregator(
-        &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
-    d_systemInputAggregator->initialise();
-
-    // return true to signalize the initialisation was sucessful and run the
-    // SampleBrowser
-    return true;
+        return true;
+    }
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-void SampleBrowser::deinitialise()
+void SampleBrowser::cleanup()
 {
     unloadSamples();
 
@@ -133,6 +136,8 @@ void SampleBrowser::deinitialise()
         delete d_systemInputAggregator;
         d_systemInputAggregator = 0;
     }
+
+    SamplesFrameworkBase::cleanup();
 }
 
 //----------------------------------------------------------------------------//

@@ -127,7 +127,6 @@ void CEGuiIrrlichtBaseApplication::destroyRenderer()
 //----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::run()
 {
-    d_sampleApp->initialise();
     CEGUI::System& guiSystem = CEGUI::System::getSingleton();
 
     // draw everything

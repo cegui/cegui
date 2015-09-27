@@ -35,8 +35,6 @@ GLFWwindow* CEGuiGLFWSharedBase::d_window = 0;
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::run()
 {
-    d_sampleApp->initialise();
-
     // Input callbacks of glfw for CEGUI
     glfwSetKeyCallback(d_window, glfwKeyCallback);
     glfwSetCharCallback(d_window, glfwCharCallback);
@@ -68,7 +66,6 @@ void CEGuiGLFWSharedBase::run()
         glfwPollEvents();
     }
 
-    d_sampleApp->deinitialise();
 }
 
 //----------------------------------------------------------------------------//

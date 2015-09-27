@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. "$myScriptsDir/common"
+
+"$myScriptsDir/build_deps"
+
+if [ $? -eq 0 ]; then
+
+    dirRequiresSudo "$ceguiInstallDir" ceguiInstallDirMaybeSudo
+
+    depsInstallDirsElements=('$tinyxmlInstallDir' \
+                             '$freeimageInstallDir' \
+                             '$glmInstallDir' \
+                             '$pcreInstallDir' \
+                             '$freetypeInstallDir' \
+                             '$epoxyInstallDir' \
+                             '$fribidiInstallDir')
+
+    depsInstallDirs()
+    {
+        if [ ${#depsInstallDirsElements[@]} -ne 0 ]; then
+            declare -i depIndex
+            depIndex=0
+            while true; do
+                echo -n "${depsInstallDirsElements[$depIndex]}"
+                depIndex=$(($depIndex+1))
+                if [ $depIndex -eq ${#depsInstallDirsElements[@]} ]; then
+                    break;
+                fi
+                echo -n \;
+            done
+        fi
+    }
+
+    ceguiCmakeOptionsElements=('-DCEGUI_SAMPLES_ENABLED=ON' \
+                               '-DCEGUI_BUILD_RENDERER_OPENGL=OFF' \
+                               '-DCEGUI_BUILD_RENDERER_OPENGL3=ON' \
+                               '-DCEGUI_USE_EPOXY=ON' \
+                               '-DCEGUI_USE_GLEW=OFF' \
+                               '-DCEGUI_TINYXML_HAS_2_6_API=TRUE' \
+                               '-DCEGUI_USE_MINIBIDI=OFF' \
+                               '-DCEGUI_USE_FRIBIDI=ON' \
+                               "-DCMAKE_FIND_ROOT_PATH=\"$(depsInstallDirs)\"")
+    ceguiCmakeOptions="${ceguiCmakeOptionsElements[*]}"
+
+    ceguiBuild()
+    {
+
+        if [ ! -d "$ceguiInstallDir" ]; then
+
+            if [ ! -d "$ceguiSrcDir" ]; then
+                echo "Error: CEGUI source dir \"$ceguiSrcDir\" doesn't exist."
+                exit -1
+            fi
+
+            if [ ! -d "$ceguiBuildDir" ]; then
+                mkdir -p "$ceguiBuildDir"
+                cd "$ceguiBuildDir"
+                eval myCmake '""' $androidCmakeOptions $ceguiCmakeOptions \
+                  '-DCMAKE_INSTALL_PREFIX="$ceguiInstallDir"' \
+                  '-DCMAKE_BUILD_TYPE="$ceguiBuildType" "$ceguiSrcDir"'
+            fi
+
+            cd "$ceguiBuildDir"
+            myMake "" "-j$buildNumOfProcesses"
+
+        fi
+
+    }
+
+    ceguiInstall()
+    {
+        if [ ! -d "$ceguiInstallDir" ]; then       
+            cd "$ceguiBuildDir"
+            myMake "$ceguiInstallDirMaybeSudo" install
+        fi
+    }
+
+    ceguiBuild  &&  ceguiInstall
+    if [ $? -eq 0 ]; then
+        echo $'\n'"Building CEGUI succeeded!"
+        true;
+    else
+        echo $'\n'"Building CEGUI failed!"
+        false;
+    fi
+
+fi
