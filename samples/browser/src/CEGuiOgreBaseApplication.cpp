@@ -232,7 +232,7 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiOgreBaseApplication::init(SamplesFrameworkBase* sampleApp,
+bool CEGuiOgreBaseApplication::init(SampleBrowserBase* sampleApp,
   const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
 {
     if (!CEGuiBaseApplication::init(sampleApp, logFile, dataPathPrefixOverride))

@@ -112,7 +112,7 @@ SampleBrowser::~SampleBrowser()
 bool SampleBrowser::initialise(const CEGUI::String& logFile,
                                const CEGUI::String& dataPathPrefixOverride)
 {
-    if (SamplesFrameworkBase::initialise(logFile, dataPathPrefixOverride))
+    if (SampleBrowserBase::initialise(logFile, dataPathPrefixOverride))
     {
         initialiseLoadScreenLayout();
         loadSamples();
@@ -137,7 +137,7 @@ void SampleBrowser::cleanup()
         d_systemInputAggregator = 0;
     }
 
-    SamplesFrameworkBase::cleanup();
+    SampleBrowserBase::cleanup();
 }
 
 //----------------------------------------------------------------------------//

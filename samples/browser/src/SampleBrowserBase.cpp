@@ -149,12 +149,11 @@ int SampleBrowserBase::run()
     }
     catch (const char* exc)
     {
-        SamplesFrameworkBase::outputExceptionMessage(exc);
+        outputExceptionMessage(exc);
     }
     catch (...)
     {
-        SamplesFrameworkBase::outputExceptionMessage
-          ("Unknown exception was caught!");
+        outputExceptionMessage("Unknown exception was caught!");
     }
     return 0;
 }
@@ -162,7 +161,7 @@ int SampleBrowserBase::run()
 /*************************************************************************
     Start the SamplesFramework application
 *************************************************************************/
-bool SampleBrowser::initialise
+bool SampleBrowserBase::initialise
   (const CEGUI::String& logFile, const CEGUI::String& dataPathPrefixOverride)
 {
     // Setup renderer selection dialog for Win32
@@ -294,7 +293,7 @@ bool SampleBrowser::initialise
 #endif
 
     if (!d_baseApp)
-        CEGUI_THROW(CEGUI::GenericException("No renderer was selected!"));
+        throw CEGUI::GenericException("No renderer was selected!");
 
     return d_baseApp->init(this, logFile, dataPathPrefixOverride);
 }
@@ -309,7 +308,7 @@ void SampleBrowserBase::cleanup()
     }
 }
 
-void SamplesFrameworkBase::renderSingleFrame(float elapsed)
+void SampleBrowserBase::renderSingleFrame(float elapsed)
 {
     d_baseApp->renderSingleFrame(elapsed);
 }
