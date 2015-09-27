@@ -193,7 +193,6 @@ if(CEGUI_BUILD_STATIC_CONFIGURATION)
 
     if (ANDROID)
         include(CEGUIAndroid)
-        set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/utils")
         set(OGRE_TEMPLATES_DIR "${CMAKE_SOURCE_DIR}/cmake/templates")
         file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/browserdummy.cpp "int x_dummy = 0;")
         SET(ANDROID_PROJECT_TARGET "CEGUISampleBrowserAndroid")
@@ -411,9 +410,7 @@ if(APPLE)
     )
 endif()
 
-if (UNIX AND NOT APPLE AND NOT ANDROID)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CMAKE_DL_LIBS})
-elseif (MINGW)
+if ((UNIX AND NOT APPLE AND NOT ANDROID) OR MINGW)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CMAKE_DL_LIBS})
 endif()
 

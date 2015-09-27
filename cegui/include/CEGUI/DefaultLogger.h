@@ -56,7 +56,6 @@ public:
     void logEvent(const String& message, LoggingLevel level = Standard);
     void setLogFilename(const String& filename, bool append = false);
 
-#ifndef __ANDROID__
 protected:
     //! Stream used to implement the logger
     std::ofstream d_ostream;
@@ -69,7 +68,6 @@ protected:
     Cache d_cache;
     //! true while log entries are beign cached (prior to logfile creation)
     bool d_caching;
-#endif
 };
 
 }
