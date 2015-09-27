@@ -51,38 +51,52 @@ else()
     )
 endif()
 
+if (ANDROID)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/SamplesFrameworkAndroid.cpp
+    )
+endif ()
 
 if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
-    # Append OpenGL, OpenGL3 and OpenGL ES 2 files
-    list(APPEND CORE_SOURCE_FILES
-        ./src/CEGuiGLFWSharedBase.cpp
-    )
-    if (CEGUI_USE_GLFW_VER STREQUAL "3")
+    if (NOT ANDROID)
+    
         list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiGLFW3SharedBase.cpp
+            ./src/CEGuiGLFWSharedBase.cpp
         )
-    else() # CEGUI_USE_GLFW_VER STREQUAL "2"
-        list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiGLFW2SharedBase.cpp
-        )
-    endif()
+        if (CEGUI_USE_GLFW_VER STREQUAL "3")
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiGLFW3SharedBase.cpp
+            )
+        else() # CEGUI_USE_GLFW_VER STREQUAL "2"
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiGLFW2SharedBase.cpp
+            )
+        endif()
 
-    if(CEGUI_BUILD_RENDERER_OPENGL)
-        list(APPEND CORE_SOURCE_FILES
-            ./src/CEGuiOpenGLBaseApplication.cpp
-        )
-    endif()
+        if (CEGUI_BUILD_RENDERER_OPENGL)
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiOpenGLBaseApplication.cpp
+            )
+        endif()
 
-    if(CEGUI_BUILD_RENDERER_OPENGL3)
-        list(APPEND CORE_SOURCE_FILES
-            ./src/CEGuiOpenGL3BaseApplication.cpp
-        )
-    endif()
+        if (CEGUI_BUILD_RENDERER_OPENGL3)
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiOpenGL3BaseApplication.cpp
+            )
+        endif()
+  
+    endif ()
 
     if (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2)
-        list (APPEND CORE_SOURCE_FILES
-            ./src/CEGuiOpenGLES2BaseApplication.cpp
-        )
+        if (ANDROID)
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiAndroidOpenglEs2BaseApplication.cpp
+            )
+        else ()
+            list (APPEND CORE_SOURCE_FILES
+                ./src/CEGuiOpenGLES2BaseApplication.cpp
+            )
+        endif ()
     endif()
 
 endif()
@@ -210,32 +224,36 @@ endif()
 #                   Dynamically Linked Executable
 ###########################################################################
 if(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
-add_executable(${CEGUI_TARGET_NAME} ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
+    if (ANDROID)
+        add_library (${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES})
+    else ()   
+        add_executable(${CEGUI_TARGET_NAME} ${COMBINED_SOURCE_FILES} ${COMBINED_HEADER_FILES})
+    endif ()
 
-# append the _d (or whatever) for debug builds as needed.
-if(CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
-    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-        OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
-    )
-endif()
+    # append the _d (or whatever) for debug builds as needed.
+    if(CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
+        )
+    endif()
 
-if(NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
-    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-        INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
-    )
-endif()
+    if(NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+        )
+    endif()
 
-if(APPLE)
-    # we add these to ensure the dynamically loaded modules we will be
-    # using are built before the .app's post build step that copies
-    # libs into the app bundle.
-    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
-                                          CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
-                                          CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}
-    )
+    if(APPLE)
+        # we add these to ensure the dynamically loaded modules we will be
+        # using are built before the .app's post build step that copies
+        # libs into the app bundle.
+        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
+                                              CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
+                                              CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}
+        )
 
-    cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
-endif()
+        cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
+    endif()
 endif(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
 
 ###########################################################################

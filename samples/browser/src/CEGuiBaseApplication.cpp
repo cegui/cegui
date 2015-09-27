@@ -107,7 +107,8 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::execute(SampleBrowserBase* sampleApp)
+bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
+  const CEGUI::String& logFile, const CEGUI::String& dataPathPrefixOverride)
 {
     d_sampleApp = sampleApp;
 
@@ -116,10 +117,11 @@ bool CEGuiBaseApplication::execute(SampleBrowserBase* sampleApp)
             "Base application subclass did not create Renderer!");
 
     // start up CEGUI system using objects created in subclass constructor.
-    CEGUI::System::create(*d_renderer, d_resourceProvider, 0, d_imageCodec);
+    CEGUI::System::create(*d_renderer, d_resourceProvider, 0, d_imageCodec, 0,
+                          "", logFile);
 
     // initialise resource system
-    initialiseResourceGroupDirectories();
+    initialiseResourceGroupDirectories(dataPathPrefixOverride);
     initialiseDefaultResourceGroups();
 
     const CEGUI::Rectf scrn(glm::vec2(0, 0), d_renderer->getDisplaySize());
@@ -155,67 +157,69 @@ bool CEGuiBaseApplication::execute(SampleBrowserBase* sampleApp)
     d_sampleApp->setApplicationWindowSize(static_cast<int>(area.getWidth()),
                                           static_cast<int>(area.getHeight()));
 
-    run();
-
-    cleanup();
-    destroyWindow();
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::cleanup()
 {
-    CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
+    if (d_renderer)
+    {
+        CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
 
-    const size_t logo_buffer_count = d_logoGeometry.size();
-    for (size_t i = 0; i < logo_buffer_count; ++i)
-        d_renderer->destroyGeometryBuffer(*d_logoGeometry.at(i));
-    d_logoGeometry.clear();
+        const size_t logo_buffer_count = d_logoGeometry.size();
+        for (size_t i = 0; i < logo_buffer_count; ++i)
+            d_renderer->destroyGeometryBuffer(*d_logoGeometry.at(i));
+        d_logoGeometry.clear();
 
-    const size_t fps_buffer_count = d_FPSGeometry.size();
-    for (size_t i = 0; i < fps_buffer_count; ++i)
-        d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
-    d_FPSGeometry.clear();
+        const size_t fps_buffer_count = d_FPSGeometry.size();
+        for (size_t i = 0; i < fps_buffer_count; ++i)
+            d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
+        d_FPSGeometry.clear();
 
-    CEGUI::System::destroy();
-    destroyRenderer ();
+        CEGUI::System::destroy();
+        destroyRenderer();
+        destroyWindow();
+    }
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::destroyRenderer ()
+void CEGuiBaseApplication::destroyRenderer()
 {
     delete d_renderer;
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::initialiseResourceGroupDirectories()
+void CEGuiBaseApplication::initialiseResourceGroupDirectories
+  (const CEGUI::String& dataPathPrefixOverride)
 {
     // initialise the required dirs for the DefaultResourceProvider
     CEGUI::DefaultResourceProvider* rp =
         static_cast<CEGUI::DefaultResourceProvider*>
             (CEGUI::System::getSingleton().getResourceProvider());
+    initDataPathPrefix(dataPathPrefixOverride);
+    CEGUI::String dataPathPrefix(getDataPathPrefix());
 
-    const char* dataPathPrefix = getDataPathPrefix();
-    char resourcePath[PATH_MAX];
-
-    // for each resource type, set a resource group directory
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-    rp->setResourceGroupDirectory("schemes", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-    rp->setResourceGroupDirectory("imagesets", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-    rp->setResourceGroupDirectory("fonts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-    rp->setResourceGroupDirectory("layouts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-    rp->setResourceGroupDirectory("looknfeels", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-    rp->setResourceGroupDirectory("schemas", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    rp->setResourceGroupDirectory("animations", resourcePath);
+    /* for each resource type, set a resource group directory. We cast strings
+       to "const CEGUI::utf8*" in order to support general Unicode strings,
+       rather than only ASCII strings (even though currently they're all ASCII).
+       */
+    rp->setResourceGroupDirectory("schemes",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/schemes/"));
+    rp->setResourceGroupDirectory("imagesets",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/imagesets/"));
+    rp->setResourceGroupDirectory("fonts",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/fonts/"));
+    rp->setResourceGroupDirectory("layouts",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/layouts/"));
+    rp->setResourceGroupDirectory("looknfeels",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/looknfeel/"));
+    rp->setResourceGroupDirectory("lua_scripts",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/lua_scripts/"));
+    rp->setResourceGroupDirectory("schemas",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/xml_schemas/"));
+    rp->setResourceGroupDirectory("animations",
+      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/animations/"));
 }
 
 //----------------------------------------------------------------------------//
@@ -237,35 +241,42 @@ void CEGuiBaseApplication::initialiseDefaultResourceGroups()
 }
 
 //----------------------------------------------------------------------------//
-const char* CEGuiBaseApplication::getDataPathPrefix() const
+void CEGuiBaseApplication::initDataPathPrefix(const CEGUI::String &override)
 {
-    static char dataPathPrefix[PATH_MAX];
 
-#ifdef __APPLE__
-    CFURLRef datafilesURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                    CFSTR("datafiles"),
-                                                    0, 0);
-    CFURLGetFileSystemRepresentation(datafilesURL, true,
-                                     reinterpret_cast<UInt8*>(dataPathPrefix),
-                                     PATH_MAX);
-    CFRelease(datafilesURL);
-#else
-    char* envDataPath = 0;
+    if (override.empty())
+    {
 
-    // get data path from environment var
-    envDataPath = getenv(DATAPATH_VAR_NAME);
+#       ifdef __APPLE__
 
-    // set data path prefix / base directory.  This will
-    // be either from an environment variable, or from
-    // a compiled in default based on original configure
-    // options
-    if (envDataPath != 0)
-        strcpy(dataPathPrefix, envDataPath);
+            char c_str[PATH_MAX];
+            CFURLRef datafilesURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                            CFSTR("datafiles"),
+                                                            0, 0);
+            CFURLGetFileSystemRepresentation(datafilesURL, true,
+                                             reinterpret_cast<UInt8*>(c_str),
+                                             PATH_MAX);
+            CFRelease(datafilesURL);
+            d_dataPathPrefix = c_str;
+
+#       else
+
+            // get data path from environment var
+            char* envDataPath = getenv(DATAPATH_VAR_NAME);
+
+            // set data path prefix / base directory.  This will
+            // be either from an environment variable, or from
+            // a compiled in default based on original configure
+            // options
+            d_dataPathPrefix = envDataPath ?
+                               envDataPath : CEGUI_SAMPLE_DATAPATH;
+
+#       endif
+
+    }
     else
-        strcpy(dataPathPrefix, CEGUI_SAMPLE_DATAPATH);
-#endif
-
-    return dataPathPrefix;
+        d_dataPathPrefix = override;
+        
 }
 
 //----------------------------------------------------------------------------//

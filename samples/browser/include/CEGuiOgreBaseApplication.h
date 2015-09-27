@@ -73,6 +73,9 @@ public:
     //! Destructor.
     ~CEGuiOgreBaseApplication();
 
+    bool init(SamplesFrameworkBase* sampleApp, const CEGUI::String &logFile,
+              const CEGUI::String &dataPathPrefixOverride);
+
     void destroyRenderer();
 
     //! called by the frame listener to perform requried per-frame updates.
@@ -90,7 +93,6 @@ protected:
     CEGUI::String getResourcePath(CEGUI::String resource);
 
     // Implementation of base class abstract methods.
-    void run();
     void destroyWindow();
     void beginRendering(const float elapsed);
     void endRendering();

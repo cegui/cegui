@@ -232,30 +232,19 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::destroyRenderer()
+bool CEGuiOgreBaseApplication::init(SamplesFrameworkBase* sampleApp,
+  const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
 {
-    delete d_frameListener;
-
-    CEGUI::OgreRenderer& renderer =
-        *static_cast<CEGUI::OgreRenderer*>(d_renderer);
-    renderer.destroyOgreResourceProvider(
-        *static_cast<CEGUI::OgreResourceProvider*>(d_resourceProvider));
-    renderer.destroyOgreImageCodec(
-        *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
-    CEGUI::OgreRenderer::destroy(renderer);
+    if (!CEGuiBaseApplication::init(sampleApp, logFile, dataPathPrefixOverride))
+        return false;
     delete d_ogreRoot;
     delete d_windowEventListener;
-}
 
-//----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::run()
-{
     // if base initialisation failed or app was cancelled by user, bail out now.
     if (!d_ogreRoot || !d_initialised)
-        return;
+        return false;
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-    d_sampleApp->initialise();
 
     // start rendering via Ogre3D engine.
     try
@@ -268,6 +257,22 @@ void CEGuiOgreBaseApplication::run()
     }
     catch (...)
     {}
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::destroyRenderer()
+{
+    delete d_frameListener;
+
+    CEGUI::OgreRenderer& renderer =
+        *static_cast<CEGUI::OgreRenderer*>(d_renderer);
+    renderer.destroyOgreResourceProvider(
+        *static_cast<CEGUI::OgreResourceProvider*>(d_resourceProvider));
+    renderer.destroyOgreImageCodec(
+        *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
+    CEGUI::OgreRenderer::destroy(renderer);
 }
 
 //----------------------------------------------------------------------------//
@@ -329,14 +334,10 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 
 CEGUI::String CEGuiOgreBaseApplication::getResourcePath(CEGUI::String resource) {
 #ifdef __ANDROID__
-    const char* dataPathPrefix = "/datafiles";
-    const char ext[]= "";
+    return "/datafiles/" + resource;
 #else 
-    const char* dataPathPrefix = getDataPathPrefix();
-    const char ext[]= "/";
+    return getDataPathPrefix() + "/" + resource + "/";
 #endif
-    CEGUI::String path = CEGUI::String(dataPathPrefix)+ "/" + resource + CEGUI::String(ext);
-    return path;
 }
 
 //----------------------------------------------------------------------------//

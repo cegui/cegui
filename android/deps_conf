@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+################################################################################
+# Package-Specific configuration
+# -------------------------------
+# For finer tuning of each CEGUI dependency package individually, you might want
+# to have a look at this file. Normally you wouldn't have to touch it,
+# though.
+#
+# * The "packageArchive" of each package is the name in which to save its downloaded
+#   source archive.
+#   tarball) to be downloaded.
+# * The "packageUri" of each package is the URI from which to download its
+#   source archive.
+# * The "packageDir" of each package is the top level directory in its source
+#   acrhive.
+# * The "srcDir" of each package is where to store its source code. Remove this
+#   directoryTo force re-retrieval of its source code.
+# * The "buildDir" of each package is where to build it. Remove this directory
+#   to force a rebuild of it.
+# * The "installDir" of each package is where to install it. Remove this
+#   directory to force a re-installation of it.
+# * The "libFilePath" of each package is a full path to its shared library
+#   ("lib<libName>.so"), including the file name.
+# * The "includePath" of each package is a full path to its include directory.
+################################################################################
+
+# "ndkMissing" is a package that its source is included with the CEGUI source,
+# which provides functions of the standard C/C++ library which are absent from
+# the Android NDK.
+ndkMissing_packageName=ndk-missing_1_0_0
+ndkMissing_srcDir="$myScriptsDir/$ndkMissing_packageName"
+ndkMissing_buildDir="$ceguiDepsBuildDir/$ndkMissing_packageName"
+ndkMissing_installDir="$ceguiDepsInstallDir/$ndkMissing_packageName"
+ndkMissing_libFilePath="$ndkMissing_installDir/lib/libndk-missing_1.so"
+    
+tinyxmlPackageName=tinyxml_2_6_2
+tinyxmlPackageArchive=tinyxml_2_6_2.tar.gz
+tinyxmlPackageDir=tinyxml
+tinyxmlPackageUri="http://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/$tinyxmlPackageArchive?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Ftinyxml%2Ffiles%2Ftinyxml%2F2.6.2%2F&ts=1439024597&use_mirror=garr"
+tinyxmlSrcDir="$ceguiDepsSrcDir/$tinyxmlPackageName"
+tinyxmlBuildDir="$ceguiDepsBuildDir/$tinyxmlPackageName"
+tinyxmlInstallDir="$ceguiDepsInstallDir/$tinyxmlPackageName"
+tinyxmlLibFilePath="$tinyxmlInstallDir/lib/libtinyxml.so"
+tinyxmlIncludePath="$tinyxmlInstallDir/include"
+
+freeimagePackageName=FreeImage_3_17_0
+freeimagePackageArchive=FreeImage3170.zip
+freeimagePackageDir=FreeImage
+freeimagePackageUri="http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.17.0/$freeimagePackageArchive?r=http%3A%2F%2Ffreeimage.sourceforge.net%2Fdownload.html&ts=1439040407&use_mirror=garr"
+freeimageSrcDir="$ceguiDepsSrcDir/$freeimagePackageName"
+freeimageBuildDir="$ceguiDepsBuildDir/$freeimagePackageName"
+freeimageInstallDir="$ceguiDepsInstallDir/$freeimagePackageName"
+freeimageLibFilePath="$freeimageInstallDir/lib/libfreeimage_3.so"
+freeimageIncludePath="$freeimageInstallDir/include"
+
+glmPackageName=glm_0_9_7_0
+glmPackageArchive=glm-0.9.7.0.7z
+glmPackageDir=glm
+glmPackageUri="https://github.com/g-truc/glm/releases/download/0.9.7.0/$glmPackageArchive"
+glmSrcDir="$ceguiDepsSrcDir/$glmPackageName"
+glmBuildDir="$ceguiDepsBuildDir/$glmPackageName"
+glmInstallDir="$ceguiDepsInstallDir/$glmPackageName"
+glmIncludePath="$glmInstallDir/include"
+
+pcrePackageName=pcre_8_37
+pcrePackageArchive=pcre-8.37.tar.bz2
+pcrePackageDir=pcre-8.37
+pcrePackageUri="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$pcrePackageArchive"
+pcreSrcDir="$ceguiDepsSrcDir/$pcrePackageName"
+pcreBuildDir="$ceguiDepsBuildDir/$pcrePackageName"
+pcreInstallDir="$ceguiDepsInstallDir/$pcrePackageName"
+pcreLibFilePath="$pcreInstallDir/lib/libpcre.so"
+pcreIncludePath="$pcreInstallDir/include"
+
+freetypePackageName=freetype_2_6
+freetypePackageArchive=freetype-2.6.tar.bz2
+freetypePackageDir=freetype-2.6
+freetypePackageUri="http://download.savannah.gnu.org/releases/freetype/$freetypePackageArchive"
+freetypeSrcDir="$ceguiDepsSrcDir/$freetypePackageName"
+freetypeBuildDir="$ceguiDepsBuildDir/$freetypePackageName"
+freetypeInstallDir="$ceguiDepsInstallDir/$freetypePackageName"
+freetypeLibFilePath="$freetypeInstallDir/lib/libfreetype.so"
+freetypeIncludePath="$freetypeInstallDir/include/freetype2"
+
+epoxyPackageName=epoxy_1_3_1_yaronct-4
+epoxyPackageArchive=libepoxy-v1.3.1_yaronct-4.tar.gz
+epoxyPackageDir=libepoxy-1.3.1_yaronct-4
+epoxyPackageUri=https://github.com/yaronct/libepoxy/archive/v1.3.1_yaronct-4.tar.gz
+epoxySrcDir="$ceguiDepsSrcDir/$epoxyPackageName"
+epoxyBuildDir="$ceguiDepsBuildDir/$epoxyPackageName"
+epoxyInstallDir="$ceguiDepsInstallDir/$epoxyPackageName"
+epoxyLibFilePath="$epoxyInstallDir/lib/libepoxy_0.so"
+epoxyIncludePath="$epoxyInstallDir/include"
+
+fribidiPackageName=fribidi_0_19_7
+fribidiPackageArchive=fribidi-0.19.7.tar.bz2
+fribidiPackageDir=fribidi-0.19.7
+fribidiPackageUri="http://fribidi.org/download/$fribidiPackageArchive"
+fribidiSrcDir="$ceguiDepsSrcDir/$fribidiPackageName"
+fribidiBuildDir="$ceguiDepsBuildDir/$fribidiPackageName"
+fribidiInstallDir="$ceguiDepsInstallDir/$fribidiPackageName"
+fribidiLibFilePath="$fribidiInstallDir/lib/libfribidi.so"
+fribidiIncludePath="$fribidiInstallDir/include/fribidi"

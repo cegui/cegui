@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. "$myScriptsDir/common"
+
+maybeSudo cp "$myScriptsDir/android-ndk-r10e_RELEASE.TXT" \
+             "$androidNdkDir/RELEASE.TXT"
+
+if [ ! -d "$androidStandaloneToolchainDir" ]; then
+
+    dirRequiresSudo "$androidStandaloneToolchainDir" toolchainDirMaybeSudo
+    myBash "$toolchainDirMaybeSudo" \
+      "$androidNdkDir/build/tools/make-standalone-toolchain.sh" \
+          --platform="android-$androidNdkApiLevel" \
+          --system="$mySystemName" \
+          --arch="$androidArch" \
+          --ndk-dir="$androidNdkDir" \
+          --abis="$androidAbi" \
+          --toolchain="$androidToolchain" \
+          --install-dir="$androidStandaloneToolchainDir"
+
+    myPatchDir "$toolchainDirMaybeSudo" "$androidStandaloneToolchainDir" \
+      "$myScriptsDir/standalone_toolchain.patch"
+
+    pushd "$androidStandaloneToolchainDir/include/c++/$androidToolchainVer/bits"
+    mySymLink "$toolchainDirMaybeSudo" \
+      "../$androidToolchainName/$androidToolchainAbi/bits/"* .
+    popd
+    
+    ${toolchainDirMaybeSudo}cp \
+      "$androidNdkDir/sources/cpufeatures/cpu-features.h" \
+      "$androidStandaloneToolchainDir/sysroot/usr/include"
+    
+    pushd "$androidStandaloneToolchainDir/arm-linux-androideabi/lib"
+    for file in libgnuobjc_shared.so libgnustl_shared.so libobjc.a libstdc++.a \
+                libsupc++.a; do
+        mySymLink "$toolchainDirMaybeSudo" "$androidToolchainAbi/$file" .
+    done
+    popd
+fi
+
+if [ ! -f "$androidToolchainCmakeFile" ]; then
+    myPatchFile "" "$myScriptsDir" "$androidToolchainCmakeFile" \
+      "$myScriptsDir/android.toolchain.cmake__orig" \
+      "$myScriptsDir/android.toolchain.cmake.patch"
+fi

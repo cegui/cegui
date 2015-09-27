@@ -28,9 +28,6 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Exceptions.h"
 
-#include <list>
-#include <iostream>
-
 #if defined CEGUI_USE_GLEW
 #include <sstream>
 #include <cstring>
