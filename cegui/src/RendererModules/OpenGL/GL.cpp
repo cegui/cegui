@@ -124,16 +124,22 @@ void OpenGLInfo::initSupportedFeatures()
 #elif defined CEGUI_USE_GLEW
 
     d_isS3tcSupported = false;
+    glGetError();
 
     // Why do we do this and not use GLEW_EXT_texture_compression_s3tc?
     // Because of glewExperimental, of course!
     int ext_count;
     glGetIntegerv(GL_NUM_EXTENSIONS, &ext_count);
-    for(int i = 0; i < ext_count; ++i)
+    if (      glGetError() == GL_NO_ERROR
+          &&  ext_count >= 0
+          &&  glGetStringi)
+    for (int i = 0; i < ext_count; ++i)
     {
-        if (!std::strcmp(
-                reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)),
-                                              "GL_EXT_texture_compression_s3tc"))
+        const char* extension
+          (reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)));
+        if (      glGetError() == GL_NO_ERROR
+              &&  extension
+              &&  !std::strcmp(extension, "GL_EXT_texture_compression_s3tc"))
         {
             d_isS3tcSupported = true;
             break;
