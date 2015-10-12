@@ -38,8 +38,7 @@ namespace CEGUI
     from some other character encodings not directly supported by the
     CEGUI::String class.
 */
-class CEGUIEXPORT StringTranscoder :
-    public AllocatedObject<StringTranscoder>
+class CEGUIEXPORT StringTranscoder
 {
 public:
     /*!
@@ -53,7 +52,7 @@ public:
         Pointer to an array of utf16 values.  This buffer should be deleted by
         calling the deleteUTF16Buffer function.
     */
-    virtual uint16* stringToUTF16(const String& input) const = 0;
+    virtual std::uint16_t* stringToUTF16(const String& input) const = 0;
 
     /*!
     \brief
@@ -88,7 +87,7 @@ public:
     \return
         String object holding the transcoded data.
     */
-    virtual String stringFromUTF16(const uint16* input) const = 0;
+    virtual String stringFromUTF16(const std::uint16_t* input) const = 0;
 
     /*
     \brief
@@ -113,7 +112,7 @@ public:
     virtual String stringFromStdWString(const std::wstring& input) const = 0;
 
     //! deletes a buffer returned from the stringToUTF16 function.
-    virtual void deleteUTF16Buffer(uint16* input) const = 0;
+    virtual void deleteUTF16Buffer(std::uint16_t* input) const = 0;
 
 protected:
     virtual ~StringTranscoder() {}

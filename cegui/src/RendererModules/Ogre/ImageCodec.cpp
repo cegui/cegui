@@ -92,12 +92,12 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
     // do the old switcharoo on R and B if needed
     if (rbswap)
     {
-        uchar* dat = image.getData();
-        for (uint j = 0; j < image.getHeight(); ++j)
+        std::uint8_t* dat = image.getData();
+        for (unsigned int j = 0; j < image.getHeight(); ++j)
         {
-            for (uint i = 0; i < image.getWidth(); ++i)
+            for (unsigned int i = 0; i < image.getWidth(); ++i)
             {
-                uchar tmp = dat[i * components + 0];
+                std::uint8_t tmp = dat[i * components + 0];
                 dat[i * components + 0] = dat[i * components + 2];
                 dat[i * components + 2] = tmp;
             }
@@ -108,8 +108,8 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // load the resulting image into the texture
     result->loadFromMemory(image.getData(),
-                           Sizef(image.getWidth(),
-                                  image.getHeight()),
+                           Sizef(static_cast<float>(image.getWidth()),
+                                 static_cast<float>(image.getHeight()) ),
                            cegui_pf);
 
     return result;

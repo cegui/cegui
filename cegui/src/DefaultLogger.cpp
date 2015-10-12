@@ -29,14 +29,17 @@
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
+#ifdef __ANDROID__
+#   include <android/log.h> 
+#endif
 #include <ctime>
 #include <iomanip>
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-DefaultLogger::DefaultLogger(void) :
-    d_caching(true)
+DefaultLogger::DefaultLogger(void) 
+   : d_caching(true)
 {
     // create log header
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
@@ -120,13 +123,39 @@ void DefaultLogger::logEvent(const String& message,
     {
         d_cache.push_back(std::make_pair(d_workstream.str().c_str(), level));
     }
-    else if (d_level >= level)
+    if (d_level >= level)
     {
-        // write message
-        d_ostream << d_workstream.str();
-        // ensure new event is written to the file, rather than just being
-        // buffered.
-        d_ostream.flush();
+        if (!d_caching)
+        {
+            // write message
+            d_ostream << d_workstream.str();
+            // ensure new event is written to the file, rather than just being
+            // buffered.
+            d_ostream.flush();
+        }
+        #ifdef __ANDROID__
+            int priority(ANDROID_LOG_UNKNOWN);
+            switch (level)
+            {
+            case Errors:
+                priority = ANDROID_LOG_ERROR;
+                break;
+            case Warnings:
+                priority = ANDROID_LOG_WARN;
+                break;
+            case Standard:
+                priority = ANDROID_LOG_INFO;
+                break;
+            case Informative:
+                priority = ANDROID_LOG_DEBUG;
+                break;
+            case Insane:
+            default:
+                priority = ANDROID_LOG_VERBOSE;
+                break;
+            }
+            __android_log_write(priority, "CEGUI_log", d_workstream.str().c_str());
+        #endif
     }
 }
 
@@ -138,19 +167,19 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
         d_ostream.close();
 
 
-#if defined(_MSC_VER)
+#   if defined(_MSC_VER)
     d_ostream.open(System::getStringTranscoder().stringToStdWString(filename).c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
-#else
+#   else
     d_ostream.open(filename.c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
-#endif
+#   endif
 
     if (!d_ostream)
-        CEGUI_THROW(FileIOException(
-            "Failed to open file '" + filename + "' for writing"));
+        throw FileIOException(
+            "Failed to open file '" + filename + "' for writing");
 
     // initialise width for date & time alignment.
     d_ostream.width(2);

@@ -34,13 +34,11 @@
 	<FalagardMapping windowType="AlfiskoSkin/TabContentPane" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="AlfiskoSkin/TabContentPane" />
 	<FalagardMapping windowType="AlfiskoSkin/TabControl" targetType="CEGUI/TabControl" renderer="Core/TabControl" lookNFeel="AlfiskoSkin/TabControl" />
 
-	<FalagardMapping windowType="AlfiskoSkin/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/Listbox" lookNFeel="AlfiskoSkin/ComboDropList" />
+	<FalagardMapping windowType="AlfiskoSkin/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/ListWidget" lookNFeel="AlfiskoSkin/ComboDropList" />
 	<FalagardMapping windowType="AlfiskoSkin/ComboEditbox" targetType="CEGUI/Editbox"	 renderer="Core/Editbox" lookNFeel="AlfiskoSkin/ComboEditbox" />
 	<FalagardMapping windowType="AlfiskoSkin/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="AlfiskoSkin/Combobox" />
 
 	<FalagardMapping windowType="AlfiskoSkin/ListboxItem" targetType="CEGUI/ItemEntry" renderer="Core/ItemEntry" lookNFeel="AlfiskoSkin/ListboxItem" />
-	<FalagardMapping windowType="AlfiskoSkin/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Core/ItemListbox" lookNFeel="AlfiskoSkin/ItemListbox" />
-	<FalagardMapping windowType="AlfiskoSkin/Listbox" targetType="CEGUI/Listbox" renderer="Core/Listbox" lookNFeel="AlfiskoSkin/Listbox" />
 
 	<FalagardMapping windowType="AlfiskoSkin/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="AlfiskoSkin/ListHeaderSegment" />
 	<FalagardMapping windowType="AlfiskoSkin/ListHeader" targetType="CEGUI/ListHeader" renderer="Core/ListHeader" lookNFeel="AlfiskoSkin/ListHeader" />
@@ -53,7 +51,6 @@
 	<FalagardMapping windowType="AlfiskoSkin/StaticImage" targetType="DefaultWindow" renderer="Core/StaticImage" lookNFeel="AlfiskoSkin/StaticImage" />
 	<FalagardMapping windowType="AlfiskoSkin/StaticText" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="AlfiskoSkin/StaticText" />
 	<FalagardMapping windowType="AlfiskoSkin/GroupBox" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="AlfiskoSkin/GroupBox" />
-    <FalagardMapping windowType="AlfiskoSkin/Tree" targetType="CEGUI/Tree" renderer="Core/Tree" lookNFeel="AlfiskoSkin/Tree" />
 -->
 
 </GUIScheme>

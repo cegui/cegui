@@ -34,6 +34,9 @@
 #   include <io.h>
 #   include <windows.h>
 #   include <string>
+#elif defined(__ANDROID__)
+#   include "CEGUI/AndroidUtils.h" 
+#   include <android/asset_manager.h>
 #else
 #   include <sys/types.h>
 #   include <sys/stat.h>
@@ -51,35 +54,53 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
                                                    const String& resourceGroup)
 {
     if (filename.empty())
-        CEGUI_THROW(InvalidRequestException(
-            "Filename supplied for data loading must be valid"));
+        throw InvalidRequestException(
+            "Filename supplied for data loading must be valid");
 
     const String final_filename(getFinalFilename(filename, resourceGroup));
 
-#if defined(__WIN32__) || defined(_WIN32)
-    FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
+#ifdef __ANDROID__
+    if (AndroidUtils::getAndroidApp() == 0)
+        throw FileIOException("AndroidUtils::android_app has not been set for CEGUI");
+    struct android_app* app = AndroidUtils::getAndroidApp();
+    if (!app->activity->assetManager)
+        throw FileIOException("Android AAssetManager is not valid ");
+    //AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_BUFFER);
+    AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_UNKNOWN);
 #else
+#   if defined(__WIN32__) || defined(_WIN32)
+    FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
+#   else
     FILE* file = fopen(final_filename.c_str(), "rb");
+#   endif
 #endif
-
     if (file == 0)
-        CEGUI_THROW(FileIOException(final_filename + " does not exist"));
+        throw FileIOException(final_filename + " does not exist");
 
+#ifdef __ANDROID__
+    size_t size = AAsset_getLength(file);
+#else
     fseek(file, 0, SEEK_END);
     const size_t size = ftell(file);
     fseek(file, 0, SEEK_SET);
+#endif
 
-    unsigned char* const buffer = CEGUI_NEW_ARRAY_PT(unsigned char, size, RawDataContainer);
+    unsigned char* const buffer = new unsigned char[size];
 
+#ifdef __ANDROID__
+    const size_t size_read = AAsset_read(file, buffer, size);
+    AAsset_close(file);
+#else
     const size_t size_read = fread(buffer, sizeof(char), size, file);
     fclose(file);
+#endif
 
     if (size_read != size)
     {
-        CEGUI_DELETE_ARRAY_PT(buffer, unsigned char, size, BufferAllocator);
+        delete[] buffer;
 
-        CEGUI_THROW(FileIOException(
-            "A problem occurred while reading file: " + final_filename));
+        throw FileIOException(
+            "A problem occurred while reading file: " + final_filename);
     }
 
     output.setData(buffer);
@@ -191,7 +212,21 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
 
         _findclose(f);
     }
-
+#elif defined(__ANDROID__)
+    if (AndroidUtils::getAndroidApp() == 0)
+        throw FileIOException("AndroidUtils::android_app has not been set for CEGUI");
+    struct android_app* app = AndroidUtils::getAndroidApp();
+    AAssetDir* dirp;
+    if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.c_str()))) 
+    {
+        const char* filename;
+        while ((filename =  AAssetDir_getNextFileName(dirp)))
+        {
+            out_vec.push_back(filename);
+            ++entries;
+        }
+        AAssetDir_close(dirp);
+    }
 // Everybody else
 #else
     DIR* dirp;

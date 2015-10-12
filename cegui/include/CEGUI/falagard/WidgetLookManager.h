@@ -31,7 +31,8 @@
 #include "../String.h"
 #include "../Exceptions.h"
 #include "./WidgetLookFeel.h"
-#include <map>
+#include <unordered_map>
+#include <unordered_set>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -47,8 +48,7 @@ namespace CEGUI
         Manager class that gives top-level access to widget data based "look and feel" specifications loaded into the system.
     */
     class CEGUIEXPORT WidgetLookManager :
-        public Singleton<WidgetLookManager>,
-        public AllocatedObject<WidgetLookManager>
+        public Singleton<WidgetLookManager>
     {
     public:
         /*!
@@ -84,10 +84,10 @@ namespace CEGUI
 
 
         /** Typedef for a set of WidgetLookFeel names. */
-        typedef std::set<String, StringFastLessCompare CEGUI_SET_ALLOC(String)> WidgetLookNameSet;
+        typedef std::unordered_set<String> WidgetLookNameSet;
 
         //! Typedef for a map of Strings to WidgetLookFeel objects
-        typedef std::map<String, WidgetLookFeel*, StringFastLessCompare CEGUI_MAP_ALLOC(String, WidgetLookFeel*)> WidgetLookPointerMap;
+        typedef std::unordered_map<String, WidgetLookFeel*> WidgetLookPointerMap;
 
         /*!
         \brief
@@ -111,12 +111,12 @@ namespace CEGUI
         \exception InvalidRequestException     thrown if an invalid filename was provided.
         */
         void parseLookNFeelSpecificationFromContainer(const RawDataContainer& source);
-        
+
         /*!
         \see WidgetLookManager::parseLookNFeelSpecificationFromContainer
         */
         void parseLookNFeelSpecificationFromFile(const String& filename, const String& resourceGroup = "");
-        
+
         /*!
         \see WidgetLookManager::parseLookNFeelSpecificationFromContainer
         */
@@ -211,7 +211,7 @@ namespace CEGUI
             String containing the WidgetLook parsed to XML.
         */
         String getWidgetLookAsString(const String& widgetLookName) const;
- 
+
         /*!
         \brief
             Writes a set WidgetLookFeels to a string. Note that XML file header and
@@ -232,7 +232,7 @@ namespace CEGUI
 
             The \a prefix specifies a name prefix common to all widget looks to be written, you could
             specify this as "TaharezLook/" and then any defined widget look starting with that prefix, such
-            as "TaharezLook/Button" and "TaharezLook/Listbox" will be written to the stream.
+            as "TaharezLook/Button" and "TaharezLook/ListWidget" will be written to the stream.
 
         \param prefix
             String holding the widget look name prefix, which will be used when searching for the widget looks
@@ -300,19 +300,11 @@ namespace CEGUI
         static String d_defaultResourceGroup;
 
 
-        //! Typedef for a map of Strings to WidgetLookFeel objects
-        // \deprecated  Will use the correct allocator in the next version and will
-        // be renamed to "WidgetLookMap"
-        typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
+        //! Typedef for a map of Strings to WidgetLookFeel instances
+        typedef std::unordered_map<String, WidgetLookFeel> WidgetLookList;
 
         //! List of WidgetLookFeels added to this Manager
         WidgetLookList  d_widgetLooks;  
-
-    public:
-        //! \deprecated Use WidgetLookPointerMap instead, which provides direct access to the added elements.
-        typedef ConstMapIterator<WidgetLookList> WidgetLookIterator;
-        //! \deprecated Use getWidgetLookPointerMap instead, which provides direct access to the added elements. In the next version getWidgetLookMap will be added to replace the const-ness.
-        WidgetLookIterator getWidgetLookIterator() const;
     };
 
 } // End of  CEGUI namespace section

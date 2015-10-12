@@ -97,8 +97,8 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 {
     // only allow creation of Window objects if we are in unlocked state
     if (isLocked())
-        CEGUI_THROW(InvalidRequestException(
-            "WindowManager is in the locked state."));
+        throw InvalidRequestException(
+            "WindowManager is in the locked state.");
 
     String finalName(name.empty() ? generateUniqueWindowName() : name);
 
@@ -252,14 +252,14 @@ Window* WindowManager::loadLayoutFromContainer(const RawDataContainer& source, P
     GUILayout_xmlHandler handler(callback, userdata);
 
     // do parse (which uses handler to create actual data)
-    CEGUI_TRY
+    try
     {
         System::getSingleton().getXMLParser()->parseXML(handler, source, GUILayoutSchemaName);
     }
-    CEGUI_CATCH(...)
+    catch (...)
     {
         Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from a RawDataContainer failed.", Errors);
-        CEGUI_RETHROW;
+        throw;
     }
 
     // log the completion of loading
@@ -272,8 +272,8 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 {
 	if (filename.empty())
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "Filename supplied for gui-layout loading must be valid."));
+		throw InvalidRequestException(
+            "Filename supplied for gui-layout loading must be valid.");
 	}
 
 	// log the fact we are about to load a layout
@@ -283,15 +283,15 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
     GUILayout_xmlHandler handler(callback, userdata);
 
 	// do parse (which uses handler to create actual data)
-	CEGUI_TRY
+	try
 	{
         System::getSingleton().getXMLParser()->parseXMLFile(handler,
             filename, GUILayoutSchemaName, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 	}
-	CEGUI_CATCH(...)
+	catch (...)
 	{
         Logger::getSingleton().logEvent("WindowManager::loadLayoutFromFile - loading of layout from file '" + filename +"' failed.", Errors);
-        CEGUI_RETHROW;
+        throw;
 	}
 
     // log the completion of loading
@@ -309,14 +309,14 @@ Window* WindowManager::loadLayoutFromString(const String& source, PropertyCallba
     GUILayout_xmlHandler handler(callback, userdata);
 
     // do parse (which uses handler to create actual data)
-    CEGUI_TRY
+    try
     {
         System::getSingleton().getXMLParser()->parseXMLString(handler, source, GUILayoutSchemaName);
     }
-    CEGUI_CATCH(...)
+    catch (...)
     {
         Logger::getSingleton().logEvent("WindowManager::loadLayoutFromString - loading of layout from string failed.", Errors);
-        CEGUI_RETHROW;
+        throw;
     }
 
     // log the completion of loading
@@ -378,8 +378,8 @@ void WindowManager::saveLayoutToFile(const Window& window,
     std::ofstream stream(filename.c_str());
 
     if (!stream.good())
-        CEGUI_THROW(FileIOException(
-            "failed to create stream for writing."));
+        throw FileIOException(
+            "failed to create stream for writing.");
 
     writeLayoutToStream(window, stream);
 }
@@ -387,10 +387,10 @@ void WindowManager::saveLayoutToFile(const Window& window,
 String WindowManager::generateUniqueWindowName()
 {
     const String ret = GeneratedWindowNameBase +
-        PropertyHelper<unsigned long>::toString(d_uid_counter);
+        PropertyHelper<std::uint32_t>::toString(d_uid_counter);
 
     // update counter for next time
-    unsigned long old_uid = d_uid_counter;
+    std::uint32_t old_uid = d_uid_counter;
     ++d_uid_counter;
 
     // log if we ever wrap-around (which should be pretty unlikely)

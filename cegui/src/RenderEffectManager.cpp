@@ -71,7 +71,7 @@ void RenderEffectManager::removeEffect(const String& name)
     Logger::getSingleton().logEvent(
         "Unregistered RenderEffect named '" + name + "'");
 
-    CEGUI_DELETE_AO i->second;
+    delete i->second;
 	d_effectRegistry.erase(name);
 }
 
@@ -88,8 +88,8 @@ RenderEffect& RenderEffectManager::create(const String& name, Window* window)
 
     // throw if no factory exists for this type
     if (i == d_effectRegistry.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No RenderEffect has been registered with the name '" + name + "'"));
+        throw UnknownObjectException(
+            "No RenderEffect has been registered with the name '" + name + "'");
 
     RenderEffect& effect = i->second->create(window);
 
@@ -111,9 +111,9 @@ void RenderEffectManager::destroy(RenderEffect& effect)
 
     // We will only destroy effects that we created (and throw otherwise)
     if (i == d_effects.end())
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "The given RenderEffect was not created by the "
-            "RenderEffectManager - perhaps you created it directly?"));
+            "RenderEffectManager - perhaps you created it directly?");
 
     // Get string of object address before we delete it.
     char addr_buff[32];
