@@ -39,15 +39,15 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner, 
-    Ogre::RenderSystem& rs, 
-    Ogre::HighLevelGpuProgramPtr vs, Ogre::HighLevelGpuProgramPtr ps)
-    : d_vertexShader(vs),
-    d_pixelShader(ps),
-    d_owner(owner),
-    d_renderSystem(rs),
-    d_lastMatrix(),
-    d_previousAlpha(-1.f)
+OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
+  Ogre::RenderSystem& rs, Ogre::HighLevelGpuProgramPtr vs,
+  Ogre::HighLevelGpuProgramPtr ps)
+    : d_owner(owner),
+      d_renderSystem(rs),
+      d_vertexShader(vs),
+      d_pixelShader(ps),
+      d_lastMatrix(),
+      d_previousAlpha(-1.f)
 {
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();

@@ -102,7 +102,7 @@ GLint OpenGLBaseShader::getUniformLocation(const std::string &name) const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLBaseShader::bindFragDataLocation(const std::string &name)
+void OpenGLBaseShader::bindFragDataLocation(const std::string& /*name*/)
 {
     if(d_program > 0)
     {

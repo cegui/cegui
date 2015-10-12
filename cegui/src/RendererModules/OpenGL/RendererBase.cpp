@@ -56,8 +56,8 @@ OpenGLRendererBase::OpenGLRendererBase() :
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
-    d_defaultTarget(0),
-    d_displaySize(display_size)
+    d_displaySize(display_size),
+    d_defaultTarget(0)
 {
     init();
     d_defaultTarget = new OpenGLViewportTarget(*this);
@@ -75,8 +75,8 @@ OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
-    d_defaultTarget(0),
-    d_displaySize(display_size)
+    d_displaySize(display_size),
+    d_defaultTarget(0)
 {
     init(true, set_glew_experimental);
     d_defaultTarget = new OpenGLViewportTarget(*this);

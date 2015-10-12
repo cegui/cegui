@@ -693,4 +693,10 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
     return true;
 }
 
+bool isSelectionSemanticValue(int value)
+{
+    return (value >= SV_SelectRange && value <= SV_SelectToEndOfLine) ||
+        (value >= SV_SelectToStartOfDocument && value <= SV_SelectToPreviousPage);
+}
+
 }

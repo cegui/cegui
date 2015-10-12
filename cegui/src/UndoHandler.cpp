@@ -165,7 +165,7 @@ UndoHandler::UndoAction UndoHandler::getLastAction()
 
     if (d_lastUndo)
     {
-        if (d_undoPosition == d_undoList.size() - 1)
+        if (d_undoPosition == static_cast<int>(d_undoList.size()) - 1)
             lastAction = d_undoList[d_undoPosition];
         else
             lastAction = d_undoList[d_undoPosition + 1];

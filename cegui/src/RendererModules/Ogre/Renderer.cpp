@@ -140,8 +140,8 @@ struct OgreRenderer_impl
         d_makeFrameControlCalls(true),
         d_useGLSL(false),
         d_useGLSLES(false),
-        d_useGLSLCore(false),
         d_useHLSL(false),
+        d_useGLSLCore(false),
         d_texturedShaderWrapper(0),
         d_colouredShaderWrapper(0)
         {}
@@ -318,7 +318,7 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 }
 
 //----------------------------------------------------------------------------//
-OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& main_window,
+OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& /*main_window*/,
     Ogre::RenderTarget &new_window)
 {
     // Link the second renderer to the first for them to share some resources

@@ -187,15 +187,10 @@ public:
 #endif
 
     virtual void windowResized(Ogre::RenderWindow* rw) ;
-    virtual void windowClosed (Ogre::RenderWindow* rw) {
-    }
-    virtual bool  windowClosing (Ogre::RenderWindow *rw) {
-        return true;
-    }
-    virtual void  windowFocusChange (Ogre::RenderWindow *rw) {
-    }
-    virtual void  windowMoved (Ogre::RenderWindow *rw) {
-    }
+    virtual void windowClosed (Ogre::RenderWindow*) {}
+    virtual bool windowClosing (Ogre::RenderWindow*) { return true; }
+    virtual void windowFocusChange (Ogre::RenderWindow*) {}
+    virtual void windowMoved (Ogre::RenderWindow*) {}
 
 protected:
 #ifndef __ANDROID__

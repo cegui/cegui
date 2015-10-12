@@ -47,8 +47,8 @@ OgreRenderTarget::OgreRenderTarget(OgreRenderer& owner,
     d_renderSystem(rs),
     d_renderTarget(0),
     d_viewport(0),
-    d_viewportValid(false)
     d_ogreViewportDimensions(0, 0, 0, 0),
+    d_viewportValid(false)
 {
 }
 
