@@ -91,7 +91,8 @@ LibxmlParser::~LibxmlParser(void)
 
 void LibxmlParser::parseXML(XMLHandler& handler,
                             const RawDataContainer& source,
-                            const String& /*schemaName*/)
+                            const String& /*schemaName*/,
+                            bool /*allowXmlValidation*/)
 {
     xmlDocPtr doc = xmlParseMemory(
         reinterpret_cast<const char*>(source.getDataPtr()),
@@ -101,11 +102,11 @@ void LibxmlParser::parseXML(XMLHandler& handler,
     {
         xmlError* err = xmlGetLastError();
 
-        CEGUI_THROW(GenericException(
+        throw GenericException(
             String("xmlParseMemory failed in file: '") +
             err->file + "' at line number" +
-            PropertyHelper<uint>::toString(err->line) + ".  Error is:" +
-            err->message));
+            PropertyHelper<std::uint32_t>::toString(err->line) + ".  Error is:" +
+            err->message);
     }
 
     // get root element

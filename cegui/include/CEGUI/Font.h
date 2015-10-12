@@ -34,8 +34,6 @@
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/FontGlyph.h"
 
-#include <map>
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -57,8 +55,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT Font :
     public PropertySet,
-    public EventSet,
-    public AllocatedObject<Font>
+    public EventSet
 {
 public:
     //! Colour value used whenever a colour is not specified.
@@ -103,8 +100,9 @@ public:
     \brief
         Draw text into a specified area of the display.
 
-    \param buffer
-        GeometryBuffer object where the geometry for the text be queued.
+    \param geom_buffers
+        List of GeometryBuffer objects that will be used to add Font geometry in
+        a batch-saving way.
 
     \param text
         String object containing the text to be drawn.
@@ -138,10 +136,11 @@ public:
         positioning (which is not possible to determine accurately by using the
         extent measurement functions).
     */
-    float drawText(GeometryBuffer& buffer, const String& text,
-                   const Vector2f& position, const Rectf* clip_rect,
-                   const ColourRect& colours, const float space_extra = 0.0f,
-                   const float x_scale = 1.0f, const float y_scale = 1.0f) const;
+    float drawText(std::vector<GeometryBuffer*>& geom_buffers, const String& text,
+                   const glm::vec2& position, const Rectf* clip_rect,
+                   const bool clipping_enabled, const ColourRect& colours,
+                   const float space_extra = 0.0f, const float x_scale = 1.0f,
+                   const float y_scale = 1.0f) const;
 
     /*!
     \brief
@@ -494,11 +493,10 @@ protected:
         This array is big enough to hold at least max_codepoint bits.
         If this member is NULL, all glyphs are considered pre-rasterised.
     */
-    uint* d_glyphPageLoaded;
+    unsigned int* d_glyphPageLoaded;
 
     //! Definition of CodepointMap type.
-    typedef std::map<utf32, FontGlyph, std::less<utf32>
-        CEGUI_MAP_ALLOC(utf32, FontGlyph)> CodepointMap;
+    typedef std::map<utf32, FontGlyph, std::less<utf32> > CodepointMap;
     //! Contains mappings from code points to Image objects
     mutable CodepointMap d_cp_map;
 };

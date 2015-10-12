@@ -70,16 +70,16 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// throw exception if passed factory is null.
 	if (!factory)
 	{
-		CEGUI_THROW(NullObjectException(
-            "The provided WindowFactory pointer was invalid."));
+		throw NullObjectException(
+            "The provided WindowFactory pointer was invalid.");
 	}
 
 	// throw exception if type name for factory is already in use
 	if (d_factoryRegistry.find(factory->getTypeName()) != d_factoryRegistry.end())
 	{
-		CEGUI_THROW(AlreadyExistsException(
+		throw AlreadyExistsException(
             "A WindowFactory for type '" + factory->getTypeName() +
-            "' is already registered."));
+            "' is already registered.");
 	}
 
 	// add the factory to the registry
@@ -123,7 +123,7 @@ void WindowFactoryManager::removeFactory(const String& name)
                                         (*j)->getTypeName() +
                                         "' windows.");
 
-        CEGUI_DELETE_AO (*j);
+        delete (*j);
         d_ownedFactories.erase(j);
     }
 }
@@ -179,11 +179,11 @@ WindowFactory* WindowFactoryManager::getFactory(const String& type) const
         // type not found anywhere, give up with an exception.
         else
         {
-            CEGUI_THROW(UnknownObjectException(
+            throw UnknownObjectException(
                 "A WindowFactory object, an alias, or mapping for '" + type +
                 "' Window objects is not registered with the system.\n\n"
                 "Have you forgotten to load a scheme using "
-                "CEGUI::SchemeManager::createFromFile(..)?"));
+                "CEGUI::SchemeManager::createFromFile(..)?");
         }
     }
 }
@@ -362,9 +362,9 @@ const String& WindowFactoryManager::getMappedLookForType(const String& type) con
     // type does not exist as a mapped type (or an alias for one)
     else
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window factory type '" + type +
-            "' is not a falagard mapped type (or an alias for one)."));
+            "' is not a falagard mapped type (or an alias for one).");
     }
 }
 
@@ -380,9 +380,9 @@ const String& WindowFactoryManager::getMappedRendererForType(const String& type)
     // type does not exist as a mapped type (or an alias for one)
     else
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window factory type '" + type +
-            "' is not a falagard mapped type (or an alias for one)."));
+            "' is not a falagard mapped type (or an alias for one).");
     }
 }
 
@@ -411,9 +411,9 @@ const WindowFactoryManager::FalagardWindowMapping& WindowFactoryManager::getFala
     // type does not exist as a mapped type (or an alias for one)
     else
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window factory type '" + type +
-            "' is not a falagard mapped type (or an alias for one)."));
+            "' is not a falagard mapped type (or an alias for one).");
     }
 }
 
@@ -429,9 +429,9 @@ const String& WindowFactoryManager::AliasTargetStack::getActiveTarget(void) cons
 }
 
 
-uint WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
+unsigned int WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
 {
-	return (uint)d_targetStack.size();
+	return (unsigned int)d_targetStack.size();
 }
 
 

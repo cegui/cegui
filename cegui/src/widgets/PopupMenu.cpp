@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	1/4/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
+
 	purpose:	Implementation of PopupMenu widget base class
 *************************************************************************/
 /***************************************************************************
@@ -127,7 +127,7 @@ void PopupMenu::openPopupMenu(bool notify)
 		d_fading = false;
 		setAlpha(d_origAlpha);
 	}
-	
+
 	show();
 	moveToFront();
 }
@@ -242,8 +242,8 @@ void PopupMenu::layoutItemWidgets()
 	Rectf render_rect = getItemRenderArea();
 
 	// get starting position
-	const float x0 = CoordConverter::alignToPixels(render_rect.d_min.d_x);
-	float y0 = CoordConverter::alignToPixels(render_rect.d_min.d_y);
+	const float x0 = CoordConverter::alignToPixels(render_rect.d_min.x);
+	float y0 = CoordConverter::alignToPixels(render_rect.d_min.y);
 
 	URect rect;
 	UVector2 sz(cegui_absdim(CoordConverter::alignToPixels(render_rect.getWidth())), cegui_absdim(0)); // set item width
@@ -277,7 +277,7 @@ Sizef PopupMenu::getContentSize() const
 	// find the content sizes
 	float widest = 0;
 	float total_height = 0;
-	
+
 	size_t i = 0;
 	size_t max = d_listItems.size();
 	while (i < max)
@@ -289,7 +289,7 @@ Sizef PopupMenu::getContentSize() const
 
 		i++;
 	}
-	
+
 	const float count = float(i);
 
 	// vert item spacing
@@ -309,7 +309,7 @@ Sizef PopupMenu::getContentSize() const
 void PopupMenu::onAlphaChanged(WindowEventArgs& e)
 {
 	MenuBase::onAlphaChanged(e);
-	
+
 	// if we are not fading, this is a real alpha change request and we save a copy of the value
 	if (!d_fading)
 	{
@@ -354,23 +354,23 @@ void PopupMenu::onHidden(WindowEventArgs& e)
 
 
 /************************************************************************
-	Handler for mouse button down events
+    Handler for cursor press events
 ************************************************************************/
-void PopupMenu::onMouseButtonDown(MouseEventArgs& e)
+void PopupMenu::onCursorPressHold(CursorInputEventArgs& e)
 {
-        MenuBase::onMouseButtonDown(e);
-        // dont reach our parent
+    MenuBase::onCursorPressHold(e);
+        // don't reach our parent
         ++e.handled;
 }
 
 
 /************************************************************************
-	Handler for mouse button up events
+    Handler for cursor activation events
 ************************************************************************/
-void PopupMenu::onMouseButtonUp(MouseEventArgs& e)
+void PopupMenu::onCursorActivate(CursorInputEventArgs& e)
 {
-        MenuBase::onMouseButtonUp(e);
-        // dont reach our parent
+    MenuBase::onCursorActivate(e);
+        // don't reach our parent
         ++e.handled;
 }
 
@@ -386,7 +386,7 @@ void PopupMenu::addPopupMenuProperties(void)
         "FadeInTime", "Property to get/set the fade in time in seconds of the popup menu.  Value is a float.",
         &PopupMenu::setFadeInTime, &PopupMenu::getFadeInTime, 0.0f
     );
-    
+
     CEGUI_DEFINE_PROPERTY(PopupMenu, float,
         "FadeOutTime", "Property to get/set the fade out time in seconds of the popup menu.  Value is a float.",
         &PopupMenu::setFadeOutTime, &PopupMenu::getFadeOutTime, 0.0f

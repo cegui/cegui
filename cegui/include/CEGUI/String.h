@@ -32,17 +32,18 @@
 #include "CEGUI/Base.h"
 #include <cstring>
 #include <stdexcept>
-#include <cstddef>
+#include <cstdlib>
+#include <functional>
 
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 /*************************************************************************
 Basic Types
 *************************************************************************/
-typedef		uint8	utf8;
-//typedef		uint16	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
-typedef		uint32	utf32;
+typedef		std::uint8_t	utf8;
+//typedef		std::uint16_t	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
+typedef		std::uint32_t	utf32;
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 
@@ -59,8 +60,7 @@ typedef utf8 encoded_char;
 	current locale, and also comparisons do not take into account the Unicode data tables, so are not 'correct'
 	as such.
 */
-class CEGUIEXPORT String :
-    public AllocatedObject<String>
+class CEGUIEXPORT String
 {
 public:
 	/*************************************************************************
@@ -315,21 +315,13 @@ public:
 	\brief
 		Constant reverse iterator class for String objects
 	*/
-#if defined(_MSC_VER) && ((_MSC_VER <= 1200) || ((_MSC_VER <= 1300) && defined(_STLPORT_VERSION)))
-	typedef	std::reverse_iterator<const_iterator, const_pointer, const_reference, difference_type>	const_reverse_iterator;
-#else
 	typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
-#endif
 
 	/*!
 	\brief
 		Reverse iterator class for String objects
 	*/
-#if defined(_MSC_VER) && ((_MSC_VER <= 1200) || ((_MSC_VER <= 1300) && defined(_STLPORT_VERSION)))
-	typedef std::reverse_iterator<iterator, pointer, reference, difference_type>			reverse_iterator;
-#else
 	typedef std::reverse_iterator<iterator>			reverse_iterator;
-#endif
 
 public:
 	//////////////////////////////////////////////////////////////////////////
@@ -745,7 +737,7 @@ public:
 	int		compare(size_type idx, size_type len, const String& str, size_type str_idx = 0, size_type str_len = npos) const
 	{
 		if ((d_cplength < idx) || (str.d_cplength < str_idx))
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if ((len == npos) || (idx + len > d_cplength))
 			len = d_cplength - idx;
@@ -820,10 +812,10 @@ public:
 	int		compare(size_type idx, size_type len, const std::string& std_str, size_type str_idx = 0, size_type str_len = npos) const
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (std_str.size() < str_idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for std::string"));
+			throw std::out_of_range("Index is out of range for std::string");
 
 		if ((len == npos) || (idx + len > d_cplength))
 			len = d_cplength - idx;
@@ -934,10 +926,10 @@ public:
 	int		compare(size_type idx, size_type len, const utf8* utf8_str, size_type str_cplen) const
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (str_cplen == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		if ((len == npos) || (idx + len > d_cplength))
 			len = d_cplength - idx;
@@ -1028,10 +1020,10 @@ public:
 	int		compare(size_type idx, size_type len, const char* chars, size_type chars_len) const
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if ((len == npos) || (idx + len > d_cplength))
 			len = d_cplength - idx;
@@ -1098,7 +1090,7 @@ public:
 	reference	at(size_type idx)
 	{
 		if (d_cplength <= idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		return ptr()[idx];
 	}
@@ -1118,7 +1110,7 @@ public:
 	const_reference	at(size_type idx) const
 	{
 		if (d_cplength <= idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		return ptr()[idx];
 	}
@@ -1206,7 +1198,7 @@ public:
 	size_type	copy(utf8* buf, size_type len = npos, size_type idx = 0) const
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (len == npos)
 			len = d_cplength;
@@ -1238,11 +1230,11 @@ public:
 		using namespace std;
 
 		if (d_cplength < idx)
-			CEGUI_THROW(out_of_range("Index was out of range for CEGUI::String object"));
+			throw out_of_range("Index was out of range for CEGUI::String object");
 
 		size_type	maxlen = d_cplength - idx;
 
-		return encoded_size(&ptr()[idx], ceguimin(num, maxlen));
+		return encoded_size(&ptr()[idx], std::min(num, maxlen));
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -1284,7 +1276,7 @@ public:
 	String&	assign(const String& str, size_type str_idx = 0, size_type str_num = npos)
 	{
 		if (str.d_cplength < str_idx)
-			CEGUI_THROW(std::out_of_range("Index was out of range for CEGUI::String object"));
+			throw std::out_of_range("Index was out of range for CEGUI::String object");
 
 		if ((str_num == npos) || (str_num > str.d_cplength - str_idx))
 			str_num = str.d_cplength - str_idx;
@@ -1343,7 +1335,7 @@ public:
 	String&	assign(const std::string& std_str, size_type str_idx = 0, size_type str_num = npos)
 	{
 		if (std_str.size() < str_idx)
-			CEGUI_THROW(std::out_of_range("Index was out of range for std::string object"));
+			throw std::out_of_range("Index was out of range for std::string object");
 
 		if ((str_num == npos) || (str_num > (size_type)std_str.size() - str_idx))
 			str_num = (size_type)std_str.size() - str_idx;
@@ -1429,7 +1421,7 @@ public:
 	String&	assign(const utf8* utf8_str, size_type str_num)
 	{
 		if (str_num == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		size_type enc_sze = encoded_size(utf8_str, str_num);
 
@@ -1472,7 +1464,7 @@ public:
 	String&	assign(size_type num, utf32 code_point)
 	{
 		if (num == npos)
-			CEGUI_THROW(std::length_error("Code point count can not be 'npos'"));
+			throw std::length_error("Code point count can not be 'npos'");
 
 		grow(num);
 		setlen(num);
@@ -1629,7 +1621,7 @@ public:
 	String& append(const String& str, size_type str_idx = 0, size_type str_num = npos)
 	{
 		if (str.d_cplength < str_idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if ((str_num == npos) || (str_num > str.d_cplength - str_idx))
 			str_num = str.d_cplength - str_idx;
@@ -1688,7 +1680,7 @@ public:
 	String& append(const std::string& std_str, size_type str_idx = 0, size_type str_num = npos)
 	{
 		if (std_str.size() < str_idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for std::string"));
+			throw std::out_of_range("Index is out of range for std::string");
 
 		if ((str_num == npos) || (str_num > (size_type)std_str.size() - str_idx))
 			str_num = (size_type)std_str.size() - str_idx;
@@ -1777,7 +1769,7 @@ public:
 	String& append(const utf8* utf8_str, size_type len)
 	{
 		if (len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		size_type encsz = encoded_size(utf8_str, len);
 		size_type newsz = d_cplength + encsz;
@@ -1825,7 +1817,7 @@ public:
 	String& append(size_type num, utf32 code_point)
 	{
 		if (num == npos)
-			CEGUI_THROW(std::length_error("Code point count can not be 'npos'"));
+			throw std::length_error("Code point count can not be 'npos'");
 
 		size_type newsz = d_cplength + num;
 		grow(newsz);
@@ -1932,7 +1924,7 @@ public:
 	String& append(const char* chars, size_type chars_len)
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		size_type newsz = d_cplength + chars_len;
 
@@ -1998,7 +1990,7 @@ public:
 	String& insert(size_type idx, const String& str, size_type str_idx, size_type str_num)
 	{
 		if ((d_cplength < idx) || (str.d_cplength < str_idx))
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if ((str_num == npos) || (str_num > str.d_cplength - str_idx))
 			str_num = str.d_cplength - str_idx;
@@ -2066,10 +2058,10 @@ public:
 	String& insert(size_type idx, const std::string& std_str, size_type str_idx, size_type str_num)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (std_str.size() < str_idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for std::string"));
+			throw std::out_of_range("Index is out of range for std::string");
 
 		if ((str_num == npos) || (str_num > (size_type)std_str.size() - str_idx))
 			str_num = (size_type)std_str.size() - str_idx;
@@ -2144,10 +2136,10 @@ public:
 	String& insert(size_type idx, const utf8* utf8_str, size_type len)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (len == npos)
-			CEGUI_THROW(std::length_error("Length of utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length of utf8 encoded string can not be 'npos'");
 
 		size_type encsz = encoded_size(utf8_str, len);
 		size_type newsz = d_cplength + encsz;
@@ -2182,10 +2174,10 @@ public:
 	String& insert(size_type idx, size_type num, utf32 code_point)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (num == npos)
-			CEGUI_THROW(std::length_error("Code point count can not be 'npos'"));
+			throw std::length_error("Code point count can not be 'npos'");
 
 		size_type newsz = d_cplength + num;
 		grow(newsz);
@@ -2314,10 +2306,10 @@ public:
 	String& insert(size_type idx, const char* chars, size_type chars_len)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length of char array can not be 'npos'"));
+			throw std::length_error("Length of char array can not be 'npos'");
 
 		size_type newsz = d_cplength + chars_len;
 
@@ -2403,7 +2395,7 @@ public:
             return *this;
 
 		if (d_cplength <= idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (len == npos)
 			len = d_cplength - idx;
@@ -2577,7 +2569,7 @@ public:
 	String& replace(size_type idx, size_type len, const String& str, size_type str_idx, size_type str_num)
 	{
 		if ((d_cplength < idx) || (str.d_cplength < str_idx))
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (((str_idx + str_num) > str.d_cplength) || (str_num == npos))
 			str_num = str.d_cplength - str_idx;
@@ -2689,10 +2681,10 @@ public:
 	String& replace(size_type idx, size_type len, const std::string& std_str, size_type str_idx, size_type str_num)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (std_str.size() < str_idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for std::string"));
+			throw std::out_of_range("Index is out of range for std::string");
 
 		if (((str_idx + str_num) > std_str.size()) || (str_num == npos))
 			str_num = (size_type)std_str.size() - str_idx;
@@ -2811,10 +2803,10 @@ public:
 	String& replace(size_type idx, size_type len, const utf8* utf8_str, size_type str_len)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		if (((len + idx) > d_cplength) || (len == npos))
 			len = d_cplength - idx;
@@ -2893,10 +2885,10 @@ public:
 	String& replace(size_type idx, size_type len, size_type num, utf32 code_point)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (num == npos)
-			CEGUI_THROW(std::length_error("Code point count can not be 'npos'"));
+			throw std::length_error("Code point count can not be 'npos'");
 
 		if (((len + idx) > d_cplength) || (len == npos))
 			len = d_cplength - idx;
@@ -3079,10 +3071,10 @@ public:
 	String& replace(size_type idx, size_type len, const char* chars, size_type chars_len)
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
+			throw std::out_of_range("Index is out of range for CEGUI::String");
 
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for the char array can not be 'npos'"));
+			throw std::length_error("Length for the char array can not be 'npos'");
 
 		if (((len + idx) > d_cplength) || (len == npos))
 			len = d_cplength - idx;
@@ -3444,7 +3436,7 @@ public:
 	size_type	find(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		size_type sze = encoded_size(utf8_str, str_len);
 
@@ -3495,7 +3487,7 @@ public:
 	size_type	rfind(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		size_type sze = encoded_size(utf8_str, str_len);
 
@@ -3586,7 +3578,7 @@ public:
 	size_type	find(const char* chars, size_type idx, size_type chars_len) const
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if ((chars_len == 0) && (idx < d_cplength))
 			return idx;
@@ -3630,7 +3622,7 @@ public:
 	size_type	rfind(const char* chars, size_type idx, size_type chars_len) const
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if (chars_len == 0)
 			return (idx < d_cplength) ? idx : d_cplength;
@@ -3876,7 +3868,7 @@ public:
 	size_type	find_first_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		if (idx < d_cplength)
 		{
@@ -3924,7 +3916,7 @@ public:
 	size_type	find_first_not_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		if (idx < d_cplength)
 		{
@@ -4063,7 +4055,7 @@ public:
 	size_type	find_first_of(const char* chars, size_type idx, size_type chars_len) const
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if (idx < d_cplength)
 		{
@@ -4104,7 +4096,7 @@ public:
 	size_type	find_first_not_of(const char* chars, size_type idx, size_type chars_len) const
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if (idx < d_cplength)
 		{
@@ -4358,7 +4350,7 @@ public:
 	size_type	find_last_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		if (d_cplength > 0)
 		{
@@ -4409,7 +4401,7 @@ public:
 	size_type	find_last_not_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
 		if (str_len == npos)
-			CEGUI_THROW(std::length_error("Length for utf8 encoded string can not be 'npos'"));
+			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		if (d_cplength > 0)
 		{
@@ -4552,7 +4544,7 @@ public:
 	size_type	find_last_of(const char* chars, size_type idx, size_type chars_len) const
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if (d_cplength > 0)
 		{
@@ -4596,7 +4588,7 @@ public:
 	size_type	find_last_not_of(const char* chars, size_type idx, size_type chars_len) const
 	{
 		if (chars_len == npos)
-			CEGUI_THROW(std::length_error("Length for char array can not be 'npos'"));
+			throw std::length_error("Length for char array can not be 'npos'");
 
 		if (d_cplength > 0)
 		{
@@ -4639,7 +4631,7 @@ public:
 	String	substr(size_type idx = 0, size_type len = npos) const
 	{
 		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range for this CEGUI::String"));
+			throw std::out_of_range("Index is out of range for this CEGUI::String");
 
 		return String(*this, idx, len);
 	}
@@ -4806,7 +4798,7 @@ private:
 		size_type destCapacity = dest_len;
 
 		// while there is data in the source buffer,
-		for (uint idx = 0; idx < src_len; ++idx)
+		for (unsigned int idx = 0; idx < src_len; ++idx)
 		{
 			utf32	cp = src[idx];
 
@@ -4859,7 +4851,7 @@ private:
 		size_type destCapacity = dest_len;
 
 		// while there is data in the source buffer, and space in the dest buffer
-		for (uint idx = 0; ((idx < src_len) && (destCapacity > 0));)
+		for (unsigned int idx = 0; ((idx < src_len) && (destCapacity > 0));)
 		{
 			utf32	cp;
 			utf8	cu = src[idx++];
@@ -5547,11 +5539,11 @@ String CEGUIEXPORT	operator+(const String& str, const char* c_str);
 String CEGUIEXPORT	operator+(const char* c_str, const String& str);
 
 
-//////////////////////////////////////////////////////////////////////////
-// Output (stream) functions
-//////////////////////////////////////////////////////////////////////////
+// Output (stream) function
 CEGUIEXPORT std::ostream& operator<<(std::ostream& s, const String& str);
 
+// Input (stream) function
+CEGUIEXPORT std::istream& operator>>(std::istream& inputStream, String& str);
 
 //////////////////////////////////////////////////////////////////////////
 // Modifying operations
@@ -5571,24 +5563,6 @@ CEGUIEXPORT std::ostream& operator<<(std::ostream& s, const String& str);
 */
 void CEGUIEXPORT swap(String& str1, String& str2);
 
-/*!
-\brief
-    Functor that can be used as comparator in a std::map with String keys.
-    It's faster than using the default, but the map will no longer be sorted alphabetically.
-*/
-struct StringFastLessCompare
-{
-    bool operator() (const String& a, const String& b) const
-    {
-        const size_t la = a.length();
-        const size_t lb = b.length();
-        if (la == lb)
-            return (memcmp(a.ptr(), b.ptr(), la * sizeof(utf32)) < 0);
-
-        return (la < lb);
-    }
-};
-
 #else
 
 /// encoded char signifies that it's a char (8bit) with encoding (in this case ASCII)
@@ -5598,29 +5572,7 @@ typedef char encoded_char;
 
 typedef std::string String;
 
-#else // CEGUI_STRING_CLASS_STD_AO
-
-typedef std::basic_string<char, std::char_traits<char>, STLAllocatorWrapper<char, AllocatorConfig<STLAllocator>::Allocator> > String;
-
 #endif
-
-/*!
-\brief
-    Functor that can be used as comparator in a std::map with String keys.
-    It's faster than using the default, but the map will no longer be sorted alphabetically.
-*/
-struct StringFastLessCompare
-{
-    bool operator() (const String& a, const String& b) const
-    {
-        const size_t la = a.length();
-        const size_t lb = b.length();
-        if (la == lb)
-            return (memcmp(a.c_str(), b.c_str(), la * sizeof(String::value_type)) < 0);
-
-        return (la < lb);
-    }
-};
 
 #if defined(_MSC_VER)
 #	pragma warning(disable : 4251)
@@ -5628,7 +5580,23 @@ struct StringFastLessCompare
 
 #endif
 
-} // End of  CEGUI namespace section
+}
 
+namespace std
+{
 
-#endif	// end of guard _CEGUIString_h_
+template<>
+struct hash<CEGUI::String>
+{
+    typedef std::size_t result_type;
+
+    result_type operator()(CEGUI::String const& string) const
+    {
+        result_type const hashVal(std::hash<std::string>()(string.c_str()));
+        return hashVal;
+    }
+};
+
+}
+
+#endif

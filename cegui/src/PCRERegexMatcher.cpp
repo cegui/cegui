@@ -57,9 +57,9 @@ void PCRERegexMatcher::setRegexString(const String& regex)
 
     // handle failure
     if (!d_regex)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Bad RegEx set: '" + regex + "'.  Additional Information: " +
-            prce_error));
+            prce_error);
 
     // set this last so that upon failure object is in consistant state.
     d_string = regex;
@@ -77,8 +77,8 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 {
     // if the regex is not valid, then an exception is thrown
     if (!d_regex)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to use invalid RegEx '" + d_string + "'."));
+        throw InvalidRequestException(
+            "Attempt to use invalid RegEx '" + d_string + "'.");
 
     int match[3];
     const char* utf8_str = str.c_str();
@@ -86,7 +86,7 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 
 #ifdef PCRE_PARTIAL_SOFT
     // we are using a new version of pcre
-    const int result = pcre_exec(d_regex, 0, utf8_str, len, 0,
+    const std::int32_t result = pcre_exec(d_regex, 0, utf8_str, len, 0,
                                  PCRE_PARTIAL_SOFT | PCRE_ANCHORED, match, 3);
 #else
     // PCRE_PARTIAL is a backwards compatible synonym for PCRE_PARTIAL_SOFT
@@ -112,10 +112,10 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
         return MS_INVALID;
 
     // anything else is an error
-    CEGUI_THROW(InvalidRequestException(
-        "PCRE Error: " + PropertyHelper<int>::toString(result) +
+    throw InvalidRequestException(
+        "PCRE Error: " + PropertyHelper<std::int32_t>::toString(result) +
         " occurred while attempting to match the RegEx '" +
-        d_string + "'."));
+        d_string + "'.");
 }
 
 //----------------------------------------------------------------------------//

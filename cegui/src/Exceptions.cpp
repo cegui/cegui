@@ -45,7 +45,7 @@
 #   include <execinfo.h>
 #   include <dlfcn.h>
 #   include <cxxabi.h>
-#   include <cstdlib>
+#   include <cstddef>
 #endif
 
 // Start of CEGUI namespace section
@@ -190,7 +190,7 @@ Exception::Exception(const String& message, const String& name,
     d_line(line),
     d_function(function),
     d_what(name + " in function '" + function +
-           "' (" + filename + ":" + PropertyHelper<int>::toString(line) + ") : " +
+           "' (" + filename + ":" + PropertyHelper<std::int32_t>::toString(line) + ") : " +
            message)
 {
     // Log exception if possible

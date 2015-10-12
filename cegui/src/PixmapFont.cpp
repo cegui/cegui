@@ -27,7 +27,7 @@
 
 #include "CEGUI/PixmapFont.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Logger.h"
@@ -124,17 +124,17 @@ void PixmapFont::updateFont()
 
         Image* img = i->second.getImage();
 
-        BasicImage* bi = dynamic_cast<BasicImage*>(img);
+        BitmapImage* bi = dynamic_cast<BitmapImage*>(img);
         if (bi)
         {
             bi->setAutoScaled(d_autoScaled);
             bi->setNativeResolution(d_nativeResolution);
         }
 
-        if (img->getRenderedOffset().d_y < d_ascender)
-            d_ascender = img->getRenderedOffset().d_y;
-        if (img->getRenderedSize().d_height + img->getRenderedOffset().d_y > d_descender)
-            d_descender = img->getRenderedSize().d_height + img->getRenderedOffset().d_y;
+        if (img->getRenderedOffset().y < d_ascender)
+            d_ascender = img->getRenderedOffset().y;
+        if (img->getRenderedSize().d_height + img->getRenderedOffset().y > d_descender)
+            d_descender = img->getRenderedSize().d_height + img->getRenderedOffset().y;
     }
 
     d_ascender = -d_ascender;
@@ -152,7 +152,7 @@ void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
     {
         xml_stream.openTag("Mapping")
             .attribute(Font_xmlHandler::MappingCodepointAttribute,
-                       PropertyHelper<uint>::toString(i->first))
+                       PropertyHelper<std::uint32_t>::toString(i->first))
             .attribute(Font_xmlHandler::MappingHorzAdvanceAttribute,
                        PropertyHelper<float>::toString(i->second.getAdvance() * advscale))
             .attribute(Font_xmlHandler::MappingImageAttribute,
@@ -170,7 +170,7 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
         ImageManager::getSingleton().get(d_imageNamePrefix + '/' + image_name));
 
     float adv = (horz_advance == -1.0f) ?
-        (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().d_x) :
+        (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().x) :
         horz_advance;
 
     if (d_autoScaled != ASM_Disabled)
@@ -182,10 +182,10 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
     // create a new FontGlyph with given character code
     const FontGlyph glyph(adv, &image, true);
 
-    if (image.getRenderedOffset().d_y < -d_ascender)
-        d_ascender = -image.getRenderedOffset().d_y;
-    if (image.getRenderedSize().d_height + image.getRenderedOffset().d_y > -d_descender)
-        d_descender = -(image.getRenderedSize().d_height + image.getRenderedOffset().d_y);
+    if (image.getRenderedOffset().y < -d_ascender)
+        d_ascender = -image.getRenderedOffset().y;
+    if (image.getRenderedSize().d_height + image.getRenderedOffset().y > -d_descender)
+        d_descender = -(image.getRenderedSize().d_height + image.getRenderedOffset().y);
 
     d_height = d_ascender - d_descender;
 
@@ -200,8 +200,8 @@ void PixmapFont::defineMapping(const String& value)
     utf32 codepoint;
     float adv;
     if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
-        CEGUI_THROW(InvalidRequestException(
-            "Bad glyph Mapping specified: " + value));
+        throw InvalidRequestException(
+            "Bad glyph Mapping specified: " + value);
     
     defineMapping(codepoint, img, adv);
 }
