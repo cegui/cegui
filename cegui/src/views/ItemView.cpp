@@ -280,7 +280,7 @@ void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenWillBeAdded(const EventArgs& args)
+bool ItemView::onChildrenWillBeAdded(const EventArgs&)
 {
     return true;
 }
@@ -340,7 +340,7 @@ bool ItemView::onChildrenWillBeRemoved(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenRemoved(const EventArgs& args)
+bool ItemView::onChildrenRemoved(const EventArgs&)
 {
 
     ItemViewEventArgs wargs(this);
@@ -352,13 +352,13 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenDataWillChange(const EventArgs& args)
+bool ItemView::onChildrenDataWillChange(const EventArgs&)
 {
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenDataChanged(const EventArgs& args)
+bool ItemView::onChildrenDataChanged(const EventArgs&)
 {
     invalidateView(false);
     return true;
@@ -372,7 +372,7 @@ void ItemView::onSelectionChanged(ItemViewEventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onScrollPositionChanged(const EventArgs& args)
+bool ItemView::onScrollPositionChanged(const EventArgs&)
 {
     invalidateView(false);
     return true;

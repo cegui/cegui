@@ -144,7 +144,7 @@ CEGUI::Window* FormNavigationSample::createWidget(const String& type,
     return widget;
 }
 
-bool FormNavigationSample::resetForm(const CEGUI::EventArgs& e)
+bool FormNavigationSample::resetForm(const CEGUI::EventArgs&)
 {
     for(std::vector<Window*>::const_iterator itor = d_editboxes.begin();
         itor != d_editboxes.end(); ++itor)
@@ -158,7 +158,7 @@ bool FormNavigationSample::resetForm(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs& e)
+bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs&)
 {
     d_confirmButton->setEnabled(false);
 

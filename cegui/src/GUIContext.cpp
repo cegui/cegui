@@ -527,21 +527,21 @@ bool GUIContext::injectTimePulse(float timeElapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCopyRequest(const SemanticInputEvent& event)
+bool GUIContext::handleCopyRequest(const SemanticInputEvent&)
 {
     Window* source = getInputTargetWindow();
     return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCutRequest(const SemanticInputEvent& event)
+bool GUIContext::handleCutRequest(const SemanticInputEvent&)
 {
     Window* source = getInputTargetWindow();
     return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handlePasteRequest(const SemanticInputEvent& event)
+bool GUIContext::handlePasteRequest(const SemanticInputEvent&)
 {
     Window* target = getInputTargetWindow();
     return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
@@ -841,7 +841,7 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCursorLeave(const SemanticInputEvent& event)
+bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
 {
     if (!getWindowContainingCursor())
         return false;

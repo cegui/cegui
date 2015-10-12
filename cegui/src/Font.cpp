@@ -76,7 +76,6 @@ Font::~Font()
 {
     if (d_glyphPageLoaded)
         delete[] d_glyphPageLoaded;
-    }
 }
 
 //----------------------------------------------------------------------------//

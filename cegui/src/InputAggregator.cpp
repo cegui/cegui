@@ -40,6 +40,21 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+static CursorInputSource convertToCursorInputSource(MouseButton button)
+{
+    if (button == LeftButton)
+        return CIS_Left;
+
+    if (button == RightButton)
+        return CIS_Right;
+
+    if (button == MiddleButton)
+        return CIS_Middle;
+
+    return CIS_None;
+}
+
 /*!
 \brief
     Implementation structure used in tracking up & down mouse button inputs in
@@ -73,19 +88,19 @@ const Sizef InputAggregator::DefaultMouseButtonMultiClickTolerance(0.01f, 0.01f)
 
 //----------------------------------------------------------------------------//
 InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
+    d_displaySizeChangedConnection(
+        System::getSingletonPtr()->subscribeEvent(System::EventDisplaySizeChanged,
+            Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
     d_inputReceiver(input_receiver),
     d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
-    d_mouseMovementScalingFactor(1.0f),
     d_generateMouseClickEvents(true),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
+    d_handleInKeyUp(true),
+    d_mouseMovementScalingFactor(1.0f),
     d_pointerPosition(0.0f, 0.0f),
-    d_displaySizeChangedConnection(
-        System::getSingletonPtr()->subscribeEvent(System::EventDisplaySizeChanged,
-            Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
-    d_keysPressed(),
-    d_handleInKeyUp(true)
+    d_keysPressed()
 {
     // Initialize the array
     memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
@@ -193,7 +208,7 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 
 //----------------------------------------------------------------------------//
 int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
-    bool alt_down, bool ctrl_down) const
+    bool /*alt_down*/, bool ctrl_down) const
 {
     int value = d_keyValuesMappings[scan_code];
 
@@ -547,7 +562,7 @@ void InputAggregator::recomputeMultiClickAbsoluteTolerance()
         d_mouseButtonMultiClickTolerance.d_height * display_size.d_height);
 }
 
-bool InputAggregator::onDisplaySizeChanged(const EventArgs& args)
+bool InputAggregator::onDisplaySizeChanged(const EventArgs&)
 {
     recomputeMultiClickAbsoluteTolerance();
     return true;

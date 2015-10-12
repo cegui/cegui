@@ -56,9 +56,9 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_owner(owner),
     d_renderSystem(rs),
     d_clipRect(0, 0, 0, 0),
+    d_matrix(1.0),
     d_expectedData(MT_INVALID),
     d_dataAppended(false),
-    d_matrix(1.0),
     d_previousAlphaValue(-1.f)
 {
     
