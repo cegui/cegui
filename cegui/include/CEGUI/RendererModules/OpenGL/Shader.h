@@ -53,7 +53,7 @@ public:
                   const std::string& fragment_shader_source,
                   OpenGLBaseStateChangeWrapper* glStateChanger);
 
-    ~OpenGLBaseShader();
+    virtual ~OpenGLBaseShader();
 
     /*!
     \brief

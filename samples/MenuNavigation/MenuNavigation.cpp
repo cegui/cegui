@@ -145,7 +145,7 @@ void MenuNavigationSample::initialiseClasses(ListWidget* classes_list_view)
     }
 }
 
-bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs& e)
+bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 

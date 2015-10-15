@@ -74,8 +74,8 @@ protected:
     void startEntranceAnimations();
 
     void updateIntroText();
-    void updateLoginWelcomeText(float passedTime);
-    void updateLoginStartButtonText(float passedTime);
+    void updateLoginWelcomeText();
+    void updateLoginStartButtonText();
     void disableInteractivePlanetElements();
     void enableInteractivePlanetElements();
     void enableNavigationBarElements();

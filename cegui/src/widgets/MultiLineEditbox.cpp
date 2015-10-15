@@ -82,11 +82,11 @@ const String MultiLineEditbox::HorzScrollbarName( "__auto_hscrollbar__" );
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	EditboxBase(type, name),
 	d_wordWrap(true),
+	d_lastRenderWidth(0.0),
 	d_widestExtent(0.0f),
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
-	d_selectionBrush(0),
-	d_lastRenderWidth(0.0)
+	d_selectionBrush(0)
 {
 	addMultiLineEditboxProperties();
 }

@@ -36,24 +36,6 @@ using namespace CEGUI;
 // for this to work you'll have to change the .layout files
 //#define SKIN "WindowsLook"
 
-static const char* PageText[] =
-{
-    "This is page three",
-    "And this is page four, it's not too different from page three, isn't it?",
-    "Yep, you guessed, this is page five",
-    "And this is page six",
-    "Seven",
-    "Eight",
-    "Nine. Quite boring, isn't it?",
-    "Ten",
-    "Eleven",
-    "Twelve",
-    "Thirteen",
-    "Fourteen",
-    "Fifteen",
-    "And, finally, sixteen. Congrats, you found the last page!",
-};
-
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
 // image.  This saves doing it manually every time in the code.
 class TabControlListItem : public ListboxTextItem

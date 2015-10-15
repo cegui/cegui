@@ -86,13 +86,6 @@ if(ANDROID)
 endif()
 
 if ((CMAKE_C_COMPILER_ID STREQUAL "GNU") OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsigned-char")
-endif ()
-if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsigned-char")
-endif ()
-
-if ((CMAKE_C_COMPILER_ID STREQUAL "GNU") OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
 elseif (NOT CMAKE_VERSION VERSION_LESS "3.1")
     set (CMAKE_C_STANDARD_REQUIRED TRUE)
@@ -279,6 +272,34 @@ else ()
     set (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2 FALSE)
 endif ()
 
+option (CEGUI_WARNINGS_AS_ERRORS "Specifies whether to treat warnings as errors. Recommended if you're developing CEGUI itself." OFF)
+
+set (CEGUI_EXTRA_FLAGS "")
+
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -fsigned-char")
+endif ()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Wall -Wextra")
+endif ()
+
+if (CEGUI_WARNINGS_AS_ERRORS)
+    if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+        set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Werror")
+    elseif (MSVC)
+        set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} /WX")
+    else ()
+        message (WARNING "You've specified \"CEGUI_WARNINGS_AS_ERRORS\" as \"ON\", but we don't know how to make it for your compiler. If you wish you can specifiy the required flags manually.")
+    endif ()
+endif ()
+
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CEGUI_EXTRA_FLAGS}")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CEGUI_EXTRA_FLAGS}")
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CEGUI_EXTRA_FLAGS}")
+set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${CEGUI_EXTRA_FLAGS}")
+set (CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} ${CEGUI_EXTRA_FLAGS}")
+set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${CEGUI_EXTRA_FLAGS}")
 
 # Here we check if Ogre is built to use boost, and if yes, if the necessary dependencies are available and found by CEGUI
 set (CEGUI_OGRE_DEPS_AVAILABLE FALSE)

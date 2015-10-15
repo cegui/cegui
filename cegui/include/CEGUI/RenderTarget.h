@@ -222,7 +222,7 @@ public:
     \return
         The vertical FOV angle of the perspective projection. Value in Radians.
     */
-    const float getFovY() const;
+    float getFovY() const;
 
     /*!
     \brief

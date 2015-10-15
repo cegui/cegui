@@ -379,11 +379,10 @@ if(CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE)
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} OIS PRIVATE TRUE)
     if (UNIX AND NOT APPLE AND NOT ANDROID)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME}  GL )
     endif()
-    cegui_add_dependency(${CEGUI_TARGET_NAME} OIS)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME})
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS} )
     if (OGRE_STATIC) #if ogre is static, then must include the static plugin libs
@@ -398,7 +397,6 @@ if(CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} IRRLICHT)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_IRRLICHT_RENDERER_LIBNAME})
 endif()
 
