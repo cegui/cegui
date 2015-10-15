@@ -436,7 +436,7 @@ void System::renderAllGUIContexts()
     WindowManager::getSingleton().cleanDeadPool();
 }
 
-void System::renderAllGUIContextsOnTarget(Renderer* contained_in)
+void System::renderAllGUIContextsOnTarget(Renderer* /*contained_in*/)
 {
     d_renderer->beginRendering();
 

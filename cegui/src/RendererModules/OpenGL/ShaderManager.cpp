@@ -42,7 +42,8 @@ namespace CEGUI
 
 OpenGLBaseShaderManager::OpenGLBaseShaderManager(OpenGLBaseStateChangeWrapper* glStateChanger,
         ShaderVersion shaderVersion)
-    : d_glStateChanger(glStateChanger), d_shaderVersion(shaderVersion)
+    : d_shaderVersion(shaderVersion),
+      d_glStateChanger(glStateChanger)
 {
     d_shadersInitialised = false;
 }

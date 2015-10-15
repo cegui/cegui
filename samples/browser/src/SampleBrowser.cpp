@@ -69,9 +69,15 @@ void android_main(struct android_app* state)
 int main(int argc, char* argv[])
 {
 #endif
+
+    CEGUI_UNUSED(argc);
+    CEGUI_UNUSED(argv);
+    
     // Basic start-up for the sample browser application.
     // Will remain in run() until quitting
     int argidx = 1;
+    CEGUI_UNUSED(argidx);
+    
 #ifdef __APPLE__
     if (argc > 1 && !std::strncmp(argv[argidx], "-psn", 4))
     {
@@ -412,7 +418,7 @@ SampleHandler* SampleBrowser::findSampleData(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
+bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs&)
 {
     d_quittingSampleView = true;
 

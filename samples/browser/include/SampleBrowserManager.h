@@ -55,7 +55,7 @@ private:
     SampleBrowserManager(const SampleBrowserManager&) {}
 
     void init();
-    SampleBrowserManager& operator=(const SampleBrowserManager&) {}
+    SampleBrowserManager& operator=(const SampleBrowserManager&) { return *this; }
 
     static const std::uint32_t d_sampleWindowFrameNormal;
     static const std::uint32_t d_sampleWindowFrameSelected;

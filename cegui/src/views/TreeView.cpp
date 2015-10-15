@@ -581,7 +581,7 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
 }
 
 //----------------------------------------------------------------------------//
-Rectf TreeView::getIndexRect(const ModelIndex& index)
+Rectf TreeView::getIndexRect(const ModelIndex&)
 {
     //TODO: implement for tree view. What do we do for indices in closed subtrees?
     throw InvalidRequestException("Not implemented for tree view yet.");

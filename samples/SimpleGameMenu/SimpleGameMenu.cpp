@@ -42,9 +42,9 @@ static CEGUI::String SoundOptionsMenu = "SoundOptionsContainer";
 
 SimpleGameMenuSample::SimpleGameMenuSample() :
     Sample(98),
-    d_currentMenu(0),
     d_layout(0),
     d_root(0),
+    d_currentMenu(0),
     d_windowNavigator(0)
 {
     Sample::d_name = "SimpleGameMenuSample";
@@ -163,48 +163,48 @@ void SimpleGameMenuSample::showMenu(CEGUI::String menu_name)
     d_navigationStrategy->d_targetWindow = d_currentMenu;
 }
 
-bool SimpleGameMenuSample::handleNewGameButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleNewGameButtonClick(const CEGUI::EventArgs&)
 {
     showMenu(DifficultyMenu);
     return true;
 }
 
-bool SimpleGameMenuSample::handleContinueGameButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleContinueGameButtonClick(const CEGUI::EventArgs&)
 {
     return true;
 }
 
-bool SimpleGameMenuSample::handleOptionsButtonClick(const CEGUI::EventArgs& e)
-{
-    showMenu(OptionsMenu);
-    return true;
-}
-
-bool SimpleGameMenuSample::handleGoToOptionsMenu(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleOptionsButtonClick(const CEGUI::EventArgs&)
 {
     showMenu(OptionsMenu);
     return true;
 }
 
-bool SimpleGameMenuSample::handleSoundOptionsButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleGoToOptionsMenu(const CEGUI::EventArgs&)
+{
+    showMenu(OptionsMenu);
+    return true;
+}
+
+bool SimpleGameMenuSample::handleSoundOptionsButtonClick(const CEGUI::EventArgs&)
 {
     showMenu(SoundOptionsMenu);
     return true;
 }
 
-bool SimpleGameMenuSample::handleVideoOptionsButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleVideoOptionsButtonClick(const CEGUI::EventArgs&)
 {
     showMenu(VideoOptionsMenu);
     return true;
 }
 
-bool SimpleGameMenuSample::handleGoToMainMenu(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleGoToMainMenu(const CEGUI::EventArgs&)
 {
     showMenu(MainMenu);
     return true;
 }
 
-bool SimpleGameMenuSample::handleGeneralOptionsButtonClick(const CEGUI::EventArgs& e)
+bool SimpleGameMenuSample::handleGeneralOptionsButtonClick(const CEGUI::EventArgs&)
 {
     showMenu(GeneralOptionsMenu);
     return true;

@@ -107,13 +107,13 @@ void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwWindowCloseCallback(GLFWwindow* window)
+void CEGuiGLFWSharedBase::glfwWindowCloseCallback(GLFWwindow* /*window*/)
 {
     d_sampleApp->setQuitting(true);
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwWindowResizeCallback(GLFWwindow* window, int width, int height)
+void CEGuiGLFWSharedBase::glfwWindowResizeCallback(GLFWwindow* /*window*/, int width, int height)
 {
     // We cache this in order to minimise calls to notifyDisplaySizeChanged,
     // which happens in the main loop whenever d_windowSized is set to true.
@@ -195,7 +195,8 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void CEGuiGLFWSharedBase::glfwKeyCallback(GLFWwindow* /*window*/, int key,
+  int /*scancode*/, int action, int /*mods*/)
 {
     CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
 
@@ -206,13 +207,15 @@ void CEGuiGLFWSharedBase::glfwKeyCallback(GLFWwindow* window, int key, int scanc
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwCharCallback(GLFWwindow* window, unsigned codepoint)
+void CEGuiGLFWSharedBase::glfwCharCallback
+  (GLFWwindow* /*window*/, unsigned codepoint)
 {
     d_sampleApp->injectChar(codepoint);
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+void CEGuiGLFWSharedBase::glfwMouseButtonCallback
+  (GLFWwindow* /*window*/, int button, int action, int /*mods*/)
 {
     CEGUI::MouseButton ceguiMouseButton = GlfwToCeguiMouseButton(button);
 
@@ -223,13 +226,15 @@ void CEGuiGLFWSharedBase::glfwMouseButtonCallback(GLFWwindow* window, int button
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+void CEGuiGLFWSharedBase::glfwScrollCallback
+  (GLFWwindow* /*window*/, double /*xoffset*/, double yoffset)
 {
     d_sampleApp->injectMouseWheelChange(static_cast<float>(yoffset/4));
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::glfwCursorPosCallback(GLFWwindow* window, double x, double y)
+void CEGuiGLFWSharedBase::glfwCursorPosCallback
+  (GLFWwindow* /*window*/, double x, double y)
 {
     if (!d_mouseDisableCalled)
     {

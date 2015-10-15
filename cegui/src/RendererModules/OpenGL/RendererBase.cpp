@@ -56,8 +56,8 @@ OpenGLRendererBase::OpenGLRendererBase() :
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
-    d_defaultTarget(0),
-    d_displaySize(display_size)
+    d_displaySize(display_size),
+    d_defaultTarget(0)
 {
     init();
     d_defaultTarget = new OpenGLViewportTarget(*this);
@@ -75,8 +75,8 @@ OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
-    d_defaultTarget(0),
-    d_displaySize(display_size)
+    d_displaySize(display_size),
+    d_defaultTarget(0)
 {
     init(true, set_glew_experimental);
     d_defaultTarget = new OpenGLViewportTarget(*this);
@@ -107,6 +107,9 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
         //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
         glGetError();
     }
+#else
+    CEGUI_UNUSED(init_glew);
+    CEGUI_UNUSED(set_glew_experimental);
 #endif
     OpenGLInfo::getSingleton().init();
     initialiseMaxTextureSize();

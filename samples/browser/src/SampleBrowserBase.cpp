@@ -136,7 +136,6 @@ SampleBrowserBase::~SampleBrowserBase()
 *************************************************************************/
 int SampleBrowserBase::run()
 {
-    bool caught_exception(false);
     try
     {
         if (initialise("CEGUI.log", CEGUI::String()))

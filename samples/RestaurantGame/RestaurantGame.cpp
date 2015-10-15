@@ -502,7 +502,7 @@ void RestaurantGameSample::selectedWeapon(SelectedWeapon weapon)
     }
 }
 
-bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs&)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     weaponIndex = (weaponIndex - 1) % 3;
@@ -513,7 +513,7 @@ bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs&
     return false;
 }
 
-bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs&)
 {
     d_root->removeChild(d_rootGameOver);
     d_rootIngame->addChild(d_cursorWnd);
@@ -523,7 +523,7 @@ bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool RestaurantGameSample::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleWeaponLeftArrowClicked(const CEGUI::EventArgs&)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );
