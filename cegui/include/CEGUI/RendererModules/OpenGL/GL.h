@@ -142,6 +142,9 @@ public:
     /*!
     \brief
         Returns true if "S3TC" texture compression is supported.
+
+        Note: Works only with Epoxy OR with desktop OpenGL >= 3.0. Otherwise
+              returns false.
     */
     bool isS3tcSupported() const { return d_isS3tcSupported; }
 
