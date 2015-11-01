@@ -70,6 +70,14 @@ if ((WIN32 OR APPLE) AND NOT CMAKE_PREFIX_PATH)
     set (CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
+elseif (NOT CMAKE_VERSION VERSION_LESS "3.1")
+    set (CMAKE_C_STANDARD_REQUIRED TRUE)
+    set (CMAKE_C_STANDARD "99")
+endif ()
+
 # Look for packages
 find_package(PCRE)
 find_package(Freetype)
