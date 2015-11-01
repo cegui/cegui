@@ -267,12 +267,10 @@ namespace CEGUI
         }
 
         // Get total formatted height.
-        const float textHeight =
-          d_formattedRenderedString->getVerticalExtent(&srcWindow);
+        const float textHeight = d_formattedRenderedString->getVerticalExtent(&srcWindow);
 
         // handle dest area adjustments for vertical formatting.
-        const VerticalTextFormatting vertFormatting =
-          d_vertFormatting.get(srcWindow);
+        const VerticalTextFormatting vertFormatting = d_vertFormatting.get(srcWindow);
 
         switch(vertFormatting)
         {
@@ -294,10 +292,9 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // add geometry for text to the target window.
-        d_formattedRenderedString->draw(&srcWindow,
-          srcWindow.getGeometryBuffer(), destRect.getPosition(), &finalColours,
-          clipper);
-
+        d_formattedRenderedString->draw(&srcWindow, srcWindow.getGeometryBuffer(),
+                                        destRect.getPosition(),
+                                        &finalColours, clipper);
     }
 
     const Font* TextComponent::getFontObject(const Window& window) const
