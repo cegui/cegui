@@ -5582,6 +5582,8 @@ typedef std::string String;
 
 }
 
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_STD
+
 namespace std
 {
 
@@ -5598,5 +5600,7 @@ struct hash<CEGUI::String>
 };
 
 }
+
+#endif
 
 #endif
