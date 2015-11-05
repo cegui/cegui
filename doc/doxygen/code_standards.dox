@@ -113,7 +113,7 @@ The following details the general code style and layout that should be used.
 - Boolean getter functions should always start with "is". Please think of meaningful names in that context, e.g. for plural, instead of "areCatsFuzzy" do NOT use "isCatsFuzzy" but use "isEachCatFuzzy" or "isEveryCatFuzzy", instead of "areVaosSupported" you could use "isVaoSupported", etc. Whatever you choose, make it both readable and grammatically correct. Sometimes opening a thesaurus may help you find the right words.
 
 @subsection code_standards_sec_2_2 Code Formatting Style and Other Tips
-- Lines in code files should be no more than 80 characters long.
+- Code or just plain text, such as comments, should be no more than 80 characters long per line. Long lines are more difficult to read and may lead to general bad programming practice.
 
 - Tab spacing size should be 4. But...
 
