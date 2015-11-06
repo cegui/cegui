@@ -113,9 +113,7 @@ The following details the general code style and layout that should be used.
 - Boolean getter functions should always start with "is". Please think of meaningful names in that context, e.g. for plural, instead of "areCatsFuzzy" do NOT use "isCatsFuzzy" but use "isEachCatFuzzy" or "isEveryCatFuzzy", instead of "areVaosSupported" you could use "isVaoSupported", etc. Whatever you choose, make it both readable and grammatically correct. Sometimes opening a thesaurus may help you find the right words.
 
 @subsection code_standards_sec_2_2 Code Formatting Style and Other Tips
-- Generally speaking no line in any file - whether code or just plain
-text - should be more than 80 characters long. Long lines are really hard to
-read and lead to general bad programming practice.
+- Code or just plain text, such as comments, should be no more than 80 characters long per line. Long lines are more difficult to read and may lead to general bad programming practice.
 
 - Tab spacing size should be 4. But...
 
@@ -317,14 +315,17 @@ a_ptr = &an_object;
 
 - Magic numbers should not appear in production code; use constant definitions instead.  In general the only number that may appear in production code is \c 0.
 
-- Use of \c NULL is not allowed; use \c 0 instead.  \c NULL is just a macro definition and does not exist in any other form in the C++ language, so it should not be used.
+- For a null pointer, use only \c nullptr in %CEGUI 1.x onward, and only \c 0 (not \c NULL) in %CEGUI 0.x.
 
 - When defining class constructors, use of member initialiser lists is to be strongly preferred over the use of assignments in the constructor body.
 
 - Only use C++ style casts.  C style casts should not be used.  Or better yet, find a way not to use the cast at all!
 
-- Do not use any language or STL constructs from C++11. We intend to support
-non-c++11 compilers for the forseeable future.
+- Don't use regular \c enum in %CEGUI 1.x onward, but only <tt>enum class</tt>. Don't use <tt>enum class</tt> in %CEGUI 0.x, but only regular \c enum.
+
+- Don't use C++11 features in %CEGUI 0.x. You can use C++11 features in %CEGUI 1.x onward, only as long as they're explicity detailed in this document. If a feature you wish to use is not listed here, you may propose to include it.
+
+- Don't use C++14 features.
 
 @subsection code_standards_sec_2_3 astyle - Artistic Style
 The following parameters for astyle may be used to get a subset of all the code standards outlined in this document. It is by no means enough to just run this on dirty source code but it will get you closer.
