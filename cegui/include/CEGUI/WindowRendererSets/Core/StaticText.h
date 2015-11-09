@@ -199,10 +199,10 @@ namespace CEGUI
         //! \deprecated
         void configureScrollbars(void);
 
-        Scrollbar* getVertScrollbar(void) const;
-        Scrollbar* getHorzScrollbar(void) const;
-        Rectf getTextRenderArea(bool should_update=true) const;
-        Sizef getDocumentSize(bool should_update=true) const;
+        Scrollbar* getVertScrollbar() const;
+        Scrollbar* getHorzScrollbar() const;
+        Rectf getTextRenderArea() const;
+        Sizef getDocumentSize() const;
 
         //! \deprecated
         Sizef getDocumentSize(const Rectf& renderArea) const;
@@ -239,6 +239,12 @@ namespace CEGUI
             date.
         */
         mutable bool d_formatValid;
+
+    private:
+        Scrollbar* getVertScrollbar(bool should_update) const;
+        Scrollbar* getHorzScrollbar(bool should_update) const;
+        Rectf getTextRenderArea(bool should_update) const;
+        Sizef getDocumentSize(bool should_update) const;
     };
 
 } // End of  CEGUI namespace section
