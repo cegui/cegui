@@ -140,11 +140,11 @@ namespace CEGUI
     *************************************************************************/
     void FalagardStaticText::renderScrolledText()
     {
+        updateFormatting();
+
         // get destination area for the text.
         const Rectf clipper(getTextRenderArea());
         Rectf absarea(clipper);
-
-        updateFormatting();
 
         // see if we may need to adjust horizontal position
         const Scrollbar* const horzScrollbar = getHorzScrollbar();
@@ -194,9 +194,12 @@ namespace CEGUI
                 absarea.d_min.d_y = absarea.d_max.d_y - textHeight;
                 break;
 
-            case VTF_TOP_ALIGNED: // TODO: What should we do in this case?
-            default:
+            case VTF_TOP_ALIGNED:
                 break;
+
+            default:
+                CEGUI_THROW(InvalidRequestException(
+                  "Invalid vertical formatting."));
             }
 
         // calculate final colours
@@ -229,8 +232,11 @@ namespace CEGUI
     /************************************************************************
         Gets the text rendering area
     *************************************************************************/
-    Rectf FalagardStaticText::getTextRenderArea(void) const
+    Rectf FalagardStaticText::getTextRenderArea(bool should_update) const
     {
+        if (should_update)
+            updateFormatting();
+
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
         bool v_visible = vertScrollbar->isVisible();
@@ -267,10 +273,12 @@ namespace CEGUI
     /************************************************************************
         Gets the pixel size of the document
     *************************************************************************/
-    Sizef FalagardStaticText::getDocumentSize() const
+    Sizef FalagardStaticText::getDocumentSize(bool should_update) const
     {
-        updateFormatting();
-        return getDocumentSizeWithoutUpdating();
+        if (should_update)
+            updateFormatting();
+        return Sizef(d_formattedRenderedString->getHorizontalExtent(d_window),
+                     d_formattedRenderedString->getVerticalExtent(d_window));
     }
 
     /************************************************************************
@@ -347,10 +355,10 @@ namespace CEGUI
         vertScrollbar->hide();
         horzScrollbar->hide();
 
-        Rectf renderArea(getTextRenderArea());
+        Rectf renderArea(getTextRenderArea(false));
         Sizef renderAreaSize(renderArea.getSize());
         d_formattedRenderedString->format(getWindow(), renderAreaSize);
-        Sizef documentSize(getDocumentSizeWithoutUpdating());
+        Sizef documentSize(getDocumentSize(false));
         bool showVert = (documentSize.d_height > renderAreaSize.d_height)  &&
                         d_enableVertScrollbar;
         bool showHorz = (documentSize.d_width > renderAreaSize.d_width)  &&
@@ -358,13 +366,13 @@ namespace CEGUI
         vertScrollbar->setVisible(showVert);
         horzScrollbar->setVisible(showHorz);
 
-        Rectf updatedRenderArea = getTextRenderArea();
+        Rectf updatedRenderArea = getTextRenderArea(false);
         if (renderArea != updatedRenderArea)
         {
             renderArea = updatedRenderArea;
             renderAreaSize = renderArea.getSize();
             d_formattedRenderedString->format(getWindow(), renderAreaSize);
-            documentSize = getDocumentSizeWithoutUpdating();
+            documentSize = getDocumentSize(false);
 
             showVert = (documentSize.d_height > renderAreaSize.d_height)  &&
                        d_enableVertScrollbar;
@@ -373,13 +381,13 @@ namespace CEGUI
             vertScrollbar->setVisible(showVert);
             horzScrollbar->setVisible(showHorz);
 
-            updatedRenderArea = getTextRenderArea();
+            updatedRenderArea = getTextRenderArea(false);
             if (renderArea != updatedRenderArea)
             {
                 renderArea = updatedRenderArea;
                 renderAreaSize = renderArea.getSize();
                 d_formattedRenderedString->format(getWindow(), renderAreaSize);
-                documentSize = getDocumentSizeWithoutUpdating();
+                documentSize = getDocumentSize(false);
             }
         }
 
@@ -617,13 +625,6 @@ bool FalagardStaticText::handleFontRenderSizeChange(const Font* const font)
     }
 
     return res;
-}
-
-//----------------------------------------------------------------------------//
-Sizef FalagardStaticText::getDocumentSizeWithoutUpdating() const
-{
-    return Sizef(d_formattedRenderedString->getHorizontalExtent(d_window),
-                 d_formattedRenderedString->getVerticalExtent(d_window));
 }
 
 //----------------------------------------------------------------------------//
