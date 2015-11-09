@@ -214,71 +214,25 @@ namespace CEGUI
     /************************************************************************
         Returns the vertical scrollbar component
     *************************************************************************/
-    Scrollbar* FalagardStaticText::getVertScrollbar(void) const
+    Scrollbar* FalagardStaticText::getVertScrollbar() const
     {
-        // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(d_window->getChild(VertScrollbarName));
-    }
-
-    /************************************************************************
-        Returns the horizontal scrollbar component
-    *************************************************************************/
-    Scrollbar* FalagardStaticText::getHorzScrollbar(void) const
-    {
-        // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(d_window->getChild(HorzScrollbarName));
+        return getVertScrollbar(true);
     }
 
     /************************************************************************
         Gets the text rendering area
     *************************************************************************/
-    Rectf FalagardStaticText::getTextRenderArea(bool should_update) const
+    Rectf FalagardStaticText::getTextRenderArea() const
     {
-        if (should_update)
-            updateFormatting();
-
-        Scrollbar* vertScrollbar = getVertScrollbar();
-        Scrollbar* horzScrollbar = getHorzScrollbar();
-        bool v_visible = vertScrollbar->isVisible();
-        bool h_visible = horzScrollbar->isVisible();
-
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = getLookNFeel();
-
-        String area_name(d_frameEnabled ? "WithFrameTextRenderArea" : "NoFrameTextRenderArea");
-
-        // if either of the scrollbars are visible, we might want to use a special rendering area
-        if (v_visible || h_visible)
-        {
-            if (h_visible)
-            {
-                area_name += "H";
-            }
-            if (v_visible)
-            {
-                area_name += "V";
-            }
-            area_name += "Scroll";
-        }
-
-        if (wlf.isNamedAreaDefined(area_name))
-        {
-            return wlf.getNamedArea(area_name).getArea().getPixelRect(*d_window);
-        }
-
-        // default to plain WithFrameTextRenderArea
-        return wlf.getNamedArea("WithFrameTextRenderArea").getArea().getPixelRect(*d_window);
+        return getTextRenderArea(true);
     }
 
     /************************************************************************
         Gets the pixel size of the document
     *************************************************************************/
-    Sizef FalagardStaticText::getDocumentSize(bool should_update) const
+    Sizef FalagardStaticText::getDocumentSize() const
     {
-        if (should_update)
-            updateFormatting();
-        return Sizef(d_formattedRenderedString->getHorizontalExtent(d_window),
-                     d_formattedRenderedString->getVerticalExtent(d_window));
+        return getDocumentSize(true);
     }
 
     /************************************************************************
@@ -350,8 +304,8 @@ namespace CEGUI
     *************************************************************************/
     void FalagardStaticText::configureScrollbars() const
     {
-        Scrollbar* vertScrollbar = getVertScrollbar();
-        Scrollbar* horzScrollbar = getHorzScrollbar();
+        Scrollbar* vertScrollbar = getVertScrollbar(false);
+        Scrollbar* horzScrollbar = getHorzScrollbar(false);
         vertScrollbar->hide();
         horzScrollbar->hide();
 
@@ -477,8 +431,8 @@ namespace CEGUI
     void FalagardStaticText::onLookNFeelAssigned()
     {
         // do initial scrollbar setup
-        Scrollbar* vertScrollbar = getVertScrollbar();
-        Scrollbar* horzScrollbar = getHorzScrollbar();
+        Scrollbar* vertScrollbar = getVertScrollbar(false);
+        Scrollbar* horzScrollbar = getHorzScrollbar(false);
 
         vertScrollbar->hide();
         horzScrollbar->hide();
@@ -626,6 +580,87 @@ bool FalagardStaticText::handleFontRenderSizeChange(const Font* const font)
 
     return res;
 }
+
+
+
+    /************************************************************************
+        Returns the vertical scrollbar component
+    *************************************************************************/
+    Scrollbar* FalagardStaticText::getVertScrollbar(bool should_update) const
+    {
+        if (should_update)
+            updateFormatting();
+        // return component created by look'n'feel assignment.
+        return static_cast<Scrollbar*>(d_window->getChild(VertScrollbarName));
+    }
+
+    /************************************************************************
+        Returns the horizontal scrollbar component
+    *************************************************************************/
+    Scrollbar* FalagardStaticText::getHorzScrollbar(bool should_update) const
+    {
+        if (should_update)
+            updateFormatting();
+        // return component created by look'n'feel assignment.
+        return static_cast<Scrollbar*>(d_window->getChild(HorzScrollbarName));
+    }
+
+    /************************************************************************
+        Returns the horizontal scrollbar component
+    *************************************************************************/
+    Scrollbar* FalagardStaticText::getHorzScrollbar() const
+    {
+        return getHorzScrollbar(true);
+    }
+
+    /************************************************************************
+        Gets the text rendering area
+    *************************************************************************/
+    Rectf FalagardStaticText::getTextRenderArea(bool should_update) const
+    {
+        Scrollbar* vertScrollbar = getVertScrollbar(should_update);
+        Scrollbar* horzScrollbar = getHorzScrollbar(should_update);
+        bool v_visible = vertScrollbar->isVisible();
+        bool h_visible = horzScrollbar->isVisible();
+
+        // get WidgetLookFeel for the assigned look.
+        const WidgetLookFeel& wlf = getLookNFeel();
+
+        String area_name(d_frameEnabled ? "WithFrameTextRenderArea" : "NoFrameTextRenderArea");
+
+        // if either of the scrollbars are visible, we might want to use a special rendering area
+        if (v_visible || h_visible)
+        {
+            if (h_visible)
+            {
+                area_name += "H";
+            }
+            if (v_visible)
+            {
+                area_name += "V";
+            }
+            area_name += "Scroll";
+        }
+
+        if (wlf.isNamedAreaDefined(area_name))
+        {
+            return wlf.getNamedArea(area_name).getArea().getPixelRect(*d_window);
+        }
+
+        // default to plain WithFrameTextRenderArea
+        return wlf.getNamedArea("WithFrameTextRenderArea").getArea().getPixelRect(*d_window);
+    }
+
+    /************************************************************************
+        Gets the pixel size of the document
+    *************************************************************************/
+    Sizef FalagardStaticText::getDocumentSize(bool should_update) const
+    {
+        if (should_update)
+            updateFormatting();
+        return Sizef(d_formattedRenderedString->getHorizontalExtent(d_window),
+                     d_formattedRenderedString->getVerticalExtent(d_window));
+    }
 
 //----------------------------------------------------------------------------//
 
