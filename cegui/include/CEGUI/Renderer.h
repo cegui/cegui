@@ -34,6 +34,8 @@
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/Sizef.h"
 
+#include <glm/mat4x4.hpp>
+
 #include <set>
 
 #if defined(_MSC_VER)

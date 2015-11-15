@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/SharedStringstream.h"
 #include <sstream>
 #include <iterator>
 
@@ -142,8 +143,11 @@ namespace CEGUI
         }
 
         int val;
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         std::istringstream strm(getValue(attrName).c_str());
-
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        std::istringstream strm(getValue(attrName).toUtf8String().c_str());
+#endif
         strm >> val;
 
         // Check for success and end-of-file
@@ -164,7 +168,8 @@ namespace CEGUI
         }
 
         float val;
-        std::istringstream strm(getValue(attrName).c_str());
+        std::stringstream& strm = SharedStringstream::GetPreparedStream();
+        strm << getValue(attrName);
 
         strm >> val;
 
@@ -177,7 +182,5 @@ namespace CEGUI
 
         return val;
     }
-
-
 
 } // End of  CEGUI namespace section

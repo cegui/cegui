@@ -238,7 +238,8 @@ void getGLErrors(const char *location)
     if (error != GL_NO_ERROR)
     {
         std::stringstream stringStream;
-        stringStream << "OpenGLBaseRenderer: Notification - OpenGL error at " << location << ": " << std::endl; 
+        stringStream << "OpenGLBaseRenderer: Notification - OpenGL error at ";
+        stringStream << location << ": " << std::endl; 
 
         switch (error)
         {

@@ -52,7 +52,7 @@ public:
         Pointer to an array of utf16 values.  This buffer should be deleted by
         calling the deleteUTF16Buffer function.
     */
-    virtual std::uint16_t* stringToUTF16(const String& input) const = 0;
+    virtual char16_t* stringToUTF16(const String& input) const = 0;
 
     /*!
     \brief
@@ -87,7 +87,7 @@ public:
     \return
         String object holding the transcoded data.
     */
-    virtual String stringFromUTF16(const std::uint16_t* input) const = 0;
+    virtual String stringFromUTF16(const char16_t* input) const = 0;
 
     /*
     \brief
@@ -112,7 +112,7 @@ public:
     virtual String stringFromStdWString(const std::wstring& input) const = 0;
 
     //! deletes a buffer returned from the stringToUTF16 function.
-    virtual void deleteUTF16Buffer(std::uint16_t* input) const = 0;
+    virtual void deleteUTF16Buffer(char16_t* input) const = 0;
 
 protected:
     virtual ~StringTranscoder() {}

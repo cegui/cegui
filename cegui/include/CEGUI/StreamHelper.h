@@ -62,9 +62,10 @@ std::istream& optionalChar(std::istream& inputStream)
 
 /*!
 \brief
-    Helper method to check for a match with a mandatory character in an istream. First, it discards leading whitespaces, then it 
-    checks if the subsequent character of the stream matches the provided one. If so, then the character is extracted/ignored, else
-    we set the fail bit for this stream.
+    Helper method to check for a match with a mandatory character in an istream.
+    First, it discards leading whitespaces, then it  checks if the subsequent
+    character of the stream matches the provided one. If so, then the character is
+    extracted/ignored, else we set the fail bit for this stream.
     Usage, for example: strStream >> mandatoryChar<'x'>;
 */
 template<char matchingCharacter>
@@ -88,22 +89,29 @@ std::istream& mandatoryChar(std::istream& inputStream)
 
 /*!
 \brief
-    A class that can be used to match and extract a mandatory sequence of characters from a string using
-    the stream operator ">>". If a space is supplied in the string supplied through the constructor, all
-    whitespaces will be discarded starting at the current position in the stream until a non-whitespace
-    character is found. If a character mismatch is encountered, the fail bit will be set for the input stream.
+    A class that can be used to match and extract a mandatory sequence of characters from a string
+    using the stream operator ">>". If a space is supplied in the string supplied through the
+    constructor, all whitespaces will be discarded starting at the current position in the stream
+    until a non-whitespace character is found. If a character mismatch is encountered, the fail bit
+    will be set for the input stream.
     Usage for example: strStream >> MandatoryString("mustMatch");
 */
 class CEGUIEXPORT MandatoryString
 {
 public:
-    MandatoryString(char const* mandatoryString);
-
     /*!
     \brief
-        A class that can be used to match and extract a mandatory sequence of characters 
+        Constructor for the class that can be used to match and extract a mandatory sequence of
+        characters from a string using the stream operator ">>". If a space is supplied in the
+        string supplied through the constructor, all whitespaces will be discarded starting at the
+        current position in the stream until a non-whitespace character is found. If a character
+        mismatch is encountered, the fail bit will be set for the input stream.
+        Usage for example: strStream >> MandatoryString("mustMatch");
     */
-    CEGUIEXPORT friend std::istream& operator>> (std::istream& inputStream, const MandatoryString& mandatoryString);  
+    MandatoryString(char const* mandatoryString);
+
+    CEGUIEXPORT friend std::istream& operator>> (std::istream& inputStream,
+                                                 const MandatoryString& mandatoryString);  
 
 private:
     //! Mandatory characters, as provided in the constructor

@@ -29,6 +29,7 @@
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
+#include "CEGUI/SharedStringstream.h"
 #ifdef __ANDROID__
 #   include <android/log.h> 
 #else
@@ -50,9 +51,12 @@ DefaultLogger::DefaultLogger(void)
     logEvent("+                          (http://www.cegui.org.uk/)                         +");
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 #ifndef __ANDROID__
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    logEvent("CEGUI::Logger singleton created. " + String(addr_buff));
+    const void* addressPtr = static_cast<const void*>(this);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << addressPtr;
+    String addressStr(sstream.str());
+
+    logEvent("CEGUI::Logger singleton created. " + addressStr);
 #endif
 }
 
@@ -62,9 +66,12 @@ DefaultLogger::~DefaultLogger(void)
 #ifndef __ANDROID__
     if (d_ostream.is_open())
     {
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-        logEvent("CEGUI::Logger singleton destroyed. " + String(addr_buff));
+        const void* addressPtr = static_cast<const void*>(this);
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+        sstream << addressPtr;
+        String addressStr(sstream.str());
+
+        logEvent("CEGUI::Logger singleton destroyed. " + addressStr);
         d_ostream.close();
     }
 #endif

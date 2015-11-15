@@ -139,10 +139,8 @@ public:
 private:
     /// mime type of the current content
     String d_mimeType;
-    // just implementation specific
-    typedef char BufferElement;
     /// raw data buffer containing current clipboard contents
-    BufferElement* d_buffer;
+    String::value_type* d_buffer;
     /// size (in bytes) of the raw buffer
     size_t d_bufferSize;
 

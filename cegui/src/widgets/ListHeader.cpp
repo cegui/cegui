@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/ListHeader.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/SharedStringstream.h"
 #include <sstream>
 
 
@@ -723,11 +724,11 @@ void ListHeader::setColumnWidth(unsigned int column, const UDim& width)
 ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, unsigned int id, const UDim& width)
 {
 	// Build unique name
-	std::stringstream name;
+	std::stringstream& name = SharedStringstream::GetPreparedStream();
 	name << SegmentNameSuffix << d_uniqueIDNumber;
 
 	// create segment.
-	ListHeaderSegment* newseg = createNewSegment(name.str().c_str());
+	ListHeaderSegment* newseg = createNewSegment(name.str());
 	d_uniqueIDNumber++;
 
 	// setup segment;

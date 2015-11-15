@@ -368,14 +368,15 @@ String WindowManager::getLayoutAsString(const Window& window) const
     std::ostringstream str;
     writeLayoutToStream(window, str);
 
-    return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
+    return String(str.str().c_str());
 }
 
 //----------------------------------------------------------------------------//
 void WindowManager::saveLayoutToFile(const Window& window,
                                      const String& filename) const
 {
-    std::ofstream stream(filename.c_str());
+    std::ofstream stream;
+    stream << filename;
 
     if (!stream.good())
         throw FileIOException(

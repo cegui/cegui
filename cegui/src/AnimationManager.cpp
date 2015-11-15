@@ -36,6 +36,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/Quaternion.h"
+#include "CEGUI/SharedStringstream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -56,10 +57,13 @@ const String AnimationManager::GeneratedAnimationNameBase("__ceanim_uid_");
 *************************************************************************/
 AnimationManager::AnimationManager(void)
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    const void* addressPtr = static_cast<const void*>(this);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << addressPtr;
+    String addressStr(sstream.str());
+
     Logger::getSingleton().logEvent(
-        "CEGUI::AnimationManager singleton created " + String(addr_buff));
+        "CEGUI::AnimationManager singleton created " + addressStr);
 
     // todo: is this too dirty?
 #   define addBasicInterpolator(i) { Interpolator* in = i; addInterpolator(in); d_basicInterpolators.push_back(in); }
@@ -106,10 +110,13 @@ AnimationManager::~AnimationManager()
 
     d_basicInterpolators.clear();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    const void* addressPtr = static_cast<const void*>(this);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << addressPtr;
+    String addressStr(sstream.str());
+
     Logger::getSingleton().logEvent(
-        "CEGUI::AnimationManager singleton destroyed " + String(addr_buff));
+        "CEGUI::AnimationManager singleton destroyed " + addressStr);
 }
 
 //----------------------------------------------------------------------------//
@@ -409,7 +416,7 @@ String AnimationManager::getAnimationDefinitionAsString(const Animation& animati
     std::ostringstream str;
     writeAnimationDefinitionToStream(animation, str);
 
-    return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
+    return String(reinterpret_cast<const String::value_type*>(str.str().c_str()));
 }
 
 //---------------------------------------------------------------------------//
