@@ -253,8 +253,6 @@ public:
     */
     inline friend std::istream& operator >> (std::istream& inStream, ColourRect& val)
     {
-        std::stringstream currentColourStream;
-
         // Match and remove the preceding string and all trailing whitespaces
         inStream >> MandatoryString(" tl : ") >> val.d_top_left >>
             MandatoryString(" tr : ") >> val.d_top_right >>
