@@ -35,9 +35,9 @@ enum CEGuiRendererType
 {
     OgreGuiRendererType,            //!< Renderer that uses the Ogre engine.
     Direct3D11GuiRendererType,      //!< Renderer that uses the Direct3D 11 API.
-    OpenGLGuiRendererType,          //!< Renderer that uses the OpenGL API.
-	OpenGL3GuiRendererType,         //!< Renderer that uses the OpenGL3 API.
-    OpenglEs2GuiRendererType,
+    OpenGLGuiRendererType,          //!< Renderer that uses the desktop OpenGL 1.2 API.
+    OpenGL3GuiRendererType,         //!< Renderer that uses the desktop OpenGL 3.2 API.
+    OpenglEs2GuiRendererType,       //!< Renderer that uses the OpenGL ES 2.0 API.
     OpenglEs2AlternateGuiRendererType,
     IrrlichtGuiRendererType,        //!< Renderer that uses the Irrlicht engine.
     DirectFBGuiRendererType,        //!< Renderer that uses the DirectFB engine.

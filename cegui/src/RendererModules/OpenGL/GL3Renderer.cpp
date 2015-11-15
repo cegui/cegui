@@ -59,8 +59,6 @@ namespace CEGUI
 #ifndef APIENTRY
 #   define APIENTRY
 #endif
-//! Dummy function for if real ones are not present (saves testing each render)
-static void APIENTRY activeTextureDummy(GLenum) {}
 
 //----------------------------------------------------------------------------//
 // template specialised class that does the real work for us

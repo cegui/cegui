@@ -430,10 +430,7 @@ protected:
 
     // Do not allow copying, assignment, or any other usage than simple creation.
     EventSet(const EventSet&) {}
-    EventSet& operator=(EventSet&)
-    {
-        return *this;
-    }
+    EventSet& operator=(const EventSet&) { return *this; }
 
     typedef std::unordered_map<String, Event*> EventMap;
     EventMap    d_events;

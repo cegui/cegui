@@ -383,7 +383,8 @@ public:
     \param rangeSelection
         True if this entry should do a range selection
     */
-    virtual void notifyItemActivated(ItemEntry*, bool cumulativeSelection, bool rangeSelection) {}
+    virtual void notifyItemActivated
+      (ItemEntry*, bool /*cumulativeSelection*/, bool /*rangeSelection*/) {}
 
     /*!
     \brief

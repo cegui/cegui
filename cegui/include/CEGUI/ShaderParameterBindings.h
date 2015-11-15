@@ -86,7 +86,7 @@ public:
     virtual ~ShaderParameter()
     {}
 
-    ShaderParameter(const ShaderParameter& other)
+    ShaderParameter(const ShaderParameter& /*other*/)
     {}
 
     /*!

@@ -42,11 +42,11 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_renderer(*System::getSingleton().getRenderer()),
     d_textarget(target),
     d_owner(&owner),
+    d_geometryBuffer(d_renderer.createGeometryBufferTextured()),
     d_geometryValid(false),
     d_position(0, 0),
     d_size(0, 0),
-    d_rotation(1, 0, 0, 0), // <-- IDENTITY
-    d_geometryBuffer(d_renderer.createGeometryBufferTextured())
+    d_rotation(1, 0, 0, 0) // <-- IDENTITY
 {
     d_geometryBuffer.setBlendMode(BM_RTT_PREMULTIPLIED);
 }

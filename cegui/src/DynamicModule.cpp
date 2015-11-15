@@ -168,19 +168,21 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
     if (!envModuleDir.empty())
         handle = DYNLIB_LOAD(envModuleDir + '/' + name);
 
-    if (!handle)
     #ifdef __APPLE__
+    if (!handle)
         // on apple, look in the app bundle frameworks directory
         handle = DYNLIB_LOAD("@executable_path/../Frameworks/" + name);
-
-        if (!handle)
     #endif
+
+    if (!handle)
         // try loading without any explicit location (i.e. use OS search path)
         handle = DYNLIB_LOAD(name);
 
     // finally, try using the compiled-in module directory
+    #if defined(CEGUI_MODULE_DIR)
     if (!handle)
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
+    #endif
 
     return handle;
 }

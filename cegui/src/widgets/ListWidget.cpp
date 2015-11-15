@@ -64,7 +64,7 @@ void ListWidget::setIndexSelectionState(size_t item_index, bool state)
 }
 
 //----------------------------------------------------------------------------//
-void ListWidget::setIndexSelectionState(StandardItem* item, bool state)
+void ListWidget::setIndexSelectionState(StandardItem* item, bool /*state*/)
 {
     if (item == 0)
     {

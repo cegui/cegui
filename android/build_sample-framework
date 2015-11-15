@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. "$myScriptsDir/sample-framework_common"
+
+cd "$androidSampleFrameworkDir"
+eval echo -n "'$(<AndroidManifest.xml.in)'" >AndroidManifest.xml
+eval echo -n "\"$(<ant.properties.in)\"" >ant.properties
+eval echo -n "\"$(<jni/Application.mk.in)\"" >jni/Application.mk
+eval echo -n "\"$(<jni/Android.mk.in)\"" >jni/Android.mk
+eval echo -n "'$(<jni/deps/Android.mk.in)'" >jni/deps/Android.mk
+for resolution in h m xh xxh; do
+    dest="res/drawable-${resolution}dpi"
+    mkdir -p "$dest"
+    cp "$ceguiSrcDir/datafiles/imagesets/logo.png" "$dest/"
+done
+if [ -f project.properties ] && [ -f local.properties ]; then
+    ant clean
+    ndk-build clean
+fi
+: \
+    &&  android update project --path . --target "android-$androidBuildTargetApiLevel" \
+    &&  ndk-build "-j$buildNumOfProcesses"
+if [ $? -eq 0 ]; then
+    case "$sampleFrameworkAndroidProjectBuildType" in
+    Debug)
+        ant debug  &&  ant installd
+        ;;
+    Release)
+        ant release  &&  ant installr
+        ;;
+    *)
+        echo 'Error: invalid "$sampleFrameworkAndroidProjectBuildType"'
+        exit 1
+        ;;
+    esac
+fi

@@ -149,7 +149,7 @@ void HelloWorldSample::deinitialise()
 {
 }
 
-bool HelloWorldSample::handleHelloWorldClicked(const CEGUI::EventArgs& args)
+bool HelloWorldSample::handleHelloWorldClicked(const CEGUI::EventArgs&)
 {
     std::cout << "Hello World!" << std::endl;
 

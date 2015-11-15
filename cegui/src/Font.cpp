@@ -75,12 +75,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 Font::~Font()
 {
     if (d_glyphPageLoaded)
-    {
-        const unsigned int old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
-            + BITS_PER_UINT - 1) / BITS_PER_UINT;
-
         delete[] d_glyphPageLoaded;
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -129,9 +124,6 @@ void Font::setMaxCodepoint(utf32 codepoint)
 {
     if (d_glyphPageLoaded)
     {
-        const unsigned int old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
-            + BITS_PER_UINT - 1) / BITS_PER_UINT;
-
         delete[] d_glyphPageLoaded;
     }
 

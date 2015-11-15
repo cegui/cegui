@@ -91,7 +91,8 @@ Element::~Element()
 {}
 
 //----------------------------------------------------------------------------//
-Element::Element(const Element&):
+Element::Element(const Element& other):
+    EventSet(other),
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {}

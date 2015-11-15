@@ -130,35 +130,35 @@ void ModelViewSample::deinitialise()
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleClearItems(const EventArgs& e)
+bool ModelViewSample::handleClearItems(const EventArgs&)
 {
     d_inventoryModel.clear();
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleRemoveSelectedListItems(const EventArgs& e)
+bool ModelViewSample::handleRemoveSelectedListItems(const EventArgs&)
 {
     removeSelectedItemsFromView(d_listView);
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleRemoveSelectedTreeItems(const EventArgs& e)
+bool ModelViewSample::handleRemoveSelectedTreeItems(const EventArgs&)
 {
     removeSelectedItemsFromView(d_treeView);
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleAddRandomItem(const EventArgs& e)
+bool ModelViewSample::handleAddRandomItem(const EventArgs&)
 {
     d_inventoryModel.addRandomItemWithChildren(d_inventoryModel.getRootIndex(), 0);
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleAddItemInList(const EventArgs& e)
+bool ModelViewSample::handleAddItemInList(const EventArgs&)
 {
     const std::vector<ModelIndexSelectionState>& selections = d_listView->getIndexSelectionStates();
     if (selections.empty())
@@ -171,7 +171,7 @@ bool ModelViewSample::handleAddItemInList(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleAddItemInTree(const EventArgs& e)
+bool ModelViewSample::handleAddItemInTree(const EventArgs&)
 {
     const std::vector<ModelIndexSelectionState>& selections = d_treeView->getIndexSelectionStates();
     if (selections.empty())
@@ -184,14 +184,14 @@ bool ModelViewSample::handleAddItemInTree(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleUpdateListItemName(const EventArgs& e)
+bool ModelViewSample::handleUpdateListItemName(const EventArgs&)
 {
     updateSelectedIndexText(d_listView, d_txtNewItemName->getText());
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::handleUpdateTreeItemName(const EventArgs& e)
+bool ModelViewSample::handleUpdateTreeItemName(const EventArgs&)
 {
     updateSelectedIndexText(d_treeView, d_txtNewItemName->getText());
     return true;
@@ -219,7 +219,7 @@ void ModelViewSample::updateSelectedIndexText(ItemView* view, const String& text
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::toggleMultiSelect(const EventArgs& e)
+bool ModelViewSample::toggleMultiSelect(const EventArgs&)
 {
     bool enabled = d_listView->isMultiSelectEnabled();
 
@@ -230,7 +230,7 @@ bool ModelViewSample::toggleMultiSelect(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ModelViewSample::toggleSorting(const EventArgs& e)
+bool ModelViewSample::toggleSorting(const EventArgs&)
 {
     Window* switch_button = d_root->getChild("btnSwitchSortingMode");
     ViewSortMode sort_mode = d_listView->getSortMode();

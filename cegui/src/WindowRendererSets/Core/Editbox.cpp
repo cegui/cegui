@@ -201,6 +201,8 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
         if (!firstCharRtl)
             caretIndex--;
     }
+#else
+    CEGUI_UNUSED(visual_text);
 #endif
 
     return caretIndex;
@@ -385,6 +387,11 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
 
         }
     }
+#else
+    CEGUI_UNUSED(wlf);
+    CEGUI_UNUSED(text);
+    CEGUI_UNUSED(text_area);
+    CEGUI_UNUSED(text_offset);
 #endif
 }
 
