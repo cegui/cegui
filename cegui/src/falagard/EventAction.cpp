@@ -29,6 +29,7 @@
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringstream.h"
 
 namespace CEGUI
 {
@@ -144,12 +145,12 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 String EventAction::makeConnectionKeyName(const Window& widget) const
 {
-    char addr[32];
-    std::sprintf(addr, "%p", &widget);
+    const void* addressPtr = static_cast<const void*>(&widget);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << addressPtr;
+    String addressStr(sstream.str());
 
-    return String(addr) +
-           d_eventName +
-           FalagardXMLHelper<ChildEventAction>::toString(d_action);
+    return addressStr + d_eventName + FalagardXMLHelper<ChildEventAction>::toString(d_action);
 }
 
 //----------------------------------------------------------------------------//

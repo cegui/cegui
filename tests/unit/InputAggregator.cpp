@@ -38,7 +38,7 @@ using namespace CEGUI;
 class MockInputEventReceiver : public InputEventReceiver
 {
 public:
-    std::string d_text;
+    CEGUI::String d_text;
     float d_totalScroll;
     glm::vec2 d_cursorPosition;
     std::vector<int> d_semanticValues;

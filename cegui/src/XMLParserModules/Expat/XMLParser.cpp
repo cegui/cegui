@@ -63,9 +63,9 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
     // Parse the data (note that the last true parameter tels Expat that this is the last chunk of the document
     if (!XML_Parse(parser, reinterpret_cast<const char*>(source.getDataPtr()), source.getSize(), true))
     {
-        String exception (String((const encoded_char*)"XML Parsing error '") +
-                          String((const encoded_char*)XML_ErrorString(XML_GetErrorCode(parser))) +
-                          String((const encoded_char*)"' at line ") +
+        String exception (String("XML Parsing error '") +
+                          String(XML_ErrorString(XML_GetErrorCode(parser))) +
+                          String("' at line ") +
                           PropertyHelper<std::uint32_t>::toString(XML_GetCurrentLineNumber(parser)));
         // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
         XML_ParserFree(parser);
@@ -90,21 +90,21 @@ void ExpatParser::startElement(void* data, const char* element, const char** att
     XMLAttributes attrs;
 
     for(size_t i = 0 ; attr[i] ; i += 2)
-        attrs.add((const encoded_char*)attr[i], (const encoded_char*)attr[i+1]);
+        attrs.add(attr[i], attr[i+1]);
 
-    handler->elementStart((const encoded_char*)element, attrs);
+    handler->elementStart(element, attrs);
 }
 
 void ExpatParser::endElement(void* data, const char* element)
 {
     XMLHandler* handler = static_cast<XMLHandler*>(data);
-    handler->elementEnd((const encoded_char*)element);
+    handler->elementEnd(element);
 }
 
 void ExpatParser::characterData(void *data, const char *text, int len)
 {
     XMLHandler* handler = static_cast<XMLHandler*>(data);
-    String str((const encoded_char*)text, static_cast<String::size_type>(len));
+    String str(text, static_cast<String::size_type>(len));
     handler->text(str);
 }
 

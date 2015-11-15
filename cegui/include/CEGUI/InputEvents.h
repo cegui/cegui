@@ -76,7 +76,8 @@ class CEGUIEXPORT TextInputEvent : public InputEvent
 public:
     TextInputEvent() : InputEvent(IET_TextInputEventType) {}
 
-    char d_character;         //!< The character inputted
+    //! The input character
+    CEGUI::String::value_type d_character;         
 };
 
 /*!

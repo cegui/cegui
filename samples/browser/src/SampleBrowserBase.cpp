@@ -133,7 +133,11 @@ int SampleBrowserBase::run()
     }
     catch (CEGUI::Exception& exc)
     {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         outputExceptionMessage(exc.getMessage().c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        outputExceptionMessage(exc.getMessage().toUtf8String().c_str());
+#endif
     }
     catch (std::exception& exc)
     {

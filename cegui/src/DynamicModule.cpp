@@ -166,8 +166,11 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
     const String envModuleDir(getModuleDirEnvVar());
 
     if (!envModuleDir.empty())
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         handle = DYNLIB_LOAD(envModuleDir + '/' + name);
-
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        handle = DYNLIB_LOAD( (envModuleDir + '/' + name).toUtf8String() );
+#endif
     if (!handle)
     #ifdef __APPLE__
         // on apple, look in the app bundle frameworks directory
@@ -176,12 +179,19 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
         if (!handle)
     #endif
         // try loading without any explicit location (i.e. use OS search path)
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         handle = DYNLIB_LOAD(name);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        handle = DYNLIB_LOAD(name.toUtf8String());
+#endif
 
     // finally, try using the compiled-in module directory
     if (!handle)
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
-
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        handle = DYNLIB_LOAD( (CEGUI_MODULE_DIR + name).toUtf8String() );
+#endif
     return handle;
 }
 
@@ -236,7 +246,11 @@ const String& DynamicModule::getModuleName() const
 //----------------------------------------------------------------------------//
 void* DynamicModule::getSymbolAddress(const String& symbol) const
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     return (void*)DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    return (void*)DYNLIB_GETSYM(d_pimpl->d_handle, symbol.toUtf8String());
+#endif
 }
 
 //----------------------------------------------------------------------------//
