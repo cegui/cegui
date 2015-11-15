@@ -86,11 +86,11 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     // (we should probably check the R and B masks and decide based on those)
     if (format == Texture::PF_RGBA)
     {
-        for ((unsigned int j = 0; j < sz.Height; ++j)
+        for (s32 j = 0; j < sz.Height; ++j)
         {
-            for ((unsigned int i = 0; i < sz.Width; ++i)
+            for (s32 i = 0; i < sz.Width; ++i)
             {
-                const std::(unsigned int8_t tmp = dat[i * components + 0];
+                const std::unint8_t tmp = dat[i * components + 0];
                 dat[i * components + 0] = dat[i * components + 2];
                 dat[i * components + 2] = tmp;
             }

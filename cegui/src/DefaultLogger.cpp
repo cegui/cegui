@@ -31,35 +31,29 @@
 #include "CEGUI/System.h"
 #ifdef __ANDROID__
 #   include <android/log.h> 
-#else
-#   include <ctime>
-#   include <iomanip>
 #endif
+#include <ctime>
+#include <iomanip>
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 DefaultLogger::DefaultLogger(void) 
-#ifndef __ANDROID__
    : d_caching(true)
-#endif
 {
     // create log header
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
     logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
     logEvent("+                          (http://www.cegui.org.uk/)                         +");
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
-#ifndef __ANDROID__
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     logEvent("CEGUI::Logger singleton created. " + String(addr_buff));
-#endif
 }
 
 //----------------------------------------------------------------------------//
 DefaultLogger::~DefaultLogger(void)
 {
-#ifndef __ANDROID__
     if (d_ostream.is_open())
     {
         char addr_buff[32];
@@ -67,14 +61,12 @@ DefaultLogger::~DefaultLogger(void)
         logEvent("CEGUI::Logger singleton destroyed. " + String(addr_buff));
         d_ostream.close();
     }
-#endif
 }
 
 //----------------------------------------------------------------------------//
 void DefaultLogger::logEvent(const String& message,
                              LoggingLevel level /* = Standard */)
 {
-#ifndef __ANDROID__
     using namespace std;
 
     time_t et;
@@ -131,43 +123,45 @@ void DefaultLogger::logEvent(const String& message,
     {
         d_cache.push_back(std::make_pair(d_workstream.str().c_str(), level));
     }
-    else if (d_level >= level)
+    if (d_level >= level)
     {
-        // write message
-        d_ostream << d_workstream.str();
-        // ensure new event is written to the file, rather than just being
-        // buffered.
-        d_ostream.flush();
+        if (!d_caching)
+        {
+            // write message
+            d_ostream << d_workstream.str();
+            // ensure new event is written to the file, rather than just being
+            // buffered.
+            d_ostream.flush();
+        }
+        #ifdef __ANDROID__
+            int priority(ANDROID_LOG_UNKNOWN);
+            switch (level)
+            {
+            case Errors:
+                priority = ANDROID_LOG_ERROR;
+                break;
+            case Warnings:
+                priority = ANDROID_LOG_WARN;
+                break;
+            case Standard:
+                priority = ANDROID_LOG_INFO;
+                break;
+            case Informative:
+                priority = ANDROID_LOG_DEBUG;
+                break;
+            case Insane:
+            default:
+                priority = ANDROID_LOG_VERBOSE;
+                break;
+            }
+            __android_log_write(priority, "CEGUI_log", d_workstream.str().c_str());
+        #endif
     }
-#else
-    std::string logName = "CEGUILog";
-    switch (level) {
-        case Errors:
-            __android_log_write (ANDROID_LOG_ERROR, logName.c_str(), message.c_str());
-            break;
-        case Warnings:
-            __android_log_write (ANDROID_LOG_WARN, logName.c_str(), message.c_str());
-            break;
-        case Standard:
-            __android_log_write (ANDROID_LOG_INFO, logName.c_str(), message.c_str());
-            break;
-        case Informative:
-            __android_log_write (ANDROID_LOG_DEBUG, logName.c_str(), message.c_str());
-            break;
-        case Insane:
-            __android_log_write (ANDROID_LOG_DEBUG, logName.c_str(), message.c_str());
-            break;
-        default:
-            __android_log_write (ANDROID_LOG_DEBUG, logName.c_str(), message.c_str());
-            break;
-    }
-#endif
 }
 
 //----------------------------------------------------------------------------//
 void DefaultLogger::setLogFilename(const String& filename, bool append)
 {
-#ifndef __ANDROID__
     // close current log file (if any)
     if (d_ostream.is_open())
         d_ostream.close();
@@ -213,7 +207,6 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
 
         d_cache.clear();
     }
-#endif
 }
 
 //----------------------------------------------------------------------------//

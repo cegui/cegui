@@ -211,7 +211,7 @@ private:
     void clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight);
     void handleSelectionAction(TreeViewItemRenderingState& item, bool toggles_expander);
 
-    void noopAction(TreeViewItemRenderingState& item, bool toggles_expander) {}
+    void noopAction(TreeViewItemRenderingState& /*item*/, bool /*toggles_expander*/) {}
 
     virtual void resortView();
 

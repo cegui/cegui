@@ -232,30 +232,19 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::destroyRenderer()
+bool CEGuiOgreBaseApplication::init(SampleBrowserBase* sampleApp,
+  const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
 {
-    delete d_frameListener;
-
-    CEGUI::OgreRenderer& renderer =
-        *static_cast<CEGUI::OgreRenderer*>(d_renderer);
-    renderer.destroyOgreResourceProvider(
-        *static_cast<CEGUI::OgreResourceProvider*>(d_resourceProvider));
-    renderer.destroyOgreImageCodec(
-        *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
-    CEGUI::OgreRenderer::destroy(renderer);
+    if (!CEGuiBaseApplication::init(sampleApp, logFile, dataPathPrefixOverride))
+        return false;
     delete d_ogreRoot;
     delete d_windowEventListener;
-}
 
-//----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::run()
-{
     // if base initialisation failed or app was cancelled by user, bail out now.
     if (!d_ogreRoot || !d_initialised)
-        return;
+        return false;
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-    d_sampleApp->initialise();
 
     // start rendering via Ogre3D engine.
     try
@@ -268,6 +257,22 @@ void CEGuiOgreBaseApplication::run()
     }
     catch (...)
     {}
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::destroyRenderer()
+{
+    delete d_frameListener;
+
+    CEGUI::OgreRenderer& renderer =
+        *static_cast<CEGUI::OgreRenderer*>(d_renderer);
+    renderer.destroyOgreResourceProvider(
+        *static_cast<CEGUI::OgreResourceProvider*>(d_resourceProvider));
+    renderer.destroyOgreImageCodec(
+        *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
+    CEGUI::OgreRenderer::destroy(renderer);
 }
 
 //----------------------------------------------------------------------------//
@@ -277,7 +282,7 @@ void CEGuiOgreBaseApplication::destroyWindow()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::beginRendering(const float elapsed)
+void CEGuiOgreBaseApplication::beginRendering(const float /*elapsed*/)
 {
     // this is nover called under Ogre, since we're not in control of the
     // rendering process.
@@ -329,20 +334,17 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 
 CEGUI::String CEGuiOgreBaseApplication::getResourcePath(CEGUI::String resource) {
 #ifdef __ANDROID__
-    const char* dataPathPrefix = "/datafiles";
-    const char ext[]= "";
+    return "/datafiles/" + resource;
 #else 
-    const char* dataPathPrefix = getDataPathPrefix();
-    const char ext[]= "/";
+    return getDataPathPrefix() + "/" + resource + "/";
 #endif
-    CEGUI::String path = CEGUI::String(dataPathPrefix)+ "/" + resource + CEGUI::String(ext);
-    return path;
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
+void CEGuiOgreBaseApplication::doFrameUpdate(const float /*elapsed*/)
 {
 }
+
 //----------------------------------------------------------------------------//
 bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args)
 {
@@ -421,7 +423,7 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
 
 //----------------------------------------------------------------------------//
 CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SampleBrowserBase*& sampleApp,
-    Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
+    Ogre::RenderWindow* window, Ogre::Camera* camera)
     : d_baseApp(baseApp),
     d_sampleApp(sampleApp)
 {
@@ -544,7 +546,7 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
+bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent&)
 {
     return true;
 }
@@ -580,7 +582,7 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
+bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent& e)
 {
     d_sampleApp->injectKeyUp(static_cast<CEGUI::Key::Scan>(e.key));
 
@@ -606,18 +608,18 @@ bool CEGuiDemoFrameListener::touchReleased(const OIS::MultiTouchEvent &e)
 
 #else
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
+bool CEGuiDemoFrameListener::mousePressed
+  (const OIS::MouseEvent&, OIS::MouseButtonID id)
 {
     d_sampleApp->injectMouseButtonDown(convertOISButtonToCegui(id));
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
+bool CEGuiDemoFrameListener::mouseReleased
+  (const OIS::MouseEvent&, OIS::MouseButtonID id)
 {
-   d_sampleApp->injectMouseButtonUp(convertOISButtonToCegui(id));
-
+    d_sampleApp->injectMouseButtonUp(convertOISButtonToCegui(id));
     return true;
 }
 

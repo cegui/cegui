@@ -114,7 +114,7 @@ bool EditboxValidationSample::validationChangeHandler(const CEGUI::EventArgs& ar
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxValidationSample::quitButtonHandler(const CEGUI::EventArgs& args)
+bool EditboxValidationSample::quitButtonHandler(const CEGUI::EventArgs&)
 {
     return true;
 }

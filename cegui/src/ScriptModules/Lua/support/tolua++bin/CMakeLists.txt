@@ -5,6 +5,8 @@ set( CORE_SOURCE_FILES
     tolua.c
 )
 
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter")
+
 add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES})
 
 if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)

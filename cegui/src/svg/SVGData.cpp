@@ -377,7 +377,7 @@ void SVGData::elementSVGPolygon(const XMLAttributes& attributes)
 }
 
 //----------------------------------------------------------------------------//
-void SVGData::elementEndLocal(const String& element)
+void SVGData::elementEndLocal(const String& /*element*/)
 {
 }
 

@@ -223,20 +223,6 @@ enum MouseButton
     NoButton
 };
 
-static CursorInputSource convertToCursorInputSource(MouseButton button)
-{
-    if (button == LeftButton)
-        return CIS_Left;
-
-    if (button == RightButton)
-        return CIS_Right;
-
-    if (button == MiddleButton)
-        return CIS_Middle;
-
-    return CIS_None;
-}
-
 /*!
 \brief
 	System key flag values

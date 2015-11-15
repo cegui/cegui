@@ -73,6 +73,9 @@ public:
     //! Destructor.
     ~CEGuiOgreBaseApplication();
 
+    bool init(SampleBrowserBase* sampleApp, const CEGUI::String &logFile,
+              const CEGUI::String &dataPathPrefixOverride);
+
     void destroyRenderer();
 
     //! called by the frame listener to perform requried per-frame updates.
@@ -90,7 +93,6 @@ protected:
     CEGUI::String getResourcePath(CEGUI::String resource);
 
     // Implementation of base class abstract methods.
-    void run();
     void destroyWindow();
     void beginRendering(const float elapsed);
     void endRendering();
@@ -115,7 +117,6 @@ protected:
 
 };
 
-
 /*!
 \brief
     Ogre FrameListener class where we deal with input processing and the like.
@@ -129,7 +130,7 @@ class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListen
 {
 public:
     // Construction and Destruction
-    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SampleBrowserBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
+    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SampleBrowserBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam);
     ~CEGuiDemoFrameListener();
 
     // Processing to be done at start and end of each frame.
@@ -186,15 +187,10 @@ public:
 #endif
 
     virtual void windowResized(Ogre::RenderWindow* rw) ;
-    virtual void windowClosed (Ogre::RenderWindow* rw) {
-    }
-    virtual bool  windowClosing (Ogre::RenderWindow *rw) {
-        return true;
-    }
-    virtual void  windowFocusChange (Ogre::RenderWindow *rw) {
-    }
-    virtual void  windowMoved (Ogre::RenderWindow *rw) {
-    }
+    virtual void windowClosed (Ogre::RenderWindow*) {}
+    virtual bool windowClosing (Ogre::RenderWindow*) { return true; }
+    virtual void windowFocusChange (Ogre::RenderWindow*) {}
+    virtual void windowMoved (Ogre::RenderWindow*) {}
 
 protected:
 #ifndef __ANDROID__

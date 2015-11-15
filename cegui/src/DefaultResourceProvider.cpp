@@ -36,7 +36,7 @@
 #   include <string>
 #elif defined(__ANDROID__)
 #   include "CEGUI/AndroidUtils.h" 
-#   include <android/asset_manager.h>  
+#   include <android/asset_manager.h>
 #else
 #   include <sys/types.h>
 #   include <sys/stat.h>

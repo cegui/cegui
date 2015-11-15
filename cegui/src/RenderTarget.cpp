@@ -50,8 +50,8 @@ RenderTarget::RenderTarget():
     d_activationCounter(0),
     d_area(0, 0, 0, 0),
     d_matrixValid(false),
-    d_viewDistance(0),
     d_matrix(1.0f),
+    d_viewDistance(0),
     d_fovY(glm::radians(30.0f))
 {
     // Call the setter function to ensure that the half-angle tangens value is set correctly
@@ -207,7 +207,7 @@ void RenderTarget::updateMatrix(const glm::mat4& matrix) const
 }
 
 //----------------------------------------------------------------------------//
-const float RenderTarget::getFovY() const
+float RenderTarget::getFovY() const
 {
     return d_fovY;
 }

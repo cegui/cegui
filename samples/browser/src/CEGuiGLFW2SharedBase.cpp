@@ -34,8 +34,6 @@ author:     Yaron Cohen-Tal
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::run()
 {
-    d_sampleApp->initialise();
-
     // Input callbacks of glfw for CEGUI
     glfwSetKeyCallback(glfwKeyCallback);
     glfwSetCharCallback(glfwCharCallback);
@@ -66,8 +64,6 @@ void CEGuiGLFWSharedBase::run()
 
         drawFrame();
     }
-
-    d_sampleApp->deinitialise();
 }
 
 //----------------------------------------------------------------------------//

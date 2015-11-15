@@ -1,0 +1,5 @@
+APP_PLATFORM := android-$androidNdkApiLevel
+APP_ABI := $androidAbi
+NDK_TOOLCHAIN_VERSION := $androidToolchainVer
+APP_STL := gnustl_shared
+APP_CPPFLAGS := -Wall -Wextra -fexceptions -frtti

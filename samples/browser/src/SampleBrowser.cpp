@@ -39,7 +39,6 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/ProgressBar.h"
 
 #include "samples.h"
-
 #include <string>
 #include <iostream>
 #include <vector>
@@ -55,6 +54,8 @@ using namespace CEGUI;
 #   include "CEGUI/AndroidUtils.h"
 #endif
 
+#if !defined __ANDROID__
+
 //----------------------------------------------------------------------------//
 #ifdef __ANDROID__
 #   include <android_native_app_glue.h>
@@ -68,9 +69,15 @@ void android_main(struct android_app* state)
 int main(int argc, char* argv[])
 {
 #endif
+
+    CEGUI_UNUSED(argc);
+    CEGUI_UNUSED(argv);
+    
     // Basic start-up for the sample browser application.
     // Will remain in run() until quitting
     int argidx = 1;
+    CEGUI_UNUSED(argidx);
+    
 #ifdef __APPLE__
     if (argc > 1 && !std::strncmp(argv[argidx], "-psn", 4))
     {
@@ -86,6 +93,8 @@ int main(int argc, char* argv[])
     return sampleBrowser.run();
 #endif
 }
+
+#endif // !defined __ANDROID__
 
 //----------------------------------------------------------------------------//
 SampleBrowser::SampleBrowser() :
@@ -106,25 +115,25 @@ SampleBrowser::~SampleBrowser()
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::initialise()
+bool SampleBrowser::initialise(const CEGUI::String& logFile,
+                               const CEGUI::String& dataPathPrefixOverride)
 {
-    using namespace CEGUI;
+    if (SampleBrowserBase::initialise(logFile, dataPathPrefixOverride))
+    {
+        initialiseLoadScreenLayout();
+        loadSamples();
 
-    initialiseLoadScreenLayout();
+        d_systemInputAggregator = new InputAggregator(
+            &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+        d_systemInputAggregator->initialise();
 
-    loadSamples();
-
-    d_systemInputAggregator = new InputAggregator(
-        &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
-    d_systemInputAggregator->initialise();
-
-    // return true to signalize the initialisation was sucessful and run the
-    // SampleBrowser
-    return true;
+        return true;
+    }
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-void SampleBrowser::deinitialise()
+void SampleBrowser::cleanup()
 {
     unloadSamples();
 
@@ -133,6 +142,8 @@ void SampleBrowser::deinitialise()
         delete d_systemInputAggregator;
         d_systemInputAggregator = 0;
     }
+
+    SampleBrowserBase::cleanup();
 }
 
 //----------------------------------------------------------------------------//
@@ -407,7 +418,7 @@ SampleHandler* SampleBrowser::findSampleData(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
+bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs&)
 {
     d_quittingSampleView = true;
 
