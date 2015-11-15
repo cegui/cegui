@@ -29,7 +29,7 @@
 
 #include "CEGUI/Image.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 namespace CEGUI
 {
