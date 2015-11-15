@@ -29,7 +29,7 @@
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RenderTarget.h"
 
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
 #include <algorithm>
