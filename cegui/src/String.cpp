@@ -1,11 +1,11 @@
 /***********************************************************************
-	created:	26/2/2004
-	author:		Paul D Turner
+	created:	14/11/2015
+	author:		Lukas Meindl
 	
-	purpose:	Implements string class
+	purpose:	Implements String class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,418 +30,433 @@
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 
-#include <iostream>
-#include <algorithm>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
-// definition of 'no position' value
-const String::size_type String::npos = (String::size_type)(-1);
+std::wstring_convert<std::codecvt<char32_t, char, std::mbstate_t>, char32_t> String::s_utf8Converter;
 
-
-//////////////////////////////////////////////////////////////////////////
-// Destructor
-//////////////////////////////////////////////////////////////////////////
-String::~String()
+bool operator==(const String& str1, const String& str2)
 {
-	if ( (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) && d_buffer )
-	{
-        delete[] d_buffer;
-	}
-
-    if ( (d_encodedbufflen > 0) && d_encodedbuff )
-	{
-		delete[] d_encodedbuff;
-	}
+    return (str1.compare(str2) == 0);
 }
 
-bool String::grow(size_type new_size)
+bool operator==(const String& str, const std::string& std_str)
 {
-    // check for too big
-    if (max_size() <= new_size)
-        throw 
-            std::length_error("Resulting CEGUI::String would be too big");
-
-    // increase, as we always null-terminate the buffer.
-    ++new_size;
-
-    if (new_size > d_reserve)
-    {
-        utf32* temp = new utf32[new_size];
-
-        if (d_reserve > CEGUI_STR_QUICKBUFF_SIZE)
-        {
-            memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
-            delete[] d_buffer;
-        }
-        else
-        {
-            std::copy(d_quickbuff.data(), d_quickbuff.data() + (d_cplength + 1), temp);
-        }
-
-        d_buffer = temp;
-        d_reserve = new_size;
-
-        return true;
-    }
-
-    return false;
+    return (str.compare(std_str) == 0);
 }
 
-// perform re-allocation to remove wasted space.
-void String::trim(void)
+bool operator==(const String& str, const std::u32string& std_u32str)
 {
-    size_type min_size = d_cplength + 1;
-
-    // only re-allocate when not using quick-buffer, and when size can be trimmed
-    if ((d_reserve > CEGUI_STR_QUICKBUFF_SIZE) && (d_reserve > min_size))
-    {
-            // see if we can trim to quick-buffer
-        if (min_size <= CEGUI_STR_QUICKBUFF_SIZE)
-        {
-            std::copy(d_buffer, d_buffer + min_size, d_quickbuff.data());
-            delete[] d_buffer;
-            d_reserve = CEGUI_STR_QUICKBUFF_SIZE;
-        }
-        // re-allocate buffer
-        else
-        {
-            utf32* temp = new utf32[min_size];
-            memcpy(temp, d_buffer, min_size * sizeof(utf32));
-            delete[] d_buffer;
-            d_buffer = temp;
-            d_reserve = min_size;
-        }
-
-    }
-
+    return (str.compare(std_u32str) == 0);
 }
 
-// build an internal buffer with the string encoded as utf8 (remains valid until string is modified).
-utf8* String::build_utf8_buff(void) const
+bool operator==(const std::string& std_str, const String& str)
 {
-    size_type buffsize = encoded_size(ptr(), d_cplength) + 1;
-
-    if (buffsize > d_encodedbufflen) {
-
-        if (d_encodedbufflen > 0)
-        {
-            delete[] d_encodedbuff;
-        }
-
-        d_encodedbuff = new utf8[buffsize];
-        d_encodedbufflen = buffsize;
-    }
-
-    encode(ptr(), d_encodedbuff, buffsize, d_cplength);
-
-    // always add a null at end
-    d_encodedbuff[buffsize-1] = ((utf8)0);
-    d_encodeddatlen = buffsize;
-
-    return d_encodedbuff;
+    return (str.compare(std_str) == 0);
 }
 
-
-
-//////////////////////////////////////////////////////////////////////////
-// Comparison operators
-//////////////////////////////////////////////////////////////////////////
-bool	operator==(const String& str1, const String& str2)
+bool operator==(const std::u32string& std_u32str, const String& str)
 {
-	return (str1.compare(str2) == 0);
+    return (str.compare(std_u32str) == 0);
 }
 
-bool	operator==(const String& str, const std::string& std_str)
+bool operator!=(const String& str1, const String& str2)
 {
-	return (str.compare(std_str) == 0);
+    return (str1.compare(str2) != 0);
 }
 
-bool	operator==(const std::string& std_str, const String& str)
+bool operator!=(const String& str, const std::string& std_str)
 {
-	return (str.compare(std_str) == 0);
+    return (str.compare(std_str) != 0);
 }
 
-bool	operator==(const String& str, const utf8* utf8_str)
+bool operator!=(const String& str, const std::u32string& std_u32str)
 {
-	return (str.compare(utf8_str) == 0);
+    return (str.compare(std_u32str) != 0);
 }
 
-bool	operator==(const utf8* utf8_str, const String& str)
+bool operator!=(const std::string& std_str, const String& str)
 {
-	return (str.compare(utf8_str) == 0);
+    return (str.compare(std_str) != 0);
 }
 
-
-bool	operator!=(const String& str1, const String& str2)
+bool operator!=(const std::u32string& std_u32str, const String& str)
 {
-	return (str1.compare(str2) != 0);
+    return (str.compare(std_u32str) != 0);
 }
 
-bool	operator!=(const String& str, const std::string& std_str)
+bool operator==(const char32_t* lhs, const String& rhs)
 {
-	return (str.compare(std_str) != 0);
+    return (rhs.compare(lhs) == 0);
 }
 
-bool	operator!=(const std::string& std_str, const String& str)
+bool operator==(const String& lhs, const char32_t* rhs)
 {
-	return (str.compare(std_str) != 0);
+    return (lhs.compare(rhs) == 0);
 }
 
-bool	operator!=(const String& str, const utf8* utf8_str)
+bool operator==(const char* lhs, const String& rhs)
 {
-	return (str.compare(utf8_str) != 0);
+    return (rhs.compare(lhs) == 0);
 }
 
-bool	operator!=(const utf8* utf8_str, const String& str)
+bool operator==(const String& lhs, const char* rhs)
 {
-	return (str.compare(utf8_str) != 0);
+    return (lhs.compare(rhs) == 0);
 }
 
-
-bool	operator<(const String& str1, const String& str2)
+bool operator!=(const char32_t* lhs, const String& rhs)
 {
-	return (str1.compare(str2) < 0);
+    return (rhs.compare(lhs) != 0);
 }
 
-bool	operator<(const String& str, const std::string& std_str)
+bool operator!=(const String& lhs, const char32_t* rhs)
 {
-	return (str.compare(std_str) < 0);
+    return (lhs.compare(rhs) != 0);
 }
 
-bool	operator<(const std::string& std_str, const String& str)
+bool operator!=(const char* lhs, const String& rhs)
 {
-	return (str.compare(std_str) >= 0);
+    return (rhs.compare(lhs) != 0);
 }
 
-bool	operator<(const String& str, const utf8* utf8_str)
+bool operator!=(const String& lhs, const char* rhs)
 {
-	return (str.compare(utf8_str) < 0);
+    return (lhs.compare(rhs) != 0);
 }
 
-bool	operator<(const utf8* utf8_str, const String& str)
+String operator+(const String& lhs, const String& rhs)
 {
-	return (str.compare(utf8_str) >= 0);
+    return String(lhs).append(rhs);
 }
 
-
-bool	operator>(const String& str1, const String& str2)
+String operator+(const std::string& lhs, const String& rhs)
 {
-	return (str1.compare(str2) > 0);
+    return String(lhs).append(rhs);
 }
 
-bool	operator>(const String& str, const std::string& std_str)
+String operator+(const String& lhs, const std::string& rhs)
 {
-	return (str.compare(std_str) > 0);
+    return String(lhs).append(rhs);
 }
 
-bool	operator>(const std::string& std_str, const String& str)
+String operator+(const std::u32string& lhs, const String& rhs)
 {
-	return (str.compare(std_str) <= 0);
+    return String(lhs).append(rhs);
 }
 
-bool	operator>(const String& str, const utf8* utf8_str)
+String operator+(const char32_t* lhs, const String& rhs)
 {
-	return (str.compare(utf8_str) > 0);
+    return String(lhs) + rhs;
 }
 
-bool	operator>(const utf8* utf8_str, const String& str)
+String operator+(const String& lhs, const std::u32string& rhs)
 {
-	return (str.compare(utf8_str) <= 0);
+    return String(lhs).append(rhs);
 }
 
-
-bool	operator<=(const String& str1, const String& str2)
+String operator+(const char* lhs, const String& rhs)
 {
-	return (str1.compare(str2) <= 0);
+    return String(lhs) + rhs;
 }
 
-bool	operator<=(const String& str, const std::string& std_str)
+String operator+(char32_t lhs, const String& rhs)
 {
-	return (str.compare(std_str) <= 0);
+    return String(1, lhs) + rhs;
 }
 
-bool	operator<=(const std::string& std_str, const String& str)
+String operator+(char lhs, const String& rhs)
 {
-	return (str.compare(std_str) >= 0);
+    return String(1, lhs) + rhs;
 }
 
-bool	operator<=(const String& str, const utf8* utf8_str)
+String operator+(const String& lhs, const char32_t* rhs)
 {
-	return (str.compare(utf8_str) <= 0);
+    return lhs + String(rhs);
 }
 
-bool	operator<=(const utf8* utf8_str, const String& str)
+String operator+(const String& lhs, const char* rhs)
 {
-	return (str.compare(utf8_str) >= 0);
+    return lhs + String(rhs);
 }
 
-
-bool	operator>=(const String& str1, const String& str2)
+String operator+(const String& lhs, char32_t rhs)
 {
-	return (str1.compare(str2) >= 0);
+    return lhs + String(1, rhs);
 }
 
-bool	operator>=(const String& str, const std::string& std_str)
+String operator+(const String& lhs, char rhs)
 {
-	return (str.compare(std_str) >= 0);
+    return lhs + String(1, rhs);
 }
 
-bool	operator>=(const std::string& std_str, const String& str)
+String operator+(String&& lhs, const String& rhs)
 {
-	return (str.compare(std_str) <= 0);
+    return std::move(lhs.append(rhs));
 }
 
-bool	operator>=(const String& str, const utf8* utf8_str)
+String operator+(String&& lhs, const std::string& rhs)
 {
-	return (str.compare(utf8_str) >= 0);
+    return std::move(lhs.append(rhs));
 }
 
-bool	operator>=(const utf8* utf8_str, const String& str)
+String operator+(String&& lhs, const std::u32string& rhs)
 {
-	return (str.compare(utf8_str) <= 0);
+    return std::move(lhs.append(rhs));
 }
 
-//////////////////////////////////////////////////////////////////////////
-// c-string operators
-//////////////////////////////////////////////////////////////////////////
-bool operator==(const String& str, const char* c_str)
+String operator+(const String& lhs, String&& rhs)
 {
-	return (str.compare(c_str) == 0);
+    return std::move(rhs.insert(0, lhs));
 }
 
-bool operator==(const char* c_str, const String& str)
+String operator+(const std::string& lhs, String&& rhs)
 {
-	return (str.compare(c_str) == 0);
+    return std::move(rhs.insert(0, lhs));
 }
 
-bool operator!=(const String& str, const char* c_str)
+String operator+(const std::u32string& lhs, String&& rhs)
 {
-	return (str.compare(c_str) != 0);
+    return std::move(rhs.insert(0, lhs));
 }
 
-bool operator!=(const char* c_str, const String& str)
+String operator+(String&& lhs, String&& rhs)
 {
-	return (str.compare(c_str) != 0);
+    return std::move(lhs.append(rhs));
 }
 
-bool operator<(const String& str, const char* c_str)
+String operator+(const char32_t* lhs, String&& rhs)
 {
-	return (str.compare(c_str) < 0);
+    return std::move(rhs.insert(0, lhs));
 }
 
-bool operator<(const char* c_str, const String& str)
+String operator+(const char* lhs, String&& rhs)
 {
-	return (str.compare(c_str) >= 0);
+    return std::move(rhs.insert(0, lhs));
 }
 
-bool operator>(const String& str, const char* c_str)
+String operator+(char32_t lhs, String&& rhs)
 {
-	return (str.compare(c_str) > 0);
+    return std::move(rhs.insert(0, 1, lhs));
 }
 
-bool operator>(const char* c_str, const String& str)
+String operator+(char lhs, String&& rhs)
 {
-	return (str.compare(c_str) <= 0);
+    return std::move(rhs.insert(0, 1, lhs));
 }
 
-bool operator<=(const String& str, const char* c_str)
+String operator+(String&& lhs, const char32_t* rhs)
 {
-	return (str.compare(c_str) <= 0);
+    return std::move(lhs.append(rhs));
 }
 
-bool operator<=(const char* c_str, const String& str)
+String operator+(String&& lhs, const char* rhs)
 {
-	return (str.compare(c_str) >= 0);
+    return std::move(lhs.append(rhs));
 }
 
-bool operator>=(const String& str, const char* c_str)
+String operator+(String&& lhs, char32_t rhs)
 {
-	return (str.compare(c_str) >= 0);
+    return std::move(lhs.append(1, rhs));
 }
 
-bool operator>=(const char* c_str, const String& str)
+String operator+(String&& lhs, char rhs)
 {
-	return (str.compare(c_str) <= 0);
+    return std::move(lhs.append(1, rhs));
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Concatenation operator functions
-//////////////////////////////////////////////////////////////////////////
-String	operator+(const String& str1, const String& str2)
+bool operator<(const String& str1, const String& str2)
 {
-	String temp(str1);
-	temp.append(str2);
-	return temp;
+    return (str1.compare(str2) < 0);
 }
 
-String	operator+(const String& str, const std::string& std_str)
+bool operator<(const String& str, const std::string& std_str)
 {
-	String temp(str);
-	temp.append(std_str);
-	return temp;
+    return (str.compare(std_str) < 0);
 }
 
-String	operator+(const std::string& std_str, const String& str)
+bool operator<(const String& str, const std::u32string& std_u32str)
 {
-	String temp(std_str);
-	temp.append(str);
-	return temp;
+    return (str.compare(std_u32str) < 0);
 }
 
-String	operator+(const String& str, const utf8* utf8_str)
+bool operator<(const std::string& std_str, const String& str)
 {
-	String temp(str);
-	temp.append(utf8_str);
-	return temp;
+    return (str.compare(std_str) >= 0);
 }
 
-String	operator+(const utf8* utf8_str, const String& str)
+bool operator<(const std::u32string& std_u32str, const String& str)
 {
-	String temp(utf8_str);
-	temp.append(str);
-	return temp;
+    return (str.compare(std_u32str) >= 0);
 }
 
-String	operator+(const String& str, utf32 code_point)
+bool operator<=(const String& str1, const String& str2)
 {
-	String temp(str);
-	temp.append(1, code_point);
-	return temp;
+    return (str1.compare(str2) <= 0);
 }
 
-String	operator+(utf32 code_point, const String& str)
+bool operator<=(const String& str, const std::string& std_str)
 {
-	String temp(1, code_point);
-	temp.append(str);
-	return temp;
+    return (str.compare(std_str) <= 0);
 }
 
-String operator+(const String& str, const char* c_str)
+bool operator<=(const String& str, const std::u32string& std_u32str)
 {
-	String tmp(str);
-	tmp.append(c_str);
-	return tmp;
+    return (str.compare(std_u32str) <= 0);
 }
 
-String operator+(const char* c_str, const String& str)
+bool operator<=(const std::string& std_str, const String& str)
 {
-	String tmp(c_str);
-	tmp.append(str);
-	return tmp;
+    return (str.compare(std_str) > 0);
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Output (stream) functions
-//////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& s, const String& str)
+bool operator<=(const std::u32string& std_u32str, const String& str)
 {
-	return s << str.c_str();
+    return (str.compare(std_u32str) > 0);
 }
 
-std::istream& operator>>(std::istream& inputStream, String& str)
+bool operator<(const char32_t* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) >= 0);
+}
+
+bool operator<(const String& lhs, const char32_t* rhs)
+{
+    return (lhs.compare(rhs) < 0);
+}
+
+bool operator<(const char* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) >= 0);
+}
+
+bool operator<(const String& lhs, const char* rhs)
+{
+    return (lhs.compare(rhs) < 0);
+}
+
+bool operator<=(const char32_t* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) > 0);
+}
+
+bool operator<=(const String& lhs, const char32_t* rhs)
+{
+    return (lhs.compare(rhs) <= 0);
+}
+
+bool operator<=(const char* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) > 0);
+}
+
+bool operator<=(const String& lhs, const char* rhs)
+{
+    return (lhs.compare(rhs) <= 0);
+}
+
+bool operator>(const String& str1, const String& str2)
+{
+    return (str1.compare(str2) > 0);
+}
+
+bool operator>(const String& str, const std::string& std_str)
+{
+    return (str.compare(std_str) > 0);
+}
+
+bool operator>(const String& str, const std::u32string& std_u32str)
+{
+    return (str.compare(std_u32str) > 0);
+}
+
+bool operator>(const std::string& std_str, const String& str)
+{
+    return (str.compare(std_str) <= 0);
+}
+
+bool operator>(const std::u32string& std_u32str, const String& str)
+{
+    return (str.compare(std_u32str) <= 0);
+}
+
+bool operator>=(const String& str1, const String& str2)
+{
+    return (str1.compare(str2) >= 0);
+}
+
+bool operator>=(const String& str, const std::string& std_str)
+{
+    return (str.compare(std_str) >= 0);
+}
+
+bool operator>=(const String& str, const std::u32string& std_u32str)
+{
+    return (str.compare(std_u32str) >= 0);
+}
+
+bool operator>=(const std::string& std_str, const String& str)
+{
+    return (str.compare(std_str) < 0);
+}
+
+bool operator>=(const std::u32string& std_u32str, const String& str)
+{
+    return (str.compare(std_u32str) < 0);
+}
+
+bool operator>(const char32_t* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) <= 0);
+}
+
+bool operator>(const String& lhs, const char32_t* rhs)
+{
+    return (lhs.compare(rhs) > 0);
+}
+
+bool operator>(const char* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) <= 0);
+}
+
+bool operator>(const String& lhs, const char* rhs)
+{
+    return (lhs.compare(rhs) > 0);
+}
+
+bool operator>=(const char32_t* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) < 0);
+}
+
+bool operator>=(const String& lhs, const char32_t* rhs)
+{
+    return (lhs.compare(rhs) >= 0);
+}
+
+bool operator>=(const char* lhs, const String& rhs)
+{
+    return (rhs.compare(lhs) < 0);
+}
+
+bool operator>=(const String& lhs, const char* rhs)
+{
+    return (lhs.compare(rhs) >= 0);
+}
+
+void swap(String& str1, String& str2)
+{
+    str1.swap(str2);
+}
+
+std::basic_ostream<char>& operator<<(std::basic_ostream<char>& outputStream, const String& str)
+{
+    outputStream << str.toUtf8String();
+    return outputStream;
+}
+
+std::basic_istream<char>& operator>>(std::basic_istream<char>& inputStream, String& str)
 {
     std::string inputString;
     inputStream >> inputString;
@@ -449,15 +464,6 @@ std::istream& operator>>(std::istream& inputStream, String& str)
     return inputStream;
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Modifying operations
-//////////////////////////////////////////////////////////////////////////
-// swap the contents of str1 and str2
-void	swap(String& str1, String& str2)
-{
-	str1.swap(str2);
 }
-
-} // End of  CEGUI namespace section
 
 #endif
