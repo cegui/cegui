@@ -135,11 +135,11 @@ SamplesFrameworkBase::~SamplesFrameworkBase()
 /*************************************************************************
     Application entry point
 *************************************************************************/
-int SamplesFrameworkBase::run()
+int SamplesFrameworkBase::run(const CEGUI::String& dataPathPrefixOverride)
 {
     CEGUI_TRY
     {
-        if (initialise("CEGUI.log", CEGUI::String()))
+        if (initialise("CEGUI.log", dataPathPrefixOverride))
             d_baseApp->run();
         cleanup();
     }
