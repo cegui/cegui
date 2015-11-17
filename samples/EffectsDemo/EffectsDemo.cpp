@@ -167,7 +167,7 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
 
-    const CEGUI::MouseCursor& cursor = d_window->getGUIContext().getMouseCursor();
+    d_window->getGUIContext().getMouseCursor();
 
     bool changed = false;
 

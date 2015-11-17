@@ -52,8 +52,8 @@ Direct3D10RenderTarget<T>::Direct3D10RenderTarget(Direct3D10Renderer& owner) :
     d_owner(owner),
     d_device(d_owner.getDirect3DDevice()),
     d_area(0, 0, 0, 0),
-    d_viewDistance(0),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_viewDistance(0)
 {
 }
 
