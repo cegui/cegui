@@ -32,7 +32,13 @@
 #include "../../Rect.h"
 #include "../../Quaternion.h"
 
-#include <d3dx10.h>
+// Unfortunately, MinGW-w64 doesn't have <d3dx10.h>
+#ifdef __MINGW32__
+    #include <d3d10.h>
+    #include <d3dx9.h>
+#else
+    #include <d3dx10.h>
+#endif
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
