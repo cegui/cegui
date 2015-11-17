@@ -329,7 +329,14 @@ public:
     static return_type fromString(const String& str)
     {
         uint64 val = 0;
-        sscanf(str.c_str(), " %llu", &val);
+        /* Due to a bug in MinGW-w64, a false warning is sometimes issued when
+           using "%llu" format. This is a nasty workaround to prevent it. */
+        #ifdef __MINGW32__
+            static const std::string format(" %llu");
+            sscanf(str.c_str(), format.c_str(), &val);
+        #else
+            sscanf(str.c_str(), " %llu", &val);
+        #endif
 
         return val;
     }
@@ -337,7 +344,14 @@ public:
     static string_return_type toString(pass_type val)
     {
         char buff[64];
-        snprintf(buff, sizeof(buff), "%llu", val);
+        /* Due to a bug in MinGW-w64, a false warning is sometimes issued when
+           using "%llu" format. This is a nasty workaround to prevent it. */
+        #ifdef __MINGW32__
+            static const std::string format("%llu");
+            snprintf(buff, sizeof(buff), format.c_str(), val);
+        #else
+            snprintf(buff, sizeof(buff), "%llu", val);
+        #endif
 
         return String(buff);
     }
