@@ -494,7 +494,14 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
 Window* GridLayoutContainer::createDummy()
 {
     char i_buff[32];
-    sprintf(i_buff, "%lu", d_nextDummyIdx);
+    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
+       "%llu" format. This is a nasty workaround to prevent it. */
+    #ifdef __MINGW32__
+        static const std::string format("%llu");
+        sprintf(i_buff, format.c_str(), static_cast<unsigned long long>(d_nextDummyIdx));
+    #else
+        sprintf(i_buff, "%llu", static_cast<unsigned long long>(d_nextDummyIdx));
+    #endif
     ++d_nextDummyIdx;
 
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
