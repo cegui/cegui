@@ -49,13 +49,22 @@
 #endif
 
 #ifdef _MSC_VER
-#define snprintf _snprintf
+    #define snprintf _snprintf
 #endif
 
 #ifdef __MINGW32__
-#if __USE_MINGW_ANSI_STDIO != 1
-#warning  __USE_MINGW_ANSI_STDIO must be set to 1 for sscanf and snprintf to work with 64bit integers
-#endif
+
+    #if __USE_MINGW_ANSI_STDIO != 1
+        #warning  __USE_MINGW_ANSI_STDIO must be set to 1 for sscanf and snprintf to work with 64bit integers
+    #endif
+
+    #pragma GCC diagnostic push
+
+    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
+       "%llu" format with the "printf"/"scanf" family of functions. */
+    #pragma GCC diagnostic ignored "-Wformat"
+    #pragma GCC diagnostic ignored "-Wformat-extra-args"
+
 #endif
 
 namespace CEGUI
@@ -329,29 +338,16 @@ public:
     static return_type fromString(const String& str)
     {
         uint64 val = 0;
-        /* Due to a bug in MinGW-w64, a false warning is sometimes issued when
-           using "%llu" format. This is a nasty workaround to prevent it. */
-        #ifdef __MINGW32__
-            static const std::string format(" %llu");
-            sscanf(str.c_str(), format.c_str(), &val);
-        #else
-            sscanf(str.c_str(), " %llu", &val);
-        #endif
+        sscanf(str.c_str(), " %llu", &val);
 
         return val;
     }
 
+        #pragma GCC diagnostic pop
     static string_return_type toString(pass_type val)
     {
         char buff[64];
-        /* Due to a bug in MinGW-w64, a false warning is sometimes issued when
-           using "%llu" format. This is a nasty workaround to prevent it. */
-        #ifdef __MINGW32__
-            static const std::string format("%llu");
-            snprintf(buff, sizeof(buff), format.c_str(), val);
-        #else
-            snprintf(buff, sizeof(buff), "%llu", val);
-        #endif
+        snprintf(buff, sizeof(buff), "%llu", val);
 
         return String(buff);
     }
@@ -998,8 +994,12 @@ public:
 
 }
 
+#ifdef __MINGW32__
+    #pragma GCC diagnostic pop
+#endif
+
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+    #pragma warning(pop)
 #endif
 
 #endif
