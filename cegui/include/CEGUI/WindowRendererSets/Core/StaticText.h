@@ -163,6 +163,96 @@ namespace CEGUI
         bool handleFontRenderSizeChange(const Font* const font);
         void render(void);
 
+        /*!
+        \brief
+            Get the current position of the horizontal scrollbar within the
+            text.
+
+            The range of the scrollbar is from 0 to the width of the text minus
+            the width of a page
+            (0 <= position <= (textSize - pageSize)).
+
+        \param position
+            Float value specifying the position of the scrollbar within the
+            text.
+        */
+        float getHorizontalScrollPosition() const;
+
+        /*!
+        \brief
+            Get the current position of the vertical scrollbar within the text.
+
+            The range of the scrollbar is from 0 to the height of the text minus
+            the height of a page
+            (0 <= position <= (textSize - pageSize)).
+
+        \param position
+            Float value specifying the position of the scrollbar within the
+            text.
+        */
+        float getVerticalScrollPosition() const;
+        
+        /*!
+        \brief
+            return the current horizontal scrollbar position as a value in the
+            interval [0, 1].
+        */
+        float getUnitIntervalHorizontalScrollPosition() const;
+
+        /*!
+        \brief
+            return the current vertical scrollbar position as a value in the
+            interval [0, 1].
+        */
+        float getUnitIntervalVerticalScrollPosition() const;
+
+        /*!
+        \brief
+            Set the current position of the horizontal scrollbar within the
+            text.
+
+            The range of the scrollbar is from 0 to the width of the text minus
+            the width of a page
+            (0 <= position <= (textSize - pageSize)), any attempt to set the
+            position outside this range will be adjusted so that it falls within
+            the legal range.
+
+        \param position
+            Float value specifying the position of the scrollbar within the 
+            text.
+        */
+        void setHorizontalScrollPosition(float position);
+
+        /*!
+        \brief
+            Set the current position of the vertical scrollbar within the text.
+
+            The range of the scrollbar is from 0 to the height of the text minus
+            the height of a page
+            (0 <= position <= (textSize - pageSize)), any attempt to set the
+            position outside this range will be adjusted so that it falls within
+            the legal range.
+
+        \param position
+            Float value specifying the position of the scrollbar within the
+            text.
+        */
+        void setVerticalScrollPosition(float position);
+
+        /*!
+        \brief
+            set the current horizontal scrollbar position as a value in the
+            interval [0, 1].
+        */
+        void setUnitIntervalHorizontalScrollPosition(float position);
+
+        /*!
+        \brief
+            set the current vertical scrollbar position as a value in the
+            interval [0, 1].
+        */
+        void setUnitIntervalVerticalScrollPosition(float position);
+
     protected:
         //! update string formatting (gets area size to use from looknfeel)
         void updateFormatting() const;

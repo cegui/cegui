@@ -571,6 +571,54 @@ float FalagardStaticText::getVerticalTextExtent() const
 }
 
 //----------------------------------------------------------------------------//
+float FalagardStaticText::getHorizontalScrollPosition() const
+{
+    return getHorzScrollbar()->getScrollPosition();
+}
+
+//----------------------------------------------------------------------------//
+float FalagardStaticText::getVerticalScrollPosition() const
+{
+    return getVertScrollbar()->getScrollPosition();
+}
+
+//----------------------------------------------------------------------------//
+float FalagardStaticText::getUnitIntervalHorizontalScrollPosition() const
+{
+    return getHorzScrollbar()->getUnitIntervalScrollPosition();
+}
+
+//----------------------------------------------------------------------------//
+float FalagardStaticText::getUnitIntervalVerticalScrollPosition() const
+{
+    return getVertScrollbar()->getUnitIntervalScrollPosition();
+}
+
+//----------------------------------------------------------------------------//
+void FalagardStaticText::setHorizontalScrollPosition(float position)
+{
+    getHorzScrollbar()->setScrollPosition(position);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardStaticText::setVerticalScrollPosition(float position)
+{
+    getVertScrollbar()->setScrollPosition(position);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardStaticText::setUnitIntervalHorizontalScrollPosition(float position)
+{
+    getHorzScrollbar()->setUnitIntervalScrollPosition(position);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardStaticText::setUnitIntervalVerticalScrollPosition(float position)
+{
+    getVertScrollbar()->setUnitIntervalScrollPosition(position);
+}
+
+//----------------------------------------------------------------------------//
 void FalagardStaticText::updateFormatting() const
 {
     updateFormatting(getTextRenderArea().getSize());
