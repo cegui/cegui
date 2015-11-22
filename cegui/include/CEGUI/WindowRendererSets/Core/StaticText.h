@@ -253,11 +253,29 @@ namespace CEGUI
         */
         void setUnitIntervalVerticalScrollPosition(float position);
 
+        /*!
+        \brief
+            Invalidate string formatting and scrollbars visibility.
+
+            This sets a "dirty" flag which causes "updateFormatting" to actually
+            perform an update.
+        \see updateFormatting
+        */
+        void invalidateFormatting();
+
     protected:
-        //! update string formatting (gets area size to use from looknfeel)
+        /*!
+        \brief
+            Update string formatting and scrollbars visibility.
+
+            This only happens if a "dirty" flag is set. The flag is set by
+            "invalidateFormatting".
+        \see invalidateFormatting
+        */
         void updateFormatting() const;
-        //! update string formatting using given area size.
-        void updateFormatting(const Sizef& sz) const;
+        
+        //! \deprecated
+        void updateFormatting(const Sizef&) const;
 
         // overridden from FalagardStatic base class
         void onLookNFeelAssigned();
@@ -265,11 +283,20 @@ namespace CEGUI
 
         // text field with scrollbars methods
         void renderScrolledText(void);
+
+        void configureScrollbars() const;
+
+        //! \deprecated
         void configureScrollbars(void);
-        Scrollbar* getVertScrollbar(void) const;
-        Scrollbar* getHorzScrollbar(void) const;
-        Rectf getTextRenderArea(void) const;
+
+        Scrollbar* getVertScrollbar() const;
+        Scrollbar* getHorzScrollbar() const;
+        Rectf getTextRenderArea() const;
+        Sizef getDocumentSize() const;
+
+        //! \deprecated
         Sizef getDocumentSize(const Rectf& renderArea) const;
+
         void setupStringFormatter() const;
 
         // overridden event handlers
@@ -296,8 +323,18 @@ namespace CEGUI
         typedef std::vector<Event::Connection> ConnectionList;
         ConnectionList  d_connections;
 
-        //! true when string formatting is up to date.
+        /*!
+        \brief
+            True when string formatting and scrollbars visibility are up to
+            date.
+        */
         mutable bool d_formatValid;
+
+    private:
+        Scrollbar* getVertScrollbar(bool should_update) const;
+        Scrollbar* getHorzScrollbar(bool should_update) const;
+        Rectf getTextRenderArea(bool should_update) const;
+        Sizef getDocumentSize(bool should_update) const;
     };
 
 } // End of  CEGUI namespace section
