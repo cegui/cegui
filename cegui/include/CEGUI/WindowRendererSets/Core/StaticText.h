@@ -331,10 +331,10 @@ namespace CEGUI
         mutable bool d_formatValid;
 
     private:
-        Scrollbar* getVertScrollbar(bool should_update) const;
-        Scrollbar* getHorzScrollbar(bool should_update) const;
-        Rectf getTextRenderArea(bool should_update) const;
-        Sizef getDocumentSize(bool should_update) const;
+        Scrollbar* getVertScrollbarWithoutUpdate() const;
+        Scrollbar* getHorzScrollbarWithoutUpdate() const;
+        Rectf getTextRenderAreaWithoutUpdate() const;
+        Sizef getDocumentSizeWithoutUpdate() const;
     };
 
 } // End of  CEGUI namespace section
