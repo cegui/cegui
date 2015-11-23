@@ -145,11 +145,11 @@ int SamplesFrameworkBase::run(const CEGUI::String& dataPathPrefixOverride)
     }
     CEGUI_CATCH(const std::exception& exc)
     {
-        outputExceptionMessage(exc.what()); \
+        outputExceptionMessage(exc.what());
     }
     CEGUI_CATCH(const char* exc)
     {
-        SamplesFrameworkBase::outputExceptionMessage(exc); \
+        SamplesFrameworkBase::outputExceptionMessage(exc);
     }
     CEGUI_CATCH(...)
     {
