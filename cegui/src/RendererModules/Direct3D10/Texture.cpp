@@ -192,10 +192,11 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
     cleanupDirect3D10Texture();
 
     const void* img_src = buffer;
+    unsigned char* dest(0);
     if (pixel_format == PF_RGB)
     {
         const unsigned char* src = static_cast<const unsigned char*>(buffer);
-        unsigned char* dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
+        dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
 
         for (int i = 0; i < buffer_size.d_width * buffer_size.d_height; ++i)
         {
@@ -228,6 +229,9 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
     data.SysMemPitch = calculateDataWidth(tex_desc.Width, pixel_format);
 
     HRESULT hr = d_device.CreateTexture2D(&tex_desc, &data, &d_texture);
+
+    if (dest)
+        delete []dest;
 
     if (FAILED(hr))
         CEGUI_THROW(RendererException(
