@@ -316,6 +316,7 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
 {
     FT_Bitmap *glyph_bitmap = &d_fontFace->glyph->bitmap;
 
+    unsigned int glyph_bitmap_width(static_cast<unsigned int>(glyph_bitmap->width));
     for ( unsigned int i = 0;
           i < static_cast<unsigned int>(glyph_bitmap->rows);  ++i)
     {
@@ -325,8 +326,7 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
         case FT_PIXEL_MODE_GRAY:
         {
             uchar *dst = reinterpret_cast<uchar*>(buffer);
-            for ( unsigned int j = 0;
-                  j < static_cast<unsigned int>(glyph_bitmap->width);  ++j)
+            for (unsigned int j = 0;  j < glyph_bitmap_width;  ++j)
             {
                 // RGBA
                 *dst++ = 0xFF;
@@ -338,8 +338,7 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
         break;
 
         case FT_PIXEL_MODE_MONO:
-            for ( unsigned int j = 0;
-                  j < static_cast<unsigned int>(glyph_bitmap->width);  ++j)
+            for (unsigned int j = 0;  j < glyph_bitmap_width;  ++j)
                 buffer [j] = (src [j / 8] & (0x80 >> (j & 7))) ? 0xFFFFFFFF : 0x00000000;
             break;
 
