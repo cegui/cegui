@@ -61,6 +61,7 @@ static void dumpBacktrace(size_t frames)
 #if defined(__ANDROID__)
 
     // Not implemented yet.
+    CEGUI_UNUSED(frames);
 
 #else
 
@@ -175,7 +176,17 @@ static void dumpBacktrace(size_t frames)
     }
 
     logger.logEvent("==========  End of Backtrace  ==========", Errors);
+
+#else
+
+    CEGUI_UNUSED(frames);
+    
 #endif
+
+#else
+
+    CEGUI_UNUSED(frames);
+
 #endif
 
 #endif

@@ -55,22 +55,36 @@ const String SamplesFramework::XMLSchemaName("Samples.xsd");
 
 #if !defined __ANDROID__
 
+/* Usage:
+   <sample framework executable> [-d <path to data files>] [<XML file name>]
+   */
+
 //----------------------------------------------------------------------------//
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* argv[])
 {
-    // Basic start-up for the sample browser application.
-    // Will remain in run() until quitting
-    int argidx = 1;
-#ifdef __APPLE__
-    if (argc > 1 && !std::strncmp(argv[argidx], "-psn", 4))
+    String xml_filename;
+    String data_path_prefix_override;
+    char** arg = argv;
+    while (true)
     {
-        --argc;
-        ++argidx;
-    }
-#endif
-    
-    SamplesFramework sampleFramework(argc > 1 ? argv[argidx] : "");
-    return sampleFramework.run();
+        ++arg;
+        if (!*arg)
+            break;
+        if ((*arg)[0] == '-')
+        {
+            if ((*arg)[1] == 'd')
+            {
+                ++arg;
+                if (!*arg)
+                    break;
+                data_path_prefix_override = *arg;
+            }
+        }
+        else
+           xml_filename = *arg;
+   }
+    SamplesFramework sampleFramework(xml_filename);
+    return sampleFramework.run(data_path_prefix_override);
 }
 
 #endif // !defined __ANDROID__

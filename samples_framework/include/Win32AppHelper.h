@@ -38,7 +38,7 @@
 #   undef max
 #endif
 
-#if defined(_WIN32)
+#ifdef _MSC_VER
 #  pragma comment(lib, "dinput8.lib")
 #  pragma comment(lib, "dxguid.lib")
 #endif

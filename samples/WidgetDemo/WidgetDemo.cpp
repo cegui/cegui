@@ -237,10 +237,8 @@ bool WidgetDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
+bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs&)
 {
-    const WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
-
     //Get widget name and mapping type
     CEGUI::String widgetName;
     CEGUI::String widgetTypeString;

@@ -57,7 +57,8 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
 pimpl(new CEGuiBaseApplication9Impl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
+    if ((pimpl->d_window = Win32AppHelper::createApplicationWindow(
+           s_defaultWindowWidth, s_defaultWindowHeight)))
     {
         if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, D3DADAPTER_DEFAULT, true))
         {
@@ -120,8 +121,6 @@ void CEGuiD3D9BaseApplication::run()
     {
         if (idle)
         {
-            CEGUI::System& guiSystem = CEGUI::System::getSingleton();
-
             // do time based updates
             DWORD thisTime = GetTickCount();
             const float elapsed =
@@ -167,7 +166,7 @@ void CEGuiD3D9BaseApplication::destroyWindow()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D9BaseApplication::beginRendering(const float elapsed)
+void CEGuiD3D9BaseApplication::beginRendering(const float /*elapsed*/)
 {
     pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET,
                              D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
