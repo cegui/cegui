@@ -63,7 +63,7 @@ public:
     \return
         code to be returned by the application.
     */
-    int run();
+    int run(const CEGUI::String& dataPathPrefixOverride);
 
     /*!
     \brief

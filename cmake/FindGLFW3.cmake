@@ -4,8 +4,12 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(GLFW3_H_PATH NAMES GLFW/glfw3.h)
-find_library(GLFW3_LIB NAMES glfw3 glfw PATH_SUFFIXES dynamic)
-find_library(GLFW3_LIB_DBG NAMES glfw3_d glfw_d PATH_SUFFIXES dynamic)
+find_library(GLFW3_LIB NAMES glfw3 glfw3dll.a PATH_SUFFIXES dynamic)
+find_library(GLFW3_LIB_DBG NAMES glfw3_d glfw3_ddll.a PATH_SUFFIXES dynamic)
+if (NOT (GLFW3_LIB OR GLFW3_LIB_DBG))
+    find_library(GLFW3_LIB NAMES glfw glfwdll.a PATH_SUFFIXES dynamic)
+    find_library(GLFW3_LIB_DBG NAMES glfw_d glfw_ddll.a PATH_SUFFIXES dynamic)
+endif ()
 mark_as_advanced(GLFW3_H_PATH GLFW3_LIB GLFW3_LIB_DBG)
 
 if (WIN32)

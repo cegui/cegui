@@ -30,6 +30,15 @@
 #include "CEGUI/CoordConverter.h"
 #include <limits>
 
+#ifdef __MINGW32__
+
+    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
+       "%llu" format with the "printf"/"scanf" family of functions. */
+    #pragma GCC diagnostic ignored "-Wformat"
+    #pragma GCC diagnostic ignored "-Wformat-extra-args"
+
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -494,7 +503,7 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
 Window* GridLayoutContainer::createDummy()
 {
     char i_buff[32];
-    sprintf(i_buff, "%lu", d_nextDummyIdx);
+    sprintf(i_buff, "%llu", static_cast<unsigned long long>(d_nextDummyIdx));
     ++d_nextDummyIdx;
 
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
@@ -620,3 +629,7 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+#ifdef __MINGW32__
+    #pragma GCC diagnostic pop
+#endif
