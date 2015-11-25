@@ -343,7 +343,6 @@ public:
         return val;
     }
 
-        #pragma GCC diagnostic pop
     static string_return_type toString(pass_type val)
     {
         char buff[64];

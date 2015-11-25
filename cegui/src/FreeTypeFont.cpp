@@ -316,9 +316,11 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
 {
     FT_Bitmap *glyph_bitmap = &d_fontFace->glyph->bitmap;
 
-    unsigned int glyph_bitmap_width(static_cast<unsigned int>(glyph_bitmap->width));
-    for ( unsigned int i = 0;
-          i < static_cast<unsigned int>(glyph_bitmap->rows);  ++i)
+    unsigned int glyph_bitmap_height =
+      static_cast<unsigned int>(glyph_bitmap->rows);
+    unsigned int glyph_bitmap_width =
+      static_cast<unsigned int>(glyph_bitmap->width);
+    for (unsigned int i = 0;  i < glyph_bitmap_height;  ++i)
     {
         uchar *src = glyph_bitmap->buffer + (i * glyph_bitmap->pitch);
         switch (glyph_bitmap->pixel_mode)
