@@ -230,8 +230,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 
     HRESULT hr = d_device.CreateTexture2D(&tex_desc, &data, &d_texture);
 
-    if (dest)
-        delete []dest;
+    delete[] dest;
 
     if (FAILED(hr))
         CEGUI_THROW(RendererException(
