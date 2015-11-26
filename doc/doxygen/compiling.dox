@@ -1,0 +1,111 @@
+﻿/**
+@page compiling Supported Systems and Compilation.
+@author Paul D Turner
+@tableofcontents
+
+@section compiling_supportedsystems Supported Systems
+CEGUI uses CMake build generation system (http://www.cmake.org/) to configure
+the build and generate makefiles or project files of whatever kind you choose
+– basically this means that if cmake can spit out build files for it,
+then you should be able to successfully use it to build CEGUI.
+
+The CEGUI developers have personally tested the build of CEGUI on a variety
+systems, and can say the CEGUI is known to build using the following in both
+32bit and 64bit configurations:
+- GNU/Linux using recent versions of either GCC (http://gcc.gnu.org/) or clang
+(http://clang.llvm.org/)
+- Microsoft Windows using MSVC++ 2008 or above (including express editions) or
+MinGW-w64
+- Apple OS X using Xcode 4 or above
+
+@section compiling_dependencies Dependencies
+You may have already noticed that CEGUI has a lot of dependencies. Don't be
+scared! These are mostly – if not all – optional. CEGUI uses these third-party
+libraries to provide various functionality ranging from the obvious rendering
+and image loading to more obscure things such as providing regular expression
+based validation of edit box content and bi-directional text.
+
+For a list of the various libraries that CEGUI can use and what they are used
+for, please see @ref dependencies.
+
+For Windows and Apple OS X users, a source based dependency package is
+provided. This contains the source for the dependencies that you may wish
+to use. Please note that this dependency package is the only supported
+approach to getting the dependencies on these systems. See @ref building_deps
+for instructions related to building the dependency pack.
+
+For GNU/Linux systems, it is expected that you will install the development
+packages for the libraries that you intend to use – either via your
+distribution's package management system or by manually building and installing
+if that is more appropriate for you.
+@note the dependency pack described above is not intended for, and is not
+supported on, GNU/Linux systems – do not even attempt to use it there, thanks!
+
+@section compiling_build Building the Source
+The procedure for building CEGUI is about as simple as things can get
+and is effectively the same as building any other library you might have
+built. Things to note are that, as already mentioned, CEGUI uses the cmake
+build generator and provides a source based dependency pack for Microsoft
+Windows and Apple OS X users.
+
+I will now overview the basic steps, since these are mostly trivial long
+descriptions are not given for most steps.
+@subsection compiling_build_decide Decide which options and dependencies you want
+Refer to the @ref dependencies and decide which features you wish you use with CEGUI.
+- For GNU/Linux: Install the appropriate development packages for the libraries
+required to provide the functionality that you want available.
+- For Windows and OS X: Build the dependencies from the source package,
+see @ref building_deps. Having built your chosen dependency libraries, copy the
+<tt>dependencies</tt> directory from the location where you built the
+dependencies to the root CEGUI source directory. This means that if your CEGUI
+directory is called <tt>C:\\cegui-0.8.0</tt>, your dependencies should be at
+<tt>C:\\cegui-0.8.0\\dependencies</tt>.
+@subsection compiling_build_configuring Configuring the build
+Now you must use CMake to configure the build and generate the appropriate
+build files so that you can actually compile the source files. I recommend
+the CMake GUI utility – at least initially until you are familiar with the
+available build options. The steps below reflect this choice, if you choose
+not to use the GUI utility for this, then it is assumed you are sufficiently
+familiar with both CMake and CEGUI and therefore do not require additional
+guidance.
+
+Once you have the CMake GUI utility running:
+- Ensure the source and build directories are correct. It is generally advised
+not to build directly in the source directory – it makes recovering back to
+'pristine' source files more difficult and basically creates a mess!
+- Press the Configure button and select the appropriate build system you
+wish you use.
+- Once the initial configure pass has run, you can then select or modify any
+options that you need to. Consult @ref build_options for an overview
+of the options available. When you are done, press the Configure button again.
+- Press the Generate button to generate the build system files appropriate
+for whatever build system you selected above.
+@subsection compiling_build_build Compiling the files
+You should now take the generated build files and build them! This may
+involve loading solution or project files into your IDE and pressing build
+buttons or entering commands – such as <tt>make</tt> – into the terminal. Once
+the build is complete, you should find libraries and perhaps executable
+binaries in subdirectories beneath your chosen build location.
+@subsection compiling_build_install Installation
+Building the 'install' target will copy the files required to use CEGUI to some
+appropriate location on your system:
+- GNU/Linux: By running <tt>make install</tt> – or some equivalent operation to
+trigger the install target – you will cause the libraries, headers and
+other items to be installed to the system. It is likely that you will need
+appropriate privileges to achieve this unless you set the install prefix to
+some other location that you already have access to.
+@note CMake does not provide an uninstall target, so there is no
+equivalent way to easily remove all the files again. However, it does produce
+a file <tt>install_manifest.txt</tt> that contains a list of all files copied during
+install. This allows you to uninstall by doing something similar to:
+<tt>xargs rm <install_manifest.txt</tt>
+- Windows and OS X: It is generally not our intention that you run the
+install target on these platforms – although the option is there for
+advanced users only. Please do not do this if you are not an advanced user
+and therefore may not know the various implications of "installing" on these
+systems.
+
+This has been an overview of the build for CEGUI. You should now have your
+libraries built and be ready and able to make use of the system.
+*/
+

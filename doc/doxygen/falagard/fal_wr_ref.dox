@@ -1,0 +1,655 @@
+/**
+@page fal_wr_ref Falagard Window Renderer Requirements
+
+@section fal_wr_ref_sec_0 Section Contents
+@ref fal_wr_ref_sec_1 <br>
+@ref fal_wr_ref_sec_2 <br>
+@ref fal_wr_ref_sec_3 <br>
+@ref fal_wr_ref_sec_4 <br>
+@ref fal_wr_ref_sec_5 <br>
+@ref fal_wr_ref_sec_6 <br>
+@ref fal_wr_ref_sec_7 <br>
+@ref fal_wr_ref_sec_8 <br>
+@ref fal_wr_ref_sec_9 <br>
+@ref fal_wr_ref_sec_10 <br>
+@ref fal_wr_ref_sec_11 <br>
+@ref fal_wr_ref_sec_12 <br>
+@ref fal_wr_ref_sec_13 <br>
+@ref fal_wr_ref_sec_14 <br>
+@ref fal_wr_ref_sec_15 <br>
+@ref fal_wr_ref_sec_16 <br>
+@ref fal_wr_ref_sec_17 <br>
+@ref fal_wr_ref_sec_18 <br>
+@ref fal_wr_ref_sec_19 <br>
+@ref fal_wr_ref_sec_20 <br>
+@ref fal_wr_ref_sec_21 <br>
+@ref fal_wr_ref_sec_22 <br>
+@ref fal_wr_ref_sec_23 <br>
+@ref fal_wr_ref_sec_24 <br>
+@ref fal_wr_ref_sec_25 <br>
+@ref fal_wr_ref_sec_26 <br>
+@ref fal_wr_ref_sec_27 <br>
+@ref fal_wr_ref_sec_28 <br>
+
+
+@section fal_wr_ref_sec_1 Falagard/Button
+General purpose push button widget class.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions (missing states will default to 'Normal'):
+    <ul>
+        <li>Normal - Imagery used when the widget is neither pushed nor has the mouse hovering over it.
+        <li>Hover - Imagery used when the widget is not pushed and has the mouse hovering over it.
+        <li>Pushed - Imagery used when the widget is pushed and the mouse is over the widget.
+        <li>PushedOff - Imagery used when the widget is pushed and the mouse is not over the widget.
+        <li>Disabled - Imagery used when the widget is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_2 Falagard/Default
+Generic window which can be used as a container window, amongst other uses.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_3 Falagard/Editbox
+General purpose single-line text box widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - Imagery used when widget is enabled.
+        <li>Disabled - Imagery used when widget is disabled.
+        <li>ReadOnly - Imagery used when widget is in 'Read Only' state.
+        <li>ActiveSelection - Additional imagery used when a text selection is defined and the widget is active. The imagery for this state will be rendered within the selection area.
+        <li>InactiveSelection - Additional imagery used when a text selection is defined and the widget is not active. The imagery for this state will be rendered within the selection area.
+    </ul>
+
+    <li>NamedArea definitions:
+    <ul>
+        <li>TextArea - Defines the area where the text, carat, and any selection imagery will appear.
+    </ul>
+
+    <li>PropertyDefinition specifications (optional, defaults will be black):
+    <ul>
+        <li>NormalTextColour - property that accesses a colour value to be used to render normal unselected text.
+        <li>SelectedTextColour - property that accesses a colour value to be used to render selected text.    
+    </ul>
+
+    <li>ImagerySection definitions:
+    <ul>
+        <li>Carat - Additional imagery used to display the insertion position carat.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_4 Falagard/FrameWindow
+General purpose window type which can be sized and moved.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>ActiveWithTitleWithFrame - Imagery used when the widget has its title bar enabled, has its frame enabled, and is active.
+        <li>InactiveWithTitleWithFrame - Imagery used when the widget has its title bar enabled, has its frame enabled, and is inactive.
+        <li>DisabledWithTitleWithFrame - Imagery used when the widget has its title bar enabled, has its frame enabled, and is disabled.
+        <li>ActiveWithTitleNoFrame - Imagery used when the widget has its title bar enabled, has its frame disabled, and is active.
+        <li>InactiveWithTitleNoFrame - Imagery used when the widget has its title bar enabled, has its frame disabled, and is inactive.
+        <li>DisabledWithTitleNoFrame - Imagery used when the widget has its title bar enabled, has its frame disabled, and is disabled.
+        <li>ActiveNoTitleWithFrame - Imagery used when the widget has its title bar disabled, has its frame enabled, and is active.
+        <li>InactiveNoTitleWithFrame - Imagery used when the widget has its title bar disabled, has its frame enabled, and is inactive.
+        <li>DisabledNoTitleWithFrame - Imagery used when the widget has its title bar disabled, has its frame enabled, and is disabled.
+        <li>ActiveNoTitleNoFrame - Imagery used when the widget has its title bar disabled, has its frame disabled, and is active.
+        <li>InactiveNoTitleNoFrame - Imagery used when the widget has its title bar disabled, has its frame disabled, and is inactive.
+        <li>DisabledNoTitleNoFrame - Imagery used when the widget has its title bar disabled, has its frame disabled, and is disabled.
+    </ul>
+
+    <li>NamedArea definitions:
+    <ul>
+        <li>ClientWithTitleWithFrame - Area that defines the clipping region for the client area when the widget has its title bar enabled, and has its frame enabled.
+        <li>ClientWithTitleNoFrame - Area that defines the clipping region for the client area when the widget has its title bar enabled, and has its frame disabled.
+        <li>ClientNoTitleWithFrame - Area that defines the clipping region for the client area when the widget has its title bar disabled, and has its frame enabled.
+        <li>ClientNoTitleNoFrame - Area that defines the clipping region for the client area when the widget has its title bar disabled, and has its frame disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_5 Falagard/ItemEntry
+Basic class that may be added to any of the ItemListBase base classes.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+
+    <li>NamedArea definitions:
+    <ul>
+        <li>ContentSize - Area defining the size of the item content. Required.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_6 Falagard/ItemListbox
+Improved single column list widget that is able to make use of ItemEntry based windows for listbox items.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions (you should choose one set, or the other):
+    <ul>
+        <li>ItemRenderArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>    
+    <li>OR:
+    <ul>
+        <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderingAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderingAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderingAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_7 Falagard/Listbox
+General purpose single column list widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions (you should choose one set, or the other):
+    <ul>
+        <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderingAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderingAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderingAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+    <li>OR:
+    <ul>
+        <li>ItemRenderArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>    
+</ul>
+
+
+@section fal_wr_ref_sec_8 Falagard/ListHeader
+List header widget. Acts as a container for ListHeaderSegment based widgets. Usually used as a component part widget for multi-column list widgets.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>Property initialiser definitions:
+    <ul>
+        <li>SegmentWidgetType - specifies the name of a "ListHeaderSegment" based widget type; an instance of which will be created for each column within the header. (Required)
+    </ul>
+</ul>
+
+@section fal_wr_ref_sec_9 Falagard/ListHeaderSegment
+Widget type intended for use as a single column header within a list header widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Disabled - Imagery to use when the widget is disabled.
+        <li>Normal - Imagery to use when the widget is enabled and the mouse is not within any part of the segment widget.
+        <li>Hover - Imagery to use when the widget is enabled and the mouse is within the main area of the widget (not the drag-sizing 'splitter' area).
+        <li>SplitterHover - Imagery to use when the widget is enabled and the mouse is within the drag-sizing 'splitter' area.
+        <li>DragGhost - Imagery to use for the drag-moving 'ghost' of the segment.  This state should specify that its imagery be render unclipped.
+        <li>AscendingSortIcon - Additional imagery used when the segment has the ascending sort direction set.
+        <li>DescendingSortDown - Additional imagery used when the segment has the descending sort direction set.
+        <li>GhostAscendingSortIcon - Additional imagery used for the drag-moving 'ghost' when the segment has the ascending sort direction set.
+        <li>GhostDescendingSortDown - Additional imagery used for the drag-moving 'ghost' when the segment has the descending sort direction set.
+    </ul>
+    
+    <li>Property initialiser definitions:
+    <ul>
+        <li>MovingCursorImage - Property to define a mouse cursor image to use when drag-moving the widget. (Optional).
+        <li>SizingCursorImage - Property to define a mouse cursor image to use when drag-sizing the widget. (Optional).
+    </ul>
+</ul>
+
+@section fal_wr_ref_sec_10 Falagard/Menubar
+General purpose horizontal menu bar widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ItemRenderArea - Target area where menu items will appear.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_11 Falagard/MenuItem
+General purpose textual menu item widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>EnabledNormal - Imagery used when the item is enabled and the mouse is not within its area.
+        <li>EnabledHover - Imagery used when the item is enabled and the mouse is within its area.
+        <li>EnabledPushed - Imagery used when the item is enabled and user has pushed the mouse button over it.
+        <li>EnabledPopupOpen - Imagery used when the item is enabled and attached popup menu is opened.
+        <li>DisabledNormal - Imagery used when the item is disabled and the mouse is not within its area.
+        <li>DisabledHover - Imagery used when the item is disabled and the mouse is within its area.
+        <li>DisabledPushed - Imagery used when the item is disabled and user has pushed the mouse button over it.
+        <li>DisabledPopupOpen - Imagery used when the item is disabled and attached popup menu is opened.
+        <li>PopupClosedIcon - Additional imagery used when the item is attached to a popup menu widget and has a a 'sub' popup menu attached to itself, and that popup is closed.
+        <li>PopupOpenIcon - Additional imagery used when the item is attached to a popup menu widget and has a a 'sub' popup menu attached to itself, and that popup is open.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ContentSize - Area defining the size of this item's content. Required.
+        <li>HasPopupContentSize - Area defining the size of this item's content if the item has an attached popup menu and is not attached to a Menubar (basically the content size with allowance for the 'popup icon'. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_12 Falagard/MultiColumnList
+General purpose multi-column list / grid widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderingAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderingAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderingAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_13 Falagard/MultiLineEditbox
+General purpose multi-line text box widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - Imagery used when widget is enabled.
+        <li>Disabled - Imagery used when widget is disabled.
+        <li>ReadOnly - Imagery used when widget is in 'Read Only' state.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>TextArea - Target area where text lines will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>TextAreaHScroll - Target area where text lines will appear when the horizontal scrollbar is visible. Optional.
+        <li>TextAreaVScroll - Target area where text lines will appear when the vertical scrollbar is visible. Optional.
+        <li>TextAreaHVScroll - Target area where text lines will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+    
+    <li>ImagerySection definitions:
+    <ul>
+        <li>Carat - Additional imagery used to display the insertion position carat.
+    </ul>
+    
+    <li>PropertyDefinition specifications (optional, defaults will be black):
+    <ul>
+        <li>NormalTextColour - property that accesses a colour value to be used to render normal unselected text.
+        <li>SelectedTextColour - property that accesses a colour value to be used to render selected text.
+        <li>ActiveSelectionColour - property that accesses a colour value to be used to render active selection highlight.
+        <li>InactiveSelectionColour - property that accesses a colour value to be used to render inactive selection highlight.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_14 Falagard/PopupMenu
+General purpose popup menu widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ItemRenderArea - Target area where menu items will appear.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_15 Falagard/ProgressBar
+General purpose progress widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery used when widget is enabled.
+        <li>Disabled - General imagery used when widget is disabled.
+        <li>EnabledProgress - imagery for 100\ progress used when widget is enabled.  The drawn imagery will appear in named area "ProgressArea" and will be clipped appropriately according to widget settings and the current progress value.
+        <li>DisabledProgress - imagery for 100\ progress used when widget is disabled. The drawn imagery will appear in named area "ProgressArea" and will be clipped appropriately according to widget settings and the current progress value.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ProgressArea - Target area where progress imagery will appear.
+    </ul>
+    
+    <li>Property initialiser definitions:
+    <ul>
+        <li>VerticalProgress - boolean property. Determines whether the progress widget is horizontal or vertical. Default is horizontal. Optional.
+        <li>ReversedProgress - boolean property. Determines whether the progress grows in the opposite direction to what is considered 'usual'. Set to "True" to have progress grow towards the left or bottom of the progress area. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_16 Falagard/ToggleButton
+General purpose radio button style widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions (missing states will default to 'Normal' or 'SelectedNormal'):
+    <ul>
+        <li>Normal - Imagery used when the widget is in the deselected / off state, and is neither pushed nor has the mouse hovering over it.
+        <li>Hover - Imagery used when the widget is in the deselected / off state, and has the mouse hovering over it.
+        <li>Pushed - Imagery used when the widget is in the deselected / off state, is pushed and has mouse over the widget.
+        <li>PushedOff - Imagery used when the widget is in the deselected / off state, is pushed and does not have the mouse over the widget.
+        <li>Disabled - Imagery used when the widget is in the deselected / off state, and is disabled.
+        <li>SelectedNormal - Imagery used when the widget is in the selected / on state, and is neither pushed nor has the mouse hovering over it.
+        <li>SelectedHover - Imagery used when the widget is in the selected / on state, and has the mouse hovering over it.
+        <li>SelectedPushed - Imagery used when the widget is in the selected / on state, is pushed and has the mouse over the widget.
+        <li>SelectedPushedOff - Imagery used when the widget is in the selected / on state, is pushed and does not have the mouse over the widget.
+        <li>SelectedDisabled - Imagery used when the widget is in the selected / on state, and is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_17 Falagard/ScrollablePane
+General purpose scrollable pane widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ViewableArea - Target area where visible content will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ViewableAreaHScroll - Target area where visible content will appear when the horizontal scrollbar is visible. Optional.
+        <li>ViewableAreaVScroll - Target area where visible content will appear when the vertical scrollbar is visible. Optional.
+        <li>ViewableAreaHVScroll - Target area where visible content will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_18 Falagard/Scrollbar
+General purpose scrollbar widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+
+    <li>NamedArea definitions:
+    <ul>
+        <li>ThumbTrackArea - Target area in which thumb may be moved.
+    </ul>
+
+    <li>Property initialiser definitions:
+    <ul>
+        <li>VerticalScrollbar - boolean property. Indicates whether this scrollbar will operate in the vertical or horizontal direction. Default is for horizontal. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_19 Falagard/Slider
+General purpose slider widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>ThumbTrackArea - Target area in which thumb may be moved.
+    </ul>
+    
+    <li>Property initialiser definitions:
+    <ul>
+        <li>VerticalSlider - boolean property. Indicates whether this slider will operate in the vertical or horizontal direction. Default is for horizontal. Optional.
+    </ul>
+</ul>
+
+@section fal_wr_ref_sec_20 Falagard/Static
+Generic non-interactive 'static' widget. Used as a base class for Falagard/StaticImage and Falagard/StaticText.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+        <li>EnabledFrame - Additional imagery used when the widget is enabled and the widget frame is enabled.
+        <li>DisabledFrame - Additional imagery used when the widget is disabled and the widget frame is enabled.
+        <li>WithFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is enabled, and the widget background is enabled.
+        <li>WithFrameDisabledBackground - Additional imagery used when the widget is disabled, the widget frame is enabled, and the widget background is enabled.
+        <li>NoFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is disabled, and the widget background is enabled.
+        <li>NoFrameDisabledBackground - Additional imagery used when the widget is disabled, the widget frame is disabled, and the widget background is enabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_21 Falagard/StaticImage
+Static widget that displays a configurable image.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+        <li>EnabledFrame - Additional imagery used when the widget is enabled and the widget frame is enabled.
+        <li>DisabledFrame - Additional imagery used when the widget is disabled and the widget frame is enabled.
+        <li>WithFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is enabled, and the widget background is enabled.
+        <li>WithFrameDisabledBackground - Additional imagery used when the widget is disabled, the widget frame is enabled, and the widget background is enabled.
+        <li>NoFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is disabled, and the widget background is enabled.
+        <li>NoFrameDisabledBackground - Additional imagery used when the widget is disabled, the widget frame is disabled, and the widget background is enabled.
+        <li>WithFrameImage - Image rendering when the frame is enabled.
+        <li>NoFrameImage - Image rendering when the frame is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_22 Falagard/StaticText
+Static widget that displays configurable text.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+        <li>EnabledFrame - Additional imagery used when the widget is enabled and the widget frame is enabled.
+        <li>DisabledFrame - Additional imagery used when the widget is disabled and the widget frame is enabled.
+        <li>WithFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is enabled, and the widget background is enabled.
+        <li>WithFrameDisabledBackground - Additional imagery used when the widget is disabled, the widget frame is enabled, and the widget background is enabled.
+        <li>NoFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is disabled, and the widget background is enabled.
+        <li>NoFrameDisabledBackground - Additional imagery used when the widgetis disabled, the widget frame is disabled, and the widget background is enabled.
+    </ul>
+    
+    <li>NamedArea definitions (missing areas will default to WithFrameTextRenderArea):
+    <ul>
+        <li>WithFrameTextRenderArea - Target area where text will appear when the frame is enabled and no scrollbars are visible (also acts as default area). Required.
+        <li>WithFrameTextRenderAreaHScroll - Target area where text will appear when the frame is enabled and the horizontal scrollbar is visible. Optional.
+        <li>WithFrameTextRenderAreaVScroll - Target area where text will appear when the frame is enabled and the vertical scrollbar is visible. Optional.
+        <li>WithFrameTextRenderAreaHVScroll - Target area where text will appear when the frame is enabled and both the horizontal and vertical scrollbars are visible. Optional.
+        <li>NoFrameTextRenderArea - Target area where text will appear when the frame is disabled and no scrollbars are visible (also acts as default area). Optional.
+        <li>NoFrameTextRenderAreaHScroll - Target area where text will appear when the frame is disabled and the horizontal scrollbar is visible. Optional.
+        <li>NoFrameTextRenderAreaVScroll - Target area where text will appear when the frame is disabled and the vertical scrollbar is visible. Optional.
+        <li>NoFrameTextRenderAreaHVScroll - Target area where text will appear when the frame is disabled and both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+    
+    <li>Child widget definitions:
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position. 
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_23 Falagard/SystemButton
+Specialised push button widget intended to be used for 'system' buttons appearing outside of the client area of a frame window style widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions (missing states will default to 'Normal'):
+    <ul>
+        <li>Normal - Imagery used when the widget is neither pushed nor has the mouse hovering over it.
+        <li>Hover - Imagery used when the widget is not pushed and has the mouse hovering over it.
+        <li>Pushed - Imagery used when the widget is pushed and the mouse is over the widget.
+        <li>PushedOff - Imagery used when the widget is pushed and the mouse is not over the widget.
+        <li>Disabled - Imagery used when the widget is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_24 Falagard/TabButton
+Special widget type used for tab buttons within a tab control based widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions (missing states will default to 'Normal'):
+    <ul>
+        <li>Normal - Imagery used when the widget is neither selected nor has the mouse hovering over it.
+        <li>Hover - Imagery used when the widget has the mouse hovering over it.
+        <li>Selected - Imagery used when the widget is the active / selected tab.
+        <li>Disabled - Imagery used when the widget is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_25 Falagard/TabControl
+General purpose tab control widget.
+
+The current TabControl base class enforces a fairly strict layout, so while imagery can be customised as desired, the general layout of the component widgets is, at least for the time being, mostly fixed.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>Property initialiser definitions:
+    <ul>
+        <li>TabButtonType - specifies a TabButton based widget type to be created each time a new tab button is required.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_26 Falagard/Titlebar
+Title bar widget intended for use as the title bar of a frame window widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions (missing states will default to 'Normal'):
+    <ul>
+        <li>Active - Imagery used when the widget is active.
+        <li>Inactive - Imagery used when the widget is inactive.
+        <li>Disabled - Imagery used when the widget is disabled.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_27 Falagard/Tooltip
+General purpose tool-tip widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+    
+    <li>NamedArea definitions:
+    <ul>
+        <li>TextArea - Typically this would be the same area as the TextComponent you define to receive the tool-tip text. This named area is used when deciding how to dynamically size the tool-tip so that text is not clipped.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_28 Falagard/Tree
+Basic Tree type widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the widget is enabled.
+        <li>Disabled - General imagery for when the widget is disabled.
+    </ul>
+
+    <li>NamedArea definitions:
+    <ul>
+        <li>ItemRenderingArea - Target area where tree items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderingAreaHScroll - Target area where tree items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderingAreaVScroll - Target area where tree items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderingAreaHVScroll - Target area where tree items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+</ul>
+
+*/

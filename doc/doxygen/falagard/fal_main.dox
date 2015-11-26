@@ -1,0 +1,23 @@
+/**
+@page fal_man Falagard skinning system for CEGUI
+@author Paul D Turner
+
+Copyright (c) 2006 - 2011 Paul D Turner & The CEGUI Development Team
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2
+or any later version published by the Free Software Foundation; with
+no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled @subpage gnu_fdl "GNU Free Documentation License".
+
+
+@section fal_s1 Contents
+@subsection fal_s1_1 Tutorial Style Introduction
+- @subpage fal_intro "Introduction and overview"
+- @subpage fal_tut1 "Introduction to Falagard 'looknfeel' XML"
+@subsection fal_s1_2 Reference Material
+- @subpage fal_element_ref "Falagard XML Element Reference"
+- @subpage fal_enum_ref "Falagard XML Enumeration Reference"
+- @subpage fal_baseclass_ref "CEGUI Widget Base Type Requirements"
+- @subpage fal_wr_ref "Falagard Window Renderer Requirements"
+*/

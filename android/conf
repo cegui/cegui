@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+
+################################################################################
+# General Configuration
+################################################################################
+
+androidSdkDir=/opt/android/android-sdk-linux
+buildNumOfProcesses=4 # Number of concurrent processes to use when building.
+
+################################################################################
+# Java Configuration
+################################################################################
+
+# The location of the Java installation to use for building the Android sample
+# framework project
+javaHomeDir=/opt/java/jdk1.7.0_79
+
+# The target Java version to build the Android sample framework project for:
+# ${javaVerMajor}.${javaVerMinor}
+javaVerMajor=1
+javaVerMinor=7
+
+################################################################################
+# Android NDK Configuration
+################################################################################
+
+# E.g. for the official Android NDK version r10e, set "androidNdkType" to
+# "Google", "androidNdkVerMajor" to "10", "androidNdkVerMinor" to "e" and
+# "androidNdkVerPatch" to "". E.g. For Crystax NDK version 10.2.1 set
+# "androidNdkType" to "Crystax", "androidNdkVerMajor" to "10",
+# "androidNdkVerMinor" to "2" and "androidNdkVerPatch" to "1".
+androidNdkType=Crystax
+androidNdkVerMajor=10
+androidNdkVerMinor=2
+androidNdkVerPatch=1
+
+androidNdkName=crystax-ndk-10.2.1
+androidNdkDir="/opt/android/$androidNdkName"
+
+# Value passed to "--system" when running "make-standalone-toolchain.sh".
+mySystemName=linux-x86_64
+
+# Value passed to "--arch" when running "make-standalone-toolchain.sh".
+androidArch=arm
+
+# The following variable determines 3 things:
+# 1) Passed to "--abis" when running "make-standalone-toolchain.sh".
+# 2) Determines "APP_ABI" in "Application.mk".
+# 3) Determines value of "ANDROID_ABI" passed to CMake.
+androidAbi=armeabi-v7a
+
+androidToolchainAbi=armv7-a
+androidToolchainVer=4.9 # Version of GCC to use with the NDK.
+androidToolchainName=arm-linux-androideabi
+androidToolchain="$androidToolchainName-$androidToolchainVer"
+
+################################################################################
+# Android Sample Framework Project Version Configuration
+################################################################################
+
+# Determines "android:minSdkVersion" in "AndroidManifest.xml".
+androidMinSdkVersion=21
+
+# Determines "android:androidSdkVersion" in "AndroidManifest.xml".
+androidTargetSdkVersion=22
+
+# Determines the value passed to "--target" when running
+# "android update project".
+androidBuildTargetApiLevel=21
+
+androidNdkApiLevel=21 # Determines the "APP_PLATFORM" in "Android.mk".
+
+################################################################################
+# CEGUI Specific Configuration
+################################################################################
+
+# Cegui version: "${ceguiVerMajor}.${ceguiVerMinor}.${ceguiVerPatch}".
+ceguiVerMajor=0
+ceguiVerMinor=8
+ceguiVerPatch=5
+
+ceguiPackageName="cegui_${ceguiVerMajor}_${ceguiVerMinor}_${ceguiVerPatch}"
+
+# Directory where the CEGUI source is located.
+ceguiSrcDir="$HOME/src/$ceguiPackageName"
+
+################################################################################
+# Build types
+################################################################################
+
+# Can be either "Debug" or "Release". Controls whether to build the sample
+# framework android project with "ant debug" or "ant release". Note: for
+# "Release" to work, the APK must be signed!
+sampleFrameworkAndroidProjectBuildType=Debug
+
+# Each can be each of "Debug", "Release", "RelWithDebInfo" or "MinSizeRel". This
+# is equivalent to CMake's variable "CMAKE_BUILD_TYPE".
+ceguiBuildType=Debug
+ceguiDepsBuildType=Release
+
+################################################################################
+# Files and Directories Paths
+# ----------------------------
+# Note: all the files and directories named by the following variables will be
+# automatically created; there's no need to create them manually.
+################################################################################
+
+# Directory where to download CEGUI dependencies. Remove this directory to force
+# re-download of all packages.
+ceguiDepsDownloadsDir="$HOME/Downloads/cegui_deps_android"
+
+# Directory where to store the source code for CEGUI dependencies. Remove this
+# directory to force re-retrieval of all CEGUI dependencies source code.
+ceguiDepsSrcDir="$HOME/src/cegui_deps_android"
+
+# Directory where to build the CEGUI dependencies. Remove this directory to
+# force a rebuild of all CEGUI dependencies.
+ceguiDepsBuildDir="$HOME/build/android/cegui_deps"
+
+# Directory where to install the CEGUI dependencies. Remove this directory to
+# force re-installation of all CEGUI dependencies.
+#
+# ** Note **
+# Path must not contain any spaces! (Because "Android.mk" doesn't know how to
+# handle them right, or at least I don't know how to make it handle them right.)
+ceguiDepsInstallDir="/usr/local/android/cegui-deps"
+
+# Directory where to create the Android NDK standalone toolchain. Remove this
+# directory to force a regeneration of the standalone toolchain.
+androidStandaloneToolchainDir="/opt/android/${androidNdkName}_${androidAbi}_${androidToolchainVer}_$androidNdkApiLevel"
+
+# A path where to create the CMake Android toolchain file.
+androidToolchainCmakeFile="$HOME/src/android.toolchain.cmake"
+
+# Directory where CEGUI will be built. Remove this directory to force a rebuild
+ceguiBuildDir="$HOME/build/android/$ceguiPackageName"
+# of CEGUI.
+
+# Directory where CEGUI will be installed. Remove this directory to force a
+# re-installation of CEGUI.
+#
+# ** Note **
+# Path must not contain any spaces! (Because "Android.mk" doesn't know how to
+# handle them right, or at least I don't know how to make it handle them right.)
+ceguiInstallDir="/usr/local/android/$ceguiPackageName"
+
+################################################################################
+# Helper programs
+# ----------------
+# Normally, you wouldn't have to touch these functions. Adjust them in case you
+# have some unusual installations of these programs:
+################################################################################
+
+mySudo() { sudo env PATH="$PATH" "$@"; }
+mySymLink() { myArgs=("$@");  ${1}ln -s "${myArgs[@]:1}"; }
+myPatchFile() { ${1}patch -o "${3}" -d "${2}" "${4}" "${5}"; }
+myPatchDir() { ${1}patch -p1 -d "${2}" -i "${3}"; }
+myWget() { ${1}wget -O "$2" "$3"; }
+myCmake() { myArgs=("$@");  ${1}cmake "${myArgs[@]:1}"; }
+myMake() { myArgs=("$@");  ${1}make "${myArgs[@]:1}"; }
+myUnpackTarGz() { ${1}tar -xzf "$2"; }
+myUnpackTarBz2() { ${1}tar -xjf "$2"; }
+myUnpack7z() { ${1}7z x "$2"; }
+myUnpackZip() { ${1}unzip "$2"; }
+myBash() { myArgs=("$@");  ${1}bash "${myArgs[@]:1}"; }
+
+################################################################################
+# Package-Specific Configuration
+# -------------------------------
+# For finer tuning of each CEGUI dependency package individually, you might want
+# to have a loot at "deps_conf.sh". Normally you wouldn't have to touch it,
+# though.
+################################################################################
+
+. "$myScriptsDir/deps_conf"

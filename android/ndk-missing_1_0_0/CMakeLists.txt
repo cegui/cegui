@@ -1,0 +1,17 @@
+cmake_minimum_required (VERSION 3.0)
+cmake_policy (VERSION 3.0)
+project (NDK-Missing VERSION 1.0.0 LANGUAGES C CXX)
+set (TARGET_ABI_VER "${PROJECT_VERSION_MAJOR}")
+set (TARGET_NAME "ndk-missing_${TARGET_ABI_VER}")
+
+set (CMAKE_C_VISIBILITY_PRESET "hidden")
+
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu99 -Wall -Wextra")
+endif ()
+
+add_library ("${TARGET_NAME}" SHARED main.cpp)
+set_target_properties(${TARGET_NAME} PROPERTIES DEFINE_SYMBOL "NDK_MISSING__EXPORTS")
+
+install (FILES ${HEADERS} DESTINATION "include")
+install (TARGETS "${TARGET_NAME}" RUNTIME DESTINATION bin LIBRARY DESTINATION lib)

@@ -1,0 +1,198 @@
+﻿/**
+@page build_options Build Options for Crazy Eddie's GUI System
+@author Paul D Turner
+@tableofcontents
+
+@section build_options_overview Overview
+The following describes the available options when building CEGUI and what
+they do. Please note that until you are more familiar with CEGUI and the build,
+the general advice is to leave things alone – that is, build or install the
+dependencies required for the choices you made regarding what functionality
+you intend to use and then let cmake configure things based on those.
+
+@section build_options_general General Options
+@subsection build_options_has_freetype CEGUI_HAS_FREETYPE
+Specifies whether to include Freetype2 font support
+@subsection build_options_has_pcre CEGUI_HAS_PCRE_REGEX
+Specifies whether to include PCRE regexp matching for editbox string validation
+@subsection build_options_has_minizip CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER
+Specifies whether to build the minizip based resource provider
+@subsection build_options_has_logger CEGUI_HAS_DEFAULT_LOGGER
+Specifies whether to build the DefaultLogger implementation
+@subsection build_options_use_fribidi CEGUI_USE_FRIBIDI
+Specifies whether bi-directional text will be supported via the fribidi
+library.
+@note You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please
+choose only one of these options.
+@subsection build_options_use_minibidi CEGUI_USE_MINIBIDI
+Specifies whether bi-directional text will be supported via the embedded
+minibidi.
+@note You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please
+choose only one of these options.
+@subsection build_options_use_glew CEGUI_USE_GLEW
+Specifies whether to use GLEW as an OpenGL loading library.
+@note You may not enable both "CEGUI_USE_GLEW" and "CEGUI_USE_EPOXY". Please
+choose only one of these options.
+@subsection build_options_use_epoxy CEGUI_USE_EPOXY
+Specifies whether to use Epoxy as an OpenGL loading library.
+@note You may not enable both "CEGUI_USE_GLEW" and "CEGUI_USE_EPOXY". Please
+choose only one of these options.
+@subsection build_options_glfw_ver CEGUI_GLFW_VER
+Specifies which major version of GLFW to use for the samples (2 or 3). The
+default is to look for both, giving priority to version 2.
+@note For desktop OpenGL rendering, either version 2 or 3 is required. For
+OpenGL ES 2.0 renderering, version 3 is required. To use OpenGL ES 2.0 with EGL,
+GLFW 3 must be used, and GLFW 3 must be built configured with
+"-DGLFW_USE_EGL=ON -DGLFW_CLIENT_LIBRARY=glesv2".
+@subsection build_options_string_class CEGUI_STRING_CLASS
+Which string class should CEGUI use:
+- 1 - utf8 and utf32 aware inbuilt string,
+- 2 - std::string without custom allocation,
+- 3 - std::basic_string allocated according to allocator config" )
+@subsection build_options_custom_allocators CEGUI_CUSTOM_ALLOCATORS
+If checked, CEGUI can use custom allocation. (for experienced developers only!)
+@subsection build_options_allocators_debug CEGUI_CUSTOM_ALLOCATORS_DEBUG
+If checked, CEGUI allocations will pass debug info to allocators. (only used
+if CEGUI_CUSTOM_ALLOCATORS is checked)
+@subsection build_options_allocators_header CEGUI_CUSTOM_ALLOCATORS_INCLUDE
+Which include file contains memory allocators and allocation
+configuration. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)
+We have bundled 2 allocators, mostly for demonstration purposes.
+- CEGUI/MemoryStdAllocator.h contains malloc allocator, use it as a starting
+point for your own allocators
+- CEGUI/MemoryOgreAllocator.h delegates allocation to Ogre, which may be useful
+to Ogre users (you will have to manually change linking options of CEGUIBase!)
+@subsection build_options_enable_static CEGUI_BUILD_STATIC_CONFIGURATION
+Specifies whether the static configs will be built.  (NB: Shared configs
+are always built)
+@subsection build_options_enable_static_factory CEGUI_BUILD_STATIC_FACTORY_MODULE
+For static CEGUI builds, specifies whether to include the getWindoFactoryModule
+method.  When false, the developer must provide a custom implementation of the
+method.
+@subsection build_options_static_deps CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES
+For WIN32 and APPLE where the dependency pack is used, prefer the static
+dependency libs over the shared/dynamic ones.
+@note On Windows you also need to be mindful of which C/C++ runtime setting has
+been used to compile the various components - they must all match or you will
+get crashes, heap corruption and/or other issues.
+@subsection build_options_build_suffix CEGUI_BUILD_SUFFIX
+String holding a suffix appended to the name of output binaries (under CMake
+build, only used for debug, defaults to "_d" on Windows and Apple, defaults
+to no suffix elsewhere).
+@subsection build_options_build_tests CEGUI_BUILD_TESTS
+Specifies whether to build the regression and performance tests.
+
+@section build_options_renderers Renderer Modules
+@subsection build_options_gl_renderer CEGUI_BUILD_RENDERER_OPENGL
+Specifies whether to include OpenGLRenderer (supports older fixed function
+pipeline desktop OpenGL 1.2) in the OpenGL renderer module
+@subsection build_options_gl3_renderer CEGUI_BUILD_RENDERER_OPENGL3
+Specifies whether to include OpenGL3Renderer (supports desktop OpenGL 3.2 (core
+profile) and OpenGL ES 2.0) in the OpenGL renderer module
+@subsection build_options_ogre_renderer CEGUI_BUILD_RENDERER_OGRE
+Specifies whether to build the Ogre renderer module
+@subsection build_options_irr_renderer CEGUI_BUILD_RENDERER_IRRLICHT
+Specifies whether to build the Irrlicht renderer module
+@subsection build_options_dfb_renderer CEGUI_BUILD_RENDERER_DIRECTFB
+Specifies whether to build the DirectFB renderer module
+@subsection build_options_d3d9_renderer CEGUI_BUILD_RENDERER_DIRECT3D9
+Specifies whether to build the Direct3D 9 renderer module
+@subsection build_options_d3d10_renderer CEGUI_BUILD_RENDERER_DIRECT3D10
+Specifies whether to build the Direct3D 10 renderer module
+@subsection build_options_d3d11_renderer CEGUI_BUILD_RENDERER_DIRECT3D11
+Specifies whether to build the Direct3D 11 renderer module
+@subsection build_options_null_renderer CEGUI_BUILD_RENDERER_NULL
+Specifies whether to build the null renderer module
+@subsection build_options_gles1_1_renderer CEGUI_BUILD_RENDERER_OPENGLES
+Specifies whether to build the OpenGLES renderer module
+
+@section build_options_xml_parsers XMLParser Modules
+@subsection build_options_expat_parser CEGUI_BUILD_XMLPARSER_EXPAT
+Specifies whether to build the Expat based XMLParser module
+@subsection build_options_xerces_parser CEGUI_BUILD_XMLPARSER_XERCES
+Specifies whether to build the Xerces-C++ based XMLParser module
+@subsection build_options_libxml_parser CEGUI_BUILD_XMLPARSER_LIBXML2
+Specifies whether to build the libxml2 based XMLParser module
+@subsection build_options_rapidxml_parser CEGUI_BUILD_XMLPARSER_RAPIDXML
+Specifies whether to build the RapidXML based XMLParser module
+@subsection build_options_tinyxml_parser CEGUI_BUILD_XMLPARSER_TINYXML
+Specifies whether to build the TinyXML based XMLParser module
+@subsection build_options_default_parser CEGUI_OPTION_DEFAULT_XMLPARSER
+Specifies the XMLParser module to use as the default, usually one of:
+- "ExpatParser"
+- "XercesParser"
+- "LibXMLParser"
+- "RapidXMLParser"
+- "TinyXMLParser"
+@subsection build_options_static_parser_lib CEGUI_STATIC_XMLPARSER_MODULE
+Specifies xml parser library to link to samples in static builds.
+
+@section build_options_image_codecs  ImageCodec Modules
+@subsection build_options_silly_codec CEGUI_BUILD_IMAGECODEC_SILLY
+Specifies whether to build the SILLY based ImageCodec module
+@subsection build_options_devil_codec CEGUI_BUILD_IMAGECODEC_DEVIL
+Specifies whether to build the DevIL based ImageCodec module
+@subsection build_options_freeimage_codec CEGUI_BUILD_IMAGECODEC_FREEIMAGE
+Specifies whether to build the FreeImage based ImageCodec module
+@subsection build_options_corona_codec CEGUI_BUILD_IMAGECODEC_CORONA
+Specifies whether to build the Corona based ImageCodec module
+@subsection build_options_stb_codec CEGUI_BUILD_IMAGECODEC_STB
+Specifies whether to build the STB based ImageCodec module
+@subsection build_options_tga_codec CEGUI_BUILD_IMAGECODEC_TGA
+Specifies whether to build the based TGA only ImageCodec module
+@subsection build_options_pvr_codec CEGUI_BUILD_IMAGECODEC_PVR
+Specifies whether to build the PVR only ImageCodec module
+@subsection build_options_default_codec CEGUI_OPTION_DEFAULT_IMAGECODEC
+Specifies the ImageCodec module to use as the default, usually one of:
+- "SILLYImageCodec"
+- "DevILImageCodec"
+- "FreeImageImageCodec"
+- "STBImageCodec"
+- "CoronaImageCodec"
+- "TGAImageCodec"
+@subsection build_options_staic_codec_lib CEGUI_STATIC_IMAGECODEC_MODULE
+Specifies image codec library to link to samples in static builds.
+
+@section build_options_scripting Script Modules
+@subsection build_options_lua_module CEGUI_BUILD_LUA_MODULE
+Specifies whether to build the Lua based script module
+@subsection build_options_lua_generator CEGUI_BUILD_LUA_GENERATOR
+Specifies whether to build the custom tolua binding generator 'toluappcegui'
+@subsection build_options_lua_safe_mode CEGUI_OPTION_SAFE_LUA_MODULE
+Specifies whether to enable extra validation in the Lua script module in
+non-debug builds
+@subsection build_options_python_modules CEGUI_BUILD_PYTHON_MODULES
+Specifies whether to build the Python extension module(s)
+
+@section build_options_samples Sample Framework and Samples
+@subsection build_options_samples_enabled CEGUI_SAMPLES_ENABLED
+@subsection build_options_samples_use_gtk2 CEGUI_SAMPLES_USE_GTK2
+Specifies whether the sample applications will make use of the GTK2 UI for
+renderer selection.
+
+@section build_options_unix GNU/Linux Specific
+@subsection build_options_install_rpath CEGUI_INSTALL_WITH_RPATH
+Specifies whether to install with RPATH set to the install location (TRUE)
+or with no RPATH set (FALSE).
+
+@section build_options_apple Apple Specific
+@subsection build_options_dylib_install_path CEGUI_APPLE_DYLIB_INSTALL_PATH
+Specifies the install rpath for dylibs and frameworks. Default:
+"@executable_path/../Frameworks"
+@subsection build_options_symlink_apple_deps CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS
+Specifies how to reference the dylibs, frameworks and datafiles in the sample
+app bundles:
+- TRUE: specifies that the files will be symlinked (saves space, but apps
+are not truly stand-alone)
+- FALSE: specifies that actual copies of the files will be used
+@subsection build_options_set_dylib_version CEGUI_APPLE_DYLIB_SET_VERSION_INFO
+Specifies whether to set VERSION and SOVERSION for dylib libraries on OS X
+
+@section build_options_msvc Microsoft MSVC++ Specific
+@subsection build_options_msvc_static_runtime CEGUI_MSVC_STATIC_RUNTIME
+Specifies whether to the static runtime (/MT and /MTd) or the DLL runtime
+(/MD and /MDd).
+@note This will also affect which set of dependency libraries are linked with.
+
+*/
+

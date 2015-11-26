@@ -1,0 +1,105 @@
+﻿/**
+@page dependencies Dependency Libraries for Crazy Eddie's GUI System
+@author Paul D Turner
+@tableofcontents
+
+@section dependencies_overview Overview
+The following is a list of all libraries that CEGUI can make use of:
+
+@subsection dependencies_core Core Functionality
+- Freetype2 (http://www.freetype.org/freetype2/)
+    - Provides TTF + other font support.
+- PCRE (http://www.pcre.org/)
+    - Provides regex based string filtering and validation in Editbox.
+- Fribidi (http://www.fribidi.org/)
+    - Provides bidirectional text support.
+- Minibidi
+    - Provides bidirectional text support (not external lib, is compiled in).
+- Minizip (http://zlib.net/)
+    - Required for minizip based resource provider.
+
+@subsection dependencies_rendering Rendering
+- OpenGL loading libraries:
+  - GLEW (http://glew.sourceforge.net/)
+  - Epoxy (https://github.com/yaronct/libepoxy), major version 1.
+  - Either GLEW or Epoxy is required for the desktop OpenGL 3.2 renderer module.
+  - Epoxy is required for the OpenGL ES 2.0 renderer module.
+  - GLEW is required for the old desktop OpenGL 1.2 renderer module.
+- GLM (http://glm.g-truc.net/)
+    - Required for GL and GL3 renderer modules.
+- DirectXSDK (http://www.microsoft.com/en-us/download/details.aspx?id=6812)
+    - Required for all D3D renderer modules.
+- D3DX11Effects
+    - Required for D3D11 renderer module (part of DXSDK above)
+- Irrlicht (http://irrlicht.sourceforge.net/)
+    - Required for Irrlicht renderer module.
+- Ogre (http://www.ogre3d.org/)
+    - Required for Ogre renderer module.
+- DirectFB (http://directfb.org/)
+    - Required for DirectFB support (broken - do not use)
+- OpenGL ES emulators:
+  - PowerVR's (http://community.imgtec.com/developers/powervr/graphics-sdk/)
+  - There are others, but PowerVR's seems to be the best.
+  - An OpenGL ES emulator is recommended (and on some platforms, necessary) to
+    use OpenGL ES 2.0 together with EGL on a desktop OS.
+
+@subsection dependencies_parsers XML Parsers
+- EXPAT (http://expat.sourceforge.net/)
+    - Required for expat XMLParser module.
+- XercesC++ (http://xerces.apache.org/xerces-c/)
+    - Required for xerces-c based XMLParser module.
+- LibXml2 (http://www.xmlsoft.org/)
+    - Required for libxml2 based XMLParser module.
+- TinyXML (http://sourceforge.net/projects/tinyxml/)
+    - Required for tinyxml based XMLParser module.
+- RapidXML (http://rapidxml.sourceforge.net/)
+    - Required for RapidXML based XMLParser module.
+
+@subsection dependencies_codecs Image Loading
+- DevIL (http://openil.sourceforge.net/)
+    - Required for DevIL based ImageCodec module
+- FreeImage (http://freeimage.sourceforge.net/)
+    - Required for FreeImage based ImageCodec module
+- SILLY (http://www.cegui.org.uk/wiki/index.php/SILLY)
+    - Required for SILLY based ImageCodec module.
+- Corona (http://corona.sourceforge.net/)
+    - Required for Corona based ImageCodec module.
+- PVRTools (http://www.imgtec.com/powervr/insider/powervr-insider.asp)
+    - Required for PVR based ImageCodec module
+
+@subsection dependencies_scripting Scripting
+- Lua 5.1 (http://www.lua.org/)
+    - Required for Lua scripting module and lua binding generator.
+- toLua++ (http://www.codenix.com/~tolua/)
+    - Required for Lua scripting module.
+- Python (http://www.python.org/)
+    - Required for python extension modules.
+- Python libs (http://www.python.org/)
+    - Required for python extension modules.
+- Boost python (http://www.boost.org/)
+    - Required for python extension modules.
+
+@subsection dependencies_samples Samples Framework
+- GLFW (http://www.glfw.org/)
+    - Required for OpenGL support in samples.
+    - For desktop OpenGL rendering, either version 2 or 3 is required.
+    - For OpenGL ES 2.0 rendering, version 3 is required.
+- OIS (http://sourceforge.net/projects/wgois/)
+    - Required for Ogre support in samples
+- GTK2 (http://www.gtk.org/)
+    - Required to enable the GTK2 based renderer selector used in the samples.
+
+@subsection dependencies_other Other
+- Boost unit_test_framework (http://www.boost.org/)
+    - Required to build cegui tests.
+- Doxygen (http://www.stack.nl/~dimitri/doxygen/)
+    - Required to build docs (makefile target not working yet)
+
+Note that none of the above are actually required. Typically you will choose what
+functions you wish to have available in CEGUI and install (or build, when using
+the source based dependency pack) the options that you have chosen. Typical
+choices are Freetype2, PCRE, one of the XML libs, one of the image loading libs
+and one of the rendering API/engine libs.
+
+*/
+

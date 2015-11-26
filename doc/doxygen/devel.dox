@@ -1,0 +1,86 @@
+/**
+@page devel Contributing to the development of CEGUI.
+@author Paul D Turner
+
+The CEGUI developers are always happy to consider code and other materials
+contributed from users out in the community for inclusion with CEGUI.  Many of
+the existing parts of CEGUI are - or started out as - user contributed material.
+
+In order to aid people wishing to contribute to the development of CEGUI, we've
+gathered together some basic guidelines that will both maximise the productivity
+of yourselves and the CEGUI developers, and also maximise the chances that your
+contribution will be accepted into the code base.  Certain points here also
+serve as a guide to CEGUI developers when assessing the overall quality of a
+submission.
+
+- Do not submit code that you personally did not create, do not own, or are
+otherwise unauthorised to contribute or give away.
+
+- Unless clearly stated otherwise on your submission, all contributed materials
+will be considered to be gifted to us, for use as we see fit.  Typically this
+just means we'll be releasing the contributed materials under our MIT license.
+
+- Before you start work, especially on anything major, you should definitely
+join our developer channel #cegui-devel on irc.freenode.net and discuss your
+ideas and intentions (alternatively, post on the forums at
+http://forums.cegui.org.uk/).  There is nothing worse in our eyes than somebody
+spending valuable time working on something that turns out to be unsuitable when
+completed - whether due to a design choice we could have advised about, something
+conflicting with existing or upcoming work, or some other reason.
+
+- We presently accept modifications exclusively via mercurial pull request - so
+this means no patches, no archives containing files or anything else of that
+nature.
+
+- Ideally your clone would be hosted at bitbucket.org and made via the fork
+mechanism that exists there. This way your pull requests can be handled in the
+most effient manner.
+
+- If your fork is not hosted at bitbucket.org, please add a ticket to the
+appropriate sub-project on the CEGUI mantis tracker (http://mantis.cegui.org.uk/).
+Posting pull requests on irc or on the forums is not advised and will virtually
+always result in your request being lost and forgotten about.
+
+- It should be clearly stated on your pull request what precisely the change or
+changes are for - including links to forum discussions and/or other mantis
+tickets where appropriate.
+
+- When working on changes, try to keep to small granular commits that each
+<em>do one thing only.</em>  If your commit message states that the change
+fixes a bug, or adds some new feature, the commit should not additionally contain
+changes to other non related parts of the system.  Pull requests with commits
+that fall into this category are likely to be rejected.
+
+- When developing code for CEGUI - whether you're modifying existing code, or
+developing new code - you should ensure that the code conforms to the existing
+style and idioms in use.  The required code style is documented in
+@ref code_standards, and your contributed code should follow this as closely as
+possible.  Contributed code that deviates too much from these guidelines will be
+rejected as a matter of course.
+
+- Ensure all new classes and/or functions are clearly documented and that any
+documentation for modified classes and/or functions is updated to be correct.
+Documentation should use the same doxygen style as is used elsewhere.  If we
+see new undocumented code or clearly incorrect documentation in your pull request
+will likely be rejected.
+
+- Where possible you should test your code on multiple platforms, and update any
+build mechanisms if appropriate.  If you're unable to test on all platforms,
+your pull request should clearly state which systems have been tested and
+which have not.
+
+- Modifications should be complete - especially those that affect the abstract
+classes and/or interfaces.  For example, if you're adding to or changing the
+functionality of the rendering system, you should include the necessary
+modifications and implementations for <em>all supported renderers</em> (or as
+many as possible, perhaps with an explanatory note).  Changes that effectively
+break all implementation modules bar one can usually expect to be rejected, the
+reason being is that accepting such modifications effectively leaves the CEGUI
+developers to do 75% or more of the work - since the remaining modules
+would have to be updated by us - which defeats the purpose of having people
+submit code in the first place.
+
+- Lastly, don't forget to update our equivalent of the AUTHORS file at
+<tt>doc/doxygen/authors.dox</tt> with your name and contribution.  If you don't
+do this, we'll assume you wish your contribution to be uncredited.
+*/
