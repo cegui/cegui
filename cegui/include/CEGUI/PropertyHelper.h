@@ -475,6 +475,14 @@ public:
         {
             return AM_EXPAND;
         }
+        else if (str == AdjustHeight)
+        {
+            return AM_ADJUST_HEIGHT;
+        }
+        else if (str == AdjustWidth)
+        {
+            return AM_ADJUST_WIDTH;
+        }
         else
         {
             return AM_IGNORE;
@@ -495,6 +503,14 @@ public:
         {
             return Expand;
         }
+        else if (val == AM_ADJUST_HEIGHT)
+        {
+            return AdjustHeight;
+        }
+        else if (val == AM_ADJUST_WIDTH)
+        {
+            return AdjustWidth;
+        }
         else
         {
             assert(false && "Invalid aspect mode");
@@ -505,6 +521,8 @@ public:
     //! Definitions of the possible values represented as Strings
     static const CEGUI::String Shrink;
     static const CEGUI::String Expand;
+    static const CEGUI::String AdjustHeight;
+    static const CEGUI::String AdjustWidth;
     static const CEGUI::String Ignore;
 };
 

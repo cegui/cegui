@@ -231,7 +231,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
                            getParentPixelSize());
     }
 
-    Sizef ret = CoordConverter::asAbsolute(d_area.getSize(), base_size, false);
+    Sizef ret = CoordConverter::asAbsolute(getSize(), base_size, false);
 
     // in case absMin components are larger than absMax ones,
     // max size takes precedence
@@ -265,46 +265,31 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
         // make sure we respect current aspect mode and ratio
         ret.scaleToAspect(d_aspectMode, d_aspectRatio);
 
-        // make sure we haven't blown any of the hard limits
-        // still maintain the aspect when we do this
-        if (d_aspectMode == AM_SHRINK)
-        {
-            float ratio = 1.0f;
-            // check that we haven't blown the min size
-            if (ret.d_width < absMin.d_width)
-            {
-                ratio = absMin.d_width / ret.d_width;
-            }
-            if (ret.d_height < absMin.d_height)
-            {
-                const float newRatio = absMin.d_height / ret.d_height;
-                if (newRatio > ratio)
-                    ratio = newRatio;
-            }
+        /* Make sure we haven't blown any of the hard limits. Still maintain the
+           aspect when we do this.
 
-            ret.d_width *= ratio;
-            ret.d_height *= ratio;
-        }
-        else if (d_aspectMode == AM_EXPAND)
+           NOTE: When the hard min max limits are unsatisfiable with the aspect
+                 lock mode, the result won't be limited by both limits! */
+        if (ret.d_width < absMin.d_width)
         {
-            float ratio = 1.0f;
-            // check that we haven't blown the min size
-            if (absMax.d_width != 0.0f && ret.d_width > absMax.d_width)
-            {
-                ratio = absMax.d_width / ret.d_width;
-            }
-            if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
-            {
-                const float newRatio = absMax.d_height / ret.d_height;
-                if (newRatio > ratio)
-                    ratio = newRatio;
-            }
-
-            ret.d_width *= ratio;
-            ret.d_height *= ratio;
+            ret.d_height *= absMin.d_width / ret.d_width;
+            ret.d_width = absMin.d_width;
         }
-        // NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
-        //       the result won't be limited by both limits!
+        else if (ret.d_height < absMin.d_height)
+        {
+            ret.d_width *= absMin.d_height / ret.d_height;
+            ret.d_height = absMin.d_height;
+        }
+        else if (absMax.d_width != 0.f  &&  ret.d_width > absMax.d_width)
+        {
+            ret.d_height *= absMax.d_width / ret.d_width;
+            ret.d_width = absMax.d_width;
+        }
+        else if (absMax.d_height != 0.f  &&  ret.d_height > absMax.d_height)
+        {
+            ret.d_width *= absMax.d_height / ret.d_height;
+            ret.d_height = absMax.d_height;
+        }
     }
 
     if (d_pixelAligned)
@@ -462,7 +447,8 @@ void Element::addElementProperties()
     );
 
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
-        "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
+        "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\", "
+        "\"Expand\", \"AdjustHeight\" or \"AdjustWidth\".",
         &Element::setAspectMode, &Element::getAspectMode, AM_IGNORE
     );
 
