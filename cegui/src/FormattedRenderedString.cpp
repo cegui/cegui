@@ -31,7 +31,8 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 FormattedRenderedString::FormattedRenderedString(const RenderedString& string) :
-    d_renderedString(&string)
+    d_renderedString(&string),
+    d_wasWordSplit(false)
 {
 }
 
@@ -50,6 +51,18 @@ void FormattedRenderedString::setRenderedString(const RenderedString& string)
 const RenderedString& FormattedRenderedString::getRenderedString() const
 {
     return *d_renderedString;
+}
+
+//----------------------------------------------------------------------------//
+bool FormattedRenderedString::wasWordSplit() const
+{
+    return d_wasWordSplit;
+}
+
+//----------------------------------------------------------------------------//
+void FormattedRenderedString::setWasWordSplit(bool to)
+{
+    d_wasWordSplit = to;
 }
 
 //----------------------------------------------------------------------------//
