@@ -80,6 +80,25 @@ public:
     */
     void setWasWordSplit(bool to);
 
+    /*
+    \brief
+        Get the number of text lines in the original (non-formatted) string
+        (i.e. "d_renderedString");
+
+    \see getNumOfFormattedTextLines
+    */
+    std::size_t getNumOfOriginalTextLines() const;
+
+    /*
+    \brief
+        Get the number of text lines in the formatted string.
+
+        That takes into account e.g. word-wrapping.
+
+    \see getNumOfOriginalTextLines
+    */
+    virtual std::size_t getNumOfFormattedTextLines() const;
+
 protected:
     //! Constructor.
     FormattedRenderedString(const RenderedString& string);

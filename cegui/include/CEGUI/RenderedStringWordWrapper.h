@@ -57,6 +57,7 @@ public:
     size_t getFormattedLineCount() const;
     float getHorizontalExtent(const Window* ref_wnd) const;
     float getVerticalExtent(const Window* ref_wnd) const;
+    std::size_t getNumOfFormattedTextLines() const;
 
 protected:
     //! Delete the current formatters and associated RenderedStrings
@@ -182,6 +183,17 @@ float RenderedStringWordWrapper<T>::getVerticalExtent(const Window* ref_wnd) con
         h += (*i)->getVerticalExtent(ref_wnd);
 
     return h;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+std::size_t RenderedStringWordWrapper<T>::getNumOfFormattedTextLines() const
+{
+    std::size_t ret(0);
+    for ( LineList::const_iterator line(d_lines.begin());
+          line != d_lines.end();  ++line)
+        ret += (*line)->getNumOfOriginalTextLines();
+    return ret;
 }
 
 //----------------------------------------------------------------------------//
