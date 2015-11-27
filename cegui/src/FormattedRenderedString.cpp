@@ -66,5 +66,15 @@ void FormattedRenderedString::setWasWordSplit(bool to)
 }
 
 //----------------------------------------------------------------------------//
+std::size_t FormattedRenderedString::getNumOfOriginalTextLines() const
+{
+    return getRenderedString().getLineCount();
+}
     
+//----------------------------------------------------------------------------//
+std::size_t FormattedRenderedString::getNumOfFormattedTextLines() const
+{
+    return getNumOfOriginalTextLines();
+}
+
 } // End of  CEGUI namespace section
