@@ -59,12 +59,15 @@ const String Element::EventChildAdded("ChildAdded");
 const String Element::EventChildRemoved("ChildRemoved");
 const String Element::EventZOrderChanged("ZOrderChanged");
 const String Element::EventNonClientChanged("NonClientChanged");
+const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
 
 //----------------------------------------------------------------------------//
 Element::Element():
     d_parent(0),
 
     d_nonClient(false),
+    d_isWidthAdjustedToContent(false),
+    d_isHeightAdjustedToContent(false),
 
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
     d_horizontalAlignment(HA_LEFT),
@@ -322,6 +325,11 @@ const Sizef& Element::getRootContainerSize() const
 }
 
 //----------------------------------------------------------------------------//
+void Element::adjustSizeToContent()
+{
+    adjustSizeToContent_direct();
+}
+
 void Element::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
@@ -391,6 +399,51 @@ void Element::setNonClient(const bool setting)
 
     ElementEventArgs args(this);
     onNonClientChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Element::setAdjustWidthToContent(bool to)
+{
+    if (d_isWidthAdjustedToContent == to)
+        return;
+    d_isWidthAdjustedToContent = to;
+    ElementEventArgs args(this);
+    onIsSizeAdjustedToContentChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Element::setAdjustHeightToContent(bool to)
+{
+    if (d_isHeightAdjustedToContent == to)
+        return;
+    d_isHeightAdjustedToContent = to;
+    ElementEventArgs args(this);
+    onIsSizeAdjustedToContentChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Element::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
+{
+    adjustSizeToContent();
+    fireEvent(EventIsSizeAdjustedToContentChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+bool Element::isWidthAdjustedToContent() const
+{
+    return d_isWidthAdjustedToContent;
+}
+
+//----------------------------------------------------------------------------//
+bool Element::isHeightAdjustedToContent() const
+{
+    return d_isHeightAdjustedToContent;
+}
+
+//----------------------------------------------------------------------------//
+bool Element::isSizeAdjustedToContent() const
+{
+    return isWidthAdjustedToContent() || isHeightAdjustedToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -474,6 +527,18 @@ void Element::addElementProperties()
         "NonClient", "Property to get/set whether the Element is 'non-client'. "
         "Value is either \"true\" or \"false\".",
         &Element::setNonClient, &Element::isNonClient, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Element, bool, "AdjustWidthToContent",
+        "Property to get/set whether to " "automatically adjust the element's " "width to the element's content.  "
+        "Value is either \"true\" or \"false\".",
+        &Element::setAdjustWidthToContent, &Element::isWidthAdjustedToContent, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Element, bool, "AdjustHeightToContent",
+        "Property to get/set whether to " "automatically adjust the element's height to the element's content.  "
+        "Value is either \"true\" or \"false\".",
+        &Element::setAdjustHeightToContent, &Element::isHeightAdjustedToContent, false
     );
 }
 
