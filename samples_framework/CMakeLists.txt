@@ -1,3 +1,8 @@
+# Allow overwriting samples datapath from CMake
+if (DEFINED CEGUI_SAMPLE_DATAPATH)
+    add_definitions(-DCEGUI_SAMPLE_DATAPATH=${CEGUI_SAMPLE_DATAPATH})
+endif()
+
 set( CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME} )
 
 set( CORE_SOURCE_FILES
@@ -56,7 +61,7 @@ endif ()
 
 if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
     if (NOT ANDROID)
-    
+
         list (APPEND CORE_SOURCE_FILES
             ./src/CEGuiGLFWSharedBase.cpp
         )
@@ -81,7 +86,7 @@ if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
                 ./src/CEGuiOpenGL3BaseApplication.cpp
             )
         endif()
-  
+
     endif ()
 
     if (CEGUI_SAMPLES_SUPPORT_RENDERER_OPENGLES2)
@@ -174,7 +179,7 @@ endif()
 ###########################################################################
 if (ANDROID)
     add_library (${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES})
-else ()   
+else ()
     add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 endif ()
 
@@ -208,7 +213,7 @@ endif()
 ###########################################################################
 if(MSVC)
     # Visual Studio 2008 or less
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16.0) 
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16.0)
         configure_file(
             ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcproj.user.in
             ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcproj.user
@@ -245,7 +250,7 @@ endif()
 add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
                                       CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
                                       CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC})
-                                      
+
 if (CEGUI_SAMPLES_ENABLE_COMMON_DIALOGUES_DEMO)
     add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_COMMON_DIALOGS_LIBNAME})
 endif()
@@ -274,7 +279,7 @@ if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
         cegui_add_dependency(${CEGUI_TARGET_NAME} EPOXY)
     elseif (CEGUI_USE_GLEW)
         cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
-    endif ()  
+    endif ()
     if (CEGUI_USE_GLFW_VER STREQUAL "3")
         cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW3)
     else () # CEGUI_USE_GLFW_VER STREQUAL "2"
