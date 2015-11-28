@@ -303,6 +303,12 @@ public:
      * changed.
      */
     static const String EventNonClientChanged;
+    /*!
+    \brief
+        Fired when any of the properties "AdjustWidthToContent" and
+        "AdjustHeightToContent" changes.
+    */
+    static const String EventIsSizeAdjustedToContentChanged;
 
     /*!
     \brief A tiny wrapper to hide some of the dirty work of rect caching
@@ -977,6 +983,103 @@ public:
     }
 
     /*!
+    \brief
+        If set to "true", keep the width of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a horizontal scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+        
+        See the documentation of "isWidthAdjustedToContent" for more details.
+
+    \see isWidthAdjustedToContent
+    \see setAdjustHeightToContent
+    */
+    void setAdjustWidthToContent(bool to);
+
+    /*!
+    \brief
+        If set to "true", keep the height of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a vertical scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+        
+        See the documentation of "isHeightAdjustedToContent" for more details.
+
+    \see isHeightAdjustedToContent
+    \see setAdjustWidthToContent
+    */
+    void setAdjustHeightToContent(bool to);
+
+    /*!
+    \brief
+        If set to "true", keep the width of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a horizontal scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So setting this property to "true" would keep the width of the
+        widget to the minimal value in which the whole text is visible without
+        the need for a horizontal scrollbar (if possible), and without the need
+        to split a word between 2 or more lines (if possible).
+
+        Whenever the size of the widget should be (re)adjusted to its content,
+        this is done by calling "adjustSizeToContent". This happens in the
+        default implementations of "onIsSizeAdjustedToContentChanged" and
+        "onSized".
+
+    \see adjustSizeToContent
+    \see isHeightAdjustedToContent
+    \see setAdjustWidthToContent
+    \see isSizeAdjustedToContent
+    \see onIsSizeAdjustedToContentChanged
+    \see onSized
+    */
+    bool isWidthAdjustedToContent() const;
+
+    /*!
+    \brief
+        If set to "true", keep the height of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a vertical scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So setting this property to "true" would keep the height of the
+        widget to the minimal value in which the whole text is visible without
+        the need for a vertical scrollbar (if possible), and without the need
+        to split a word between 2 or more lines (if possible).
+
+        Whenever the size of the widget should be (re)adjusted to its content,
+        this is done by calling "adjustSizeToContent". This happens in the
+        default implementations of "onIsSizeAdjustedToContentChanged" and
+        "onSized".
+
+    \see adjustSizeToContent
+    \see isWidthAdjustedToContent
+    \see setAdjustHeightToContent
+    \see isSizeAdjustedToContent
+    \see onContentSizeChanged
+    \see onIsSizeAdjustedToContentChanged
+    \see onSized
+    */
+    bool isHeightAdjustedToContent() const;
+
+    /*!
+    \brief
+        Return whether any of the properties "AdjustWidthToContent" and
+        "AdjustHeightToContent" is set to true.
+
+    \see isWidthAdjustedToContent
+    \see isHeightAdjustedToContent
+    */
+    bool isSizeAdjustedToContent() const;
+
+    /*!
     \brief Return a Rect that describes the unclipped outer rect area of the Element
 
     The unclipped outer rectangle is the entire area of the element, including
@@ -1102,6 +1205,49 @@ public:
     */
     virtual const Sizef& getRootContainerSize() const;
 
+    /*!
+    \brief
+        Set the size of the element to the minimal value in which the whole
+        element content is visible without the need for scrollbars
+        (if possible), and while the content remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So setting this property to "true" would keep the width of the
+        widget to the minimal value in which the whole text is visible without
+        the need for a horizontal scrollbar (if possible), and without the need
+        to split a word between 2 or more lines (if possible).
+
+        If the "AdjustWidthToContent" property is set to "true", the width is
+        adjusted. If the "AdjustHeightToContent" property is set to "true", the
+        height is adjusted. The exact behaviour of this method depends on the
+        combination of "AdjustWidthToContent" and "AdjustHeightToContent", as
+        well as on the type of widget, and possibly other properties. You might
+        want to look at the documentation for
+        "FalagardStaticText::adjustSizeToContent" for a detailed description on
+        how this method behaves for a "FalagardStaticText" widget, which serves
+        as a great example.
+    
+        There are 2 helper methods that you may want to use when implementing
+        this method:
+        1. "adjustSizeToContent_direct"
+        2. "getSizeAdjustedToContent_bisection"
+
+        The default implementations of "onIsSizeAdjustedToContentChanged" and
+        "onSized" call this method. Make sure you call this method whenever the
+        size should be re-adjusted to the content in any other case.
+    
+        The default implementation calls "adjustSizeToContent_direct".
+
+    \see FalagardStaticText::adjustSizeToContent
+    \see adjustSizeToContent_direct
+    \see getSizeAdjustedToContent_bisection
+    \see isWidthAdjustedToContent
+    \see isHeightAdjustedToContent
+    \see isSizeAdjustedToContent
+    */
+    virtual void adjustSizeToContent();
 protected:
     /*!
     \brief
@@ -1287,6 +1433,13 @@ protected:
     */
     virtual void onNonClientChanged(ElementEventArgs& e);
 
+    /*!
+    \brief
+        Called whenever any of the properties "AdjustWidthToContent" and
+        "AdjustHeightToContent" change.
+    */
+    virtual void onIsSizeAdjustedToContentChanged(ElementEventArgs&);
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
@@ -1302,7 +1455,36 @@ protected:
     //! true if element is in non-client (outside InnerRect) area of parent.
     bool d_nonClient;
 
-    //! This element objects area as defined by a URect.
+    /*!
+    \brief
+        If set to "true", keep the width of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a horizontal scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        See the documentation for "isWidthAdjustedToContent" for a more detailed
+        description.
+    
+    \see isWidthAdjustedToContent
+    \see d_isHeightAdjustedToContent
+    */
+    bool d_isWidthAdjustedToContent;
+
+    /*!
+    \brief
+        If set to "true", keep the height of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a vertical scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        See the documentation for "isHeightAdjustedToContent" for a more
+        detailed description.
+    
+    \see isHeightAdjustedToContent
+    \see d_isWidthAdjustedToContent
+    */
+    bool d_isHeightAdjustedToContent;
+
     URect d_area;
     //! Specifies the base for horizontal alignment.
     HorizontalAlignment d_horizontalAlignment;
