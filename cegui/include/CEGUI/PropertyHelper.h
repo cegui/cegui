@@ -255,20 +255,6 @@ public:
     static string_return_type toString(pass_type val);
 };
 
-template<>
-class CEGUIEXPORT PropertyHelper<char32_t>
-{
-public:
-    typedef char32_t return_type;
-    typedef return_type safe_method_return_type;
-    typedef const char32_t pass_type;
-    typedef String string_return_type;
-    
-    static const String& getDataTypeName();
-    static return_type fromString(const String& str);
-    static string_return_type toString(pass_type val);
-};
-
 template<> 
 class CEGUIEXPORT PropertyHelper<bool>
 {
@@ -516,7 +502,6 @@ extern template CEGUIEXPORT class PropertyHelper<std::int32_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::int64_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint32_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint64_t>;
-extern template CEGUIEXPORT class PropertyHelper<char32_t>;
 extern template CEGUIEXPORT class PropertyHelper<bool>;
 extern template CEGUIEXPORT class PropertyHelper<AspectMode>;
 extern template CEGUIEXPORT class PropertyHelper<glm::vec2>;
