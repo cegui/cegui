@@ -844,25 +844,6 @@ PropertyHelper<glm::quat>::string_return_type PropertyHelper<glm::quat>::toStrin
     return String(sstream.str());
 }
 
-const String& PropertyHelper<char32_t>::getDataTypeName()
-{
-    static const String type("char32_t");
-
-    return type;
-}
-
-PropertyHelper<char32_t>::return_type
-PropertyHelper<char32_t>::fromString(const String& str)
-{
-    return str[0];
-}
-
-PropertyHelper<char32_t>::string_return_type PropertyHelper<char32_t>::toString(
-    PropertyHelper<char32_t>::pass_type val)
-{
-    return String("") + val;
-}
-
 const String& PropertyHelper<String>::getDataTypeName()
 {
     static const String type("String");
@@ -890,7 +871,6 @@ template class PropertyHelper<std::int32_t>;
 template class PropertyHelper<std::int64_t>;
 template class PropertyHelper<std::uint32_t>;
 template class PropertyHelper<std::uint64_t>;
-template class PropertyHelper<char32_t>;
 template class PropertyHelper<bool>;
 template class PropertyHelper<AspectMode>;
 template class PropertyHelper<USize>;
