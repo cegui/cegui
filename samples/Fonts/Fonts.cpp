@@ -25,133 +25,18 @@ author:     Paul D Turner
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 
-// NOTE: if you don't have Asian fonts installed, the Japanese and Korean
-// sample texts might show up unreadable in this source file. The sample
-// should look okay though when running.
-
 #include "Fonts.h"
 #include "CEGUI/CEGUI.h"
 
-using namespace CEGUI;
+#include "LanguageStrings.h"
 
-static const unsigned int LangListSize = 12;
+using namespace CEGUI;
+using namespace LanguageStrings;
 
 struct FontOption
 {
     CEGUI::String   d_font;
     bool            d_isEditable;
-};
-
-static struct
-{
-    char* Language;
-    char* Font;
-    char* Text;
-} LangList [LangListSize] =
-{
-    // A list of strings in different languages
-    // Feel free to add your own language here (UTF-8 ONLY!)...
-{
-        "Sandbox"
-        "DejaVuSans-12"
-        "Try out writing text in any language here. The used font can be changed on the right.\n"
-        "You can create new fonts if needed. The new font will be set as font for the selected text/language...\n"
-        "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other Samples)\n"
-        "Important: When you switch to a font the FIRST time, it takes some time to load it. Especially for fonts with asian characters this load time might be noticable.!"
-},
-{
-        "European characters using DejaVuSans font",
-        "DejaVuSans-12",
-        "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog\n\n"
-        "Supports nearly all European unicode characters, including cyrillic:\n"
-        "bokmål, česky, русский, српски / srpski, slovenščina, latviešu, Tiếng Việt, etc.\n"
-        "¥¤£¢©®ÐÆ\nÄÜÖäüöß\nēĒŗŖūŪīĪāĀšŠģĢķĶļĻžŽčČņŅ\nøØæÆåÅèâïÀÁÂƒéíóúÉÍÓÚõç¿ñÑ\nускоряющпризв"
-},
-{
-        "European characters using Junicode font",
-        "Junicode-14",
-        "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog\n\n"
-        "Supports most European unicode characters, but for example no cyrillic:\n"
-        "bokmål, česky, slovenščina, latviešu, Tiếng Việt, etc.\n"
-        "¥¤£¢©®ÐÆ\nÄÜÖäüöß\nēĒŗŖūŪīĪāĀšŠģĢķĶļĻžŽčČņŅ\nøØæÆåÅèâïÀÁÂƒéíóúÉÍÓÚõç¿ñÑ"
-},
-{
-        "Korean/Chinese/Japanese using Batang font",
-        "Batang-18",
-
-        //Japanese
-        "日本語を選択\n"
-        "トリガー検知\n"
-        "鉱石備蓄不足\n\n\n\n\n"
-
-        //Chinese
-        "早發白帝城 (李白)\n\n"
-
-        "朝辭白帝彩雲間，\n"
-        "千里江陵一日還。\n"
-        "兩岸猿聲啼不住，\n"
-        "輕舟己過萬重山。\n\n\n\n\n"
-
-        //Korean
-        "이몸이/죽고죽어/일백번/고쳐죽어/\n"
-        "백골이/진퇴되어/넋이라도/있고없고/\n"
-        "임 향한/일편단심이야/가실 줄이/있으랴/"
-},
-{
-        "Hebrew using TnuaLibre font",
-        "TnuaLibre-12",
-        "תנועה \n"
-        "חופשי ** אבגד  \n"
-        "1234"
-},
-{
-        "Old German using Fette UNZ Fraktur font",
-        "FetteUNZFraktur-20",
-        "Heute back ich, morgen brau ich,\n"
-        "Übermorgen hol ich mir der Königin ihr Kind;\n"
-        "Ach, wie gut, dass niemand weiß,\n"
-        "dass ich Rumpelstilzchen heiß"
-},
-{
-        "Latin using Old Fell Type font",
-        "FellType-12.5",
-        "☞Non nobis, non nobis, Domine\n"
-        "Sed nomini tuo da gloriam.☜\n"
-        "    Ð"
-},
-{
-        "Handwriting font",
-        "GreatVibes-22",
-        "Dear Gooby,\n\n"
-        "Handwriting is nice when you don't have to do it yourself.\n\n"
-        "Regards, Uncle Dolan."
-},
-{
-        "RichStyle Icons font",
-        "RichStyle-22",
-        "+ - ? B I W Y f n t ℹ ⇦ ⇧ ⇨ ⇩ ⌘ ☎ ☐ ☑ ⚖ ⚙ ⚠ ⛏ ✎ ✑ ✓ ✔ ✕ ✖ ❝ ❞ ➡ ⬀ ⬁ ⬂ ⬃ ⬅ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋                       "
-},
-{
-        "Old Runic writing using Futhark Adapted font",
-        "FutharkAdapted-18",
-        "Somehow, although he is the smallest office boy around the place, none of the other lads pick on him. Scuffling and fighting almost has ceased since Kerensky came to work. That's only one of the nicknames of Leo Kobreen, and was assigned to him because of a considerable facial resemblance to the perpetually fleeing Russian statesman, and, too, because both wore quite formal standing collars."
-},
-{
-        "Klingon using pIqaD HaSta font",
-        "Klingon-pIqaD-HaSta-24",
-        "  \n\n\n"
-        "         \n"
-        "         \n"
-        "  "
-},
-{
-        "Pixel style font using Mizufalp font",
-        "mizufalp-12",
-        "Mechanic: Somebody set up us the bomb.\n"
-        "Operator: Main screen turn on.\n"
-        "CATS: All your base are belong to us.\n"
-        "CATS: You have no chance to survive make your time."
-}
 };
 
 FontsSample::FontsSample() :
