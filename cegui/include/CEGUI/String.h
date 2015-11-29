@@ -53,12 +53,16 @@ namespace CEGUI
     provides conversion functionality for regular char arrays (interpreted as UTF-8 / ASCII) and accepts
     such char arrays and strings in the constructor and in the assign, insert and other functions.
 \note The std::string is not inherited as this cannot be safely done due to the non-virtual constructor.
-\note The term "character" in the context of positions and counts/numbers always refers to a number relating
-    to code points and not code units, which is of relevance in the context of std::string and char* containing
-    UTF-8 encoded characters.
-\note The class was spacifically created to provide the methods of an std::string (or std::basic_string to be specific)
+\note The term "character" in the context of positions and counts/numbers, if not explicitly specified otherwise,
+    refers to code points and not code units, which is of relevance in the context of std::string and char*,
+    as they are allowed to contain UTF-8 code units.
+\note The class was specifically created to provide the methods of an std::string (or std::basic_string to be specific)
     while providing support for passing char, char32_t, char*, char32_t*, std::string, std::u32string and String to all
-    methods, operators and constructors via overloads.
+    methods, operators and constructors via overloads. 
+ \note Very few function overloads that take a char* and depend on a count are not supported, 
+    since that would be unsafe (if taking the count for the code units) or misleading (if 
+    taking the count for code points). Such functions are, for example, variations of find,
+    assign and replace.
 */
 class CEGUIEXPORT String
 {
@@ -88,6 +92,94 @@ public:
     typedef std::u32string::reverse_iterator        reverse_iterator;     
     //! Type used for const reverse iterators pointing to an UTF-32 code point of the String
     typedef std::u32string::const_reverse_iterator  const_reverse_iterator; 
+
+    //////////////////////////////////////////////////////////////////////////
+    // Conversion helper functions/interface
+    //////////////////////////////////////////////////////////////////////////
+
+    /*
+    \brief
+        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 string (std::u32string).
+    \param utf8String
+        An UTF-8 encoded or ASCII char array. The char array will be converted only until the first null-character is encountered.
+    \return
+        Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded string or char array.
+    */
+    static std::u32string convertUtf8ToUtf32(const char* utf8String);
+
+    /*
+    \brief
+        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 string (std::u32string).
+    \param utf8StringStart
+        A pointer to the beginning of the UTF-8 encoded or ASCII char array to be converted.
+    \param utf8StringEnd
+        A pointer to the end of the UTF-8 or ASCII char array to be converted.
+    \return
+        Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded string or char array.
+    */
+    static std::u32string String::convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd);
+
+    /*
+    \brief
+        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 string (std::u32string).
+    \param utf8String
+        An UTF-8 encoded or ASCII string. The char array will be converted only until the first null-character is encountered.
+    \return
+        Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded string or char array.
+    */
+    static std::u32string convertUtf8ToUtf32(const std::string& utf8String);
+
+    /*
+    \brief
+        Converts an UTF-8 character to an UTF-32 string (std::u32string).
+    \param utf8Char
+        A UTF-8 character.
+    \return
+        Returns an UTF-32 string (std::u32string) converted from the UTF-8 character.
+    */
+    static std::u32string convertUtf8ToUtf32(const char utf8Char);
+
+    /*
+    \brief
+        Converts an UTF-32 string or char32_t array to an UTF-8 string (std::string).
+    \param utf32String
+        A UTF-32 string or char32_t array. The char32_t array will be converted only until the first null-character is encountered.
+    \return
+        Returns an UTF-8 string (std::string) converted from the UTF-32 string or char32_t array.
+    */
+    static std::string convertUtf32ToUtf8(const char32_t* utf32String);
+
+    /*
+    \brief
+        Converts an UTF-32 string or char32_t array to an UTF-8 string (std::string).
+    \param utf32StringStart
+        A pointer to the beginning of the UTF-32 encoded char32_t array to be converted.
+    \param utf32StringEnd
+        A pointer to the end of the UTF-32 encoded char32_t array to be converted.
+    \return
+        Returns an UTF-8 string (std::string) converted from the UTF-32 string or char32_t array.
+    */
+    static std::string convertUtf32ToUtf8(const char32_t* utf32StringStart, const char32_t* utf32StringEnd);
+
+    /*
+    \brief
+        Converts an UTF-32 string or char32_t array to an UTF-8 string (std::string).
+        \param utf32String
+        A UTF-32 string or char32_t array. The char32_t array will be converted only until the first null-character is encountered.
+    \return
+        Returns an UTF-8 string (std::string) converted from the UTF-32 string or char32_t array.
+    */
+    static std::string convertUtf32ToUtf8(const std::u32string& utf32String);
+
+    /*
+    \brief
+        Converts an UTF-32 character to a UTF-8 string (std::string).
+    \param utf32Char
+        A UTF-32 character.
+    \return
+        Returns an UTF-8 string (std::string) converted from the UTF-32 character.
+    */
+    static std::string convertUtf32ToUtf8(const char32_t utf32Char);
 
     //////////////////////////////////////////////////////////////////////////
     // Default constructors and destructors
@@ -257,8 +349,7 @@ public:
     \param str
         std::string object containing either ASCII or UTF-8 encoded characters.
     */
-    String(const std::string& str)
-        : d_string(s_utf8Converter.from_bytes(str))
+    String::String(const std::string& str) : d_string(convertUtf8ToUtf32(str))
     {}
 
     /*!
@@ -269,8 +360,7 @@ public:
     \param str
         Pointer to the char array containing either ASCII or UTF-8 encoded characters.
     */
-    String(const char* str)
-        : d_string(s_utf8Converter.from_bytes(str))
+    String::String(const char* str) : d_string(convertUtf8ToUtf32(str))
     {}
 
     /*!
@@ -281,10 +371,10 @@ public:
         encountered null-character.
 
     \param charArray
-        Array of characters, which can be ASCII or UTF-8 encoded.
+        Array of characters (or code units), which can be ASCII or UTF-8 encoded.
 
     \param chars_len
-        Number of chars from the array to be used.
+        Number of chars (ASCII characters or UTF-8 code units) from the array to be used.
 
     \exception
         std::length_error Thrown if resulting String object would be too big.
@@ -323,7 +413,7 @@ public:
     */
     String& operator=(const std::string& str)
     {
-        d_string = s_utf8Converter.from_bytes(str);
+        d_string = convertUtf8ToUtf32(str);
         return *this;
     }
 
@@ -410,7 +500,7 @@ public:
     */ 
     String& assign(size_type count, char ch)
     {
-        d_string.assign(count, s_utf8Converter.from_bytes(ch)[0]);
+        d_string.assign(count, convertUtf8ToUtf32(ch)[0]);
         return *this;
     }
 
@@ -430,7 +520,7 @@ public:
     */ 
     String& assign(const std::string& str)
     {
-        d_string.assign(s_utf8Converter.from_bytes(str));
+        d_string.assign(convertUtf8ToUtf32(str));
         return *this;
     }
 
@@ -455,7 +545,7 @@ public:
     */ 
     String& assign(const std::string& str, size_type pos, size_type count = npos)
     {
-        std::u32string convertedStr = s_utf8Converter.from_bytes(str);
+        std::u32string convertedStr = convertUtf8ToUtf32(str);
         d_string.assign(convertedStr, pos, count);
         return *this;
     }
@@ -485,12 +575,12 @@ public:
     \brief
         Replaces the contents of this String with "count" number of characters from the null-terminated char array
         "charArray" containing either UTF-8 encoded characters or ASCII chars. In the case of UTF-8 encoded characters,
-        the count refers to the number of code points, not to the number of code units (chars). The input array will
+        the count refers to the number of code units (char), not to the number of code points. The input array will
         only be processed until the first encountered null-character.
     */ 
     String& assign(const char* charArray, size_type count)
     {
-        d_string.assign(s_utf8Converter.from_bytes(charArray).data(), count);
+        d_string.assign(convertUtf8ToUtf32(charArray, charArray + count).data(), count);
         return *this;
     }
 
@@ -513,7 +603,7 @@ public:
     */ 
     String& assign(const char* charArray)
     {
-        d_string.assign(s_utf8Converter.from_bytes(charArray).data());
+        d_string.assign(convertUtf8ToUtf32(charArray).data());
         return *this;
     }
 
@@ -992,7 +1082,7 @@ public:
     */
     String& insert(size_type index, const char* charArray)
     {
-        d_string.insert(index, s_utf8Converter.from_bytes(charArray).data());
+        d_string.insert(index, convertUtf8ToUtf32(charArray).data());
         return *this;
     }
 
@@ -1031,7 +1121,7 @@ public:
     */
     String& insert(size_type index, const char* charArray, size_type count)
     {
-        d_string.insert(index, s_utf8Converter.from_bytes(charArray).data(), count);
+        d_string.insert(index, convertUtf8ToUtf32(charArray).data(), count);
         return *this;
     }
 
@@ -1077,7 +1167,7 @@ public:
     */
     String& insert(size_type index, const std::string& str)
     {
-        d_string.insert(index, s_utf8Converter.from_bytes(str));
+        d_string.insert(index, convertUtf8ToUtf32(str));
         return *this;
     }
 
@@ -1137,7 +1227,7 @@ public:
     */ 
     String& insert(size_type index, const std::string& str, size_type index_str, size_type count = npos)
     {
-        d_string.insert(index, s_utf8Converter.from_bytes(str), index_str, count);
+        d_string.insert(index, convertUtf8ToUtf32(str), index_str, count);
         return *this;
     }
 
@@ -1170,7 +1260,7 @@ public:
     */
     iterator insert(const_iterator iter, char ch)
     {
-        return d_string.insert(iter, s_utf8Converter.from_bytes(ch)[0]);
+        return d_string.insert(iter, convertUtf8ToUtf32(ch)[0]);
     }
 
    /*!
@@ -1206,7 +1296,7 @@ public:
     */
     iterator insert(const_iterator iter, size_type count, char ch)
     {
-        return d_string.insert(iter, count, s_utf8Converter.from_bytes(ch)[0]);
+        return d_string.insert(iter, count, convertUtf8ToUtf32(ch)[0]);
     }
 
     /*!
@@ -1302,7 +1392,7 @@ public:
     */
     void push_back(char ch)
     {
-        d_string.push_back(s_utf8Converter.from_bytes(ch)[0]);
+        d_string.push_back(convertUtf8ToUtf32(ch)[0]);
     }
 
     /*!
@@ -1344,7 +1434,7 @@ public:
     */
     String& append(size_type count, char ch)
     {
-        d_string.append(count, s_utf8Converter.from_bytes(ch)[0]);
+        d_string.append(count, convertUtf8ToUtf32(ch)[0]);
         return *this;
     }
 
@@ -1388,7 +1478,7 @@ public:
     */
     String& append(const std::string& str)
     {
-        d_string.append(s_utf8Converter.from_bytes(str));
+        d_string.append(convertUtf8ToUtf32(str));
         return *this;
     }
 
@@ -1445,7 +1535,7 @@ public:
     */
     String& append(const std::string& str, size_type pos, size_type count = npos)
     {
-        d_string.append(s_utf8Converter.from_bytes(str), pos, count);
+        d_string.append(convertUtf8ToUtf32(str), pos, count);
         return *this;
     }
 
@@ -1468,19 +1558,19 @@ public:
 
     /*!
     \brief
-        Appends "count" number of characters (code points) from the char array "charArray" to this
-        String. "charArray" can consist either of UTF-8 encoded or ASCII characters. The input array
+        Appends "count" number of characters (code units!) from the char array "charArray" to this
+        String. "charArray" can consist either of UTF-8 encoded or ASCII code points. The input array
         is only processed until the first null-character encountered.
     \param charArray
         The char array containing the string to append.
     \param count
-        The number of characters (code points) from the array to append.
+        The number of characters (code units) from the array to append.
     \return
         Returns a reference to this String (*this).
     */
     String& append(const char* charArray, size_type count)
     {
-        d_string.append(s_utf8Converter.from_bytes(charArray).data(), count);
+        d_string.append(convertUtf8ToUtf32(charArray, charArray + count));
         return *this;
     }
 
@@ -1512,7 +1602,7 @@ public:
     */
     String& append(const char* charArray)
     {
-        d_string.append(s_utf8Converter.from_bytes(charArray).data());
+        d_string.append(convertUtf8ToUtf32(charArray).data());
         return *this;
     }
 
@@ -1696,7 +1786,7 @@ public:
     */
     int compare(const std::string& str) const
     {
-        return d_string.compare(s_utf8Converter.from_bytes(str));
+        return d_string.compare(convertUtf8ToUtf32(str));
     }
 
     /*!
@@ -1754,7 +1844,7 @@ public:
     */
     int compare(size_type pos1, size_type count1, const std::string& str) const
     {
-        return d_string.compare(pos1, count1, s_utf8Converter.from_bytes(str));
+        return d_string.compare(pos1, count1, convertUtf8ToUtf32(str));
     }
 
     /*!
@@ -1829,7 +1919,7 @@ public:
     int compare(size_type pos1, size_type count1, const std::string& str,
                 size_type pos2, size_type count2 = npos) const
     {
-        return d_string.compare(pos1, count1, s_utf8Converter.from_bytes(str),
+        return d_string.compare(pos1, count1, convertUtf8ToUtf32(str),
                                 pos2, count2);
     }
 
@@ -1861,7 +1951,7 @@ public:
     */
     int compare(const char* charArray) const
     {
-        return d_string.compare(s_utf8Converter.from_bytes(charArray).data());
+        return d_string.compare(convertUtf8ToUtf32(charArray).data());
     }
 
     /*!
@@ -1900,7 +1990,7 @@ public:
     */
     int compare(size_type pos1, size_type count1, const char* charArray) const
     {
-        return d_string.compare(pos1, count1, s_utf8Converter.from_bytes(charArray).data());
+        return d_string.compare(pos1, count1, convertUtf8ToUtf32(charArray).data());
     }
 
     /*!
@@ -1943,7 +2033,7 @@ public:
     */
     int compare(size_type pos1, size_type count1, const char* charArray, size_type count2) const
     {
-        return d_string.compare(pos1, count1, s_utf8Converter.from_bytes(charArray).data(), count2);
+        return d_string.compare(pos1, count1, convertUtf8ToUtf32(charArray).data(), count2);
     }
 
     /*!
@@ -1997,7 +2087,7 @@ public:
     */
     String& replace(size_type pos, size_type count, const std::string& str)
     {
-        d_string.replace(pos, count, s_utf8Converter.from_bytes(str));
+        d_string.replace(pos, count, convertUtf8ToUtf32(str));
         return *this;
     }
 
@@ -2052,7 +2142,7 @@ public:
     */
     String& replace(const_iterator first, const_iterator last, const std::string& str)
     {
-        d_string.replace(first, last, s_utf8Converter.from_bytes(str));
+        d_string.replace(first, last, convertUtf8ToUtf32(str));
         return *this;
     }
 
@@ -2122,7 +2212,7 @@ public:
     String& replace(size_type pos, size_type count, const std::string& str,
                     size_type pos2, size_type count2 = npos)
     {
-        d_string.replace(pos, count, s_utf8Converter.from_bytes(str), pos2, count2);
+        d_string.replace(pos, count, convertUtf8ToUtf32(str), pos2, count2);
         return *this;
     }
 
@@ -2183,14 +2273,14 @@ public:
     \param charArray
         The array of characters (code points), containing contain either UTF-8 encoded or ASCII characters, to use for the replacement.
     \param count2
-        The number of characters of the substring to be used to replace the characters (code points) of this String with.
+        The number of characters (CODE UNITS!) of the substring to be used to replace the characters (code points) of this String with.
     \return
         Returns a reference to this String (*this).
     */
     String& replace(size_type pos, size_type count,
                     const char* charArray, size_type count2)
     {
-        d_string.replace(pos, count, s_utf8Converter.from_bytes(charArray).data(), count2);
+        d_string.replace(pos, count, convertUtf8ToUtf32(charArray, charArray + count2).data(), npos);
         return *this;
     }
 
@@ -2229,14 +2319,14 @@ public:
         The array of characters (code points) to use for the replacement. The character array may contain either UTF-8 encoded
         or ASCII characters.
     \param count2
-        The number of characters of the substring to be used to replace the characters (code points) of this String with.
+        The number of characters (CODE UNITS!) of the substring to be used to replace the characters (code points) of this String with.
     \return
         Returns a reference to this String (*this).
     */
     String& replace(const_iterator first, const_iterator last,
                     const char* charArray, size_type count2)
     {
-        d_string.replace(first, last, s_utf8Converter.from_bytes(charArray).data(), count2);
+        d_string.replace(first, last, convertUtf8ToUtf32(charArray, charArray + count2).data(), npos);
         return *this;
     }
 
@@ -2272,7 +2362,7 @@ public:
     \param count
         The length of characters (code points) of the substring of this String to replace.
     \param charArray
-        The null-terminated array of characters (code points) to use for the replacement. The character array may
+        The null-terminated array of characters (or code units) to use for the replacement. The character array may
         contain either UTF-8 encoded or ASCII characters.
     \return
         Returns a reference to this String (*this).
@@ -2280,7 +2370,7 @@ public:
     String& replace(size_type pos, size_type count,
                     const char* charArray)
     {
-        d_string.replace(pos, count, s_utf8Converter.from_bytes(charArray).data());
+        d_string.replace(pos, count, convertUtf8ToUtf32(charArray).data());
         return *this;
     }
 
@@ -2324,7 +2414,7 @@ public:
     String& replace(const_iterator first, const_iterator last,
                     const char* charArray)
     {
-        d_string.replace(first, last, s_utf8Converter.from_bytes(charArray).data());
+        d_string.replace(first, last, convertUtf8ToUtf32(charArray).data());
         return *this;
     }
 
@@ -2368,7 +2458,7 @@ public:
     String& replace(size_type pos, size_type count,
                     size_type count2, char ch)
     {
-        d_string.replace(pos, count, count2, s_utf8Converter.from_bytes(ch)[0]);
+        d_string.replace(pos, count, count2, convertUtf8ToUtf32(ch)[0]);
         return *this;
     }
 
@@ -2412,7 +2502,7 @@ public:
     String& replace(const_iterator first, const_iterator last,
                     size_type count2, char ch)
     {
-        d_string.replace(first, last, count2, s_utf8Converter.from_bytes(ch)[0]);
+        d_string.replace(first, last, count2, convertUtf8ToUtf32(ch)[0]);
         return *this;
     }
 
@@ -2511,7 +2601,7 @@ public:
     */
     void resize(size_type count, char ch)
     {
-        return d_string.resize(count, s_utf8Converter.from_bytes(ch)[0]);
+        return d_string.resize(count, convertUtf8ToUtf32(ch)[0]);
     }
 
     /*
@@ -2571,7 +2661,7 @@ public:
     */
     size_type find(const std::string& str, size_type pos = 0) const
     {
-        return d_string.find(s_utf8Converter.from_bytes(str), pos);
+        return d_string.find(convertUtf8ToUtf32(str), pos);
     }
 
     /*
@@ -2591,27 +2681,6 @@ public:
     size_type find(const char32_t* charArray, size_type pos, size_type count) const
     {
         return d_string.find(charArray, pos, count);
-    }
-
-    /*
-    \brief
-        Finds the first substring that is equal to the given characters in the array "charArray", containing either UTF-8 encoded or ASCII
-        characters. Search starts at position "pos" of this String. The number of characters (code points, not code units) from the array
-        to be compared are specified by "count". The characters in the array are only processed until the first null-character due to the
-        conversion to UTF-32 taking place before the comparison.
-    \param charArray
-        The character array to search for, which may contain either UTF-8 encoded or ASCII characters.
-    \param pos
-        The position at which the search will start.
-    \param count
-        The number of characters of the array to use for comparison.
-    \return
-        Returns the position of the first character of the found substring matching the String or returns npos if no
-        matching substring was found. 
-    */
-    size_type find(const char* charArray, size_type pos, size_type count) const
-    {
-        return d_string.find(s_utf8Converter.from_bytes(charArray).data(), pos, count);
     }
 
     /*
@@ -2647,7 +2716,7 @@ public:
     */
     size_type find(const char* charArray, size_type pos = 0) const
     {
-        return d_string.find(s_utf8Converter.from_bytes(charArray).data(), pos);
+        return d_string.find(convertUtf8ToUtf32(charArray).data(), pos);
     }
 
     /*
@@ -2679,7 +2748,7 @@ public:
     */
     size_type find(char ch, size_type pos = 0) const
     {
-        return d_string.find(s_utf8Converter.from_bytes(ch)[0], pos);
+        return d_string.find(convertUtf8ToUtf32(ch)[0], pos);
     }
 
     // rfind
@@ -2733,7 +2802,7 @@ public:
     */
     size_type rfind(const std::string& str, size_type pos = npos) const
     {
-        return d_string.rfind(s_utf8Converter.from_bytes(str), pos);
+        return d_string.rfind(convertUtf8ToUtf32(str), pos);
     }
 
     /*
@@ -2754,28 +2823,6 @@ public:
     size_type rfind(const char32_t* charArray, size_type pos, size_type count) const
     {
         return d_string.rfind(charArray, pos, count);
-    }
-
-    /*
-    \brief
-        Finds the first substring that is equal to the given characters in the array "charArray", containing either UTF-8 encoded or ASCII
-        characters. Search starts at position "pos" of this String. The number of characters (code points, not code units) from the array
-        to be compared are specified by "count". The characters in the array are only processed until the first null-character due to the
-        conversion to UTF-32 taking place before the comparison.
-        If npos or any value equal or bigger than size() is passed as pos, the whole string is searched.
-    \param charArray
-        The character array to search for, which may contain either UTF-8 encoded or ASCII characters.
-    \param pos
-        The position at which the search will start.
-    \param count
-        The number of characters of the array to use for comparison.
-    \return
-        Returns the position of the first character of the found substring matching the String or returns npos if no
-        matching substring was found. 
-    */
-    size_type rfind(const char* charArray, size_type pos, size_type count) const
-    {
-        return d_string.rfind(s_utf8Converter.from_bytes(charArray).data(), pos, count);
     }
 
     /*
@@ -2813,7 +2860,7 @@ public:
     */
     size_type rfind(const char* charArray, size_type pos = npos) const
     {
-        return d_string.rfind(s_utf8Converter.from_bytes(charArray).data(), pos);
+        return d_string.rfind(convertUtf8ToUtf32(charArray).data(), pos);
     }
 
     /*
@@ -2847,7 +2894,7 @@ public:
     */
     size_type rfind(char ch, size_type pos = npos) const
     {
-        return d_string.rfind(s_utf8Converter.from_bytes(ch)[0], pos);
+        return d_string.rfind(convertUtf8ToUtf32(ch)[0], pos);
     }
 
     // find_first_of
@@ -2897,7 +2944,7 @@ public:
     */
     size_type find_first_of(const std::string& str, size_type pos = 0) const
     {
-        return d_string.find_first_of(s_utf8Converter.from_bytes(str), pos);
+        return d_string.find_first_of(convertUtf8ToUtf32(str), pos);
     }
 
     /*
@@ -2916,25 +2963,6 @@ public:
     size_type find_first_of(const char32_t* charArray, size_type pos, size_type count) const
     {
         return d_string.find_first_of(charArray, pos, count);
-    }
-
-    /*
-    \brief
-        Finds the first character in this String that is equal to one of the characters in the given string. The search considers
-        only the interval [pos, size()) of this String in the search. The input array is only processed until the first null-character
-        that is encountered.
-    \param charArray
-        The character array containing the string to search for, which may contain either UTF-8 encoded or ASCII characters. 
-    \param pos
-        The position at which the search will start.
-    \param count
-        The number of characters (code points) in the supplied string to use for the comparison.
-    \return
-        Returns the position of the first character found or returns npos if no matching character was found.
-    */
-    size_type find_first_of(const char* charArray, size_type pos, size_type count) const
-    {
-        return d_string.find_first_of(s_utf8Converter.from_bytes(charArray).data(), pos, count);
     }
 
     /*
@@ -2968,7 +2996,7 @@ public:
     */
     size_type find_first_of(const char* charArray, size_type pos = 0) const
     {
-        return d_string.find_first_of(s_utf8Converter.from_bytes(charArray).data(), pos);
+        return d_string.find_first_of(convertUtf8ToUtf32(charArray).data(), pos);
     }
 
     /*
@@ -3000,7 +3028,7 @@ public:
     */
     size_type find_first_of(char ch, size_type pos = 0) const
     {
-        return d_string.find_first_of(s_utf8Converter.from_bytes(ch)[0], pos);
+        return d_string.find_first_of(convertUtf8ToUtf32(ch)[0], pos);
     }
 
     // find_last_of
@@ -3050,7 +3078,7 @@ public:
     */
     size_type find_last_of(const std::string& str, size_type pos = npos) const
     {
-        return d_string.find_last_of(s_utf8Converter.from_bytes(str), pos);
+        return d_string.find_last_of(convertUtf8ToUtf32(str), pos);
     }
 
     /*
@@ -3069,25 +3097,6 @@ public:
     size_type find_last_of(const char32_t* charArray, size_type pos, size_type count) const
     {
         return d_string.find_last_of(charArray, pos, count);
-    }
-
-    /*
-    \brief
-        Finds the last character in this String that is equal to one of the characters in the given string. The search considers
-        only the interval [0; pos] of this String in the search. The input array is only processed until the last null-character
-        that is encountered.
-    \param charArray
-        The character array containing the string to search for, which may contain either UTF-8 encoded or ASCII characters. 
-    \param pos
-        The position at which the search will stop.
-    \param count
-        The number of characters (code points) in the supplied string to use for the comparison.
-    \return
-        Returns the position of the last character found or returns npos if no matching character was found.
-    */
-    size_type find_last_of(const char* charArray, size_type pos, size_type count) const
-    {
-        return d_string.find_last_of(s_utf8Converter.from_bytes(charArray).data(), pos, count);
     }
 
     /*
@@ -3121,7 +3130,7 @@ public:
     */
     size_type find_last_of(const char* charArray, size_type pos = npos) const
     {
-        return d_string.find_last_of(s_utf8Converter.from_bytes(charArray).data(), pos);
+        return d_string.find_last_of(convertUtf8ToUtf32(charArray).data(), pos);
     }
 
     /*
@@ -3153,7 +3162,7 @@ public:
     */
     size_type find_last_of(char ch, size_type pos = npos) const
     {
-        return d_string.find_last_of(s_utf8Converter.from_bytes(ch)[0], pos);
+        return d_string.find_last_of(convertUtf8ToUtf32(ch)[0], pos);
     }
 
     // first_not_of
@@ -3203,7 +3212,7 @@ public:
     */
     size_type find_first_not_of(const std::string& str, size_type pos = 0) const
     {
-        return d_string.find_first_not_of(s_utf8Converter.from_bytes(str), pos);
+        return d_string.find_first_not_of(convertUtf8ToUtf32(str), pos);
     }
 
     /*
@@ -3222,25 +3231,6 @@ public:
     size_type find_first_not_of(const char32_t* charArray, size_type pos, size_type count) const
     {
         return d_string.find_first_not_of(charArray, pos, count);
-    }
-
-    /*
-    \brief
-        Finds the first character in this String that is not equal to any of the characters in the given string. The search considers
-        only the interval [pos, size()) of this String in the search. The input array is only processed until the first null-character
-        that is encountered.
-    \param charArray
-        The character array containing the string to search for, which may contain either UTF-8 encoded or ASCII characters. 
-    \param pos
-        The position at which the search will start.
-    \param count
-        The number of characters (code points) in the supplied string to use for the comparison.
-    \return
-        Returns the position of the first character found or returns npos if no matching character was found.
-    */
-    size_type find_first_not_of(const char* charArray, size_type pos, size_type count) const
-    {
-        return d_string.find_first_not_of(s_utf8Converter.from_bytes(charArray).data(), pos, count);
     }
 
     /*
@@ -3274,7 +3264,7 @@ public:
     */
     size_type find_first_not_of(const char* charArray, size_type pos = 0) const
     {
-        return d_string.find_first_not_of(s_utf8Converter.from_bytes(charArray).data(), pos);
+        return d_string.find_first_not_of(convertUtf8ToUtf32(charArray).data(), pos);
     }
 
     /*
@@ -3306,7 +3296,7 @@ public:
     */
     size_type find_first_not_of(char ch, size_type pos = 0) const
     {
-        return d_string.find_first_not_of(s_utf8Converter.from_bytes(ch)[0], pos);
+        return d_string.find_first_not_of(convertUtf8ToUtf32(ch)[0], pos);
     }
 
     // find_last_not_of
@@ -3356,7 +3346,7 @@ public:
     */
     size_type find_last_not_of(const std::string& str, size_type pos = npos) const
     {
-        return d_string.find_last_not_of(s_utf8Converter.from_bytes(str), pos);
+        return d_string.find_last_not_of(convertUtf8ToUtf32(str), pos);
     }
 
     /*
@@ -3375,25 +3365,6 @@ public:
     size_type find_last_not_of(const char32_t* charArray, size_type pos, size_type count) const
     {
         return d_string.find_last_not_of(charArray, pos, count);
-    }
-
-    /*
-    \brief
-        Finds the last character in this String that is not equal to any of the characters in the given string. The search considers
-        only the interval [0; pos] of this String in the search. The input array is only processed until the last null-character
-        that is encountered.
-    \param charArray
-        The character array containing the string to search for, which may contain either UTF-8 encoded or ASCII characters. 
-    \param pos
-        The position at which the search will stop.
-    \param count
-        The number of characters (code points) in the supplied string to use for the comparison.
-    \return
-        Returns the position of the last character found or returns npos if no matching character was found.
-    */
-    size_type find_last_not_of(const char* charArray, size_type pos, size_type count) const
-    {
-        return d_string.find_last_not_of(s_utf8Converter.from_bytes(charArray).data(), pos, count);
     }
 
     /*
@@ -3427,7 +3398,7 @@ public:
     */
     size_type find_last_not_of(const char* charArray, size_type pos = npos) const
     {
-        return d_string.find_last_not_of(s_utf8Converter.from_bytes(charArray).data(), pos);
+        return d_string.find_last_not_of(convertUtf8ToUtf32(charArray).data(), pos);
     }
 
     /*
@@ -3459,7 +3430,7 @@ public:
     */
     size_type find_last_not_of(char ch, size_type pos = npos) const
     {
-        return d_string.find_last_not_of(s_utf8Converter.from_bytes(ch)[0], pos);
+        return d_string.find_last_not_of(convertUtf8ToUtf32(ch)[0], pos);
     }
 
     /*
@@ -3482,13 +3453,10 @@ public:
     */
     std::string toUtf8String() const
     {
-        return s_utf8Converter.to_bytes(d_string);
+        return convertUtf32ToUtf8(d_string);
     }
 
 private:
-    //! The UTF-8 / UTF-32 standard conversion facet
-    static std::wstring_convert<std::codecvt<char32_t, char, std::mbstate_t>, char32_t> s_utf8Converter;
-
     /*!
     \brief
         Performs UTF-8 based stream output on Strings.

@@ -33,7 +33,70 @@
 namespace CEGUI
 {
 
-std::wstring_convert<std::codecvt<char32_t, char, std::mbstate_t>, char32_t> String::s_utf8Converter;
+std::u32string String::convertUtf8ToUtf32(const char* utf8String)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.from_bytes(utf8String);
+}
+
+std::u32string String::convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.from_bytes(utf8StringStart, utf8StringEnd);
+}
+
+std::u32string String::convertUtf8ToUtf32(const std::string& utf8String)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.from_bytes(utf8String);
+}
+
+std::u32string String::convertUtf8ToUtf32(const char utf8Char)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.from_bytes(utf8Char);
+}
+
+std::string String::convertUtf32ToUtf8(const char32_t* utf32String)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.to_bytes(utf32String);
+}
+
+std::string convertUtf32ToUtf8(const char32_t* utf32StringStart, const char32_t* utf32StringEnd)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.to_bytes(utf32StringStart, utf32StringEnd);
+}
+
+std::string String::convertUtf32ToUtf8(const std::u32string& utf32String)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.to_bytes(utf32String);
+}
+
+std::string String::convertUtf32ToUtf8(const char32_t utf32Char)
+{
+    //! The UTF-8 / UTF-32 standard conversion facet
+    // TODO: Add thread_local if available
+    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
+    return utf8Converter.to_bytes(utf32Char);
+}
+
 
 bool operator==(const String& str1, const String& str2)
 {
