@@ -1869,11 +1869,11 @@ void Window::setInheritsTooltipText(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setArea_impl(const UVector2& pos, const USize& size,
-                          bool topLeftSizing, bool fireEvents)
+void Window::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
+                          bool adjust_size_to_content)
 {
     markCachedWindowRectsInvalid();
-    Element::setArea_impl(pos, size, topLeftSizing, fireEvents);
+    Element::setArea_impl(pos, size, topLeftSizing, fireEvents, adjust_size_to_content);
 
     //if (moved || sized)
     // FIXME: This is potentially wasteful
@@ -2219,10 +2219,10 @@ Window* Window::getActiveSibling()
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSized(ElementEventArgs& e)
+void Window::onSized_impl(ElementEventArgs& e)
 {
     /*
-     * Why are we not calling Element::onSized?  It's because that function
+     * Why are we not calling Element::onSized_impl?  It's because that function
      * always calls the onParentSized notification for all children - we really
      * want that to be done via performChildWindowLayout instead and we
      * definitely don't want it done twice.

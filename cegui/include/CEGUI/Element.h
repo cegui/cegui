@@ -439,9 +439,15 @@ public:
     \param size
         UVector2 describing the new size of the element area.
 
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.
+
     \see UDim
     */
-    virtual void setArea(const UVector2& pos, const USize& size);
+    virtual void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content=true);
 
     //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
@@ -492,7 +498,7 @@ public:
     */
     inline void setPosition(const UVector2& pos)
     {
-        setArea_impl(pos, d_area.getSize());
+        setArea_impl(pos, getSize());
     }
 
     //! \overload
@@ -605,7 +611,29 @@ public:
     */
     inline void setSize(const USize& size)
     {
-        setArea(d_area.getPosition(), size);
+        setSize(size, true);
+    }
+
+    /*!
+    \brief
+        Set the element's size.
+
+        Sets the size of the area occupied by this element.
+
+    \param size
+        USize describing the new size of the element's area.
+
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.
+
+    \see UDim
+    */
+    inline void setSize(const USize& size, bool adjust_size_to_content)
+    {
+        setArea(getPosition(), size, adjust_size_to_content);
     }
 
     //! \overload
@@ -1284,9 +1312,15 @@ protected:
         - true if events should be fired as normal.
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
+
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.
      */
-    virtual void setArea_impl(const UVector2& pos, const USize& size,
-                              bool topLeftSizing = false, bool fireEvents = true);
+    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,
+                              bool adjust_size_to_content=true);
 
     //! helper to return whether the inner rect size has changed
     inline bool isInnerRectSizeChanged() const
@@ -1326,8 +1360,18 @@ protected:
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
 
-    //! helper to fire events based on changes to area rect
-    void fireAreaChangeEvents(const bool moved, const bool sized);
+    /*!
+    \brief
+        Helper to fire events based on changes to area rect.
+    
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.  
+    */
+    void fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content=true);
+
     void notifyChildrenOfSizeChange(const bool non_client,
                                     const bool client);
 
@@ -1341,8 +1385,24 @@ protected:
     \param e
         ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
+
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.  
     */
-    virtual void onSized(ElementEventArgs& e);
+    virtual void onSized(ElementEventArgs& e, bool adjust_size_to_content=true);
+    
+    /*!
+    \brief
+        Handler called when the element's size changes.
+
+    \param e
+        ElementEventArgs object whose 'element' pointer field is set to the element
+        that triggered the event.
+    */
+    virtual void onSized_impl(ElementEventArgs& e);
 
     /*!
     \brief

@@ -98,9 +98,9 @@ Element::Element(const Element& other):
 {}
 
 //----------------------------------------------------------------------------//
-void Element::setArea(const UVector2& pos, const USize& size)
+void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
-    setArea_impl(pos, size);
+    setArea_impl(pos, size, false, true, adjust_size_to_content);
 }
 
 //----------------------------------------------------------------------------//
@@ -543,8 +543,8 @@ void Element::addElementProperties()
 }
 
 //----------------------------------------------------------------------------//
-void Element::setArea_impl(const UVector2& pos, const USize& size,
-                        bool topLeftSizing, bool fireEvents)
+void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
+                           bool adjust_size_to_content)
 {
     // we make sure the screen areas are recached when this is called as we need
     // it in most cases
@@ -569,11 +569,11 @@ void Element::setArea_impl(const UVector2& pos, const USize& size,
         d_area.setPosition(pos);
 
     if (fireEvents)
-        fireAreaChangeEvents(moved, sized);
+        fireAreaChangeEvents(moved, sized, adjust_size_to_content);
 }
 
 //----------------------------------------------------------------------------//
-void Element::fireAreaChangeEvents(const bool moved, const bool sized)
+void Element::fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content)
 {
     if (moved)
     {
@@ -584,7 +584,7 @@ void Element::fireAreaChangeEvents(const bool moved, const bool sized)
     if (sized)
     {
         ElementEventArgs args(this);
-        onSized(args);
+        onSized(args, adjust_size_to_content);
     }
 }
 
@@ -700,7 +700,16 @@ Rectf Element::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-void Element::onSized(ElementEventArgs& e)
+void Element::onSized(ElementEventArgs& e, bool adjust_size_to_content)
+{
+    onSized_impl(e);
+
+    if (adjust_size_to_content)
+        adjustSizeToContent();
+}
+
+//----------------------------------------------------------------------------//
+void Element::onSized_impl(ElementEventArgs& e)
 {
     notifyScreenAreaChanged(false);
     notifyChildrenOfSizeChange(true, true);
