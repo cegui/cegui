@@ -1301,7 +1301,7 @@ protected:
         USize object describing the new area size.
 
     \param topLeftSizing
-        - true to indicate the the operation is a sizing operation on the top
+        - true to indicate the operation is a sizing operation on the top
           and/or left edges of the area, and so element movement should be
           inhibited if size is at max or min.
         - false to indicate the operation is not a strict sizing operation on
