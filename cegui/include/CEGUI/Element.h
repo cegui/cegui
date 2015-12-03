@@ -1276,6 +1276,217 @@ public:
     \see isSizeAdjustedToContent
     */
     virtual void adjustSizeToContent();
+
+    /*!
+    \brief
+        Get the width of the content of the element.
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text.
+        This method is used by "adjustSizeToContent_direct".
+    */
+    virtual float getContentWidth() const;
+
+    /*!
+    \brief
+        Get the height of the content of the element.
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text.
+
+        This method is used by "adjustSizeToContent_direct".
+    */
+    virtual float getContentHeight() const;
+    
+    /*!
+    \brief
+        Get a lower bound for the width of the area of the element which is
+        reserved for content as an affine function of the element width.
+
+        An affine function means: "y" is an affine function of "x" if, for some
+        constants "a" and "b", it holds true that "y = a*x +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "y" be the width of the area of the element which is reserved for
+               content.
+            - "x" be the element width.
+        Then the following applies:
+            y >= ret.d_scale*x + ret.d_offset
+
+    \see adjustSizeToContent
+    \see getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
+    \see getContentWidth
+    */
+    virtual UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const;
+    
+    /*!
+    \brief
+        Get a lower bound for the height of the area of the element which is
+        reserved for content as an affine function of the element height.
+
+        An affine function means: "y" is an affine function of "x" if, for some
+        constants "a" and "b", it holds true that "y = a*x +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "y" be the height of the area of the element which is reserved for
+              content.
+            - "x" be the element height.
+        Then the following applies:
+            y >= ret.d_scale*x + ret.d_offset
+
+    \see adjustSizeToContent
+    \see getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
+    \see getContentHeight
+    */
+    virtual UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const;
+
+    /*!
+    \brief
+        Get a lower bound for the element width as an affine function of the
+        width of the area of the element which is reserved for content.
+
+        An affine function means: "y" is an affine function of "x" if, for some
+        constants "a" and "b", it holds true that "y = a*x +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+        The default implementaiton inverts the function returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth".
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "y" be the element width.
+            - "x" be the width of the area of the element which is reserved for
+              content.
+        Then the following applies:
+            y >= ret.d_scale*x + ret.d_offset
+
+    \see adjustSizeToContent
+    \see getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
+    \see getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent
+    \see getContentWidth
+    */
+    virtual UDim getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() const;
+      
+    /*!
+    \brief
+        Get a lower bound for the element height as an affine function of the
+        height of the area of the element which is reserved for content.
+
+        An affine function means: "y" is an affine function of "x" if, for some
+        constants "a" and "b", it holds true that "y = a*x +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+        The default implementaiton inverts the function returned by
+        "getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight".
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "y" be the element height.
+            - "x" be the height of the area of the element which is reserved for
+              content.
+        Then the following applies:
+            y >= ret.d_scale*x + ret.d_offset
+
+    \see adjustSizeToContent
+    \see getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
+    \see getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent
+    \see getContentHeight
+    */
+    virtual UDim getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent() const;
+      
+    /*!
+    \brief
+        An implementation of "adjustSizeToContent" that works for simple cases.
+
+        Set the size of the element using the following logic:
+        1) If the "AdjustWidthToContent" property is set to "true", do:
+            A. Compute the content width by calling "getContentWidth".
+            B. Compute a lower bound for the element width as a function of
+               width of the area reserved for the element content by calling
+               "getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent"
+            C. Use the results from "A" and "B" to compute a suitable element
+               width - that is, such as that the width of the area reserved for
+               the content be at least the result from "A".
+        2) Repeat the same steps of "1", replacing "width" with "height".
+
+        Note that in this implementation the width and height are treated
+        independently of each other.
+
+        If "getAspectMode() != AM_IGNORE", this method respects the aspect ratio
+        using the following logic:
+            - If only "isWidthAdjustedToContent()" is true, compute the height
+              from the width and the aspect ratio.
+            - If only "isHeightAdjustedToContent()" is true, compute the width
+              from the height and the aspect ratio.
+            - If both "isWidthAdjustedToContent()" and
+              "isHeightAdjustedToContent()" are true, expand one of the width or
+              the height to comply with the aspect ratio.
+
+    \see adjustSizeToContent
+    \see getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent
+    \see getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent
+    \see getSizeAdjustedToContent_bisection
+    \see isWidthAdjustedToContent
+    \see isHeightAdjustedToContent
+    */
+    void adjustSizeToContent_direct();
+
+    /*!
+    \brief
+        Return a tiny number ("epsilon") serving as a "safety guard" for the
+        computations of "adjustSizeToContent".
+
+        The method "adjustSizeToContent" performs various computations to
+        determine the required size so that the whole element content is visible
+        without the need for scrollbars (if possible), and while the content
+        remains "intact" (if possible). However, due to computational errors,
+        it's possible that if we use the exact value obtained, we might not
+        achieve this goal fully. Therefore, we should, at some points of the
+        computation, add a tiny number ("epsilon") serving as a "safety guard".
+        This method returns the epsilon to use.
+
+        Normally there's no reason to override this method.
+
+    \see adjustSizeToContent
+    */
+    virtual float adjustSizeToContent_getEpsilon() const;
+
 protected:
     /*!
     \brief
