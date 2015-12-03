@@ -330,6 +330,98 @@ void Element::adjustSizeToContent()
     adjustSizeToContent_direct();
 }
 
+//----------------------------------------------------------------------------//
+float Element::getContentWidth() const
+{
+    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+}
+
+//----------------------------------------------------------------------------//
+float Element::getContentHeight() const
+{
+    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+}
+
+//----------------------------------------------------------------------------//
+UDim Element::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const
+{
+    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+}
+
+//----------------------------------------------------------------------------//
+UDim Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const
+{
+    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+}
+
+//----------------------------------------------------------------------------//
+UDim Element::getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() const
+{
+    UDim inverse(getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth());
+    if (inverse.d_scale == 0.f)
+        CEGUI_THROW(InvalidRequestException("Content width doesn't depend on the element width."));
+    return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
+}
+
+//----------------------------------------------------------------------------//
+UDim Element::getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent() const
+{
+    UDim inverse(getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight());
+    if (inverse.d_scale == 0.f)
+        CEGUI_THROW(InvalidRequestException("Content height doesn't depend on the element height."));
+    return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
+}
+
+//----------------------------------------------------------------------------//
+void Element::adjustSizeToContent_direct()
+{
+    if (!isSizeAdjustedToContent())
+        return;
+    const float epsilon = adjustSizeToContent_getEpsilon();
+    USize size_func(UDim(-1.f, -1.f), UDim(-1.f, -1.f));
+    Sizef new_pixel_size(getPixelSize());
+    if (isWidthAdjustedToContent())
+    {
+        size_func.d_width = getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent();
+        new_pixel_size.d_width = std::ceil((getContentWidth()+epsilon)*size_func.d_width.d_scale  +
+                                            size_func.d_width.d_offset);
+    }
+    if (isHeightAdjustedToContent())
+    {
+        size_func.d_height = getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent();
+        new_pixel_size.d_height = std::ceil((getContentHeight()+epsilon)*size_func.d_height.d_scale  +
+                                             size_func.d_height.d_offset);
+    }
+    if (getAspectMode() != AM_IGNORE)
+    {
+        if (isWidthAdjustedToContent())
+        {
+            if (isHeightAdjustedToContent())
+                new_pixel_size.scaleToAspect(AM_EXPAND, getAspectRatio());
+            else
+                new_pixel_size.scaleToAspect(AM_ADJUST_HEIGHT, getAspectRatio());
+        }
+        else
+        {
+            if (isHeightAdjustedToContent())
+                new_pixel_size.scaleToAspect(AM_ADJUST_WIDTH, getAspectRatio());
+        }
+    }
+    USize new_size(getSize());
+    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AM_IGNORE))
+        new_size.d_width = UDim(0.f, new_pixel_size.d_width);
+    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AM_IGNORE))
+        new_size.d_height = UDim(0.f, new_pixel_size.d_height);
+    setSize(new_size, false);
+}
+
+//----------------------------------------------------------------------------//
+float Element::adjustSizeToContent_getEpsilon() const
+{
+    return 1.f / 64.f;
+}
+
+//----------------------------------------------------------------------------//
 void Element::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
