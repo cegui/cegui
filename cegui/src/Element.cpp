@@ -421,6 +421,86 @@ float Element::adjustSizeToContent_getEpsilon() const
     return 1.f / 64.f;
 }
 
+/*----------------------------------------------------------------------------//
+    Return the lowest power of 2 (with non-negative integer exponent) which is
+    greater than or equal to "of".
+------------------------------------------------------------------------------*/
+static uint64 powOf2Supremum(uint64 of)
+{
+    uint64 num_of_digits(0);
+    if (of)
+    {
+        --of;
+        while (of)
+        {
+            ++num_of_digits;
+            of >>= 1;
+        }
+    }
+    return static_cast<uint64>(1) << num_of_digits;
+}
+
+//----------------------------------------------------------------------------//
+Sizef Element::getSizeAdjustedToContent_bisection(const USize& size_func, float domain_min, float domain_max) const
+{
+    int64 domain_min_int(std::floor(domain_min));
+    int64 domain_max_int(std::ceil(domain_max));
+    if (domain_min_int >= domain_max_int)
+        CEGUI_THROW(InvalidRequestException("Length of domain is 0."));
+
+    /* First, enlarge the domain so that it's a power of 2 (with non-negative
+       integer exponent). This makes the bisection use only integer
+       parameters. */
+    int64 domain_size(domain_max_int - domain_min_int);
+    int64 domain_size_pow_of_2(static_cast<int64>(powOf2Supremum(domain_size)));
+    domain_min_int -= domain_size_pow_of_2 - domain_size;
+
+    Sizef element_size(0.f, 0.f);
+    while (true)
+    {
+        int64 param((domain_min_int+domain_max_int+1) / 2);
+        float param_float(static_cast<float>(param));
+        element_size = Sizef(size_func.d_width.d_scale*param_float + size_func.d_width.d_offset,
+                             size_func.d_height.d_scale*param_float + size_func.d_height.d_offset);
+        if (domain_max_int <= domain_min_int+1)
+            break;
+        if (param_float <= domain_min)
+            domain_min_int = param;
+        else if (param_float >= domain_max    ||
+                 ((element_size.d_width >= 0)  &&
+                   (element_size.d_height >= 0)  &&
+                   contentFitsForSpecifiedElementSize(element_size)))
+            domain_max_int = param;
+        else
+            domain_min_int = param;
+    }
+    return element_size;
+}
+
+//----------------------------------------------------------------------------//
+bool Element::contentFitsForSpecifiedElementSize(const Sizef& element_size)
+  const
+{
+    return contentFitsForSpecifiedElementSize_tryByResizing(element_size);
+}
+
+//----------------------------------------------------------------------------//
+bool Element::contentFitsForSpecifiedElementSize_tryByResizing(const Sizef& element_size) const
+{
+    const USize current_size(getSize());
+    const_cast<Element*>(this)->setSize(
+      USize(UDim(0.f, element_size.d_width), UDim(0.f, element_size.d_height)), false);
+    bool ret(contentFits());
+    const_cast<Element*>(this)->setSize(current_size, false);
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+bool Element::contentFits() const
+{
+    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+}
+
 //----------------------------------------------------------------------------//
 void Element::setRotation(const Quaternion& rotation)
 {
