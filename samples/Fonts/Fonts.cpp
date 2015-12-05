@@ -195,9 +195,10 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     // Create a custom font which we use to draw the list items. This custom
     // font won't get effected by the scaler and such.
     FontManager& fontManager(FontManager::getSingleton());
-    CEGUI::Font& font(fontManager.createFromFile("DejaVuSans-12.font"));
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set it as the default
-    d_guiContext->setDefaultFont(&font);
+    d_guiContext->setDefaultFont(defaultFont);
 
     // load all the fonts (if they are not loaded yet)
     fontManager.createAll("*.font", "fonts");
@@ -268,7 +269,7 @@ void FontsSample::deinitialise()
 {
 }
 
-bool FontsSample::handleFontCreationButtonClicked(const EventArgs& e)
+bool FontsSample::handleFontCreationButtonClicked(const EventArgs&)
 {
     FontManager& fontMgr(FontManager::getSingleton());
 
@@ -294,7 +295,7 @@ bool FontsSample::handleFontCreationButtonClicked(const EventArgs& e)
 
 
     String::size_type pos = fontFileName.rfind(".imageset");
-    if (pos != -1)
+    if (pos != String::npos)
     {
         CEGUI::Font& createdFont = fontMgr.createPixmapFont(fontName, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
             CEGUI::Sizef(1280.0f, 720.0f), XREA_THROW);
@@ -311,7 +312,7 @@ bool FontsSample::handleFontCreationButtonClicked(const EventArgs& e)
     return true;
 }
 
-bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
+bool FontsSample::handleFontEditButtonClicked(const EventArgs&)
 {
     FontManager& fontMgr(FontManager::getSingleton());
 
@@ -347,7 +348,7 @@ bool FontsSample::handleFontEditButtonClicked(const EventArgs& e)
     return true;
 }
 
-bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
+bool FontsSample::handleFontSelectionChanged(const EventArgs&)
 {
     //Change font of the selected language/text sample
     if (d_textSelector->getFirstSelectedItem() && d_fontSelector->getFirstSelectedItem())
@@ -414,7 +415,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs& e)
     return true;
 }
 
-bool FontsSample::handleTextSelectionChanged(const EventArgs& e)
+bool FontsSample::handleTextSelectionChanged(const EventArgs&)
 {
     if (d_textSelector->getFirstSelectedItem())
     {
@@ -428,7 +429,7 @@ bool FontsSample::handleTextSelectionChanged(const EventArgs& e)
     return true;
 }
 
-bool FontsSample::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
+bool FontsSample::handleTextMultiLineEditboxTextChanged(const EventArgs&)
 {
     if (d_textSelector->getFirstSelectedItem())
     {
@@ -440,14 +441,14 @@ bool FontsSample::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
     return true;
 }
 
-bool FontsSample::handleFontFileNameSelectionChanged(const EventArgs& e)
+bool FontsSample::handleFontFileNameSelectionChanged(const EventArgs&)
 {
     generateNewFontName();
 
     return true;
 }
 
-bool FontsSample::handleRenewFontNameButtonClicked(const EventArgs& e)
+bool FontsSample::handleRenewFontNameButtonClicked(const EventArgs&)
 {
     generateNewFontName();
 
@@ -469,17 +470,20 @@ void FontsSample::initialiseAutoScaleOptionsArray()
 void FontsSample::retrieveLoadedFontNames(bool areEditable)
 {
     FontManager& fontManager(FontManager::getSingleton());
-    FontManager::FontIterator fi = fontManager.getIterator();
+    FontManager::FontRegistry registeredFonts = fontManager.getRegisteredFonts();
 
-    while (!fi.isAtEnd())
+    FontManager::FontRegistry::const_iterator curIter = registeredFonts.begin();
+    FontManager::FontRegistry::const_iterator iterEnd = registeredFonts.end();
+    while (curIter != iterEnd)
     {
-        CEGUI::Font& font(fontManager.get(fi.getCurrentKey()));
+        Font* curFont = curIter->second;
 
-        if (d_fontNameOptions.find(font.getName()) == d_fontNameOptions.end())
+        if (d_fontNameOptions.find(curFont->getName()) == d_fontNameOptions.end())
         {
-            d_fontNameOptions[font.getName()] = areEditable;
+            d_fontNameOptions[curFont->getName()] = areEditable;
         }
-        ++fi;
+
+        ++curIter;
     }
 }
 

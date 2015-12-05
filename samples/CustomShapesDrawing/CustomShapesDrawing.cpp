@@ -54,15 +54,28 @@ using namespace glm;
     Constructor.
 *************************************************************************/
 CustomShapesDrawingSample::CustomShapesDrawingSample() :
-    d_FPSMaxGraphValue(1),
+    d_root(nullptr),
+    d_customSVGImageFrameWindow(nullptr),
+    d_customPolyline(nullptr),
+    d_FPSGraphGeometryBuffer(nullptr),
     d_FPSGraphSamplesCount(30),
+    d_FPSFrames(),
+    d_FPSElapsed(0.0f),
+    d_FPSMaxGraphValue(1),
     d_useRealFPS(false),
     d_customSVGImageWidth(300.0f),
     d_customSVGImageHeight(100.0f),
     d_customGeometryGraphWidth(300.0f),
     d_customGeometryGraphHeight(100.0f),
-    d_FPSElapsed(0.0f),
-    d_FPSFrames()
+    d_lastFPSLabel(nullptr),
+    d_customGeometryFPSLabel1(nullptr),
+    d_customGeometryFPSLabel2(nullptr),
+    d_customGeometryFPSLabel3(nullptr),
+    d_customSVGImageFPSLabel1(nullptr),
+    d_customSVGImageFPSLabel2(nullptr),
+    d_customSVGImageFPSLabel3(nullptr),
+    d_customSVGImage(nullptr),
+    d_customSVGData(nullptr)
 {
     Sample::d_name = "CustomShapesDrawingSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
@@ -106,10 +119,12 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("Image", "WindowsLook/Background");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // Set the root window as root of our GUI Context
     guiContext->setRootWindow(d_root);
@@ -758,7 +773,7 @@ void CustomShapesDrawingSample::createCustomSVGImageWindows()
 /*************************************************************************
     Display size change handler
 *************************************************************************/
-bool CustomShapesDrawingSample::handleDisplaySizeChange(const CEGUI::EventArgs& args)
+bool CustomShapesDrawingSample::handleDisplaySizeChange(const CEGUI::EventArgs&)
 {
     updateCustomGeometryFPSLabels();
 
@@ -770,7 +785,8 @@ bool CustomShapesDrawingSample::handleDisplaySizeChange(const CEGUI::EventArgs& 
 /*************************************************************************
     Handler for size changes of the custom-SVGImage FrameWindow
 *************************************************************************/
-bool CustomShapesDrawingSample::handleSVGImageFrameWindowSizeChanged(const CEGUI::EventArgs& args)
+bool CustomShapesDrawingSample::handleSVGImageFrameWindowSizeChanged
+  (const CEGUI::EventArgs&)
 {
     updateCustomSVGImageFPSLabels();
 

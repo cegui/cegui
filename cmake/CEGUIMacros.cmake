@@ -119,10 +119,31 @@ macro (cegui_add_dependency_static_libs _TARGET_NAME _DEP_NAME)
 endmacro()
 
 #
-# add a dependency to a target (and it's static equivalent, if it exists)
+# add a dependency to a target (and it's static equivalent, if it exists).
+#
+# An optional "SCOPE" 3rd argument can be specified to determine the "scope"
+# argument passed to "target_include_directories". This argument can be one of
+# "INTERFACE", "PUBLIC" and "PRIVATE", the default being "PRIVATE". In general,
+# u should use "PUBLIC" if every target that depends on "_TARGET_NAME" should also
+# compile with "_DEP_NAME"'s include directories. Please refer to the
+# documentation of "target_include_directories" for more details.
+#
+# An optional "IS_SYSTEM" 4th argument can be specified to determine whether to
+# treat the headers of the dependency as system headers. This usually means that
+# the compiler won't generate warnings for these headers. The default is
+# "FALSE".
 #
 macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
-    include_directories(${${_DEP_NAME}_INCLUDE_DIR})
+# Optional additional arguments: "SCOPE" "IS_SYSTEM"
+    if ("${ARGC}" GREATER 2)
+        if (("${ARGC}" GREATER 3) AND "${ARGV3}")
+            target_include_directories(${_TARGET_NAME} SYSTEM "${ARGV2}" ${${_DEP_NAME}_INCLUDE_DIR})
+        else ()
+            target_include_directories(${_TARGET_NAME} "${ARGV2}" ${${_DEP_NAME}_INCLUDE_DIR})
+        endif ()
+    else ()
+        target_include_directories(${_TARGET_NAME} PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
+    endif ()
 
     ###########################################################################
     #                    NON-STATIC VERSION OF TARGET
@@ -243,7 +264,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         # Do not version modules, since we dlopen these directly and need to know
         # the name is what we think it will be (and not rely on symlinks which will
         # not be installed always, but usually only as part of *-dev packages).
-        if (NOT ${_IS_MODULE})
+        if (NOT ${_IS_MODULE} AND NOT ANDROID)
             if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
                 set_target_properties(${_LIB_NAME} PROPERTIES
                     VERSION ${CEGUI_ABI_VERSION}
@@ -698,4 +719,3 @@ macro(cegui_defaultmodule_sanity_test _DEFAULTVAR _MODNAME _BUILDVAR)
         endif()
     endif()
 endmacro()
-

@@ -61,8 +61,9 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     WindowManager& win_mgr = WindowManager::getSingleton();
     d_root = win_mgr.loadLayoutFromFile("MenuNavigationSample.layout");
 
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    gui_context->setDefaultFont(&defaultFont);
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+    gui_context->setDefaultFont(defaultFont);
 
     gui_context->setRootWindow(d_root);
 
@@ -144,7 +145,7 @@ void MenuNavigationSample::initialiseClasses(ListWidget* classes_list_view)
     }
 }
 
-bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs& e)
+bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 

@@ -172,7 +172,9 @@ public:
      * been hidden.
      */
 	static const String EventDropListRemoved;
-    /** Event fired when the user accepts a selection from the drop-down list
+    /** Event fired when a selection from the drop-down list is accepted. This occurs
+     * whenever an item in the list is selected either manually through input or if
+     * on of the selection setting functions are called and successful select an item.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Combobox in which the user has
      * confirmed a selection from the drop down list.
@@ -329,7 +331,7 @@ public:
 		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
 		the position of the caret.
 	*/
-	size_t	getSelectionStartIndex(void) const;
+	size_t	getTextSelectionStart(void) const;
 
 
 	/*!
@@ -340,7 +342,7 @@ public:
 		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
 		the position of the caret.
 	*/
-	size_t	getSelectionEndIndex(void) const;
+	size_t	getTextSelectionEnd(void) const;
 
 
 	/*!
@@ -350,7 +352,7 @@ public:
 	\return
 		Number of code points (or characters) contained within the currently defined selection.
 	*/
-	size_t	getSelectionLength(void) const;
+	size_t	getTextSelectionLength(void) const;
 
 
 	/*!
@@ -630,7 +632,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelection(size_t start_pos, size_t end_pos);
+	void	setTextSelection(size_t start_pos, size_t end_pos);
 	/*!
 	\brief
 		Define the current selection start for the Editbox
@@ -642,7 +644,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelectionStart(size_t start_pos);
+	void	setTextSelectionStart(size_t start_pos);
 
 	/*!
 	\brief
@@ -654,7 +656,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelectionLength(size_t length);
+	void	setTextSelectionLength(size_t length);
 
 	/*!
 	\brief

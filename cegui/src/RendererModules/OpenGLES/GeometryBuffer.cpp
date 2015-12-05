@@ -132,7 +132,7 @@ void OpenGLESGeometryBuffer::setClippingRegion(const Rectf& region)
 
 //----------------------------------------------------------------------------//
 void OpenGLESGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-    uint vertex_count)
+    unsigned int vertex_count)
 {
     performBatchManagement();
 
@@ -142,7 +142,7 @@ void OpenGLESGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     GLVertex vd;
     const Vertex* vs = vbuff;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    for ((unsigned int i = 0; i < vertex_count; ++i, ++vs)
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by OpenGLES as needed.
@@ -180,13 +180,13 @@ Texture* OpenGLESGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLESGeometryBuffer::getVertexCount() const
+(unsigned int OpenGLESGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLESGeometryBuffer::getBatchCount() const
+(unsigned int OpenGLESGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }
@@ -194,7 +194,7 @@ uint OpenGLESGeometryBuffer::getBatchCount() const
 //----------------------------------------------------------------------------//
 void OpenGLESGeometryBuffer::performBatchManagement()
 {
-    const GLuint gltex = d_activeTexture ?
+    const GL(unsigned int gltex = d_activeTexture ?
                             d_activeTexture->getOpenGLESTexture() : 0;
 
     // create a new batch if there are no batches yet, or if the active texture

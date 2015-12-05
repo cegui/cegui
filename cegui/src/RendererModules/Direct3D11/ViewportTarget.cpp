@@ -32,16 +32,16 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
-    Direct3D11RenderTarget<>(owner)
+    Direct3D11RenderTarget(owner)
 {
     // initialise renderer size
     D3D11_VIEWPORT vp;
     UINT vp_count = 1;
     d_deviceContext.RSGetViewports(&vp_count, &vp);
     if (vp_count != 1)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             "Unable to access required view port information from "
-            "ID3D11Device."));
+            "ID3D11Device.");
 
     Rectf area(
         glm::vec2(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
@@ -54,7 +54,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner,
                                                    const Rectf& area) :
-    Direct3D11RenderTarget<>(owner)
+    Direct3D11RenderTarget(owner)
 {
     setArea(area);
 }
@@ -69,7 +69,4 @@ bool Direct3D11ViewportTarget::isImageryCache() const
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

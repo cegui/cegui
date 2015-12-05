@@ -24,6 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/GL3GeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 #include "CEGUI/RenderEffect.h"
@@ -90,8 +91,16 @@ void OpenGL3GeometryBuffer::draw() const
     // activate desired blending mode
     d_owner.setupRenderingBlendMode(d_blendMode);
 
-    // Bind our vao
-    d_glStateChanger->bindVertexArray(d_verticesVAO);
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+    {
+        // Bind our vao
+        d_glStateChanger->bindVertexArray(d_verticesVAO);
+    }
+    else
+    {
+        // This binds and sets up a vbo for rendering
+        finaliseVertexAttributes();
+    }
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
@@ -123,34 +132,45 @@ void OpenGL3GeometryBuffer::reset()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 {
-    glGenVertexArrays(1, &d_verticesVAO);
-    d_glStateChanger->bindVertexArray(d_verticesVAO);
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+    {
+        glGenVertexArrays(1, &d_verticesVAO);
+        d_glStateChanger->bindVertexArray(d_verticesVAO);
+    }
 
-    // Generate and bind position vbo
+    // Generate position vbo
     glGenBuffers(1, &d_verticesVBO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 
-    // Unbind Vertex Attribute Array (VAO)
-    d_glStateChanger->bindVertexArray(0);
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+    {
+        // Unbind Vertex Attribute Array (VAO)
+        d_glStateChanger->bindVertexArray(0);
+    }
 
     // Unbind array and element array buffers
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+
+    
 }
 
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::finaliseVertexAttributes()
+void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
 {
-    //We need to bind both of the following calls
-    d_glStateChanger->bindVertexArray(d_verticesVAO);
+    //On OpenGL desktop versions we want to bind both of the following calls, otherwise vbos are enough as the following calls
+    //only affect the vbo (which may be tied to a vao)
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+    {
+        d_glStateChanger->bindVertexArray(d_verticesVAO);
+    }
+
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
     GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
-
     const CEGUI::OpenGLBaseShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGLBaseShaderWrapper*>(d_renderMaterial->getShaderWrapper());
-
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
     int dataOffset = 0;
     const size_t attribute_count = d_vertexAttributes.size();
@@ -161,7 +181,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
         case VAT_POSITION0:
             {
                 GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
-                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
                 glEnableVertexAttribArray(shader_pos_loc);
                 dataOffset += 3;
             }
@@ -169,7 +189,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
         case VAT_COLOUR0:
             {
                 GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
-                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
                 glEnableVertexAttribArray(shader_colour_loc);
                 dataOffset += 4;
             }
@@ -177,7 +197,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
         case VAT_TEXCOORD0:
             {
                 GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
-                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
                 glEnableVertexAttribArray(texture_coord_loc);
                 dataOffset += 2;
             }
@@ -192,7 +212,8 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 {
-    glDeleteVertexArrays(1, &d_verticesVAO);
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+        glDeleteVertexArrays(1, &d_verticesVAO);
     glDeleteBuffers(1, &d_verticesVBO);
 }
 

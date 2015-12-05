@@ -28,9 +28,11 @@
 #define _CEGUICoordConverter_h_
 
 #include "CEGUI/UDim.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/UVector.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/URect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -84,36 +86,36 @@ public:
 
     /*!
     \brief
-        converts given Vector2<UDim> to absolute glm::vec2
+        converts given UVector2 to absolute glm::vec2
     */
-    inline static glm::vec2 asAbsolute(const Vector2<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
     {
         return glm::vec2(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Vector2<UDim> to relative glm::vec2
+        converts given UVector2 to relative glm::vec2
     */
-    inline static glm::vec2 asRelative(const Vector2<UDim>& v, const Sizef& base)
+    inline static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
     {
         return glm::vec2(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }
 
 	/*!
     \brief
-        converts given Size<UDim> to absolute Sizef
+        converts given USize to absolute Sizef
     */
-    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static Sizef asAbsolute(const USize& v, const Sizef& base, bool pixelAlign = true)
     {
         return Sizef(asAbsolute(v.d_width, base.d_width, pixelAlign), asAbsolute(v.d_height, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Size<UDim> to relative Sizef
+        converts given USize to relative Sizef
     */
-    inline static Sizef asRelative(const Size<UDim>& v, const Sizef& base)
+    inline static Sizef asRelative(const USize& v, const Sizef& base)
     {
         return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
     }

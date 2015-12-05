@@ -34,6 +34,9 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/URect.h"
 
 #include <algorithm>
 
@@ -88,7 +91,8 @@ Element::~Element()
 {}
 
 //----------------------------------------------------------------------------//
-Element::Element(const Element&):
+Element::Element(const Element& other):
+    EventSet(other),
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {}
@@ -348,13 +352,12 @@ void Element::setRotation(const glm::quat& rotation)
 void Element::addChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
-                InvalidRequestException("Can't add NULL to Element as a child!"));
+        throw 
+                InvalidRequestException("Can't add NULL to Element as a child!");
 
     if (element == this)
-        CEGUI_THROW(
-                InvalidRequestException("Can't make element its own child - "
-                                        "this->addChild(this); is forbidden."));
+        throw InvalidRequestException("Can't make element its own child - "
+                                       "this->addChild(this); is forbidden.");
 
     addChild_impl(element);
     ElementEventArgs args(element);
@@ -365,10 +368,10 @@ void Element::addChild(Element* element)
 void Element::removeChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
+        throw 
                 InvalidRequestException("NULL can't be a child of any Element, "
                                         "it makes little sense to ask for its "
-                                        "removal"));
+                                        "removal");
 
     removeChild_impl(element);
     ElementEventArgs args(element);
@@ -605,7 +608,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     const Sizef parent_size = parent_rect.getSize();
 
-    glm::vec2 offset = glm::vec2(parent_rect.d_min.d_x, parent_rect.d_min.d_y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
+    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {

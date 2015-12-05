@@ -35,12 +35,12 @@ StandardItem::StandardItem() : GenericItem()
 }
 
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem(const String& text, uint id) : GenericItem(text), d_id(id)
+StandardItem::StandardItem(const String& text, unsigned int id) : GenericItem(text), d_id(id)
 {
 }
 
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem(const String& text, const String& icon, uint id /*= 0*/) :
+StandardItem::StandardItem(const String& text, const String& icon, unsigned int id /*= 0*/) :
 GenericItem(text, icon), d_id(id)
 {
 }

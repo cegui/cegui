@@ -32,7 +32,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Interpolator.h"
-#include "CEGUI/Vector.h"
 #include <cmath>
 
 #define GLM_FORCE_RADIANS

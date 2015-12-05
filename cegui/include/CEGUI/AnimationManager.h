@@ -320,7 +320,7 @@ private:
     //! Base name to use for generated window names.
     static const String GeneratedAnimationNameBase;
     //! Counter used to generate unique animation names.
-    unsigned long d_uid_counter;
+    std::uint32_t d_uid_counter;
 };
 
 } // End of  CEGUI namespace section

@@ -175,18 +175,18 @@ System::System(Renderer& renderer,
     Config_xmlHandler config;
     if (!configFile.empty())
     {
-        CEGUI_TRY
+        try
         {
             d_xmlParser->parseXMLFile(config, configFile,
                                       config.CEGUIConfigSchemaName,
                                       "");
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             // cleanup XML stuff
             d_xmlParser->cleanup();
             delete d_xmlParser;
-            CEGUI_RETHROW;
+            throw;
         }
     }
 
@@ -259,11 +259,11 @@ System::~System(void)
 	// execute shut-down script
 	if (!d_termScriptName.empty())
 	{
-		CEGUI_TRY
+		try
 		{
 			executeScriptFile(d_termScriptName);
 		}
-		CEGUI_CATCH (...) {}  // catch all exceptions and continue system shutdown
+		catch (...) {}  // catch all exceptions and continue system shutdown
 
 	}
 
@@ -355,9 +355,9 @@ const String& System::getVerboseVersion()
 
     if (ret.empty())
     {
-        ret = PropertyHelper<uint>::toString(CEGUI_VERSION_MAJOR) + "." +
-              PropertyHelper<uint>::toString(CEGUI_VERSION_MINOR) + "." +
-              PropertyHelper<uint>::toString(CEGUI_VERSION_PATCH);
+        ret = PropertyHelper<std::uint32_t>::toString(CEGUI_VERSION_MAJOR) + "." +
+              PropertyHelper<std::uint32_t>::toString(CEGUI_VERSION_MINOR) + "." +
+              PropertyHelper<std::uint32_t>::toString(CEGUI_VERSION_PATCH);
 
         ret += " (Build: " __DATE__;
 
@@ -390,18 +390,18 @@ const String& System::getVerboseVersion()
 
 #elif defined(_MSC_VER)
         ret += " MSVC++ ";
-#if _MSC_VER < 1500
+#if _MSC_VER < 1600
         ret += "(Note: Compiler version is old and not officially supported)";
-#elif _MSC_VER == 1500
-        ret += "9.0";
 #elif _MSC_VER == 1600
-        ret += "10.0";
+        ret += "10.0 (2010)";
 #elif _MSC_VER == 1700
-        ret += "11.0";
+        ret += "11.0 (2012)";
 #elif _MSC_VER == 1800
-        ret += "12.0";
-#elif _MSC_VER > 1800
-        ret += "Great Scott!";
+        ret += "12.0 (2013)";
+#elif _MSC_VER == 1900
+        ret += "14.0 (2015)";
+#elif _MSC_VER > 1900
+        ret += "Unknown MSVC++ version";
 #endif
 
 #ifdef _WIN64
@@ -436,7 +436,7 @@ void System::renderAllGUIContexts()
     WindowManager::getSingleton().cleanDeadPool();
 }
 
-void System::renderAllGUIContextsOnTarget(Renderer* contained_in)
+void System::renderAllGUIContextsOnTarget(Renderer* /*contained_in*/)
 {
     d_renderer->beginRendering();
 
@@ -502,19 +502,19 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 {
 	if (d_scriptModule)
 	{
-		CEGUI_TRY
+		try
 		{
 			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
         // Forward script exceptions with line number and file info
-        CEGUI_CATCH(ScriptException& e)
+        catch (ScriptException& e)
         {
-            CEGUI_THROW(e);
+            throw e;
         }
-		CEGUI_CATCH(...)
+		catch (...)
 		{
-			CEGUI_THROW(GenericException(
-                "An exception was thrown during the execution of the script file."));
+			throw GenericException(
+                "An exception was thrown during the execution of the script file.");
 		}
 
 	}
@@ -534,19 +534,19 @@ int	System::executeScriptGlobal(const String& function_name) const
 {
 	if (d_scriptModule)
 	{
-		CEGUI_TRY
+		try
 		{
 			return d_scriptModule->executeScriptGlobal(function_name);
 		}
         // Forward script exceptions with line number and file info
-        CEGUI_CATCH(ScriptException& e)
+        catch (ScriptException& e)
         {
-            CEGUI_THROW(e);
+            throw e;
         }
-		CEGUI_CATCH(...)
+		catch (...)
 		{
-			CEGUI_THROW(GenericException(
-                "An exception was thrown during execution of the scripted function."));
+			throw GenericException(
+                "An exception was thrown during execution of the scripted function.");
 		}
 
 	}
@@ -567,19 +567,19 @@ void System::executeScriptString(const String& str) const
 {
     if (d_scriptModule)
     {
-        CEGUI_TRY
+        try
         {
             d_scriptModule->executeString(str);
         }
         // Forward script exceptions with line number and file info
-        CEGUI_CATCH(ScriptException& e)
+        catch (ScriptException& e)
         {
-            CEGUI_THROW(e);
+            throw e;
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
-            CEGUI_THROW(GenericException(
-                "An exception was thrown during execution of the script code."));
+            throw GenericException(
+                "An exception was thrown during execution of the script code.");
         }
 
     }
@@ -928,14 +928,14 @@ void System::performVersionTest(const int expected, const int received,
                                 const String& func)
 {
     if (expected != received)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+        throw InvalidRequestException("Version mismatch detected! "
             "Called from function: " + func +
-            " Expected abi: " + PropertyHelper<int>::toString(expected) +
-            " received abi: " + PropertyHelper<int>::toString(received) +
+            " Expected abi: " + PropertyHelper<std::int32_t>::toString(expected) +
+            " received abi: " + PropertyHelper<std::int32_t>::toString(received) +
             ". This means that the code calling the function was compiled "
             "against a CEGUI version that is incompatible with the library "
             "containing the function. Usually this means that you have "
-            "old binary library versions that have been used by mistake."));
+            "old binary library versions that have been used by mistake.");
 }
 
 //----------------------------------------------------------------------------//
@@ -1006,6 +1006,10 @@ void System::destroyRegexMatcher(RegexMatcher* rm) const
 //----------------------------------------------------------------------------//
 GUIContext& System::getDefaultGUIContext() const
 {
+    if (d_guiContexts.empty())
+        throw InvalidRequestException("Requesting the DefaultGUIContext, but no DefaultGUIContext is available. "
+        "The list of GUIContexts is empty.");
+
     return *d_guiContexts.front();
 }
 

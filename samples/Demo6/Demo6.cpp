@@ -57,9 +57,10 @@ bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
 
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // load an image to use as a background
     if (!ImageManager::getSingleton().isDefined("SpaceBackgroundImage"))
@@ -428,7 +429,7 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/NewColTextBox"));
 
     // get ID for new column
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
     // get width to use for new column (in pixels)
     float width = static_cast<float>(atof(widthbox->getText().c_str()));
     // get column label text
@@ -459,14 +460,14 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& args)
     Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/DelColIDBox"));
 
     // obtain the id of the column to be deleted
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
 
     // attempt to delete the column, ignoring any errors.
-    CEGUI_TRY
+    try
     {
         mcl->removeColumnWithID(id);
     }
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {}
 
     // reset the delete column ID box.
@@ -486,7 +487,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/RowTextBox"));
 
     // get the ID of the initial column item to set
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
     // get the text that is to be set initially into the specified column of the new row
     String text = textbox->getText();
 
@@ -500,12 +501,12 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& args)
     item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to add a new row, using the new ListboxTextItem as the initial content for one of the columns
-    CEGUI_TRY
+    try
     {
         mcl->addRow(item, id);
     }
     // something went wrong, so cleanup the ListboxTextItem
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {
         delete item;
     }
@@ -523,14 +524,14 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& args)
     Editbox* idxbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/DelRowIdxBox"));
 
     // get index of row to delete.
-    CEGUI::uint idx = atoi(idxbox->getText().c_str());
+    unsigned int idx = atoi(idxbox->getText().c_str());
 
     // attempt to delete the row, ignoring any errors.
-    CEGUI_TRY
+    try
     {
         mcl->removeRow(idx);
     }
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {}
 
     // clear the row index box
@@ -551,9 +552,9 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SetItemTextBox"));
 
     // get ID of column to be affected
-    CEGUI::uint id = atoi(idbox->getText().c_str());
+    unsigned int id = atoi(idbox->getText().c_str());
     // get index of row to be affected
-    CEGUI::uint row = atoi(rowbox->getText().c_str());
+    unsigned int row = atoi(rowbox->getText().c_str());
     // get new text for item
     String text = textbox->getText();
 
@@ -568,12 +569,12 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& args)
     item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to set the new item in place
-    CEGUI_TRY
+    try
     {
         mcl->setItem(item, id, row);
     }
     // something went wrong, so cleanup the ListboxTextItem.
-    CEGUI_CATCH (InvalidRequestException)
+    catch (InvalidRequestException)
     {
         delete item;
     }

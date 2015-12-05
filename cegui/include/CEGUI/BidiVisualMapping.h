@@ -61,7 +61,7 @@ public:
         Gets the Bidi char type of a char.
 
     \param charToCheck
-        The utf32 character code that will be checked.
+        The char / char32_t character code that will be checked.
 
     \return
         One of the BidiCharType enumerated values indicating the Bidi char type.

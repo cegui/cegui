@@ -55,10 +55,10 @@ private:
     SampleBrowserManager(const SampleBrowserManager&) {}
 
     void init();
-    SampleBrowserManager& operator=(const SampleBrowserManager&) {}
+    SampleBrowserManager& operator=(const SampleBrowserManager&) { return *this; }
 
-    static const CEGUI::uint32 d_sampleWindowFrameNormal;
-    static const CEGUI::uint32 d_sampleWindowFrameSelected;
+    static const std::uint32_t d_sampleWindowFrameNormal;
+    static const std::uint32_t d_sampleWindowFrameSelected;
 
     void updateWindows();
 

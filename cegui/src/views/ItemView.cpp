@@ -280,7 +280,7 @@ void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenWillBeAdded(const EventArgs& args)
+bool ItemView::onChildrenWillBeAdded(const EventArgs&)
 {
     return true;
 }
@@ -340,7 +340,7 @@ bool ItemView::onChildrenWillBeRemoved(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenRemoved(const EventArgs& args)
+bool ItemView::onChildrenRemoved(const EventArgs&)
 {
 
     ItemViewEventArgs wargs(this);
@@ -352,13 +352,13 @@ bool ItemView::onChildrenRemoved(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenDataWillChange(const EventArgs& args)
+bool ItemView::onChildrenDataWillChange(const EventArgs&)
 {
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onChildrenDataChanged(const EventArgs& args)
+bool ItemView::onChildrenDataChanged(const EventArgs&)
 {
     invalidateView(false);
     return true;
@@ -372,7 +372,7 @@ void ItemView::onSelectionChanged(ItemViewEventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::onScrollPositionChanged(const EventArgs& args)
+bool ItemView::onScrollPositionChanged(const EventArgs&)
 {
     invalidateView(false);
     return true;
@@ -381,23 +381,22 @@ bool ItemView::onScrollPositionChanged(const EventArgs& args)
 //----------------------------------------------------------------------------//
 void ItemView::onCursorPressHold(CursorInputEventArgs& e)
 {
+    Window::onCursorPressHold(e);
     if (e.source != CIS_Left)
         return;
 
     handleSelection(e.position, true, false, false);
-
     ++e.handled;
-    Window::onCursorPressHold(e);
 }
 
 //----------------------------------------------------------------------------//
 void ItemView::onCursorMove(CursorInputEventArgs& e)
 {
+    Window::onCursorMove(e);
     if (d_isItemTooltipsEnabled)
         setupTooltip(e.position);
 
     ++e.handled;
-    Window::onCursorMove(e);
 }
 
 static void disconnectIfNotNull(Event::Connection& connection)
@@ -569,7 +568,7 @@ void ItemView::updateScrollbar(Scrollbar* scrollbar, float available_area,
 {
     scrollbar->setDocumentSize(rendered_area);
     scrollbar->setPageSize(available_area);
-    scrollbar->setStepSize(ceguimax(1.0f, rendered_area / 10.0f));
+    scrollbar->setStepSize(std::max(1.0f, rendered_area / 10.0f));
     scrollbar->setScrollPosition(scrollbar->getScrollPosition());
 
     if (display_mode == SDM_Hidden)
@@ -619,8 +618,8 @@ ItemViewWindowRenderer* ItemView::getViewRenderer()
 {
     if (d_windowRenderer == 0)
     {
-        CEGUI_THROW(InvalidRequestException(
-            "The view should have a window renderer attached!"));
+        throw InvalidRequestException(
+            "The view should have a window renderer attached!");
     }
 
     return static_cast<ItemViewWindowRenderer*>(d_windowRenderer);
@@ -948,13 +947,13 @@ void ItemView::ensureIndexIsVisible(const ModelIndex& index)
     const float right = left + rect.getWidth();
 
     // if left is left of the view area, or if item too big
-    if ((left < render_area.d_min.d_x) || ((right - left) > view_width))
+    if ((left < render_area.d_min.x) || ((right - left) > view_width))
     {
         // scroll item to left
         horz_scroll->setScrollPosition(currPos + left);
     }
     // if right is right of the view area
-    else if (right >= render_area.d_max.d_x)
+    else if (right >= render_area.d_max.x)
     {
         // scroll item to right of list
         horz_scroll->setScrollPosition(currPos + right - view_width);

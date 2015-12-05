@@ -38,7 +38,6 @@ author:     Lukas E Meindl
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/InputAggregator.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/Vector.h"
 
 using namespace CEGUI;
 
@@ -47,9 +46,9 @@ SampleHandler::SampleHandler(Sample* sample)
     : d_sample(sample)
     , d_usedFilesString("")
     , d_sampleWindow(0)
+    , d_guiContext(0)
     , d_inputAggregator(0)
     , d_nonDefaultInputAggregator(false)
-    , d_guiContext(0)
     , d_textureTarget(0)
     , d_textureTargetImage(0)
 {
@@ -231,7 +230,7 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
     CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
 
     //! Creating a texcture target to render the GUIContext onto
-    d_textureTarget = system.getRenderer()->createTextureTarget();
+    d_textureTarget = system.getRenderer()->createTextureTarget(false);
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
     d_textureTarget->declareRenderSize(size);
 

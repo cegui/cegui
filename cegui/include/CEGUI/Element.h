@@ -808,9 +808,7 @@ public:
     */
     inline glm::vec2 getPixelPosition() const
     {
-        // FIXME: Temporary because of transition to glm::vec2
-        const Vector2<float> min = getUnclippedOuterRect().get().d_min;
-        return glm::vec2(min.d_x, min.d_y);
+        return getUnclippedOuterRect().get().d_min;
     }
 
     /*!

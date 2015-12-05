@@ -24,6 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Texture.h"
@@ -42,9 +43,7 @@
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
-#include <sstream>
 #include <algorithm>
-#include <cstring>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,16 +59,14 @@ namespace CEGUI
 #ifndef APIENTRY
 #   define APIENTRY
 #endif
-//! Dummy function for if real ones are not present (saves testing each render)
-static void APIENTRY activeTextureDummy(GLenum) {}
 
 //----------------------------------------------------------------------------//
 // template specialised class that does the real work for us
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    TextureTarget* create(OpenGLRendererBase& r) const
-        { return new T(static_cast<OpenGL3Renderer&>(r)); }
+    TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const
+        { return new T(static_cast<OpenGL3Renderer&>(r), addStencilBuffer); }
 };
 
 //----------------------------------------------------------------------------//
@@ -78,8 +75,8 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const int abi)
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGL3Renderer& renderer(create());
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -95,8 +92,8 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGL3Renderer& renderer(create(display_size));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -110,8 +107,8 @@ void OpenGL3Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     OpenGL3Renderer* renderer = static_cast<OpenGL3Renderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
@@ -147,26 +144,32 @@ void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer() :
+    OpenGLRendererBase(true),
     d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
-    initialiseRendererIDString();
-    initialiseGLExtensions();
-    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
-    initialiseTextureTargetFactory();
-    initialiseOpenGLShaders();
+    init();
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
-    OpenGLRendererBase(display_size),
+    OpenGLRendererBase(display_size, true),
     d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
+    init();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::init()
+{
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs()
+        &&  OpenGLInfo::getSingleton().verMajor() < 2)
+        throw RendererException("Only version 2 and up of OpenGL ES is "
+                                "supported by this type of renderer.");
     initialiseRendererIDString();
-    initialiseGLExtensions();
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
@@ -186,9 +189,10 @@ OpenGL3Renderer::~OpenGL3Renderer()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseRendererIDString()
 {
-    d_rendererID =
-        "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
-        "renderer module.";
+    d_rendererID = OpenGLInfo::getSingleton().isUsingDesktopOpengl()
+        ?  "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
+           "renderer module."
+        :  "CEGUI::OpenGL3Renderer - OpenGL ES 2 renderer module.";
 }
 //----------------------------------------------------------------------------//
 OpenGLGeometryBufferBase* OpenGL3Renderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
@@ -197,21 +201,26 @@ OpenGLGeometryBufferBase* OpenGL3Renderer::createGeometryBuffer_impl(CEGUI::RefC
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGL3Renderer::createTextureTarget_impl()
+TextureTarget* OpenGL3Renderer::createTextureTarget_impl(bool addStencilBuffer)
 {
-    return d_textureTargetFactory->create(*this);
+    return d_textureTargetFactory->create(*this, addStencilBuffer);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::beginRendering()
 {
-    // if enabled, restores a subset of the GL state back to default values.
-    if (d_initExtraStates)
-        setupExtraStates();
+    // Deprecated OpenGL 2 client states may mess up rendering. They are not added here
+    // since they are deprecated and thus do not fit in a OpenGL Core renderer. However
+    // this information may be relevant for people combining deprecated and modern
+    // functions. In that case disable client states like this: glDisableClientState(GL_VERTEX_ARRAY);
 
     d_openGLStateChanger->reset();
 
-    // Setup initial states
+    // if enabled, restores a subset of the GL state back to default values.
+    if (d_isStateResettingEnabled)
+        restoreChangedStatesToDefaults(false);
+
+    d_openGLStateChanger->enable(GL_SCISSOR_TEST);
     d_openGLStateChanger->enable(GL_BLEND);
 
     // force set blending ops to get to a known state.
@@ -221,21 +230,38 @@ void OpenGL3Renderer::beginRendering()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::endRendering()
 {
+    if (d_isStateResettingEnabled)
+        restoreChangedStatesToDefaults(true);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::setupExtraStates()
+void OpenGL3Renderer::restoreChangedStatesToDefaults(bool isAfterRendering)
 {
-    glActiveTexture(GL_TEXTURE0);
+    //Resetting to initial values of the functions
+    d_openGLStateChanger->activeTexture(GL_TEXTURE0);
+    d_openGLStateChanger->bindTexture(GL_TEXTURE_2D, 0);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    if (OpenGLInfo::getSingleton().isPolygonModeSupported())
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+ 
+    d_openGLStateChanger->disable(GL_CULL_FACE);
+    d_openGLStateChanger->disable(GL_DEPTH_TEST);
 
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+    // During the preparation before rendering, these states will be changed anyways
+    // so we do not want to change them extra
+    if(isAfterRendering)
+    { 
+        d_openGLStateChanger->disable(GL_BLEND);
+        d_openGLStateChanger->disable(GL_SCISSOR_TEST);
+    }
 
-    glUseProgram(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    d_openGLStateChanger->blendFunc(GL_ONE, GL_ZERO);
+
+    d_openGLStateChanger->useProgram(0);
+    if (OpenGLInfo::getSingleton().isVaoSupported())
+        d_openGLStateChanger->bindVertexArray(0);
+    d_openGLStateChanger->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 //----------------------------------------------------------------------------//
@@ -290,46 +316,6 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::initialiseGLExtensions()
-{
-    glewExperimental = GL_TRUE;
-
-    GLenum err = glewInit();
-    if(err != GLEW_OK)
-    {
-        std::ostringstream err_string;
-        //Problem: glewInit failed, something is seriously wrong.
-        err_string << "failed to initialise the GLEW library. "
-            << glewGetErrorString(err);
-
-        CEGUI_THROW(RendererException(err_string.str().c_str()));
-    }
-    //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
-    glGetError();
-
-    // Why do we do this and not use GLEW_EXT_texture_compression_s3tc?
-    // Because of glewExperimental, of course!
-    int ext_count;
-    glGetIntegerv(GL_NUM_EXTENSIONS, &ext_count);
-    for(int i = 0; i < ext_count; ++i)
-    {
-        if (!std::strcmp(
-                reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)),
-                                              "GL_EXT_texture_compression_s3tc"))
-        {
-            d_s3tcSupported = true;
-            break;
-        }
-    }
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGL3Renderer::isS3TCSupported() const
-{
-    return d_s3tcSupported;
-}
-
-//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
     if(shaderType == DS_TEXTURED)
@@ -346,8 +332,8 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
     }
     else
     {
-        CEGUI_THROW(RendererException(
-            "A default shader of this type does not exist."));
+        throw RendererException(
+            "A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }

@@ -31,6 +31,24 @@
 
 using namespace CEGUI;
 
+static const char* PageText[] =
+{
+    "This is page three",
+    "And this is page four, it's not too different from page three, isn't it?",
+    "Yep, you guessed, this is page five",
+    "And this is page six",
+    "Seven",
+    "Eight",
+    "Nine. Quite boring, isn't it?",
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "And, finally, sixteen. Congrats, you found the last page!",
+};
+
 TabControlSample::TabControlSample()
 {
     Sample::d_name = "TabControlSample";
@@ -50,9 +68,10 @@ bool TabControlSample::initialise(CEGUI::GUIContext* guiContext)
     d_usedFiles = CEGUI::String(__FILE__);
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
@@ -261,12 +280,12 @@ bool TabControlSample::handleAddTab(const EventArgs&)
             Window* pg = 0;
 
             pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-            CEGUI_TRY
+            try
             {
                 pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
                 pg->setName(String(pgname.str().c_str()));
             }
-            CEGUI_CATCH(CEGUI::Exception&)
+            catch (CEGUI::Exception&)
             {
                 Logger::getSingleton().logEvent("Some error occured while adding a tabpage. Please see the logfile.");
                 break;

@@ -114,10 +114,10 @@ void Direct3D11GeometryBuffer::draw() const
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
+    d_clipRect.top(std::max(0.0f, region.top()));
+    d_clipRect.bottom(std::max(0.0f, region.bottom()));
+    d_clipRect.left(std::max(0.0f, region.left()));
+    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 
@@ -189,7 +189,7 @@ void Direct3D11GeometryBuffer::allocateVertexBuffer(const UINT dataSize) const
     buffer_desc.MiscFlags      = 0;
 
     if (FAILED(d_device->CreateBuffer(&buffer_desc, 0, &d_vertexBuffer)))
-        CEGUI_THROW(RendererException("failed to allocate vertex buffer."));
+        throw RendererException("failed to allocate vertex buffer.");
 }
 
 //----------------------------------------------------------------------------//
@@ -226,7 +226,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
     std::vector<D3D11_INPUT_ELEMENT_DESC> vertexLayoutVector;
 
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
-    int dataOffset = 0;
+    UINT dataOffset = 0;
     const size_t attribute_count = d_vertexAttributes.size();
     for (size_t i = 0; i < attribute_count; ++i)
     {
@@ -262,8 +262,8 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
     }
 
     if(vertexLayoutVector.size() == 0)
-                CEGUI_THROW(RendererException(
-            "The empty vertex layout is invalid because it is empty."));
+                throw RendererException(
+            "The empty vertex layout is invalid because it is empty.");
 
 
     const CEGUI::Direct3D11ShaderWrapper* shaderWrapper = static_cast<const CEGUI::Direct3D11ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
@@ -276,8 +276,8 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
                                             shaderWrapper->getVertShaderBufferSize(),
                                             &d_inputLayout)))
     {
-        CEGUI_THROW(RendererException(
-            "Failed to create D3D InputLayout."));
+        throw RendererException(
+            "Failed to create D3D InputLayout.");
     }
 }
 

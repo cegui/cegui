@@ -49,7 +49,7 @@ public:
     {
         for (size_t i = 0; i < count; ++i)
         {
-            d_model.addItem(PropertyHelper<uint>::toString(i));
+            d_model.addItem(PropertyHelper<std::uint32_t>::toString(i));
         }
     }
 
@@ -58,7 +58,7 @@ public:
         for (size_t i = 0; i < count; ++i)
         {
             d_model.addItemAtPosition(
-                new StandardItem(PropertyHelper<uint>::toString(i)), at_position + i + 1);
+                new StandardItem(PropertyHelper<std::uint32_t>::toString(i)), at_position + i + 1);
         }
     }
 

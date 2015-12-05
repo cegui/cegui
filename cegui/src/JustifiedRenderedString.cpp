@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/Vector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

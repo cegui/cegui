@@ -55,12 +55,12 @@ public:
     void setPivot(const glm::vec3& p);
     void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    void appendGeometry(const Vertex* const vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
+    unsigned int getVertexCount() const;
+    unsigned int getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
     void setClippingActive(const bool active);
@@ -74,7 +74,7 @@ protected:
     struct BatchInfo
     {
         IDirectFBSurface* texture;
-        uint vertexCount;
+        unsigned int vertexCount;
         bool clip;
     };
 

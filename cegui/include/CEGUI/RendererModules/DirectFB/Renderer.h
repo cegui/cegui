@@ -28,11 +28,11 @@
 #define _CEGUIDirectFBRenderer_h_
 
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Vector.h"
 #include <directfb.h>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -62,7 +62,7 @@ public:
     virtual GeometryBuffer& createGeometryBuffer();
     virtual void destroyGeometryBuffer(const GeometryBuffer& buffer);
     virtual void destroyAllGeometryBuffers();
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const CEGUI::String& name);
@@ -80,7 +80,7 @@ public:
     virtual void setDisplaySize(const Sizef& sz);
     virtual const Sizef& getDisplaySize() const;
     virtual const glm::vec2& getDisplayDPI() const;
-    virtual uint getMaxTextureSize() const;
+    virtual unsigned int getMaxTextureSize() const;
     virtual const String& getIdentifierString() const;
     virtual bool isTexCoordSystemFlipped() const;
 
@@ -118,7 +118,7 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, DirectFBTexture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, DirectFBTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
 };

@@ -71,9 +71,10 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->getCursor().setDefaultImage("GameMenuSampleImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-13.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    d_guiContext->setDefaultFont(&defaultFont);
+    d_guiContext->setDefaultFont(defaultFont);
 
     FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
@@ -307,8 +308,8 @@ void GameMenuSample::update(float timeSinceLastUpdate)
     {
         d_timeSinceLoginAccepted += timeSinceLastUpdate;
 
-        updateLoginWelcomeText(timeSinceLastUpdate);
-        updateLoginStartButtonText(timeSinceLastUpdate);
+        updateLoginWelcomeText();
+        updateLoginStartButtonText();
     }
 
     if(d_timeSinceStart >= s_loginDisplayStartDelay && !d_loginContainer->isVisible())
@@ -321,7 +322,7 @@ void GameMenuSample::update(float timeSinceLastUpdate)
     }
 }
 
-bool GameMenuSample::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleLoginAcceptButtonClicked(const CEGUI::EventArgs&)
 {
     d_startButtonClickArea->setAlpha(0.0f);
     d_startButtonBlendInAnimInst->start();
@@ -343,7 +344,7 @@ bool GameMenuSample::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args
     return false;
 }
 
-bool GameMenuSample::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs&)
 {
     if(!d_interactivePlanetElementsAreEnabled)
         enableInteractivePlanetElements();
@@ -357,7 +358,7 @@ bool GameMenuSample::handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& 
 }
 
 
-bool GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs&)
 {
     if(!d_loginWasAccepted)
         return false;
@@ -421,7 +422,7 @@ bool GameMenuSample::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool GameMenuSample::handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerEntersLeftArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -430,7 +431,7 @@ bool GameMenuSample::handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool GameMenuSample::handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -439,7 +440,7 @@ bool GameMenuSample::handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool GameMenuSample::handlePointerEntersRightArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerEntersRightArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -448,7 +449,7 @@ bool GameMenuSample::handlePointerEntersRightArrowArea(const CEGUI::EventArgs& a
     return false;
 }
 
-bool GameMenuSample::handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& args)
+bool GameMenuSample::handlePointerLeavesRightArrowArea(const CEGUI::EventArgs&)
 {
     CEGUI::EventArgs fireArgs;
     if(d_loginWasAccepted)
@@ -458,7 +459,7 @@ bool GameMenuSample::handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& a
 }
 
 
-bool GameMenuSample::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -473,7 +474,7 @@ bool GameMenuSample::handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool GameMenuSample::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -488,7 +489,7 @@ bool GameMenuSample::handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool GameMenuSample::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -507,7 +508,7 @@ bool GameMenuSample::handleStartPopupLinesCharactersDisplay(const CEGUI::EventAr
 }
 
 
-bool GameMenuSample::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -525,7 +526,7 @@ bool GameMenuSample::handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs&
 }
 
 
-bool GameMenuSample::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args)
+bool GameMenuSample::handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs&)
 {
     if(!d_startButtonClicked)
         return false;
@@ -709,7 +710,7 @@ void GameMenuSample::updateIntroText()
     d_botBarLabel->setText(finalText);
 }
 
-void GameMenuSample::updateLoginWelcomeText(float passedTime)
+void GameMenuSample::updateLoginWelcomeText()
 {
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
@@ -735,7 +736,7 @@ void GameMenuSample::updateLoginWelcomeText(float passedTime)
 }
 
 
-void GameMenuSample::updateLoginStartButtonText(float passedTime)
+void GameMenuSample::updateLoginStartButtonText()
 {
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;

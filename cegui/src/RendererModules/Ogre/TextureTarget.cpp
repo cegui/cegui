@@ -40,12 +40,14 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float OgreTextureTarget::DEFAULT_SIZE = 128.0f;
-uint OgreTextureTarget::s_textureNumber = 0;
+std::uint32_t OgreTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
-                                     Ogre::RenderSystem& rs) :
-    OgreRenderTarget<TextureTarget>(owner, rs),
+                                     Ogre::RenderSystem& rs,
+                                     bool addStencilBuffer) :
+    OgreRenderTarget(owner, rs),
+    TextureTarget(addStencilBuffer),
     d_CEGUITexture(0)
 {
     d_CEGUITexture = static_cast<OgreTexture*>(
@@ -138,7 +140,7 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
 String OgreTextureTarget::generateTextureName()
 {
     String tmp("_ogre_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }
@@ -147,7 +149,4 @@ String OgreTextureTarget::generateTextureName()
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

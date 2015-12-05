@@ -37,7 +37,7 @@ namespace CEGUI
 class DirectFBRenderer;
 
 //! Implementation of CEGUI::RenderTarget for DirectFB
-class DirectFBRenderTarget : public RenderTarget
+class DirectFBRenderTarget : virtual public RenderTarget
 {
 public:
     //! Constructor.

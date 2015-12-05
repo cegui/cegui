@@ -52,8 +52,8 @@ SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buf
                                                     const float stroke_half_width,
                                                     const SVGPaintStyle& paint_style,
                                                     const float max_scale) :
-    d_geometryBuffer(geometry_buffer),
     d_strokeHalfWidth(stroke_half_width),
+    d_geometryBuffer(geometry_buffer),
     d_paintStyle(paint_style),
     d_maxScale(max_scale),
     d_prevPoint(0),
@@ -559,10 +559,9 @@ void SVGTesselator::createStrokeLinejoin(StrokeSegmentData& stroke_data,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::determineAntiAliasingOffsets(float width, glm::vec2& antialiasing_offsets)
+void SVGTesselator::determineAntiAliasingOffsets
+  (float /*width*/, glm::vec2& antialiasing_offsets)
 {
-	float remainder = width - static_cast<int>(width);
-
     float& core_offset = antialiasing_offsets.x;
     float& fade_offset = antialiasing_offsets.y;
 
@@ -718,7 +717,7 @@ void SVGTesselator::createTriangleStripFillGeometry(const std::vector<glm::vec2>
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createCircleFill(const std::vector<glm::vec2>& circle_points,
-                                     float max_scale,
+                                     float /*max_scale*/,
                                      const SVGPaintStyle& paint_style,
                                      GeometryBuffer& geometry_buffer,
                                      const SVGImage::SVGImageRenderSettings& render_settings,
@@ -847,7 +846,7 @@ void SVGTesselator::createArcStrokeAAGeometry(const std::vector<glm::vec2>& poin
                                               const glm::vec2& arc_draw_origin_point,
                                               StrokeSegmentData& stroke_data,
                                               const glm::vec2& scale_factors,
-                                              const bool polygon_is_clockwise,
+                                              const bool /*polygon_is_clockwise*/,
                                               glm::vec2& linecap_left_AA,
                                               glm::vec2& linecap_right_AA,
                                               glm::vec2& linecap_left_fade,
@@ -953,7 +952,7 @@ void SVGTesselator::createArcPoints(const glm::vec2& center_point,
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createEllipseFill(const std::vector<glm::vec2>& ellipse_points,
-                                      const float max_scale,
+                                      const float /*max_scale*/,
                                       const SVGPaintStyle& paint_style,
                                       GeometryBuffer& geometry_buffer,
                                       const SVGImage::SVGImageRenderSettings& render_settings,
@@ -1101,20 +1100,21 @@ void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_d
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke_data,
-                                                       const SVGImage::SVGImageRenderSettings& render_settings,
-                                                       const glm::vec2& scale_factors,
-                                                       const glm::vec2& cur_point,
-                                                       const glm::vec2& second_bevel_point,
-                                                       const glm::vec2& segment_end_left,
-                                                       const glm::vec2& segment_end_right,
-                                                       const glm::vec2& prev_to_cur,
-                                                       const glm::vec2& cur_to_next,
-                                                       const glm::vec2& prev_dir_to_inside,
-                                                       const glm::vec2& next_dir_to_inside,
-                                                       const SVGPaintStyle::SVGLinejoin linejoin,
-                                                       const bool polygon_is_clockwise,
-                                                       const bool draw)
+void SVGTesselator::createStrokeLinejoinBevelOrRoundAA
+  (StrokeSegmentData &stroke_data,
+   const SVGImage::SVGImageRenderSettings&,
+   const glm::vec2& scale_factors,
+   const glm::vec2& cur_point,
+   const glm::vec2& second_bevel_point,
+   const glm::vec2& segment_end_left,
+   const glm::vec2& segment_end_right,
+   const glm::vec2& prev_to_cur,
+   const glm::vec2& cur_to_next,
+   const glm::vec2& prev_dir_to_inside,
+   const glm::vec2& next_dir_to_inside,
+   const SVGPaintStyle::SVGLinejoin linejoin,
+   const bool polygon_is_clockwise,
+   const bool draw)
 {
     ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
     ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
@@ -1431,8 +1431,8 @@ void SVGTesselator::setStrokeDataLastPointsAsCurrentPointsAA(StrokeSegmentData &
 void SVGTesselator::createFill(const std::vector<glm::vec2>& points,
                                GeometryBuffer& geometry_buffer,
                                const SVGPaintStyle& paint_style,
-                               const SVGImage::SVGImageRenderSettings& render_settings,
-                               const glm::vec2& scale_factors)
+                               const SVGImage::SVGImageRenderSettings&,
+                               const glm::vec2& /*scale_factors*/)
 {
     if(points.size() < 3 || paint_style.d_fill.d_none)
         return;

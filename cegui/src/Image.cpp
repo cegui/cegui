@@ -36,8 +36,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 Image::Image(const String& name) :
     d_name(name),
-    d_pixelOffset(0.0f, 0.0f),
     d_imageArea(0.0f, 0.0f, 0.0f, 0.0f),
+    d_pixelOffset(0.0f, 0.0f),
     d_autoScaled(ASM_Disabled),
     d_nativeResolution(640, 480),
     d_scaledSize(0, 0),
@@ -56,8 +56,8 @@ Image::Image(const String& name,
              const Sizef& native_resolution
              ) :
     d_name(name),
-    d_pixelOffset(pixel_offset),
     d_imageArea(image_area),
+    d_pixelOffset(pixel_offset),
     d_autoScaled(auto_scaled),
     d_nativeResolution(native_resolution),
     d_scaledSize(0, 0),

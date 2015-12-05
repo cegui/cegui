@@ -81,7 +81,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         // center the expander compared to the item's height
         float half_diff = (size.d_height - d_subtreeExpanderImagerySize.d_height) / 2.0f;
 
-        size.d_width = ceguimax(items_area.getWidth(), size.d_width);
+        size.d_width = std::max(items_area.getWidth(), size.d_width);
         float indent = d_subtreeExpanderImagerySize.d_width + expander_margin * 2;
         if (item->d_totalChildCount > 0)
         {
@@ -124,7 +124,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         renderString(tree_view, rendered_string, item_rect,
             tree_view->getFont(), &item_clipper, item->d_isSelected);
 
-        item_pos.y += ceguimax(size.d_height, d_subtreeExpanderImagerySize.d_height);
+        item_pos.y += std::max(size.d_height, d_subtreeExpanderImagerySize.d_height);
 
         if (item->d_renderedChildren.empty())
             continue;

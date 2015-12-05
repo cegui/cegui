@@ -25,6 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/DynamicModule.h"
@@ -56,7 +57,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// The following are some GL extension / version dependant related items.
+// The following are some GL extension / version dependent related items.
 // This is all done totally internally here; no need for external interface
 // to show any of this.
 //----------------------------------------------------------------------------//
@@ -78,8 +79,8 @@ static void APIENTRY activeTextureDummy(GLenum) {}
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    virtual TextureTarget* create(OpenGLRendererBase& r) const
-        { return new T(r); }
+    virtual TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const
+        { return new T(r, addStencilBuffer); }
 };
 
 //----------------------------------------------------------------------------//
@@ -89,8 +90,8 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGLRenderer& renderer(create(tt_type));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -107,8 +108,8 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const Sizef& display_size,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGLRenderer& renderer(create(display_size, tt_type));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -122,8 +123,8 @@ void OpenGLRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     OpenGLRenderer* renderer = static_cast<OpenGLRenderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
@@ -160,7 +161,8 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type)
+OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
+    OpenGLRendererBase(false)
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
@@ -177,7 +179,7 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type)
 //----------------------------------------------------------------------------//
 OpenGLRenderer::OpenGLRenderer(const Sizef& display_size,
                                const TextureTargetType tt_type) :
-    OpenGLRendererBase(display_size)
+    OpenGLRendererBase(display_size, false)
 {
     initialiseRendererIDString();
     initialiseGLExtensions();
@@ -211,9 +213,9 @@ OpenGLGeometryBufferBase* OpenGLRenderer::createGeometryBuffer_impl(CEGUI::RefCo
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLRenderer::createTextureTarget_impl()
+TextureTarget* OpenGLRenderer::createTextureTarget_impl(bool addStencilBuffer)
 {
-    return d_textureTargetFactory->create(*this);
+    return d_textureTargetFactory->create(*this, addStencilBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -245,15 +247,15 @@ void OpenGLRenderer::beginRendering()
     glDisableClientState(GL_EDGE_FLAG_ARRAY);
 
     // if enabled, restores a subset of the GL state back to default values.
-    if (d_initExtraStates)
-        setupExtraStates();
+    if (d_isStateResettingEnabled)
+        restoreOpenGLStatesToDefaults();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::endRendering()
 {
-    if (d_initExtraStates)
-        cleanupExtraStates();
+    if (d_isStateResettingEnabled)
+        cleanupMatrixStack();
 
     // restore former matrices
     // FIXME: If the push ops failed, the following could mess things up!
@@ -266,7 +268,7 @@ void OpenGLRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::setupExtraStates()
+void OpenGLRenderer::restoreOpenGLStatesToDefaults()
 {
     CEGUI_activeTexture(GL_TEXTURE0);
     CEGUI_clientActiveTexture(GL_TEXTURE0);
@@ -292,7 +294,7 @@ void OpenGLRenderer::setupExtraStates()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::cleanupExtraStates()
+void OpenGLRenderer::cleanupMatrixStack()
 {
     glMatrixMode(GL_TEXTURE);
     glPopMatrix();
@@ -379,17 +381,6 @@ void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::initialiseGLExtensions()
 {
-    // initialise GLEW
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-    {
-        std::ostringstream err_string;
-        err_string << "OpenGLRenderer failed to initialise the GLEW library. "
-        << glewGetErrorString(err);
-
-        CEGUI_THROW(RendererException(err_string.str().c_str()));
-    }
-
     // GL 1.3 has multi-texture support natively
     if (GLEW_VERSION_1_3)
     {
@@ -411,12 +402,6 @@ void OpenGLRenderer::initialiseGLExtensions()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLRenderer::isS3TCSupported() const
-{
-    return GLEW_EXT_texture_compression_s3tc > 0;
-}
-
-//----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
     if(shaderType == DS_TEXTURED)
@@ -433,8 +418,8 @@ RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultSha
     }
     else
     {
-        CEGUI_THROW(RendererException(
-            "A default shader of this type does not exist."));
+        throw RendererException(
+            "A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }
@@ -454,7 +439,7 @@ Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz)
     Sizef out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
-    if (!GLEW_ARB_texture_non_power_of_two)
+    if (!OpenGLInfo::getSingleton().isNpotTextureSupported())
     {
         out.d_width = getNextPOTSize(out.d_width);
         out.d_height = getNextPOTSize(out.d_height);

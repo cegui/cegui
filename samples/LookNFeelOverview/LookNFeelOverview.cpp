@@ -41,6 +41,7 @@ LookNFeelOverviewSample class
 *************************************************************************/
 
 LookNFeelOverviewSample::LookNFeelOverviewSample()
+    : d_fontForTaharez(0)
 {
     Sample::d_name = "LookNFeelOverviewSample";
     Sample::d_credits = "Lukas &quot;Ident&quot; Meindl";
@@ -74,12 +75,14 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load all Fonts we are going to use and which are not loaded via scheme
-    d_fontForTaharez = &FontManager::getSingleton().createFromFile("Jura-10.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-10.font");
+    d_fontForTaharez = loadedFonts.empty() ? 0 : loadedFonts.front();
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+
 
     // load all layouts we want to use later
     d_taharezOverviewLayout = winMgr.loadLayoutFromFile("TaharezLookOverview.layout");
-
+    d_vanillaOverviewLayout = winMgr.loadLayoutFromFile("VanillaLookOverview.layout");
 
     // create a root window
     Window* root = winMgr.createWindow("DefaultWindow", "root");
@@ -115,13 +118,11 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_taharezLookListboxItem = new CEGUI::StandardItem("TaharezLook");
     skinSelectionCombobox->addItem(d_taharezLookListboxItem);
-    //d_taharezLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
 
     d_vanillaLookListboxItem = new CEGUI::StandardItem("Vanilla");
     skinSelectionCombobox->addItem(d_vanillaLookListboxItem);
-    //d_vanillaLookListboxItem->setSelectionBrushImage("Vanilla-Images/GenericBrush");
 
-    CEGUI::ListboxTextItem* blaLookListboxItem = new CEGUI::ListboxTextItem("TaharezLook");
+    skinSelectionCombobox->setItemSelectState(d_taharezLookListboxItem, true);
 
     // success!
     return true;
@@ -156,7 +157,8 @@ bool LookNFeelOverviewSample::handleSkinSelectionAccepted(const CEGUI::EventArgs
     }
     else if(selectedItem == d_vanillaLookListboxItem)
     {
-
+        d_loadedLayoutContainer->addChild(d_vanillaOverviewLayout);
+        d_guiContext->setDefaultFont(d_fontForTaharez); 
     }
 
     return false;

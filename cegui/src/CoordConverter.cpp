@@ -114,7 +114,7 @@ float CoordConverter::getBaseXValue(const Window& window)
     );
 
     const float parent_width = parent_rect.getWidth();
-    float baseX = parent_rect.d_min.d_x;
+    float baseX = parent_rect.d_min.x;
 
     baseX += asAbsolute(window.getArea().d_min.d_x, parent_width);
 
@@ -145,7 +145,7 @@ float CoordConverter::getBaseYValue(const Window& window)
     );
 
     const float parent_height = parent_rect.getHeight();
-    float baseY = parent_rect.d_min.d_y;
+    float baseY = parent_rect.d_min.y;
 
     baseY += asAbsolute(window.getArea().d_min.d_y, parent_height);
 

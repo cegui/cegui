@@ -350,7 +350,7 @@ void RestaurantGameSample::updatePlates(float timeSinceLastUpdate)
 void RestaurantGameSample::updateScoreWindow()
 {
     CEGUI::Window* scoreWnd = d_rootIngame->getChild("TopBar/ScoreBGImage/Score");
-    scoreWnd->setText(CEGUI::PropertyHelper<int>::toString(d_score));
+    scoreWnd->setText(CEGUI::PropertyHelper<std::int32_t>::toString(d_score));
 }
 
 bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& args)
@@ -390,14 +390,14 @@ bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& ar
     return false;
 }
 
-void RestaurantGameSample::createScorePopup(const glm::vec2& cursor_pos, int points)
+void RestaurantGameSample::createScorePopup(const glm::vec2& cursor_pos, std::int32_t points)
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameSample/PopupLabel");
     d_rootIngame->addChild(popupWindow);
     popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(cursor_pos.x), cegui_absdim(cursor_pos.y)));
-    popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
+    popupWindow->setText(CEGUI::PropertyHelper<std::int32_t>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));
     popupWindow->setPixelAligned(false);
@@ -502,7 +502,7 @@ void RestaurantGameSample::selectedWeapon(SelectedWeapon weapon)
     }
 }
 
-bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs&)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     weaponIndex = (weaponIndex - 1) % 3;
@@ -513,7 +513,7 @@ bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs&
     return false;
 }
 
-bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs&)
 {
     d_root->removeChild(d_rootGameOver);
     d_rootIngame->addChild(d_cursorWnd);
@@ -523,7 +523,7 @@ bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs& ar
     return false;
 }
 
-bool RestaurantGameSample::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleWeaponLeftArrowClicked(const CEGUI::EventArgs&)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );

@@ -5,7 +5,7 @@
 	purpose:	Implementation of the Multi-line edit box base class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,22 +36,19 @@
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
 
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
 const String MultiLineEditbox::WidgetTypeName("CEGUI/MultiLineEditbox");
 
 
-/*************************************************************************
-    MultiLineEditboxWindowRenderer
-*************************************************************************/
 MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
     WindowRenderer(name, MultiLineEditbox::EventNamespace)
 {
 }
 
-//----------------------------------------------------------------------------//
+
 void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
 {
     assert(d_window != 0);
@@ -65,9 +62,6 @@ void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
     }
 }
 
-/*************************************************************************
-	Constants
-*************************************************************************/
 // event names
 const String MultiLineEditbox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
 const String MultiLineEditbox::EventWordWrapModeChanged( "WordWrapModeChanged" );
@@ -81,54 +75,28 @@ const String MultiLineEditbox::EventHorzScrollbarModeChanged( "HorzScrollbarMode
 // Static data initialisation
 String MultiLineEditbox::d_lineBreakChars("\n");
 
-/*************************************************************************
-    Child Widget name constants
-*************************************************************************/
 const String MultiLineEditbox::VertScrollbarName( "__auto_vscrollbar__" );
 const String MultiLineEditbox::HorzScrollbarName( "__auto_hscrollbar__" );
 
-/*************************************************************************
-	Constructor for the MultiLineEditbox base class.
-*************************************************************************/
+
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
-	Window(type, name),
-	d_readOnly(false),
-	d_maxTextLen(String().max_size()),
-	d_caretPos(0),
-	d_selectionStart(0),
-	d_selectionEnd(0),
-	d_dragging(false),
-	d_dragAnchorIdx(0),
+	EditboxBase(type, name),
 	d_wordWrap(true),
+	d_lastRenderWidth(0.0),
 	d_widestExtent(0.0f),
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
-	d_selectionBrush(0),
-	d_lastRenderWidth(0.0)
+	d_selectionBrush(0)
 {
 	addMultiLineEditboxProperties();
-    // create undo handler
-    d_undoHandler = new UndoHandler(this);
-
-    // override default and disable text parsing
-    d_textParsingEnabled = false;
-    // Since parsing is ever allowed in the editbox, ban the property too.
-    banPropertyFromXML("TextParsingEnabled");
 }
 
 
-/*************************************************************************
-	Destructor for the MultiLineEditbox base class.
-*************************************************************************/
 MultiLineEditbox::~MultiLineEditbox(void)
 {
-    delete d_undoHandler;
 }
 
 
-/*************************************************************************
-	Initialise the Window based object ready for use.
-*************************************************************************/
 void MultiLineEditbox::initialiseComponents(void)
 {
 	// create the component sub-widgets
@@ -151,61 +119,6 @@ void MultiLineEditbox::initialiseComponents(void)
 }
 
 
-/*************************************************************************
-	return true if the edit box has input focus.
-*************************************************************************/
-bool MultiLineEditbox::hasInputFocus(void) const
-{
-	return isActive();
-}
-
-
-/*************************************************************************
-	return the current selection start point.
-*************************************************************************/
-size_t MultiLineEditbox::getSelectionStartIndex(void) const
-{
-	return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caretPos;
-}
-
-
-/*************************************************************************
-	return the current selection end point.
-*************************************************************************/
-size_t MultiLineEditbox::getSelectionEndIndex(void) const
-{
-	return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caretPos;
-}
-
-
-/*************************************************************************
-	return the length of the current selection (in code points / characters).
-*************************************************************************/
-size_t MultiLineEditbox::getSelectionLength(void) const
-{
-	return d_selectionEnd - d_selectionStart;
-}
-
-
-/*************************************************************************
-	Specify whether the edit box is read-only.
-*************************************************************************/
-void MultiLineEditbox::setReadOnly(bool setting)
-{
-	// if setting is changed
-	if (d_readOnly != setting)
-	{
-		d_readOnly = setting;
-		WindowEventArgs args(this);
- 		onReadOnlyChanged(args);
-	}
-
-}
-
-
-/*************************************************************************
-	Set the current position of the caret.
-*************************************************************************/
 void MultiLineEditbox::setCaretIndex(size_t caret_pos)
 {
 	// make sure new position is valid
@@ -228,89 +141,6 @@ void MultiLineEditbox::setCaretIndex(size_t caret_pos)
 }
 
 
-/*************************************************************************
-	Define the current selection for the edit box
-*************************************************************************/
-void MultiLineEditbox::setSelection(size_t start_pos, size_t end_pos)
-{
-	// ensure selection start point is within the valid range
-    if (start_pos > getText().length() - 1)
-	{
-       start_pos = getText().length() - 1;
-	}
-
-	// ensure selection end point is within the valid range
-    if (end_pos > getText().length() - 1)
-	{
-       end_pos = getText().length() - 1;
-	}
-
-	// ensure start is before end
-	if (start_pos > end_pos)
-	{
-		size_t tmp = end_pos;
-		end_pos = start_pos;
-		start_pos = tmp;
-	}
-
-	// only change state if values are different.
-	if ((start_pos != d_selectionStart) || (end_pos != d_selectionEnd))
-	{
-		// setup selection
-		d_selectionStart = start_pos;
-		d_selectionEnd	 = end_pos;
-
-		// Trigger "selection changed" event
-		WindowEventArgs args(this);
-		onTextSelectionChanged(args);
-	}
-
-}
-
-//----------------------------------------------------------------------------//
-void MultiLineEditbox::setSelectionStart(size_t start_pos)
-{
-    this->setSelection(start_pos,start_pos + this->getSelectionLength());
-}
-//----------------------------------------------------------------------------//
-void MultiLineEditbox::setSelectionLength(size_t length)
-{
-    this->setSelection(this->getSelectionStartIndex(),this->getSelectionStartIndex() + length);
-}
-
-
-/*************************************************************************
-	set the maximum text length for this edit box.
-*************************************************************************/
-void MultiLineEditbox::setMaxTextLength(size_t max_len)
-{
-	if (d_maxTextLen != max_len)
-	{
-		d_maxTextLen = max_len;
-
-		// Trigger max length changed event
-		WindowEventArgs args(this);
-		onMaximumTextLengthChanged(args);
-
-		// trim string
-        if (getText().length() > d_maxTextLen)
-		{
-            String newText = getText();
-            newText.resize(d_maxTextLen);
-            setText(newText);
-            d_undoHandler->clearUndoHistory();
-
-			onTextChanged(args);
-		}
-
-	}
-
-}
-
-
-/*************************************************************************
-	Scroll the view so that the current caret position is visible.
-*************************************************************************/
 void MultiLineEditbox::ensureCaretIsVisible(void)
 {
     Scrollbar* vertScrollbar = getVertScrollbar();
@@ -360,9 +190,6 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
 }
 
 
-/*************************************************************************
-	Set whether the text will be word wrapped or not.
-*************************************************************************/
 void MultiLineEditbox::setWordWrapping(bool setting)
 {
 	if (setting != d_wordWrap)
@@ -377,10 +204,6 @@ void MultiLineEditbox::setWordWrapping(bool setting)
 }
 
 
-/*************************************************************************
-	display required integrated scroll bars according to current state
-	of the edit box and update their values.
-*************************************************************************/
 void MultiLineEditbox::configureScrollbars(void)
 {
     Scrollbar* const vertScrollbar = getVertScrollbar();
@@ -423,16 +246,16 @@ void MultiLineEditbox::configureScrollbars(void)
 
 	vertScrollbar->setDocumentSize(static_cast<float>(d_lines.size()) * lspc);
 	vertScrollbar->setPageSize(renderArea.getHeight());
-	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
 	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
 	horzScrollbar->setDocumentSize(d_widestExtent);
 	horzScrollbar->setPageSize(renderArea.getWidth());
-	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
 	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
-//----------------------------------------------------------------------------//
+
 void MultiLineEditbox::formatText(const bool update_scrollbars)
 {
 	d_widestExtent = 0.0f;
@@ -568,10 +391,6 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 }
 
 
-/*************************************************************************
-	Return the length of the next token in String 'text' starting at
-	index 'start_idx'.
-*************************************************************************/
 size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx) const
 {
 	String::size_type pos = text.find_first_of(TextUtils::DefaultWrapDelimiters, start_idx);
@@ -594,10 +413,6 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 }
 
 
-/*************************************************************************
-	Return the text code point index that is rendered closest to screen
-	position 'pt'.
-*************************************************************************/
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
 	//
@@ -607,14 +422,14 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 
 	Rectf textArea(getTextRenderArea());
 
-    wndPt -= glm::vec2(textArea.d_min.d_x, textArea.d_min.d_y);
+    wndPt -= glm::vec2(textArea.d_min.x, textArea.d_min.y);
 
 	// factor in scroll bar values
     wndPt.x += getHorzScrollbar()->getScrollPosition();
     wndPt.y += getVertScrollbar()->getScrollPosition();
 
 	size_t lineNumber = static_cast<size_t>(
-        ceguimax(0.0f, wndPt.y) / getFont()->getLineSpacing());
+        std::max(0.0f, wndPt.y) / getFont()->getLineSpacing());
 
 	if (lineNumber >= d_lines.size())
 	{
@@ -634,10 +449,6 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 }
 
 
-/*************************************************************************
-	Return the line number a given index falls on with the current
-	formatting.  Will return last line if index is out of range.
-*************************************************************************/
 size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 {
 	size_t lineCount = d_lines.size();
@@ -668,35 +479,17 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 
 	}
 
-	CEGUI_THROW(InvalidRequestException(
-        "Unable to identify a line from the given, invalid, index."));
+	throw InvalidRequestException(
+        "Unable to identify a line from the given, invalid, index.");
 }
 
 
-
-/*************************************************************************
-	Clear the current selection setting
-*************************************************************************/
-void MultiLineEditbox::clearSelection(void)
-{
-	// perform action only if required.
-	if (getSelectionLength() != 0)
-	{
-		setSelection(0, 0);
-	}
-
-}
-
-
-/*************************************************************************
-	Erase the currently selected text.
-*************************************************************************/
 void MultiLineEditbox::eraseSelectedText(bool modify_text)
 {
 	if (getSelectionLength() != 0)
 	{
 		// setup new caret position and remove selection highlight.
-		setCaretIndex(getSelectionStartIndex());
+		setCaretIndex(getSelectionStart());
 
 		// erase the selected characters (if required)
 		if (modify_text)
@@ -704,10 +497,10 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
             String newText = getText();
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_DELETE;
-            undo.d_startIdx = getSelectionStartIndex();
-            undo.d_text = newText.substr(getSelectionStartIndex(), getSelectionLength());
+            undo.d_startIdx = getSelectionStart();
+            undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
-            newText.erase(getSelectionStartIndex(), getSelectionLength());
+            newText.erase(getSelectionStart(), getSelectionLength());
             setText(newText);
 
 			// trigger notification that text has changed.
@@ -720,33 +513,7 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 
 }
 
-//----------------------------------------------------------------------------//
-bool MultiLineEditbox::performCopy(Clipboard& clipboard)
-{
-    if (getSelectionLength() == 0)
-        return false;
 
-    const String selectedText = getText().substr(
-        getSelectionStartIndex(), getSelectionLength());
-
-    clipboard.setText(selectedText);
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-bool MultiLineEditbox::performCut(Clipboard& clipboard)
-{
-    if (isReadOnly())
-        return false;
-
-    if (!performCopy(clipboard))
-        return false;
-
-    handleDelete();
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 bool MultiLineEditbox::performPaste(Clipboard& clipboard)
 {
     if (isReadOnly())
@@ -759,7 +526,7 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
 
     // backup current text
     String tmp(getText());
-    tmp.erase(getSelectionStartIndex(), getSelectionLength());
+    tmp.erase(getSelectionStart(), getSelectionLength());
 
     // erase selected text
     eraseSelectedText();
@@ -793,9 +560,7 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
     }
 }
 
-/*************************************************************************
-	Processing for backspace key
-*************************************************************************/
+
 void MultiLineEditbox::handleBackspace(void)
 {
 	if (!isReadOnly())
@@ -824,9 +589,6 @@ void MultiLineEditbox::handleBackspace(void)
 }
 
 
-/*************************************************************************
-	Processing for Delete key
-*************************************************************************/
 void MultiLineEditbox::handleDelete(void)
 {
 	if (!isReadOnly())
@@ -857,136 +619,6 @@ void MultiLineEditbox::handleDelete(void)
 }
 
 
-/*************************************************************************
-    Processing to move caret one character left (and optionally select it)
-*************************************************************************/
-void MultiLineEditbox::handleCharLeft(bool select)
-{
-	if (d_caretPos > 0)
-	{
-		setCaretIndex(d_caretPos - 1);
-	}
-
-    if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
-}
-
-
-/*************************************************************************
-    Processing to move caret one word left (and optionally select it)
-*************************************************************************/
-void MultiLineEditbox::handleWordLeft(bool select)
-{
-	if (d_caretPos > 0)
-	{
-        setCaretIndex(TextUtils::getWordStartIdx(getText(), getCaretIndex()));
-	}
-
-    if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
-}
-
-
-/*************************************************************************
-    Processing to move caret one character right (and optionally select it)
-*************************************************************************/
-void MultiLineEditbox::handleCharRight(bool select)
-{
-   if (d_caretPos < getText().length() - 1)
-	{
-		setCaretIndex(d_caretPos + 1);
-	}
-
-    if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
-}
-
-
-/*************************************************************************
-    Processing to move caret one word right (and optionally select it)
-*************************************************************************/
-void MultiLineEditbox::handleWordRight(bool select)
-{
-   if (d_caretPos < getText().length() - 1)
-	{
-        setCaretIndex(TextUtils::getNextWordStartIdx(getText(), getCaretIndex()));
-	}
-
-    if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
-}
-
-
-/*************************************************************************
-    Processing to move caret to the start of the text (and optionally select the text)
-*************************************************************************/
-void MultiLineEditbox::handleDocHome(bool select)
-{
-	if (d_caretPos > 0)
-	{
-		setCaretIndex(0);
-	}
-
-    if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
-}
-
-
-/*************************************************************************
-    Processing to move caret to the end of the text (and optionally select the text)
-*************************************************************************/
-void MultiLineEditbox::handleDocEnd(bool select)
-{
-   if (d_caretPos < getText().length() - 1)
-	{
-       setCaretIndex(getText().length() - 1);
-	}
-
-    if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
-}
-
-
-/*************************************************************************
-    Processing to move caret to the start of the current line
-    (and optionally select the text)
-*************************************************************************/
 void MultiLineEditbox::handleLineHome(bool select)
 {
 	size_t line = getLineNumberFromIndex(d_caretPos);
@@ -1012,9 +644,6 @@ void MultiLineEditbox::handleLineHome(bool select)
 }
 
 
-/*************************************************************************
-    Processing to move caret to the end of the current line (and optionally select it)
-*************************************************************************/
 void MultiLineEditbox::handleLineEnd(bool select)
 {
 	size_t line = getLineNumberFromIndex(d_caretPos);
@@ -1040,9 +669,6 @@ void MultiLineEditbox::handleLineEnd(bool select)
 }
 
 
-/*************************************************************************
-    Processing to move caret up a line (and optionally select it)
-*************************************************************************/
 void MultiLineEditbox::handleLineUp(bool select)
 {
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
@@ -1069,9 +695,6 @@ void MultiLineEditbox::handleLineUp(bool select)
 }
 
 
-/*************************************************************************
-    Processing to move caret down a line (and optionally select it)
-*************************************************************************/
 void MultiLineEditbox::handleLineDown(bool select)
 {
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
@@ -1098,9 +721,6 @@ void MultiLineEditbox::handleLineDown(bool select)
 }
 
 
-/*************************************************************************
-	Processing to insert a new line / paragraph.
-*************************************************************************/
 void MultiLineEditbox::handleNewLine()
 {
 	if (!isReadOnly())
@@ -1129,9 +749,6 @@ void MultiLineEditbox::handleNewLine()
 }
 
 
-/*************************************************************************
-    Processing to move caret one page up (and optionally select it)
-*************************************************************************/
 void MultiLineEditbox::handlePageUp(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
@@ -1157,9 +774,6 @@ void MultiLineEditbox::handlePageUp(bool select)
 }
 
 
-/*************************************************************************
-    Processing to move caret one page down (and optionally select it)
-*************************************************************************/
 void MultiLineEditbox::handlePageDown(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
@@ -1182,81 +796,6 @@ void MultiLineEditbox::handlePageDown(bool select)
 }
 
 
-/*************************************************************************
-    Handler for when a cursor is pressed
-*************************************************************************/
-void MultiLineEditbox::onCursorPressHold(CursorInputEventArgs& e)
-{
-	// base class handling
-    Window::onCursorPressHold(e);
-
-    if (e.source == CIS_Left)
-	{
-		// grab inputs
-		if (captureInput())
-		{
-            // handle cursor press
-			clearSelection();
-			d_dragging = true;
-			d_dragAnchorIdx = getTextIndexFromPosition(e.position);
-			setCaretIndex(d_dragAnchorIdx);
-		}
-
-		++e.handled;
-	}
-}
-
-
-/*************************************************************************
-    Handler for when cursor is activated
-*************************************************************************/
-void MultiLineEditbox::onCursorActivate(CursorInputEventArgs& e)
-{
-	// base class processing
-    Window::onCursorActivate(e);
-
-    if (e.source == CIS_Left)
-	{
-		releaseInput();
-		++e.handled;
-	}
-}
-
-/*************************************************************************
-	Handler for when cursor moves in the window.
-*************************************************************************/
-void MultiLineEditbox::onCursorMove(CursorInputEventArgs& e)
-{
-	// base class processing
-	Window::onCursorMove(e);
-
-	if (d_dragging)
-	{
-		setCaretIndex(getTextIndexFromPosition(e.position));
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-
-	++e.handled;
-}
-
-
-/*************************************************************************
-	Handler for when capture is lost.
-*************************************************************************/
-void MultiLineEditbox::onCaptureLost(WindowEventArgs& e)
-{
-	d_dragging = false;
-
-	// base class processing
-	Window::onCaptureLost(e);
-
-	++e.handled;
-}
-
-
-/*************************************************************************
-	Handler for when character (printable keys) are typed
-*************************************************************************/
 void MultiLineEditbox::onCharacter(TextEventArgs& e)
 {
     // NB: We are not calling the base class handler here because it propagates
@@ -1304,9 +843,7 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
 
 }
 
-/*************************************************************************
-	Handler for when text is programmatically changed.
-*************************************************************************/
+
 void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 {
     // ensure last character is a new line
@@ -1338,9 +875,6 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 }
 
 
-/*************************************************************************
-	Handler for when widget size is changed.
-*************************************************************************/
 void MultiLineEditbox::onSized(ElementEventArgs& e)
 {
 	formatText(true);
@@ -1352,9 +886,6 @@ void MultiLineEditbox::onSized(ElementEventArgs& e)
 }
 
 
-/*************************************************************************
-    Handler for scroll actions
-*************************************************************************/
 void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
 {
 	// base class processing.
@@ -1375,6 +906,7 @@ void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
 	++e.handled;
 }
 
+
 void MultiLineEditbox::onFontChanged(WindowEventArgs& e)
 {
     Window::onFontChanged(e);
@@ -1387,66 +919,7 @@ bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) co
 	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != 0;
 }
 
-/*************************************************************************
-	Handler called when the read-only state of the edit box changes
-*************************************************************************/
-void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)
-{
-	fireEvent(EventReadOnlyModeChanged, e, EventNamespace);
-}
 
-
-/*************************************************************************
-	Handler called when the word wrap mode for the the edit box changes
-*************************************************************************/
-void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
-{
-	fireEvent(EventWordWrapModeChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the maximum text length for the edit box changes
-*************************************************************************/
-void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
-{
-	fireEvent(EventMaximumTextLengthChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the caret moves.
-*************************************************************************/
-void MultiLineEditbox::onCaretMoved(WindowEventArgs& e)
-{
-	invalidate();
-	fireEvent(EventCaretMoved, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the text selection changes
-*************************************************************************/
-void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
-{
-	invalidate();
-	fireEvent(EventTextSelectionChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the edit box is full
-*************************************************************************/
-void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
-{
-	fireEvent(EventEditboxFull, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the 'always show' setting for the vertical
-	scroll bar changes.
-*************************************************************************/
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	invalidate();
@@ -1454,10 +927,6 @@ void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 }
 
 
-/*************************************************************************
-	Handler called when 'always show' setting for the horizontal scroll
-	bar changes.
-*************************************************************************/
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
 	invalidate();
@@ -1465,45 +934,15 @@ void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 }
 
 
-/*************************************************************************
-	Return whether the text in the edit box will be word-wrapped.
-*************************************************************************/
 bool MultiLineEditbox::isWordWrapped(void) const
 {
 	return d_wordWrap;
 }
 
 
-/*************************************************************************
-	Add new properties for this class
-*************************************************************************/
 void MultiLineEditbox::addMultiLineEditboxProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
-        "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
-        &MultiLineEditbox::setReadOnly, &MultiLineEditbox::isReadOnly, false
-    );
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
-        "CaretIndex","Property to get/set the current caret index.  Value is \"[uint]\".",
-        &MultiLineEditbox::setCaretIndex, &MultiLineEditbox::getCaretIndex, 0
-    );
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
-        "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
-        &MultiLineEditbox::setSelectionStart, &MultiLineEditbox::getSelectionStartIndex, 0
-    );
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
-        "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
-        &MultiLineEditbox::setSelectionLength, &MultiLineEditbox::getSelectionLength, 0
-    );
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
-        "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
-        &MultiLineEditbox::setMaxTextLength, &MultiLineEditbox::getMaxTextLength, String().max_size()
-    );
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"true\" or \"false\".",
@@ -1513,7 +952,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, Image*,
         "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"set:[imageset name] image:[image name]\".",
         &MultiLineEditbox::setSelectionBrushImage, &MultiLineEditbox::getSelectionBrushImage, 0
-    );
+        );
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
@@ -1522,9 +961,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
     );
 }
 
-/*************************************************************************
-    Handler for scroll position changes.
-*************************************************************************/
+
 bool MultiLineEditbox::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the MultiLineEditbox
@@ -1532,33 +969,25 @@ bool MultiLineEditbox::handle_scrollChange(const EventArgs&)
     return true;
 }
 
-/*************************************************************************
-    Return a pointer to the vertical scrollbar component widget.
-*************************************************************************/
+
 Scrollbar* MultiLineEditbox::getVertScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
-/*************************************************************************
-	Return whether the vertical scroll bar is always shown.
-*************************************************************************/
+
 bool MultiLineEditbox::isVertScrollbarAlwaysShown(void) const
 {
 	return d_forceVertScroll;
 }
 
-/*************************************************************************
-    Return a pointer to the horizontal scrollbar component widget.
-*************************************************************************/
+
 Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
-/*************************************************************************
-    Get the text rendering area
-*************************************************************************/
+
 Rectf MultiLineEditbox::getTextRenderArea() const
 {
     if (d_windowRenderer != 0)
@@ -1569,15 +998,17 @@ Rectf MultiLineEditbox::getTextRenderArea() const
     else
     {
         //return getTextRenderArea_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
+
 
 const Image* MultiLineEditbox::getSelectionBrushImage() const
 {
     return d_selectionBrush;
 }
+
 
 void MultiLineEditbox::setSelectionBrushImage(const Image* image)
 {
@@ -1585,9 +1016,7 @@ void MultiLineEditbox::setSelectionBrushImage(const Image* image)
     invalidate();
 }
 
-/*************************************************************************
-	Set whether the vertical scroll bar should always be shown.
-*************************************************************************/
+
 void MultiLineEditbox::setShowVertScrollbar(bool setting)
 {
 	if (d_forceVertScroll != setting)
@@ -1600,7 +1029,7 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
 	}
 }
 
-//----------------------------------------------------------------------------//
+
 bool MultiLineEditbox::handle_vertScrollbarVisibilityChanged(const EventArgs&)
 {
     if (d_wordWrap)
@@ -1609,44 +1038,9 @@ bool MultiLineEditbox::handle_vertScrollbarVisibilityChanged(const EventArgs&)
     return true;
 }
 
-/*************************************************************************
-    Undo/redo
-*************************************************************************/
-bool MultiLineEditbox::performUndo()
-{
-    bool result = false;
-    if (!isReadOnly())
-    {
-        clearSelection();
 
-        result = d_undoHandler->undo(d_caretPos);
-        WindowEventArgs args(this);
-        onTextChanged(args);
-    }
-
-    return result;
-}
-
-//----------------------------------------------------------------------------//
-bool MultiLineEditbox::performRedo()
-{
-    bool result = false;
-    if (!isReadOnly())
-    {
-        clearSelection();
-        result = d_undoHandler->redo(d_caretPos);
-        WindowEventArgs args(this);
-        onTextChanged(args);
-    }
-    return result;
-}
-
-//----------------------------------------------------------------------------//
 void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
-    // base class processing
-    Window::onSemanticInputEvent(e);
-
     if (isDisabled())
         return;
 
@@ -1679,113 +1073,75 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
         if (getSelectionLength() == 0 && isSelectionSemanticValue(e.d_semanticValue))
             d_dragAnchorIdx = d_caretPos;
 
-        switch (e.d_semanticValue)
+        // Check if the semantic value to be handled is of a general type and can thus be
+        // handled via common EditboxBase handlers
+        bool isSemanticValueHandled = handleBasicSemanticValue(e);
+
+        // If the semantic value was not handled, check for specific values
+        if (!isSemanticValueHandled)
         {
-        case SV_DeletePreviousCharacter:
-            handleBackspace();
-            break;
+            // We assume it will be handled now, if not it will be set to false in default-case
+            isSemanticValueHandled = true;
 
-        case SV_DeleteNextCharacter:
-            handleDelete();
-            break;
+            switch (e.d_semanticValue)
+            {
 
-        case SV_Confirm:
-            handleNewLine();
-            break;
+            case SV_Confirm:
+                handleNewLine();
+                break;
 
-        case SV_GoToPreviousCharacter:
-            handleCharLeft(false);
-            break;
+            case SV_GoUp:
+                handleLineUp(false);
+                break;
 
-        case SV_GoToNextCharacter:
-            handleCharRight(false);
-            break;
+            case SV_SelectUp:
+                handleLineUp(true);
+                break;
 
-        case SV_SelectPreviousCharacter:
-            handleCharLeft(true);
-            break;
+            case SV_GoDown:
+                handleLineDown(false);
+                break;
 
-        case SV_SelectNextCharacter:
-            handleCharRight(true);
-            break;
+            case SV_SelectDown:
+                handleLineDown(true);
+                break;
 
-        case SV_GoToPreviousWord:
-            handleWordLeft(false);
-            break;
+            case SV_GoToStartOfLine:
+                handleLineHome(false);
+                break;
 
-        case SV_GoToNextWord:
-            handleWordRight(false);
-            break;
+            case SV_SelectToStartOfLine:
+                handleLineHome(true);
+                break;
 
-        case SV_SelectPreviousWord:
-            handleWordLeft(true);
-            break;
+            case SV_GoToEndOfLine:
+                handleLineEnd(false);
+                break;
 
-        case SV_SelectNextWord:
-            handleWordRight(true);
-            break;
+            case SV_SelectToEndOfLine:
+                handleLineEnd(true);
+                break;
 
-        case SV_GoUp:
-            handleLineUp(false);
-            break;
+            case SV_GoToPreviousPage:
+                handlePageUp(false);
+                break;
 
-        case SV_SelectUp:
-            handleLineUp(true);
-            break;
+            case SV_GoToNextPage:
+                handlePageDown(false);
+                break;
 
-        case SV_GoDown:
-            handleLineDown(false);
-            break;
-
-        case SV_SelectDown:
-            handleLineDown(true);
-            break;
-
-        case SV_GoToStartOfLine:
-            handleLineHome(false);
-            break;
-
-        case SV_GoToEndOfLine:
-            handleLineEnd(false);
-            break;
-
-        case SV_GoToStartOfDocument:
-            handleDocHome(false);
-            break;
-
-        case SV_SelectToStartOfLine:
-            handleLineHome(true);
-            break;
-
-        case SV_SelectToEndOfLine:
-            handleLineEnd(true);
-            break;
-
-        case SV_SelectToStartOfDocument:
-            handleDocHome(true);
-            break;
-
-        case SV_SelectToEndOfDocument:
-            handleDocHome(true);
-
-        case SV_GoToPreviousPage:
-            handlePageUp(false);
-            break;
-
-        case SV_GoToNextPage:
-            handlePageDown(false);
-            break;
-
-        default:
-            Window::onSemanticInputEvent(e);
-            return;
+            default:
+                Window::onSemanticInputEvent(e);
+                isSemanticValueHandled = false;
+            }
         }
 
-        ++e.handled;
+        if (isSemanticValueHandled)
+            ++e.handled;
     }
 }
 
-//----------------------------------------------------------------------------//
+
 void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
@@ -1818,4 +1174,34 @@ void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
     ++e.handled;
 }
 
-} // End of  CEGUI namespace section
+
+void MultiLineEditbox::setMaxTextLength(size_t max_len)
+{
+    if (d_maxTextLen != max_len)
+    {
+        d_maxTextLen = max_len;
+
+        // Trigger max length changed event
+        WindowEventArgs args(this);
+        onMaximumTextLengthChanged(args);
+
+        // trim string
+        if (getText().length() > d_maxTextLen)
+        {
+            String newText = getText();
+            newText.resize(d_maxTextLen);
+            setText(newText);
+            onTextChanged(args);
+            d_undoHandler->clearUndoHistory();
+        }
+    }
+}
+
+
+void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
+{
+    fireEvent(EventWordWrapModeChanged, e, EventNamespace);
+}
+
+
+}

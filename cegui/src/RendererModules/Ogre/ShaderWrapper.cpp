@@ -39,15 +39,15 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner, 
-    Ogre::RenderSystem& rs, 
-    Ogre::HighLevelGpuProgramPtr vs, Ogre::HighLevelGpuProgramPtr ps)
-    : d_vertexShader(vs),
-    d_pixelShader(ps),
-    d_owner(owner),
-    d_renderSystem(rs),
-    d_lastMatrix(),
-    d_previousAlpha(-1.f)
+OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
+  Ogre::RenderSystem& rs, Ogre::HighLevelGpuProgramPtr vs,
+  Ogre::HighLevelGpuProgramPtr ps)
+    : d_owner(owner),
+      d_renderSystem(rs),
+      d_vertexShader(vs),
+      d_pixelShader(ps),
+      d_lastMatrix(),
+      d_previousAlpha(-1.f)
 {
     d_vertexParameters = d_vertexShader->createParameters();
     d_pixelParameters = d_pixelShader->createParameters();
@@ -67,8 +67,8 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
     // We will throw an error if shaders/parameter names are invalid
     if (target == vertex_map.end() || target2 == pixel_map.end())
     {
-        CEGUI_THROW(RendererException("Ogre renderer couldn't find an index for"
-            " the shader data."));
+        throw RendererException("Ogre renderer couldn't find an index for"
+            " the shader data.");
 
         return;
     }
@@ -124,7 +124,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         {
             std::string errorMessage = std::string("Unknown variable name: \"")+
             iter->first + "\"";
-            CEGUI_THROW(RendererException(errorMessage));
+            throw RendererException(errorMessage);
         }
 
         size_t target_index = find_iter->second;
@@ -143,7 +143,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
             if (actual_texture.isNull())
             {
-                CEGUI_THROW(RendererException("Ogre texture ptr is empty"));
+                throw RendererException("Ogre texture ptr is empty");
             }
 
             d_renderSystem._setTexture(0, true, actual_texture);
@@ -183,7 +183,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             break;
         }
         default:
-            CEGUI_THROW(RendererException("Invalid parameter type"));
+            throw RendererException("Invalid parameter type");
         }
     }
 

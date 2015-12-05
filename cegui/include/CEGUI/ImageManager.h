@@ -30,12 +30,12 @@
 #include "CEGUI/Singleton.h"
 #include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/ImageFactory.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/IteratorBase.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -139,7 +139,7 @@ public:
     Image& get(const String& name) const;
     bool isDefined(const String& name) const;
 
-    uint getImageCount() const;
+    unsigned int getImageCount() const;
 
     void loadImageset(const String& filename, const String& resource_group = "");
     void loadImagesetFromString(const String& source);
@@ -189,7 +189,7 @@ public:
     typedef std::pair<Image*, ImageFactory*> ImagePair;
 
     //! container type used to hold the images.
-    typedef std::map<String, ImagePair, StringFastLessCompare> ImageMap;
+    typedef std::unordered_map<String, ImagePair> ImageMap;
 
     //! ConstBaseIterator type definition.
     typedef ConstMapIterator<ImageMap> ImageIterator;
@@ -207,7 +207,7 @@ private:
     void elementEndLocal(const String& element);
 
     //! container type used to hold the registered Image types.
-    typedef std::map<String, ImageFactory*, StringFastLessCompare> ImageFactoryRegistry;
+    typedef std::unordered_map<String, ImageFactory*> ImageFactoryRegistry;
 
     //! helper to delete an image given an map iterator.
     void destroy(ImageMap::iterator& iter);
@@ -239,8 +239,8 @@ template <typename T>
 void ImageManager::addImageType(const String& name)
 {
     if (isImageTypeAvailable(name))
-        CEGUI_THROW(AlreadyExistsException(
-            "Image type already exists: " + name));
+        throw AlreadyExistsException(
+            "Image type already exists: " + name);
 
     d_factories[name] = new TplImageFactory<T>;
 

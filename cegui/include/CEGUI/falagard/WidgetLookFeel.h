@@ -37,7 +37,8 @@
 #include "./EventLinkDefinition.h"
 #include "./NamedArea.h"
 #include "./NamedDefinitionCollator.h"
-#include <map>
+#include <unordered_map>
+#include <unordered_set>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -500,27 +501,27 @@ public:
     const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
 
     //! A typedef defining a set of String objects
-    typedef std::set<String, StringFastLessCompare> StringSet;
+    typedef std::unordered_set<String> StringSet;
 
     /** Typedefs for maps of Falagard elements this WidgetLookFeel owns. */
     //! Map of Strings to StateImagery pointers
-    typedef std::map<String, StateImagery*, StringFastLessCompare> StateImageryPointerMap;
+    typedef std::unordered_map<String, StateImagery*> StateImageryPointerMap;
     //! Map of Strings to ImagerySection pointers
-    typedef std::map<String, ImagerySection*, StringFastLessCompare> ImagerySectionPointerMap;
+    typedef std::unordered_map<String, ImagerySection*> ImagerySectionPointerMap;
     //! Map of Strings to NamedArea pointers
-    typedef std::map<String, NamedArea*, StringFastLessCompare> NamedAreaPointerMap;
+    typedef std::unordered_map<String, NamedArea*> NamedAreaPointerMap;
     //! Map of Strings to WidgetComponent pointers
-    typedef std::map<String, WidgetComponent*, StringFastLessCompare> WidgetComponentPointerMap;
+    typedef std::unordered_map<String, WidgetComponent*> WidgetComponentPointerMap;
     //! Map of Strings to AnimationInstance pointers
-    typedef std::map<String, AnimationInstance*, StringFastLessCompare> AnimationInstancePointerMap;
+    typedef std::unordered_map<String, AnimationInstance*> AnimationInstancePointerMap;
     //! Map of Strings to EventLinkDefinition pointers
-    typedef std::map<String, EventLinkDefinition*, StringFastLessCompare> EventLinkDefinitionPointerMap;
+    typedef std::unordered_map<String, EventLinkDefinition*> EventLinkDefinitionPointerMap;
 
     /** Typedefs for maps of property related elements this WidgetLookFeel owns. */
     //! Map of Strings to PropertyInitialiser pointers
-    typedef std::map<String, PropertyInitialiser*, StringFastLessCompare> PropertyInitialiserPointerMap;
+    typedef std::unordered_map<String, PropertyInitialiser*> PropertyInitialiserPointerMap;
     //! Map of Strings to PropertyDefinitionBase pointers
-    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare> PropertyDefinitionBasePointerMap;
+    typedef std::unordered_map<String, PropertyDefinitionBase*> PropertyDefinitionBasePointerMap;
 
 
     //! perform any processing required due to the given font having changed.
@@ -796,16 +797,16 @@ private:
 
 
     //! Map types for the Falagard elements that this WidgetLookFeel can own. The keys are the names of the corresponding elements, as CEGUI::String.
-    typedef std::map<String, StateImagery, StringFastLessCompare> StateImageryMap;
-    typedef std::map<String, ImagerySection, StringFastLessCompare> ImagerySectionMap;
-    typedef std::map<String, NamedArea, StringFastLessCompare> NamedAreaMap;
+    typedef std::unordered_map<String, StateImagery> StateImageryMap;
+    typedef std::unordered_map<String, ImagerySection> ImagerySectionMap;
+    typedef std::unordered_map<String, NamedArea> NamedAreaMap;
 
-    typedef std::map<String, PropertyInitialiser, StringFastLessCompare> PropertyInitialiserMap;
-    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare> PropertyDefinitionMap;
-    typedef std::map<String, PropertyDefinitionBase*, StringFastLessCompare> PropertyLinkDefinitionMap;
+    typedef std::unordered_map<String, PropertyInitialiser> PropertyInitialiserMap;
+    typedef std::unordered_map<String, PropertyDefinitionBase*> PropertyDefinitionMap;
+    typedef std::unordered_map<String, PropertyDefinitionBase*> PropertyLinkDefinitionMap;
 
-    typedef std::map<String, WidgetComponent, StringFastLessCompare> WidgetComponentMap;
-    typedef std::map<String, EventLinkDefinition, StringFastLessCompare> EventLinkDefinitionMap;
+    typedef std::unordered_map<String, WidgetComponent> WidgetComponentMap;
+    typedef std::unordered_map<String, EventLinkDefinition> EventLinkDefinitionMap;
 
     //! List of animation names
     typedef std::vector<String> AnimationList;
@@ -844,7 +845,7 @@ private:
     typedef NamedDefinitionCollator<String, PropertyDefinitionBase*> PropertyLinkDefinitionCollator;
     typedef NamedDefinitionCollator<String, const PropertyInitialiser*> PropertyInitialiserCollator;
     typedef NamedDefinitionCollator<String, const EventLinkDefinition*> EventLinkDefinitionCollator;
-    typedef std::set<String, StringFastLessCompare> AnimationNameSet;
+    typedef std::unordered_set<String> AnimationNameSet;
 
     // functions to populate containers with collections of objects that we
     // gain through inheritence.

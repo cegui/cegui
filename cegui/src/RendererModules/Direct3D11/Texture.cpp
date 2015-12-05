@@ -30,6 +30,8 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 
+#include <cstdint>
+
 #include <d3d11.h>
 
 
@@ -76,40 +78,40 @@ static size_t calculateDataWidth(const size_t width, Texture::PixelFormat fmt)
 //----------------------------------------------------------------------------//
 // Helper utility function that copies an RGBA buffer into a region of a second
 // buffer as D3DCOLOR data values
-static void blitToSurface(const uint32* src, uint32* dst,
+static void blitToSurface(const std::uint32_t* src, std::uint32_t* dst,
                    const Sizef& sz, size_t dest_pitch)
 {
-    for (uint i = 0; i < sz.d_height; ++i)
+    for (unsigned int i = 0; i < sz.d_height; ++i)
     {
-        for (uint j = 0; j < sz.d_width; ++j)
+        for (unsigned int j = 0; j < sz.d_width; ++j)
         {
-            const uint32 pixel = src[j];
-            const uint32 tmp = pixel & 0x00FF00FF;
+            const std::uint32_t pixel = src[j];
+            const std::uint32_t tmp = pixel & 0x00FF00FF;
             dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
         }
 
-        dst += dest_pitch / sizeof(uint32);
-        src += static_cast<uint32>(sz.d_width);
+        dst += dest_pitch / sizeof(std::uint32_t);
+        src += static_cast<std::uint32_t>(sz.d_width);
     }
 }
 
 //----------------------------------------------------------------------------//
 // Helper utility function that copies a region of a buffer containing D3DCOLOR
 // values into a second buffer as RGBA values.
-static void blitFromSurface(const uint32* src, uint32* dst,
+static void blitFromSurface(const std::uint32_t* src, std::uint32_t* dst,
                      const Sizef& sz, size_t source_pitch)
 {
-    for (uint i = 0; i < sz.d_height; ++i)
+    for (unsigned int i = 0; i < sz.d_height; ++i)
     {
-        for (uint j = 0; j < sz.d_width; ++j)
+        for (unsigned int j = 0; j < sz.d_width; ++j)
         {
-            const uint32 pixel = src[j];
-            const uint32 tmp = pixel & 0x00FF00FF;
+            const std::uint32_t pixel = src[j];
+            const std::uint32_t tmp = pixel & 0x00FF00FF;
             dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
         }
 
-        src += source_pitch / sizeof(uint32);
-        dst += static_cast<uint32>(sz.d_width);
+        src += source_pitch / sizeof(std::uint32_t);
+        dst += static_cast<std::uint32_t>(sz.d_width);
     }
 }
 
@@ -183,8 +185,8 @@ void Direct3D11Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created!"));
+        throw RendererException(
+            "CEGUI::System object has not been created!");
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -198,9 +200,9 @@ void Direct3D11Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -209,8 +211,8 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
                                        PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     cleanupDirect3D11Texture();
 
@@ -256,8 +258,8 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
         delete[] img_src;
 
     if (FAILED(hr))
-        CEGUI_THROW(RendererException(
-            "Failed to create texture from memory buffer."));
+        throw RendererException(
+            "Failed to create texture from memory buffer.");
 
     initialiseShaderResourceView();
 
@@ -272,9 +274,9 @@ void Direct3D11Texture::blitFromMemory(const void* sourceData, const Rectf& area
     if (!d_texture)
         return;
 
-    uint32* buff = new uint32[static_cast<size_t>(area.getWidth()) *
+    std::uint32_t* buff = new std::uint32_t[static_cast<size_t>(area.getWidth()) *
                               static_cast<size_t>(area.getHeight())];
-    blitFromSurface(static_cast<const uint32*>(sourceData), buff,
+    blitFromSurface(static_cast<const std::uint32_t*>(sourceData), buff,
                     area.getSize(), static_cast<size_t>(area.getWidth()) * 4);
 
     D3D11_BOX dst_box = {static_cast<UINT>(area.left()),
@@ -315,8 +317,8 @@ void Direct3D11Texture::blitToMemory(void* targetData)
         if (SUCCEEDED(d_deviceContext.Map(offscreen, 0, D3D11_MAP_READ,
                                               0, &mapped_tex)))
         {
-            blitFromSurface(static_cast<uint32*>(mapped_tex.pData),
-                            static_cast<uint32*>(targetData),
+            blitFromSurface(static_cast<std::uint32_t*>(mapped_tex.pData),
+                            static_cast<std::uint32_t*>(targetData),
                             Sizef(static_cast<float>(tex_desc.Width),
                                    static_cast<float>(tex_desc.Height)),
                             mapped_tex.RowPitch);
@@ -333,7 +335,7 @@ void Direct3D11Texture::blitToMemory(void* targetData)
             "ID3D11Device::CreateTexture2D failed for 'offscreen'.");
 
     if (!exception_msg.empty())
-        CEGUI_THROW(RendererException(exception_msg));
+        throw RendererException(exception_msg);
 }
 
 //----------------------------------------------------------------------------//
@@ -452,8 +454,8 @@ Direct3D11Texture::Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& 
     tex_desc.MipLevels = 1;
 
     if (FAILED(d_device.CreateTexture2D(&tex_desc, 0, &d_texture)))
-        CEGUI_THROW(RendererException(
-            "Failed to create texture with specified size."));
+        throw RendererException(
+            "Failed to create texture with specified size.");
 
     initialiseShaderResourceView();
 

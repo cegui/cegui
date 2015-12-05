@@ -83,18 +83,13 @@ CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
         MessageBox(0, Win32AppHelper::CREATE_WINDOW_ERROR,
                    Win32AppHelper::APPLICATION_NAME, MB_ICONERROR|MB_OK);
 
-    CEGUI_THROW(std::runtime_error(
-        "Windows Direct3D 11 application failed to initialise."));
+    throw std::runtime_error(
+        "Windows Direct3D 11 application failed to initialise.");
 }
 
 //----------------------------------------------------------------------------//
 CEGuiD3D11BaseApplication::~CEGuiD3D11BaseApplication()
 {
-    Win32AppHelper::mouseLeaves();
-
-    CEGUI::Direct3D11Renderer::destroy(
-        *static_cast<CEGUI::Direct3D11Renderer*>(d_renderer));
-
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
     cleanupDirect3D();
@@ -105,9 +100,17 @@ CEGuiD3D11BaseApplication::~CEGuiD3D11BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiD3D11BaseApplication::destroyRenderer()
+{
+    Win32AppHelper::mouseLeaves();
+
+    CEGUI::Direct3D11Renderer::destroy(
+        *static_cast<CEGUI::Direct3D11Renderer*>(d_renderer));
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiD3D11BaseApplication::run()
 {
-    d_sampleApp->initialise();
     Win32AppHelper::setSampleBrowser(d_sampleApp);
 
     float clear_colour[4] = {0.0f, 0.0f, 0.0f, 0.0f};

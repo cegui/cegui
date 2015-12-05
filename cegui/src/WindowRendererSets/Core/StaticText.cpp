@@ -176,17 +176,21 @@ namespace CEGUI
         const float vertScrollPosition = vertScrollbar->getScrollPosition();
         // if scroll bar is in use, position according to that.
         if (vertScrollbar->isEffectiveVisible())
-            absarea.d_min.d_y -= vertScrollPosition;
+            absarea.d_min.y -= vertScrollPosition;
         // no scrollbar, so adjust position according to formatting set.
         else
             switch(d_vertFormatting)
             {
             case VTF_CENTRE_ALIGNED:
-                absarea.d_min.d_y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
+                absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
                 break;
 
             case VTF_BOTTOM_ALIGNED:
-                absarea.d_min.d_y = absarea.d_max.d_y - textHeight;
+                absarea.d_min.y = absarea.d_max.y - textHeight;
+                break;
+
+            case VTF_TOP_ALIGNED: // TODO: What should we do in this case?
+            default:
                 break;
             }
 
@@ -194,7 +198,7 @@ namespace CEGUI
         const ColourRect final_cols(d_textCols);
         // cache the text for rendering.
         d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffers(),
-                                        absarea.getPositionGLM(),
+                                        absarea.getPosition(),
                                         &final_cols, &clipper);
     }
 
@@ -359,11 +363,11 @@ namespace CEGUI
         // Set up scroll bar values
         vertScrollbar->setDocumentSize(documentSize.d_height);
         vertScrollbar->setPageSize(renderAreaSize.d_height);
-        vertScrollbar->setStepSize(ceguimax(1.0f, renderAreaSize.d_height / 10.0f));
+        vertScrollbar->setStepSize(std::max(1.0f, renderAreaSize.d_height / 10.0f));
 
         horzScrollbar->setDocumentSize(documentSize.d_width);
         horzScrollbar->setPageSize(renderAreaSize.d_width);
-        horzScrollbar->setStepSize(ceguimax(1.0f, renderAreaSize.d_width / 10.0f));
+        horzScrollbar->setStepSize(std::max(1.0f, renderAreaSize.d_width / 10.0f));
     }
 
     /*************************************************************************

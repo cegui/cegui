@@ -188,17 +188,17 @@ void Cursor::constrainPosition()
 {
     const Rectf absarea(getConstraintArea());
 
-    if (d_position.x >= absarea.d_max.d_x)
-        d_position.x = absarea.d_max.d_x -1;
+    if (d_position.x >= absarea.d_max.x)
+        d_position.x = absarea.d_max.x -1;
 
-    if (d_position.y >= absarea.d_max.d_y)
-        d_position.y = absarea.d_max.d_y -1;
+    if (d_position.y >= absarea.d_max.y)
+        d_position.y = absarea.d_max.y -1;
 
-    if (d_position.y < absarea.d_min.d_y)
-        d_position.y = absarea.d_min.d_y;
+    if (d_position.y < absarea.d_min.y)
+        d_position.y = absarea.d_min.y;
 
-    if (d_position.x < absarea.d_min.d_x)
-        d_position.x = absarea.d_min.d_x;
+    if (d_position.x < absarea.d_min.x)
+        d_position.x = absarea.d_min.x;
 }
 
 
@@ -212,18 +212,18 @@ void Cursor::setConstraintArea(const Rectf* area)
 
 	if (!area)
 	{
-		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.d_x / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.d_y / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.d_x / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.d_y / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.y / renderer_area.getHeight());
 	}
 	else
 	{
         Rectf finalArea(area->getIntersection(renderer_area));
-		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_min.d_x / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_min.d_y / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_max.d_x / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_max.d_y / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_min.x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_min.y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_max.x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_max.y / renderer_area.getHeight());
 	}
 
 	constrainPosition();
@@ -244,10 +244,10 @@ void Cursor::setUnifiedConstraintArea(const URect* area)
 	}
 	else
 	{
-		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.d_x / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.d_y / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.d_x / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.d_y / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.y / renderer_area.getHeight());
 	}
 
 	constrainPosition();

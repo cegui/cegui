@@ -103,7 +103,7 @@ const StateImagery& WidgetLookFeel::getStateImagery(const CEGUI::String& name, b
         return stateImageryIter->second;
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("StateImagery with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("StateImagery with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getStateImagery(name, true);
 }
@@ -117,7 +117,7 @@ const ImagerySection& WidgetLookFeel::getImagerySection(const CEGUI::String& nam
         return imagerySectIter->second;
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("ImagerySection with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("ImagerySection with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getImagerySection(name, true);
 }
@@ -131,7 +131,7 @@ const NamedArea& WidgetLookFeel::getNamedArea(const String& name, bool includeIn
         return namedAreaIter->second;
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("NamedArea with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("NamedArea with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getNamedArea(name, true);
 }
@@ -145,7 +145,7 @@ const PropertyInitialiser& WidgetLookFeel::getPropertyInitialiser(const String& 
         return propertyInitialiserIter->second;
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("PropertyInitialiser with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("PropertyInitialiser with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getPropertyInitialiser(name, true);
 }
@@ -159,7 +159,7 @@ const PropertyDefinitionBase& WidgetLookFeel::getPropertyDefinition(const String
         return *(propDefIter->second);
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("PropertyDefinition with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("PropertyDefinition with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getPropertyDefinition(name, true);
 }
@@ -173,7 +173,7 @@ const PropertyDefinitionBase& WidgetLookFeel::getPropertyLinkDefinition(const St
         return *(propLinkDefIter->second);
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("PropertyLinkDefinition with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("PropertyLinkDefinition with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getPropertyLinkDefinition(name, true);
 }
@@ -187,7 +187,7 @@ const WidgetComponent& WidgetLookFeel::getWidgetComponent(const String& name, bo
         return widgetComponentIter->second;
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("WidgetComponent with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("WidgetComponent with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getWidgetComponent(name, true);
 }
@@ -201,7 +201,7 @@ const EventLinkDefinition& WidgetLookFeel::getEventLinkDefinition(const String& 
         return eventLinkDefIter->second;
 
     if (!includeInheritedLook || d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException("WidgetComponent with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'."));
+        throw UnknownObjectException("WidgetComponent with name '" + name + "' was not found in WidgetLookFeel '" + d_lookName + "'.");
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).getEventLinkDefinition(name, true);
 }
@@ -233,12 +233,12 @@ void WidgetLookFeel::renameImagerySection(const String& oldName, const String& n
 {
 	ImagerySectionMap::iterator oldsection = d_imagerySectionMap.find(oldName);
     if (oldsection == d_imagerySectionMap.end())
-        CEGUI_THROW(UnknownObjectException("unknown imagery section: '" +
-            oldName + "' in look '" + d_lookName + "'."));
+        throw UnknownObjectException("unknown imagery section: '" +
+            oldName + "' in look '" + d_lookName + "'.");
 
     if (d_imagerySectionMap.find(newName) != d_imagerySectionMap.end())
-        CEGUI_THROW(UnknownObjectException("imagery section: '" + newName +
-            "' already exists in look '" + d_lookName + "'."));
+        throw UnknownObjectException("imagery section: '" + newName +
+            "' already exists in look '" + d_lookName + "'.");
 
     oldsection->second.setName(newName);
     d_imagerySectionMap[newName] = d_imagerySectionMap[oldName];
@@ -393,8 +393,8 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
 {
     if (widget.getLookNFeel() != getName())
     {
-        CEGUI_THROW(InvalidRequestException("The window '" + 
-            widget.getNamePath() + "' does not have this WidgetLook assigned"));
+        throw InvalidRequestException("The window '" + 
+            widget.getNamePath() + "' does not have this WidgetLook assigned");
     }
 
     // remove added child widgets
@@ -583,12 +583,12 @@ void WidgetLookFeel::renameNamedArea(const String& oldName, const String& newNam
     NamedAreaMap::iterator oldarea = d_namedAreaMap.find(oldName);
     NamedAreaMap::const_iterator newarea = d_namedAreaMap.find(newName);
     if (oldarea == d_namedAreaMap.end())
-        CEGUI_THROW(UnknownObjectException("unknown named area: '" + oldName +
-            "' in look '" + d_lookName + "'."));
+        throw UnknownObjectException("unknown named area: '" + oldName +
+            "' in look '" + d_lookName + "'.");
 
     if (newarea != d_namedAreaMap.end())
-        CEGUI_THROW(UnknownObjectException("named area: '" + newName +
-            "' already exists in look '" + d_lookName + "'."));
+        throw UnknownObjectException("named area: '" + newName +
+            "' already exists in look '" + d_lookName + "'.");
 
     oldarea->second.setName(newName);
     d_namedAreaMap[newName] = d_namedAreaMap[oldName];
@@ -1130,9 +1130,9 @@ WidgetLookFeel::StateImageryPointerMap WidgetLookFeel::getStateImageryMap(bool i
 
         if(stateImageryIter == d_stateImageryMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: StateImagery with name: \"" + currentElementName
+            throw UnknownObjectException("Error: StateImagery with name: \"" + currentElementName
                 + "\" exists in the list of names but a StateImagery with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {
@@ -1161,9 +1161,9 @@ WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bo
 
         if(imagerySectionIter == d_imagerySectionMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: ImagerySection with name: \"" + currentElementName
+            throw UnknownObjectException("Error: ImagerySection with name: \"" + currentElementName
                                                + "\" exists in the list of names but a ImagerySection with this name"
-                                               + "could not be found in the map"));
+                                               + "could not be found in the map");
         }
         else
         {
@@ -1192,9 +1192,9 @@ WidgetLookFeel::NamedAreaPointerMap WidgetLookFeel::getNamedAreaMap(bool include
 
         if(namedAreaIter == d_namedAreaMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: NamedArea with name: \"" + currentElementName
+            throw UnknownObjectException("Error: NamedArea with name: \"" + currentElementName
                 + "\" exists in the list of names but a NamedArea with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {
@@ -1223,9 +1223,9 @@ WidgetLookFeel::WidgetComponentPointerMap WidgetLookFeel::getWidgetComponentMap(
 
         if(widgetComponentIter == d_widgetComponentMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: WidgetComponent with name: \"" + currentElementName
+            throw UnknownObjectException("Error: WidgetComponent with name: \"" + currentElementName
                 + "\" exists in the list of names but a WidgetComponent with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {
@@ -1254,9 +1254,9 @@ WidgetLookFeel::PropertyInitialiserPointerMap WidgetLookFeel::getPropertyInitial
 
         if(propertyInitIter == d_propertyInitialiserMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: PropertyInitialiser with name: \"" + currentElementName
+            throw UnknownObjectException("Error: PropertyInitialiser with name: \"" + currentElementName
                 + "\" exists in the list of names but a PropertyInitialiser with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {
@@ -1286,9 +1286,9 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyDefi
 
         if(propDefIter == d_propertyDefinitionMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: PropertyDefinition with name: \"" + currentElementName
+            throw UnknownObjectException("Error: PropertyDefinition with name: \"" + currentElementName
                 + "\" exists in the list of names but a PropertyDefinition with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {
@@ -1317,9 +1317,9 @@ WidgetLookFeel::PropertyDefinitionBasePointerMap WidgetLookFeel::getPropertyLink
 
         if(propLinkDefIter == d_propertyLinkDefinitionMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: PropertyLinkDefinition with name: \"" + currentElementName
+            throw UnknownObjectException("Error: PropertyLinkDefinition with name: \"" + currentElementName
                 + "\" exists in the list of names but a PropertyLinkDefinition with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {        
@@ -1349,9 +1349,9 @@ WidgetLookFeel::EventLinkDefinitionPointerMap WidgetLookFeel::getEventLinkDefini
 
         if(eventLinkDefIter == d_eventLinkDefinitionMap.end())
         {
-            CEGUI_THROW(UnknownObjectException("Error: EventLinkDefinition with name: \"" + currentElementName
+            throw UnknownObjectException("Error: EventLinkDefinition with name: \"" + currentElementName
                 + "\" exists in the list of names but a EventLinkDefinition with this name"
-                + "could not be found in the map"));
+                + "could not be found in the map");
         }
         else
         {
@@ -1382,8 +1382,8 @@ WidgetLookFeel* WidgetLookFeel::getInheritedWidgetLookFeel()
     WidgetLookManager::WidgetLookPointerMap::iterator foundIter = pointerMap.find(d_inheritedLookName);
 
     if(foundIter == pointerMap.end())
-        CEGUI_THROW(UnknownObjectException("Error: Inherited WidgetLook with name: \"" + d_inheritedLookName
-                                           + "\" cannot be found in the WidgetLookManager's map"));
+        throw UnknownObjectException("Error: Inherited WidgetLook with name: \"" + d_inheritedLookName
+                                           + "\" cannot be found in the WidgetLookManager's map");
 
     return foundIter->second;
 }

@@ -41,7 +41,7 @@ using namespace CEGUI;
 class MyListItem : public ListboxTextItem
 {
 public:
-    MyListItem(const String& text, CEGUI::uint item_id = 0) :
+    MyListItem(const String& text, unsigned int item_id = 0) :
       ListboxTextItem(text, item_id)
       {
           setSelectionBrushImage("Vanilla-Images/GenericBrush");
@@ -166,10 +166,11 @@ bool WidgetsSample::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // load an image to use as a background
     if (!ImageManager::getSingleton().isDefined("SpaceBackgroundImage"))
@@ -240,7 +241,7 @@ bool WidgetsSample::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
     return true;
 }
 
-bool WidgetsSample::handleRenderingEnded(const CEGUI::EventArgs& args)
+bool WidgetsSample::handleRenderingEnded(const CEGUI::EventArgs&)
 {
     d_windowLightCursorMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();
@@ -557,7 +558,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     horizontalLayout->addChild(updateEventLabel);
     updateEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
     updateEventLabel->setText("EventUpdated");
-    updateEventLabel->setFont("DejaVuSans-12-NoScale");
+    updateEventLabel->setFont("DejaVuSans-12");
     updateEventLabel->setProperty("HorzFormatting", "LeftAligned");
 
     d_windowLightCursorMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
@@ -570,7 +571,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     horizontalLayout->addChild(cursor_move_event_label);
     cursor_move_event_label->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
     cursor_move_event_label->setText("EventCursorMove");
-    cursor_move_event_label->setFont("DejaVuSans-12-NoScale");
+    cursor_move_event_label->setFont("DejaVuSans-12");
     cursor_move_event_label->setProperty("HorzFormatting", "LeftAligned");
 }
 
@@ -589,8 +590,8 @@ void WidgetsSample::logFiredEvent(const CEGUI::String& logMessage)
     eventsLog = eventsLog.substr(pos, len);
     if (len == 2056)
     {
-        int newlinePos = eventsLog.find_first_of("\n");
-        if (newlinePos != std::string::npos)
+        String::size_type newlinePos = eventsLog.find_first_of("\n");
+        if (newlinePos != String::npos)
             eventsLog = eventsLog.substr(newlinePos, std::string::npos);
     }
     d_widgetsEventsLog->setText(eventsLog);

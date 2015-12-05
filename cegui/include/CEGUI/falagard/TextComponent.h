@@ -332,6 +332,19 @@ namespace CEGUI
         // overridden from ComponentBase.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
+
+        //! Update string formatting.
+        void updateFormatting(const Window& srcWindow) const;
+
+        /*!
+        \brief
+            Update string formatting.
+        
+        \param size
+            The pixel size of the component.
+        */
+        void updateFormatting(const Window& srcWindow, const Sizef& size) const;
+
     protected:
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;

@@ -292,7 +292,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
 
     float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
         getViewRenderer()->getSubtreeExpanderSize().d_width;
-    rendered_max_width = ceguimax(rendered_max_width, item.d_size.d_width + indent);
+    rendered_max_width = std::max(rendered_max_width, item.d_size.d_width + indent);
     rendered_total_height += item.d_size.d_height;
 
     item.d_isSelected = isIndexSelected(index);
@@ -316,10 +316,10 @@ ModelIndex TreeView::indexAtWithAction(const glm::vec2& position,
 
     glm::vec2 window_position = CoordConverter::screenToWindow(*this, position);
     Rectf render_area(getViewRenderer()->getViewRenderArea());
-    if (!render_area.isPointInRect(window_position))
+    if (!render_area.isPointInRectf(window_position))
         return ModelIndex();
 
-    float cur_height = render_area.d_min.d_y - getVertScrollbar()->getScrollPosition();
+    float cur_height = render_area.d_min.y - getVertScrollbar()->getScrollPosition();
     bool handled = false;
     return indexAtRecursive(d_rootItemState, cur_height, window_position,
         handled, action);
@@ -581,10 +581,10 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
 }
 
 //----------------------------------------------------------------------------//
-Rectf TreeView::getIndexRect(const ModelIndex& index)
+Rectf TreeView::getIndexRect(const ModelIndex&)
 {
     //TODO: implement for tree view. What do we do for indices in closed subtrees?
-    CEGUI_THROW(InvalidRequestException("Not implemented for tree view yet."));
+    throw InvalidRequestException("Not implemented for tree view yet.");
 }
 
 #if defined(_MSC_VER)

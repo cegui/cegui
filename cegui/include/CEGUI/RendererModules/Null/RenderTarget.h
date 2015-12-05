@@ -29,7 +29,7 @@
 
 #include "../../RenderTarget.h"
 #include "CEGUI/RendererModules/Null/Renderer.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -40,8 +40,7 @@
 namespace CEGUI
 {
 //! Intermediate RenderTarget 
-template<typename T = RenderTarget>
-class NULL_GUIRENDERER_API NullRenderTarget : public T
+class NULL_GUIRENDERER_API NullRenderTarget : virtual public RenderTarget
 {
 public:
     //! Constructor

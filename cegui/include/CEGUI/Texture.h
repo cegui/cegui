@@ -32,9 +32,8 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

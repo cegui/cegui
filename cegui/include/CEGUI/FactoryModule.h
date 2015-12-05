@@ -49,11 +49,11 @@ public:
     //! Register the factory for objects of the specified type.
     void registerFactory(const String& type_name);
     //! Register factories for all object types in the module.
-    uint registerAllFactories();
+    unsigned int registerAllFactories();
     //! Unregister the factory for objects of the specified type.
     void unregisterFactory(const String& type_name);
     //! Unregister factories for all object types in the module.
-    uint unregisterAllFactories();
+    unsigned int unregisterAllFactories();
 
 protected:
     //! Collection type that holds pointers to the factory registerer objects.

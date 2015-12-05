@@ -32,9 +32,9 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Rect.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
@@ -47,7 +47,8 @@
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include <vector>
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -198,8 +199,10 @@ public:
     static const String CursorPassThroughEnabledPropertyName;
     //! Name of property to access for the Window will receive drag and drop related notifications.
     static const String DragDropTargetPropertyName;
-    //! Name of property to access for the Window will automatically attempt to use a full imagery caching RenderingSurface (if supported by the renderer).
+    //! Name of property to access for the Window whether texture caching should be activated or not. Will only have an effect if the Renderer supports texture caching.
     static const String AutoRenderingSurfacePropertyName;
+    //! Name of property to access for the Window whether texture caching should have a stencil buffer attached for stencil operations, as used in SVG and Custom Shape rendering.
+    static const String AutoRenderingSurfaceStencilEnabledPropertyName;
     //! Name of property to access for the text parsing setting for the Window.
     static const String TextParsingEnabledPropertyName;
     //! Name of property to access for the margin for the Window.
@@ -624,9 +627,9 @@ public:
         return the ID code currently assigned to this Window by client code.
 
     \return
-        uint value equal to the currently assigned ID code for this Window.
+        unsigned int value equal to the currently assigned ID code for this Window.
     */
-    uint getID(void) const {return d_ID;}
+    unsigned int getID(void) const {return d_ID;}
 
     using NamedElement::isChild;
     /*!
@@ -639,13 +642,13 @@ public:
         the return from this function will only have meaning to the client code.
 
     \param ID
-        uint ID code to look for.
+        unsigned int ID code to look for.
 
     \return
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChild(uint ID) const;
+    bool isChild(unsigned int ID) const;
 
     /*!
     \brief
@@ -661,13 +664,13 @@ public:
         make sure the window hierarchy from the entry point is small.
 
     \param ID
-        uint ID code to look for.
+        unsigned int ID code to look for.
 
     \return
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChildRecursive(uint ID) const;
+    bool isChildRecursive(unsigned int ID) const;
 
 
     /*!
@@ -755,7 +758,7 @@ public:
         functions for checking if a given window is attached.
 
     \param ID
-        uint value specifying the ID code of the window to return a pointer to.
+        unsigned int value specifying the ID code of the window to return a pointer to.
 
     \return
         Pointer to the (first) Window object attached to this window that has
@@ -764,7 +767,7 @@ public:
     \exception UnknownObjectException
         thrown if no window with the ID code \a ID is attached to this Window.
     */
-    Window* getChild(uint ID) const;
+    Window* getChild(unsigned int ID) const;
 
     /*!
     \brief
@@ -780,14 +783,14 @@ public:
         make sure the window hierarchy from the entry point is small.
 
     \param ID
-        uint value specifying the ID code of the window to return a pointer to.
+        unsigned int value specifying the ID code of the window to return a pointer to.
 
     \return
         Pointer to the (first) Window object attached to this window that has
         the ID code \a ID.
         If no child is found with the ID code \a ID, 0 is returned.
     */
-    Window* getChildRecursive(uint ID) const;
+    Window* getChildRecursive(unsigned int ID) const;
 
     /*!
     \brief
@@ -811,14 +814,14 @@ public:
         Window.
 
     \param ID
-        uint value specifying the ID to look for.
+        unsigned int value specifying the ID to look for.
 
     \return
         - true if an ancestor (parent, or parent of parent, etc) was found with
           the ID code \a ID.
         - false if no ancestor window has the ID code \a ID.
     */
-    bool isAncestor(uint ID) const;
+    bool isAncestor(unsigned int ID) const;
 
     /*!
     \brief
@@ -826,12 +829,18 @@ public:
 
     \param useDefault
         Specifies whether to return the default font if this Window has no
-        preferred font set.
+        preferred font set. This is typically set to true but whenever we
+        want to know if a default font would be used, this will be set to
+        false, and if the returned Font is a zero pointer we know that this
+        means a default font would be used otherwise.
 
     \return
         Pointer to the Font being used by this Window.  If the window has no
         assigned font, and \a useDefault is true, then the default system font
         is returned.
+    */
+    /*!  \deprecated This function is deprecated, as the parameter will be removed in the next major version. Separate functions
+         will be added with proper function names to replicate the functionality for useDefault=false.
     */
     const Font* getFont(bool useDefault = true) const;
 
@@ -1405,6 +1414,18 @@ public:
 
     /*!
     \brief
+        Returns whether the Window's texture caching (if activated) will have a stencil buffer
+        attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
+        For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
+
+    \return
+    - true to provide stencil buffer functionality with the texture caching.
+    - false to not provide a stencil buffer functionality with the texture caching.
+    */
+    bool isAutoRenderingSurfaceStencilEnabled() const;
+
+    /*!
+    \brief
         Returns the window at the root of the hierarchy starting at this
         Window.  The root window is defined as the first window back up the
         hierarchy that has no parent window.
@@ -1470,7 +1491,7 @@ public:
     \return
         Nothing
     */
-    void setEnabled(bool setting);
+    virtual void setEnabled(bool enabled);
 
     /*!
     \brief
@@ -1480,29 +1501,20 @@ public:
     \param setting
         - true to disable the Window
         - false to enable the Window.
-
-    \return
-        Nothing
     */
-    void setDisabled(bool setting);
+    void setDisabled(bool disabled) { setEnabled(!disabled); }
 
     /*!
     \brief
         enable the Window to allow interaction.
-
-    \return
-        Nothing
     */
-    void enable(void)   {setEnabled(true);}
+    void enable()   { setEnabled(true); }
 
     /*!
     \brief
         disable the Window to prevent interaction.
-
-    \return
-        Nothing
     */
-    void disable(void)  {setEnabled(false);}
+    void disable()  { setEnabled(false); }
 
     /*!
     \brief
@@ -1561,14 +1573,11 @@ public:
 
     /*!
     \brief
-        Deactivate the window.  No further inputs will be received by the window
+        Deactivate the window. No further inputs will be received by the window
         until it is re-activated either programmatically or by the user
         interacting with the gui.
-
-    \return
-        Nothing.
     */
-    void deactivate(void);
+    void deactivate();
 
     /*!
     \brief
@@ -1595,7 +1604,7 @@ public:
     \return
         Nothing
     */
-    void setID(uint ID);
+    void setID(unsigned int ID);
 
     /*!
     \brief
@@ -1678,7 +1687,7 @@ public:
     \return
         Nothing.
     */
-    void removeChild(uint ID);
+    void removeChild(unsigned int ID);
 
     /*!
     \brief
@@ -2526,6 +2535,19 @@ public:
         - false to disable automatic use of an imagery caching RenderingSurface.
     */
     void setUsingAutoRenderingSurface(bool setting);
+
+    /*!
+    \brief
+        Sets whether the Window's texture caching (if activated) will have a stencil buffer
+        attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
+        For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
+
+    \param setting
+        - true to provide stencil buffer functionality with the texture caching.
+        - false to not provide a stencil buffer functionality with the texture caching.
+    */
+    void setAutoRenderingSurfaceStencilEnabled(bool setting);
+  
 
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
@@ -3378,7 +3400,7 @@ protected:
     void notifyClippingChanged(void);
 
     //! helper to create and setup the auto RenderingWindow surface
-    void allocateRenderingWindow();
+    void allocateRenderingWindow(bool addStencilBuffer);
 
     //! helper to clean up the auto RenderingWindow surface
     void releaseRenderingWindow();
@@ -3575,9 +3597,9 @@ protected:
     //! definition of type used for the list of child windows to be drawn
     typedef std::vector<Window*> ChildDrawList;
     //! definition of type used for the UserString dictionary.
-    typedef std::map<String, String, StringFastLessCompare> UserStringMap;
+    typedef std::unordered_map<String, String> UserStringMap;
     //! definition of type used to track properties banned from writing XML.
-    typedef std::set<String, StringFastLessCompare> BannedXMLPropertySet;
+    typedef std::unordered_set<String> BannedXMLPropertySet;
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;
@@ -3617,6 +3639,8 @@ protected:
     mutable bool d_needsRedraw;
     //! holds setting for automatic creation of of surface (RenderingWindow)
     bool d_autoRenderingWindow;
+    //! holds setting for stencil buffer usage in texture caching
+    bool d_autoRenderingSurfaceStencilEnabled;
 
     //! Holds pointer to the Window objects current cursor image.
     const Image* d_cursor;
@@ -3658,7 +3682,7 @@ protected:
     UBox d_margin;
 
     //! User ID assigned to this Window
-    uint d_ID;
+    unsigned int d_ID;
     //! Holds pointer to some user assigned data.
     void* d_userData;
     //! Holds a collection of named user string values.

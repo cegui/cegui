@@ -92,6 +92,7 @@ const String Window::RiseOnClickEnabledPropertyName("RiseOnClickEnabled");
 const String Window::CursorPassThroughEnabledPropertyName("CursorPassThroughEnabled");
 const String Window::DragDropTargetPropertyName("DragDropTarget");
 const String Window::AutoRenderingSurfacePropertyName("AutoRenderingSurface");
+const String Window::AutoRenderingSurfaceStencilEnabledPropertyName("AutoRenderingSurfaceStencilEnabled");
 const String Window::TextParsingEnabledPropertyName("TextParsingEnabled");
 const String Window::MarginPropertyName("MarginProperty");
 const String Window::UpdateModePropertyName("UpdateMode");
@@ -225,6 +226,7 @@ Window::Window(const String& type, const String& name):
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
+    d_autoRenderingSurfaceStencilEnabled(false),
     d_cursor(0),
 
     // alpha transparency set up
@@ -364,7 +366,7 @@ bool Window::isActive(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isChild(uint ID) const
+bool Window::isChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -376,7 +378,7 @@ bool Window::isChild(uint ID) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isChildRecursive(uint ID) const
+bool Window::isChildRecursive(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -388,7 +390,7 @@ bool Window::isChildRecursive(uint ID) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChild(uint ID) const
+Window* Window::getChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -398,12 +400,12 @@ Window* Window::getChild(uint ID) const
 
     char strbuf[16];
     sprintf(strbuf, "%X", ID);
-    CEGUI_THROW(UnknownObjectException("A Window with ID: '" +
-        String(strbuf) + "' is not attached to Window '" + d_name + "'."));
+    throw UnknownObjectException("A Window with ID: '" +
+        String(strbuf) + "' is not attached to Window '" + d_name + "'.");
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChildRecursive(uint ID) const
+Window* Window::getChildRecursive(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
 
@@ -469,7 +471,7 @@ const Window* Window::getActiveChild(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isAncestor(uint ID) const
+bool Window::isAncestor(unsigned int ID) const
 {
     // return false if we have no ancestor
     if (!d_parent)
@@ -608,7 +610,7 @@ bool Window::isHit(const glm::vec2& position, const bool allow_disabled) const
     if ((test_area.getWidth() == 0.0f) || (test_area.getHeight() == 0.0f))
         return false;
 
-    return test_area.isPointInRect(position);
+    return test_area.isPointInRectf(position);
 }
 
 //----------------------------------------------------------------------------//
@@ -688,13 +690,13 @@ void Window::setAlwaysOnTop(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setEnabled(bool setting)
+void Window::setEnabled(bool enabled)
 {
     // only react if setting has changed
-    if (d_enabled == setting)
+    if (d_enabled == enabled)
         return;
 
-    d_enabled = setting;
+    d_enabled = enabled;
     WindowEventArgs args(this);
 
     if (d_enabled)
@@ -712,12 +714,6 @@ void Window::setEnabled(bool setting)
     }
 
     getGUIContext().updateWindowContainingCursor();
-}
-
-//----------------------------------------------------------------------------//
-void Window::setDisabled(bool setting)
-{
-    setEnabled(!setting);
 }
 
 //----------------------------------------------------------------------------//
@@ -758,11 +754,14 @@ void Window::activate(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::deactivate(void)
+void Window::deactivate()
 {
-    ActivationEventArgs args(this);
-    args.otherWindow = 0;
-    onDeactivated(args);
+    if (isActive())
+    {
+        ActivationEventArgs args(this);
+        args.otherWindow = 0;
+        onDeactivated(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -791,6 +790,9 @@ void Window::setText(const String& text)
 //----------------------------------------------------------------------------//
 void Window::setFont(const Font* font)
 {
+    if (d_font == font)
+        return;
+
     d_font = font;
     d_renderedStringValid = false;
     WindowEventArgs args(this);
@@ -804,7 +806,7 @@ void Window::setFont(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild(uint ID)
+void Window::removeChild(unsigned int ID)
 {
     const size_t child_count = getChildCount();
 
@@ -1012,7 +1014,7 @@ void Window::setRestoreOldCapture(bool setting)
 void Window::setAlpha(const float alpha)
 {
     // clamp this to the valid range [0.0, 1.0]
-    float clampedAlpha = ceguimax(ceguimin(alpha, 1.0f), 0.0f);
+    float clampedAlpha = std::max(std::min(alpha, 1.0f), 0.0f);
 
     // Ensure that the new alpha value is actually different from the currently set one
     // to avoid unnecessary invalidating and re-caching of textures and children
@@ -1202,9 +1204,9 @@ void Window::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
 
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window can only have Elements of type Window added as children "
-            "(Window path: " + getNamePath() + ")."));
+            "(Window path: " + getNamePath() + ").");
 
     // if the element is already a child of this Window, this is a NOOP
     if (isChild(element))
@@ -1246,6 +1248,11 @@ void Window::removeChild_impl(Element* element)
     }
 
     wnd->onZChange_impl();
+
+    // There can be issues if a removed window is activated and then added to a parent that has other
+    // active children. In general there is no reason why a removed window should still be active anymore
+    // anyways. Upon or before adding them, they may be reactivated manually if desired.
+    wnd->deactivate();
 }
 
 //----------------------------------------------------------------------------//
@@ -1297,7 +1304,7 @@ void Window::setCursor(const Image* image)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setID(uint ID)
+void Window::setID(unsigned int ID)
 {
     if (d_ID == ID)
         return;
@@ -1367,7 +1374,7 @@ void Window::addWindowProperties(void)
         &Window::setFont, &Window::property_getFont, 0
     );
 
-    CEGUI_DEFINE_PROPERTY(Window, uint,
+    CEGUI_DEFINE_PROPERTY(Window, unsigned int,
         IDPropertyName, "Property to get/set the ID value of the Window. Value is an unsigned integer number.",
         &Window::setID, &Window::getID, 0
     );
@@ -1464,6 +1471,13 @@ void Window::addWindowProperties(void)
         "  Value is either \"true\" or \"false\".",
         &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false /* TODO: Inconsistency*/
     );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        AutoRenderingSurfaceStencilEnabledPropertyName, "Property to get/set whether the Window's texture caching (if activated) "
+        "will have a stencil buffer attached. This may be required for proper rendering of SVG images and Custom Shapes."
+        "  Value is either \"true\" or \"false\".",
+        &Window::setAutoRenderingSurfaceStencilEnabled, &Window::isAutoRenderingSurfaceStencilEnabled, false
+        );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         TextParsingEnabledPropertyName, "Property to get/set the text parsing setting for the Window.  "
@@ -1797,7 +1811,7 @@ void Window::setTooltipType(const String& tooltipType)
     }
     else
     {
-        CEGUI_TRY
+        try
         {
             d_customTip = static_cast<Tooltip*>(
                 WindowManager::getSingleton().createWindow(
@@ -1805,7 +1819,7 @@ void Window::setTooltipType(const String& tooltipType)
             d_customTip->setAutoWindow(true);
             d_weOwnTip = true;
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             d_customTip = 0;
             d_weOwnTip = false;
@@ -1895,9 +1909,9 @@ void Window::setLookNFeel(const String& look)
         return;
 
     if (!d_windowRenderer)
-        CEGUI_THROW(NullObjectException("There must be a "
+        throw NullObjectException("There must be a "
             "window renderer assigned to the window '" + d_name +
-            "' to set its look'n'feel"));
+            "' to set its look'n'feel");
 
     WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
     if (!d_lookName.empty())
@@ -1969,12 +1983,12 @@ void Window::layoutLookNFeelChildWidgets()
     if (d_lookName.empty())
         return;
 
-    CEGUI_TRY
+    try
     {
         WidgetLookManager::getSingleton().
             getWidgetLook(d_lookName).layoutChildWidgets(*this);
     }
-    CEGUI_CATCH (UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         Logger::getSingleton().logEvent(
             "Window::layoutLookNFeelChildWidgets: "
@@ -1988,9 +2002,9 @@ const String& Window::getUserString(const String& name) const
     UserStringMap::const_iterator iter = d_userStrings.find(name);
 
     if (iter == d_userStrings.end())
-        CEGUI_THROW(UnknownObjectException(
+        throw UnknownObjectException(
             "a user string named '" + name + "' is not defined for Window '" +
-            d_name + "'."));
+            d_name + "'.");
 
     return (*iter).second;
 }
@@ -2042,7 +2056,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
         // first we check to make sure the property is'nt banned from XML
         if (!isPropertyBannedFromXML(iter.getCurrentValue()))
         {
-            CEGUI_TRY
+            try
             {
                 // only write property if it's not at the default state
                 if (!isPropertyAtDefault(iter.getCurrentValue()))
@@ -2051,7 +2065,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                     ++propertiesWritten;
                 }
             }
-            CEGUI_CATCH (InvalidRequestException&)
+            catch (InvalidRequestException&)
             {
                 // This catches errors from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent(
@@ -2071,7 +2085,7 @@ int Window::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
     int windowsWritten = 0;
 
-    for (uint i = 0; i < getChildCount(); ++i)
+    for (unsigned int i = 0; i < getChildCount(); ++i)
     {
         const Window* const child = getChildAtIdx(i);
 
@@ -2739,9 +2753,9 @@ void Window::setWindowRenderer(const String& name)
         onWindowRendererAttached(e);
     }
     else
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Attempt to assign a 'null' window renderer to window '" +
-            d_name + "'."));
+            d_name + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -2754,9 +2768,9 @@ WindowRenderer* Window::getWindowRenderer(void) const
 void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer))
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "The window renderer '" + d_windowRenderer->getName() + "' is not "
-            "compatible with this widget type (" + getType() + ")"));
+            "compatible with this widget type (" + getType() + ")");
 
     d_windowRenderer->d_window = this;
     d_windowRenderer->onAttach();
@@ -2964,7 +2978,7 @@ void Window::updateGeometryRenderSettings()
     if (ctx.owner == this && ctx.surface->isRenderingWindow())
     {
         static_cast<RenderingWindow*>(ctx.surface)->
-            setPosition(getUnclippedOuterRect().get().getPositionGLM());
+            setPosition(getUnclippedOuterRect().get().getPosition());
         static_cast<RenderingWindow*>(d_surface)->setPivot(
             glm::vec3(
                 d_pixelSize.d_width / 2.0f,
@@ -2981,8 +2995,8 @@ void Window::updateGeometryRenderSettings()
         // position is the offset of the window on the dest surface.
         const Rectf ucrect(getUnclippedOuterRect().get());
 
-        d_translation = glm::vec3(ucrect.d_min.d_x - ctx.offset.x,
-                                  ucrect.d_min.d_y - ctx.offset.y,
+        d_translation = glm::vec3(ucrect.d_min.x - ctx.offset.x,
+                                  ucrect.d_min.y - ctx.offset.y,
                                   0.0f);
     }
     initialiseClippers(ctx);
@@ -3095,7 +3109,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     {
         ctx.surface = d_surface;
         ctx.owner = this;
-        ctx.offset = getUnclippedOuterRect().get().getPositionGLM();
+        ctx.offset = getUnclippedOuterRect().get().getPosition();
         ctx.queue = RQ_BASE;
     }
     else if (d_parent)
@@ -3177,12 +3191,18 @@ bool Window::isUsingAutoRenderingSurface() const
     return d_autoRenderingWindow;
 }
 
+bool Window::isAutoRenderingSurfaceStencilEnabled() const
+{
+    return d_autoRenderingSurfaceStencilEnabled;
+}
+
+
 //----------------------------------------------------------------------------//
 void Window::setUsingAutoRenderingSurface(bool setting)
 {
     if (setting)
     {
-        allocateRenderingWindow();
+        allocateRenderingWindow(d_autoRenderingSurfaceStencilEnabled);
     }
     else
     {
@@ -3193,20 +3213,40 @@ void Window::setUsingAutoRenderingSurface(bool setting)
         d_autoRenderingWindow = setting;
     }
 
-    // while the actal area on screen may not have changed, the arrangement of
+    // while the actual area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
     notifyScreenAreaChanged();
 }
 
+void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
+{
+    if (d_autoRenderingSurfaceStencilEnabled != setting)
+    {
+        d_autoRenderingSurfaceStencilEnabled = setting;
+
+        if (!d_autoRenderingWindow)
+            return;
+
+        // We need to recreate the auto rendering window since we just changed a crucial setting for it
+        releaseRenderingWindow();
+        allocateRenderingWindow(setting);
+        d_autoRenderingWindow = true;
+
+        // while the actual area on screen may not have changed, the arrangement of
+        // surfaces and geometry did...
+        notifyScreenAreaChanged();
+    }
+}
+
 //----------------------------------------------------------------------------//
-void Window::allocateRenderingWindow()
+void Window::allocateRenderingWindow(bool addStencilBuffer)
 {
     if (!d_autoRenderingWindow)
     {
         d_autoRenderingWindow = true;
 
         TextureTarget* const t =
-            System::getSingleton().getRenderer()->createTextureTarget();
+            System::getSingleton().getRenderer()->createTextureTarget(addStencilBuffer);
 
         // TextureTargets may not be available, so check that first.
         if (!t)
@@ -3225,7 +3265,7 @@ void Window::allocateRenderingWindow()
         // set size and position of RenderingWindow
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
         static_cast<RenderingWindow*>(d_surface)->
-            setPosition(getUnclippedOuterRect().get().getPositionGLM());
+            setPosition(getUnclippedOuterRect().get().getPosition());
 
         getGUIContext().markAsDirty();
     }
@@ -3352,7 +3392,7 @@ const RenderedString& Window::getRenderedString() const
     if (!d_renderedStringValid)
     {
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), getFont(), 0);
+            getTextVisual(), 0, 0);
         d_renderedStringValid = true;
     }
 
@@ -3662,8 +3702,8 @@ size_t Window::getZIndex() const
         this);
 
     if (i == getParent()->d_drawList.end())
-        CEGUI_THROW(InvalidRequestException(
-            "Window is not in its parent's draw list."));
+        throw InvalidRequestException(
+            "Window is not in its parent's draw list.");
 
     return std::distance(getParent()->d_drawList.begin(), i);
 }
@@ -3736,14 +3776,22 @@ const Image* Window::property_getCursor() const
 GUIContext& Window::getGUIContext() const
 {
     // GUIContext is always the one on the root window, we do not allow parts
-    // of a hierarchy to be drawn to seperate contexts (which is not much of
+    // of a hierarchy to be drawn to separate contexts (which is not much of
     // a limitation).
     //
     // ISSUE: if root has no GUIContext set for it, should we return 0 or
     //        System::getDefaultGUIContext?  Come to IRC and argue about it!
-    return getParent() ? getParent()->getGUIContext() :
-                         d_guiContext ? *d_guiContext :
-                                        System::getSingleton().getDefaultGUIContext();
+    if (getParent() != 0)
+    {
+        return getParent()->getGUIContext();
+    }
+    else
+    {
+        if (d_guiContext)
+            return *d_guiContext;
+        else
+            return System::getSingleton().getDefaultGUIContext();
+    }
 }
 
 //----------------------------------------------------------------------------//

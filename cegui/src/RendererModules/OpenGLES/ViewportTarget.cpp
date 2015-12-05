@@ -35,7 +35,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner) :
-    OpenGLESRenderTarget<>(owner)
+    OpenGLESRenderTarget(owner)
 {
     // viewport area defaults to whatever the current OpenGLES viewport is set to
     GLint vp[4];
@@ -52,7 +52,7 @@ OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner) :
 //----------------------------------------------------------------------------//
 OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner,
                                                const Rectf& area) :
-        OpenGLESRenderTarget<>(owner)
+        OpenGLESRenderTarget(owner)
 {
     setArea(area);
 }
@@ -66,8 +66,4 @@ bool OpenGLESViewportTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

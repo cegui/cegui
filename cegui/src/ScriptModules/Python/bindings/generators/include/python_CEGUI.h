@@ -42,9 +42,9 @@ public:
     {
         return PropertyHelper<float>::fromString(str);
     }
-    static unsigned int stringToUint(const String& str)
+    static std::uint32_t stringToUint32(const String& str)
     {
-        return PropertyHelper<uint>::fromString(str);
+        return PropertyHelper<std::uint32_t>::fromString(str);
     }
     static bool stringToBool(const String& str)
     {
@@ -131,9 +131,9 @@ public:
     {
         return PropertyHelper<float>::toString(val);
     }
-    static String uintToString(unsigned int val)
+    static String uint32ToString(std::uint32_t val)
     {
-        return PropertyHelper<uint>::toString(val);
+        return PropertyHelper<std::uint32_t>::toString(val);
     }
     static String boolToString(bool val)
     {

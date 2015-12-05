@@ -47,10 +47,10 @@ namespace CEGUI
 class Direct3D11Texture;
 
 //! Direct3D11TextureTarget - allows rendering to Direct3D 10 textures.
-class D3D11_GUIRENDERER_API Direct3D11TextureTarget : public Direct3D11RenderTarget<TextureTarget>
+class D3D11_GUIRENDERER_API Direct3D11TextureTarget : public Direct3D11RenderTarget, public TextureTarget
 {
 public:
-    Direct3D11TextureTarget(Direct3D11Renderer& owner);
+    Direct3D11TextureTarget(Direct3D11Renderer& owner, bool addStencilBuffer);
     virtual ~Direct3D11TextureTarget();
 
     // overrides from the superclass
@@ -67,7 +67,7 @@ protected:
     //! default size of created texture objects
     static const float DEFAULT_SIZE;
     //! static data used for creating texture names
-    static uint s_textureNumber;
+    static std::uint32_t s_textureNumber;
     //! helper to generate unique texture names
     static String generateTextureName();
 

@@ -24,7 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 
 namespace CEGUI
@@ -141,7 +141,7 @@ void OpenGLBaseStateChangeWrapper::reset()
     d_viewPortParams.reset();
     d_scissorParams.reset();
     d_bindBufferParams.reset();
-    d_activeTexturePosition = -1;
+    d_activeTexturePosition = UINT_MAX;
     d_boundTextures.clear();
     d_enabledOpenGLStates.clear();
 }
@@ -159,7 +159,6 @@ void OpenGLBaseStateChangeWrapper::useProgram(GLuint program)
         d_shaderProgram = program;
     }
 }
-
 GLuint OpenGLBaseStateChangeWrapper::getUsedProgram() const
 {
     return d_shaderProgram;
@@ -239,7 +238,7 @@ unsigned int OpenGLBaseStateChangeWrapper::getActiveTexture() const
 
 void OpenGLBaseStateChangeWrapper::bindTexture(GLenum target, GLuint texture)
 {
-    if (d_activeTexturePosition == -1)
+    if (d_activeTexturePosition == UINT_MAX)
         return;
 
     BoundTexture& boundTexture = d_boundTextures[d_activeTexturePosition];

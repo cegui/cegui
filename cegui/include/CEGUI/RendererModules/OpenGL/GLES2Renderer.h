@@ -160,14 +160,13 @@ public:
     virtual Sizef getAdjustedTextureSize(const Sizef& sz);
     void endRendering();
     Sizef getAdjustedTextureSize(const Sizef& sz) const;
-    bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
 protected:
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    TextureTarget* createTextureTarget_impl();
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer);
     //! creates a texture of GLES2Texture type
     virtual OpenGLTexture* createTexture_impl(const String& name);
 
@@ -206,8 +205,8 @@ protected:
     //! initialise OGLES2TextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    //! restores all relevant OpenGL States CEGUI touches to their default value
+    void restoreChangedStatesToDefaults();
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
     OpenGLBaseShaderWrapper* d_shaderWrapperTextured;

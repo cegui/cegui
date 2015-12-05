@@ -34,7 +34,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/TplWindowRendererFactory.h"
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -120,7 +120,7 @@ private:
     /*************************************************************************
         Implementation data
     *************************************************************************/
-    typedef std::map<String, WindowRendererFactory*, StringFastLessCompare> WR_Registry;
+    typedef std::unordered_map<String, WindowRendererFactory*> WR_Registry;
     WR_Registry d_wrReg;
 
     //! Container type to hold WindowRenderFacory objects that we created.
@@ -143,18 +143,18 @@ void WindowRendererManager::addFactory()
                                         factory->getName() +
                                         "' WindowRenderers.");
         // add the factory we just created
-        CEGUI_TRY
+        try
         {
             WindowRendererManager::getSingleton().addFactory(factory);
         }
-        CEGUI_CATCH (Exception&)
+        catch (Exception&)
         {
             Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
                                             "'" + factory->getName() +
                                             "' WindowRenderers.");
             // delete the factory object
             delete factory;
-            CEGUI_RETHROW;
+            throw;
         }
     }
 

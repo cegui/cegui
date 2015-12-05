@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 
-LayerSpecification::LayerSpecification(uint priority) :
+LayerSpecification::LayerSpecification(unsigned int priority) :
     d_layerPriority(priority)
 {}
 
@@ -64,12 +64,12 @@ void LayerSpecification::clearSectionSpecifications()
     d_sections.clear();
 }
 
-uint LayerSpecification::getLayerPriority() const
+unsigned int LayerSpecification::getLayerPriority() const
 {
     return d_layerPriority;
 }
 
-void LayerSpecification::setLayerPriority(uint priority)
+void LayerSpecification::setLayerPriority(unsigned int priority)
 {
     d_layerPriority = priority;
 }
@@ -79,7 +79,7 @@ void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     xml_stream.openTag(Falagard_xmlHandler::LayerElement);
 
     if (d_layerPriority != 0)
-        xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<uint>::toString(d_layerPriority));
+        xml_stream.attribute(Falagard_xmlHandler::PriorityAttribute, PropertyHelper<std::uint32_t>::toString(d_layerPriority));
 
     // ouput all sections in this layer
     for(SectionSpecificationList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)

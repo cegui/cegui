@@ -33,7 +33,9 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Event.h"
 #include "CEGUI/IteratorBase.h"
-#include <map>
+#include <unordered_map>
+
+#include <iostream>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -427,13 +429,10 @@ protected:
     ScriptModule* getScriptModule() const;
 
     // Do not allow copying, assignment, or any other usage than simple creation.
-    EventSet(EventSet&) {}
-    EventSet& operator=(EventSet&)
-    {
-        return *this;
-    }
+    EventSet(const EventSet&) {}
+    EventSet& operator=(const EventSet&) { return *this; }
 
-    typedef std::map<String, Event*, StringFastLessCompare> EventMap;
+    typedef std::unordered_map<String, Event*> EventMap;
     EventMap    d_events;
 
     bool d_muted;    //!< true if events for this EventSet have been muted.

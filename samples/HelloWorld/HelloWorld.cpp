@@ -89,9 +89,10 @@ bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
     d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // Set the root window as root of our GUI Context
     guiContext->setRootWindow(d_root);
@@ -148,7 +149,7 @@ void HelloWorldSample::deinitialise()
 {
 }
 
-bool HelloWorldSample::handleHelloWorldClicked(const CEGUI::EventArgs& args)
+bool HelloWorldSample::handleHelloWorldClicked(const CEGUI::EventArgs&)
 {
     std::cout << "Hello World!" << std::endl;
 

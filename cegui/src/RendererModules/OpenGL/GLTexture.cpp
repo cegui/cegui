@@ -94,8 +94,8 @@ void OpenGL1Texture::initInternalPixelFormatFields(const PixelFormat fmt)
         break;
 
     default:
-        CEGUI_THROW(RendererException(
-                        "invalid or unsupported CEGUI::PixelFormat."));
+        throw RendererException(
+                        "invalid or unsupported CEGUI::PixelFormat.");
     }
 }
 
@@ -133,7 +133,7 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
     glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
 
     if((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
+        throw RendererException("size too big");
 
     // save old texture binding
     GLuint old_tex;
@@ -152,10 +152,10 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
     }
     else
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+        glTexImage2D(GL_TEXTURE_2D, 0, d_format,
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
-                     0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
+                     0, d_format, d_subpixelFormat, 0);
     }
 
     // restore previous texture binding.
@@ -165,29 +165,80 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void OpenGL1Texture::blitToMemory(void* targetData)
 {
-    // save existing config
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if(d_isCompressed)
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs())
     {
-        glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
-    }
-    else
-    {
+        /* OpenGL ES 3.1 or below doesn't support
+        "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
+        using "glReadPixels". */
+
         GLint old_pack;
         glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
-
+        GLuint texture_framebuffer(0);
+        GLint framebuffer_old(0), pack_alignment_old(0);
+        glGenFramebuffers(1, &texture_framebuffer);
+        GLenum framebuffer_target(0), framebuffer_param(0);
+        if (OpenGLInfo::getSingleton()
+            .isSeperateReadAndDrawFramebufferSupported())
+        {
+            framebuffer_param = GL_READ_FRAMEBUFFER_BINDING;
+            framebuffer_target = GL_READ_FRAMEBUFFER;
+        }
+        else
+        {
+            framebuffer_param = GL_FRAMEBUFFER_BINDING;
+            framebuffer_target = GL_FRAMEBUFFER;
+        }
+        glGetIntegerv(framebuffer_param, &framebuffer_old);
+        glBindFramebuffer(framebuffer_target, texture_framebuffer);
+        glFramebufferTexture2D(framebuffer_target, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, d_ogltexture, 0);
+        GLint read_buffer_old(0), pixel_pack_buffer_old(0);
+        if (OpenGLInfo::getSingleton().isReadBufferSupported())
+        {
+            glGetIntegerv(GL_READ_BUFFER, &read_buffer_old);
+            glReadBuffer(GL_COLOR_ATTACHMENT0);
+            glGetIntegerv(GL_PIXEL_PACK_BUFFER_BINDING, &pixel_pack_buffer_old);
+            glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+        }
+        glGetIntegerv(GL_PACK_ALIGNMENT, &pack_alignment_old);
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
+        glReadPixels(0, 0, static_cast<GLsizei>(d_dataSize.d_width),
+            static_cast<GLsizei>(d_dataSize.d_height), GL_RGBA, GL_UNSIGNED_BYTE, targetData);
+        glPixelStorei(GL_PACK_ALIGNMENT, pack_alignment_old);
+        if (OpenGLInfo::getSingleton().isReadBufferSupported())
+        {
+            glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_pack_buffer_old);
+            glReadBuffer(read_buffer_old);
+        }
+        glBindFramebuffer(framebuffer_target, framebuffer_old);
+        glDeleteFramebuffers(1, &texture_framebuffer);
 
-        glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
     }
+    else // Desktop OpenGL
+    {
+        // save existing config
+        GLuint old_tex;
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
-    // restore previous config.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+
+        if (d_isCompressed)
+        {
+            glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
+        }
+        else
+        {
+            GLint old_pack;
+            glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
+
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+            glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
+
+            glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
+        }
+
+        // restore previous config.
+        glBindTexture(GL_TEXTURE_2D, old_tex);
+    }
 }
 
 //----------------------------------------------------------------------------//

@@ -60,8 +60,9 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     WindowManager& win_mgr = WindowManager::getSingleton();
     d_root = (DefaultWindow*)win_mgr.createWindow("DefaultWindow", "Root");
 
-    Font& default_font = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    gui_context->setDefaultFont(&default_font);
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
+    gui_context->setDefaultFont(defaultFont);
 
     gui_context->setRootWindow(d_root);
 
@@ -143,7 +144,7 @@ CEGUI::Window* FormNavigationSample::createWidget(const String& type,
     return widget;
 }
 
-bool FormNavigationSample::resetForm(const CEGUI::EventArgs& e)
+bool FormNavigationSample::resetForm(const CEGUI::EventArgs&)
 {
     for(std::vector<Window*>::const_iterator itor = d_editboxes.begin();
         itor != d_editboxes.end(); ++itor)
@@ -157,7 +158,7 @@ bool FormNavigationSample::resetForm(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs& e)
+bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs&)
 {
     d_confirmButton->setEnabled(false);
 

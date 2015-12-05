@@ -28,9 +28,8 @@
 #define _CEGUIRenderingWindow_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

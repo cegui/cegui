@@ -30,6 +30,8 @@
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Logger.h"
 
+#include <locale.h>  
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -55,6 +57,24 @@ namespace CEGUI
 
     void XMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup, bool allowXmlValidation)
     {
+        //TODO: Once we replace all C parsing functions (sscanf and whatever is used) by the superiour std::regex and std's streams,
+        // this locale-check becomes redundant and needs to be removed as well.
+        char* localeAll = setlocale(LC_ALL, NULL);
+        char* localeNumeric = setlocale(LC_NUMERIC, NULL);
+
+        if( (*localeAll != 'C') || (*localeNumeric != 'C') )
+        {
+            // Only throw this if only numeric locale is "wrong"
+            Logger::getSingleton().logEvent(
+                "The C locale for LC_NUMERIC and/or LC_ALL is not set to \"C\". However, CEGUI is only ensured to parse strings and numbers correctly under the condition that the "
+                "locale is set to \"C\". This is required, for example, when parsing files or converting from a (property-) value to a String (or vice-versa). If your code or one of your libraries change "
+                "the locale (typically, by using the function \"setlocale\"), please set the locale back to the default everytime before a relevant call to CEGUI is issued to ensure "
+                "that the parsing will be functional and correct. "
+                "If you know what you are doing and there are no issues whatsoever, you may ignore this error message."
+                , Errors);
+        }
+
+
         // Acquire resource using CEGUI ResourceProvider
         RawDataContainer rawXMLData;
         System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
@@ -73,7 +93,7 @@ namespace CEGUI
             // exception safety
             System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
 
-            CEGUI_RETHROW;
+            throw;
         }
 
         // Release resource
@@ -86,7 +106,7 @@ namespace CEGUI
         RawDataContainer rawXMLData;
 
         const char* c_str = source.c_str();
-        rawXMLData.setData((uint8*)c_str);
+        rawXMLData.setData((std::uint8_t*)c_str);
         rawXMLData.setSize(strlen(c_str));
 
         try
@@ -100,7 +120,7 @@ namespace CEGUI
         	rawXMLData.setData(0);
 			rawXMLData.setSize(0);
 
-			CEGUI_RETHROW;
+			throw;
         }
 
         // !!! We must not allow DataContainer to delete String owned data,

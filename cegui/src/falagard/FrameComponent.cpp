@@ -211,11 +211,11 @@ void FrameComponent::setImage(FrameImageComponent part, const Image* image)
 void FrameComponent::setImage(FrameImageComponent part, const String& name)
 {
     const Image* image;
-    CEGUI_TRY
+    try
     {
         image = &ImageManager::getSingleton().get(name);
     }
-    CEGUI_CATCH (UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         image = 0;
     }
@@ -428,7 +428,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_min.d_y += imageSize.d_height + componentImage->getRenderedOffset().y;
+        backgroundRect.d_min.y += imageSize.d_height + componentImage->getRenderedOffset().y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -459,7 +459,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().y;
+        backgroundRect.d_max.y -= imageSize.d_height - componentImage->getRenderedOffset().y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -490,7 +490,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_min.d_x += imageSize.d_width + componentImage->getRenderedOffset().x;
+        backgroundRect.d_min.x += imageSize.d_width + componentImage->getRenderedOffset().x;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -521,7 +521,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_x -= imageSize.d_width - componentImage->getRenderedOffset().x;
+        backgroundRect.d_max.x -= imageSize.d_width - componentImage->getRenderedOffset().x;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -572,7 +572,7 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
                                  Rectf& destRect, const ColourRect& colours,
                                  const Rectf* clipper, bool clip_to_display) const
 {
-    uint horzTiles, vertTiles;
+    unsigned int horzTiles, vertTiles;
     float xpos, ypos;
 
     Sizef imgSz(image->getRenderedSize());
@@ -608,8 +608,8 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown HorizontalFormatting value was specified."));
+            throw InvalidRequestException(
+                "An unknown HorizontalFormatting value was specified.");
     }
 
     // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -643,23 +643,23 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown VerticalFormatting value was specified."));
+            throw InvalidRequestException(
+                "An unknown VerticalFormatting value was specified.");
     }
 
     // perform final rendering (actually is now a caching of the images which will be drawn)
     Rectf finalRect;
     Rectf finalClipper;
     const Rectf* clippingRect;
-    finalRect.d_min.d_y = ypos;
-    finalRect.d_max.d_y = ypos + imgSz.d_height;
+    finalRect.d_min.y = ypos;
+    finalRect.d_max.y = ypos + imgSz.d_height;
 
-    for (uint row = 0; row < vertTiles; ++row)
+    for (unsigned int row = 0; row < vertTiles; ++row)
     {
-        finalRect.d_min.d_x = xpos;
-        finalRect.d_max.d_x = xpos + imgSz.d_width;
+        finalRect.d_min.x = xpos;
+        finalRect.d_max.x = xpos + imgSz.d_width;
 
-        for (uint col = 0; col < horzTiles; ++col)
+        for (unsigned int col = 0; col < horzTiles; ++col)
         {
             // use custom clipping for right and bottom edges when tiling the imagery
             if (((vertFmt == VF_TILED) && row == vertTiles - 1) ||
@@ -674,12 +674,12 @@ void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers,
 
             image->render(geometry_buffers, finalRect, clippingRect, !clip_to_display, colours);
 
-            finalRect.d_min.d_x += imgSz.d_width;
-            finalRect.d_max.d_x += imgSz.d_width;
+            finalRect.d_min.x += imgSz.d_width;
+            finalRect.d_max.x += imgSz.d_width;
         }
 
-        finalRect.d_min.d_y += imgSz.d_height;
-        finalRect.d_max.d_y += imgSz.d_height;
+        finalRect.d_min.y += imgSz.d_height;
+        finalRect.d_max.y += imgSz.d_height;
     }
 }
 

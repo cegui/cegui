@@ -24,6 +24,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
@@ -66,6 +68,41 @@ void OpenGLTexture::initialise(const String& filename, const String& resourceGro
     initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
+}
+//----------------------------------------------------------------------------//
+GLint OpenGLTexture::internalFormat() const
+{
+    if (OpenGLInfo::getSingleton().isSizedInternalFormatSupported())
+    {
+        const char* err = "Invalid or unsupported OpenGL pixel format.";
+        switch (d_format)
+        {
+        case GL_RGBA:
+            switch (d_subpixelFormat)
+            {
+            case GL_UNSIGNED_BYTE:
+                return GL_RGBA8;
+            case GL_UNSIGNED_SHORT_4_4_4_4:
+                return GL_RGBA4;
+            default:
+                throw RendererException(err);
+            }
+        case GL_RGB:
+            switch (d_subpixelFormat)
+            {
+            case GL_UNSIGNED_BYTE:
+                return GL_RGB8;
+            case GL_UNSIGNED_SHORT_5_6_5:
+                return GL_RGB565;
+            default:
+                throw RendererException(err);
+            }
+        default:
+            throw RendererException(err);
+        }
+    }
+    else
+        return d_format;
 }
  
 //----------------------------------------------------------------------------//
@@ -135,9 +172,9 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             system.getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -145,8 +182,8 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                     PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     initInternalPixelFormatFields(pixel_format);
     setTextureSize_impl(buffer_size);
@@ -220,7 +257,23 @@ void OpenGLTexture::grabTexture()
     if (d_grabBuffer)
         return;
 
-    d_grabBuffer = new uint8[static_cast<int>(4*d_size.d_width*d_size.d_height)];
+    std::size_t buffer_size(0);
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs())
+    {
+        /* OpenGL ES 3.1 or below doesn't support
+           "glGetTexImage"/"glGetCompressedTexImage", so we need to emulate it
+           with "glReadPixels", which will return the data in (umcompressed)
+           format (GL_RGBA, GL_UNSIGNED_BYTE). */
+        buffer_size = static_cast<std::size_t>(d_dataSize.d_width)
+          *static_cast<std::size_t>(d_dataSize.d_height) *4;
+        d_isCompressed = false;
+        d_format = GL_RGBA;
+        d_subpixelFormat = GL_UNSIGNED_BYTE;
+    }
+    else // Desktop OpenGL
+        buffer_size = static_cast<std::size_t>(d_size.d_width)
+          *static_cast<std::size_t>(d_size.d_height) *4;
+    d_grabBuffer = new std::uint8_t[buffer_size];
 
     blitToMemory(d_grabBuffer);
 
@@ -236,7 +289,10 @@ void OpenGLTexture::restoreTexture()
     generateOpenGLTexture();
     setTextureSize_impl(d_size);
 
-    blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), d_size));
+    /* In OpenGL ES we used "glReadPixels" to grab the texture, reading just the
+       relevant rectangle. */
+    Sizef blit_size = OpenGLInfo::getSingleton().isUsingOpenglEs() ? d_dataSize : d_size;
+    blitFromMemory(d_grabBuffer, Rectf(glm::vec2(0, 0), blit_size));
 
     // free the grabbuffer
     delete[] d_grabBuffer;
@@ -349,7 +405,7 @@ bool OpenGLTexture::isPixelFormatSupported(const PixelFormat fmt) const
     case PF_RGBA_DXT1:
     case PF_RGBA_DXT3:
     case PF_RGBA_DXT5:
-        return d_owner.isS3TCSupported();
+        return OpenGLInfo::getSingleton().isS3tcSupported();
 
     default:
         return false;

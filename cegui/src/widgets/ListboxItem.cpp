@@ -53,7 +53,7 @@ const Colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 /*************************************************************************
 	Base class constructor
 *************************************************************************/
-ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
+ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)

@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+. "$myScriptsDir/conf"
+androidSampleFrameworkDir="$myScriptsDir/CEGUISampleFramework"
+export PKG_CONFIG_SYSROOT_DIR="$androidStandaloneToolchainDir/sysroot"
+
+maybeSudo()
+{
+    "$@" 2>/dev/null
+    if [ $? -ne 0 ]; then
+        mySudo "$@"
+    fi
+}
+
+dirRequiresSudo()
+{
+    myDir="$1"
+    myMaybeSudo="$2"
+    declare -i dirExists
+    [ -d "$myDir" ]
+    dirExists=$?
+    maybeSudo mkdir -p "$myDir"
+    touch "$myDir/file_to_test_permission" 2>/dev/null
+    eval '{ [ $? -eq 0 ]  &&  '"$myMaybeSudo"'=""; }  ||  '"$myMaybeSudo"'="mySudo "'
+    rm -f "$myDir/file_to_test_permission" 2>/dev/null
+    if [ $dirExists -ne 0 ]; then
+        eval '${'"$myMaybeSudo"'}rmdir "$myDir"'
+    fi
+}
+
+addToolchainToPath()
+{
+    export PATH="$androidStandaloneToolchainDir/bin${PATH+:}$PATH"
+}
+
+androidCmakeOptionsElements=('-G "Unix Makefiles"' \
+                             '-DCMAKE_TOOLCHAIN_FILE="$androidToolchainCmakeFile"' \
+                             '-DANDROID_NDK="$androidNdkDir"' \
+                             '-DANDROID_ABI="$androidAbi"' \
+                             '-DANDROID_NATIVE_API_LEVEL=android-"$androidNdkApiLevel"' \
+                             '-DANDROID_TOOLCHAIN_NAME="$androidToolchain"' \
+                             '-DANDROID_STL=gnustl_shared')
+androidCmakeOptions="${androidCmakeOptionsElements[*]}"
+
+declare -A androidBuildFlags
+androidBuildFlags=([Debug]="-O0 -g -DDEBUG -D_DEBUG" \
+                   [Release]="-O3 -DNDEBUG" \
+                   [RelWithDebInfo]="-O2 -g -DNDEBUG" \
+                   [MinSizeRel]="-Os -DNDEBUG")
+androidAutotoolsOptionsElements=('CFLAGS="${androidBuildFlags[$myBuildType]}"' \
+                             'CXXFLAGS="${androidBuildFlags[$myBuildType]}"')
+androidAutotoolsOptions="${androidAutotoolsOptionsElements[*]}"
+androidBuildOptionsElements=('user_CFLAGS="${androidBuildFlags[$myBuildType]}"' \
+                             'user_CXXFLAGS="${androidBuildFlags[$myBuildType]}"')
+androidBuildOptions="${androidBuildOptionsElements[*]}"
+
+androidToolchainConfigurationElements=('CC="$androidToolchainName-gcc"' \
+                                       'CXX="$androidToolchainName-g++"' \
+                                       'AR="$androidToolchainName-ar"' \
+                                       'LD="$androidToolchainName-ld"' \
+                                       'AS="$androidToolchainName-as"' \
+                                       'NM="$androidToolchainName-nm"' \
+                                       'STRIP="$androidToolchainName-strip"' \
+                                       'RANLIB="$androidToolchainName-ranlib"' \
+                                       'OBJDUMP="$androidToolchainName-objdump"')
+androidToolchainConfiguration="${androidToolchainConfigurationElements[*]}"

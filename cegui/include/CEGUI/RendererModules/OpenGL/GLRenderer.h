@@ -35,7 +35,7 @@ namespace CEGUI
     class OpenGLShaderWrapper;
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL
 */
 class OPENGL_GUIRENDERER_API OpenGLRenderer : public OpenGLRendererBase
 {
@@ -172,18 +172,17 @@ public:
     void beginRendering();
     void endRendering();
     virtual Sizef getAdjustedTextureSize(const Sizef& sz);
-    bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
 protected:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    TextureTarget* createTextureTarget_impl();
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer);
     //! creates a texture of GLTexture type
     virtual OpenGLTexture* createTexture_impl(const String& name);
 
-    //! set up renderer id string.
     void initialiseRendererIDString();
 
     /*!
@@ -217,11 +216,11 @@ protected:
     */
     virtual ~OpenGLRenderer();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    //! initialise several additional OpenGL states to their defaults
+    void restoreOpenGLStatesToDefaults();
 
-    //! cleanup the extra GL states enabled via enableExtraStateSettings
-    void cleanupExtraStates();
+    //! clean up the texture matrix stack if state restoring is enabled
+    void cleanupMatrixStack();
 
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory(const TextureTargetType tt_type);
