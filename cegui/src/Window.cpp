@@ -3853,6 +3853,69 @@ const Sizef& Window::getRootContainerSize() const
 }
 
 //----------------------------------------------------------------------------//
+float Window::getContentWidth() const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->getContentWidth();
+    return Element::getContentWidth();
+}
+
+//----------------------------------------------------------------------------//
+float Window::getContentHeight() const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->getContentHeight();
+    return Element::getContentHeight();
+}
+
+//----------------------------------------------------------------------------//
+UDim Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth()
+  const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth();
+    return Element::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth();
+}
+
+//----------------------------------------------------------------------------//
+UDim Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight()
+  const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()-> getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight();
+    return Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight();
+}
+
+//----------------------------------------------------------------------------//
+void Window::adjustSizeToContent()
+{
+    if (!isSizeAdjustedToContent())
+        return;
+    if (getWindowRenderer())
+    {
+        getWindowRenderer()->adjustSizeToContent();
+        return;
+    }
+    Element::adjustSizeToContent();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::contentFitsForSpecifiedElementSize(const Sizef& element_size) const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->contentFitsForSpecifiedWindowSize(element_size);
+    return Element::contentFitsForSpecifiedElementSize(element_size);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::contentFits() const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->contentFits();
+    return Element::contentFits();
+}
+
+//----------------------------------------------------------------------------//
 void Window::setAutoWindow(bool is_auto)
 {
     d_autoWindow = is_auto;

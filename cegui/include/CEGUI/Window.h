@@ -2804,6 +2804,14 @@ public:
     // overridden from Element
     const Sizef& getRootContainerSize() const;
 
+    float getContentWidth() const;
+    float getContentHeight() const;
+    UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const;
+    UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const;
+    void adjustSizeToContent();
+    bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const;
+    bool contentFits() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
