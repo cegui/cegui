@@ -1244,8 +1244,8 @@ public:
         the text, and "intact" means no single word is split between 2 or more
         lines. So setting this property to "true" would keep the width of the
         widget to the minimal value in which the whole text is visible without
-        the need for a horizontal scrollbar (if possible), and without the need
-        to split a word between 2 or more lines (if possible).
+        the need for scrollbars (if possible), and without the need to split a
+        word between 2 or more lines (if possible).
 
         If the "AdjustWidthToContent" property is set to "true", the width is
         adjusted. If the "AdjustHeightToContent" property is set to "true", the
@@ -1486,6 +1486,96 @@ public:
     \see adjustSizeToContent
     */
     virtual float adjustSizeToContent_getEpsilon() const;
+
+    /*!
+    \brief
+        A helper method that can be used in the implementation of
+        "adjustSizeToContent" for non-simple cases.
+
+        This method tries to find a suitable size by try-and-error: It's given a
+        (mathematical) function "f(n)" whose domain is the integers between
+        "floor(domain_min)" and "ceil(domain_max)", and its codomain is R^2
+        (representing possible element sizes - i.e. of type "Sizef"). This
+        method finds the minimal "n" for which
+        "contentFitsForSpecifiedElementSize(f(n))" returns "true" - that is, for
+        which the whole element content is visible without the need for
+        scrollbars (if possible), and while the content remains "intact" (if
+        possible). The (mathematical) function "f(n)" is an affine function
+        defined by:
+            f(n) = (size_func.d_width.d_scale*n +size_func.d_width.d_offset,
+                    size_func.d_height.d_scale*n +size_func.d_height.d_offset)
+
+        Note: it's assumed that
+        "contentFitsForSpecifiedElementSize(f(domain_min))" returns "false" and
+        "contentFitsForSpecifiedElementSize(f(domain_max))" returns "true".
+
+        This method uses bisection to find the solution.
+
+        You might want to look at "FalagardStaticText::adjustSizeToContent" to
+        see an example of how this method is used.
+
+    \return
+        f(n)
+    
+    \see contentFitsForSpecifiedElementSize
+    \see adjustSizeToContent
+    \see FalagardStaticText::adjustSizeToContent
+    */
+    Sizef getSizeAdjustedToContent_bisection(const USize& size_func, float domain_min, float domain_max) const;
+
+    /*!
+    \brief
+        Return whether setting the element size to "element_size" would make the
+        whole element content visible without the need for scrollbars (if
+        possible), and while the content remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So calling this method returns whether if we set the element size
+        to "element_size" the whole text would be visible, without the need for
+        scrollbars, and without having to split a single word between 2 or more
+        lines.
+
+        The default implementation calls
+        "contentFitsForSpecifiedElementSize_tryByResizing".
+
+        This method is used by "getSizeAdjustedToContent_bisection".
+
+    \see contentFitsForSpecifiedElementSize_tryByResizing
+    \see getSizeAdjustedToContent_bisection
+    */
+    virtual bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const;
+      
+    /*!
+    \brief
+        A possible implementation of "contentFitsForSpecifiedElementSize".
+
+        This implementation actually sets (temporarily) the element size to
+        "element_size", and then calls "contentFits".
+
+    \see contentFits
+    \see contentFitsForSpecifiedElementSize
+    */
+    bool contentFitsForSpecifiedElementSize_tryByResizing(const Sizef& element_size) const;
+
+    /*!
+    \brief
+        Return whether the whole element content is visible without the need for
+        scrollbars (if possible), and while the content remains "intact" (if
+        possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines.
+
+        This method is used by
+        "contentFitsForSpecifiedElementSize_tryByResizing"
+
+    \see contentFitsForSpecifiedElementSize_tryByResizing
+    */
+    virtual bool contentFits() const;
 
 protected:
     /*!
