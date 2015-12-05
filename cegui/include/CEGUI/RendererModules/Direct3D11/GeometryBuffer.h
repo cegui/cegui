@@ -29,7 +29,7 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

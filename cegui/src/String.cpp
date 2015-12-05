@@ -31,6 +31,7 @@
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 
 #include <iostream>
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -43,13 +44,14 @@ const String::size_type String::npos = (String::size_type)(-1);
 //////////////////////////////////////////////////////////////////////////
 // Destructor
 //////////////////////////////////////////////////////////////////////////
-String::~String(void)
+String::~String()
 {
-	if (d_reserve > CEGUI_STR_QUICKBUFF_SIZE)
+	if ( (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) && d_buffer )
 	{
-		delete[] d_buffer;
+        delete[] d_buffer;
 	}
-		if (d_encodedbufflen > 0)
+
+    if ( (d_encodedbufflen > 0) && d_encodedbuff )
 	{
 		delete[] d_encodedbuff;
 	}
@@ -59,8 +61,8 @@ bool String::grow(size_type new_size)
 {
     // check for too big
     if (max_size() <= new_size)
-        CEGUI_THROW(
-            std::length_error("Resulting CEGUI::String would be too big"));
+        throw 
+            std::length_error("Resulting CEGUI::String would be too big");
 
     // increase, as we always null-terminate the buffer.
     ++new_size;
@@ -76,7 +78,7 @@ bool String::grow(size_type new_size)
         }
         else
         {
-            memcpy(temp, d_quickbuff, (d_cplength + 1) * sizeof(utf32));
+            std::copy(d_quickbuff.data(), d_quickbuff.data() + (d_cplength + 1), temp);
         }
 
         d_buffer = temp;
@@ -99,7 +101,7 @@ void String::trim(void)
             // see if we can trim to quick-buffer
         if (min_size <= CEGUI_STR_QUICKBUFF_SIZE)
         {
-            memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
+            std::copy(d_buffer, d_buffer + min_size, d_quickbuff.data());
             delete[] d_buffer;
             d_reserve = CEGUI_STR_QUICKBUFF_SIZE;
         }
@@ -437,6 +439,14 @@ String operator+(const char* c_str, const String& str)
 std::ostream& operator<<(std::ostream& s, const String& str)
 {
 	return s << str.c_str();
+}
+
+std::istream& operator>>(std::istream& inputStream, String& str)
+{
+    std::string inputString;
+    inputStream >> inputString;
+    str.assign(inputString);
+    return inputStream;
 }
 
 //////////////////////////////////////////////////////////////////////////

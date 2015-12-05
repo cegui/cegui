@@ -46,7 +46,7 @@
 #endif
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include <irrlicht.h>
 
@@ -61,6 +61,7 @@ class CEGuiIrrlichtBaseApplication : public CEGuiBaseApplication,
 public:
     CEGuiIrrlichtBaseApplication();
     ~CEGuiIrrlichtBaseApplication();
+    void destroyRenderer();
 
     // irrlicht event listener
 #if CEGUI_IRR_SDK_VERSION >= 14

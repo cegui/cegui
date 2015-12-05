@@ -43,8 +43,8 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-const CEGUI::uint32 SampleBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
-const CEGUI::uint32 SampleBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
+const std::uint32_t SampleBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
+const std::uint32_t SampleBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
 
 SampleBrowserManager::SampleBrowserManager(SampleBrowser* owner, CEGUI::Window* samplesWindow)
     : d_owner(owner),
@@ -141,8 +141,8 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 
-    const float relPosX = (cursor_pos.x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
-    const float relPosY = (cursor_pos.y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
+    const float relPosX = (cursor_pos.x - windowDimensions.left() - innerRectangle.getPosition().x) / innerRectangle.getWidth();
+    const float relPosY = (cursor_pos.y - windowDimensions.top()  - innerRectangle.getPosition().y) / innerRectangle.getHeight();
 
     if (relPosX >= 0.0f && relPosX <= 1.0f && relPosY >= 0.0f && relPosY <= 1.0f)
     {
@@ -209,7 +209,7 @@ CEGUI::DefaultWindow* SampleBrowserManager::createPreviewHeaderNameWindow(const 
     CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
     windowName->setSize(CEGUI::USize(cegui_reldim(0.6f), cegui_absdim(44.f)));
     windowName->setText(name);
-    windowName->setFont("DejaVuSans-12-NoScale");
+    windowName->setFont("DejaVuSans-12");
     windowName->setProperty("HorzFormatting", "Centre");
     windowName->setCursorInputPropagationEnabled(true);
 

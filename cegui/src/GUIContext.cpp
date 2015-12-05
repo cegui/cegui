@@ -527,21 +527,21 @@ bool GUIContext::injectTimePulse(float timeElapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCopyRequest(const SemanticInputEvent& event)
+bool GUIContext::handleCopyRequest(const SemanticInputEvent&)
 {
     Window* source = getInputTargetWindow();
     return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCutRequest(const SemanticInputEvent& event)
+bool GUIContext::handleCutRequest(const SemanticInputEvent&)
 {
     Window* source = getInputTargetWindow();
     return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handlePasteRequest(const SemanticInputEvent& event)
+bool GUIContext::handlePasteRequest(const SemanticInputEvent&)
 {
     Window* target = getInputTargetWindow();
     return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
@@ -617,9 +617,11 @@ Font* GUIContext::getDefaultFont() const
 
     // if no explicit default, we will return the first font we can get from
     // the font manager
-    FontManager::FontIterator iter = FontManager::getSingleton().getIterator();
+    const FontManager::FontRegistry& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
 
-    return (!iter.isAtEnd()) ? *iter : 0;
+    FontManager::FontRegistry::const_iterator iter = registeredFonts.begin();
+
+    return (iter != registeredFonts.end()) ? iter->second : 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -669,7 +671,7 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
         return (*(*itor).second)(event);
     }
 
-    Window* targetWindow = getTargetWindow(d_cursor.getPosition(), false);
+    Window* targetWindow = getInputTargetWindow();
     // window navigator's window takes precedence
     if (d_windowNavigator != 0)
         targetWindow = d_windowNavigator->getCurrentFocusedWindow();
@@ -839,7 +841,7 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCursorLeave(const SemanticInputEvent& event)
+bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
 {
     if (!getWindowContainingCursor())
         return false;

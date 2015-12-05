@@ -328,10 +328,10 @@ void Config_xmlHandler::loadAutoResources() const
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
+            throw InvalidRequestException(
                 "AutoLoad of resource type '" + (*i).type_string +
                 "' is not currently supported.Pattern was: " + (*i).pattern +
-                " group was: " + (*i).group));
+                " group was: " + (*i).group);
         }
     }
 }

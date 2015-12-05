@@ -57,8 +57,9 @@ public:
 
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
 
-    bool initialise();
-    void deinitialise();
+    bool initialise(const CEGUI::String& logFile,
+                    const CEGUI::String& dataPathPrefixOverride);
+    void cleanup();
 
     void loadSamples();
 
@@ -86,9 +87,9 @@ protected:
 
     void initialiseSampleBrowserLayout();
 
-    bool initialiseSampleStepwise(int sampleNumber);
+    bool initialiseSampleStepwise(std::int32_t sampleNumber);
 
-    void displaySampleLoadProgress(int sampleNumber);
+    void displaySampleLoadProgress(std::int32_t sampleNumber);
     void initialisationFinalisation();
     void unloadSamples();
 

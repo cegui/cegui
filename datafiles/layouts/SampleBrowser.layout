@@ -83,7 +83,7 @@
             </AutoWindow>
             <Window type="SampleBrowserSkin/StaticText" name="Summary" >
                 <Property name="Area" value="{{0.0257143,0},{0.0768676,-50},{0.971429,0},{0.366868,-14}}" />
-                <Property name="Font" value="DejaVuSans-12-NoScale" />
+                <Property name="Font" value="DejaVuSans-12" />
                 <Property name="Text" value="Summary : " />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />
@@ -110,7 +110,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="UsedFiles" >
                 <Property name="Area" value="{{0.0257143,0},{0.687821,0},{0.971429,0},{0.857193,0}}" />
-                <Property name="Font" value="DejaVuSans-12-NoScale" />
+                <Property name="Font" value="DejaVuSans-12" />
                 <Property name="Text" value="Used files:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />
@@ -138,7 +138,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="Description" >
                 <Property name="Area" value="{{0.0257143,0},{0.273051,50},{0.971429,0},{0.563051,73}}" />
-                <Property name="Font" value="DejaVuSans-12-NoScale" />
+                <Property name="Font" value="DejaVuSans-12" />
                 <Property name="Text" value="Description:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />
@@ -165,7 +165,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="Credits" >
                 <Property name="Area" value="{{0.0257143,0},{0.864854,0},{0.971429,0},{0.981595,0}}" />
-                <Property name="Font" value="DejaVuSans-12-NoScale" />
+                <Property name="Font" value="DejaVuSans-12" />
                 <Property name="Text" value="Credits:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />

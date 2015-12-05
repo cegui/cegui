@@ -30,9 +30,8 @@
 
 #include "../../Base.h"
 #include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
-#include "../../Rect.h"
+#include "../../Sizef.h"
+#include "../../Rectf.h"
 #include "../../TextureTarget.h"
 #include "../../RefCounted.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
@@ -40,17 +39,7 @@
 #include "glm/glm.hpp"
 
 #include <vector>
-#include <map>
-
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef CEGUIOPENGLRENDERER_EXPORTS
-#       define OPENGL_GUIRENDERER_API __declspec(dllexport)
-#   else
-#       define OPENGL_GUIRENDERER_API __declspec(dllimport)
-#   endif
-#else
-#   define OPENGL_GUIRENDERER_API
-#endif
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -63,7 +52,7 @@ class OpenGLTexture;
 class OpenGLGeometryBufferBase;
 class RenderMaterial;
 
-//! Common base class used for other OpenGL based renderer modules.
+//! Common base class used for other OpenGL (desktop or ES) based renderer modules.
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
@@ -71,7 +60,7 @@ public:
     virtual RenderTarget& getDefaultRenderTarget();
     virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const String& name);
@@ -87,7 +76,7 @@ public:
     virtual void setDisplaySize(const Sizef& sz);
     virtual const Sizef& getDisplaySize() const;
     virtual const glm::vec2& getDisplayDPI() const;
-    virtual uint getMaxTextureSize() const;
+    virtual unsigned int getMaxTextureSize() const;
     virtual const String& getIdentifierString() const;
     virtual bool isTexCoordSystemFlipped() const;
 
@@ -117,16 +106,24 @@ public:
 
     /*!
     \brief
-        Tells the renderer to initialise some extra states beyond what it
-        directly needs itself for CEGUI.
+        Tells the renderer to enable/disable the resetting of most states used by
+        CEGUI to their default values (OpenGL3Renderer) or their previously set
+        values (OpenGLRenderer).
 
-        This option is useful in cases where you've made changes to the default
-        OpenGL state and do not want to save/restore those between CEGUI
-        rendering calls.  Note that this option will not deal with every
-        possible state or extension - if you want a state added here, make a
-        request and we'll consider it ;)
+        Since the amount of states used by CEGUI is very large and we can't
+        store a temporary for each of them and restore them, the user is responsible
+        for setting the states to the expects ones once CEGUI is done rendering.
     */
-    void enableExtraStateSettings(bool setting);
+    void setStateResettingEnabled(bool setting);
+
+    /*!
+    \brief
+        Returns if state resetting is enabled or disabled in this Renderer.
+
+    \return
+        True if state resetting is enabled, False if state resetting is disabled.
+    */
+    bool getStateResettingEnabled();
 
     /*!
     \brief
@@ -168,9 +165,6 @@ public:
     virtual void setupRenderingBlendMode(const BlendMode mode,
                                          const bool force = false) = 0;
 
-    //! Return whether EXT_texture_compression_s3tc is supported
-    virtual bool isS3TCSupported() const = 0;
-
     /*!
     \brief
         Helper to get the viewport.
@@ -191,6 +185,21 @@ protected:
         Size object describing the initial display resolution.
     */
     OpenGLRendererBase(const Sizef& display_size);
+    
+    OpenGLRendererBase(bool set_glew_experimental);
+
+    /*!
+    \brief
+        Constructor.
+
+    \param display_size
+        Size object describing the initial display resolution.
+    \param set_glew_experimental
+        If true, set "glewExperimental = GL_TRUE" before calling "glewInit".
+    */
+    OpenGLRendererBase(const Sizef& display_size, bool set_glew_experimental);
+    
+    void init (bool init_glew=false, bool set_glew_experimental=false);
 
     //! Destructor!
     virtual ~OpenGLRendererBase();
@@ -210,7 +219,7 @@ protected:
     virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl(RefCounted<RenderMaterial> renderMaterial) = 0;
 
     //! return some appropriate TextureTarget subclass instance.
-    virtual TextureTarget* createTextureTarget_impl() = 0;
+    virtual TextureTarget* createTextureTarget_impl(bool addStencilBuffer) = 0;
 
     //! return some appropriate Texture subclass instance.
     virtual OpenGLTexture* createTexture_impl(const String& name) = 0;
@@ -228,13 +237,13 @@ protected:
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
     //! container type used to hold Textures we create.
-    typedef std::map<String, OpenGLTexture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, OpenGLTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
-    bool d_initExtraStates;
+    bool d_isStateResettingEnabled;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
 };
@@ -251,7 +260,8 @@ class OGLTextureTargetFactory
 public:
     OGLTextureTargetFactory() {}
     virtual ~OGLTextureTargetFactory() {}
-    virtual TextureTarget* create(OpenGLRendererBase&) const
+    virtual TextureTarget* create
+      (OpenGLRendererBase&, bool /*addStencilBuffer*/) const
         { return 0; }
 };
 

@@ -60,7 +60,7 @@ public:
         Data members
     *************************************************************************/
     //! handlers should increment this if they handled the event.
-    uint handled;
+    unsigned int handled;
 };
 
 /*!

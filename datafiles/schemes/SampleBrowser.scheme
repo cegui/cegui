@@ -2,8 +2,7 @@
 <GUIScheme version="5" name="SampleBrowserSkin">
 	<Imageset filename="SampleBrowser.imageset" />
 	<Font filename="DejaVuSans-12.font" />
-    <Font filename="DejaVuSans-12-NoScale.font" />
-    <Font filename="DejaVuSans-14-NoScale.font" />
+    <Font filename="SampleBrowserFonts.font" />
 	<LookNFeel filename="SampleBrowser.looknfeel" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 

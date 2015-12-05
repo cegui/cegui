@@ -40,20 +40,20 @@ namespace CEGUI
 {
 //---------------------------------------------------------------------------//
 GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
+    d_renderMaterial(renderMaterial),
     d_translation(0, 0, 0),
     d_rotation(1, 0, 0, 0), // <-- IDENTITY
     d_scale(1.0f, 1.0f, 1.0f),
     d_pivot(0, 0, 0),
     d_customTransform(1.0f),
-    d_effect(0),
-    d_blendMode(BM_NORMAL),
-    d_renderMaterial(renderMaterial),
-    d_polygonFillRule(PFR_NONE),
-    d_postStencilVertexCount(0),
-    d_alpha(1.0f),
     d_matrixValid(false),
     d_lastRenderTarget(0),
-    d_lastRenderTargetActivationCount(0)
+    d_lastRenderTargetActivationCount(0),
+    d_blendMode(BM_NORMAL),
+    d_polygonFillRule(PFR_NONE),
+    d_postStencilVertexCount(0),
+    d_effect(0),
+    d_alpha(1.0f)
 {}
 
 //---------------------------------------------------------------------------//

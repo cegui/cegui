@@ -51,8 +51,6 @@ public:
                   const std::string& fragment_shader_source,
                   OpenGLBaseStateChangeWrapper* glStateChanger);
 
-    ~OpenGL3Shader();
-
     /*!
     \brief
         Defines the name of the variable inside the shader which represents the

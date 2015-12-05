@@ -29,11 +29,10 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOPENGLESRENDERER_EXPORTS
@@ -210,7 +209,7 @@ public:
     virtual GeometryBuffer& createGeometryBuffer();
     virtual void destroyGeometryBuffer(const GeometryBuffer& buffer);
     virtual void destroyAllGeometryBuffers();
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const String& name);
@@ -228,7 +227,7 @@ public:
     virtual void setDisplaySize(const Sizef& sz);
     virtual const Sizef& getDisplaySize() const;
     virtual const glm::vec2& getDisplayDPI() const;
-    virtual uint getMaxTextureSize() const;
+    virtual unsigned int getMaxTextureSize() const;
     virtual const String& getIdentifierString() const;
     virtual bool isTexCoordSystemFlipped() const;
 
@@ -367,11 +366,11 @@ private:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, OpenGLESTexture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, OpenGLESTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
     bool d_initExtraStates;
     //! pointer to a helper that creates TextureTargets supported by the system.

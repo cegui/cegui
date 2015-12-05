@@ -102,8 +102,8 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithOffset_ReturnsCor
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithScrollbar_ReturnsCorrectIndex)
 {
-    for (int i = 0; i < 100; ++i)
-        model.d_items.push_back(" item .." + PropertyHelper<int>::toString(i));
+    for (std::int32_t i = 0; i < 100; ++i)
+        model.d_items.push_back(" item .." + PropertyHelper<std::int32_t>::toString(i));
     model.d_items.push_back(ITEM1);
     view->setSize(USize(cegui_absdim(100), cegui_absdim(font_height * 10)));
     view->prepareForRender();

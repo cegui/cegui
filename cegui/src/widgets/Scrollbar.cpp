@@ -372,9 +372,9 @@ Thumb* Scrollbar::getThumb() const
 void Scrollbar::updateThumb(void)
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "This function must be implemented by the window renderer object "
-            "(no window renderer is assigned.)"));
+            "(no window renderer is assigned.)");
 
     static_cast<ScrollbarWindowRenderer*>(d_windowRenderer)->updateThumb();
 }
@@ -383,9 +383,9 @@ void Scrollbar::updateThumb(void)
 float Scrollbar::getValueFromThumb(void) const
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "This function must be implemented by the window renderer object "
-            "(no window renderer is assigned.)"));
+            "(no window renderer is assigned.)");
 
     return static_cast<ScrollbarWindowRenderer*>(
                d_windowRenderer)->getValueFromThumb();
@@ -395,9 +395,9 @@ float Scrollbar::getValueFromThumb(void) const
 float Scrollbar::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "This function must be implemented by the window renderer object "
-            "(no window renderer is assigned.)"));
+            "(no window renderer is assigned.)");
 
     return static_cast<ScrollbarWindowRenderer*>(
                d_windowRenderer)->getAdjustDirectionFromPoint(pt);
@@ -485,7 +485,7 @@ float Scrollbar::getMaxScrollPosition() const
 {
     // max position is (docSize - pageSize)
     // but must be at least 0 (in case doc size is very small)
-    return ceguimax((d_documentSize - d_pageSize), 0.0f);
+    return std::max((d_documentSize - d_pageSize), 0.0f);
 }
 
 //----------------------------------------------------------------------------//

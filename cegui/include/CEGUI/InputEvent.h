@@ -32,8 +32,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/SemanticInputEvent.h"
 
 #if defined(_MSC_VER)
@@ -224,20 +223,6 @@ enum MouseButton
     NoButton
 };
 
-static CursorInputSource convertToCursorInputSource(MouseButton button)
-{
-    if (button == LeftButton)
-        return CIS_Left;
-
-    if (button == RightButton)
-        return CIS_Right;
-
-    if (button == MiddleButton)
-        return CIS_Middle;
-
-    return CIS_None;
-}
-
 /*!
 \brief
 	System key flag values
@@ -344,7 +329,7 @@ class CEGUIEXPORT TextEventArgs : public WindowEventArgs
 public:
 	TextEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	String::value_type character; //!< utf32 or char (depends on used String class) codepoint for the character of the text.
+	String::value_type character; //!< char32_t or char (depends on used String class) codepoint for the character of the text.
 };
 
 /*!

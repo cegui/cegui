@@ -75,8 +75,8 @@ void GLES2Texture::initInternalPixelFormatFields(const PixelFormat fmt)
         break;
 
     default:
-        CEGUI_THROW(RendererException(
-                        "invalid or unsupported CEGUI::PixelFormat."));
+        throw RendererException(
+                        "invalid or unsupported CEGUI::PixelFormat.");
     }
 }
 
@@ -104,7 +104,7 @@ void GLES2Texture::setTextureSize_impl(const Sizef& sz)
     glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
 
     if((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
+        throw RendererException("size too big");
 
     // save old texture binding
     GLuint old_tex;
@@ -141,7 +141,7 @@ void GLES2Texture::setTextureSize_impl(const Sizef& sz)
 void GLES2Texture::blitToMemory(void* targetData)
 {
     // TODO:
-    CEGUI_THROW(RendererException("GLES2Texture blitToMemory unimplemented!"));
+    throw RendererException("GLES2Texture blitToMemory unimplemented!");
 }
 
 //----------------------------------------------------------------------------//

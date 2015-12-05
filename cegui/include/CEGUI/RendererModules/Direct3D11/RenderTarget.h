@@ -29,7 +29,7 @@
 
 #include "../../RenderTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 
 #if defined(_MSC_VER)
@@ -40,9 +40,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Implementation of an ntermediate RenderTarget for the Direct3D 10 API
-template <typename T = RenderTarget>
-class D3D11_GUIRENDERER_API Direct3D11RenderTarget : public T
+//! Implementation of the RenderTarget class specialised for the Direct3D11 API
+class D3D11_GUIRENDERER_API Direct3D11RenderTarget : virtual public RenderTarget
 {
 public:
     //! Constructor

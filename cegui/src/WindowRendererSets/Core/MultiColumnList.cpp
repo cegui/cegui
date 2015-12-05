@@ -104,7 +104,7 @@ namespace CEGUI
         const float alpha = w->getEffectiveAlpha();
 
         // loop through the items
-        for (uint i = 0; i < w->getRowCount(); ++i)
+        for (unsigned int i = 0; i < w->getRowCount(); ++i)
         {
             // set initial x position for this row.
             itemPos.x = itemsArea.left() - horzScrollbar->getScrollPosition();
@@ -113,7 +113,7 @@ namespace CEGUI
             itemSize.d_height = w->getHighestRowItemHeight(i);
 
             // loop through the columns in this row
-            for (uint j = 0; j < w->getColumnCount(); ++j)
+            for (unsigned int j = 0; j < w->getColumnCount(); ++j)
             {
                 // allow item to use full width of the column
                 itemSize.d_width = CoordConverter::asAbsolute(header->getColumnWidth(j), header->getPixelSize().d_width);

@@ -377,7 +377,7 @@ void SVGData::elementSVGPolygon(const XMLAttributes& attributes)
 }
 
 //----------------------------------------------------------------------------//
-void SVGData::elementEndLocal(const String& element)
+void SVGData::elementEndLocal(const String& /*element*/)
 {
 }
 
@@ -415,8 +415,8 @@ SVGData::SVGLength SVGData::parseLengthDataType(const String& length_string)
     }
     else
     // Parse error
-        CEGUI_THROW(SVGParsingException(
-            "SVG file parsing was aborted because of an invalid value of an SVG 'length' type"));
+        throw SVGParsingException(
+            "SVG file parsing was aborted because of an invalid value of an SVG 'length' type");
 
     return length;
 }
@@ -557,8 +557,8 @@ glm::vec3 SVGData::parseColour(const CEGUI::String& colour_string)
         return glm::vec3(0.0f, 1.0f, 1.0f);
 
     // Parse error
-    CEGUI_THROW(SVGParsingException(
-        "SVG file parsing was aborted because of an invalid colour value"));
+    throw SVGParsingException(
+        "SVG file parsing was aborted because of an invalid colour value");
 
     return glm::vec3();
 }
@@ -658,8 +658,8 @@ void SVGData::parsePaintStyleStrokeLinecap(const String& strokeLinecapString, SV
     else if(strokeLinecapString.compare("square") == 0)
         paint_style.d_strokeLinecap = SVGPaintStyle::SLC_SQUARE;
     else
-        CEGUI_THROW(SVGParsingException(
-        "SVG file parsing was aborted because of an invalid value for the SVG 'linecap' type"));
+        throw SVGParsingException(
+        "SVG file parsing was aborted because of an invalid value for the SVG 'linecap' type");
 }
 
 //----------------------------------------------------------------------------//
@@ -672,8 +672,8 @@ void SVGData::parsePaintStyleStrokeLinejoin(const String& strokeLinejoinString, 
     else if(strokeLinejoinString.compare("bevel") == 0)
         paint_style.d_strokeLinejoin = SVGPaintStyle::SLJ_BEVEL;
     else
-        CEGUI_THROW(SVGParsingException(
-        "SVG file parsing was aborted because of an invalid value for the SVG 'linejoin' type"));
+        throw SVGParsingException(
+        "SVG file parsing was aborted because of an invalid value for the SVG 'linejoin' type");
 }
 
 //----------------------------------------------------------------------------//

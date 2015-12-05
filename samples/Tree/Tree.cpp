@@ -34,6 +34,7 @@
 #endif
 
 #include <ctime>
+#include <cstdint>
 #include <stddef.h>
 
 
@@ -63,11 +64,11 @@ const unsigned int TreeSample::EditBoxID = 2;
 int randInt(int low, int high)
    {
    int   num;
-   CEGUI::uint32 range;
+   std::uint32_t range;
 
    range = high - low + 1;
    if (range > RAND_MAX)
-      num = (int)(((CEGUI::uint32)rand() * (CEGUI::uint32)rand()) % range);
+      num = (int)(((std::uint32_t)rand() * (std::uint32_t)rand()) % range);
    else
       num = (rand()) % range;
 
@@ -119,9 +120,10 @@ bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // Load the scheme to initialise the skin which we use in this sample
     SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
@@ -208,16 +210,16 @@ bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
     theTree->addItem(newTreeCtrlEntryLvl1);
 
     // Now let's create a whole bunch of items automatically
-    int levelIndex = 3;
-    int idepthIndex;
-    int childIndex;
-    int childCount;
+    std::int32_t levelIndex = 3;
+    std::int32_t idepthIndex;
+    std::int32_t childIndex;
+    std::int32_t childCount;
     unsigned int iconIndex;
     String itemText;
     while (levelIndex < 10)
     {
         idepthIndex = 0;
-        itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex);
+        itemText = "Tree Item Level " + PropertyHelper<std::int32_t>::toString(levelIndex) + " Depth " + PropertyHelper<std::int32_t>::toString(idepthIndex);
         newTreeCtrlEntryLvl1 = new StandardItem(itemText);
         // Set a random icon for the item.  Sometimes blank (on purpose).
         iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0])) + 2);
@@ -230,7 +232,7 @@ bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
         childCount = randInt(0, 3);
         while (childIndex < childCount)
         {
-            itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
+            itemText = "Tree Item Level " + PropertyHelper<std::int32_t>::toString(levelIndex) + " Depth " + PropertyHelper<std::int32_t>::toString(idepthIndex + 1) + " Child " + PropertyHelper<std::int32_t>::toString(childIndex + 1);
             newTreeCtrlEntryLvl2 = new StandardItem(itemText);
             // Set a random icon for the item.  Sometimes blank (on purpose).
             iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
@@ -242,7 +244,7 @@ bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
 
         while (idepthIndex < 15)
         {
-            itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1);
+            itemText = "Tree Item Level " + PropertyHelper<std::int32_t>::toString(levelIndex) + " Depth " + PropertyHelper<std::int32_t>::toString(idepthIndex + 1);
             newTreeCtrlEntryLvl2 = new StandardItem(itemText);
             // Set a random icon for the item.  Sometimes blank (on purpose).
             iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
@@ -255,7 +257,7 @@ bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
             childCount = randInt(0, 3);
             while (childIndex < childCount)
             {
-                itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
+                itemText = "Tree Item Level " + PropertyHelper<std::int32_t>::toString(levelIndex) + " Depth " + PropertyHelper<std::int32_t>::toString(idepthIndex + 1) + " Child " + PropertyHelper<std::int32_t>::toString(childIndex + 1);
                 newTreeCtrlEntryLvl2 = new StandardItem(itemText);
                 // Set a random icon for the item.  Sometimes blank (on purpose).
                 iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));

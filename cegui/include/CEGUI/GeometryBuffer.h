@@ -30,7 +30,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/RenderMaterial.h"
 

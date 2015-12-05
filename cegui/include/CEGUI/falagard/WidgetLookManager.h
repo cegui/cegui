@@ -31,7 +31,8 @@
 #include "../String.h"
 #include "../Exceptions.h"
 #include "./WidgetLookFeel.h"
-#include <map>
+#include <unordered_map>
+#include <unordered_set>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -83,10 +84,10 @@ namespace CEGUI
 
 
         /** Typedef for a set of WidgetLookFeel names. */
-        typedef std::set<String, StringFastLessCompare> WidgetLookNameSet;
+        typedef std::unordered_set<String> WidgetLookNameSet;
 
         //! Typedef for a map of Strings to WidgetLookFeel objects
-        typedef std::map<String, WidgetLookFeel*, StringFastLessCompare> WidgetLookPointerMap;
+        typedef std::unordered_map<String, WidgetLookFeel*> WidgetLookPointerMap;
 
         /*!
         \brief
@@ -300,7 +301,7 @@ namespace CEGUI
 
 
         //! Typedef for a map of Strings to WidgetLookFeel instances
-        typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
+        typedef std::unordered_map<String, WidgetLookFeel> WidgetLookList;
 
         //! List of WidgetLookFeels added to this Manager
         WidgetLookList  d_widgetLooks;  

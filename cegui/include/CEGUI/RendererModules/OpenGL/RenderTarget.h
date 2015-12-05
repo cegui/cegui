@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "../../RenderTarget.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -40,10 +40,9 @@ namespace CEGUI
 {
 /*!
 \brief
-    Intermediate OpenGL implementation of a RenderTarget.
+    OpenGL implementation of a RenderTarget.
 */
-template <typename T = RenderTarget>
-class OPENGL_GUIRENDERER_API OpenGLRenderTarget : public T
+class OPENGL_GUIRENDERER_API OpenGLRenderTarget : virtual public RenderTarget
 {
 public:
     //! Constructor

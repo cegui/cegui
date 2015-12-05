@@ -24,11 +24,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
-
 
 #include <sstream>
 #include <iostream>
@@ -102,7 +102,7 @@ GLint OpenGLBaseShader::getUniformLocation(const std::string &name) const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLBaseShader::bindFragDataLocation(const std::string &name)
+void OpenGLBaseShader::bindFragDataLocation(const std::string& /*name*/)
 {
     if(d_program > 0)
     {
@@ -127,7 +127,7 @@ GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
     {
         std::stringstream stringStream;
         stringStream << "Critical Error - Could not create shader object of type:" << type << ".";
-        CEGUI_THROW(RendererException(stringStream.str().c_str()));
+        throw RendererException(stringStream.str().c_str());
         return 0;
     }
 
@@ -192,6 +192,8 @@ void OpenGLBaseShader::link()
 
     d_createdSuccessfully = true;
     checkGLErrors();
+
+
 }
 
 //----------------------------------------------------------------------------//
@@ -207,7 +209,7 @@ void OpenGLBaseShader::outputProgramLog(GLuint program)
     {
         std::stringstream sstream;
         sstream << "OpenGLBaseShader linking has failed.\n" << logBuffer;
-        CEGUI_THROW(RendererException(sstream.str().c_str()));
+        throw RendererException(sstream.str().c_str());
     }
 };
 
@@ -224,7 +226,7 @@ void OpenGLBaseShader::outputShaderLog(GLuint shader)
     {
         std::stringstream ss;
         ss << "OpenGLBaseShader compilation has failed.\n" << logBuffer;
-          CEGUI_THROW(RendererException(ss.str().c_str()));
+          throw RendererException(ss.str().c_str());
     }
 };
 

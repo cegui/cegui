@@ -30,7 +30,7 @@
 #include "./Enums.h"
 #include "../String.h"
 #include "../UDim.h"
-#include "../Rect.h"
+#include "../Rectf.h"
 #include "../XMLSerializer.h"
 
 // Start of CEGUI namespace section
@@ -391,7 +391,7 @@ private:
     //! Holds target window name suffix.
     String d_widgetName;
     //! the dimension of the target window that we are to represent.
-    DimensionType d_what;
+    DimensionType d_dimensionType;
 };
 
 /*!

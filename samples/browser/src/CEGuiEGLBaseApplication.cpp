@@ -126,7 +126,7 @@ void CEGuiEGLBaseApplication::initialiseResourceGroupDirectories()
 #ifdef __ANDROID__
     const char* dataPathPrefix = "datafiles";
 #else
-    const char* dataPathPrefix = getDataPathPrefix();
+    const char* dataPathPrefix = getDataPathPrefix().c_str();
 #endif
     char resourcePath[PATH_MAX];
 

@@ -29,7 +29,7 @@ Author:   Hans Mackowiak (Hanmac) hanmac@gmx.de
 #include "CEGUI/Base.h"
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/ResourceProvider.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -116,7 +116,7 @@ public:
          const String& file_pattern,
          const String& resource_group);
 protected:
-  typedef std::map<String, ResourceProvider*, StringFastLessCompare> Providermap;
+  typedef std::unordered_map<String, ResourceProvider*> Providermap;
   Providermap  d_providerlist;
 public:
   typedef ConstMapIterator<Providermap> ProviderIterator;

@@ -149,9 +149,10 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     if (d_font)
         return d_font;
 
-    return (window ? window->getGUIContext() :
-                     System::getSingleton().getDefaultGUIContext()).
-           getDefaultFont();
+    if (window)
+        return window->getFont();
+
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -191,12 +192,12 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
         break;
 
     default:
-        CEGUI_THROW(InvalidRequestException(
-            "unknown VerticalFormatting option specified."));
+        throw InvalidRequestException(
+            "unknown VerticalFormatting option specified.");
     }
 
     // apply padding to position:
-    final_pos += d_padding.getPositionGLM();
+    final_pos += d_padding.getPosition();
 
     // apply modulative colours if needed.
     ColourRect final_cols(d_colours);
@@ -230,8 +231,8 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
 {
     const Font* fnt = getEffectiveFont(ref_wnd);
 
-    Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
-               d_padding.d_min.d_y + d_padding.d_max.d_y);
+    Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
+               d_padding.d_min.y + d_padding.d_max.y);
 
     if (fnt)
     {
@@ -259,8 +260,8 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.
     if (!fnt)
-        CEGUI_THROW(InvalidRequestException(
-            "unable to split with no font set."));
+        throw InvalidRequestException(
+            "unable to split with no font set.");
 
     // create 'left' side of split and clone our basic configuration
     RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
@@ -289,7 +290,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             // if it was the first token, split the token itself
             if (first_component && left_len == 0)
                 left_len =
-                    ceguimax(static_cast<size_t>(1),
+                    std::max(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
                                 d_text.substr(0, token_len), split_point));
             

@@ -105,6 +105,13 @@ d_device(0),
 //----------------------------------------------------------------------------//
 CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
 {
+    if (d_device)
+        d_device->drop();
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiIrrlichtBaseApplication::destroyRenderer()
+{
     CEGUI::IrrlichtRenderer& renderer =
         *static_cast<CEGUI::IrrlichtRenderer*>(d_renderer);
 
@@ -115,15 +122,11 @@ CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
         *static_cast<CEGUI::IrrlichtImageCodec*>(d_imageCodec));
 
     CEGUI::IrrlichtRenderer::destroy(renderer);
-
-    if (d_device)
-        d_device->drop();
 }
 
 //----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::run()
 {
-    d_sampleApp->initialise();
     CEGUI::System& guiSystem = CEGUI::System::getSingleton();
 
     // draw everything

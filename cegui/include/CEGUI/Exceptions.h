@@ -33,6 +33,12 @@
 #include "CEGUI/String.h"
 #include <exception>
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4275)
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -463,7 +469,7 @@ public:
     VS2003.
 */
 #define RendererException(message)  \
-    RendererException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
+    ::CEGUI::RendererException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -826,5 +832,8 @@ public:
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif // end of guard _CEGUIExceptions_h_

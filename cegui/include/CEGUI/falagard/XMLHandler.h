@@ -31,6 +31,7 @@
 #include "./Dimensions.h"
 #include "../Window.h"
 #include <vector>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -207,9 +208,9 @@ namespace CEGUI
         //! Type for handlers of a closing xml element.
         typedef void (Falagard_xmlHandler::*ElementEndHandler)();
         //! Map of handlers for opening xml elements.
-        typedef std::map<String, ElementStartHandler, StringFastLessCompare> ElementStartHandlerMap;
+        typedef std::unordered_map<String, ElementStartHandler> ElementStartHandlerMap;
         //! Map of handlers for closing xml elements.
-        typedef std::map<String, ElementEndHandler, StringFastLessCompare> ElementEndHandlerMap;
+        typedef std::unordered_map<String, ElementEndHandler> ElementEndHandlerMap;
 
         /*************************************************************************
             helper methods

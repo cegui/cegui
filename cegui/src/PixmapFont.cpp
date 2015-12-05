@@ -152,7 +152,7 @@ void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
     {
         xml_stream.openTag("Mapping")
             .attribute(Font_xmlHandler::MappingCodepointAttribute,
-                       PropertyHelper<uint>::toString(i->first))
+                       PropertyHelper<std::uint32_t>::toString(i->first))
             .attribute(Font_xmlHandler::MappingHorzAdvanceAttribute,
                        PropertyHelper<float>::toString(i->second.getAdvance() * advscale))
             .attribute(Font_xmlHandler::MappingImageAttribute,
@@ -200,8 +200,8 @@ void PixmapFont::defineMapping(const String& value)
     utf32 codepoint;
     float adv;
     if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
-        CEGUI_THROW(InvalidRequestException(
-            "Bad glyph Mapping specified: " + value));
+        throw InvalidRequestException(
+            "Bad glyph Mapping specified: " + value);
     
     defineMapping(codepoint, img, adv);
 }

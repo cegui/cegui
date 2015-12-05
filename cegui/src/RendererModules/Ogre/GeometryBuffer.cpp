@@ -56,9 +56,9 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_owner(owner),
     d_renderSystem(rs),
     d_clipRect(0, 0, 0, 0),
+    d_matrix(1.0),
     d_expectedData(MT_INVALID),
     d_dataAppended(false),
-    d_matrix(1.0),
     d_previousAlphaValue(-1.f)
 {
     
@@ -139,10 +139,10 @@ void OgreGeometryBuffer::draw() const
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
+    d_clipRect.top(std::max(0.0f, region.top()));
+    d_clipRect.bottom(std::max(0.0f, region.bottom()));
+    d_clipRect.left(std::max(0.0f, region.left()));
+    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
@@ -253,8 +253,8 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
         break;
     }
     default:
-        CEGUI_THROW(RendererException(
-            "Unknown d_expectedData type."));
+        throw RendererException(
+            "Unknown d_expectedData type.");
     }
 
 }
@@ -282,8 +282,8 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 
     if (d_hwBuffer.isNull())
     {
-        CEGUI_THROW(RendererException("Failed to create Ogre vertex buffer, "
-            "probably because the vertex layout is invalid."));
+        throw RendererException("Failed to create Ogre vertex buffer, "
+            "probably because the vertex layout is invalid.");
     }
 
     // bind the vertex buffer for rendering

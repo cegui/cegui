@@ -29,11 +29,10 @@
 
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 #include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
+#include "../../Sizef.h"
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -161,7 +160,7 @@ public:
     virtual GeometryBuffer& createGeometryBuffer();
     virtual void destroyGeometryBuffer(const GeometryBuffer& buffer);
     virtual void destroyAllGeometryBuffers();
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const String& name);
@@ -179,7 +178,7 @@ public:
     virtual void setDisplaySize(const Sizef& sz);
     virtual const Sizef& getDisplaySize() const;
     virtual const glm::vec2& getDisplayDPI() const;
-    virtual uint getMaxTextureSize() const;
+    virtual unsigned int getMaxTextureSize() const;
     virtual const String& getIdentifierString() const;
     virtual bool isTexCoordSystemFlipped() const;
   
@@ -220,11 +219,11 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, IrrlichtTexture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, IrrlichtTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! ptr to helper object that aids in injection of events from Irrlicht.
     IrrlichtEventPusher* d_eventPusher;
     //! true if driver supports non square textures

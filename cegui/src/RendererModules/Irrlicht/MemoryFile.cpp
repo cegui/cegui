@@ -32,7 +32,7 @@ namespace CEGUI
 {
 IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename,
                                        const unsigned char* memory,
-                                       uint32 size) :
+                                       std::uint32_t size) :
     d_filename(filename.c_str()),
     d_buffer(memory),
     d_size(size),
@@ -42,7 +42,7 @@ IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename,
 
 irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::u32 sizeToRead)
 {
-    uint32 realReadSize =
+    std::uint32_t realReadSize =
     ((d_position + sizeToRead) > d_size) ? d_size - d_position : sizeToRead;
 
     memcpy(buffer, d_buffer + d_position, realReadSize);
@@ -53,7 +53,7 @@ irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::u32 sizeToRead)
 
 bool IrrlichtMemoryFile::seek(long finalPos, bool relativeMovement)
 {
-    uint32 targetPosition = relativeMovement ? d_position : 0;
+    std::uint32_t targetPosition = relativeMovement ? d_position : 0;
     targetPosition += finalPos;
 
     if (targetPosition > d_size)

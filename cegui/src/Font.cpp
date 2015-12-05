@@ -36,7 +36,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 // amount of bits in a uint
-#define BITS_PER_UINT   (sizeof (uint) * 8)
+#define BITS_PER_UINT   (sizeof (unsigned int) * 8)
 // must be a power of two
 #define GLYPHS_PER_PAGE 256
 
@@ -75,12 +75,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 Font::~Font()
 {
     if (d_glyphPageLoaded)
-    {
-        const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
-            + BITS_PER_UINT - 1) / BITS_PER_UINT;
-
         delete[] d_glyphPageLoaded;
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -129,19 +124,16 @@ void Font::setMaxCodepoint(utf32 codepoint)
 {
     if (d_glyphPageLoaded)
     {
-        const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
-            + BITS_PER_UINT - 1) / BITS_PER_UINT;
-
         delete[] d_glyphPageLoaded;
     }
 
     d_maxCodepoint = codepoint;
 
-    const uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-    const uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
+    const unsigned int npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
+    const unsigned int size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
 
-    d_glyphPageLoaded = new uint[size];
-    memset(d_glyphPageLoaded, 0, size * sizeof(uint));
+    d_glyphPageLoaded = new unsigned int[size];
+    memset(d_glyphPageLoaded, 0, size * sizeof(unsigned int));
 }
 
 //----------------------------------------------------------------------------//
@@ -155,8 +147,8 @@ const FontGlyph* Font::getGlyphData(utf32 codepoint) const
     if (d_glyphPageLoaded)
     {
         // Check if glyph page has been rasterised
-        uint page = codepoint / GLYPHS_PER_PAGE;
-        uint mask = 1 << (page & (BITS_PER_UINT - 1));
+        unsigned int page = codepoint / GLYPHS_PER_PAGE;
+        unsigned int mask = 1 << (page & (BITS_PER_UINT - 1));
         if (!(d_glyphPageLoaded[page / BITS_PER_UINT] & mask))
         {
             d_glyphPageLoaded[page / BITS_PER_UINT] |= mask;
@@ -196,7 +188,7 @@ float Font::getTextExtent(const String& text, float x_scale) const
         }
     }
 
-    return ceguimax(adv_extent, cur_extent);
+    return std::max(adv_extent, cur_extent);
 }
 
 //----------------------------------------------------------------------------//
@@ -342,11 +334,11 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 
     if (d_nativeResolution.d_width != DefaultNativeHorzRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeHorzResAttribute,
-            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeResolution.d_width)));
+            PropertyHelper<std::uint32_t>::toString(static_cast<std::uint32_t>(d_nativeResolution.d_width)));
 
     if (d_nativeResolution.d_height != DefaultNativeVertRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
-            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeResolution.d_height)));
+            PropertyHelper<std::uint32_t>::toString(static_cast<std::uint32_t>(d_nativeResolution.d_height)));
 
     if (d_autoScaled != ASM_Disabled)
         xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute,

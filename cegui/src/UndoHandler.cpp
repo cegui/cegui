@@ -108,7 +108,7 @@ void UndoHandler::setUndoLimit(int limit)
 {
     if (limit < 0)
     {
-        CEGUI_THROW(InvalidRequestException("Invalid undo limit. Limit cannot be less then zero."));
+        throw InvalidRequestException("Invalid undo limit. Limit cannot be less then zero.");
     }
 
     d_undoLimit = limit;
@@ -165,7 +165,7 @@ UndoHandler::UndoAction UndoHandler::getLastAction()
 
     if (d_lastUndo)
     {
-        if (d_undoPosition == d_undoList.size() - 1)
+        if (d_undoPosition == static_cast<int>(d_undoList.size()) - 1)
             lastAction = d_undoList[d_undoPosition];
         else
             lastAction = d_undoList[d_undoPosition + 1];

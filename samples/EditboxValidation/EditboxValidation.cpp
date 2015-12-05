@@ -49,9 +49,10 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
     d_usedFiles = CEGUI::String(__FILE__);
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
     guiContext->getCursor().setDefaultImage("AlfiskoSkin/MouseArrow");
@@ -113,7 +114,7 @@ bool EditboxValidationSample::validationChangeHandler(const CEGUI::EventArgs& ar
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxValidationSample::quitButtonHandler(const CEGUI::EventArgs& args)
+bool EditboxValidationSample::quitButtonHandler(const CEGUI::EventArgs&)
 {
     return true;
 }

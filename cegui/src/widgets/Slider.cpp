@@ -296,8 +296,8 @@ void Slider::updateThumb(void)
     else
     {
         //updateThumb_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -315,8 +315,8 @@ float Slider::getValueFromThumb(void) const
     else
     {
         //return getValueFromThumb_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -334,8 +334,8 @@ float Slider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
     else
     {
         //return getAdjustDirectionFromPoint_impl(pt);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 

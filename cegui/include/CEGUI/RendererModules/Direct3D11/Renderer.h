@@ -28,13 +28,12 @@
 #define _CEGUIDirect3D11Renderer_h_
 
 #include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
+#include "../../Sizef.h"
 
 #include <glm/glm.hpp>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIDIRECT3D11RENDERER_EXPORTS
@@ -183,7 +182,7 @@ public:
     virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
     virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    virtual TextureTarget* createTextureTarget();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
     virtual void destroyTextureTarget(TextureTarget* target);
     virtual void destroyAllTextureTargets();
     virtual Texture& createTexture(const String& name);
@@ -201,7 +200,7 @@ public:
     virtual void setDisplaySize(const Sizef& sz);
     virtual const Sizef& getDisplaySize() const;
     virtual const glm::vec2& getDisplayDPI() const;
-    virtual uint getMaxTextureSize() const;
+    virtual unsigned int getMaxTextureSize() const;
     virtual const String& getIdentifierString() const;
     virtual bool isTexCoordSystemFlipped() const;
 
@@ -271,7 +270,7 @@ protected:
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
     //! container type used to hold Textures we create.
-    typedef std::map<String, Direct3D11Texture*, StringFastLessCompare> TextureMap;
+    typedef std::unordered_map<String, Direct3D11Texture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
 

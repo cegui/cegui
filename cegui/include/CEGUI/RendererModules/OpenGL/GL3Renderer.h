@@ -37,7 +37,19 @@ namespace CEGUI
 
 /*!
 \brief
-    Renderer class to interface with OpenGL
+    Renderer class to interface with desktop OpenGL version >= 3.2 or OpenGL ES
+    version >= 2.
+
+    Note: to use this renderer with OpenGL ES 2.0, the Epoxy OpenGL loading
+    library (https://github.com/yaronct/libepoxy, major version 1)
+    must first be installed, and CEGUI must be configured with
+    "-DCEGUI_BUILD_RENDERER_OPENGL=OFF -DCEGUI_BUILD_RENDERER_OPENGL3=ON
+    -DCEGUI_USE_EPOXY=ON -DCEGUI_USE_GLEW=OFF".
+
+    Note: Your OpenGL context must already be initialised when you call this;
+    CEGUI will not create the OpenGL context itself. Nothing special has to be
+    done to choose between desktop OpenGL and OpenGL ES: the type is
+    automatically determined by the type of the current OpenGL context.
 */
 class OPENGL_GUIRENDERER_API OpenGL3Renderer : public OpenGLRendererBase
 {
@@ -158,14 +170,14 @@ public:
     void beginRendering();
     void endRendering();
     virtual Sizef getAdjustedTextureSize(const Sizef& sz);
-    bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
 protected:
+    //! Overrides
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    TextureTarget* createTextureTarget_impl();
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer);
     //! creates a texture of GL3Texture type
     virtual OpenGLTexture* createTexture_impl(const String& name);
 
@@ -185,6 +197,9 @@ protected:
         Size object describing the initial display resolution.
     */
     OpenGL3Renderer(const Sizef& display_size);
+    
+    void init();
+
 
     //! Initialises the ShaderManager and the required OpenGL shaders
     void initialiseOpenGLShaders();
@@ -193,7 +208,6 @@ protected:
     //! Initialises the OpenGL ShaderWrapper for coloured objects
     void initialiseStandardColouredShaderWrapper();
 
-    void initialiseGLExtensions();
 
 protected:
     /*!
@@ -206,8 +220,8 @@ private:
     //! initialise OGL3TextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    //! restores all relevant OpenGL States CEGUI touches to their default value
+    void restoreChangedStatesToDefaults(bool isAfterRendering);
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
     OpenGLBaseShaderWrapper* d_shaderWrapperTextured;
@@ -216,10 +230,8 @@ private:
 
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGLBaseStateChangeWrapper* d_openGLStateChanger;
-    //! The ShaderManager  takes care of the creation of standard OpenGL Shaders and their deletion
+    //! Wrapper for creating and handling shaders
     OpenGLBaseShaderManager* d_shaderManager;
-    //! whether S3TC texture compression is supported by the context
-    bool d_s3tcSupported;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
 };

@@ -123,10 +123,10 @@ void SVGImage::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
     const glm::vec2 scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
 
     // URGENT FIXME: Shouldn't this be in the hands of the user?
-    final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);
-    final_rect.d_min.d_y = CoordConverter::alignToPixels(final_rect.d_min.d_y);
-    final_rect.d_max.d_x = CoordConverter::alignToPixels(final_rect.d_max.d_x);
-    final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
+    final_rect.d_min.x = CoordConverter::alignToPixels(final_rect.d_min.x);
+    final_rect.d_min.y = CoordConverter::alignToPixels(final_rect.d_min.y);
+    final_rect.d_max.x = CoordConverter::alignToPixels(final_rect.d_max.x);
+    final_rect.d_max.y = CoordConverter::alignToPixels(final_rect.d_max.y);
 
     SVGImageRenderSettings svg_render_settings(render_settings,
                                                scale_factor,

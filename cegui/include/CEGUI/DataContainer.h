@@ -74,7 +74,7 @@ public:
 	\param data
         Pointer to the uint8 data buffer.
 	*/
-    void setData(uint8* data) { mData = data; }
+    void setData(std::uint8_t* data) { mData = data; }
 
 	/*!
 	\brief
@@ -83,8 +83,8 @@ public:
 	\return
 		Pointer to an the uint8 data buffer.
 	*/
-    uint8* getDataPtr(void) { return mData; }
-    const uint8* getDataPtr(void) const { return mData; }
+    std::uint8_t* getDataPtr(void) { return mData; }
+    const std::uint8_t* getDataPtr(void) const { return mData; }
 
 	/*!
 	\brief
@@ -114,7 +114,7 @@ private:
     /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    uint8* mData;
+    std::uint8_t* mData;
     size_t mSize;
 };
 

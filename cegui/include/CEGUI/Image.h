@@ -30,7 +30,7 @@
 #include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/String.h"
 #include "CEGUI/ColourRect.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #include <vector>
 

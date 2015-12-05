@@ -1,0 +1,31 @@
+cmake_minimum_required (VERSION 3.0)
+cmake_policy (VERSION 3.0)
+project (Tinyxml VERSION 2.6.2 LANGUAGES C CXX)
+set (TARGET_NAME tinyxml)
+
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++03")
+endif ()
+
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-strict-aliasing -Wall -Wextra")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if (NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+        set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} /W4")
+    endif()
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Dinline=__inline")
+endif ()
+
+set (SOURCES tinystr.cpp
+             tinyxml.cpp
+             tinyxmlerror.cpp
+             tinyxmlparser.cpp)
+set (HEADERS tinystr.h
+             tinyxml.h)
+
+add_library ("${TARGET_NAME}" SHARED ${SOURCES})
+set_target_properties("${TARGET_NAME}" PROPERTIES DEFINE_SYMBOL "TINYXML_EXPORTS")
+
+install (FILES ${HEADERS} DESTINATION "include")
+install (TARGETS "${TARGET_NAME}" RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+

@@ -242,8 +242,8 @@ void PopupMenu::layoutItemWidgets()
 	Rectf render_rect = getItemRenderArea();
 
 	// get starting position
-	const float x0 = CoordConverter::alignToPixels(render_rect.d_min.d_x);
-	float y0 = CoordConverter::alignToPixels(render_rect.d_min.d_y);
+	const float x0 = CoordConverter::alignToPixels(render_rect.d_min.x);
+	float y0 = CoordConverter::alignToPixels(render_rect.d_min.y);
 
 	URect rect;
 	UVector2 sz(cegui_absdim(CoordConverter::alignToPixels(render_rect.getWidth())), cegui_absdim(0)); // set item width

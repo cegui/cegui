@@ -162,6 +162,15 @@ setting CMake options and regenerating, rather than editing directly.
 // Uncomment this to use an external fribidi library.
 #cmakedefine CEGUI_USE_FRIBIDI
 
+// Controls whether to use GLEW as an OpenGL loading library.
+#cmakedefine CEGUI_USE_GLEW
+
+// Controls whether to use Epoxy as an OpenGL loading library.
+#cmakedefine CEGUI_USE_EPOXY
+
+// Controls whether to support OpenGL ES 2.0 renderer.
+#cmakedefine CEGUI_SUPPORT_RENDERER_OPENGLES2
+
 //////////////////////////////////////////////////////////////////////////
 // The following controls whether the MinizipResourceProvider will be
 // built into the CEGUIBase library.  You can uncomment the following line
@@ -176,7 +185,7 @@ setting CMake options and regenerating, rather than editing directly.
 // this can be changed at runtime via the CEGUI_MODULE_DIR environment var.
 #if defined(_WIN32) || defined(__WIN32__)
 #   define CEGUI_MODULE_DIR "${CMAKE_BINARY_DIR}/bin/"
-#else
+#elif !defined(__ANDROID__)
 #   define CEGUI_MODULE_DIR "${CMAKE_INSTALL_PREFIX}/${CEGUI_MODULE_INSTALL_DIR}/"
 #endif
 

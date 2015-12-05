@@ -25,6 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
@@ -46,26 +47,72 @@ String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!"
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase() :
-    d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID)
+    d_defaultTarget(0)
 {
-    initialiseMaxTextureSize();
+    init();
     initialiseDisplaySizeWithViewportSize();
-
     d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displaySize(display_size),
-    d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID)
+    d_defaultTarget(0)
 {
-    initialiseMaxTextureSize();
-
+    init();
     d_defaultTarget = new OpenGLViewportTarget(*this);
+}
+
+//----------------------------------------------------------------------------//
+OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
+    d_defaultTarget(0)
+{
+    init(true, set_glew_experimental);
+    initialiseDisplaySizeWithViewportSize();
+    d_defaultTarget = new OpenGLViewportTarget(*this);
+}
+
+//----------------------------------------------------------------------------//
+OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
+                                       bool set_glew_experimental) :
+    d_displaySize(display_size),
+    d_defaultTarget(0)
+{
+    init(true, set_glew_experimental);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
+{
+    d_displayDPI.x = 96;
+    d_displayDPI.y = 96;
+    d_isStateResettingEnabled = true;
+    d_activeBlendMode = BM_INVALID;
+#if defined CEGUI_USE_GLEW
+    if (init_glew)
+    {
+        if (set_glew_experimental)
+            glewExperimental = GL_TRUE;
+        GLenum err = glewInit();
+        if(err != GLEW_OK)
+        {
+            std::ostringstream err_string;
+            //Problem: glewInit failed, something is seriously wrong.
+            err_string << "failed to initialise the GLEW library. "
+                << glewGetErrorString(err);
+
+            throw RendererException(err_string.str().c_str());
+        }
+        //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
+        glGetError();
+    }
+#else
+    CEGUI_UNUSED(init_glew);
+    CEGUI_UNUSED(set_glew_experimental);
+#endif
+    OpenGLInfo::getSingleton().init();
+    initialiseMaxTextureSize();
 }
 
 //----------------------------------------------------------------------------//
@@ -130,9 +177,9 @@ GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCount
 
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLRendererBase::createTextureTarget()
+TextureTarget* OpenGLRendererBase::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* t = createTextureTarget_impl();
+    TextureTarget* t = createTextureTarget_impl(addStencilBuffer);
 
     if (t)
         d_textureTargets.push_back(t);
@@ -165,8 +212,8 @@ void OpenGLRendererBase::destroyAllTextureTargets()
 Texture& OpenGLRendererBase::createTexture(const String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* tex = createTexture_impl(name);
     tex->initialise();
@@ -183,8 +230,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
                                        const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* tex = createTexture_impl(name);
     tex->initialise(filename, resourceGroup);
@@ -199,8 +246,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
 Texture& OpenGLRendererBase::createTexture(const String& name, const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* tex = createTexture_impl(name);
     tex->initialise(size);
@@ -259,8 +306,8 @@ Texture& OpenGLRendererBase::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No texture named '" + name + "' is available."));
+        throw UnknownObjectException(
+            "No texture named '" + name + "' is available.");
 
     return *i->second;
 }
@@ -284,7 +331,7 @@ const glm::vec2& OpenGLRendererBase::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLRendererBase::getMaxTextureSize() const
+unsigned int OpenGLRendererBase::getMaxTextureSize() const
 {
     return d_maxTextureSize;
 }
@@ -300,8 +347,8 @@ Texture& OpenGLRendererBase::createTexture(const String& name, GLuint tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     OpenGLTexture* t = createTexture_impl(name);
     t->initialise(tex, sz);
@@ -326,10 +373,14 @@ void OpenGLRendererBase::setDisplaySize(const Sizef& sz)
     }
 }
 
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::enableExtraStateSettings(bool setting)
+void OpenGLRendererBase::setStateResettingEnabled(bool setting)
 {
-    d_initExtraStates = setting;
+    d_isStateResettingEnabled = setting;
+}
+
+bool OpenGLRendererBase::getStateResettingEnabled()
+{
+    return d_isStateResettingEnabled;
 }
 
 //----------------------------------------------------------------------------//
@@ -361,9 +412,10 @@ void OpenGLRendererBase::restoreTextures()
 }
 
 //----------------------------------------------------------------------------//
+ 
 float OpenGLRendererBase::getNextPOTSize(const float f)
 {
-    uint size = static_cast<uint>(f);
+    unsigned int size = static_cast<unsigned int>(f);
 
     // if not power of 2
     if ((size & (size - 1)) || !size)

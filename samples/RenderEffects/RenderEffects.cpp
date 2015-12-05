@@ -37,7 +37,7 @@ WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
     d_window(dynamic_cast<CEGUI::FrameWindow*>(window))
 {
     if (!d_window)
-        CEGUI_THROW(CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!"));
+        throw CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!");
 }
 
 //----------------------------------------------------------------------------//
@@ -72,8 +72,8 @@ void WobblyWindowEffect::syncPivots(CEGUI::RenderingWindow& window)
             const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
 
             d_pivots[x][y] = glm::vec2(
-                    factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
-                    factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
+                    factorMinX * pixelRect.d_min.x + factorMaxX * pixelRect.d_max.x,
+                    factorMinY * pixelRect.d_min.y + factorMaxY * pixelRect.d_max.y);
 
             d_pivotVelocities[x][y] = glm::vec2(
                     0.0f,
@@ -184,8 +184,8 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
             const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
 
             const glm::vec2 desiredPos = glm::vec2(
-                    factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
-                    factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
+                    factorMinX * pixelRect.d_min.x + factorMaxX * pixelRect.d_max.x,
+                    factorMinY * pixelRect.d_min.y + factorMaxY * pixelRect.d_max.y);
 
             const glm::vec2 delta = desiredPos - d_pivots[x][y];
 
@@ -603,9 +603,10 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
     // Set default font for the gui context
-    guiContext->setDefaultFont(&defaultFont);
+    guiContext->setDefaultFont(defaultFont);
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )

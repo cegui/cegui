@@ -46,8 +46,8 @@ namespace CEGUI
 const float GLES2FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-GLES2FBOTextureTarget::GLES2FBOTextureTarget(GLES2Renderer& owner) :
-    OpenGLTextureTarget(owner),
+GLES2FBOTextureTarget::GLES2FBOTextureTarget(GLES2Renderer& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer),
     d_glStateChanger(owner.getOpenGLStateChanger())
 {
     // no need to initialise d_previousFrameBuffer here, it will be

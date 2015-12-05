@@ -60,7 +60,7 @@ namespace CEGUI
             Specifies the priority of the layer.  Layers with higher priorities will be drawn on top
             of layers with lower priorities.
         */
-        LayerSpecification(uint priority = 0);
+        LayerSpecification(unsigned int priority = 0);
 
         /*!
         \brief
@@ -117,17 +117,17 @@ namespace CEGUI
             Return the priority of this layer.
 
         \return
-            uint value descibing the priority of this LayerSpecification.
+            unsigned int value descibing the priority of this LayerSpecification.
         */
-        uint getLayerPriority() const;
+        unsigned int getLayerPriority() const;
         /*!
         \brief
             Sets the priority of this layer.
 
         \return
-            uint value descibing the priority of this LayerSpecification.
+            unsigned int value descibing the priority of this LayerSpecification.
         */
-        void setLayerPriority(uint priority);
+        void setLayerPriority(unsigned int priority);
 
         /*!
         \brief
@@ -170,7 +170,7 @@ namespace CEGUI
         //! Collection of SectionSpecification instances
         SectionSpecificationList    d_sections;
         //! Priority of the layer
-        uint                        d_layerPriority;
+        unsigned int                        d_layerPriority;
     };
 
 } // End of  CEGUI namespace section

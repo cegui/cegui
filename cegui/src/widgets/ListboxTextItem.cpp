@@ -50,7 +50,7 @@ const Colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 /*************************************************************************
 	Constructor
 *************************************************************************/
-ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
+ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 	ListboxItem(text, item_id, item_data, disabled, auto_delete),
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
 	d_font(0),
@@ -75,12 +75,9 @@ const Font* ListboxTextItem::getFont(void) const
 	{
 		return d_owner->getFont();
 	}
-	// no owner, just use the default (which may be NULL anyway)
-	else
-	{
-        return System::getSingleton().getDefaultGUIContext().getDefaultFont();   
-	}
-
+    // no owner, so the default font is ambiguous (it could be of any context)
+    else
+        return 0;  
 }
 
 
@@ -146,7 +143,7 @@ void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const
     if (!font)
         return;
 
-    glm::vec2 draw_pos(targetRect.getPositionGLM());
+    glm::vec2 draw_pos(targetRect.getPosition());
 
     draw_pos.y += CoordConverter::alignToPixels(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
@@ -193,10 +190,10 @@ void ListboxTextItem::parseTextString() const
 {
     if (d_textParsingEnabled)
         d_renderedString =
-            d_stringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
+            d_stringParser.parse(getTextVisual(), 0, &d_textCols);
     else
         d_renderedString =
-            d_noTagsStringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
+            d_noTagsStringParser.parse(getTextVisual(), 0, &d_textCols);
 
     d_renderedStringValid = true;
 }

@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #include <windows.h>
 #include <GL/wglew.h>
@@ -52,7 +52,7 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner);
+    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer);
     virtual ~OpenGLWGLPBTextureTarget();
 
     // overrides from OpenGLRenderTarget

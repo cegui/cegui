@@ -23,6 +23,9 @@ set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.inc)
 # gather sample dirs
 subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
+
+
+
 # loop through samples and exclude those that should not be build 
 foreach(dir ${SAMPLES_SUBDIRS})
     if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK
@@ -43,7 +46,7 @@ endforeach()
 file(WRITE ${SAMPLE_LIST_HEADER} "#ifndef _SamplesListHeader_h_\n#define _SamplesListHeader_h_\n\n#include \"Sample.h\"\n")
 file(WRITE ${SAMPLE_LIST_CODE} "std::vector<Sample*> samples;")
 foreach(sample ${SAMPLES_LIST})
-    set(_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${sample}/${sample}.h")
+    set(_PATH "${sample}/${sample}.h")
     file(APPEND ${SAMPLE_LIST_HEADER} "\n#include \"${_PATH}\"")
     file(APPEND ${SAMPLE_LIST_CODE} "\nsamples.push_back(new ${sample}Sample());")
 endforeach()

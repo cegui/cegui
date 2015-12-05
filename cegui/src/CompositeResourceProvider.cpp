@@ -70,8 +70,8 @@ void CompositeResourceProvider::loadRawDataContainer(const String& filename,
                          const String& resourceGroup)
 {
   if (filename.empty())
-    CEGUI_THROW(InvalidRequestException(
-      "Filename supplied for data loading must be valid"));
+    throw InvalidRequestException(
+      "Filename supplied for data loading must be valid");
   ProviderIterator it=getIterator();
   for(it.toStart(); !it.isAtEnd(); ++it)
   {
@@ -86,7 +86,7 @@ void CompositeResourceProvider::loadRawDataContainer(const String& filename,
       }
     }   
   }
-  CEGUI_THROW(InvalidRequestException(filename + " does not exist"));
+  throw InvalidRequestException(filename + " does not exist");
 }
 
 size_t CompositeResourceProvider::getResourceGroupFileNames(std::vector<String>& out_vec,

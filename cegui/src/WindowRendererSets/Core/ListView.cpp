@@ -32,7 +32,6 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/Vector.h"
 
 namespace CEGUI
 {
@@ -78,7 +77,7 @@ void FalagardListView::render(ListView* list_view)
         RenderedString& rendered_string = item->d_string;
         Sizef size(item->d_size);
 
-        size.d_width = ceguimax(items_area.getWidth(), size.d_width);
+        size.d_width = std::max(items_area.getWidth(), size.d_width);
 
         Rectf item_rect;
         item_rect.left(item_pos.x);

@@ -135,21 +135,21 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
             wnd->getPixelSize());
 
         if (wnd->getHorizontalAlignment() == HA_CENTRE)
-            area.setPosition(area.getPosition() - Vector2<float>(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
+            area.setPosition(area.getPosition() - glm::vec2(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
         if (wnd->getVerticalAlignment() == VA_CENTRE)
-            area.setPosition(area.getPosition() - Vector2<float>(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
+            area.setPosition(area.getPosition() - glm::vec2(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
 
-        if (area.d_min.d_x < extents.d_min.d_x)
-            extents.d_min.d_x = area.d_min.d_x;
+        if (area.d_min.x < extents.d_min.x)
+            extents.d_min.x = area.d_min.x;
 
-        if (area.d_min.d_y < extents.d_min.d_y)
-            extents.d_min.d_y = area.d_min.d_y;
+        if (area.d_min.y < extents.d_min.y)
+            extents.d_min.y = area.d_min.y;
 
-        if (area.d_max.d_x > extents.d_max.d_x)
-            extents.d_max.d_x = area.d_max.d_x;
+        if (area.d_max.x > extents.d_max.x)
+            extents.d_max.x = area.d_max.x;
 
-        if (area.d_max.d_y > extents.d_max.d_y)
-            extents.d_max.d_y = area.d_max.d_y;
+        if (area.d_max.y > extents.d_max.y)
+            extents.d_max.y = area.d_max.y;
     }
 
     return extents;

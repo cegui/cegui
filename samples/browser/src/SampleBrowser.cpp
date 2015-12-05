@@ -39,7 +39,6 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/ProgressBar.h"
 
 #include "samples.h"
-
 #include <string>
 #include <iostream>
 #include <vector>
@@ -55,6 +54,8 @@ using namespace CEGUI;
 #   include "CEGUI/AndroidUtils.h"
 #endif
 
+#if !defined __ANDROID__
+
 //----------------------------------------------------------------------------//
 #ifdef __ANDROID__
 #   include <android_native_app_glue.h>
@@ -68,9 +69,15 @@ void android_main(struct android_app* state)
 int main(int argc, char* argv[])
 {
 #endif
+
+    CEGUI_UNUSED(argc);
+    CEGUI_UNUSED(argv);
+    
     // Basic start-up for the sample browser application.
     // Will remain in run() until quitting
     int argidx = 1;
+    CEGUI_UNUSED(argidx);
+    
 #ifdef __APPLE__
     if (argc > 1 && !std::strncmp(argv[argidx], "-psn", 4))
     {
@@ -86,6 +93,8 @@ int main(int argc, char* argv[])
     return sampleBrowser.run();
 #endif
 }
+
+#endif // !defined __ANDROID__
 
 //----------------------------------------------------------------------------//
 SampleBrowser::SampleBrowser() :
@@ -106,25 +115,25 @@ SampleBrowser::~SampleBrowser()
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::initialise()
+bool SampleBrowser::initialise(const CEGUI::String& logFile,
+                               const CEGUI::String& dataPathPrefixOverride)
 {
-    using namespace CEGUI;
+    if (SampleBrowserBase::initialise(logFile, dataPathPrefixOverride))
+    {
+        initialiseLoadScreenLayout();
+        loadSamples();
 
-    initialiseLoadScreenLayout();
+        d_systemInputAggregator = new InputAggregator(
+            &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+        d_systemInputAggregator->initialise();
 
-    loadSamples();
-
-    d_systemInputAggregator = new InputAggregator(
-        &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
-    d_systemInputAggregator->initialise();
-
-    // return true to signalize the initialisation was sucessful and run the
-    // SampleBrowser
-    return true;
+        return true;
+    }
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-void SampleBrowser::deinitialise()
+void SampleBrowser::cleanup()
 {
     unloadSamples();
 
@@ -133,15 +142,17 @@ void SampleBrowser::deinitialise()
         delete d_systemInputAggregator;
         d_systemInputAggregator = 0;
     }
+
+    SampleBrowserBase::cleanup();
 }
 
 //----------------------------------------------------------------------------//
 void SampleBrowser::initialiseLoadScreenLayout()
 {
-    CEGUI::Font& font =
-        FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(&font);
+    CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(defaultFont);
 
     SchemeManager::getSingleton().createFromFile("SampleBrowser.scheme");
 
@@ -355,7 +366,10 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     CEGUI::GUIContext* sampleContext(correspondingSampleData->getGuiContext());
     sampleContext->setRenderTarget(defaultRenderTarget);
 
+    //! We add the exit button to the sample
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
+
+    //! We manually set the cursor to where it was in the overview
     sampleContext->getCursor().setPosition(
         CEGUI::System::getSingleton().getDefaultGUIContext().getCursor().
             getPosition());
@@ -404,15 +418,15 @@ SampleHandler* SampleBrowser::findSampleData(CEGUI::Window* sampleWindow)
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
+bool SampleBrowser::handleSampleExitButtonClicked(const CEGUI::EventArgs&)
 {
     d_quittingSampleView = true;
 
-    return true;
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::initialiseSampleStepwise(int sampleNumber)
+bool SampleBrowser::initialiseSampleStepwise(std::int32_t sampleNumber)
 {
     if (static_cast<int>(d_samples.size()) <= sampleNumber)
         return true;
@@ -442,11 +456,6 @@ void SampleBrowser::initialiseSampleBrowserLayout()
         createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
-
-    CEGUI::FontManager::getSingleton().
-        createFromFile("DejaVuSans-10-NoScale.font");
-    CEGUI::FontManager::getSingleton().
-        createFromFile("Junicode-13.font");
 
     CEGUI::SchemeManager::getSingleton().createFromFile("Generic.scheme");
 
@@ -490,7 +499,7 @@ void SampleBrowser::initialiseSampleBrowserLayout()
 //----------------------------------------------------------------------------//
 bool SampleBrowser::updateInitialisationStep()
 {
-    static int step(0);
+    static std::int32_t step(0);
 
     switch (step)
     {
@@ -592,20 +601,20 @@ void SampleBrowser::renderSampleGUIContexts()
 //----------------------------------------------------------------------------//
 void SampleBrowser::displaySampleBrowserLayoutLoadProgress()
 {
-    int totalNum = d_samples.size() + 2;
+    std::int32_t totalNum = d_samples.size() + 2;
 
     CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin ...");
     d_loadingScreenText->setText(loadText);
 
-    CEGUI::String progressText =  PropertyHelper<int>::toString(1) + "/" +
-        PropertyHelper<int>::toString(totalNum - 1);
+    CEGUI::String progressText =  PropertyHelper<std::int32_t>::toString(1) + "/" +
+        PropertyHelper<std::int32_t>::toString(totalNum - 1);
     d_loadScreenChunkProgressText->setText(progressText);
 
     d_loadingProgressBar->setProgress(1.0f / (totalNum - 1.0f));
 }
 
 //----------------------------------------------------------------------------//
-void SampleBrowser::displaySampleLoadProgress(int sampleNumber)
+void SampleBrowser::displaySampleLoadProgress(std::int32_t sampleNumber)
 {
     SampleHandler* sampleData = d_samples[sampleNumber + 1];
 
@@ -613,8 +622,8 @@ void SampleBrowser::displaySampleLoadProgress(int sampleNumber)
     CEGUI::String loadText = "Loading " + sampleData->getNameText() + " ...";
     d_loadingScreenText->setText(loadText);
 
-    CEGUI::String progressText = PropertyHelper<int>::toString(sampleNumber + 3) +
-        "/" + PropertyHelper<int>::toString(totalNum - 1);
+    CEGUI::String progressText = PropertyHelper<std::int32_t>::toString(sampleNumber + 3) +
+        "/" + PropertyHelper<std::int32_t>::toString(totalNum - 1);
     d_loadScreenChunkProgressText->setText(progressText);
 
     d_loadingProgressBar->setProgress( (sampleNumber + 3.f) / (totalNum - 1.0f) );

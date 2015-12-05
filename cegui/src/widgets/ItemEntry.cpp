@@ -72,8 +72,8 @@ Sizef ItemEntry::getItemPixelSize(void) const
     else
     {
         //return getItemPixelSize_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 

@@ -30,8 +30,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -55,16 +54,16 @@ public:
 
 /*!
 \brief
-    Defines interface to some surface that can be rendered to.  Concrete
-    instances of objects that implement the RenderTarget interface are
-    normally created via the Renderer object.
+    Defines a virtual RenderTarget class serving different render target classes
+    as base. Concrete instances of objects that implement the RenderTarget interface are
+    normally created via the Renderer object. This class should be inherited
+    only using virtual inheritance.
 */
 class CEGUIEXPORT RenderTarget :
     public EventSet
 {
 public:
     RenderTarget();
-
     virtual ~RenderTarget();
 
     //! Namespace for global events
@@ -223,7 +222,7 @@ public:
     \return
         The vertical FOV angle of the perspective projection. Value in Radians.
     */
-    const float getFovY() const;
+    float getFovY() const;
 
     /*!
     \brief

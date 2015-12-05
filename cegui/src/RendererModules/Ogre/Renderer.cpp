@@ -64,6 +64,8 @@
 
 #include "glm/gtc/type_ptr.hpp"
 
+#include <unordered_map>
+
 #define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           60
 
 // Start of CEGUI namespace section
@@ -115,7 +117,7 @@ typedef std::vector<TextureTarget*> TextureTargetList;
 //! container type used to hold GeometryBuffers we create.
 typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
 //! container type used to hold Textures we create.
-typedef std::map<String, OgreTexture*, StringFastLessCompare> TextureMap;
+typedef std::unordered_map<String, OgreTexture*> TextureMap;
 
 //----------------------------------------------------------------------------//
 // Implementation data for the OgreRenderer
@@ -138,8 +140,8 @@ struct OgreRenderer_impl
         d_makeFrameControlCalls(true),
         d_useGLSL(false),
         d_useGLSLES(false),
-        d_useGLSLCore(false),
         d_useHLSL(false),
+        d_useGLSLCore(false),
         d_texturedShaderWrapper(0),
         d_colouredShaderWrapper(0)
         {}
@@ -160,7 +162,7 @@ struct OgreRenderer_impl
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! OGRE root object ptr
     Ogre::Root* d_ogreRoot;
     //! Pointer to the render system for Ogre.
@@ -229,8 +231,8 @@ OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-        "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+        "CEGUI::System object is already initialised.");
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     createOgreCompositorResources();
@@ -251,8 +253,8 @@ OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     createOgreCompositorResources();
@@ -271,8 +273,8 @@ void OgreRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     OgreRenderer* renderer = static_cast<OgreRenderer*>(sys->getRenderer());
     OgreResourceProvider* rp =
@@ -316,7 +318,7 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 }
 
 //----------------------------------------------------------------------------//
-OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& main_window,
+OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& /*main_window*/,
     Ogre::RenderTarget &new_window)
 {
     // Link the second renderer to the first for them to share some resources
@@ -335,10 +337,10 @@ void OgreRenderer::createOgreCompositorResources()
 
     // We want this to fail if it isn't initialized
     if (!manager)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
         "Ogre CompositorManager2 is not initialized, "
         "you must call Ogre::Root::initialiseCompositor() after "
-        "creating at least one window."));
+        "creating at least one window.");
 
     Ogre::CompositorWorkspaceDef* templatedworkspace = 
         manager->addWorkspaceDefinition("CEGUI_workspace");
@@ -452,9 +454,9 @@ RenderTarget& OgreRenderer::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OgreRenderer::createTextureTarget()
+TextureTarget* OgreRenderer::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem);
+    TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem, addStencilBuffer);
     d_pimpl->d_textureTargets.push_back(tt);
     return tt;
 }
@@ -538,8 +540,8 @@ Texture& OgreRenderer::createTexture(const String& name, Ogre::TexturePtr& tex,
 void OgreRenderer::throwIfNameExists(const String& name) const
 {
     if (d_pimpl->d_textures.find(name) != d_pimpl->d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "[OgreRenderer] Texture already exists: " + name));
+        throw AlreadyExistsException(
+            "[OgreRenderer] Texture already exists: " + name);
 }
 
 //----------------------------------------------------------------------------//
@@ -590,7 +592,7 @@ Texture& OgreRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_pimpl->d_textures.find(name);
     
     if (i == d_pimpl->d_textures.end())
-        CEGUI_THROW(UnknownObjectException("Texture does not exist: " + name));
+        throw UnknownObjectException("Texture does not exist: " + name);
 
     return *i->second;
 }
@@ -663,7 +665,7 @@ const glm::vec2& OgreRenderer::getDisplayDPI() const
 }
 
 //----------------------------------------------------------------------------//
-uint OgreRenderer::getMaxTextureSize() const
+unsigned int OgreRenderer::getMaxTextureSize() const
 {
     return d_pimpl->d_maxTextureSize;
 }
@@ -683,10 +685,10 @@ OgreRenderer::OgreRenderer() :
     // get auto created window
     Ogre::RenderWindow* rwnd = d_pimpl->d_ogreRoot->getAutoCreatedWindow();
     if (!rwnd)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             "Ogre was not initialised to automatically create a window, you "
             "should therefore be explicitly specifying a Ogre::RenderTarget in "
-            "the OgreRenderer::create function."));
+            "the OgreRenderer::create function.");
 
     constructor_impl(*rwnd);
 }
@@ -741,12 +743,12 @@ OgreRenderer::~OgreRenderer()
 void OgreRenderer::checkOgreInitialised()
 {
     if (!d_pimpl->d_ogreRoot)
-        CEGUI_THROW(RendererException("The Ogre::Root object has not been "
-            "created. You must initialise Ogre first!"));
+        throw RendererException("The Ogre::Root object has not been "
+            "created. You must initialise Ogre first!");
 
     if (!d_pimpl->d_ogreRoot->isInitialised())
-        CEGUI_THROW(RendererException("Ogre has not been initialised. You must "
-            "initialise Ogre first!"));
+        throw RendererException("Ogre has not been initialised. You must "
+            "initialise Ogre first!");
 }
 
 //----------------------------------------------------------------------------//
@@ -769,7 +771,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 
 #if OGRE_VERSION >= 0x10800
     #ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
-        CEGUI_THROW(RendererException("RT Shader System not available. However CEGUI relies on shaders for rendering. "));
+        throw RendererException("RT Shader System not available. However CEGUI relies on shaders for rendering. ");
     #endif
 #endif
 
@@ -847,9 +849,9 @@ void OgreRenderer::initialiseShaders()
         shaderLanguage = "hlsl";
     }
     else {
-        CEGUI_THROW(RendererException("Underlying Ogre render system does not support available " 
+        throw RendererException("Underlying Ogre render system does not support available " 
             "shader languages which should be one of glsl, glsles or hlsl "
-            "which are required for supporting custom shaders in this CEGUI version"));
+            "which are required for supporting custom shaders in this CEGUI version");
     }
 
     // Create vertex shaders
@@ -947,9 +949,9 @@ void OgreRenderer::initialiseShaders()
         }
         else// If no shader was compatible
         {
-            CEGUI_THROW(RendererException(
+            throw RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
-                "unable to compile for vs_5_0 or vs_2_0"));
+                "unable to compile for vs_5_0 or vs_2_0");
         }
 
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_5_0"))
@@ -970,9 +972,9 @@ void OgreRenderer::initialiseShaders()
         }
         else
         {
-            CEGUI_THROW(RendererException(
+            throw RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
-                "unable to compile for ps_5_0 or ps_2_0"));
+                "unable to compile for ps_5_0 or ps_2_0");
         }
 
     }
@@ -1167,7 +1169,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     }
     else
     {
-        CEGUI_THROW(RendererException("A default shader of this type does not exist."));
+        throw RendererException("A default shader of this type does not exist.");
 
         return RefCounted<RenderMaterial>();
     }

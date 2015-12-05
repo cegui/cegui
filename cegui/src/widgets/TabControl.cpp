@@ -141,7 +141,7 @@ Window*	TabControl::getTabContents(const String& name) const
 /*************************************************************************
 Get the tab at a given ID
 *************************************************************************/
-Window*	TabControl::getTabContents(uint ID) const
+Window*	TabControl::getTabContents(unsigned int ID) const
 {
     return getTabPane()->getChild(ID);
 }
@@ -173,7 +173,7 @@ size_t TabControl::getSelectedTabIndex() const
         if (d_tabButtonVector [i]->isSelected ())
             return i;
 
-	CEGUI_THROW(UnknownObjectException("Current tab not in list?"));
+	throw UnknownObjectException("Current tab not in list?");
 }
 
 /*************************************************************************
@@ -186,7 +186,7 @@ void TabControl::setSelectedTab(const String &name)
 /*************************************************************************
 Set the selected tab by window ID
 *************************************************************************/
-void TabControl::setSelectedTab(uint ID)
+void TabControl::setSelectedTab(unsigned int ID)
 {
     selectTab_impl(getTabPane()->getChild(ID));
 }
@@ -208,7 +208,7 @@ void TabControl::makeTabVisible(const String &name)
 /*************************************************************************
 Make the tab by window ID visible
 *************************************************************************/
-void TabControl::makeTabVisible(uint ID)
+void TabControl::makeTabVisible(unsigned int ID)
 {
     makeTabVisible_impl(getTabPane()->getChild(ID));
 }
@@ -290,7 +290,7 @@ void TabControl::removeTab(const String& name)
 /*************************************************************************
 Remove a tab by ID
 *************************************************************************/
-void TabControl::removeTab(uint ID)
+void TabControl::removeTab(unsigned int ID)
 {
     // do nothing if given window is not attached as a tab.
     if (getTabPane()->isChild(ID))
@@ -329,8 +329,8 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
         if (d_tabButtonVector [i]->getTargetWindow () == wnd)
             return d_tabButtonVector [i];
 
-	CEGUI_THROW(UnknownObjectException(
-        "The Window object is not a tab contents."));
+	throw UnknownObjectException(
+        "The Window object is not a tab contents.");
 }
 /*************************************************************************
 Remove tab button
@@ -468,9 +468,9 @@ void TabControl::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
 
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "TabControl can only have Elements of type Window added as "
-            "children (Window path: " + getNamePath() + ")."));
+            "children (Window path: " + getNamePath() + ").");
 
     if (wnd->isAutoWindow())
     {
@@ -728,8 +728,8 @@ TabButton* TabControl::createTabButton(const String& name) const
     else
     {
         //return createTabButton_impl(name);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -784,7 +784,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
         // This is the middle cursor source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
         d_btGrabPos = (pe.position.x -
-            but_pane->getOuterRectClipper().d_min.d_x) -
+            but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
     else if (pe.source == CIS_None)
@@ -792,7 +792,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
         // Regular cursor move event
         Window *but_pane = getTabButtonPane();
         float new_to = (pe.position.x -
-            but_pane->getOuterRectClipper().d_min.d_x) -
+            but_pane->getOuterRectClipper().d_min.x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||
             (new_to > d_firstTabOffset + 0.9))

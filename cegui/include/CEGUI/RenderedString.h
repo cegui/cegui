@@ -27,8 +27,8 @@
 #ifndef _CEGUIRenderedString_h_
 #define _CEGUIRenderedString_h_
 
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
 #include <vector>
 #include <utility>
 

@@ -45,7 +45,7 @@ public:
     virtual void deinitialise() = 0;
 
     virtual void onEnteringSample() {}
-    virtual void update(float timeSinceLastUpdate) {}
+    virtual void update(float /*timeSinceLastUpdate*/) {}
 
     const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
     //! Get an explicit instance of input aggregator to be used with this sample

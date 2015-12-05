@@ -25,6 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
@@ -54,10 +56,10 @@ OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
+    d_clipRect.top(std::max(0.0f, region.top()));
+    d_clipRect.left(std::max(0.0f, region.left()));
+    d_clipRect.bottom(std::max(0.0f, region.bottom()));
+    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//

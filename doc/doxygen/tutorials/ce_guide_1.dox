@@ -40,7 +40,7 @@ automatically.
 As stated above, when using the boostrapSystem functions, initialising CEGUI is
 as simple as a single function call:
 
-@subsection rendering_tutorial_bootstrap_opengl OpenGL (Fixed Function)
+@subsection rendering_tutorial_bootstrap_opengl Old desktop OpenGL 1.2 (Fixed Function)
 - Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
 - Library: CEGUIOpenGLRenderer-0
 @code
@@ -54,16 +54,23 @@ CEGUI::OpenGLRenderer& myRenderer =
     CEGUI::OpenGLRenderer::bootstrapSystem();
 @endcode
 
-@subsection rendering_tutorial_bootstrap_opengl3 OpenGL 3
+@subsection rendering_tutorial_bootstrap_opengl3 Desktop OpenGL 3.2 or OpenGL ES 2.0
 - Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
 - Library: CEGUIOpenGLRenderer-0
+- Note: to use this renderer with OpenGL ES 2.0, the Epoxy OpenGL loading library
+  (https://github.com/yaronct/libepoxy, major version 1)
+  must first be installed, and CEGUI must be configured with
+  "-DCEGUI_BUILD_RENDERER_OPENGL=OFF -DCEGUI_BUILD_RENDERER_OPENGL3=ON
+   -DCEGUI_USE_EPOXY=ON -DCEGUI_USE_GLEW=OFF".
 @code
 // Bootstrap CEGUI::System with an OpenGL3Renderer object that uses the
 // current GL viewport, the DefaultResourceProvider, and the default
 // ImageCodec.
 //
 // NB: Your OpenGL context must already be initialised when you call this; CEGUI
-// will not create the OpenGL context itself.
+// will not create the OpenGL context itself. Nothing special has to be done to
+// choose between desktop OpenGL and OpenGL ES: the type is automatically
+// determined by the type of the current OpenGL context.
 CEGUI::OpenGL3Renderer& myRenderer =
     CEGUI::OpenGL3Renderer::bootstrapSystem();
 @endcode
@@ -132,7 +139,7 @@ CEGUI::Direct3D10Renderer& myRenderer =
     CEGUI::Direct3D10Renderer::create( myD3D10Device );
 @endcode
 
-@subsubsection rendering_tutorial_renderer_ogl OpenGL (Fixed Function)
+@subsubsection rendering_tutorial_renderer_ogl old Desktop OpenGL 1.2 (Fixed Function)
 - Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
 - Library: CEGUIOpenGLRenderer-0
 @code
@@ -142,7 +149,7 @@ CEGUI::OpenGLRenderer& myRenderer =
     CEGUI::OpenGLRenderer::create();
 @endcode
 
-@subsubsection rendering_tutorial_renderer_ogl3 OpenGL 3
+@subsubsection rendering_tutorial_renderer_ogl3 Desktop OpenGL 3.2 or OpenGL ES 2.0
 - Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
 - Library: CEGUIOpenGL3Renderer-0
 @code
@@ -223,7 +230,7 @@ draw3DScene();
 mySwapChain->Present(0, 0);
 @endcode
 
-@subsection rendering_tutorial_draw_ogl OpenGL
+@subsection rendering_tutorial_draw_ogl OpenGL (desktop or ES)
 @code
 // user function to draw 3D scene
 draw3DScene();
@@ -234,8 +241,8 @@ draw3DScene();
 // glActiveTexture(GL_TEXTURE_0) 
 
     // draw GUI
-    // NB: When not using >=3.2 core profile, this call should not occur
-    // between glBegin/glEnd calls.
+    // NB: When using the old desktop OpenGL 1.2 renderer, this call should not
+    // occur between glBegin/glEnd calls.
     CEGUI::System::getSingleton().renderAllGUIContexts();
 @endcode
 

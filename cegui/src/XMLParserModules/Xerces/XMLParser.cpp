@@ -82,7 +82,7 @@ namespace CEGUI
         // create parser
         SAX2XMLReader* reader = createReader(xercesHandler);
 
-        CEGUI_TRY
+        try
         {
             bool forceXmlValidation;
 
@@ -98,38 +98,38 @@ namespace CEGUI
             // do parse
             doParse(reader, source);
         }
-        CEGUI_CATCH(const XMLException& exc)
+        catch (const XMLException& exc)
         {
             if (exc.getCode() != XMLExcepts::NoError)
             {
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message("An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
+                String message("An error occurred at line nr. " + PropertyHelper<std::uint32_t>::toString((std::uint32_t)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
-                CEGUI_THROW(FileIOException(message));
+                throw FileIOException(message);
             }
 
         }
-        CEGUI_CATCH(const SAXParseException& exc)
+        catch (const SAXParseException& exc)
         {
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message("An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
+            String message("An error occurred at line nr. " + PropertyHelper<std::uint32_t>::toString((std::uint32_t)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 
-            CEGUI_THROW(FileIOException(message));
+            throw FileIOException(message);
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             delete reader;
 
             Logger::getSingleton().logEvent("An unexpected error occurred while parsing XML", Errors);
-            CEGUI_RETHROW;
+            throw;
         }
 
         // cleanup
@@ -141,11 +141,11 @@ namespace CEGUI
         XERCES_CPP_NAMESPACE_USE;
 
         // initialise Xerces-C XML system
-        CEGUI_TRY
+        try
         {
             XMLPlatformUtils::Initialize();
         }
-        CEGUI_CATCH(XMLException& exc)
+        catch (XMLException& exc)
         {
             // prepare a message about the failure
             char* excmsg = XMLString::transcode(exc.getMessage());
@@ -154,7 +154,7 @@ namespace CEGUI
             XMLString::release(&excmsg);
 
             // throw a C string (because it won't try and use logger, which may not be available)
-            CEGUI_THROW(message.c_str());
+            throw message.c_str();
         }
 
         return true;
@@ -173,7 +173,7 @@ namespace CEGUI
         String attributeName;
         String attributeValue;
 
-        for (uint i = 0; i < src.getLength(); ++i)
+        for (unsigned int i = 0; i < src.getLength(); ++i)
         {
             // TODO dalfy: Optimize this using temporary value. 
             attributeName = transcodeXmlCharToString(src.getLocalName(i), XMLString::stringLen(src.getLocalName(i)));
@@ -219,7 +219,7 @@ namespace CEGUI
         }
         else
         {
-            CEGUI_THROW(GenericException("Internal Error: Could not create UTF-8 string transcoder."));
+            throw GenericException("Internal Error: Could not create UTF-8 string transcoder.");
         }
 
     }
@@ -349,12 +349,12 @@ namespace CEGUI
 
     void XercesHandler::error (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
     {
-        CEGUI_THROW(exc);
+        throw exc;
     }
 
     void XercesHandler::fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
     {
-        CEGUI_THROW(exc);
+        throw exc;
     }
 
 } // End of  CEGUI namespace section

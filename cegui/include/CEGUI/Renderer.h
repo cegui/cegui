@@ -31,9 +31,8 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/RefCounted.h"
+#include "CEGUI/Sizef.h"
 
 #include <set>
 
@@ -198,8 +197,12 @@ public:
     \return
         Pointer to a TextureTarget object that is suitable for caching imagery,
         or 0 if the renderer is unable to offer such a thing.
+
+   \param addStencilBuffer
+        A boolean that defines whether a stencil buffer should be attached to the
+        TextureTarget or not.
     */
-    virtual TextureTarget* createTextureTarget() = 0;
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer) = 0;
 
     /*!
     \brief
@@ -399,7 +402,7 @@ public:
     \return
         Size of the maximum supported texture in pixels.
     */
-    virtual uint getMaxTextureSize() const = 0;
+    virtual unsigned int getMaxTextureSize() const = 0;
 
     /*!
     \brief

@@ -25,6 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RenderEffect.h"
@@ -90,11 +91,6 @@ void OpenGLGeometryBuffer::draw() const
         d_effect->performPostRenderFunctions();
 
     updateRenderTargetData(d_owner.getActiveRenderTarget());
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::finaliseVertexAttributes()
-{
 }
 
 //----------------------------------------------------------------------------//

@@ -101,19 +101,19 @@ void InventoryModel::load()
     d_root->addItem(backpack);
 
     InventoryItem* bow = InventoryItem::make("Bow", 23.451f, d_root);
-    for (int i = 25; i >= 0; --i)
+    for (std::int32_t i = 25; i >= 0; --i)
     {
         InventoryItem* arrow = InventoryItem::make(
-            "arrow " + PropertyHelper<int>::toString(i), 0.2f, bow);
+            "arrow " + PropertyHelper<std::int32_t>::toString(i), 0.2f, bow);
         bow->addItem(arrow);
     }
     d_root->addItem(bow);
 
     // generate *many* items :D
-    for (int i = 2000; i >= 1960; i -= 2)
+    for (std::int32_t i = 2000; i >= 1960; i -= 2)
     {
         InventoryItem* almanach = InventoryItem::make(
-            "Almanach " + PropertyHelper<int>::toString(i), 0.34f, d_root);
+            "Almanach " + PropertyHelper<std::int32_t>::toString(i), 0.34f, d_root);
 
         if (i % 2 == 0)
             almanach->setIcon("DriveIcons/Lime");
@@ -127,13 +127,13 @@ void InventoryModel::addRandomItemWithChildren(const ModelIndex& parent, size_t 
     size_t child_count)
 {
     InventoryItem* new_item = InventoryItem::make(
-        "New random item #" + PropertyHelper<int>::toString(d_randomItemsCount),
+        "New random item #" + PropertyHelper<std::int32_t>::toString(d_randomItemsCount),
         0.3f, static_cast<InventoryItem*>(parent.d_modelData));
 
     for (size_t i = 0; i < child_count; ++i)
     {
         InventoryItem* new_subitem = InventoryItem::make(
-            "New sub item #" + PropertyHelper<int>::toString(d_randomItemsCount),
+            "New sub item #" + PropertyHelper<std::int32_t>::toString(d_randomItemsCount),
             1.3f, new_item);
 
         new_item->addItem(new_subitem);

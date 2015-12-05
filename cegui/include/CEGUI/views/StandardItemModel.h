@@ -42,15 +42,15 @@ class CEGUIEXPORT StandardItem : public GenericItem
 {
 public:
     StandardItem();
-    explicit StandardItem(const String& text, uint id = 0);
-    StandardItem(const String& text, const String& icon, uint id = 0);
+    explicit StandardItem(const String& text, unsigned int id = 0);
+    StandardItem(const String& text, const String& icon, unsigned int id = 0);
 
     //! Id of this item
-    uint getId() const { return d_id; }
-    void setId(uint val) { d_id = val; }
+    unsigned int getId() const { return d_id; }
+    void setId(unsigned int val) { d_id = val; }
 
 protected:
-    uint d_id;
+    unsigned int d_id;
 };
 
 /*!
