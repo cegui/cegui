@@ -29,6 +29,7 @@
 #include "CEGUI/Exceptions.h"
 
 #include <OgreRenderSystem.h>
+#include <OgreRenderTarget.h>
 #include <OgreCamera.h>
 #include <OgreViewport.h>
 
