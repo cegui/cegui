@@ -41,7 +41,6 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 
-#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 

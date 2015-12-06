@@ -34,7 +34,6 @@
 #include "CEGUI/Interpolator.h"
 #include <cmath>
 
-#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
