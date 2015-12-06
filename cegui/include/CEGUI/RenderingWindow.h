@@ -31,7 +31,6 @@
 #include "CEGUI/Sizef.h"
 #include "CEGUI/Rectf.h"
 
-#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
