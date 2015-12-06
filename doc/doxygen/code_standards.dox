@@ -113,7 +113,16 @@ The following details the general code style and layout that should be used.
 - Boolean getter functions should always start with "is". Please think of meaningful names in that context, e.g. for plural, instead of "areCatsFuzzy" do NOT use "isCatsFuzzy" but use "isEachCatFuzzy" or "isEveryCatFuzzy", instead of "areVaosSupported" you could use "isVaoSupported", etc. Whatever you choose, make it both readable and grammatically correct. Sometimes opening a thesaurus may help you find the right words.
 
 @subsection code_standards_sec_2_2 Code Formatting Style and Other Tips
-- Code in general should be no more than 80 characters long per line. Long lines are more difficult to read and may lead to general bad programming practice. However there are cases when lines longer than 80 characters are appropriate, and in such cases it's allowed. However, no code line, ever, should be longer than 120 characters. Comments in code files should be split to lines at 80-character boundary.
+- Code in general should be no more than 80 characters long per line. Long lines are more difficult to read and may lead to general bad programming practice. However there are cases when lines longer than 80 characters are appropriate, and in such cases it's allowed. However, no code line, ever, should be longer than 120 characters. Comments in code files should be split to lines at 80-character boundary. Here's an example where it's appropriate to exceed 80 characters in code lines. This is how it looks when split to 2 lines so as not to break the 80-character limit:
+\code{.cpp}
+    unsigned int glyph_bitmap_height =
+      static_cast<unsigned int>(glyph_bitmap->rows);
+\endcode
+And this is how it looks without splitting to 2 lines:
+\code{.cpp}
+    unsigned int glyph_bitmap_height = static_cast<unsigned int>(glyph_bitmap->rows);
+\endcode
+... (though it still doesn't break the 120-character hard limit)
 
 - Tab spacing size should be 4. But...
 
