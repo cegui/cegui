@@ -48,8 +48,8 @@ static struct
     // So do not be afraid by the looks of this ;) We just want to avoid having to extra load any
     // files in the samples to keep it simple.
     {
-        "Sandbox"
-        "DejaVuSans-12"
+        "Sandbox",
+        "DejaVuSans-12",
         "Try out writing text in any language here. The used font can be changed on the right.\n"
         "You can create new fonts if needed. The new font will be set as font for the selected text/language...\n"
         "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other Samples)\n"
