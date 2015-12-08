@@ -240,7 +240,7 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
     // dispatch handler, or log error
     if (i != d_tagHandlers.end())
     {
-        if(!correctValueFormat)
+        if(correctValueFormat)
         {
             (this->*(*i).second)(rs, value);
         }
