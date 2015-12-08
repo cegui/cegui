@@ -43,7 +43,6 @@ public:
     std::wstring stringToStdWString(const String& input) const;
     String stringFromUTF16(const char16_t* input) const;
     String stringFromStdWString(const std::wstring& input) const;
-    void deleteUTF16Buffer(char16_t* input) const;
 
 private:
     const char* UTF16PE;

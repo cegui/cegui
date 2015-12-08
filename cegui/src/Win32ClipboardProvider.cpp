@@ -79,11 +79,11 @@ void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buff
          if(clipboard)
             memcpy(clipboard, utf16str, size_in_bytes);
          GlobalUnlock(clipboard_data);
+         // CF_UNICODETEXT is for UTF-16 encoded strings
          SetClipboardData(CF_UNICODETEXT, clipboard_data);
          CloseClipboard();
 
-         // Free temporary UTF-16 buffer
-         System::getSingleton().getStringTranscoder().deleteUTF16Buffer(utf16str);
+         delete[] utf16str;
       }
    }
 }
