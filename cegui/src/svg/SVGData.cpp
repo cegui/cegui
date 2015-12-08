@@ -556,7 +556,7 @@ glm::vec3 SVGData::parseColour(const CEGUI::String& colour_string)
     return glm::vec3();
 }
 
-glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String &colourString,
+glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String& colourString,
                                      const CEGUI::String& origString)
 {
     glm::vec3 colour;
@@ -566,32 +566,49 @@ glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String &colourString,
     strStream << std::hex;
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
-    strStream.str(colourString.substr(0, 2));
+    std::string currentSubStr = colourString.substr(0, 2);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    strStream.str(colourString.substr(0, 2).toUtf8String());
+    std::string currentSubStr = colourString.substr(0, 2).toUtf8String();
 #endif
-    strStream >> value;
-    colour.x = value / 255.0f;
+    strStream.clear();
+    strStream.str(currentSubStr);
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
-    strStream.str(colourString.substr(2, 4));
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    strStream.str(colourString.substr(2, 4).toUtf8String());
-#endif
     strStream >> value;
-    colour.y = value / 255.0f;
-
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
-    strStream.str(colourString.substr(4, 6));
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    strStream.str(colourString.substr(4, 6).toUtf8String());
-#endif
-    strStream >> value;
-    colour.z = value / 255.0f;
-
     if (strStream.fail())
         throw SVGParsingException("SVG file parsing was aborted because of an invalid "
             "colour value: " + origString);
+
+    colour.x = value / 255.0f;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+    currentSubStr = colourString.substr(2, 2);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    currentSubStr = colourString.substr(2, 2).toUtf8String();
+#endif
+    strStream.clear();
+    strStream.str(currentSubStr);
+
+    strStream >> value;
+    if (strStream.fail())
+        throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+            "colour value: " + origString);
+
+    colour.y = value / 255.0f;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+    currentSubStr = colourString.substr(4, 2);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    currentSubStr = colourString.substr(4, 2).toUtf8String();
+#endif
+    strStream.clear();
+    strStream.str(currentSubStr);
+
+    strStream >> value;
+    if (strStream.fail())
+        throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+            "colour value: " + origString);
+
+    colour.z = value / 255.0f;
 
     strStream << std::dec;
 
@@ -809,13 +826,13 @@ glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes)
     // Unity matrix is our default/basis
     glm::mat3x3 currentMatrix(1.0f);
 
-    sstream >> MandatoryString("matrix(");
+    sstream >> MandatoryString("matrix") >> mandatoryChar<'('>;
     if(!sstream.fail())
     {
         float matrixValues[6];
 
         int i = 0;
-        while( (i < 6) && sstream.fail() )
+        while( (i < 6) && !sstream.fail() )
         {
             // We allow either comma or spaces as separators
             sstream >> optionalChar<','>;
