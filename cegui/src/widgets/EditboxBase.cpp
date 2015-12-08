@@ -214,7 +214,7 @@ void EditboxBase::setSelectionLength(size_t length)
 	this->setSelection(this->getSelectionStart(), this->getSelectionStart() + length);
 }
 
-void EditboxBase::setTextMaskingCodepoint(char32_t code_point)
+void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
 {
     if (code_point != d_textMaskingCodepoint)
     {
@@ -544,9 +544,9 @@ void EditboxBase::addEditboxBaseProperties(void)
         &EditboxBase::setTextMaskingEnabled, &EditboxBase::isTextMaskingEnabled, false
     );
 
-    CEGUI_DEFINE_PROPERTY(EditboxBase, char32_t,
+    CEGUI_DEFINE_PROPERTY(EditboxBase, std::uint32_t,
         "TextMaskingCodepoint","Property to get/set the UTF-32 codepoint value used for masking text. "
-        "Value is char32_t to represent an UTF-32 codepoint.",
+        "Value is 32 bit unsigned integer representing an UTF-32 codepoint.",
         &EditboxBase::setTextMaskingCodepoint, &EditboxBase::getTextMaskingCodepoint, 
         42
     );
