@@ -57,12 +57,23 @@ public:
     \brief
         Helper function for getting the stringstream with its value set to the
         supplied String value.
-    \param str
+    \param initialValue
         The String this stringstream should be initialised to.
     \return
         The shared stringstream.
     */
-    static std::stringstream& GetPreparedStream(const String& str);
+    static std::stringstream& GetPreparedStream(const String& initialValue);
+
+    /*!
+    \brief
+        Helper function for getting the stringstream with its value set to the
+        supplied string value.
+    \param initialValue
+        The string this stringstream should be initialised to.
+    \return
+        The shared stringstream.
+    */
+    static std::stringstream& GetPreparedStream(const std::string& initialValue);
 
     /*!
     \brief
