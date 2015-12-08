@@ -49,8 +49,7 @@ public:
         String object with the text to be transcoded.
 
     \return
-        Pointer to an array of utf16 values.  This buffer should be deleted by
-        calling the deleteUTF16Buffer function.
+        Pointer to an array of utf16 values.
     */
     virtual char16_t* stringToUTF16(const String& input) const = 0;
 
@@ -110,9 +109,6 @@ public:
         std::wstring will work everywhere - because it wont.
     */
     virtual String stringFromStdWString(const std::wstring& input) const = 0;
-
-    //! deletes a buffer returned from the stringToUTF16 function.
-    virtual void deleteUTF16Buffer(char16_t* input) const = 0;
 
 protected:
     virtual ~StringTranscoder() {}
