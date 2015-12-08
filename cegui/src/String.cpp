@@ -27,6 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/String.h"
+#include "CEGUI/Exceptions.h"
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 
@@ -35,66 +36,162 @@ namespace CEGUI
 
 std::u32string String::convertUtf8ToUtf32(const char* utf8String)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.from_bytes(utf8String);
+    if(utf8String == nullptr)
+        return std::u32string();
+
+    std::size_t codeUnitCount = std::char_traits<char>::length(utf8String);
+    return convertUtf8ToUtf32(utf8String, codeUnitCount);
 }
 
 std::u32string String::convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.from_bytes(utf8StringStart, utf8StringEnd);
+    if (utf8StringStart == nullptr)
+        return std::u32string();
+
+    return convertUtf8ToUtf32(utf8StringStart, utf8StringEnd - utf8StringStart);
 }
 
 std::u32string String::convertUtf8ToUtf32(const std::string& utf8String)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.from_bytes(utf8String);
+    return convertUtf8ToUtf32(utf8String.data(), utf8String.size());
 }
 
 std::u32string String::convertUtf8ToUtf32(const char utf8Char)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.from_bytes(utf8Char);
+    return convertUtf8ToUtf32(&utf8Char, 1);
+}
+
+std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t stringLength)
+{
+    if (utf8String == nullptr)
+        return std::u32string();
+
+    std::u32string utf32String;
+
+    // Go through every UTF-8 code unit
+    size_t currentCharIndex = 0;
+    while (currentCharIndex < stringLength)
+    {
+        const char& currentCodeUnit = utf8String[currentCharIndex];
+
+        char32_t utf32CodeUnit;
+
+        // Check if the code point consists of a single code unit
+        if (currentCodeUnit < 0x80)
+        {
+            utf32CodeUnit = static_cast<char32_t>(currentCodeUnit);
+        }
+        else if (currentCodeUnit < 0xE0)
+        {
+            if (currentCharIndex + 1 >= stringLength)
+            {
+                throw CEGUI::InvalidRequestException("String conversion from UTF-8 to UTF-32 failed due to the "
+                                                     "start byte not being follwed by enough continuation bytes");
+                break;
+            }
+            utf32CodeUnit = ((currentCodeUnit                & 0x1F) << 6);
+            utf32CodeUnit |= (utf8String[currentCharIndex++] & 0x3F);
+        }
+        else if (currentCodeUnit < 0xF0)
+        {
+            if (currentCharIndex + 2 >= stringLength)
+            {
+                throw CEGUI::InvalidRequestException("String conversion from UTF-8 to UTF-32 failed due to the "
+                                                      "start byte not being follwed by enough continuation bytes");
+                break;
+            }
+            utf32CodeUnit = ((currentCodeUnit                   & 0x0F) << 12);
+            utf32CodeUnit |= ((utf8String[currentCharIndex++]   & 0x3F) << 6);
+            utf32CodeUnit |= (utf8String[currentCharIndex++]    & 0x3F);
+        }
+        else
+        {
+            if (currentCharIndex + 3 >= stringLength)
+            {
+                throw CEGUI::InvalidRequestException("String conversion from UTF-8 to UTF-32 failed due to the "
+                                                     "start byte not being follwed by enough continuation bytes");
+                break;
+            }
+            utf32CodeUnit = ((currentCodeUnit                   & 0x07) << 18);
+            utf32CodeUnit |= ((utf8String[currentCharIndex++]   & 0x3F) << 12);
+            utf32CodeUnit |= ((utf8String[currentCharIndex++]   & 0x3F) << 6);
+            utf32CodeUnit |= (utf8String[currentCharIndex++]    & 0x3F);
+        }
+
+        utf32String.push_back(utf32CodeUnit);
+
+        ++currentCharIndex;
+    }
+
+    return utf32String;
 }
 
 std::string String::convertUtf32ToUtf8(const char32_t* utf32String)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.to_bytes(utf32String);
+    if (utf32String == nullptr)
+        return std::string();
+
+    std::size_t codeUnitCount = std::char_traits<char32_t>::length(utf32String);
+    return convertUtf32ToUtf8(utf32String, codeUnitCount);
 }
 
-std::string convertUtf32ToUtf8(const char32_t* utf32StringStart, const char32_t* utf32StringEnd)
+std::string String::convertUtf32ToUtf8(const char32_t* utf32StringStart, const char32_t* utf32StringEnd)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.to_bytes(utf32StringStart, utf32StringEnd);
+    if (utf32StringStart == nullptr)
+        return std::string();
+
+    return convertUtf32ToUtf8(utf32StringStart, utf32StringEnd - utf32StringStart);
 }
 
 std::string String::convertUtf32ToUtf8(const std::u32string& utf32String)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.to_bytes(utf32String);
+    return convertUtf32ToUtf8(utf32String.data(), utf32String.size());
 }
 
 std::string String::convertUtf32ToUtf8(const char32_t utf32Char)
 {
-    //! The UTF-8 / UTF-32 standard conversion facet
-    // TODO: Add thread_local if available
-    static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8Converter;
-    return utf8Converter.to_bytes(utf32Char);
+    return convertUtf32ToUtf8(&utf32Char, 1);
+}
+
+std::string String::convertUtf32ToUtf8(const char32_t* utf32String, const size_t stringLength)
+{
+    if (utf32String == nullptr)
+        return std::string();
+
+    std::string utf8EncodedString;
+    
+    // Go through every UTF-32 code unit
+    for (size_t currentCharIndex = 0; currentCharIndex < stringLength; ++currentCharIndex)
+    {
+        const char32_t& currentCodeUnit = utf32String[currentCharIndex];
+
+        // Check if the UTF-32 code unit can be represented by a single UTF-8 code-unit
+        if (currentCodeUnit < 0x80) 
+            utf8EncodedString.push_back(static_cast<char>(currentCodeUnit));
+        // Check if the UTF-32 code unit can be represented by two UTF-8 code-units
+        else if (currentCodeUnit < 0x800)
+        {
+            utf8EncodedString.push_back(static_cast<char>((currentCodeUnit >> 6)   | 0xC0));
+            utf8EncodedString.push_back(static_cast<char>((currentCodeUnit & 0x3F) | 0x80));
+        }
+        // Check if the UTF-32 code unit can be represented by three UTF-8 code-units
+        else if (currentCodeUnit < 0x10000)
+        {
+            utf8EncodedString.push_back(static_cast<char>((currentCodeUnit  >> 12)         | 0xE0));
+            utf8EncodedString.push_back(static_cast<char>(((currentCodeUnit >> 6)  & 0x3F) | 0x80));
+            utf8EncodedString.push_back(static_cast<char>((currentCodeUnit         & 0x3F) | 0x80));
+        }
+        // Otherwise the UTF-32 code unit can only be represented by four UTF-8 code-units
+        else
+        {
+            utf8EncodedString.push_back(static_cast<char>((currentCodeUnit  >> 18)         | 0xF0));
+            utf8EncodedString.push_back(static_cast<char>(((currentCodeUnit >> 12) & 0x3F) | 0x80));
+            utf8EncodedString.push_back(static_cast<char>(((currentCodeUnit >> 6)  & 0x3F) | 0x80));
+            utf8EncodedString.push_back(static_cast<char>((currentCodeUnit         & 0x3F) | 0x80));
+        }
+    }
+
+    return utf8EncodedString;
 }
 
 
