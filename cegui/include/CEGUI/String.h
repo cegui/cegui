@@ -32,8 +32,6 @@
 
 #include "CEGUI/Base.h"
 #include <string>
-#include <codecvt>
-#include <locale>
 
 namespace CEGUI
 {
@@ -99,9 +97,9 @@ public:
 
     /*
     \brief
-        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 string (std::u32string).
+        Converts an UTF-8 encoded or ASCII char array to an UTF-32 encoded string (std::u32string). The array has to be null-terminated.
     \param utf8String
-        An UTF-8 encoded or ASCII char array. The char array will be converted only until the first null-character is encountered.
+        An UTF-8 encoded or ASCII char array, which is null-terminated.
     \return
         Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded string or char array.
     */
@@ -109,7 +107,7 @@ public:
 
     /*
     \brief
-        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 string (std::u32string).
+        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 encoded string (std::u32string).
     \param utf8StringStart
         A pointer to the beginning of the UTF-8 encoded or ASCII char array to be converted.
     \param utf8StringEnd
@@ -121,7 +119,7 @@ public:
 
     /*
     \brief
-        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 string (std::u32string).
+        Converts an UTF-8 encoded or ASCII string or char array to an UTF-32 encoded string (std::u32string).
     \param utf8String
         An UTF-8 encoded or ASCII string. The char array will be converted only until the first null-character is encountered.
     \return
@@ -131,7 +129,7 @@ public:
 
     /*
     \brief
-        Converts an UTF-8 character to an UTF-32 string (std::u32string).
+        Converts an UTF-8 character to an UTF-32 encoded string (std::u32string).
     \param utf8Char
         A UTF-8 character.
     \return
@@ -141,11 +139,23 @@ public:
 
     /*
     \brief
-        Converts an UTF-32 string or char32_t array to an UTF-8 string (std::string).
-    \param utf32String
-        A UTF-32 string or char32_t array. The char32_t array will be converted only until the first null-character is encountered.
+        Converts an UTF-8 encoded or ASCII har array to an UTF-32 encoded string (std::u32string).
+    \param utf8String
+        A pointer to the beginning of the UTF-8 encoded or ASCII char array to be converted.
+    \param stringLength
+        The amount of chars (UTF-8 code units) contained in this array that shall be converted.
     \return
-        Returns an UTF-8 string (std::string) converted from the UTF-32 string or char32_t array.
+        Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded char array.
+    */
+    static std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t stringLength);
+
+    /*
+    \brief
+        Converts an UTF-32 encoded char32_t array to an UTF-8 string (std::string). The array has to be null-terminated.
+    \param utf32String
+        A UTF-32 encoded char32_t array, which is null-terminated.
+    \return
+        Returns an UTF-8 string (std::string) converted from the UTF-32 encoded char32_t array.
     */
     static std::string convertUtf32ToUtf8(const char32_t* utf32String);
 
@@ -181,17 +191,29 @@ public:
     */
     static std::string convertUtf32ToUtf8(const char32_t utf32Char);
 
+    /*
+    \brief
+        Converts an UTF-32 string or char32_t array to an UTF-8 string (std::string).
+    \param utf32String
+        A pointer to the beginning of the UTF-32 encoded char32_t array to be converted.
+    \param stringLength
+        The length of the char32_t array of UTF-32 characters to be converted.
+    \return
+        Returns an UTF-8 string (std::string) converted from the UTF-32 string or char32_t array.
+    */
+    static std::string String::convertUtf32ToUtf8(const char32_t* utf32String, const size_t stringLength);
+
     //////////////////////////////////////////////////////////////////////////
     // Default constructors and destructors
     //////////////////////////////////////////////////////////////////////////
 
     //! Default constructor. Constructs empty string (zero size and unspecified capacity)
     String()
-        : String(std::u32string::allocator_type())
+        : String(std::allocator<char32_t>())
     {}
 
     //! Default constructor. Constructs empty string (zero size and unspecified capacity)
-    explicit String(const std::u32string::allocator_type& alloc)
+    explicit String(const std::allocator<char32_t>& alloc)
         : d_string(alloc)
     {}
 
@@ -209,7 +231,7 @@ public:
         Constructs a String containing count copies of character "ch". The
         behavior is undefined for count >= npos.
     */
-    String(size_type count, char32_t ch, const std::u32string::allocator_type& alloc = std::u32string::allocator_type())
+    String(size_type count, char32_t ch, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(count, ch, alloc)
     {}
 
@@ -220,7 +242,7 @@ public:
         or if count == npos, then the resulting substring reaches from the
         requested position to its end.
     */
-    String(const CEGUI::String& other, size_type pos, size_type count = npos, const std::u32string::allocator_type& alloc = std::u32string::allocator_type())
+    String(const CEGUI::String& other, size_type pos, size_type count = npos, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(other.d_string, pos, count, alloc)
     {}
 
@@ -231,7 +253,7 @@ public:
         or if count == npos, then the resulting substring reaches from the
         requested position to its end.
     */
-    String(const std::u32string& other, size_type pos, size_type count = npos, const std::u32string::allocator_type& alloc = std::u32string::allocator_type())
+    String(const std::u32string& other, size_type pos, size_type count = npos, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(other, pos, count, alloc)
     {}
 
@@ -244,7 +266,7 @@ public:
         count.
     */
     String(const char32_t* charArray, size_type count,
-           const std::u32string::allocator_type& alloc = std::u32string::allocator_type())
+           const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(charArray, count, alloc)
     {}
 
@@ -256,7 +278,7 @@ public:
         The behavior is undefined if "charArray" does not point to an array of
         at least Traits::length(s)+1 elements of char32_t.
     */
-    String(const char32_t* charArray, const std::u32string::allocator_type& alloc = std::u32string::allocator_type())
+    String(const char32_t* charArray, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(charArray, alloc)
     {}
 
@@ -265,7 +287,7 @@ public:
         Constructs a String with the contents of the range [first, last). 
     */
     template<class InputIt>
-    String(InputIt first, InputIt last, const std::u32string::allocator_type& alloc = std::u32string::allocator_type)
+    String(InputIt first, InputIt last, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(first, last, alloc)
     {}
 
@@ -289,7 +311,7 @@ public:
     \brief
         Copy constructor. 
     */
-    String(const CEGUI::String& other, const std::u32string::allocator_type& alloc)
+    String(const CEGUI::String& other, const std::allocator<char32_t>& alloc)
         : d_string(other.d_string)
     {}
 
@@ -297,7 +319,7 @@ public:
     \brief
         Copy constructor based on a std::u32string. 
     */
-    String(const std::u32string& other, const std::u32string::allocator_type& alloc)
+    String(const std::u32string& other, const std::allocator<char32_t>& alloc)
         : d_string(other)
     {}
 
@@ -321,7 +343,7 @@ public:
     \brief
         Move constructor. The String "other" is left in valid but unspecified state.
     */
-    String(CEGUI::String&& other, const std::u32string::allocator_type& alloc)
+    String(CEGUI::String&& other, const std::allocator<char32_t>& alloc)
         : d_string(other.d_string, alloc)
     {}
 
@@ -329,7 +351,7 @@ public:
     \brief
         Move constructor. The String "other" is left in valid but unspecified state.
     */
-    String(std::u32string&& other, const std::u32string::allocator_type& alloc)
+    String(std::u32string&& other, const std::allocator<char32_t>& alloc)
         : d_string(other, alloc)
     {}
 
@@ -337,7 +359,7 @@ public:
     \brief
         Constructs a String with the contents of the initialiser-list "init"
     */
-    String(std::initializer_list<char32_t> init, const std::u32string::allocator_type& alloc = std::u32string::allocator_type())
+    String(std::initializer_list<char32_t> init, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(init, alloc)
     {}
 
@@ -632,7 +654,7 @@ public:
     \brief
         Replaces the contents of this string with the contents of the initialiser-list "initialiserList".
     */
-    std::u32string::allocator_type get_allocator() const
+    std::allocator<char32_t> get_allocator() const
     {
         return d_string.get_allocator();
     }
