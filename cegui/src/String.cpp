@@ -72,7 +72,7 @@ std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t s
     size_t currentCharIndex = 0;
     while (currentCharIndex < stringLength)
     {
-        const char& currentCodeUnit = utf8String[currentCharIndex];
+        const unsigned char currentCodeUnit = static_cast<const unsigned char>(utf8String[currentCharIndex]);
 
         char32_t utf32CodeUnit;
 
@@ -90,7 +90,7 @@ std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t s
                 break;
             }
             utf32CodeUnit = ((currentCodeUnit                & 0x1F) << 6);
-            utf32CodeUnit |= (utf8String[currentCharIndex++] & 0x3F);
+            utf32CodeUnit |= (utf8String[++currentCharIndex] & 0x3F);
         }
         else if (currentCodeUnit < 0xF0)
         {
@@ -101,8 +101,8 @@ std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t s
                 break;
             }
             utf32CodeUnit = ((currentCodeUnit                   & 0x0F) << 12);
-            utf32CodeUnit |= ((utf8String[currentCharIndex++]   & 0x3F) << 6);
-            utf32CodeUnit |= (utf8String[currentCharIndex++]    & 0x3F);
+            utf32CodeUnit |= ((utf8String[++currentCharIndex]   & 0x3F) << 6);
+            utf32CodeUnit |= (utf8String[++currentCharIndex]    & 0x3F);
         }
         else
         {
@@ -113,9 +113,9 @@ std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t s
                 break;
             }
             utf32CodeUnit = ((currentCodeUnit                   & 0x07) << 18);
-            utf32CodeUnit |= ((utf8String[currentCharIndex++]   & 0x3F) << 12);
-            utf32CodeUnit |= ((utf8String[currentCharIndex++]   & 0x3F) << 6);
-            utf32CodeUnit |= (utf8String[currentCharIndex++]    & 0x3F);
+            utf32CodeUnit |= ((utf8String[++currentCharIndex]   & 0x3F) << 12);
+            utf32CodeUnit |= ((utf8String[++currentCharIndex]   & 0x3F) << 6);
+            utf32CodeUnit |= (utf8String[++currentCharIndex]    & 0x3F);
         }
 
         utf32String.push_back(utf32CodeUnit);
