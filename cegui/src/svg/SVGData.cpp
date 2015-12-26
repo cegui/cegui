@@ -30,6 +30,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringstream.h"
 // for the XML parsing part.
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/XMLAttributes.h"
@@ -385,11 +386,17 @@ void SVGData::elementEndLocal(const String& /*element*/)
 SVGData::SVGLength SVGData::parseLengthDataType(const String& length_string)
 {
     SVGLength length;
-    char lengthEnding[3] = "";
     String unitString;
 
-    sscanf(length_string.c_str(), "%f%2s", &length.d_value, lengthEnding);
-    unitString = lengthEnding;
+    std::stringstream& strStream = SharedStringstream::GetPreparedStream(length_string);
+
+    strStream >> length.d_value;
+    if(strStream.fail())
+        throw SVGParsingException(
+            "SVG file parsing was aborted because of an invalid value of an SVG"
+            " 'length' type (float value): " + length_string);
+
+    strStream >> unitString;
 
     if(unitString.empty())
         return length;
@@ -481,44 +488,32 @@ glm::vec3 SVGData::parseColour(const CEGUI::String& colour_string)
 {
     if(colour_string.at(0) == '#')
     {
-        glm::vec3 colour;
-
         if(colour_string.size() == 7)
         {
-            int value;
-            sscanf(colour_string.c_str() + 1, " %2X ", &value);
-            colour.x = value / 255.0f;
-            sscanf(colour_string.c_str() + 3, " %2X ", &value);
-            colour.y = value / 255.0f;
-            sscanf(colour_string.c_str() + 5, " %2X ", &value);
-            colour.z = value / 255.0f;
+            const CEGUI::String modifiedColourStr = colour_string.substr(1,7);
 
-            return colour;
+            return parseRgbHexColour(modifiedColourStr, colour_string);
         }
         else if(colour_string.size() == 4)
         {
-            CEGUI::String mod_colour_string = CEGUI::String("") +
+            CEGUI::String modifiedColourStr = CEGUI::String("") +
                 colour_string[1] + colour_string[1] +
                 colour_string[2] + colour_string[2] +
                 colour_string[3] + colour_string[3];
 
-            int value;
-            sscanf(mod_colour_string.c_str(), " %2X ", &value);
-            colour.x = value / 255.0f;
-            sscanf(mod_colour_string.c_str() + 2, " %2X ", &value);
-            colour.y = value / 255.0f;
-            sscanf(mod_colour_string.c_str() + 4, " %2X ", &value);
-            colour.z = value / 255.0f;
-
-            return colour;
+            return parseRgbHexColour(modifiedColourStr, colour_string);
         }
     }
     else if(colour_string.compare("rgb(") > 0)
     {
-        CEGUI::String mod_colour_string = colour_string.substr(4, colour_string.length() - 5);
+        CEGUI::String rgbColours = colour_string.substr(4, colour_string.length() - 5);
+        std::stringstream& strStream = SharedStringstream::GetPreparedStream(rgbColours);
 
         int r, g, b;
-        sscanf(mod_colour_string.c_str(), " %i , %i , %i ", &r, &g, &b);
+        strStream >> r >> mandatoryChar<','>  >> g >> mandatoryChar<','>  >> b;
+        if (strStream.fail())
+            throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+                                      "rgb-colour value: " + colour_string);
 
         return glm::vec3(r / 255.0f, g / 255.0f, b / 255.0f);
     }
@@ -556,25 +551,82 @@ glm::vec3 SVGData::parseColour(const CEGUI::String& colour_string)
     else if(colour_string.compare("aqua") == 0)
         return glm::vec3(0.0f, 1.0f, 1.0f);
 
-    // Parse error
-    throw SVGParsingException(
-        "SVG file parsing was aborted because of an invalid colour value");
-
+    // No matching format was found, let's throw an error.
+    throw SVGParsingException("SVG file parsing was aborted because of an invalid colour value");
     return glm::vec3();
+}
+
+glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String& colourString,
+                                     const CEGUI::String& origString)
+{
+    glm::vec3 colour;
+    int value;
+
+    std::stringstream& strStream = SharedStringstream::GetPreparedStream();
+    strStream << std::hex;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+    std::string currentSubStr = colourString.substr(0, 2);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    std::string currentSubStr = colourString.substr(0, 2).toUtf8String();
+#endif
+    strStream.clear();
+    strStream.str(currentSubStr);
+
+    strStream >> value;
+    if (strStream.fail())
+        throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+            "colour value: " + origString);
+
+    colour.x = value / 255.0f;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+    currentSubStr = colourString.substr(2, 2);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    currentSubStr = colourString.substr(2, 2).toUtf8String();
+#endif
+    strStream.clear();
+    strStream.str(currentSubStr);
+
+    strStream >> value;
+    if (strStream.fail())
+        throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+            "colour value: " + origString);
+
+    colour.y = value / 255.0f;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+    currentSubStr = colourString.substr(4, 2);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    currentSubStr = colourString.substr(4, 2).toUtf8String();
+#endif
+    strStream.clear();
+    strStream.str(currentSubStr);
+
+    strStream >> value;
+    if (strStream.fail())
+        throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+            "colour value: " + origString);
+
+    colour.z = value / 255.0f;
+
+    strStream << std::dec;
+
+    return colour;
 }
 
 //----------------------------------------------------------------------------//
 std::vector<float> SVGData::parseListOfLengths(const String& list_of_lengths_string)
 {
     std::vector<float> list_of_lengths;
-    const char* lengths_array_pointer = list_of_lengths_string.c_str();
-    float value;
-    int offset;
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream(list_of_lengths_string);
 
-    while (1 == sscanf(lengths_array_pointer, " %f ,%n", &value, &offset))
+    float currentValue;
+    sstream >> currentValue;
+    while (!sstream.fail())
     {
-        list_of_lengths.push_back(value);
-        lengths_array_pointer += offset;
+        list_of_lengths.push_back(currentValue);
+        sstream >> mandatoryChar<','> >> currentValue;
     }
 
     return list_of_lengths;
@@ -619,7 +671,12 @@ void SVGData::parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPai
         paint_style.d_fillOpacity = 1.0f;
     else
     {
-        sscanf(fillOpacityString.c_str(), "%f", &paint_style.d_fillOpacity);
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream(fillOpacityString);
+        sstream >> paint_style.d_fillOpacity;
+        if(sstream.fail())
+            throw SVGParsingException("SVG file parsing was aborted because of an invalid "
+                                      "fill opacity value: " + fillOpacityString);
+
         //! Clamp value in each case without throwing a warning if the values are below 0 or above 1
         paint_style.d_fillOpacity = std::min( std::max(0.0f, paint_style.d_fillOpacity), 1.0f );
     }
@@ -640,11 +697,20 @@ void SVGData::parsePaintStyleStroke(const String& strokeString, SVGPaintStyle& p
 //----------------------------------------------------------------------------//
 void SVGData::parsePaintStyleStrokeWidth(const String& strokeWidthString, SVGPaintStyle& paint_style)
 {
-    sscanf(strokeWidthString.c_str(), "%f", &paint_style.d_strokeWidth);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream(strokeWidthString);
+    sstream >> paint_style.d_strokeWidth;
+    if(sstream.fail())
+        throw SVGParsingException(
+            "SVG file parsing was aborted because of an invalid value for the SVG 'stroke-width' "
+            "type : " + strokeWidthString);
+
     if(paint_style.d_strokeWidth < 0.0f)
     {
         paint_style.d_strokeWidth = 1.0f;
-        Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for stroke-width was specified in the SVG file. The value is set to the initial value '1'.", Errors);
+        Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for "
+                                        "stroke-width was specified in the SVG file. The value was "
+                                        "set to the initial value '1'. String: " +
+                                        strokeWidthString, Errors);
     }
 }
 
@@ -679,11 +745,20 @@ void SVGData::parsePaintStyleStrokeLinejoin(const String& strokeLinejoinString, 
 //----------------------------------------------------------------------------//
 void SVGData::parsePaintStyleMiterlimitString(const String& strokeMiterLimitString, SVGPaintStyle& paint_style)
 {
-    sscanf(strokeMiterLimitString.c_str(), "%f", &paint_style.d_strokeMiterlimit);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream(strokeMiterLimitString);
+    sstream >> paint_style.d_strokeMiterlimit;
+    if (sstream.fail())
+        throw SVGParsingException(
+            "SVG file parsing was aborted because of an invalid value for the SVG "
+            "'stroke-miterlimit' type : " + strokeMiterLimitString);
+
     if(paint_style.d_strokeMiterlimit < 1.0f)
     {
         paint_style.d_strokeMiterlimit = 4.0f;
-        Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for stroke-miterlimit was specified in the SVG file. The value is set to the initial value '4'.", Errors);
+        Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for "
+                                        "stroke-miterlimit was specified in the SVG file. The "
+                                        " value was set to the initial value '4'. String: " +
+                                        strokeMiterLimitString, Errors);
     }
 }
 
@@ -714,7 +789,13 @@ void SVGData::parsePaintStyleStrokeOpacity(const String& strokeOpacityString, SV
         paint_style.d_strokeOpacity = 1.0f;
     else
     {
-        sscanf(strokeOpacityString.c_str(), "%f", &paint_style.d_strokeOpacity);
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream(strokeOpacityString);
+        sstream >> paint_style.d_strokeOpacity;
+        if (sstream.fail())
+            throw SVGParsingException(
+                "SVG file parsing was aborted because of an invalid value for the SVG "
+                "'stroke-opacity' type : " + strokeOpacityString);
+
         //! Clamp value without ever throwing a warning
         paint_style.d_strokeOpacity = std::min( std::max(0.0f, paint_style.d_strokeOpacity), 1.0f );
     }
@@ -726,38 +807,53 @@ void SVGData::parsePaintStyleStrokeDashOffset(const String& strokeDashOffsetStri
     if(strokeDashOffsetString.empty())
         paint_style.d_strokeDashOffset = 0.0f;
     else
-        sscanf(strokeDashOffsetString.c_str(), "%f", &paint_style.d_strokeDashOffset);
+    {
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream(strokeDashOffsetString);
+        sstream >> paint_style.d_strokeDashOffset;
+        if (sstream.fail())
+            throw SVGParsingException(
+                "SVG file parsing was aborted because of an invalid value for the SVG "
+                "'stroke-opacity' type : " + strokeDashOffsetString);
+    }
 }
 
 //----------------------------------------------------------------------------//
 glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes)
 {
-    const String transformString(
-        attributes.getValueAsString(SVGTransformAttribute));
+    const String transformString(attributes.getValueAsString(SVGTransformAttribute));
 
-    const char* transformStringSegment = transformString.c_str();
-    int offset = 0;
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream(transformString);
     // Unity matrix is our default/basis
     glm::mat3x3 currentMatrix(1.0f);
 
-    if(sscanf(transformStringSegment, " matrix( %n", &offset) == 0 && offset != 0)
+    sstream >> MandatoryString("matrix") >> mandatoryChar<'('>;
+    if(!sstream.fail())
     {
-        transformStringSegment += offset;
         float matrixValues[6];
 
         int i = 0;
-        while( (i < 6) && ( sscanf(transformStringSegment, " %f %n", &matrixValues[i],  &offset) == 1 || 
-                            sscanf(transformStringSegment, " , %f %n", &matrixValues[i],  &offset) == 1 ) )
+        while( (i < 6) && !sstream.fail() )
         {
-            transformStringSegment += offset;
+            // We allow either comma or spaces as separators
+            sstream >> optionalChar<','>;
+            sstream >> matrixValues[i];
             ++i;
         }
         
         //If we parsed the expected amount of matrix elements we will multiply the matrix to our transformation
         if(i == 6)
+        {
             currentMatrix *= glm::mat3x3(matrixValues[0], matrixValues[2], matrixValues[4],
                                          matrixValues[1], matrixValues[3], matrixValues[5],
                                          0.0f, 0.0f, 1.0f);
+        }
+        else
+        {
+            throw SVGParsingException(
+                "SVG file parsing was aborted because of an invalid value for the SVG "
+                "'transform' type : " + transformString);
+        }
+
     }
 
     return currentMatrix;
@@ -766,26 +862,27 @@ glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes)
 //----------------------------------------------------------------------------//
 void SVGData::parsePointsString(const String& pointsString, std::vector<glm::vec2>& points)
 {
-    const char* currentStringSegment = pointsString.c_str();
-    int offset;
-    glm::vec2 currentPoint;
+
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream(pointsString);
 
     while(true)
     {
-        int successful_args = sscanf(currentStringSegment, " %f , %f%n", &currentPoint.x, &currentPoint.y, &offset);
+        glm::vec2 currentPoint;
 
-        if(successful_args == 2)
-        {
-            points.push_back(currentPoint);
-            currentStringSegment += offset;
-        }
-        else if(successful_args == 1)
-        {
-            points.clear();
-            currentStringSegment += offset;
-        }
-        else
+        sstream >> currentPoint.x;
+        //Check if a new pair can be read, if not then break the loop
+        if(sstream.fail())
             break;
+        sstream >> mandatoryChar<','>;
+        if (sstream.fail())
+            throw SVGParsingException("SVG file parsing was aborted because of an invalid value "
+                                      "for the SVG 'points' type (missing comma separator): " +
+                                      pointsString);
+        sstream >> currentPoint.y;
+        if (sstream.fail())
+            throw SVGParsingException("SVG file parsing was aborted because of an invalid value "
+                                      "for the SVG 'points' type (missing second value of the pair"
+                                      "): " + pointsString);
     }
 }
 

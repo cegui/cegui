@@ -351,6 +351,10 @@ private:
         The colour String value from which the colour values will be parsed;
     */
     static glm::vec3 parseColour(const CEGUI::String& colour_string);
+
+    static glm::vec3 parseRgbHexColour(const CEGUI::String& colour_mod_string,
+                                       const CEGUI::String& colour_string);
+
 };
 
 }

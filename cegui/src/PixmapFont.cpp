@@ -31,6 +31,7 @@
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringstream.h"
 
 #ifdef _MSC_VER
 #define snprintf _snprintf
@@ -163,21 +164,20 @@ void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
-                               const float horz_advance)
+void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName,
+                               const float horzAdvance)
 {
-     Image& image(
-        ImageManager::getSingleton().get(d_imageNamePrefix + '/' + image_name));
+    Image& image(ImageManager::getSingleton().get(d_imageNamePrefix + '/' + imageName));
 
-    float adv = (horz_advance == -1.0f) ?
+    float adv = (horzAdvance == -1.0f) ?
         (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().x) :
-        horz_advance;
+        horzAdvance;
 
     if (d_autoScaled != ASM_Disabled)
         adv *= d_origHorzScaling;
 
-    if (codepoint > d_maxCodepoint)
-        d_maxCodepoint = codepoint;
+    if (codePoint > d_maxCodepoint)
+        d_maxCodepoint = codePoint;
 
     // create a new FontGlyph with given character code
     const FontGlyph glyph(adv, &image, true);
@@ -190,20 +190,41 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
     d_height = d_ascender - d_descender;
 
     // add glyph to the map
-    d_cp_map[codepoint] = glyph;
+    d_cp_map[codePoint] = glyph;
 }
 
 //----------------------------------------------------------------------------//
 void PixmapFont::defineMapping(const String& value)
 {
-    char img[33];
-    utf32 codepoint;
+    CEGUI::String imageName;
     float adv;
-    if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
+    unsigned int codePoint;
+
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << value;
+
+    sstream >> codePoint;
+    if (sstream.fail())
+        throw InvalidRequestException("Glyph Mapping does not begin with a "
+                                      "code point number: " + value);
+    sstream >> mandatoryChar<','>;
+    if (sstream.fail())
+        throw InvalidRequestException("Glyph Mapping lacks comma separator: " +
+                                      value);
+
+    sstream >> adv;
+    if (sstream.fail())
+        throw InvalidRequestException("Glyph Mapping lacks float value as "
+                                       " second parameter : "+ value);
+    sstream >> mandatoryChar<','>;
+
+    imageName = sstream.str();
+
+    //" %u , %g , %32s", &codepoint, &adv, img
         throw InvalidRequestException(
             "Bad glyph Mapping specified: " + value);
     
-    defineMapping(codepoint, img, adv);
+    defineMapping(codePoint, imageName, adv);
 }
 
 //----------------------------------------------------------------------------//

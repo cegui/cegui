@@ -30,7 +30,7 @@
 #include "Sample.h"
 
 #include "CEGUI/ForwardRefs.h"
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <deque>
 #include <vector>

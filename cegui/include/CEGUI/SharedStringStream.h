@@ -24,22 +24,22 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _SharedStringStream_h_
-#define _SharedStringStream_h_
+#ifndef _SharedStringstream_h_
+#define _SharedStringstream_h_
 
-#include "Base.h"
+#include "CEGUI/String.h"
 
 #include <sstream>
 
 namespace CEGUI
 {
 
+//! For library-internal usage only
 class SharedStringstream
 {
 public:
     SharedStringstream();
 
- 
     /*!
     \brief
         Changes the precision of the stream (the amount of decimal numbers after the decimal
@@ -52,6 +52,37 @@ public:
     // TODO: make this "static thread_local" in the future once supported on all major compilers,
     // currently only supported on VS 2015 apparently
     static SharedStringstream s_sharedStreamInstance;
+
+    /*!
+    \brief
+        Helper function for getting the stringstream with its value set to the
+        supplied String value.
+    \param initialValue
+        The String this stringstream should be initialised to.
+    \return
+        The shared stringstream.
+    */
+    static std::stringstream& GetPreparedStream(const String& initialValue);
+
+    /*!
+    \brief
+        Helper function for getting the stringstream with its value set to the
+        supplied string value.
+    \param initialValue
+        The string this stringstream should be initialised to.
+    \return
+        The shared stringstream.
+    */
+    static std::stringstream& GetPreparedStream(const std::string& initialValue);
+
+    /*!
+    \brief
+        Helper function for getting the shared stringstream set to an empty
+        String value.
+    \return
+        The shared stringstream.
+    */
+    static std::stringstream& GetPreparedStream();
 };
 
 }

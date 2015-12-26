@@ -28,6 +28,7 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/SharedStringstream.h"
 #include <limits>
 
 #ifdef __MINGW32__
@@ -502,12 +503,13 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
 //----------------------------------------------------------------------------//
 Window* GridLayoutContainer::createDummy()
 {
-    char i_buff[32];
-    sprintf(i_buff, "%llu", static_cast<unsigned long long>(d_nextDummyIdx));
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << d_nextDummyIdx;
+
     ++d_nextDummyIdx;
 
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
-                    DummyName + String(i_buff));
+                    DummyName + sstream.str());
 
     dummy->setAutoWindow(true);
     dummy->setVisible(false);

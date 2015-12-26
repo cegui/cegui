@@ -49,4 +49,34 @@ void SharedStringstream::setPrecision(int precision)
     d_sharedStream.precision(precision);
 }
 
+std::stringstream& SharedStringstream::GetPreparedStream(const String& initialValue)
+{
+    std::stringstream& sstream = s_sharedStreamInstance.d_sharedStream;
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+    sstream.str(initialValue.c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    sstream.str(initialValue.toUtf8String().c_str());
+#endif
+    sstream.clear();
+
+    return sstream;
+}
+
+std::stringstream& SharedStringstream::GetPreparedStream(const std::string& initialValue)
+{
+    std::stringstream& sstream = s_sharedStreamInstance.d_sharedStream;
+    sstream.str(initialValue);
+    sstream.clear();
+
+    return sstream;
+}
+
+std::stringstream& SharedStringstream::GetPreparedStream()
+{
+    std::stringstream& sstream = s_sharedStreamInstance.d_sharedStream;
+    sstream.str(std::string());
+    sstream.clear();
+    return sstream;
+}
+
 }

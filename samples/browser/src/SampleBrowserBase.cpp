@@ -144,6 +144,10 @@ int SampleBrowserBase::run()
     }
     catch (const std::exception& exc)
     {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        outputExceptionMessage(exc.getMessage().toUtf8String().c_str());
+#endif
         outputExceptionMessage(exc.what());
     }
     catch (const char* exc)
