@@ -30,7 +30,7 @@
 #include "CEGUI/Base.h"
 
 #include "CEGUI/ModuleConfig.h"
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #ifdef CEGUI_BUILD_RENDERER_OGRE
 namespace Ogre

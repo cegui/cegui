@@ -103,9 +103,9 @@ void Thumb::setVertRange(float min, float max)
 /*************************************************************************
 	set the movement range of the thumb for the vertical axis.
 *************************************************************************/
-void Thumb::setVertRange(const std::pair<float, float> &range)
+void Thumb::setVertRange(const glm::vec2& range)
 {
-	setVertRange(range.first,range.second);
+	setVertRange(range.x, range.y);
 }
 /*************************************************************************
 	set the movement range of the thumb for the horizontal axis.
@@ -141,9 +141,9 @@ void Thumb::setHorzRange(float min, float max)
 /*************************************************************************
 	set the movement range of the thumb for the horizontal axis.
 *************************************************************************/
-void Thumb::setHorzRange(const std::pair<float, float> &range)
+void Thumb::setHorzRange(const glm::vec2& range)
 {
-	setHorzRange(range.first,range.second);
+	setHorzRange(range.x, range.y);
 }
 
 
@@ -284,9 +284,9 @@ void Thumb::onCaptureLost(WindowEventArgs& e)
 	Return a std::pair that describes the current range set for the
 	vertical movement.
 *************************************************************************/
-std::pair<float, float>	Thumb::getVertRange(void) const
+glm::vec2 Thumb::getVertRange(void) const
 {
-	return std::make_pair(d_vertMin, d_vertMax);
+	return glm::vec2(d_vertMin, d_vertMax);
 }
 
 
@@ -294,9 +294,9 @@ std::pair<float, float>	Thumb::getVertRange(void) const
 	Return a std::pair that describes the current range set for the
 	horizontal movement.
 *************************************************************************/
-std::pair<float, float>	Thumb::getHorzRange(void) const
+glm::vec2 Thumb::getHorzRange(void) const
 {
-	return std::make_pair(d_horzMin, d_horzMax);
+	return glm::vec2(d_horzMin, d_horzMax);
 }
 
 
@@ -313,16 +313,18 @@ void Thumb::addThumbProperties(void)
         &Thumb::setHotTracked, &Thumb::isHotTracked, true
     );
 
-    typedef std::pair<float,float> range;
-
-    CEGUI_DEFINE_PROPERTY(Thumb, range,
-        "VertRange", "Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".",
-        &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f, 1.0f)
+    CEGUI_DEFINE_PROPERTY(Thumb, glm::vec2,
+        "VertRange", "Property to get/set the vertical movement range for the thumb.  Value is a "
+        " two-dimensional float vector (glm::vec2): "
+        "\"x:[x_float] y:[y_float]\"",
+        &Thumb::setVertRange, &Thumb::getVertRange, glm::vec2(0.0f, 1.0f)
     );
 
-    CEGUI_DEFINE_PROPERTY(Thumb, range,
-        "HorzRange", "Property to get/set the horizontal movement range for the thumb.  Value is \"min:[float] max:[float]\".",
-        &Thumb::setHorzRange, &Thumb::getHorzRange, range(0.0f, 1.0f)
+    CEGUI_DEFINE_PROPERTY(Thumb, glm::vec2,
+        "HorzRange", "Property to get/set the horizontal movement range for the thumb.  Value is a "
+        " two-dimensional float vector (glm::vec2): "
+        "\"x:[x_float] y:[y_float]\"",
+        &Thumb::setHorzRange, &Thumb::getHorzRange, glm::vec2(0.0f, 1.0f)
     );
 
     CEGUI_DEFINE_PROPERTY(Thumb, bool,

@@ -30,6 +30,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringstream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -43,18 +44,24 @@ namespace CEGUI
 
     WidgetLookManager::WidgetLookManager()
     {
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+        const void* addressPtr = static_cast<const void*>(this);
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+        sstream << addressPtr;
+        String addressStr(sstream.str());
+
         Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
-            "created. " + String(addr_buff));
+            "created. " + addressStr);
     }
 
     WidgetLookManager::~ WidgetLookManager()
     {
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+        const void* addressPtr = static_cast<const void*>(this);
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+        sstream << addressPtr;
+        String addressStr(sstream.str());
+
         Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
-            "destroyed. " + String(addr_buff));
+            "destroyed. " + addressStr);
     }
 
     /*************************************************************************
@@ -212,7 +219,7 @@ namespace CEGUI
         std::ostringstream str;
         writeWidgetLookToStream(widgetLookName, str);
 
-        return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
+        return str.str();
     }
 
     void WidgetLookManager::writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const
@@ -260,7 +267,7 @@ namespace CEGUI
         std::ostringstream str;
         writeWidgetLookSetToStream(widgetLookNameSet, str);
 
-        return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
+        return str.str();
     }
 
     WidgetLookManager::WidgetLookPointerMap WidgetLookManager::getWidgetLookPointerMap()

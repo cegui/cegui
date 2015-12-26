@@ -178,7 +178,7 @@ if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
 endif()
 
 set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
-1 - utf8 and utf32 aware inbuilt string,
+1 - UTF-8 (char) and UTF-32 (char32_t) aware inbuilt string,
 2 - regular std::string"
 )
 

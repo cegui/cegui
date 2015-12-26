@@ -25,134 +25,18 @@ author:     Paul D Turner
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 
-// NOTE: if you don't have Asian fonts installed, the Japanese and Korean
-// sample texts might show up unreadable in this source file. The sample
-// should look okay though when running.
-
 #include "Fonts.h"
 #include "CEGUI/CEGUI.h"
 
-using namespace CEGUI;
+#include "LanguageStrings.h"
 
-static const unsigned int LangListSize = 12;
+using namespace CEGUI;
+using namespace LanguageStrings;
 
 struct FontOption
 {
     CEGUI::String   d_font;
     bool            d_isEditable;
-};
-
-static struct
-{
-    encoded_char* Language;
-    encoded_char* Font;
-    encoded_char* Text;
-} LangList [LangListSize] =
-{
-    // A list of strings in different languages
-    // Feel free to add your own language here (UTF-8 ONLY!)...
-    {
-        (encoded_char*)"Sandbox",
-            (encoded_char*)"DejaVuSans-12",
-            (encoded_char*)"Try out writing text in any language here. The used font can be changed on the right.\n"
-            "You can create new fonts if needed. The new font will be set as font for the selected text/language...\n"
-            "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other Samples)\n"
-            "Important: When you switch to a font the FIRST time, it takes some time to load it. Especially for fonts with asian characters this load time might be noticable.!"
-    },
-    {
-        (encoded_char*)"European characters using DejaVuSans font",
-            (encoded_char*)"DejaVuSans-12",
-            (encoded_char*)"Try Catching The Brown Fox While It's Jumping Over The Lazy Dog\n\n"
-            "Supports nearly all European unicode characters, including cyrillic:\n"
-            "bokmål, česky, русский, српски / srpski, slovenščina, latviešu, Tiếng Việt, etc.\n"
-            "¥¤£¢©®ÐÆ\nÄÜÖäüöß\nēĒŗŖūŪīĪāĀšŠģĢķĶļĻžŽčČņŅ\nøØæÆåÅèâïÀÁÂƒéíóúÉÍÓÚõç¿ñÑ\nускоряющпризв"
-        },
-        {
-            (encoded_char*)"European characters using Junicode font",
-                (encoded_char*)"Junicode-14",
-                (encoded_char*)"Try Catching The Brown Fox While It's Jumping Over The Lazy Dog\n\n"
-                "Supports most European unicode characters, but for example no cyrillic:\n"
-                "bokmål, česky, slovenščina, latviešu, Tiếng Việt, etc.\n"
-                "¥¤£¢©®ÐÆ\nÄÜÖäüöß\nēĒŗŖūŪīĪāĀšŠģĢķĶļĻžŽčČņŅ\nøØæÆåÅèâïÀÁÂƒéíóúÉÍÓÚõç¿ñÑ"
-        },
-
-            {
-                (encoded_char*)"Korean/Chinese/Japanese using Batang font",
-                    (encoded_char*)"Batang-18",
-                    (encoded_char*)
-                    //Japanese
-                    "日本語を選択\n"
-                    "トリガー検知\n"
-                    "鉱石備蓄不足\n\n\n\n\n"
-
-                    //Chinese
-                    "早發白帝城 (李白)\n\n"
-
-                    "朝辭白帝彩雲間，\n"
-                    "千里江陵一日還。\n"
-                    "兩岸猿聲啼不住，\n"
-                    "輕舟己過萬重山。\n\n\n\n\n"
-
-                    //Korean
-                    "이몸이/죽고죽어/일백번/고쳐죽어/\n"
-                    "백골이/진퇴되어/넋이라도/있고없고/\n"
-                    "임 향한/일편단심이야/가실 줄이/있으랴/"
-                },
-                {
-                    (encoded_char*)"Hebrew using TnuaLibre font",
-                        (encoded_char*)"TnuaLibre-12",
-                        (encoded_char*)"תנועה \n"
-                        "חופשי ** אבגד  \n"
-                        "1234"
-                    },
-                    {
-                        (encoded_char*)"Old German using Fette UNZ Fraktur font",
-                            (encoded_char*)"FetteUNZFraktur-20",
-                            (encoded_char*)"Heute back ich, morgen brau ich,\n"
-                            "Übermorgen hol ich mir der Königin ihr Kind;\n"
-                            "Ach, wie gut, dass niemand weiß,\n"
-                            "dass ich Rumpelstilzchen heiß"
-                    },
-                    {
-                        (encoded_char*)"Latin using Old Fell Type font",
-                            (encoded_char*)"FellType-12.5",
-                            (encoded_char*)"☞Non nobis, non nobis, Domine\n"
-                            "Sed nomini tuo da gloriam.☜\n"
-                            "    Ð"
-                        },
-                        {
-                            (encoded_char*)"Handwriting font",
-                                (encoded_char*)"GreatVibes-22",
-                                (encoded_char*)"Dear Gooby,\n\n"
-                                "Handwriting is nice when you don't have to do it yourself.\n\n"
-                                "Regards, Uncle Dolan."
-                        },
-                        {
-                            (encoded_char*)"RichStyle Icons font",
-                                (encoded_char*)"RichStyle-22",
-                                (encoded_char*)"+ - ? B I W Y f n t ℹ ⇦ ⇧ ⇨ ⇩ ⌘ ☎ ☐ ☑ ⚖ ⚙ ⚠ ⛏ ✎ ✑ ✓ ✔ ✕ ✖ ❝ ❞ ➡ ⬀ ⬁ ⬂ ⬃ ⬅ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋                       "
-                            },
-                            {
-                                (encoded_char*)"Old Runic writing using Futhark Adapted font",
-                                    (encoded_char*)"FutharkAdapted-18",
-                                    (encoded_char*)"Somehow, although he is the smallest office boy around the place, none of the other lads pick on him. Scuffling and fighting almost has ceased since Kerensky came to work. That's only one of the nicknames of Leo Kobreen, and was assigned to him because of a considerable facial resemblance to the perpetually fleeing Russian statesman, and, too, because both wore quite formal standing collars."
-                            },
-                            {
-                                (encoded_char*)"Klingon using pIqaD HaSta font",
-                                    (encoded_char*)"Klingon-pIqaD-HaSta-24",
-                                    (encoded_char*)"  \n\n\n"
-                                    "         \n"
-                                    "         \n"
-                                    "  "
-                                },
-                                {
-                                    (encoded_char*)"Pixel style font using Mizufalp font",
-                                        (encoded_char*)"mizufalp-12",
-                                        (encoded_char*)"Mechanic: Somebody set up us the bomb.\n"
-                                        "Operator: Main screen turn on.\n"
-                                        "CATS: All your base are belong to us.\n"
-                                        "CATS: You have no chance to survive make your time."
-                                }
 };
 
 FontsSample::FontsSample() :

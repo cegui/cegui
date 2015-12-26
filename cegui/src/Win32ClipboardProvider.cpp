@@ -67,26 +67,23 @@ void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buff
       if(OpenClipboard(0))
       {
          // Transcode buffer to UTF-16
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-         String str(static_cast<const utf8*>(buffer), size);
-#else
-         String str(static_cast<const char*>(buffer), size);
-#endif
-         std::uint16_t* str_utf16 = System::getSingleton().getStringTranscoder().stringToUTF16(str);
-         size_t size_in_bytes = (str.size() + 1) * sizeof(std::uint16_t);
+         String str(static_cast<String::value_type*>(buffer), size);
+
+         char16_t* utf16str = System::getSingleton().getStringTranscoder().stringToUTF16(str);
+         size_t size_in_bytes = (str.size() + 1) * sizeof(char16_t);
 
          // Copy to clipboard
          EmptyClipboard();
          HGLOBAL clipboard_data = GlobalAlloc(GMEM_DDESHARE,size_in_bytes);
          LPWSTR clipboard = static_cast<LPWSTR>(GlobalLock(clipboard_data));
          if(clipboard)
-            memcpy(clipboard, str_utf16, size_in_bytes);
+            memcpy(clipboard, utf16str, size_in_bytes);
          GlobalUnlock(clipboard_data);
+         // CF_UNICODETEXT is for UTF-16 encoded strings
          SetClipboardData(CF_UNICODETEXT, clipboard_data);
          CloseClipboard();
 
-         // Free temporary UTF-16 buffer
-         System::getSingleton().getStringTranscoder().deleteUTF16Buffer(str_utf16);
+         delete[] utf16str;
       }
    }
 }
@@ -97,13 +94,21 @@ void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buf
    {
       // Open & read UTF-16 clipboard data
       HGLOBAL clipboard_data = GetClipboardData(CF_UNICODETEXT);
-      const std::uint16_t* clipboard = static_cast<const std::uint16_t*>(GlobalLock(clipboard_data));
+      const char16_t* clipboard = static_cast<const char16_t*>(GlobalLock(clipboard_data));
       if(clipboard)
       {
          // Transcode UTF-16 to native format and copy to local buffer
          String str = System::getSingleton().getStringTranscoder().stringFromUTF16(clipboard);
-         allocateBuffer(strlen(str.c_str())); // We need the actual byte count which can be different from str.size() when using UTF-8!
-         memcpy(d_buffer, str.c_str(), d_bufferSize);
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+         // We need the actual byte count which can be different from str.size() when using UTF-8!
+         const char* utf8Characters = str.c_str();
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+         // We need the actual byte count which can be different from str.size() when using UTF-8!
+         const char* utf8Characters = str.toUtf8String().c_str();
+#endif
+         allocateBuffer(strlen(utf8Characters)); // We need the actual byte count which can be different from str.size() when using UTF-8!
+         memcpy(d_buffer, utf8Characters, d_bufferSize);
 
          mime_type = "text/plain";
          buffer = d_buffer;

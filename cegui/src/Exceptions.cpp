@@ -30,13 +30,17 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include <iostream>
+#include <sstream>
 
 #if defined( __WIN32__ ) || defined( _WIN32)
 #   include <windows.h>
 #endif
 
 #if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4091)
 #   include <dbghelp.h>
+#   pragma warning(pop)
 #elif defined(__ANDROID__)
 #   include <android/log.h>
 #elif     (defined(__linux__) && !defined(__ANDROID__)) \
@@ -111,12 +115,21 @@ static void dumpBacktrace(size_t frames)
     {
         symbol->Address = stackframe.AddrPC.Offset;
         DWORD64 displacement = 0;
-        char signature[256];
+
+        std::stringstream sstream;
+        sstream << "#" << frame_no << " ";
 
         if (SymFromAddr(GetCurrentProcess(), symbol->Address, &displacement, symbol))
+        {
+            char signature[256];
             UnDecorateSymbolName(symbol->Name, signature, sizeof(signature), UNDNAME_COMPLETE);
+            sstream << signature;
+        }
         else
-            sprintf_s(signature, sizeof(signature), "%p", ULongToPtr(symbol->Address));
+        {
+            const void* addressPtr = ULongToPtr(symbol->Address);
+            sstream << addressPtr;
+        }
  
         IMAGEHLP_MODULE64 modinfo;
         modinfo.SizeOfStruct = sizeof(modinfo);
@@ -124,12 +137,11 @@ static void dumpBacktrace(size_t frames)
         const BOOL have_image_name =
             SymGetModuleInfo64(GetCurrentProcess(), symbol->Address, &modinfo);
 
-        char outstr[512];
-        sprintf_s(outstr, sizeof(outstr), "#%d %s +%#llx (%s)",
-                  frame_no, signature, displacement,
-                  (have_image_name ? modinfo.LoadedImageName : "????"));
+        sstream << std::hex << std::setfill('0') << std::setw(16) << displacement << std::dec;
+        sstream << " (" << have_image_name ? modinfo.LoadedImageName : "????";
+        sstream << ")";
 
-        logger.logEvent(outstr, Errors);
+        logger.logEvent(CEGUI::String(sstream.str()), Errors);
 
         if (++frame_no >= frames)
             break;
@@ -230,7 +242,11 @@ Exception::~Exception(void) throw()
 //----------------------------------------------------------------------------//
 const char* Exception::what() const throw()
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     return d_what.c_str();
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    return d_what.toUtf8String().c_str();
+#endif
 }
 
 //----------------------------------------------------------------------------//
