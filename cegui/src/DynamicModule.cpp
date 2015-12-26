@@ -68,7 +68,7 @@ struct DynamicModule::Impl :
 
     ~Impl()
     {
-        DYNLIB_UNLOAD(d_handle);
+        CEGUI_UNUSED(DYNLIB_UNLOAD(d_handle));
     }
 
     //! Holds the name of the loaded module.

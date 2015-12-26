@@ -49,13 +49,22 @@
 #endif
 
 #ifdef _MSC_VER
-#define snprintf _snprintf
+    #define snprintf _snprintf
 #endif
 
 #ifdef __MINGW32__
-#if __USE_MINGW_ANSI_STDIO != 1
-#warning  __USE_MINGW_ANSI_STDIO must be set to 1 for sscanf and snprintf to work with 64bit integers
-#endif
+
+    #if __USE_MINGW_ANSI_STDIO != 1
+        #warning  __USE_MINGW_ANSI_STDIO must be set to 1 for sscanf and snprintf to work with 64bit integers
+    #endif
+
+    #pragma GCC diagnostic push
+
+    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
+       "%llu" format with the "printf"/"scanf" family of functions. */
+    #pragma GCC diagnostic ignored "-Wformat"
+    #pragma GCC diagnostic ignored "-Wformat-extra-args"
+
 #endif
 
 namespace CEGUI
@@ -984,8 +993,12 @@ public:
 
 }
 
+#ifdef __MINGW32__
+    #pragma GCC diagnostic pop
+#endif
+
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+    #pragma warning(pop)
 #endif
 
 #endif
