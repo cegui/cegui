@@ -332,7 +332,7 @@ public:
 		ListHeaderSegment object that the offset to is to be returned.
 
 	\return
-		The number of pixels up-to the begining of the ListHeaderSegment described by \a segment.
+		The number of pixels up-to the beginning of the ListHeaderSegment described by \a segment.
 
 	\exception InvalidRequestException	thrown if \a segment is not attached to the ListHeader.
 	*/
@@ -347,7 +347,7 @@ public:
 		Zero based column index of the ListHeaderSegment whos pixel offset it to be returned.
 
 	\return
-		The number of pixels up-to the begining of the ListHeaderSegment located at zero based column
+		The number of pixels up-to the beginning of the ListHeaderSegment located at zero based column
 		index \a column.
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
