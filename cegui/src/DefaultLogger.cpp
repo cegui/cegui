@@ -48,7 +48,7 @@ DefaultLogger::DefaultLogger(void)
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    logEvent("CEGUI::Logger singleton created. " + String(addr_buff));
+    logEvent("CEGUI::Logger Singleton created. " + String(addr_buff));
 }
 
 //----------------------------------------------------------------------------//
