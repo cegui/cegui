@@ -35,6 +35,33 @@
 #include "CEGUI/Logger.h"
 #include <algorithm>
 
+#ifdef __MINGW32__
+
+extern "C"
+{
+
+struct ID3DX10ThreadPump;
+
+HRESULT WINAPI D3DX10CreateEffectFromMemory(
+  LPCVOID pData,
+  SIZE_T DataLength,
+  LPCSTR pSrcFileName,
+  CONST D3D10_SHADER_MACRO* pDefines, 
+  ID3D10Include* pInclude,
+  LPCSTR pProfile,
+  UINT HLSLFlags,
+  UINT FXFlags,
+  ID3D10Device* pDevice, 
+  ID3D10EffectPool* pEffectPool,
+  ID3DX10ThreadPump* pPump,
+  ID3D10Effect** ppEffect,
+  ID3D10Blob** ppErrors,
+  HRESULT* pHResult);
+
+}
+
+#endif
+
 #include "shader.txt"
 
 // Start of CEGUI namespace section

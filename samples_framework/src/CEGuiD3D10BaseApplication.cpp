@@ -38,6 +38,19 @@
 #include <d3d10.h>
 #include <dinput.h>
 
+#ifdef __MINGW32__
+
+extern "C" HRESULT WINAPI D3DX10CreateDeviceAndSwapChain(
+  IDXGIAdapter* pAdapter,
+  D3D10_DRIVER_TYPE DriverType,
+  HMODULE Software,
+  UINT Flags,
+  DXGI_SWAP_CHAIN_DESC* pSwapChainDesc,
+  IDXGISwapChain** ppSwapChain,    
+  ID3D10Device** ppDevice);
+
+#endif
+
 //----------------------------------------------------------------------------//
 struct CEGuiBaseApplication10Impl
 {
@@ -52,7 +65,8 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
     pimpl(new CEGuiBaseApplication10Impl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
+    if ((pimpl->d_window = Win32AppHelper::createApplicationWindow(
+           s_defaultWindowWidth, s_defaultWindowHeight)))
     {
         if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, true))
         {
@@ -122,8 +136,6 @@ void CEGuiD3D10BaseApplication::run()
     {
         if (idle)
         {
-            CEGUI::System& guiSystem = CEGUI::System::getSingleton();
-
             // do time based updates
             const DWORD thisTime = GetTickCount();
             const float elapsed =
@@ -161,7 +173,7 @@ void CEGuiD3D10BaseApplication::destroyWindow()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D10BaseApplication::beginRendering(const float elapsed)
+void CEGuiD3D10BaseApplication::beginRendering(const float /*elapsed*/)
 {
 }
 
@@ -192,10 +204,17 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
     scd.Windowed = windowed;
 
     // initialise main parts of D3D
+#ifdef __MINGW32__
+    res = D3DX10CreateDeviceAndSwapChain(0, D3D10_DRIVER_TYPE_HARDWARE,
+                                         0, 0,
+                                         &scd, &pimpl->d_swapChain,
+                                         &pimpl->d_device);
+#else
     res = D3D10CreateDeviceAndSwapChain(0, D3D10_DRIVER_TYPE_HARDWARE,
                                         0, 0, D3D10_SDK_VERSION,
                                         &scd, &pimpl->d_swapChain,
                                         &pimpl->d_device);
+#endif
     if (SUCCEEDED(res))
     {
 

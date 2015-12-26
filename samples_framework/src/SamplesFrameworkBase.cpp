@@ -135,21 +135,21 @@ SamplesFrameworkBase::~SamplesFrameworkBase()
 /*************************************************************************
     Application entry point
 *************************************************************************/
-int SamplesFrameworkBase::run()
+int SamplesFrameworkBase::run(const CEGUI::String& dataPathPrefixOverride)
 {
     CEGUI_TRY
     {
-        if (initialise("CEGUI.log", CEGUI::String()))
+        if (initialise("CEGUI.log", dataPathPrefixOverride))
             d_baseApp->run();
         cleanup();
     }
     CEGUI_CATCH(const std::exception& exc)
     {
-        outputExceptionMessage(exc.what()); \
+        outputExceptionMessage(exc.what());
     }
     CEGUI_CATCH(const char* exc)
     {
-        SamplesFrameworkBase::outputExceptionMessage(exc); \
+        SamplesFrameworkBase::outputExceptionMessage(exc);
     }
     CEGUI_CATCH(...)
     {
