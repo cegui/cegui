@@ -97,7 +97,7 @@ Scheme::~Scheme(void)
 *************************************************************************/
 void Scheme::loadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Begining resource loading for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource loading for GUI scheme '" + d_name + "' ----", Informative);
 
     // load all resources specified for this scheme.
     loadXMLImagesets();
@@ -118,7 +118,7 @@ void Scheme::loadResources(void)
 *************************************************************************/
 void Scheme::unloadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Begining resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
 
     // unload all resources specified for this scheme.
     //unloadFonts(); FIXME: Prevent unloading of cross-used fonts

@@ -213,7 +213,7 @@ System::System(Renderer& renderer,
     outputLogHeader();
 
     // beginning main init
-    logger.logEvent("---- Begining CEGUI System initialisation ----");
+    logger.logEvent("---- Beginning CEGUI System initialisation ----");
 
     // create the core system singleton objects
     createSingletons();
@@ -227,7 +227,7 @@ System::System(Renderer& renderer,
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    logger.logEvent("CEGUI::System singleton created. " + String(addr_buff));
+    logger.logEvent("CEGUI::System Singleton created. (" + String(addr_buff) + ")");
     logger.logEvent("---- CEGUI System initialisation completed ----");
     logger.logEvent("");
 
@@ -254,7 +254,7 @@ System::System(Renderer& renderer,
 *************************************************************************/
 System::~System(void)
 {
-	Logger::getSingleton().logEvent("---- Begining CEGUI System destruction ----");
+	Logger::getSingleton().logEvent("---- Beginning CEGUI System destruction ----");
 
 	// execute shut-down script
 	if (!d_termScriptName.empty())
