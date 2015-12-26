@@ -318,11 +318,6 @@ public:
         attempt to set the position outside this range will be adjusted so that
         it falls within the legal range.
 
-    \note
-        The returned value has no meaning within the Gui system, it is left up
-        to the application to assign appropriate values for the application
-        specific use of the scroll bar.
-
     \param position
         float value specifying the position of the scroll bar within its
         document.

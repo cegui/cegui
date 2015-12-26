@@ -5,7 +5,9 @@ set( CORE_SOURCE_FILES
     tolua.c
 )
 
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter")
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter")
+endif ()
 
 add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES})
 

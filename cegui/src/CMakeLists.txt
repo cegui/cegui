@@ -101,6 +101,9 @@ endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
     cegui_add_dependency(${CEGUI_TARGET_NAME} MINIZIP)
+    if (MINGW)
+        target_link_libraries(${CEGUI_TARGET_NAME} shlwapi)
+    endif ()
 endif ()
 
 if (WIN32 AND NOT MINGW)

@@ -130,17 +130,17 @@ void OpenGLInfo::initSupportedFeatures()
     // Because of glewExperimental, of course!
     int ext_count;
     glGetIntegerv(GL_NUM_EXTENSIONS, &ext_count);
-    if ((glGetError() == GL_NO_ERROR)
-        &&  ext_count >= 0
-        &&  glGetStringi)
+    if ((glGetError() == GL_NO_ERROR)  &&
+        (ext_count >= 0)  &&
+        glGetStringi)
     {  
         for (int i = 0; i < ext_count; ++i)
         {
             const char* extension
               (reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)));
-            if ((glGetError() == GL_NO_ERROR)
-                &&  extension
-                &&  !std::strcmp(extension, "GL_EXT_texture_compression_s3tc"))
+            if ((glGetError() == GL_NO_ERROR)  &&
+                extension  &&
+                !std::strcmp(extension, "GL_EXT_texture_compression_s3tc"))
             {
                 d_isS3tcSupported = true;
                 break;
