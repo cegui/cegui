@@ -37,7 +37,7 @@
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4251 4521 4522)
+#   pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
