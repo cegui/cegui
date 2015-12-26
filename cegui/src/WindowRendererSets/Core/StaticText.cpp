@@ -198,8 +198,7 @@ namespace CEGUI
                 break;
 
             default:
-                CEGUI_THROW(InvalidRequestException(
-                  "Invalid vertical formatting."));
+                throw InvalidRequestException("Invalid vertical formatting.");
             }
 
         // calculate final colours
@@ -235,15 +234,6 @@ namespace CEGUI
     {
         updateFormatting();
         return getTextRenderAreaWithoutUpdate();
-    }
-
-        if (wlf.isNamedAreaPresent(area_name))
-        {
-            return wlf.getNamedArea(area_name).getArea().getPixelRect(*d_window);
-        }
-
-        // default to plain WithFrameTextRenderArea
-        return wlf.getNamedArea("WithFrameTextRenderArea").getArea().getPixelRect(*d_window);
     }
 
     /************************************************************************
@@ -696,7 +686,7 @@ bool FalagardStaticText::handleFontRenderSizeChange(const Font* const font)
             area_name += "Scroll";
         }
 
-        if (wlf.isNamedAreaDefined(area_name))
+        if (wlf.isNamedAreaPresent(area_name))
         {
             return wlf.getNamedArea(area_name).getArea().getPixelRect(*d_window);
         }
