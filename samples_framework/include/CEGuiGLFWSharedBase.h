@@ -32,6 +32,9 @@
 
 #if CEGUI_USE_GLFW_VER == 3
 #   include <GLFW/glfw3.h>
+#   if (GLFW_VERSION_MINOR < 1) && (GLFW_VERSION_PATCH < 1)
+#       define GLFW_DONT_CARE -1
+#   endif 
 #elif CEGUI_USE_GLFW_VER == 2
 #   include <GL/glfw.h>
 #else
