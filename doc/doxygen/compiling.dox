@@ -14,7 +14,8 @@ systems, and can say the CEGUI is known to build using the following in both
 32bit and 64bit configurations:
 - GNU/Linux using recent versions of either GCC (http://gcc.gnu.org/) or clang
 (http://clang.llvm.org/)
-- Microsoft Windows using MSVC++ 2008 or above (including express editions) or MinGW
+- Microsoft Windows using MSVC++ 2008 or above (including express editions) or
+MinGW-w64
 - Apple OS X using Xcode 4 or above
 
 @section compiling_dependencies Dependencies
