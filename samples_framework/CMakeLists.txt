@@ -1,8 +1,3 @@
-# Allow overwriting samples datapath from CMake
-if (DEFINED CEGUI_SAMPLE_DATAPATH)
-    add_definitions(-DCEGUI_SAMPLE_DATAPATH=${CEGUI_SAMPLE_DATAPATH})
-endif()
-
 set( CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME} )
 
 set( CORE_SOURCE_FILES
