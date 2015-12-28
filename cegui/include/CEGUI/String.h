@@ -371,7 +371,7 @@ public:
     \param str
         std::string object containing either ASCII or UTF-8 encoded characters.
     */
-    String::String(const std::string& str) : d_string(convertUtf8ToUtf32(str))
+    String(const std::string& str) : d_string(convertUtf8ToUtf32(str))
     {}
 
     /*!
@@ -382,7 +382,7 @@ public:
     \param str
         Pointer to the char array containing either ASCII or UTF-8 encoded characters.
     */
-    String::String(const char* str) : d_string(convertUtf8ToUtf32(str))
+    String(const char* str) : d_string(convertUtf8ToUtf32(str))
     {}
 
     /*!
