@@ -148,9 +148,8 @@ String Clipboard::getText()
 
     if (mimeType == "text/plain" && size != 0)
     {
-        // d_buffer an utf8 or ASCII C string (ASCII if std::string is used)
-
-        // !!! However it is not null terminated !!! So we have to tell String
+        // d_buffer is an UTF-8 encoded, UTF-32 encoded or ASCII string
+        // !However it is not null terminated ! So we have to tell String
         // how many code units (not code points!) there are.
         return String(static_cast<const String::value_type*>(d_buffer), d_bufferSize);
     }
