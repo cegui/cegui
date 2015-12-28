@@ -198,7 +198,7 @@ namespace CEGUI
             XMLSize_t eaten = 0;
             XMLSize_t offset = 0;
 #else /* _XERCES_VERSION >= 30000 */
-            utf8 outBuff[128];
+            char outBuff[128];
             unsigned int outputLength;
             unsigned int eaten = 0;
             unsigned int offset = 0;
