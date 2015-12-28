@@ -29,7 +29,7 @@
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 
 #include <stdio.h>
 #include <sstream>

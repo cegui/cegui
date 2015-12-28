@@ -28,7 +28,7 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 #include <limits>
 
 // Start of CEGUI namespace section

@@ -31,7 +31,7 @@
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -40,7 +40,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 
 #include "CEGUI/widgets/Thumb.h"
 #include "CEGUI/widgets/TabControl.h"
