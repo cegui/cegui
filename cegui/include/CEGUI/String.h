@@ -307,6 +307,7 @@ public:
         : d_string(other)
     {}
 
+#if defined(_MSC_VER)
     /*!
     \brief
         Copy constructor. 
@@ -322,6 +323,7 @@ public:
     String(const std::u32string& other, const std::allocator<char32_t>& alloc)
         : d_string(other, alloc)
     {}
+#endif
 
     /*!
     \brief
@@ -339,6 +341,7 @@ public:
         : d_string(other)
     {}
 
+#if defined(_MSC_VER)
     /*!
     \brief
         Move constructor. The String "other" is left in valid but unspecified state.
@@ -346,6 +349,7 @@ public:
     String(CEGUI::String&& other, const std::allocator<char32_t>& alloc)
         : d_string(other.d_string, alloc)
     {}
+
 
     /*!
     \brief
@@ -362,6 +366,7 @@ public:
     String(std::initializer_list<char32_t> init, const std::allocator<char32_t>& alloc = std::allocator<char32_t>())
         : d_string(init, alloc)
     {}
+#endif
 
     /*!
     \brief
@@ -650,6 +655,7 @@ public:
         return *this;
     }
 
+#if defined(_MSC_VER)
     /*!
     \brief
         Replaces the contents of this string with the contents of the initialiser-list "initialiserList".
@@ -658,6 +664,7 @@ public:
     {
         return d_string.get_allocator();
     }
+#endif
 
     //////////////////////////////////////////////////////////////////////////
     // Element access
