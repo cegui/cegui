@@ -312,7 +312,7 @@ public:
         Copy constructor. 
     */
     String(const CEGUI::String& other, const std::allocator<char32_t>& alloc)
-        : d_string(other.d_string)
+        : d_string(other.d_string, alloc)
     {}
 
     /*!
@@ -320,7 +320,7 @@ public:
         Copy constructor based on a std::u32string. 
     */
     String(const std::u32string& other, const std::allocator<char32_t>& alloc)
-        : d_string(other)
+        : d_string(other, alloc)
     {}
 
     /*!
