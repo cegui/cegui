@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Exceptions.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 #include <sstream>
 #include <iterator>
 

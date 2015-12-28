@@ -29,7 +29,7 @@
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 #ifdef __ANDROID__
 #   include <android/log.h> 
 #endif

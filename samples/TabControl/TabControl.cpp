@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "Sample.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 
 #include "TabControl.h"
 

@@ -30,7 +30,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

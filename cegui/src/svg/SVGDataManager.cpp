@@ -29,7 +29,7 @@
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 
 namespace CEGUI
 {

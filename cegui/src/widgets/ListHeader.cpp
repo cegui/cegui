@@ -29,7 +29,7 @@
 #include "CEGUI/widgets/ListHeader.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 #include <sstream>
 
 

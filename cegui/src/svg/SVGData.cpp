@@ -30,7 +30,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/SharedStringstream.h"
+#include "CEGUI/SharedStringStream.h"
 // for the XML parsing part.
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/XMLAttributes.h"
