@@ -27,6 +27,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/SharedStringStream.h"
 
 // for the XML parsing part.
 #include "CEGUI/XMLParser.h"
@@ -104,10 +105,10 @@ static Sizef s_nativeResolution(640.0f, 480.0f);
 //----------------------------------------------------------------------------//
 ImageManager::ImageManager()
 {
-    char addr_buff[32];
-    std::sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "[CEGUI::ImageManager] Singleton created " + String(addr_buff));
+        "CEGUI::ImageManager Singleton created. (" + addressStr + ")");
 
     // self-register the built in 'BitmapImage' type.
     addImageType<BitmapImage>("BitmapImage");
@@ -123,10 +124,10 @@ ImageManager::~ImageManager()
     while (!d_factories.empty())
         removeImageType(d_factories.begin()->first);
 
-    char addr_buff[32];
-    std::sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-       "[CEGUI::ImageManager] Singleton destroyed " + String(addr_buff));
+       "CEGUI::ImageManager Singleton destroyed (" + addressStr + ")");
 }
 
 //----------------------------------------------------------------------------//
@@ -138,7 +139,7 @@ void ImageManager::removeImageType(const String& name)
         return;
 
     Logger::getSingleton().logEvent(
-        "[CEGUI::ImageManager] Unregistered Image type: " + name);
+        "[ImageManager] Unregistered Image type: " + name);
 
     delete i->second;
 	d_factories.erase(name);
@@ -167,11 +168,10 @@ Image& ImageManager::create(const String& type, const String& name)
     Image& image = factory->create(name);
     d_images[name] = std::make_pair(&image, factory);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&image));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(&image);
 
     Logger::getSingleton().logEvent(
-        "[ImageManager] Created image: '" + name + "' (" + addr_buff + 
+        "[ImageManager] Created image: '" + name + "' (" + addressStr + 
         ") of type: " + type);
 
     return image;
@@ -214,11 +214,9 @@ Image& ImageManager::create(const XMLAttributes& attributes)
 
     d_images[name] = std::make_pair(&image, factory);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&image));
-
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&image);
     Logger::getSingleton().logEvent(
-        "[ImageManager] Created image: '" + name + "' (" + addr_buff + 
+        "[ImageManager] Created image: '" + name + "' (" + addressStr + 
         ") of type: " + s_imagesetType);
 
     return image;

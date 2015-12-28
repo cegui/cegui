@@ -42,6 +42,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/DynamicModule.h"
+#include "CEGUI/SharedStringStream.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
@@ -85,10 +86,9 @@ Scheme::~Scheme(void)
 {
     unloadResources();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
     Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been "
-        "unloaded (object destructor). " + addr_buff, Informative);
+        "unloaded (object destructor). " + addressStr, Informative);
 }
 
 
@@ -97,7 +97,7 @@ Scheme::~Scheme(void)
 *************************************************************************/
 void Scheme::loadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Begining resource loading for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource loading for GUI scheme '" + d_name + "' ----", Informative);
 
     // load all resources specified for this scheme.
     loadXMLImagesets();
@@ -118,7 +118,7 @@ void Scheme::loadResources(void)
 *************************************************************************/
 void Scheme::unloadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Begining resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
 
     // unload all resources specified for this scheme.
     //unloadFonts(); FIXME: Prevent unloading of cross-used fonts

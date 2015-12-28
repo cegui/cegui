@@ -30,7 +30,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <vector>
 

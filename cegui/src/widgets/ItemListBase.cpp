@@ -160,7 +160,7 @@ size_t ItemListBase::getItemIndex(const ItemEntry* item) const
 *************************************************************************/
 ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* start_item)
 {
-	// if start_item is NULL begin search at begining, else start at item after start_item
+	// if start_item is NULL begin search at beginning, else start at item after start_item
 	size_t index = (!start_item) ? 0 : (getItemIndex(start_item) + 1);
 
 	while (index < d_listItems.size())
@@ -244,7 +244,7 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
     }
 	else if (item && item->d_ownerList != this)
 	{
-		// if position is NULL begin insert at begining, else insert after item 'position'
+		// if position is NULL begin insert at beginning, else insert after item 'position'
 		ItemEntryList::iterator ins_pos;
 
 		if (!position)

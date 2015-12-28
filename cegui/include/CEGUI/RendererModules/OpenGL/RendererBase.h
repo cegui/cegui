@@ -36,7 +36,7 @@
 #include "../../RefCounted.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <vector>
 #include <unordered_map>

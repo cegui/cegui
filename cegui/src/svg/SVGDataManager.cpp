@@ -29,6 +29,7 @@
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringstream.h"
 
 namespace CEGUI
 {
@@ -115,11 +116,10 @@ bool SVGDataManager::isSVGDataDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void SVGDataManager::logSVGDataCreation(SVGData* svgData)
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(svgData));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
     Logger::getSingleton().logEvent(
-        "[SVGDataManager] Created SVGData object: '" + svgData->getName() + "' (" + addr_buff + 
+        "[SVGDataManager] Created SVGData object: '" + svgData->getName() + "' (" + addressStr + 
         ")");
 }
 

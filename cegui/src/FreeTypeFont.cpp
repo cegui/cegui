@@ -34,14 +34,11 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/SharedStringStream.h"
 #include <cmath>
 #include <cstdio>
 #include <stddef.h>
 #include <cstring>
-
-#ifdef _MSC_VER
-#define snprintf _snprintf
-#endif
 
 namespace CEGUI
 {
@@ -85,10 +82,9 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
 
     updateFont();
 
-    char tmp[50];
-    snprintf(tmp, sizeof(tmp), "Successfully loaded %d glyphs",
-             static_cast<int>(d_cp_map.size()));
-    Logger::getSingleton().logEvent(tmp, Informative);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << "Successfully loaded " << d_cp_map.size() << " glyphs";
+    Logger::getSingleton().logEvent(sstream.str(), Informative);
 }
 
 //----------------------------------------------------------------------------//
@@ -172,7 +168,7 @@ unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
+void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) const
 {
     CodepointMap::iterator s = d_cp_map.lower_bound(start_codepoint);
     if (s == d_cp_map.end())
@@ -438,10 +434,10 @@ void FreeTypeFont::updateFont()
         if ((best_size <= 0) ||
                 FT_Set_Char_Size(d_fontFace, 0, FT_F26Dot6(best_size * 64), 0, 0))
         {
-            char size [20];
-            snprintf(size, sizeof(size), "%g", d_ptSize);
+            std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+            sstream << "%g" << d_ptSize;
             throw GenericException("The font '" + d_name + "' cannot be "
-                "rasterised at a size of " + size + " points, and cannot be "
+                "rasterised at a size of " + sstream.str() + " points, and cannot be "
                 "used.");
         }
     }
@@ -490,7 +486,7 @@ void FreeTypeFont::initialiseGlyphMap()
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* FreeTypeFont::findFontGlyph(const utf32 codepoint) const
+const FontGlyph* FreeTypeFont::findFontGlyph(const char32_t codepoint) const
 {
     CodepointMap::iterator pos = d_cp_map.find(codepoint);
 

@@ -32,7 +32,7 @@
 #include "CEGUI/svg/SVGPaintStyle.h"
 #include "CEGUI/svg/SVGImage.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <vector>
 

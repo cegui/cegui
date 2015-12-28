@@ -188,8 +188,7 @@ void DirectFBRenderer::logTextureCreation(DirectFBTexture* texture)
 {
     if (Logger* logger = Logger::getSingletonPtr())
     {
-        char addr_buff[32];
-        sprintf(addr_buff, " (%p)", static_cast<void*>(texture));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(texture);
 
         logger->logEvent("[DirectFBRenderer] Created texture: " +
                          texture->getName() + addr_buff);
@@ -220,8 +219,7 @@ void DirectFBRenderer::logTextureDestruction(DirectFBTexture* texture)
 {
     if (Logger* logger = Logger::getSingletonPtr())
     {
-        char addr_buff[32];
-        sprintf(addr_buff, " (%p)", static_cast<void*>(texture));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(texture);
 
         logger->logEvent("[DirectFBRenderer] Destroyed texture: " +
                          texture->getName() + addr_buff);

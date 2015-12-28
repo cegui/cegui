@@ -29,6 +29,8 @@
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/SharedStringstream.h"
+
 #include <stdio.h>
 #include <sstream>
 #include <iomanip>
@@ -244,25 +246,33 @@ namespace CEGUI
             return 0.0f;
         }
 
-        int res, tmp;
+        int tmp;
         unsigned int utmp;
         double val;
+
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
 
         switch (d_inputMode)
         {
         case FloatingPoint:
-            res = sscanf(tmpTxt.c_str(), "%lf", &val);
+            sstream << tmpTxt;
+            sstream >> val;
             break;
         case Integer:
-            res = sscanf(tmpTxt.c_str(), "%d", &tmp);
+            sstream << tmpTxt;
+            sstream >> tmp;
             val = static_cast<double>(tmp);
             break;
         case Hexadecimal:
-            res = sscanf(tmpTxt.c_str(), "%x", &utmp);
+            sstream << std::hex << tmpTxt;
+            sstream >> utmp;
+            sstream << std::dec;
             val = static_cast<double>(utmp);
             break;
         case Octal:
-            res = sscanf(tmpTxt.c_str(), "%o", &utmp);
+            sstream << std::oct << tmpTxt;
+            sstream >> utmp;
+            sstream << std::dec;
             val = static_cast<double>(utmp);
             break;
         default:
@@ -270,19 +280,20 @@ namespace CEGUI
                 "An unknown TextInputMode was encountered.");
         }
 
-        if (res)
+        if (!sstream.fail())
         {
             return val;
         }
 
-        throw InvalidRequestException(
-            "The string '" + getEditbox()->getText() +
-            "' can not be converted to numerical representation.");
+        throw InvalidRequestException("The string '" + getEditbox()->getText() +
+                                      "' could not be converted to numerical representation.");
+
+        return 0.0f;
     }
 
     String Spinner::getTextFromValue(void) const
     {
-        std::stringstream tmp;
+        std::stringstream& tmp = SharedStringstream::GetPreparedStream();
 
         switch (d_inputMode)
         {
@@ -293,10 +304,10 @@ namespace CEGUI
             tmp << static_cast<int>(d_currentValue);
             break;
         case Hexadecimal:
-            tmp << std::hex << std::uppercase << static_cast<int>(d_currentValue);
+            tmp << std::hex << std::uppercase << static_cast<int>(d_currentValue) << std::dec;
             break;
         case Octal:
-            tmp << std::oct << static_cast<int>(d_currentValue);
+            tmp << std::oct << static_cast<int>(d_currentValue) << std::dec;
             break;
         default:
             throw InvalidRequestException(

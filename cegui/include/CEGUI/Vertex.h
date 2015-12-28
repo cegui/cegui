@@ -29,7 +29,7 @@
 
 #include "CEGUI/Colour.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

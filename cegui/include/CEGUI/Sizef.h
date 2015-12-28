@@ -33,7 +33,7 @@
 #include "CEGUI/StreamHelper.h"
 #include <typeinfo>
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI

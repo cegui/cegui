@@ -3187,7 +3187,7 @@ protected:
 
     \param e
         TextEventArgs object whose 'character' field is set to the Unicode code
-        point (encoded as utf32) for the character inputted.
+        point (encoded as UTF-32) for the character inputted.
     */
     virtual void onCharacter(TextEventArgs& e);
 

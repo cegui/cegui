@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "Sample.h"
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/SharedStringstream.h"
 
 #include "TabControl.h"
 
@@ -270,10 +271,10 @@ bool TabControlSample::handleAddTab(const EventArgs&)
         // Add some tab buttons once
         for (int num = 3; num <= 16; num++)
         {
-            std::stringstream pgname;
-            pgname << "Page" << num;
+            std::stringstream pgNameStream;
+            pgNameStream << "Page" << num;
 
-            if (root->isChild(String("Frame/TabControl/") + pgname.str().c_str()))
+            if (root->isChild(String("Frame/TabControl/") + pgNameStream.str()))
                 // Next
                 continue;
 
@@ -283,7 +284,7 @@ bool TabControlSample::handleAddTab(const EventArgs&)
             try
             {
                 pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-                pg->setName(String(pgname.str().c_str()));
+                pg->setName(String(pgNameStream.str()));
             }
             catch (CEGUI::Exception&)
             {
@@ -297,7 +298,7 @@ bool TabControlSample::handleAddTab(const EventArgs&)
                 Window* txt = pg->getChild("Text");
                 txt->setText(PageText[num - 3]);
 
-                pg->setText(pgname.str().c_str());
+                pg->setText(pgNameStream.str());
                 tc->addTab(pg);
 
                 refreshPageList();

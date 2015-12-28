@@ -40,7 +40,7 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
 
-#include "glm/gtc/type_ptr.hpp"
+#include <glm/gtc/type_ptr.hpp>
 
 #include <sstream>
 #include <algorithm>

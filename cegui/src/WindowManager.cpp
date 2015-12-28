@@ -35,6 +35,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/SharedStringStream.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
@@ -68,10 +69,10 @@ WindowManager::WindowManager(void) :
     d_uid_counter(0),
     d_lockCount(0)
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::WindowManager singleton created " + String(addr_buff));
+        "CEGUI::WindowManager Singleton created. (" + addressStr + ")");
 }
 
 
@@ -83,10 +84,10 @@ WindowManager::~WindowManager(void)
 	destroyAllWindows();
     cleanDeadPool();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::WindowManager singleton destroyed " + String(addr_buff));
+        "CEGUI::WindowManager singleton destroyed (" + addressStr + ")");
 }
 
 
@@ -107,10 +108,9 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 
     Window* newWindow = factory->createWindow(finalName);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(newWindow));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(newWindow);
     Logger::getSingleton().logEvent("Window '" + finalName +"' of type '" +
-        type + "' has been created. " + addr_buff, Informative);
+        type + "' has been created. " + addressStr, Informative);
 
     // see if we need to assign a look to this window
     if (wfMgr.isFalagardMappedType(type))
@@ -193,13 +193,12 @@ void WindowManager::destroyWindow(Window* window)
                   d_windowRegistry.end(),
                   window);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(&window));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&window);
 
 	if (iter == d_windowRegistry.end())
     {
         Logger::getSingleton().logEvent("[WindowManager] Attempt to delete "
-            "Window that does not exist!  Address was: " + String(addr_buff) +
+            "Window that does not exist!  Address was: " + addressStr +
             ". WARNING: This could indicate a double-deletion issue!!",
             Errors);
         return;
@@ -208,7 +207,7 @@ void WindowManager::destroyWindow(Window* window)
     d_windowRegistry.erase(iter);
 
     Logger::getSingleton().logEvent("Window at '" + window->getNamePath() +
-        "' will be added to dead pool. " + addr_buff, Informative);
+        "' will be added to dead pool. " + addressStr, Informative);
 
     // do 'safe' part of cleanup
     window->destroy();
@@ -368,14 +367,15 @@ String WindowManager::getLayoutAsString(const Window& window) const
     std::ostringstream str;
     writeLayoutToStream(window, str);
 
-    return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
+    return String(str.str().c_str());
 }
 
 //----------------------------------------------------------------------------//
 void WindowManager::saveLayoutToFile(const Window& window,
                                      const String& filename) const
 {
-    std::ofstream stream(filename.c_str());
+    std::ofstream stream;
+    stream << filename;
 
     if (!stream.good())
         throw FileIOException(

@@ -120,7 +120,7 @@ void Font::addFontProperties()
 }
 
 //----------------------------------------------------------------------------//
-void Font::setMaxCodepoint(utf32 codepoint)
+void Font::setMaxCodepoint(char32_t codepoint)
 {
     if (d_glyphPageLoaded)
     {
@@ -137,7 +137,7 @@ void Font::setMaxCodepoint(utf32 codepoint)
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* Font::getGlyphData(utf32 codepoint) const
+const FontGlyph* Font::getGlyphData(char32_t codepoint) const
 {
     if (codepoint > d_maxCodepoint)
         return 0;
@@ -161,7 +161,7 @@ const FontGlyph* Font::getGlyphData(utf32 codepoint) const
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* Font::findFontGlyph(const utf32 codepoint) const
+const FontGlyph* Font::findFontGlyph(const char32_t codepoint) const
 {
     CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
     return (pos != d_cp_map.end()) ? &pos->second : 0;
@@ -315,7 +315,7 @@ void Font::notifyDisplaySizeChanged(const Sizef& size)
 }
 
 //----------------------------------------------------------------------------//
-void Font::rasterise(utf32, utf32) const
+void Font::rasterise(char32_t, char32_t) const
 {
     // do nothing by default
 }

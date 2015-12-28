@@ -245,7 +245,7 @@ void ImageManager::addImageType(const String& name)
     d_factories[name] = new TplImageFactory<T>;
 
     Logger::getSingleton().logEvent(
-        "[CEGUI::ImageManager] Registered Image type: " + name);
+        "[ImageManager] Registered Image type: " + name);
 }
 
 //---------------------------------------------------------------------------//
