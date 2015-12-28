@@ -33,9 +33,11 @@
 #include "CEGUI/Base.h"
 #include <string>
 
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+
 namespace CEGUI
 {
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
