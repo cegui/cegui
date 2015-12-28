@@ -115,7 +115,7 @@ public:
     \return
         Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded string or char array.
     */
-    static std::u32string String::convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd);
+    static std::u32string convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd);
 
     /*
     \brief
@@ -147,7 +147,7 @@ public:
     \return
         Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded char array.
     */
-    static std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t stringLength);
+    static std::u32string convertUtf8ToUtf32(const char* utf8String, const size_t stringLength);
 
     /*
     \brief
@@ -201,7 +201,7 @@ public:
     \return
         Returns an UTF-8 string (std::string) converted from the UTF-32 string or char32_t array.
     */
-    static std::string String::convertUtf32ToUtf8(const char32_t* utf32String, const size_t stringLength);
+    static std::string convertUtf32ToUtf8(const char32_t* utf32String, const size_t stringLength);
 
     //////////////////////////////////////////////////////////////////////////
     // Default constructors and destructors
