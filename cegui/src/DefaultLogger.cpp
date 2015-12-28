@@ -29,6 +29,7 @@
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
+#include "CEGUI/SharedStringstream.h"
 #ifdef __ANDROID__
 #   include <android/log.h> 
 #endif
@@ -46,9 +47,10 @@ DefaultLogger::DefaultLogger(void)
     logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
     logEvent("+                          (http://www.cegui.org.uk/)                         +");
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    logEvent("CEGUI::Logger Singleton created. " + String(addr_buff));
+
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
+    logEvent("CEGUI::Logger Singleton created. (" + addressStr + ")");
 }
 
 //----------------------------------------------------------------------------//
@@ -56,9 +58,9 @@ DefaultLogger::~DefaultLogger(void)
 {
     if (d_ostream.is_open())
     {
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-        logEvent("CEGUI::Logger singleton destroyed. " + String(addr_buff));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
+        logEvent("CEGUI::Logger singleton destroyed. " + addressStr);
         d_ostream.close();
     }
 }

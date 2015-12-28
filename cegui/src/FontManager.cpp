@@ -34,6 +34,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/PixmapFont.h"
+#include "CEGUI/SharedStringStream.h"
 
 #ifdef CEGUI_HAS_FREETYPE
 #   include "CEGUI/FreeTypeFont.h"
@@ -51,23 +52,23 @@ template<> FontManager* Singleton<FontManager>::ms_Singleton = 0;
 FontManager::FontManager() :
     d_resourceType("Font")
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::FontManager singleton created. " + String(addr_buff));
+        "CEGUI::FontManager Singleton created. (" + addressStr + ")");
 }
 
 FontManager::~FontManager()
 {
     Logger::getSingleton().logEvent(
-        "---- Begining cleanup of Font system ----");
+        "---- Beginning cleanup of Font system ----");
 
     destroyAll();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::FontManager singleton destroyed. " + String(addr_buff));
+        "CEGUI::FontManager singleton destroyed. (" + addressStr + ")");
 }
 
 Font& FontManager::createFreeTypeFont(const String& font_name,
@@ -222,11 +223,10 @@ bool FontManager::isDefined(const String& font_name) const
 void FontManager::destroyObject(
     FontRegistry::iterator ob)
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(ob->second));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + d_resourceType +
         "' named '" + ob->first + "' has been destroyed. " +
-        addr_buff, Informative);
+        addressStr, Informative);
 
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);

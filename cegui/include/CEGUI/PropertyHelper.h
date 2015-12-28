@@ -46,16 +46,6 @@
 
 #include <cstdio>
 
-
- #ifdef __MINGW32__
-    #pragma GCC diagnostic push
-
-    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
-       "%llu" format with the "printf"/"scanf" family of functions. */
-    #pragma GCC diagnostic ignored "-Wformat"
-    #pragma GCC diagnostic ignored "-Wformat-extra-args"
-#endif
-
 namespace CEGUI
 {
 /*!
@@ -264,25 +254,6 @@ public:
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
 };
-
-
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
-
-template<>
-class CEGUIEXPORT PropertyHelper<String::value_type>
-{
-public:
-    typedef String::value_type return_type;
-    typedef return_type safe_method_return_type;
-    typedef const String::value_type pass_type;
-    typedef String string_return_type;
-    
-    static const String& getDataTypeName();
-    static return_type fromString(const String& str);
-    static string_return_type toString(pass_type val);
-};
-
-#endif
 
 template<> 
 class CEGUIEXPORT PropertyHelper<bool>
@@ -521,9 +492,6 @@ public:
     static string_return_type toString(pass_type val);
 };
 
-#ifdef __MINGW32__
-    #pragma GCC diagnostic pop
-#endif
 // Explicit instantiation declarations
 extern template CEGUIEXPORT class PropertyHelper<String>;
 extern template CEGUIEXPORT class PropertyHelper<float>;
@@ -533,9 +501,6 @@ extern template CEGUIEXPORT class PropertyHelper<std::int32_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::int64_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint32_t>;
 extern template CEGUIEXPORT class PropertyHelper<std::uint64_t>;
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
-extern template CEGUIEXPORT class PropertyHelper<String::value_type>;
-#endif
 extern template CEGUIEXPORT class PropertyHelper<bool>;
 extern template CEGUIEXPORT class PropertyHelper<AspectMode>;
 extern template CEGUIEXPORT class PropertyHelper<glm::vec2>;

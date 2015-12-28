@@ -155,14 +155,6 @@ static size_t getStringLength(const T* buffer)
 }
 
 //----------------------------------------------------------------------------//
-// Helper to correctly delete a buffer returned from iconvTranscode
-template<typename T>
-static void deleteTranscodeBuffer(T* buffer)
-{
-    delete[] buffer;
-}
-
-//----------------------------------------------------------------------------//
 // Helper to transcode a buffer and return a string class built from it.
 template<typename String_T, typename CodeUnit_T>
 static String_T iconvTranscode(IconvHelper& ich,
@@ -170,7 +162,7 @@ static String_T iconvTranscode(IconvHelper& ich,
 {
     CodeUnit_T* tmp = iconvTranscode<CodeUnit_T>(ich, in_buf, in_len);
     String_T result(tmp);
-    deleteTranscodeBuffer(tmp);
+    delete[] tmp;
 
     return result;
 }
@@ -289,12 +281,6 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) co
     return String(&buf[0]);
 
 #endif
-}
-
-//----------------------------------------------------------------------------//
-void IconvStringTranscoder::deleteUTF16Buffer(std::uint16_t* input) const
-{
-    deleteTranscodeBuffer(input);
 }
 
 //----------------------------------------------------------------------------//

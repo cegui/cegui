@@ -205,7 +205,8 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
             if ((fd.attrib & _A_SUBDIR))
                 continue;
 
-            out_vec.push_back(System::getStringTranscoder().stringFromStdWString(fd.name));
+            CEGUI::String currentName = System::getStringTranscoder().stringFromStdWString(fd.name);
+            out_vec.push_back(currentName);
             ++entries;
         }
         while (_wfindnext(f, &fd) == 0);

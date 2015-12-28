@@ -115,7 +115,7 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     switch(message)
     {
     case WM_CHAR:
-        s_sampleBrowser->injectChar((CEGUI::utf32)wParam);
+        s_sampleBrowser->injectChar((char32_t)wParam);
         break;
 
     case WM_MOUSELEAVE:

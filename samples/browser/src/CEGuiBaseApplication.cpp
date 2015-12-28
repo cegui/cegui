@@ -50,6 +50,7 @@
 #include <string.h>
 #include <limits.h>
 #include <math.h>
+#include <sstream>
 
 // setup default-default path
 #ifndef CEGUI_SAMPLE_DATAPATH
@@ -205,21 +206,21 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories
        rather than only ASCII strings (even though currently they're all ASCII).
        */
     rp->setResourceGroupDirectory("schemes",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/schemes/"));
+      dataPathPrefix + "/schemes/");
     rp->setResourceGroupDirectory("imagesets",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/imagesets/"));
+      dataPathPrefix + "/imagesets/");
     rp->setResourceGroupDirectory("fonts",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/fonts/"));
+      dataPathPrefix + "/fonts/");
     rp->setResourceGroupDirectory("layouts",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/layouts/"));
+      dataPathPrefix + "/layouts/");
     rp->setResourceGroupDirectory("looknfeels",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/looknfeel/"));
+      dataPathPrefix + "/looknfeel/");
     rp->setResourceGroupDirectory("lua_scripts",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/lua_scripts/"));
+      dataPathPrefix + "/lua_scripts/");
     rp->setResourceGroupDirectory("schemas",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/xml_schemas/"));
+      dataPathPrefix + "/xml_schemas/");
     rp->setResourceGroupDirectory("animations",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/animations/"));
+      dataPathPrefix + "/animations/");
 }
 
 //----------------------------------------------------------------------------//
@@ -331,15 +332,15 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 return;
 
             // update FPS imagery
-            char fps_textbuff[16];
-            sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
+            std::stringstream sstream;
+            sstream << "FPS: " << d_FPSValue;
 
             const size_t bufferCount = d_FPSGeometry.size();
             for (size_t i = 0; i < bufferCount; ++i)
                 d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
             d_FPSGeometry.clear();
 
-            fnt->drawText(d_FPSGeometry, fps_textbuff, glm::vec2(0, 0), 0, false,
+            fnt->drawText(d_FPSGeometry, sstream.str(), glm::vec2(0, 0), 0, false,
                           CEGUI::Colour(0xFFFFFFFF));
 
             updateFPSGeometry();

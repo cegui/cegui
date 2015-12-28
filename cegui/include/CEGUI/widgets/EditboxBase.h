@@ -32,6 +32,8 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Window.h"
 
+#include <cstdint>
+
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -214,11 +216,10 @@ public:
         return the code point used when rendering masked text.
 
     \return
-        utf32 or char (depends on used String class) code point value representing
-        the Unicode code point that will be rendered instead of the Editbox text
-        when rendering in masked mode.
+        Unsigned integer value representing an UTF-32 code point that will be rendered instead of
+        the Editbox text when rendering in masked mode.
     */
-    String::value_type getTextMaskingCodepoint() const { return d_textMaskingCodepoint; }
+    std::uint32_t getTextMaskingCodepoint() const { return d_textMaskingCodepoint; }
 
     /*!
     \brief
@@ -325,14 +326,13 @@ public:
         set the code point used when rendering masked text.
 
     \param code_point
-        utf32 or char (depends on used String class) code point value representing
-        the vode point that should be rendered instead of the Editbox text when
-        rendering in masked mode.
+        Unsigned int value representing an UTF-32 code point that should be rendered instead of the
+        Editbox text when rendering in masked mode.
 
     \return
         Nothing.
     */
-    void setTextMaskingCodepoint(String::value_type code_point);
+    void setTextMaskingCodepoint(std::uint32_t code_point);
 
     /*!
     \brief
@@ -561,7 +561,7 @@ protected:
     //! True if the editbox text should be rendered masked.
     bool d_textMaskingEnabled;
     //! Code point to use when rendering masked text.
-    String::value_type d_textMaskingCodepoint;
+    std::uint32_t d_textMaskingCodepoint;
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
     //! Position of the caret / insert-point.

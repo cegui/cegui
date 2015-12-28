@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderEffectManager.h"
+#include "CEGUI/SharedStringStream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -36,10 +37,10 @@ RenderEffectManager* Singleton<RenderEffectManager>::ms_Singleton = 0;
 //---------------------------------------------------------------------------//
 RenderEffectManager::RenderEffectManager()
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::RenderEffectManager singleton created " + String(addr_buff));
+        "CEGUI::RenderEffectManager Singleton created. (" + addressStr + ")");
 }
 
 //---------------------------------------------------------------------------//
@@ -53,10 +54,10 @@ RenderEffectManager::~RenderEffectManager()
     while (!d_effectRegistry.empty())
         removeEffect(d_effectRegistry.begin()->first);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::RenderEffectManager singleton destroyed " + String(addr_buff));
+        "CEGUI::RenderEffectManager singleton destroyed (" + addressStr + ")");
 }
 
 //---------------------------------------------------------------------------//
@@ -96,10 +97,10 @@ RenderEffect& RenderEffectManager::create(const String& name, Window* window)
     // here we keep track of the factory used to create the effect object.
     d_effects[&effect] = i->second;
 
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&effect));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&effect);
+
     Logger::getSingleton().logEvent("RenderEffectManager::create: Created "
-        "instance of effect '" + name + "' at " + String(addr_buff));
+        "instance of effect '" + name + "' at (" + addressStr + ")");
 
     return effect;
 }
@@ -116,8 +117,7 @@ void RenderEffectManager::destroy(RenderEffect& effect)
             "RenderEffectManager - perhaps you created it directly?");
 
     // Get string of object address before we delete it.
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&effect));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&effect);
 
     // use the same factory to delete the RenderEffect as what created it
     i->second->destroy(effect);
@@ -126,7 +126,7 @@ void RenderEffectManager::destroy(RenderEffect& effect)
     d_effects.erase(i);
 
     Logger::getSingleton().logEvent("RenderEffectManager::destroy: Destroyed "
-        "RenderEffect object at " + String(addr_buff));
+        "RenderEffect object at (" + addressStr + ")");
 }
 
 //---------------------------------------------------------------------------//

@@ -41,7 +41,7 @@
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGBasicShape.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <iostream>
 #include <ctime>

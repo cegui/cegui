@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(NativeClipboardProvider)
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     // Unicode string set, get
-    const CEGUI::utf8* utf8Test = (const CEGUI::utf8*)"(・。・;)";
+    const char* utf8Test = "(・。・;)";
     cb.setText(utf8Test);
     BOOST_CHECK_EQUAL(cb.getText(), utf8Test);
     BOOST_CHECK(memcmp(g_ClipboardBuffer, CEGUI::String(utf8Test).c_str(), g_ClipboardSize) == 0);

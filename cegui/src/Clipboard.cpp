@@ -78,7 +78,7 @@ void Clipboard::setData(const String& mimeType, const void* buffer, size_t size)
         }
         
         d_bufferSize = size;
-        d_buffer = new BufferElement[d_bufferSize];
+        d_buffer = new String::value_type[d_bufferSize];
     }
     
     memcpy(d_buffer, buffer, d_bufferSize);
@@ -112,7 +112,7 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
             }
             
             d_bufferSize = retrievedSize;
-            d_buffer = new BufferElement[d_bufferSize];
+            d_buffer = new String::value_type[d_bufferSize];
         }
         
         memcpy(d_buffer, retrievedBuffer, retrievedSize);
@@ -126,15 +126,13 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
 //----------------------------------------------------------------------------//
 void Clipboard::setText(const String& text)
 {
-    // could be just ASCII if std::string is used as CEGUI::String
-    const char* utf8_bytes = text.c_str();
+    // Get the character (char or char32_t) pointing to the characters of the string
+    const String::value_type* characterArray = text.c_str();
     
-    // we don't want the actual string length, that might not be the buffer size
-    // in case of utf8!
-    // this gets us the number of bytes until \0 is encountered
-    const size_t size = strlen(utf8_bytes);
+    // Get the number of characters until the null-character \0 is encountered
+    const size_t size = std::char_traits<String::value_type>::length(characterArray);
     
-    setData("text/plain", static_cast<const void*>(utf8_bytes), size);
+    setData("text/plain", static_cast<const void*>(characterArray), size);
 }
 
 //----------------------------------------------------------------------------//
@@ -154,11 +152,7 @@ String Clipboard::getText()
 
         // !!! However it is not null terminated !!! So we have to tell String
         // how many code units (not code points!) there are.
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-        return String(reinterpret_cast<const utf8*>(d_buffer), d_bufferSize);
-#else
-        return String(static_cast<const char*>(d_buffer), d_bufferSize);
-#endif
+        return String(static_cast<const String::value_type*>(d_buffer), d_bufferSize);
     }
     else
     {

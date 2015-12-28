@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
+#include <sstream>
 
 using namespace CEGUI;
 
@@ -429,9 +430,16 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/NewColTextBox"));
 
     // get ID for new column
-    unsigned int id = atoi(idbox->getText().c_str());
+    std::stringstream sstream;
+    sstream << idbox->getText();
+    unsigned int id = 0;
+    sstream >> id;
+
     // get width to use for new column (in pixels)
-    float width = static_cast<float>(atof(widthbox->getText().c_str()));
+    sstream << widthbox->getText();
+    float width = 0.0f;
+    sstream >> width;
+
     // get column label text
     String text = textbox->getText();
 
@@ -460,7 +468,10 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& args)
     Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/DelColIDBox"));
 
     // obtain the id of the column to be deleted
-    unsigned int id = atoi(idbox->getText().c_str());
+    std::stringstream sstream;
+    sstream << idbox->getText();
+    unsigned int id = 0;
+    sstream >> id;
 
     // attempt to delete the column, ignoring any errors.
     try
@@ -487,7 +498,12 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/RowTextBox"));
 
     // get the ID of the initial column item to set
-    unsigned int id = atoi(idbox->getText().c_str());
+    std::stringstream sstream;
+    sstream << idbox->getText();
+    unsigned int id = 0;
+    sstream >> id;
+
+
     // get the text that is to be set initially into the specified column of the new row
     String text = textbox->getText();
 
@@ -524,7 +540,10 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& args)
     Editbox* idxbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/DelRowIdxBox"));
 
     // get index of row to delete.
-    unsigned int idx = atoi(idxbox->getText().c_str());
+    std::stringstream sstream;
+    sstream << idxbox->getText();
+    unsigned int idx = 0;
+    sstream >> idx;
 
     // attempt to delete the row, ignoring any errors.
     try
@@ -552,9 +571,16 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& args)
     Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SetItemTextBox"));
 
     // get ID of column to be affected
-    unsigned int id = atoi(idbox->getText().c_str());
+    std::stringstream sstream;
+    sstream << idbox->getText();
+    unsigned int id = 0;
+    sstream >> id;
+
     // get index of row to be affected
-    unsigned int row = atoi(rowbox->getText().c_str());
+    sstream << rowbox->getText();
+    unsigned int row = 0;
+    sstream >> row;
+
     // get new text for item
     String text = textbox->getText();
 
@@ -593,10 +619,9 @@ bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& args)
     // update the selected count
     std::string tmp("Current Selected Count: ");
 
-    char buff[16];
-    sprintf(buff, "%d", mcl->getSelectedCount());
-
-    tmp += buff;
+    std::stringstream sstream;
+    sstream << mcl->getSelectedCount();
+    tmp += sstream.str();
 
     static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SelCount")->setText(tmp.c_str());
 
@@ -682,19 +707,23 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
     Window* rowText = static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/RowCount");
 
     std::string tmp;
-    char buff[16];
+    {
+        // update the column count
+        tmp = "Current Column Count: ";
+        std::stringstream sstream;
+        sstream << mcl->getColumnCount();
+        tmp += sstream.str();
+        colText->setText(tmp.c_str());
+    }
 
-    // update the column count
-    tmp = "Current Column Count: ";
-    sprintf(buff, "%d", mcl->getColumnCount());
-    tmp += buff;
-    colText->setText(tmp.c_str());
-
-    // update the row count
-    tmp = "Current Row Count: ";
-    sprintf(buff, "%d", mcl->getRowCount());
-    tmp += buff;
-    rowText->setText(tmp.c_str());
+    {
+        // update the row count
+        tmp = "Current Row Count: ";
+        std::stringstream sstream;
+        sstream << mcl->getRowCount();
+        tmp += sstream.str();
+        rowText->setText(tmp.c_str());
+    }
 
     // event was handled.
     return true;

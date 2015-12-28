@@ -40,6 +40,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/AnimationManager.h"
+#include "CEGUI/SharedStringstream.h"
 
 #include "CEGUI/widgets/Thumb.h"
 #include "CEGUI/widgets/TabControl.h"
@@ -352,8 +353,9 @@ namespace CEGUI
     argb_t Falagard_xmlHandler::hexStringToARGB(const String& str)
     {
         argb_t val;
-        std::istringstream s(str.c_str());
-        s >> std::hex >> val;
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+        sstream >> std::hex >> val;
+        sstream << std::dec;
 
         return val;
     }
@@ -1016,7 +1018,6 @@ namespace CEGUI
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
         const String eventName(attributes.getValueAsString(FireEventAttribute));
-        typedef std::pair<float, float> Range;
 
         if(type == PropertyHelper<Colour>::getDataTypeName())
             prop = new PropertyDefinition<Colour>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName() );
@@ -1088,8 +1089,6 @@ namespace CEGUI
             prop = new PropertyDefinition<VerticalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<HorizontalFormatting>::getDataTypeName())
             prop = new PropertyDefinition<HorizontalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<Range>::getDataTypeName())
-            prop = new PropertyDefinition<Range>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else
         {
             if (type != GenericDataType && type != "String")
@@ -1249,9 +1248,6 @@ namespace CEGUI
             d_propertyLink = new PropertyLinkDefinition<HorizontalFormatting>(
                     name, widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName()
             );
-        else if (type == PropertyHelper<Range>::getDataTypeName())
-            d_propertyLink = new PropertyLinkDefinition<Range>(name,
-                    widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else
         {
             if (type != GenericDataType && type != PropertyHelper<String>::getDataTypeName())
@@ -1784,8 +1780,6 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<VerticalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<HorizontalFormatting>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<HorizontalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<std::pair<float,float> >::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<Range>* >(d_propertyLink)->addLinkTarget(w, p);
             else
                 dynamic_cast<PropertyLinkDefinition<String>* >(d_propertyLink)->addLinkTarget(w, p);
 
