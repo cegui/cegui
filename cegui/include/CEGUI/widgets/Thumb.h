@@ -31,7 +31,7 @@
 #define _CEGUIThumb_h_
 
 #include "./PushButton.h"
-#include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 #include <utility>
 
 
