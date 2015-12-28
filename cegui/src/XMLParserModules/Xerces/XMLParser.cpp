@@ -249,7 +249,7 @@ namespace CEGUI
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
                 schemaName.c_str(),
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-                schemaName.c_str().toUtf8String(),
+                schemaName.toUtf8String().c_str(),
 #endif
                 false);
             reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
@@ -260,7 +260,7 @@ namespace CEGUI
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
             XMLCh* pval = XMLString::transcode(schemaName.c_str());
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-            XMLCh* pval = XMLString::transcode(schemaName.c_str()->toUtf8String());
+            XMLCh* pval = XMLString::transcode(schemaName.toUtf8String().c_str());
 #endif
             reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
             XMLString::release(&pval);
