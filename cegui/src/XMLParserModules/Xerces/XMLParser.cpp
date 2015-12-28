@@ -197,18 +197,17 @@ namespace CEGUI
             XMLSize_t outputLength;
             XMLSize_t eaten = 0;
             XMLSize_t offset = 0;
-#else /* _XERCES_VERSION >= 30000 */
+#else
             char outBuff[128];
             unsigned int outputLength;
             unsigned int eaten = 0;
             unsigned int offset = 0;
-#endif /* _XERCES_VERSION >= 30000 */
-//            unsigned int inputLength = XMLString::stringLen(xmlch_str); // dalfy caracters node need to transcode but give the size 
+#endif
 
-            while (inputLength)
+            while (inputLength != 0)
             {
                 outputLength = transcoder->transcodeTo(xmlch_str + offset, inputLength, outBuff, 128, eaten, XMLTranscoder::UnRep_RepChar);
-                out.append(outBuff, outputLength);
+                out.append(reinterpret_cast<char*>(&outBuff[0]), outputLength);
                 offset += eaten;
                 inputLength -= eaten;
             }
