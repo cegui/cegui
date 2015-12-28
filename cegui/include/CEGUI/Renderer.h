@@ -34,7 +34,7 @@
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/Sizef.h"
 
-#include <glm/mat4x4.hpp>
+#include <glm/glm.hpp>
 
 #include <set>
 
