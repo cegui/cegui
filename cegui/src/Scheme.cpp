@@ -42,6 +42,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/DynamicModule.h"
+#include "CEGUI/SharedStringStream.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
@@ -85,10 +86,9 @@ Scheme::~Scheme(void)
 {
     unloadResources();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
     Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been "
-        "unloaded (object destructor). " + addr_buff, Informative);
+        "unloaded (object destructor). " + addressStr, Informative);
 }
 
 

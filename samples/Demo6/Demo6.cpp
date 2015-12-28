@@ -619,10 +619,9 @@ bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& args)
     // update the selected count
     std::string tmp("Current Selected Count: ");
 
-    char buff[16];
-    sprintf(buff, "%d", mcl->getSelectedCount());
-
-    tmp += buff;
+    std::stringstream sstream;
+    sstream << mcl->getSelectedCount();
+    tmp += sstream.str();
 
     static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SelCount")->setText(tmp.c_str());
 
@@ -708,19 +707,23 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
     Window* rowText = static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/RowCount");
 
     std::string tmp;
-    char buff[16];
+    {
+        // update the column count
+        tmp = "Current Column Count: ";
+        std::stringstream sstream;
+        sstream << mcl->getColumnCount();
+        tmp += sstream.str();
+        colText->setText(tmp.c_str());
+    }
 
-    // update the column count
-    tmp = "Current Column Count: ";
-    sprintf(buff, "%d", mcl->getColumnCount());
-    tmp += buff;
-    colText->setText(tmp.c_str());
-
-    // update the row count
-    tmp = "Current Row Count: ";
-    sprintf(buff, "%d", mcl->getRowCount());
-    tmp += buff;
-    rowText->setText(tmp.c_str());
+    {
+        // update the row count
+        tmp = "Current Row Count: ";
+        std::stringstream sstream;
+        sstream << mcl->getRowCount();
+        tmp += sstream.str();
+        rowText->setText(tmp.c_str());
+    }
 
     // event was handled.
     return true;

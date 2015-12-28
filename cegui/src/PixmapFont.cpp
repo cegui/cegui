@@ -33,10 +33,6 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/SharedStringstream.h"
 
-#ifdef _MSC_VER
-#define snprintf _snprintf
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {

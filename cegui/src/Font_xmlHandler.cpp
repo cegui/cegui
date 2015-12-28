@@ -35,6 +35,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/PixmapFont.h"
+#include "CEGUI/SharedStringStream.h"
 
 #ifdef CEGUI_HAS_FREETYPE
 #   include "CEGUI/FreeTypeFont.h"
@@ -198,10 +199,9 @@ void Font_xmlHandler::validateFontFileVersion(const XMLAttributes& attrs)
 //----------------------------------------------------------------------------//
 void Font_xmlHandler::elementFontEnd()
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(d_font));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(d_font);
     Logger::getSingleton().logEvent("Finished creation of Font '" +
-        d_font->getName() + "' via XML file. " + addr_buff, Informative);
+        d_font->getName() + "' via XML file. " + addressStr, Informative);
 
     d_loadedFonts.push_back(d_font);
     d_font = 0;

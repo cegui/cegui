@@ -46,16 +46,6 @@
 
 #include <cstdio>
 
-
- #ifdef __MINGW32__
-    #pragma GCC diagnostic push
-
-    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
-       "%llu" format with the "printf"/"scanf" family of functions. */
-    #pragma GCC diagnostic ignored "-Wformat"
-    #pragma GCC diagnostic ignored "-Wformat-extra-args"
-#endif
-
 namespace CEGUI
 {
 /*!
@@ -502,9 +492,6 @@ public:
     static string_return_type toString(pass_type val);
 };
 
-#ifdef __MINGW32__
-    #pragma GCC diagnostic pop
-#endif
 // Explicit instantiation declarations
 extern template CEGUIEXPORT class PropertyHelper<String>;
 extern template CEGUIEXPORT class PropertyHelper<float>;

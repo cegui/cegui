@@ -116,10 +116,7 @@ bool SVGDataManager::isSVGDataDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void SVGDataManager::logSVGDataCreation(SVGData* svgData)
 {
-    const void* addressPtr = static_cast<const void*>(svgData);
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << addressPtr;
-    String addressStr(sstream.str());
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
     Logger::getSingleton().logEvent(
         "[SVGDataManager] Created SVGData object: '" + svgData->getName() + "' (" + addressStr + 

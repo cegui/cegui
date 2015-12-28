@@ -163,12 +163,17 @@ static void dumpBacktrace(size_t frames)
 
     for (int i = 0; i < received; ++i)
     {
-        char outstr[512];
+        std::string outstr;
         Dl_info info;
         if (dladdr(buffer[i], &info))
         {
             if (!info.dli_sname)
-                snprintf(outstr, 512, "#%d %p (%s)", i, buffer[i], info.dli_fname);
+            {
+                std::stringstream sstream;
+                sstream << "#" << i << " " << static_cast<const void*>(buffer[i]) << " (" <<
+                    << info.dli_fname << ")";
+                outstr = sstream.str();
+            }
             else
             {
                 ptrdiff_t offset = static_cast<char*>(buffer[i]) -
@@ -176,13 +181,22 @@ static void dumpBacktrace(size_t frames)
 
                 int demangle_result = 0;
                 char* demangle_name = abi::__cxa_demangle(info.dli_sname, 0, 0, &demangle_result);
-                snprintf(outstr, 512, "#%d %s +%#tx (%s)",
-                         i, demangle_name ? demangle_name : info.dli_sname, offset, info.dli_fname);
+
+                std::stringstream sstream;
+                sstream << "#" << i << " " << demangle_name ? demangle_name : info.dli_sname <<
+                    " +" << std::hex << std::uppercase << std::showbase << offset << " (" <<
+                    info.dli_fname << ")";
+                outstr = sstream.str();
+
                 std::free(demangle_name);
             }
         }
         else
-            snprintf(outstr, 512, "#%d --- error ---", i);
+        {
+            std::stringstream sstream;
+            sstream << "#" << i << " --- error ---";
+            outstr = sstream.str();
+        }
 
         logger.logEvent(outstr, Errors);
     }

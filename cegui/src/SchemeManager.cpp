@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringStream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -38,24 +39,23 @@ SchemeManager::SchemeManager() :
     d_resourceType("Scheme"),
     d_autoLoadResources(true)
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-    "CEGUI::SchemeManager singleton created. " + String(addr_buff));
+        "CEGUI::SchemeManager Singleton created. (" + addressStr + ")");
 }
 
 //----------------------------------------------------------------------------//
 SchemeManager::~SchemeManager()
 {
     Logger::getSingleton().logEvent(
-        "---- Begining cleanup of GUI Scheme system ----");
+        "---- Beginning cleanup of GUI Scheme system ----");
 
     destroyAll();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
     Logger::getSingleton().logEvent(
-        "CEGUI::SchemeManager singleton destroyed. " + String(addr_buff));
+        "CEGUI::SchemeManager Singleton destroyed. (" + addressStr + ")");
 }
 
 //----------------------------------------------------------------------------//
@@ -167,11 +167,10 @@ bool SchemeManager::isDefined(const String& object_name) const
 void SchemeManager::destroyObject(
     SchemeRegistry::iterator ob)
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(ob->second));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + d_resourceType +
         "' named '" + ob->first + "' has been destroyed. " +
-        addr_buff, Informative);
+        addressStr, Informative);
 
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);

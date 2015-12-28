@@ -506,9 +506,8 @@ void WindowFactoryManager::addFactory()
     // only do the actual add now if our singleton has already been created
     if (WindowFactoryManager::getSingletonPtr())
     {
-        Logger::getSingleton().logEvent("Created WindowFactory for '" +
-                                        factory->getTypeName() +
-                                        "' windows.");
+        Logger::getSingleton().logEvent("[WindowFactoryManager] Created WindowFactory "
+                                        "for '" + factory->getTypeName() + "' windows.");
         // add the factory we just created
         try
         {
@@ -516,9 +515,8 @@ void WindowFactoryManager::addFactory()
         }
         catch (Exception&)
         {
-            Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
-                                            factory->getTypeName() +
-                                            "' windows.");
+            Logger::getSingleton().logEvent("[WindowFactoryManager] Deleted WindowFactory "
+                                            "for '" + factory->getTypeName() + "' windows.");
             // delete the factory object
             delete factory;
             throw;

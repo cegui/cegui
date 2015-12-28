@@ -145,10 +145,7 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 String EventAction::makeConnectionKeyName(const Window& widget) const
 {
-    const void* addressPtr = static_cast<const void*>(&widget);
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << addressPtr;
-    String addressStr(sstream.str());
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
     return addressStr + d_eventName + FalagardXMLHelper<ChildEventAction>::toString(d_action);
 }

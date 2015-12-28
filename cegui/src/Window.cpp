@@ -45,6 +45,7 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/GlobalEventSet.h"
+#include "CEGUI/SharedStringStream.h"
 #include <algorithm>
 #include <iterator>
 #include <cmath>
@@ -398,10 +399,11 @@ Window* Window::getChild(unsigned int ID) const
         if (getChildAtIdx(i)->getID() == ID)
             return getChildAtIdx(i);
 
-    char strbuf[16];
-    sprintf(strbuf, "%X", ID);
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << std::hex << ID << std::dec;
+
     throw UnknownObjectException("A Window with ID: '" +
-        String(strbuf) + "' is not attached to Window '" + d_name + "'.");
+        sstream.str() + "' is not attached to Window '" + d_name + "'.");
 }
 
 //----------------------------------------------------------------------------//

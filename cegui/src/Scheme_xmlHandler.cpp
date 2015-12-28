@@ -30,6 +30,7 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/SharedStringStream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -305,10 +306,9 @@ void Scheme_xmlHandler::elementGUISchemeEnd()
         throw InvalidRequestException(
             "Attempt to access null object.");
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(d_scheme));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(d_scheme);
     Logger::getSingleton().logEvent("Finished creation of GUIScheme '" +
-        d_scheme->getName() + "' via XML file. " + addr_buff, Informative);
+        d_scheme->getName() + "' via XML file. " + addressStr, Informative);
 }
 
 } // End of  CEGUI namespace section
