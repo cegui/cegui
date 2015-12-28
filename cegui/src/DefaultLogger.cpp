@@ -47,12 +47,10 @@ DefaultLogger::DefaultLogger(void)
     logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
     logEvent("+                          (http://www.cegui.org.uk/)                         +");
     logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
-    const void* addressPtr = static_cast<const void*>(this);
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << addressPtr;
-    String addressStr(sstream.str());
 
-    logEvent("CEGUI::Logger Singleton created. " + addressStr);
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
+    logEvent("CEGUI::Logger Singleton created. (" + addressStr + ")");
 }
 
 //----------------------------------------------------------------------------//
@@ -60,10 +58,7 @@ DefaultLogger::~DefaultLogger(void)
 {
     if (d_ostream.is_open())
     {
-        const void* addressPtr = static_cast<const void*>(this);
-        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-        sstream << addressPtr;
-        String addressStr(sstream.str());
+        String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
         logEvent("CEGUI::Logger singleton destroyed. " + addressStr);
         d_ostream.close();

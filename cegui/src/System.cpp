@@ -57,6 +57,7 @@
 #include "CEGUI/views/All.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
+#include "CEGUI/SharedStringStream.h"
 #include "CEGUI/svg/SVGDataManager.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
@@ -225,9 +226,8 @@ System::System(Renderer& renderer,
     // add the window factories for the core window types
     addStandardWindowFactories();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    logger.logEvent("CEGUI::System Singleton created. (" + String(addr_buff) + ")");
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+    logger.logEvent("CEGUI::System Singleton created. (" + addressStr + ")");
     logger.logEvent("---- CEGUI System initialisation completed ----");
     logger.logEvent("");
 
@@ -308,10 +308,8 @@ System::~System(void)
     if (d_ourResourceProvider)
         delete d_resourceProvider;
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
-       String(addr_buff));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " + addressStr);
 	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
 
 #ifdef CEGUI_HAS_DEFAULT_LOGGER

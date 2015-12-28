@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/SharedStringStream.h"
 #include <algorithm>
 
 // Start CEGUI namespace
@@ -55,10 +56,10 @@ WindowRendererManager* WindowRendererManager::getSingletonPtr(void)
 *************************************************************************/
 WindowRendererManager::WindowRendererManager()
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::WindowRendererManager singleton created " + String(addr_buff));
+        "CEGUI::WindowRendererManager Singleton created. (" + addressStr + ")");
 
     // complete addition of any pre-added WindowRendererFactory objects
     OwnedFactoryList::iterator i = d_ownedFactories.begin();
@@ -75,10 +76,10 @@ WindowRendererManager::WindowRendererManager()
 
 WindowRendererManager::~WindowRendererManager()
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::WindowRendererManager singleton destroyed " + String(addr_buff));
+        "CEGUI::WindowRendererManager Singleton destroyed (" + addressStr + ")");
 }
 
 /*************************************************************************
@@ -116,10 +117,9 @@ void WindowRendererManager::addFactory(WindowRendererFactory* wr)
         throw AlreadyExistsException("A WindowRendererFactory named '"+wr->getName()+"' already exist");
     }
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(wr));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(wr);
     Logger::getSingleton().logEvent("WindowRendererFactory '"+wr->getName()+
-        "' added. " + addr_buff);
+        "' added. " + addressStr);
 }
 
 /*************************************************************************
@@ -141,13 +141,12 @@ void WindowRendererManager::removeFactory(const String& name)
                                              d_ownedFactories.end(),
                                              (*i).second);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>((*i).second));
+    String addressStr = SharedStringstream::GetPointerAddressAsString((*i).second);
 
     d_wrReg.erase(name);
 
     Logger::getSingleton().logEvent("WindowRendererFactory for '" + name +
-                                    "' WindowRenderers removed. " + addr_buff);
+                                    "' WindowRenderers removed. " + addressStr);
 
     // delete factory object if we created it
     if (j != d_ownedFactories.end())

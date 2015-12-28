@@ -79,4 +79,11 @@ std::stringstream& SharedStringstream::GetPreparedStream()
     return sstream;
 }
 
+CEGUI::String SharedStringstream::GetPointerAddressAsString(const void* addressPointer)
+{
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << addressPointer;
+    return CEGUI::String(sstream.str());
+}
+
 }

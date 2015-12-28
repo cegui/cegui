@@ -31,15 +31,6 @@
 #include "CEGUI/SharedStringstream.h"
 #include <limits>
 
-#ifdef __MINGW32__
-
-    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
-       "%llu" format with the "printf"/"scanf" family of functions. */
-    #pragma GCC diagnostic ignored "-Wformat"
-    #pragma GCC diagnostic ignored "-Wformat-extra-args"
-
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -631,7 +622,3 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-#ifdef __MINGW32__
-    #pragma GCC diagnostic pop
-#endif

@@ -83,6 +83,17 @@ public:
         The shared stringstream.
     */
     static std::stringstream& GetPreparedStream();
+
+    /*!
+    \brief
+        Helper function for retrieving the hexadecimal representation of a
+        memory address as String based on a passed pointer. 
+    \param addressPointer
+        The pointer to the memory address that we want to retrieve as String.
+    \return
+        A String containing the memory address representation.
+    */
+    static String GetPointerAddressAsString(const void* addressPointer);
 };
 
 }

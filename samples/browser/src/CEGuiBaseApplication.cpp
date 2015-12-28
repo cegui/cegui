@@ -50,6 +50,7 @@
 #include <string.h>
 #include <limits.h>
 #include <math.h>
+#include <sstream>
 
 // setup default-default path
 #ifndef CEGUI_SAMPLE_DATAPATH
@@ -331,15 +332,15 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 return;
 
             // update FPS imagery
-            char fps_textbuff[16];
-            sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
+            std::stringstream sstream;
+            sstream << "FPS: " << d_FPSValue;
 
             const size_t bufferCount = d_FPSGeometry.size();
             for (size_t i = 0; i < bufferCount; ++i)
                 d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
             d_FPSGeometry.clear();
 
-            fnt->drawText(d_FPSGeometry, fps_textbuff, glm::vec2(0, 0), 0, false,
+            fnt->drawText(d_FPSGeometry, sstream.str(), glm::vec2(0, 0), 0, false,
                           CEGUI::Colour(0xFFFFFFFF));
 
             updateFPSGeometry();

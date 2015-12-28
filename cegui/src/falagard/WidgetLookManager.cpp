@@ -44,24 +44,18 @@ namespace CEGUI
 
     WidgetLookManager::WidgetLookManager()
     {
-        const void* addressPtr = static_cast<const void*>(this);
-        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-        sstream << addressPtr;
-        String addressStr(sstream.str());
+        String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
-        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
-            "created. " + addressStr);
+        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager Singleton "
+            "created. (" + addressStr + ")");
     }
 
     WidgetLookManager::~ WidgetLookManager()
     {
-        const void* addressPtr = static_cast<const void*>(this);
-        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-        sstream << addressPtr;
-        String addressStr(sstream.str());
+        String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
-        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
-            "destroyed. " + addressStr);
+        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager Singleton "
+            "destroyed. (" + addressStr + ")");
     }
 
     /*************************************************************************

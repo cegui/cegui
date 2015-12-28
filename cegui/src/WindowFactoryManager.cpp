@@ -29,6 +29,7 @@
 #include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/WindowFactory.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/SharedStringStream.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -45,8 +46,10 @@ WindowFactoryManager::OwnedWindowFactoryList WindowFactoryManager::d_ownedFactor
 //----------------------------------------------------------------------------//
 WindowFactoryManager::WindowFactoryManager(void)
 {
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::WindowFactoryManager singleton created");
+        "CEGUI::WindowFactoryManager Singleton created. (" + addressStr + ")");
 
     // complete addition of any pre-added WindowFactory objects
     WindowFactoryManager::OwnedWindowFactoryList::iterator i =
@@ -85,10 +88,9 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// add the factory to the registry
 	d_factoryRegistry[factory->getTypeName()] = factory;
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(factory));
-	Logger::getSingleton().logEvent("WindowFactory for '" +
-       factory->getTypeName() +"' windows added. " + addr_buff);
+    String addressStr = SharedStringstream::GetPointerAddressAsString(factory);
+	Logger::getSingleton().logEvent("[WindowFactoryManager] WindowFactory for '" +
+       factory->getTypeName() +"' windows added. (" + addressStr + ")");
 }
 
 
@@ -108,20 +110,18 @@ void WindowFactoryManager::removeFactory(const String& name)
                                                    d_ownedFactories.end(),
                                                    (*i).second);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>((*i).second));
+    String addressStr = SharedStringstream::GetPointerAddressAsString((*i).second);
 
 	d_factoryRegistry.erase(name);
 
-    Logger::getSingleton().logEvent("WindowFactory for '" + name +
-                                    "' windows removed. " + addr_buff);
+    Logger::getSingleton().logEvent("[WindowFactoryManager] WindowFactory for '" + name +
+                                    "' windows removed. " + addressStr);
 
     // delete factory object if we created it
     if (j != d_ownedFactories.end())
     {
-        Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
-                                        (*j)->getTypeName() +
-                                        "' windows.");
+        Logger::getSingleton().logEvent("[WindowFactoryManager] Deleted WindowFactory "
+                                        "for '" + (*j)->getTypeName() + "' windows.");
 
         delete (*j);
         d_ownedFactories.erase(j);
@@ -314,12 +314,11 @@ void WindowFactoryManager::addFalagardWindowMapping(const String& newType,
         Logger::getSingleton().logEvent("Falagard mapping for type '" + newType + "' already exists - current mapping will be replaced.");
     }
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(&mapping));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&mapping);
     Logger::getSingleton().logEvent("Creating falagard mapping for type '" +
         newType + "' using base type '" + targetType + "', window renderer '" +
         renderer + "' Look'N'Feel '" + lookName + "' and RenderEffect '" +
-        effectName + "'. " + addr_buff);
+        effectName + "'. " + addressStr);
 
     d_falagardRegistry[newType] = mapping;
 }

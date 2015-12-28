@@ -57,13 +57,10 @@ const String AnimationManager::GeneratedAnimationNameBase("__ceanim_uid_");
 *************************************************************************/
 AnimationManager::AnimationManager(void)
 {
-    const void* addressPtr = static_cast<const void*>(this);
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << addressPtr;
-    String addressStr(sstream.str());
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
     Logger::getSingleton().logEvent(
-        "CEGUI::AnimationManager singleton created " + addressStr);
+        "CEGUI::AnimationManager Singleton created. (" + addressStr + ")");
 
     // todo: is this too dirty?
 #   define addBasicInterpolator(i) { Interpolator* in = i; addInterpolator(in); d_basicInterpolators.push_back(in); }
@@ -110,10 +107,7 @@ AnimationManager::~AnimationManager()
 
     d_basicInterpolators.clear();
 
-    const void* addressPtr = static_cast<const void*>(this);
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << addressPtr;
-    String addressStr(sstream.str());
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
     Logger::getSingleton().logEvent(
         "CEGUI::AnimationManager singleton destroyed " + addressStr);
