@@ -459,21 +459,23 @@ cegui_set_library_name( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
 # Select one of the XML parser modules to be the default, warning if none are
 # available.
 ################################################################################
+set(CEGUI_DEFAULT_XMLPARSER_TOOLTIP "Specifies the XMLParser module to use as the default (e.g.: ExpatParser, XercesParser, LibXMLParser, RapidXMLParser or TinyXMLParser)")
+
 if (CEGUI_BUILD_XMLPARSER_EXPAT)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
-    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_EXPAT_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_EXPAT_PARSER_LIBNAME} CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
 elseif (CEGUI_BUILD_XMLPARSER_XERCES)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
-    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_XERCES_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_XERCES_PARSER_LIBNAME} CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
 elseif (CEGUI_BUILD_XMLPARSER_LIBXML2)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "LibXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
-    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_LIBXML2_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "LibXMLParser" CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_LIBXML2_PARSER_LIBNAME} CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
 elseif (CEGUI_BUILD_XMLPARSER_RAPIDXML)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
-    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_RAPIDXML_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_RAPIDXML_PARSER_LIBNAME} CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
 elseif (CEGUI_BUILD_XMLPARSER_TINYXML)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
-    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_TINYXML_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_TINYXML_PARSER_LIBNAME} CACHE STRING "${CEGUI_DEFAULT_XMLPARSER_TOOLTIP}" )
 else()
     message(WARNING "None of the XML parser modules are going to be built.
 You should ensure that CEGUI_OPTION_DEFAULT_XMLPARSER is set to something
