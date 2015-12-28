@@ -243,17 +243,25 @@ namespace CEGUI
             System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
 
             // wrap schema data in a xerces MemBufInputSource object
-            MemBufInputSource  schemaData(
+            MemBufInputSource schemaData(
                 rawSchemaData.getDataPtr(),
                 static_cast<const unsigned int>(rawSchemaData.getSize()),
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
                 schemaName.c_str(),
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+                schemaName.c_str().toUtf8String(),
+#endif
                 false);
             reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
             // enable grammar reuse
             reader->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
-            // set schema for usage
+            // set schema for usage     
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
             XMLCh* pval = XMLString::transcode(schemaName.c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+            XMLCh* pval = XMLString::transcode(schemaName.c_str()->toUtf8String());
+#endif
             reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
             XMLString::release(&pval);
             Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.");
