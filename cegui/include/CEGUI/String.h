@@ -1372,7 +1372,7 @@ public:
 
     /*!
     \brief
-        Inserts elements from initialiher_list "initialiserList" before the element pointed by pos.
+        Inserts elements from initializer_list "initialiserList" before the element pointed by pos.
     \param iter
         The position iterator at which the characters will be inserted.
     \param initialiserList
