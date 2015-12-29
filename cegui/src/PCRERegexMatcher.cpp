@@ -28,6 +28,8 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/PropertyHelper.h"
 
+#include <cstring>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -99,7 +101,7 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     const char* utf8_str = str.toUtf8String().c_str();
 #endif
-    const int len = static_cast<int>(strlen(utf8_str));
+    const int len = static_cast<int>(std::strlen(utf8_str));
 
 #ifdef PCRE_PARTIAL_SOFT
     // we are using a new version of pcre
