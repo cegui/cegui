@@ -1315,10 +1315,17 @@ public:
     \return Returns an iterator pointing to the first inserted character (code point). Returns
         "iter" if no characters were inserted.
     */
+#if defined (_MSC_VER)
     iterator insert(const_iterator iter, size_type count, char32_t ch)
     {
         return d_string.insert(iter, count, ch);
     }
+#else 
+    void insert(iterator iter, size_type count, char32_t ch)
+    {
+        d_string.insert(iter, count, ch);
+    }
+#endif
 
     /*!
     \brief
@@ -1333,10 +1340,17 @@ public:
     \return Returns an iterator pointing to the first inserted character (code point). Returns
         "iter" if no characters were inserted.
     */
+#if defined (_MSC_VER)
     iterator insert(const_iterator iter, size_type count, char ch)
     {
         return d_string.insert(iter, count, convertUtf8ToUtf32(ch)[0]);
     }
+#else
+    void insert(iterator iter, size_type count, char ch)
+    {
+        d_string.insert(iter, count, convertUtf8ToUtf32(ch)[0]);
+    }
+#endif
 
     /*!
     \brief
@@ -1366,11 +1380,17 @@ public:
     \return Returns an iterator pointing to the first inserted character (code point). Returns
         "iter" if no characters were inserted.
     */
+#if defined (_MSC_VER)
     iterator insert(const_iterator iter, std::initializer_list<char32_t> initialiserList)
     {
         return d_string.insert(iter, initialiserList);
     }
-
+#else 
+    void insert(iterator iter, std::initializer_list<char32_t> initialiserList)
+    {
+        d_string.insert(iter, initialiserList);
+    }
+#endif
     /*!
     \brief
         Removes the specified number of characters starting at the index.
