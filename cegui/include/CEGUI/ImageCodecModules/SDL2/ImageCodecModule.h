@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 #ifndef _SDL2_IMAGE_CODEC_MODULE_H_
-#define	_SDL2_IMAGE_CODEC_MODULE_H_
+#define _SDL2_IMAGE_CODEC_MODULE_H_
 
 #include <CEGUI/ImageCodecModules/SDL2/ImageCodec.h>
 
