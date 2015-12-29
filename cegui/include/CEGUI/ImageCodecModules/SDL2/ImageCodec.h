@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 #ifndef _SDL2_IMAGE_CODEC_H_
-#define	_SDL2_IMAGE_CODEC_H_
+#define _SDL2_IMAGE_CODEC_H_
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUISDL2IMAGECODEC_EXPORTS
@@ -49,15 +49,13 @@
 namespace CEGUI
 {
 
-class CEGUISDL2IMAGECODEC_API SDL2ImageCodec : public ImageCodec {
+class CEGUISDL2IMAGECODEC_API SDL2ImageCodec : public ImageCodec 
+{
 public:
     SDL2ImageCodec();
     ~SDL2ImageCodec();
     
     Texture* load(const RawDataContainer& data, Texture* result);
-protected: 
-    
-private:
 };
 
 } // End namespace 

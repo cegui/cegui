@@ -72,8 +72,8 @@ Texture* SDL2ImageCodec::load(const RawDataContainer& data, Texture* result)
         
         if (!img)
         {
-            Logger::getSingletonPtr()->logEvent("Cannot load image! RetVal == 0", Errors);
-            return NULL;
+            Logger::getSingletonPtr()->logEvent("Cannot load image! SDL2_image returned an error in IMG_Load_RW", Errors);
+            return 0;
         }
             
         switch (img->format->BitsPerPixel)
@@ -87,8 +87,8 @@ Texture* SDL2ImageCodec::load(const RawDataContainer& data, Texture* result)
                 break;
                 
             default:
-                Logger::getSingletonPtr()->logEvent("Unsupported pixel format", Errors);
-                return NULL;
+                Logger::getSingletonPtr()->logEvent("Unsupported pixel format in SDL2 image codec", Errors);
+                return 0;
         }
         
         Sizef size;
