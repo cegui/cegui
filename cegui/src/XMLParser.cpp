@@ -31,6 +31,7 @@
 #include "CEGUI/Logger.h"
 
 #include <locale.h>  
+#include <cstring>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -93,7 +94,7 @@ namespace CEGUI
         const char* c_str = source.toUtf8String().c_str();
 #endif
         rawXMLData.setData((std::uint8_t*)c_str);
-        rawXMLData.setSize(strlen(c_str));
+        rawXMLData.setSize(std::strlen(c_str));
 
         try
         {
