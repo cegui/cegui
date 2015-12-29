@@ -809,10 +809,11 @@ PropertyHelper<glm::quat>::fromString(const String& str)
     if (str.empty())
         return val;
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
-    else if (strchr(str.c_str(), 'w') || strchr(str.c_str(), 'W'))
+    else if (str.find("w", 0) != std::string::npos || 
+             str.find("W", 0) != std::string::npos)
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    else if (strchr(str.toUtf8String().c_str(), 'w') ||
-             strchr(str.toUtf8String().c_str(), 'W'))
+    else if (str.toUtf8String().find("w", 0) != std::string::npos || 
+             str.toUtf8String().find("W", 0) != std::string::npos)
 #endif
     {
         std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
