@@ -41,6 +41,8 @@
 #   include "CEGUI/FreeTypeFont.h"
 #endif
 
+#include <sstream>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -213,7 +215,10 @@ void Font_xmlHandler::elementFontsEnd()
         throw InvalidRequestException(
         "The Fonts node was closed but the loading for the last font has not been completed.");
 
-    Logger::getSingleton().logEvent("Finished Fonts loading. Number of loaded fonts: " + d_loadedFonts.size(), Informative);
+    std::ostringstream stream;
+    stream << "Finished Fonts loading. Number of loaded fonts: " << d_loadedFonts.size();
+
+    Logger::getSingleton().logEvent(stream.str(), Informative);
 }
 
 void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
