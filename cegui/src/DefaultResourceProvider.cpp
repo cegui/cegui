@@ -67,30 +67,32 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
         throw FileIOException("Android AAssetManager is not valid ");
     //AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_BUFFER);
     AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_UNKNOWN);
+    
+    if (file == 0)
+        throw FileIOException(final_filename + " does not exist");
+
+    size_t size = AAsset_getLength(file);
+
+    unsigned char* const buffer = new unsigned char[size];
+
+    const size_t size_read = AAsset_read(file, buffer, size);
+    AAsset_close(file);
 #else
 #   if defined(__WIN32__) || defined(_WIN32)
     FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
 #   else
     FILE* file = fopen(final_filename.c_str(), "rb");
 #   endif
-#endif
+    
     if (file == 0)
         throw FileIOException(final_filename + " does not exist");
-
-#ifdef __ANDROID__
-    size_t size = AAsset_getLength(file);
-#else
+    
     fseek(file, 0, SEEK_END);
     const size_t size = ftell(file);
     fseek(file, 0, SEEK_SET);
-#endif
 
     unsigned char* const buffer = new unsigned char[size];
 
-#ifdef __ANDROID__
-    const size_t size_read = AAsset_read(file, buffer, size);
-    AAsset_close(file);
-#else
     const size_t size_read = fread(buffer, sizeof(char), size, file);
     fclose(file);
 #endif
