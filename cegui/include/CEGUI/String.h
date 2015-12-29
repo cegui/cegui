@@ -4262,10 +4262,16 @@ struct hash<CEGUI::String>
 #endif
 
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+
 namespace CEGUI
 {
 typedef std::string String;
 }
+
+#if defined(_MSC_VER)
+#	pragma warning(disable : 4251)
+#endif
+
 #endif
 
 #endif
