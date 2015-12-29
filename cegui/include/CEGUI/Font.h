@@ -443,7 +443,7 @@ protected:
     /*!
     \brief
         Set the maximal glyph index. This reserves the respective
-        number of bits in the d_glyphPageLoaded array.
+        number of bits in the d_loadedGlyphPages array.
     */
     void setMaxCodepoint(char32_t codepoint);
 
@@ -493,7 +493,7 @@ protected:
         This array is big enough to hold at least max_codepoint bits.
         If this member is NULL, all glyphs are considered pre-rasterised.
     */
-    unsigned int* d_glyphPageLoaded;
+    mutable std::vector<unsigned int> d_loadedGlyphPages;
 
     //! Definition of CodepointMap type.
     typedef std::map<char32_t, FontGlyph, std::less<char32_t> > CodepointMap;

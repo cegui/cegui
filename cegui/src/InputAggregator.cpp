@@ -31,6 +31,8 @@
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/System.h"
 
+#include <iterator>
+
 #if defined (_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4351)
@@ -102,8 +104,8 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_pointerPosition(0.0f, 0.0f),
     d_keysPressed()
 {
-    // Initialize the array
-    memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
+    // Initialise the array
+    std::fill(std::begin(d_keyValuesMappings), std::end(d_keyValuesMappings), SV_NoValue);
 
     // initial absolute tolerance
     recomputeMultiClickAbsoluteTolerance();

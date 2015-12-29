@@ -32,6 +32,8 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/BitmapImage.h"
 
+#include <iterator>
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -62,7 +64,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
     d_autoScaled(auto_scaled),
     d_nativeResolution(native_res),
     d_maxCodepoint(0),
-    d_glyphPageLoaded(0)
+    d_loadedGlyphPages(0)
 {
     addFontProperties();
 
@@ -74,8 +76,6 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 //----------------------------------------------------------------------------//
 Font::~Font()
 {
-    if (d_glyphPageLoaded)
-        delete[] d_glyphPageLoaded;
 }
 
 //----------------------------------------------------------------------------//
@@ -122,18 +122,13 @@ void Font::addFontProperties()
 //----------------------------------------------------------------------------//
 void Font::setMaxCodepoint(char32_t codepoint)
 {
-    if (d_glyphPageLoaded)
-    {
-        delete[] d_glyphPageLoaded;
-    }
-
     d_maxCodepoint = codepoint;
 
     const unsigned int npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
     const unsigned int size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
 
-    d_glyphPageLoaded = new unsigned int[size];
-    memset(d_glyphPageLoaded, 0, size * sizeof(unsigned int));
+    d_loadedGlyphPages.resize(size);
+    std::fill(d_loadedGlyphPages.begin(), d_loadedGlyphPages.end(), 0);
 }
 
 //----------------------------------------------------------------------------//
@@ -144,14 +139,14 @@ const FontGlyph* Font::getGlyphData(char32_t codepoint) const
 
     const FontGlyph* const glyph = findFontGlyph(codepoint);
 
-    if (d_glyphPageLoaded)
+    if (!d_loadedGlyphPages.empty())
     {
         // Check if glyph page has been rasterised
         unsigned int page = codepoint / GLYPHS_PER_PAGE;
         unsigned int mask = 1 << (page & (BITS_PER_UINT - 1));
-        if (!(d_glyphPageLoaded[page / BITS_PER_UINT] & mask))
+        if (!(d_loadedGlyphPages[page / BITS_PER_UINT] & mask))
         {
-            d_glyphPageLoaded[page / BITS_PER_UINT] |= mask;
+            d_loadedGlyphPages[page / BITS_PER_UINT] |= mask;
             rasterise(codepoint & ~(GLYPHS_PER_PAGE - 1),
                       codepoint | (GLYPHS_PER_PAGE - 1));
         }

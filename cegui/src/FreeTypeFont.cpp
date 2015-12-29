@@ -191,8 +191,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
         d_glyphTextures.push_back(&texture);
 
         // Create a memory buffer where we will render our glyphs
-        argb_t* mem_buffer = new argb_t[texsize * texsize];
-        memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
+        std::vector<argb_t> mem_buffer(texsize * texsize, 0);
 
         // Go ahead, line by line, top-left to bottom-right
         unsigned int x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
@@ -257,7 +256,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                         break;
 
                     // Copy rendered glyph to memory buffer in RGBA format
-                    drawGlyphToBuffer(mem_buffer + (y * texsize) + x, texsize);
+                    drawGlyphToBuffer(&mem_buffer[0] + (y * texsize) + x, texsize);
 
                     // Create a new image in the imageset
                     const Rectf area(static_cast<float>(x),
@@ -300,8 +299,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
         }
 
         // Copy our memory buffer into the texture and free it
-        texture.loadFromMemory(mem_buffer, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PF_RGBA);
-        delete[] mem_buffer;
+        texture.loadFromMemory(&mem_buffer[0], Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PF_RGBA);
 
         if (finished)
             break;
