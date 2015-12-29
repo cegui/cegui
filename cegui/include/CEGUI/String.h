@@ -1273,7 +1273,11 @@ public:
     \return Returns an iterator pointing to the first inserted character (code point). Returns
         "iter" if no characters were inserted.
     */
+#if defined (_MSC_VER)
     iterator insert(const_iterator iter, char32_t ch)
+#else
+    iterator insert(iterator iter, char32_t ch)
+#endif
     {
         return d_string.insert(iter, ch);
     }
@@ -1289,7 +1293,11 @@ public:
     \return Returns an iterator pointing to the first inserted character (code point). Returns
         "iter" if no characters were inserted.
     */
+#if defined (_MSC_VER)
     iterator insert(const_iterator iter, char ch)
+#else
+    iterator insert(iterator iter, char ch)
+#endif
     {
         return d_string.insert(iter, convertUtf8ToUtf32(ch)[0]);
     }

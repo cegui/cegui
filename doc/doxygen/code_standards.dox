@@ -63,11 +63,6 @@ This section contains some general guidelines on naming and arranging files.
 
 - Wherever possible header files should contain Doxygen documentation for all classes, data and functions.  There will be <em>very few</em>, if any, exceptions to this rule.
 
-- In source files, definitions of the various data groups and each member function should be separated by a line, thus:
-@code
-//----------------------------------------------------------------------------//
-@endcode
-
 - Implementation code belongs in the implementation .cpp files, not in the header files.  There are very few cases, such as for template implementation, where c++ code should appear in header files.
 
 - The general content of a header file should be in the following order:
@@ -128,6 +123,19 @@ And this is how it looks without splitting to 2 lines:
 
 - Do not use actual tabs, have your editor insert spaces instead. This is very
 important.
+
+- When you override a function in a subclass, you must used the virtual and override keyword in the declaration, e.g.:
+\code{.cpp}
+class BaseClass
+{
+    virtual int overriddenFunction() = 0;
+}
+
+class SubClass
+{
+    virtual int overriddenFunction() override;
+}
+\endcode
 
 - Code within functions should be split into logical groups by the use of blank lines where appropriate.  Generally any control structure (if, while, case, do and so on) should be both preceded and followed by a blank line.
 
@@ -324,17 +332,17 @@ a_ptr = &an_object;
 
 - Magic numbers should not appear in production code; use constant definitions instead.  In general the only number that may appear in production code is \c 0.
 
-- For a null pointer, use only \c nullptr in %CEGUI 1.x onward, and only \c 0 (not \c NULL) in %CEGUI 0.x.
+- For pointers comparisons and for setting pointers use only \c nullptr and not 0 and especially not NULL.
 
 - When defining class constructors, use of member initialiser lists is to be strongly preferred over the use of assignments in the constructor body.
 
-- Only use C++ style casts.  C style casts should not be used.  Or better yet, find a way not to use the cast at all!
+- Only use C++ style casts (primarily static_cast).  C style casts should not be used.  Or better yet, use a type consistently if possible so you do not need to cast in the first place!
 
-- Don't use regular \c enum in %CEGUI 1.x onward, but only <tt>enum class</tt>. Don't use <tt>enum class</tt> in %CEGUI 0.x, but only regular \c enum.
+- Don't use regular \c enum - only <tt>enum class</tt>.
 
-- Don't use C++11 features in %CEGUI 0.x. You can use C++11 features in %CEGUI 1.x onward, only as long as they're explicity detailed in this document. If a feature you wish to use is not listed here, you may propose to include it.
+- You are encouraged to use C++11 features - but only as long as they are available in all compilers that CEGUI supports (mind the minimum version we support). 
 
-- Don't use C++14 features.
+- We currently do not target C++14, so try not to use C++14 features unless they are available in all compilers that CEGUI supports (mind the minimum version we support). 
 
 @subsection code_standards_sec_2_3 astyle - Artistic Style
 The following parameters for astyle may be used to get a subset of all the code standards outlined in this document. It is by no means enough to just run this on dirty source code but it will get you closer.
