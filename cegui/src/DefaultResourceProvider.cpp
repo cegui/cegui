@@ -81,7 +81,11 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #   if defined(__WIN32__) || defined(_WIN32)
     FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
 #   else
-    FILE* file = fopen(final_filename.c_str(), "rb");
+#       if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        FILE* file = fopen(final_filename.toUtf8String().c_str(), "rb");
+#       else
+        FILE* file = fopen(final_filename.c_str(), "rb");
+#       endif
 #   endif
     
     if (file == 0)
@@ -234,7 +238,13 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
 #else
     DIR* dirp;
 
-    if ((dirp = opendir(dir_name.c_str())))
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    dirp = opendir(dir_name.toUtf8String().c_str());
+#else
+    dirp = opendir(dir_name.c_str());
+#endif
+
+    if (dirp)
     {
         struct dirent* dp;
 
@@ -243,9 +253,15 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
             const String filename(dir_name + dp->d_name);
             struct stat s;
 
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+            if ((stat(filename.toUtf8String().c_str(), &s) == 0) &&
+                    S_ISREG(s.st_mode) &&
+                    (fnmatch(file_pattern.toUtf8String().c_str(), dp->d_name, 0) == 0))
+#else
             if ((stat(filename.c_str(), &s) == 0) &&
                     S_ISREG(s.st_mode) &&
                     (fnmatch(file_pattern.c_str(), dp->d_name, 0) == 0))
+#endif
             {
                 out_vec.push_back(dp->d_name);
                 ++entries;
