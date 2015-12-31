@@ -125,7 +125,7 @@ static T* iconvTranscode(IconvHelper& ich, const char* in_buf, size_t in_len)
         if (result != static_cast<size_t>(-1))
         {
             T* ret_buff = new T[out_count + 1];
-            memcpy(ret_buff, &out_vec[0], out_count * sizeof(T));
+            std::copy(out_vec.begin(), out_vec.begin() + out_count, ret_buff);
             ret_buff[out_count] = 0;
             return ret_buff;
         }
