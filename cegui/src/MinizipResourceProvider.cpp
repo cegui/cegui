@@ -70,7 +70,11 @@ struct MinizipResourceProvider::Impl
 // Helper function that matches names against the pattern.
 bool nameMatchesPattern(const String& name, const String& pattern)
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     return !FNMATCH(pattern.c_str(), name.c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    return !FNMATCH(pattern.toUtf8String().c_str(), name.toUtf8String().c_str());
+#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -109,7 +113,12 @@ void MinizipResourceProvider::setArchive(const String& archive)
 //----------------------------------------------------------------------------//
 bool MinizipResourceProvider::doesFileExist(const String& filename)
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     std::ifstream dataFile(filename.c_str(), std::ios::binary | std::ios::ate);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    std::ifstream dataFile(filename.toUtf8String().c_str(), 
+                           std::ios::binary | std::ios::ate);
+#endif
 
     if (dataFile)
         return true;
@@ -120,7 +129,11 @@ bool MinizipResourceProvider::doesFileExist(const String& filename)
 //----------------------------------------------------------------------------//
 void MinizipResourceProvider::openArchive()
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     d_pimpl->d_zfile = unzOpen(d_pimpl->d_archive.c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    d_pimpl->d_zfile = unzOpen(d_pimpl->d_archive.toUtf8String().c_str());
+#endif
 
     if (d_pimpl->d_zfile == 0)
     {
@@ -168,7 +181,11 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
             "loaded because the archive has not been set");
     }
 
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     if (unzLocateFile(d_pimpl->d_zfile, final_filename.c_str(), 0) != UNZ_OK)
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    if (unzLocateFile(d_pimpl->d_zfile, final_filename.toUtf8String().c_str(), 0) != UNZ_OK)
+#endif
     {
         throw InvalidRequestException("'" + final_filename +
             "' does not exist");
