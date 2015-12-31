@@ -190,16 +190,28 @@ IconvStringTranscoder::IconvStringTranscoder()
 char16_t* IconvStringTranscoder::stringToUTF16(const String& input) const
 {
     IconvHelper ich(UTF16PE, "UTF-8");
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     return iconvTranscode<char16_t>(
         ich, input.c_str(), getStringLength(input.c_str()));
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    return iconvTranscode<char16_t>(
+        ich, input.c_str(), getStringLength(input.toUtf8String().c_str()));
+#endif
 }
 
 //----------------------------------------------------------------------------//
 std::wstring IconvStringTranscoder::stringToStdWString(const String& input) const
 {
     IconvHelper ich("WCHAR_T", "UTF-8");
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     return iconvTranscode<std::wstring, wchar_t>(
         ich, input.c_str(), getStringLength(input.c_str()));
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    return iconvTranscode<std::wstring, wchar_t>(
+        ich, input.c_str(), getStringLength(input.toUtf8String().c_str()));
+#endif
 }
 
 //----------------------------------------------------------------------------//
