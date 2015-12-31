@@ -28,6 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/Clipboard.h"
 
+#include <cstring>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -81,7 +83,7 @@ void Clipboard::setData(const String& mimeType, const void* buffer, size_t size)
         d_buffer = new String::value_type[d_bufferSize];
     }
     
-    memcpy(d_buffer, buffer, d_bufferSize);
+    std::memcpy(d_buffer, buffer, d_bufferSize);
     
     // we have set the data to the internal clipboard, now sync it with the
     // system-wide native clipboard if possible
@@ -115,7 +117,7 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
             d_buffer = new String::value_type[d_bufferSize];
         }
         
-        memcpy(d_buffer, retrievedBuffer, retrievedSize);
+        std::memcpy(d_buffer, retrievedBuffer, retrievedSize);
     }
     
     mimeType = d_mimeType;
