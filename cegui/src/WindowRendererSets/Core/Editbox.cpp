@@ -145,7 +145,7 @@ void FalagardEditbox::setupVisualString(String& visual) const
     Editbox* w = static_cast<Editbox*>(d_window);
 
     if (w->isTextMaskingEnabled())
-        visual.assign(w->getText().length(), w->getTextMaskingCodepoint());
+        visual.assign(w->getText().length(), static_cast<String::value_type>(w->getTextMaskingCodepoint()));
     else
         visual.assign(w->getTextVisual());
 }
