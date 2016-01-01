@@ -133,6 +133,14 @@ find_package(GTK2 COMPONENTS gtk)
 # set for consistency with other deps
 set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
+## Search for ccache
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+    set(ENV(CCACHE_CPP2) "yes")
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+endif(CCACHE_FOUND)
+
 if (GLEW_FOUND OR EPOXY_FOUND)
     set (OPENGL_LOADER_FOUND TRUE)
 else ()
