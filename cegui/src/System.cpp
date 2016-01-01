@@ -478,7 +478,7 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
         // Forward script exceptions with line number and file info
         CEGUI_CATCH(ScriptException& e)
         {
-            CEGUI_THROW(e);
+            CEGUI_RETHROW;
         }
 		CEGUI_CATCH(...)
 		{
@@ -510,7 +510,7 @@ int	System::executeScriptGlobal(const String& function_name) const
         // Forward script exceptions with line number and file info
         CEGUI_CATCH(ScriptException& e)
         {
-            CEGUI_THROW(e);
+            CEGUI_RETHROW;
         }
 		CEGUI_CATCH(...)
 		{
@@ -543,7 +543,7 @@ void System::executeScriptString(const String& str) const
         // Forward script exceptions with line number and file info
         CEGUI_CATCH(ScriptException& e)
         {
-            CEGUI_THROW(e);
+            CEGUI_RETHROW;
         }
         CEGUI_CATCH(...)
         {

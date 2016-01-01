@@ -113,8 +113,8 @@ bool CEGuiBaseApplication::init(SamplesFrameworkBase* sampleApp,
     d_sampleApp = sampleApp;
 
     if (!d_renderer)
-        throw CEGUI::InvalidRequestException("CEGuiBaseApplication::run: "
-            "Base application subclass did not create Renderer!");
+        CEGUI_THROW(CEGUI::InvalidRequestException("CEGuiBaseApplication::run: "
+            "Base application subclass did not create Renderer!"));
 
     // start up CEGUI system using objects created in subclass constructor.
     CEGUI::System::create(*d_renderer, d_resourceProvider, 0, d_imageCodec, 0,

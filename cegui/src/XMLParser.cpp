@@ -79,12 +79,12 @@ namespace CEGUI
         RawDataContainer rawXMLData;
         System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
 
-        try
+        CEGUI_TRY
         {
             // The actual parsing action (this is overridden and depends on the specific parser)
             parseXML(handler, rawXMLData, schemaName);
         }
-        catch (const Exception&)
+        CEGUI_CATCH (const Exception&)
         {
             // hint the related file name in the log
             Logger::getSingleton().logEvent("The last thrown exception was related to XML file '" +
@@ -109,12 +109,12 @@ namespace CEGUI
         rawXMLData.setData((uint8*)c_str);
         rawXMLData.setSize(strlen(c_str));
 
-        try
+        CEGUI_TRY
         {
         	// The actual parsing action (this is overridden and depends on the specific parser)
         	parseXML(handler, rawXMLData, schemaName);
         }
-        catch(...)
+        CEGUI_CATCH(...)
         {
         	// make sure we don't allow rawXMLData to release String owned data no matter what!
         	rawXMLData.setData(0);

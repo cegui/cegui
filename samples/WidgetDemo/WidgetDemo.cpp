@@ -949,13 +949,13 @@ void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRo
         // Set the third row item (type) for the property
         d_widgetPropertiesDisplayWindow->setItem(new MyListItem(curProperty->getDataType()), 1, rowID);
 
-        try
+        CEGUI_TRY
         {
             // Set the second row item (value) for the property if it is gettable
             if(widget->isPropertyPresent(curProperty->getName()))
                 d_widgetPropertiesDisplayWindow->setItem(new MyListItem(widget->getProperty(curProperty->getName())), 2, rowID);
         }
-        catch(CEGUI::InvalidRequestException exception)
+        CEGUI_CATCH(CEGUI::InvalidRequestException exception)
         {
         }
 
