@@ -470,7 +470,8 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
         // 1 3 5
         // 2 4 6
 
-        size_t x, y = 0;
+        size_t x = 0;
+        size_t y = 0;
         bool done = false;
 
         for (x = 0; x < d_gridWidth; ++x)
