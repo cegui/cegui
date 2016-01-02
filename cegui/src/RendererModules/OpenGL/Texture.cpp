@@ -343,6 +343,10 @@ void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
 
     // set texture to required size
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     if (d_isCompressed)
     {
@@ -423,6 +427,10 @@ void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     if (d_isCompressed)
         loadCompressedTextureBuffer(area, sourceData);
@@ -480,7 +488,7 @@ void OpenGLTexture::blitToMemory(void* targetData)
             glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_pack_buffer_old);
             glReadBuffer(read_buffer_old);
         }
-  	glBindFramebuffer(framebuffer_target, framebuffer_old);
+        glBindFramebuffer(framebuffer_target, framebuffer_old);
         glDeleteFramebuffers(1, &texture_framebuffer);
 
     }
@@ -492,6 +500,10 @@ void OpenGLTexture::blitToMemory(void* targetData)
         glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
         glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
         if (d_isCompressed)
         {
