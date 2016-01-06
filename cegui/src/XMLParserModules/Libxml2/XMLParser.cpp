@@ -50,14 +50,14 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
     while (currAttr)
     {
         xmlChar* val = xmlGetProp(node, currAttr->name);
-        CEGUI::String value( static_cast<char*>(val) );
+        CEGUI::String value( reinterpret_cast<char*>(val) );
         attrs.add(currAttr->name, value);
         xmlFree(val);
         currAttr = currAttr->next;
     }
 
     // element start processing
-    CEGUI::String nodeName(static_cast<char*>(node->name));
+    CEGUI::String nodeName( reinterpret_cast<char*>(node->name));
     handler.elementStart(nodeName, attrs);
 
     for (xmlNode* cur_node = node->children; cur_node; cur_node = cur_node->next)
