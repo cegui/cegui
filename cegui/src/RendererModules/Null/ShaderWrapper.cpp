@@ -43,6 +43,7 @@ NullShaderWrapper::~NullShaderWrapper()
 //----------------------------------------------------------------------------//
 void NullShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
 {
+    CEGUI_UNUSED(shaderParameterBindings);
 }
 
 //----------------------------------------------------------------------------//
