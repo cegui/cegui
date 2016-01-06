@@ -150,8 +150,6 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_shaderManager(0)
 {
     init();
-    CEGUI_UNUSED(d_s3tcSupported);
-    // d_s3tcSupported is unused, but must be preserved to avoid breaking ABI
 }
 
 //----------------------------------------------------------------------------//
