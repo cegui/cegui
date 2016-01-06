@@ -870,19 +870,33 @@ void SVGData::parsePointsString(const String& pointsString, std::vector<glm::vec
         glm::vec2 currentPoint;
 
         sstream >> currentPoint.x;
-        //Check if a new pair can be read, if not then break the loop
+        //Check if a new pair can be read, if not then break the loop, the input so far is assumed
+        //to be valid
         if(sstream.fail())
+        {
             break;
+        }
+
         sstream >> mandatoryChar<','>;
         if (sstream.fail())
+        {
             throw SVGParsingException("SVG file parsing was aborted because of an invalid value "
                                       "for the SVG 'points' type (missing comma separator): " +
                                       pointsString);
+            //Clearing the invalid list of points
+            points.clear();
+        }
         sstream >> currentPoint.y;
         if (sstream.fail())
+        {
             throw SVGParsingException("SVG file parsing was aborted because of an invalid value "
                                       "for the SVG 'points' type (missing second value of the pair"
                                       "): " + pointsString);
+            //Clearing the invalid list of points
+            points.clear();
+        }
+
+        points.push_back(currentPoint);
     }
 }
 
