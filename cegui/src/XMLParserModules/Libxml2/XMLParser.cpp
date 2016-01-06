@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/XMLParserModules/Libxml2/XMLParser.h"
 #include "CEGUI/System.h"
+#include "CEGUI/String.h"
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/XMLAttributes.h"
@@ -49,13 +50,15 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
     while (currAttr)
     {
         xmlChar* val = xmlGetProp(node, currAttr->name);
-        attrs.add(currAttr->name, val);
+        CEGUI::String value( static_cast<char*>(val) );
+        attrs.add(currAttr->name, value);
         xmlFree(val);
         currAttr = currAttr->next;
     }
 
     // element start processing
-    handler.elementStart(node->name, attrs);
+    CEGUI::String nodeName(static_cast<char*>(node->name));
+    handler.elementStart(nodeName, attrs);
 
     for (xmlNode* cur_node = node->children; cur_node; cur_node = cur_node->next)
     {
@@ -76,7 +79,7 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
     }
 
     // element end processing
-    handler.elementEnd(node->name);
+    handler.elementEnd(nodeName);
 }
 
 LibxmlParser::LibxmlParser(void)
