@@ -1129,7 +1129,6 @@ namespace CEGUI
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
         const String eventName(attributes.getValueAsString(FireEventAttribute));
-        typedef std::pair<float, float> Range;
 
         if (type == PropertyHelper<Colour>::getDataTypeName())
             d_propertyLink = new PropertyLinkDefinition<Colour>(name,
@@ -1707,8 +1706,6 @@ namespace CEGUI
         if (!w.empty() || !p.empty())
         {
             const String type(dynamic_cast<Property*>(d_propertyLink)->getDataType());
-
-            typedef std::pair<float,float> Range;
 
             if(type == PropertyHelper<Colour>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<Colour>* >(d_propertyLink)->addLinkTarget(w, p);
