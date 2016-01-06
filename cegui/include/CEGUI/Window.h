@@ -1525,7 +1525,7 @@ public:
     \return
         Nothing
     */
-    void setEnabled(bool setting);
+    virtual void setEnabled(bool enabled);
 
     /*!
     \brief
@@ -1535,29 +1535,20 @@ public:
     \param setting
         - true to disable the Window
         - false to enable the Window.
-
-    \return
-        Nothing
     */
-    void setDisabled(bool setting);
+    void setDisabled(bool disabled) { setEnabled(!disabled); }
 
     /*!
     \brief
         enable the Window to allow interaction.
-
-    \return
-        Nothing
     */
-    void enable(void)   {setEnabled(true);}
+    void enable()   { setEnabled(true); }
 
     /*!
     \brief
         disable the Window to prevent interaction.
-
-    \return
-        Nothing
     */
-    void disable(void)  {setEnabled(false);}
+    void disable()  { setEnabled(false); }
 
     /*!
     \brief
