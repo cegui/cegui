@@ -50,8 +50,7 @@ namespace CEGUI
 \see
     AnimationManager
 */
-class CEGUIEXPORT Interpolator :
-    public AllocatedObject<Interpolator>
+class CEGUIEXPORT Interpolator
 {
 public:
     //! destructor

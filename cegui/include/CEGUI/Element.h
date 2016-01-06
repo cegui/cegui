@@ -241,8 +241,7 @@ class directly. You most likely want to use CEGUI::Window.
 */
 class CEGUIEXPORT Element :
     public PropertySet,
-    public EventSet,
-    public AllocatedObject<Element>
+    public EventSet
 {
 public:
     //! Namespace for global events
@@ -805,9 +804,9 @@ public:
         Return the element's absolute (or screen, depending on the type of the element) position in pixels.
 
     \return
-        Vector2f object describing this element's absolute position in pixels.
+        glm::vec2 object describing this element's absolute position in pixels.
     */
-    inline const Vector2f& getPixelPosition() const
+    inline glm::vec2 getPixelPosition() const
     {
         return getUnclippedOuterRect().get().d_min;
     }
@@ -857,16 +856,16 @@ public:
         CEGUI used Euler angles previously. While these are easy to use and seem
         intuitive they cause Gimbal locks when animating and are overall the worse
         solution than using Quaternions. You can still use Euler angles, see
-        the CEGUI::Quaternion class for more info about that.
+        the glm::quat class for more info about that.
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief retrieves rotation of this widget
 
     \see Element::setRotation
     */
-    inline const Quaternion& getRotation() const
+    inline const glm::quat& getRotation() const
     {
         return d_rotation;
     }
@@ -1291,8 +1290,7 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child elements.
-    typedef std::vector<Element*
-        CEGUI_VECTOR_ALLOC(Element*)> ChildList;
+    typedef std::vector<Element*> ChildList;
 
     //! The list of child element objects attached to this.
     ChildList d_children;
@@ -1321,7 +1319,7 @@ protected:
     //! Current constrained pixel size of the element.
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
-    Quaternion d_rotation;
+    glm::quat d_rotation;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;

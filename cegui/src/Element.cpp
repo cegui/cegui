@@ -34,6 +34,9 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/URect.h"
 
 #include <algorithm>
 
@@ -75,7 +78,7 @@ Element::Element():
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
-    d_rotation(Quaternion::IDENTITY),
+    d_rotation(1, 0, 0, 0), // <-- IDENTITY
 
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
@@ -337,7 +340,7 @@ const Sizef& Element::getRootContainerSize() const
 }
 
 //----------------------------------------------------------------------------//
-void Element::setRotation(const Quaternion& rotation)
+void Element::setRotation(const glm::quat& rotation)
 {
     d_rotation = rotation;
 
@@ -349,13 +352,12 @@ void Element::setRotation(const Quaternion& rotation)
 void Element::addChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
-                InvalidRequestException("Can't add NULL to Element as a child!"));
+        throw 
+                InvalidRequestException("Can't add NULL to Element as a child!");
 
     if (element == this)
-        CEGUI_THROW(
-                InvalidRequestException("Can't make element its own child - "
-                                        "this->addChild(this); is forbidden."));
+        throw InvalidRequestException("Can't make element its own child - "
+                                       "this->addChild(this); is forbidden.");
 
     addChild_impl(element);
     ElementEventArgs args(element);
@@ -366,10 +368,10 @@ void Element::addChild(Element* element)
 void Element::removeChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
+        throw 
                 InvalidRequestException("NULL can't be a child of any Element, "
                                         "it makes little sense to ask for its "
-                                        "removal"));
+                                        "removal");
 
     removeChild_impl(element);
     ElementEventArgs args(element);
@@ -477,11 +479,11 @@ void Element::addElementProperties()
         &Element::setPixelAligned, &Element::isPixelAligned, true
     );
 
-    CEGUI_DEFINE_PROPERTY(Element, Quaternion,
-        "Rotation", "Property to get/set the Element's rotation. Value is a quaternion: "
+    CEGUI_DEFINE_PROPERTY(Element, glm::quat,
+        "Rotation", "Property to get/set the Element's rotation. Value is a quaternion (glm::quat): "
         "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\""
         "or \"x:[x_float] y:[y_float] z:[z_float]\" to convert from Euler angles (in degrees).",
-        &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
+        &Element::setRotation, &Element::getRotation, glm::quat(1.0, 0.0, 0.0, 0.0)
     );
 
     CEGUI_DEFINE_PROPERTY(Element, bool,
@@ -589,7 +591,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
     const Sizef pixel_size = skipAllPixelAlignment ?
         calculatePixelSize(true) : getPixelSize();
-    Rectf ret(Vector2f(0, 0), pixel_size);
+    Rectf ret(glm::vec2(0, 0), pixel_size);
 
     const Element* parent = getParentElement();
 
@@ -601,20 +603,20 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     }
     else
     {
-        parent_rect = Rectf(Vector2f(0, 0), getRootContainerSize());
+        parent_rect = Rectf(glm::vec2(0, 0), getRootContainerSize());
     }
 
     const Sizef parent_size = parent_rect.getSize();
 
-    Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
+    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {
         case HA_CENTRE:
-            offset.d_x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
+            offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
             break;
         case HA_RIGHT:
-            offset.d_x += parent_size.d_width - pixel_size.d_width;
+            offset.x += parent_size.d_width - pixel_size.d_width;
             break;
         default:
             break;
@@ -623,10 +625,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     switch (getVerticalAlignment())
     {
         case VA_CENTRE:
-            offset.d_y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
+            offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
             break;
         case VA_BOTTOM:
-            offset.d_y += parent_size.d_height - pixel_size.d_height;
+            offset.y += parent_size.d_height - pixel_size.d_height;
             break;
         default:
             break;
@@ -634,8 +636,8 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     if (d_pixelAligned && !skipAllPixelAlignment)
     {
-        offset = Vector2f(CoordConverter::alignToPixels(offset.d_x),
-                          CoordConverter::alignToPixels(offset.d_y));
+        offset = glm::vec2(CoordConverter::alignToPixels(offset.x),
+                           CoordConverter::alignToPixels(offset.y));
     }
 
     ret.offset(offset);

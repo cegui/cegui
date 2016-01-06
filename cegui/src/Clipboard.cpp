@@ -28,6 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/Clipboard.h"
 
+#include <cstring>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -40,7 +42,6 @@ Clipboard::Clipboard():
     d_mimeType("text/plain"), // reasonable default I think
     d_buffer(0),
     d_bufferSize(0),
-    
     d_nativeProvider(0)
 {}
 
@@ -49,7 +50,7 @@ Clipboard::~Clipboard()
 {
     if (d_buffer != 0)
     {
-        CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
+        delete[] d_buffer;
     }
 }
 
@@ -74,15 +75,15 @@ void Clipboard::setData(const String& mimeType, const void* buffer, size_t size)
     {
         if (d_buffer != 0)
         {
-            CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
+            delete[] d_buffer;
             d_buffer = 0;
         }
         
         d_bufferSize = size;
-        d_buffer = CEGUI_NEW_ARRAY_PT(BufferElement, d_bufferSize, Clipboard);
+        d_buffer = new String::value_type[d_bufferSize];
     }
     
-    memcpy(d_buffer, buffer, d_bufferSize);
+    std::memcpy(d_buffer, buffer, d_bufferSize);
     
     // we have set the data to the internal clipboard, now sync it with the
     // system-wide native clipboard if possible
@@ -108,15 +109,15 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
         {
             if (d_buffer != 0)
             {
-                CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
+                delete[] d_buffer;
                 d_buffer = 0;
             }
             
             d_bufferSize = retrievedSize;
-            d_buffer = CEGUI_NEW_ARRAY_PT(BufferElement, d_bufferSize, Clipboard);
+            d_buffer = new String::value_type[d_bufferSize];
         }
         
-        memcpy(d_buffer, retrievedBuffer, retrievedSize);
+        std::memcpy(d_buffer, retrievedBuffer, retrievedSize);
     }
     
     mimeType = d_mimeType;
@@ -127,15 +128,13 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
 //----------------------------------------------------------------------------//
 void Clipboard::setText(const String& text)
 {
-    // could be just ASCII if std::string is used as CEGUI::String
-    const char* utf8_bytes = text.c_str();
+    // Get the character (char or char32_t) pointing to the characters of the string
+    const String::value_type* characterArray = text.c_str();
     
-    // we don't want the actual string length, that might not be the buffer size
-    // in case of utf8!
-    // this gets us the number of bytes until \0 is encountered
-    const size_t size = strlen(utf8_bytes);
+    // Get the number of characters until the null-character \0 is encountered
+    const size_t size = std::char_traits<String::value_type>::length(characterArray);
     
-    setData("text/plain", static_cast<const void*>(utf8_bytes), size);
+    setData("text/plain", static_cast<const void*>(characterArray), size);
 }
 
 //----------------------------------------------------------------------------//
@@ -151,15 +150,10 @@ String Clipboard::getText()
 
     if (mimeType == "text/plain" && size != 0)
     {
-        // d_buffer an utf8 or ASCII C string (ASCII if std::string is used)
-
-        // !!! However it is not null terminated !!! So we have to tell String
+        // d_buffer is an UTF-8 encoded, UTF-32 encoded or ASCII string
+        // !However it is not null terminated ! So we have to tell String
         // how many code units (not code points!) there are.
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-        return String(reinterpret_cast<const utf8*>(d_buffer), d_bufferSize);
-#else
-        return String(static_cast<const char*>(d_buffer), d_bufferSize);
-#endif
+        return String(static_cast<const String::value_type*>(d_buffer), d_bufferSize);
     }
     else
     {
