@@ -58,8 +58,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-struct DynamicModule::Impl :
-    public AllocatedObject<DynamicModule::Impl>
+struct DynamicModule::Impl
 {
     Impl(const String& name) :
         d_moduleName(name),
@@ -167,8 +166,11 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
     const String envModuleDir(getModuleDirEnvVar());
 
     if (!envModuleDir.empty())
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         handle = DYNLIB_LOAD(envModuleDir + '/' + name);
-
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        handle = DYNLIB_LOAD( (envModuleDir + '/' + name).toUtf8String() );
+#endif
     #ifdef __APPLE__
     if (!handle)
         // on apple, look in the app bundle frameworks directory
@@ -177,20 +179,30 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 
     if (!handle)
         // try loading without any explicit location (i.e. use OS search path)
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         handle = DYNLIB_LOAD(name);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        handle = DYNLIB_LOAD(name.toUtf8String());
+#endif
 
     // finally, try using the compiled-in module directory
     #if defined(CEGUI_MODULE_DIR)
     if (!handle)
+        #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
+        #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+        handle = DYNLIB_LOAD( (CEGUI_MODULE_DIR + name).toUtf8String() );
+        #endif
     #endif
+
+
 
     return handle;
 }
 
 //----------------------------------------------------------------------------//
 DynamicModule::DynamicModule(const String& name) :
-    d_pimpl(CEGUI_NEW_AO Impl(name))
+    d_pimpl(new Impl(name))
 {
 	if (name.empty())
 		return;
@@ -220,14 +232,14 @@ DynamicModule::DynamicModule(const String& name) :
 
     // check for library load failure
     if (!d_pimpl->d_handle)
-        CEGUI_THROW(GenericException("Failed to load module '" +
-            d_pimpl->d_moduleName + "': " + getFailureString()));
+        throw GenericException("Failed to load module '" +
+            d_pimpl->d_moduleName + "': " + getFailureString());
 }
 
 //----------------------------------------------------------------------------//
 DynamicModule::~DynamicModule()
 {
-    CEGUI_DELETE_AO d_pimpl;
+    delete d_pimpl;
 }
 
 //----------------------------------------------------------------------------//
@@ -239,7 +251,11 @@ const String& DynamicModule::getModuleName() const
 //----------------------------------------------------------------------------//
 void* DynamicModule::getSymbolAddress(const String& symbol) const
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
     return (void*)DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    return (void*)DYNLIB_GETSYM(d_pimpl->d_handle, symbol.toUtf8String());
+#endif
 }
 
 //----------------------------------------------------------------------------//

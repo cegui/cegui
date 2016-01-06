@@ -130,8 +130,8 @@ ItemEntry* ItemListBase::getItemFromIndex(size_t index) const
 	}
 	else
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified index is out of range for this ItemListBase."));
+		throw InvalidRequestException(
+            "the specified index is out of range for this ItemListBase.");
 	}
 }
 
@@ -149,8 +149,8 @@ size_t ItemListBase::getItemIndex(const ItemEntry* item) const
 	}
 	else
 	{
-		CEGUI_THROW(InvalidRequestException(
-            "the specified ItemEntry is not attached to this ItemListBase."));
+		throw InvalidRequestException(
+            "the specified ItemEntry is not attached to this ItemListBase.");
 	}
 }
 
@@ -160,7 +160,7 @@ size_t ItemListBase::getItemIndex(const ItemEntry* item) const
 *************************************************************************/
 ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* start_item)
 {
-	// if start_item is NULL begin search at begining, else start at item after start_item
+	// if start_item is NULL begin search at beginning, else start at item after start_item
 	size_t index = (!start_item) ? 0 : (getItemIndex(start_item) + 1);
 
 	while (index < d_listItems.size())
@@ -244,7 +244,7 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
     }
 	else if (item && item->d_ownerList != this)
 	{
-		// if position is NULL begin insert at begining, else insert after item 'position'
+		// if position is NULL begin insert at beginning, else insert after item 'position'
 		ItemEntryList::iterator ins_pos;
 
 		if (!position)
@@ -258,8 +258,8 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 			// throw if item 'position' is not in the list
 			if (ins_pos == d_listItems.end())
 			{
-				CEGUI_THROW(InvalidRequestException(
-                    "the specified ItemEntry for parameter 'position' is not attached to this ItemListBase."));
+				throw InvalidRequestException(
+                    "the specified ItemEntry for parameter 'position' is not attached to this ItemListBase.");
 			}
 
 		}
@@ -556,8 +556,8 @@ Rectf ItemListBase::getItemRenderArea(void) const
     else
     {
         //return getItemRenderArea_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 

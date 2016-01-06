@@ -75,7 +75,7 @@ public:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    virtual float getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
+    virtual float getAdjustDirectionFromPoint(const glm::vec2& pt) const  = 0;
 };
 
 /*!
@@ -324,6 +324,25 @@ public:
     */
     void setScrollPosition(float position);
 
+    /*!
+    \brief
+        Returns the maximal scroll position value that is allowed, depending
+        on the document size and page size.
+
+    \return
+        The maximal scroll position value that is allowed
+    */
+    float getMaxScrollPosition() const;
+
+    /*!
+    \brief
+        Returns whether the current scroll position is at the end of the range or not.
+
+    \return
+        True if the current scroll position is at the end. False if it is not at the end.
+    */
+    bool isAtEnd() const;
+
     //! return the current scroll position as a value in the interval [0, 1]
     float getUnitIntervalScrollPosition() const;
     //! set the current scroll position as a value in the interval [0, 1]
@@ -488,18 +507,12 @@ protected:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    float getAdjustDirectionFromPoint(const Vector2f& pt) const;
+    float getAdjustDirectionFromPoint(const glm::vec2& pt) const;
 
     /** implementation func that updates scroll position value, returns true if
      * value was changed.  NB: Fires no events and does no other updates.
      */
     bool setScrollPosition_impl(const float position);
-
-    //! return whether the current scroll position is at the end of the range.
-    bool isAtEnd() const;
-
-    //! return the max allowable scroll position value
-    float getMaxScrollPosition() const;
 
     //! handler function for when thumb moves.
     bool handleThumbMoved(const EventArgs& e);
@@ -533,8 +546,8 @@ protected:
     virtual void onScrollConfigChanged(WindowEventArgs& e);
 
     // Overridden event handlers
-    virtual void onMouseButtonDown(MouseEventArgs& e);
-    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
 
     // base class overrides
     void banPropertiesForAutoWindow();

@@ -157,8 +157,8 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
 
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(const Window* ref_wnd,
-                                       GeometryBuffer& buffer,
-                                       const Vector2f& position,
+                                       std::vector<GeometryBuffer*>& geometry_buffers,
+                                       const glm::vec2& position,
                                        const ColourRect* mod_colours,
                                        const Rectf* clip_rect,
                                        const float vertical_space,
@@ -169,18 +169,18 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
     if (!fnt)
         return;
 
-    Vector2f final_pos(position);
+    glm::vec2 final_pos(position);
     float y_scale = 1.0f;
 
     // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        final_pos.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
+        final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_CENTRE_ALIGNED:
-        final_pos.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+        final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
     case VF_STRETCHED:
@@ -192,8 +192,8 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
         break;
 
     default:
-        CEGUI_THROW(InvalidRequestException(
-            "unknown VerticalFormatting option specified."));
+        throw InvalidRequestException(
+            "unknown VerticalFormatting option specified.");
     }
 
     // apply padding to position:
@@ -214,16 +214,15 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
 
         sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
 
-        Rectf sel_rect(position.d_x + sel_start_extent,
-                       position.d_y,
-                       position.d_x + sel_end_extent,
-                       position.d_y + vertical_space);
+        Rectf sel_rect(position.x + sel_start_extent,
+                       position.y,
+                       position.x + sel_end_extent,
+                       position.y + vertical_space);
 
-        d_selectionImage->render(buffer, sel_rect, clip_rect, ColourRect(0xFF002FFF));
+        d_selectionImage->render(geometry_buffers, sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
     }
-
     // draw the text string.
-    fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
+    fnt->drawText(geometry_buffers, d_text, final_pos, clip_rect, true, final_cols,
                   space_extra, 1.0f, y_scale);
 }
 
@@ -232,8 +231,8 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
 {
     const Font* fnt = getEffectiveFont(ref_wnd);
 
-    Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
-               d_padding.d_min.d_y + d_padding.d_max.d_y);
+    Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
+               d_padding.d_min.y + d_padding.d_max.y);
 
     if (fnt)
     {
@@ -261,11 +260,11 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.
     if (!fnt)
-        CEGUI_THROW(InvalidRequestException(
-            "unable to split with no font set."));
+        throw InvalidRequestException(
+            "unable to split with no font set.");
 
     // create 'left' side of split and clone our basic configuration
-    RenderedStringTextComponent* lhs = CEGUI_NEW_AO RenderedStringTextComponent();
+    RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
     lhs->d_padding = d_padding;
     lhs->d_verticalFormatting = d_verticalFormatting;
     lhs->d_font = d_font;
@@ -291,7 +290,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             // if it was the first token, split the token itself
             if (first_component && left_len == 0)
                 left_len =
-                    ceguimax(static_cast<size_t>(1),
+                    std::max(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
                                 d_text.substr(0, token_len), split_point));
             
@@ -356,7 +355,7 @@ size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent* RenderedStringTextComponent::clone() const
 {
-    RenderedStringTextComponent* c = CEGUI_NEW_AO RenderedStringTextComponent(*this);
+    RenderedStringTextComponent* c = new RenderedStringTextComponent(*this);
     return c;
 }
 

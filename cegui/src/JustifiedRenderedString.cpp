@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/Vector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -58,18 +57,18 @@ void JustifiedRenderedString::format(const Window* ref_wnd,
 }
 
 //----------------------------------------------------------------------------//
-void JustifiedRenderedString::draw(const Window* ref_wnd, GeometryBuffer& buffer,
-                                   const Vector2f& position,
+void JustifiedRenderedString::draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
+                                   const glm::vec2& position,
                                    const ColourRect* mod_colours,
                                    const Rectf* clip_rect) const
 {
-    Vector2f draw_pos(position);
+    glm::vec2 draw_pos(position);
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        d_renderedString->draw(ref_wnd, i, buffer, draw_pos, mod_colours,
+        d_renderedString->draw(ref_wnd, i, geometry_buffers, draw_pos, mod_colours,
                                clip_rect, d_spaceExtras[i]);
-        draw_pos.d_y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
 }
 

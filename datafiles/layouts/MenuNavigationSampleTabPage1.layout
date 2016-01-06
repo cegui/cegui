@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="Page1" >
+        <Property name="Area" value="{{0,1},{0,0},{1,1},{1,0}}" />
+        <Property name="Text" value="2D Menu" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="TaharezLook/Button" name="Button1" >
+            <Property name="Area" value="{{0,49},{0,170},{0,145},{0,202}}" />
+            <Property name="Text" value="1" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button2" >
+            <Property name="Area" value="{{0,48},{0,214},{0,144},{0,246}}" />
+            <Property name="Text" value="2" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button3" >
+            <Property name="Area" value="{{0,50},{0,262},{0,146},{0,294}}" />
+            <Property name="Text" value="3" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button4" >
+            <Property name="Area" value="{{0,51},{0,303},{0,147},{0,335}}" />
+            <Property name="Text" value="4" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button5" >
+            <Property name="Area" value="{{0,170},{0,168},{0,266},{0,200}}" />
+            <Property name="Text" value="5" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button6" >
+            <Property name="Area" value="{{0,169},{0,214},{0,265},{0,246}}" />
+            <Property name="Text" value="6" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button7" >
+            <Property name="Area" value="{{0,171},{0,260},{0,267},{0,292}}" />
+            <Property name="Text" value="7" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button8" >
+            <Property name="Area" value="{{0,171},{0,306},{0,267},{0,338}}" />
+            <Property name="Text" value="8" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button9" >
+            <Property name="Area" value="{{0,296},{0,171},{0,392},{0,203}}" />
+            <Property name="Text" value="9" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button10" >
+            <Property name="Area" value="{{0,296},{0,214},{0,392},{0,246}}" />
+            <Property name="Text" value="10" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button11" >
+            <Property name="Area" value="{{0,294},{0,260},{0,390},{0,292}}" />
+            <Property name="Text" value="11" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button12" >
+            <Property name="Area" value="{{0,296},{0,304},{0,392},{0,336}}" />
+            <Property name="Text" value="12" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button13" >
+            <Property name="Area" value="{{0,421},{0,173},{0,517},{0,205}}" />
+            <Property name="Text" value="13" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button14" >
+            <Property name="Area" value="{{0,422},{0,216},{0,518},{0,248}}" />
+            <Property name="Text" value="14" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button15" >
+            <Property name="Area" value="{{0,420},{0,262},{0,516},{0,294}}" />
+            <Property name="Text" value="15" />
+        </Window>
+        <Window type="TaharezLook/Button" name="Button16" >
+            <Property name="Area" value="{{0,422},{0,306},{0,518},{0,338}}" />
+            <Property name="Text" value="16" />
+        </Window>
+        <Window type="WindowsLook/StaticText" name="StaticText" >
+            <Property name="Area" value="{{0,51},{0,343},{0,518},{0,470}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="HorzScrollPageSize" value="462.2" />
+            <Property name="VertScrollPageSize" value="122.2" />
+        </Window>
+        <Window type="WindowsLook/StaticText" name="StaticText2" >
+            <Property name="Area" value="{{-0.0046875,52},{0.115278,20},{-0.00156252,516},{0.0361111,119}}" />
+            <Property name="Text" value="Select a button with the directional arrows and activate it with the &apos;ENTER&apos; key." />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+            <Property name="HorzScrollPageSize" value="463.2" />
+            <Property name="VertScrollPageSize" value="37.2" />
+            <Property name="HorzScrollDocumentSize" value="439" />
+            <Property name="VertScrollDocumentSize" value="27.3591" />
+        </Window>
+    </Window>
+</GUILayout>
