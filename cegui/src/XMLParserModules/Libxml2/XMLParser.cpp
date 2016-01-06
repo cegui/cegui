@@ -51,13 +51,16 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
     {
         xmlChar* val = xmlGetProp(node, currAttr->name);
         CEGUI::String value( reinterpret_cast<char*>(val) );
-        attrs.add(currAttr->name, value);
+
+        CEGUI::String attrName( reinterpret_cast<const char*>(currAttr->name));
+
+        attrs.add(attrName, value);
         xmlFree(val);
         currAttr = currAttr->next;
     }
 
     // element start processing
-    CEGUI::String nodeName( reinterpret_cast<char*>(node->name));
+    CEGUI::String nodeName( reinterpret_cast<const char*>(node->name));
     handler.elementStart(nodeName, attrs);
 
     for (xmlNode* cur_node = node->children; cur_node; cur_node = cur_node->next)
@@ -70,7 +73,10 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
 
         case XML_TEXT_NODE:
             if (cur_node->content != 0 && *cur_node->content!= '\0')
-                handler.text(cur_node->content);
+            {
+                String cureNodeContent( reinterpret_cast<const char*>(cur_node->content) );
+                handler.text(cureNodeContent);
+            }
             break;
 
         default:
