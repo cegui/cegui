@@ -354,7 +354,48 @@ UDim Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight()
     CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
 }
 
-//----------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------//
+    By definition of
+    "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth" (see its
+    doc), if we let "t" be the width of the area of the element which is
+    reserved for content and "n" be the element width, then the following holds
+    true:
+
+        t >= inverse.d_scale*m + inverse.d_offset                          (1)
+
+    Therefore, for every non-negative number "c", if we want "t >= c" to be
+    true, it's sufficient to require that:
+
+        inverse.d_scale*m + inverse.d_offset >= c
+
+    Assume "inverse.d_scale > 0". Then that's equivalent to:
+
+        m >= (c - inverse.d_offset) / inverse.d_scale
+
+    If we let "a = 1/inverse.d_scale" and
+    "b = -inverse.d_offset / inverse.d_scale" then that's equivalent to:
+
+        m >= a*c +b
+
+    So we have the following: for every non-negative number "c", if
+    "m >= a*c +b" then "t >= c". Therefore, by the definition of
+    "getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent" (see its
+    doc), we can return:
+
+        UDim(a, b) = UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale)
+
+    Now, if "inverse.d_scale = 0" obviously all the above doesn't work.f In this
+    case we have, from (1):
+
+        t >= inverse.d_scale*m + inverse.d_offset = inverse.d_offset
+
+    Which means the width of the area of the element which is reserved for
+    content that we can guarantee is constant and doesn't depend on the element
+    width. Therefore, no matter what "a" and "b" we choose, we can't guarantee
+    that for every non-negative number "c", if "m >= a*c +b" then "t >= c"
+    (because all we know is t >= inverse.d_offset). Therefore in such a case we
+    throw an exception.
+------------------------------------------------------------------------------*/
 UDim Element::getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() const
 {
     UDim inverse(getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth());
@@ -363,7 +404,11 @@ UDim Element::getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() c
     return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
 }
 
-//----------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------//
+    The implementation of this method is equivalent to that of
+    "getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent". See the
+    comment before the definition of that method for more details.
+------------------------------------------------------------------------------*/
 UDim Element::getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent() const
 {
     UDim inverse(getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight());

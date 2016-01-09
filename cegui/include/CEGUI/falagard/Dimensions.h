@@ -105,16 +105,16 @@ public:
     \brief
         Get a lower bound for this dimension as an affine function of "type".
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
 
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the value of this dimension.
-            - "x" be the value of "type". For instance, if "type" is "DT_WIDTH",
-              "x" would be the width of the window.
+            - "t" be the value of this dimension.
+            - "m" be the value of "type". For instance, if "type" is "DT_WIDTH",
+              "m" would be the width of the window.
         Then:
-            y >= ret.d_scale*x + ret.d_offset
+            t >= ret.d_scale*m + ret.d_offset
 
         The default implementation simply returns "UDim(0.f, getValue(wnd))".
 
@@ -132,16 +132,16 @@ public:
     \brief
         Get a upper bound for this dimension as an affine function of "type".
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
 
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the value of this dimension.
-            - "x" be the value of "type". For instance, if "type" is "DT_WIDTH",
-              "x" would be the width of the window.
+            - "t" be the value of this dimension.
+            - "m" be the value of "type". For instance, if "type" is "DT_WIDTH",
+              "m" would be the width of the window.
         Then:
-            y <= ret.d_scale*x +ret.d_offset
+            t <= ret.d_scale*m +ret.d_offset
 
         The default implementation simply returns "UDim(0.f, getValue(wnd))".
 
@@ -956,17 +956,18 @@ public:
     /*!
     \brief
         Get a lower bound for the width of this area as an affine function of
+        the window width.
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
         the window width.
 
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the width of this area.
-            - "x" be the window width.
+            - "t" be the width of this area.
+            - "m" be the window width.
         Then:
-            y >= ret.d_scale*x +ret.d_offset
+            t >= ret.d_scale*m +ret.d_offset
 
         This method can be used to implement
         "Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth".
@@ -981,15 +982,15 @@ public:
         Get a lower bound for the height of this area as an affine function of
         the window height.
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
 
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the height of this area.
-            - "x" be the window height.
+            - "t" be the height of this area.
+            - "m" be the window height.
         Then:
-            y >= ret.d_scale*x +ret.d_offset
+            t >= ret.d_scale*m +ret.d_offset
 
         This method can be used to implement
         "Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight".
