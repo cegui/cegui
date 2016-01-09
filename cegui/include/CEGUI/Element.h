@@ -1303,8 +1303,8 @@ public:
         Get a lower bound for the width of the area of the element which is
         reserved for content as an affine function of the element width.
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
 
         The meaning of "content" depends on the type of element. For instance,
         the content of a "FalagardStaticText" widget is its text. The area
@@ -1317,11 +1317,11 @@ public:
     \return
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the width of the area of the element which is reserved for
+            - "t" be the width of the area of the element which is reserved for
                content.
-            - "x" be the element width.
+            - "m" be the element width.
         Then the following applies:
-            y >= ret.d_scale*x + ret.d_offset
+            t >= ret.d_scale*m + ret.d_offset
 
     \see adjustSizeToContent
     \see getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
@@ -1334,8 +1334,8 @@ public:
         Get a lower bound for the height of the area of the element which is
         reserved for content as an affine function of the element height.
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
 
         The meaning of "content" depends on the type of element. For instance,
         the content of a "FalagardStaticText" widget is its text. The area
@@ -1348,11 +1348,11 @@ public:
     \return
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the height of the area of the element which is reserved for
+            - "t" be the height of the area of the element which is reserved for
               content.
-            - "x" be the element height.
+            - "m" be the element height.
         Then the following applies:
-            y >= ret.d_scale*x + ret.d_offset
+            t >= ret.d_scale*m + ret.d_offset
 
     \see adjustSizeToContent
     \see getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
@@ -1365,8 +1365,8 @@ public:
         Get a lower bound for the element width as an affine function of the
         width of the area of the element which is reserved for content.
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "m" is an affine function of "t" if, for some
+        constants "a" and "b", it holds true that "m = a*t +b".
 
         The meaning of "content" depends on the type of element. For instance,
         the content of a "FalagardStaticText" widget is its text. The area
@@ -1377,16 +1377,19 @@ public:
         This method is used by "adjustSizeToContent".
 
         The default implementaiton inverts the function returned by
-        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth".
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth". If the
+        scale of the value returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth" is 0,
+        there's no solution, so an exception is thrown.
 
     \return
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the element width.
-            - "x" be the width of the area of the element which is reserved for
+            - "m" be the element width.
+            - "t" be the width of the area of the element which is reserved for
               content.
-        Then the following applies:
-            y >= ret.d_scale*x + ret.d_offset
+        Then the following applies: for every non-negative number "c", if
+        "m >= ret.d_scale*c + ret.d_offset" then "t >= c".
 
     \see adjustSizeToContent
     \see getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
@@ -1400,8 +1403,8 @@ public:
         Get a lower bound for the element height as an affine function of the
         height of the area of the element which is reserved for content.
 
-        An affine function means: "y" is an affine function of "x" if, for some
-        constants "a" and "b", it holds true that "y = a*x +b".
+        An affine function means: "m" is an affine function of "t" if, for some
+        constants "a" and "b", it holds true that "m = a*t +b".
 
         The meaning of "content" depends on the type of element. For instance,
         the content of a "FalagardStaticText" widget is its text. The area
@@ -1412,16 +1415,19 @@ public:
         This method is used by "adjustSizeToContent".
 
         The default implementaiton inverts the function returned by
-        "getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight".
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth". If the
+        scale of the value returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth" is 0,
+        there's no solution, so an exception is thrown.
 
     \return
         Let:
             - "ret" be the value returned by this method.
-            - "y" be the element height.
-            - "x" be the height of the area of the element which is reserved for
+            - "m" be the element height.
+            - "t" be the height of the area of the element which is reserved for
               content.
-        Then the following applies:
-            y >= ret.d_scale*x + ret.d_offset
+        Then the following applies: for every non-negative number "c", if
+        "m >= ret.d_scale*c + ret.d_offset" then "t >= c".
 
     \see adjustSizeToContent
     \see getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
