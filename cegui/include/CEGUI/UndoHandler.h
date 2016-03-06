@@ -134,6 +134,11 @@ public:
     */
     bool canRedo();
 
+    /*!
+    \brief
+        Gets the action type of the last performed
+        action added to the undo list.
+    */
     UndoAction getLastAction();
 
 private:

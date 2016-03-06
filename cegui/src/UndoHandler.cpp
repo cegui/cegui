@@ -35,7 +35,7 @@ namespace CEGUI
 // Constructor
 //////////////////////////////////////////////////////////////////////////
 UndoHandler::UndoHandler(Window *window) :
-    d_undoLimit(10),
+    d_undoLimit(30),
     d_undoPosition(-1),
     d_lastUndo(true)
 {
