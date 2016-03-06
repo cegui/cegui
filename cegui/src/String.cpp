@@ -29,7 +29,7 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Exceptions.h"
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
 
 namespace CEGUI
 {
@@ -72,55 +72,14 @@ std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t s
     size_t currentCharIndex = 0;
     while (currentCharIndex < stringLength)
     {
-        const unsigned char currentCodeUnit = static_cast<const unsigned char>(utf8String[currentCharIndex]);
+        size_t remainingCodeUnits = stringLength - currentCharIndex;
+        size_t usedCodeUnits;
+        char32_t utf32CodePoint = getCodePointFromCodeUnits(utf8String + currentCharIndex,
+                                                            remainingCodeUnits,
+                                                            usedCodeUnits);
+        currentCharIndex += usedCodeUnits;
 
-        char32_t utf32CodeUnit;
-
-        // Check if the code point consists of a single code unit
-        if (currentCodeUnit < 0x80)
-        {
-            utf32CodeUnit = static_cast<char32_t>(currentCodeUnit);
-        }
-        else if (currentCodeUnit < 0xE0)
-        {
-            if (currentCharIndex + 1 >= stringLength)
-            {
-                throw CEGUI::InvalidRequestException("String conversion from UTF-8 to UTF-32 failed due to the "
-                                                     "start byte not being follwed by enough continuation bytes");
-                break;
-            }
-            utf32CodeUnit = ((currentCodeUnit                & 0x1F) << 6);
-            utf32CodeUnit |= (utf8String[++currentCharIndex] & 0x3F);
-        }
-        else if (currentCodeUnit < 0xF0)
-        {
-            if (currentCharIndex + 2 >= stringLength)
-            {
-                throw CEGUI::InvalidRequestException("String conversion from UTF-8 to UTF-32 failed due to the "
-                                                      "start byte not being follwed by enough continuation bytes");
-                break;
-            }
-            utf32CodeUnit = ((currentCodeUnit                   & 0x0F) << 12);
-            utf32CodeUnit |= ((utf8String[++currentCharIndex]   & 0x3F) << 6);
-            utf32CodeUnit |= (utf8String[++currentCharIndex]    & 0x3F);
-        }
-        else
-        {
-            if (currentCharIndex + 3 >= stringLength)
-            {
-                throw CEGUI::InvalidRequestException("String conversion from UTF-8 to UTF-32 failed due to the "
-                                                     "start byte not being follwed by enough continuation bytes");
-                break;
-            }
-            utf32CodeUnit = ((currentCodeUnit                   & 0x07) << 18);
-            utf32CodeUnit |= ((utf8String[++currentCharIndex]   & 0x3F) << 12);
-            utf32CodeUnit |= ((utf8String[++currentCharIndex]   & 0x3F) << 6);
-            utf32CodeUnit |= (utf8String[++currentCharIndex]    & 0x3F);
-        }
-
-        utf32String.push_back(utf32CodeUnit);
-
-        ++currentCharIndex;
+        utf32String.push_back(utf32CodePoint);
     }
 
     return utf32String;
@@ -194,6 +153,233 @@ std::string String::convertUtf32ToUtf8(const char32_t* utf32String, const size_t
     return utf8EncodedString;
 }
 
+size_t String::getCodePointSize(const char initialCodeUnit)
+{
+    if( (initialCodeUnit & 0x80) == 0x00)
+    {
+        return 1;
+    }
+    else if ( (initialCodeUnit & 0xE0) == 0xC0)
+    {
+        return 2;
+    }
+    else if ( (initialCodeUnit & 0xF0) == 0xE0)
+    {
+        return 3;
+    }
+    else if ( (initialCodeUnit & 0xF8) == 0xF0)
+    {
+        return 4;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+char32_t String::convertCodePoint(const char firstCodeUnit, const char secondCodeUnit)
+{
+    char32_t utf32CodePoint     =  ((firstCodeUnit & 0x1F) << 6);
+    utf32CodePoint              |= (secondCodeUnit & 0x3F);
+    return utf32CodePoint;
+}
+
+char32_t String::convertCodePoint(const char firstCodeUnit, const char secondCodeUnit,
+                                  const char thirdCodeUnit)
+{
+    char32_t utf32CodePoint =  ((firstCodeUnit  & 0x0F) << 12);
+    utf32CodePoint          |= ((secondCodeUnit & 0x3F) << 6);
+    utf32CodePoint          |= (thirdCodeUnit   & 0x3F);
+    return utf32CodePoint;
+}
+
+char32_t String::convertCodePoint(const char firstCodeUnit, const char secondCodeUnit,
+                                  const char thirdCodeUnit, const char fourthCodeUnit)
+{
+    char32_t utf32CodePoint =  ((firstCodeUnit  & 0x07) << 18);
+    utf32CodePoint          |= ((secondCodeUnit & 0x3F) << 12);
+    utf32CodePoint          |= ((thirdCodeUnit  & 0x3F) << 6);
+    utf32CodePoint          |= (fourthCodeUnit  & 0x3F);
+    return utf32CodePoint;
+}
+
+
+bool String::isContinuingUTF8CodeUnit(const char codeUnit)
+{
+    const unsigned char unsignedCodeUnit = static_cast<const unsigned char>(codeUnit);
+
+    return (unsignedCodeUnit & 0xC0) == 0x80;
+}
+
+char32_t String::getCodePointFromCodeUnits(const char* firstCodeUnit,
+                                           const size_t remainingCodeUnits)
+{
+    size_t consumedCodeUnits;
+    return getCodePointFromCodeUnits(firstCodeUnit,
+                                     remainingCodeUnits,
+                                     consumedCodeUnits);
+}
+
+char32_t String::getCodePointFromCodeUnits(const char* firstCodeUnit,
+                                           const size_t remainingCodeUnits,
+                                           size_t& consumedCodeUnits)
+{
+    /* Number of code units that the code point consists
+       of according to the initial code unit */
+    size_t codeUnitsInCodePoint = getCodePointSize(*firstCodeUnit);
+
+    checkUtf8CodePointSizeForValidity(codeUnitsInCodePoint,
+                                      remainingCodeUnits);
+    
+
+    consumedCodeUnits = codeUnitsInCodePoint;
+    switch (codeUnitsInCodePoint)
+    {
+    case 1:
+        return static_cast<char32_t>(firstCodeUnit[0]);
+    case 2:
+        return convertCodePoint(firstCodeUnit[0], firstCodeUnit[1]);
+    case 3:
+        return convertCodePoint(
+            firstCodeUnit[0],
+            firstCodeUnit[1],
+            firstCodeUnit[2]);
+    case 4:
+        return convertCodePoint(
+            firstCodeUnit[0],
+            firstCodeUnit[1],
+            firstCodeUnit[2],
+            firstCodeUnit[3]);
+    default:
+    {
+        throw CEGUI::UnicodeStringException(
+            "String conversion from UTF-8 to UTF-32 failed due to an "
+            "invalid amount of bytes specified for the code point.");
+        break;
+    }
+    }
+}
+
+char32_t String::getCodePointFromCodeUnits(String::const_iterator currentCodeUnit,
+                                           String::const_iterator codeUnitRangeEnd)
+{
+    size_t consumedCodeUnits;
+    return getCodePointFromCodeUnits(currentCodeUnit,
+                                     codeUnitRangeEnd,
+                                     consumedCodeUnits);
+}
+
+char32_t String::getCodePointFromCodeUnits(String::const_iterator currentCodeUnit,
+                                           String::const_iterator codeUnitRangeEnd,
+                                           size_t& consumedCodeUnits)
+{
+    /* Number of code units that the code point consists
+       of according to the initial code unit */
+    size_t codeUnitsInCodePoint = getCodePointSize(*currentCodeUnit);
+
+    size_t remainingCodeUnits = codeUnitRangeEnd - currentCodeUnit;
+
+    checkUtf8CodePointSizeForValidity(codeUnitsInCodePoint,
+                                      remainingCodeUnits);
+
+    const char& firstCodeUnit = *currentCodeUnit;
+    
+    switch (codeUnitsInCodePoint)
+    {
+    case 1:
+        return static_cast<char32_t>(firstCodeUnit);
+    case 2:
+    {
+        const char& secondCodeUnit = *(++currentCodeUnit);
+        return convertCodePoint(
+            firstCodeUnit,
+            secondCodeUnit);
+    }
+    case 3:
+    {
+        const char& secondCodeUnit = *(++currentCodeUnit);
+        const char& thirdCodeUnit = *(++currentCodeUnit);
+        return convertCodePoint(
+            firstCodeUnit,
+            secondCodeUnit,
+            thirdCodeUnit);
+    }
+    case 4:
+    {
+        const char& secondCodeUnit = *(++currentCodeUnit);
+        const char& thirdCodeUnit = *(++currentCodeUnit);
+        const char& fourthCodeUnit = *(++currentCodeUnit);
+        return convertCodePoint(
+            firstCodeUnit,
+            secondCodeUnit,
+            thirdCodeUnit,
+            fourthCodeUnit);
+    }
+    default:
+    {
+        throw CEGUI::UnicodeStringException(
+            "String conversion from UTF-8 to UTF-32 failed due to an "
+            "invalid amount of bytes specified for the code point.");
+        break;
+    }
+    }
+}
+
+void String::checkUtf8CodePointSizeForValidity(
+    const size_t codeUnitsInCodePoint,
+    const size_t remainingCodeUnits)
+{
+    if (codeUnitsInCodePoint == -1)
+    {
+        throw UnicodeStringException(
+            "Invalid initial byte detected for a code point in the string");
+    }
+
+    if (codeUnitsInCodePoint > remainingCodeUnits)
+    {
+        throw UnicodeStringException(
+            "String conversion from UTF-8 to UTF-32 failed due to the "
+            "start byte not being followed by the expected amount of "
+            "continuation bytes");
+    }
+}
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+bool String::isUtf8StringValid() const
+{
+    String::codepoint_iterator codePointIter(
+        d_string.begin(), d_string.begin(), d_string.end());
+
+    size_t totalCodeUnits = d_string.size();
+
+    while(!codePointIter.isAtEnd())
+    {
+        size_t codeUnitsInCodePoint = getCodePointSize(*(codePointIter.getCodeUnitIterator()));
+
+        size_t remainingCodeUnits = totalCodeUnits - codePointIter.getCodeUnitIndexFromStart();
+
+        if(codeUnitsInCodePoint > remainingCodeUnits || codeUnitsInCodePoint == -1)
+        {
+            return false;
+        }
+
+        ++codePointIter;   
+    }  
+
+    return true;
+}
+#endif
+
+bool String::codepoint_iterator::operator==(const codepoint_iterator& rhs) const
+{
+    if (m_rangeStart != rhs.m_rangeEnd || m_rangeEnd != rhs.m_rangeEnd)
+    {
+        throw UnicodeStringException(
+            "The code point iterators to be compared are defined "
+            "within different ranges");
+    }
+    return (m_iter == rhs.m_iter);
+}
 
 bool operator==(const String& str1, const String& str2)
 {
@@ -612,16 +798,81 @@ void swap(String& str1, String& str2)
 
 std::basic_ostream<char>& operator<<(std::basic_ostream<char>& outputStream, const String& str)
 {
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    outputStream << str.d_string;
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
     outputStream << str.toUtf8String();
+#endif
     return outputStream;
 }
 
 std::basic_istream<char>& operator>>(std::basic_istream<char>& inputStream, String& str)
 {
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    inputStream >> str.d_string;
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
     std::string inputString;
     inputStream >> inputString;
     str.assign(inputString);
+#endif
     return inputStream;
+}
+
+void String::codepoint_iterator::decrementByOneCodePoint()
+{
+    if (m_iter == m_rangeStart)
+    {
+        throw UnicodeStringException(
+            "Error: Attempting to decrement a code point iterator, which"
+            "already points to the beginning of the String.");
+    }
+
+    String::const_iterator endRangeIter = m_iter;
+
+    // Decrement the iterator while this is an continuing code unit
+    // starting from the code unit preceding the code point we
+    // were pointing to previously
+    --m_iter;
+    size_t codeUnitCount = 0;
+    while (isContinuingUTF8CodeUnit(*m_iter))
+    {
+        if (m_iter == m_rangeStart)
+        {
+            throw UnicodeStringException(
+                "No leading byte found in this String for the current "
+                "continuing code unit.");
+        }
+        else
+        {
+            --m_iter;
+            ++codeUnitCount;
+        }
+    }
+
+    if (getCodePointSize(*m_iter) != (codeUnitCount + 1))
+    {
+        throw UnicodeStringException(
+            "Invalid code point encountered while decrementing "
+            "the code point iterator.");
+    }
+}
+
+void String::codepoint_iterator::incrementByOneCodePoint()
+{
+    size_t size = getCodePointSize(*m_iter);
+    for (size_t i = 0; i < size; ++i)
+    {
+        if (m_iter < m_rangeEnd)
+        {
+            ++m_iter;
+        }
+        if (m_iter > m_rangeEnd)
+        {
+            throw UnicodeStringException(
+                "The code point iterators to be compared are defined "
+                "within different ranges");
+        }
+    }
 }
 
 }

@@ -196,130 +196,155 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
     const Font* fnt = w->getFont();
 
-    if (fnt)
+    if (fnt == nullptr)
     {
-        // calculate final colours to use.
-        ColourRect colours;
-        ColourRect normalTextCol;
-        setColourRectToUnselectedTextColour(normalTextCol);
-        ColourRect selectTextCol;
-        setColourRectToSelectedTextColour(selectTextCol);
-        ColourRect selectBrushCol;
-        w->hasInputFocus() ? setColourRectToActiveSelectionColour(selectBrushCol) :
-                             setColourRectToInactiveSelectionColour(selectBrushCol);
+        return;
+    }
 
-        const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
-        const size_t numLines = d_lines.size();
+    // calculate final colours to use.
+    ColourRect colours;
+    ColourRect normalTextCol;
+    setColourRectToUnselectedTextColour(normalTextCol);
+    ColourRect selectTextCol;
+    setColourRectToSelectedTextColour(selectTextCol);
+    ColourRect selectBrushCol;
+    w->hasInputFocus() ? setColourRectToActiveSelectionColour(selectBrushCol) :
+        setColourRectToInactiveSelectionColour(selectBrushCol);
 
-        // calculate the range of visible lines
-        size_t sidx,eidx;
-        sidx = static_cast<size_t>(vertScrollPos / fnt->getLineSpacing());
-        eidx = 1 + sidx + static_cast<size_t>(dest_area.getHeight() / fnt->getLineSpacing());
-        eidx = std::min(eidx, numLines);
-        drawArea.d_min.y += fnt->getLineSpacing()*static_cast<float>(sidx);
+    const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
+    const size_t numLines = d_lines.size();
 
-        // for each formatted line.
-        for (size_t i = sidx; i < eidx; ++i)
+    // calculate the range of visible lines
+    size_t sidx, eidx;
+    sidx = static_cast<size_t>(vertScrollPos / fnt->getLineSpacing());
+    eidx = 1 + sidx + static_cast<size_t>(dest_area.getHeight() / fnt->getLineSpacing());
+    eidx = std::min(eidx, numLines);
+    drawArea.d_min.y += fnt->getLineSpacing()*static_cast<float>(sidx);
+
+    // for each formatted line.
+    for (size_t i = sidx; i < eidx; ++i)
+    {
+        Rectf lineRect(drawArea);
+        const MultiLineEditbox::LineInfo& currLine = d_lines[i];
+        String lineText(w->getTextVisual().substr(currLine.d_startIdx, currLine.d_length));
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+        if (!lineText.isUtf8StringValid())
         {
-            Rectf lineRect(drawArea);
-            const MultiLineEditbox::LineInfo& currLine = d_lines[i];
-            String lineText(w->getTextVisual().substr(currLine.d_startIdx, currLine.d_length));
+            lineText = "";
+        }
+#endif
 
-            // offset the font little down so that it's centered within its own spacing
-            const float old_top = lineRect.top();
-            lineRect.d_min.y += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
 
-            // if it is a simple 'no selection area' case
-            if ((currLine.d_startIdx >= w->getSelectionEnd()) ||
-                ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStart()) ||
-                (w->getSelectionBrushImage() == 0))
+        // offset the font little down so that it's centered within its own spacing
+        const float old_top = lineRect.top();
+        lineRect.d_min.y += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
+
+        // if it is a simple 'no selection area' case
+        if ((currLine.d_startIdx >= w->getSelectionEnd()) ||
+            ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStart()) ||
+            (w->getSelectionBrushImage() == 0))
+        {
+            colours = normalTextCol;
+            // render the complete line.
+            fnt->drawText(w->getGeometryBuffers(), lineText,
+                          lineRect.getPosition(), &dest_area, true, colours);
+        }
+        // we have at least some selection highlighting to do
+        else
+        {
+            // Start of actual rendering section.
+            String sect;
+            size_t sectIdx = 0, sectLen;
+            float selStartOffset = 0.0f, selAreaWidth = 0.0f;
+
+            // render any text prior to selected region of line.
+            if (currLine.d_startIdx < w->getSelectionStart())
             {
-                colours = normalTextCol;
-                // render the complete line.
-                fnt->drawText(w->getGeometryBuffers(), lineText,
-                              lineRect.getPosition(), &dest_area, true, colours);
-            }
-            // we have at least some selection highlighting to do
-            else
-            {
-                // Start of actual rendering section.
-                String sect;
-                size_t sectIdx = 0, sectLen;
-                float selStartOffset = 0.0f, selAreaWidth = 0.0f;
+                // calculate length of text section
+                sectLen = w->getSelectionStart() - currLine.d_startIdx;
 
-                // render any text prior to selected region of line.
-                if (currLine.d_startIdx < w->getSelectionStart())
-                {
-                    // calculate length of text section
-                    sectLen = w->getSelectionStart() - currLine.d_startIdx;
-
-                    // get text for this section
-                    sect = lineText.substr(sectIdx, sectLen);
-                    sectIdx += sectLen;
-
-                    // get the pixel offset to the beginning of the selection area highlight.
-                    selStartOffset = fnt->getTextAdvance(sect);
-
-                    // draw this portion of the text
-                    colours = normalTextCol;
-                    fnt->drawText(w->getGeometryBuffers(), sect,
-                                    lineRect.getPosition(), &dest_area, true, colours);
-
-                    // set position ready for next portion of text
-                    lineRect.d_min.x += selStartOffset;
-                }
-
-                // calculate the length of the selected section
-                sectLen = std::min(w->getSelectionEnd() - currLine.d_startIdx, currLine.d_length) - sectIdx;
-
-                // get the text for this section
+                // get text for this section
                 sect = lineText.substr(sectIdx, sectLen);
                 sectIdx += sectLen;
 
-                // get the extent to use as the width of the selection area highlight
-                selAreaWidth = fnt->getTextAdvance(sect);
-
-                const float text_top = lineRect.top();
-                lineRect.top(old_top);
-
-                // calculate area for the selection brush on this line
-                lineRect.left(drawArea.left() + selStartOffset);
-                lineRect.right(lineRect.left() + selAreaWidth);
-                lineRect.bottom(lineRect.top() + fnt->getLineSpacing());
-
-                // render the selection area brush for this line
-                colours = selectBrushCol;
-                w->getSelectionBrushImage()->render(w->getGeometryBuffers(), lineRect, &dest_area, true, colours);
-
-                // draw the text for this section
-                colours = selectTextCol;
-                fnt->drawText(w->getGeometryBuffers(), sect,
-                                lineRect.getPosition(), &dest_area, true, colours);
-
-                lineRect.top(text_top);
-
-                // render any text beyond selected region of line
-                if (sectIdx < currLine.d_length)
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
+                // get the pixel offset to the beginning of the selection area highlight.
+                selStartOffset = fnt->getTextAdvance(sect);
+#else
+                if (sect.isUtf8StringValid())
                 {
-                    // update render position to the end of the selected area.
-                    lineRect.d_min.x += selAreaWidth;
-
-                    // calculate length of this section
-                    sectLen = currLine.d_length - sectIdx;
-
-                    // get the text for this section
-                    sect = lineText.substr(sectIdx, sectLen);
-
-                    // render the text for this section.
-                    colours = normalTextCol;
-                    fnt->drawText(w->getGeometryBuffers(), sect,
-                                    lineRect.getPosition(), &dest_area, true, colours);
+                    selStartOffset = fnt->getTextAdvance(sect);
                 }
+                else
+                {
+                    // The section string is invalid, use the entire line instead
+                    sect = lineText;
+                    sectIdx = lineText.size();
+                    selStartOffset = fnt->getTextAdvance(sect);
+                    w->setCaretIndex(0);
+                    w->setSelectionLength(0);
+                }
+#endif          
+                // draw this portion of the text
+                colours = normalTextCol;
+                fnt->drawText(w->getGeometryBuffers(), sect,
+                              lineRect.getPosition(), &dest_area, true, colours);
+
+                // set position ready for next portion of text
+                lineRect.d_min.x += selStartOffset;
             }
 
-            // update master position for next line in paragraph.
-            drawArea.d_min.y += fnt->getLineSpacing();
+            // calculate the length of the selected section
+            sectLen = std::min(w->getSelectionEnd() - currLine.d_startIdx, currLine.d_length) - sectIdx;
+
+            // get the text for this section
+            sect = lineText.substr(sectIdx, sectLen);
+            sectIdx += sectLen;
+
+            // get the extent to use as the width of the selection area highlight
+            selAreaWidth = fnt->getTextAdvance(sect);
+
+            const float text_top = lineRect.top();
+            lineRect.top(old_top);
+
+            // calculate area for the selection brush on this line
+            lineRect.left(drawArea.left() + selStartOffset);
+            lineRect.right(lineRect.left() + selAreaWidth);
+            lineRect.bottom(lineRect.top() + fnt->getLineSpacing());
+
+            // render the selection area brush for this line
+            colours = selectBrushCol;
+            w->getSelectionBrushImage()->render(w->getGeometryBuffers(), lineRect, &dest_area, true, colours);
+
+            // draw the text for this section
+            colours = selectTextCol;
+            fnt->drawText(w->getGeometryBuffers(), sect,
+                          lineRect.getPosition(), &dest_area, true, colours);
+
+            lineRect.top(text_top);
+
+            // render any text beyond selected region of line
+            if (sectIdx < currLine.d_length)
+            {
+                // update render position to the end of the selected area.
+                lineRect.d_min.x += selAreaWidth;
+
+                // calculate length of this section
+                sectLen = currLine.d_length - sectIdx;
+
+                // get the text for this section
+                sect = lineText.substr(sectIdx, sectLen);
+
+                // render the text for this section.
+                colours = normalTextCol;
+                fnt->drawText(w->getGeometryBuffers(), sect,
+                              lineRect.getPosition(), &dest_area, true, colours);
+            }
         }
+
+        // update master position for next line in paragraph.
+        drawArea.d_min.y += fnt->getLineSpacing();
     }
 }
 

@@ -100,10 +100,10 @@ void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buf
          // Transcode UTF-16 to native format and copy to local buffer
          String str = System::getSingleton().getStringTranscoder().stringFromUTF16(clipboard);
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
          // We need the actual byte count which can be different from str.size() when using UTF-8!
          const char* utf8Characters = str.c_str();
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
          // We need the actual byte count which can be different from str.size() when using UTF-8!
          const char* utf8Characters = str.toUtf8String().c_str();
 #endif

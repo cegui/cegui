@@ -808,10 +808,10 @@ PropertyHelper<glm::quat>::fromString(const String& str)
 
     if (str.empty())
         return val;
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     else if (str.find("w", 0) != std::string::npos || 
              str.find("W", 0) != std::string::npos)
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     else if (str.toUtf8String().find("w", 0) != std::string::npos || 
              str.toUtf8String().find("W", 0) != std::string::npos)
 #endif

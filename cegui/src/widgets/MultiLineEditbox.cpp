@@ -157,7 +157,22 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
 		size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
 
 		float ypos = caretLine * fnt->getLineSpacing();
-        float xpos = fnt->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
+
+
+        float xpos = 0;
+        String caretLineSubstr = getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx);
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
+        xpos = fnt->getTextAdvance(caretLineSubstr);
+#else
+        if(caretLineSubstr.isUtf8StringValid())
+        {
+            xpos = fnt->getTextAdvance(caretLineSubstr);
+        }
+        else
+        {
+            xpos = 0;
+        }
+#endif
 
 		// adjust position for scroll bars
 		xpos -= horzScrollbar->getScrollPosition();
@@ -271,26 +286,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
         String::size_type   paraLen;
         LineInfo    line;
 
-        // now we will check if our width changed, if not we'll just update text from last cursor
-        if (areaWidth != d_lastRenderWidth || !d_undoHandler->canUndo())
-        {
-            d_lines.clear();
-        }
-        else
-        {
-            // ok there's no need to update whole text
-            size_t lastuUndoPos = d_undoHandler->getLastAction().d_startIdx;
-            // ok now delete all formatting data before lastuUndoPos
-            int countToRemove = getLineNumberFromIndex(lastuUndoPos) - 1;
-            if (countToRemove >= 0)
-            {
-                d_lines.erase(d_lines.begin() + countToRemove, d_lines.end());
-                if (d_lines.size() > 0)
-                    currPos = d_lines.back().d_startIdx + d_lines.back().d_length;
-            }
-            else
-                d_lines.clear();
-        }
+        d_lines.clear();
 
         while (currPos < getText().length())
 		{
@@ -574,11 +570,24 @@ void MultiLineEditbox::handleBackspace(void)
             String newText = getText();
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_DELETE;
-            undo.d_startIdx = d_caretPos - 1;
-            undo.d_text = newText.substr(d_caretPos - 1, 1);
+
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+            size_t deleteStartPos = d_caretPos - 1;
+            size_t deleteLength = 1;
+#else
+            String::codepoint_iterator caretIter(newText.begin() + d_caretPos,
+                                                 newText.begin(), newText.end());
+            --caretIter;
+            
+            size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
+            size_t deleteLength = d_caretPos - deleteStartPos;
+#endif
+
+            undo.d_startIdx = deleteStartPos;
+            undo.d_text = newText.substr(deleteStartPos, deleteLength);
             d_undoHandler->addUndoHistory(undo);
-            newText.erase(d_caretPos - 1, 1);
-            setCaretIndex(d_caretPos - 1);
+            newText.erase(deleteStartPos, deleteLength);
+            setCaretIndex(deleteStartPos);
             setText(newText);
 
 			WindowEventArgs args(this);
@@ -603,9 +612,16 @@ void MultiLineEditbox::handleDelete(void)
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_DELETE;
             undo.d_startIdx = d_caretPos;
-            undo.d_text = newText.substr(d_caretPos, 1);
+
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+            size_t eraseLength = 1;
+#else
+            size_t eraseLength = String::getCodePointSize(newText[d_caretPos]);
+#endif
+
+            undo.d_text = newText.substr(d_caretPos, eraseLength);
             d_undoHandler->addUndoHistory(undo);
-            newText.erase(d_caretPos, 1);
+            newText.erase(d_caretPos, eraseLength);
             setText(newText);
 
 			ensureCaretIsVisible();
@@ -737,7 +753,7 @@ void MultiLineEditbox::handleNewLine()
             undo.d_startIdx = getCaretIndex();
             undo.d_text = "\x0a";
             d_undoHandler->addUndoHistory(undo);
-            newText.insert(getCaretIndex(), 1, 0x0a);
+            newText.insert(getCaretIndex(), 1, static_cast<String::value_type>(0x0a));
             setText(newText);
 
 			d_caretPos++;

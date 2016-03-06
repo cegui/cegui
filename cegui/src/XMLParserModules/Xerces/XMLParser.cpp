@@ -245,9 +245,9 @@ namespace CEGUI
             MemBufInputSource schemaData(
                 rawSchemaData.getDataPtr(),
                 static_cast<const unsigned int>(rawSchemaData.getSize()),
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
                 schemaName.c_str(),
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
                 schemaName.toUtf8String().c_str(),
 #endif
                 false);
@@ -256,9 +256,9 @@ namespace CEGUI
             reader->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
             // set schema for usage     
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
             XMLCh* pval = XMLString::transcode(schemaName.c_str());
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
             XMLCh* pval = XMLString::transcode(schemaName.toUtf8String().c_str());
 #endif
             reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);

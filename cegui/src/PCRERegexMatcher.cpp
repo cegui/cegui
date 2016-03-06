@@ -54,18 +54,18 @@ void PCRERegexMatcher::setRegexString(const String& regex)
     // try to compile this new regex string
     const char* prce_error;
     int pcre_erroff;
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     d_regex = pcre_compile(regex.c_str(), PCRE_UTF8,
                            &prce_error, &pcre_erroff, 0);
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
         &prce_error, &pcre_erroff, 0);
 #endif
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     d_regex = pcre_compile(regex.c_str(), PCRE_UTF8,
         &prce_error, &pcre_erroff, 0);
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
         &prce_error, &pcre_erroff, 0);
 #endif
@@ -96,9 +96,9 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
             "Attempt to use invalid RegEx '" + d_string + "'.");
 
     int match[3];
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     const char* utf8_str = str.c_str();
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     const char* utf8_str = str.toUtf8String().c_str();
 #endif
     const int len = static_cast<int>(std::strlen(utf8_str));
