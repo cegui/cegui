@@ -186,9 +186,10 @@ if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
     message(SEND_ERROR "You may not disable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
 endif()
 
-set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
-1 - UTF-8 (char) and UTF-32 (char32_t) aware inbuilt string,
-2 - regular std::string"
+set( CEGUI_STRING_CLASS 2 CACHE INT "CEGUI offers three CEGUI::String class configurations
+1 - UTF-8 : ASCII, UTF-8 and UTF-32 aware, minimal storage, slightly less efficient, stores code units as char (std::string) internally - mind this fact when manipulating the String
+2 - UTF-32 : ASCII, UTF-8 and UTF-32 aware, stores 32 bit per character, stores code points as char32_t (std::u32string) internally
+3 - std::string : regular std::string used as CEGUI::String, not Unicode aware"
 )
 
 
