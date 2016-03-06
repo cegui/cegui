@@ -784,7 +784,7 @@ public:
     */ 
     String& operator=(char ch)
     {
-        assign(ch);
+        assign(1, ch);
         return *this;
     }
 #endif
@@ -2244,7 +2244,7 @@ public:
     */
     String& append(const std::string& str, size_type pos, size_type count = npos)
     {
-        std::u32string convertedString = convertUtf8ToUtf32(str, pos, count);
+        std::u32string convertedString = convertUtf8ToUtf32(str.substr(pos, count));
         d_string.append(convertedString);
         return *this;
     }

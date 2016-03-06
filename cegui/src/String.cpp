@@ -368,7 +368,6 @@ bool String::isUtf8StringValid() const
 
     return true;
 }
-#endif
 
 bool String::codepoint_iterator::operator==(const codepoint_iterator& rhs) const
 {
@@ -380,6 +379,7 @@ bool String::codepoint_iterator::operator==(const codepoint_iterator& rhs) const
     }
     return (m_iter == rhs.m_iter);
 }
+#endif
 
 bool operator==(const String& str1, const String& str2)
 {
@@ -818,6 +818,7 @@ std::basic_istream<char>& operator>>(std::basic_istream<char>& inputStream, Stri
     return inputStream;
 }
 
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
 void String::codepoint_iterator::decrementByOneCodePoint()
 {
     if (m_iter == m_rangeStart)
@@ -874,6 +875,7 @@ void String::codepoint_iterator::incrementByOneCodePoint()
         }
     }
 }
+#endif
 
 }
 
