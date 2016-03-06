@@ -53,8 +53,10 @@ void SharedStringstream::setPrecision(int precision)
 std::stringstream& SharedStringstream::GetPreparedStream(const String& initialValue)
 {
     std::stringstream& sstream = s_sharedStreamInstance.d_sharedStream;
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     sstream.str(initialValue.toUtf8String().c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
+    sstream.str(initialValue.getString());
 #endif
     sstream.clear();
 

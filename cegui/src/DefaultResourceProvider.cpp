@@ -81,7 +81,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #   if defined(__WIN32__) || defined(_WIN32)
     FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
 #   else
-#       if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#       if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         FILE* file = fopen(final_filename.toUtf8String().c_str(), "rb");
 #       else
         FILE* file = fopen(final_filename.c_str(), "rb");
@@ -238,7 +238,7 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
 #else
     DIR* dirp;
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     dirp = opendir(dir_name.toUtf8String().c_str());
 #else
     dirp = opendir(dir_name.c_str());
@@ -253,7 +253,7 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
             const String filename(dir_name + dp->d_name);
             struct stat s;
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
             if ((stat(filename.toUtf8String().c_str(), &s) == 0) &&
                     S_ISREG(s.st_mode) &&
                     (fnmatch(file_pattern.toUtf8String().c_str(), dp->d_name, 0) == 0))

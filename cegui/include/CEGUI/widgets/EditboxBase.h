@@ -564,7 +564,9 @@ protected:
     std::uint32_t d_textMaskingCodepoint;
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
-    //! Position of the caret / insert-point.
+    /*! Position of the caret / insert-point, relative to the beginning
+        of the string and measured in Unicode code units (or ASCII characters).
+    */
     size_t d_caretPos;
     //! Start of selection area.
     size_t d_selectionStart;

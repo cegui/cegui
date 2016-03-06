@@ -143,9 +143,9 @@ namespace CEGUI
         }
 
         int val;
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         std::istringstream strm(getValue(attrName).c_str());
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         std::istringstream strm(getValue(attrName).toUtf8String().c_str());
 #endif
         strm >> val;

@@ -268,6 +268,9 @@ public:
     */
     float getTextExtent(const String& text, float x_scale = 1.0f) const;
 
+    void getGlyphExtents(char32_t currentCodePoint, float& cur_extent,
+                         float& adv_extent, float x_scale) const;
+
     /*!
     \brief
         Return pixel advance of the specified text when rendered with this Font.

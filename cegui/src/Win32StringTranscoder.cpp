@@ -40,10 +40,10 @@ Win32StringTranscoder::Win32StringTranscoder()
 //----------------------------------------------------------------------------//
 char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
 {
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), 
                                         -1, 0, 0);
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.toUtf8String().c_str(),
                                         -1, 0, 0);
 #endif
@@ -53,10 +53,10 @@ char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
             "MultiByteToWideChar failed");
 
     wchar_t* buff = new wchar_t[len];
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
                         reinterpret_cast<LPWSTR>(buff), len);
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     MultiByteToWideChar(CP_UTF8, 0, input.toUtf8String().c_str(), -1,
                         buff, len);
 #endif
@@ -98,11 +98,7 @@ static CEGUI::String stringFromUTF16(UINT codepage, const char16_t* input)
 //----------------------------------------------------------------------------//
 String Win32StringTranscoder::stringFromUTF16(const char16_t* input) const
 {
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     return CEGUI::stringFromUTF16(CP_UTF8, input);
-#else
-    return CEGUI::stringFromUTF16(CP_ACP, input);
-#endif
 }
 
 //----------------------------------------------------------------------------//
