@@ -369,7 +369,17 @@ void EditboxBase::handleCharLeft(bool select)
 {
     if (d_caretPos > 0)
     {
-        setCaretIndex(d_caretPos - 1);
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+        size_t previousCodePointPos = d_caretPos - 1;
+#else
+        const String& currentText = getText();
+        String::codepoint_iterator caretIter(currentText.begin() + d_caretPos,
+                                             currentText.begin(), currentText.end());
+        --caretIter;
+
+        size_t previousCodePointPos = caretIter.getCodeUnitIndexFromStart();
+#endif
+        setCaretIndex(previousCodePointPos);
     }
 
     if (select)
@@ -405,7 +415,14 @@ void EditboxBase::handleCharRight(bool select)
 {
     if (d_caretPos < getText().length())
     {
-        setCaretIndex(d_caretPos + 1);
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+        size_t codePointSize = 1;
+#else
+        const CEGUI::String& currentText = getText();
+        size_t codePointSize = String::getCodePointSize(currentText[d_caretPos]);
+#endif
+
+        setCaretIndex(d_caretPos + codePointSize);
     }
 
     if (select)

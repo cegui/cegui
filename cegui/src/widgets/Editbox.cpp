@@ -381,14 +381,27 @@ void Editbox::handleBackspace(void)
         {
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_DELETE;
-            undo.d_startIdx = d_caretPos - 1;
-            undo.d_text = tmp.substr(d_caretPos - 1, 1);
 
-            tmp.erase(d_caretPos - 1, 1);
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+            size_t deleteStartPos = d_caretPos - 1;
+            size_t deleteLength = 1;
+#else
+            String::codepoint_iterator caretIter(tmp.begin() + d_caretPos,
+                                                 tmp.begin(), tmp.end());
+            --caretIter;
+
+            size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
+            size_t deleteLength = d_caretPos - deleteStartPos;
+#endif
+
+            undo.d_startIdx = deleteStartPos;
+            undo.d_text = tmp.substr(deleteStartPos, deleteLength);
+
+            tmp.erase(deleteStartPos, deleteLength);
 
             if (handleValidityChangeForString(tmp))
             {
-                setCaretIndex(d_caretPos - 1);
+                setCaretIndex(deleteStartPos);
 
                 // set text to the newly modified string
                 setText(tmp);
@@ -432,9 +445,16 @@ void Editbox::handleDelete(void)
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_DELETE;
             undo.d_startIdx = d_caretPos;
-            undo.d_text = tmp.substr(d_caretPos, 1);
 
-            tmp.erase(d_caretPos, 1);
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+            size_t eraseLength = 1;
+#else
+            size_t eraseLength = String::getCodePointSize(tmp[d_caretPos]);
+#endif
+
+            undo.d_text = tmp.substr(d_caretPos, eraseLength);
+
+            tmp.erase(d_caretPos, eraseLength);
 
             if (handleValidityChangeForString(tmp))
             {
