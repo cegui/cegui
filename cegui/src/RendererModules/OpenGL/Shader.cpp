@@ -226,7 +226,7 @@ void OpenGL3Shader::outputProgramLog(GLuint program)
         sstream << "OpenGL3Shader linking has failed.\n" << logBuffer;
         CEGUI_THROW(RendererException(sstream.str().c_str()));
     }
-};
+}
 
 //----------------------------------------------------------------------------//
 void OpenGL3Shader::outputShaderLog(GLuint shader)
@@ -243,7 +243,7 @@ void OpenGL3Shader::outputShaderLog(GLuint shader)
         ss << "OpenGL3Shader compilation has failed.\n" << logBuffer;
           CEGUI_THROW(RendererException(ss.str().c_str()));
     }
-};
+}
 
 //----------------------------------------------------------------------------//
 void getGLErrors(const char *location)

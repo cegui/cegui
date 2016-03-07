@@ -145,7 +145,7 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 String EventAction::makeConnectionKeyName(const Window& widget) const
 {
     char addr[32];
-    std::sprintf(addr, "%p", &widget);
+    std::sprintf(addr, "%p", static_cast<const void *>(&widget));
 
     return String(addr) +
            d_eventName +
