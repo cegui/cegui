@@ -2975,7 +2975,7 @@ public:
     {
         std::string convertedString = convertUtf32ToUtf8(charArray, count2);
         return d_string.compare(pos1, count1,
-                                convertedString, convertedString.length());
+                                convertedString.c_str(), convertedString.length());
     }
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
     /*!
@@ -3001,7 +3001,7 @@ public:
     {
         std::u32string convertedString = convertUtf8ToUtf32(charArray, count2);
         return d_string.compare(pos1, count1,
-                                convertedString, convertedString.length());
+                                convertedString.c_str(), convertedString.length());
     }
 #endif
 
