@@ -214,9 +214,6 @@ public:
     // Implementation of InputEventReceiver interface
     bool injectInputEvent(const InputEvent& event);
 
-    bool injectUndoRequest();
-    bool injectRedoRequest();
-
     // public overrides
     void draw();
 
@@ -276,6 +273,8 @@ protected:
     bool handleCursorLeave(const SemanticInputEvent& event);
     bool handleCursorActivateEvent(const SemanticInputEvent& event);
     bool handleCursorPressHoldEvent(const SemanticInputEvent& event);
+    bool handleUndoRequest(const SemanticInputEvent& event);
+    bool handleRedoRequest(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;
