@@ -260,8 +260,8 @@ char32_t String::getCodePointFromCodeUnits(const char* firstCodeUnit,
     }
 }
 
-char32_t String::getCodePointFromCodeUnits(String::const_iterator currentCodeUnit,
-                                           String::const_iterator codeUnitRangeEnd)
+char32_t String::getCodePointFromCodeUnits(std::string::const_iterator currentCodeUnit,
+                                           std::string::const_iterator codeUnitRangeEnd)
 {
     size_t consumedCodeUnits;
     return getCodePointFromCodeUnits(currentCodeUnit,
@@ -269,8 +269,8 @@ char32_t String::getCodePointFromCodeUnits(String::const_iterator currentCodeUni
                                      consumedCodeUnits);
 }
 
-char32_t String::getCodePointFromCodeUnits(String::const_iterator currentCodeUnit,
-                                           String::const_iterator codeUnitRangeEnd,
+char32_t String::getCodePointFromCodeUnits(std::string::const_iterator currentCodeUnit,
+                                           std::string::const_iterator codeUnitRangeEnd,
                                            size_t& consumedCodeUnits)
 {
     /* Number of code units that the code point consists

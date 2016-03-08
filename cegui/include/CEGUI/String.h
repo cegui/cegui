@@ -313,12 +313,12 @@ public:
                                               const size_t remainingCodeUnits);
 
 
-    static char32_t getCodePointFromCodeUnits(String::const_iterator currentCodeUnit,
-                                              String::const_iterator codeUnitRangeEnd,
+    static char32_t getCodePointFromCodeUnits(std::string::const_iterator currentCodeUnit,
+                                              std::string::const_iterator codeUnitRangeEnd,
                                               size_t& consumedCodeUnits);
 
-    static char32_t getCodePointFromCodeUnits(String::const_iterator currentCodeUnit,
-                                              String::const_iterator codeUnitRangeEnd);
+    static char32_t getCodePointFromCodeUnits(std::string::const_iterator currentCodeUnit,
+                                              std::string::const_iterator codeUnitRangeEnd);
 
     static void checkUtf8CodePointSizeForValidity(
         const size_t codeUnitsInCodePoint,
