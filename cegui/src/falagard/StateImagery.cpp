@@ -99,7 +99,7 @@ void StateImagery::writeXMLToStream(XMLSerializer& xml_stream) const
         .attribute(Falagard_xmlHandler::NameAttribute, d_stateName);
 
     if (d_clipToDisplay)
-        xml_stream.attribute(Falagard_xmlHandler::ClippedAttribute, PropertyHelper<bool>::False);
+        xml_stream.attribute(Falagard_xmlHandler::ClippedAttribute, PropertyHelper<bool>::ValueFalse);
 
     // output all layers defined for this state
     for(LayerSpecificationList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
