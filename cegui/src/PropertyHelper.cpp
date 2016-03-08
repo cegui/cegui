@@ -41,8 +41,8 @@ namespace CEGUI
 {
 
 //! Definitions of static constants
-const CEGUI::String PropertyHelper<bool>::True("true");
-const CEGUI::String PropertyHelper<bool>::False("false");
+const CEGUI::String PropertyHelper<bool>::ValueTrue("true");
+const CEGUI::String PropertyHelper<bool>::ValueFalse("false");
 
 const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
 const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");
@@ -63,12 +63,12 @@ const String& PropertyHelper<bool>::getDataTypeName()
 
 PropertyHelper<bool>::return_type PropertyHelper<bool>::fromString(const String& str)
 {
-    return (str == True || str == "True");
+    return (str == ValueTrue || str == "True");
 }
 
 PropertyHelper<bool>::string_return_type PropertyHelper<bool>::toString(pass_type val)
 {
-    return val ? True : False;
+    return val ? ValueTrue : ValueFalse;
 }
 
 const String& PropertyHelper<AspectMode>::getDataTypeName()

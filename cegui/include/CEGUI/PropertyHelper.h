@@ -268,9 +268,12 @@ public:
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
 
-    //! Definitions of the possible values represented as Strings
-    static const CEGUI::String True;
-    static const CEGUI::String False;
+    /*! Definitions of the possible values represented as Strings
+        We must not use "True" and "False" here due to conflicts
+        with definitions in other libraries using these identifiers.
+    */
+    static const CEGUI::String ValueTrue;
+    static const CEGUI::String ValueFalse;
 };
 
 
