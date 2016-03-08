@@ -67,7 +67,7 @@ void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buff
       if(OpenClipboard(0))
       {
          // Transcode buffer to UTF-16
-         String str(static_cast<String::value_type*>(buffer), size);
+         String str(static_cast<char*>(buffer), size);
 
          char16_t* utf16str = System::getSingleton().getStringTranscoder().stringToUTF16(str);
          size_t size_in_bytes = (str.size() + 1) * sizeof(char16_t);
@@ -105,9 +105,11 @@ void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buf
          const char* utf8Characters = str.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
          // We need the actual byte count which can be different from str.size() when using UTF-8!
-         const char* utf8Characters = str.toUtf8String().c_str();
+         std::string utf8String = str.toUtf8String();
+         const char* utf8Characters = utf8String.c_str();
 #endif
-         allocateBuffer(strlen(utf8Characters)); // We need the actual byte count which can be different from str.size() when using UTF-8!
+         const size_t characterCount = std::char_traits<char>::length(utf8Characters);
+         allocateBuffer(characterCount); 
          memcpy(d_buffer, utf8Characters, d_bufferSize);
 
          mime_type = "text/plain";

@@ -140,7 +140,7 @@ private:
     /// mime type of the current content
     String d_mimeType;
     /// raw data buffer containing current clipboard contents
-    String::value_type* d_buffer;
+    char* d_buffer;
     /// size (in bytes) of the raw buffer
     size_t d_bufferSize;
 

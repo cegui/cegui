@@ -80,7 +80,7 @@ void Clipboard::setData(const String& mimeType, const void* buffer, size_t size)
         }
         
         d_bufferSize = size;
-        d_buffer = new String::value_type[d_bufferSize];
+        d_buffer = new char[d_bufferSize];
     }
     
     std::memcpy(d_buffer, buffer, d_bufferSize);
@@ -107,14 +107,14 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
         
         if (retrievedSize != d_bufferSize)
         {
-            if (d_buffer != 0)
+            if (d_buffer != nullptr)
             {
                 delete[] d_buffer;
                 d_buffer = 0;
             }
             
             d_bufferSize = retrievedSize;
-            d_buffer = new String::value_type[d_bufferSize];
+            d_buffer = new char[d_bufferSize];
         }
         
         std::memcpy(d_buffer, retrievedBuffer, retrievedSize);
@@ -128,13 +128,19 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
 //----------------------------------------------------------------------------//
 void Clipboard::setText(const String& text)
 {
-    // Get the character (char or char32_t) pointing to the characters of the string
-    const String::value_type* characterArray = text.c_str();
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    const std::string utf8String = String::convertUtf32ToUtf8(text.getString());
+    // Get the pointer for the String content
+    const char* characterArray = utf8String.c_str();
+#else
+    // Get the pointer for the String content
+    const char* characterArray = text.c_str();
+#endif
     
     // Get the number of characters until the null-character \0 is encountered
-    const size_t size = std::char_traits<String::value_type>::length(characterArray);
+    const size_t characterCount = std::char_traits<char>::length(characterArray);
     
-    setData("text/plain", static_cast<const void*>(characterArray), size);
+    setData("text/plain", static_cast<const void*>(characterArray), characterCount);
 }
 
 //----------------------------------------------------------------------------//
@@ -150,10 +156,7 @@ String Clipboard::getText()
 
     if (mimeType == "text/plain" && size != 0)
     {
-        // d_buffer is an UTF-8 encoded, UTF-32 encoded or ASCII string
-        // !However it is not null terminated ! So we have to tell String
-        // how many code units (not code points!) there are.
-        return String(static_cast<const String::value_type*>(d_buffer), d_bufferSize);
+        return String(static_cast<const char*>(d_buffer), d_bufferSize);
     }
     else
     {
