@@ -25,6 +25,7 @@ Renderer class for your chosen API or engine.  Unless you're doing something adv
 otherwise unusual, these are the fuctions you'll want to use, since they enable the
 creation of all the initial CEGUI objects in a single call.
 
+
 Note that the Renderers also have destroySystem functions for cleaning up afterwards.
 
 The Ogre3D and Irrlicht engines each have their own intergrated file loading and
@@ -186,6 +187,20 @@ core CEGUI system to initialise itself.
 @code
 CEGUI::System::create( myRenderer );
 @endcode
+
+
+<br>
+@section Deinitialisation
+Don't forget to deinitialise your CEGUI System and your CEGUI Renderer. This must be done in the following order:
+1. Call @code CEGUI::System::destroy(); @endcode to destroy the CEGUI System.
+2. Then destroy your CEGUI renderer (which you should store in a pointer, such as d_renderer) , e.g.:
+ @code CEGUI::OpenGL3Renderer::destroy(static_cast<CEGUI::OpenGL3Renderer&>(*d_renderer)); @endcode
+
+The above expression inside the call casts the pointer, which is of type Renderer*, to the specific subtype Renderer class - in this case OpenGL3Renderer. You can of course store the reference to the Renderer using the correct subtype (here: OpenGL3Renderer) from the beginning.
+
+In order to prevent leaks you will also need to destroy any GUIContexts, Textures and GeometryBuffers that you <b>manually</b> created. Windows, Images and other regularly created parts of CEGUI will be destroyed following the above two destruction calls automatically. In case you dynamically create a large amount of CEGUI windows or other objects in your application during run-time, you are advised to destroy them to reduce memory usage.
+
+
 
 <br>
 @section rendering_tutorial_draw Call the function to render the GUI
