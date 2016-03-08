@@ -548,14 +548,14 @@ bool GUIContext::handlePasteRequest(const SemanticInputEvent&)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectUndoRequest()
+bool GUIContext::handleUndoRequest(const SemanticInputEvent&)
 {
     Window* target = getInputTargetWindow();
     return target ? target->performUndo() : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectRedoRequest()
+bool GUIContext::handleRedoRequest(const SemanticInputEvent&)
 {
     Window* target = getInputTargetWindow();
     return target ? target->performRedo() : false;
@@ -694,6 +694,15 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 void GUIContext::initializeSemanticEventHandlers()
 {
+    d_semanticEventHandlers.insert(
+        std::make_pair(SV_Undo,
+                       new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+                           &GUIContext::handleUndoRequest, this)));
+    d_semanticEventHandlers.insert(
+        std::make_pair(SV_Redo,
+                       new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+                           &GUIContext::handleRedoRequest, this)));
+
     d_semanticEventHandlers.insert(std::make_pair(SV_Cut,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCutRequest, this)));

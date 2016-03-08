@@ -28,6 +28,8 @@ author:     Yaron Cohen-Tal
 #include "SampleBrowserBase.h"
 #include "CEGUI/CEGUI.h"
 
+#include <gl/glfw.h>
+
 #include <stdexcept>
 #include <sstream>
 
@@ -195,9 +197,13 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
     CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
 
     if(action == GLFW_PRESS)
+    {
         d_sampleApp->injectKeyDown(ceguiKey);
+    }
     else if (action == GLFW_RELEASE)
+    {
         d_sampleApp->injectKeyUp(ceguiKey);
+    }
 }
 
 //----------------------------------------------------------------------------//

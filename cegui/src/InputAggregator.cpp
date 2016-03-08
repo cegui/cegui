@@ -210,7 +210,7 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 
 //----------------------------------------------------------------------------//
 int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
-    bool /*alt_down*/, bool ctrl_down) const
+    bool alt_down, bool ctrl_down) const
 {
     int value = d_keyValuesMappings[scan_code];
 
@@ -225,6 +225,8 @@ int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
             value = SV_SelectToEndOfDocument;
         else if (scan_code == Key::Home)
             value = SV_SelectToStartOfDocument;
+        else if (scan_code == Key::Z)
+            value = SV_Redo;
     }
     else if (ctrl_down)
     {
@@ -246,6 +248,10 @@ int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
             value = SV_Cut;
         else if (scan_code == Key::Tab)
             value = SV_NavigateToPrevious;
+        else if (scan_code == Key::Z)
+            value = SV_Undo;
+        else if (scan_code == Key::Y)
+            value = SV_Redo;
     }
     else if (shift_down)
     {
@@ -265,6 +271,11 @@ int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
             value = SV_SelectPreviousPage;
         else if (scan_code == Key::PageDown)
             value = SV_SelectNextPage;
+    }
+    if (alt_down)
+    {
+        if(scan_code == Key::Backspace)
+            value = SV_Undo;
     }
 
     return value;
