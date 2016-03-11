@@ -437,7 +437,8 @@ size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     // Return the proper index
     if (w->isTextMaskingEnabled())
         return w->getFont()->getCharAtPixel(
-                String(w->getTextVisual().length(), w->getTextMaskingCodepoint()),
+                String(w->getTextVisual().length(),
+                static_cast<String::value_type>(w->getTextMaskingCodepoint())),
                 wndx);
     else
         return w->getFont()->getCharAtPixel(w->getTextVisual(), wndx);
