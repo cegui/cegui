@@ -181,7 +181,7 @@ public:
 
     inline UDim operator/(float divisor) const
     {
-        return UDim(d_scale /divisor, d_offset /divisor);
+        return UDim(d_scale / divisor, d_offset / divisor);
     }
     
     /*!

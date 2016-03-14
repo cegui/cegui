@@ -201,7 +201,7 @@ bool RenderedString::split(const Window* ref_wnd, const size_t line,
                     c->split(ref_wnd,
                              split_point - (partial_extent - c->getPixelSize(ref_wnd).d_width),
                              idx == 0,
-                             &was_word_split);
+                             was_word_split);
 
                 if (lc)
                 {

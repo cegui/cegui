@@ -150,8 +150,8 @@ public:
         Any existing content in the RenderedString is replaced.
 
     \return
-        Was any word split into 2 or more lines, because it couldn't fit in a
-        single line?
+        True if any word was split into 2 or more lines, because it couldn't fit
+        in a single line?
 
     \exception InvalidRequestException
         thrown if \a line is out of range.

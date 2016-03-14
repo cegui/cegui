@@ -1022,7 +1022,7 @@ public:
     \see isWidthAdjustedToContent
     \see setAdjustHeightToContent
     */
-    void setAdjustWidthToContent(bool to);
+    void setAdjustWidthToContent(bool value);
 
     /*!
     \brief
@@ -1036,7 +1036,7 @@ public:
     \see isHeightAdjustedToContent
     \see setAdjustWidthToContent
     */
-    void setAdjustHeightToContent(bool to);
+    void setAdjustHeightToContent(bool value);
 
     /*!
     \brief
