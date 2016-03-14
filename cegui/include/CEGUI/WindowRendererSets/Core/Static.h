@@ -102,6 +102,15 @@ namespace CEGUI
 
         virtual void render();
 
+        /*!
+        \brief
+            Called when the frame is enabled/disabled.
+
+        \see isFrameEnabled
+        \see setFrameEnabled
+        */
+        virtual void onIsFrameEnabledChanged();
+
     protected:
         // implementation data
         bool d_frameEnabled;        //!< True when the frame is enabled.
