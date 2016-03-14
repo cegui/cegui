@@ -60,9 +60,9 @@ bool FormattedRenderedString::wasWordSplit() const
 }
 
 //----------------------------------------------------------------------------//
-void FormattedRenderedString::setWasWordSplit(bool to)
+void FormattedRenderedString::setWasWordSplit(bool value)
 {
-    d_wasWordSplit = to;
+    d_wasWordSplit = value;
 }
 
 //----------------------------------------------------------------------------//

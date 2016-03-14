@@ -78,7 +78,7 @@ public:
 
     \see wasWordSplit
     */
-    void setWasWordSplit(bool to);
+    void setWasWordSplit(bool value);
 
     /*
     \brief

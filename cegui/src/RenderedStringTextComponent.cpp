@@ -255,7 +255,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
                                                         const Window* ref_wnd,
                                                         float split_point,
                                                         bool first_component,
-                                                        bool* was_word_split)
+                                                        bool& was_word_split)
 {
     const Font* fnt = getEffectiveFont(ref_wnd);
 
@@ -265,7 +265,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
         CEGUI_THROW(InvalidRequestException(
             "unable to split with no font set."));
 
-    bool was_word_split_ret = false;
+    was_word_split = false;
 
     // create 'left' side of split and clone our basic configuration
     RenderedStringTextComponent* lhs = CEGUI_NEW_AO RenderedStringTextComponent();
@@ -294,7 +294,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             // if it was the first token, split the token itself
             if (first_component && left_len == 0)
             {
-                was_word_split_ret = true;
+                was_word_split = true;
                 left_len =
                     ceguimax(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
@@ -337,8 +337,6 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
 
     d_text = d_text.substr(rhs_start);
 
-    if (was_word_split)
-        *was_word_split = was_word_split_ret;
     return lhs;
 }
 

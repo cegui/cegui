@@ -75,7 +75,7 @@ public:
     RenderedStringImageComponent* split(const Window* ref_wnd,
                                         float split_point,
                                         bool first_component,
-                                        bool* was_word_split=0);
+                                        bool& was_word_split);
     RenderedStringImageComponent* clone() const;
     size_t getSpaceCount() const;
     void setSelection(const Window* ref_wnd,

@@ -619,21 +619,21 @@ void Element::setNonClient(const bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Element::setAdjustWidthToContent(bool to)
+void Element::setAdjustWidthToContent(bool value)
 {
-    if (d_isWidthAdjustedToContent == to)
+    if (d_isWidthAdjustedToContent == value)
         return;
-    d_isWidthAdjustedToContent = to;
+    d_isWidthAdjustedToContent = value;
     ElementEventArgs args(this);
     onIsSizeAdjustedToContentChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void Element::setAdjustHeightToContent(bool to)
+void Element::setAdjustHeightToContent(bool value)
 {
-    if (d_isHeightAdjustedToContent == to)
+    if (d_isHeightAdjustedToContent == value)
         return;
-    d_isHeightAdjustedToContent = to;
+    d_isHeightAdjustedToContent = value;
     ElementEventArgs args(this);
     onIsSizeAdjustedToContentChanged(args);
 }
