@@ -95,6 +95,14 @@ PropertyHelper<AspectMode>::string_return_type PropertyHelper<AspectMode>::toStr
     {
         return Expand;
     }
+    else if (val == AM_ADJUST_HEIGHT)
+    {
+        return AdjustHeight;
+    }
+    else if (val == AM_ADJUST_WIDTH)
+    {
+        return AdjustWidth;
+    }
     else
     {
         assert(false && "Invalid aspect mode");
@@ -111,6 +119,14 @@ PropertyHelper<AspectMode>::return_type PropertyHelper<AspectMode>::fromString(c
     else if (str == Expand)
     {
         return AM_EXPAND;
+    }
+    else if (str == AdjustHeight)
+    {
+        return AM_ADJUST_HEIGHT;
+    }
+    else if (str == AdjustWidth)
+    {
+        return AM_ADJUST_WIDTH;
     }
     else
     {

@@ -238,7 +238,7 @@ bool FalagardStaticText::isWordWrapOn() const
     case HTF_WORDWRAP_JUSTIFIED:
         return true;
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid horizontal formatting."));
+        throw InvalidRequestException("Invalid horizontal formatting.");
     }
 }
 
@@ -378,7 +378,7 @@ bool FalagardStaticText::contentFits() const
                 absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException("Invalid actual horizontal formatting."));
+                throw InvalidRequestException("Invalid actual horizontal formatting.");
             }
         }
 
@@ -959,7 +959,7 @@ const ComponentArea& FalagardStaticText::getTextComponentAreaWithoutUpdate() con
         area_name += "Scroll";
     }
 
-    if (wlf.isNamedAreaDefined(area_name))
+    if (wlf.isNamedAreaPresent(area_name))
     {
         return wlf.getNamedArea(area_name).getArea();
     }
@@ -1005,7 +1005,7 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(const L
                                  size_func.d_height.d_scale*getLineHeight() + size_func.d_height.d_offset);
     UDim height_sequence(size_func.d_height.d_scale*getVerticalAdvance() + size_func.d_height.d_offset,
                          size_func.d_height.d_scale*(getLineHeight()+epsilon) + size_func.d_height.d_offset);
-    float max_num_of_lines(ceguimax(
+    float max_num_of_lines(std::max(
       static_cast<float>(d_formattedRenderedString->getNumOfOriginalTextLines() -1),
       (window_max_width / getWindow()->getAspectRatio() - height_sequence_precise.d_offset)
         / height_sequence_precise.d_scale));

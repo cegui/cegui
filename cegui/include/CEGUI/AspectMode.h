@@ -51,7 +51,11 @@ enum AspectMode
     Satisfies the aspect ratio by expanding the widget as little
     as possible outside it
     */
-    AM_EXPAND
+    AM_EXPAND,
+    //! Satisfy the aspect ratio by adjusting the height according to the width.
+    AM_ADJUST_HEIGHT,
+    //! Satisfy the aspect ratio by adjusting the width according to the height.
+    AM_ADJUST_WIDTH
 };
 
 

@@ -336,25 +336,25 @@ void Element::adjustSizeToContent()
 //----------------------------------------------------------------------------//
 float Element::getContentWidth() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
 float Element::getContentHeight() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
 UDim Element::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
 UDim Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 /*----------------------------------------------------------------------------//
@@ -403,7 +403,7 @@ UDim Element::getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() c
 {
     UDim inverse(getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth());
     if (inverse.d_scale == 0.f)
-        CEGUI_THROW(InvalidRequestException("Content width doesn't depend on the element width."));
+        throw InvalidRequestException("Content width doesn't depend on the element width.");
     return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
 }
 
@@ -416,7 +416,7 @@ UDim Element::getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent()
 {
     UDim inverse(getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight());
     if (inverse.d_scale == 0.f)
-        CEGUI_THROW(InvalidRequestException("Content height doesn't depend on the element height."));
+        throw InvalidRequestException("Content height doesn't depend on the element height.");
     return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
 }
 
@@ -473,9 +473,9 @@ float Element::adjustSizeToContent_getEpsilon() const
     Return the lowest power of 2 (with non-negative integer exponent) which is
     greater than or equal to "of".
 ------------------------------------------------------------------------------*/
-static uint64 powOf2Supremum(uint64 of)
+static std::uint64_t powOf2Supremum(std::uint64_t of)
 {
-    uint64 num_of_digits(0);
+    std::uint64_t num_of_digits(0);
     if (of)
     {
         --of;
@@ -485,28 +485,28 @@ static uint64 powOf2Supremum(uint64 of)
             of >>= 1;
         }
     }
-    return static_cast<uint64>(1) << num_of_digits;
+    return static_cast<std::uint64_t>(1) << num_of_digits;
 }
 
 //----------------------------------------------------------------------------//
 Sizef Element::getSizeAdjustedToContent_bisection(const USize& size_func, float domain_min, float domain_max) const
 {
-    int64 domain_min_int(std::floor(domain_min));
-    int64 domain_max_int(std::ceil(domain_max));
+    std::int64_t domain_min_int(std::floor(domain_min));
+    std::int64_t domain_max_int(std::ceil(domain_max));
     if (domain_min_int >= domain_max_int)
-        CEGUI_THROW(InvalidRequestException("Length of domain is 0."));
+        throw InvalidRequestException("Length of domain is 0.");
 
     /* First, enlarge the domain so that it's a power of 2 (with non-negative
        integer exponent). This makes the bisection use only integer
        parameters. */
-    int64 domain_size(domain_max_int - domain_min_int);
-    int64 domain_size_pow_of_2(static_cast<int64>(powOf2Supremum(domain_size)));
+    std::int64_t domain_size(domain_max_int - domain_min_int);
+    std::int64_t domain_size_pow_of_2(static_cast<std::int64_t>(powOf2Supremum(domain_size)));
     domain_min_int -= domain_size_pow_of_2 - domain_size;
 
     Sizef element_size(0.f, 0.f);
     while (true)
     {
-        int64 param((domain_min_int+domain_max_int+1) / 2);
+        std::int64_t param((domain_min_int+domain_max_int+1) / 2);
         float param_float(static_cast<float>(param));
         element_size = Sizef(size_func.d_width.d_scale*param_float + size_func.d_width.d_offset,
                              size_func.d_height.d_scale*param_float + size_func.d_height.d_offset);
@@ -546,11 +546,11 @@ bool Element::contentFitsForSpecifiedElementSize_tryByResizing(const Sizef& elem
 //----------------------------------------------------------------------------//
 bool Element::contentFits() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
-void Element::setRotation(const Quaternion& rotation)
+void Element::setRotation(const glm::quat& rotation)
 {
     d_rotation = rotation;
 

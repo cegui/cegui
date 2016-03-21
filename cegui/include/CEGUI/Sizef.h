@@ -39,32 +39,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*
-
-/ *!
-\brief
-    How aspect ratio should be maintained
-* /
-enum AspectMode
-{
-    //! Ignores the target aspect (default)
-    AM_IGNORE,
-    / *!
-    Satisfies the aspect ratio by shrinking the size as little
-    as possible to fit inside it
-    * /
-    AM_SHRINK,
-    / *!
-    Satisfies the aspect ratio by expanding the widget as little
-    as possible outside it
-    * /
-    AM_EXPAND,
-    //! Satisfy the aspect ratio by adjusting the height according to the width.
-    AM_ADJUST_HEIGHT,
-    //! Satisfy the aspect ratio by adjusting the width according to the height.
-    AM_ADJUST_WIDTH
-};
-*/
 
 /*!
 \brief
@@ -184,7 +158,7 @@ public:
             keepHeight = false;
             break;
         default:
-            CEGUI_THROW(InvalidRequestException("Invalid aspect mode."));
+            throw(InvalidRequestException("Invalid aspect mode."));
         }
         if (keepHeight)
         {

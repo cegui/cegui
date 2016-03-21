@@ -284,24 +284,24 @@ UDim OperatorDim::getBoundAsUDim(const UDim& lval, const UDim& rval) const
             else if (lval.d_scale == 0.f)
                 return rval *lval.d_offset;
             else
-                CEGUI_THROW(InvalidRequestException("Multiplication gives a non-affine function"));
+                throw InvalidRequestException("Multiplication gives a non-affine function");
         case DOP_DIVIDE:
-            if      (rval.d_scale == 0.f)
+            if(rval.d_scale == 0.f)
             {
                 if (rval.d_offset == 0.f)
-                    CEGUI_THROW(InvalidRequestException("Division by 0."));
+                    throw InvalidRequestException("Division by 0.");
                 return lval /rval.d_offset;
             }
             else if (lval.d_scale == 0.f)
             {
                 if (lval.d_offset == 0.f)
-                    CEGUI_THROW(InvalidRequestException("Division by 0."));
+                    throw InvalidRequestException("Division by 0.");
                 return rval /lval.d_offset;
             }
             else
-                CEGUI_THROW(InvalidRequestException("Division gives a non-affine function"));
+                throw InvalidRequestException("Division gives a non-affine function");
         default:
-            CEGUI_THROW(InvalidRequestException("Unknown DimensionOperator value."));
+            throw InvalidRequestException("Unknown DimensionOperator value.");
         }
     }
 }
@@ -1119,7 +1119,7 @@ UDim UnifiedDim::getBoundAsUDim(const Window& wnd, DimensionType type, float rou
                    ?    UDim(d_value.d_scale, d_value.d_offset +round_err)
                    :    UDim(0.f, getValue(wnd));
         default:
-            CEGUI_THROW(InvalidRequestException("unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException("unknown or unsupported DimensionType encountered.");
     }
 }
 
@@ -1362,7 +1362,7 @@ UDim ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth(const Window& wnd) con
     case DT_WIDTH:
         return d_right_or_width.getBaseDimension().getLowerBoundAsUDim(wnd, DT_WIDTH);
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid or unsupported dimension type."));
+        throw InvalidRequestException("Invalid or unsupported dimension type.");
     }
 }
 
@@ -1377,7 +1377,7 @@ UDim ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight(const Window& wnd) c
     case DT_HEIGHT:
         return d_bottom_or_height.getBaseDimension().getLowerBoundAsUDim(wnd, DT_HEIGHT);
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid or unsupported dimension type."));
+        throw InvalidRequestException("Invalid or unsupported dimension type.");
     }
 }
 
