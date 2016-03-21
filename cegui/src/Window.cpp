@@ -3814,7 +3814,7 @@ const Sizef& Window::getRootContainerSize() const
 
 //----------------------------------------------------------------------------//
 float Window::getContentWidth() const
-{
+{ 
     if (getWindowRenderer())
         return getWindowRenderer()->getContentWidth();
     return Element::getContentWidth();

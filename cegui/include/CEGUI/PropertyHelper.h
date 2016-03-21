@@ -291,22 +291,6 @@ public:
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
 
-        else if (str == AdjustHeight)
-        {
-            return AM_ADJUST_HEIGHT;
-        }
-        else if (str == AdjustWidth)
-        {
-            return AM_ADJUST_WIDTH;
-        }
-        else if (val == AM_ADJUST_HEIGHT)
-        {
-            return AdjustHeight;
-        }
-        else if (val == AM_ADJUST_WIDTH)
-        {
-            return AdjustWidth;
-        }
     //! Definitions of the possible values represented as Strings
     static const CEGUI::String Shrink;
     static const CEGUI::String Expand;

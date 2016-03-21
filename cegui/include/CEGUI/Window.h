@@ -2794,6 +2794,14 @@ public:
     */
     virtual bool canFocus();
 
+    float getContentWidth() const override;
+    float getContentHeight() const override;
+    UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const override;
+    UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const override;
+    void adjustSizeToContent() override;
+    bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const override;
+    bool contentFits() const override;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;

@@ -333,7 +333,7 @@ protected:
     virtual void handleDelete();
     virtual void onCharacter(TextEventArgs& e);
     virtual void onTextChanged(WindowEventArgs& e);
-    virtual void onSized(ElementEventArgs& e);
+    virtual void onSized_impl(ElementEventArgs& e);
 
     // Overriding methods inherited from Window
     virtual void onScroll(CursorInputEventArgs& e);
