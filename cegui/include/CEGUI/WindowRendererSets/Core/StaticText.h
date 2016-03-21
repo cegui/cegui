@@ -660,18 +660,26 @@ namespace CEGUI
         static inline return_type fromString(const String& str)
         {
             if (str == s_autoString)
+            {
                 return FalagardStaticText::NumOfTextLinesToShow::auto_();
-            float val=0;
-            sscanf(str.c_str(), " %g", &val);
+            }
+
+            float val = 0.0f;
+            std::stringstream sstream;
+            sstream << str;
+            sstream >> val;
             return FalagardStaticText::NumOfTextLinesToShow(val);
         }
         static inline string_return_type toString(pass_type val)
         {
             if (val.isAuto())
+            {
                 return s_autoString;
-            char buff[64];
-            snprintf(buff, sizeof(buff), "%g", val.get());
-            return String(buff);
+            }
+
+            std::stringstream sstream;
+            sstream << val.get();
+            return String(sstream.str());
         }
     };
 
