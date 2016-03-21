@@ -27,7 +27,7 @@
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Texture.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
@@ -39,7 +39,9 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
+#include "CEGUI/RendererModules/OpenGL/GL3StateChangeWrapper.h"
+#include "CEGUI/RenderMaterial.h"
+#include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
 #include <algorithm>
 
@@ -63,8 +65,8 @@ namespace CEGUI
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    TextureTarget* create(OpenGLRendererBase& r) const
-        { return CEGUI_NEW_AO T(static_cast<OpenGL3Renderer&>(r)); }
+    TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const
+        { return new T(static_cast<OpenGL3Renderer&>(r), addStencilBuffer); }
 };
 
 //----------------------------------------------------------------------------//
@@ -73,11 +75,11 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const int abi)
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGL3Renderer& renderer(create());
-    DefaultResourceProvider* rp = CEGUI_NEW_AO CEGUI::DefaultResourceProvider();
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
     return renderer;
@@ -90,11 +92,11 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size,
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+        throw InvalidRequestException(
+            "CEGUI::System object is already initialised.");
 
     OpenGL3Renderer& renderer(create(display_size));
-    DefaultResourceProvider* rp = CEGUI_NEW_AO CEGUI::DefaultResourceProvider();
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
     return renderer;
@@ -105,15 +107,15 @@ void OpenGL3Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is not created or was already destroyed."));
+        throw InvalidRequestException(
+            "CEGUI::System object is not created or was already destroyed.");
 
     OpenGL3Renderer* renderer = static_cast<OpenGL3Renderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =
         static_cast<DefaultResourceProvider*>(sys->getResourceProvider());
 
     System::destroy();
-    CEGUI_DELETE_AO rp;
+    delete rp;
     destroy(*renderer);
 }
 
@@ -122,7 +124,7 @@ OpenGL3Renderer& OpenGL3Renderer::create(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO OpenGL3Renderer();
+    return *new OpenGL3Renderer();
 }
 
 //----------------------------------------------------------------------------//
@@ -131,31 +133,29 @@ OpenGL3Renderer& OpenGL3Renderer::create(const Sizef& display_size,
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *CEGUI_NEW_AO OpenGL3Renderer(display_size);
+    return *new OpenGL3Renderer(display_size);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 {
-    CEGUI_DELETE_AO &renderer;
+    delete &renderer;
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer() :
     OpenGLRendererBase(true),
-    d_shaderStandard(0),
+    d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
     init();
-    CEGUI_UNUSED(d_s3tcSupported);
-    // d_s3tcSupported is unused, but must be preserved to avoid breaking ABI
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     OpenGLRendererBase(display_size, true),
-    d_shaderStandard(0),
+    d_shaderWrapperTextured(0),
     d_openGLStateChanger(0),
     d_shaderManager(0)
 {
@@ -165,22 +165,25 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::init()
 {
-    if (      OpenGLInfo::getSingleton().isUsingOpenglEs()
-          &&  OpenGLInfo::getSingleton().verMajor() < 2)
-        CEGUI_THROW(RendererException("Only version 2 and up of OpenGL ES is "
-                                      "supported by this type of renderer."));
+    if (OpenGLInfo::getSingleton().isUsingOpenglEs()
+        &&  OpenGLInfo::getSingleton().verMajor() < 2)
+        throw RendererException("Only version 2 and up of OpenGL ES is "
+                                "supported by this type of renderer.");
     initialiseRendererIDString();
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
-    d_openGLStateChanger = CEGUI_NEW_AO OpenGL3StateChangeWrapper();
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::~OpenGL3Renderer()
 {
-    CEGUI_DELETE_AO d_textureTargetFactory;
-    CEGUI_DELETE_AO d_openGLStateChanger;
-    CEGUI_DELETE_AO d_shaderManager;
+    delete d_textureTargetFactory;
+    delete d_openGLStateChanger;
+    delete d_shaderManager;
+
+    delete d_shaderWrapperTextured;
+    delete d_shaderWrapperSolid;
 }
 
 //----------------------------------------------------------------------------//
@@ -192,15 +195,15 @@ void OpenGL3Renderer::initialiseRendererIDString()
         :  "CEGUI::OpenGL3Renderer - OpenGL ES 2 renderer module.";
 }
 //----------------------------------------------------------------------------//
-OpenGLGeometryBufferBase* OpenGL3Renderer::createGeometryBuffer_impl()
+OpenGLGeometryBufferBase* OpenGL3Renderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    return CEGUI_NEW_AO OpenGL3GeometryBuffer(*this);
+    return new OpenGL3GeometryBuffer(*this, renderMaterial);
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGL3Renderer::createTextureTarget_impl()
+TextureTarget* OpenGL3Renderer::createTextureTarget_impl(bool addStencilBuffer)
 {
-    return d_textureTargetFactory->create(*this);
+    return d_textureTargetFactory->create(*this, addStencilBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -214,47 +217,49 @@ void OpenGL3Renderer::beginRendering()
     d_openGLStateChanger->reset();
 
     // if enabled, restores a subset of the GL state back to default values.
-    if (d_initExtraStates)
-        setupExtraStates();
+    if (d_isStateResettingEnabled)
+        restoreChangedStatesToDefaults(false);
 
-    glEnable(GL_SCISSOR_TEST);
-    glEnable(GL_BLEND);
+    d_openGLStateChanger->enable(GL_SCISSOR_TEST);
+    d_openGLStateChanger->enable(GL_BLEND);
 
     // force set blending ops to get to a known state.
     setupRenderingBlendMode(BM_NORMAL, true);
-
-    d_shaderStandard->bind();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::endRendering()
 {
-    glUseProgram(0);
-
-    if (d_initExtraStates)
-        setupExtraStates();
-
-    glDisable(GL_BLEND);
-    glDisable(GL_SCISSOR_TEST);
+    if (d_isStateResettingEnabled)
+        restoreChangedStatesToDefaults(true);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::setupExtraStates()
+void OpenGL3Renderer::restoreChangedStatesToDefaults(bool isAfterRendering)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //Resetting to initial values of the functions
+    d_openGLStateChanger->activeTexture(GL_TEXTURE0);
+    d_openGLStateChanger->bindTexture(GL_TEXTURE_2D, 0);
 
     if (OpenGLInfo::getSingleton().isPolygonModeSupported())
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+ 
+    d_openGLStateChanger->disable(GL_CULL_FACE);
+    d_openGLStateChanger->disable(GL_DEPTH_TEST);
 
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-    
+    // During the preparation before rendering, these states will be changed anyways
+    // so we do not want to change them extra
+    if(isAfterRendering)
+    { 
+        d_openGLStateChanger->disable(GL_BLEND);
+        d_openGLStateChanger->disable(GL_SCISSOR_TEST);
+    }
+
     d_openGLStateChanger->blendFunc(GL_ONE, GL_ZERO);
 
+    d_openGLStateChanger->useProgram(0);
     if (OpenGLInfo::getSingleton().isVaoSupported())
         d_openGLStateChanger->bindVertexArray(0);
-    glUseProgram(0);
     d_openGLStateChanger->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -264,12 +269,12 @@ void OpenGL3Renderer::initialiseTextureTargetFactory()
 {
     //Use OGL core implementation for FBOs
     d_rendererID += "  TextureTarget support enabled via FBO OGL 3.2 core implementation.";
-    d_textureTargetFactory = CEGUI_NEW_AO OGLTemplateTargetFactory<OpenGL3FBOTextureTarget>;
+    d_textureTargetFactory = new OGLTemplateTargetFactory<OpenGL3FBOTextureTarget>;
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
-                                             const bool force)
+                                              const bool force)
 {
     // exit if mode is already set up (and update not forced)
     if ((d_activeBlendMode == mode) && !force)
@@ -279,52 +284,22 @@ void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
 
     if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
     {
-        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        d_openGLStateChanger->blendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
     else
     {
-        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+        d_openGLStateChanger->blendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
     }
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGL3Renderer::getAdjustedTextureSize(const Sizef& sz) const
+Sizef OpenGL3Renderer::getAdjustedTextureSize(const Sizef& sz)
 {
     return Sizef(sz);
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3Shader*& OpenGL3Renderer::getShaderStandard()
-{
-    return d_shaderStandard;
-}
-
-//----------------------------------------------------------------------------//
-GLint OpenGL3Renderer::getShaderStandardPositionLoc()
-{
-    return d_shaderStandardPosLoc;
-}
-
-//----------------------------------------------------------------------------//
-GLint OpenGL3Renderer::getShaderStandardTexCoordLoc()
-{
-    return d_shaderStandardTexCoordLoc;
-}
-
-//----------------------------------------------------------------------------//
-GLint OpenGL3Renderer::getShaderStandardColourLoc()
-{
-    return d_shaderStandardColourLoc;
-}
-
-//----------------------------------------------------------------------------//
-GLint OpenGL3Renderer::getShaderStandardMatrixUniformLoc()
-{
-    return d_shaderStandardMatrixLoc;
-}
-
-//----------------------------------------------------------------------------//
-OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
+OpenGLBaseStateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 {
     return d_openGLStateChanger;
 }
@@ -333,26 +308,71 @@ OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
-    d_shaderManager = CEGUI_NEW_AO OpenGL3ShaderManager();
+    d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, SHADER_GLSL);
     d_shaderManager->initialiseShaders();
-    d_shaderStandard = d_shaderManager->getShader(SHADER_ID_STANDARDSHADER);
-    GLuint texLoc = d_shaderStandard->getUniformLocation("texture0");
-    d_shaderStandard->bind();
-    glUniform1i(texLoc, 0);
-    d_shaderStandard->unbind();
 
-    d_shaderStandardPosLoc = d_shaderStandard->getAttribLocation("inPosition");
-    d_shaderStandardTexCoordLoc = d_shaderStandard->getAttribLocation("inTexCoord");
-    d_shaderStandardColourLoc = d_shaderStandard->getAttribLocation("inColour");
-
-    d_shaderStandardMatrixLoc = d_shaderStandard->getUniformLocation("modelViewPerspMatrix");
+    initialiseStandardTexturedShaderWrapper();
+    initialiseStandardColouredShaderWrapper();
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGL3Renderer::isS3TCSupported() const
+RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    return OpenGLInfo::getSingleton().isS3tcSupported();
+    if(shaderType == DS_TEXTURED)
+    {
+        RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
+
+        return render_material;
+    }
+    else if(shaderType == DS_SOLID)
+    {
+        RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
+
+        return render_material;
+    }
+    else
+    {
+        throw RendererException(
+            "A default shader of this type does not exist.");
+
+        return RefCounted<RenderMaterial>();
+    }
 }
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
+{
+    OpenGLBaseShader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
+    d_shaderWrapperTextured = new OpenGLBaseShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
+
+    d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
+
+    d_shaderWrapperTextured->addUniformVariable("modelViewProjMatrix");
+    d_shaderWrapperTextured->addUniformVariable("alphaPercentage");
+
+    d_shaderWrapperTextured->addAttributeVariable("inPosition");
+    d_shaderWrapperTextured->addAttributeVariable("inTexCoord");
+    d_shaderWrapperTextured->addAttributeVariable("inColour");
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::initialiseStandardColouredShaderWrapper()
+{
+    OpenGLBaseShader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
+    d_shaderWrapperSolid = new OpenGLBaseShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
+
+    d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix");
+    d_shaderWrapperSolid->addUniformVariable("alphaPercentage");
+
+    d_shaderWrapperSolid->addAttributeVariable("inPosition");
+    d_shaderWrapperSolid->addAttributeVariable("inColour");
+}
+
+//----------------------------------------------------------------------------//
+OpenGLTexture* OpenGL3Renderer::createTexture_impl(const String& name)
+{
+    return new OpenGL3Texture(*this, name);
+}  
 
 //----------------------------------------------------------------------------//
 

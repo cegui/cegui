@@ -28,7 +28,7 @@
 #define _InventoryBase_h_
 
 #include "BoolArray2D.h"
-#include <CEGUI/Rect.h>
+#include <CEGUI/Rectf.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

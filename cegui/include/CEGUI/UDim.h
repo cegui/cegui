@@ -3,7 +3,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,6 +28,8 @@
 #define _CEGUIUDim_h_
 
 #include "CEGUI/Base.h"
+#include "CEGUI/StreamHelper.h"
+
 #include <ostream>
 
 #if defined(_MSC_VER)
@@ -89,8 +91,7 @@ namespace CEGUI
 \see CEGUI::USize
 \see CEGUI::URect
 */
-class CEGUIEXPORT UDim :
-    public AllocatedObject<UDim>
+class CEGUIEXPORT UDim
 {
 public:
     inline UDim()
@@ -185,14 +186,24 @@ public:
     }
     
     /*!
-    \brief allows writing the udim to std ostream
+    \brief Writes a UDim to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const UDim& v)
+    inline friend std::ostream& operator << (std::ostream& s, const UDim& val)
     {
-        s << "CEGUI::UDim(" << v.d_scale << ", " << v.d_offset << ")";
+        s << "{" << val.d_scale << "," << val.d_offset << "}";
         return s;
     }
-    
+
+    /*!
+    \brief Extracts a UDim from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& s, UDim& val)
+    {
+        // Format is: " { %g , %g } " but we are lenient regarding the format, so this is also allowed: " %g %g "
+        s >> optionalChar<'{'> >> val.d_scale >> optionalChar<','> >> val.d_offset >> optionalChar<'}'>;
+        return s;
+    }
+
     /*!
     \brief finger saving convenience method returning UDim(0, 0)
     */
@@ -249,8 +260,7 @@ public:
 \note
     Name taken from W3 'box model'
 */
-class CEGUIEXPORT UBox :
-    public AllocatedObject<UBox>
+class CEGUIEXPORT UBox
 {
 public:
     UBox():
@@ -326,6 +336,32 @@ public:
         return UBox(
                    d_top + b.d_top, d_left + b.d_left,
                    d_bottom + b.d_bottom, d_right + b.d_right);
+    }
+
+    /*
+    \brief Writes a UBox to a stream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const UBox& val)
+    {
+        s << "{top:{" << val.d_top.d_scale << "," << val.d_top.d_offset << "},left:{" <<
+            val.d_left.d_scale << "," << val.d_left.d_offset << "},bottom:{" <<
+            val.d_bottom.d_scale << "," << val.d_bottom.d_offset << "},right:{" <<
+            val.d_right.d_scale << "," << val.d_right.d_offset << "}}";
+        return s;
+    }
+
+    /*!
+    \brief Extracts a UBox from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& inStream, UBox& val)
+    {
+        // Format is:  { top: { %g , %g } , left: { %g , %g } , bottom: { %g , %g } , right: { %g , %g } }",
+        // but we are lenient regarding the format, so this is also allowed: " top : { %g %g } left : { %g %g } bottom : { %g %g } right : { %g %g } "
+        inStream >> optionalChar<'{'> >> MandatoryString(" top : {") >> val.d_top.d_scale >> optionalChar<','> >> val.d_top.d_offset >>
+            mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" left : {") >> val.d_left.d_scale >> optionalChar<','> >> val.d_left.d_offset >>
+            mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" bottom : {") >> val.d_bottom.d_scale >> optionalChar<','> >> val.d_bottom.d_offset >>
+            mandatoryChar<'}'> >> optionalChar<','> >> MandatoryString(" right : {") >> val.d_right.d_scale >> optionalChar<','> >> val.d_right.d_offset;
+        return inStream;
     }
 
     /*************************************************************************

@@ -29,11 +29,13 @@
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/System.h"
 
+#include <cstdint>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint32 NullTexture::d_textureNumber = 0;
+std::uint32_t NullTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 const String& NullTexture::getName() const
@@ -54,7 +56,7 @@ const Sizef& NullTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& NullTexture::getTexelScaling() const
+const glm::vec2& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -66,8 +68,8 @@ void NullTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created!"));
+        throw RendererException(
+            "CEGUI::System object has not been created!");
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -81,9 +83,9 @@ void NullTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//

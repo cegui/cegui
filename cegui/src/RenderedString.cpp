@@ -92,7 +92,7 @@ void RenderedString::cloneComponentList(const ComponentList& list)
 void RenderedString::clearComponentList(ComponentList& list)
 {
     for (size_t i = 0; i < list.size(); ++i)
-        CEGUI_DELETE_AO list[i];
+        delete list[i];
 
     list.clear();
 }
@@ -106,8 +106,8 @@ bool RenderedString::split(const Window* ref_wnd, const size_t line,
     // On the plus side, it does seem to work though ;)
 
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException(
-            "line number specified is invalid."));
+        throw InvalidRequestException(
+            "line number specified is invalid.");
 
     bool was_word_split(false);
 
@@ -252,8 +252,8 @@ Sizef RenderedString::getPixelSize(const Window* ref_wnd,
                                    const size_t line) const
 {
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException(
-            "line number specified is invalid."));
+        throw InvalidRequestException(
+            "line number specified is invalid.");
 
     Sizef sz(0, 0);
 
@@ -274,8 +274,8 @@ Sizef RenderedString::getPixelSize(const Window* ref_wnd,
 size_t RenderedString::getSpaceCount(const size_t line) const
 {
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException(
-            "line number specified is invalid."));
+        throw InvalidRequestException(
+            "line number specified is invalid.");
 
     size_t space_count = 0;
 
@@ -288,24 +288,24 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 
 //----------------------------------------------------------------------------//
 void RenderedString::draw(const Window* ref_wnd, const size_t line,
-                          GeometryBuffer& buffer, const Vector2f& position,
+                          std::vector<GeometryBuffer*>& geometry_buffers, const glm::vec2& position,
                           const ColourRect* mod_colours, const Rectf* clip_rect,
                           const float space_extra) const
 {
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException(
-            "line number specified is invalid."));
+        throw InvalidRequestException(
+            "line number specified is invalid.");
 
     const float render_height = getPixelSize(ref_wnd, line).d_height;
 
-    Vector2f comp_pos(position);
+    glm::vec2 comp_pos(position);
 
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        d_components[i]->draw(ref_wnd, buffer, comp_pos, mod_colours, clip_rect,
+        d_components[i]->draw(ref_wnd, geometry_buffers, comp_pos, mod_colours, clip_rect,
                               render_height, space_extra);
-        comp_pos.d_x += d_components[i]->getPixelSize(ref_wnd).d_width;
+        comp_pos.x += d_components[i]->getPixelSize(ref_wnd).d_width;
     }
 }
 

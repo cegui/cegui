@@ -34,8 +34,6 @@
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/FontGlyph.h"
 
-#include <map>
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -57,8 +55,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT Font :
     public PropertySet,
-    public EventSet,
-    public AllocatedObject<Font>
+    public EventSet
 {
 public:
     //! Colour value used whenever a colour is not specified.
@@ -90,21 +87,22 @@ public:
         Return whether this Font can draw the specified code-point
 
     \param cp
-        utf32 code point that is the subject of the query.
+        char32_t code point that is the subject of the query.
 
     \return
         true if the font contains a mapping for code point \a cp,
         false if it does not contain a mapping for \a cp.
     */
-    bool isCodepointAvailable(utf32 cp) const
+    bool isCodepointAvailable(char32_t cp) const
     { return (d_cp_map.find(cp) != d_cp_map.end()); }
 
     /*!
     \brief
         Draw text into a specified area of the display.
 
-    \param buffer
-        GeometryBuffer object where the geometry for the text be queued.
+    \param geom_buffers
+        List of GeometryBuffer objects that will be used to add Font geometry in
+        a batch-saving way.
 
     \param text
         String object containing the text to be drawn.
@@ -138,10 +136,11 @@ public:
         positioning (which is not possible to determine accurately by using the
         extent measurement functions).
     */
-    float drawText(GeometryBuffer& buffer, const String& text,
-                   const Vector2f& position, const Rectf* clip_rect,
-                   const ColourRect& colours, const float space_extra = 0.0f,
-                   const float x_scale = 1.0f, const float y_scale = 1.0f) const;
+    float drawText(std::vector<GeometryBuffer*>& geom_buffers, const String& text,
+                   const glm::vec2& position, const Rectf* clip_rect,
+                   const bool clipping_enabled, const ColourRect& colours,
+                   const float space_extra = 0.0f, const float x_scale = 1.0f,
+                   const float y_scale = 1.0f) const;
 
     /*!
     \brief
@@ -268,6 +267,9 @@ public:
     \see getTextAdvance
     */
     float getTextExtent(const String& text, float x_scale = 1.0f) const;
+
+    void getGlyphExtents(char32_t currentCodePoint, float& cur_extent,
+                         float& adv_extent, float x_scale) const;
 
     /*!
     \brief
@@ -399,13 +401,13 @@ public:
         or 0 if the codepoint does not have a glyph defined.
 
     \param codepoint
-        utf32 codepoint to return the glyphDat structure for.
+        char32_t codepoint to return the glyphDat structure for.
 
     \return
         Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
         is defined for \a codepoint.
     */
-    const FontGlyph* getGlyphData(utf32 codepoint) const;
+    const FontGlyph* getGlyphData(char32_t codepoint) const;
 
 protected:
     //! Constructor.
@@ -427,7 +429,7 @@ protected:
     \param end_codepoint
         The highest codepoint that should be rasterised
     */
-    virtual void rasterise(utf32 start_codepoint, utf32 end_codepoint) const;
+    virtual void rasterise(char32_t start_codepoint, char32_t end_codepoint) const;
 
     //! Update the font as needed, according to the current parameters.
     virtual void updateFont() = 0;
@@ -444,12 +446,12 @@ protected:
     /*!
     \brief
         Set the maximal glyph index. This reserves the respective
-        number of bits in the d_glyphPageLoaded array.
+        number of bits in the d_loadedGlyphPages array.
     */
-    void setMaxCodepoint(utf32 codepoint);
+    void setMaxCodepoint(char32_t codepoint);
 
     //! finds FontGlyph in map and returns it, or 0 if none.
-    virtual const FontGlyph* findFontGlyph(const utf32 codepoint) const;
+    virtual const FontGlyph* findFontGlyph(const char32_t codepoint) const;
 
     //! Name of this font.
     String d_name;
@@ -479,7 +481,7 @@ protected:
     float d_vertScaling;
 
     //! Maximal codepoint for font glyphs
-    utf32 d_maxCodepoint;
+    char32_t d_maxCodepoint;
 
     /*!
     \brief
@@ -494,11 +496,10 @@ protected:
         This array is big enough to hold at least max_codepoint bits.
         If this member is NULL, all glyphs are considered pre-rasterised.
     */
-    uint* d_glyphPageLoaded;
+    mutable std::vector<unsigned int> d_loadedGlyphPages;
 
     //! Definition of CodepointMap type.
-    typedef std::map<utf32, FontGlyph, std::less<utf32>
-        CEGUI_MAP_ALLOC(utf32, FontGlyph)> CodepointMap;
+    typedef std::map<char32_t, FontGlyph, std::less<char32_t> > CodepointMap;
     //! Contains mappings from code points to Image objects
     mutable CodepointMap d_cp_map;
 };

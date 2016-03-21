@@ -31,11 +31,12 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-uint OpenGLTextureTarget::s_textureNumber = 0;
+std::uint32_t OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLRenderTarget<TextureTarget>(owner),
+OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
+    OpenGLRenderTarget(owner),
+    TextureTarget(addStencilBuffer),
     d_texture(0)
 {
     createCEGUITexture();
@@ -57,12 +58,6 @@ bool OpenGLTextureTarget::isImageryCache() const
 Texture& OpenGLTextureTarget::getTexture() const
 {
     return *d_CEGUITexture;
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLTextureTarget::isRenderingInverted() const
-{
-    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -95,7 +90,7 @@ void OpenGLTextureTarget::createCEGUITexture()
 String OpenGLTextureTarget::generateTextureName()
 {
     String tmp("_ogl_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }
@@ -103,9 +98,4 @@ String OpenGLTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-//----------------------------------------------------------------------------//
-// Implementation of base class
-#include "./RenderTarget.inl"
-
 

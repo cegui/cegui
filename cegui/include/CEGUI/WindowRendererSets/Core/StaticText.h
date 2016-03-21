@@ -548,7 +548,7 @@ namespace CEGUI
         bool onTextChanged(const EventArgs& e);
         bool onSized(const EventArgs& e);
         bool onFontChanged(const EventArgs& e);
-        bool onMouseWheel(const EventArgs& e);
+        bool onScroll(const EventArgs& e);
         bool onIsSizeAdjustedToContentChanged(const EventArgs&);
 
         // event subscribers
