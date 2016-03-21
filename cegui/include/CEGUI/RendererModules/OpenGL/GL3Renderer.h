@@ -31,9 +31,9 @@
 
 namespace CEGUI
 {
-    class OpenGL3Shader;
-    class OpenGL3ShaderManager;
-    class OpenGL3StateChangeWrapper;
+    class OpenGLBaseShaderWrapper;
+    class OpenGLBaseShaderManager;
+    class OpenGLBaseStateChangeWrapper;
 
 /*!
 \brief
@@ -158,79 +158,28 @@ public:
 
     /*!
     \brief
-        Helper to return the reference to the pointer to the standard shader of
-        the Renderer
-
-    \return
-        Reference to the pointer to the standard shader of the Renderer
-    */
-    OpenGL3Shader*& getShaderStandard();
-
-    /*!
-    \brief
-        Helper to return the attribute location of the position variable in the
-        standard shader
-
-    \return
-        Attribute location of the position variable in the standard shader
-    */
-    GLint getShaderStandardPositionLoc();
-
-
-    /*!
-    \brief
-        Helper to return the attribute location of the texture coordinate
-        variable in the standard shader
-
-    \return
-        Attribute location of the texture coordinate variable in the standard
-        shader
-    */
-    GLint getShaderStandardTexCoordLoc();
-
-
-    /*!
-    \brief
-        Helper to return the attribute location of the colour variable in the
-        standard shader
-
-    \return
-        Attribute location of the colour variable in the standard shader
-    */
-    GLint getShaderStandardColourLoc();
-
-    /*!
-    \brief
-        Helper to return the uniform location of the matrix variable in the
-        standard shader
-
-    \return
-        Uniform location of the matrix variable in the standard shader
-    */
-    GLint getShaderStandardMatrixUniformLoc();
-
-    /*!
-    \brief
         Helper to get the wrapper used to check for redundant OpenGL state
         changes.
 
     \return
         The active OpenGL state change wrapper object.
     */
-    OpenGL3StateChangeWrapper* getOpenGLStateChanger();
+    OpenGLBaseStateChangeWrapper* getOpenGLStateChanger();
 
     // base class overrides / abstract function implementations
     void beginRendering();
     void endRendering();
-    Sizef getAdjustedTextureSize(const Sizef& sz) const;
-    bool isS3TCSupported() const;
+    virtual Sizef getAdjustedTextureSize(const Sizef& sz);
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
-private:
+protected:
     //! Overrides
-    OpenGLGeometryBufferBase* createGeometryBuffer_impl();
-    TextureTarget* createTextureTarget_impl();
+    OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer);
+    //! creates a texture of GL3Texture type
+    virtual OpenGLTexture* createTexture_impl(const String& name);
 
     void initialiseRendererIDString();
 
@@ -248,10 +197,17 @@ private:
         Size object describing the initial display resolution.
     */
     OpenGL3Renderer(const Sizef& display_size);
-
+    
     void init();
 
+
+    //! Initialises the ShaderManager and the required OpenGL shaders
     void initialiseOpenGLShaders();
+    //! Initialises the OpenGL ShaderWrapper for textured objects
+    void initialiseStandardTexturedShaderWrapper();
+    //! Initialises the OpenGL ShaderWrapper for coloured objects
+    void initialiseStandardColouredShaderWrapper();
+
 
 protected:
     /*!
@@ -264,25 +220,18 @@ private:
     //! initialise OGL3TextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    //! restores all relevant OpenGL States CEGUI touches to their default value
+    void restoreChangedStatesToDefaults(bool isAfterRendering);
 
-    //! The OpenGL shader we will use usually
-    OpenGL3Shader* d_shaderStandard;
-    //! Position variable location inside the shader, for OpenGL
-    GLint d_shaderStandardPosLoc;
-    //! TexCoord variable location inside the shader, for OpenGL
-    GLint d_shaderStandardTexCoordLoc;
-    //! Color variable location inside the shader, for OpenGL
-    GLint d_shaderStandardColourLoc;
-    //! Matrix uniform location inside the shader, for OpenGL
-    GLint d_shaderStandardMatrixLoc;
+    //! Wrapper of the OpenGL shader we will use for textured geometry
+    OpenGLBaseShaderWrapper* d_shaderWrapperTextured;
+    //! Wrapper of the OpenGL shader we will use for solid geometry
+    OpenGLBaseShaderWrapper* d_shaderWrapperSolid;
+
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
-    OpenGL3StateChangeWrapper* d_openGLStateChanger;
+    OpenGLBaseStateChangeWrapper* d_openGLStateChanger;
     //! Wrapper for creating and handling shaders
-    OpenGL3ShaderManager* d_shaderManager;
-    //! \deprecated This attribute and associated functionality has been moved/replaced to/by the OpenGLInfo class
-    bool d_s3tcSupported;
+    OpenGLBaseShaderManager* d_shaderManager;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
 };

@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 
@@ -38,9 +39,11 @@ namespace CEGUI
 static const size_t LOG_BUFFER_SIZE = 8096;
 
 //----------------------------------------------------------------------------//
-OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
-                             const std::string& fragment_shader_source) :
-    d_createdSucessfully(false),
+OpenGLBaseShader::OpenGLBaseShader(const std::string& vertex_shader_source,
+                             const std::string& fragment_shader_source,
+                             OpenGLBaseStateChangeWrapper* glStateChanger) :
+    d_glStateChanger(glStateChanger),
+    d_createdSuccessfully(false),
     d_vertexShader(0),
     d_fragmentShader(0),
     d_geometryShader(0),
@@ -68,7 +71,7 @@ OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3Shader::~OpenGL3Shader()
+OpenGLBaseShader::~OpenGLBaseShader()
 {
     if(d_program != 0)
         glDeleteProgram(d_program);
@@ -81,47 +84,40 @@ OpenGL3Shader::~OpenGL3Shader()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::bind() const
+void OpenGLBaseShader::bind() const
 {
-    glUseProgram(d_program);
+    d_glStateChanger->useProgram(d_program);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::unbind() const
-{
-    glUseProgram(0);
-}
-
-//----------------------------------------------------------------------------//
-GLuint OpenGL3Shader::getAttribLocation(const std::string &name) const
+GLint OpenGLBaseShader::getAttribLocation(const std::string &name) const
 {
     return glGetAttribLocation(d_program, name.c_str());
 }
 
 //----------------------------------------------------------------------------//
-GLuint OpenGL3Shader::getUniformLocation(const std::string &name) const
+GLint OpenGLBaseShader::getUniformLocation(const std::string &name) const
 {
     return glGetUniformLocation(d_program, name.c_str());
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::bindFragDataLocation(const std::string &name)
+void OpenGLBaseShader::bindFragDataLocation(const std::string& /*name*/)
 {
     if(d_program > 0)
     {
-        glBindFragDataLocation(d_program, 0, name.c_str());
         link();
     }
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGL3Shader::isCreatedSuccessfully()
+bool OpenGLBaseShader::isCreatedSuccessfully()
 {
-    return d_createdSucessfully;
+    return d_createdSuccessfully;
 }
 
 //----------------------------------------------------------------------------//
-GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
+GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
 {
     // Create shader object
     checkGLErrors();
@@ -131,7 +127,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
     {
         std::stringstream stringStream;
         stringStream << "Critical Error - Could not create shader object of type:" << type << ".";
-        CEGUI_THROW(RendererException(stringStream.str().c_str()));
+        throw RendererException(stringStream.str().c_str());
         return 0;
     }
 
@@ -162,7 +158,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::link()
+void OpenGLBaseShader::link()
 {
 
     // Attach shaders and link
@@ -194,25 +190,14 @@ void OpenGL3Shader::link()
     if (d_program == 0)
         return;
 
-    d_createdSucessfully = true;
+    d_createdSuccessfully = true;
     checkGLErrors();
 
-    if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
-    {
-        glBindFragDataLocation(d_program, 0, "out0"); // GL_COLOR_ATTACHMENT0
-        glBindFragDataLocation(d_program, 1, "out1"); // GL_COLOR_ATTACHMENT1
-        glBindFragDataLocation(d_program, 2, "out2"); // ...
-        glBindFragDataLocation(d_program, 3, "out3");
-        glBindFragDataLocation(d_program, 4, "out4");
-        glBindFragDataLocation(d_program, 5, "out5");
-        glBindFragDataLocation(d_program, 6, "out6");
-        glBindFragDataLocation(d_program, 7, "out7");
-    }
-    checkGLErrors();
+
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::outputProgramLog(GLuint program)
+void OpenGLBaseShader::outputProgramLog(GLuint program)
 {
     char logBuffer[LOG_BUFFER_SIZE];
     GLsizei length;
@@ -223,13 +208,13 @@ void OpenGL3Shader::outputProgramLog(GLuint program)
     if (length > 0)
     {
         std::stringstream sstream;
-        sstream << "OpenGL3Shader linking has failed.\n" << logBuffer;
-        CEGUI_THROW(RendererException(sstream.str().c_str()));
+        sstream << "OpenGLBaseShader linking has failed.\n" << logBuffer;
+        throw RendererException(sstream.str().c_str());
     }
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::outputShaderLog(GLuint shader)
+void OpenGLBaseShader::outputShaderLog(GLuint shader)
 {
     char logBuffer[LOG_BUFFER_SIZE];
     GLsizei length;
@@ -240,8 +225,8 @@ void OpenGL3Shader::outputShaderLog(GLuint shader)
     if (length > 0)
     {
         std::stringstream ss;
-        ss << "OpenGL3Shader compilation has failed.\n" << logBuffer;
-          CEGUI_THROW(RendererException(ss.str().c_str()));
+        ss << "OpenGLBaseShader compilation has failed.\n" << logBuffer;
+          throw RendererException(ss.str().c_str());
     }
 }
 
@@ -253,7 +238,8 @@ void getGLErrors(const char *location)
     if (error != GL_NO_ERROR)
     {
         std::stringstream stringStream;
-        stringStream << "OpenGL3Renderer: Notification - OpenGL error at " << location << ": " << std::endl; 
+        stringStream << "OpenGLBaseRenderer: Notification - OpenGL error at ";
+        stringStream << location << ": " << std::endl; 
 
         switch (error)
         {

@@ -49,7 +49,9 @@ endmacro()
 # Add libs to a target, and correctly handles static versions of libs built by the project
 #
 macro (cegui_target_link_libraries _TARGET_NAME)
-    target_link_libraries(${_TARGET_NAME} ${ARGN})
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+        target_link_libraries(${_TARGET_NAME} ${ARGN})
+    endif()
 
     get_target_property(_TARGET_EXISTS ${_TARGET_NAME}_Static TYPE)
     if (_TARGET_EXISTS)
@@ -243,49 +245,51 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     ###########################################################################
     #                       SHARED LIBRARY SET UP
     ###########################################################################
-    add_library(${_LIB_NAME} ${_LIB_TYPE} ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
-    set_target_properties(${_LIB_NAME} PROPERTIES DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE})
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+        add_library(${_LIB_NAME} ${_LIB_TYPE} ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
+        set_target_properties(${_LIB_NAME} PROPERTIES DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE})
 
-    if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
-        # Starting with CMake 2.8.12 LINK_INTERFACE_LIBRARIES was renamed to INTERFACE_LINK_LIBRARIES
-        if (${CMAKE_VERSION} VERSION_GREATER 2.8.12 OR ${CMAKE_VERSION} VERSION_EQUAL 2.8.12)
-            set_target_properties(${_LIB_NAME} PROPERTIES
-                INTERFACE_LINK_LIBRARIES ""
-            )
-        else()
-            set_target_properties(${_LIB_NAME} PROPERTIES
-                LINK_INTERFACE_LIBRARIES ""
-            )
-        endif()
-    endif()
-
-    if (APPLE)
-        set_target_properties(${_LIB_NAME} PROPERTIES
-            INSTALL_NAME_DIR ${CEGUI_APPLE_DYLIB_INSTALL_PATH}
-            BUILD_WITH_INSTALL_RPATH TRUE
-        )
-
-        # Force the somewhat standard .dylib extension for modules over the use of
-        # the .so extension
-        if (${_IS_MODULE})
-            set_target_properties(${_LIB_NAME} PROPERTIES SUFFIX ".dylib")
+        if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+            # Starting with CMake 2.8.12 LINK_INTERFACE_LIBRARIES was renamed to INTERFACE_LINK_LIBRARIES
+            if (${CMAKE_VERSION} VERSION_GREATER 2.8.12 OR ${CMAKE_VERSION} VERSION_EQUAL 2.8.12)
+                set_target_properties(${_LIB_NAME} PROPERTIES
+                    INTERFACE_LINK_LIBRARIES ""
+                    )
+            else()
+                set_target_properties(${_LIB_NAME} PROPERTIES
+                    LINK_INTERFACE_LIBRARIES ""
+                    )
+            endif()
         endif()
 
-    elseif(CEGUI_INSTALL_WITH_RPATH)
-        set_target_properties(${_LIB_NAME} PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
-        )
-    endif()
-
-    # Do not version modules, since we dlopen these directly and need to know
-    # the name is what we think it will be (and not rely on symlinks which will
-    # not be installed always, but usually only as part of *-dev packages).
-    if (NOT ${_IS_MODULE} AND NOT ANDROID)
-        if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
+        if (APPLE)
             set_target_properties(${_LIB_NAME} PROPERTIES
-                VERSION ${CEGUI_ABI_VERSION}
-                SOVERSION ${CEGUI_SOVERSION}
-            )
+                INSTALL_NAME_DIR ${CEGUI_APPLE_DYLIB_INSTALL_PATH}
+                BUILD_WITH_INSTALL_RPATH TRUE
+                )
+
+            # Force the somewhat standard .dylib extension for modules over the use of
+            # the .so extension
+            if (${_IS_MODULE})
+                set_target_properties(${_LIB_NAME} PROPERTIES SUFFIX ".dylib")
+            endif()
+
+        elseif(CEGUI_INSTALL_WITH_RPATH)
+            set_target_properties(${_LIB_NAME} PROPERTIES
+                INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+                )
+        endif()
+
+        # Do not version modules, since we dlopen these directly and need to know
+        # the name is what we think it will be (and not rely on symlinks which will
+        # not be installed always, but usually only as part of *-dev packages).
+        if (NOT ${_IS_MODULE} AND NOT ANDROID)
+            if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
+                set_target_properties(${_LIB_NAME} PROPERTIES
+                    VERSION ${CEGUI_ABI_VERSION}
+                    SOVERSION ${CEGUI_SOVERSION}
+                    )
+            endif()
         endif()
     endif()
 
@@ -299,11 +303,13 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             set(_CEGUI_LIB_DEST ${CEGUI_LIB_INSTALL_DIR})
         endif()
 
-        install(TARGETS ${_LIB_NAME}
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION ${_CEGUI_LIB_DEST}
-            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        )
+        if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+            install(TARGETS ${_LIB_NAME}
+                RUNTIME DESTINATION bin
+                LIBRARY DESTINATION ${_CEGUI_LIB_DEST}
+                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+                )
+        endif()
 
         if (CEGUI_BUILD_STATIC_CONFIGURATION)
             install(TARGETS ${_LIB_NAME}_Static
@@ -400,27 +406,30 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
 endmacro()
 
 #
-# Define a CEGUI sample module
+# Define a CEGUI sample module using some extra header and source files
 #
-macro (cegui_add_sample _NAME)
+macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE_FILES)
     set (CEGUI_TARGET_NAME ${_NAME})
-
     cegui_gather_files()
 
-	set(CORE_HEADER_FILES ${CORE_HEADER_FILES}
-		${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
-		${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
-	)
-    
+    set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES}
+        ${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
+        ${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
+    )
+
+	set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
+
     # Each demo will become a dynamically linked library as plugin (module)
     cegui_add_library_impl(${CEGUI_TARGET_NAME} TRUE CORE_SOURCE_FILES CORE_HEADER_FILES FALSE FALSE)
 
     # Setup custom install location
-    install(TARGETS ${CEGUI_TARGET_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
-        ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
-    )
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+        install(TARGETS ${CEGUI_TARGET_NAME}
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+            ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+            )
+    endif()
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
@@ -442,7 +451,12 @@ macro (cegui_add_sample _NAME)
     # Add the MetaData chunk of the sample to the final xml
     file(READ ${CMAKE_CURRENT_SOURCE_DIR}/SampleMetaData.xml DEMO_META_DATA)
     file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "${DEMO_META_DATA}")
+
 endmacro()
+macro (cegui_add_sample _NAME)
+	cegui_add_sample_with_extra_files(${_NAME} "" "")
+endmacro()
+
 
 #
 # Define a PyCEGUI* extension module
@@ -477,11 +491,19 @@ endmacro()
 # Define a CEGUI test executable
 #
 macro (cegui_add_test_executable _NAME)
+    cegui_add_test_executable_with_extra_files(${_NAME} "" "")
+endmacro()
+
+macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE_FILES)
     set (CEGUI_TARGET_NAME ${_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
 
     cegui_gather_files()
 
     include_directories(${Boost_INCLUDE_DIR})
+
+    # add the extra header/source files
+    set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES})
+    set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
 
     ###########################################################################
     #                     Statically Linked Executable
@@ -505,41 +527,45 @@ macro (cegui_add_test_executable _NAME)
     ###########################################################################
     #                   Dynamically Linked Executable
     ###########################################################################
-    add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+        add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 
-    # append the _d (or whatever) for debug builds as needed.
-    if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-            OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
-        )
-    endif()
+        # append the _d (or whatever) for debug builds as needed.
+        if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
+            set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+                OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
+                )
+        endif()
 
-    add_definitions(-DBOOST_ALL_NO_LIB)
-    # set boost to use dynamic linking
-    if (NOT CEGUI_BUILD_STATIC_CONFIGURATION)
-        add_definitions( -DBOOST_TEST_DYN_LINK )
-    endif()
+        add_definitions(-DBOOST_ALL_NO_LIB)
+        # set boost to use dynamic linking
+        if (NOT CEGUI_BUILD_STATIC_CONFIGURATION)
+            add_definitions( -DBOOST_TEST_DYN_LINK )
+        endif()
 
-    if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
-        )
+        if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
+            set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+                INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+                )
+        endif()
     endif()
 
     ###########################################################################
     #                      LIBRARY LINK SETUP
     ###########################################################################
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME}
-        ${CEGUI_BASE_LIBNAME}
-        ${CEGUI_NULL_RENDERER_LIBNAME}
-        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-    )
-
-    if (CEGUI_BUILD_PERFORMANCE_TESTS)
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME}
-            ${Boost_TIMER_LIBRARY}
-            ${Boost_SYSTEM_LIBRARY}
-        )
+            ${CEGUI_BASE_LIBNAME}
+            ${CEGUI_NULL_RENDERER_LIBNAME}
+            ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+            )
+
+        if (CEGUI_BUILD_PERFORMANCE_TESTS)
+            cegui_target_link_libraries(${CEGUI_TARGET_NAME}
+                ${Boost_TIMER_LIBRARY}
+                ${Boost_SYSTEM_LIBRARY}
+                )
+        endif()
     endif()
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
@@ -554,11 +580,13 @@ macro (cegui_add_test_executable _NAME)
     ###########################################################################
     #                           INSTALLATION
     ###########################################################################
-    install(TARGETS ${CEGUI_TARGET_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-    )
+    if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+        install(TARGETS ${CEGUI_TARGET_NAME}
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+            )
+    endif()
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
@@ -648,11 +676,12 @@ macro (cegui_find_package_handle_standard_args _PKGNAME _LIBBASENAMEVAR)
                 list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC_DBG)
             endif()
         endif ()
-        if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
-            if ((_WANT_REL_LIBS AND ${_LIBBASENAMEVAR}) OR NOT ${_LIBBASENAMEVAR}_DBG)
+        
+        if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+            if (_WANT_REL_LIBS)
                 list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR})
             endif()
-            if ((_WANT_DBG_LIBS AND ${_LIBBASENAMEVAR}_DBG) OR NOT ${_LIBBASENAMEVAR})
+            if (_WANT_DBG_LIBS)
                 list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_DBG)
             endif()
         endif()

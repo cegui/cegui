@@ -29,6 +29,7 @@
 #include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/WindowFactory.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/SharedStringStream.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -45,8 +46,10 @@ WindowFactoryManager::OwnedWindowFactoryList WindowFactoryManager::d_ownedFactor
 //----------------------------------------------------------------------------//
 WindowFactoryManager::WindowFactoryManager(void)
 {
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::WindowFactoryManager singleton created");
+        "CEGUI::WindowFactoryManager Singleton created. (" + addressStr + ")");
 
     // complete addition of any pre-added WindowFactory objects
     WindowFactoryManager::OwnedWindowFactoryList::iterator i =
@@ -70,25 +73,24 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// throw exception if passed factory is null.
 	if (!factory)
 	{
-		CEGUI_THROW(NullObjectException(
-            "The provided WindowFactory pointer was invalid."));
+		throw NullObjectException(
+            "The provided WindowFactory pointer was invalid.");
 	}
 
 	// throw exception if type name for factory is already in use
 	if (d_factoryRegistry.find(factory->getTypeName()) != d_factoryRegistry.end())
 	{
-		CEGUI_THROW(AlreadyExistsException(
+		throw AlreadyExistsException(
             "A WindowFactory for type '" + factory->getTypeName() +
-            "' is already registered."));
+            "' is already registered.");
 	}
 
 	// add the factory to the registry
 	d_factoryRegistry[factory->getTypeName()] = factory;
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(factory));
-	Logger::getSingleton().logEvent("WindowFactory for '" +
-       factory->getTypeName() +"' windows added. " + addr_buff);
+    String addressStr = SharedStringstream::GetPointerAddressAsString(factory);
+	Logger::getSingleton().logEvent("[WindowFactoryManager] WindowFactory for '" +
+       factory->getTypeName() +"' windows added. (" + addressStr + ")");
 }
 
 
@@ -108,22 +110,20 @@ void WindowFactoryManager::removeFactory(const String& name)
                                                    d_ownedFactories.end(),
                                                    (*i).second);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>((*i).second));
+    String addressStr = SharedStringstream::GetPointerAddressAsString((*i).second);
 
 	d_factoryRegistry.erase(name);
 
-    Logger::getSingleton().logEvent("WindowFactory for '" + name +
-                                    "' windows removed. " + addr_buff);
+    Logger::getSingleton().logEvent("[WindowFactoryManager] WindowFactory for '" + name +
+                                    "' windows removed. " + addressStr);
 
     // delete factory object if we created it
     if (j != d_ownedFactories.end())
     {
-        Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
-                                        (*j)->getTypeName() +
-                                        "' windows.");
+        Logger::getSingleton().logEvent("[WindowFactoryManager] Deleted WindowFactory "
+                                        "for '" + (*j)->getTypeName() + "' windows.");
 
-        CEGUI_DELETE_AO (*j);
+        delete (*j);
         d_ownedFactories.erase(j);
     }
 }
@@ -179,11 +179,11 @@ WindowFactory* WindowFactoryManager::getFactory(const String& type) const
         // type not found anywhere, give up with an exception.
         else
         {
-            CEGUI_THROW(UnknownObjectException(
+            throw UnknownObjectException(
                 "A WindowFactory object, an alias, or mapping for '" + type +
                 "' Window objects is not registered with the system.\n\n"
                 "Have you forgotten to load a scheme using "
-                "CEGUI::SchemeManager::createFromFile(..)?"));
+                "CEGUI::SchemeManager::createFromFile(..)?");
         }
     }
 }
@@ -314,12 +314,11 @@ void WindowFactoryManager::addFalagardWindowMapping(const String& newType,
         Logger::getSingleton().logEvent("Falagard mapping for type '" + newType + "' already exists - current mapping will be replaced.");
     }
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(&mapping));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&mapping);
     Logger::getSingleton().logEvent("Creating falagard mapping for type '" +
         newType + "' using base type '" + targetType + "', window renderer '" +
         renderer + "' Look'N'Feel '" + lookName + "' and RenderEffect '" +
-        effectName + "'. " + addr_buff);
+        effectName + "'. " + addressStr);
 
     d_falagardRegistry[newType] = mapping;
 }
@@ -362,9 +361,9 @@ const String& WindowFactoryManager::getMappedLookForType(const String& type) con
     // type does not exist as a mapped type (or an alias for one)
     else
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window factory type '" + type +
-            "' is not a falagard mapped type (or an alias for one)."));
+            "' is not a falagard mapped type (or an alias for one).");
     }
 }
 
@@ -380,9 +379,9 @@ const String& WindowFactoryManager::getMappedRendererForType(const String& type)
     // type does not exist as a mapped type (or an alias for one)
     else
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window factory type '" + type +
-            "' is not a falagard mapped type (or an alias for one)."));
+            "' is not a falagard mapped type (or an alias for one).");
     }
 }
 
@@ -411,9 +410,9 @@ const WindowFactoryManager::FalagardWindowMapping& WindowFactoryManager::getFala
     // type does not exist as a mapped type (or an alias for one)
     else
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Window factory type '" + type +
-            "' is not a falagard mapped type (or an alias for one)."));
+            "' is not a falagard mapped type (or an alias for one).");
     }
 }
 
@@ -429,9 +428,9 @@ const String& WindowFactoryManager::AliasTargetStack::getActiveTarget(void) cons
 }
 
 
-uint WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
+unsigned int WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
 {
-	return (uint)d_targetStack.size();
+	return (unsigned int)d_targetStack.size();
 }
 
 

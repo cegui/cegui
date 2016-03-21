@@ -177,7 +177,7 @@ protected:
 
     RGB_Colour getAlphaSliderPositionColour(int x, int y);
 
-    Vector2f getColourPickingColourPosition();
+    glm::vec2 getColourPickingColourPosition();
     void getColourPickingColourPositionHSV(float& x, float& y);
 
     // Handlers to relay child widget events so they appear to come from us
@@ -193,18 +193,18 @@ protected:
 
     bool handleAlphaEditboxTextChanged(const EventArgs& args);
 
-    bool handleColourPickerStaticImageMouseLeaves(const EventArgs& args);
-    bool handleColourPickerStaticImageMouseButtonUp(const EventArgs& args);
-    bool handleColourPickerStaticImageMouseButtonDown(const EventArgs& args);
-    bool handleColourPickerStaticImageMouseMove(const EventArgs& args);
+    bool handleColourPickerStaticImagePointerLeaves(const EventArgs& args);
+    bool handleColourPickerStaticImagePointerActivate(const EventArgs& args);
+    bool handleColourPickerStaticImagePointerPressHold(const EventArgs& args);
+    bool handleColourPickerStaticImagePointerMove(const EventArgs& args);
 
     virtual void onCancelButtonClicked(WindowEventArgs& e);
     virtual void onAcceptButtonClicked(WindowEventArgs& e);
 
-    void onColourCursorPositionChanged();
+    void onColourIndicatorPositionChanged();
     void onColourSliderChanged();
 
-    void refreshColourPickerCursorPosition(const MouseEventArgs& mouseEventArgs);
+    void refreshColourPickerIndicatorPosition(const CursorInputEventArgs& pointerEventArgs);
     void refreshAlpha();
 
     void refreshOnlyColourSliderImage();
@@ -214,15 +214,15 @@ protected:
     void refreshEditboxesAndColourRects();
 
     void refreshColourRects();
-    void positionColourPickerCursorAbsolute(float x, float y);
-    void positionColourPickerCursorRelative(float x, float y);
+    void positionColourPickerIndicatorAbsolute(float x, float y);
+    void positionColourPickerIndicatorRelative(float x, float y);
     void setColours(const Lab_Colour& newColourLAB);
     void setColours(const RGB_Colour& newColourRGB);
     void setColours(const HSV_Colour& newColourHSV);
 
     void setColourAlpha(float alphaValue);
 
-    void refreshColourPickerCursorPosition();
+    void refreshColourPickerIndicatorPosition();
     void refreshColourSliderPosition();
 
     void initColourPicker();
@@ -260,7 +260,7 @@ protected:
     Window* getColourPickerCursorStaticImage();
 
     ColourPicker* d_callingColourPicker;
-    Window* d_colourPickerCursor;
+    Window* d_colourPickerIndicator;
 
     SliderMode d_sliderMode;
 
@@ -294,7 +294,7 @@ protected:
 
     int d_colourPickerControlsTextureSize;
 
-    bool d_draggingColourPickerCursor;
+    bool d_draggingColourPickerIndicator;
 
     RGB_Colour* d_colourPickingTexture;
 

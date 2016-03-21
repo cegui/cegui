@@ -103,21 +103,21 @@ void DirectFBGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setTranslation(const Vector3f& v)
+void DirectFBGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setRotation(const Quaternion& r)
+void DirectFBGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setPivot(const Vector3f& p)
+void DirectFBGeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
     d_matrixValid = false;
@@ -126,10 +126,10 @@ void DirectFBGeometryBuffer::setPivot(const Vector3f& p)
 //----------------------------------------------------------------------------//
 void DirectFBGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
+    d_clipRect.top(std::max(0.0f, region.top()));
+    d_clipRect.bottom(std::max(0.0f, region.bottom()));
+    d_clipRect.left(std::max(0.0f, region.left()));
+    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
@@ -140,7 +140,7 @@ void DirectFBGeometryBuffer::appendVertex(const Vertex& vertex)
 
 //----------------------------------------------------------------------------//
 void DirectFBGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-                                            uint vertex_count)
+                                            unsigned int vertex_count)
 {
     IDirectFBSurface* t =
         d_activeTexture ? d_activeTexture->getDirectFBSurface() : 0;
@@ -161,7 +161,7 @@ void DirectFBGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     DFBVertex vd;
     const Vertex* vs = vbuff;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    for (unsigned int i = 0; i < vertex_count; ++i, ++vs)
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by DirectFB as needed.
@@ -197,13 +197,13 @@ Texture* DirectFBGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-uint DirectFBGeometryBuffer::getVertexCount() const
+unsigned int DirectFBGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint DirectFBGeometryBuffer::getBatchCount() const
+unsigned int DirectFBGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }

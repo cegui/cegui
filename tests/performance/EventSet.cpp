@@ -37,7 +37,7 @@ static const CEGUI::String EVENT_NAME("ExplicitlyAddedTestEvent");
 class EventSetPerformanceTest : public PerformanceTest
 {
 public:
-    EventSetPerformanceTest(CEGUI::String const& test_name, CEGUI::EventSet& set)
+    EventSetPerformanceTest(CEGUI::String test_name, CEGUI::EventSet& set)
         : PerformanceTest(test_name), d_eventSet(set)
     {
     }

@@ -47,13 +47,11 @@ enum BidiCharType
 };
 
 //! Abstract class to wrap a Bidi visual mapping of a text string.
-class CEGUIEXPORT BidiVisualMapping :
-    public AllocatedObject<BidiVisualMapping>
+class CEGUIEXPORT BidiVisualMapping
 {
 public:
     //! type definition for collection used to hold mapping index lists.
-    typedef std::vector<int
-        CEGUI_VECTOR_ALLOC(int)> StrIndexList;
+    typedef std::vector<int> StrIndexList;
 
     //! Destructor.
     virtual ~BidiVisualMapping();
@@ -63,7 +61,7 @@ public:
         Gets the Bidi char type of a char.
 
     \param charToCheck
-        The utf32 character code that will be checked.
+        The char / char32_t character code that will be checked.
 
     \return
         One of the BidiCharType enumerated values indicating the Bidi char type.

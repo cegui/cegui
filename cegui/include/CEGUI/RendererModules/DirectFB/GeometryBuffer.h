@@ -29,7 +29,6 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Rect.h"
-#include "CEGUI/Quaternion.h"
 #include <directfb.h>
 #include <vector>
 
@@ -51,17 +50,17 @@ public:
 
     // Implement GeometryBuffer interface.
     void draw() const;
-    void setTranslation(const Vector3f& v);
-    void setRotation(const Quaternion& r);
-    void setPivot(const Vector3f& p);
+    void setTranslation(const glm::vec3& v);
+    void setRotation(const glm::quat& r);
+    void setPivot(const glm::vec3& p);
     void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    void appendGeometry(const Vertex* const vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
+    unsigned int getVertexCount() const;
+    unsigned int getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
     void setClippingActive(const bool active);
@@ -75,7 +74,7 @@ protected:
     struct BatchInfo
     {
         IDirectFBSurface* texture;
-        uint vertexCount;
+        unsigned int vertexCount;
         bool clip;
     };
 
@@ -96,11 +95,11 @@ protected:
     //! whether clipping will be active for the current batch
     bool d_clippingActive;
     //! translation vector
-    Vector3f d_translation;
+    glm::vec3 d_translation;
     //! rotation vector
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! pivot point for rotation
-    Vector3f d_pivot;
+    glm::vec3 d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache

@@ -24,11 +24,11 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _First_Person_HUD_
-#define _First_Person_HUD_
+#ifndef _Restaurant_Game_h
+#define _Restaurant_Game_h
 
-#include "SampleBase.h"
-
+#include "Sample.h"
+#include <glm/glm.hpp>
 #include <vector>
 
 namespace CEGUI
@@ -48,14 +48,16 @@ enum SelectedWeapon
 };
 
 // Sample class
-class HUDDemo : public Sample
+class RestaurantGameSample : public Sample
 {
 public:
+    RestaurantGameSample();
+
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     void initGame();
-    void setupMouseCursor();
+    void setupCursor();
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
@@ -77,17 +79,17 @@ public:
 protected:
     static const CEGUI::String& getRandomGameImage();
 
-    void updateMouseCursor();
+    void updateCursor();
     void updatePlates(float timeSinceLastUpdate);
 
-    bool handlePlateWindowClicked(const CEGUI::EventArgs& args);
+    bool handlePlateWindowActivated(const CEGUI::EventArgs& args);
     bool handleScorePopupAnimationEnded(const CEGUI::EventArgs& args);
     bool handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args);
     bool handleWeaponRightArrowClicked(const CEGUI::EventArgs& args);
     bool handleRestartButtonClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
-    void createScorePopup(const CEGUI::Vector2<float>& mousePos, int points);
+    void createScorePopup(const glm::vec2& cursor_pos, std::int32_t points);
 
     void handleLivesChanged();
 
@@ -99,9 +101,9 @@ protected:
     CEGUI::Window* d_rootIngame;
     CEGUI::Window* d_rootGameOver;
 
-    CEGUI::Window* d_mouseCursorWnd;
+    CEGUI::Window* d_cursorWnd;
 
-    int d_score;
+    std::int32_t d_score;
 
     std::vector<GamePlate*> d_gamePlates;
     std::vector<CEGUI::Window*> d_delayDestroyWindows;

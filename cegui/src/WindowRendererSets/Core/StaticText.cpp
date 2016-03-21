@@ -119,7 +119,7 @@ namespace CEGUI
     FalagardStaticText::~FalagardStaticText()
     {
         if (d_formattedRenderedString)
-            CEGUI_DELETE_AO d_formattedRenderedString;
+            delete d_formattedRenderedString;
     }
 
 //----------------------------------------------------------------------------//
@@ -364,18 +364,18 @@ bool FalagardStaticText::contentFits() const
             case HTF_WORDWRAP_LEFT_ALIGNED:
             case HTF_JUSTIFIED:
             case HTF_WORDWRAP_JUSTIFIED:
-                absarea.offset(Vector2f(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_CENTRE_ALIGNED:
             case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(Vector2f(range / 2 - horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_RIGHT_ALIGNED:
             case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(Vector2f(range - horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             default:
                 CEGUI_THROW(InvalidRequestException("Invalid actual horizontal formatting."));
@@ -388,28 +388,27 @@ bool FalagardStaticText::contentFits() const
         const float vertScrollPosition = vertScrollbar->getScrollPosition();
         // if scroll bar is in use, position according to that.
         if (vertScrollbar->isEffectiveVisible())
-            absarea.d_min.d_y -= vertScrollPosition;
+            absarea.d_min.y -= vertScrollPosition;
         // no scrollbar, so adjust position according to formatting set.
         else
             switch(getActualVerticalFormatting())
             {
             case VTF_CENTRE_ALIGNED:
-                absarea.d_min.d_y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
+                absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
                 break;
             case VTF_BOTTOM_ALIGNED:
-                absarea.d_min.d_y = absarea.d_max.d_y - textHeight;
+                absarea.d_min.y = absarea.d_max.y - textHeight;
                 break;
             case VTF_TOP_ALIGNED:
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException("Invalid actual vertical formatting."));
+                throw InvalidRequestException("Invalid actual vertical formatting.");
             }
 
         // calculate final colours
-        ColourRect final_cols(d_textCols);
-        final_cols.modulateAlpha(d_window->getEffectiveAlpha());
+        const ColourRect final_cols(d_textCols);
         // cache the text for rendering.
-        d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffer(),
+        d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffers(),
                                         absarea.getPosition(),
                                         &final_cols, &clipper);
     }
@@ -586,10 +585,10 @@ void FalagardStaticText::setNumOfTextLinesToShow(NumOfTextLinesToShow to)
 
         vertScrollbar->setDocumentSize(documentSize.d_height);
         vertScrollbar->setPageSize(renderAreaSize.d_height);
-        vertScrollbar->setStepSize(ceguimax(1.0f, renderAreaSize.d_height / 10.0f));
+        vertScrollbar->setStepSize(std::max(1.0f, renderAreaSize.d_height / 10.0f));
         horzScrollbar->setDocumentSize(documentSize.d_width);
         horzScrollbar->setPageSize(renderAreaSize.d_width);
-        horzScrollbar->setStepSize(ceguimax(1.0f, renderAreaSize.d_width / 10.0f));
+        horzScrollbar->setStepSize(std::max(1.0f, renderAreaSize.d_width / 10.0f));
     }
 
     /*************************************************************************
@@ -625,11 +624,11 @@ void FalagardStaticText::setNumOfTextLinesToShow(NumOfTextLinesToShow to)
 
 
     /*************************************************************************
-        Handler for mouse wheel changes
+        Handler for scroll actions
     *************************************************************************/
-    bool FalagardStaticText::onMouseWheel(const EventArgs& event)
+    bool FalagardStaticText::onScroll(const EventArgs& event)
     {
-        const MouseEventArgs& e = static_cast<const MouseEventArgs&>(event);
+        const CursorInputEventArgs& e = static_cast<const CursorInputEventArgs&>(event);
 
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -639,11 +638,11 @@ void FalagardStaticText::setNumOfTextLinesToShow(NumOfTextLinesToShow to)
 
         if (vertScrollbarVisible && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
         {
-            vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
+            vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
         }
         else if (horzScrollbarVisible && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
         {
-            horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
+            horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
         }
 
         return vertScrollbarVisible || horzScrollbarVisible;
@@ -699,8 +698,8 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
                 Event::Subscriber(&FalagardStaticText::onFontChanged, this)));
 
         d_connections.push_back(
-            d_window->subscribeEvent(Window::EventMouseWheel,
-                Event::Subscriber(&FalagardStaticText::onMouseWheel, this)));
+            d_window->subscribeEvent(Window::EventScroll,
+                Event::Subscriber(&FalagardStaticText::onScroll, this)));
 
         d_connections.push_back(
             d_window->subscribeEvent(Window::EventIsSizeAdjustedToContentChanged,
@@ -734,45 +733,45 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
         {
         case HTF_LEFT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO LeftAlignedRenderedString(d_window->getRenderedString());
+                new LeftAlignedRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_RIGHT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RightAlignedRenderedString(d_window->getRenderedString());
+                new RightAlignedRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_CENTRE_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO CentredRenderedString(d_window->getRenderedString());
+                new CentredRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_JUSTIFIED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO JustifiedRenderedString(d_window->getRenderedString());
+                new JustifiedRenderedString(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_LEFT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <LeftAlignedRenderedString>(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_RIGHT_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <RightAlignedRenderedString>(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_CENTRE_ALIGNED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <CentredRenderedString>(d_window->getRenderedString());
             break;
 
         case HTF_WORDWRAP_JUSTIFIED:
             d_formattedRenderedString =
-                CEGUI_NEW_AO RenderedStringWordWrapper
+                new RenderedStringWordWrapper
                     <JustifiedRenderedString>(d_window->getRenderedString());
             break;
         }
