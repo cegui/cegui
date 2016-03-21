@@ -3,12 +3,30 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System
 for each release.
-@note From the 0.8.0 release items are taken from our mantis ticket tracking
-system and not from the commit logs themsevles - this means that releases will
-likely contain additions, fixes and other changes that do not get mentioned in
-this change log. If you're looking for a 100% complete record of all changes
-please consult the commit logs!
+@note Starting with the 0.8.5 release, a list of resolved issues from our bitbucket bug-tracker
+will be used as change log. The list might be incomplete, as some (especially smaller) changes often are
+not mentioned in the issue tracker. Therefore, if you want more in-depth information about all changes and
+a definitely complete list, please read the commit logs of the v0-8 branch up to the point of this release!
 
+<b>Release 0.8.5 (taken from bitbucket issue-tracker, milestone 0.8.5. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. [https://bitbucket.org/cegui/cegui/issue/998](http://example.net/) </b>
+- Some changes around the Cmake for the OgreRenderer were done, both fixes and enhancements
+- #998: SimpleTimer.cpp includes headers into namespace
+- #1019: Docu lacks info on deinitialisation of CEGUI
+- #1034: Doxygen docs use GIF images
+- #1063: OpenGLRenderer on Linux renders CEGUI samples upside-down
+- #1065: The 0.7->0.8 porting tips should either be added to the API Docu or referenced from there
+- #1072: Docu: Replace CEGUIFalagardWRBase with CEGUICoreWindowRendererSet in Docu
+- #1076: TabControl XML printing prints children twice 
+- #1077: ComboDropList output to XML shows RestoreOldCapture for Scrollbar's autowindow children
+- #1078: Properties that are forwarded via PropertyLinkDefinitions are printed to XML
+- #1079: Tooltips behave glitchy, take away focus from underlying windows, affect move-events 
+- #1080: Tooltips are wrongly printed to XML, inheritance affects the printing and uses wrong values
+- #1081: Numerous windows XML-print some redundant (because forwarded) AutoWindow properties
+- #1082: Scrollable panes print their children inside their autowindow instead of directly inside them
+- #1087: StaticText uses incorrect Font when DefaultFont of a GUIContext is changed
+- #1097: Window font ignored in RenderStringTextComponents
+- #1104: Issue an exception if the locale is unexpected, before parsing anything with sscanf
+- #1110: Support building CEGUI and its deps on Windows with MSVC for 64-bit.
 
 <b>Release 0.8.4 (taken from commit logs, since there were no mantis entries)</b>
 - Package 'promo' dir, people might want to use logo in their products.
