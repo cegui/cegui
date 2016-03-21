@@ -181,9 +181,6 @@ setting CMake options and regenerating, rather than editing directly.
 // Controls whether to use Epoxy as an OpenGL loading library.
 #cmakedefine CEGUI_USE_EPOXY
 
-// Controls whether to support OpenGL ES 2.0 renderer.
-#cmakedefine CEGUI_SUPPORT_RENDERER_OPENGLES2
-
 //////////////////////////////////////////////////////////////////////////
 // The following controls whether the MinizipResourceProvider will be
 // built into the CEGUIBase library.  You can uncomment the following line

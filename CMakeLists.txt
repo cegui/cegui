@@ -53,9 +53,9 @@ set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION
 #   - If the interface had binary compabilbe additions only (so no ABI breaking
 #     changes) increase AGE, else set AGE to 0.
 #
-set( CEGUI_ABI_CURRENT 5)
+set( CEGUI_ABI_CURRENT 6)
 set( CEGUI_ABI_REVISION 0)
-set( CEGUI_ABI_AGE 3)
+set( CEGUI_ABI_AGE 4)
 MATH( EXPR CEGUI_SOVERSION ${CEGUI_ABI_CURRENT}-${CEGUI_ABI_AGE} )
 set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION} )
 
