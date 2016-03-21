@@ -28,7 +28,7 @@
 #define _CEGUIOpenGL1Texture_h_
 
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
-#include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -45,11 +45,7 @@ public:
     virtual void blitToMemory(void* targetData);
 
 protected:
-    friend class OpenGLRenderer;
-
-    //! Basic constructor.
     OpenGL1Texture(OpenGLRendererBase& owner, const String& name);
-    //! Destructor.
     virtual ~OpenGL1Texture();
 
     //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
