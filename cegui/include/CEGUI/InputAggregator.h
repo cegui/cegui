@@ -210,7 +210,7 @@ public:
     */
     virtual bool injectKeyUp(Key::Scan scan_code);
 
-    virtual bool injectChar(String::value_type code_point);
+    virtual bool injectChar(char32_t code_point);
     virtual bool injectMouseWheelChange(float delta);
     virtual bool injectMousePosition(float x_pos, float y_pos);
 

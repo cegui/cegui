@@ -128,7 +128,7 @@ public:
         - true if the input was processed by the receiver.
         - false if the input was not processed by the receiver.
     */
-    virtual bool injectChar(String::value_type code_point) = 0;
+    virtual bool injectChar(char32_t code_point) = 0;
 
     /*!
     \brief

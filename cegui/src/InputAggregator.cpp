@@ -427,7 +427,7 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
         isControlPressed());
 }
 
-bool InputAggregator::injectChar(String::value_type code_point)
+bool InputAggregator::injectChar(char32_t code_point)
 {
     if (d_inputReceiver == 0)
         return false;

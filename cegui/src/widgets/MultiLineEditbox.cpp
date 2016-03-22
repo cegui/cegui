@@ -824,7 +824,7 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
 
 	// only need to take notice if we have focus
 	if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.character))
+        getFont()->isCodepointAvailable(e.d_character))
 	{
 		// erase selected text
 		eraseSelectedText();
@@ -836,9 +836,9 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_INSERT;
             undo.d_startIdx = getCaretIndex();
-            undo.d_text = e.character;
+            undo.d_text = e.d_character;
             d_undoHandler->addUndoHistory(undo);
-            newText.insert(getCaretIndex(), 1, e.character);
+            newText.insert(getCaretIndex(), 1, e.d_character);
             setText(newText);
 
 			d_caretPos++;
