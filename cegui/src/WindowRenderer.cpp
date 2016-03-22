@@ -63,11 +63,10 @@ const WidgetLookFeel& WindowRenderer::getLookNFeel() const
 *************************************************************************/
 Rectf WindowRenderer::getUnclippedInnerRect() const
 {
-    const WidgetLookFeel& lf(getLookNFeel());
+    const WidgetLookFeel& wlf(getLookNFeel());
 
-    if (lf.isNamedAreaDefined("inner_rect"))
-        return lf.getNamedArea("inner_rect").getArea().
-            getPixelRect(*d_window, d_window->getUnclippedOuterRect().get());
+    if(wlf.isNamedAreaPresent("inner_rect", true))
+        return wlf.getNamedArea("inner_rect").getArea().getPixelRect(*d_window, d_window->getUnclippedOuterRect().get());
     else
         return d_window->getUnclippedOuterRect().get();
 }
@@ -138,25 +137,25 @@ bool WindowRenderer::handleFontRenderSizeChange(const Font* const font)
 //----------------------------------------------------------------------------//
 float WindowRenderer::getContentWidth() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of window renderer."));
+    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }
 
 //----------------------------------------------------------------------------//
 float WindowRenderer::getContentHeight() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of window renderer."));
+    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }
 
 //----------------------------------------------------------------------------//
 UDim WindowRenderer::getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of window renderer."));
+    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }
 
 //----------------------------------------------------------------------------//
 UDim WindowRenderer::getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of window renderer."));
+    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }
 
 //----------------------------------------------------------------------------//
@@ -168,13 +167,13 @@ void WindowRenderer::adjustSizeToContent()
 //----------------------------------------------------------------------------//
 bool WindowRenderer::contentFitsForSpecifiedWindowSize(const Sizef& /*window_size*/) const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of window renderer."));
+    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }
 
 //----------------------------------------------------------------------------//
 bool WindowRenderer::contentFits() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of window renderer."));
+    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }
 
 //----------------------------------------------------------------------------//

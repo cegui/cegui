@@ -4,7 +4,7 @@
 
     This looknfeel specifies a set of WidgetLook definitions that are intended
     to recreate the overall look of Ogre's new SDK tray system within CEGUI.
-    
+
     This looknfeel has been made for use in some upcoming recreations of the
     Ogre samples, that use CEGUI instead of the new Ogre SDK tray system.  This
     is being done mostly for fun, though also to demonstrate the use of CEGUI
@@ -474,7 +474,6 @@
 -->
     <WidgetLook name="OgreTray/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="true"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -583,7 +582,6 @@
 -->
     <WidgetLook name="OgreTray/HorizontalScrollbar">
         <Property name="VerticalScrollbar" value="false"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -2067,10 +2065,11 @@
         </StateImagery>
     </WidgetLook>
     <!--
-:::: Listbox
+:::: ListView
 -->
-    <WidgetLook name="OgreTray/Listbox">
+    <WidgetLook name="OgreTray/ListView">
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="OgreTrayImages/MiniTextBoxOverM"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2332,7 +2331,7 @@
         <PropertyLinkDefinition targetProperty="NormalTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="NormalEditTextColour"/>
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="SelectedEditTextColour"/>
         <Property name="ReadOnly" value="true"/>
-        <Property name="SingleClickMode" value="true"/>
+        <Property name="SingleCursorActivationMode" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="OgreTray/Editbox">
             <Area>
@@ -2797,8 +2796,7 @@
 -->
     <WidgetLook name="OgreTray/Slider">
         <Property name="VerticalSlider" value="false"/>
-        <Property name="MouseAutoRepeatEnabled" value="true"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="CursorAutoRepeatEnabled" value="true"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -3185,200 +3183,7 @@
             <Subscription action="Start" event="TooltipInactive"/>
         </AnimationDefinition>
     </WidgetLook>
-    <!--
-:::: ItemListbox
--->
-    <WidgetLook name="OgreTray/ItemListbox">
-        <Property name="Size" value="{{0, 256}, {0, 256}}" />
-        <NamedArea name="ItemRenderArea">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayT" dimension="Height"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="RightEdge"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayR" dimension="Width"/>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="BottomEdge"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayB" dimension="Height"/>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderAreaHScroll">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayT" dimension="Height"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="RightEdge"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayR" dimension="Width"/>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="BottomEdge"/>
-                        <OperatorDim op="Add">
-                            <ImageDim name="OgreTrayImages/MiniTrayB" dimension="Height"/>
-                            <ImageDim name="OgreTrayImages/Handle" dimension="Height"/>
-                        </OperatorDim>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderAreaVScroll">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayT" dimension="Height"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="RightEdge"/>
-                        <OperatorDim op="Add">
-                            <ImageDim name="OgreTrayImages/MiniTrayR" dimension="Width"/>
-                            <ImageDim name="OgreTrayImages/Handle" dimension="Width"/>
-                        </OperatorDim>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="BottomEdge"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayB" dimension="Height"/>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <NamedArea name="ItemRenderAreaHVScroll">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayT" dimension="Height"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="RightEdge"/>
-                        <OperatorDim op="Add">
-                            <ImageDim name="OgreTrayImages/MiniTrayR" dimension="Width"/>
-                            <ImageDim name="OgreTrayImages/Handle" dimension="Width"/>
-                        </OperatorDim>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1.0" type="BottomEdge"/>
-                        <OperatorDim op="Add">
-                            <ImageDim name="OgreTrayImages/MiniTrayB" dimension="Height"/>
-                            <ImageDim name="OgreTrayImages/Handle" dimension="Height"/>
-                        </OperatorDim>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <Child nameSuffix="__auto_hscrollbar__" type="OgreTray/HorizontalScrollbar">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <OperatorDim op="Subtract">
-                        <AbsoluteDim value="0"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayB" dimension="Height"/>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="Width"/>
-                        <OperatorDim op="Add">
-                            <ImageDim name="OgreTrayImages/MiniTrayR" dimension="Width"/>
-                            <ImageDim name="OgreTrayImages/Handle" dimension="Width"/>
-                        </OperatorDim>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="Height">
-                    <ImageDim name="OgreTrayImages/Handle" dimension="Height"/>
-                </Dim>
-            </Area>
-            <VertAlignment type="BottomAligned"/>
-            <Property name="NonClient" value="true"/>
-        </Child>
-        <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
-            <Area>
-                <Dim type="LeftEdge">
-                    <OperatorDim op="Subtract">
-                        <AbsoluteDim value="0"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayR" dimension="Width"/>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="OgreTrayImages/MiniTrayT" dimension="Height"/>
-                </Dim>
-                <Dim type="Width">
-                    <ImageDim name="OgreTrayImages/Handle" dimension="Width"/>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge"/>
-                        <ImageDim name="OgreTrayImages/MiniTrayB" dimension="Height"/>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-            <HorzAlignment type="RightAligned"/>
-            <Property name="NonClient" value="true"/>
-        </Child>
-        <ImagerySection name="main">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="TopEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="RightEdge">
-                        <UnifiedDim scale="1" type="RightEdge"/>
-                    </Dim>
-                    <Dim type="BottomEdge">
-                        <UnifiedDim scale="1" type="BottomEdge"/>
-                    </Dim>
-                </Area>
-                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL"/>
-                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR"/>
-                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL"/>
-                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR"/>
-                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL"/>
-                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT"/>
-                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR"/>
-                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB"/>
-                <Image component="Background" name="OgreTrayImages/MiniTrayM"/>
-            </FrameComponent>
-        </ImagerySection>
-        <StateImagery name="Enabled">
-            <Layer>
-                <Section section="main"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Disabled">
-            <Layer>
-                <Section section="main"/>
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
+
     <!--
 :::: ListboxItem
 -->
@@ -4323,7 +4128,6 @@
     <WidgetLook name="OgreTray/MenuItem">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="TextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF779977" type="ColourRect" name="PushedOffColour"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>

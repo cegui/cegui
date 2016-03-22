@@ -31,7 +31,7 @@
 
 #include "CEGUI/Font.h"
 #include "CEGUI/DataContainer.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -130,7 +130,7 @@ protected:
     \return
         Nothing.
     */
-    void drawGlyphToBuffer(argb_t* buffer, uint buf_width) const;
+    void drawGlyphToBuffer(argb_t* buffer, unsigned int buf_width) const;
 
     /*!
     \brief
@@ -141,7 +141,7 @@ protected:
     \param e
         The last glyph in set
     */
-    uint getTextureSize(CodepointMap::const_iterator s,
+    unsigned int getTextureSize(CodepointMap::const_iterator s,
                         CodepointMap::const_iterator e) const;
 
     //! Register all properties of this class.
@@ -155,8 +155,8 @@ protected:
     void initialiseGlyphMap();
 
     // overrides of functions in Font base class.
-    const FontGlyph* findFontGlyph(const utf32 codepoint) const;
-    void rasterise(utf32 start_codepoint, utf32 end_codepoint) const;
+    const FontGlyph* findFontGlyph(const char32_t codepoint) const;
+    void rasterise(char32_t start_codepoint, char32_t end_codepoint) const;
     void updateFont();
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
 
@@ -164,19 +164,17 @@ protected:
     float d_specificLineSpacing;
     //! Point size of font.
     float d_ptSize;
-    //! True if the font should be rendered as anti-alaised by freeType.
+    //! True if the font should be rendered as anti-aliased by freeType.
     bool d_antiAliased;
     //! FreeType-specific font handle
     FT_Face d_fontFace;
     //! Font file data
     RawDataContainer d_fontData;
     //! Type definition for TextureVector.
-    typedef std::vector<Texture*
-        CEGUI_VECTOR_ALLOC(Texture*)> TextureVector;
+    typedef std::vector<Texture*> TextureVector;
     //! Textures that hold the glyph imagery for this font.
     mutable TextureVector d_glyphTextures;
-    typedef std::vector<BasicImage*
-        CEGUI_VECTOR_ALLOC(BasicImage*)> ImageVector;
+    typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
 };

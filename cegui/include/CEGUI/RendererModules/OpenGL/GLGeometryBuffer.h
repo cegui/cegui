@@ -38,7 +38,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class OpenGLTexture;
 class OpenGLRenderer;
 
 /*!
@@ -49,10 +48,16 @@ class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public OpenGLGeometryBufferB
 {
 public:
     //! Constructor
-    OpenGLGeometryBuffer(OpenGLRenderer& owner);
+    OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
-    // implementation/overrides of members from GeometryBuffer
-    void draw() const;
+    // Overrides of virtual and abstract methods inherited from GeometryBuffer
+    virtual void draw() const;
+
+    /*
+    \brief
+        Updates the fixed-function vertex data pointers based on the defined vertex attributes
+    */
+    void setupVertexDataPointers() const;
 };
 
 } // End of  CEGUI namespace section

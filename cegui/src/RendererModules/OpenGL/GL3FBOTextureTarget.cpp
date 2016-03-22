@@ -32,6 +32,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 
 #include "CEGUI/Logger.h"
 
@@ -45,8 +46,9 @@ namespace CEGUI
 const float OpenGL3FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
-    OpenGLTextureTarget(owner)
+OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer),
+    d_glStateChanger(owner.getOpenGLStateChanger())
 {
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()
@@ -61,6 +63,11 @@ OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
 OpenGL3FBOTextureTarget::~OpenGL3FBOTextureTarget()
 {
     glDeleteFramebuffers(1, &d_frameBuffer);
+
+    if (d_usesStencil)
+    {
+        glDeleteRenderbuffers(1, &d_stencilBufferRBO);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -114,8 +121,14 @@ void OpenGL3FBOTextureTarget::clear()
     // switch to our FBO
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
     // Clear it.
+    d_glStateChanger->disable(GL_SCISSOR_TEST);
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
+
+    if(!d_usesStencil)
+        glClear(GL_COLOR_BUFFER_BIT);
+    else
+        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
     // switch back to rendering to the previously bound FBO
     glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
 
@@ -130,9 +143,6 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
-    // create FBO
-    glGenFramebuffers(1, &d_frameBuffer);
-
     // remember previously bound FBO-s to make sure we set them back
     GLint previousFBO_read(-1), previousFBO_draw(-1), previousFBO(-1);
     if (OpenGLInfo::getSingleton().isSeperateReadAndDrawFramebufferSupported())
@@ -142,14 +152,17 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     }
     else
         glGetIntegerv(OpenGLInfo::getSingleton().isUsingOpenglEs() ?
-                        GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
-                      &previousFBO);
+            GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
+            &previousFBO);
+
+    // create FBO
+    glGenFramebuffers(1, &d_frameBuffer);
 
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
     // set up the texture the FBO will draw to
     glGenTextures(1, &d_texture);
-    glBindTexture(GL_TEXTURE_2D, d_texture);
+    d_glStateChanger->bindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -163,6 +176,19 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_TEXTURE_2D, d_texture, 0);
+
+    if (d_usesStencil)
+    { 
+        // Set up the stencil buffer for the FBO
+        glGenRenderbuffers(1, &d_stencilBufferRBO);
+        glBindRenderbuffer(GL_RENDERBUFFER, d_stencilBufferRBO);
+        glRenderbufferStorage(GL_RENDERBUFFER,
+                              GL_STENCIL_INDEX8,
+                              static_cast<GLsizei>(DEFAULT_SIZE),
+                              static_cast<GLsizei>(DEFAULT_SIZE));
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
+                                  GL_RENDERBUFFER, d_stencilBufferRBO);
+    }
 
     //Check for framebuffer completeness
     checkFramebufferStatus();
@@ -180,7 +206,7 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
 
     // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+    d_glStateChanger->bindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -202,7 +228,7 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
     }
 
     // set the texture to the required size
-    glBindTexture(GL_TEXTURE_2D, d_texture);
+    d_glStateChanger->bindTexture(GL_TEXTURE_2D, d_texture);
 
     glTexImage2D(GL_TEXTURE_2D, 0,
                  OpenGLInfo::getSingleton().isSizedInternalFormatSupported() ?
@@ -210,13 +236,23 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+    if (d_usesStencil)
+    {
+        glBindRenderbuffer(GL_RENDERBUFFER, d_stencilBufferRBO);
+        glRenderbufferStorage(GL_RENDERBUFFER,
+            GL_STENCIL_INDEX8,
+            static_cast<GLsizei>(sz.d_width),
+            static_cast<GLsizei>(sz.d_height));
+    }
+
     clear();
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
 
     // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+    d_glStateChanger->bindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -246,7 +282,7 @@ void OpenGL3FBOTextureTarget::checkFramebufferStatus()
     if(status != GL_FRAMEBUFFER_COMPLETE)
     {
         std::stringstream stringStream;
-        stringStream << "OpenGL3Renderer: Error  Framebuffer is not complete\n";
+        stringStream << "OpenGL3Renderer: Error - The Framebuffer is incomplete: ";
 
         switch(status)
         {
@@ -254,16 +290,16 @@ void OpenGL3FBOTextureTarget::checkFramebufferStatus()
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
             break;
         case GL_FRAMEBUFFER_UNDEFINED:
-            stringStream << "GL_FRAMEBUFFER_UNDEFINED \n";
+            stringStream << "GL_FRAMEBUFFER_UNDEFINED\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER :
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER \n";
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER\n";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
             stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n";
