@@ -485,7 +485,7 @@ static unsigned int powOf2Supremum(unsigned int value)
             value >>= 1;
         }
     }
-    return static_cast<unsigned int>(1) << num_of_digits;
+    return 1u << num_of_digits;
 }
 
 //----------------------------------------------------------------------------//
