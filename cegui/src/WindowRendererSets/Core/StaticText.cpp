@@ -167,9 +167,9 @@ float FalagardStaticText::NumOfTextLinesToShow::get() const
 }
 
 //----------------------------------------------------------------------------//
-void FalagardStaticText::NumOfTextLinesToShow::set(float to)
+void FalagardStaticText::NumOfTextLinesToShow::set(float newValue)
 {
-    d_value = to;
+    d_value = newValue;
 }
 
 //----------------------------------------------------------------------------//
@@ -487,11 +487,11 @@ const ComponentArea& FalagardStaticText::getTextComponentArea() const
     }
 
 //----------------------------------------------------------------------------//
-void FalagardStaticText::setNumOfTextLinesToShow(NumOfTextLinesToShow to)
+void FalagardStaticText::setNumOfTextLinesToShow(NumOfTextLinesToShow newValue)
 {
-    if (d_numOfTextLinesToShow == to)
+    if (d_numOfTextLinesToShow == newValue)
         return;
-    d_numOfTextLinesToShow = to;
+    d_numOfTextLinesToShow = newValue;
     invalidateFormatting();
     getWindow()->adjustSizeToContent();
 }
