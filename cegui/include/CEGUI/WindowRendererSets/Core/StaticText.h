@@ -199,8 +199,8 @@ namespace CEGUI
             void setAuto();
             //! Get the value. Only use it it's not "Auto".
             float get() const;
-            //! Set the value to a "float" value.
-            void set(float to);
+            //! Set the value to "newValue".
+            void set(float newValue);
             //! Return the value. Only use it it's not "Auto".
             operator float() const;
             //! Return an object set to "Auto".
@@ -276,7 +276,7 @@ namespace CEGUI
 
         \see getNumOfTextLinesToShow
         */
-        void setNumOfTextLinesToShow(NumOfTextLinesToShow to);
+        void setNumOfTextLinesToShow(NumOfTextLinesToShow newValue);
 
         /*!
         \brief
