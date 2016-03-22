@@ -53,13 +53,13 @@ const Colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 /*************************************************************************
 	Base class constructor
 *************************************************************************/
-ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
+ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
+    d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
+    d_bidiVisualMapping(new MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -78,7 +78,7 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-    CEGUI_DELETE_AO d_bidiVisualMapping;
+    delete d_bidiVisualMapping;
 }
 
 /*************************************************************************
@@ -88,23 +88,6 @@ void ListboxItem::setSelectionBrushImage(const String& name)
 {
 	setSelectionBrushImage(&ImageManager::getSingleton().get(name));
 }
-
-
-/*************************************************************************
-	Return a ColourRect object describing the colours in 'cols' after
-	having their alpha component modulated by the value 'alpha'.
-*************************************************************************/
-ColourRect ListboxItem::getModulateAlphaColourRect(const ColourRect& cols, float alpha) const
-{
-	return ColourRect
-		(
-			calculateModulatedAlphaColour(cols.d_top_left, alpha),
-			calculateModulatedAlphaColour(cols.d_top_right, alpha),
-			calculateModulatedAlphaColour(cols.d_bottom_left, alpha),
-			calculateModulatedAlphaColour(cols.d_bottom_right, alpha)
-		);
-}
-
 
 /*************************************************************************
 	Return a colour value describing the colour specified by 'col' after

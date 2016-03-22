@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for ButtonBase widget
 *************************************************************************/
 /***************************************************************************
@@ -57,9 +57,10 @@ public:
 	\brief
 		return true if user is hovering over this widget (or it's pushed and user is not over it for highlight)
 
-	\return
-		true if the user is hovering or if the button is pushed and the mouse is not over the button.  Otherwise return false.
-	*/
+    \return
+        true if the user is hovering or if the button is pushed and the pointer is
+        not over the button. Otherwise return false.
+    */
 	bool	isHovering(void) const			{return d_hovering;}
 
 
@@ -98,29 +99,30 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onMouseLeaves(MouseEventArgs& e);
+    virtual void    onCursorMove(CursorInputEventArgs& e);
+    virtual void    onCursorLeaves(CursorInputEventArgs& e);
+    virtual void    onCursorPressHold(CursorInputEventArgs& e);
+    virtual void    onCursorActivate(CursorInputEventArgs& e);
+    virtual void    onCaptureLost(WindowEventArgs& e);
 
 
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
-	/*!
-	\brief
-		Update the internal state of the widget with the mouse at the given position.
+    /*!
+    \brief
+    Update the internal state of the widget with the cursor at the given position.
 
-	\param mouse_pos
-		Point object describing, in screen pixel co-ordinates, the location of the mouse cursor.
+    \param cursor_pos
+        Point object describing, in screen pixel co-ordinates, the location of
+        the cursor.
 
-	\return
-		Nothing
-	*/
-	void	updateInternalState(const Vector2f& mouse_pos);
+    \return
+        Nothing
+    */
+    void updateInternalState(const glm::vec2& cursor_pos);
 
-    bool calculateCurrentHoverState(const Vector2f& mouse_pos);
+    bool calculateCurrentHoverState(const glm::vec2& cursor_pos);
 
 	/*************************************************************************
 		Implementation Data

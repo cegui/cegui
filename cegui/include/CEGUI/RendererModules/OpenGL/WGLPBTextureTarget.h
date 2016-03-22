@@ -27,12 +27,12 @@
 #ifndef _CEGUIOpenGLWGLPBTextureTarget_h_
 #define _CEGUIOpenGLWGLPBTextureTarget_h_
 
-//#include <windows.h>
-#include "CEGUI/RendererModules/OpenGL/GL.h"
-#include <GL/wglew.h>
-
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
-#include "../../Rect.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+#include "../../Rectf.h"
+
+#include <windows.h>
+#include <GL/wglew.h>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -52,7 +52,7 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner);
+    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer);
     virtual ~OpenGLWGLPBTextureTarget();
 
     // overrides from OpenGLRenderTarget

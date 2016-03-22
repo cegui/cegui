@@ -49,10 +49,10 @@ namespace CEGUI
 class CEGUIEXPORT HeaderSequenceEventArgs : public WindowEventArgs
 {
 public:
-	HeaderSequenceEventArgs(Window* wnd, uint old_idx, uint new_idx) : WindowEventArgs(wnd), d_oldIdx(old_idx), d_newIdx(new_idx) {};
+	HeaderSequenceEventArgs(Window* wnd, unsigned int old_idx, unsigned int new_idx) : WindowEventArgs(wnd), d_oldIdx(old_idx), d_newIdx(new_idx) {};
 
-	uint d_oldIdx;		//!< The original column index of the segment that has moved.
-	uint d_newIdx;		//!< The new column index of the segment that has moved.
+	unsigned int d_oldIdx;		//!< The original column index of the segment that has moved.
+	unsigned int d_newIdx;		//!< The new column index of the segment that has moved.
 };
 
 /*!
@@ -206,9 +206,9 @@ public:
 		Return the number of columns or segments attached to the header.
 
 	\return
-		uint value equal to the number of columns / segments currently in the header.
+		unsigned int value equal to the number of columns / segments currently in the header.
 	*/
-	uint	getColumnCount(void) const;
+	unsigned int getColumnCount(void) const;
 
 	
 	/*!
@@ -223,7 +223,7 @@ public:
 
 	\exception InvalidRequestException	thrown if column is out of range.
 	*/
-	ListHeaderSegment&	getSegmentFromColumn(uint column) const;
+	ListHeaderSegment&	getSegmentFromColumn(unsigned int column) const;
 
 
 	/*!
@@ -239,7 +239,7 @@ public:
 
 	\exception	InvalidRequestException		thrown if no segment with the requested ID is attached.
 	*/
-	ListHeaderSegment&	getSegmentFromID(uint id) const;
+	ListHeaderSegment&	getSegmentFromID(unsigned int id) const;
 
 
 	/*!
@@ -259,11 +259,11 @@ public:
 		to successfully call this method.
 
 	\return
-		uint which is the sort-key segment ID.
+		unsigned int which is the sort-key segment ID.
 
 	\exception	InvalidRequestException		thrown if no segments are attached to the ListHeader.
 	*/
-	uint	getSortSegmentID(void) const;
+	unsigned int	getSortSegmentID(void) const;
 
 
 	/*!
@@ -278,7 +278,7 @@ public:
 
 	\exception	InvalidRequestException		thrown if \a segment is not attached to this ListHeader.
 	*/
-	uint	getColumnFromSegment(const ListHeaderSegment& segment) const;
+	unsigned int	getColumnFromSegment(const ListHeaderSegment& segment) const;
 
 
 	/*!
@@ -293,7 +293,7 @@ public:
 
 	\exception	InvalidRequestException		thrown if no attached segment has the requested ID.
 	*/
-	uint	getColumnFromID(uint id) const;
+	unsigned int	getColumnFromID(unsigned int id) const;
 
 
 	/*!
@@ -306,7 +306,7 @@ public:
 
 	\exception	InvalidRequestException		thrown if there are no segments / columns in this ListHeader.
 	*/
-	uint	getSortColumn(void) const;
+	unsigned int	getSortColumn(void) const;
 
 
 	/*!
@@ -321,7 +321,7 @@ public:
 
 	\exception InvalidRequestException	thrown if no attached segments have the requested text.
 	*/
-	uint	getColumnWithText(const String& text) const;
+	unsigned int	getColumnWithText(const String& text) const;
 
 
 	/*!
@@ -332,7 +332,7 @@ public:
 		ListHeaderSegment object that the offset to is to be returned.
 
 	\return
-		The number of pixels up-to the begining of the ListHeaderSegment described by \a segment.
+		The number of pixels up-to the beginning of the ListHeaderSegment described by \a segment.
 
 	\exception InvalidRequestException	thrown if \a segment is not attached to the ListHeader.
 	*/
@@ -347,12 +347,12 @@ public:
 		Zero based column index of the ListHeaderSegment whos pixel offset it to be returned.
 
 	\return
-		The number of pixels up-to the begining of the ListHeaderSegment located at zero based column
+		The number of pixels up-to the beginning of the ListHeaderSegment located at zero based column
 		index \a column.
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	float	getPixelOffsetToColumn(uint column) const;
+	float	getPixelOffsetToColumn(unsigned int column) const;
 
 
 	/*!
@@ -378,7 +378,7 @@ public:
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	UDim getColumnWidth(uint column) const;
+	UDim getColumnWidth(unsigned int column) const;
 
 
 	/*!
@@ -490,7 +490,7 @@ public:
 
 	\exception InvalidRequestException	thrown if \a column is out of range for this ListHeader.
 	*/
-	void	setSortColumn(uint column);
+	void	setSortColumn(unsigned int column);
 
 
 	/*!
@@ -505,7 +505,7 @@ public:
 
 	\exception InvalidRequestException	thrown if no segment with ID \a id is attached to the ListHeader.
 	*/
-	void	setSortColumnFromID(uint id);
+	void	setSortColumnFromID(unsigned int id);
 
 
 	/*!
@@ -552,7 +552,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	addColumn(const String& text, uint id, const UDim& width);
+	void	addColumn(const String& text, unsigned int id, const UDim& width);
 
 
 	/*!
@@ -575,7 +575,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	insertColumn(const String& text, uint id, const UDim& width, uint position);
+	void	insertColumn(const String& text, unsigned int id, const UDim& width, unsigned int position);
 
 
 	/*!
@@ -600,7 +600,7 @@ public:
 
 	\exception InvalidRequestException	thrown if ListHeaderSegment \a position is not attached to the ListHeader.
 	*/
-	void	insertColumn(const String& text, uint id, const UDim& width, const ListHeaderSegment& position);
+	void	insertColumn(const String& text, unsigned int id, const UDim& width, const ListHeaderSegment& position);
 
 
 	/*!
@@ -615,7 +615,7 @@ public:
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	void	removeColumn(uint column);
+	void	removeColumn(unsigned int column);
 
 
 	/*!
@@ -649,7 +649,7 @@ public:
 
 	\exception InvalidRequestException thrown if \a column is out of range for this ListHeader.
 	*/
-	void	moveColumn(uint column, uint position);
+	void	moveColumn(unsigned int column, unsigned int position);
 
 
 	/*!
@@ -670,7 +670,7 @@ public:
 	\exception InvalidRequestException thrown if \a column is out of range for this ListHeader, or if \a position
 		is not attached to this ListHeader.
 	*/
-	void	moveColumn(uint column, const ListHeaderSegment& position);
+	void	moveColumn(unsigned int column, const ListHeaderSegment& position);
 
 
 	/*!
@@ -689,7 +689,7 @@ public:
 
 	\exception InvalidRequestException thrown if \a segment is not attached to this ListHeader.
 	*/
-	void	moveSegment(const ListHeaderSegment& segment, uint position);
+	void	moveSegment(const ListHeaderSegment& segment, unsigned int position);
 
 
 	/*!
@@ -743,7 +743,7 @@ public:
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	void	setColumnWidth(uint column, const UDim& width);
+	void	setColumnWidth(unsigned int column, const UDim& width);
 
 
 	/*************************************************************************
@@ -802,7 +802,7 @@ protected:
 	\brief
 		Create initialise and return a ListHeaderSegment object, with all events subscribed and ready to use.
 	*/
-	ListHeaderSegment*	createInitialisedSegment(const String& text, uint id, const UDim& width);
+	ListHeaderSegment*	createInitialisedSegment(const String& text, unsigned int id, const UDim& width);
 
 
 	/*!
@@ -940,14 +940,13 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::vector<ListHeaderSegment*
-        CEGUI_VECTOR_ALLOC(ListHeaderSegment*)> SegmentList;
+	typedef	std::vector<ListHeaderSegment*> SegmentList;
 	SegmentList	d_segments;			//!< Attached segment windows in header order.
 	ListHeaderSegment*	d_sortSegment;	//!< Pointer to the segment that is currently set as the sork-key,
 	bool	d_sizingEnabled;		//!< true if segments can be sized by the user.
 	bool	d_sortingEnabled;		//!< true if the sort criteria modifications by user are enabled (no sorting is actuall done)
 	bool	d_movingEnabled;		//!< true if drag & drop moving of columns / segments is enabled.
-	uint	d_uniqueIDNumber;		//!< field used to create unique names.
+	unsigned int	d_uniqueIDNumber;		//!< field used to create unique names.
 	float	d_segmentOffset;		//!< Base offset used to layout the segments (allows scrolling within the window area)
 	ListHeaderSegment::SortDirection	d_sortDir;		//!< Brief copy of the current sort direction.
 

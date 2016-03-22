@@ -105,13 +105,11 @@ void TabControl::initialiseComponents(void)
     {
         CEGUI::Window* buttonScrollLeft = getChild(ButtonScrollLeft);
         buttonScrollLeft->banPropertyFromXML(Window::VisiblePropertyName);
-        buttonScrollLeft->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
     }
     if (isChild(ButtonScrollRight))
     {
         CEGUI::Window* buttonScrollRight = getChild(ButtonScrollRight);
         buttonScrollRight->banPropertyFromXML(Window::VisiblePropertyName);
-        buttonScrollRight->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
     }
 
 	performChildWindowLayout();
@@ -143,7 +141,7 @@ Window*	TabControl::getTabContents(const String& name) const
 /*************************************************************************
 Get the tab at a given ID
 *************************************************************************/
-Window*	TabControl::getTabContents(uint ID) const
+Window*	TabControl::getTabContents(unsigned int ID) const
 {
     return getTabPane()->getChild(ID);
 }
@@ -175,7 +173,7 @@ size_t TabControl::getSelectedTabIndex() const
         if (d_tabButtonVector [i]->isSelected ())
             return i;
 
-	CEGUI_THROW(UnknownObjectException("Current tab not in list?"));
+	throw UnknownObjectException("Current tab not in list?");
 }
 
 /*************************************************************************
@@ -188,7 +186,7 @@ void TabControl::setSelectedTab(const String &name)
 /*************************************************************************
 Set the selected tab by window ID
 *************************************************************************/
-void TabControl::setSelectedTab(uint ID)
+void TabControl::setSelectedTab(unsigned int ID)
 {
     selectTab_impl(getTabPane()->getChild(ID));
 }
@@ -210,7 +208,7 @@ void TabControl::makeTabVisible(const String &name)
 /*************************************************************************
 Make the tab by window ID visible
 *************************************************************************/
-void TabControl::makeTabVisible(uint ID)
+void TabControl::makeTabVisible(unsigned int ID)
 {
     makeTabVisible_impl(getTabPane()->getChild(ID));
 }
@@ -292,7 +290,7 @@ void TabControl::removeTab(const String& name)
 /*************************************************************************
 Remove a tab by ID
 *************************************************************************/
-void TabControl::removeTab(uint ID)
+void TabControl::removeTab(unsigned int ID)
 {
     // do nothing if given window is not attached as a tab.
     if (getTabPane()->isChild(ID))
@@ -331,8 +329,8 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
         if (d_tabButtonVector [i]->getTargetWindow () == wnd)
             return d_tabButtonVector [i];
 
-	CEGUI_THROW(UnknownObjectException(
-        "The Window object is not a tab contents."));
+	throw UnknownObjectException(
+        "The Window object is not a tab contents.");
 }
 /*************************************************************************
 Remove tab button
@@ -420,14 +418,12 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     {
         scrollLeftBtn = getChild(ButtonScrollLeft);
         lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
-        scrollLeftBtn->setWantsMultiClickEvents(false);
     }
 
     if (isChild(ButtonScrollRight))
     {
         scrollRightBtn = getChild(ButtonScrollRight);
         rx = CoordConverter::asAbsolute(scrollRightBtn->getPosition().d_x, ww);
-        scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
     if (x < lx)
@@ -453,12 +449,12 @@ void TabControl::addTabControlProperties(void)
         "TabHeight", "Property to get/set the height of the tabs.",
         &TabControl::setTabHeight, &TabControl::getTabHeight, UDim(0.05f,0.0f)
     );
-    
+
     CEGUI_DEFINE_PROPERTY(TabControl, UDim,
         "TabTextPadding", "Property to get/set the padding either side of the tab buttons.",
         &TabControl::setTabTextPadding, &TabControl::getTabTextPadding, UDim(0.0f,0.5f)
     );
-    
+
     CEGUI_DEFINE_PROPERTY(TabControl, TabPanePosition,
         "TabPanePosition", "Property to get/set the position of the buttons pane.",
         &TabControl::setTabPanePosition, &TabControl::getTabPanePosition, TabControl::Top
@@ -470,12 +466,12 @@ Internal version of adding a child window
 void TabControl::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "TabControl can only have Elements of type Window added as "
-            "children (Window path: " + getNamePath() + ")."));
-    
+            "children (Window path: " + getNamePath() + ").");
+
     if (wnd->isAutoWindow())
     {
         // perform normal addChild
@@ -493,7 +489,7 @@ Internal version of removing a child window
 void TabControl::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
-    
+
     // protect against possible null pointers
     if (!wnd) return;
 
@@ -535,7 +531,7 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     // panel of the correct height already
     UVector2 position(cegui_absdim(0.0f), cegui_absdim(0.0f));
     USize size(cegui_absdim(0.0f), cegui_reldim(1.0f));
-    
+
     // x position is based on previous button
     if (!index)
     {
@@ -549,11 +545,11 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
         // position is prev pos + width
         position.d_x = prevButton->getArea().d_max.d_x;
     }
-   
-    size.d_width = 
+
+    size.d_width =
         cegui_absdim(btn->getRenderedString().getHorizontalExtent(btn)) +
             getTabTextPadding() + getTabTextPadding();
- 
+
     btn->setPosition(position);
     btn->setSize(size);
 
@@ -732,8 +728,8 @@ TabButton* TabControl::createTabButton(const String& name) const
     else
     {
         //return createTabButton_impl(name);
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -781,22 +777,22 @@ bool TabControl::handleScrollPane(const EventArgs& e)
 
 bool TabControl::handleDraggedPane(const EventArgs& e)
 {
-    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+    const CursorInputEventArgs& pe = static_cast<const CursorInputEventArgs&>(e);
 
-    if (me.button == MiddleButton)
+    if (pe.source == CIS_Middle)
     {
-        // This is the middle-mouse-click event, remember initial drag position
+        // This is the middle cursor source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
-        d_btGrabPos = (me.position.d_x -
-            but_pane->getOuterRectClipper().d_min.d_x) -
+        d_btGrabPos = (pe.position.x -
+            but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
-    else if (me.button == NoButton)
+    else if (pe.source == CIS_None)
     {
-        // Regular mouse move event
+        // Regular cursor move event
         Window *but_pane = getTabButtonPane();
-        float new_to = (me.position.d_x -
-            but_pane->getOuterRectClipper().d_min.d_x) -
+        float new_to = (pe.position.x -
+            but_pane->getOuterRectClipper().d_min.x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||
             (new_to > d_firstTabOffset + 0.9))
@@ -811,12 +807,12 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 
 bool TabControl::handleWheeledPane(const EventArgs& e)
 {
-    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+    const CursorInputEventArgs& me = static_cast<const CursorInputEventArgs&>(e);
 
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
-    d_firstTabOffset += me.wheelChange * delta;
+    d_firstTabOffset += me.scroll * delta;
     performChildWindowLayout();
 
     return true;

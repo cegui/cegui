@@ -18,14 +18,12 @@ else ()
         set (DIRECTXSDK_ARCH x64)
     endif()
 
-    find_path(DIRECTXSDK_H_PATH NAMES d3d10.h PATHS ENV DXSDK_DIR PATH_SUFFIXES Include NO_DEFAULT_PATH)
-    find_path(DIRECTXSDK_LIB_PATH NAMES d3dx10d.lib PATHS ENV DXSDK_DIR PATH_SUFFIXES "Lib/${DIRECTXSDK_ARCH}")
+find_path(DIRECTXSDK_H_PATH NAMES d3d11.h PATHS ENV DXSDK_DIR PATH_SUFFIXES Include NO_DEFAULT_PATH)
+find_path(DIRECTXSDK_LIB_PATH NAMES d3d11.lib PATHS ENV DXSDK_DIR PATH_SUFFIXES "Lib/${DIRECTXSDK_ARCH}")
 
     # now test for the specific d3d lib versions and set MAX_D3D accordingly
     if (EXISTS "${DIRECTXSDK_LIB_PATH}/d3d11.lib")
         set (DIRECTXSDK_MAX_D3D 11)
-    elseif (EXISTS "${DIRECTXSDK_LIB_PATH}/d3d10.lib")
-        set (DIRECTXSDK_MAX_D3D 10)
     elseif (EXISTS "${DIRECTXSDK_LIB_PATH}/d3d9.lib")
         set (DIRECTXSDK_MAX_D3D 9)
     else()

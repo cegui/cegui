@@ -58,6 +58,8 @@ namespace CEGUI
             state = "Pushed";
         else if (w->isHovering())
             state = "Hover";
+        else if (w->isFocused())
+            state = "Focused";
         else
             state = "Normal";
 

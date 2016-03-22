@@ -32,7 +32,7 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/CoordConverter.h"
 #include <iostream>
-#include <cstdlib>
+#include <stddef.h>
 
 namespace CEGUI
 {
@@ -211,11 +211,11 @@ void FrameComponent::setImage(FrameImageComponent part, const Image* image)
 void FrameComponent::setImage(FrameImageComponent part, const String& name)
 {
     const Image* image;
-    CEGUI_TRY
+    try
     {
         image = &ImageManager::getSingleton().get(name);
     }
-    CEGUI_CATCH (UnknownObjectException&)
+    catch (UnknownObjectException&)
     {
         image = 0;
     }
@@ -268,7 +268,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
     Rectf backgroundRect(destRect);
     Rectf finalRect;
     Sizef imageSize;
-    Vector2f imageOffsets;
+    glm::vec2 imageOffsets;
     ColourRect imageColours;
     float leftfactor, rightfactor, topfactor, bottomfactor;
     bool calcColoursPerImage;
@@ -304,24 +304,24 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        topOffset  += imageSize.d_width + imageOffsets.d_x;
-        leftOffset += imageSize.d_height + imageOffsets.d_y;
+        topOffset  += imageSize.d_width + imageOffsets.x;
+        leftOffset += imageSize.d_height + imageOffsets.y;
         topWidth   -= topOffset;
         leftHeight -= leftOffset;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + imageOffsets.d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + imageOffsets.x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + imageOffsets.d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + imageOffsets.y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // top-right image
@@ -336,23 +336,23 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        rightOffset += imageSize.d_height + imageOffsets.d_y;
-        topWidth    -= imageSize.d_width - imageOffsets.d_x;
+        rightOffset += imageSize.d_height + imageOffsets.y;
+        topWidth    -= imageSize.d_width - imageOffsets.x;
         rightHeight -= rightOffset;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + imageOffsets.d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + imageOffsets.x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + imageOffsets.d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + imageOffsets.y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // bottom-left image
@@ -367,23 +367,23 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        bottomOffset += imageSize.d_width + imageOffsets.d_x;
+        bottomOffset += imageSize.d_width + imageOffsets.x;
         bottomWidth  -= bottomOffset;
-        leftHeight   -= imageSize.d_height - imageOffsets.d_y;
+        leftHeight   -= imageSize.d_height - imageOffsets.y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + imageOffsets.d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + imageOffsets.x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + imageOffsets.d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + imageOffsets.y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // bottom-right image
@@ -398,22 +398,22 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        bottomWidth -= imageSize.d_width - imageOffsets.d_x;
-        rightHeight -= imageSize.d_height - imageOffsets.d_y;
+        bottomWidth -= imageSize.d_width - imageOffsets.x;
+        rightHeight -= imageSize.d_height - imageOffsets.y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // top image
@@ -428,21 +428,21 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_min.d_y += imageSize.d_height + componentImage->getRenderedOffset().d_y;
+        backgroundRect.d_min.y += imageSize.d_height + componentImage->getRenderedOffset().y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        renderImage(srcWindow.getGeometryBuffer(), componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     VF_TOP_ALIGNED, d_topEdgeFormatting.get(srcWindow),
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -459,21 +459,21 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;
+        backgroundRect.d_max.y -= imageSize.d_height - componentImage->getRenderedOffset().y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        renderImage(srcWindow.getGeometryBuffer(), componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     VF_BOTTOM_ALIGNED, d_bottomEdgeFormatting.get(srcWindow),
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -490,21 +490,21 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_min.d_x += imageSize.d_width + componentImage->getRenderedOffset().d_x;
+        backgroundRect.d_min.x += imageSize.d_width + componentImage->getRenderedOffset().x;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        renderImage(srcWindow.getGeometryBuffer(), componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     d_leftEdgeFormatting.get(srcWindow), HF_LEFT_ALIGNED,
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -521,21 +521,21 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_x -= imageSize.d_width - componentImage->getRenderedOffset().d_x;
+        backgroundRect.d_max.x -= imageSize.d_width - componentImage->getRenderedOffset().x;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
         }
 
         // draw this element.
-        renderImage(srcWindow.getGeometryBuffer(), componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     d_rightEdgeFormatting.get(srcWindow), HF_RIGHT_ALIGNED,
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -545,9 +545,9 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (backgroundRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (backgroundRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + backgroundRect.getWidth() / destRect.getWidth();
-            topfactor    = (backgroundRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (backgroundRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + backgroundRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -559,20 +559,20 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         const VerticalFormatting vertFormatting =
             d_backgroundVertFormatting.get(srcWindow);
 
-        renderImage(srcWindow.getGeometryBuffer(), componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     vertFormatting, horzFormatting,
                     backgroundRect, imageColours, clipper, clipToDisplay);
     }
 }
 
 //----------------------------------------------------------------------------//
-void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
+void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers, const Image* image,
                                  VerticalFormatting vertFmt,
                                  HorizontalFormatting horzFmt,
                                  Rectf& destRect, const ColourRect& colours,
-                                 const Rectf* clipper, bool /*clipToDisplay*/) const
+                                 const Rectf* clipper, bool clip_to_display) const
 {
-    uint horzTiles, vertTiles;
+    unsigned int horzTiles, vertTiles;
     float xpos, ypos;
 
     Sizef imgSz(image->getRenderedSize());
@@ -608,8 +608,8 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown HorizontalFormatting value was specified."));
+            throw InvalidRequestException(
+                "An unknown HorizontalFormatting value was specified.");
     }
 
     // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -643,23 +643,23 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown VerticalFormatting value was specified."));
+            throw InvalidRequestException(
+                "An unknown VerticalFormatting value was specified.");
     }
 
     // perform final rendering (actually is now a caching of the images which will be drawn)
     Rectf finalRect;
     Rectf finalClipper;
     const Rectf* clippingRect;
-    finalRect.d_min.d_y = ypos;
-    finalRect.d_max.d_y = ypos + imgSz.d_height;
+    finalRect.d_min.y = ypos;
+    finalRect.d_max.y = ypos + imgSz.d_height;
 
-    for (uint row = 0; row < vertTiles; ++row)
+    for (unsigned int row = 0; row < vertTiles; ++row)
     {
-        finalRect.d_min.d_x = xpos;
-        finalRect.d_max.d_x = xpos + imgSz.d_width;
+        finalRect.d_min.x = xpos;
+        finalRect.d_max.x = xpos + imgSz.d_width;
 
-        for (uint col = 0; col < horzTiles; ++col)
+        for (unsigned int col = 0; col < horzTiles; ++col)
         {
             // use custom clipping for right and bottom edges when tiling the imagery
             if (((vertFmt == VF_TILED) && row == vertTiles - 1) ||
@@ -672,14 +672,14 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
             else
                 clippingRect = clipper;
 
-            image->render(buffer, finalRect, clippingRect, colours);
+            image->render(geometry_buffers, finalRect, clippingRect, !clip_to_display, colours);
 
-            finalRect.d_min.d_x += imgSz.d_width;
-            finalRect.d_max.d_x += imgSz.d_width;
+            finalRect.d_min.x += imgSz.d_width;
+            finalRect.d_max.x += imgSz.d_width;
         }
 
-        finalRect.d_min.d_y += imgSz.d_height;
-        finalRect.d_max.d_y += imgSz.d_height;
+        finalRect.d_min.y += imgSz.d_height;
+        finalRect.d_max.y += imgSz.d_height;
     }
 }
 

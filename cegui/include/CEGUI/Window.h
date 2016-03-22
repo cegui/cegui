@@ -32,10 +32,9 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
-#include "CEGUI/Rect.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
@@ -48,7 +47,8 @@
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include <vector>
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -95,7 +95,7 @@ public:
 
     static return_type fromString(const String& str)
     {
-    
+
         if (str == "Always")
         {
             return WUM_ALWAYS;
@@ -170,7 +170,7 @@ public:
     //! Name of property to access for the get/set the 'inherits alpha' setting for the Window.
     static const String InheritsAlphaPropertyName;
     //! Name of property to access for the the mouse cursor image for the Window.
-    static const String MouseCursorImagePropertyName;
+    static const String CursorImagePropertyName;
     //! Name of property to access for the the 'visible state' setting for the Window.
     static const String VisiblePropertyName;
     //! Name of property to access for the 'restore old capture' setting for the Window.
@@ -179,10 +179,8 @@ public:
     static const String TextPropertyName;
     //! Name of property to access for the 'z-order changing enabled' setting for the Window. 
     static const String ZOrderingEnabledPropertyName;
-    //! Name of property to access for whether the window will receive double-click and triple-click events.
-    static const String WantsMultiClickEventsPropertyName;
     //! Name of property to access for whether the window will receive autorepeat mouse button down events.
-    static const String MouseAutoRepeatEnabledPropertyName;
+    static const String CursorAutoRepeatEnabledPropertyName;
     //! Name of property to access for the autorepeat delay.
     static const String AutoRepeatDelayPropertyName;
     //! Name of property to access for the autorepeat rate.
@@ -198,11 +196,13 @@ public:
     //! Name of property to access for the window will come to the top of the Z-order when clicked.
     static const String RiseOnClickEnabledPropertyName;
     //! Name of property to access for the window ignores mouse events and pass them through to any windows behind it.
-    static const String MousePassThroughEnabledPropertyName;
+    static const String CursorPassThroughEnabledPropertyName;
     //! Name of property to access for the Window will receive drag and drop related notifications.
     static const String DragDropTargetPropertyName;
-    //! Name of property to access for the Window will automatically attempt to use a full imagery caching RenderingSurface (if supported by the renderer).
+    //! Name of property to access for the Window whether texture caching should be activated or not. Will only have an effect if the Renderer supports texture caching.
     static const String AutoRenderingSurfacePropertyName;
+    //! Name of property to access for the Window whether texture caching should have a stencil buffer attached for stencil operations, as used in SVG and Custom Shape rendering.
+    static const String AutoRenderingSurfaceStencilEnabledPropertyName;
     //! Name of property to access for the text parsing setting for the Window.
     static const String TextParsingEnabledPropertyName;
     //! Name of property to access for the margin for the Window.
@@ -210,7 +210,7 @@ public:
     //! Name of property to access for the window update mode setting.
     static const String UpdateModePropertyName;
     //! Name of property to access whether unhandled mouse inputs should be propagated back to the Window's parent. 
-    static const String MouseInputPropagationEnabledPropertyName;
+    static const String CursorInputPropagationEnabledPropertyName;
     //! Name of property to access whether the system considers this window to be an automatically created sub-component window.
     static const String AutoWindowPropertyName;
 
@@ -225,7 +225,7 @@ public:
      * Handlers are passed a const UpdateEventArgs reference.
      */
     static const String EventUpdated;
-    
+
     /** Event fired when the text string for the Window has changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose text was changed.
@@ -305,23 +305,23 @@ public:
      * was changed.
      */
     static const String EventAlwaysOnTopChanged;
-    /** Event fired when the Window gains capture of mouse inputs.
+    /** Event fired when the Window gains capture of cursor inputs.
      * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window that has captured mouse inputs.
+     * WindowEventArgs::window set to the Window that has captured cursor inputs.
      */
     static const String EventInputCaptureGained;
-    /** Event fired when the Window loses capture of mouse inputs.
+    /** Event fired when the Window loses capture of cursor inputs.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to either:
-     * - the Window that has lost capture of mouse inputs if that event was
+     * - the Window that has lost capture of cursor inputs if that event was
      *   caused by the window itself releasing the capture.
-     * - the Window that is @gaining capture of mouse inputs if that is the
+     * - the Window that is @gaining capture of cursor inputs if that is the
      *   cause of the previous window with capture losing that capture.
      */
     static const String EventInputCaptureLost;
     /** Event fired when the Window has been invalidated.
      * When a window is invalidated its cached rendering geometry is cleared,
-     * the rendering surface that recieves the window's output is invalidated
+     * the rendering surface that receives the window's output is invalidated
      * and the window's target GUIContext is marked as dirty; this causes all
      * objects involved in the display of the window to be refreshed the next
      * time that the GUIContext::draw function is called.
@@ -331,7 +331,7 @@ public:
     static const String EventInvalidated;
     /** Event fired when rendering of the Window has started.  In this context
      * 'rendering' is the population of the GeometryBuffer with geometry for the
-     * window, not the actual rendering of that GeometryBuffer content to the 
+     * window, not the actual rendering of that GeometryBuffer content to the
      * display.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose rendering has started.
@@ -339,7 +339,7 @@ public:
     static const String EventRenderingStarted;
     /** Event fired when rendering of the Window has ended.  In this context
      * 'rendering' is the population of the GeometryBuffer with geometry for the
-     * window, not the actual rendering of that GeometryBuffer content to the 
+     * window, not the actual rendering of that GeometryBuffer content to the
      * display.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose rendering has ended.
@@ -400,96 +400,58 @@ public:
     static const String EventMarginChanged;
 
     // generated externally (inputs)
-    /** Event fired when the mouse cursor has entered the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when the cursor has entered the Window's area.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseEntersArea;
-    /** Event fired when the mouse cursor has left the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventCursorEntersArea;
+    /** Event fired when the cursor has left the Window's area.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseLeavesArea;
-    /** Event fired when the mouse cursor enters the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventCursorLeavesArea;
+    /** Event fired when the cursor enters the Window's area.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
-     *\note This event is fired if - and only if - the mouse cursor is actually
+     *\note This event is fired if - and only if - the cursor is actually
      * over some part of this Window's surface area, and will not fire for
-     * example if the location of the mouse is over some child window (even
-     * though the mouse is technically also within the area of this Window).
+     * example if the location of the cursor is over some child window (even
+     * though the cursor is technically also within the area of this Window).
      * For an alternative version of this event see the
-     * Window::EventMouseEntersArea event.
+     * Window::EventCursorEntersArea event.
      */
-    static const String EventMouseEntersSurface;
-    /** Event fired when the mouse cursor is no longer over the Window's surface
+    static const String EventCursorEntersSurface;
+    /** Event fired when the cursor is no longer over the Window's surface
      * area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
-     *\note This event will fire whenever the mouse is no longer actually over
-     * some part of this Window's surface area, for example if the mouse is
-     * moved over some child window (even though technically the mouse has not
+     *\note This event will fire whenever the cursor is no longer actually over
+     * some part of this Window's surface area, for example if the cursor is
+     * moved over some child window (even though technically the cursor has not
      * actually 'left' this Window's area).  For an alternative version of this
-     * event see the Window::EventMouseLeavesArea event.
+     * event see the Window::EventCursorLeavesArea event.
      */
-    static const String EventMouseLeavesSurface;
-    /** Event fired when the mouse cursor moves within the area of the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventCursorLeavesSurface;
+    /** Event fired when the cursor moves within the area of the Window.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseMove;
-    /** Event fired when the mouse wheel is scrolled when the mouse cursor is
-     * within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventCursorMove;
+    /** Event fired when there is a scroll event within the Window's area.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseWheel;
-    /** Event fired when a mouse button is pressed down within the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventScroll;
+    /** Event fired when a cursor is pressed and held down within the Window.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseButtonDown;
-    /** Event fired when a mouse button is released within the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventCursorPressHold;
+    /** Event fired when the cursor is activated within the Window.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseButtonUp;
-    /** Event fired when a mouse button is clicked - that is, pressed down and
-     * released within a specific time interval - while the mouse cursor is
-     * within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseClick;
-    /** Event fired when a mouse button is double-clicked while the mouse cursor
-     * is within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseDoubleClick;
-    /** Event fired when a mouse button is triple-clicked while the mouse cursor
-     * is within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseTripleClick;
-    /** Event fired when a key on the keyboard was pressed down while the window
-     * had input focus.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the key press,
-     * KeyEventArgs::scancode set to the Key::Scan value of the key that was
-     * pressed, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the key was pressed.
-     */
-    static const String EventKeyDown;
-    /** Event fired when a key on the keyboard was released while the window
-     * had input focus.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the key release,
-     * KeyEventArgs::scancode set to the Key::Scan value of the key that was
-     * released, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the key was released.
-     */
-    static const String EventKeyUp;
+    static const String EventCursorActivate;
     /** Event fired when the Window receives a character key input event.
      * Handlers are passed a const KeyEventArgs reference with
      * WindowEventArgs::window set to the Window receiving the character input,
@@ -498,6 +460,11 @@ public:
      * values active when the character input was received.
      */
     static const String EventCharacterKey;
+    /** Event fired when the Window receives a semantic input event.
+     * Handler are passed a const SemanticEventArgs reference with the details
+     * of what semantic event was received
+     */
+    static const String EventSemanticEvent;
 
     /*************************************************************************
         Child Widget name suffix constants
@@ -633,10 +600,10 @@ public:
         return true if this is the active Window.  An active window is a window
         that may receive user inputs.
 
-        Mouse events are always sent to the window containing the mouse cursor
-        regardless of what this function reports (unless a window has captured
-        inputs).  The active state mainly determines where send other, for
-        example keyboard, inputs.
+        Cursor events are always sent to the window containing the cursor
+        regardless of what this function reports (unless a window has
+        captured inputs). The active state mainly determines where send other,
+        for example keyboard inputs.
 
     \return
         - true if the window is active and may be sent inputs by the system.
@@ -660,9 +627,9 @@ public:
         return the ID code currently assigned to this Window by client code.
 
     \return
-        uint value equal to the currently assigned ID code for this Window.
+        unsigned int value equal to the currently assigned ID code for this Window.
     */
-    uint getID(void) const {return d_ID;}
+    unsigned int getID(void) const {return d_ID;}
 
     using NamedElement::isChild;
     /*!
@@ -675,13 +642,13 @@ public:
         the return from this function will only have meaning to the client code.
 
     \param ID
-        uint ID code to look for.
+        unsigned int ID code to look for.
 
     \return
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChild(uint ID) const;
+    bool isChild(unsigned int ID) const;
 
     /*!
     \brief
@@ -697,13 +664,13 @@ public:
         make sure the window hierarchy from the entry point is small.
 
     \param ID
-        uint ID code to look for.
+        unsigned int ID code to look for.
 
     \return
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChildRecursive(uint ID) const;
+    bool isChildRecursive(unsigned int ID) const;
 
 
     /*!
@@ -724,7 +691,7 @@ public:
     {
         return static_cast<Window*>(getChildElementAtIdx(idx));
     }
-    
+
     /*!
     \brief
         return the attached child window that the given name path references.
@@ -791,7 +758,7 @@ public:
         functions for checking if a given window is attached.
 
     \param ID
-        uint value specifying the ID code of the window to return a pointer to.
+        unsigned int value specifying the ID code of the window to return a pointer to.
 
     \return
         Pointer to the (first) Window object attached to this window that has
@@ -800,7 +767,7 @@ public:
     \exception UnknownObjectException
         thrown if no window with the ID code \a ID is attached to this Window.
     */
-    Window* getChild(uint ID) const;
+    Window* getChild(unsigned int ID) const;
 
     /*!
     \brief
@@ -816,14 +783,14 @@ public:
         make sure the window hierarchy from the entry point is small.
 
     \param ID
-        uint value specifying the ID code of the window to return a pointer to.
+        unsigned int value specifying the ID code of the window to return a pointer to.
 
     \return
         Pointer to the (first) Window object attached to this window that has
         the ID code \a ID.
         If no child is found with the ID code \a ID, 0 is returned.
     */
-    Window* getChildRecursive(uint ID) const;
+    Window* getChildRecursive(unsigned int ID) const;
 
     /*!
     \brief
@@ -847,14 +814,14 @@ public:
         Window.
 
     \param ID
-        uint value specifying the ID to look for.
+        unsigned int value specifying the ID to look for.
 
     \return
         - true if an ancestor (parent, or parent of parent, etc) was found with
           the ID code \a ID.
         - false if no ancestor window has the ID code \a ID.
     */
-    bool isAncestor(uint ID) const;
+    bool isAncestor(unsigned int ID) const;
 
     /*!
     \brief
@@ -1037,7 +1004,7 @@ public:
         check if the given pixel position would hit this window.
 
     \param position
-        Vector2 object describing the position to check.  The position
+        vec2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
     \param allow_disabled
@@ -1048,7 +1015,7 @@ public:
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2f& position,
+    virtual bool isHit(const glm::vec2& position,
                        const bool allow_disabled = false) const;
 
     /*!
@@ -1056,22 +1023,22 @@ public:
         return the child Window that is hit by the given pixel position
 
     \param position
-        Vector2 object describing the position to check.  The position
+        vec2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
     \return
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getChildAtPosition(const Vector2f& position) const;
+    Window* getChildAtPosition(const glm::vec2& position) const;
 
     /*!
     \brief
         return the child Window that is 'hit' by the given position, and is
-        allowed to handle mouse events.
+        allowed to handle cursor events.
 
     \param position
-        Vector2 object describing the position to check.  The position
+        vec2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
     \param allow_disabled
@@ -1082,7 +1049,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2f& position, 
+    Window* getTargetChildAtPosition(const glm::vec2& position,
                                      const bool allow_disabled = false) const;
 
     /*!
@@ -1100,19 +1067,19 @@ public:
 
     /*!
     \brief
-        Return a pointer to the mouse cursor image to use when the mouse cursor
-        is within this window's area.
+        Return a pointer to the cursor image to use when the cursor
+        indicator is within this window's area.
 
     \param useDefault
-        Sepcifies whether to return the default mouse cursor image if this
-        window specifies no preferred mouse cursor image.
+        Specifies whether to return the default cursor image if this
+        window specifies no preferred cursor image.
 
     \return
-        Pointer to the mouse cursor image that will be used when the mouse
-        enters this window's area.  May return NULL indicating no cursor will
+        Pointer to the cursor image that will be used when the cursor
+        enters this window's area.  May return NULL indicating no indicator will
         be drawn for this window.
     */
-    const Image* getMouseCursor(bool useDefault = true) const;
+    const Image* getCursor(bool useDefault = true) const;
 
     /*!
     \brief
@@ -1150,8 +1117,8 @@ public:
     \note
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        the z order of the Window by clicking the cursor; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
@@ -1166,36 +1133,24 @@ public:
 
     /*!
     \brief
-        Return whether this window will receive multi-click events or multiple
-        'down' events instead.
-
-    \return
-        - true if the Window will receive double-click and triple-click events.
-        - false if the Window will receive multiple mouse button down events
-          instead of double/triple click events.
-    */
-    bool wantsMultiClickEvents(void) const;
-
-    /*!
-    \brief
-        Return whether mouse button down event autorepeat is enabled for this
+        Return whether cursor press event autorepeat is enabled for this
         window.
 
     \return
-        - true if autorepeat of mouse button down events is enabled for this
+        - true if autorepeat of cursor press events is enabled for this
           window.
-        - false if autorepeat of mouse button down events is not enabled for
+        - false if autorepeat of cursor press events is not enabled for
           this window.
     */
-    bool isMouseAutoRepeatEnabled(void) const;
+    bool isCursorAutoRepeatEnabled(void) const;
 
     /*!
     \brief
         Return the current auto-repeat delay setting for this window.
 
     \return
-        float value indicating the delay, in seconds, defore the first repeat
-        mouse button down event will be triggered when autorepeat is enabled.
+        float value indicating the delay, in seconds, before the first repeat
+        cursor press event will be triggered when autorepeat is enabled.
     */
     float getAutoRepeatDelay(void) const;
 
@@ -1204,9 +1159,8 @@ public:
         Return the current auto-repeat rate setting for this window.
 
     \return
-        float value indicating the rate, in seconds, at which repeat mouse
-        button down events will be generated after the initial delay has
-        expired.
+        float value indicating the rate, in seconds, at which repeat cursor press
+        events will be generated after the initial delay has expired.
     */
     float getAutoRepeatRate(void) const;
 
@@ -1290,33 +1244,33 @@ public:
     /*!
     \brief
         Return whether this window will rise to the top of the z-order when
-        clicked with the left mouse button.
+        activated with the left cursor source.
 
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        the z order of the Window by activating the cursor; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \return
         - true if the window will come to the top of other windows when the left
-          mouse button is pushed within its area.
+          cursor source is activated within its area.
         - false if the window does not change z-order position when the left
-          mouse button is pushed within its area.
+          cursor source is activated within its area.
      */
-    bool isRiseOnClickEnabled(void) const   { return d_riseOnClick; }
+    bool isRiseOnPointerActivationEnabled(void) const   { return d_riseOnPointerActivation; }
 
     /*!
     \brief
-        Return the GeometryBuffer object for this Window.
+        Return the list of GeometryBuffer objects for this Window.
 
     \return
-        Reference to the GeometryBuffer object for this Window.
+        Reference to the list of GeometryBuffer objects for this Window.
     */
-    GeometryBuffer& getGeometryBuffer();
+    std::vector<GeometryBuffer*>& getGeometryBuffers();
 
     /*!
     \brief
@@ -1385,15 +1339,15 @@ public:
 
     /*!
     \brief
-        Returns whether this window should ignore mouse event and pass them
+        Returns whether this window should ignore cursor event and pass them
         through to and other windows behind it. In effect making the window
-        transparent to the mouse.
+        transparent to the cursor.
 
     \return
-        true if mouse pass through is enabled.
-        false if mouse pass through is not enabled.
+        true if cursor pass through is enabled.
+        false if cursor pass through is not enabled.
     */
-    bool isMousePassThroughEnabled(void) const  {return d_mousePassThroughEnabled;}
+    bool isCursorPassThroughEnabled(void) const  {return d_cursorPassThroughEnabled;}
 
     /*!
     \brief
@@ -1457,6 +1411,18 @@ public:
         - false if automatic use of a caching RenderTarget is not enabled.
     */
     bool isUsingAutoRenderingSurface() const;
+
+    /*!
+    \brief
+        Returns whether the Window's texture caching (if activated) will have a stencil buffer
+        attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
+        For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
+
+    \return
+    - true to provide stencil buffer functionality with the texture caching.
+    - false to not provide a stencil buffer functionality with the texture caching.
+    */
+    bool isAutoRenderingSurfaceStencilEnabled() const;
 
     /*!
     \brief
@@ -1607,14 +1573,11 @@ public:
 
     /*!
     \brief
-        Deactivate the window.  No further inputs will be received by the window
+        Deactivate the window. No further inputs will be received by the window
         until it is re-activated either programmatically or by the user
         interacting with the gui.
-
-    \return
-        Nothing.
     */
-    void deactivate(void);
+    void deactivate();
 
     /*!
     \brief
@@ -1641,7 +1604,7 @@ public:
     \return
         Nothing
     */
-    void setID(uint ID);
+    void setID(unsigned int ID);
 
     /*!
     \brief
@@ -1659,11 +1622,11 @@ public:
     \brief
         Insert the text string \a text into the current text string for the
         Window object at the position specified by \a position.
-     
+
     \param text
         String object holding the text that is to be inserted into the Window
         object's current text string.
-     
+
     \param position
         The characted index position where the string \a text should be
         inserted.
@@ -1674,7 +1637,7 @@ public:
     \brief
         Append the string \a text to the currect text string for the Window
         object.
-     
+
     \param text
         String object holding the text that is to be appended to the Window
         object's current text string.
@@ -1724,12 +1687,12 @@ public:
     \return
         Nothing.
     */
-    void removeChild(uint ID);
+    void removeChild(unsigned int ID);
 
     /*!
     \brief
         Creates a child window attached to this window.
-    
+
     \param type
         String that describes the type of Window to be created.  A valid
         WindowFactory for the specified type must be registered.
@@ -1760,7 +1723,7 @@ public:
         Name path that references the window to destroy
     */
     void destroyChild(const String& name_path);
-    
+
     /*!
     \brief
         Move the Window to the top of the z order.
@@ -1822,11 +1785,11 @@ public:
         The sibling window that this window will be moved behind.
     */
     void moveBehind(const Window* const window);
-    
+
     /*!
     \brief
         Return the (visual) z index of the window on it's parent.
-        
+
         The z index is a number that indicates the order that windows will be
         drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
         front of lower numbers.
@@ -1937,19 +1900,6 @@ public:
 
     /*!
     \brief
-        Invalidate this window causing at least this window to be redrawn during
-        the next rendering pass.
-
-    \return
-        Nothing
-
-    \deprecated
-        This function is deprecated in favour of the version taking a boolean.
-    */
-    void invalidate(void);
-
-    /*!
-    \brief
         Invalidate this window and - dependant upon \a recursive - all child
         content, causing affected windows to be redrawn during the next
         rendering pass.
@@ -1959,28 +1909,25 @@ public:
         invalidated.
         - true will cause all child content to be invalidated also.
         - false will just invalidate this single window.
-
-    \return
-        Nothing
     */
-    void invalidate(const bool recursive);
+    void invalidate(const bool recursive = false);
 
     /*!
     \brief
-        Set the mouse cursor image to be used when the mouse enters this window.
+        Set the cursor image to be used when the cursor enters this window.
 
     \param image
-        Pointer to the Image object to use as the mouse cursor image when the
-        mouse enters the area for this Window.
+        Pointer to the Image object to use as the cursor image when the
+        cursor enters the area for this Window.
 
     \return
         Nothing.
     */
-    void setMouseCursor(const Image* image);
+    void setCursor(const Image* image);
 
     /*!
     \brief
-        Set the mouse cursor image to be used when the mouse enters this window.
+        Set the cursor image to be used when the cursor enters this window.
 
     \param imageset
         String object that contains the name of the Imageset that contains the
@@ -1995,7 +1942,7 @@ public:
     \exception UnknownObjectException
         thrown if no Image named \a name exists.
     */
-    void setMouseCursor(const String& name);
+    void setCursor(const String& name);
 
     /*!
     \brief
@@ -2012,7 +1959,7 @@ public:
         Nothing.
     */
     void setUserData(void* user_data)   {d_userData = user_data;}
-    
+
     /*!
     \brief
         Set whether z-order changes are enabled or disabled for this Window.
@@ -2020,8 +1967,8 @@ public:
     \note
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        the z order of the Window by activating the cursor; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
@@ -2036,43 +1983,28 @@ public:
         Nothing.
     */
     void    setZOrderingEnabled(bool setting);
-    
-    /*!
-    \brief
-        Set whether this window will receive multi-click events or multiple
-        'down' events instead.
-
-    \param setting
-        - true if the Window will receive double-click and triple-click events.
-        - false if the Window will receive multiple mouse button down events
-          instead of double/triple click events.
-
-    \return
-        Nothing.
-    */
-    void setWantsMultiClickEvents(bool setting);
 
     /*!
     \brief
-        Set whether mouse button down event autorepeat is enabled for this
+        Set whether cursor press event autorepeat is enabled for this
         window.
 
     \param setting
-        - true to enable autorepeat of mouse button down events.
-        - false to disable autorepeat of mouse button down events.
+        - true to enable autorepeat of cursor press events.
+        - false to disable autorepeat of cursor press events.
 
     \return
         Nothing.
     */
-    void setMouseAutoRepeatEnabled(bool setting);
+    void setCursorAutoRepeatEnabled(bool setting);
 
     /*!
     \brief
         Set the current auto-repeat delay setting for this window.
 
     \param delay
-        float value indicating the delay, in seconds, defore the first repeat
-        mouse button down event should be triggered when autorepeat is enabled.
+        float value indicating the delay, in seconds, before the first repeat
+        cursor press event should be triggered when autorepeat is enabled.
 
     \return
         Nothing.
@@ -2084,9 +2016,8 @@ public:
         Set the current auto-repeat rate setting for this window.
 
     \param rate
-        float value indicating the rate, in seconds, at which repeat mouse
-        button down events should be generated after the initial delay has
-        expired.
+        float value indicating the rate, in seconds, at which repeat cursor press
+        events should be generated after the initial delay has expired.
 
     \return
         Nothing.
@@ -2209,27 +2140,27 @@ public:
     /*!
     \brief
         Set whether this window will rise to the top of the z-order when clicked
-        with the left mouse button.
+        with the left cursor source.
 
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
-        if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        if rise on cursor activation is disabled it only affects the users ability to affect
+        the z order of the Window by activating the left cursor source; is still
+        possible to programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \param setting
         - true if the window should come to the top of other windows when the
-          left mouse button is pushed within its area.
+          left cursor source is activated within its area.
         - false if the window should not change z-order position when the left
-          mouse button is pushed within its area.
+          cursor source is activated within its area.
 
     \return
         Nothing.
      */
-    void setRiseOnClickEnabled(bool setting)    { d_riseOnClick = setting; }
+    void setRiseOnClickEnabled(bool setting)    { d_riseOnPointerActivation = setting; }
 
     /*!
     \brief
@@ -2250,7 +2181,7 @@ public:
         code is supposed to use skins is by defining a Falagard mapping (either
         in a scheme xml file or in code) and then create instances of that
         mapped type via WindowManager.  See
-        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme. 
+        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme.
         With that being said, it is possible for client code to use this
         function so long as you are aware of the implications of doing so:
         - Automatically created child windows (AutoWindows) will be deleted, and
@@ -2355,42 +2286,60 @@ public:
         Nothing.
     */
     virtual void update(float elapsed);
-    
+
     /*!
     \brief
         Asks the widget to perform a clipboard copy to the provided clipboard
-        
+
     \param clipboard
         Target clipboard class
-        
+
     \return
         true if the copy was successful and allowed, false otherwise
     */
     virtual bool performCopy(Clipboard& clipboard);
-    
+
     /*!
     \brief
         Asks the widget to perform a clipboard cut to the provided clipboard
-     
+
     \param clipboard
         Target clipboard class
-     
+
     \return
         true if the cut was successful and allowed, false otherwise
     */
     virtual bool performCut(Clipboard& clipboard);
-    
+
     /*!
     \brief
         Asks the widget to perform a clipboard paste from the provided clipboard
-     
+
     \param clipboard
         Source clipboard class
-     
+
     \return
         true if the paste was successful and allowed, false otherwise
      */
     virtual bool performPaste(Clipboard& clipboard);
+
+    /*!
+    \brief
+        Asks the widget to perform a undo operation
+
+    \return
+        true if the undo was successful and allowed, false otherwise
+     */
+    virtual bool performUndo();
+
+    /*!
+    \brief
+        Asks the widget to perform a redo operation
+
+    \return
+        true if the redo was successful and allowed, false otherwise
+     */
+    virtual bool performRedo();
 
     /*!
     \brief
@@ -2425,15 +2374,15 @@ public:
 
     /*!
     \brief
-        Sets whether this window should ignore mouse events and pass them
+        Sets whether this window should ignore cursor events and pass them
         through to any windows behind it. In effect making the window
-        transparent to the mouse.
+        transparent to the cursor.
 
     \param setting
-        true if mouse pass through is enabled.
-        false if mouse pass through is not enabled.
+        true if cursor pass through is enabled.
+        false if cursor pass through is not enabled.
     */
-    void setMousePassThroughEnabled(bool setting)   {d_mousePassThroughEnabled = setting;}
+    void setCursorPassThroughEnabled(bool setting)   {d_cursorPassThroughEnabled = setting;}
 
     /*!
     \brief
@@ -2447,7 +2396,7 @@ public:
         code is supposed to use skins is by defining a Falagard mapping (either
         in a scheme xml file or in code) and then create instances of that
         mapped type via WindowManager.  See
-        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme. 
+        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme.
     */
     void setWindowRenderer(const String& name);
 
@@ -2587,6 +2536,19 @@ public:
     */
     void setUsingAutoRenderingSurface(bool setting);
 
+    /*!
+    \brief
+        Sets whether the Window's texture caching (if activated) will have a stencil buffer
+        attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
+        For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
+
+    \param setting
+        - true to provide stencil buffer functionality with the texture caching.
+        - false to not provide a stencil buffer functionality with the texture caching.
+    */
+    void setAutoRenderingSurfaceStencilEnabled(bool setting);
+  
+
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
     //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
@@ -2605,8 +2567,8 @@ public:
     //! retrieves currently set margin
     const UBox& getMargin() const;
 
-    //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2f getUnprojectedPosition(const Vector2f& pos) const;
+    //! return glm::vec2 \a pos after being fully unprojected for this Window.
+    glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
 
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const
@@ -2705,7 +2667,7 @@ public:
         windows and widgets; updates should be disabled selectively and
         cautiously - if you are unsure of what you are doing, leave the mode
         set to WUM_ALWAYS.
-    
+
     \param mode
         One of the WindowUpdateMode enumerated values indicating the mode to
         set for this Window.
@@ -2724,7 +2686,7 @@ public:
         windows and widgets; updates should be disabled selectively and
         cautiously - if you are unsure of what you are doing, leave the mode
         set to WUM_ALWAYS.
-    
+
     \return
         One of the WindowUpdateMode enumerated values indicating the current
         mode set for this Window.
@@ -2733,27 +2695,19 @@ public:
 
     /*!
     \brief
-        Set whether mouse input that is not directly handled by this Window
+        Set whether cursor input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
-
-    \param enabled
-        - true if unhandled mouse input should be propagated to the parent.
-        - false if unhandled mouse input should not be propagated.
     */
-    void setMouseInputPropagationEnabled(const bool enabled);
+    void setCursorInputPropagationEnabled(const bool enabled);
 
     /*!
     \brief
-        Return whether mouse input that is not directly handled by this Window
+        Return whether cursor input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
-
-    \return
-        - true if unhandled mouse input will be propagated to the parent.
-        - false if unhandled mouse input will not be propagated.
     */
-    bool isMouseInputPropagationEnabled() const;
+    bool isCursorInputPropagationEnabled() const;
 
     /*!
     \brief
@@ -2791,26 +2745,62 @@ public:
 
     /*!
     \brief
-        Return whether Window thinks mouse is currently within its area.
+        Return whether Window thinks cursor is currently within its area.
 
     \note
-        If the mouse cursor has moved or Window's area has changed since the
+        If the cursor has moved or Window's area has changed since the
         last time the GUIContext updated the window hit information, the value
         returned here may be inaccurate - this is not a bug, but is required
         to ensure correct handling of certain events.
     */
-    bool isMouseContainedInArea() const;
+    bool isPointerContainedInArea() const;
 
     // overridden from Element
     const Sizef& getRootContainerSize() const;
 
-    float getContentWidth() const;
-    float getContentHeight() const;
-    UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const;
-    UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const;
-    void adjustSizeToContent();
-    bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const;
-    bool contentFits() const;
+    /*!
+    \brief
+        Return whether this Window is focused or not.
+
+        A window is focused when it is the active Window inside the current
+        GUIContext.
+    */
+    bool isFocused() const;
+
+    /*!
+    \brief
+        Makes this Window be focused.
+
+        Focusing a Window means activating it and setting the focused flag.
+        This will also trigger the activated event. Focusing works only on
+        non-disabled widgets.
+    */
+    void focus();
+
+    /*!
+    \brief
+        Unfocus this Window.
+
+        This will trigger the deactivated event if this was an active window.
+    */
+    void unfocus();
+
+    /*!
+    \brief
+        Return whether Window can be focused or not.
+
+        A Window cannot be usually focused when it's disabled. Other widgets
+        can override this method based on their own behaviour.
+    */
+    virtual bool canFocus();
+
+    float getContentWidth() const override;
+    float getContentHeight() const override;
+    UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const override;
+    UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const override;
+    void adjustSizeToContent() override;
+    bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const override;
+    bool contentFits() const override;
 
 protected:
     // friend classes for construction / initialisation purposes (for now)
@@ -2842,7 +2832,7 @@ protected:
         'this'.
     */
     virtual void onMoved(ElementEventArgs& e);
-    
+
     virtual void onRotated(ElementEventArgs& e);
 
     /*!
@@ -2982,7 +2972,7 @@ protected:
 
     /*!
     \brief
-        Handler called when this window gains capture of mouse inputs.
+        Handler called when this window gains capture of cursor inputs.
 
     \param e
         WindowEventArgs object whose 'window' pointer field is set to the window
@@ -2993,7 +2983,7 @@ protected:
 
     /*!
     \brief
-        Handler called when this window loses capture of mouse inputs.
+        Handler called when this window loses capture of cursor inputs.
 
     \param e
         WindowEventArgs object whose 'window' pointer field is set to the window
@@ -3113,162 +3103,110 @@ protected:
 
     /*!
     \brief
-        Handler called when the mouse cursor has entered this window's area.
+        Handler called when the cursor has entered this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onMouseEntersArea(MouseEventArgs& e);
+    virtual void onCursorEntersArea(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has left this window's area.
+        Handler called when the cursor has left this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onMouseLeavesArea(MouseEventArgs& e);
+    virtual void onCursorLeavesArea(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has entered this window's area and
+        Handler called when the cursor has entered this window's area and
         is actually over some part of this windows surface and not, for
         instance over a child window - even though technically in those cases
-        the mouse is also within this Window's area, the handler will not be
+        the cursor is also within this Window's area, the handler will not be
         called.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
 
     \see
-        Window::onMouseEntersArea
+        Window::onCursorEntersArea
     */
-    virtual void onMouseEnters(MouseEventArgs& e);
+    virtual void onCursorEnters(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor is no longer over this window's
-        surface area.  This will be called when the mouse is not over a part
-        of this Window's actual surface - even though technically the mouse is
-        still within the Window's area, for example if the mouse moves over a
+        Handler called when the cursor is no longer over this window's
+        surface area.  This will be called when the cursor is not over a part
+        of this Window's actual surface - even though technically the cursor is
+        still within the Window's area, for example if the cursor moves over a
         child window.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
 
     \see
-        Window::onMouseLeavesArea
+        Window::onCursorLeavesArea
     */
-    virtual void onMouseLeaves(MouseEventArgs& e);
+    virtual void onCursorLeaves(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has been moved within this window's
-        area.
+        Handler called when the cursor has been moved within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onMouseMove(MouseEventArgs& e);
+    virtual void onCursorMove(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse wheel (z-axis) position changes within
+        Handler called when the cursor scroll value changes within
         this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onScroll(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when a mouse button has been depressed within this
-        window's area.
+        Handler called when a cursor is held pressed within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onMouseButtonDown(MouseEventArgs& e);
+    virtual void onCursorPressHold(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when a mouse button has been released within this
-        window's area.
+        Handler called when a cursor is activated within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onMouseButtonUp(MouseEventArgs& e);
+    virtual void onCursorActivate(CursorInputEventArgs& e);
 
     /*!
     \brief
-        Handler called when a mouse button has been clicked (that is depressed
-        and then released, within a specified time) within this window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been double-clicked within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseDoubleClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been triple-clicked within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseTripleClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a key as been depressed while this window has input
-        focus.
-
-    \param e
-        KeyEventArgs object whose 'scancode' field is set to the Key::Scan value
-        representing the key that was pressed, and whose 'sysKeys' field
-        represents the combination of SystemKey that were active when the event
-        was generated.
-    */
-    virtual void onKeyDown(KeyEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a key as been released while this window has input
-        focus.
-
-    \param e
-        KeyEventArgs object whose 'scancode' field is set to the Key::Scan value
-        representing the key that was released, and whose 'sysKeys' field
-        represents the combination of SystemKey that were active when the event
-        was generated.  All other fields should be considered as 'junk'.
-    */
-    virtual void onKeyUp(KeyEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a character-key has been pressed while this window
+        Handler called when a character has been injected while this window
         has input focus.
 
     \param e
-        KeyEventArgs object whose 'codepoint' field is set to the Unicode code
-        point (encoded as utf32) for the character typed, and whose 'sysKeys'
-        field represents the combination of SystemKey that were active when the
-        event was generated.  All other fields should be considered as 'junk'.
+        TextEventArgs object whose 'character' field is set to the Unicode code
+        point (encoded as UTF-32) for the character inputted.
     */
-    virtual void onCharacter(KeyEventArgs& e);
+    virtual void onCharacter(TextEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when a semantic input event occurred
+
+    \param e
+        The semantic input event
+    */
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*!
     \brief
@@ -3397,6 +3335,12 @@ protected:
 
     /*!
     \brief
+        Destroys the geometry buffers of this Window.
+    */
+    void destroyGeometryBuffers();
+
+    /*!
+    \brief
         Update the rendering cache.
 
         Populates the Window's GeometryBuffer ready for rendering.
@@ -3418,9 +3362,22 @@ protected:
 
     /*!
     \brief
-        Fires off a repeated mouse button down event for this window.
+        Fires off a repeated cursor press event for this window.
+        Update position and clip region on this Windows geometry / rendering
+        surface.
     */
-    void generateAutoRepeatEvent(MouseButton button);
+    void updateGeometryBuffersTranslationAndClipping();
+
+    /*!
+    \brief
+        Updates this Window's geometry buffers alpha value
+    */
+    void updateGeometryBuffersAlpha();
+
+    /*!
+    \brief
+    */
+    void generateAutoRepeatEvent(CursorInputSource source);
 
     /*!
     \brief
@@ -3451,7 +3408,7 @@ protected:
     void notifyClippingChanged(void);
 
     //! helper to create and setup the auto RenderingWindow surface
-    void allocateRenderingWindow();
+    void allocateRenderingWindow(bool addStencilBuffer);
 
     //! helper to clean up the auto RenderingWindow surface
     void releaseRenderingWindow();
@@ -3462,7 +3419,7 @@ protected:
     //! \copydoc Element::setArea_impl
     virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false,
                               bool fireEvents=true, bool adjust_size_to_content=true);
-    
+
     /*!
     \brief
         Cleanup child windows
@@ -3534,7 +3491,7 @@ protected:
         Nothing.
     */
     void removeWindowFromDrawList(const Window& wnd);
-    
+
     /*!
     \brief
         Return whether the window is at the top of the Z-Order.  This will
@@ -3579,7 +3536,7 @@ protected:
     virtual Rectf getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
     virtual Rectf getHitTestRect_impl() const;
-    
+
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
@@ -3593,11 +3550,11 @@ protected:
     void markCachedWindowRectsInvalid();
     void layoutLookNFeelChildWidgets();
 
-    Window* getChildAtPosition(const Vector2f& position,
-                               bool (Window::*hittestfunc)(const Vector2f&, bool) const,
+    Window* getChildAtPosition(const glm::vec2& position,
+                               bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
                                bool allow_disabled = false) const;
 
-    bool isHitTargetWindow(const Vector2f& position, bool allow_disabled) const;
+    bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const;
 
     /*************************************************************************
         Properties for Window base class
@@ -3647,14 +3604,11 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of child windows to be drawn
-    typedef std::vector<Window*
-        CEGUI_VECTOR_ALLOC(Window*)> ChildDrawList;
+    typedef std::vector<Window*> ChildDrawList;
     //! definition of type used for the UserString dictionary.
-    typedef std::map<String, String, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, String)> UserStringMap;
+    typedef std::unordered_map<String, String> UserStringMap;
     //! definition of type used to track properties banned from writing XML.
-    typedef std::set<String, StringFastLessCompare
-        CEGUI_SET_ALLOC(String)> BannedXMLPropertySet;
+    typedef std::unordered_set<String> BannedXMLPropertySet;
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;
@@ -3686,17 +3640,19 @@ protected:
     String d_lookName;
     //! The WindowRenderer module that implements the Look'N'Feel specification
     WindowRenderer* d_windowRenderer;
-    //! Object which acts as a cache of geometry drawn by this Window.
-    GeometryBuffer* d_geometry;
+    //! List of geometry buffers that cache the geometry drawn by this Window.
+    std::vector<GeometryBuffer*> d_geometryBuffers;
     //! RenderingSurface owned by this window (may be 0)
     RenderingSurface* d_surface;
     //! true if window geometry cache needs to be regenerated.
     mutable bool d_needsRedraw;
     //! holds setting for automatic creation of of surface (RenderingWindow)
     bool d_autoRenderingWindow;
+    //! holds setting for stencil buffer usage in texture caching
+    bool d_autoRenderingSurfaceStencilEnabled;
 
-    //! Holds pointer to the Window objects current mouse cursor image.
-    const Image* d_mouseCursor;
+    //! Holds pointer to the Window objects current cursor image.
+    const Image* d_cursor;
 
     //! Alpha transparency setting for the Window
     float d_alpha;
@@ -3735,7 +3691,7 @@ protected:
     UBox d_margin;
 
     //! User ID assigned to this Window
-    uint d_ID;
+    unsigned int d_ID;
     //! Holds pointer to some user assigned data.
     void* d_userData;
     //! Holds a collection of named user string values.
@@ -3743,23 +3699,21 @@ protected:
 
     //! true if Window will be drawn on top of all other Windows
     bool d_alwaysOnTop;
-    //! whether window should rise in the z order when left clicked.
-    bool d_riseOnClick;
+    //! whether window should rise in the z order when left cursor source is activated.
+    bool d_riseOnPointerActivation;
     //! true if the Window responds to z-order change requests.
     bool d_zOrderingEnabled;
 
-    //! true if the Window wishes to hear about multi-click mouse events.
-    bool d_wantsMultiClicks;
-    //! whether (most) mouse events pass through this window
-    bool d_mousePassThroughEnabled;
-    //! whether pressed mouse button will auto-repeat the down event.
+    //! whether (most) cursor events pass through this window
+    bool d_cursorPassThroughEnabled;
+    //! whether pressed cursor will auto-repeat the down event.
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
     float d_repeatDelay;
     //! seconds between further repeats after delay has expired.
     float d_repeatRate;
-    //! button we're tracking for auto-repeat purposes.
-    MouseButton d_repeatButton;
+    //! Cursor source we're tracking for auto-repeat purposes.
+    CursorInputSource d_repeatPointerSource;
     //! implements repeating - is true after delay has elapsed,
     bool d_repeating;
     //! implements repeating - tracks time elapsed.
@@ -3796,14 +3750,22 @@ protected:
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
 
-    //! specifies whether mouse inputs should be propagated to parent(s)
-    bool d_propagateMouseInputs;
+    //! specifies whether cursor inputs should be propagated to parent(s)
+    bool d_propagatePointerInputs;
 
     //! GUIContext.  Set when this window is used as a root window.
     GUIContext* d_guiContext;
 
-    //! true when mouse is contained within this Window's area.
-    bool d_containsMouse;
+    //! true when cursor is contained within this Window's area.
+    bool d_containsPointer;
+
+    //! The translation which was set for this window.
+    glm::vec3 d_translation;
+    //! true when this window is focused.
+    bool d_isFocused;
+
+    //! The clipping region which was set for this window.
+    Rectf d_clippingRegion;
 
 private:
     /*************************************************************************
@@ -3814,8 +3776,8 @@ private:
 
     //! Not intended for public use, only used as a "Font" property getter
     const Font* property_getFont() const;
-    //! Not intended for public use, only used as a "MouseCursor" property getter
-    const Image* property_getMouseCursor() const;
+    //! Not intended for public use, only used as a "Cursor" property getter
+    const Image* property_getCursor() const;
 
     //! connection for event listener for font render size changes.
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
