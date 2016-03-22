@@ -296,7 +296,7 @@ void Editbox::onCharacter(TextEventArgs& e)
 
     // only need to take notice if we have focus
     if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.character))
+        getFont()->isCodepointAvailable(e.d_character))
     {
         // backup current text
         String tmp(getText());
@@ -314,9 +314,9 @@ void Editbox::onCharacter(TextEventArgs& e)
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UAT_INSERT;
             undo.d_startIdx = getSelectionStart();
-            undo.d_text = e.character;
+            undo.d_text = e.d_character;
 
-            tmp.insert(getSelectionStart(), 1, e.character);
+            tmp.insert(getSelectionStart(), 1, e.d_character);
 
             if (handleValidityChangeForString(tmp))
             {

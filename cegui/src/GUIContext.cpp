@@ -654,7 +654,7 @@ bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
     if (!args.window)
         return false;
 
-    args.character = event.d_character;
+    args.d_character = event.d_character;
 
     args.window->onCharacter(args);
     return args.handled != 0;

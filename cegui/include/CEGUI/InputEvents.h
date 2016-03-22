@@ -77,7 +77,7 @@ public:
     TextInputEvent() : InputEvent(IET_TextInputEventType) {}
 
     //! The input character
-    CEGUI::String::value_type d_character;         
+    char32_t d_character;         
 };
 
 /*!

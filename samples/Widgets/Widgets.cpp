@@ -92,7 +92,7 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     }
     else if(const CEGUI::TextEventArgs* textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
     {
-        logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->character) + "'";
+        logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->d_character) + "'";
     }
     else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
     {

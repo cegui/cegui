@@ -329,7 +329,8 @@ class CEGUIEXPORT TextEventArgs : public WindowEventArgs
 public:
 	TextEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	String::value_type character; //!< char32_t or char (depends on used String class) codepoint for the character of the text.
+    //! char32_t codepoint representing the character of the text event.
+	char32_t d_character; 
 };
 
 /*!
