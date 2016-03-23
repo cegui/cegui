@@ -299,7 +299,7 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        char32_t& currentCodePoint = text[c];
+        const char32_t& currentCodePoint = text[c];
 #else
     String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
     while (!currentCodePointIter.isAtEnd())
