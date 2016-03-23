@@ -491,22 +491,22 @@ static unsigned int powOf2Supremum(unsigned int value)
 //----------------------------------------------------------------------------//
 Sizef Element::getSizeAdjustedToContent_bisection(const USize& size_func, float domain_min, float domain_max) const
 {
-    std::int64_t domain_min_int(std::floor(domain_min));
-    std::int64_t domain_max_int(std::ceil(domain_max));
+    int domain_min_int(static_cast<int>(std::floor(domain_min)));
+    int domain_max_int(static_cast<int>(std::ceil(domain_max)));
     if (domain_min_int >= domain_max_int)
         throw InvalidRequestException("Length of domain is 0.");
 
     /* First, enlarge the domain so that it's a power of 2 (with non-negative
        integer exponent). This makes the bisection use only integer
        parameters. */
-    std::int64_t domain_size(domain_max_int - domain_min_int);
-    std::int64_t domain_size_pow_of_2(static_cast<std::int64_t>(powOf2Supremum(domain_size)));
+    int domain_size(domain_max_int - domain_min_int);
+    int domain_size_pow_of_2(static_cast<int>(powOf2Supremum(domain_size)));
     domain_min_int -= domain_size_pow_of_2 - domain_size;
 
     Sizef element_size(0.f, 0.f);
     while (true)
     {
-        std::int64_t param((domain_min_int+domain_max_int+1) / 2);
+        int param((domain_min_int+domain_max_int+1) / 2);
         float param_float(static_cast<float>(param));
         element_size = Sizef(size_func.d_width.d_scale*param_float + size_func.d_width.d_offset,
                              size_func.d_height.d_scale*param_float + size_func.d_height.d_offset);
