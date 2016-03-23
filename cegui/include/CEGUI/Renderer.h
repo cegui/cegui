@@ -48,21 +48,6 @@ namespace CEGUI
 {
     class RenderMaterial;
 
-
-//----------------------------------------------------------------------------//
-/*!
-\brief
-    Enumerated type that contains the valid diagonal-mode that specify how a
-    quad is split into triangles when rendered with by a 3D API.
-*/
-enum QuadSplitMode
-{
-    //! Diagonal split goes from top-left to bottom-right
-    TopLeftToBottomRight,
-    //! Diagonal split goes from bottom-left to top-right
-    BottomLeftToTopRight
-};
-
 //----------------------------------------------------------------------------//
 
 /*!
