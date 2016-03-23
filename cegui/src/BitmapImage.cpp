@@ -97,8 +97,6 @@ void BitmapImage::setTexture(Texture* texture)
 void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
                          const ImageRenderSettings& render_settings) const
 {
-    const QuadSplitMode quad_split_mode(TopLeftToBottomRight);
-
     Rectf dest(render_settings.d_destArea);
     // apply rendering offset to the destination Rect
     dest.offset(d_scaledOffset);
@@ -118,7 +116,9 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     // calculate final, clipped, texture co-ordinates
     const Rectf tex_rect((d_imageArea + ((final_rect - dest) * tex_per_pix)) * texel_scale);
 
-    // URGENT FIXME: Shouldn't this be in the hands of the user?
+    // TODO: This is clearly not optimal but the only way to go with the current
+    // Font rendering system. Distance field rendering would allow us to ignore the 
+    // pixel alignment.
     final_rect.d_min.x = CoordConverter::alignToPixels(final_rect.d_min.x);
     final_rect.d_min.y = CoordConverter::alignToPixels(final_rect.d_min.y);
     final_rect.d_max.x = CoordConverter::alignToPixels(final_rect.d_max.x);
@@ -143,18 +143,10 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     vbuffer[2].d_position.z   = 0.0f;
     vbuffer[2].d_texCoords.x = tex_rect.right();
 
-    // top-left to bottom-right diagonal
-    if (quad_split_mode == TopLeftToBottomRight)
-    {
-        vbuffer[2].d_position.y   = final_rect.bottom();
-        vbuffer[2].d_texCoords.y = tex_rect.bottom();
-    }
-    // bottom-left to top-right diagonal
-    else
-    {
-        vbuffer[2].d_position.y   = final_rect.top();
-        vbuffer[2].d_texCoords.y = tex_rect.top();
-    }
+    // Quad splitting done from top-left to bottom-right diagonal
+    vbuffer[2].d_position.y = final_rect.bottom();
+    vbuffer[2].d_texCoords.y = tex_rect.bottom();
+
 
     // vertex 3
     vbuffer[3].setColour(colours.d_top_right);
@@ -167,18 +159,9 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     vbuffer[4].d_position.z   = 0.0f;
     vbuffer[4].d_texCoords.x = tex_rect.left();
 
-    // top-left to bottom-right diagonal
-    if (quad_split_mode == TopLeftToBottomRight)
-    {
-        vbuffer[4].d_position.y   = final_rect.top();
-        vbuffer[4].d_texCoords.y = tex_rect.top();
-    }
-    // bottom-left to top-right diagonal
-    else
-    {
-        vbuffer[4].d_position.y   = final_rect.bottom();
-        vbuffer[4].d_texCoords.y = tex_rect.bottom();
-    }
+    // Quad splitting done from top-left to bottom-right diagonal
+    vbuffer[4].d_position.y = final_rect.top();
+    vbuffer[4].d_texCoords.y = tex_rect.top();
 
     // vertex 5
     vbuffer[5].setColour(colours.d_bottom_right);
