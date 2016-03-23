@@ -299,29 +299,16 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        const FontGlyph* glyph;
-        if ((glyph = getGlyphData(text[c])))
-        {
-            const Image* const img = glyph->getImage();
-
-            glyph_pos.y =
-                base_y - (img->getRenderedOffset().y - img->getRenderedOffset().y * y_scale);
-            img->render(geom_buffers, glyph_pos,
-                      glyph->getSize(x_scale, y_scale), clip_rect, clipping_enabled, colours);
-            glyph_pos.x += glyph->getAdvance(x_scale);
-            // apply extra spacing to space chars
-            if (text[c] == ' ')
-                glyph_pos.x += space_extra;
-        }
-    }
+        char32_t& currentCodePoint = text[c];
 #else
     String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
     while (!currentCodePointIter.isAtEnd())
     {
         char32_t currentCodePoint = *currentCodePointIter;
+#endif
         const FontGlyph* glyph = getGlyphData(currentCodePoint);
         if (glyph != nullptr)
-        {
+        {  
             const Image* const img = glyph->getImage();
 
             glyph_pos.y =
@@ -333,10 +320,11 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
             if (currentCodePoint == ' ')
                 glyph_pos.x += space_extra;
         }
-
-        ++currentCodePointIter;
-    }
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+         ++currentCodePointIter;
 #endif
+    }
+
 
     return glyph_pos.x;
 }
