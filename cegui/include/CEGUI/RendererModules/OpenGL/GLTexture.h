@@ -42,12 +42,12 @@ namespace CEGUI
 class OPENGL_GUIRENDERER_API OpenGL1Texture : public OpenGLTexture
 {
 public:
-    virtual void blitToMemory(void* targetData);
-
-protected:
     OpenGL1Texture(OpenGLRendererBase& owner, const String& name);
     virtual ~OpenGL1Texture();
 
+    virtual void blitToMemory(void* targetData);
+
+protected:
     //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
     virtual void setTextureEnvironment();
 
