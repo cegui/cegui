@@ -39,7 +39,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardListHeaderSegment::render()
+    void FalagardListHeaderSegment::createRenderGeometry()
     {
         ListHeaderSegment* w = (ListHeaderSegment*)d_window;
         // get WidgetLookFeel for the assigned look.

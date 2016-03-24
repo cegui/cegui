@@ -77,7 +77,7 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::render()
+void FalagardEditbox::createRenderGeometry()
 {
     const WidgetLookFeel& wlf = getLookNFeel();
 
@@ -105,7 +105,7 @@ void FalagardEditbox::render()
 #ifdef CEGUI_BIDI_SUPPORT
     renderTextBidi(wlf, visual_text, text_area, text_offset);
 #else
-    renderTextNoBidi(wlf, visual_text, text_area, text_offset);
+    createRenderGeometryForTextWithoutBidi(wlf, visual_text, text_area, text_offset);
 #endif
 
     // remember this for next time.
@@ -243,10 +243,11 @@ float FalagardEditbox::calculateTextOffset(const Rectf& text_area,
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
-                                       const String& text,
-                                       const Rectf& text_area,
-                                       float text_offset)
+void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
+    const WidgetLookFeel& wlf,
+    const String& text,
+    const Rectf& text_area,
+    float text_offset)
 {
     const Font* font = d_window->getFont();
 
@@ -278,31 +279,41 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
         hlarea.d_min.x += text_offset + selStartOffset;
         hlarea.d_max.x = hlarea.d_min.x + (selEndOffset - selStartOffset);
 
-        // render the selection imagery.
-        wlf.getStateImagery(active ? "ActiveSelection" :
-                                     "InactiveSelection").
-            render(*w, hlarea, 0, &text_area);
+        // create render geometry for the selection imagery.
+        const String& stateName = active ? "ActiveSelection" : "InactiveSelection";
+        wlf.getStateImagery(stateName).render(*w, hlarea, 0, &text_area);
     }
 
-    // draw pre-highlight text
+    // create render geometry for pre-highlight text
     String sect = text.substr(0, w->getSelectionStart());
     colours = unselectedColours;
-    text_part_rect.d_min.x =
-        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
-                       &text_area, true, colours);
 
-    // draw highlight text
+    auto preHighlightTextGeomBuffers = font->createRenderGeometryForText(
+        sect, text_part_rect.d_min.x,
+        text_part_rect.getPosition(),
+        &text_area, true, colours);
+
+    w->appendGeometryBuffers(preHighlightTextGeomBuffers);
+
+    // create render geometry for highlight text
     sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
-    text_part_rect.d_min.x =
-        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
-                       &text_area, true, colours);
 
-    // draw post-highlight text
+    auto highlitTextGeomBuffers = font->createRenderGeometryForText(
+        sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
+        &text_area, true, colours);
+
+    w->appendGeometryBuffers(highlitTextGeomBuffers);
+
+    // create render geometry for  post-highlight text
     sect = text.substr(w->getSelectionEnd());
     colours = unselectedColours;
-    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
-                   &text_area, true, colours);
+
+     auto postHighlitTextGeomBuffers = font->createRenderGeometryForText(
+        sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
+        &text_area, true, colours);
+
+    w->appendGeometryBuffers(postHighlitTextGeomBuffers);
 }
 
 //----------------------------------------------------------------------------//

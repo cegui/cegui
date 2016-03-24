@@ -86,7 +86,7 @@ public:
     */
     FalagardTreeView(const String& type);
 
-    void render();
+    void createRenderGeometry() override;
 
     virtual Sizef getSubtreeExpanderSize(void) const;
     virtual float getSubtreeExpanderXIndent(int depth) const;

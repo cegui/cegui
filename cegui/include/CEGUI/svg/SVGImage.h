@@ -71,8 +71,8 @@ public:
     SVGImage(const XMLAttributes& attributes);
 
     // Implement CEGUI::Image interface
-    void render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                const ImageRenderSettings& render_settings) const;    
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const ImageRenderSettings& render_settings) const override;    
 
     /*!
     \brief

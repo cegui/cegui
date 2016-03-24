@@ -252,7 +252,7 @@ namespace CEGUI
         }
     }
 
-    void TextComponent::render_impl(Window& srcWindow, Rectf& destRect,
+    void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
       const CEGUI::ColourRect* modColours, const Rectf* clipper,
       bool /*clipToDisplay*/) const
     {
@@ -285,9 +285,9 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // add geometry for text to the target window.
-        d_formattedRenderedString->draw(&srcWindow, srcWindow.getGeometryBuffers(),
-                                        destRect.getPosition(),
-                                        &finalColours, clipper);
+        d_formattedRenderedString->createRenderGeometry(&srcWindow, destRect.getPosition(),
+                                        &finalColours,
+                                        clipper);
     }
 
     const Font* TextComponent::getFontObject(const Window& window) const

@@ -55,7 +55,7 @@ namespace CEGUI
         */
         FalagardTabButton(const String& type);
 
-        void render();
+        void createRenderGeometry() override;
     };
 
 } // End of  CEGUI namespace section

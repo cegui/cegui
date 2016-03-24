@@ -39,7 +39,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardTooltip::render()
+    void FalagardTooltip::createRenderGeometry()
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();

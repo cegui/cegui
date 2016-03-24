@@ -51,7 +51,7 @@ public:
 
     // implementation of base interface
     void format(const Window* ref_wnd, const Sizef& area_size);
-    void draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
+    std::vector<GeometryBuffer*> createRenderGeometry(const Window* ref_wnd,
               const glm::vec2& position, const ColourRect* mod_colours,
               const Rectf* clip_rect) const;
     size_t getFormattedLineCount() const;

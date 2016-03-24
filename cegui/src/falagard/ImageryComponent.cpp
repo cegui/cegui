@@ -120,7 +120,10 @@ namespace CEGUI
         d_vertFormatting.setPropertySource(property_name);
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clip_to_display) const
+    void ImageryComponent::addImageRenderGeometryToWindow_impl(
+        Window& srcWindow, Rectf& destRect,
+        const CEGUI::ColourRect* modColours, const Rectf* clipper,
+        bool clip_to_display) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -215,10 +218,12 @@ namespace CEGUI
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
         Rectf finalRect;
-        Rectf finalClipper;
-        const Rectf* clippingRect;
         finalRect.top(ypos);
         finalRect.bottom(ypos + imgSz.d_height);
+
+        ImageRenderSettings imgRenderSettings(
+            finalRect, 0,
+            !clip_to_display, finalColours);
 
         for (unsigned int row = 0; row < vertTiles; ++row)
         {
@@ -231,17 +236,22 @@ namespace CEGUI
                 if (((vertFormatting == VF_TILED) && row == vertTiles - 1) ||
                     ((horzFormatting == HF_TILED) && col == horzTiles - 1))
                 {
-                    finalClipper = clipper ? clipper->getIntersection(destRect) : destRect;
-                    clippingRect = &finalClipper;
+                    imgRenderSettings.d_clipArea = clipper ? &clipper->getIntersection(destRect) : &destRect;
                 }
-                // not tiliing, or not on far edges, just used passed in clipper (if any).
+                // not tiling, or not on far edges, just used passed in clipper (if any).
                 else
                 {
-                    clippingRect = clipper;
+                    imgRenderSettings.d_clipArea = clipper;
                 }
 
+                imgRenderSettings.d_destArea = finalRect;
+                 
+
                 // add geometry for image to the target window.
-                img->render(srcWindow.getGeometryBuffers(), finalRect, clippingRect, !clip_to_display, finalColours);
+                std::vector<GeometryBuffer*> geomBuffers = 
+                    img->createRenderGeometry(imgRenderSettings);
+
+                srcWindow.appendGeometryBuffers(geomBuffers);
 
                 finalRect.d_min.x += imgSz.d_width;
                 finalRect.d_max.x += imgSz.d_width;

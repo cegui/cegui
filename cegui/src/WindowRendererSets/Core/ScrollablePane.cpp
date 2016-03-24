@@ -76,7 +76,7 @@ namespace CEGUI
         return wlf.getNamedArea("ViewableArea").getArea().getPixelRect(*w);
     }
 
-    void FalagardScrollablePane::render()
+    void FalagardScrollablePane::createRenderGeometry()
     {
         const StateImagery* imagery;
 

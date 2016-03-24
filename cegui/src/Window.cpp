@@ -1078,7 +1078,7 @@ void Window::invalidate_impl(const bool recursive)
 }
 
 //----------------------------------------------------------------------------//
-void Window::render()
+void Window::draw()
 {
     // don't do anything if window is not visible
     if (!isEffectiveVisible())
@@ -1101,7 +1101,7 @@ void Window::render()
         // render any child windows
         for (ChildDrawList::iterator it = d_drawList.begin(); it != d_drawList.end(); ++it)
         {
-            (*it)->render();
+            (*it)->draw();
         }
     }
 
@@ -1134,7 +1134,7 @@ void Window::bufferGeometry(const RenderingContext&)
 
         // get derived class or WindowRenderer to re-populate geometry buffer.
         if (d_windowRenderer)
-            d_windowRenderer->render();
+            d_windowRenderer->createRenderGeometry();
         else
             populateGeometryBuffer();
 
@@ -3093,6 +3093,12 @@ void Window::appendText(const String& text)
 std::vector<GeometryBuffer*>& Window::getGeometryBuffers()
 {
     return d_geometryBuffers;
+}
+
+void Window::appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers)
+{
+    d_geometryBuffers.insert(d_geometryBuffers.end(), geomBuffers.begin(),
+        geomBuffers.end());
 }
 
 //----------------------------------------------------------------------------//

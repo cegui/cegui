@@ -44,7 +44,7 @@ namespace CEGUI
         "");
     }
 
-    void FalagardTabControl::render()
+    void FalagardTabControl::createRenderGeometry()
     {
         const StateImagery* imagery;
         // get WidgetLookFeel for the assigned look.

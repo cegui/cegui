@@ -49,7 +49,7 @@ namespace CEGUI
         false);
     }
 
-    void FalagardScrollbar::render()
+    void FalagardScrollbar::createRenderGeometry()
     {
         const StateImagery* imagery;
 

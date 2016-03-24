@@ -397,10 +397,10 @@ public:
 
     /*!
     \brief
-        Draw the list box item in its current state
+        Create render geometry for the list box item in its current state
 
-    \param position
-        Vecor2 object describing the upper-left corner of area that should be rendered in to for the draw operation.
+    \param targetRect
+        The target rectangle for drawing.
 
     \param alpha
         Alpha value to be used when rendering the item (between 0.0f and 1.0f).
@@ -411,8 +411,9 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
-                      float alpha, const Rectf* clipper) const = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+        const Rectf& targetRect,
+        float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************
         Operators

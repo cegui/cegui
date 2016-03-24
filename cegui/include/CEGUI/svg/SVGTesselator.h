@@ -126,98 +126,99 @@ public:
     
     /*!
     \brief
-        Tesselates an SVGRect and adds the created geometry to the GeometryBuffer
-        list.
+        Tesselates an SVGRect and returns the created render geometry.
     
     \param rect
             The SVGRect object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
+
+    \return
+            Returns the tesselated render geometry for this shape.
     */
-    static void tesselateRect(const SVGRect* rect,
-                              std::vector<GeometryBuffer*>& geometry_buffers,
-                              const SVGImage::SVGImageRenderSettings& render_settings);
+    static std::vector<GeometryBuffer*> tesselateRect(
+        const SVGRect* rect,
+        const SVGImage::SVGImageRenderSettings& render_settings);
+
     /*!
     \brief
-        Tesselates an SVGCircle and adds the created geometry to the GeometryBuffer
-        list.
-    
+        Tesselates an SVGCircle and returns the created render geometry.
+
     \param rect
             The SVGCircle object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
+
+    \return
+            Returns the tesselated render geometry for this shape.
     */
-    static void tesselateCircle(const SVGCircle* circle,
-                                std::vector<GeometryBuffer*>& geometry_buffers,
-                                const SVGImage::SVGImageRenderSettings& render_settings);
+    static std::vector<GeometryBuffer*> tesselateCircle(
+        const SVGCircle* circle,
+        const SVGImage::SVGImageRenderSettings& render_settings);
 
     /*!
     \brief
-        Tesselates an SVGEllipse and adds the created geometry to the GeometryBuffer
-        list.
-    
+        Tesselates an SVGEllipse and returns the created render geometry.
+
     \param rect
             The SVGEllipse object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
+
+    \return
+            Returns the tesselated render geometry for this shape.
     */
-    static void tesselateEllipse(const SVGEllipse* ellipse,
-                                 std::vector<GeometryBuffer*>& geometry_buffers,
-                                 const SVGImage::SVGImageRenderSettings& render_settings);
+    static std::vector<GeometryBuffer*> tesselateEllipse(
+        const SVGEllipse* ellipse,
+        const SVGImage::SVGImageRenderSettings& render_settings);
 
     /*!
     \brief
-        Tesselates an SVGLine and adds the created geometry to the GeometryBuffer
-        list.
+        Tesselates an SVGLine and returns the created render geometry.
 
     \param line
             The SVGLine object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
+
+    \return
+            Returns the tesselated render geometry for this shape.
     */
-    static void tesselateLine(const SVGLine* line,
-                              std::vector<GeometryBuffer*>& geometry_buffers,
-                              const SVGImage::SVGImageRenderSettings& render_settings);
+    static std::vector<GeometryBuffer*> tesselateLine(
+        const SVGLine* line,
+        const SVGImage::SVGImageRenderSettings& render_settings);
 
     /*!
     \brief
-        Tesselates an SVGPolyline and adds the created geometry to the GeometryBuffer
-        list.
+        Tesselates an SVGPolyline and returns the created render geometry.
 
     \param polyline
             The SVGPolyline object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
+
+    \return
+            Returns the tesselated render geometry for this shape.
     */
-    static void tesselatePolyline(const SVGPolyline* polyline,
-                                  std::vector<GeometryBuffer*>& geometry_buffers,
-                                  const SVGImage::SVGImageRenderSettings& render_settings);
+    static std::vector<GeometryBuffer*> tesselatePolyline(
+        const SVGPolyline* polyline,
+        const SVGImage::SVGImageRenderSettings& render_settings);
 
     /*!
     \brief
-        Tesselates an SVGPolygon and adds the created geometry to the GeometryBuffer
-        list.
+        Tesselates an SVGPolygon and returns the created render geometry.
 
     \param polyline
             The SVGPolygon object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
+
+    \return
+            Returns the tesselated render geometry for this shape.
     */
-    static void tesselatePolygon(const SVGPolygon* polyline,
-                                 std::vector<GeometryBuffer*>& geometry_buffers,
-                                 const SVGImage::SVGImageRenderSettings& render_settings);
+    static std::vector<GeometryBuffer*> tesselatePolygon(
+        const SVGPolygon* polyline,
+        const SVGImage::SVGImageRenderSettings& render_settings);
 
 private:
     /*!
@@ -379,12 +380,12 @@ private:
                                    const glm::vec2& point3);
 
     //! Helper function that creates and sets the parameters for a coloured geometry buffer
-    static void setupGeometryBuffers(GeometryBuffer*& fill_geometry_buffer,
-                                     GeometryBuffer*& stroke_geometry_buffer,
-                                     std::vector<GeometryBuffer*>& geometry_buffers,
-                                     const SVGImage::SVGImageRenderSettings& render_settings,
-                                     const glm::mat3x3& svg_transformation,
-                                     const bool is_fill_needing_stencil);
+    static std::vector<GeometryBuffer*> setupGeometryBuffers(
+        GeometryBuffer*& fill_geometry_buffer,
+        GeometryBuffer*& stroke_geometry_buffer,
+        const SVGImage::SVGImageRenderSettings& render_settings,
+        const glm::mat3x3& svg_transformation,
+        const bool is_fill_needing_stencil);
 
     //! Helper function for setting an SVG GeometryBuffer's render settings and transformation matrix
     static void setupGeometryBufferSettings(CEGUI::GeometryBuffer* geometry_buffer,

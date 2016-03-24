@@ -130,8 +130,17 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addBitmapImageFromFile("cegui_logo",
                                                          "logo.png");
-    CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
-        d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, false, CEGUI::ColourRect(0xFFFFFFFF));
+
+    CEGUI::Image& ceguiLogo = CEGUI::ImageManager::getSingleton().get("cegui_logo");
+
+    ImageRenderSettings imgRenderSettings(
+        CEGUI::Rectf(0, 0, 183, 89));
+
+    auto ceguiLogoGeomBuffers = ceguiLogo.createRenderGeometry(
+        imgRenderSettings);
+
+    d_logoGeometry.insert(d_logoGeometry.end(), ceguiLogoGeomBuffers.begin(),
+        ceguiLogoGeomBuffers.end());
 
     // initial position update of the logo
     updateLogoGeometry();
@@ -340,8 +349,12 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
             d_FPSGeometry.clear();
 
-            fnt->drawText(d_FPSGeometry, sstream.str(), glm::vec2(0, 0), 0, false,
-                          CEGUI::Colour(0xFFFFFFFF));
+            auto textGeomBuffers = fnt->createRenderGeometryForText(
+                sstream.str(), glm::vec2(0, 0), 0, false,
+                CEGUI::Colour(0xFFFFFFFF));
+
+            d_FPSGeometry.insert(d_FPSGeometry.end(), textGeomBuffers.begin(),
+                textGeomBuffers.end());
 
             updateFPSGeometry();
         }

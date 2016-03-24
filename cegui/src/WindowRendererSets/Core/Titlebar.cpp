@@ -39,7 +39,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardTitlebar::render()
+    void FalagardTitlebar::createRenderGeometry()
     {
         const StateImagery* imagery;
 

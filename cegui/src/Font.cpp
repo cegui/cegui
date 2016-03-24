@@ -286,16 +286,29 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
     return char_count;
 }
 
-//----------------------------------------------------------------------------//
-float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
-                    const String& text, const glm::vec2& position,
-                    const Rectf* clip_rect, const bool clipping_enabled,
-                    const ColourRect& colours, const float space_extra,
-                    const float x_scale, const float y_scale) const
+std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
+    const String& text, const glm::vec2& position,
+    const Rectf* clip_rect, const bool clipping_enabled,
+    const ColourRect& colours, const float space_extra,
+    const float x_scale, const float y_scale) const
+{
+    float nextGlyphPos = 0.0f;
+
+    return createRenderGeometryForText(
+        text, nextGlyphPos, position, clip_rect, clipping_enabled,
+        colours, space_extra, x_scale, y_scale);
+}
+
+std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
+    const String& text, float& nextGlyphPosX, const glm::vec2& position,
+    const Rectf* clip_rect, const bool clipping_enabled,
+    const ColourRect& colours, const float space_extra,
+    const float x_scale, const float y_scale) const
 {
     const float base_y = position.y + getBaseline(y_scale);
     glm::vec2 glyph_pos(position);
-
+    std::vector<GeometryBuffer*> geomBuffers;
+    
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
@@ -311,22 +324,49 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
         {  
             const Image* const img = glyph->getImage();
 
-            glyph_pos.y =
-                base_y - (img->getRenderedOffset().y - img->getRenderedOffset().y * y_scale);
-            img->render(geom_buffers, glyph_pos,
-                        glyph->getSize(x_scale, y_scale), clip_rect, clipping_enabled, colours);
+            glyph_pos.y = base_y - (img->getRenderedOffset().y - 
+                img->getRenderedOffset().y * y_scale);
+
+            // We only fully create the first GeometryBuffer
+            if(geomBuffers.empty())
+            {
+                ImageRenderSettings imgRenderSettings(
+                    Rectf(glyph_pos, glyph->getSize(x_scale, y_scale)),
+                    clip_rect, clipping_enabled, colours);
+
+                std::vector<GeometryBuffer*> currentGeombuffs =
+                    img->createRenderGeometry(imgRenderSettings);
+
+                assert(currentGeombuffs.size() <= 1 && "Glyphs are expected to "
+                    "be built from a single GeometryBuffer (or none)");
+
+                if(currentGeombuffs.size() == 1)
+                {
+                    geomBuffers.push_back(currentGeombuffs.front());
+                }
+            }
+            else
+            {
+                // Else we append the geometry to the existing geometry
+                //TODO textGlyphsGeomBuff
+            }
+
             glyph_pos.x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
             if (currentCodePoint == ' ')
+            {
                 glyph_pos.x += space_extra;
+            }
         }
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
          ++currentCodePointIter;
 #endif
     }
 
+    nextGlyphPosX = glyph_pos.x;
 
-    return glyph_pos.x;
+    // Adding a single geometry buffer containing the batched glyphs
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

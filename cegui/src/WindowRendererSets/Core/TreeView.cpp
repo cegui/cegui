@@ -47,7 +47,7 @@ FalagardTreeView::FalagardTreeView(const String& type) :
 }
 
 //----------------------------------------------------------------------------//
-void FalagardTreeView::render()
+void FalagardTreeView::createRenderGeometry()
 {
     const WidgetLookFeel& wlf = getLookNFeel();
     TreeView* tree_view = getView();
@@ -114,14 +114,19 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
             icon_rect.setHeight(size.d_height);
 
             Rectf icon_clipper(icon_rect.getIntersection(items_area));
-            img.render(tree_view->getGeometryBuffers(), icon_rect, &icon_clipper,
+
+            ImageRenderSettings renderSettings(
+                icon_rect, &icon_clipper,
                 true, ICON_COLOUR_RECT, 1.0f);
+
+            auto imgGeomBuffers = img.createRenderGeometry(renderSettings);
+            tree_view->appendGeometryBuffers(imgGeomBuffers);
 
             item_rect.left(item_rect.left() + icon_rect.getWidth());
         }
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
-        renderString(tree_view, rendered_string, item_rect,
+        createRenderGeometryAndAddToItemView(tree_view, rendered_string, item_rect,
             tree_view->getFont(), &item_clipper, item->d_isSelected);
 
         item_pos.y += std::max(size.d_height, d_subtreeExpanderImagerySize.d_height);

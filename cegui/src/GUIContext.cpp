@@ -274,7 +274,7 @@ void GUIContext::renderWindowHierarchyToSurfaces()
     if (rs.isRenderingWindow())
         static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
 
-    d_rootWindow->render();
+    d_rootWindow->draw();
 }
 
 //----------------------------------------------------------------------------//

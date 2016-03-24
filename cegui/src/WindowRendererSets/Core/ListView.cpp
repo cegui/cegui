@@ -47,7 +47,7 @@ FalagardListView::FalagardListView(const String& type) :
 }
 
 //----------------------------------------------------------------------------//
-void FalagardListView::render()
+void FalagardListView::createRenderGeometry()
 {
     const StateImagery* imagery;
     const WidgetLookFeel& wlf = getLookNFeel();
@@ -62,11 +62,11 @@ void FalagardListView::render()
             (has_focused_state ? "EnabledFocused" : "Enabled"));
     imagery->render(*list_view);
 
-    render(list_view);
+    createRenderGeometry(list_view);
 }
 
 //----------------------------------------------------------------------------//
-void FalagardListView::render(ListView* list_view)
+void FalagardListView::createRenderGeometry(ListView* list_view)
 {
     Rectf items_area(getViewRenderArea());
     glm::vec2 item_pos(getItemRenderStartPosition(list_view, items_area));
@@ -93,15 +93,21 @@ void FalagardListView::render(ListView* list_view)
             icon_rect.setHeight(size.d_height);
 
             Rectf icon_clipper(icon_rect.getIntersection(items_area));
-            img.render(list_view->getGeometryBuffers(), icon_rect, &icon_clipper,
+
+            ImageRenderSettings renderSettings(
+                icon_rect, &icon_clipper,
                 true, ICON_COLOUR_RECT, 1.0f);
+
+            auto imgGeomBuffers = img.createRenderGeometry(renderSettings);
+
+            list_view->appendGeometryBuffers(imgGeomBuffers);
 
             item_rect.left(item_rect.left() + icon_rect.getWidth());
         }
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
-        renderString(list_view, rendered_string, item_rect,
+        createRenderGeometryAndAddToItemView(list_view, rendered_string, item_rect,
             list_view->getFont(), &item_clipper, item->d_isSelected);
 
         item_pos.y += size.d_height;

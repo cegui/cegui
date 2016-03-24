@@ -154,6 +154,51 @@ public:
     }
 };
 
+
+/*!
+\brief
+    A struct that contains the render settings for the Image class.
+*/
+struct ImageRenderSettings
+{
+    //! Constructor
+    ImageRenderSettings(const Rectf& dest_area,
+                        const Rectf* clip_area = 0,
+                        bool clipping_enabled = false,
+                        const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
+                        float alpha = 1.0f) :
+        d_destArea(dest_area),
+        d_clipArea(clip_area),
+        d_clippingEnabled(clipping_enabled),
+        d_multiplyColours(multiplication_colours),
+        d_alpha(alpha)
+    {
+    }
+
+    ImageRenderSettings(const ImageRenderSettings& source) :
+        d_destArea(source.d_destArea),
+        d_clipArea(source.d_clipArea),
+        d_clippingEnabled(source.d_clippingEnabled),
+        d_multiplyColours(source.d_multiplyColours),
+        d_alpha(source.d_alpha)
+    {
+    }
+
+    //! The destination area for the Image.
+    Rectf d_destArea;
+    //! The clipping area of the Image.
+    const Rectf* d_clipArea;
+    //! True of clipping should be enabled for the geometry of this Image.
+    bool d_clippingEnabled;
+    //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
+    //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
+    //! If this will be used depends on the underlying image.
+    ColourRect d_multiplyColours;
+    //! The alpha value for this image, should be set as the GeometryBuffer's
+    //! alpha by the underlying image class
+    float d_alpha;
+};
+
 /*!
 \brief
     Interface for Image.
@@ -166,53 +211,6 @@ class CEGUIEXPORT Image :
     public ChainedXMLHandler
 {
 public:
-
-    /*!
-    \brief
-        A struct that contains the render settings for the Image class.
-    */
-    struct ImageRenderSettings
-    {
-        //! Constructor
-        ImageRenderSettings(const Rectf& dest_area,
-                            const Rectf* clip_area,
-                            bool clipping_enabled,
-                            const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
-                            float alpha = 1.0f) :
-            d_destArea(dest_area),
-            d_clipArea(clip_area),
-            d_clippingEnabled(clipping_enabled),
-            d_multiplyColours(multiplication_colours),
-            d_alpha(alpha)
-        {
-        }
-
-        ImageRenderSettings(const ImageRenderSettings& source) :
-            d_destArea(source.d_destArea),
-            d_clipArea(source.d_clipArea),
-            d_clippingEnabled(source.d_clippingEnabled),
-            d_multiplyColours(source.d_multiplyColours),
-            d_alpha(source.d_alpha)
-        {
-        }
-
-        //! The destination area for the Image.
-        Rectf d_destArea;
-        //! The clipping area of the Image.
-        const Rectf* d_clipArea;
-        //! True of clipping should be enabled for the geometry of this Image.
-        bool d_clippingEnabled;
-        //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
-        //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
-        //! If this will be used depends on the underlying image.
-        ColourRect d_multiplyColours;
-        //! The alpha value for this image, should be set as the GeometryBuffer's
-        //! alpha by the underlying image class
-        float d_alpha;
-    };
-
-
-
     //! Constructor
     Image(const String& name);
     Image(const String& name, const glm::vec2& pixel_offset,
@@ -223,16 +221,14 @@ public:
 
     /*!
     \brief
-        Creates a GeometryBuffer from the Image, providing the data
-        needed for rendering.
+        Creates a container of GeometryBuffers based on the Image, providing the 
+        geometry data needed for rendering.
 
-    \param geometry_buffers
-        The GeometryBuffer list to which the new geometry of this Image will be added to.
     \param render_settings
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
      */
-    virtual void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                        const ImageRenderSettings& render_settings) const = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+        const ImageRenderSettings& render_settings) const = 0;
         
     /*!
     \brief
@@ -311,64 +307,6 @@ public:
     */
     void setNativeResolution(const Sizef& native_res);
 
-
-    // Standard Image::render overloads
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Rectf& dest_area,
-                const Rectf* clip_area,
-                bool clipping_enabled,
-                const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
-                float alpha = 1.0f) const
-    {
-        ImageRenderSettings render_settings(dest_area, clip_area, clipping_enabled, 
-            multiplication_colours, alpha);
-        render(geometry_buffers, render_settings);
-    }
-
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const glm::vec2& position,
-                const Rectf* clip_area = 0,
-                const bool clipping_enabled = false) const
-    {
-        ImageRenderSettings render_settings(Rectf(position, getRenderedSize()), clip_area, clipping_enabled);
-        render(geometry_buffers, render_settings);
-    }
-
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const glm::vec2& position,
-                const Rectf* clip_area,
-                const bool clipping_enabled,
-                const ColourRect& colours,
-                float alpha = 1.0f) const
-    {
-        ImageRenderSettings render_settings(Rectf(position, getRenderedSize()), 
-            clip_area, clipping_enabled, colours, alpha);
-        render(geometry_buffers, render_settings);
-    }
-
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const glm::vec2& position,
-                const Sizef& size,
-                const Rectf* clip_area = 0,
-                const bool clipping_enabled = false) const
-    {
-        ImageRenderSettings render_settings(Rectf(position, size), clip_area, clipping_enabled);
-        render(geometry_buffers, render_settings);
-    }
-
-
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const glm::vec2& position,
-                const Sizef& size,
-                const Rectf* clip_area,
-                const bool clipping_enabled,
-                const ColourRect& colours, 
-                float alpha = 1.0f) const
-    {
-        ImageRenderSettings render_settings(Rectf(position, size), clip_area, 
-            clipping_enabled, colours, alpha);
-        render(geometry_buffers, render_settings);
-    }
 
     /*!
     \brief

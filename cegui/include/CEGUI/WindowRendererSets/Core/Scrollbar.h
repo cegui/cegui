@@ -75,8 +75,8 @@ namespace CEGUI
         bool isVertical() const;
         void setVertical(bool setting);
 
-        void render();
-        void performChildWindowLayout();
+        void createRenderGeometry() override;
+        void performChildWindowLayout() override;
 
     protected:
         // data members

@@ -49,14 +49,15 @@ public:
     ~RenderedStringWordWrapper();
 
     // implementation of base interface
-    void format(const Window* ref_wnd, const Sizef& area_size);
-    void draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
-              const glm::vec2& position, const ColourRect* mod_colours,
-              const Rectf* clip_rect) const;
-    size_t getFormattedLineCount() const;
-    float getHorizontalExtent(const Window* ref_wnd) const;
-    float getVerticalExtent(const Window* ref_wnd) const;
-    std::size_t getNumOfFormattedTextLines() const;
+    void format(const Window* ref_wnd, const Sizef& area_size) override;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Window* ref_wnd,
+        const glm::vec2& position, const ColourRect* mod_colours,
+        const Rectf* clip_rect) const override;
+    size_t getFormattedLineCount() const override;
+    float getHorizontalExtent(const Window* ref_wnd) const override;
+    float getVerticalExtent(const Window* ref_wnd) const override;
+    std::size_t getNumOfFormattedTextLines() const override;
 
 protected:
     //! Delete the current formatters and associated RenderedStrings
@@ -129,19 +130,28 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void RenderedStringWordWrapper<T>::draw(const Window* ref_wnd,
-                                        std::vector<GeometryBuffer*>& geometry_buffers,
-                                        const glm::vec2& position,
-                                        const ColourRect* mod_colours,
-                                        const Rectf* clip_rect) const
+std::vector<GeometryBuffer*> RenderedStringWordWrapper<T>::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const ColourRect* mod_colours,
+    const Rectf* clip_rect) const
 {
     glm::vec2 line_pos(position);
+    std::vector<GeometryBuffer*> geomBuffers;
+
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
     {
-        (*i)->draw(ref_wnd, geometry_buffers, line_pos, mod_colours, clip_rect);
+        std::vector<GeometryBuffer*> currentRenderGeometry =
+            (*i)->createRenderGeometry(ref_wnd, line_pos, mod_colours, clip_rect);
+
+        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
+            currentRenderGeometry.end());
+
         line_pos.y += (*i)->getVerticalExtent(ref_wnd);
     }
+
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

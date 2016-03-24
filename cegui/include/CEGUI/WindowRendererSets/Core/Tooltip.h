@@ -58,7 +58,7 @@ namespace CEGUI
         */
         FalagardTooltip(const String& type);
 
-        void render();
+        void createRenderGeometry() override;
         Sizef getTextSize() const;
     };
 

@@ -78,13 +78,13 @@ public:
     */
     FalagardListView(const String& type);
 
-    void render();
+    void createRenderGeometry() override;
 
     virtual Rectf getViewRenderArea(void) const;
     virtual void resizeViewToContent(bool fit_width, bool fit_height) const;
 
 private:
-    void render(ListView* list_view);
+    void createRenderGeometry(ListView* list_view);
 };
 
 }

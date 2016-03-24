@@ -72,7 +72,7 @@ bool FalagardMenuItem::parentIsMenubar() const
 }
 
 //----------------------------------------------------------------------------//
-void FalagardMenuItem::render()
+void FalagardMenuItem::createRenderGeometry()
 {
     MenuItem* w = (MenuItem*)d_window;
     // build name of state we're in
