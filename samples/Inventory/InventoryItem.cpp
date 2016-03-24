@@ -134,10 +134,9 @@ void InventoryItem::populateGeometryBuffer()
         {
             if (d_content.elementAtLocation(x, y))
             {
-                Rectf area(glm::vec2(x * square_size.d_width + 1, y * square_size.d_height + 1),
+                imgRenderSettings.d_destArea = Rectf(
+                    glm::vec2(x * square_size.d_width + 1, y * square_size.d_height + 1),
                     Sizef(square_size.d_width - 2, square_size.d_height - 2));
-                
-                imgRenderSettings.d_destArea = area;
 
                 auto geomBuffers = img->createRenderGeometry(imgRenderSettings);
 
