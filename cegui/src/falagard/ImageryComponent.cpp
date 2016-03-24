@@ -217,18 +217,18 @@ namespace CEGUI
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
-        Rectf finalRect;
-        finalRect.top(ypos);
-        finalRect.bottom(ypos + imgSz.d_height);
-
         ImageRenderSettings imgRenderSettings(
-            finalRect, 0,
+            Rectf(), 0,
             !clip_to_display, finalColours);
+
+        Rectf& renderSettingDestArea = imgRenderSettings.d_destArea;
+        renderSettingDestArea.top(ypos);
+        renderSettingDestArea.bottom(ypos + imgSz.d_height);
 
         for (unsigned int row = 0; row < vertTiles; ++row)
         {
-            finalRect.left(xpos);
-            finalRect.right(xpos + imgSz.d_width);
+            renderSettingDestArea.left(xpos);
+            renderSettingDestArea.right(xpos + imgSz.d_width);
 
             for (unsigned int col = 0; col < horzTiles; ++col)
             {
@@ -244,21 +244,18 @@ namespace CEGUI
                     imgRenderSettings.d_clipArea = clipper;
                 }
 
-                imgRenderSettings.d_destArea = finalRect;
-                 
-
                 // add geometry for image to the target window.
                 std::vector<GeometryBuffer*> geomBuffers = 
                     img->createRenderGeometry(imgRenderSettings);
 
                 srcWindow.appendGeometryBuffers(geomBuffers);
 
-                finalRect.d_min.x += imgSz.d_width;
-                finalRect.d_max.x += imgSz.d_width;
+                renderSettingDestArea.d_min.x += imgSz.d_width;
+                renderSettingDestArea.d_max.x += imgSz.d_width;
             }
 
-            finalRect.d_min.y += imgSz.d_height;
-            finalRect.d_max.y += imgSz.d_height;
+            renderSettingDestArea.d_min.y += imgSz.d_height;
+            renderSettingDestArea.d_max.y += imgSz.d_height;
         }
     }
 
