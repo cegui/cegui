@@ -156,18 +156,20 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringTextComponent::draw(const Window* ref_wnd,
-                                       std::vector<GeometryBuffer*>& geometry_buffers,
-                                       const glm::vec2& position,
-                                       const ColourRect* mod_colours,
-                                       const Rectf* clip_rect,
-                                       const float vertical_space,
-                                       const float space_extra) const
+std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const ColourRect* mod_colours,
+    const Rectf* clip_rect,
+    const float vertical_space,
+    const float space_extra) const
 {
     const Font* fnt = getEffectiveFont(ref_wnd); 
 
     if (!fnt)
-        return;
+    {
+        return std::vector<GeometryBuffer*>();
+    }
 
     glm::vec2 final_pos(position);
     float y_scale = 1.0f;
@@ -219,11 +221,16 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
                        position.x + sel_end_extent,
                        position.y + vertical_space);
 
-        d_selectionImage->render(geometry_buffers, sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
+        ImageRenderSettings imgRenderSettings(
+            sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
+
+        d_selectionImage->createRenderGeometry(imgRenderSettings);
     }
-    // draw the text string.
-    fnt->drawText(geometry_buffers, d_text, final_pos, clip_rect, true, final_cols,
-                  space_extra, 1.0f, y_scale);
+    // Create the geometry for rendering for the given text.
+    return fnt->createRenderGeometryForText(
+        d_text, final_pos,
+        clip_rect, true, final_cols,
+        space_extra, 1.0f, y_scale);
 }
 
 //----------------------------------------------------------------------------//

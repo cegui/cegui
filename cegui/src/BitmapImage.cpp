@@ -94,8 +94,7 @@ void BitmapImage::setTexture(Texture* texture)
 }
 
 //----------------------------------------------------------------------------//
-void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
-                         const ImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRenderSettings& render_settings) const
 {
     Rectf dest(render_settings.d_destArea);
     // apply rendering offset to the destination Rect
@@ -107,7 +106,7 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
 
     // check if rect was totally clipped
     if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
-        return;
+        return std::vector<GeometryBuffer*>();
 
     // Obtain correct scale values from the texture
     const glm::vec2& texel_scale = d_texture->getTexelScaling();
@@ -125,7 +124,7 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     final_rect.d_max.y = CoordConverter::alignToPixels(final_rect.d_max.y);
 
     TexturedColouredVertex vbuffer[6];
-    const CEGUI::ColourRect&  colours = render_settings.d_multiplyColours;
+    const CEGUI::ColourRect& colours = render_settings.d_multiplyColours;
 
     // vertex 0
     vbuffer[0].setColour(colours.d_top_left);
@@ -169,7 +168,6 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     vbuffer[5].d_texCoords   = glm::vec2(tex_rect.right(), tex_rect.bottom());
 
     CEGUI::GeometryBuffer& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-    geometry_buffers.push_back(&buffer);
 
     buffer.setClippingActive(render_settings.d_clippingEnabled);
     if(render_settings.d_clippingEnabled)
@@ -177,6 +175,10 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     buffer.setTexture("texture0", d_texture);
     buffer.appendGeometry(vbuffer, 6);
     buffer.setAlpha(render_settings.d_alpha);
+
+    std::vector<GeometryBuffer*> geomBuffers;
+    geomBuffers.push_back(&buffer);
+    return geomBuffers;
 }
 
 

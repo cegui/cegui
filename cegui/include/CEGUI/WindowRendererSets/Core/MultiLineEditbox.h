@@ -93,10 +93,9 @@ public:
     */
     FalagardMultiLineEditbox(const String& type);
 
-    // overridden from base classes.
-    Rectf getTextRenderArea(void) const;
-    void render();
-    void update(float elapsed);
+    Rectf getTextRenderArea(void) const override;
+    void createRenderGeometry() override;
+    void update(float elapsed) override;
 
     //! return whether the blinking caret is enabled.
     bool isCaretBlinkEnabled() const;

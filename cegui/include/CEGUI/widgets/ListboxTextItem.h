@@ -186,11 +186,9 @@ public:
     bool handleFontRenderSizeChange(const Font* const font);
 
 
-	/*************************************************************************
-		Required implementations of pure virtuals from the base class.
-	*************************************************************************/
-    Sizef getPixelSize(void) const;
-    void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect, float alpha, const Rectf* clipper) const;
+    Sizef getPixelSize(void) const override;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
 
 protected:
     void parseTextString() const;

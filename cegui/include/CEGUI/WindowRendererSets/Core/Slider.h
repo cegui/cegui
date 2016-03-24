@@ -77,8 +77,8 @@ namespace CEGUI
         bool isReversedDirection() const;
         void setReversedDirection(bool setting);
 
-        void render();
-        void performChildWindowLayout();
+        void createRenderGeometry() override;
+        void performChildWindowLayout() override;
 
     protected:
         // data members

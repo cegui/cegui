@@ -77,7 +77,7 @@ namespace CEGUI
         return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*w);
     }
 
-    void FalagardMultiColumnList::render()
+    void FalagardMultiColumnList::createRenderGeometry()
     {
         MultiColumnList* w = (MultiColumnList*)d_window;
         const ListHeader* header = w->getListHeader();
@@ -136,8 +136,10 @@ namespace CEGUI
                         continue;
                     }
 
-                    // draw this item
-                    item->draw(w->getGeometryBuffers(), itemRect, alpha, &itemClipper);
+                    // Create render geometry for this item and add it to the Window
+                    auto geomBuffers = item->createRenderGeometry(itemRect, alpha, &itemClipper);
+
+                    w->appendGeometryBuffers(geomBuffers);
                 }
 
                 // update position for next column.

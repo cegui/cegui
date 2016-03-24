@@ -66,8 +66,8 @@ public:
     \param render_settings
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
      */
-    virtual void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                        const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry( 
+        const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
         
 
     //! The BasicShape's style, which describes the filling and stroke of the graphical element.
@@ -97,8 +97,8 @@ public:
             const float rx = 0.0f, const float ry = 0.0f);
 
     //! Implementation of SVGBasicShape interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value in the current user coordinate system
     float d_x;
@@ -135,8 +135,8 @@ public:
               const float r);
 
     //! Implementation of SVGBasicShape interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the center of the circle. 
     float d_cx;
@@ -168,8 +168,8 @@ public:
                const float ry);
 
     //! Implementation of SVGBasicShape interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the center of the ellipse. 
     float d_cx;
@@ -204,8 +204,8 @@ public:
     {}
 
     //! Implementation of SVGBasicShape interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the start of the line
     float d_x1;
@@ -237,8 +237,8 @@ public:
     {}
 
     //! Implementation of SVGBasicShape interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The points defining the line
     std::vector<glm::vec2> d_points;
@@ -264,8 +264,8 @@ public:
     {}
 
     //! Implementation of SVGBasicShape interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The points defining the line
     std::vector<glm::vec2> d_points;

@@ -40,7 +40,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardFrameWindow::render()
+    void FalagardFrameWindow::createRenderGeometry()
     {
         FrameWindow* w = (FrameWindow*)d_window;
         // do not render anything for the rolled-up state.

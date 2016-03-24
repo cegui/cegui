@@ -125,23 +125,29 @@ Sizef ListboxTextItem::getPixelSize(void) const
     return sz;
 }
 
-
-/*************************************************************************
-	Draw the list box item in its current state.
-*************************************************************************/
-void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
-                           float alpha, const Rectf* clipper) const
+std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
+    const Rectf& targetRect,
+    float alpha, const Rectf* clipper) const
 {
+    std::vector<GeometryBuffer*> geomBuffers;
+
     if (d_selected && d_selectBrush != 0)
     {
-        d_selectBrush->render(geometry_buffers, targetRect, clipper, true,
-                            d_selectCols, alpha);
+        ImageRenderSettings imgRenderSettings(
+            targetRect, clipper, true,
+            d_selectCols, alpha);
+
+        std::vector<GeometryBuffer*> brushGeomBuffers =
+            d_selectBrush->createRenderGeometry(imgRenderSettings);
+
+        geomBuffers.insert(geomBuffers.end(), brushGeomBuffers.begin(),
+            brushGeomBuffers.end());
     }
 
     const Font* font = getFont();
 
     if (!font)
-        return;
+        return geomBuffers;
 
     glm::vec2 draw_pos(targetRect.getPosition());
 
@@ -155,9 +161,16 @@ void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(d_owner, i, geometry_buffers, draw_pos, &final_colours, clipper, 0.0f);
+        std::vector<GeometryBuffer*> stringGeomBuffers = d_renderedString.createRenderGeometry(
+            d_owner, i, draw_pos, &final_colours, clipper, 0.0f);
+
+        geomBuffers.insert(geomBuffers.end(), stringGeomBuffers.begin(),
+            stringGeomBuffers.end());
+
         draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
+
+    return geomBuffers;
 }
 
 

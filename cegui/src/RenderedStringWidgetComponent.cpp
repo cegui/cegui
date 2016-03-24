@@ -89,18 +89,19 @@ void RenderedStringWidgetComponent::setSelection(const Window* /*ref_wnd*/,
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
-                                         std::vector<GeometryBuffer*>& geometry_buffers,
-                                         const glm::vec2& position,
-                                         const CEGUI::ColourRect* /*mod_colours*/,
-                                         const Rectf* clip_rect,
-                                         const float vertical_space,
-                                         const float /*space_extra*/) const
+std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const CEGUI::ColourRect* /*mod_colours*/,
+    const Rectf* clip_rect,
+    const float vertical_space,
+    const float /*space_extra*/) const
 {
     Window* const window = getEffectiveWindow(ref_wnd);
+    std::vector<GeometryBuffer*> geomBuffers;
 
     if (!window)
-        return;
+        std::vector<GeometryBuffer*>();
 
     // HACK: re-adjust for inner-rect of parent
     float x_adj = 0, y_adj = 0;
@@ -148,7 +149,15 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-        d_selectionImage->render(geometry_buffers, select_area, clip_rect, true, ColourRect(0xFF002FFF));
+
+        ImageRenderSettings imgRenderSettings(
+            select_area, clip_rect, true, ColourRect(0xFF002FFF));
+
+        auto currentRenderGeometry = 
+            d_selectionImage->createRenderGeometry(imgRenderSettings);
+
+        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
+            currentRenderGeometry.end());
     }
 
     // we do not actually draw the widget, we just move it into position.
@@ -156,6 +165,8 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
                         UDim(0, final_pos.y + d_padding.d_min.y - y_adj));
 
     window->setPosition(wpos);
+
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

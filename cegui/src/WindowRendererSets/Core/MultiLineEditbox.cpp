@@ -122,7 +122,7 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 
     // try and get imagery for our current state
     imagery = &wlf.getStateImagery(state);
-    // perform the rendering operation.
+    // Create the render geometry for the imagery
     imagery->render(*w);
 }
 
@@ -164,23 +164,23 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
             caretArea.setHeight(fnt->getLineSpacing());
             caretArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), w->getVertScrollbar()->getScrollPosition()));
 
-            // cache the caret image for rendering.
+            // Create the render geometry for the caret image
             caretImagery.render(*w, caretArea, 0, &textArea);
         }
     }
 }
 
-void FalagardMultiLineEditbox::render()
+void FalagardMultiLineEditbox::createRenderGeometry()
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
-    // render general frame and stuff before we handle the text itself
+    // Create the render geometry for the general frame and stuff before we handle the text itself
     cacheEditboxBaseImagery();
 
-    // Render edit box text
+    // Create the render geometry for the edit box text
     Rectf textarea(getTextRenderArea());
     cacheTextLines(textarea);
 
-    // draw caret
+    // Create the render geometry for the caret
     if ((w->hasInputFocus() && !w->isReadOnly()) &&
         (!d_blinkCaret || d_showCaret))
             cacheCaretImagery(textarea);
@@ -189,7 +189,8 @@ void FalagardMultiLineEditbox::render()
 void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
-    // text is already formatted, we just grab the lines and render them with the required alignment.
+    // text is already formatted, we just grab the lines and
+    // create the render geometry for them with the required alignment.
     Rectf drawArea(dest_area);
     float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
     drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
@@ -246,9 +247,13 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             (w->getSelectionBrushImage() == 0))
         {
             colours = normalTextCol;
-            // render the complete line.
-            fnt->drawText(w->getGeometryBuffers(), lineText,
-                          lineRect.getPosition(), &dest_area, true, colours);
+            
+            // Create Geometry buffers for the text and add to the Window
+            float nextGlyphPos = 0.0f;
+            auto textGeomBuffers = fnt->createRenderGeometryForText(lineText, nextGlyphPos,
+                lineRect.getPosition(), &dest_area, true, colours);
+
+            w->appendGeometryBuffers(textGeomBuffers);
         }
         // we have at least some selection highlighting to do
         else
@@ -258,7 +263,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             size_t sectIdx = 0, sectLen;
             float selStartOffset = 0.0f, selAreaWidth = 0.0f;
 
-            // render any text prior to selected region of line.
+            // Create the render geometry for any text prior to selected region of line.
             if (currLine.d_startIdx < w->getSelectionStart())
             {
                 // calculate length of text section
@@ -286,9 +291,9 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                     w->setSelectionLength(0);
                 }
 #endif          
-                // draw this portion of the text
+                // Create the render geometry for this portion of the text
                 colours = normalTextCol;
-                fnt->drawText(w->getGeometryBuffers(), sect,
+                auto geomBuffers = fnt->createRenderGeometryForText(sect,
                               lineRect.getPosition(), &dest_area, true, colours);
 
                 // set position ready for next portion of text
@@ -313,18 +318,25 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             lineRect.right(lineRect.left() + selAreaWidth);
             lineRect.bottom(lineRect.top() + fnt->getLineSpacing());
 
-            // render the selection area brush for this line
+            // Create the render geometry for the selection area brush for this line
             colours = selectBrushCol;
-            w->getSelectionBrushImage()->render(w->getGeometryBuffers(), lineRect, &dest_area, true, colours);
 
-            // draw the text for this section
+            ImageRenderSettings renderSettings(
+                lineRect, &dest_area, true, colours);
+
+            auto selectionGeomBuffers = w->getSelectionBrushImage()->createRenderGeometry(
+                renderSettings);
+            w->appendGeometryBuffers(selectionGeomBuffers);
+
+            // Create the render geometry for the text for this section
             colours = selectTextCol;
-            fnt->drawText(w->getGeometryBuffers(), sect,
-                          lineRect.getPosition(), &dest_area, true, colours);
+            auto textGeomBuffers = fnt->createRenderGeometryForText(sect,
+                lineRect.getPosition(), &dest_area, true, colours);
+            w->appendGeometryBuffers(textGeomBuffers);
 
             lineRect.top(text_top);
 
-            // render any text beyond selected region of line
+            // Create the render geometry for any text beyond selected region of line
             if (sectIdx < currLine.d_length)
             {
                 // update render position to the end of the selected area.
@@ -338,8 +350,9 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                 // render the text for this section.
                 colours = normalTextCol;
-                fnt->drawText(w->getGeometryBuffers(), sect,
-                              lineRect.getPosition(), &dest_area, true, colours);
+                auto textAfterSelectionGeomBuffers = fnt->createRenderGeometryForText(sect,
+                    lineRect.getPosition(), &dest_area, true, colours);
+                w->appendGeometryBuffers(textAfterSelectionGeomBuffers);
             }
         }
 

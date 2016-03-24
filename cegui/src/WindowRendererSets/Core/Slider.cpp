@@ -55,7 +55,7 @@ namespace CEGUI
         false);
     }
 
-    void FalagardSlider::render()
+    void FalagardSlider::createRenderGeometry()
     {
         const StateImagery* imagery;
 

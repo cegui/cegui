@@ -60,12 +60,11 @@ public:
     \brief
         Draw the string to a GeometryBuffer.
 
+    \param ref_wnd
+        A pointer to a reference Window used to retrieve certain attributes if needed. 
+
     \param line
         The line of the RenderedString to draw.
-
-    \param buffer
-        GeometryBuffer object that is to receive the geometry resulting from the
-        draw operations.
 
     \param position
         Vector2 describing the position where the RenderedString is to be drawn.
@@ -89,13 +88,17 @@ public:
         float value indicating additional padding value to be applied to space
         characters in the string.
 
+    \return
+        Returns the created GeometryBuffer objects needed for rendering this object.
+
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void draw(const Window* ref_wnd,
-              const size_t line, std::vector<GeometryBuffer*>& geometry_buffers,
-              const glm::vec2& position, const ColourRect* mod_colours,
-              const Rectf* clip_rect, const float space_extra) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Window* ref_wnd,
+        const size_t line,
+        const glm::vec2& position, const ColourRect* mod_colours,
+        const Rectf* clip_rect, const float space_extra) const;
 
     /*!
     \brief

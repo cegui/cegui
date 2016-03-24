@@ -77,13 +77,13 @@ public:
     **************************************************************************/
     /*!
     \brief
-        Populate render cache.
+        Creates the render geometry.
 
         This method must be implemented by all window renderers and should
         perform the rendering operations needed for this widget.
         Normally using the Falagard API...
     */
-    virtual void render() = 0;
+    virtual void createRenderGeometry() = 0;
 
     /*!
     \brief

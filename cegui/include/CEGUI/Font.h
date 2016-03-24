@@ -98,11 +98,56 @@ public:
 
     /*!
     \brief
-        Draw text into a specified area of the display.
+        Create render geometry for the text that should be rendered into a
+        specified area of the display.
 
-    \param geom_buffers
-        List of GeometryBuffer objects that will be used to add Font geometry in
-        a batch-saving way.
+    \param text
+        String object containing the text to be drawn.
+
+    \param nextGlyphPosX
+        The x-coordinate where subsequent text should be rendered to ensure correct
+        positioning (which is not possible to determine accurately by using the
+        extent measurement functions).
+
+    \param position
+        Reference to a Vector2 object describing the location at which the text
+        is to be drawn.
+
+    \param clip_rect
+        Rect object describing the clipping area for the drawing.
+        No drawing will occur outside this Rect.
+
+    \param colours
+        ColourRect object describing the colours to be applied when drawing the
+        text.  NB: The colours specified in here are applied to each glyph,
+        rather than the text as a whole.
+
+    \param space_extra
+        Number of additional pixels of spacing to be added to space characters.
+
+    \param x_scale
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
+
+    \param y_scale
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
+
+    \return
+        Returns a list of GeometryBuffers representing the render geometry of
+        the text.
+    */
+    std::vector<GeometryBuffer*> createRenderGeometryForText(
+        const String& text, float& nextGlyphPosX,
+        const glm::vec2& position, const Rectf* clip_rect,
+        const bool clipping_enabled, const ColourRect& colours,
+        const float space_extra = 0.0f, const float x_scale = 1.0f,
+        const float y_scale = 1.0f) const;
+
+        /*!
+    \brief
+        Create render geometry for the text that should be rendered into a
+        specified area of the display.
 
     \param text
         String object containing the text to be drawn.
@@ -132,15 +177,15 @@ public:
         considered to be 'normal'.
 
     \return
-        The x co-ord where subsequent text should be rendered to ensure correct
-        positioning (which is not possible to determine accurately by using the
-        extent measurement functions).
+        Returns a list of GeometryBuffers representing the render geometry of
+        the text.
     */
-    float drawText(std::vector<GeometryBuffer*>& geom_buffers, const String& text,
-                   const glm::vec2& position, const Rectf* clip_rect,
-                   const bool clipping_enabled, const ColourRect& colours,
-                   const float space_extra = 0.0f, const float x_scale = 1.0f,
-                   const float y_scale = 1.0f) const;
+    std::vector<GeometryBuffer*> createRenderGeometryForText(
+        const String& text,
+        const glm::vec2& position, const Rectf* clip_rect,
+        const bool clipping_enabled, const ColourRect& colours,
+        const float space_extra = 0.0f, const float x_scale = 1.0f,
+        const float y_scale = 1.0f) const;
 
     /*!
     \brief

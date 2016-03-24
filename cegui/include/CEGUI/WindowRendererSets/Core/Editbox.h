@@ -151,7 +151,7 @@ public:
     void setTextFormatting(const HorizontalTextFormatting format);
     HorizontalTextFormatting getTextFormatting() const;
 
-    void render();
+    void createRenderGeometry() override;
 
     // overridden from EditboxWindowRenderer base class.
     size_t getTextIndexFromPosition(const glm::vec2& pt) const;
@@ -169,7 +169,7 @@ protected:
                               const float text_extent,
                               const float caret_width,
                               const float extent_to_caret);
-    void renderTextNoBidi(const WidgetLookFeel& wlf,
+    void createRenderGeometryForTextWithoutBidi(const WidgetLookFeel& wlf,
                           const String& text,
                           const Rectf& text_area,
                           float text_offset);

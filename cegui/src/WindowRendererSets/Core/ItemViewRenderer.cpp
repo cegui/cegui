@@ -83,17 +83,22 @@ Rectf ItemViewRenderer::getViewRenderArea(const ItemView* item_view,
 }
 
 //----------------------------------------------------------------------------//
-void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_string,
+void ItemViewRenderer::createRenderGeometryAndAddToItemView(
+    ItemView* view, RenderedString& rendered_string,
     Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected)
 {
     if (view->getSelectionBrushImage() != 0 && is_selected)
     {
-        view->getSelectionBrushImage()->render(
-            view->getGeometryBuffers(),
+        ImageRenderSettings renderSettings(
             draw_rect,
             item_clipper,
             true,
             view->getSelectionColourRect());
+
+        auto brushGeomBuffers = view->getSelectionBrushImage()->createRenderGeometry(
+            renderSettings);
+
+        view->appendGeometryBuffers(brushGeomBuffers);
     }
 
     glm::vec2 draw_pos(draw_rect.getPosition());
@@ -102,8 +107,11 @@ void ItemViewRenderer::renderString(ItemView* view, RenderedString& rendered_str
         draw_pos.y += CoordConverter::alignToPixels(
             (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
-        rendered_string.draw(view, i, view->getGeometryBuffers(),
+        auto stringGeomBuffers = rendered_string.createRenderGeometry(
+            view, i,
             draw_pos, 0, item_clipper, 0.0f);
+
+        view->appendGeometryBuffers(stringGeomBuffers);
 
         draw_pos.y += rendered_string.getPixelSize(view, i).d_height;
     }

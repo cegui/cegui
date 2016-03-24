@@ -79,10 +79,8 @@ namespace CEGUI
         */
         void cacheListboxBaseImagery();
 
-        // overridden from MultiColumnList base class.
-        Rectf getListRenderArea(void) const;
-        // overridden from base class.
-        void render();
+        Rectf getListRenderArea(void) const override;
+        void createRenderGeometry() override;
     };
 } // End of  CEGUI namespace section
 

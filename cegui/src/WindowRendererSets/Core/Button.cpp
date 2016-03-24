@@ -38,7 +38,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardButton::render()
+    void FalagardButton::createRenderGeometry()
     {
         ButtonBase* w = (ButtonBase*)d_window;
         const WidgetLookFeel& wlf = getLookNFeel();

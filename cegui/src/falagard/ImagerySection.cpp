@@ -57,17 +57,17 @@ namespace CEGUI
         // render all frame components in this section
         for(FrameComponentList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).render(srcWindow, finalColsPtr, clipper, clipToDisplay);
+            (*frame).createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
         }
         // render all image components in this section
         for(ImageryComponentList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).render(srcWindow, finalColsPtr, clipper, clipToDisplay);
+            (*image).createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
         }
         // render all text components in this section
         for(TextComponentList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).render(srcWindow, finalColsPtr, clipper, clipToDisplay);
+            (*text).createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
         }
     }
 
@@ -85,17 +85,17 @@ namespace CEGUI
         // render all frame components in this section
         for(FrameComponentList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).render(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
+            (*frame).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
         }
         // render all image components in this section
         for(ImageryComponentList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).render(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
+            (*image).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
         }
         // render all text components in this section
         for(TextComponentList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).render(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
+            (*text).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
         }
     }
 

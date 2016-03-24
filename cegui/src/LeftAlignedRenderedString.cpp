@@ -44,19 +44,27 @@ void LeftAlignedRenderedString::format(const Window* /*ref_wnd*/,
 }
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::draw(const Window* ref_wnd,
-                                     std::vector<GeometryBuffer*>& geometry_buffers,
-                                     const glm::vec2& position,
-                                     const ColourRect* mod_colours,
-                                     const Rectf* clip_rect) const
+std::vector<GeometryBuffer*> LeftAlignedRenderedString::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const ColourRect* mod_colours,
+    const Rectf* clip_rect) const
 {
     glm::vec2 draw_pos(position);
+    std::vector<GeometryBuffer*> geomBuffers;
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        d_renderedString->draw(ref_wnd, i, geometry_buffers, draw_pos, mod_colours, clip_rect, 0.0f);
+        std::vector<GeometryBuffer*> currentRenderGeometry = 
+            d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+
+        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
+            currentRenderGeometry.end());
+
         draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
+
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

@@ -320,7 +320,7 @@ namespace CEGUI
 
         // overridden from base class
         bool handleFontRenderSizeChange(const Font* const font);
-        void render(void);
+        void createRenderGeometry(void);
 
         /*!
         \brief
@@ -523,8 +523,8 @@ namespace CEGUI
         void onLookNFeelAssigned();
         void onLookNFeelUnassigned();
 
-        // text field with scrollbars methods
-        void renderScrolledText(void);
+        // Adds the render geometry for scrolled text to the Window
+        void addScrolledTextRenderGeometry();
 
         /*!
         \brief

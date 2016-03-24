@@ -82,10 +82,11 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
-                      const glm::vec2& position, const ColourRect* mod_colours,
-                      const Rectf* clip_rect, const float vertical_space,
-                      const float space_extra) const = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+        const Window* ref_wnd,
+        const glm::vec2& position, const ColourRect* mod_colours,
+        const Rectf* clip_rect, const float vertical_space,
+        const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
     virtual Sizef getPixelSize(const Window* ref_wnd) const = 0;

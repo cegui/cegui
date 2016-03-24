@@ -50,8 +50,8 @@ public:
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
     // Implement CEGUI::Image interface
-    void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const ImageRenderSettings& render_settings) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const ImageRenderSettings& render_settings) const override;
 
     /*!
     \brief

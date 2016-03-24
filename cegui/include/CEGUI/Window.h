@@ -1272,6 +1272,16 @@ public:
     */
     std::vector<GeometryBuffer*>& getGeometryBuffers();
 
+    
+    /*!
+    \brief
+        Adds GeometryBuffers to the end of the list of GeometryBuffers of this Window.
+
+    \param appendingGeomBuffers
+        The GeometryBuffers that will be appended to the window's GeometryBuffers
+    */
+    void appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers);
+
     /*!
     \brief
         Get the name of the LookNFeel assigned to this window.
@@ -2259,13 +2269,10 @@ public:
 
     /*!
     \brief
-        Causes the Window object to render itself and all of it's attached
-        children
-
-    \return
-        Nothing
+        Draws the Window object and all of it's attached
+        children to the display.
     */
-    void render();
+    void draw();
 
     /*!
     \brief

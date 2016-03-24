@@ -287,10 +287,11 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::draw(const Window* ref_wnd, const size_t line,
-                          std::vector<GeometryBuffer*>& geometry_buffers, const glm::vec2& position,
-                          const ColourRect* mod_colours, const Rectf* clip_rect,
-                          const float space_extra) const
+std::vector<GeometryBuffer*> RenderedString::createRenderGeometry(
+    const Window* ref_wnd, const size_t line,
+    const glm::vec2& position,
+    const ColourRect* mod_colours, const Rectf* clip_rect,
+    const float space_extra) const
 {
     if (line >= getLineCount())
         throw InvalidRequestException(
@@ -299,14 +300,22 @@ void RenderedString::draw(const Window* ref_wnd, const size_t line,
     const float render_height = getPixelSize(ref_wnd, line).d_height;
 
     glm::vec2 comp_pos(position);
+    std::vector<GeometryBuffer*> geomBuffers;
 
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        d_components[i]->draw(ref_wnd, geometry_buffers, comp_pos, mod_colours, clip_rect,
-                              render_height, space_extra);
+        std::vector<GeometryBuffer*> currentRenderGeometry =
+            d_components[i]->createRenderGeometry(ref_wnd, comp_pos, mod_colours, clip_rect,
+                render_height, space_extra);
+
+        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
+            currentRenderGeometry.end());
+
         comp_pos.x += d_components[i]->getPixelSize(ref_wnd).d_width;
     }
+
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

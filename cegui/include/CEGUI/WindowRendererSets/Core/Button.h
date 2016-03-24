@@ -57,7 +57,7 @@ namespace CEGUI
         */
         FalagardButton(const String& type);
 
-        void render();
+        void createRenderGeometry() override;
         virtual String actualStateName(const String& name) const   {return name;}
     };
 

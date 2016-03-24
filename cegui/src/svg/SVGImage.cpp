@@ -103,8 +103,8 @@ SVGData* SVGImage::getSVGData()
 }
 
 //----------------------------------------------------------------------------//
-void SVGImage::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                      const ImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGImage::createRenderGeometry(
+    const ImageRenderSettings& render_settings) const
 {
     Rectf dest(render_settings.d_destArea);
     // apply rendering offset to the destination Rect
@@ -116,7 +116,7 @@ void SVGImage::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
 
     // check if our Image is totally clipped and return if it is
     if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
-        return;
+        return std::vector<GeometryBuffer*>();
 
     // Calculate the scale factor for our Image which is the scaling of the Image
     // area to the destination area of our render call
@@ -132,10 +132,19 @@ void SVGImage::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
                                                scale_factor,
                                                d_useGeometryAntialiasing);
 
+    std::vector<GeometryBuffer*> geometryBuffers;
     const std::vector<SVGBasicShape*>& shapes = d_svgData->getShapes();
-    const unsigned int shape_count = shapes.size();
-    for (unsigned int i = 0; i < shape_count; ++i)
-        shapes[i]->render(image_geometry_buffers, svg_render_settings);
+    
+    for(SVGBasicShape* currentShape : shapes)
+    {
+        std::vector<GeometryBuffer*> currentRenderGeometry =
+            currentShape->createRenderGeometry(svg_render_settings);
+
+        geometryBuffers.insert(geometryBuffers.end(), currentRenderGeometry.begin(),
+            currentRenderGeometry.end());
+    }
+
+    return geometryBuffers;
 }
 
 //----------------------------------------------------------------------------//

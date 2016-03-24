@@ -40,7 +40,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardTabButton::render()
+    void FalagardTabButton::createRenderGeometry()
     {
         TabButton* w = static_cast<TabButton*>(d_window);
         // get WidgetLookFeel for the assigned look.

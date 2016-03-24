@@ -44,7 +44,7 @@ namespace CEGUI
         "");
     }
 
-    void FalagardListHeader::render()
+    void FalagardListHeader::createRenderGeometry()
     {
         const StateImagery* imagery;
         // get WidgetLookFeel for the assigned look.

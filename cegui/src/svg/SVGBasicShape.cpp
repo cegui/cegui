@@ -66,12 +66,10 @@ SVGRect::SVGRect(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
-void SVGRect::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                     const SVGImage::SVGImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGRect::createRenderGeometry(
+    const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselateRect(this,
-                                 image_geometry_buffers,
-                                 render_settings);
+    return SVGTesselator::tesselateRect(this, render_settings);
 }
 
 //----------------------------------------------------------------------------//
@@ -88,12 +86,10 @@ SVGCircle::SVGCircle(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
-void SVGCircle::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                       const SVGImage::SVGImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGCircle::createRenderGeometry(
+    const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselateCircle(this,
-                                   image_geometry_buffers,
-                                   render_settings);
+    return SVGTesselator::tesselateCircle(this, render_settings);
 }
 
 //----------------------------------------------------------------------------//
@@ -112,12 +108,10 @@ SVGEllipse::SVGEllipse(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
-void SVGEllipse::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                       const SVGImage::SVGImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGEllipse::createRenderGeometry(
+    const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselateEllipse(this,
-                                    image_geometry_buffers,
-                                    render_settings);
+    return SVGTesselator::tesselateEllipse(this, render_settings);
 }
 
 
@@ -150,12 +144,10 @@ SVGLine::SVGLine(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
-void SVGLine::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                     const SVGImage::SVGImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGLine::createRenderGeometry(
+    const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselateLine(this,
-                                 image_geometry_buffers,
-                                 render_settings);
+   return SVGTesselator::tesselateLine(this, render_settings);
 }
 
 //----------------------------------------------------------------------------//
@@ -168,12 +160,10 @@ SVGPolyline::SVGPolyline(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
-void SVGPolyline::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                         const SVGImage::SVGImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGPolyline::createRenderGeometry(
+    const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselatePolyline(this,
-                                     image_geometry_buffers,
-                                     render_settings);
+    return SVGTesselator::tesselatePolyline(this, render_settings);
 }
 
 //----------------------------------------------------------------------------//
@@ -186,12 +176,10 @@ SVGPolygon::SVGPolygon(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
-void SVGPolygon::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
-                        const SVGImage::SVGImageRenderSettings& render_settings) const
+std::vector<GeometryBuffer*> SVGPolygon::createRenderGeometry(
+    const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselatePolygon(this,
-                                    image_geometry_buffers,
-                                    render_settings);
+    return SVGTesselator::tesselatePolygon(this, render_settings);
 }
 
 //----------------------------------------------------------------------------//

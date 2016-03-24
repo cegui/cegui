@@ -202,17 +202,13 @@ FalagardStaticText::NumOfTextLinesToShow FalagardStaticText::getNumOfTextLinesTo
     return d_numOfTextLinesToShow;
 }
 
-    /************************************************************************
-        Populates the rendercache with imagery for this widget
-    *************************************************************************/
-    void FalagardStaticText::render()
-    {
-        // base class rendering
-        FalagardStatic::render();
+void FalagardStaticText::createRenderGeometry()
+{
+    // base class rendering
+    FalagardStatic::createRenderGeometry();
 
-        // text rendering
-        renderScrolledText();
-    }
+    addScrolledTextRenderGeometry();
+}
 
 //----------------------------------------------------------------------------//
 void FalagardStaticText::onIsFrameEnabledChanged()
@@ -333,85 +329,85 @@ bool FalagardStaticText::contentFits() const
       content_size.d_height <= area_reserved_for_content.getHeight();
 }
 
-    //------------------------------------------------------------------------//
-    void FalagardStaticText::invalidateFormatting()
+//------------------------------------------------------------------------//
+void FalagardStaticText::invalidateFormatting()
+{
+    d_formatValid = false;
+    d_window->invalidate();
+}
+
+void FalagardStaticText::addScrolledTextRenderGeometry()
+{
+    updateFormatting();
+
+    // get destination area for the text.
+    const Rectf clipper(getTextRenderArea());
+    Rectf absarea(clipper);
+
+    // see if we may need to adjust horizontal position
+    const Scrollbar* const horzScrollbar = getHorzScrollbar();
+    if (horzScrollbar->isEffectiveVisible())
     {
-        d_formatValid = false;
-        d_window->invalidate();
+        const float range = horzScrollbar->getDocumentSize() -
+                            horzScrollbar->getPageSize();
+
+        switch(getActualHorizontalFormatting())
+        {
+        case HTF_LEFT_ALIGNED:
+        case HTF_WORDWRAP_LEFT_ALIGNED:
+        case HTF_JUSTIFIED:
+        case HTF_WORDWRAP_JUSTIFIED:
+            absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
+            break;
+
+        case HTF_CENTRE_ALIGNED:
+        case HTF_WORDWRAP_CENTRE_ALIGNED:
+            absarea.setWidth(horzScrollbar->getDocumentSize());
+            absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
+            break;
+
+        case HTF_RIGHT_ALIGNED:
+        case HTF_WORDWRAP_RIGHT_ALIGNED:
+            absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
+            break;
+        default:
+            throw InvalidRequestException("Invalid actual horizontal formatting.");
+        }
     }
 
-    /************************************************************************
-        Caches the text according to scrollbar positions
-    *************************************************************************/
-    void FalagardStaticText::renderScrolledText()
-    {
-        updateFormatting();
-
-        // get destination area for the text.
-        const Rectf clipper(getTextRenderArea());
-        Rectf absarea(clipper);
-
-        // see if we may need to adjust horizontal position
-        const Scrollbar* const horzScrollbar = getHorzScrollbar();
-        if (horzScrollbar->isEffectiveVisible())
+    // adjust y positioning according to formatting option
+    float textHeight = d_formattedRenderedString->getVerticalExtent(d_window);
+    const Scrollbar* const vertScrollbar = getVertScrollbar();
+    const float vertScrollPosition = vertScrollbar->getScrollPosition();
+    // if scroll bar is in use, position according to that.
+    if (vertScrollbar->isEffectiveVisible())
+        absarea.d_min.y -= vertScrollPosition;
+    // no scrollbar, so adjust position according to formatting set.
+    else
+        switch(getActualVerticalFormatting())
         {
-            const float range = horzScrollbar->getDocumentSize() -
-                                horzScrollbar->getPageSize();
-
-            switch(getActualHorizontalFormatting())
-            {
-            case HTF_LEFT_ALIGNED:
-            case HTF_WORDWRAP_LEFT_ALIGNED:
-            case HTF_JUSTIFIED:
-            case HTF_WORDWRAP_JUSTIFIED:
-                absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
-                break;
-
-            case HTF_CENTRE_ALIGNED:
-            case HTF_WORDWRAP_CENTRE_ALIGNED:
-                absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
-                break;
-
-            case HTF_RIGHT_ALIGNED:
-            case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
-                break;
-            default:
-                throw InvalidRequestException("Invalid actual horizontal formatting.");
-            }
+        case VTF_CENTRE_ALIGNED:
+            absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
+            break;
+        case VTF_BOTTOM_ALIGNED:
+            absarea.d_min.y = absarea.d_max.y - textHeight;
+            break;
+        case VTF_TOP_ALIGNED:
+            break;
+        default:
+            throw InvalidRequestException("Invalid actual vertical formatting.");
         }
 
-        // adjust y positioning according to formatting option
-        float textHeight = d_formattedRenderedString->getVerticalExtent(d_window);
-        const Scrollbar* const vertScrollbar = getVertScrollbar();
-        const float vertScrollPosition = vertScrollbar->getScrollPosition();
-        // if scroll bar is in use, position according to that.
-        if (vertScrollbar->isEffectiveVisible())
-            absarea.d_min.y -= vertScrollPosition;
-        // no scrollbar, so adjust position according to formatting set.
-        else
-            switch(getActualVerticalFormatting())
-            {
-            case VTF_CENTRE_ALIGNED:
-                absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
-                break;
-            case VTF_BOTTOM_ALIGNED:
-                absarea.d_min.y = absarea.d_max.y - textHeight;
-                break;
-            case VTF_TOP_ALIGNED:
-                break;
-            default:
-                throw InvalidRequestException("Invalid actual vertical formatting.");
-            }
+    // calculate final colours
+    const ColourRect final_cols(d_textCols);
+    // cache the text for rendering.
+    std::vector<GeometryBuffer*> geomBuffers = d_formattedRenderedString->createRenderGeometry(
+        d_window,
+        absarea.getPosition(),
+        &final_cols, &clipper);
 
-        // calculate final colours
-        const ColourRect final_cols(d_textCols);
-        // cache the text for rendering.
-        d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffers(),
-                                        absarea.getPosition(),
-                                        &final_cols, &clipper);
-    }
+    d_window->appendGeometryBuffers(geomBuffers);
+}
 
     /************************************************************************
         Returns the vertical scrollbar component
