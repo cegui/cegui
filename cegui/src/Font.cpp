@@ -308,6 +308,11 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
     const float base_y = position.y + getBaseline(y_scale);
     glm::vec2 glyph_pos(position);
     std::vector<GeometryBuffer*> geomBuffers;
+    GeometryBuffer* textGeometryBuffer = nullptr;
+
+    ImageRenderSettings imgRenderSettings(
+        Rectf(), clip_rect,
+        clipping_enabled, colours);
     
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
@@ -327,13 +332,12 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
             glyph_pos.y = base_y - (img->getRenderedOffset().y - 
                 img->getRenderedOffset().y * y_scale);
 
-            // We only fully create the first GeometryBuffer
-            if(geomBuffers.empty())
-            {
-                ImageRenderSettings imgRenderSettings(
-                    Rectf(glyph_pos, glyph->getSize(x_scale, y_scale)),
-                    clip_rect, clipping_enabled, colours);
+            imgRenderSettings.d_destArea =
+                Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
 
+            // We only fully create the first GeometryBuffer
+            if(textGeometryBuffer == nullptr)
+            {
                 std::vector<GeometryBuffer*> currentGeombuffs =
                     img->createRenderGeometry(imgRenderSettings);
 
@@ -342,13 +346,14 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
 
                 if(currentGeombuffs.size() == 1)
                 {
-                    geomBuffers.push_back(currentGeombuffs.front());
+                    textGeometryBuffer = currentGeombuffs.back();
                 }
             }
             else
             {
-                // Else we append the geometry to the existing geometry
-                //TODO textGlyphsGeomBuff
+                // Else we add geometry to the rendering batch of the existing geometry
+                img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
+                    colours);
             }
 
             glyph_pos.x += glyph->getAdvance(x_scale);
@@ -361,6 +366,11 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
          ++currentCodePointIter;
 #endif
+    }
+
+    if (textGeometryBuffer != nullptr)
+    {
+        geomBuffers.push_back(textGeometryBuffer);
     }
 
     nextGlyphPosX = glyph_pos.x;
