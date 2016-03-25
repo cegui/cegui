@@ -147,6 +147,12 @@ std::vector<GeometryBuffer*> SVGImage::createRenderGeometry(
     return geometryBuffers;
 }
 
+void SVGImage::addToRenderGeometry(
+    GeometryBuffer& geomBuffer, const Rectf& renderArea, const ColourRect& colours) const
+{
+    throw std::runtime_error("not implemented");
+}
+
 //----------------------------------------------------------------------------//
 bool SVGImage::getUsesGeometryAntialiasing() const
 {
