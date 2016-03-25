@@ -53,7 +53,10 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_polygonFillRule(PFR_NONE),
     d_postStencilVertexCount(0),
     d_effect(0),
-    d_alpha(1.0f)
+    d_alpha(1.0f),
+    d_clippingActive(false),
+    d_clippingRegion(0, 0, 0, 0),
+    d_preparedClippingRegion(0, 0, 0, 0)
 {}
 
 //---------------------------------------------------------------------------//
@@ -334,6 +337,26 @@ void GeometryBuffer::setCustomTransform(const glm::mat4x4& transformation)
         d_customTransform = transformation;
         d_matrixValid = false;
     }
+}
+
+void GeometryBuffer::setClippingRegion(const Rectf& region)
+{
+    d_clippingRegion = region;
+
+    d_preparedClippingRegion.top(std::max(0.0f, region.top()));
+    d_preparedClippingRegion.bottom(std::max(0.0f, region.bottom()));
+    d_preparedClippingRegion.left(std::max(0.0f, region.left()));
+    d_preparedClippingRegion.right(std::max(0.0f, region.right()));
+}
+
+const Rectf& GeometryBuffer::getClippingRegion()
+{
+    return d_clippingRegion;
+}
+
+const Rectf& GeometryBuffer::getPreparedClippingRegion()
+{
+    return d_preparedClippingRegion;
 }
 
 //----------------------------------------------------------------------------//

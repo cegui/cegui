@@ -52,10 +52,10 @@ void OpenGLGeometryBuffer::draw() const
 
     if (d_clippingActive)
     {
-        glScissor(static_cast<GLint>(d_clipRect.left()),
-            static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
-            static_cast<GLint>(d_clipRect.getWidth()),
-            static_cast<GLint>(d_clipRect.getHeight()));
+        glScissor(static_cast<GLint>(d_preparedClippingRegion.left()),
+            static_cast<GLint>(viewPort.getHeight() - d_preparedClippingRegion.bottom()),
+            static_cast<GLint>(d_preparedClippingRegion.getWidth()),
+            static_cast<GLint>(d_preparedClippingRegion.getHeight()));
 
         glEnable(GL_SCISSOR_TEST);
     }

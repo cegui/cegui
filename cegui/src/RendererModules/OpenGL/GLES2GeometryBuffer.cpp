@@ -69,10 +69,10 @@ void GLES2GeometryBuffer::draw() const
 
     if (d_clippingActive)
     {
-        d_glStateChanger->scissor(static_cast<GLint>(d_clipRect.left()),
-            static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
-            static_cast<GLint>(d_clipRect.getWidth()),
-            static_cast<GLint>(d_clipRect.getHeight()));
+        d_glStateChanger->scissor(static_cast<GLint>(d_preparedClippingRegion.left()),
+            static_cast<GLint>(viewPort.getHeight() - d_preparedClippingRegion.bottom()),
+            static_cast<GLint>(d_preparedClippingRegion.getWidth()),
+            static_cast<GLint>(d_preparedClippingRegion.getHeight()));
 
         d_glStateChanger->enable(GL_SCISSOR_TEST);
     }

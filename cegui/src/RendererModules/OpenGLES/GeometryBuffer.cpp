@@ -35,7 +35,6 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGLESGeometryBuffer::OpenGLESGeometryBuffer() :
     d_activeTexture(0),
-    d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
@@ -60,10 +59,10 @@ void OpenGLESGeometryBuffer::draw() const
     // setup clip region
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    glScissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(vp[3] - d_clipRect.bottom()),
-              static_cast<GLint>(d_clipRect.getWidth()),
-              static_cast<GLint>(d_clipRect.getHeight()));
+    glScissor(static_cast<GLint>(d_preparedClippingRegion.left()),
+              static_cast<GLint>(vp[3] - d_preparedClippingRegion.bottom()),
+              static_cast<GLint>(d_preparedClippingRegion.getWidth()),
+              static_cast<GLint>(d_preparedClippingRegion.getHeight()));
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -122,12 +121,6 @@ void OpenGLESGeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
     d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect = region;
 }
 
 //----------------------------------------------------------------------------//

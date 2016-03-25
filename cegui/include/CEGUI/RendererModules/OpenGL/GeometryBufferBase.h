@@ -58,9 +58,6 @@ public:
     OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGLGeometryBufferBase();
 
-    // Overrides of virtual and abstract methods inherited from GeometryBuffer
-    virtual void setClippingRegion(const Rectf& region);
-
     /*
     \brief
         The update function that is to be called when all the vertex attributes
@@ -74,8 +71,6 @@ protected:
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase& d_owner;
-    //! rectangular clip region
-    Rectf d_clipRect;
     //! Cache of the model view projection matrix
     mutable glm::mat4 d_matrix;
 };

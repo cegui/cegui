@@ -46,7 +46,6 @@ Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner, CE
     , d_device(d_owner.getDirect3DDevice())
     , d_deviceContext(d_owner.getDirect3DDeviceContext())
     , d_bufferSize(0)
-    , d_clipRect(0, 0, 0, 0)
     , d_inputLayout(0)
     , d_vertexBuffer(0)
 {
@@ -110,16 +109,6 @@ void Direct3D11GeometryBuffer::draw() const
 
     updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect.top(std::max(0.0f, region.top()));
-    d_clipRect.bottom(std::max(0.0f, region.bottom()));
-    d_clipRect.left(std::max(0.0f, region.left()));
-    d_clipRect.right(std::max(0.0f, region.right()));
-}
-
 
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
@@ -285,10 +274,10 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
 void Direct3D11GeometryBuffer::setScissorRects() const
 {
     D3D11_RECT clip;
-    clip.left   = static_cast<LONG>(d_clipRect.left());
-    clip.top    = static_cast<LONG>(d_clipRect.top());
-    clip.right  = static_cast<LONG>(d_clipRect.right());
-    clip.bottom = static_cast<LONG>(d_clipRect.bottom());
+    clip.left   = static_cast<LONG>(d_preparedClippingRegion.left());
+    clip.top    = static_cast<LONG>(d_preparedClippingRegion.top());
+    clip.right  = static_cast<LONG>(d_preparedClippingRegion.right());
+    clip.bottom = static_cast<LONG>(d_preparedClippingRegion.bottom());
     d_deviceContext->RSSetScissorRects(1, &clip);
 }
 

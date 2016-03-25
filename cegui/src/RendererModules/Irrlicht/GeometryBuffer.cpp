@@ -40,7 +40,6 @@ namespace CEGUI
 IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver):
     d_driver(driver),
     d_activeTexture(0),
-    d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
@@ -112,7 +111,7 @@ void IrrlichtGeometryBuffer::setupClipping() const
     d_savedViewport = d_driver.getViewPort();
     d_savedProjection = d_driver.getTransform(irr::video::ETS_PROJECTION);
 
-    const Sizef csz(d_clipRect.getSize());
+    const Sizef csz(d_preparedClippingRegion.getSize());
     const Sizef tsz(static_cast<float>(d_savedViewport.getWidth()),
                      static_cast<float>(d_savedViewport.getHeight()));
 
@@ -123,20 +122,20 @@ void IrrlichtGeometryBuffer::setupClipping() const
     scsr(1, 1) = tsz.d_height / csz.d_height;
     scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
                    (d_savedViewport.UpperLeftCorner.X -
-                     (d_clipRect.left() + csz.d_width * 0.5f))) / csz.d_width;
+                     (d_preparedClippingRegion.left() + csz.d_width * 0.5f))) / csz.d_width;
     scsr(3, 1) = -(tsz.d_height + 2.0f *
                    (d_savedViewport.UpperLeftCorner.Y -
-                     (d_clipRect.top() + csz.d_height * 0.5f))) / csz.d_height;
+                     (d_preparedClippingRegion.top() + csz.d_height * 0.5f))) / csz.d_height;
 
     scsr *= d_savedProjection;
     d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
 
     // set new viewport for the clipping area
     const irr::core::rect<irr::s32> vp(
-            static_cast<irr::s32>(d_clipRect.left()),
-            static_cast<irr::s32>(d_clipRect.top()),
-            static_cast<irr::s32>(d_clipRect.right()),
-            static_cast<irr::s32>(d_clipRect.bottom()));
+            static_cast<irr::s32>(d_preparedClippingRegion.left()),
+            static_cast<irr::s32>(d_preparedClippingRegion.top()),
+            static_cast<irr::s32>(d_preparedClippingRegion.right()),
+            static_cast<irr::s32>(d_preparedClippingRegion.bottom()));
     d_driver.setViewPort(vp);
 }
 
@@ -173,15 +172,6 @@ void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
     d_pivot.Y = p.y;
     d_pivot.Z = p.z;
     d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect.top(std::max(0.0f, region.top()));
-    d_clipRect.bottom(std::max(0.0f, region.bottom()));
-    d_clipRect.left(std::max(0.0f, region.left()));
-    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//

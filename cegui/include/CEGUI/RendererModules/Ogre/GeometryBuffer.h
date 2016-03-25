@@ -70,7 +70,6 @@ public:
 
     virtual void draw() const;
     virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
-    virtual void setClippingRegion(const Rectf& region);
     virtual void reset();
     virtual int getVertexAttributeElementCount() const;
 
@@ -93,8 +92,6 @@ protected:
     OgreRenderer& d_owner;
     //! Ogre render system we're to use.
     Ogre::RenderSystem& d_renderSystem;
-    //! rectangular clip region
-    Rectf d_clipRect;
 
     //! model matrix cache
     mutable glm::mat4 d_matrix;

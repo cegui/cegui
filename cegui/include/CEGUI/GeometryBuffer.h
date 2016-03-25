@@ -168,9 +168,23 @@ public:
 
     /*!
     \brief
-        Set the clipping region to be used when rendering this buffer.
+        Set the clipping region to be used when rendering this buffer. The
+        clipping region for actual rendering will be stored extra after 
+        clamping the input region.
     */
-    virtual void setClippingRegion(const Rectf& region) = 0;
+    virtual void setClippingRegion(const Rectf& region);
+
+    /*!
+    \brief
+        Gets the set clipping region for this buffer.
+    */
+    const Rectf& getClippingRegion();
+
+    /*!
+    \brief
+        Gets the prepared clipping region to be used when rendering this buffer.
+    */
+    const Rectf& getPreparedClippingRegion();
 
     /*!
     \brief
@@ -470,7 +484,7 @@ public:
     glm::mat4 getModelMatrix() const;
 
 
-protected:
+protected:  
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
     //! Reference to the RenderMaterial used for this GeometryBuffer
@@ -520,6 +534,13 @@ protected:
     unsigned int    d_postStencilVertexCount;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect*   d_effect;
+    /*
+    \brief  The last clipping region that was set. Negative values in this one are
+            not clamped to 0.
+    */
+    Rectf           d_clippingRegion;
+    //! Clipping region clamped to 0, for usage in rendering
+    Rectf           d_preparedClippingRegion;
     //! True if clipping will be active for the current batch
     bool            d_clippingActive;
     //! The alpha value which will be applied to the whole buffer when rendering

@@ -65,7 +65,6 @@ public:
     void setTranslation(const glm::vec3& v);
     void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);
-    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);
@@ -100,8 +99,6 @@ protected:
     IrrlichtTexture* d_activeTexture;
     //! material used with the texture for rendering.
     mutable irr::video::SMaterial d_material;
-    //! rectangular clip region
-    Rectf d_clipRect;
     //! whether clipping will be active for the current batch
     bool d_clippingActive;
     //! translation vector
