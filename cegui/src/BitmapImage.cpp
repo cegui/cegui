@@ -96,76 +96,23 @@ void BitmapImage::setTexture(Texture* texture)
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRenderSettings& render_settings) const
 {
-    Rectf dest(render_settings.d_destArea);
-    // apply rendering offset to the destination Rect
-    dest.offset(d_scaledOffset);
+    Rectf texRect;
+    Rectf finalRect;
 
-    const CEGUI::Rectf*const&  clip_area = render_settings.d_clipArea;
-    // get the rect area that we will actually draw to (i.e. perform clipping)
-    Rectf final_rect(clip_area ? dest.getIntersection(*clip_area) : dest );
+    bool isFullClipped = calculateTextureAndRenderAreas(
+        render_settings.d_destArea, render_settings.d_clipArea,
+        finalRect, texRect);
 
-    // check if rect was totally clipped
-    if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
+    if(isFullClipped)
+    {
         return std::vector<GeometryBuffer*>();
-
-    // Obtain correct scale values from the texture
-    const glm::vec2& texel_scale = d_texture->getTexelScaling();
-    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
-
-    // calculate final, clipped, texture co-ordinates
-    const Rectf tex_rect((d_imageArea + ((final_rect - dest) * tex_per_pix)) * texel_scale);
-
-    // TODO: This is clearly not optimal but the only way to go with the current
-    // Font rendering system. Distance field rendering would allow us to ignore the 
-    // pixel alignment.
-    final_rect.d_min.x = CoordConverter::alignToPixels(final_rect.d_min.x);
-    final_rect.d_min.y = CoordConverter::alignToPixels(final_rect.d_min.y);
-    final_rect.d_max.x = CoordConverter::alignToPixels(final_rect.d_max.x);
-    final_rect.d_max.y = CoordConverter::alignToPixels(final_rect.d_max.y);
+    }
 
     TexturedColouredVertex vbuffer[6];
     const CEGUI::ColourRect& colours = render_settings.d_multiplyColours;
 
-    // vertex 0
-    vbuffer[0].setColour(colours.d_top_left);
-    vbuffer[0].d_position   = glm::vec3(final_rect.left(), final_rect.top(), 0.0f);
-    vbuffer[0].d_texCoords = glm::vec2(tex_rect.left(), tex_rect.top());
+    createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
 
-    // vertex 1
-    vbuffer[1].setColour(colours.d_bottom_left);
-    vbuffer[1].d_position   = glm::vec3(final_rect.left(), final_rect.bottom(), 0.0f);
-    vbuffer[1].d_texCoords = glm::vec2(tex_rect.left(), tex_rect.bottom());
-
-    // vertex 2
-    vbuffer[2].setColour(colours.d_bottom_right);
-    vbuffer[2].d_position.x   = final_rect.right();
-    vbuffer[2].d_position.z   = 0.0f;
-    vbuffer[2].d_texCoords.x = tex_rect.right();
-
-    // Quad splitting done from top-left to bottom-right diagonal
-    vbuffer[2].d_position.y = final_rect.bottom();
-    vbuffer[2].d_texCoords.y = tex_rect.bottom();
-
-
-    // vertex 3
-    vbuffer[3].setColour(colours.d_top_right);
-    vbuffer[3].d_position   = glm::vec3(final_rect.right(), final_rect.top(), 0.0f);
-    vbuffer[3].d_texCoords = glm::vec2(tex_rect.right(), tex_rect.top());
-
-    // vertex 4
-    vbuffer[4].setColour(colours.d_top_left);
-    vbuffer[4].d_position.x   = final_rect.left();
-    vbuffer[4].d_position.z   = 0.0f;
-    vbuffer[4].d_texCoords.x = tex_rect.left();
-
-    // Quad splitting done from top-left to bottom-right diagonal
-    vbuffer[4].d_position.y = final_rect.top();
-    vbuffer[4].d_texCoords.y = tex_rect.top();
-
-    // vertex 5
-    vbuffer[5].setColour(colours.d_bottom_right);
-    vbuffer[5].d_position     = glm::vec3(final_rect.right(), final_rect.bottom(), 0.0f);
-    vbuffer[5].d_texCoords   = glm::vec2(tex_rect.right(), tex_rect.bottom());
 
     CEGUI::GeometryBuffer& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
 
@@ -182,7 +129,114 @@ std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRender
 }
 
 
+void BitmapImage::addToRenderGeometry(
+    GeometryBuffer& geomBuffer,
+    const Rectf& renderArea,
+    const ColourRect& colours) const
+{
+    Rectf texRect;
+    Rectf finalRect;
 
+    const Rectf& clippingRegion = geomBuffer.getClippingRegion();
+
+    bool isFullClipped = calculateTextureAndRenderAreas(
+        renderArea, &clippingRegion,
+        finalRect, texRect);
+
+    if (isFullClipped)
+    {
+        return;
+    }
+
+    TexturedColouredVertex vbuffer[6];
+    createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
+
+    geomBuffer.appendGeometry(vbuffer, 6);
+}
+
+
+bool BitmapImage::calculateTextureAndRenderAreas(
+    const Rectf& renderSettingDestArea,
+    const Rectf* clippingArea,
+    Rectf& finalRect, Rectf& texRect) const
+{
+    Rectf dest(renderSettingDestArea);
+    // apply rendering offset to the destination Rect
+    dest.offset(d_scaledOffset);
+
+    const CEGUI::Rectf*const& clip_area = clippingArea;
+    // get the rect area that we will actually draw to (i.e. perform clipping)
+    finalRect = Rectf(clip_area ? dest.getIntersection(*clip_area) : dest);
+
+    // check if rect was totally clipped
+    if ((finalRect.getWidth() == 0) || (finalRect.getHeight() == 0))
+        return true;
+
+    // Obtain correct scale values from the texture
+    const glm::vec2& texel_scale = d_texture->getTexelScaling();
+    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
+
+    // calculate final, clipped, texture co-ordinates
+    texRect = Rectf((d_imageArea + ((finalRect - dest) * tex_per_pix)) * texel_scale);
+
+    // TODO: This is clearly not optimal but the only way to go with the current
+    // Font rendering system. Distance field rendering would allow us to ignore the 
+    // pixel alignment.
+    finalRect.d_min.x = CoordConverter::alignToPixels(finalRect.d_min.x);
+    finalRect.d_min.y = CoordConverter::alignToPixels(finalRect.d_min.y);
+    finalRect.d_max.x = CoordConverter::alignToPixels(finalRect.d_max.x);
+    finalRect.d_max.y = CoordConverter::alignToPixels(finalRect.d_max.y);
+
+    return false;
+}
+
+void BitmapImage::createTexturedQuadVertices(
+    TexturedColouredVertex* vbuffer,
+    const CEGUI::ColourRect &colours,
+    Rectf &finalRect,
+    const Rectf &texRect) const
+{
+    // vertex 0
+    vbuffer[0].setColour(colours.d_top_left);
+    vbuffer[0].d_position = glm::vec3(finalRect.left(), finalRect.top(), 0.0f);
+    vbuffer[0].d_texCoords = glm::vec2(texRect.left(), texRect.top());
+
+    // vertex 1
+    vbuffer[1].setColour(colours.d_bottom_left);
+    vbuffer[1].d_position = glm::vec3(finalRect.left(), finalRect.bottom(), 0.0f);
+    vbuffer[1].d_texCoords = glm::vec2(texRect.left(), texRect.bottom());
+
+    // vertex 2
+    vbuffer[2].setColour(colours.d_bottom_right);
+    vbuffer[2].d_position.x = finalRect.right();
+    vbuffer[2].d_position.z = 0.0f;
+    vbuffer[2].d_texCoords.x = texRect.right();
+
+    // Quad splitting done from top-left to bottom-right diagonal
+    vbuffer[2].d_position.y = finalRect.bottom();
+    vbuffer[2].d_texCoords.y = texRect.bottom();
+
+
+    // vertex 3
+    vbuffer[3].setColour(colours.d_top_right);
+    vbuffer[3].d_position = glm::vec3(finalRect.right(), finalRect.top(), 0.0f);
+    vbuffer[3].d_texCoords = glm::vec2(texRect.right(), texRect.top());
+
+    // vertex 4
+    vbuffer[4].setColour(colours.d_top_left);
+    vbuffer[4].d_position.x = finalRect.left();
+    vbuffer[4].d_position.z = 0.0f;
+    vbuffer[4].d_texCoords.x = texRect.left();
+
+    // Quad splitting done from top-left to bottom-right diagonal
+    vbuffer[4].d_position.y = finalRect.top();
+    vbuffer[4].d_texCoords.y = texRect.top();
+
+    // vertex 5
+    vbuffer[5].setColour(colours.d_bottom_right);
+    vbuffer[5].d_position = glm::vec3(finalRect.right(), finalRect.bottom(), 0.0f);
+    vbuffer[5].d_texCoords = glm::vec2(texRect.right(), texRect.bottom());
+}
 
 //----------------------------------------------------------------------------//
 const Texture* BitmapImage::getTexture() const

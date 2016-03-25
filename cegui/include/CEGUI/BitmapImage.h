@@ -49,9 +49,13 @@ public:
                const Rectf& tex_area, const glm::vec2& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
-    // Implement CEGUI::Image interface
     std::vector<GeometryBuffer*> createRenderGeometry(
         const ImageRenderSettings& render_settings) const override;
+
+    void addToRenderGeometry(
+        GeometryBuffer& geomBuffer,
+        const Rectf& renderArea,
+        const ColourRect& colours) const override;
 
     /*!
     \brief
@@ -72,6 +76,27 @@ public:
     const Texture* getTexture() const;
 
 protected:
+    /*!
+    \brief
+        Fills the vertices data for the textured quad based on the supplied
+        parameters. The supplied pointer must point to an array of size 6
+        for the quad.
+    */
+    void createTexturedQuadVertices(
+        TexturedColouredVertex* vbuffer,
+        const CEGUI::ColourRect& colours,
+        Rectf& finalRect,
+        const Rectf& texRect) const;
+
+    /*!
+    \brief
+        Helper function for calculating the tecture and render areas.
+    */
+    bool calculateTextureAndRenderAreas(
+        const Rectf& renderSettingDestArea,
+        const Rectf* clippingArea,
+        Rectf &finalRect, Rectf &texRect) const;
+
     //! Texture used by this image.
     Texture* d_texture;
 };

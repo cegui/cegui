@@ -226,9 +226,30 @@ public:
 
     \param render_settings
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
-     */
+    */
     virtual std::vector<GeometryBuffer*> createRenderGeometry(
         const ImageRenderSettings& render_settings) const = 0;
+
+    /*!
+    \brief
+        Appends additional render geometry for this image to an GeometryBuffers.
+        The GeometryBuffer must be created beforehand and must feature render
+        settings that allow adding this image geometry into the same render batch.
+        Batching compatibility has to be ensured before this call.
+
+    \param geomBuffer
+        The existing GeometryBuffers to which the new render geometry will be appended.
+
+    \param renderArea
+        The target area at which the image should be rendered.
+
+    \param colours
+        Multiplicative colours to be applied to the text.
+    */
+    virtual void addToRenderGeometry(
+        GeometryBuffer& geomBuffer,
+        const Rectf& renderArea,
+        const ColourRect& colours) const = 0;
         
     /*!
     \brief
