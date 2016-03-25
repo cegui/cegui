@@ -55,7 +55,6 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     GeometryBuffer(renderMaterial),
     d_owner(owner),
     d_renderSystem(rs),
-    d_clipRect(0, 0, 0, 0),
     d_matrix(1.0),
     d_expectedData(MT_INVALID),
     d_dataAppended(false),
@@ -134,15 +133,6 @@ void OgreGeometryBuffer::draw() const
     }
 
     updateRenderTargetData(d_owner.getActiveRenderTarget());
-}
-
-//----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect.top(std::max(0.0f, region.top()));
-    d_clipRect.bottom(std::max(0.0f, region.bottom()));
-    d_clipRect.left(std::max(0.0f, region.left()));
-    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
@@ -306,8 +296,11 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
 // ------------------------------------ //
 void OgreGeometryBuffer::setScissorRects() const
 {
-    d_renderSystem.setScissorTest(true, static_cast<size_t>(d_clipRect.left()), 
-        static_cast<size_t>(d_clipRect.top()), static_cast<size_t>(d_clipRect.right()), static_cast<size_t>(d_clipRect.bottom()));
+    d_renderSystem.setScissorTest(true,
+        static_cast<size_t>(d_preparedClippingRegion.left()), 
+        static_cast<size_t>(d_preparedClippingRegion.top()),
+        static_cast<size_t>(d_preparedClippingRegion.right()),
+        static_cast<size_t>(d_preparedClippingRegion.bottom()));
 }
 
 // ------------------------------------ //

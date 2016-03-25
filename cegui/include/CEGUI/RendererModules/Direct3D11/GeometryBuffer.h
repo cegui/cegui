@@ -55,7 +55,6 @@ public:
     // Implement GeometryBuffer interface.
     virtual void draw() const;
     virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
-    virtual void setClippingRegion(const Rectf& region);
 
     /*
     \brief
@@ -89,8 +88,6 @@ protected:
     mutable ID3D11Buffer* d_vertexBuffer;
     //! Size of the currently allocated vertex buffer.
     mutable UINT d_bufferSize;
-    //! rectangular clip region
-    Rectf d_clipRect;
     //! Cache of the model view projection matrix
     mutable glm::mat4 d_matrix;
     //! D3D11 input layout describing the vertex format we use.

@@ -57,10 +57,7 @@ public:
     void draw() const;
     void appendGeometry(const std::vector<float>& vertex_data);
     void finaliseVertexAttributes();
-    void setClippingRegion(const Rectf& region);
 protected:
-    //! rectangular clip region
-    Rectf d_clipRect;
 };
 
 

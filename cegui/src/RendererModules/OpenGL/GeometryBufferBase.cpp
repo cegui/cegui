@@ -43,7 +43,6 @@ namespace CEGUI
 OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial)
     : GeometryBuffer(renderMaterial)
     , d_owner(owner)
-    , d_clipRect(0, 0, 0, 0)
     , d_matrix(1.0)
 {
 }
@@ -51,15 +50,6 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CE
 //----------------------------------------------------------------------------//
 OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 {
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
-{
-    d_clipRect.top(std::max(0.0f, region.top()));
-    d_clipRect.left(std::max(0.0f, region.left()));
-    d_clipRect.bottom(std::max(0.0f, region.bottom()));
-    d_clipRect.right(std::max(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//

@@ -53,7 +53,6 @@ public:
     void setTranslation(const glm::vec3& v);
     void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);
-    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);
@@ -90,8 +89,6 @@ protected:
     typedef std::vector<DFBVertex> VertexList;
     //! container where added geometry is stored.
     VertexList d_vertices;
-    //! rectangular clip region
-    Rectf d_clipRect;
     //! whether clipping will be active for the current batch
     bool d_clippingActive;
     //! translation vector
