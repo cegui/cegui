@@ -1734,6 +1734,10 @@ void Window::destroy(void)
         return;
     }
 
+    // double check we are detached from parent
+    if (d_parent)
+        d_parent->removeChild(this);
+
     // signal our imminent destruction
     WindowEventArgs args(this);
     onDestructionStarted(args);
@@ -1747,6 +1751,8 @@ void Window::destroy(void)
 
     // ensure custom tooltip is cleaned up
     setTooltip(static_cast<Tooltip*>(0));
+    
+
 
     // clean up looknfeel related things
     if (!d_lookName.empty())
@@ -1764,10 +1770,6 @@ void Window::destroy(void)
             destroyWindowRenderer(d_windowRenderer);
         d_windowRenderer = 0;
     }
-
-    // double check we are detached from parent
-    if (d_parent)
-        d_parent->removeChild(this);
 
     cleanupChildren();
 
