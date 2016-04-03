@@ -353,7 +353,7 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
             {
                 // Else we add geometry to the rendering batch of the existing geometry
                 img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
-                    colours);
+                    clip_rect, colours);
             }
 
             glyph_pos.x += glyph->getAdvance(x_scale);
