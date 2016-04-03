@@ -93,7 +93,7 @@ The following details the general code style and layout that should be used.
 
 - Constants should be all upper case with words separated by an underscore, such as in @b THIS_IS_CONSTANT.  Please note that this rule does also apply to class member constants and enumeration values.
 
-- Don't use global variables.
+- Don't use global variables. Exception: Sample code for platforms where we don't have a main function, e.g. Android.
 
 - Class member variables should be camel case; where each word in the name is capitalised except the first word, such as in @b thisVariable.  Normal members should have the prefix @b d_ (for data, don't ask!), such as in @b d_thisVariable, while static members should have the prefix @b s_, such as in @b s_anotherVariable.
 
