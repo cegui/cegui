@@ -249,6 +249,7 @@ public:
     virtual void addToRenderGeometry(
         GeometryBuffer& geomBuffer,
         const Rectf& renderArea,
+        const Rectf* clipArea,
         const ColourRect& colours) const = 0;
         
     /*!

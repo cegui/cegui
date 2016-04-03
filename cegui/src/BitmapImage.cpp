@@ -132,15 +132,14 @@ std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRender
 void BitmapImage::addToRenderGeometry(
     GeometryBuffer& geomBuffer,
     const Rectf& renderArea,
+    const Rectf* clipArea,
     const ColourRect& colours) const
 {
     Rectf texRect;
     Rectf finalRect;
 
-    const Rectf& clippingRegion = geomBuffer.getClippingRegion();
-
     bool isFullClipped = calculateTextureAndRenderAreas(
-        renderArea, &clippingRegion,
+        renderArea, clipArea,
         finalRect, texRect);
 
     if (isFullClipped)
@@ -164,9 +163,8 @@ bool BitmapImage::calculateTextureAndRenderAreas(
     // apply rendering offset to the destination Rect
     dest.offset(d_scaledOffset);
 
-    const CEGUI::Rectf*const& clip_area = clippingArea;
     // get the rect area that we will actually draw to (i.e. perform clipping)
-    finalRect = Rectf(clip_area ? dest.getIntersection(*clip_area) : dest);
+    finalRect = Rectf(clippingArea ? dest.getIntersection(*clippingArea) : dest);
 
     // check if rect was totally clipped
     if ((finalRect.getWidth() == 0) || (finalRect.getHeight() == 0))
