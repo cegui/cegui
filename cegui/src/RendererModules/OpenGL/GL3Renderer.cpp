@@ -238,7 +238,7 @@ void OpenGL3Renderer::endRendering()
 void OpenGL3Renderer::restoreChangedStatesToDefaults(bool isAfterRendering)
 {
     //Resetting to initial values of the functions
-    d_openGLStateChanger->activeTexture(GL_TEXTURE0);
+    d_openGLStateChanger->activeTexture(0);
     d_openGLStateChanger->bindTexture(GL_TEXTURE_2D, 0);
 
     if (OpenGLInfo::getSingleton().isPolygonModeSupported())
