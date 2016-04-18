@@ -1257,8 +1257,12 @@ void Window::removeChild_impl(Element* element)
     
     wnd->onZChange_impl();
 
-    // Removed windows should not be active anymore
-    wnd->deactivate();
+    // Removed windows should not be active anymore (they are not attached
+    // to anything so this would not make sense)
+    if(wnd->isActive())
+    {
+        wnd->deactivate();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1734,13 +1738,13 @@ void Window::destroy(void)
         return;
     }
 
-    // double check we are detached from parent
-    if (d_parent)
-        d_parent->removeChild(this);
-
     // signal our imminent destruction
     WindowEventArgs args(this);
     onDestructionStarted(args);
+
+    // Check we are detached from parent
+    if (d_parent)
+        d_parent->removeChild(this);
 
     releaseInput();
 
