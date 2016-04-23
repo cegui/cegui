@@ -8,7 +8,7 @@ will be used as change log. The list might be incomplete, as some (especially sm
 not mentioned in the issue tracker. Therefore, if you want more in-depth information about all changes and
 a definitely complete list, please read the commit logs of the v0-8 branch up to the point of this release!
 
-<b>Release 0.8.6 (taken from bitbucket issue-tracker, milestone 0.8.5. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. [https://bitbucket.org/cegui/cegui/issue/998](http://example.net/) </b>
+<b>Release 0.8.6 (taken from bitbucket issue-tracker based on the respective milestone. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. https://bitbucket.org/cegui/cegui/issue/998 </b>
 - #1120: Bug regarding order of destruction : Element object referenced by '__auto_titlebar__' is not attached to Element at (...)
 - #1111: Add official support for MinGW (32 and 64 bit targets)
 - Child removal (e.g. on destruction) always triggered a deactivation event due to a change in a fix for 0.8.5, now the deactivation event is only triggered when the element was actually active.
