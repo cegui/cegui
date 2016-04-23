@@ -19,6 +19,7 @@ build/
 debug/
 release/
 doc/doxygen/html/
+doxygenoutput
 
 xcuserdata/
 *.xcworkspace/
