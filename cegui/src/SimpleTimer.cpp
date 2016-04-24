@@ -27,7 +27,12 @@
 #include "CEGUI/SimpleTimer.h"
 
 #if (defined(__WIN32__) || defined(_WIN32) ) && (!defined __MINGW32__)
+
+#ifdef WIN32_LEAN_AND_MEAN
+    #undef WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
+
 double CEGUI::SimpleTimer::currentTime()
 {
     return timeGetTime() / 1000.0;
