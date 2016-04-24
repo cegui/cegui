@@ -31,12 +31,26 @@
 
 #include <chrono>
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 //! Simple timer class that returns the elapsed time since the last start in seconds.
 class CEGUIEXPORT SimpleTimer
 {
 public:
+#if !(_MSC_VER == 1800)
+    typedef std::chrono::time_point<std::chrono::steady_clock> timePoint;
+#else
+    // Once again, Visual Studio 2013 does the wrong thing regarding C++11
+    typedef std::chrono::time_point<std::chrono::system_clock> timePoint;
+#endif
+ 
+    
+
     SimpleTimer() : d_lastStartTime(std::chrono::steady_clock::now()) {}
 
     /*!
@@ -53,10 +67,14 @@ public:
         return elapsedTime.count();
     }
 private:
-    std::chrono::time_point<std::chrono::steady_clock> d_lastStartTime;
+    timePoint d_lastStartTime;
 };
 
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
 
