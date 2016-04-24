@@ -28,10 +28,11 @@
 #define _CEGUIRenderingWindow_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -107,7 +108,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    void setPosition(const Vector2f& position);
+    void setPosition(const glm::vec2& position);
 
     /*!
     \brief
@@ -127,7 +128,7 @@ public:
     \param rotation
         Quaternion object describing the rotation.
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief
@@ -138,7 +139,7 @@ public:
         Vector3 describing the three dimensional point around which the
         RenderingWindow will be rotated.
     */
-    void setPivot(const Vector3f& pivot);
+    void setPivot(const glm::vec3& pivot);
 
     /*!
     \brief
@@ -153,7 +154,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    const Vector2f& getPosition() const;
+    const glm::vec2& getPosition() const;
 
     /*!
     \brief
@@ -171,7 +172,7 @@ public:
     \return
         Quaternion object describing the rotation for the RenderingWindow.
     */
-    const Quaternion& getRotation()const;
+    const glm::quat& getRotation()const;
 
     /*!
     \brief
@@ -181,7 +182,7 @@ public:
         Vector3 object describing the current location of the pivot point used
         when rotating the RenderingWindow.
     */
-    const Vector3f& getPivot() const;
+    const glm::vec3& getPivot() const;
 
     /*!
     \brief
@@ -276,7 +277,7 @@ public:
         Fill in Vector2 object \a p_out with an unprojected version of the
         point described by Vector2 \a p_in.
     */
-    void unprojectPoint(const Vector2f& p_in, Vector2f& p_out);
+    void unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out);
 
     // overrides from base
     void draw();
@@ -298,18 +299,18 @@ protected:
     TextureTarget& d_textarget;
     //! RenderingSurface that owns this object, we render back to this object.
     RenderingSurface* d_owner;
-    //! GeometryBuffer that holds geometry for drawing this window.
-    GeometryBuffer* d_geometry;
+    //! The geometry buffers that cache the geometry drawn by this Window.
+    GeometryBuffer& d_geometryBuffer;
     //! indicates whether data in GeometryBuffer is up-to-date
     bool d_geometryValid;
     //! Position of this RenderingWindow
-    Vector2f d_position;
+    glm::vec2 d_position;
     //! Size of this RenderingWindow
     Sizef d_size;
     //! Rotation for this RenderingWindow
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! Pivot point used for the rotation.
-    Vector3f d_pivot;
+    glm::vec3 d_pivot;
 };
 
 } // End of  CEGUI namespace section

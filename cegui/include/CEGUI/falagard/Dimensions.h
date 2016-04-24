@@ -30,15 +30,14 @@
 #include "./Enums.h"
 #include "../String.h"
 #include "../UDim.h"
-#include "../Rect.h"
+#include "../Rectf.h"
 #include "../XMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //! Abstract interface for a generic 'dimension' class.
-class CEGUIEXPORT BaseDim :
-    public AllocatedObject<BaseDim>
+class CEGUIEXPORT BaseDim
 {
 public:
     BaseDim();
@@ -452,7 +451,7 @@ private:
     //! Holds target window name suffix.
     String d_widgetName;
     //! the dimension of the target window that we are to represent.
-    DimensionType d_what;
+    DimensionType d_dimensionType;
 };
 
 /*!
@@ -756,8 +755,7 @@ private:
     dimensional value, but also a record of what the dimension value is supposed
     to represent. (e.g. a co-ordinate on the x axis, or the height of something).
 */
-class CEGUIEXPORT Dimension :
-    public AllocatedObject<Dimension>
+class CEGUIEXPORT Dimension
 {
 public:
     Dimension();
@@ -843,8 +841,7 @@ private:
     represent width and height depending upon what the assigned Dimension(s)
     represent.
 */
-class CEGUIEXPORT ComponentArea :
-    public AllocatedObject<ComponentArea>
+class CEGUIEXPORT ComponentArea
 {
 public:
     ComponentArea();
@@ -919,7 +916,7 @@ public:
         area for this ComponentArea.
 
     \note
-        Calling this will replace any existing souce, such as a named area.
+        Calling this will replace any existing source, such as a named area.
 
     \param property
         String object holding the name of a Propery.  The property should access
@@ -937,7 +934,7 @@ public:
     const String& getNamedAreaSourceLook() const;
 
     //! Set the named area source of the ComponentArea.
-    void setNamedAreaSouce(const String& widget_look, const String& area_name);
+    void setNamedAreaSource(const String& widget_look, const String& area_name);
 
     /*!
     \brief

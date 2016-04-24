@@ -32,7 +32,6 @@
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/Irrlicht/Texture.h"
 #include "CEGUI/Vertex.h"
-#include "CEGUI/Quaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,7 +40,6 @@ namespace CEGUI
 IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver):
     d_driver(driver),
     d_activeTexture(0),
-    d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
@@ -113,7 +111,7 @@ void IrrlichtGeometryBuffer::setupClipping() const
     d_savedViewport = d_driver.getViewPort();
     d_savedProjection = d_driver.getTransform(irr::video::ETS_PROJECTION);
 
-    const Sizef csz(d_clipRect.getSize());
+    const Sizef csz(d_preparedClippingRegion.getSize());
     const Sizef tsz(static_cast<float>(d_savedViewport.getWidth()),
                      static_cast<float>(d_savedViewport.getHeight()));
 
@@ -124,20 +122,20 @@ void IrrlichtGeometryBuffer::setupClipping() const
     scsr(1, 1) = tsz.d_height / csz.d_height;
     scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
                    (d_savedViewport.UpperLeftCorner.X -
-                     (d_clipRect.left() + csz.d_width * 0.5f))) / csz.d_width;
+                     (d_preparedClippingRegion.left() + csz.d_width * 0.5f))) / csz.d_width;
     scsr(3, 1) = -(tsz.d_height + 2.0f *
                    (d_savedViewport.UpperLeftCorner.Y -
-                     (d_clipRect.top() + csz.d_height * 0.5f))) / csz.d_height;
+                     (d_preparedClippingRegion.top() + csz.d_height * 0.5f))) / csz.d_height;
 
     scsr *= d_savedProjection;
     d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
 
     // set new viewport for the clipping area
     const irr::core::rect<irr::s32> vp(
-            static_cast<irr::s32>(d_clipRect.left()),
-            static_cast<irr::s32>(d_clipRect.top()),
-            static_cast<irr::s32>(d_clipRect.right()),
-            static_cast<irr::s32>(d_clipRect.bottom()));
+            static_cast<irr::s32>(d_preparedClippingRegion.left()),
+            static_cast<irr::s32>(d_preparedClippingRegion.top()),
+            static_cast<irr::s32>(d_preparedClippingRegion.right()),
+            static_cast<irr::s32>(d_preparedClippingRegion.bottom()));
     d_driver.setViewPort(vp);
 }
 
@@ -149,40 +147,31 @@ void IrrlichtGeometryBuffer::cleanupClipping() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTranslation(const Vector3f& v)
+void IrrlichtGeometryBuffer::setTranslation(const glm::vec3& v)
 {
-    d_translation.X = v.d_x;
-    d_translation.Y = v.d_y;
-    d_translation.Z = v.d_z;
+    d_translation.X = v.x;
+    d_translation.Y = v.y;
+    d_translation.Z = v.z;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
+void IrrlichtGeometryBuffer::setRotation(const glm::quat& r)
 {
-    d_rotation.W = -r.d_w;
-    d_rotation.X = r.d_x;
-    d_rotation.Y = r.d_y;
-    d_rotation.Z = r.d_z;
+    d_rotation.W = -r.w;
+    d_rotation.X = r.x;
+    d_rotation.Y = r.y;
+    d_rotation.Z = r.z;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setPivot(const Vector3f& p)
+void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
 {
-    d_pivot.X = p.d_x;
-    d_pivot.Y = p.d_y;
-    d_pivot.Z = p.d_z;
+    d_pivot.X = p.x;
+    d_pivot.Y = p.y;
+    d_pivot.Z = p.z;
     d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
@@ -193,7 +182,7 @@ void IrrlichtGeometryBuffer::appendVertex(const Vertex& vertex)
 
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-                                            uint vertex_count)
+                                            unsigned int vertex_count)
 {
     // see if we should start a new batch
     irr::video::ITexture* t =
@@ -210,7 +199,7 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     const irr::u16 idx_start = d_batches.back().vertexCount;
     irr::video::S3DVertex v;
-    for (uint i = 0; i < vertex_count; ++i)
+    for (unsigned int i = 0; i < vertex_count; ++i)
     {
         const Vertex& vs = vbuff[i];
         v.Pos.X     = vs.position.d_x + d_texelOffset;
@@ -249,13 +238,13 @@ Texture* IrrlichtGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-uint IrrlichtGeometryBuffer::getVertexCount() const
+unsigned int IrrlichtGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint IrrlichtGeometryBuffer::getBatchCount() const
+unsigned int IrrlichtGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }

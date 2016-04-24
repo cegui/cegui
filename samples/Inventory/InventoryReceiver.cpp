@@ -180,7 +180,7 @@ void InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e)
     const Sizef square_size(squarePixelSize());
 
     Rectf item_area(item->getUnclippedOuterRect().get());
-    item_area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
+    item_area.offset(0.5f * glm::vec2(square_size.d_width, square_size.d_height));
 
     const int drop_x = gridXLocationFromPixelPosition(item_area.left());
     const int drop_y = gridYLocationFromPixelPosition(item_area.top());
@@ -201,6 +201,9 @@ void InventoryReceiver::populateGeometryBuffer()
 
     const Sizef square_size(squarePixelSize());
 
+    ImageRenderSettings imgRenderSettings(
+        Rectf(), 0);
+
     for (int y = 0; y < d_content.height(); ++y)
     {
         for (int x = 0; x < d_content.width(); ++x)
@@ -209,10 +212,15 @@ void InventoryReceiver::populateGeometryBuffer()
             if (d_content.elementAtLocation(x, y))
                 colour = 0xFF0000FF;
 
-            img->render(*d_geometry,
-                        Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
-                        Sizef(square_size.d_width - 2, square_size.d_height - 2), 0,
-                        ColourRect(colour));
+            imgRenderSettings.d_multiplyColours = Colour(colour);
+            imgRenderSettings.d_destArea = Rectf(
+                glm::vec2(x * square_size.d_width + 1, y * square_size.d_height + 1),
+                Sizef(square_size.d_width - 2, square_size.d_height - 2));
+
+            auto geomBuffers = img->createRenderGeometry(
+                imgRenderSettings);
+
+            appendGeometryBuffers(geomBuffers);
         }
     }
 }

@@ -37,11 +37,11 @@ class MinibidiVisualMapping : public BidiVisualMapping
 {
 public:
     // implement required interface.
-    BidiCharType getBidiCharType(const utf32 char_to_check) const;
+    BidiCharType getBidiCharType(const char32_t char_to_check) const;
     bool reorderFromLogicalToVisual(const String& logical, String& visual,
                                     StrIndexList& l2v, StrIndexList& v2l) const;
 };
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIMinibidiVisualMapping_h_
+#endif

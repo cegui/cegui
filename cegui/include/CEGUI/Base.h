@@ -8,7 +8,7 @@
 				headers will include this file.
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,6 +40,7 @@
 
 #include <cassert>
 #include <algorithm>
+#include <cstdint>
 
 /*************************************************************************
 	Dynamic Library import / export control conditional
@@ -56,13 +57,6 @@
 #       define CEGUIEXPORT
 #       define CEGUIPRIVATE
 #endif
-
-
-// totally kill this warning (debug info truncated to 255 chars etc...) on <= VC6
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-#   pragma warning(disable : 4786)
-#endif
-
 
 // Detect macros for min / max and undefine (with a warning where possible)
 #if defined(max)
@@ -88,41 +82,10 @@
 
 // fix to undefine _STLP_DEBUG if STLport is not actually being used
 // (resolves some unresolved externals concerning boost)
-#if defined(_STLP_DEBUG) && defined(_MSC_VER) && (_MSC_VER >= 1200)
+#if defined(_STLP_DEBUG) && defined(_MSC_VER)
 #   if !defined(_STLPORT_VERSION)
 #       undef _STLP_DEBUG
 #   endif
-#endif
-
-// The following defines macros used within CEGUI for std::min/std::max
-// usage, and is done as a compatibility measure for VC6 with native STL.
-#if defined(_MSC_VER) && (_MSC_VER <= 1200) && !defined(_STLPORT_VERSION)
-#    define ceguimin	std::_cpp_min
-#    define ceguimax	std::_cpp_max
-#else
-#    define ceguimin	std::min
-#    define ceguimax	std::max
-#endif
-
-// CEGUI's Exception macros
-// This provides a mechanism to override how exception handling is used.  Note
-// that in general this facility _should not be used_.  Attempts to use this
-// to disable exceptions to 'make things easier' are doomed to failure.  CEGUI
-// becomes less robust without exceptions (because they are used internally by
-// CEGUI).  In addition, overriding the exception mechanism will also cause
-// memory leaks in various places.  This is your only warning about such things,
-// if you decide to continue anyway you hereby waive any right to complain :-p
-#ifndef CEGUI_TRY
-#   define CEGUI_TRY try
-#endif
-#ifndef CEGUI_CATCH
-#   define CEGUI_CATCH(e) catch (e)
-#endif
-#ifndef CEGUI_THROW
-#   define CEGUI_THROW(e) throw e
-#endif
-#ifndef CEGUI_RETHROW
-#   define CEGUI_RETHROW throw
 #endif
 
 // CEGUI_FUNCTION_NAME - CEGUI::String containing current function name
@@ -152,26 +115,6 @@
 */
 namespace CEGUI
 {
-
-/*************************************************************************
-	Simplification of some 'unsigned' types
-*************************************************************************/
-typedef	unsigned long	ulong;
-typedef unsigned short	ushort;
-typedef unsigned int	uint;
-typedef unsigned char	uchar;
-
-typedef long long    int64;
-typedef int          int32;
-typedef short        int16;
-typedef signed char  int8;
-
-typedef unsigned long long  uint64;
-typedef unsigned int        uint32;
-typedef unsigned short      uint16;
-typedef unsigned char       uint8;
-
-
 /*************************************************************************
 	System wide constants
 *************************************************************************/
@@ -192,6 +135,5 @@ typedef std::ostream OutStream;     //!< Output stream class.
 	Bring in forward references to all GUI base system classes
 *************************************************************************/
 #include "CEGUI/ForwardRefs.h"
-#include "CEGUI/MemoryAllocation.h"
 
 #endif	// end of guard _CEGUIBase_h_
