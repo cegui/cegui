@@ -93,7 +93,7 @@ The following details the general code style and layout that should be used.
 
 - Constants should be all upper case with words separated by an underscore, such as in @b THIS_IS_CONSTANT.  Please note that this rule does also apply to class member constants and enumeration values.
 
-- Global variables should use camel case; where each word in the name is capitalised except the first word.  Globals should be prefixed with @b G_.  So if we had a global we want to call 'nastyVariable' it should be named @b G_nastyVariable - yes, it looks horrible, and hopefully it's horrible enough that you find another way!
+- Don't use global variables. Exception: Sample code for platforms where we don't have a main function, e.g. Android.
 
 - Class member variables should be camel case; where each word in the name is capitalised except the first word, such as in @b thisVariable.  Normal members should have the prefix @b d_ (for data, don't ask!), such as in @b d_thisVariable, while static members should have the prefix @b s_, such as in @b s_anotherVariable.
 
@@ -101,9 +101,9 @@ The following details the general code style and layout that should be used.
 
 - When using camel case on a member function or variable with words in it that are typically fully capitalised (e.g. "OpenGL ES"), camel case them anyways, do not ever use underscores here! For example call the method isUsingOpenglEs instead of isUsingOpenGLES. The latter would be read more like "Open GLES", and the reader might end up wondering what "GLES" is.
 
-- Local variables in functions should be all lower case with an underscore between words, such as in @b word_count.
+- In %CEGUI version 0.8.X local variables and function parameters should all be lower case with an underscore between words, such as in @b word_count and @b new_size.
 
-- Parameter names are treated the same as other local variables, so should be named all lower case with an underscore between words, such as in @b char_count.
+- Starting with CEGUI version 1.X and in %CEGUI default branch the local variables and function parameters should all be written in camel case, such as in @b wordCount and @b newSize.
 
 - Boolean getter functions should always start with "is". Please think of meaningful names in that context, e.g. for plural, instead of "areCatsFuzzy" do NOT use "isCatsFuzzy" but use "isEachCatFuzzy" or "isEveryCatFuzzy", instead of "areVaosSupported" you could use "isVaoSupported", etc. Whatever you choose, make it both readable and grammatically correct. Sometimes opening a thesaurus may help you find the right words.
 
