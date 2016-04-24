@@ -29,22 +29,31 @@
 
 #include "CEGUI/Base.h"
 
+#include <chrono>
+
 namespace CEGUI
 {
-
-//! Simple timer class.
+//! Simple timer class that returns the elapsed time since the last start in seconds.
 class CEGUIEXPORT SimpleTimer
 {
-    double d_baseTime;
-
 public:
-    //! returns time in seconds
-    static double currentTime();
+    SimpleTimer() : d_lastStartTime(std::chrono::steady_clock::now()) {}
 
-    SimpleTimer() : d_baseTime(currentTime()) {}
+    /*!
+    \brief Restarts the timer, setting it to the current time.
+    */
+    void restart() { d_lastStartTime = std::chrono::steady_clock::now(); }
 
-    void restart() { d_baseTime = currentTime(); }
-    double elapsed() { return currentTime() - d_baseTime; }
+    /*!
+    \brief Returns the elapsed time in seconds.
+    */
+    double elapsedTime() const
+    {
+        std::chrono::duration<double> elapsedTime = std::chrono::steady_clock::now() - d_lastStartTime;
+        return elapsedTime.count();
+    }
+private:
+    std::chrono::time_point<std::chrono::steady_clock> d_lastStartTime;
 };
 
 }

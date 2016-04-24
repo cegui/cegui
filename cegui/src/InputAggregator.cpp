@@ -347,7 +347,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
 
     // TODO: re-add the check for different windows?
     // if multi-click requirements are not met
-    if (((d_mouseButtonMultiClickTimeout > 0) && (tkr.d_timer.elapsed() > d_mouseButtonMultiClickTimeout)) ||
+    if (((d_mouseButtonMultiClickTimeout > 0) && (tkr.d_timer.elapsedTime() > d_mouseButtonMultiClickTimeout)) ||
         (!tkr.d_click_area.isPointInRectf(d_pointerPosition)) ||
         (tkr.d_click_count > 3))
     {
