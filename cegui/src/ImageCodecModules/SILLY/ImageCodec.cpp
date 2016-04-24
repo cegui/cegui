@@ -30,7 +30,7 @@
 #include "CEGUI/ImageCodecModules/SILLY/ImageCodec.h"
 #include <SILLY.h>
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,7 +40,7 @@ SILLYImageCodec::SILLYImageCodec()
 {
     d_supportedFormat = "tga jpg png";
     if (! SILLY::SILLYInit())
-        CEGUI_THROW(GenericException("Unable to initialize SILLY library"));
+        throw GenericException("Unable to initialize SILLY library");
 
 }
 

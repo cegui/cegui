@@ -566,7 +566,7 @@ protected:
     void removeChild_impl(Element* element);
     
     void onSized_impl(ElementEventArgs& e);
-    void onMouseWheel(MouseEventArgs& e);
+    void onScroll(CursorInputEventArgs& e);
 
     //! \copydoc Window::getChildByNamePath_impl
     NamedElement* getChildByNamePath_impl(const String& name_path) const;

@@ -60,6 +60,10 @@ The following have made large, important, or on-going contributions to the syste
     - Tree Demo.
 - Andrew Zabolotny:
     - Font class rewrite.
+- Henri Hyyryläinen:
+    - 3rd version of the Ogre3D renderer module.
+- Luca Ebach:
+    - SamplesBrowser rework to merge the 'zillion' sample libraries into the executable
 
 <br>
 @section authors_sec_5 Other Contributors

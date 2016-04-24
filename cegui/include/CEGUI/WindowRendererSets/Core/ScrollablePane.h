@@ -65,11 +65,9 @@ namespace CEGUI
         */
         FalagardScrollablePane(const String& type);
 
-        void render();
-        Rectf getViewableArea(void) const;
-
-        // overridden from WindowRenderer base class.
-        Rectf getUnclippedInnerRect() const;
+        void createRenderGeometry() override;
+        Rectf getViewableArea(void) const override;
+        Rectf getUnclippedInnerRect() const override;
 
     protected:
         // overridden from WindowRenderer base class.

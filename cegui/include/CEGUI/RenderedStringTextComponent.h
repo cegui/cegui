@@ -31,6 +31,8 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
 
+#include <vector>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -62,10 +64,11 @@ public:
     const ColourRect& getColours() const;
 
     // implementation of abstract base interface
-    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-              const Vector2f& position, const ColourRect* mod_colours,
-              const Rectf* clip_rect, const float vertical_space,
-              const float space_extra) const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Window* ref_wnd,
+        const glm::vec2& position, const ColourRect* mod_colours,
+        const Rectf* clip_rect, const float vertical_space,
+        const float space_extra) const;
     Sizef getPixelSize(const Window* ref_wnd) const;
     bool canSplit() const;
     RenderedStringTextComponent* split(const Window* ref_wnd,

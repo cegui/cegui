@@ -75,8 +75,8 @@ namespace CEGUI
         bool isVertical() const;
         void setVertical(bool setting);
 
-        void render();
-        void performChildWindowLayout();
+        void createRenderGeometry() override;
+        void performChildWindowLayout() override;
 
     protected:
         // data members
@@ -85,7 +85,7 @@ namespace CEGUI
         // overridden from Scrollbar base class.
         void updateThumb(void);
         float getValueFromThumb(void) const;
-        float getAdjustDirectionFromPoint(const Vector2f& pt) const;
+        float getAdjustDirectionFromPoint(const glm::vec2& pt) const;
     };
 
 } // End of  CEGUI namespace section

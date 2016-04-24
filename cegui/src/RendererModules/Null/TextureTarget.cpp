@@ -32,12 +32,13 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint NullTextureTarget::s_textureNumber = 0;
+std::uint32_t NullTextureTarget::s_textureNumber = 0;
 const float NullTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-NullTextureTarget::NullTextureTarget(NullRenderer& owner) :
-    NullRenderTarget<TextureTarget>(owner),
+NullTextureTarget::NullTextureTarget(NullRenderer& owner, bool addStencilBuffer) :
+    NullRenderTarget(owner),
+    TextureTarget(addStencilBuffer),
     d_CEGUITexture(0)
 {
     d_CEGUITexture = static_cast<NullTexture*>(
@@ -75,21 +76,15 @@ void NullTextureTarget::declareRenderSize(const Sizef& sz)
 {
 	Rectf r;
 	r.setSize(sz);
-	r.setPosition(Vector2f(0, 0));
+    r.setPosition(glm::vec2(0, 0));
     setArea(r);
-}
-
-//----------------------------------------------------------------------------//
-bool NullTextureTarget::isRenderingInverted() const
-{
-    return false;
 }
 
 //----------------------------------------------------------------------------//
 String NullTextureTarget::generateTextureName()
 {
     String tmp("_null_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }
@@ -97,7 +92,4 @@ String NullTextureTarget::generateTextureName()
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

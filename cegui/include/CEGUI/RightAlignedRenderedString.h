@@ -51,16 +51,15 @@ public:
 
     // implementation of base interface
     void format(const Window* ref_wnd, const Sizef& area_size);
-    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-              const Vector2f& position, const ColourRect* mod_colours,
+    std::vector<GeometryBuffer*> createRenderGeometry(const Window* ref_wnd,
+              const glm::vec2& position, const ColourRect* mod_colours,
               const Rectf* clip_rect) const;
     size_t getFormattedLineCount() const;
     float getHorizontalExtent(const Window* ref_wnd) const;
     float getVerticalExtent(const Window* ref_wnd) const;
 
 protected:
-    std::vector<float
-        CEGUI_VECTOR_ALLOC(float)> d_offsets;
+    std::vector<float> d_offsets;
 };
     
 } // End of  CEGUI namespace section

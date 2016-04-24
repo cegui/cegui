@@ -46,6 +46,7 @@ namespace CEGUI
 
         States:
             - Enabled
+            - EnabledFocused
             - Disabled
 
         Named Areas:
@@ -76,8 +77,8 @@ namespace CEGUI
         bool isReversedDirection() const;
         void setReversedDirection(bool setting);
 
-        void render();
-        void performChildWindowLayout();
+        void createRenderGeometry() override;
+        void performChildWindowLayout() override;
 
     protected:
         // data members
@@ -87,7 +88,7 @@ namespace CEGUI
         // overridden from Slider base class.
         void updateThumb(void);
         float getValueFromThumb(void) const;
-        float getAdjustDirectionFromPoint(const Vector2f& pt) const;
+        float getAdjustDirectionFromPoint(const glm::vec2& pt) const;
     };
 
 } // End of  CEGUI namespace section
