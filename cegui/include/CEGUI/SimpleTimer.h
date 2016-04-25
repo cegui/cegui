@@ -42,14 +42,12 @@ namespace CEGUI
 class CEGUIEXPORT SimpleTimer
 {
 public:
-#if !(_MSC_VER == 1800)
+#if (_MSC_VER != 1800)
     typedef std::chrono::time_point<std::chrono::steady_clock> timePoint;
 #else
     // Once again, Visual Studio 2013 does the wrong thing regarding C++11
     typedef std::chrono::time_point<std::chrono::system_clock> timePoint;
 #endif
- 
-    
 
     SimpleTimer() : d_lastStartTime(std::chrono::steady_clock::now()) {}
 
