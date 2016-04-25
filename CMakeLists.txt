@@ -33,7 +33,7 @@ include(CMakeDependentOption)
 ################################################################################
 set( CEGUI_VERSION_MAJOR 0)
 set( CEGUI_VERSION_MINOR 8)
-set( CEGUI_VERSION_PATCH 6)
+set( CEGUI_VERSION_PATCH 7)
 set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION_PATCH} )
 
 #
@@ -48,14 +48,14 @@ set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION
 #   - AGE: Number of previous binary interfaces this library is compatible with.
 #
 # Prior to issuing a release, modify the values as follows:
-#   - If there were any changes in the source, increase REVISION.
-#   - If the interface changed at all, increase CURRENT and set REVISION to 0
-#   - If the interface had binary compabilbe additions only (so no ABI breaking
-#     changes) increase AGE, else set AGE to 0.
+#   - If there were no changes to the source, do not change any values.
+#   - If there were changes to the implementation, but no changes to the ABI at all (that is, nothing was added, removed, or changed that affects ABI), increase REVISION.
+#   - If there were changes that modified the ABI, but the ABI remains compatible with the previous release, increase CURRENT, increase AGE, and set REVISION to 0.
+#   - If there were ABI breaking changes, increase CURRENT, set AGE to 0 and set REVISION to 0.
 #
 set( CEGUI_ABI_CURRENT 6)
-set( CEGUI_ABI_REVISION 1)
-set( CEGUI_ABI_AGE 5)
+set( CEGUI_ABI_REVISION 2)
+set( CEGUI_ABI_AGE 4)
 MATH( EXPR CEGUI_SOVERSION ${CEGUI_ABI_CURRENT}-${CEGUI_ABI_AGE} )
 set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION} )
 
