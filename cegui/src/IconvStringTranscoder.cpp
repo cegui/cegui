@@ -259,7 +259,7 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) co
      * succeed, though some data may be lost in translation.  The 'bad'
      * part about using ctype for conversion is that it is a single code
      * unit mapping, which means when the user has a mbcs locale, characters
-     * that should be correcly represented (i.e they would be converted by
+     * that should be correctly represented (i.e they would be converted by
      * the codecvt version) are instead replaced by the default character.
      *
      * The ideal scenario for us would be able to use the codecvt approach but
@@ -268,7 +268,7 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) co
      * that uses WideCharToMultiByte passing the CP_ACP value.
      */
     std::locale conv_locale("");
-    std::vector<String::value_type> buf(input.length() * 6 + 1);
+    std::vector<char> buf(input.length() * 6 + 1);
 
 #if 0
     typedef std::codecvt<wchar_t, char, mbstate_t> Converter;
