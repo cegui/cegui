@@ -396,10 +396,10 @@ public:
     */
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     String(size_type count, char32_t ch, const std::allocator<value_type>& alloc = std::allocator<value_type>())
-        : d_string()
+        : d_string(alloc)
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
     String(size_type count, char ch, const std::allocator<value_type>& alloc = std::allocator<value_type>())
-        : d_string()
+        : d_string(alloc)
 #endif
     {
         assign(count, ch);
@@ -1144,7 +1144,10 @@ public:
     \return
         The String::value_type element at the front of the String.
     */
-    const value_type& front() const;
+    const value_type& front() const
+    {
+        return d_string.front();
+    }
    
     /*!
     \brief
