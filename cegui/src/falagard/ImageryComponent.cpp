@@ -232,11 +232,21 @@ namespace CEGUI
 
             for (unsigned int col = 0; col < horzTiles; ++col)
             {
+                Rectf clippedDestRect;
+
                 // use custom clipping for right and bottom edges when tiling the imagery
                 if (((vertFormatting == VF_TILED) && row == vertTiles - 1) ||
                     ((horzFormatting == HF_TILED) && col == horzTiles - 1))
                 {
-                    imgRenderSettings.d_clipArea = clipper ? &clipper->getIntersection(destRect) : &destRect;
+                    if(clipper != nullptr)
+                    {
+                        clippedDestRect = clipper->getIntersection(destRect);
+                        imgRenderSettings.d_clipArea = &clippedDestRect;
+                    }
+                    else
+                    {
+                        imgRenderSettings.d_clipArea = &destRect; 
+                    }
                 }
                 // not tiling, or not on far edges, just used passed in clipper (if any).
                 else
