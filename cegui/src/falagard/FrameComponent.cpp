@@ -689,11 +689,21 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
 
         for (unsigned int col = 0; col < horzTiles; ++col)
         {
+            Rectf clipperRect;
+
             // use custom clipping for right and bottom edges when tiling the imagery
             if (((vertFmt == VF_TILED) && row == vertTiles - 1) ||
                 ((horzFmt == HF_TILED) && col == horzTiles - 1))
             {
-                renderSettings.d_clipArea = clipper ? &clipper->getIntersection(destRect) : &destRect;
+                if(clipper)
+                {
+                    clipperRect = clipper->getIntersection(destRect);
+                    renderSettings.d_clipArea = &clipperRect;
+                }
+                else
+                {
+                    renderSettings.d_clipArea = &destRect;
+                }
             }
             // not tiling, or not on far edges, just used passed in clipper (if any).
             else
