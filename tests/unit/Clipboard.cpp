@@ -115,14 +115,22 @@ BOOST_AUTO_TEST_CASE(NativeClipboardProvider)
     cb.setText(asciiTest);
     BOOST_CHECK_EQUAL(cb.getText(), asciiTest);
     BOOST_CHECK_EQUAL(g_ClipboardSize, 15); // it only contains characters from ASCII 7bit
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32
     BOOST_CHECK(memcmp(g_ClipboardBuffer, CEGUI::String(asciiTest).c_str(), g_ClipboardSize) == 0);
+#else
+    BOOST_CHECK(memcmp(g_ClipboardBuffer, CEGUI::String(asciiTest).toUtf8String().c_str(), g_ClipboardSize) == 0);
+#endif
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32 || CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
     // Unicode string set, get
     const char* utf8Test = "(・。・;)";
     cb.setText(utf8Test);
     BOOST_CHECK_EQUAL(cb.getText(), utf8Test);
+
+#   if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
     BOOST_CHECK(memcmp(g_ClipboardBuffer, CEGUI::String(utf8Test).c_str(), g_ClipboardSize) == 0);
+#   endif
+
 #endif
 
     delete provider;
