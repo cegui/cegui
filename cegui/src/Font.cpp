@@ -25,7 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Font.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/System.h"
@@ -159,7 +158,7 @@ const FontGlyph* Font::getGlyphData(char32_t codepoint) const
 const FontGlyph* Font::findFontGlyph(const char32_t codepoint) const
 {
     CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
-    return (pos != d_cp_map.end()) ? &pos->second : 0;
+    return (pos != d_cp_map.end()) ? pos->second : nullptr;
 }
 
 
@@ -196,7 +195,7 @@ void Font::getGlyphExtents(char32_t currentCodePoint, float& cur_extent,
 
     if (glyph != nullptr)
     {
-        float width = glyph->getRenderedAdvance(x_scale);
+        float width = glyph->getRenderedAdvance(0, 0, x_scale);
 
         if (adv_extent + width > cur_extent)
         {

@@ -36,17 +36,20 @@ namespace CEGUI
 \brief
     internal class representing a single font glyph.
 
-    For TrueType fonts initially all FontGlyph's are empty
-    (getImage() will return 0), but they are filled by demand.
+    For TrueType fonts initially all FontGlyphs are empty
+    (getImage() will return nullptr), but they are filled by demand.
 */
 class CEGUIEXPORT FontGlyph
 {
 public:
     //! Constructor.
-    FontGlyph(float advance = 0.0f, Image* image = 0, bool valid = false) :
+    FontGlyph(float advance = 0.0f, Image* image = nullptr, bool valid = false) :
         d_image(image),
         d_advance(advance),
         d_valid(valid)
+    {}
+
+    virtual ~FontGlyph()
     {}
 
     //! Return the CEGUI::Image object rendered for this glyph.
@@ -72,7 +75,10 @@ public:
         The rendered advance value is the total number of pixels from the
         current pen position that will be occupied by this glyph when rendered.
     */
-    float getRenderedAdvance(float x_scale) const
+    virtual float getRenderedAdvance(
+        unsigned int leftGlyphIndex,
+        unsigned int rightGlyphIndex,
+        float x_scale) const
     { return (d_image->getRenderedSize().d_width +
               d_image->getRenderedOffset().x) * x_scale; }
 

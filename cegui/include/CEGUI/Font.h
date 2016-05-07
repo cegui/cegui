@@ -544,7 +544,7 @@ protected:
     mutable std::vector<unsigned int> d_loadedGlyphPages;
 
     //! Definition of CodepointMap type.
-    typedef std::map<char32_t, FontGlyph, std::less<char32_t> > CodepointMap;
+    typedef std::map<char32_t, FontGlyph*, std::less<char32_t> > CodepointMap;
     //! Contains mappings from code points to Image objects
     mutable CodepointMap d_cp_map;
 };

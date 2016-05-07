@@ -100,7 +100,7 @@ public:
                  const float specific_line_spacing = 0.0f);
 
     //! Destructor.
-    ~FreeTypeFont();
+    virtual ~FreeTypeFont();
 
     //! return the point size of the freetype font.
     float getPointSize() const;
@@ -114,6 +114,11 @@ public:
     //! return whether the freetype font is rendered anti-aliased.
     void setAntiAliased(const bool anti_alaised);
 
+    // Gets the font face
+    const FT_Face& getFontFace() const;
+
+    // Gets the kerning mode
+    FT_Kerning_Mode getKerningMode() const;
 protected:
     /*!
     \brief
@@ -155,10 +160,10 @@ protected:
     void initialiseGlyphMap();
 
     // overrides of functions in Font base class.
-    const FontGlyph* findFontGlyph(const char32_t codepoint) const;
-    void rasterise(char32_t start_codepoint, char32_t end_codepoint) const;
-    void updateFont();
-    void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
+    const FontGlyph* findFontGlyph(const char32_t codepoint) const override;
+    void rasterise(char32_t start_codepoint, char32_t end_codepoint) const override;
+    void updateFont() override;
+    void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
 
     //! If non-zero, the overridden line spacing that we're to report.
     float d_specificLineSpacing;
@@ -177,6 +182,8 @@ protected:
     typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
+    //! Kerning mode
+    FT_Kerning_Mode d_kerningMode;
 };
 
 } // End of  CEGUI namespace section

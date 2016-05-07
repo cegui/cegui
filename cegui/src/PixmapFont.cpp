@@ -117,9 +117,9 @@ void PixmapFont::updateFont()
         if (i->first > d_maxCodepoint)
             d_maxCodepoint = i->first;
 
-        i->second.setAdvance(i->second.getAdvance() * factor);
+        i->second->setAdvance(i->second->getAdvance() * factor);
 
-        Image* img = i->second.getImage();
+        Image* img = i->second->getImage();
 
         BitmapImage* bi = dynamic_cast<BitmapImage*>(img);
         if (bi)
@@ -151,9 +151,9 @@ void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
             .attribute(Font_xmlHandler::MappingCodepointAttribute,
                        PropertyHelper<std::uint32_t>::toString(i->first))
             .attribute(Font_xmlHandler::MappingHorzAdvanceAttribute,
-                       PropertyHelper<float>::toString(i->second.getAdvance() * advscale))
+                       PropertyHelper<float>::toString(i->second->getAdvance() * advscale))
             .attribute(Font_xmlHandler::MappingImageAttribute,
-                       i->second.getImage()->getName());
+                       i->second->getImage()->getName());
 
         xml_stream.closeTag();
     }
@@ -176,7 +176,7 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
         d_maxCodepoint = codePoint;
 
     // create a new FontGlyph with given character code
-    const FontGlyph glyph(adv, &image, true);
+    FontGlyph* const glyph = new FontGlyph(adv, &image, true);
 
     if (image.getRenderedOffset().y < -d_ascender)
         d_ascender = -image.getRenderedOffset().y;
@@ -186,6 +186,12 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
     d_height = d_ascender - d_descender;
 
     // add glyph to the map
+    if (d_cp_map.find(codePoint) != d_cp_map.end())
+    {
+        throw InvalidRequestException("PixmapFont::defineMapping - Requesting "
+            "adding an already added glyph to the codepoint glyph map.");
+    }
+
     d_cp_map[codePoint] = glyph;
 }
 
