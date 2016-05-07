@@ -35,10 +35,12 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/SharedStringStream.h"
+#include "CEGUI/FreeTypeFontGlyph.h"
+
 #include <cmath>
 #include <cstdio>
-#include <stddef.h>
-#include <cstring>
+
+
 
 namespace CEGUI
 {
@@ -73,7 +75,8 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
     d_specificLineSpacing(specific_line_spacing),
     d_ptSize(point_size),
     d_antiAliased(anti_aliased),
-    d_fontFace(0)
+    d_fontFace(nullptr),
+    d_kerningMode(FT_KERNING_DEFAULT)
 {
     if (!ft_usage_count++)
         FT_Init_FreeType(&ft_lib);
@@ -129,7 +132,7 @@ unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
         for (CodepointMap::const_iterator c = s; c != e; ++c)
         {
             // skip glyphs that are already rendered
-            if (c->second.getImage())
+            if (c->second->getImage())
                 continue;
 
             // load glyph metrics (don't render)
@@ -214,7 +217,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
             finished |= (s == e);
 
             // Check if glyph already rendered
-            if (!s->second.getImage())
+            if (!s->second->getImage())
             {
                 // Render the glyph
                 if (FT_Load_Char(d_fontFace, s->first, FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT |
@@ -234,7 +237,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                         new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
-                    s->second.setImage(img);
+                    s->second->setImage(img);
                 }
                 else
                 {
@@ -273,7 +276,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                         new BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
-                    s->second.setImage(img);
+                    s->second->setImage(img);
 
                     // Advance to next position
                     x = x_next;
@@ -356,6 +359,11 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
+    for(auto codePointMapEntry : d_cp_map)
+    {
+        delete codePointMapEntry.second;
+    }
+
     d_cp_map.clear();
 
     for (size_t i = 0; i < d_glyphImages.size(); ++i)
@@ -367,7 +375,7 @@ void FreeTypeFont::free()
     d_glyphTextures.clear();
 
     FT_Done_Face(d_fontFace);
-    d_fontFace = 0;
+    d_fontFace = nullptr;
     System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
 }
 
@@ -394,7 +402,7 @@ void FreeTypeFont::updateFont()
     if (!d_fontFace->charmap)
     {
         FT_Done_Face(d_fontFace);
-        d_fontFace = 0;
+        d_fontFace = nullptr;
         throw GenericException(
             "The font '" + d_name + "' does not have a Unicode charmap, and "
             "cannot be used.");
@@ -475,7 +483,13 @@ void FreeTypeFont::initialiseGlyphMap()
         if (max_codepoint < codepoint)
             max_codepoint = codepoint;
 
-        d_cp_map[codepoint] = FontGlyph();
+        if(d_cp_map.find(codepoint) != d_cp_map.end())
+        {
+            throw InvalidRequestException("FreeTypeFont::initialiseGlyphMap - Requesting "
+                "adding an already added glyph to the codepoint glyph map.");        
+        }
+
+        d_cp_map[codepoint] = new FreeTypeFontGlyph(this);
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
@@ -491,10 +505,10 @@ const FontGlyph* FreeTypeFont::findFontGlyph(const char32_t codepoint) const
     if (pos == d_cp_map.end())
         return 0;
 
-    if (!pos->second.isValid())
+    if (!pos->second->isValid())
         initialiseFontGlyph(pos);
 
-    return &pos->second;
+    return pos->second;
 }
 
 //----------------------------------------------------------------------------//
@@ -508,8 +522,8 @@ void FreeTypeFont::initialiseFontGlyph(CodepointMap::iterator cp) const
     const float adv =
         d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(FT_POS_COEF);
 
-    cp->second.setAdvance(adv);
-    cp->second.setValid(true);
+    cp->second->setAdvance(adv);
+    cp->second->setValid(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -563,6 +577,14 @@ void FreeTypeFont::setAntiAliased(const bool anti_alaised)
     onRenderSizeChanged(args);
 }
 
-//----------------------------------------------------------------------------//
+const FT_Face& FreeTypeFont::getFontFace() const
+{
+    return d_fontFace;
+}
+
+FT_Kerning_Mode FreeTypeFont::getKerningMode() const
+{
+    return d_kerningMode;
+}
 
 } // End of  CEGUI namespace section
