@@ -255,7 +255,6 @@ char32_t String::getCodePointFromCodeUnits(const char* firstCodeUnit,
         throw CEGUI::UnicodeStringException(
             "String conversion from UTF-8 to UTF-32 failed due to an "
             "invalid amount of bytes specified for the code point.");
-        break;
     }
     }
 }
@@ -320,7 +319,6 @@ char32_t String::getCodePointFromCodeUnits(std::string::const_iterator currentCo
         throw CEGUI::UnicodeStringException(
             "String conversion from UTF-8 to UTF-32 failed due to an "
             "invalid amount of bytes specified for the code point.");
-        break;
     }
     }
 }
