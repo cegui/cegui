@@ -478,7 +478,7 @@ void FreeTypeFont::initialiseGlyphMap()
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
     FT_ULong max_codepoint = codepoint;
 
-    while (gindex)
+    while (gindex != 0)
     {
         if (max_codepoint < codepoint)
             max_codepoint = codepoint;
@@ -489,7 +489,7 @@ void FreeTypeFont::initialiseGlyphMap()
                 "adding an already added glyph to the codepoint glyph map.");        
         }
 
-        d_cp_map[codepoint] = new FreeTypeFontGlyph(this);
+        d_cp_map[codepoint] = new FreeTypeFontGlyph(this, gindex);
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
