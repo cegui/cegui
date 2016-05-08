@@ -76,8 +76,7 @@ public:
         current pen position that will be occupied by this glyph when rendered.
     */
     virtual float getRenderedAdvance(
-        unsigned int leftGlyphIndex,
-        unsigned int rightGlyphIndex,
+        const FontGlyph* /*nextGlyph*/,
         float x_scale) const
     { return (d_image->getRenderedSize().d_width +
               d_image->getRenderedOffset().x) * x_scale; }
@@ -88,7 +87,7 @@ public:
 
         The returned value is the number of pixels the pen should move
         horizontally to position itself ready to render the next glyph.  This
-        is not always the same as the glyph image width or rendererd advance,
+        is not always the same as the glyph image width or rendered advance,
         since it allows for horizontal overhangs.
     */
     float getAdvance(float x_scale = 1.0) const

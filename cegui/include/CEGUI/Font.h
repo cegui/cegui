@@ -313,8 +313,17 @@ public:
     */
     float getTextExtent(const String& text, float x_scale = 1.0f) const;
 
-    void getGlyphExtents(char32_t currentCodePoint, float& cur_extent,
-                         float& adv_extent, float x_scale) const;
+    /*!
+    \brief
+        Calculates and returns the size this glyph takes up if it is the last character, or 
+        the size the glyph takes until the next character begins (considering kerning).
+    */
+    void getGlyphExtents(
+        char32_t currentCodePoint,
+        char32_t nextCodePoint,
+        bool isFollowedByAnotherCharacter,
+        float& cur_extent,
+        float& adv_extent, float x_scale) const;
 
     /*!
     \brief
