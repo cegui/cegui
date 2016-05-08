@@ -44,7 +44,7 @@
 #include <CEGUI/ImageCodec.h>
 #include <CEGUI/Texture.h>
 
-#include "SDL_video.h"
+#include <SDL_video.h>
 
 namespace CEGUI
 {
