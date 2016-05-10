@@ -41,6 +41,7 @@ namespace CEGUI
 //---------------------------------------------------------------------------//
 GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_renderMaterial(renderMaterial),
+    d_vertexCount(0),
     d_translation(0, 0, 0),
     d_rotation(1, 0, 0, 0), // <-- IDENTITY
     d_scale(1.0f, 1.0f, 1.0f),
@@ -52,11 +53,11 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_blendMode(BM_NORMAL),
     d_polygonFillRule(PFR_NONE),
     d_postStencilVertexCount(0),
-    d_effect(0),
-    d_alpha(1.0f),
-    d_clippingActive(false),
+    d_effect(nullptr),
     d_clippingRegion(0, 0, 0, 0),
-    d_preparedClippingRegion(0, 0, 0, 0)
+    d_preparedClippingRegion(0, 0, 0, 0),
+    d_clippingActive(false),
+    d_alpha(1.0f)
 {}
 
 //---------------------------------------------------------------------------//
