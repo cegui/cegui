@@ -124,7 +124,7 @@ And this is how it looks without splitting to 2 lines:
 - Do not use actual tabs, have your editor insert spaces instead. This is very
 important.
 
-- In CEGUI default branch and CEGUI version 1.X or higher: When you override a function in a subclass, you must used the virtual and override keyword in the declaration, e.g.:
+- In CEGUI default branch and CEGUI version 1.X or higher: When you override a function in a subclass, you must use the override keyword (without virtual) for its declaration, e.g.:
 \code{.cpp}
 class BaseClass
 {
@@ -133,7 +133,7 @@ class BaseClass
 
 class SubClass
 {
-    virtual int overriddenFunction() override;
+    int overriddenFunction() override;
 }
 \endcode
 
@@ -349,6 +349,25 @@ a_ptr = &an_object;
 - In %CEGUI default branch and %CEGUI version 1.X or higher: We currently do not target C++14, so try not to use C++14 features unless they are available in all compilers that %CEGUI supports (mind the minimum version we support). 
 
 - In %CEGUI 0.X: Do not use any C++11 or C++14 features.
+
+- When including files, such as headers, always use quotation marks for our internal files and always use the pointy brackets ("<" and ">") for all dependencies and the standard library includes.
+@code
+#include "CEGUI/SomeClass.h"
+
+#include <freetype.h>
+#include <vector>
+@endcode
+
+- When including files, such as headers, always use the following order: If applicable, first include the header corresponding to the cpp file. Then include all headers belonging to CEGUI. Then all headers from external dependencies. Last include the standard library and OS headers. For SomeClass.cpp it would look like this:
+@code
+#include "CEGUI/SomeClass.h"
+
+#include "CEGUI/Window.h"
+
+#include <glm/glm.hpp>
+
+#include <algorithm>
+@endcode
 
 @subsection code_standards_sec_2_3 astyle - Artistic Style
 The following parameters for astyle may be used to get a subset of all the code standards outlined in this document. It is by no means enough to just run this on dirty source code but it will get you closer.
