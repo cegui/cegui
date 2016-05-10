@@ -173,7 +173,7 @@ size_t String::getCodePointSize(const char initialCodeUnit)
     }
     else
     {
-        return -1;
+        return 0;
     }
 }
 
@@ -283,6 +283,7 @@ char32_t String::getCodePointFromCodeUnits(std::string::const_iterator currentCo
 
     const char& firstCodeUnit = *currentCodeUnit;
     
+    consumedCodeUnits = codeUnitsInCodePoint;
     switch (codeUnitsInCodePoint)
     {
     case 1:
@@ -327,7 +328,7 @@ void String::checkUtf8CodePointSizeForValidity(
     const size_t codeUnitsInCodePoint,
     const size_t remainingCodeUnits)
 {
-    if (codeUnitsInCodePoint == -1)
+    if (codeUnitsInCodePoint == 0)
     {
         throw UnicodeStringException(
             "Invalid initial byte detected for a code point in the string");
@@ -356,7 +357,7 @@ bool String::isUtf8StringValid() const
 
         size_t remainingCodeUnits = totalCodeUnits - codePointIter.getCodeUnitIndexFromStart();
 
-        if(codeUnitsInCodePoint > remainingCodeUnits || codeUnitsInCodePoint == -1)
+        if(codeUnitsInCodePoint > remainingCodeUnits || codeUnitsInCodePoint == 0)
         {
             return false;
         }
