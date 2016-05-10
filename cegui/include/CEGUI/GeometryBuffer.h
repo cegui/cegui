@@ -34,11 +34,9 @@
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/RenderMaterial.h"
 
-#include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include <vector>
-#include <cstddef> //size_t
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
