@@ -56,7 +56,7 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
         throw GenericException("Unable to create a new Expat Parser");
     }
 
-    XML_SetUserData(parser, (void*)&handler); // Initialise user data
+    XML_SetUserData(parser, static_cast<void*>(&handler)); // Initialise user data
     XML_SetElementHandler(parser, startElement, endElement); // Register callback for elements
     XML_SetCharacterDataHandler(parser, characterData); // Register callback for character data
 

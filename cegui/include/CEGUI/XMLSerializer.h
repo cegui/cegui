@@ -166,7 +166,6 @@ namespace CEGUI
             return false != d_error;
         }
         
-    protected:
     private:
         bool d_error; //!< Store the status of the serializer 
         unsigned int d_tagCount; //!<Return the number of tag in the document 

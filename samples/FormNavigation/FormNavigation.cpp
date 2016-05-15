@@ -58,7 +58,7 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     gui_context->getCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();
-    d_root = (DefaultWindow*)win_mgr.createWindow("DefaultWindow", "Root");
+    d_root = static_cast<DefaultWindow*>(win_mgr.createWindow("DefaultWindow", "Root"));
 
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
@@ -70,8 +70,8 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     d_windowNavigator = new WindowNavigator(getNavigationMappings(), d_navigationStrategy);
     gui_context->setWindowNavigator(d_windowNavigator);
 
-    FrameWindow* wnd = (FrameWindow*)win_mgr.createWindow("TaharezLook/FrameWindow",
-        "Sample Window");
+    FrameWindow* wnd = static_cast<FrameWindow*>(win_mgr.createWindow("TaharezLook/FrameWindow",
+                                                                      "Sample Window"));
     d_root->addChild(wnd);
 
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));

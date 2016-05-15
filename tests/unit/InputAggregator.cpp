@@ -45,8 +45,8 @@ public:
 
     MockInputEventReceiver() :
         d_text(""),
-        d_cursorPosition(0.0f, 0.0f),
-        d_totalScroll(0)
+        d_totalScroll(0),
+        d_cursorPosition(0.0f, 0.0f)
     {}
 
     ~MockInputEventReceiver()

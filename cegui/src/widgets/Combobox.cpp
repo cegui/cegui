@@ -1119,7 +1119,7 @@ bool Combobox::editbox_TextAcceptedEventHandler(const EventArgs&)
 bool Combobox::editbox_TextChangedEventHandler(const EventArgs& e)
 {
 	// set this windows text to match
-	setText(((const WindowEventArgs&)e).window->getText());
+	setText(static_cast<const WindowEventArgs&>(e).window->getText());
 
 	return true;
 }

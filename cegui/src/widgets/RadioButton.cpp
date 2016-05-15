@@ -96,7 +96,7 @@ RadioButton* RadioButton::getSelectedButtonInGroup() const
             // is this child same type as we are?
             if (getParent()->getChildAtIdx(child)->getType() == getType())
             {
-                RadioButton* rb = (RadioButton*)getParent()->getChildAtIdx(child);
+                RadioButton* rb = static_cast<RadioButton*>(getParent()->getChildAtIdx(child));
 
                 // is child same group and selected?
                 if (rb->isSelected() && (rb->getGroupID() == d_groupID))

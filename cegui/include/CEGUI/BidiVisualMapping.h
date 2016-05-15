@@ -112,10 +112,12 @@ public:
     bool updateVisual(const String& logical);
 
 
-    const StrIndexList getL2vMapping() const
+    StrIndexList getL2vMapping() const
         {return d_l2vMapping;}
-    const StrIndexList getV2lMapping() const
+
+    StrIndexList getV2lMapping() const
         {return d_v2lMapping;}
+
     const String& getTextVisual() const
         {return d_textVisual;}
 

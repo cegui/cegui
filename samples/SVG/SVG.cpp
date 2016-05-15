@@ -79,7 +79,6 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setRootWindow(d_root);
 
     // Load our SVG-based Imageset via the ImageManager
-    CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
     ImageManager::getSingleton().loadImageset("SVGSampleImageset.imageset");
 
     // We get our loaded sample SVGImage and save it to a variable

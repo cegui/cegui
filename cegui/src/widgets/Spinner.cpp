@@ -66,7 +66,7 @@ namespace CEGUI
         d_currentValue(1.0f),
         d_maxValue(32767.0f),
         d_minValue(-32768.0f),
-        d_inputMode((TextInputMode)-1)
+        d_inputMode(static_cast<TextInputMode>(-1))
     {
         addSpinnerProperties();
     }
@@ -421,7 +421,7 @@ namespace CEGUI
 
     bool Spinner::handleIncreaseButton(const EventArgs& e)
     {
-        if (((const CursorInputEventArgs&)e).source == CIS_Left)
+        if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
         {
             setCurrentValue(d_currentValue + d_stepSize);
             return true;
@@ -432,7 +432,7 @@ namespace CEGUI
 
     bool Spinner::handleDecreaseButton(const EventArgs& e)
     {
-        if (((const CursorInputEventArgs&)e).source == CIS_Left)
+        if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
         {
             setCurrentValue(d_currentValue - d_stepSize);
             return true;

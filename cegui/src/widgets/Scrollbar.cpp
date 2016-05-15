@@ -255,7 +255,7 @@ bool Scrollbar::handleThumbMoved(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
-    if (((const CursorInputEventArgs&)e).source != CIS_Left)
+    if (static_cast<const CursorInputEventArgs&>(e).source != CIS_Left)
         return false;
 
     scrollForwardsByStep();
@@ -265,7 +265,7 @@ bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
-    if (((const CursorInputEventArgs&)e).source != CIS_Left)
+    if (static_cast<const CursorInputEventArgs&>(e).source != CIS_Left)
         return false;
 
     scrollBackwardsByStep();

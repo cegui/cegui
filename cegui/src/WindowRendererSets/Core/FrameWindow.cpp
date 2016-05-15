@@ -42,7 +42,7 @@ namespace CEGUI
 
     void FalagardFrameWindow::createRenderGeometry()
     {
-        FrameWindow* w = (FrameWindow*)d_window;
+        FrameWindow* w = static_cast<FrameWindow*>(d_window);
         // do not render anything for the rolled-up state.
         if (w->isRolledup())
             return;
@@ -73,7 +73,7 @@ namespace CEGUI
 
     Rectf FalagardFrameWindow::getUnclippedInnerRect(void) const
     {
-        FrameWindow* w = (FrameWindow*)d_window;
+        FrameWindow* w = static_cast<FrameWindow*>(d_window);
         if (w->isRolledup())
             return Rectf(0, 0, 0, 0);
 

@@ -401,7 +401,7 @@ public:
         this name has been changed after instantiating the system, the name
         returned may not actually correspond to the module in use.
     */
-    static const String getDefaultXMLParserName();
+    static String getDefaultXMLParserName();
 
     /*!
     \brief

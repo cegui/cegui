@@ -264,7 +264,7 @@ void PopupMenu::layoutItemWidgets()
 		// next position
 		y0 += CoordConverter::alignToPixels(sz.d_y.d_offset + d_itemSpacing);
 
-		item++; // next item
+	    ++item; // next item
 	}
 }
 

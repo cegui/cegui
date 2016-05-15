@@ -181,8 +181,6 @@ bool ScrollablePaneSample::SampleNewDialog(const CEGUI::EventArgs&)
     dlg->setSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setText("Drag me around too!");
 
-    // we put this in the center of the viewport into the scrollable pane
-    UVector2 uni_center(UDim(0.5f,0), UDim(0.5f,0));
     // URGENT FIXME!
     //Vector2f center = CoordConverter::windowToScreen(*d_root, uni_center);
     //Vector2f target = CoordConverter::screenToWindow(*d_pane->getContentPane(), center);

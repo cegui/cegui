@@ -44,13 +44,13 @@ DefaultLogger::DefaultLogger(void)
 {
     // create log header
     DefaultLogger::logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
-    logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
-    logEvent("+                          (http://www.cegui.org.uk/)                         +");
-    logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+    DefaultLogger::logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
+    DefaultLogger::logEvent("+                          (http://www.cegui.org.uk/)                         +");
+    DefaultLogger::logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
-    logEvent("CEGUI::Logger Singleton created. (" + addressStr + ")");
+    DefaultLogger::logEvent("CEGUI::Logger Singleton created. (" + addressStr + ")");
 }
 
 //----------------------------------------------------------------------------//
@@ -60,7 +60,7 @@ DefaultLogger::~DefaultLogger(void)
     {
         String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
-        logEvent("CEGUI::Logger singleton destroyed. " + addressStr);
+        DefaultLogger::logEvent("CEGUI::Logger singleton destroyed. " + addressStr);
         d_ostream.close();
     }
 }

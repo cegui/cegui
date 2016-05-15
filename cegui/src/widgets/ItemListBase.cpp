@@ -550,7 +550,7 @@ Rectf ItemListBase::getItemRenderArea(void) const
 {
     if (d_windowRenderer != nullptr)
     {
-        ItemListBaseWindowRenderer* wr = (ItemListBaseWindowRenderer*)d_windowRenderer;
+        ItemListBaseWindowRenderer* wr = static_cast<ItemListBaseWindowRenderer*>(d_windowRenderer);
         return wr->getItemRenderArea();
     }
     else

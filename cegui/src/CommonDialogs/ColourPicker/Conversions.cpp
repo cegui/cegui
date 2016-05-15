@@ -274,7 +274,7 @@ RGB_Colour ColourPickerConversions::toRGB(const HSV_Colour& colour)
     float g = 0.0f;
     float b = 0.0f;
 
-    int i = (int)(colour.H * 6.0f);
+    int i = static_cast<int>(colour.H * 6.0f);
     float f = colour.H * 6 - i;
     float p = colour.V * (1 - colour.S);
     float q = colour.V * (1 - f * colour.S);

@@ -166,7 +166,7 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
     Image& image(ImageManager::getSingleton().get(d_imageNamePrefix + '/' + imageName));
 
     float adv = (horzAdvance == -1.0f) ?
-        (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().x) :
+        static_cast<float>(static_cast<int>(image.getRenderedSize().d_width + image.getRenderedOffset().x)) :
         horzAdvance;
 
     if (d_autoScaled != ASM_Disabled)

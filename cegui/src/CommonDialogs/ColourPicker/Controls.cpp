@@ -165,8 +165,8 @@ Lab_Colour ColourPickerControls::getColourPickingPositionColourLAB(float xAbs,
     float a = 0.0f;
     float b = 0.0f;
 
-    float xRel = xAbs / (float)(d_colourPickerPickingImageWidth - 1);
-    float yRel = yAbs / (float)(d_colourPickerPickingImageHeight - 1);
+    float xRel = xAbs / static_cast<float>(d_colourPickerPickingImageWidth - 1);
+    float yRel = yAbs / static_cast<float>(d_colourPickerPickingImageHeight - 1);
 
     if (d_sliderMode != SliderMode_Lab_L)
     {
@@ -199,8 +199,8 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
 {
     HSV_Colour colour;
 
-    float xRel = xAbs / (float)(d_colourPickerPickingImageWidth - 1);
-    float yRel = yAbs / (float)(d_colourPickerPickingImageHeight - 1);
+    float xRel = xAbs / static_cast<float>(d_colourPickerPickingImageWidth - 1);
+    float yRel = yAbs / static_cast<float>(d_colourPickerPickingImageHeight - 1);
 
     if (d_sliderMode != SliderMode_HSV_H)
     {

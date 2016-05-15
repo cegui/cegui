@@ -172,7 +172,7 @@ namespace CEGUI
     {
         if (d_windowRenderer != nullptr)
         {
-            TooltipWindowRenderer* wr = (TooltipWindowRenderer*)d_windowRenderer;
+            TooltipWindowRenderer* wr = static_cast<TooltipWindowRenderer*>(d_windowRenderer);
             return wr->getTextSize();
         }
         else

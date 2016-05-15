@@ -75,7 +75,7 @@ namespace CEGUI
 
     void FalagardSlider::updateThumb(void)
     {
-        Slider* w = (Slider*)d_window;
+        Slider* w = static_cast<Slider*>(d_window);
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
         Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
@@ -137,7 +137,7 @@ namespace CEGUI
 
     float FalagardSlider::getValueFromThumb(void) const
     {
-        Slider* w = (Slider*)d_window;
+        Slider* w = static_cast<Slider*>(d_window);
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
         const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
@@ -170,7 +170,7 @@ namespace CEGUI
 
     float FalagardSlider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
     {
-        Slider* w = (Slider*)d_window;
+        Slider* w = static_cast<Slider*>(d_window);
         const Rectf absrect(w->getThumb()->getUnclippedOuterRect().get());
 
         if ((d_vertical && (pt.y < absrect.top())) ||

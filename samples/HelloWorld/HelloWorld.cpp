@@ -86,7 +86,7 @@ bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
     // The DefaultWindow does not perform any rendering of its own, so is invisible.
     //
     // Create a DefaultWindow called 'Root'.
-    d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+    d_root = static_cast<DefaultWindow*>(winMgr.createWindow("DefaultWindow", "Root"));
 
     // load font and setup default if not loaded via scheme
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -101,7 +101,7 @@ bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
     // and resized.
     //
     // Create a FrameWindow in the TaharezLook style, and name it 'Sample Window'
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Sample Window");
+    FrameWindow* wnd = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "Sample Window"));
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.

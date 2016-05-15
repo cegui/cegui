@@ -524,7 +524,7 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
     if (d_windowRenderer != nullptr)
     {
-        EditboxWindowRenderer* wr = (EditboxWindowRenderer*)d_windowRenderer;
+        EditboxWindowRenderer* wr = static_cast<EditboxWindowRenderer*>(d_windowRenderer);
         return wr->getTextIndexFromPosition(pt);
     }
     else
