@@ -28,6 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/Clipboard.h"
 
+#include <cstring>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
