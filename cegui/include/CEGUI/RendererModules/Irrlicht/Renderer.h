@@ -29,11 +29,10 @@
 
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 #include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
+#include "../../Sizef.h"
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -155,50 +154,36 @@ public:
         next power of two up from \a f if it's not.
     */
     static float getNextPOTSize(const float f);
-    
-    /*!
-    \brief
-        Returns if the texture coordinate system is vertically flipped or not. The original of a
-        texture coordinate system is typically located either at the the top-left or the bottom-left.
-        CEGUI, Direct3D and most rendering engines assume it to be on the top-left. OpenGL assumes it to
-        be at the bottom left.        
- 
-        This function is intended to be used when generating geometry for rendering the TextureTarget
-        onto another surface. It is also intended to be used when trying to use a custom texture (RTT)
-        inside CEGUI using the Image class, in order to determine the Image coordinates correctly.
-
-    \return
-        - true if flipping is required: the texture coordinate origin is at the bottom left
-        - false if flipping is not required: the texture coordinate origin is at the top left
-    */
-    bool isTexCoordSystemFlipped() const { return false; }
 
     // implement Renderer interface
-    RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
-    TextureTarget* createTextureTarget();
-    void destroyTextureTarget(TextureTarget* target);
-    void destroyAllTextureTargets();
-    Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name,
+    virtual RenderTarget& getDefaultRenderTarget();
+    virtual GeometryBuffer& createGeometryBuffer();
+    virtual void destroyGeometryBuffer(const GeometryBuffer& buffer);
+    virtual void destroyAllGeometryBuffers();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
+    virtual void destroyTextureTarget(TextureTarget* target);
+    virtual void destroyAllTextureTargets();
+    virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Sizef& size);
-    void destroyTexture(Texture& texture);
-    void destroyTexture(const String& name);
-    void destroyAllTextures();
-    Texture& getTexture(const String& name) const;
-    bool isTextureDefined(const String& name) const;
-    void beginRendering();
-    void endRendering();
-    void setDisplaySize(const Sizef& sz);
-    const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
-    uint getMaxTextureSize() const;
-    const String& getIdentifierString() const;
+    virtual Texture& createTexture(const String& name, const Sizef& size);
+    virtual void destroyTexture(Texture& texture);
+    virtual void destroyTexture(const String& name);
+    virtual void destroyAllTextures();
+    virtual Texture& getTexture(const String& name) const;
+    virtual bool isTextureDefined(const String& name) const;
+    virtual void beginRendering();
+    virtual void endRendering();
+    virtual void setDisplaySize(const Sizef& sz);
+    virtual const Sizef& getDisplaySize() const;
+    virtual const glm::vec2& getDisplayDPI() const;
+    virtual unsigned int getMaxTextureSize() const;
+    virtual const String& getIdentifierString() const;
+    virtual bool isTexCoordSystemFlipped() const;
+  
     const IrrlichtEventPusher* getEventPusher() const;
+
 
 protected:
     //! Constructor
@@ -222,7 +207,7 @@ protected:
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2f d_displayDPI;
+    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
@@ -234,12 +219,11 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, IrrlichtTexture*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, IrrlichtTexture*)> TextureMap;
+    typedef std::unordered_map<String, IrrlichtTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! ptr to helper object that aids in injection of events from Irrlicht.
     IrrlichtEventPusher* d_eventPusher;
     //! true if driver supports non square textures

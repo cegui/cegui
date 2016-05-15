@@ -55,7 +55,7 @@ public:
 	\brief
 		base class constructor
 	*/
-	ListboxTextItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
+	ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
 
 
 	/*!
@@ -182,15 +182,13 @@ public:
     bool isTextParsingEnabled() const;
 
     // base class overrides
-    void setText(const String& text);
-    bool handleFontRenderSizeChange(const Font* const font);
+    void setText(const String& text) override;
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
 
-	/*************************************************************************
-		Required implementations of pure virtuals from the base class.
-	*************************************************************************/
-    Sizef getPixelSize(void) const;
-    void draw(GeometryBuffer& buffer, const Rectf& targetRect, float alpha, const Rectf* clipper) const;
+    Sizef getPixelSize(void) const override;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
 
 protected:
     void parseTextString() const;

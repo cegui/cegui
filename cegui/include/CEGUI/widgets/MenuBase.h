@@ -203,8 +203,8 @@ protected:
     virtual void    onPopupClosed(WindowEventArgs& e);
 
     // overridden from base
-    virtual void onChildRemoved(ElementEventArgs& e);
-    virtual void onHidden(WindowEventArgs& e);
+    void onChildRemoved(ElementEventArgs& e) override;
+    void onHidden(WindowEventArgs& e) override;
 
     /*************************************************************************
         Implementation Data

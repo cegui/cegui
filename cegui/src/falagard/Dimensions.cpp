@@ -84,16 +84,16 @@ UDim BaseDim::getUpperBoundAsUDim(const Window& wnd, DimensionType /*type*/) con
 
 //----------------------------------------------------------------------------//
 OperatorDim::OperatorDim() :
-    d_left(0),
-    d_right(0),
+    d_left(nullptr),
+    d_right(nullptr),
     d_op(DOP_NOOP)
 {
 }
 
 //----------------------------------------------------------------------------//
 OperatorDim::OperatorDim(DimensionOperator op) :
-    d_left(0),
-    d_right(0),
+    d_left(nullptr),
+    d_right(nullptr),
     d_op(op)
 {
 }
@@ -109,14 +109,14 @@ OperatorDim::OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right) :
 //----------------------------------------------------------------------------//
 OperatorDim::~OperatorDim()
 {
-    CEGUI_DELETE_AO d_right;
-    CEGUI_DELETE_AO d_left;
+    delete d_right;
+    delete d_left;
 }
 
 //----------------------------------------------------------------------------//
 void OperatorDim::setLeftOperand(const BaseDim* operand)
 {
-    CEGUI_DELETE_AO d_left;
+    delete d_left;
     
     d_left = operand ? operand->clone() : 0;
 }
@@ -130,7 +130,7 @@ BaseDim* OperatorDim::getLeftOperand() const
 //----------------------------------------------------------------------------//
 void OperatorDim::setRightOperand(const BaseDim* operand)
 {
-    CEGUI_DELETE_AO d_right;
+    delete d_right;
     
     d_right = operand ? operand->clone() : 0;
 }
@@ -161,8 +161,8 @@ void OperatorDim::setNextOperand(const BaseDim* operand)
     else if (!d_right)
         d_right = operand ? operand->clone() : 0;
     else
-        CEGUI_THROW(InvalidRequestException(
-            "Both operands are already set."));
+        throw InvalidRequestException(
+            "Both operands are already set.");
 }
 
 //----------------------------------------------------------------------------//
@@ -206,15 +206,15 @@ float OperatorDim::getValueImpl(const float lval, const float rval) const
         return rval == 0.0f ? rval : lval / rval;
 
     default:
-        CEGUI_THROW(InvalidRequestException(
-            "Unknown DimensionOperator value."));
+        throw InvalidRequestException(
+            "Unknown DimensionOperator value.");
     }
 }
 
 //----------------------------------------------------------------------------//
 BaseDim* OperatorDim::clone() const
 {
-    return CEGUI_NEW_AO OperatorDim(d_op, d_left, d_right);
+    return new OperatorDim(d_op, d_left, d_right);
 }
 
 //----------------------------------------------------------------------------//
@@ -284,24 +284,24 @@ UDim OperatorDim::getBoundAsUDim(const UDim& lval, const UDim& rval) const
             else if (lval.d_scale == 0.f)
                 return rval *lval.d_offset;
             else
-                CEGUI_THROW(InvalidRequestException("Multiplication gives a non-affine function"));
+                throw InvalidRequestException("Multiplication gives a non-affine function");
         case DOP_DIVIDE:
-            if      (rval.d_scale == 0.f)
+            if(rval.d_scale == 0.f)
             {
                 if (rval.d_offset == 0.f)
-                    CEGUI_THROW(InvalidRequestException("Division by 0."));
+                    throw InvalidRequestException("Division by 0.");
                 return lval /rval.d_offset;
             }
             else if (lval.d_scale == 0.f)
             {
                 if (lval.d_offset == 0.f)
-                    CEGUI_THROW(InvalidRequestException("Division by 0."));
+                    throw InvalidRequestException("Division by 0.");
                 return rval /lval.d_offset;
             }
             else
-                CEGUI_THROW(InvalidRequestException("Division gives a non-affine function"));
+                throw InvalidRequestException("Division gives a non-affine function");
         default:
-            CEGUI_THROW(InvalidRequestException("Unknown DimensionOperator value."));
+            throw InvalidRequestException("Unknown DimensionOperator value.");
         }
     }
 }
@@ -340,7 +340,7 @@ float AbsoluteDim::getValue(const Window&, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* AbsoluteDim::clone() const
 {
-    return CEGUI_NEW_AO AbsoluteDim(*this);
+    return new AbsoluteDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -394,16 +394,16 @@ float ImageDimBase::getValue(const Window& wnd) const
             break;
 
         case DT_X_OFFSET:
-            return img->getRenderedOffset().d_x;
+            return img->getRenderedOffset().x;
             break;
 
         case DT_Y_OFFSET:
-            return img->getRenderedOffset().d_y;
+            return img->getRenderedOffset().y;
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException(
+                "unknown or unsupported DimensionType encountered.");
             break;
     }
 }
@@ -452,7 +452,7 @@ const Image* ImageDim::getSourceImage(const Window& /*wnd*/) const
 //----------------------------------------------------------------------------//
 BaseDim* ImageDim::clone() const
 {
-    return CEGUI_NEW_AO ImageDim(*this);
+    return new ImageDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -500,7 +500,7 @@ const Image* ImagePropertyDim::getSourceImage(const Window& wnd) const
 //----------------------------------------------------------------------------//
 BaseDim* ImagePropertyDim::clone() const
 {
-    return CEGUI_NEW_AO ImagePropertyDim(*this);
+    return new ImagePropertyDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -521,7 +521,7 @@ void ImagePropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream)
 //----------------------------------------------------------------------------//
 WidgetDim::WidgetDim(const String& name, DimensionType dim) :
     d_widgetName(name),
-    d_what(dim)
+    d_dimensionType(dim)
 {}
 
 //----------------------------------------------------------------------------//
@@ -539,13 +539,13 @@ void WidgetDim::setWidgetName(const String& name)
 //----------------------------------------------------------------------------//
 DimensionType WidgetDim::getSourceDimension() const
 {
-    return d_what;
+    return d_dimensionType;
 }
 
 //----------------------------------------------------------------------------//
 void WidgetDim::setSourceDimension(DimensionType dim)
 {
-    d_what = dim;
+    d_dimensionType = dim;
 }
 
 //----------------------------------------------------------------------------//
@@ -561,13 +561,17 @@ float WidgetDim::getValue(const Window& wnd) const
     // name not empty, so find window with required name
     else
     {
-        widget = wnd.getChild(d_widgetName);
+        if (wnd.isChild(d_widgetName))
+            widget = wnd.getChild(d_widgetName);
+        else
+            throw InvalidRequestException(
+                "A WidgetDim in window \"" + wnd.getName() + "\" requested window \"" + d_widgetName + "\" as WidgetDim-source, but this is not a child of the window");
     }
 
     // get size of parent; required to extract pixel values
     Sizef parentSize(widget->getParentPixelSize());
 
-    switch (d_what)
+    switch (d_dimensionType)
     {
         case DT_WIDTH:
             return widget->getPixelSize().d_width;
@@ -606,8 +610,8 @@ float WidgetDim::getValue(const Window& wnd) const
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException(
+                "unknown or unsupported DimensionType encountered.");
             break;
     }
 }
@@ -615,14 +619,14 @@ float WidgetDim::getValue(const Window& wnd) const
 //----------------------------------------------------------------------------//
 float WidgetDim::getValue(const Window& wnd, const Rectf&) const
 {
-    // This dimension type does not alter when whithin a container Rect.
+    // This dimension type does not alter when within a container Rect.
     return getValue(wnd);
 }
 
 //----------------------------------------------------------------------------//
 BaseDim* WidgetDim::clone() const
 {
-    return CEGUI_NEW_AO WidgetDim(*this);
+    return new WidgetDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -637,7 +641,7 @@ void WidgetDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     if (!d_widgetName.empty())
         xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_widgetName);
 
-    xml_stream.attribute(Falagard_xmlHandler::DimensionAttribute, FalagardXMLHelper<DimensionType>::toString(d_what));
+    xml_stream.attribute(Falagard_xmlHandler::DimensionAttribute, FalagardXMLHelper<DimensionType>::toString(d_dimensionType));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -735,8 +739,8 @@ float FontDim::getValue(const Window& wnd) const
                 return fontObj->getTextExtent(d_text.empty() ? sourceWindow.getText() : d_text) + d_padding;
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException(
-                    "unknown or unsupported FontMetricType encountered."));
+                throw InvalidRequestException(
+                    "unknown or unsupported FontMetricType encountered.");
                 break;
         }
     }
@@ -763,7 +767,7 @@ float FontDim::getValue(const Window& wnd, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* FontDim::clone() const
 {
-    return CEGUI_NEW_AO FontDim(*this);
+    return new FontDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -873,8 +877,8 @@ float PropertyDim::getValue(const Window& wnd) const
             return CoordConverter::asAbsolute(d, s.d_height);
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException(
+                "unknown or unsupported DimensionType encountered.");
     }
 }
 
@@ -887,7 +891,7 @@ float PropertyDim::getValue(const Window& wnd, const Rectf&) const
 //----------------------------------------------------------------------------//
 BaseDim* PropertyDim::clone() const
 {
-    return CEGUI_NEW_AO PropertyDim(*this);
+    return new PropertyDim(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -911,7 +915,7 @@ void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) cons
 //----------------------------------------------------------------------------//
 Dimension::Dimension()
 {
-    d_value = 0;
+    d_value = nullptr;
     d_type = DT_INVALID;
 }
 
@@ -919,7 +923,7 @@ Dimension::Dimension()
 Dimension::~Dimension()
 {
     if (d_value)
-        CEGUI_DELETE_AO d_value;
+        delete d_value;
 }
 
 //----------------------------------------------------------------------------//
@@ -941,7 +945,7 @@ Dimension& Dimension::operator=(const Dimension& other)
 {
     // release old value, if any.
     if (d_value)
-        CEGUI_DELETE_AO d_value;
+        delete d_value;
 
     d_value = other.d_value ? other.d_value->clone() : 0;
     d_type = other.d_type;
@@ -961,7 +965,7 @@ void Dimension::setBaseDimension(const BaseDim& dim)
 {
     // release old value, if any.
     if (d_value)
-        CEGUI_DELETE_AO d_value;
+        delete d_value;
 
     d_value = dim.clone();
 }
@@ -1052,8 +1056,8 @@ float UnifiedDim::getValue(const Window& wnd) const
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException(
+                "unknown or unsupported DimensionType encountered.");
             break;
     }
 }
@@ -1080,8 +1084,8 @@ float UnifiedDim::getValue(const Window&, const Rectf& container) const
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException(
+                "unknown or unsupported DimensionType encountered.");
             break;
     }
 }
@@ -1089,7 +1093,7 @@ float UnifiedDim::getValue(const Window&, const Rectf& container) const
 //----------------------------------------------------------------------------//
 BaseDim* UnifiedDim::clone() const
 {
-    UnifiedDim* ndim = CEGUI_NEW_AO UnifiedDim(d_value, d_what);
+    UnifiedDim* ndim = new UnifiedDim(d_value, d_what);
     return ndim;
 }
 
@@ -1115,7 +1119,7 @@ UDim UnifiedDim::getBoundAsUDim(const Window& wnd, DimensionType type, float rou
                    ?    UDim(d_value.d_scale, d_value.d_offset +round_err)
                    :    UDim(0.f, getValue(wnd));
         default:
-            CEGUI_THROW(InvalidRequestException("unknown or unsupported DimensionType encountered."));
+            throw InvalidRequestException("unknown or unsupported DimensionType encountered.");
     }
 }
 
@@ -1311,7 +1315,7 @@ const String& ComponentArea::getNamedAreaSourceLook() const
 }
 
 //----------------------------------------------------------------------------//
-void ComponentArea::setNamedAreaSouce(const String& widget_look,
+void ComponentArea::setNamedAreaSource(const String& widget_look,
                                       const String& area_name)
 {
     d_namedSource = area_name;
@@ -1358,7 +1362,7 @@ UDim ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth(const Window& wnd) con
     case DT_WIDTH:
         return d_right_or_width.getBaseDimension().getLowerBoundAsUDim(wnd, DT_WIDTH);
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid or unsupported dimension type."));
+        throw InvalidRequestException("Invalid or unsupported dimension type.");
     }
 }
 
@@ -1373,7 +1377,7 @@ UDim ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight(const Window& wnd) c
     case DT_HEIGHT:
         return d_bottom_or_height.getBaseDimension().getLowerBoundAsUDim(wnd, DT_HEIGHT);
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid or unsupported dimension type."));
+        throw InvalidRequestException("Invalid or unsupported dimension type.");
     }
 }
 

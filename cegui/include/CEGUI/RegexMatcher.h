@@ -36,8 +36,7 @@ namespace CEGUI
 {
 
 //! Interface for Regex matching support classes
-class CEGUIEXPORT RegexMatcher :
-    public AllocatedObject<RegexMatcher>
+class CEGUIEXPORT RegexMatcher
 {
 public:
     //! Enumeration of possible states when cosidering a regex match.

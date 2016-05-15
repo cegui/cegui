@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include "PVRTGlobal.h"
 #include "PVRTTexture.h"
@@ -61,7 +61,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         converted_pvr_header = *pvr_header;
 
         PVRTuint32* data = reinterpret_cast<PVRTuint32*>(&converted_pvr_header);
-        for (uint i = 0; i < sizeof(PVR_Texture_Header) / sizeof(PVRTuint32); i++)
+        for (unsigned int i = 0; i < sizeof(PVR_Texture_Header) / sizeof(PVRTuint32); i++)
             PVRTByteSwap(reinterpret_cast<PVRTuint8*>(data++), sizeof(PVRTuint32));
 
         pvr_header = &converted_pvr_header;
@@ -162,8 +162,8 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
 
     const void* texture_data =
         reinterpret_cast<const void*>(data.getDataPtr() + pvr_header->dwHeaderSize);
-    const uint size_x = pvr_header->dwWidth;
-    const uint size_y = pvr_header->dwHeight;
+    const unsigned int size_x = pvr_header->dwWidth;
+    const unsigned int size_y = pvr_header->dwHeight;
 
     if (is_compressed_format)
     {

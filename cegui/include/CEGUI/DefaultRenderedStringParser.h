@@ -43,7 +43,7 @@ public:
     // implement required interface
     RenderedString parse(const String& input_string,
                          const Font* initial_font,
-                         const ColourRect* initial_colours);
+                         const ColourRect* initial_colours) override;
 };
 
 } // End of  CEGUI namespace section

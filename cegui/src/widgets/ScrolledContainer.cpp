@@ -47,11 +47,11 @@ ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
     d_contentArea(0, 0, 0, 0),
     d_autosizePane(true),
-    
+
     d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
 {
     addScrolledContainerProperties();
-    setMouseInputPropagationEnabled(true);
+    setCursorInputPropagationEnabled(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -90,7 +90,7 @@ void ScrolledContainer::setContentArea(const Rectf& area)
     if (!d_autosizePane)
     {
         d_contentArea = area;
-        
+
         // Fire event
         WindowEventArgs args(this);
         onContentChanged(args);
@@ -135,21 +135,21 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
             wnd->getPixelSize());
 
         if (wnd->getHorizontalAlignment() == HA_CENTRE)
-            area.setPosition(area.getPosition() - CEGUI::Vector2f(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
+            area.setPosition(area.getPosition() - glm::vec2(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
         if (wnd->getVerticalAlignment() == VA_CENTRE)
-            area.setPosition(area.getPosition() - CEGUI::Vector2f(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
+            area.setPosition(area.getPosition() - glm::vec2(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
 
-        if (area.d_min.d_x < extents.d_min.d_x)
-            extents.d_min.d_x = area.d_min.d_x;
+        if (area.d_min.x < extents.d_min.x)
+            extents.d_min.x = area.d_min.x;
 
-        if (area.d_min.d_y < extents.d_min.d_y)
-            extents.d_min.d_y = area.d_min.d_y;
+        if (area.d_min.y < extents.d_min.y)
+            extents.d_min.y = area.d_min.y;
 
-        if (area.d_max.d_x > extents.d_max.d_x)
-            extents.d_max.d_x = area.d_max.d_x;
+        if (area.d_max.x > extents.d_max.x)
+            extents.d_max.x = area.d_max.x;
 
-        if (area.d_max.d_y > extents.d_max.d_y)
-            extents.d_max.d_y = area.d_max.d_y;
+        if (area.d_max.y > extents.d_max.y)
+            extents.d_max.y = area.d_max.y;
     }
 
     return extents;
@@ -303,17 +303,17 @@ void ScrolledContainer::addScrolledContainerProperties(void)
         "  Value is either \"true\" or \"false\".",
         &ScrolledContainer::setContentPaneAutoSized, &ScrolledContainer::isContentPaneAutoSized, true
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
         "ContentArea", "Property to get/set the current content area rectangle of the content pane."
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         &ScrolledContainer::setContentArea, &ScrolledContainer::getContentArea, Rectf::zero()
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
         "ChildExtentsArea", "Property to get the current content extents rectangle."
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        0, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
+        nullptr, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
     );
 }
 
