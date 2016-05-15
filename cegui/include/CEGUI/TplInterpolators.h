@@ -150,7 +150,7 @@ public:
         typename Helper::return_type val1 = Helper::fromString(value1);
         typename Helper::return_type val2 = Helper::fromString(value2);
 
-        typename Helper::return_type result = position < 0.5 ? val1 : val2;;
+        typename Helper::return_type result = position < 0.5 ? val1 : val2;
 
         return Helper::toString(result);
     }

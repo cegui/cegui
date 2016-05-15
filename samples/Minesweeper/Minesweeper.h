@@ -45,6 +45,7 @@ class MinesweeperSample : public Sample
 {
 public:
     MinesweeperSample();
+    virtual ~MinesweeperSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

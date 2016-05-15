@@ -34,6 +34,7 @@ class MenuNavigationSample : public Sample
 {
 public:
     MenuNavigationSample();
+    virtual ~MenuNavigationSample() {}
 
     bool initialise(CEGUI::GUIContext* gui_context) override;
     void deinitialise() override;

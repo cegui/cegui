@@ -43,7 +43,8 @@ template<typename TArg>
 class SlotFunctorBase
 {
 public:
-    virtual ~SlotFunctorBase() {};
+    virtual ~SlotFunctorBase() {}
+
     virtual bool operator()(const TArg& arg) = 0;
 };
 

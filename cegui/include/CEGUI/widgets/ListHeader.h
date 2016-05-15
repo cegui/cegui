@@ -49,7 +49,7 @@ namespace CEGUI
 class CEGUIEXPORT HeaderSequenceEventArgs : public WindowEventArgs
 {
 public:
-	HeaderSequenceEventArgs(Window* wnd, unsigned int old_idx, unsigned int new_idx) : WindowEventArgs(wnd), d_oldIdx(old_idx), d_newIdx(new_idx) {};
+	HeaderSequenceEventArgs(Window* wnd, unsigned int old_idx, unsigned int new_idx) : WindowEventArgs(wnd), d_oldIdx(old_idx), d_newIdx(new_idx) {}
 
 	unsigned int d_oldIdx;		//!< The original column index of the segment that has moved.
 	unsigned int d_newIdx;		//!< The new column index of the segment that has moved.

@@ -39,6 +39,7 @@ class TextSample : public Sample
 {
 public:
     TextSample();
+    virtual ~TextSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

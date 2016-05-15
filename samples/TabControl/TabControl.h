@@ -52,6 +52,7 @@ class TabControlSample : public Sample
 {
 public:
     TabControlSample();
+    virtual ~TabControlSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

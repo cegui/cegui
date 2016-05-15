@@ -45,6 +45,7 @@ class CustomShapesDrawingSample : public Sample
 {
 public:
     CustomShapesDrawingSample();
+    virtual ~CustomShapesDrawingSample() {}
 
     //! Initialises our sample
     bool initialise(CEGUI::GUIContext* guiContext) override;

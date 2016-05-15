@@ -226,7 +226,7 @@ private:
 class CEGUIEXPORT AbsoluteDim : public BaseDim
 {
 public:
-    AbsoluteDim() {};
+    AbsoluteDim() {}
     AbsoluteDim(float val);
 
     //! Get the current value of the AbsoluteDim.
@@ -258,7 +258,7 @@ private:
 class CEGUIEXPORT ImageDimBase : public BaseDim
 {
 public:
-    ImageDimBase() {};
+    ImageDimBase() {}
 
     /*!
     \brief
@@ -309,7 +309,7 @@ protected:
 class CEGUIEXPORT ImageDim : public ImageDimBase
 {
 public:
-    ImageDim() {};
+    ImageDim() {}
     ImageDim(const String& image_name, DimensionType dim);
 
     //! return the name of the image accessed by this ImageDim.
@@ -334,7 +334,7 @@ protected:
 class CEGUIEXPORT ImagePropertyDim : public ImageDimBase
 {
 public:
-    ImagePropertyDim() {};
+    ImagePropertyDim() {}
 
     /*!
     \brief
@@ -382,7 +382,7 @@ protected:
 class CEGUIEXPORT WidgetDim : public BaseDim
 {
 public:
-    WidgetDim() {};
+    WidgetDim() {}
     /*!
     \brief
         Constructor.
@@ -462,7 +462,7 @@ private:
 class CEGUIEXPORT UnifiedDim : public BaseDim
 {
 public:
-    UnifiedDim(){};
+    UnifiedDim(){}
     /*!
     \brief
         Constructor.
@@ -536,7 +536,7 @@ private:
 class CEGUIEXPORT FontDim : public BaseDim
 {
 public:
-    FontDim() {};
+    FontDim() {}
     /*!
     \brief
         Constructor.
@@ -631,7 +631,7 @@ private:
 class CEGUIEXPORT PropertyDim : public BaseDim
 {
 public:
-    PropertyDim() {};
+    PropertyDim() {}
     /*!
     \brief
         Constructor.

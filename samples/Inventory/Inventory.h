@@ -34,6 +34,7 @@ class InventorySample : public Sample
 {
 public:
     InventorySample();
+    virtual ~InventorySample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

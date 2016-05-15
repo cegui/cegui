@@ -36,6 +36,7 @@ class CommonDialogsSample : public Sample
 {
 public:
     CommonDialogsSample();
+    virtual ~CommonDialogsSample() {}
 
     bool initialise(CEGUI::GUIContext* guiContext) override;
     void deinitialise(void) override

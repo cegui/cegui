@@ -48,6 +48,7 @@ class GameMenuSample : public Sample
 {
 public:
     GameMenuSample();
+    virtual ~GameMenuSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

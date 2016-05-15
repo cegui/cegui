@@ -74,6 +74,7 @@ class ScrollablePaneSample : public Sample
 {
 public:
     ScrollablePaneSample();
+    virtual ~ScrollablePaneSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

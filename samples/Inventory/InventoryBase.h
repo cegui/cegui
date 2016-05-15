@@ -37,6 +37,8 @@ namespace CEGUI
 class InventoryBase
 {
 public:
+    virtual ~InventoryBase() {}
+
     // returns the pixel size of a single square in the content grid.
     virtual Sizef squarePixelSize() const;
 

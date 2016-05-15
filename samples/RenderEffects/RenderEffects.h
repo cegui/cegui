@@ -133,6 +133,7 @@ class RenderEffectsSample : public Sample
 {
 public:
     RenderEffectsSample();
+    virtual ~RenderEffectsSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

@@ -35,6 +35,7 @@ class TreeSample : public Sample
 {
 public:
     TreeSample();
+    virtual ~TreeSample() {}
 
    // method to initialise the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

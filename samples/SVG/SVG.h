@@ -41,6 +41,7 @@ class SVGSample : public Sample
 {
 public:
     SVGSample();
+    virtual ~SVGSample() {}
 
     bool initialise(CEGUI::GUIContext* guiContext) override;
     void deinitialise() override;

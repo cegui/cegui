@@ -41,6 +41,7 @@ class Demo6Sample : public Sample
 {
 public:
     Demo6Sample();
+    virtual ~Demo6Sample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

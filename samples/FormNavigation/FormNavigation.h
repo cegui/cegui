@@ -34,6 +34,7 @@ class FormNavigationSample : public Sample
 {
 public:
     FormNavigationSample();
+    virtual ~FormNavigationSample() {}
 
     bool initialise(CEGUI::GUIContext* gui_context) override;
     void deinitialise() override;

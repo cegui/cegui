@@ -35,6 +35,8 @@ class LookNFeelOverviewSample : public Sample
 {
 public:
     LookNFeelOverviewSample();
+    virtual ~LookNFeelOverviewSample() {}
+    
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;
