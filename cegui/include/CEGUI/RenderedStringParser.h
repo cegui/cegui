@@ -56,6 +56,9 @@ public:
     virtual RenderedString parse(const String& input_string,
                                  const Font* initial_font,
                                  const ColourRect* initial_colours) = 0;
+
+    virtual ~RenderedStringParser()
+    {}
 };
 
 } // End of  CEGUI namespace section

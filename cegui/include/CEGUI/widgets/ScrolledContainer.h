@@ -176,7 +176,7 @@ protected:
 
     // overridden from Window.
     void drawSelf(const RenderingContext&) override
-    {};
+    {}
     Rectf getInnerRectClipper_impl() const override;
 
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,

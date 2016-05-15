@@ -284,7 +284,7 @@ ModelIndex GenericItemModel<TGenericItem>::makeValidIndex(size_t id,
 template <typename TGenericItem>
 GenericItemModel<TGenericItem>::~GenericItemModel()
 {
-    clear(false);
+    GenericItemModel<TGenericItem>::clear(false);
 
     delete d_root;
 }

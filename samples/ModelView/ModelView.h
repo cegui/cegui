@@ -37,6 +37,7 @@ class ModelViewSample : public Sample
 {
 public:
     ModelViewSample();
+    virtual ~ModelViewSample() {}
 
     bool initialise(CEGUI::GUIContext* gui_context) override;
     void deinitialise() override;

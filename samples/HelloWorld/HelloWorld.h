@@ -39,6 +39,7 @@ class HelloWorldSample : public Sample
 {
 public:
     HelloWorldSample();
+    virtual ~HelloWorldSample() {}
 
     bool initialise(CEGUI::GUIContext* guiContext) override;
     void deinitialise() override;

@@ -52,6 +52,7 @@ class RestaurantGameSample : public Sample
 {
 public:
     RestaurantGameSample();
+    virtual ~RestaurantGameSample() {}
 
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext) override;

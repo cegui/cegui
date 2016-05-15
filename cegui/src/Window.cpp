@@ -2677,8 +2677,6 @@ void Window::onCursorActivate(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onCursorActivate(e);
-
-        return;
     }
 }
 
@@ -2708,8 +2706,6 @@ void Window::onSemanticInputEvent(SemanticEventArgs& e)
     {
         e.window = getParent();
         getParent()->onSemanticInputEvent(e);
-
-        return;
     }
 }
 

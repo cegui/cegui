@@ -34,6 +34,7 @@ class EditboxValidationSample : public Sample
 {
 public:
     EditboxValidationSample();
+    virtual ~EditboxValidationSample() {}
 
     bool initialise(CEGUI::GUIContext* guiContext) override;
     void deinitialise() override;
