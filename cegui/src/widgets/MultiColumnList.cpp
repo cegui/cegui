@@ -150,7 +150,7 @@ unsigned int MultiColumnList::getColumnCount(void) const
 *************************************************************************/
 unsigned int MultiColumnList::getRowCount(void) const
 {
-	return (unsigned int)d_grid.size();
+	return static_cast<unsigned int>(d_grid.size());
 }
 
 
@@ -2021,7 +2021,8 @@ bool MultiColumnList::handleHeaderScroll(const EventArgs&)
 *************************************************************************/
 bool MultiColumnList::handleHeaderSegMove(const EventArgs& e)
 {
-	moveColumn_impl(((HeaderSequenceEventArgs&)e).d_oldIdx, ((HeaderSequenceEventArgs&)e).d_newIdx);
+    const HeaderSequenceEventArgs& headerSeqEventArgs = static_cast<const HeaderSequenceEventArgs&>(e);
+	moveColumn_impl(headerSeqEventArgs.d_oldIdx, headerSeqEventArgs.d_newIdx);
 
 	// signal change to our clients
 	WindowEventArgs args(this);
@@ -2110,8 +2111,11 @@ bool MultiColumnList::handleSortDirectionChange(const EventArgs&)
 *************************************************************************/
 bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 {
+    const WindowEventArgs& winEventArgs = static_cast<const WindowEventArgs&>(e);
+
 	// get the column index for the segment that was double-clicked
-	unsigned int col = getListHeader()->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
+	unsigned int col = getListHeader()->getColumnFromSegment(
+        static_cast<ListHeaderSegment&>(*winEventArgs.window));
 
 	autoSizeColumnHeader(col);
 
@@ -2479,7 +2483,7 @@ Rectf MultiColumnList::getListRenderArea() const
 {
     if (d_windowRenderer != nullptr)
     {
-        MultiColumnListWindowRenderer* wr = (MultiColumnListWindowRenderer*)d_windowRenderer;
+        MultiColumnListWindowRenderer* wr = static_cast<MultiColumnListWindowRenderer*>(d_windowRenderer);
         return wr->getListRenderArea();
     }
     else

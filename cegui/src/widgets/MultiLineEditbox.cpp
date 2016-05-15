@@ -1008,7 +1008,7 @@ Rectf MultiLineEditbox::getTextRenderArea() const
 {
     if (d_windowRenderer != nullptr)
     {
-        MultiLineEditboxWindowRenderer* wr = (MultiLineEditboxWindowRenderer*)d_windowRenderer;
+        MultiLineEditboxWindowRenderer* wr = static_cast<MultiLineEditboxWindowRenderer*>(d_windowRenderer);
         return wr->getTextRenderArea();
     }
     else

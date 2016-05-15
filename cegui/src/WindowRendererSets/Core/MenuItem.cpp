@@ -74,7 +74,7 @@ bool FalagardMenuItem::parentIsMenubar() const
 //----------------------------------------------------------------------------//
 void FalagardMenuItem::createRenderGeometry()
 {
-    MenuItem* w = (MenuItem*)d_window;
+    MenuItem* w = static_cast<MenuItem*>(d_window);
     // build name of state we're in
     String stateName(w->isEffectiveDisabled() ? "Disabled" : "Enabled");
 

@@ -45,7 +45,7 @@ namespace CEGUI
 
     Rectf FalagardScrollablePane::getViewableArea(void) const
     {
-        ScrollablePane* w = (ScrollablePane*)d_window;
+        ScrollablePane* w = static_cast<ScrollablePane*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         bool v_visible = w->getVertScrollbar()->isVisible();

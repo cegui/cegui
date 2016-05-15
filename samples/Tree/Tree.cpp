@@ -68,7 +68,7 @@ int randInt(int low, int high)
 
    range = high - low + 1;
    if (range > RAND_MAX)
-      num = (int)(((std::uint32_t)rand() * (std::uint32_t)rand()) % range);
+      num = static_cast<int>((static_cast<std::uint32_t>(rand()) * static_cast<std::uint32_t>(rand())) % range);
    else
       num = (rand()) % range;
 
@@ -288,7 +288,7 @@ bool TreeSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
     using namespace CEGUI;
 
     const ItemViewEventArgs& treeArgs = static_cast<const ItemViewEventArgs&>(args);
-    Editbox *editBox = (Editbox *)d_rootWindow->getChild(EditBoxID);
+    Editbox *editBox = static_cast<Editbox *>(d_rootWindow->getChild(EditBoxID));
 
     TreeWidget* tree = static_cast<TreeWidget*>(treeArgs.window);
     // Three different ways to get the item selected.
@@ -322,7 +322,7 @@ bool TreeSample::handleEventSubtreeExpanded(const CEGUI::EventArgs& args)
     using namespace CEGUI;
 
     const ItemViewEventArgs& treeArgs = static_cast<const ItemViewEventArgs&>(args);
-    Editbox *editBox = (Editbox *)d_rootWindow->getChild(EditBoxID);
+    Editbox *editBox = static_cast<Editbox *>(d_rootWindow->getChild(EditBoxID));
     TreeWidget* tree = static_cast<TreeWidget*>(treeArgs.window);
     StandardItem* expanded_item = tree->getModel()->getItemForIndex(treeArgs.d_index);
     editBox->setText("Opened: " + expanded_item->getText());
@@ -335,7 +335,7 @@ bool TreeSample::handleEventSubtreeCollapsed(const CEGUI::EventArgs& args)
     using namespace CEGUI;
 
     const ItemViewEventArgs& treeArgs = static_cast<const ItemViewEventArgs&>(args);
-    Editbox *editBox = (Editbox *)d_rootWindow->getChild(EditBoxID);
+    Editbox *editBox = static_cast<Editbox *>(d_rootWindow->getChild(EditBoxID));
     TreeWidget* tree = static_cast<TreeWidget*>(treeArgs.window);
     StandardItem* collapsed_item = tree->getModel()->getItemForIndex(treeArgs.d_index);
     editBox->setText("Closed: " + collapsed_item->getText());

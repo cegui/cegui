@@ -241,7 +241,7 @@ Exception::Exception(const String& message, const String& name,
     {
         // output to stderr unless it's explicitly disabled
         // nobody seems to look in their log file!
-        std::cerr << what() << std::endl;
+        std::cerr << Exception::what() << std::endl;
     }
 #ifdef __ANDROID__
     __android_log_print(ANDROID_LOG_ERROR, "CEGUIBase", "Exception thrown: %s", what());

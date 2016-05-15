@@ -114,7 +114,7 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // Create a Generic/image called 'Root' with a white image as Image property.
-    d_root = (DefaultWindow*)winMgr.createWindow("Generic/Image", "Root");
+    d_root = static_cast<DefaultWindow*>(winMgr.createWindow("Generic/Image", "Root"));
     d_root->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     d_root->setProperty("Image", "WindowsLook/Background");
 
@@ -328,7 +328,6 @@ void CustomShapesDrawingSample::updateCustomGeometryGraph(std::vector<glm::vec2>
         CEGUI::ColouredVertex linePositionVertex;
         static const CEGUI::Colour lineColour(0.0f, 1.0f, 0.0f, 1.0f);
 
-        glm::vec2 vertexPosition;
         linePositionVertex.setColour(lineColour);
 
         linePositionVertex.d_position = glm::vec3(prevPos - offsetVector, 0.0f);

@@ -69,7 +69,7 @@ namespace CEGUI
 
     void FalagardScrollbar::updateThumb(void)
     {
-        Scrollbar* w = (Scrollbar*)d_window;
+        Scrollbar* w = static_cast<Scrollbar*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
         Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
@@ -112,7 +112,7 @@ namespace CEGUI
 
     float FalagardScrollbar::getValueFromThumb(void) const
     {
-        Scrollbar* w = (Scrollbar*)d_window;
+        Scrollbar* w = static_cast<Scrollbar*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
         const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
@@ -133,7 +133,7 @@ namespace CEGUI
 
     float FalagardScrollbar::getAdjustDirectionFromPoint(const glm::vec2& pt) const
     {
-        Scrollbar* w = (Scrollbar*)d_window;
+        Scrollbar* w = static_cast<Scrollbar*>(d_window);
         const Rectf& absrect(w->getThumb()->getUnclippedOuterRect().get());
 
         if ((d_vertical && (pt.y > absrect.bottom())) ||

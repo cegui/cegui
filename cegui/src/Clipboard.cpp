@@ -159,12 +159,10 @@ String Clipboard::getText()
     {
         return String(static_cast<const char*>(d_buffer), d_bufferSize);
     }
-    else
-    {
-        // the held mime type differs, it's not plain text so we can't
-        // return it as just string
-        return String();
-    }
+
+    // the held mime type differs, it's not plain text so we can't
+    // return it as just string
+    return String();
 }
 
 //----------------------------------------------------------------------------//

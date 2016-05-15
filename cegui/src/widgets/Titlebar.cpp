@@ -114,7 +114,7 @@ void Titlebar::onCursorMove(CursorInputEventArgs& e)
         const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position) - d_dragPoint);
 
 		// move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
-		((FrameWindow*)d_parent)->offsetPixelPosition(delta);
+		static_cast<FrameWindow*>(d_parent)->offsetPixelPosition(delta);
 
 		++e.handled;
 	}
@@ -197,7 +197,7 @@ void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
         if (d_parent)
         {
             // we should only ever be attached to a FrameWindow (or derived) class
-            ((FrameWindow*)d_parent)->toggleRollup();
+            static_cast<FrameWindow*>(d_parent)->toggleRollup();
         }
 
         ++e.handled;

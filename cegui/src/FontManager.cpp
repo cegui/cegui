@@ -293,7 +293,7 @@ void FontManager::doExistingObjectsAction(FontList& fonts, const XMLResourceExis
 
     FontList::iterator curIter = fonts.begin();
 
-    for (auto iter = fonts.begin(); iter != fonts.end(); iter++)
+    for (auto iter = fonts.begin(); iter != fonts.end(); ++iter)
     {
         //! We replacing the pointers to the font object, which is necessary in case 
         *iter = &doExistingObjectAction(*iter, action);

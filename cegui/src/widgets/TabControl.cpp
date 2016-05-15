@@ -722,7 +722,7 @@ TabButton* TabControl::createTabButton(const String& name) const
 {
     if (d_windowRenderer != nullptr)
     {
-        TabControlWindowRenderer* wr = (TabControlWindowRenderer*)d_windowRenderer;
+        TabControlWindowRenderer* wr = static_cast<TabControlWindowRenderer*>(d_windowRenderer);
         return wr->createTabButton(name);
     }
     else

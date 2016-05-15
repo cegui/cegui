@@ -542,7 +542,7 @@ void SampleBrowser::initialisationFinalisation()
 {
     System::getSingleton().getDefaultGUIContext().getCursor().
         setDefaultImage("SampleBrowserSkin/MouseArrow");
-    d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
+    d_samplesWinMgr->setWindowRatio(d_appWindowWidth / static_cast<float>(d_appWindowHeight));
 
     System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
 

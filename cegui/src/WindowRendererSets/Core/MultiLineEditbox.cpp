@@ -67,7 +67,7 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
 
 Rectf FalagardMultiLineEditbox::getTextRenderArea(void) const
 {
-    MultiLineEditbox* w = (MultiLineEditbox*)d_window;
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     const WidgetLookFeel& wlf = getLookNFeel();
     bool v_visible = w->getVertScrollbar()->isVisible();
     bool h_visible = w->getHorzScrollbar()->isVisible();
@@ -99,7 +99,7 @@ Rectf FalagardMultiLineEditbox::getTextRenderArea(void) const
 
 void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 {
-    MultiLineEditbox* w = (MultiLineEditbox*)d_window;
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     const StateImagery* imagery;
 
     // get WidgetLookFeel for the assigned look.
@@ -128,7 +128,7 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 
 void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
 {
-    MultiLineEditbox* w = (MultiLineEditbox*)d_window;
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     const Font* fnt = w->getFont();
 
     // require a font so that we can calculate caret position.
@@ -172,7 +172,7 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
 
 void FalagardMultiLineEditbox::createRenderGeometry()
 {
-    MultiLineEditbox* w = (MultiLineEditbox*)d_window;
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     // Create the render geometry for the general frame and stuff before we handle the text itself
     cacheEditboxBaseImagery();
 
@@ -188,7 +188,7 @@ void FalagardMultiLineEditbox::createRenderGeometry()
 
 void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 {
-    MultiLineEditbox* w = (MultiLineEditbox*)d_window;
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     // text is already formatted, we just grab the lines and
     // create the render geometry for them with the required alignment.
     Rectf drawArea(dest_area);

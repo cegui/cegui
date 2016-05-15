@@ -63,7 +63,7 @@ public:
     */
     inline static float alignToPixels(float x)
     {
-        return (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f));
+        return static_cast<float>(static_cast<int>(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)));
     }
     
     /*!

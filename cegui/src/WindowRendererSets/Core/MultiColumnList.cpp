@@ -46,7 +46,7 @@ namespace CEGUI
 
     Rectf FalagardMultiColumnList::getListRenderArea(void) const
     {
-        MultiColumnList* w = (MultiColumnList*)d_window;
+        MultiColumnList* w = static_cast<MultiColumnList*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         bool v_visible = w->getVertScrollbar()->isVisible();
@@ -79,7 +79,7 @@ namespace CEGUI
 
     void FalagardMultiColumnList::createRenderGeometry()
     {
-        MultiColumnList* w = (MultiColumnList*)d_window;
+        MultiColumnList* w = static_cast<MultiColumnList*>(d_window);
         const ListHeader* header = w->getListHeader();
         const Scrollbar* vertScrollbar = w->getVertScrollbar();
         const Scrollbar* horzScrollbar = w->getHorzScrollbar();

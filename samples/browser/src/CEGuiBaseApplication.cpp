@@ -125,8 +125,6 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     initialiseResourceGroupDirectories(dataPathPrefixOverride);
     initialiseDefaultResourceGroups();
 
-    const CEGUI::Rectf scrn(glm::vec2(0, 0), d_renderer->getDisplaySize());
-
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addBitmapImageFromFile("cegui_logo",
                                                          "logo.png");

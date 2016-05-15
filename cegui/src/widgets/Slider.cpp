@@ -290,7 +290,7 @@ void Slider::updateThumb(void)
 {
     if (d_windowRenderer != nullptr)
     {
-        SliderWindowRenderer* wr = (SliderWindowRenderer*)d_windowRenderer;
+        SliderWindowRenderer* wr = static_cast<SliderWindowRenderer*>(d_windowRenderer);
         wr->updateThumb();
     }
     else
@@ -309,7 +309,7 @@ float Slider::getValueFromThumb(void) const
 {
     if (d_windowRenderer != nullptr)
     {
-        SliderWindowRenderer* wr = (SliderWindowRenderer*)d_windowRenderer;
+        SliderWindowRenderer* wr = static_cast<SliderWindowRenderer*>(d_windowRenderer);
         return wr->getValueFromThumb();
     }
     else
@@ -328,7 +328,7 @@ float Slider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 {
     if (d_windowRenderer != nullptr)
     {
-        SliderWindowRenderer* wr = (SliderWindowRenderer*)d_windowRenderer;
+        SliderWindowRenderer* wr = static_cast<SliderWindowRenderer*>(d_windowRenderer);
         return wr->getAdjustDirectionFromPoint(pt);
     }
     else

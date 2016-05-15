@@ -57,7 +57,6 @@ public:
     void draw() const override;
     void appendGeometry(const std::vector<float>& vertex_data);
     void finaliseVertexAttributes();
-protected:
 };
 
 

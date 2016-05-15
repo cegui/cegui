@@ -83,7 +83,7 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
 
     addFreeTypeFontProperties();
 
-    updateFont();
+    FreeTypeFont::updateFont();
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << "Successfully loaded " << d_cp_map.size() << " glyphs";

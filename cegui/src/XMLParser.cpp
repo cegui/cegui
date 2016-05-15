@@ -93,7 +93,7 @@ namespace CEGUI
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         const char* c_str = source.toUtf8String().c_str();
 #endif
-        rawXMLData.setData((std::uint8_t*)c_str);
+        rawXMLData.setData(reinterpret_cast<std::uint8_t*>(const_cast<char*>(c_str)));
         rawXMLData.setSize(std::strlen(c_str));
 
         try

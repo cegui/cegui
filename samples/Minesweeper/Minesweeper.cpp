@@ -101,7 +101,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
 
     // install this as the root GUI sheet
     guiContext->setRootWindow(background);
-    d_alarm = (Timer*)winMgr.createWindow("Timer");
+    d_alarm = static_cast<Timer*>(winMgr.createWindow("Timer"));
     background->addChild(d_alarm);
     d_alarm->setDelay(0.5); // Tick each 0.5 seconds
 
@@ -121,7 +121,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     action->setYPosition(UDim(0.10f, 0.0f));
     action->setWidth(UDim(0.94f, 0.0f));
     action->setHeight(UDim(0.1f, 0.0f));
-    d_counter = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "mine_counter");
+    d_counter = static_cast<Editbox*>(winMgr.createWindow("Vanilla/Editbox", "mine_counter"));
     action->addChild(d_counter);
     d_counter->setText("0");
     d_counter->setTooltipText("Number of mine");
@@ -141,7 +141,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     newGame->setHeight(UDim(1.0f, 0.0f));
     newGame->subscribeEvent(PushButton::EventClicked,  Event::Subscriber(&MinesweeperSample::handleGameStartClicked, this));
 
-    d_timer = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "timer");
+    d_timer = static_cast<Editbox*>(winMgr.createWindow("Vanilla/Editbox", "timer"));
     action->addChild(d_timer);
     d_timer->setText("0");
     d_timer->setTooltipText("Time elapsed");
@@ -172,7 +172,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
             // Initialize buttons coordinate
             d_buttonsMapping[i][j].d_col = j;
             d_buttonsMapping[i][j].d_row = i;
-            d_buttons[i][j] = (PushButton*)winMgr.createWindow("Vanilla/Button");
+            d_buttons[i][j] = static_cast<PushButton*>(winMgr.createWindow("Vanilla/Button"));
             row->addChild(d_buttons[i][j]);
             d_buttons[i][j]->setArea(URect(UDim(d_inc * j, 0), UDim(0,0),
                 UDim(d_inc * (j + 1), 0), UDim(1,0)));
@@ -349,8 +349,8 @@ void MinesweeperSample::boardPositionMines()
     {
         do
         {
-            x = (size_t) ((float)MinesweeperSize * (::rand() / (RAND_MAX + 1.0)));
-            y = (size_t) ((float)MinesweeperSize * (::rand() / (RAND_MAX + 1.0)));
+            x = static_cast<size_t>(static_cast<float>(MinesweeperSize) * (::rand() / (RAND_MAX + 1.0)));
+            y = static_cast<size_t>(static_cast<float>(MinesweeperSize) * (::rand() / (RAND_MAX + 1.0)));
         }
         while(d_board[x][y] > 8);
 

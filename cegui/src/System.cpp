@@ -36,12 +36,10 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/Config_xmlHandler.h"
-#include "CEGUI/DataContainer.h"
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
@@ -51,10 +49,8 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingWindow.h"
-#include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
-#include "CEGUI/views/All.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
 #include "CEGUI/SharedStringStream.h"
@@ -507,7 +503,7 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
         // Forward script exceptions with line number and file info
         catch (ScriptException& e)
         {
-            throw e;
+            throw;
         }
 		catch (...)
 		{
@@ -539,7 +535,7 @@ int	System::executeScriptGlobal(const String& function_name) const
         // Forward script exceptions with line number and file info
         catch (ScriptException& e)
         {
-            throw e;
+            throw;
         }
 		catch (...)
 		{
@@ -572,7 +568,7 @@ void System::executeScriptString(const String& str) const
         // Forward script exceptions with line number and file info
         catch (ScriptException& e)
         {
-            throw e;
+            throw;
         }
         catch (...)
         {
@@ -768,8 +764,8 @@ void System::cleanupXMLParser()
     if (d_parserModule)
     {
         // get pointer to parser deletion function
-        void(*deleteFunc)(XMLParser*) = (void(*)(XMLParser*))d_parserModule->
-            getSymbolAddress("destroyParser");
+        void(*deleteFunc)(XMLParser*) = static_cast<void(*)(XMLParser*)>(d_parserModule->
+            getSymbolAddress("destroyParser"));
         // cleanup the xml parser object
         deleteFunc(d_xmlParser);
 
@@ -795,7 +791,7 @@ void System::setXMLParser(const String& parserName)
     d_parserModule = new DynamicModule(String("CEGUI") + parserName);
     // get pointer to parser creation function
     XMLParser* (*createFunc)(void) =
-        (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
+        static_cast<XMLParser* (*)(void)>(d_parserModule->getSymbolAddress("createParser"));
     // create the parser object
     d_xmlParser = createFunc();
     // make sure we know to cleanup afterwards.
@@ -825,7 +821,7 @@ void System::setDefaultXMLParserName(const String& parserName)
     d_defaultXMLParserName = parserName;
 }
 
-const String System::getDefaultXMLParserName()
+String System::getDefaultXMLParserName()
 {
     return d_defaultXMLParserName;
 }
@@ -868,7 +864,7 @@ void System::setupImageCodec(const String& codecName)
             new DynamicModule(String("CEGUI") + codecName);
 
         // use function from module to create the codec object.
-        d_imageCodec = ((ImageCodec*(*)(void))d_imageCodecModule->
+        d_imageCodec = static_cast<ImageCodec*(*)(void)>(d_imageCodecModule->
             getSymbolAddress("createImageCodec"))();
 #    endif
 
@@ -885,7 +881,7 @@ void System::cleanupImageCodec()
 
     if (d_imageCodecModule)
     {
-        ((void(*)(ImageCodec*))d_imageCodecModule->
+        static_cast<void(*)(ImageCodec*)>(d_imageCodecModule->
             getSymbolAddress("destroyImageCodec"))(d_imageCodec);
 
         delete d_imageCodecModule;
@@ -981,8 +977,8 @@ void System::invalidateAllWindows()
         // invalidate window itself
         wnd->invalidate();
         // if window has rendering window surface, invalidate it's geometry
-        RenderingSurface* rs;
-        if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
+        RenderingSurface* rs = wnd->getRenderingSurface();
+        if (rs != nullptr && rs->isRenderingWindow())
             static_cast<RenderingWindow*>(rs)->invalidateGeometry();
     }
 }

@@ -229,7 +229,7 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
 
     //! Creating a texcture target to render the GUIContext onto
     d_textureTarget = system.getRenderer()->createTextureTarget(false);
-    d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+    d_guiContext = &system.createGUIContext(static_cast<RenderTarget&>(*d_textureTarget));
     d_textureTarget->declareRenderSize(size);
 
     //! Creating an image based on the TextureTarget's texture, which allows us to use the rendered-to-texture inside CEGUI for previewing the sample

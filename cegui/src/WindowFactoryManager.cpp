@@ -430,7 +430,7 @@ const String& WindowFactoryManager::AliasTargetStack::getActiveTarget(void) cons
 
 unsigned int WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
 {
-	return (unsigned int)d_targetStack.size();
+	return static_cast<unsigned int>(d_targetStack.size());
 }
 
 

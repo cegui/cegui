@@ -104,7 +104,7 @@ ListHeader::~ListHeader(void)
 *************************************************************************/
 unsigned int ListHeader::getColumnCount(void) const
 {
-	return (unsigned int)d_segments.size();
+	return static_cast<unsigned int>(d_segments.size());
 }
 
 
@@ -894,7 +894,7 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 	layoutSegments();
 
 	// Fire segment sized event.
-	WindowEventArgs args(((WindowEventArgs&)e).window);
+	WindowEventArgs args((static_cast<const WindowEventArgs&>(e)).window);
 	onSegmentSized(args);
 
 	return true;
@@ -933,7 +933,7 @@ bool ListHeader::segmentMovedHandler(const EventArgs& e)
 		}
 
 		// find original column for dragged segment.
-		ListHeaderSegment* seg = ((ListHeaderSegment*)((WindowEventArgs&)e).window);
+		ListHeaderSegment* seg = static_cast<ListHeaderSegment*>((static_cast<const WindowEventArgs&>(e)).window);
 		unsigned int curcol = getColumnFromSegment(*seg);
 
 		// move column
@@ -952,7 +952,7 @@ bool ListHeader::segmentClickedHandler(const EventArgs& e)
 	// double-check we allow this action
 	if (d_sortingEnabled)
 	{
-		ListHeaderSegment* seg = ((ListHeaderSegment*)((WindowEventArgs&)e).window);
+		ListHeaderSegment* seg = static_cast<ListHeaderSegment*>(static_cast<const WindowEventArgs&>(e).window);
 
 		// is this a new sort column?
 		if (d_sortSegment != seg)
@@ -984,7 +984,7 @@ bool ListHeader::segmentClickedHandler(const EventArgs& e)
 		}
 
 		// Notify that a segment has been clicked
-		WindowEventArgs args(((WindowEventArgs&)e).window);
+		WindowEventArgs args((static_cast<const WindowEventArgs&>(e)).window);
 		onSegmentClicked(args);
 	}
 
@@ -997,7 +997,7 @@ bool ListHeader::segmentClickedHandler(const EventArgs& e)
 *************************************************************************/
 bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 {
-	WindowEventArgs args(((WindowEventArgs&)e).window);
+	WindowEventArgs args((static_cast<const WindowEventArgs&>(e)).window);
 	onSplitterDoubleClicked(args);
 
 	return true;
@@ -1081,7 +1081,7 @@ ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
 {
     if (d_windowRenderer != nullptr)
     {
-        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
+        ListHeaderWindowRenderer* wr = static_cast<ListHeaderWindowRenderer*>(d_windowRenderer);
         return wr->createNewSegment(name);
     }
     else
@@ -1099,7 +1099,7 @@ void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
 {
     if (d_windowRenderer != nullptr)
     {
-        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
+        ListHeaderWindowRenderer* wr = static_cast<ListHeaderWindowRenderer*>(d_windowRenderer);
         wr->destroyListSegment(segment);
     }
     else

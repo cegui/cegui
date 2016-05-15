@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectTreeWithOffset_ReturnsCorrectIn
     float x_offset = 500;
     float y_offset = 354;
     view->setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
-    model.addRandomItemWithChildren(model.getRootIndex(), nullptr);
+    model.addRandomItemWithChildren(model.getRootIndex(), 0);
 
     ModelIndex index = view->indexAt(glm::vec2(
         x_offset + expander_width * 2,
