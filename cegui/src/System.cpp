@@ -501,7 +501,7 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
         // Forward script exceptions with line number and file info
-        catch (ScriptException& e)
+        catch (ScriptException&)
         {
             throw;
         }
@@ -533,7 +533,7 @@ int	System::executeScriptGlobal(const String& function_name) const
 			return d_scriptModule->executeScriptGlobal(function_name);
 		}
         // Forward script exceptions with line number and file info
-        catch (ScriptException& e)
+        catch (ScriptException&)
         {
             throw;
         }
@@ -566,7 +566,7 @@ void System::executeScriptString(const String& str) const
             d_scriptModule->executeString(str);
         }
         // Forward script exceptions with line number and file info
-        catch (ScriptException& e)
+        catch (ScriptException&)
         {
             throw;
         }
@@ -764,7 +764,7 @@ void System::cleanupXMLParser()
     if (d_parserModule)
     {
         // get pointer to parser deletion function
-        void(*deleteFunc)(XMLParser*) = static_cast<void(*)(XMLParser*)>(d_parserModule->
+        void(*deleteFunc)(XMLParser*) = reinterpret_cast<void(*)(XMLParser*)>(d_parserModule->
             getSymbolAddress("destroyParser"));
         // cleanup the xml parser object
         deleteFunc(d_xmlParser);
@@ -791,7 +791,7 @@ void System::setXMLParser(const String& parserName)
     d_parserModule = new DynamicModule(String("CEGUI") + parserName);
     // get pointer to parser creation function
     XMLParser* (*createFunc)(void) =
-        static_cast<XMLParser* (*)(void)>(d_parserModule->getSymbolAddress("createParser"));
+        reinterpret_cast<XMLParser* (*)(void)>(d_parserModule->getSymbolAddress("createParser"));
     // create the parser object
     d_xmlParser = createFunc();
     // make sure we know to cleanup afterwards.
@@ -864,7 +864,7 @@ void System::setupImageCodec(const String& codecName)
             new DynamicModule(String("CEGUI") + codecName);
 
         // use function from module to create the codec object.
-        d_imageCodec = static_cast<ImageCodec*(*)(void)>(d_imageCodecModule->
+        d_imageCodec = reinterpret_cast<ImageCodec*(*)(void)>(d_imageCodecModule->
             getSymbolAddress("createImageCodec"))();
 #    endif
 
@@ -881,7 +881,7 @@ void System::cleanupImageCodec()
 
     if (d_imageCodecModule)
     {
-        static_cast<void(*)(ImageCodec*)>(d_imageCodecModule->
+        reinterpret_cast<void(*)(ImageCodec*)>(d_imageCodecModule->
             getSymbolAddress("destroyImageCodec"))(d_imageCodec);
 
         delete d_imageCodecModule;
