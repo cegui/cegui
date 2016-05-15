@@ -578,7 +578,7 @@ bool ItemListBase::handle_PaneChildRemoved(const EventArgs& e)
         if (pos != d_listItems.end())
         {
             // make sure the item is no longer related to us
-            (*pos)->d_ownerList = 0;
+            (*pos)->d_ownerList = nullptr;
             // remove item
             d_listItems.erase(pos);
             // trigger list update

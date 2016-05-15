@@ -327,7 +327,7 @@ void PopupMenu::onDestructionStarted(WindowEventArgs& e)
     Window* p = getParent();
     if (p && dynamic_cast<MenuItem*>(p))
     {
-        static_cast<MenuItem*>(p)->setPopupMenu(0);
+        static_cast<MenuItem*>(p)->setPopupMenu(nullptr);
     }
     MenuBase::onDestructionStarted(e);
 }

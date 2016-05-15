@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
     ModelIndex index = view->indexAt(glm::vec2(1, 0));
 
-    BOOST_REQUIRE(index.d_modelData == 0);
+    BOOST_REQUIRE(index.d_modelData == nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
 
     ModelIndex index = view->indexAt(glm::vec2(1, font_height / 2.0f));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
 }
 
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithOffset_ReturnsCor
         x_offset + 1,
         y_offset + font_height / 2.0f));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
 }
 
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithScrollbar_Returns
 
     ModelIndex index = view->indexAt(glm::vec2(1, 9 * font_height + font_height / 2.0f));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
 }
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideSingleObject_ReturnsInvalidIndex)
 
     ModelIndex index = view->indexAt(glm::vec2(1, font_height * 2));
 
-    BOOST_REQUIRE(index.d_modelData == 0);
+    BOOST_REQUIRE(index.d_modelData == nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
 
     ModelIndex index = view->indexAt(glm::vec2(1, font_height * 2));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
 }
 

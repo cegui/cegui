@@ -51,7 +51,7 @@ MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& nam
 
 void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
 {
-    assert(d_window != 0);
+    assert(d_window != nullptr);
 
     // ensure window's text has a terminating \n
     String text(d_window->getText());
@@ -86,7 +86,7 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	d_widestExtent(0.0f),
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
-	d_selectionBrush(0)
+	d_selectionBrush(nullptr)
 {
 	addMultiLineEditboxProperties();
 }
@@ -932,7 +932,7 @@ void MultiLineEditbox::onFontChanged(WindowEventArgs& e)
 
 bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != nullptr;
 }
 
 
@@ -1006,7 +1006,7 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 
 Rectf MultiLineEditbox::getTextRenderArea() const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         MultiLineEditboxWindowRenderer* wr = (MultiLineEditboxWindowRenderer*)d_windowRenderer;
         return wr->getTextRenderArea();

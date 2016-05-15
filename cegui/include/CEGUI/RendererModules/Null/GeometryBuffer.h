@@ -54,7 +54,7 @@ public:
     virtual ~NullGeometryBuffer();
 
     // Implementation/overrides of member functions inherited from GeometryBuffer
-    void draw() const;
+    void draw() const override;
     void appendGeometry(const std::vector<float>& vertex_data);
     void finaliseVertexAttributes();
 protected:

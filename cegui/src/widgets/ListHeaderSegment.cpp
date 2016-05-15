@@ -62,8 +62,8 @@ const float	ListHeaderSegment::SegmentMoveThreshold	= 12.0f;
 *************************************************************************/
 ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	Window(type, name),
-	d_sizingCursor(0),
-	d_movingCursor(0),
+	d_sizingCursor(nullptr),
+	d_movingCursor(nullptr),
 	d_splitterSize(DefaultSizingArea),
 	d_splitterHover(false),
 	d_dragSizing(false),
@@ -620,12 +620,12 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
         "SizingCursorImage", "Property to get/set the sizing cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
-        &ListHeaderSegment::setSizingCursorImage, &ListHeaderSegment::getSizingCursorImage, 0
+        &ListHeaderSegment::setSizingCursorImage, &ListHeaderSegment::getSizingCursorImage, nullptr
     );
 
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
         "MovingCursorImage", "Property to get/set the moving cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
-        &ListHeaderSegment::setMovingCursorImage, &ListHeaderSegment::getMovingCursorImage, 0
+        &ListHeaderSegment::setMovingCursorImage, &ListHeaderSegment::getMovingCursorImage, nullptr
     );
 }
 

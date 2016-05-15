@@ -126,7 +126,7 @@ void InventoryItem::populateGeometryBuffer()
         colour = 0xFFFF0000;
 
     ImageRenderSettings imgRenderSettings(
-        Rectf(), 0, false, ColourRect(colour));
+        Rectf(), nullptr, false, ColourRect(colour));
 
     for (int y = 0; y < d_content.height(); ++y)
     {
@@ -180,7 +180,7 @@ void InventoryItem::onMoved(ElementEventArgs& e)
 void InventoryItem::onDragDropTargetChanged(DragDropEventArgs& e)
 {
     DragContainer::onDragDropTargetChanged(e);
-    d_validDropTarget = (dynamic_cast<InventoryReceiver*>(d_dropTarget) != 0);
+    d_validDropTarget = (dynamic_cast<InventoryReceiver*>(d_dropTarget) != nullptr);
     invalidate();
 }
 

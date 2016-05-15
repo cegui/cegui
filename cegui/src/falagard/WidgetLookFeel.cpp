@@ -1376,7 +1376,7 @@ const CEGUI::String& WidgetLookFeel::getInheritedWidgetLookName() const
 WidgetLookFeel* WidgetLookFeel::getInheritedWidgetLookFeel()
 {
     if(d_inheritedLookName.empty())
-        return 0;
+        return nullptr;
 
     WidgetLookManager::WidgetLookPointerMap pointerMap = WidgetLookManager::getSingleton().getWidgetLookPointerMap();
     WidgetLookManager::WidgetLookPointerMap::iterator foundIter = pointerMap.find(d_inheritedLookName);

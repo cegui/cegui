@@ -173,7 +173,7 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
                    GL_RGBA8 : GL_RGBA,
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_TEXTURE_2D, d_texture, 0);
 
@@ -235,7 +235,7 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
                    GL_RGBA8 : GL_RGBA,
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
     if (d_usesStencil)
     {

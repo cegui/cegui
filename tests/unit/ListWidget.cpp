@@ -48,7 +48,7 @@ BOOST_FIXTURE_TEST_SUITE(ListWidgetTestSuite, ListWidgetFixture)
 //----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(GetFirstSelectedItem_NoSelection_ReturnsNull)
 {
-    BOOST_REQUIRE_EQUAL(static_cast<StandardItem*>(0), view->getFirstSelectedItem());
+    BOOST_REQUIRE_EQUAL(static_cast<StandardItem*>(nullptr), view->getFirstSelectedItem());
 }
 
 //----------------------------------------------------------------------------//
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(GetNextSelectedItem_OneItem_NullStartItem_ReturnsFirstSelec
 
     view->setIndexSelectionState(static_cast<size_t>(0), true);
 
-    BOOST_REQUIRE_EQUAL(view->getItemAtIndex(0), view->getNextSelectedItem(0));
+    BOOST_REQUIRE_EQUAL(view->getItemAtIndex(0), view->getNextSelectedItem(nullptr));
 }
 
 //----------------------------------------------------------------------------//
@@ -154,7 +154,7 @@ BOOST_FIXTURE_TEST_CASE(
 
     view->clearList();
 
-    BOOST_REQUIRE_EQUAL(static_cast<StandardItem*>(0), d_firstSelectedItem);
+    BOOST_REQUIRE_EQUAL(static_cast<StandardItem*>(nullptr), d_firstSelectedItem);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -150,7 +150,7 @@ bool MenuNavigationSample::handleSelectButtonClicked(const CEGUI::EventArgs&)
     using namespace CEGUI;
 
     StandardItem* item = d_classesList->getFirstSelectedItem();
-    if (item != 0)
+    if (item != nullptr)
     {
         d_logWidget2->setText("Selected " + item->getText() + "\n");
     }

@@ -42,10 +42,10 @@ static CEGUI::String SoundOptionsMenu = "SoundOptionsContainer";
 
 SimpleGameMenuSample::SimpleGameMenuSample() :
     Sample(98),
-    d_layout(0),
-    d_root(0),
-    d_currentMenu(0),
-    d_windowNavigator(0)
+    d_layout(nullptr),
+    d_root(nullptr),
+    d_currentMenu(nullptr),
+    d_windowNavigator(nullptr)
 {
     Sample::d_name = "SimpleGameMenuSample";
     Sample::d_credits = "Timotei Dolean";
@@ -82,7 +82,7 @@ bool SimpleGameMenuSample::initialise(CEGUI::GUIContext* gui_context)
     // install this as the root GUI sheet
     gui_context->setRootWindow(d_root);
 
-    d_navigationStrategy = new WindowChildrenNavigationStrategy(0);
+    d_navigationStrategy = new WindowChildrenNavigationStrategy(nullptr);
 
     d_windowNavigator = new WindowNavigator(createNavigationMappings(),
         d_navigationStrategy);
@@ -155,7 +155,7 @@ void SimpleGameMenuSample::createEventHandlers()
 
 void SimpleGameMenuSample::showMenu(CEGUI::String menu_name)
 {
-    if (d_currentMenu != 0)
+    if (d_currentMenu != nullptr)
         d_currentMenu->setVisible(false);
 
     d_currentMenu = d_layout->getChild(menu_name);

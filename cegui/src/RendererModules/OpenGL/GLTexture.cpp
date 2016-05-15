@@ -148,14 +148,14 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
         glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format,
                                static_cast<GLsizei>(size.d_width),
                                static_cast<GLsizei>(size.d_height),
-                               0, image_size, 0);
+                               0, image_size, nullptr);
     }
     else
     {
         glTexImage2D(GL_TEXTURE_2D, 0, d_format,
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
-                     0, d_format, d_subpixelFormat, 0);
+                     0, d_format, d_subpixelFormat, nullptr);
     }
 
     // restore previous texture binding.

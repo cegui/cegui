@@ -85,7 +85,7 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	d_forceHorzScroll(false),
 	d_nominatedSelectCol(0),
 	d_nominatedSelectRow(0),
-	d_lastSelected(0),
+	d_lastSelected(nullptr),
     d_columnCount(0),
     d_autoSizeColumnUsesHeader(false)
 {
@@ -410,7 +410,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, unsigne
 	}
 
 	// no matching item.
-	return 0;
+	return nullptr;
 }
 
 
@@ -442,7 +442,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, unsigned i
 	}
 
 	// no matching item.
-	return 0;
+	return nullptr;
 }
 
 
@@ -480,7 +480,7 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 	}
 
 	// No match
-	return 0;
+	return nullptr;
 }
 
 
@@ -490,7 +490,7 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 *************************************************************************/
 ListboxItem* MultiColumnList::getFirstSelectedItem(void) const
 {
-	return getNextSelected(0);
+	return getNextSelected(nullptr);
 }
 
 
@@ -792,7 +792,7 @@ void MultiColumnList::removeColumn(unsigned int col_idx)
 			d_grid[i].d_items.erase(d_grid[i].d_items.begin() + col_idx);
 
 			// delete the ListboxItem as needed.
-			if ((item != 0) && item->isAutoDeleted())
+			if ((item != nullptr) && item->isAutoDeleted())
 			{
 				delete item;
 			}
@@ -858,7 +858,7 @@ unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, uns
 	// Build the new row
 	ListRow row;
 	row.d_sortColumn = getSortColumn();
-	row.d_items.resize(getColumnCount(), 0);
+	row.d_items.resize(getColumnCount(), nullptr);
 	row.d_rowID = row_id;
 
 	if (item)
@@ -906,7 +906,7 @@ unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, uns
 *************************************************************************/
 unsigned int MultiColumnList::insertRow(unsigned int row_idx, unsigned int row_id)
 {
-	return insertRow(0, 0, row_idx, row_id);
+	return insertRow(nullptr, 0, row_idx, row_id);
 }
 
 
@@ -925,7 +925,7 @@ unsigned int MultiColumnList::insertRow(ListboxItem* item, unsigned int col_id, 
 		// Build the new row (empty)
 		ListRow row;
 		row.d_sortColumn = getSortColumn();
-		row.d_items.resize(getColumnCount(), 0);
+		row.d_items.resize(getColumnCount(), nullptr);
 		row.d_rowID = row_id;
 
 		// if row index is too big, just insert at end.
@@ -1012,7 +1012,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	// delete old item as required
 	ListboxItem* oldItem = d_grid[position.row][position.column];
 
-	if ((oldItem != 0) && oldItem->isAutoDeleted())
+	if ((oldItem != nullptr) && oldItem->isAutoDeleted())
 	{
 		delete oldItem;
 	}
@@ -1569,7 +1569,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 			ListboxItem* item = d_grid[i][j];
 
 			// if slot has an item, and item is selected
-			if ((item != 0) && item->isSelected())
+			if (item == nullptr && item->isSelected())
 			{
 				// clear selection state and set modified flag
 				item->setSelected(false);
@@ -1619,7 +1619,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 
@@ -1983,7 +1983,7 @@ void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative
         modified = true;
 
         // select range or item, depending upon state and last selected item
-        if (range && (d_lastSelected != 0) && d_multiSelect)
+        if (range && (d_lastSelected != nullptr) && d_multiSelect)
         {
             modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
         }
@@ -2273,7 +2273,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
 
     CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, unsigned int,
         "RowCount", "Property to access the number of rows in the list (read only)",
-        0, &MultiColumnList::getRowCount, 0
+        nullptr, &MultiColumnList::getRowCount, 0
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, MultiColumnList::SelectionMode,
@@ -2410,7 +2410,7 @@ ListHeader* MultiColumnList::getListHeader() const
 
 bool MultiColumnList::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const MultiColumnListWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const MultiColumnListWindowRenderer*>(renderer) != nullptr;
 }
 
 /*************************************************************************
@@ -2477,7 +2477,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 *************************************************************************/
 Rectf MultiColumnList::getListRenderArea() const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         MultiColumnListWindowRenderer* wr = (MultiColumnListWindowRenderer*)d_windowRenderer;
         return wr->getListRenderArea();

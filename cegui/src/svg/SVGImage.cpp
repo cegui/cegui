@@ -54,7 +54,7 @@ const String ImageNativeVertResAttribute( "nativeVertRes" );
 //----------------------------------------------------------------------------//
 SVGImage::SVGImage(const String& name) :
     Image(name),
-    d_svgData(0),
+    d_svgData(nullptr),
     d_useGeometryAntialiasing(true)
 {
 }

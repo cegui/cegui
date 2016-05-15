@@ -77,7 +77,7 @@ const Font* ListboxTextItem::getFont(void) const
 	}
     // no owner, so the default font is ambiguous (it could be of any context)
     else
-        return 0;  
+        return nullptr;  
 }
 
 
@@ -131,7 +131,7 @@ std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
-    if (d_selected && d_selectBrush != 0)
+    if (d_selected && d_selectBrush != nullptr)
     {
         ImageRenderSettings imgRenderSettings(
             targetRect, clipper, true,
@@ -203,10 +203,10 @@ void ListboxTextItem::parseTextString() const
 {
     if (d_textParsingEnabled)
         d_renderedString =
-            d_stringParser.parse(getTextVisual(), 0, &d_textCols);
+            d_stringParser.parse(getTextVisual(), nullptr, &d_textCols);
     else
         d_renderedString =
-            d_noTagsStringParser.parse(getTextVisual(), 0, &d_textCols);
+            d_noTagsStringParser.parse(getTextVisual(), nullptr, &d_textCols);
 
     d_renderedStringValid = true;
 }

@@ -112,7 +112,7 @@ RadioButton* RadioButton::getSelectedButtonInGroup() const
     }
 
     // no selected button attached to this window is in same group
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//

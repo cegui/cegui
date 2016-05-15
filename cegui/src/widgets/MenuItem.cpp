@@ -30,7 +30,6 @@
 #include "CEGUI/widgets/Menubar.h"
 #include "CEGUI/widgets/PopupMenu.h"
 
-#include "CEGUI/Logger.h"
 #include "CEGUI/WindowManager.h"
 
 // Start of CEGUI namespace section
@@ -57,7 +56,7 @@ MenuItem::MenuItem(const String& type, const String& name)
       d_popupOpening(false),
       d_autoPopupTimeout(0.0f),
       d_autoPopupTimeElapsed(0.0f),
-      d_popup(0)
+      d_popup(nullptr)
 {
     // add the new properties
     addMenuItemProperties();
@@ -87,7 +86,7 @@ void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
     // if input is captured, but not by 'this', then we never hover highlight
     const Window* capture_wnd = getCaptureWindow();
 
-    if (capture_wnd == 0)
+    if (capture_wnd == nullptr)
         d_hovering = (getGUIContext().getWindowContainingCursor() == this && isHit(cursor_pos));
     else
         d_hovering = (capture_wnd == this && isHit(cursor_pos));
@@ -107,7 +106,7 @@ void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
 
                 if (!menu->isMultiplePopupsAllowed())
                 {
-                    if (curpopup != this && curpopup != 0)
+                    if (curpopup != this && curpopup != nullptr)
                     {
                         if (!hasAutoPopup())
                         {
@@ -175,7 +174,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     }
 
     // we are setting a new popup and not just clearing. and we are told to add the child
-    if (popup != 0 && add_as_child)
+    if (popup != nullptr && add_as_child)
     {
         addChild(popup);
     }
@@ -189,7 +188,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
 void MenuItem::openPopupMenu(bool notify)
 {
     // no popup? or already open...
-    if (d_popup == 0 || d_opened)
+    if (d_popup == nullptr || d_opened)
         return;
 
     d_popupOpening = false;
@@ -237,7 +236,7 @@ void MenuItem::openPopupMenu(bool notify)
 void MenuItem::closePopupMenu(bool notify)
 {
     // no popup? or not open...
-    if (d_popup == 0 || !d_opened)
+    if (d_popup == nullptr || !d_opened)
         return;
 
     d_popupOpening = false;
@@ -251,7 +250,7 @@ void MenuItem::closePopupMenu(bool notify)
         // only if the menu base does not allow multiple popups
         if (!menu->isMultiplePopupsAllowed())
         {
-            menu->changePopupMenuItem(0);
+            menu->changePopupMenuItem(nullptr);
             return; // the rest is handled when the menu base eventually call us again itself
         }
     }

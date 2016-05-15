@@ -35,7 +35,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 // Singleton instance pointer
-template<> SVGDataManager* Singleton<SVGDataManager>::ms_Singleton = 0;
+template<> SVGDataManager* Singleton<SVGDataManager>::ms_Singleton = nullptr;
 
 
 //----------------------------------------------------------------------------//

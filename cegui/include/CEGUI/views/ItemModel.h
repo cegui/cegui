@@ -67,7 +67,7 @@ public:
     \param model_data
         Optional model data associated with this index.
     */
-    explicit ModelIndex(void* model_data = 0);
+    explicit ModelIndex(void* model_data = nullptr);
 
     /*!
     \brief

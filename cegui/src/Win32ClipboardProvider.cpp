@@ -34,7 +34,7 @@ namespace CEGUI
 {
 
 Win32ClipboardProvider::Win32ClipboardProvider() :
-    d_buffer(0),
+    d_buffer(nullptr),
     d_bufferSize(0)
 {
 }
@@ -56,7 +56,7 @@ void Win32ClipboardProvider::allocateBuffer(size_t size)
 void Win32ClipboardProvider::deallocateBuffer()
 {
    delete[] d_buffer;
-   d_buffer = 0;
+   d_buffer = nullptr;
    d_bufferSize = 0;
 }
 
@@ -64,7 +64,7 @@ void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buff
 {
    if(mime_type == "text/plain")
    {
-      if(OpenClipboard(0))
+      if(OpenClipboard(nullptr))
       {
          // Transcode buffer to UTF-16
          String str(static_cast<char*>(buffer), size);
@@ -90,7 +90,7 @@ void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buff
 
 void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buffer, size_t& size)
 {
-   if(OpenClipboard(0))
+   if(OpenClipboard(nullptr))
    {
       // Open & read UTF-16 clipboard data
       HGLOBAL clipboard_data = GetClipboardData(CF_UNICODETEXT);

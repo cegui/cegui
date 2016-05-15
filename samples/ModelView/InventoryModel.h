@@ -57,7 +57,7 @@ public:
     bool operator==(const InventoryItem& other);
 
     static InventoryItem* make(const CEGUI::String& name, float weight,
-        GenericItem* parent = 0);
+        GenericItem* parent = nullptr);
     friend std::ostream& operator<< (std::ostream& output, const InventoryItem& item);
 };
 

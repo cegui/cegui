@@ -50,12 +50,12 @@ public:
     virtual ~NullRenderTarget();
 
     // implement parts of CEGUI::RenderTarget interface
-    virtual void activate();
-    virtual void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in, glm::vec2& p_out) const;
-    virtual bool isImageryCache() const;
+    void activate() override;
+    void unprojectPoint(const GeometryBuffer& buff,
+                        const glm::vec2& p_in, glm::vec2& p_out) const override;
+    bool isImageryCache() const override;
     // implementing the virtual function with a covariant return type
-    virtual NullRenderer& getOwner();
+    NullRenderer& getOwner() override;
 
 protected:
     //! NullRenderer object that owns this RenderTarget

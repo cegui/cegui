@@ -239,9 +239,9 @@ Window::Window(const String& type, const String& name):
     d_distCapturedInputs(false),
 
     // text system set up
-    d_font(0),
+    d_font(nullptr),
 #ifndef CEGUI_BIDI_SUPPORT
-    d_bidiVisualMapping(0),
+    d_bidiVisualMapping(nullptr),
 #elif defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
@@ -259,7 +259,7 @@ Window::Window(const String& type, const String& name):
 
     // user specific data
     d_ID(0),
-    d_userData(0),
+    d_userData(nullptr),
 
     // z-order related options
     d_alwaysOnTop(false),
@@ -278,7 +278,7 @@ Window::Window(const String& type, const String& name):
     d_dragDropTarget(true),
 
     // tool tip related
-    d_customTip(0),
+    d_customTip(nullptr),
     d_weOwnTip(false),
     d_inheritsTipText(true),
 
@@ -301,7 +301,7 @@ Window::Window(const String& type, const String& name):
     // Don't propagate cursor inputs by default.
     d_propagatePointerInputs(false),
 
-    d_guiContext(0),
+    d_guiContext(nullptr),
 
     d_containsPointer(false),
     d_isFocused(false),
@@ -439,7 +439,7 @@ Window* Window::getChildRecursive(unsigned int ID) const
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -454,7 +454,7 @@ const Window* Window::getActiveChild(void) const
 {
     // are children can't be active if we are not
     if (!isActive())
-        return 0;
+        return nullptr;
 
     for (ChildDrawList::const_reverse_iterator it = d_drawList.rbegin(); it != d_drawList.rend(); ++it)
     {
@@ -649,7 +649,7 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
     }
 
     // nothing hit
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -745,9 +745,9 @@ void Window::activate(void)
     if (getCaptureWindow() && getCaptureWindow() != this)
     {
         Window* const tmpCapture = getCaptureWindow();
-        getGUIContext().setInputCaptureWindow(0);
+        getGUIContext().setInputCaptureWindow(nullptr);
 
-        WindowEventArgs args(0);
+        WindowEventArgs args(nullptr);
         tmpCapture->onCaptureLost(args);
     }
 
@@ -760,7 +760,7 @@ void Window::deactivate()
     if (isActive())
     {
         ActivationEventArgs args(this);
-        args.otherWindow = 0;
+        args.otherWindow = nullptr;
         onDeactivated(args);
     }
 }
@@ -864,7 +864,7 @@ bool Window::moveToFront_impl(bool wasClicked)
         {
             took_action = true;
             ActivationEventArgs args(this);
-            args.otherWindow = 0;
+            args.otherWindow = nullptr;
             onActivated(args);
         }
 
@@ -924,7 +924,7 @@ void Window::moveToBack()
     if (isActive())
     {
         ActivationEventArgs args(this);
-        args.otherWindow = 0;
+        args.otherWindow = nullptr;
         onDeactivated(args);
     }
 
@@ -988,13 +988,13 @@ void Window::releaseInput(void)
         // check for case when there was no previously captured window
         if (d_oldCapture)
         {
-            d_oldCapture = 0;
+            d_oldCapture = nullptr;
             getCaptureWindow()->moveToFront();
         }
 
     }
     else
-        getGUIContext().setInputCaptureWindow(0);
+        getGUIContext().setInputCaptureWindow(nullptr);
 
     WindowEventArgs args(this);
     onCaptureLost(args);
@@ -1374,7 +1374,7 @@ void Window::addWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, Font*,
         FontPropertyName,"Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
-        &Window::setFont, &Window::property_getFont, 0
+        &Window::setFont, &Window::property_getFont, nullptr
     );
 
     CEGUI_DEFINE_PROPERTY(Window, unsigned int,
@@ -1389,7 +1389,7 @@ void Window::addWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, Image*,
         CursorImagePropertyName,"Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
-        &Window::setCursor, &Window::property_getCursor, 0
+        &Window::setCursor, &Window::property_getCursor, nullptr
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1747,10 +1747,10 @@ void Window::destroy(void)
     // let go of the tooltip if we have it
     Tooltip* const tip = getTooltip();
     if (tip && tip->getTargetWindow()==this)
-        tip->setTargetWindow(0);
+        tip->setTargetWindow(nullptr);
 
     // ensure custom tooltip is cleaned up
-    setTooltip(static_cast<Tooltip*>(0));
+    setTooltip(static_cast<Tooltip*>(nullptr));
     
 
 
@@ -1763,12 +1763,12 @@ void Window::destroy(void)
     }
 
     // free any assigned WindowRenderer
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         d_windowRenderer->onDetach();
         WindowRendererManager::getSingleton().
             destroyWindowRenderer(d_windowRenderer);
-        d_windowRenderer = 0;
+        d_windowRenderer = nullptr;
     }
 
     cleanupChildren();
@@ -1780,7 +1780,7 @@ void Window::destroy(void)
 //----------------------------------------------------------------------------//
 bool Window::isUsingDefaultTooltip(void) const
 {
-    return d_customTip == 0;
+    return d_customTip == nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -1811,7 +1811,7 @@ void Window::setTooltipType(const String& tooltipType)
 
     if (tooltipType.empty())
     {
-        d_customTip = 0;
+        d_customTip = nullptr;
         d_weOwnTip = false;
     }
     else
@@ -1826,7 +1826,7 @@ void Window::setTooltipType(const String& tooltipType)
         }
         catch (UnknownObjectException&)
         {
-            d_customTip = 0;
+            d_customTip = nullptr;
             d_weOwnTip = false;
         }
     }
@@ -1958,7 +1958,7 @@ void Window::setModalState(bool state)
     }
     // clear the modal target
     else
-        getGUIContext().setModalWindow(0);
+        getGUIContext().setModalWindow(nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -2416,9 +2416,9 @@ void Window::onCaptureLost(WindowEventArgs& e)
     d_repeatPointerSource = CIS_None;
 
     // handle restore of previous capture window as required.
-    if (d_restoreOldCapture && (d_oldCapture != 0)) {
+    if (d_restoreOldCapture && (d_oldCapture != nullptr)) {
         d_oldCapture->onCaptureLost(e);
-        d_oldCapture = 0;
+        d_oldCapture = nullptr;
     }
 
     // handle case where cursor is now in a different window
@@ -2565,7 +2565,7 @@ void Window::onCursorLeaves(CursorInputEventArgs& e)
     const Window* const mw = getGUIContext().getWindowContainingCursor();
     Tooltip* const tip = getTooltip();
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
-        tip->setTargetWindow(0);
+        tip->setTargetWindow(nullptr);
 
     fireEvent(EventCursorLeavesSurface, e, EventNamespace);
 }
@@ -2621,7 +2621,7 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     // perform tooltip control
     Tooltip* const tip = getTooltip();
     if (tip)
-        tip->setTargetWindow(0);
+        tip->setTargetWindow(nullptr);
 
     if ((e.source == CIS_Left) && moveToFront_impl(true))
         ++e.handled;
@@ -2738,7 +2738,7 @@ void Window::setWindowRenderer(const String& name)
         return;
 
     WindowRendererManager& wrm = WindowRendererManager::getSingleton();
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         // Allow reset of renderer
         if (d_windowRenderer->getName() == name)
@@ -2786,7 +2786,7 @@ void Window::onWindowRendererAttached(WindowEventArgs& e)
 void Window::onWindowRendererDetached(WindowEventArgs& e)
 {
     d_windowRenderer->onDetach();
-    d_windowRenderer->d_window = 0;
+    d_windowRenderer->d_window = nullptr;
     fireEvent(EventWindowRendererDetached, e, EventNamespace);
 }
 
@@ -3130,7 +3130,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     else
     {
         ctx.surface = &getGUIContext();
-        ctx.owner = 0;
+        ctx.owner = nullptr;
         ctx.offset = glm::vec2(0, 0);
         ctx.queue = RQ_BASE;
     }
@@ -3266,7 +3266,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
                 "Failed to create a suitable TextureTarget for use by Window '"
                 + d_name + "'", Errors);
 
-            d_surface = 0;
+            d_surface = nullptr;
             return;
         }
 
@@ -3290,7 +3290,7 @@ void Window::releaseRenderingWindow()
         RenderingWindow* const old_surface =
             static_cast<RenderingWindow*>(d_surface);
         d_autoRenderingWindow = false;
-        d_surface = 0;
+        d_surface = nullptr;
         // detach child surfaces prior to destroying the owning surface
         transferChildSurfaces();
         // destroy surface and texture target it used
@@ -3403,7 +3403,7 @@ const RenderedString& Window::getRenderedString() const
     if (!d_renderedStringValid)
     {
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), 0, 0);
+            getTextVisual(), nullptr, nullptr);
         d_renderedStringValid = true;
     }
 
@@ -3792,7 +3792,7 @@ GUIContext& Window::getGUIContext() const
     //
     // ISSUE: if root has no GUIContext set for it, should we return 0 or
     //        System::getDefaultGUIContext?  Come to IRC and argue about it!
-    if (getParent() != 0)
+    if (getParent() != nullptr)
     {
         return getParent()->getGUIContext();
     }

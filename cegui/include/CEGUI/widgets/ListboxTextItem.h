@@ -55,7 +55,7 @@ public:
 	\brief
 		base class constructor
 	*/
-	ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
+	ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
 
 
 	/*!

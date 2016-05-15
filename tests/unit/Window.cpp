@@ -60,7 +60,7 @@ struct LayoutSetupFixture
 
     ~LayoutSetupFixture()
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(0);
+        CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(nullptr);
 
         CEGUI::WindowManager::getSingleton().destroyWindow(d_root);
     }

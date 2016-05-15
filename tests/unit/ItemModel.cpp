@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(ModelIndexTestSuite)
 BOOST_AUTO_TEST_CASE(Ctor_Default_InitialisesDefaultValues)
 {
     ModelIndex modelIndex;
-    BOOST_CHECK(modelIndex.d_modelData == 0);
+    BOOST_CHECK(modelIndex.d_modelData == nullptr);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

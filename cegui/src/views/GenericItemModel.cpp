@@ -31,18 +31,18 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-GenericItem::GenericItem() : d_text(""), d_parent(0)
+GenericItem::GenericItem() : d_text(""), d_parent(nullptr)
 {
 }
 
 //----------------------------------------------------------------------------//
-GenericItem::GenericItem(const String& text) : d_text(text), d_parent(0)
+GenericItem::GenericItem(const String& text) : d_text(text), d_parent(nullptr)
 {
 }
 
 //----------------------------------------------------------------------------//
 GenericItem::GenericItem(const String& text, const String& icon) :
-d_text(text), d_icon(icon), d_parent(0)
+d_text(text), d_icon(icon), d_parent(nullptr)
 {
 }
 

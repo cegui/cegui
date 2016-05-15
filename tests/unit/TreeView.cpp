@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
     ModelIndex index = view->indexAt(glm::vec2(1, 0));
 
-    BOOST_REQUIRE(index.d_modelData == 0);
+    BOOST_REQUIRE(index.d_modelData == nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObject_ReturnsCorrectIndex)
 
     ModelIndex index = view->indexAt(glm::vec2(expander_width * 2, font_height / 2.0f));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(
         model.getRoot().getChildren().at(0),
         static_cast<InventoryItem*>(index.d_modelData));
@@ -126,13 +126,13 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideObjectTreeWithOffset_ReturnsCorrectIn
     float x_offset = 500;
     float y_offset = 354;
     view->setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
-    model.addRandomItemWithChildren(model.getRootIndex(), 0);
+    model.addRandomItemWithChildren(model.getRootIndex(), nullptr);
 
     ModelIndex index = view->indexAt(glm::vec2(
         x_offset + expander_width * 2,
         y_offset + font_height / 2.0f));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(
         model.getRoot().getChildren().at(0),
         static_cast<InventoryItem*>(index.d_modelData));
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectTreeWithScrollbar_Returns
         expander_width * 2,
         9 * font_height + font_height / 2.0f));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(
         model.getRoot().getChildren().at(49),
         static_cast<InventoryItem*>(index.d_modelData));
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideObject_ReturnsInvalidIndex)
 
     ModelIndex index = view->indexAt(glm::vec2(expander_width * 2, font_height * 3));
 
-    BOOST_REQUIRE(index.d_modelData == 0);
+    BOOST_REQUIRE(index.d_modelData == nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
         expander_width * 2,
         font_height + font_height / 2));
 
-    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE(index.d_modelData != nullptr);
     BOOST_REQUIRE_EQUAL(
         model.getRoot().getChildren().at(1),
         static_cast<InventoryItem*>(index.d_modelData));
@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(GetTreeViewItemForIndex)
 
     // subtree not opened now.
     BOOST_REQUIRE_EQUAL(
-        static_cast<TreeViewItemRenderingState*>(0),
+        static_cast<TreeViewItemRenderingState*>(nullptr),
         view->getTreeViewItemForIndex(index0_child));
     CursorInputEventArgs args =
         createCursorEventArgs(expander_width / 2, font_height / 2, view);

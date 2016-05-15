@@ -67,7 +67,7 @@ d_randomItemsCount(0)
 void InventoryModel::load()
 {
     InventoryItem* backpack = InventoryItem::make("Trip backpack", 2.0f, d_root);
-    InventoryItem* prev_matryoshka = 0;
+    InventoryItem* prev_matryoshka = nullptr;
 
     // matryoshka Z to A
     for (char chr = 'Z'; chr >= 'A'; --chr)
@@ -76,7 +76,7 @@ void InventoryModel::load()
 
         matryoshka->setIcon("DriveIcons/DriveStack");
 
-        if (prev_matryoshka != 0)
+        if (prev_matryoshka != nullptr)
         {
             prev_matryoshka->setParent(matryoshka);
             matryoshka->addItem(prev_matryoshka);

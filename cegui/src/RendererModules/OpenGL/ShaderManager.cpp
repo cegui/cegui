@@ -59,7 +59,7 @@ OpenGLBaseShader* OpenGLBaseShaderManager::getShader(GLuint id)
     if(d_shaders.find(id) != d_shaders.end())
         return d_shaders[id];
     else
-        return 0;
+        return nullptr;
 }
 
 void OpenGLBaseShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)

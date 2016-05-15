@@ -47,7 +47,7 @@ String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!"
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase() :
-    d_defaultTarget(0)
+    d_defaultTarget(nullptr)
 {
     init();
     initialiseDisplaySizeWithViewportSize();
@@ -57,7 +57,7 @@ OpenGLRendererBase::OpenGLRendererBase() :
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displaySize(display_size),
-    d_defaultTarget(0)
+    d_defaultTarget(nullptr)
 {
     init();
     d_defaultTarget = new OpenGLViewportTarget(*this);
@@ -65,7 +65,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
-    d_defaultTarget(0)
+    d_defaultTarget(nullptr)
 {
     init(true, set_glew_experimental);
     initialiseDisplaySizeWithViewportSize();
@@ -76,7 +76,7 @@ OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
     d_displaySize(display_size),
-    d_defaultTarget(0)
+    d_defaultTarget(nullptr)
 {
     init(true, set_glew_experimental);
     d_defaultTarget = new OpenGLViewportTarget(*this);

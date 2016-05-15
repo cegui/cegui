@@ -41,7 +41,7 @@ LookNFeelOverviewSample class
 *************************************************************************/
 
 LookNFeelOverviewSample::LookNFeelOverviewSample()
-    : d_fontForTaharez(0)
+    : d_fontForTaharez(nullptr)
 {
     Sample::d_name = "LookNFeelOverviewSample";
     Sample::d_credits = "Lukas &quot;Ident&quot; Meindl";

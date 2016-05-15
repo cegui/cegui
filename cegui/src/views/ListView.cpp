@@ -87,7 +87,7 @@ ListView::~ListView()
 void ListView::prepareForRender()
 {
     ItemView::prepareForRender();
-    if (d_itemModel == 0 || !isDirty())
+    if (d_itemModel == nullptr || !isDirty())
         return;
 
     if (d_needsFullRender)
@@ -127,7 +127,7 @@ void ListView::prepareForRender()
 //----------------------------------------------------------------------------//
 ModelIndex ListView::indexAt(const glm::vec2& position)
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return ModelIndex();
 
     //TODO: add prepareForLayout() as a cheaper operation alternative?

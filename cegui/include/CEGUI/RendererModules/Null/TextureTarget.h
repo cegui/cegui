@@ -48,11 +48,11 @@ public:
     virtual ~NullTextureTarget();
 
     // implementation of RenderTarget interface
-    bool isImageryCache() const;
+    bool isImageryCache() const override;
     // implement CEGUI::TextureTarget interface.
-    void clear();
-    Texture& getTexture() const;
-    void declareRenderSize(const Sizef& sz);
+    void clear() override;
+    Texture& getTexture() const override;
+    void declareRenderSize(const Sizef& sz) override;
 
 protected:
     //! helper to generate unique texture names

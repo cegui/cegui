@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(Insert_NullPosition_InsertsAtBeginning)
     StandardItemModel model;
     model.addItem("i1");
 
-    model.insertItem(new StandardItem("i2"), 0);
+    model.insertItem(new StandardItem("i2"), nullptr);
 
     BOOST_REQUIRE_EQUAL(2, model.getChildCount(model.getRootIndex()));
     BOOST_REQUIRE_EQUAL("i2", model.getData(model.makeIndex(0, model.getRootIndex()), IDR_Text));

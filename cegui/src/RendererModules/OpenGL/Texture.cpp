@@ -31,8 +31,6 @@
 #include "CEGUI/System.h"
 #include "CEGUI/ImageCodec.h"
 
-#include "CEGUI/RendererModules/OpenGL/GL.h"
-
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -41,7 +39,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name) :
     d_size(0, 0),
-    d_grabBuffer(0),
+    d_grabBuffer(nullptr),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_owner(owner),
@@ -296,7 +294,7 @@ void OpenGLTexture::restoreTexture()
 
     // free the grabbuffer
     delete[] d_grabBuffer;
-    d_grabBuffer = 0;
+    d_grabBuffer = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -360,7 +358,7 @@ void OpenGLTexture::cleanupOpenGLTexture()
     if (d_grabBuffer)
     {
         delete[] d_grabBuffer;
-        d_grabBuffer = 0;
+        d_grabBuffer = nullptr;
     }
     // otherwise delete any OpenGL texture associated with this object.
     else

@@ -45,7 +45,7 @@ char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
                                         -1, 0, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.toUtf8String().c_str(),
-                                        -1, 0, 0);
+                                        -1, nullptr, 0);
 #endif
 
     if (!len)
@@ -78,7 +78,7 @@ std::wstring Win32StringTranscoder::stringToStdWString(const String& input) cons
 static CEGUI::String stringFromUTF16(UINT codepage, const char16_t* input)
 {
     const int len = WideCharToMultiByte(codepage, 0, reinterpret_cast<const wchar_t*>(input), -1,
-                                        0, 0, 0, 0);
+                                        nullptr, 0, nullptr, nullptr);
     if (!len)
         throw CEGUI::InvalidRequestException(
             "WideCharToMultiByte failed");
@@ -86,7 +86,7 @@ static CEGUI::String stringFromUTF16(UINT codepage, const char16_t* input)
     char* buff = new char[len];
 
     WideCharToMultiByte(codepage, 0, reinterpret_cast<const wchar_t*>(input), -1,
-                        buff, len, 0, 0);
+                        buff, len, nullptr, nullptr);
 
     const CEGUI::String result(buff);
 

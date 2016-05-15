@@ -145,9 +145,9 @@ void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer() :
     OpenGLRendererBase(true),
-    d_shaderWrapperTextured(0),
-    d_openGLStateChanger(0),
-    d_shaderManager(0)
+    d_shaderWrapperTextured(nullptr),
+    d_openGLStateChanger(nullptr),
+    d_shaderManager(nullptr)
 {
     init();
 }
@@ -155,9 +155,9 @@ OpenGL3Renderer::OpenGL3Renderer() :
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     OpenGLRendererBase(display_size, true),
-    d_shaderWrapperTextured(0),
-    d_openGLStateChanger(0),
-    d_shaderManager(0)
+    d_shaderWrapperTextured(nullptr),
+    d_openGLStateChanger(nullptr),
+    d_shaderManager(nullptr)
 {
     init();
 }

@@ -67,7 +67,7 @@ void OpenGLTextureTarget::grabTexture()
     {
         d_owner.destroyTexture(*d_CEGUITexture);
         d_texture = 0;
-        d_CEGUITexture = 0;
+        d_CEGUITexture = nullptr;
     }
 }
 

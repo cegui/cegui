@@ -265,7 +265,7 @@ template <typename TGenericItem>
 GenericItemModel<TGenericItem>::GenericItemModel(TGenericItem* root) :
 d_root(root)
 {
-    if (root == 0)
+    if (root == nullptr)
         throw InvalidRequestException("Root cannot be null");
 }
 
@@ -293,7 +293,7 @@ GenericItemModel<TGenericItem>::~GenericItemModel()
 template <typename TGenericItem>
 bool GenericItemModel<TGenericItem>::isValidIndex(const ModelIndex& model_index) const
 {
-    return model_index.d_modelData != 0;
+    return model_index.d_modelData != nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -301,7 +301,7 @@ template <typename TGenericItem>
 ModelIndex GenericItemModel<TGenericItem>::makeIndex(size_t child,
     const ModelIndex& parent_index)
 {
-    if (parent_index.d_modelData == 0)
+    if (parent_index.d_modelData == nullptr)
         return ModelIndex();
 
     GenericItem* item = static_cast<GenericItem*>(parent_index.d_modelData);
@@ -339,7 +339,7 @@ ModelIndex GenericItemModel<TGenericItem>::getParentIndex(const ModelIndex& mode
         return ModelIndex();
 
     GenericItem* item = static_cast<GenericItem*>(model_index.d_modelData);
-    if (item->getParent() == 0)
+    if (item->getParent() == nullptr)
         return getRootIndex();
 
     return ModelIndex(item->getParent());
@@ -356,7 +356,7 @@ int GenericItemModel<TGenericItem>::getChildId(const ModelIndex& model_index) co
 template <typename TGenericItem>
 int GenericItemModel<TGenericItem>::getChildId(const GenericItem* item) const
 {
-    if (item == 0 || item->getParent() == 0)
+    if (item == nullptr || item->getParent() == nullptr)
         return -1;
 
     GenericItem* parent_item = item->getParent();
@@ -381,7 +381,7 @@ ModelIndex GenericItemModel<TGenericItem>::getRootIndex() const
 template <typename TGenericItem>
 size_t GenericItemModel<TGenericItem>::getChildCount(const ModelIndex& model_index) const
 {
-    if (model_index.d_modelData == 0)
+    if (model_index.d_modelData == nullptr)
         return d_root->getChildren().size();
 
     return static_cast<GenericItem*>(model_index.d_modelData)->getChildren().size();
@@ -414,7 +414,7 @@ void GenericItemModel<TGenericItem>::addItem(String text)
 template <typename TGenericItem>
 void GenericItemModel<TGenericItem>::addItem(GenericItem* item)
 {
-    if (item == 0)
+    if (item == nullptr)
         throw InvalidRequestException("Cannot add a NULL item to the model!");
 
     addItemAtPosition(item,
@@ -450,10 +450,10 @@ template <typename TGenericItem>
 void GenericItemModel<TGenericItem>::insertItem(GenericItem* item,
     const GenericItem* position)
 {
-    int child_id = position == 0 ? -1 : getChildId(position);
+    int child_id = position == nullptr ? -1 : getChildId(position);
 
     ModelIndex parent_index = getRootIndex();
-    if (position != 0)
+    if (position != nullptr)
         parent_index = getParentIndex(getIndexForItem(position));
 
     addItemAtPosition(item, parent_index,
