@@ -21,7 +21,7 @@
             <Property name="TooltipText" value="Switch active page to selected" />
         </Window>
 
-        <Window name="PageList" type="TaharezLook/Listbox">
+        <Window name="PageList" type="TaharezLook/ListWidget">
             <Property name="Area" value="{{0.55,0},{0.1,0},{0.95,0},{0.48,0}}" />
             <Property name="TooltipText" value="A list of available tabs to experiment with" />
         </Window>

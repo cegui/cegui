@@ -35,6 +35,7 @@ The documentation for CEGUI is split into the following sections:
     - @ref datafile_tutorial
     - @ref window_tutorial
     - @ref input_tutorial
+    - @ref gui_navigation_tutorial
 
 - Porting Guides
     - @ref porting7to8

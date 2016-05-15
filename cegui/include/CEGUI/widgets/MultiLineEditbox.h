@@ -1,11 +1,11 @@
 /***********************************************************************
 	created:	30/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to the Multi-lien edit box base class.
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,11 +29,12 @@
 #ifndef _CEGUIMultiLineEditbox_h_
 #define _CEGUIMultiLineEditbox_h_
 
-#include "../Base.h"
-#include "../Window.h"
+#include "CEGUI/widgets/EditboxBase.h"
+
 #include "../Font.h"
 
 #include <vector>
+#include <deque>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -44,6 +45,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+// forward declaration
+class UndoHandler;
+
 /*!
 \brief
     Base class for multi-line edit box window renderer objects.
@@ -65,18 +69,18 @@ public:
     \return
         Rect object describing the area of the Window to be used for rendering text.
     */
-    virtual Rectf getTextRenderArea(void) const = 0;
+    virtual Rectf getTextRenderArea() const = 0;
 
 protected:
     // base class overrides
-    void onLookNFeelAssigned();
+    void onLookNFeelAssigned() override;
 };
 
 /*!
 \brief
 	Base class for the multi-line edit box widget.
 */
-class CEGUIEXPORT MultiLineEditbox : public Window
+class CEGUIEXPORT MultiLineEditbox : public EditboxBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -139,15 +143,11 @@ public:
      */
 	static const String EventHorzScrollbarModeChanged;
 
-    /*************************************************************************
-        Child Widget name constants
-    *************************************************************************/
-    static const String VertScrollbarName;   //!< Widget name for the vertical scrollbar component.
-    static const String HorzScrollbarName;   //!< Widget name for the horizontal scrollbar component.
+    //! Widget name for the vertical scrollbar component.
+    static const String VertScrollbarName;  
+    //! Widget name for the horizontal scrollbar component.
+    static const String HorzScrollbarName;   
 
-    /*************************************************************************
-        Implementation struct
-    *************************************************************************/
     /*!
     \brief
         struct used to store information about a formatted line within the
@@ -159,85 +159,24 @@ public:
         size_t  d_length;       //!< Code point length of this line.
         float   d_extent;       //!< Rendered extent of this line.
     };
-    typedef std::vector<LineInfo
-        CEGUI_VECTOR_ALLOC(LineInfo)>   LineList;   //!< Type for collection of LineInfos.
+    typedef std::vector<LineInfo>   LineList;   //!< Type for collection of LineInfos.
+
+
+	//! Constructor for the MultiLineEditbox base class.
+	MultiLineEditbox(const String& type, const String& name);
+
+
+    //! Destructor for the MultiLineEditbox base class.
+    virtual ~MultiLineEditbox();
+
+    // Inherited methods
+    void setCaretIndex(size_t caret_pos) override;
+    void setMaxTextLength(size_t max_len) override;
+    bool performPaste(Clipboard& clipboard) override;
 
 	/*************************************************************************
 		Accessor Functions
 	*************************************************************************/
-	/*!
-	\brief
-		return true if the edit box has input focus.
-
-	\return
-		- true if the edit box has keyboard input focus.
-		- false if the edit box does not have keyboard input focus.
-	*/
-	bool	hasInputFocus(void) const;
-
-
-	/*!
-	\brief
-		return true if the edit box is read-only.
-
-	\return
-		- true if the edit box is read only and can't be edited by the user.
-		- false if the edit box is not read only and may be edited by the user.
-	*/
-	bool	isReadOnly(void) const		{return d_readOnly;}
-
-
-	/*!
-	\brief
-		return the current position of the caret.
-
-	\return
-		Index of the insert caret relative to the start of the text.
-	*/
-	size_t	getCaretIndex(void) const		{return d_caretPos;}
-
-
-	/*!
-	\brief
-		return the current selection start point.
-
-	\return
-		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
-		the position of the caret.
-	*/
-	size_t	getSelectionStartIndex(void) const;
-
-
-	/*!
-	\brief
-		return the current selection end point.
-
-	\return
-		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
-		the position of the caret.
-	*/
-	size_t	getSelectionEndIndex(void) const;
-
-	
-	/*!
-	\brief
-		return the length of the current selection (in code points / characters).
-
-	\return
-		Number of code points (or characters) contained within the currently defined selection.
-	*/
-	size_t	getSelectionLength(void) const;
-
-
-	/*!
-	\brief
-		return the maximum text length set for this edit box.
-
-	\return
-		The maximum number of code points (characters) that can be entered into this edit box.
-	*/
-	size_t	getMaxTextLength(void) const		{return d_maxTextLen;}
-
 
 	/*!
 	\brief
@@ -247,7 +186,7 @@ public:
 		- true if the text will be word-wrapped at the edges of the widget frame.
 		- false if text will not be word-wrapped (a scroll bar will be used to access long text lines).
 	*/
-	bool	isWordWrapped(void) const;
+	bool isWordWrapped() const;
 
 
     /*!
@@ -271,7 +210,7 @@ public:
 		- true if the scroll bar will always be shown even if it is not required.
 		- false if the scroll bar will only be shown when it is required.
 	*/
-	bool	isVertScrollbarAlwaysShown(void) const;
+	bool isVertScrollbarAlwaysShown() const;
 
     /*!
     \brief
@@ -295,10 +234,10 @@ public:
     \return
         Rect object describing the area of the Window to be used for rendering text.
     */
-    Rectf getTextRenderArea(void) const;
+    Rectf getTextRenderArea() const;
 
     // get d_lines
-    const LineList& getFormattedLines(void) const   {return d_lines;}
+    const LineList& getFormattedLines() const   {return d_lines;}
 
     /*!
     \brief
@@ -320,98 +259,14 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialiseComponents(void);
-
-
-	/*!
-	\brief
-		Specify whether the edit box is read-only.
-
-	\param setting
-		- true if the edit box is read only and can't be edited by the user.
-		- false if the edit box is not read only and may be edited by the user.
-
-	\return
-		Nothing.
-	*/
-	void	setReadOnly(bool setting);
-
-
-	/*!
-	\brief
-		Set the current position of the caret.
-
-	\param caret_pos
-		New index for the insert caret relative to the start of the text.  If the value specified is greater than the
-		number of characters in the edit box, the caret is positioned at the end of the text.
-
-	\return
-		Nothing.
-	*/
-	void	setCaretIndex(size_t caret_pos);
-
-
-	/*!
-	\brief
-		Define the current selection for the edit box
-
-	\param start_pos
-		Index of the starting point for the selection.  If this value is greater than the number of characters in the edit box, the
-		selection start will be set to the end of the text.
-
-	\param end_pos
-		Index of the ending point for the selection.  If this value is greater than the number of characters in the edit box, the
-		selection start will be set to the end of the text.
-
-	\return
-		Nothing.
-	*/
-	void	setSelection(size_t start_pos, size_t end_pos);
-	
-
-    /*!
-    \brief
-        Define the current selection start for the Editbox
-
-        \param start_pos
-        Index of the starting point for the selection.  If this value is greater than the number of characters in the Editbox, the
-        selection start will be set to the end of the text.
-
-    \return
-        Nothing.
-    */
-    void setSelectionStart(size_t start_pos);
-
-    /*!
-    \brief
-        Define the current selection for the Editbox
-
-    \param start_pos
-        Length of the selection.
-
-    \return
-        Nothing.
-    */
-    void setSelectionLength(size_t length);
-
-	/*!
-	\brief
-		set the maximum text length for this edit box.
-
-	\param max_len
-		The maximum number of code points (characters) that can be entered into this Editbox.
-
-	\return
-		Nothing.
-	*/
-	void	setMaxTextLength(size_t max_len);
+    void initialiseComponents() override;
 
 
 	/*!
 	\brief
 		Scroll the view so that the current caret position is visible.
 	*/
-	void	ensureCaretIsVisible(void);
+	virtual void ensureCaretIsVisible();
 
 
 	/*!
@@ -425,7 +280,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setWordWrapping(bool setting);
+	void setWordWrapping(bool setting);
 
     /*!
 	\brief
@@ -440,225 +295,116 @@ public:
 	*/
 	void	setShowVertScrollbar(bool setting);
 
-    // selection brush image property support
+    /*!
+	\brief
+		Sets a selection brush Image
+
+	\param image
+		The brush image to be used for selections
+	*/
     void setSelectionBrushImage(const Image* image);
+
+    /*!
+	\brief
+		Returns the selection brush Image
+
+	\return
+		The brush image currently used for selections
+	*/
     const Image* getSelectionBrushImage() const;
-    
-    //! \copydoc Window::performCopy
-    virtual bool performCopy(Clipboard& clipboard);
-    
-    //! \copydoc Window::performCut
-    virtual bool performCut(Clipboard& clipboard);
-    
-    //! \copydoc Window::performPaste
-    virtual bool performPaste(Clipboard& clipboard);
+
 
     /*!
     \brief
         Format the text into lines as dictated by the formatting options.
 
-    \param update_scrollbars 
+    \param update_scrollbars
         - true if scrollbar configuration should be performed.
         - false if scrollbar configuration should not be performed.
     */
     void formatText(const bool update_scrollbars);
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for the MultiLineEditbox base class.
-	*/
-	MultiLineEditbox(const String& type, const String& name);
-
-
-	/*!
-	\brief
-		Destructor for the MultiLineEditbox base class.
-	*/
-	virtual ~MultiLineEditbox(void);
-
 
 protected:
-	/*************************************************************************
-		Implementation Methods (abstract)
-	*************************************************************************/
-	/*!
-	\brief
-		Return a Rect object describing, in un-clipped pixels, the window relative area
-		that the text should be rendered in to.
+    // Overriding methods inherited from EditboxBase
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
+    void eraseSelectedText(bool modify_text = true) override;
+    void handleBackspace() override;
+    void handleDelete() override;
+    void onCharacter(TextEventArgs& e) override;
+    void onTextChanged(WindowEventArgs& e) override;
+    void onSized_impl(ElementEventArgs& e) override;
 
-	\return
-		Rect object describing the area of the Window to be used for rendering text.
-	*/
-	//virtual	Rect	getTextRenderArea_impl(void) const		= 0;
+    // Overriding methods inherited from Window
+    void onScroll(CursorInputEventArgs& e) override;
+    void onFontChanged(WindowEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
+    /*!
+    \brief
+        Processing to move caret to the start of the current line.
 
-	/*************************************************************************
-		Implementation Methods
-	*************************************************************************/
-	/*!
-	\brief
-		Format the text into lines as needed by the current formatting options.
-    \deprecated
-        This is deprecated in favour of the version taking a boolean.
-	*/
-	void	formatText(void);
-
-	/*!
-	\brief
-		Return the length of the next token in String \a text starting at index \a start_idx.
-
-	\note
-		Any single whitespace character is one token, any group of other characters is a token.
-	
-	\return
-		The code point length of the token.
-	*/
-	size_t	getNextTokenLength(const String& text, size_t start_idx) const;
+    \param select
+        when true, the text until the start of the line be also selected
+    */
+    void handleLineHome(bool select);
 
 
     /*!
-	\brief
-		display required integrated scroll bars according to current state of the edit box and update their values.
-	*/
-	void	configureScrollbars(void);
+    \brief
+        Processing to move caret to the end of the current line
+
+    \param select
+        when true, the text until the end of the line will be also selected
+    */
+    void handleLineEnd(bool select);
 
 
-	/*!
-	\brief
-		Return the text code point index that is rendered closest to screen position \a pt.
+    /*!
+    \brief
+        Processing to move caret up a line.
 
-	\param pt
-		Point object describing a position on the screen in pixels.
-
-	\return
-		Code point index into the text that is rendered closest to screen position \a pt.
-	*/
-	size_t	getTextIndexFromPosition(const Vector2f& pt) const;
+    \param select
+        when true, a line up will be also selected
+    */
+    void handleLineUp(bool select);
 
 
-	/*!
-	\brief
-		Clear the current selection setting
-	*/
-	void	clearSelection(void);
+    /*!
+    \brief
+        Processing to move caret down a line.
 
-
-	/*!
-	\brief
-		Erase the currently selected text.
-
-	\param modify_text
-		when true, the actual text will be modified.  When false, everything is done except erasing the characters.
-	*/
-	void	eraseSelectedText(bool modify_text = true);
-
-
-	/*!
-	\brief
-		Processing for backspace key
-	*/
-	void	handleBackspace(void);
-
-
-	/*!
-	\brief
-		Processing for Delete key
-	*/
-	void	handleDelete(void);
-
-
-	/*!
-	\brief
-		Processing to move caret one character left
-	*/
-	void	handleCharLeft(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret one word left
-	*/
-	void	handleWordLeft(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret one character right
-	*/
-	void	handleCharRight(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret one word right
-	*/
-	void	handleWordRight(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret to the start of the text.
-	*/
-	void	handleDocHome(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret to the end of the text
-	*/
-	void	handleDocEnd(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret to the start of the current line.
-	*/
-	void	handleLineHome(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret to the end of the current line
-	*/
-	void	handleLineEnd(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret up a line.
-	*/
-	void	handleLineUp(uint sysKeys);
-
-
-	/*!
-	\brief
-		Processing to move caret down a line.
-	*/
-	void	handleLineDown(uint sysKeys);
+    \param select
+        when true, a line down will be also selected
+    */
+    void handleLineDown(bool select);
 
 
 	/*!
 	\brief
 		Processing to insert a new line / paragraph.
 	*/
-	void	handleNewLine(uint sysKeys);
+    void handleNewLine();
 
 
     /*!
     \brief
         Processing to move caret one page up
+
+    \param select
+        when true, a page up will be also selected
     */
-    void    handlePageUp(uint sysKeys);
+    void handlePageUp(bool select);
 
 
     /*!
     \brief
         Processing to move caret one page down
+
+    \param select
+        when true, a page down will be also selected
     */
-    void    handlePageDown(uint sysKeys);
+    void handlePageDown(bool select);
 
 	/*!
 	\brief
@@ -670,113 +416,77 @@ protected:
     bool handle_vertScrollbarVisibilityChanged(const EventArgs&);
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
+
+
+	/*!
+	\brief
+		Return the length of the next token in String \a text starting at index \a start_idx.
+
+	\note
+		Any single whitespace character is one token, any group of other characters is a token.
+
+	\return
+		The code point length of the token.
+	*/
+	size_t getNextTokenLength(const String& text, size_t start_idx) const;
+
+
+    /*!
+	\brief
+		display required integrated scroll bars according to current state of the edit box and update their values.
+	*/
+	void configureScrollbars();
+
+
 
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
 	/*!
 	\brief
-		Handler called when the read-only state of the edit box changes
-	*/
-	void	onReadOnlyChanged(WindowEventArgs& e);
-
-
-	/*!
-	\brief
 		Handler called when the word wrap mode for the the edit box changes
 	*/
-	void	onWordWrapModeChanged(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the maximum text length for the edit box changes
-	*/
-	void	onMaximumTextLengthChanged(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the caret moves.
-	*/
-	void	onCaretMoved(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the text selection changes
-	*/
-	void	onTextSelectionChanged(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the edit box is full
-	*/
-	void	onEditboxFullEvent(WindowEventArgs& e);
+	void onWordWrapModeChanged(WindowEventArgs& e);
 
 
 	/*!
 	\brief
 		Handler called when the 'always show' setting for the vertical scroll bar changes.
 	*/
-	void	onVertScrollbarModeChanged(WindowEventArgs& e);
+	void onVertScrollbarModeChanged(WindowEventArgs& e);
 
 
 	/*!
 	\brief
 		Handler called when 'always show' setting for the horizontal scroll bar changes.
 	*/
-	void	onHorzScrollbarModeChanged(WindowEventArgs& e);
-
-
-	/*************************************************************************
-		Overridden event handlers
-	*************************************************************************/
-	virtual	void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual	void	onMouseDoubleClicked(MouseEventArgs& e);
-	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onCharacter(KeyEventArgs& e);
-	virtual void	onKeyDown(KeyEventArgs& e);
-	virtual void	onTextChanged(WindowEventArgs& e);
-	virtual void	onSized_impl(ElementEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
-    virtual void onFontChanged(WindowEventArgs& e);
-
+	void onHorzScrollbarModeChanged(WindowEventArgs& e);
 
 	/*************************************************************************
 		Implementation data
 	*************************************************************************/
-	bool	d_readOnly;			//!< true if the edit box is in read-only mode
-	size_t	d_maxTextLen;		//!< Maximum number of characters for this Editbox.
-	size_t	d_caretPos;			//!< Position of the caret / insert-point.
-	size_t	d_selectionStart;	//!< Start of selection area.
-	size_t	d_selectionEnd;		//!< End of selection area.
-	bool	d_dragging;			//!< true when a selection is being dragged.
-	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
-
-	static String d_lineBreakChars;	//!< Holds what we consider to be line break characters.
-	bool		d_wordWrap;			//!< true when formatting uses word-wrapping.
-	LineList	d_lines;			//!< Holds the lines for the current formatting.
-	float		d_widestExtent;		//!< Holds the extent of the widest line as calculated in the last formatting pass.
+	static String   d_lineBreakChars;	//!< Holds what we consider to be line break characters.
+    bool            d_wordWrap;		//!< true when formatting uses word-wrapping.
+	LineList        d_lines;			//!< Holds the lines for the current formatting.
+	float           d_lastRenderWidth;  //!< Holds last render area width
+	float           d_widestExtent;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
 
 	// component widget settings
-	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
-	bool	d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
+	bool d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
+	bool d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
 
 	// images
-	const Image*	d_selectionBrush;	//!< Image to use as the selection brush (should be set by derived class).
+	const Image* d_selectionBrush;	//!< Image to use as the selection brush (should be set by derived class).
 
 
 private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addMultiLineEditboxProperties(void);
+	void addMultiLineEditboxProperties();
+
+    void handleSelectAllText(SemanticEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

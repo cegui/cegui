@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="@PKG_NAME@"
+    android:versionCode="1"
+    android:versionName="@CEGUI_VERSION@" 
+    android:installLocation="auto">
+
+    <uses-sdk android:minSdkVersion="@ANDROID_NATIVE_API_LEVEL@" />
+    <uses-feature android:glEsVersion="@ANDROID_GLES_VERSION@" android:required="true"/>
+
+    <application android:label="@ANDROID_MOD_NAME@" android:icon="@drawable/ic_launcher" android:hasCode="false">
+        <activity android:name="android.app.NativeActivity" 
+            android:label="@ANDROID_MOD_NAME@"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation@SCREEN_SIZE@|keyboardHidden"
+            android:debuggable="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <!-- Tell NativeActivity the name of or .so -->
+            <meta-data android:name="android.app.lib_name" android:value="@ANDROID_MOD_NAME@" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> 
+    </application>
+
+</manifest>

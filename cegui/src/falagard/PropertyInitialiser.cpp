@@ -39,12 +39,12 @@ namespace CEGUI
 
     void PropertyInitialiser::apply(CEGUI::PropertySet& target) const
     {
-        CEGUI_TRY
+        try
         {
             target.setProperty(d_propertyName, d_propertyValue);
         }
         // allow 'missing' properties
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {}
     }
 
