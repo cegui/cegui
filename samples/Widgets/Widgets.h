@@ -45,6 +45,15 @@ typedef std::vector<MyListItem*> WidgetListType;
 // Sample class
 class WidgetsSample : public Sample
 {
+//----------------------------------------------------------------------------//
+// Helper struct to handle widget properties
+//----------------------------------------------------------------------------//
+struct WidgetPropertiesObject
+{
+    std::vector<const CEGUI::Property*> d_propertyList;
+    const CEGUI::Window* d_widget;
+};
+
 public:
     WidgetsSample();
 
