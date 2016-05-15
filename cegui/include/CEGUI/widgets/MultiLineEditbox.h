@@ -73,7 +73,7 @@ public:
 
 protected:
     // base class overrides
-    void onLookNFeelAssigned();
+    void onLookNFeelAssigned() override;
 };
 
 /*!
@@ -170,9 +170,9 @@ public:
     virtual ~MultiLineEditbox();
 
     // Inherited methods
-    virtual void setCaretIndex(size_t caret_pos);
-    virtual void setMaxTextLength(size_t max_len);
-    virtual bool performPaste(Clipboard& clipboard);
+    void setCaretIndex(size_t caret_pos) override;
+    void setMaxTextLength(size_t max_len) override;
+    bool performPaste(Clipboard& clipboard) override;
 
 	/*************************************************************************
 		Accessor Functions
@@ -259,7 +259,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void initialiseComponents();
+    void initialiseComponents() override;
 
 
 	/*!
@@ -327,18 +327,18 @@ public:
 
 protected:
     // Overriding methods inherited from EditboxBase
-    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const;
-    virtual void eraseSelectedText(bool modify_text = true);
-    virtual void handleBackspace();
-    virtual void handleDelete();
-    virtual void onCharacter(TextEventArgs& e);
-    virtual void onTextChanged(WindowEventArgs& e);
-    virtual void onSized_impl(ElementEventArgs& e);
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
+    void eraseSelectedText(bool modify_text = true) override;
+    void handleBackspace() override;
+    void handleDelete() override;
+    void onCharacter(TextEventArgs& e) override;
+    void onTextChanged(WindowEventArgs& e) override;
+    void onSized_impl(ElementEventArgs& e) override;
 
     // Overriding methods inherited from Window
-    virtual void onScroll(CursorInputEventArgs& e);
-    virtual void onFontChanged(WindowEventArgs& e);
-    virtual void onSemanticInputEvent(SemanticEventArgs& e);
+    void onScroll(CursorInputEventArgs& e) override;
+    void onFontChanged(WindowEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     /*!
     \brief
@@ -416,7 +416,7 @@ protected:
     bool handle_vertScrollbarVisibilityChanged(const EventArgs&);
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
 
 	/*!

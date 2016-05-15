@@ -74,7 +74,7 @@ namespace CEGUI
         Sizef getItemPixelSize(void) const override;
 
         // overridden from WindowRenderer
-        bool handleFontRenderSizeChange(const Font* const font);
+        bool handleFontRenderSizeChange(const Font* const font) override;
 
     protected:
         const NamedArea& getContentNamedArea() const;

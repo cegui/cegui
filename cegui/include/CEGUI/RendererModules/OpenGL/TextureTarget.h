@@ -52,9 +52,9 @@ public:
     virtual ~OpenGLTextureTarget();
 
     // implementation of RenderTarget interface
-    bool isImageryCache() const;
+    bool isImageryCache() const override;
     // implementation of parts of TextureTarget interface
-    Texture& getTexture() const;
+    Texture& getTexture() const override;
 
     /*!
     \brief

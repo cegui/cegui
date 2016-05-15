@@ -173,7 +173,7 @@ void TreeView::prepareForRender()
 {
     ItemView::prepareForRender();
     //TODO: better way of ignoring the null item model? E.g.: warn? Throw an exception?
-    if (d_itemModel == 0 || !isDirty())
+    if (d_itemModel == nullptr || !isDirty())
         return;
 
     if (d_needsFullRender)
@@ -308,7 +308,7 @@ ModelIndex TreeView::indexAt(const glm::vec2& position)
 ModelIndex TreeView::indexAtWithAction(const glm::vec2& position,
     TreeViewItemAction action)
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return ModelIndex();
 
     //TODO: add prepareForLayout() as a cheaper operation alternative?
@@ -373,7 +373,7 @@ TreeViewWindowRenderer* TreeView::getViewRenderer()
 //----------------------------------------------------------------------------//
 void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return;
 
     item.d_subtreeIsExpanded = !item.d_subtreeIsExpanded;
@@ -436,7 +436,7 @@ bool TreeView::onChildrenRemoved(const EventArgs& args)
     const ModelEventArgs& margs = static_cast<const ModelEventArgs&>(args);
     TreeViewItemRenderingState* item = getTreeViewItemForIndex(margs.d_parentIndex);
 
-    if (item == 0)
+    if (item == nullptr)
         return true;
 
     item->d_totalChildCount -= margs.d_count;
@@ -471,7 +471,7 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     const ModelEventArgs& margs = static_cast<const ModelEventArgs&>(args);
     TreeViewItemRenderingState* item = getTreeViewItemForIndex(margs.d_parentIndex);
 
-    if (item == 0)
+    if (item == nullptr)
         return true;
 
     item->d_totalChildCount += margs.d_count;
@@ -542,7 +542,7 @@ TreeViewItemRenderingState* TreeView::getTreeViewItemForIndex(const ModelIndex& 
         ids_stack.pop_back();
 
         if (static_cast<size_t>(child_id) >= item->d_children.size())
-            return 0;
+            return nullptr;
 
         item = &item->d_children.at(child_id);
     }

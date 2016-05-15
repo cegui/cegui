@@ -56,8 +56,8 @@ public:
     TplWindowFactory();
 
     // Implement WindowFactory interface
-    Window* createWindow(const String& name);
-    void destroyWindow(Window* window);
+    Window* createWindow(const String& name) override;
+    void destroyWindow(Window* window) override;
 };
 
 //----------------------------------------------------------------------------//

@@ -54,8 +54,8 @@ public:
         values to be used.  May be 0.
     */
     void createRenderGeometryAndAddToWindow(
-        Window& srcWindow, const CEGUI::ColourRect* modColours = 0,
-        const Rectf* clipper = 0, bool clipToDisplay = false) const;
+        Window& srcWindow, const CEGUI::ColourRect* modColours = nullptr,
+        const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
 
     /*!
     \brief
@@ -76,8 +76,8 @@ public:
     */
     void createRenderGeometryAndAddToWindow(
         Window& srcWindow, const Rectf& baseRect,
-        const CEGUI::ColourRect* modColours = 0,
-        const Rectf* clipper = 0, bool clipToDisplay = false) const;
+        const CEGUI::ColourRect* modColours = nullptr,
+        const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
 
     /*!
     \brief

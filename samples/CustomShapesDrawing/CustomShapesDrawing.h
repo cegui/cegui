@@ -47,13 +47,13 @@ public:
     CustomShapesDrawingSample();
 
     //! Initialises our sample
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
-    virtual void deinitialise();
+    void deinitialise() override;
 
 private:
     //! The general update function of our sample
-    void update(float timeSinceLastUpdate);
+    void update(float timeSinceLastUpdate) override;
 
     //! Updates the counted FPS and triggers the recreation of FPS Graph geometry if needed.
     void updateFPS(float timeSinceLastUpdate);

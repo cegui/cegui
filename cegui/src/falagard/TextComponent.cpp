@@ -51,7 +51,7 @@ namespace CEGUI
 {
     TextComponent::TextComponent() :
 #ifndef CEGUI_BIDI_SUPPORT
-        d_bidiVisualMapping(0),
+        d_bidiVisualMapping(nullptr),
 #elif defined (CEGUI_USE_FRIBIDI)
         d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
@@ -75,7 +75,7 @@ namespace CEGUI
         FalagardComponentBase(obj),
         d_textLogical(obj.d_textLogical),
 #ifndef CEGUI_BIDI_SUPPORT
-        d_bidiVisualMapping(0),
+        d_bidiVisualMapping(nullptr),
 #elif defined (CEGUI_USE_FRIBIDI)
         d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
@@ -303,7 +303,7 @@ namespace CEGUI
         }
         catch (UnknownObjectException&)
         {
-            return 0;
+            return nullptr;
         }
     }
 
@@ -455,17 +455,17 @@ namespace CEGUI
             #endif
             // parse string using parser from Window.
             d_renderedString =
-                srcWindow.getRenderedStringParser().parse(vis, font, 0);
+                srcWindow.getRenderedStringParser().parse(vis, font, nullptr);
         }
         // do we use a static text string from the looknfeel
         else if (!getTextVisual().empty())
             // parse string using parser from Window.
             d_renderedString = srcWindow.getRenderedStringParser().
-                parse(getTextVisual(), font, 0);
+                parse(getTextVisual(), font, nullptr);
         // do we have to override the font?
         else if (font != srcWindow.getFont())
             d_renderedString = srcWindow.getRenderedStringParser().
-                parse(srcWindow.getTextVisual(), font, 0);
+                parse(srcWindow.getTextVisual(), font, nullptr);
         // use ready-made RenderedString from the Window itself
         else
             rs = &srcWindow.getRenderedString();

@@ -139,7 +139,7 @@ public:
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string,
                          const Font* active_font,
-                         const ColourRect* active_colours);
+                         const ColourRect* active_colours) override;
 
 protected:
     //! append the text string \a text to the RenderedString \a rs.

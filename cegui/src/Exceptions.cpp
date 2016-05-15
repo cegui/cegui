@@ -73,7 +73,7 @@ static void dumpBacktrace(size_t frames)
 #if defined(_MSC_VER)
     SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES);
 
-    if (!SymInitialize(GetCurrentProcess(), 0, TRUE))
+    if (!SymInitialize(GetCurrentProcess(), nullptr, TRUE))
         return;
 
     HANDLE thread = GetCurrentThread();
@@ -110,7 +110,7 @@ static void dumpBacktrace(size_t frames)
 
     size_t frame_no = 0;
     while (StackWalk64(machine_arch, GetCurrentProcess(), thread, &stackframe,
-                       &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0) &&
+                       &context, nullptr, SymFunctionTableAccess64, SymGetModuleBase64, nullptr) &&
            stackframe.AddrPC.Offset)
     {
         symbol->Address = stackframe.AddrPC.Offset;

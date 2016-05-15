@@ -146,7 +146,7 @@ public:
     */
     virtual bool hasInputFocus() const;
 
-    virtual bool performPaste(Clipboard& clipboard) = 0;
+    bool performPaste(Clipboard& clipboard) override = 0;
 
     /*!
     \brief
@@ -353,23 +353,23 @@ public:
     virtual void setMaxTextLength(size_t max_len) = 0;
 
     //! \copydoc Window::performCopy
-    virtual bool performCopy(Clipboard& clipboard);
+    bool performCopy(Clipboard& clipboard) override;
 
     //! \copydoc Window::performCut
-    virtual bool performCut(Clipboard& clipboard);
+    bool performCut(Clipboard& clipboard) override;
 
     //! \copydoc Window::setEnabled
-    virtual void setEnabled(bool enabled);
+    void setEnabled(bool enabled) override;
  
     //! \copydoc Window::performUndo
-    virtual bool performUndo();
+    bool performUndo() override;
 
     //! \copydoc Window::performRedo
-    virtual bool performRedo();
+    bool performRedo() override;
 
 protected:
     // Inherited methods
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const = 0;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
 
     /*!
     \brief
@@ -545,14 +545,14 @@ protected:
     bool handleBasicSemanticValue(SemanticEventArgs& e);
 
     // Overridden event handlers
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    virtual void onCursorActivate(CursorInputEventArgs& e);
-    virtual void onCursorMove(CursorInputEventArgs& e);
-    virtual void onCaptureLost(WindowEventArgs& e);
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
 
-    virtual void onCharacter(TextEventArgs& e) = 0;
-    virtual void onTextChanged(WindowEventArgs& e) = 0;
-    virtual void onSemanticInputEvent(SemanticEventArgs& e) = 0;
+    void onCharacter(TextEventArgs& e) override = 0;
+    void onTextChanged(WindowEventArgs& e) override = 0;
+    void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
     //! True if the editbox is in read-only mode
     bool d_readOnly;

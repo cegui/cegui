@@ -319,8 +319,8 @@ namespace CEGUI
         float getVerticalAdvance() const;
 
         // overridden from base class
-        bool handleFontRenderSizeChange(const Font* const font);
-        void createRenderGeometry(void);
+        bool handleFontRenderSizeChange(const Font* const font) override;
+        void createRenderGeometry(void) override;
 
         /*!
         \brief
@@ -412,7 +412,7 @@ namespace CEGUI
         */
         void setUnitIntervalVerticalScrollPosition(float position);
 
-        void onIsFrameEnabledChanged();
+        void onIsFrameEnabledChanged() override;
 
         /*!
         \brief
@@ -425,10 +425,10 @@ namespace CEGUI
         */
         bool isWordWrapOn() const;
 
-        float getContentWidth() const;
-        float getContentHeight() const;
-        UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth() const;
-        UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight() const;
+        float getContentWidth() const override;
+        float getContentHeight() const override;
+        UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth() const override;
+        UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight() const override;
 
         /*!
         \brief
@@ -457,7 +457,7 @@ namespace CEGUI
                limited to those heights in which exactly a whole number of lines
                fits, because there's no point to try other heights.
         */
-        void adjustSizeToContent();
+        void adjustSizeToContent() override;
 
         /*!
         \brief
@@ -481,7 +481,7 @@ namespace CEGUI
             scrollbars, and without the need to split a word between 2 or more
             lines.
         */
-        bool contentFitsForSpecifiedWindowSize(const Sizef& window_size) const;
+        bool contentFitsForSpecifiedWindowSize(const Sizef& window_size) const override;
 
         /*!
         \brief
@@ -489,7 +489,7 @@ namespace CEGUI
             without the need for scrollbars, and without the need to split a
             word between 2 or more lines.
         */
-        bool contentFits() const;
+        bool contentFits() const override;
 
         /*!
         \brief
@@ -520,8 +520,8 @@ namespace CEGUI
         void updateFormatting(const Sizef&) const;
 
         // overridden from FalagardStatic base class
-        void onLookNFeelAssigned();
-        void onLookNFeelUnassigned();
+        void onLookNFeelAssigned() override;
+        void onLookNFeelUnassigned() override;
 
         // Adds the render geometry for scrolled text to the Window
         void addScrolledTextRenderGeometry();

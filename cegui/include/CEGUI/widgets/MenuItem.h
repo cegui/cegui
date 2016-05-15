@@ -260,13 +260,13 @@ protected:
     /*************************************************************************
         Overridden event handlers
     *************************************************************************/
-    virtual void    onCursorMove(CursorInputEventArgs& e);
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-    virtual void    onCursorActivate(CursorInputEventArgs& e);
-    virtual void    onCaptureLost(WindowEventArgs& e);
-    virtual void    onCursorLeaves(CursorInputEventArgs& e);
-    virtual void    onTextChanged(WindowEventArgs& e);
-    virtual void    updateSelf(float elapsed);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void    onCaptureLost(WindowEventArgs& e) override;
+    void    onCursorLeaves(CursorInputEventArgs& e) override;
+    void    onTextChanged(WindowEventArgs& e) override;
+    void    updateSelf(float elapsed) override;
 
 
     /*************************************************************************
@@ -334,7 +334,7 @@ private:
     /*!
     \copydoc Window::addChild_impl
     */
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 };
 
 } // End of  CEGUI namespace section

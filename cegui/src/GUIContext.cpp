@@ -48,14 +48,14 @@ const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
-    d_rootWindow(0),
+    d_rootWindow(nullptr),
     d_isDirty(false),
-    d_defaultTooltipObject(0),
+    d_defaultTooltipObject(nullptr),
     d_weCreatedTooltipObject(false),
-    d_defaultFont(0),
+    d_defaultFont(nullptr),
     d_surfaceSize(target.getArea().getSize()),
-    d_modalWindow(0),
-    d_captureWindow(0),
+    d_modalWindow(nullptr),
+    d_captureWindow(nullptr),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -65,7 +65,7 @@ GUIContext::GUIContext(RenderTarget& target) :
             WindowManager::EventWindowDestroyed,
             Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
     d_semanticEventHandlers(),
-    d_windowNavigator(0)
+    d_windowNavigator(nullptr)
 {
     resetWindowContainingCursor();
     initializeSemanticEventHandlers();
@@ -74,7 +74,7 @@ GUIContext::GUIContext(RenderTarget& target) :
 //----------------------------------------------------------------------------//
 void GUIContext::resetWindowContainingCursor()
 {
-    d_windowContainingCursor = 0;
+    d_windowContainingCursor = nullptr;
     d_windowContainingCursorIsUpToDate = true;
 }
 
@@ -85,7 +85,7 @@ GUIContext::~GUIContext()
     deleteSemanticEventHandlers();
 
     if (d_rootWindow)
-        d_rootWindow->setGUIContext(0);
+        d_rootWindow->setGUIContext(nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -101,7 +101,7 @@ void GUIContext::setRootWindow(Window* new_root)
         return;
 
     if (d_rootWindow)
-        d_rootWindow->setGUIContext(0);
+        d_rootWindow->setGUIContext(nullptr);
 
     WindowEventArgs args(d_rootWindow);
 
@@ -119,7 +119,7 @@ void GUIContext::setRootWindow(Window* new_root)
 //----------------------------------------------------------------------------//
 void GUIContext::updateRootWindowAreaRects() const
 {
-    ElementEventArgs args(0);
+    ElementEventArgs args(nullptr);
     d_rootWindow->onParentSized(args);
 }
 
@@ -160,7 +160,7 @@ void GUIContext::destroyDefaultTooltipWindowInstance()
     if (d_defaultTooltipObject && d_weCreatedTooltipObject)
     {
         WindowManager::getSingleton().destroyWindow(d_defaultTooltipObject);
-        d_defaultTooltipObject = 0;
+        d_defaultTooltipObject = nullptr;
     }
 
     d_weCreatedTooltipObject = false;
@@ -309,20 +309,20 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
         static_cast<const WindowEventArgs&>(args).window;
 
     if (window == d_rootWindow)
-        d_rootWindow = 0;
+        d_rootWindow = nullptr;
 
     if (window == getWindowContainingCursor())
         resetWindowContainingCursor();
 
     if (window == d_modalWindow)
-        d_modalWindow = 0;
+        d_modalWindow = nullptr;
 
     if (window == d_captureWindow)
-        d_captureWindow = 0;
+        d_captureWindow = nullptr;
 
     if (window == d_defaultTooltipObject)
     {
-        d_defaultTooltipObject = 0;
+        d_defaultTooltipObject = nullptr;
         d_weCreatedTooltipObject = false;
     }
 
@@ -349,7 +349,7 @@ void GUIContext::updateWindowContainingCursor()
 //----------------------------------------------------------------------------//
 bool GUIContext::updateWindowContainingCursor_impl() const
 {
-    CursorInputEventArgs ciea(0);
+    CursorInputEventArgs ciea(nullptr);
     const glm::vec2 cursor_pos(d_cursor.getPosition());
 
     Window* const window_with_cursor = getTargetWindow(cursor_pos, true);
@@ -442,7 +442,7 @@ Window* GUIContext::getTargetWindow(const glm::vec2& pt,
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
-        return 0;
+        return nullptr;
 
     Window* dest_window = d_captureWindow;
 
@@ -479,7 +479,7 @@ Window* GUIContext::getInputTargetWindow() const
 {
     // if no active sheet, there is no target widow.
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
-        return 0;
+        return nullptr;
 
     // handle normal non-modal situations
     if (!d_modalWindow)
@@ -501,7 +501,7 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
         const SemanticInputEvent& semantic_event =
             static_cast<const SemanticInputEvent&>(event);
 
-        if (d_windowNavigator != 0)
+        if (d_windowNavigator != nullptr)
             d_windowNavigator->handleSemanticEvent(semantic_event);
 
         return handleSemanticInputEvent(semantic_event);
@@ -595,7 +595,7 @@ void GUIContext::onRenderTargetChanged(GUIContextRenderTargetEventArgs& args)
 void GUIContext::setDefaultFont(const String& name)
 {
     if (name.empty())
-        setDefaultFont(0);
+        setDefaultFont(nullptr);
     else
         setDefaultFont(&FontManager::getSingleton().get(name));
 }
@@ -673,10 +673,10 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
 
     Window* targetWindow = getInputTargetWindow();
     // window navigator's window takes precedence
-    if (d_windowNavigator != 0)
+    if (d_windowNavigator != nullptr)
         targetWindow = d_windowNavigator->getCurrentFocusedWindow();
 
-    if (targetWindow != 0)
+    if (targetWindow != nullptr)
     {
         SemanticEventArgs args(targetWindow);
 
@@ -740,7 +740,7 @@ void GUIContext::deleteSemanticEventHandlers()
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(0);
+    CursorInputEventArgs ciea(nullptr);
     ciea.position = d_cursor.getPosition();
     ciea.moveDelta = glm::vec2(0, 0);
     ciea.source = event.d_payload.source;
@@ -754,7 +754,7 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
     if (!ciea.window)
         return false;
 
-    if (d_windowNavigator != 0)
+    if (d_windowNavigator != nullptr)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
     ciea.window->onCursorActivate(ciea);
@@ -764,7 +764,7 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(0);
+    CursorInputEventArgs ciea(nullptr);
     ciea.position = d_cursor.getPosition();
     ciea.moveDelta = glm::vec2(0, 0);
     ciea.source = event.d_payload.source;
@@ -774,7 +774,7 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
     if (ciea.window)
         ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
 
-    if (d_windowNavigator != 0)
+    if (d_windowNavigator != nullptr)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
     ciea.window->onCursorPressHold(ciea);
@@ -784,7 +784,7 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(0);
+    CursorInputEventArgs ciea(nullptr);
     ciea.position = d_cursor.getPosition();
     ciea.moveDelta = glm::vec2(0, 0);
     ciea.source = CIS_None;
@@ -830,7 +830,7 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
         event.d_payload.array[1]);
 
     // setup cursor movement event args object.
-    CursorInputEventArgs ciea(0);
+    CursorInputEventArgs ciea(nullptr);
     ciea.moveDelta = new_position - d_cursor.getPosition();
 
     // no movement means no event
@@ -855,7 +855,7 @@ bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
     if (!getWindowContainingCursor())
         return false;
 
-    CursorInputEventArgs ciea(0);
+    CursorInputEventArgs ciea(nullptr);
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(
         d_cursor.getPosition());
     ciea.moveDelta = glm::vec2(0, 0);

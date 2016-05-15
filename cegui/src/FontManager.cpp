@@ -46,7 +46,7 @@ namespace CEGUI
 {
 
 // singleton instance pointer
-template<> FontManager* Singleton<FontManager>::ms_Singleton = 0;
+template<> FontManager* Singleton<FontManager>::ms_Singleton = nullptr;
 
 
 FontManager::FontManager() :

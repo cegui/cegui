@@ -41,7 +41,7 @@
 namespace CEGUI
 {
     ImageryComponent::ImageryComponent() :
-        d_image(0),
+        d_image(nullptr),
         d_vertFormatting(VF_TOP_ALIGNED),
         d_horzFormatting(HF_LEFT_ALIGNED)
     {}
@@ -64,7 +64,7 @@ namespace CEGUI
         }
         catch (UnknownObjectException&)
         {
-            d_image = 0;
+            d_image = nullptr;
         }
     }
 
@@ -218,7 +218,7 @@ namespace CEGUI
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
         ImageRenderSettings imgRenderSettings(
-            Rectf(), 0,
+            Rectf(), nullptr,
             !clip_to_display, finalColours);
 
         Rectf& renderSettingDestArea = imgRenderSettings.d_destArea;

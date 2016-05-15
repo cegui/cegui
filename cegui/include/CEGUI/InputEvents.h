@@ -104,7 +104,7 @@ public:
         d_object(obj)
     {}
 
-    virtual bool operator()(const InputEvent& arg)
+    bool operator()(const InputEvent& arg) override
     {
         return (d_object->*d_function)(static_cast<const TInput&>(arg));
     }

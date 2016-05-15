@@ -79,8 +79,8 @@ static void APIENTRY activeTextureDummy(GLenum) {}
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    virtual TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const
-        { return new T(r, addStencilBuffer); }
+    TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const override
+    { return new T(r, addStencilBuffer); }
 };
 
 //----------------------------------------------------------------------------//

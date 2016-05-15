@@ -79,7 +79,7 @@ namespace CEGUI
 
     protected:
         // overridden from TabControl base class.
-        TabButton* createTabButton(const String& name) const;
+        TabButton* createTabButton(const String& name) const override;
 
         // data fields
         String  d_tabButtonType;

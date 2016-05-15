@@ -35,8 +35,8 @@ class EditboxValidationSample : public Sample
 public:
     EditboxValidationSample();
 
-    bool initialise(CEGUI::GUIContext* guiContext);
-    void deinitialise();
+    bool initialise(CEGUI::GUIContext* guiContext) override;
+    void deinitialise() override;
 
 protected:
     bool validationChangeHandler(const CEGUI::EventArgs& args);

@@ -48,7 +48,6 @@
 #include "CEGUI/SharedStringStream.h"
 #include <algorithm>
 #include <iterator>
-#include <cmath>
 #include <stdio.h>
 #include <queue>
 
@@ -223,19 +222,19 @@ Window::Window(const String& type, const String& name):
     d_clippedByParent(true),
 
     // rendering components and options
-    d_windowRenderer(0),
-    d_surface(0),
+    d_windowRenderer(nullptr),
+    d_surface(nullptr),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
     d_autoRenderingSurfaceStencilEnabled(false),
-    d_cursor(0),
+    d_cursor(nullptr),
 
     // alpha transparency set up
     d_alpha(1.0f),
     d_inheritsAlpha(true),
 
     // cursor input capture set up
-    d_oldCapture(0),
+    d_oldCapture(nullptr),
     d_restoreOldCapture(false),
     d_distCapturedInputs(false),
 
@@ -252,7 +251,7 @@ Window::Window(const String& type, const String& name):
 #endif
     d_bidiDataValid(false),
     d_renderedStringValid(false),
-    d_customStringParser(0),
+    d_customStringParser(nullptr),
     d_textParsingEnabled(true),
 
     // margin

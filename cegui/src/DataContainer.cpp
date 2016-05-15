@@ -38,7 +38,7 @@ void RawDataContainer::release(void)
     {
         delete[] mData;
 
-        mData = 0;
+        mData = nullptr;
         mSize = 0;
     }
 }

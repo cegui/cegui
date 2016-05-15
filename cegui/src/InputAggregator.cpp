@@ -311,7 +311,7 @@ bool InputAggregator::injectMouseMove(float delta_x, float delta_y)
 
 bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     d_pointerPosition = glm::vec2(x_pos, y_pos);
@@ -325,7 +325,7 @@ bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
 
 bool InputAggregator::injectMouseLeaves()
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_PointerLeave);
@@ -335,7 +335,7 @@ bool InputAggregator::injectMouseLeaves()
 
 bool InputAggregator::injectMouseButtonDown(MouseButton button)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     //
@@ -390,7 +390,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
 }
 bool InputAggregator::injectMouseButtonUp(MouseButton button)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_CursorActivate);
@@ -401,7 +401,7 @@ bool InputAggregator::injectMouseButtonUp(MouseButton button)
 
 bool InputAggregator::injectKeyDown(Key::Scan scan_code)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
     
     d_keysPressed[scan_code] = true;
@@ -415,7 +415,7 @@ bool InputAggregator::injectKeyDown(Key::Scan scan_code)
 
 bool InputAggregator::injectKeyUp(Key::Scan scan_code)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
     
     d_keysPressed[scan_code] = false;
@@ -429,7 +429,7 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
 
 bool InputAggregator::injectChar(char32_t code_point)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     TextInputEvent text_event;
@@ -440,7 +440,7 @@ bool InputAggregator::injectChar(char32_t code_point)
 
 bool InputAggregator::injectMouseWheelChange(float delta)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_VerticalScroll);
@@ -451,7 +451,7 @@ bool InputAggregator::injectMouseWheelChange(float delta)
 
 bool InputAggregator::injectMouseButtonClick(const MouseButton button)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_CursorActivate);
@@ -466,7 +466,7 @@ bool InputAggregator::injectMouseButtonClick(const MouseButton button)
 
 bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_SelectWord);
@@ -477,7 +477,7 @@ bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
 
 bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_SelectAll);
@@ -488,7 +488,7 @@ bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
 
 bool InputAggregator::injectCopyRequest()
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_Copy);
@@ -498,7 +498,7 @@ bool InputAggregator::injectCopyRequest()
 
 bool InputAggregator::injectCutRequest()
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_Cut);
@@ -508,7 +508,7 @@ bool InputAggregator::injectCutRequest()
 
 bool InputAggregator::injectPasteRequest()
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == nullptr)
         return false;
 
     SemanticInputEvent semantic_event(SV_Paste);

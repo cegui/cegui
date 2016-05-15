@@ -146,7 +146,7 @@ PropertyHelper<Image*>::fromString(const String& str)
 {
     // handle empty string case
     if (str.empty())
-        return 0;
+        return nullptr;
 
     PropertyHelper<Image*>::return_type image;
 
@@ -156,7 +156,7 @@ PropertyHelper<Image*>::fromString(const String& str)
     }
     catch (UnknownObjectException&)
     {
-        image = 0;
+        image = nullptr;
         throwParsingException(getDataTypeName(), str);
     }
 
@@ -181,7 +181,7 @@ PropertyHelper<Font*>::fromString(const String& str)
 {
     // handle empty string case
     if (str.empty())
-        return 0;
+        return nullptr;
 
     PropertyHelper<Font*>::return_type image;
 
@@ -191,7 +191,7 @@ PropertyHelper<Font*>::fromString(const String& str)
     }
     catch (UnknownObjectException&)
     {
-        image = 0;
+        image = nullptr;
         throwParsingException(getDataTypeName(), str);
     }
 

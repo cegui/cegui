@@ -2444,7 +2444,7 @@ public:
           Window objects.
         - false to just process \e this Window.
     */
-    virtual void notifyScreenAreaChanged(bool recursive = true);
+    void notifyScreenAreaChanged(bool recursive = true) override;
 
     /*!
     \brief
@@ -2763,7 +2763,7 @@ public:
     bool isPointerContainedInArea() const;
 
     // overridden from Element
-    const Sizef& getRootContainerSize() const;
+    const Sizef& getRootContainerSize() const override;
 
     /*!
     \brief
@@ -2827,7 +2827,7 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onSized_impl(ElementEventArgs& e);
+    void onSized_impl(ElementEventArgs& e) override;
 
     /*!
     \brief
@@ -2838,9 +2838,9 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onMoved(ElementEventArgs& e);
+    void onMoved(ElementEventArgs& e) override;
 
-    virtual void onRotated(ElementEventArgs& e);
+    void onRotated(ElementEventArgs& e) override;
 
     /*!
     \brief
@@ -3086,7 +3086,7 @@ protected:
         window that caused the event; this is typically either this window's
         parent window, or NULL to indicate the screen size has changed.
     */
-    virtual void onParentSized(ElementEventArgs& e);
+    void onParentSized(ElementEventArgs& e) override;
 
     /*!
     \brief
@@ -3096,7 +3096,7 @@ protected:
         WindowEventArgs object whose 'window' pointer field is set to the window
         that has been added.
     */
-    virtual void onChildAdded(ElementEventArgs& e);
+    void onChildAdded(ElementEventArgs& e) override;
 
     /*!
     \brief
@@ -3106,7 +3106,7 @@ protected:
         WindowEventArgs object whose 'window' pointer field is set the window
         that has been removed.
     */
-    virtual void onChildRemoved(ElementEventArgs& e);
+    void onChildRemoved(ElementEventArgs& e) override;
 
     /*!
     \brief
@@ -3365,7 +3365,7 @@ protected:
     \return
         Nothing
     */
-    virtual void setParent(Element* parent);
+    void setParent(Element* parent) override;
 
     /*!
     \brief
@@ -3424,8 +3424,8 @@ protected:
     void initialiseClippers(const RenderingContext& ctx);
 
     //! \copydoc Element::setArea_impl
-    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false,
-                              bool fireEvents=true, bool adjust_size_to_content=true);
+    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false,
+                              bool fireEvents=true, bool adjust_size_to_content=true) override;
 
     /*!
     \brief
@@ -3436,12 +3436,12 @@ protected:
     /*!
     \copydoc Element::addChild_impl
     */
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 
     /*!
     \copydoc Element::removeChild_impl
     */
-    virtual void removeChild_impl(Element* element);
+    void removeChild_impl(Element* element) override;
 
     /*!
     \brief
@@ -3536,7 +3536,7 @@ protected:
      */
     const Window* getWindowAttachedToCommonAncestor(const Window& wnd) const;
 
-    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
+    Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     //! Default implementation of function to return Window outer clipper area.
     virtual Rectf getOuterRectClipper_impl() const;
     //! Default implementation of function to return Window inner clipper area.
@@ -3584,7 +3584,7 @@ protected:
     public:
         WindowRendererProperty();
         void writeXMLToStream(const PropertyReceiver* receiver,
-                              XMLSerializer& xml_stream) const;
+                              XMLSerializer& xml_stream) const override;
     } d_windowRendererProperty;
 
     /*!
@@ -3604,7 +3604,7 @@ protected:
     public:
         LookNFeelProperty();
         void writeXMLToStream(const PropertyReceiver* receiver,
-                              XMLSerializer& xml_stream) const;
+                              XMLSerializer& xml_stream) const override;
     } d_lookNFeelProperty;
 
     /*************************************************************************

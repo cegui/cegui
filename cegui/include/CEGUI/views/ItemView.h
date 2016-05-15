@@ -386,7 +386,7 @@ protected:
     void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
         ScrollbarDisplayMode new_mode, String change_event);
 
-    virtual void initialiseComponents(void);
+    void initialiseComponents(void) override;
 
     virtual bool onChildrenWillBeAdded(const EventArgs& args);
     virtual bool onChildrenAdded(const EventArgs& args);
@@ -401,11 +401,11 @@ protected:
     virtual void onSortModeChanged(WindowEventArgs& args);
     virtual void onViewContentsChanged(WindowEventArgs& args);
 
-    virtual void onScroll(CursorInputEventArgs& e);
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    virtual void onCursorMove(CursorInputEventArgs& e);
-    virtual void onSemanticInputEvent(SemanticEventArgs& e);
-    virtual void onParentSized(ElementEventArgs& e);
+    void onScroll(CursorInputEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onParentSized(ElementEventArgs& e) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;
     Event::Connection d_eventChildrenAddedConnection;

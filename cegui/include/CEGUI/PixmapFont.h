@@ -110,8 +110,8 @@ protected:
     void addPixmapFontProperties();
 
     // override of functions in Font base class.
-    void updateFont ();
-    void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
+    void updateFont () override;
+    void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
 
     //! The Image name prefix used for the glyphs
     String d_imageNamePrefix;

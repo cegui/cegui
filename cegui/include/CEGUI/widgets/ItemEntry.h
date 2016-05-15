@@ -200,7 +200,7 @@ protected:
 		Implementation Functions
 	*************************************************************************/
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*************************************************************************
         New Event Handlers
@@ -211,7 +211,7 @@ protected:
     */
     virtual void onSelectionChanged(WindowEventArgs& e);
 
-    virtual void onSemanticInputEvent(SemanticEventArgs& e);
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     /*************************************************************************
         Implementation Data

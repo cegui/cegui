@@ -107,13 +107,13 @@ String NamedElement::getNamePath() const
 //----------------------------------------------------------------------------//
 bool NamedElement::isChild(const String& name_path) const
 {
-    return getChildByNamePath_impl(name_path) != 0;
+    return getChildByNamePath_impl(name_path) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
 bool NamedElement::isChildRecursive(const String& name) const
 {
-    return getChildByNameRecursive_impl(name) != 0;
+    return getChildByNameRecursive_impl(name) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -213,7 +213,7 @@ NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) con
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -250,7 +250,7 @@ NamedElement* NamedElement::getChildByNameRecursive_impl(const String& name) con
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -266,7 +266,7 @@ void NamedElement::addNamedElementProperties()
 
     CEGUI_DEFINE_PROPERTY_NO_XML(NamedElement, String,
         "NamePath", "Property to get the absolute name path of this Element.",
-        0, &NamedElement::getNamePath, ""
+        nullptr, &NamedElement::getNamePath, ""
     );
 }
 

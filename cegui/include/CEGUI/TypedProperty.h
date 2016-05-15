@@ -62,13 +62,13 @@ public:
     {}
     
     //! \copydoc Property::get
-    virtual String get(const PropertyReceiver* receiver) const
+    String get(const PropertyReceiver* receiver) const override
     {
         return Helper::toString(getNative(receiver));
     }
 
     //! \copydoc Property::set
-    virtual void set(PropertyReceiver* receiver, const String& value)
+    void set(PropertyReceiver* receiver, const String& value) override
     {
         setNative(receiver, Helper::fromString(value));
     }

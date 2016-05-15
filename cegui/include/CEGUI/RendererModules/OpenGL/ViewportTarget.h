@@ -62,7 +62,7 @@ public:
     virtual ~OpenGLViewportTarget();
 
     // implementations of RenderTarget interface
-    bool isImageryCache() const;
+    bool isImageryCache() const override;
 };
 
 } // End of  CEGUI namespace section

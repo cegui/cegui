@@ -26,11 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/falagard/ComponentBase.h"
 #include "CEGUI/falagard/XMLHandler.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Colour.h"
-#include <iostream>
-
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

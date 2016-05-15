@@ -66,7 +66,7 @@ const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToConte
 
 //----------------------------------------------------------------------------//
 Element::Element():
-    d_parent(0),
+    d_parent(nullptr),
 
     d_nonClient(false),
     d_isWidthAdjustedToContent(false),
@@ -850,7 +850,7 @@ void Element::removeChild_impl(Element* element)
         // remove element from child list
         d_children.erase(it);
         // reset element's parent so it's no longer this element.
-        element->setParent(0);
+        element->setParent(nullptr);
     }
 }
 

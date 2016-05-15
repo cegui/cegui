@@ -108,7 +108,7 @@ public:
         { return d_function; }
 
     // override from std::exception.
-    const char* what() const throw();
+    const char* what() const throw() override;
 
     /*!
     \brief

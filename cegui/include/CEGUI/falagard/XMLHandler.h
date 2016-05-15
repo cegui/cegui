@@ -196,8 +196,8 @@ namespace CEGUI
             ChainedXMLHandler base class overrides
         *************************************************************************/
         void elementStartLocal(const String& element,
-                               const XMLAttributes& attributes);
-        void elementEndLocal(const String& element);
+                               const XMLAttributes& attributes) override;
+        void elementEndLocal(const String& element) override;
 
     private:
         /*************************************************************************

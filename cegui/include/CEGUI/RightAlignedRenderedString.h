@@ -50,13 +50,13 @@ public:
     RightAlignedRenderedString(const RenderedString& string);
 
     // implementation of base interface
-    void format(const Window* ref_wnd, const Sizef& area_size);
+    void format(const Window* ref_wnd, const Sizef& area_size) override;
     std::vector<GeometryBuffer*> createRenderGeometry(const Window* ref_wnd,
               const glm::vec2& position, const ColourRect* mod_colours,
-              const Rectf* clip_rect) const;
-    size_t getFormattedLineCount() const;
-    float getHorizontalExtent(const Window* ref_wnd) const;
-    float getVerticalExtent(const Window* ref_wnd) const;
+              const Rectf* clip_rect) const override;
+    size_t getFormattedLineCount() const override;
+    float getHorizontalExtent(const Window* ref_wnd) const override;
+    float getVerticalExtent(const Window* ref_wnd) const override;
 
 protected:
     std::vector<float> d_offsets;

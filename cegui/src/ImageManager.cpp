@@ -47,7 +47,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 // singleton instance pointer
-template<> ImageManager* Singleton<ImageManager>::ms_Singleton = 0;
+template<> ImageManager* Singleton<ImageManager>::ms_Singleton = nullptr;
 
 //----------------------------------------------------------------------------//
 String ImageManager::d_imagesetDefaultResourceGroup;
@@ -96,8 +96,8 @@ const String NativeVersion( "2" );
 
 //----------------------------------------------------------------------------//
 // Internal variables used when parsing XML
-static Texture* s_texture = 0;
-static SVGData* s_SVGData = 0;
+static Texture* s_texture = nullptr;
+static SVGData* s_SVGData = nullptr;
 static CEGUI::String s_imagesetType = "";
 static AutoScaledMode s_autoScaled = ASM_Disabled;
 static Sizef s_nativeResolution(640.0f, 480.0f);
@@ -373,8 +373,8 @@ void ImageManager::elementEndLocal(const String& element)
     // ensure that everything is reset to default values when the Imageset ends
     if (element == ImagesetElement)
     {
-        s_texture = 0;
-        s_SVGData = 0;
+        s_texture = nullptr;
+        s_SVGData = nullptr;
         s_imagesetType = "";
     }
 }

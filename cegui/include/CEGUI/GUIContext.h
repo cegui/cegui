@@ -212,10 +212,10 @@ public:
     bool injectTimePulse(float timeElapsed);
 
     // Implementation of InputEventReceiver interface
-    bool injectInputEvent(const InputEvent& event);
+    bool injectInputEvent(const InputEvent& event) override;
 
     // public overrides
-    void draw();
+    void draw() override;
 
     /*!
     \brief
@@ -256,7 +256,7 @@ protected:
     virtual void onDefaultFontChanged(EventArgs& args);
 
     // protected overrides
-    void drawContent();
+    void drawContent() override;
 
     // Input event handlers
     void initializeSemanticEventHandlers();

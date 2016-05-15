@@ -88,14 +88,14 @@ public:
 
     void createRenderGeometry() override;
 
-    virtual Sizef getSubtreeExpanderSize(void) const;
-    virtual float getSubtreeExpanderXIndent(int depth) const;
-    virtual Rectf getViewRenderArea(void) const;
-    inline TreeView* getView() const;
-    virtual void resizeViewToContent(bool fit_width, bool fit_height) const;
+    Sizef getSubtreeExpanderSize(void) const override;
+    float getSubtreeExpanderXIndent(int depth) const override;
+    Rectf getViewRenderArea(void) const override;
+    inline TreeView* getView() const override;
+    void resizeViewToContent(bool fit_width, bool fit_height) const override;
 
 protected:
-    virtual void onLookNFeelAssigned();
+    void onLookNFeelAssigned() override;
 
 private:
     void renderTreeItem(TreeView* tree_view, const Rectf& items_area,

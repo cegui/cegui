@@ -503,7 +503,7 @@ const FontGlyph* FreeTypeFont::findFontGlyph(const char32_t codepoint) const
     CodepointMap::iterator pos = d_cp_map.find(codepoint);
 
     if (pos == d_cp_map.end())
-        return 0;
+        return nullptr;
 
     if (!pos->second->isValid())
         initialiseFontGlyph(pos);

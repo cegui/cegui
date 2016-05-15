@@ -54,7 +54,7 @@ public:
     ~OpenGLBaseShaderWrapper();
 
     //Implementation of ShaderWrapper interface
-    void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
+    void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings) override;
 
     //! Adds a shader attribute variable to the list of variables
     void addAttributeVariable(const std::string& attributeName);

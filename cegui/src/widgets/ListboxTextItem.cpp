@@ -53,7 +53,7 @@ const Colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 	ListboxItem(text, item_id, item_data, disabled, auto_delete),
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-	d_font(0),
+	d_font(nullptr),
     d_renderedStringValid(false),
     d_textParsingEnabled(true)
 {

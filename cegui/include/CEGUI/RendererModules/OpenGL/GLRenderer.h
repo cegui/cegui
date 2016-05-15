@@ -169,19 +169,19 @@ public:
     static void destroy(OpenGLRenderer& renderer);
 
     // base class overrides / abstract function implementations
-    void beginRendering();
-    void endRendering();
-    virtual Sizef getAdjustedTextureSize(const Sizef& sz);
+    void beginRendering() override;
+    void endRendering() override;
+    Sizef getAdjustedTextureSize(const Sizef& sz) override;
     void setupRenderingBlendMode(const BlendMode mode,
-                                 const bool force = false);
-    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+                                 const bool force = false) override;
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const override;
 
 protected:
     //! Overrides
-    OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    TextureTarget* createTextureTarget_impl(bool addStencilBuffer);
+    OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer) override;
     //! creates a texture of GLTexture type
-    virtual OpenGLTexture* createTexture_impl(const String& name);
+    OpenGLTexture* createTexture_impl(const String& name) override;
 
     void initialiseRendererIDString();
 

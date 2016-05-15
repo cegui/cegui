@@ -108,7 +108,7 @@ void Titlebar::onCursorMove(CursorInputEventArgs& e)
 	// Base class processing.
 	Window::onCursorMove(e);
 
-	if (d_dragging && (d_parent != 0))
+	if (d_dragging && (d_parent != nullptr))
 	{
         // calculate amount that window has been moved
         const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position) - d_dragPoint);
@@ -147,7 +147,7 @@ void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rectf constrainArea;
 
-				if ((d_parent == 0) || (getParent()->getParent() == 0))
+				if ((d_parent == nullptr) || (getParent()->getParent() == nullptr))
 				{
                     const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);

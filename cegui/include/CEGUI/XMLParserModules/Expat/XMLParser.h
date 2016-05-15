@@ -54,13 +54,13 @@ public:
     ~ExpatParser(void);
 
     // Implementation of public abstract interface
-    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/);
+    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/) override;
 
 protected:
     // Implementation of protected abstract interface.
-    bool initialiseImpl(void);
+    bool initialiseImpl(void) override;
     // Implementation of protected abstract interface.
-    void cleanupImpl(void);
+    void cleanupImpl(void) override;
     // C++ class methods name are not valide C function pointer. static solve this
     static void startElement(void* data, const char* element, const char**attr); // Expat handlers
     static void endElement(void* data, const char* element); // Expat handlers

@@ -154,10 +154,10 @@ public:
     void createRenderGeometry() override;
 
     // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const glm::vec2& pt) const;
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
     // overridden from WindowRenderer class
-    void update(float elapsed);
-    bool handleFontRenderSizeChange(const Font* const font);
+    void update(float elapsed) override;
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
 protected:
     //! helper to draw the base imagery (container and what have you)

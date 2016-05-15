@@ -57,28 +57,28 @@ class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
     // implement Renderer interface
-    virtual RenderTarget& getDefaultRenderTarget();
-    virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
-    virtual void destroyTextureTarget(TextureTarget* target);
-    virtual void destroyAllTextureTargets();
-    virtual Texture& createTexture(const String& name);
-    virtual Texture& createTexture(const String& name,
+    RenderTarget& getDefaultRenderTarget() override;
+    GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
+    GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
+    TextureTarget* createTextureTarget(bool addStencilBuffer) override;
+    void destroyTextureTarget(TextureTarget* target) override;
+    void destroyAllTextureTargets() override;
+    Texture& createTexture(const String& name) override;
+    Texture& createTexture(const String& name,
                            const String& filename,
-                           const String& resourceGroup);
-    virtual Texture& createTexture(const String& name, const Sizef& size);
-    virtual void destroyTexture(Texture& texture);
-    virtual void destroyTexture(const String& name);
-    virtual void destroyAllTextures();
-    virtual Texture& getTexture(const String& name) const;
-    virtual bool isTextureDefined(const String& name) const;
-    virtual void setDisplaySize(const Sizef& sz);
-    virtual const Sizef& getDisplaySize() const;
-    virtual const glm::vec2& getDisplayDPI() const;
-    virtual unsigned int getMaxTextureSize() const;
-    virtual const String& getIdentifierString() const;
-    virtual bool isTexCoordSystemFlipped() const;
+                           const String& resourceGroup) override;
+    Texture& createTexture(const String& name, const Sizef& size) override;
+    void destroyTexture(Texture& texture) override;
+    void destroyTexture(const String& name) override;
+    void destroyAllTextures() override;
+    Texture& getTexture(const String& name) const override;
+    bool isTextureDefined(const String& name) const override;
+    void setDisplaySize(const Sizef& sz) override;
+    const Sizef& getDisplaySize() const override;
+    const glm::vec2& getDisplayDPI() const override;
+    unsigned int getMaxTextureSize() const override;
+    const String& getIdentifierString() const override;
+    bool isTexCoordSystemFlipped() const override;
 
     /*!
     \brief

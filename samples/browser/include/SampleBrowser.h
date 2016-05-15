@@ -58,29 +58,29 @@ public:
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
 
     bool initialise(const CEGUI::String& logFile,
-                    const CEGUI::String& dataPathPrefixOverride);
-    void cleanup();
+                    const CEGUI::String& dataPathPrefixOverride) override;
+    void cleanup() override;
 
     void loadSamples();
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);
 
-    virtual void update(float passedTime);
+    void update(float passedTime) override;
 
-    virtual void handleNewWindowSize(float width, float height);
+    void handleNewWindowSize(float width, float height) override;
 
-    virtual void renderGUIContexts();
+    void renderGUIContexts() override;
 
     SampleHandler* findSampleData(CEGUI::Window* sampleWindow);
 
-    virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
-    virtual bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey);
-    virtual bool injectChar(int character);
-    virtual bool injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton);
-    virtual bool injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton);
-    virtual bool injectMouseWheelChange(float position);
-    virtual bool injectMousePosition(float x, float y);
+    bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey) override;
+    bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey) override;
+    bool injectChar(int character) override;
+    bool injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) override;
+    bool injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) override;
+    bool injectMouseWheelChange(float position) override;
+    bool injectMousePosition(float x, float y) override;
 
 protected:
     void initialiseLoadScreenLayout();

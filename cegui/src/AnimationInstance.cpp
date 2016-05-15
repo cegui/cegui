@@ -30,7 +30,6 @@
 #include "CEGUI/Animation.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/Affector.h"
 #include "CEGUI/Logger.h"
 
 // Start of CEGUI namespace section
@@ -51,9 +50,9 @@ const String AnimationInstance::EventAnimationLooped("AnimationLooped");
 AnimationInstance::AnimationInstance(Animation* definition):
     d_definition(definition),
 
-    d_target(0),
-    d_eventReceiver(0),
-    d_eventSender(0),
+    d_target(nullptr),
+    d_eventReceiver(nullptr),
+    d_eventSender(nullptr),
 
     d_position(0.0),
     d_speed(1.0),

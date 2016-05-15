@@ -170,7 +170,7 @@ namespace CEGUI
 
     Sizef Tooltip::getTextSize() const
     {
-        if (d_windowRenderer != 0)
+        if (d_windowRenderer != nullptr)
         {
             TooltipWindowRenderer* wr = (TooltipWindowRenderer*)d_windowRenderer;
             return wr->getTextSize();
@@ -270,7 +270,7 @@ namespace CEGUI
         WindowEventArgs args(this);
         onTooltipInactive(args);
 
-        d_target = 0;
+        d_target = nullptr;
     }
 
     void Tooltip::switchToActiveState(void)
@@ -287,7 +287,7 @@ namespace CEGUI
 
     bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
 	{
-		return dynamic_cast<const TooltipWindowRenderer*>(renderer) != 0;
+		return dynamic_cast<const TooltipWindowRenderer*>(renderer) != nullptr;
 	}
 
     void Tooltip::updateSelf(float elapsed)

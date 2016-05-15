@@ -68,15 +68,15 @@ public:
         const Window* ref_wnd,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, const float vertical_space,
-        const float space_extra) const;
-    Sizef getPixelSize(const Window* ref_wnd) const;
-    bool canSplit() const;
+        const float space_extra) const override;
+    Sizef getPixelSize(const Window* ref_wnd) const override;
+    bool canSplit() const override;
     RenderedStringTextComponent* split(const Window* ref_wnd,
-      float split_point, bool first_component, bool& was_word_split);
-    RenderedStringTextComponent* clone() const;
-    size_t getSpaceCount() const;
+      float split_point, bool first_component, bool& was_word_split) override;
+    RenderedStringTextComponent* clone() const override;
+    size_t getSpaceCount() const override;
     void setSelection(const Window* ref_wnd,
-                      const float start, const float end);
+                      const float start, const float end) override;
 
 protected:
     const Font* getEffectiveFont(const Window* window) const;

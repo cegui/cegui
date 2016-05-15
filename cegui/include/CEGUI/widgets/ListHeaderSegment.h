@@ -458,12 +458,12 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    virtual void onCursorMove(CursorInputEventArgs& e);
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    virtual void onCursorActivate(CursorInputEventArgs& e);
-    virtual void onCursorLeaves(CursorInputEventArgs& e);
-    virtual void onCaptureLost(WindowEventArgs& e);
-    virtual void onSemanticInputEvent(SemanticEventArgs& e);
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCursorLeaves(CursorInputEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
 	/*************************************************************************

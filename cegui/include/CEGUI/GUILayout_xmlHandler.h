@@ -55,8 +55,8 @@ public:
 	\brief
 		Constructor for GUILayout_xmlHandler objects
 	*/
-	GUILayout_xmlHandler(PropertyCallback* callback = 0, void* userdata = 0) :
-	  d_root(0),
+	GUILayout_xmlHandler(PropertyCallback* callback = nullptr, void* userdata = nullptr) :
+	  d_root(nullptr),
 	  d_propertyCallback(callback),
 	  d_userData(userdata)
 	{}
@@ -67,8 +67,8 @@ public:
 	*/
 	virtual ~GUILayout_xmlHandler(void) {}
 
-    virtual const String& getSchemaName() const;
-    virtual const String& getDefaultResourceGroup() const;
+    const String& getSchemaName() const override;
+    const String& getDefaultResourceGroup() const override;
 
 	/*************************************************************************
 		SAX2 Handler overrides
@@ -77,9 +77,9 @@ public:
 	\brief
 		document processing (only care about elements, schema validates format)
 	*/
-    virtual void elementStart(const String& element, const XMLAttributes& attributes);
-    virtual void elementEnd(const String& element);
-    virtual void text(const String& text);
+    void elementStart(const String& element, const XMLAttributes& attributes) override;
+    void elementEnd(const String& element) override;
+    void text(const String& text) override;
 
 	/*************************************************************************
 		Functions used by our implementation

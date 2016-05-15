@@ -111,10 +111,10 @@ public:
 
   void loadRawDataContainer(const String& filename,
         RawDataContainer& output,
-        const String& resourceGroup);
+        const String& resourceGroup) override;
   size_t getResourceGroupFileNames(std::vector<String>& out_vec,
          const String& file_pattern,
-         const String& resource_group);
+         const String& resource_group) override;
 protected:
   typedef std::unordered_map<String, ResourceProvider*> Providermap;
   Providermap  d_providerlist;

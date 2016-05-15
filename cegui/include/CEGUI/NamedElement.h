@@ -210,7 +210,7 @@ public:
 
 protected:
     //! \copydoc Element::addChild_impl
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 
     /*!
     \brief Retrieves a child at \a name_path or 0 if none such exists

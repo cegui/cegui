@@ -473,7 +473,7 @@ public:
     ~Scrollbar(void);
 
     // overrides
-    void initialiseComponents(void);
+    void initialiseComponents(void) override;
 
 protected:
     /*!
@@ -530,7 +530,7 @@ protected:
     bool handleThumbTrackEnded(const EventArgs& e);
 
     //! validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     // New event handlers for slider widget
     //! Handler triggered when the scroll position changes
@@ -546,11 +546,11 @@ protected:
     virtual void onScrollConfigChanged(WindowEventArgs& e);
 
     // Overridden event handlers
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    virtual void onScroll(CursorInputEventArgs& e);
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onScroll(CursorInputEventArgs& e) override;
 
     // base class overrides
-    void banPropertiesForAutoWindow();
+    void banPropertiesForAutoWindow() override;
 
     // Implementation Data
     //! The size of the document / data being scrolled thorugh.

@@ -123,13 +123,13 @@ const String ItemView::EventViewContentsChanged("ViewContentsChanged");
 //----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
     Window(type, name),
-    d_itemModel(0),
+    d_itemModel(nullptr),
     d_textColourRect(ColourRect(DefaultTextColour)),
     d_selectionColourRect(ColourRect(DefaultSelectionColour)),
     d_isDirty(true),
     d_needsFullRender(true),
-    d_lastSelectedIndex(0),
-    d_selectionBrush(0),
+    d_lastSelectedIndex(nullptr),
+    d_selectionBrush(nullptr),
     d_vertScrollbarDisplayMode(SDM_WhenNeeded),
     d_horzScrollbarDisplayMode(SDM_WhenNeeded),
     d_isItemTooltipsEnabled(false),
@@ -139,8 +139,8 @@ ItemView::ItemView(const String& type, const String& name) :
     d_isAutoResizeWidthEnabled(false),
     d_renderedMaxWidth(0),
     d_renderedTotalHeight(0),
-    d_eventChildrenAddedConnection(0),
-    d_eventChildrenRemovedConnection(0)
+    d_eventChildrenAddedConnection(nullptr),
+    d_eventChildrenRemovedConnection(nullptr)
 {
     addItemViewProperties();
 }
@@ -489,7 +489,7 @@ void ItemView::setIsDirty(bool value)
 //----------------------------------------------------------------------------//
 int ItemView::getSelectedIndexPosition(const ModelIndex& index) const
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return false;
 
     for (size_t i = 0; i < d_indexSelectionStates.size(); ++i)

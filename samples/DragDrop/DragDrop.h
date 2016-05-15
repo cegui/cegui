@@ -41,10 +41,12 @@ class DragDropSample : public Sample
 public:
     DragDropSample();
 
-    // override member to initialse the sample.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    virtual ~DragDropSample() {}
+
+    // override member to initialise the sample.
+    bool initialise(CEGUI::GUIContext* guiContext) override;
     // override member to perform cleanup.
-    virtual void deinitialise();
+    void deinitialise() override;
 
 private:
     /// member to subscribe handler to each 'slot' in the layout.

@@ -108,12 +108,12 @@ protected:
 	/*************************************************************************
 		Overridden event handler functions
 	*************************************************************************/
-    virtual void    onCursorMove(CursorInputEventArgs& e);
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-    virtual void    onCursorActivate(CursorInputEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onFontChanged(WindowEventArgs &e);
-    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void	onCaptureLost(WindowEventArgs& e) override;
+    void	onFontChanged(WindowEventArgs &e) override;
+    void    onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
 	/*************************************************************************

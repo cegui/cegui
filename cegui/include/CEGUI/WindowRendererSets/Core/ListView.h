@@ -80,8 +80,8 @@ public:
 
     void createRenderGeometry() override;
 
-    virtual Rectf getViewRenderArea(void) const;
-    virtual void resizeViewToContent(bool fit_width, bool fit_height) const;
+    Rectf getViewRenderArea(void) const override;
+    void resizeViewToContent(bool fit_width, bool fit_height) const override;
 
 private:
     void createRenderGeometry(ListView* list_view);

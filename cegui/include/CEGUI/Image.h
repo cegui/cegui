@@ -347,8 +347,8 @@ public:
 protected:
     // implement chained xml handler abstract interface
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 
     //! Updates the scaled size and offset values according to the new display size of the renderer 
     void updateScaledSizeAndOffset(const Sizef& renderer_display_size);

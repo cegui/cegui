@@ -236,15 +236,15 @@ public:
     */
     TGenericItem& getRoot() { return static_cast<TGenericItem&>(*d_root); }
 
-    virtual bool isValidIndex(const ModelIndex& model_index) const;
-    virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index);
-    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const;
-    virtual int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const;
-    virtual ModelIndex getParentIndex(const ModelIndex& model_index) const;
-    virtual int getChildId(const ModelIndex& model_index) const;
-    virtual ModelIndex getRootIndex() const;
-    virtual size_t getChildCount(const ModelIndex& model_index) const;
-    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text);
+    bool isValidIndex(const ModelIndex& model_index) const override;
+    ModelIndex makeIndex(size_t child, const ModelIndex& parent_index) override;
+    bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) const override;
+    int compareIndices(const ModelIndex& index1, const ModelIndex& index2) const override;
+    ModelIndex getParentIndex(const ModelIndex& model_index) const override;
+    int getChildId(const ModelIndex& model_index) const override;
+    ModelIndex getRootIndex() const override;
+    size_t getChildCount(const ModelIndex& model_index) const override;
+    String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text) override;
 
 protected:
     //! Deletes all children of the specified item, optionally invoking the
@@ -496,8 +496,8 @@ template <typename TGenericItem>
 TGenericItem* GenericItemModel<TGenericItem>::getItemForIndex(
     const ModelIndex& index) const
 {
-    if (index.d_modelData == 0)
-        return 0;
+    if (index.d_modelData == nullptr)
+        return nullptr;
 
     return static_cast<TGenericItem*>(index.d_modelData);
 }
@@ -528,7 +528,7 @@ template <typename TGenericItem>
 void CEGUI::GenericItemModel<TGenericItem>::deleteChildren(GenericItem* item,
     bool notify)
 {
-    if (item == 0)
+    if (item == nullptr)
         throw InvalidRequestException("Cannot delete children of a NULL item!");
 
     size_t items_count = item->getChildren().size();

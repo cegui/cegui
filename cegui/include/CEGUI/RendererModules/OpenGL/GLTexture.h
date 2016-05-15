@@ -45,19 +45,19 @@ public:
     OpenGL1Texture(OpenGLRendererBase& owner, const String& name);
     virtual ~OpenGL1Texture();
 
-    virtual void blitToMemory(void* targetData);
+    void blitToMemory(void* targetData) override;
 
 protected:
     //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
-    virtual void setTextureEnvironment();
+    void setTextureEnvironment() override;
 
     //! initialise the internal format flags for the given CEGUI::PixelFormat.
-    virtual void initInternalPixelFormatFields(const PixelFormat fmt);
+    void initInternalPixelFormatFields(const PixelFormat fmt) override;
 
     //! internal texture resize function (does not reset format or other fields)
-    virtual void setTextureSize_impl(const Sizef& sz);
+    void setTextureSize_impl(const Sizef& sz) override;
 
-    virtual GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
+    GLsizei getCompressedTextureSize(const Sizef& pixel_size) const override;
 
 };
 

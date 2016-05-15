@@ -190,7 +190,7 @@ public:
 
     // override from Window class
     bool isHit(const glm::vec2& position,
-               const bool allow_disabled = false) const;
+               const bool allow_disabled = false) const override;
 
 	/*!
 	\brief
@@ -511,7 +511,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialiseComponents(void);
+    void	initialiseComponents(void) override;
 
 
 	/*!
@@ -1026,10 +1026,10 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-	virtual	void	onFontChanged(WindowEventArgs& e);
-	virtual void	onTextChanged(WindowEventArgs& e);
-	virtual void	onActivated(ActivationEventArgs& e);
-    void onSized_impl(ElementEventArgs& e);
+    void	onFontChanged(WindowEventArgs& e) override;
+    void	onTextChanged(WindowEventArgs& e) override;
+    void	onActivated(ActivationEventArgs& e) override;
+    void onSized_impl(ElementEventArgs& e) override;
 
 
 	/*************************************************************************

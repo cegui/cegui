@@ -141,12 +141,13 @@ public:
     {}
 
     //! Implementation of the shader_parameter interface
-    virtual ShaderParamType getType() const
+    ShaderParamType getType() const override
     { return SPT_FLOAT; }
-    virtual ShaderParameterFloat* clone() const
+
+    ShaderParameterFloat* clone() const override
     { return new ShaderParameterFloat(*this); }
-    bool equal(const ShaderParameter* other_parameter) const;
-    void takeOverParameterValue(const ShaderParameter* other_parameter);
+    bool equal(const ShaderParameter* other_parameter) const override;
+    void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
     //! The float parameter value
     float d_parameterValue;
@@ -165,12 +166,13 @@ public:
     {}
 
     //! Implementation of the shader_parameter interface
-    virtual ShaderParamType getType() const
+    ShaderParamType getType() const override
     { return SPT_INT; }
-    virtual ShaderParameterInt* clone() const
+
+    ShaderParameterInt* clone() const override
     { return new ShaderParameterInt(*this); }
-    bool equal(const ShaderParameter* other_parameter) const;
-    void takeOverParameterValue(const ShaderParameter* other_parameter);
+    bool equal(const ShaderParameter* other_parameter) const override;
+    void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
     //! The float parameter value
     int d_parameterValue;
@@ -189,12 +191,13 @@ public:
     {}
 
     //! Implementation of the shader_parameter interface
-    virtual ShaderParamType getType() const
+    ShaderParamType getType() const override
     { return SPT_TEXTURE; }
-    virtual ShaderParameterTexture* clone() const
+
+    ShaderParameterTexture* clone() const override
     { return new ShaderParameterTexture(*this); }
-    bool equal(const ShaderParameter* other_parameter) const;
-    void takeOverParameterValue(const ShaderParameter* other_parameter);
+    bool equal(const ShaderParameter* other_parameter) const override;
+    void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
     //! The float parameter value
     const CEGUI::Texture* d_parameterValue;
@@ -213,12 +216,13 @@ public:
     {}
 
     //! Implementation of the shader_parameter interface
-    virtual ShaderParamType getType() const
+    ShaderParamType getType() const override
     { return SPT_MATRIX_4X4; }
-    virtual ShaderParameterMatrix* clone() const
+
+    ShaderParameterMatrix* clone() const override
     { return new ShaderParameterMatrix(*this); }
-    bool equal(const ShaderParameter* other_parameter) const;
-    void takeOverParameterValue(const ShaderParameter* other_parameter);
+    bool equal(const ShaderParameter* other_parameter) const override;
+    void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
     glm::mat4 d_parameterValue;
 };

@@ -103,24 +103,24 @@ public:
     virtual void layoutIfNecessary();
 
     /// @copydoc Window::update
-    virtual void update(float elapsed);
-    
-    virtual const CachedRectf& getClientChildContentArea() const;
+    void update(float elapsed) override;
 
-    virtual void notifyScreenAreaChanged(bool recursive);
+    const CachedRectf& getClientChildContentArea() const override;
+
+    void notifyScreenAreaChanged(bool recursive) override;
 
     size_t getIdxOfChild(Window* wnd) const;
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
-    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
+    Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     
     Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
 
     /// @copydoc Window::addChild_impl
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
     /// @copydoc Window::removeChild_impl
-    virtual void removeChild_impl(Element* element);
+    void removeChild_impl(Element* element) override;
 
     /*************************************************************************
         Event trigger methods
@@ -182,7 +182,7 @@ protected:
     virtual UVector2 getBoundingSizeForWindow(Window* window) const;
 
     // overridden from parent class
-    void onParentSized(ElementEventArgs& e);
+    void onParentSized(ElementEventArgs& e) override;
 
     /*************************************************************************
         Implementation Data

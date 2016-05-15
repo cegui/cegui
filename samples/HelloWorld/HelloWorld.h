@@ -40,8 +40,8 @@ class HelloWorldSample : public Sample
 public:
     HelloWorldSample();
 
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-    virtual void deinitialise();
+    bool initialise(CEGUI::GUIContext* guiContext) override;
+    void deinitialise() override;
 
 private:
     bool handleHelloWorldClicked(const CEGUI::EventArgs& args);

@@ -58,7 +58,7 @@ const String EditboxBase::ReadOnlyCursorImagePropertyName("ReadOnlyCursorImage")
 EditboxBase::EditboxBase(const String& type, const String& name) :
     Window(type, name),
     d_readOnly(false),
-    d_readOnlyCursorImage(0),
+    d_readOnlyCursorImage(nullptr),
     d_textMaskingEnabled(false),
     d_textMaskingCodepoint('*'),
     d_maxTextLen(String().max_size()),
@@ -493,7 +493,7 @@ void EditboxBase::handleSelectAll()
 
 bool EditboxBase::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
 }
 
 
@@ -591,7 +591,7 @@ void EditboxBase::addEditboxBaseProperties(void)
         "ReadOnlyCursorImage", "Property to get/set the mouse cursor image "
         "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
         "Value is the image to use.",
-        &EditboxBase::setReadOnlyCursorImage, &EditboxBase::getReadOnlyCursorImage, 0
+        &EditboxBase::setReadOnlyCursorImage, &EditboxBase::getReadOnlyCursorImage, nullptr
     );
 }
 

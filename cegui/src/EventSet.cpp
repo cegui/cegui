@@ -179,7 +179,7 @@ Event* EventSet::getEventObject(const String& name, bool autoAdd)
     if (pos == d_events.end())
     {
         if (!autoAdd)
-            return 0;
+            return nullptr;
 
         addEvent(name);
         pos = d_events.find(name);
@@ -193,7 +193,7 @@ void EventSet::fireEvent_impl(const String& name, EventArgs& args)
 {
     Event* ev = getEventObject(name);
 
-    if ((ev != 0) && !d_muted)
+    if ((ev != nullptr) && !d_muted)
         (*ev)(args);
 }
 

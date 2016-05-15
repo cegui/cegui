@@ -52,14 +52,14 @@ public:
     virtual ~OpenGL3FBOTextureTarget();
 
     // overrides from OpenGL3RenderTarget
-    void activate();
-    void deactivate();
+    void activate() override;
+    void deactivate() override;
     // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Sizef& sz);
+    void clear() override;
+    void declareRenderSize(const Sizef& sz) override;
     // specialise functions from OpenGL3TextureTarget
-    void grabTexture();
-    void restoreTexture();
+    void grabTexture() override;
+    void restoreTexture() override;
 
 protected:
     //! default size of created texture objects

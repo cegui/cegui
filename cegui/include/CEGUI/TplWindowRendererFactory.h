@@ -56,8 +56,8 @@ public:
     TplWindowRendererFactory();
 
     // Implement WindowRendererFactory interface
-    WindowRenderer* create();
-    void destroy(WindowRenderer* wr);
+    WindowRenderer* create() override;
+    void destroy(WindowRenderer* wr) override;
 };
 
 //----------------------------------------------------------------------------//

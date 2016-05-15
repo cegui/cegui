@@ -182,8 +182,8 @@ public:
     bool isTextParsingEnabled() const;
 
     // base class overrides
-    void setText(const String& text);
-    bool handleFontRenderSizeChange(const Font* const font);
+    void setText(const String& text) override;
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
 
     Sizef getPixelSize(void) const override;

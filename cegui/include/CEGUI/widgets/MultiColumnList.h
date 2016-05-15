@@ -784,7 +784,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialiseComponents(void);
+    void initialiseComponents() override;
 
 
 	/*!
@@ -1562,10 +1562,10 @@ protected:
 	bool	resetList_impl(void);
 
     // overrides function in base class.
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     // overrides function in base class.
-    int writePropertiesXML(XMLSerializer& xml_stream) const;
+    int writePropertiesXML(XMLSerializer& xml_stream) const override;
 
     /*!
     \brief
@@ -1655,11 +1655,11 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-	virtual	void	onFontChanged(WindowEventArgs& e);
-	virtual void	onSized_impl(ElementEventArgs& e);
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-    virtual void    onScroll(CursorInputEventArgs& e);
-    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
+    void	onFontChanged(WindowEventArgs& e) override;
+    void	onSized_impl(ElementEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onScroll(CursorInputEventArgs& e) override;
+    void    onSemanticInputEvent(SemanticEventArgs& e) override;
 
 	/*************************************************************************
 		Handlers for subscribed events

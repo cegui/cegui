@@ -44,8 +44,8 @@ public:
         Default constructor.
     */
     RefCounted() :
-        d_object(0),
-        d_count(0)
+        d_object(nullptr),
+        d_count(nullptr)
     {
     }
 
@@ -56,7 +56,7 @@ public:
     RefCounted(T* ob) :
         d_object(ob),
         // use system heap for this! no CEGUI_NEW_PT!
-        d_count((ob != 0) ? new unsigned int(1) : 0)
+        d_count((ob != nullptr) ? new unsigned int(1) : 0)
     {
     }
 

@@ -36,11 +36,11 @@ public:
     WobblyWindowEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
-    int getPassCount() const;
-    void performPreRenderFunctions(const int pass);
-    void performPostRenderFunctions();
-    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry);
-    bool update(const float elapsed, CEGUI::RenderingWindow& window);
+    int getPassCount() const override;
+    void performPreRenderFunctions(const int pass) override;
+    void performPostRenderFunctions() override;
+    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry) override;
+    bool update(const float elapsed, CEGUI::RenderingWindow& window) override;
 
 protected:
     void syncPivots(CEGUI::RenderingWindow& window);
@@ -81,11 +81,11 @@ public:
     OldWobblyWindowEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
-    int getPassCount() const;
-    void performPreRenderFunctions(const int pass);
-    void performPostRenderFunctions();
-    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry);
-    bool update(const float elapsed, CEGUI::RenderingWindow& window);
+    int getPassCount() const override;
+    void performPreRenderFunctions(const int pass) override;
+    void performPostRenderFunctions() override;
+    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry) override;
+    bool update(const float elapsed, CEGUI::RenderingWindow& window) override;
 
 protected:
     static const float tess_x;
@@ -110,11 +110,11 @@ public:
     ElasticWindowEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
-    int getPassCount() const;
-    void performPreRenderFunctions(const int pass);
-    void performPostRenderFunctions();
-    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry);
-    bool update(const float elapsed, CEGUI::RenderingWindow& window);
+    int getPassCount() const override;
+    void performPreRenderFunctions(const int pass) override;
+    void performPostRenderFunctions() override;
+    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry) override;
+    bool update(const float elapsed, CEGUI::RenderingWindow& window) override;
 
 protected:
     glm::vec2 d_currentPosition;
@@ -135,10 +135,10 @@ public:
     RenderEffectsSample();
 
     // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
     // method to perform any required cleanup operations.
-    virtual void deinitialise();
+    void deinitialise() override;
 
 protected:
     // Initialiser for the effects in the combobox

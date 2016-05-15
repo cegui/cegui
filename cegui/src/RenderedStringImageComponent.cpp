@@ -36,7 +36,7 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent() :
-    d_image(0),
+    d_image(nullptr),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_size(0, 0),
     d_selected(false)
@@ -70,7 +70,7 @@ void RenderedStringImageComponent::setImage(const String& name)
     }
     else
     {
-        d_image = 0;
+        d_image = nullptr;
     }
 }
 

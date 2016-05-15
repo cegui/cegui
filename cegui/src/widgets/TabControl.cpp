@@ -151,7 +151,7 @@ Get the tab for the given index
 Window*	TabControl::getTabContentsAtIndex(size_t index) const
 {
     if (index >= d_tabButtonVector.size ())
-        return 0;
+        return nullptr;
     return d_tabButtonVector [index]->getTargetWindow();
 }
 
@@ -393,7 +393,7 @@ Make tab visible implementation
 *************************************************************************/
 void TabControl::makeTabVisible_impl(Window* wnd)
 {
-    TabButton *tb = 0;
+    TabButton *tb = nullptr;
 
     for (size_t i = 0; i < d_tabButtonVector.size (); ++i)
     {
@@ -402,7 +402,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
         Window* child = tb->getTargetWindow();
         if (child == wnd)
             break;
-        tb = 0;
+        tb = nullptr;
     }
 
     if (!tb)
@@ -413,7 +413,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     float w = tb->getPixelSize().d_width;
     float lx = 0, rx = ww;
 
-    Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
+    Window *scrollLeftBtn = nullptr, *scrollRightBtn = nullptr;
     if (isChild(ButtonScrollLeft))
     {
         scrollLeftBtn = getChild(ButtonScrollLeft);
@@ -582,7 +582,7 @@ void TabControl::performChildWindowLayout(bool nonclient_sized_hint,
                                      client_sized_hint);
 
     // Calculate the size & position of the tab scroll buttons
-    Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
+    Window *scrollLeftBtn = nullptr, *scrollRightBtn = nullptr;
     if (isChild(ButtonScrollLeft))
         scrollLeftBtn = getChild(ButtonScrollLeft);
 
@@ -711,7 +711,7 @@ int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const
 
 bool TabControl::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const TabControlWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const TabControlWindowRenderer*>(renderer) != nullptr;
 }
 
 /*************************************************************************
@@ -720,7 +720,7 @@ bool TabControl::validateWindowRenderer(const WindowRenderer* renderer) const
 *************************************************************************/
 TabButton* TabControl::createTabButton(const String& name) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         TabControlWindowRenderer* wr = (TabControlWindowRenderer*)d_windowRenderer;
         return wr->createTabButton(name);

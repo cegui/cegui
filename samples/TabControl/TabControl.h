@@ -54,10 +54,10 @@ public:
     TabControlSample();
 
     // method to initialse the samples windows and events.
-    bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
     // method to perform any required cleanup operations.
-    void deinitialise();
+    void deinitialise() override;
 
     void refreshPageList();
     bool handleTabPanePos(const EventArgs& e);

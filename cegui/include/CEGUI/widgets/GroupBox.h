@@ -90,12 +90,12 @@ protected:
     /*!
     \copydoc Window::addChild_impl
     */
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 
     /*!
     \copydoc Window::removeChild_impl
     */
-    virtual void removeChild_impl(Element* element);
+    void removeChild_impl(Element* element) override;
 
 
 };

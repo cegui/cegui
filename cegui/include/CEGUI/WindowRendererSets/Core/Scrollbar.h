@@ -83,9 +83,9 @@ namespace CEGUI
         bool    d_vertical;     //!< True if slider operates in vertical direction.
 
         // overridden from Scrollbar base class.
-        void updateThumb(void);
-        float getValueFromThumb(void) const;
-        float getAdjustDirectionFromPoint(const glm::vec2& pt) const;
+        void updateThumb(void) override;
+        float getValueFromThumb(void) const override;
+        float getAdjustDirectionFromPoint(const glm::vec2& pt) const override;
     };
 
 } // End of  CEGUI namespace section

@@ -42,10 +42,10 @@ class SVGSample : public Sample
 public:
     SVGSample();
 
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
-    virtual void deinitialise();
+    bool initialise(CEGUI::GUIContext* guiContext) override;
+    void deinitialise() override;
 
-    void update(float timeSinceLastUpdate);
+    void update(float timeSinceLastUpdate) override;
 
 protected:  
     CEGUI::DefaultWindow*       d_root;

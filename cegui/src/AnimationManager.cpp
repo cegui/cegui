@@ -45,7 +45,7 @@ namespace CEGUI
     Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> AnimationManager* Singleton<AnimationManager>::ms_Singleton  = 0;
+template<> AnimationManager* Singleton<AnimationManager>::ms_Singleton  = nullptr;
 // Name of the xsd schema file used to validate animation XML files.
 const String AnimationManager::XMLSchemaName("Animation.xsd");
 // String that holds the default resource group for loading animations

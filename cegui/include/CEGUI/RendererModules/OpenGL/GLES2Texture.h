@@ -42,7 +42,7 @@ namespace CEGUI
 class OPENGL_GUIRENDERER_API GLES2Texture : public OpenGLTexture 
 {
 public:
-    virtual void blitToMemory(void* targetData);
+    void blitToMemory(void* targetData) override;
 
     // Friends (to allow construction and destruction)
     friend GLES2Renderer;
@@ -54,12 +54,12 @@ protected:
     virtual ~GLES2Texture();
 
     //! initialise the internal format flags for the given CEGUI::PixelFormat.
-    virtual void initInternalPixelFormatFields(const PixelFormat fmt);
+    void initInternalPixelFormatFields(const PixelFormat fmt) override;
 
     //! internal texture resize function (does not reset format or other fields)
-    virtual void setTextureSize_impl(const Sizef& sz);
+    void setTextureSize_impl(const Sizef& sz) override;
 
-    virtual GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
+    GLsizei getCompressedTextureSize(const Sizef& pixel_size) const override;
 
 };
 

@@ -27,7 +27,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Cursor.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
@@ -57,8 +56,8 @@ const String Cursor::EventDefaultImageChanged("DefaultImageChanged");
 	constructor
 *************************************************************************/
 Cursor::Cursor(void) :
-    d_indicatorImage(0),
-    d_defaultIndicatorImage(0),
+    d_indicatorImage(nullptr),
+    d_defaultIndicatorImage(nullptr),
     d_position(0.0f, 0.0f),
     d_visible(true),
     d_customSize(0.0f, 0.0f),
@@ -120,7 +119,7 @@ void Cursor::setDefaultImage(const Image* image)
         return;
 
 	d_defaultIndicatorImage = image;
-    d_cachedGeometryValid = d_indicatorImage != 0;
+    d_cachedGeometryValid = d_indicatorImage != nullptr;
 
 	CursorEventArgs args(this);
 	args.d_image = image;

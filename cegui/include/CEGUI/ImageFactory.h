@@ -64,9 +64,9 @@ class TplImageFactory : public ImageFactory
 {
 public:
     // Implement ImageFactory interface
-    Image& create(const String& name);
-    Image& create(const XMLAttributes& attributes);
-    void destroy(Image& image);
+    Image& create(const String& name) override;
+    Image& create(const XMLAttributes& attributes) override;
+    void destroy(Image& image) override;
 };
 
 //---------------------------------------------------------------------------//

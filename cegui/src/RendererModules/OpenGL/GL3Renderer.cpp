@@ -65,8 +65,8 @@ namespace CEGUI
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const
-        { return new T(static_cast<OpenGL3Renderer&>(r), addStencilBuffer); }
+    TextureTarget* create(OpenGLRendererBase& r, bool addStencilBuffer) const override
+    { return new T(static_cast<OpenGL3Renderer&>(r), addStencilBuffer); }
 };
 
 //----------------------------------------------------------------------------//
