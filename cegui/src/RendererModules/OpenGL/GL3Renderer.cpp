@@ -105,10 +105,12 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size,
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::destroySystem()
 {
-    System* sys;
-    if (!(sys = System::getSingletonPtr()))
+    System* sys = System::getSingletonPtr();
+    if (sys == nullptr)
+    {
         throw InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed.");
+    }
 
     OpenGL3Renderer* renderer = static_cast<OpenGL3Renderer*>(sys->getRenderer());
     DefaultResourceProvider* rp =

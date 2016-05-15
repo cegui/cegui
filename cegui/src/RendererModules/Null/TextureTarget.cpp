@@ -45,7 +45,7 @@ NullTextureTarget::NullTextureTarget(NullRenderer& owner, bool addStencilBuffer)
         &d_owner.createTexture(generateTextureName()));
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
+    NullTextureTarget::declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//

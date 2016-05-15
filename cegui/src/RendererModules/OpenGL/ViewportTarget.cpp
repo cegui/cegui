@@ -46,7 +46,7 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRendererBase& owner) :
         Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3]))
     );
 
-    setArea(init_area);
+    RenderTarget::setArea(init_area);
 }
 
 //----------------------------------------------------------------------------//
@@ -54,7 +54,7 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRendererBase& owner,
     const Rectf& area) :
         OpenGLRenderTarget(owner)
 {
-    setArea(area);
+    RenderTarget::setArea(area);
 }
 
 //----------------------------------------------------------------------------//

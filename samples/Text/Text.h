@@ -46,11 +46,6 @@ public:
     // method to perform any required cleanup operations.
     void deinitialise() override;
 
-    /*************************************************************************
-        member functions used as event handlers
-    *************************************************************************/
-    bool handleQuit(const CEGUI::EventArgs& e);
-
 private:
     /** Sub routines for each edit panel.*/
     void initStaticText();
@@ -70,8 +65,6 @@ private:
     bool vertScrollChangedHandler(const CEGUI::EventArgs& e);
     /** Called when the user clicks the Quit button.*/
     bool quit(const CEGUI::EventArgs& e);
-
-    CEGUI::GUIContext* d_guiContext;
 };
 
 #endif  // end of guard _Sample_Sample4_h_

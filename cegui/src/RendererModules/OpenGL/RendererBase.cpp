@@ -119,8 +119,8 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 OpenGLRendererBase::~OpenGLRendererBase()
 {
     destroyAllGeometryBuffers();
-    destroyAllTextureTargets();
-    destroyAllTextures();
+    OpenGLRendererBase::destroyAllTextureTargets();
+    OpenGLRendererBase::destroyAllTextures();
 
     delete d_defaultTarget;
 }

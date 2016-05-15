@@ -191,36 +191,36 @@ public:
     /************************************************************************/
     /* InjectedInputReceiver interface implementation                       */
     /************************************************************************/
-    virtual bool injectMouseMove(float delta_x, float delta_y);
-    virtual bool injectMouseLeaves();
+    bool injectMouseMove(float delta_x, float delta_y) override;
+    bool injectMouseLeaves() override;
 
-    virtual bool injectMouseButtonDown(MouseButton button);
-    virtual bool injectMouseButtonUp(MouseButton button);
+    bool injectMouseButtonDown(MouseButton button) override;
+    bool injectMouseButtonUp(MouseButton button) override;
 
     /*!
     \return
         True if set to handle keys on key down and the input was consumed.
         When not to set handle actions on key down will always return true.
     */
-    virtual bool injectKeyDown(Key::Scan scan_code);
+    bool injectKeyDown(Key::Scan scan_code) override;
     /*!
     \return
         True if set to handle keys on key up and the input was consumed.
         When not to set handle actions on key up will always return true.
     */
-    virtual bool injectKeyUp(Key::Scan scan_code);
+    bool injectKeyUp(Key::Scan scan_code) override;
 
-    virtual bool injectChar(char32_t code_point);
-    virtual bool injectMouseWheelChange(float delta);
-    virtual bool injectMousePosition(float x_pos, float y_pos);
+    bool injectChar(char32_t code_point) override;
+    bool injectMouseWheelChange(float delta) override;
+    bool injectMousePosition(float x_pos, float y_pos) override;
 
-    virtual bool injectMouseButtonClick(const MouseButton button);
-    virtual bool injectMouseButtonDoubleClick(const MouseButton button);
-    virtual bool injectMouseButtonTripleClick(const MouseButton button);
+    bool injectMouseButtonClick(const MouseButton button) override;
+    bool injectMouseButtonDoubleClick(const MouseButton button) override;
+    bool injectMouseButtonTripleClick(const MouseButton button) override;
 
-    virtual bool injectCopyRequest();
-    virtual bool injectCutRequest();
-    virtual bool injectPasteRequest();
+    bool injectCopyRequest() override;
+    bool injectCutRequest() override;
+    bool injectPasteRequest() override;
 
 protected:
     virtual void onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args);

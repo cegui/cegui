@@ -55,8 +55,6 @@ public:
 
     typedef std::vector<SampleHandler*> SampleList;
 
-    static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
-
     bool initialise(const CEGUI::String& logFile,
                     const CEGUI::String& dataPathPrefixOverride) override;
     void cleanup() override;
