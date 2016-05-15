@@ -357,7 +357,7 @@ namespace CEGUI
         bool isUsingFixedDragOffset() const;
 
         // Window class overrides.
-        void getRenderingContext_impl(RenderingContext& ctx) const;
+        void getRenderingContext_impl(RenderingContext& ctx) const override;
 
     protected:
         /*************************************************************************
@@ -411,13 +411,13 @@ namespace CEGUI
         /*************************************************************************
         	Overrides for Event handler methods
         *************************************************************************/
-        virtual void onCursorPressHold(CursorInputEventArgs& e);
-        virtual void onCursorActivate(CursorInputEventArgs& e);
-        virtual void onCursorMove(CursorInputEventArgs& e);
-        virtual void onCaptureLost(WindowEventArgs& e);
-        virtual void onAlphaChanged(WindowEventArgs& e);
-        virtual void onClippingChanged(WindowEventArgs& e);/*Window::drawSelf(z);*/
-        virtual void onMoved(ElementEventArgs& e);
+        void onCursorPressHold(CursorInputEventArgs& e) override;
+        void onCursorActivate(CursorInputEventArgs& e) override;
+        void onCursorMove(CursorInputEventArgs& e) override;
+        void onCaptureLost(WindowEventArgs& e) override;
+        void onAlphaChanged(WindowEventArgs& e) override;
+        void onClippingChanged(WindowEventArgs& e) override;/*Window::drawSelf(z);*/
+        void onMoved(ElementEventArgs& e) override;
 
         /*************************************************************************
         	New Event handler methods

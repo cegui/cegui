@@ -294,7 +294,8 @@ ListboxItem* MultiColumnList::getItemAtGridReference(const MCLGridRef& grid_ref)
 		throw InvalidRequestException(
             "the column given in the grid reference is out of range.");
 	}
-	else if (grid_ref.row >= getRowCount())
+	
+    if (grid_ref.row >= getRowCount())
 	{
 		throw InvalidRequestException(
             "the row given in the grid reference is out of range.");
@@ -318,21 +319,18 @@ bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, unsigned in
 		throw InvalidRequestException(
             "the column index given is out of range.");
 	}
-	else
-	{
-		for (unsigned int i = 0; i < getRowCount(); ++i)
-		{
-			if (d_grid[i][col_idx] == item)
-			{
-				return true;
-			}
 
+	for (unsigned int i = 0; i < getRowCount(); ++i)
+	{
+		if (d_grid[i][col_idx] == item)
+		{
+			return true;
 		}
 
-		// Item was not in the column.
-		return false;
 	}
 
+	// Item was not in the column.
+	return false;
 }
 
 
@@ -347,21 +345,18 @@ bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, unsigned int r
 		throw InvalidRequestException(
             "the row index given is out of range.");
 	}
-	else
-	{
-		for (unsigned int i = 0; i < getColumnCount(); ++i)
-		{
-			if (d_grid[row_idx][i] == item)
-			{
-				return true;
-			}
 
+	for (unsigned int i = 0; i < getColumnCount(); ++i)
+	{
+		if (d_grid[row_idx][i] == item)
+		{
+			return true;
 		}
 
-		// Item was not in the row.
-		return false;
 	}
 
+	// Item was not in the row.
+	return false;
 }
 
 
@@ -529,7 +524,7 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 			// does this item match?
 			ListboxItem* item = d_grid[i][j];
 
-			if ((item != 0) && item->isSelected())
+			if ((item != nullptr) && item->isSelected())
 			{
 				return d_grid[i][j];
 			}
@@ -539,7 +534,7 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	}
 
 	// No match
-	return 0;
+	return nullptr;
 }
 
 
@@ -556,7 +551,7 @@ unsigned int MultiColumnList::getSelectedCount(void) const
 		{
 			ListboxItem* item = d_grid[i][j];
 
-			if ((item != 0) && item->isSelected())
+			if ((item != nullptr) && item->isSelected())
 			{
 				++count;
 			}
@@ -753,7 +748,7 @@ void MultiColumnList::insertColumn(const String& text, unsigned int col_id, cons
 	{
         d_grid[i].d_items.insert(
             d_grid[i].d_items.begin() + position,
-            static_cast<ListboxItem*>(0));
+            static_cast<ListboxItem*>(nullptr));
 	}
 
 	// update stored nominated selection column if that has changed.
@@ -849,7 +844,7 @@ void MultiColumnList::moveColumnWithID(unsigned int col_id, unsigned int positio
 *************************************************************************/
 unsigned int MultiColumnList::addRow(unsigned int row_id)
 {
-	return addRow(0, 0, row_id);
+	return addRow(nullptr, 0, row_id);
 }
 
 
@@ -858,7 +853,7 @@ unsigned int MultiColumnList::addRow(unsigned int row_id)
 *************************************************************************/
 unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, unsigned int row_id)
 {
-	unsigned int col_idx = 0;
+	unsigned int col_idx;
 
 	// Build the new row
 	ListRow row;
@@ -889,7 +884,7 @@ unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, uns
         // insert item and get final inserted position.
         ListItemGrid::iterator final_pos = d_grid.insert(ins_pos, row);
 		// get final inserted position as an uint.
-		pos = (unsigned int)std::distance(d_grid.begin(), final_pos);
+		pos = static_cast<unsigned int>(std::distance(d_grid.begin(), final_pos));
 	}
 	// not sorted, just stick it on the end.
 	else
@@ -972,7 +967,7 @@ void MultiColumnList::removeRow(unsigned int row_idx)
 		{
 			ListboxItem* item = d_grid[row_idx][i];
 
-			if ((item != 0) && item->isAutoDeleted())
+			if ((item != nullptr) && item->isAutoDeleted())
 			{
 				delete item;
 			}
@@ -1141,8 +1136,6 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 		default:
 			throw InvalidRequestException(
                 "invalid or unknown SelectionMode value supplied.");
-			break;
-
 		}
 
 		// Fire event.
@@ -1980,6 +1973,7 @@ void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative
 
     if (item)
     {
+        // TODO: wtf this is overwritten right after
         // clear old selections if not a cumulative selection or if multi-select is off
         if (!cumulative || !d_multiSelect)
         {
@@ -2321,7 +2315,7 @@ bool MultiColumnList::resetList_impl(void)
 				ListboxItem* item = d_grid[i][j];
 
 				// delete item as needed.
-				if ((item != 0) && item->isAutoDeleted())
+				if ((item != nullptr) && item->isAutoDeleted())
 				{
 					delete item;
 				}
@@ -2335,7 +2329,7 @@ bool MultiColumnList::resetList_impl(void)
 
 		// reset other affected fields
 		d_nominatedSelectRow = 0;
-		d_lastSelected = 0;
+		d_lastSelected = nullptr;
 
 		return true;
 	}

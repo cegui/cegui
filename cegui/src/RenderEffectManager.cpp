@@ -32,7 +32,7 @@ namespace CEGUI
 {
 //---------------------------------------------------------------------------//
 template<>
-RenderEffectManager* Singleton<RenderEffectManager>::ms_Singleton = 0;
+RenderEffectManager* Singleton<RenderEffectManager>::ms_Singleton = nullptr;
 
 //---------------------------------------------------------------------------//
 RenderEffectManager::RenderEffectManager()

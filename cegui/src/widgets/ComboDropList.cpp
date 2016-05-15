@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/widgets/ComboDropList.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -52,7 +51,7 @@ ComboDropList::ComboDropList(const String& type, const String& name) :
 {
 	d_autoArm = false;
 	d_armed = false;
-    d_lastItemSelected = 0;
+    d_lastItemSelected = nullptr;
 
 	hide();
 
@@ -113,7 +112,7 @@ void ComboDropList::onViewContentsChanged(WindowEventArgs& e)
 {
     // basically see if our 'sticky' selection was removed
     if ((d_lastItemSelected) && !isItemInList(d_lastItemSelected))
-        d_lastItemSelected = 0;
+        d_lastItemSelected = nullptr;
 
     // base class processing
     ListWidget::onViewContentsChanged(e);
@@ -154,7 +153,7 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
                 StandardItem* item = d_itemModel.getItemForIndex(indexAt(e.position));
 
                 // if an item is under cursor, select it
-                if (item != 0)
+                if (item != nullptr)
                 {
                     setIndexSelectionState(item, true);
                 }
@@ -212,7 +211,7 @@ void ComboDropList::onCursorActivate(CursorInputEventArgs& e)
 
     if (e.source == CIS_Left)
 	{
-		if (d_armed && (getChildAtPosition(e.position) == 0))
+		if (d_armed && (getChildAtPosition(e.position) == nullptr))
 		{
             // if something was selected, confirm that selection.
             if (getIndexSelectionStates().size() > 0)
@@ -246,7 +245,7 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
 	++e.handled;
 
     // ensure 'sticky' selection remains.
-    if (d_lastItemSelected != 0 && isItemSelected(d_lastItemSelected))
+    if (d_lastItemSelected != nullptr && isItemSelected(d_lastItemSelected))
     {
         clearSelections();
         setIndexSelectionState(d_lastItemSelected, true);

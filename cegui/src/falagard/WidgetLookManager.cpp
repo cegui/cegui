@@ -37,7 +37,7 @@ namespace CEGUI
 {
     ////////////////////////////////////////////////////////////////////////////////
     // Static data definitions.
-    template<> WidgetLookManager* Singleton<WidgetLookManager>::ms_Singleton = 0;
+    template<> WidgetLookManager* Singleton<WidgetLookManager>::ms_Singleton = nullptr;
     const String WidgetLookManager::FalagardSchemaName("Falagard.xsd");
     String WidgetLookManager::d_defaultResourceGroup;
     ////////////////////////////////////////////////////////////////////////////////

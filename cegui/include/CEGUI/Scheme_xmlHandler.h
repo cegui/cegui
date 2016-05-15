@@ -50,10 +50,10 @@ public:
     Scheme& getObject() const;
 
     // XMLHandler overrides
-    const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
-    void elementStart(const String& element, const XMLAttributes& attributes);
-    void elementEnd(const String& element);
+    const String& getSchemaName() const override;
+    const String& getDefaultResourceGroup() const override;
+    void elementStart(const String& element, const XMLAttributes& attributes) override;
+    void elementEnd(const String& element) override;
 
 private:
     //! Filename of the XML schema used for validating GUIScheme files.

@@ -183,7 +183,7 @@ void Scrollbar::setScrollPosition(float position)
 //----------------------------------------------------------------------------//
 bool Scrollbar::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-    return dynamic_cast<const ScrollbarWindowRenderer*>(renderer) != 0;
+    return dynamic_cast<const ScrollbarWindowRenderer*>(renderer) != nullptr;
 }
 
 //----------------------------------------------------------------------------//

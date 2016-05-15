@@ -71,7 +71,7 @@ BasicRenderedStringParser::BasicRenderedStringParser() :
     d_aspectLock(false),
     d_initialised(false)
 {
-    initialiseDefaultState();
+    BasicRenderedStringParser::initialiseDefaultState();
 }
 
 //----------------------------------------------------------------------------//
@@ -84,7 +84,7 @@ BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
     d_aspectLock(false),
     d_initialised(false)
 {
-    initialiseDefaultState();
+    BasicRenderedStringParser::initialiseDefaultState();
 }
 
 //----------------------------------------------------------------------------//

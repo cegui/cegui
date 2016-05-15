@@ -108,7 +108,7 @@ void Font::addFontProperties()
 
     CEGUI_DEFINE_PROPERTY(Font, String,
         "Name", "This is font name.  Value is a string.",
-        0, &Font::getName, ""
+        nullptr, &Font::getName, ""
     );
 
     CEGUI_DEFINE_PROPERTY(Font, AutoScaledMode,

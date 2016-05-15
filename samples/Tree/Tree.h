@@ -37,10 +37,10 @@ public:
     TreeSample();
 
    // method to initialise the samples windows and events.
-   virtual bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
    // method to perform any required cleanup operations.
-   virtual void deinitialise();
+    void deinitialise() override;
 
 protected:
    CEGUI::Window* d_rootWindow;

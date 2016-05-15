@@ -83,8 +83,8 @@ protected:
     void addRadioButtonProperties();
 
     // overridden from ToggleButton
-    bool getPostClickSelectState() const;
-    void onSelectStateChange(WindowEventArgs& e);
+    bool getPostClickSelectState() const override;
+    void onSelectStateChange(WindowEventArgs& e) override;
 
     std::uint32_t d_groupID;
 };

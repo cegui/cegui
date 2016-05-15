@@ -30,7 +30,6 @@
 
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
-#include "../../Rect.h"
 
 
 #if defined(_MSC_VER)
@@ -53,14 +52,14 @@ public:
     virtual ~GLES2FBOTextureTarget();
 
     // overrides from GLES2RenderTarget
-    void activate();
-    void deactivate();
+    void activate() override;
+    void deactivate() override;
     // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Sizef& sz);
+    void clear() override;
+    void declareRenderSize(const Sizef& sz) override;
     // specialise functions from GLES2TextureTarget
-    void grabTexture();
-    void restoreTexture();
+    void grabTexture() override;
+    void restoreTexture() override;
 
 protected:
     //! default size of created texture objects

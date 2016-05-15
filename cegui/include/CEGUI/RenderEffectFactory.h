@@ -56,8 +56,8 @@ class TplRenderEffectFactory : public RenderEffectFactory
 {
 public:
     // Implement RenderEffectFactory interface
-    RenderEffect& create(Window* window);
-    void destroy(RenderEffect& effect);
+    RenderEffect& create(Window* window) override;
+    void destroy(RenderEffect& effect) override;
 };
 
 //---------------------------------------------------------------------------//

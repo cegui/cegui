@@ -81,14 +81,14 @@ const String NativeVersion( "4" );
 
 //----------------------------------------------------------------------------//
 Font_xmlHandler::Font_xmlHandler():
-    d_font(0),
+    d_font(nullptr),
     d_isFontLoadingDone(false)
 {}
 
 //----------------------------------------------------------------------------//
 Font_xmlHandler::~Font_xmlHandler()
 {
-    if (!d_isFontLoadingDone && d_font != 0)
+    if (!d_isFontLoadingDone && d_font != nullptr)
     {
         Logger::getSingleton().logEvent("Font_xmlHandler::~Font_xmlHandler: "
             "Font XML Handler is being destroyed, but loading of Font with name \"" + d_font->getName() + "\" has not been completed.",
@@ -159,7 +159,7 @@ void Font_xmlHandler::elementFontsStart(const XMLAttributes& attributes)
 
 void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 {
-    if (d_font != 0)
+    if (d_font != nullptr)
     {
         throw InvalidRequestException(
             "Attempting to load a new font but the loading of the "
@@ -206,12 +206,12 @@ void Font_xmlHandler::elementFontEnd()
         d_font->getName() + "' via XML file. " + addressStr, Informative);
 
     d_loadedFonts.push_back(d_font);
-    d_font = 0;
+    d_font = nullptr;
 }
 
 void Font_xmlHandler::elementFontsEnd()
 {
-    if (d_font != 0)
+    if (d_font != nullptr)
         throw InvalidRequestException(
         "The Fonts node was closed but the loading for the last font has not been completed.");
 
@@ -247,7 +247,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
 #ifdef CEGUI_HAS_FREETYPE
-    if (d_font != 0)
+    if (d_font != nullptr)
     {
         throw InvalidRequestException(
             "Attempting to create a FreeTypeFont but loading of a " 
@@ -284,7 +284,7 @@ void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
     const String filename(attributes.getValueAsString(FontFilenameAttribute));
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
-    if (d_font != 0)
+    if (d_font != nullptr)
     {
         throw InvalidRequestException(
             "Attempting to create a PixmapFont but loading of a "

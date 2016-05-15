@@ -704,7 +704,7 @@ void Combobox::selectListItemWithEditboxText()
 {
     ComboDropList* const droplist = getDropList();
 
-    if (StandardItem* item = droplist->findItemWithText(getEditbox()->getText(), 0))
+    if (StandardItem* item = droplist->findItemWithText(getEditbox()->getText(), nullptr))
     {
         droplist->setIndexSelectionState(item, true);
         droplist->ensureIndexIsVisible(item);
@@ -815,7 +815,7 @@ bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
             ComboDropList* droplist = getDropList();
 
 			// if there is an item with the same text as the edit box, pre-select it
-            StandardItem* item = droplist->findItemWithText(editbox->getText(), 0);
+            StandardItem* item = droplist->findItemWithText(editbox->getText(), nullptr);
 
 			if (item)
 			{

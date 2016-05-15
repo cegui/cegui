@@ -266,7 +266,7 @@ namespace CEGUI
         void switchToActiveState(void);
 
         // validate window renderer
-        virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+        bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
         /*************************************************************************
             Event triggers
@@ -320,10 +320,10 @@ namespace CEGUI
         /************************************************************************
             Overridden from Window.
         ************************************************************************/
-        void updateSelf(float elapsed);
-        void onHidden(WindowEventArgs& e);
-        void onCursorEnters(CursorInputEventArgs& e);
-        void onTextChanged(WindowEventArgs& e);
+        void updateSelf(float elapsed) override;
+        void onHidden(WindowEventArgs& e) override;
+        void onCursorEnters(CursorInputEventArgs& e) override;
+        void onTextChanged(WindowEventArgs& e) override;
 
         /************************************************************************
             Data fields

@@ -52,7 +52,7 @@ public:
     virtual ~OpenGL3StateChangeWrapper();
 
     //! call to glBindVertexArray
-    virtual void bindVertexArray(GLuint vertexArray);
+    void bindVertexArray(GLuint vertexArray) override;
 };
 
 } // End of  CEGUI namespace section

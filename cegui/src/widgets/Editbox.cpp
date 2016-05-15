@@ -54,7 +54,7 @@ const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorI
 
 Editbox::Editbox(const String& type, const String& name) :
     EditboxBase(type, name),
-    d_readOnlyMouseCursorImage(0),
+    d_readOnlyMouseCursorImage(nullptr),
     d_validator(System::getSingleton().createRegexMatcher()),
     d_weOwnValidator(true),
     d_validatorMatchState(RegexMatcher::MS_VALID),
@@ -471,7 +471,7 @@ void Editbox::handleDelete(void)
 
 bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
 }
 
 
@@ -522,7 +522,7 @@ void Editbox::addEditboxProperties()
 
 size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         EditboxWindowRenderer* wr = (EditboxWindowRenderer*)d_windowRenderer;
         return wr->getTextIndexFromPosition(pt);

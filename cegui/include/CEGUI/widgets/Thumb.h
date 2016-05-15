@@ -270,7 +270,7 @@ public:
 
 protected:
     // overridden from base class
-    void banPropertiesForAutoWindow();
+    void banPropertiesForAutoWindow() override;
 
 	/*************************************************************************
 		New Thumb Events
@@ -300,9 +300,9 @@ protected:
 	/*************************************************************************
 		Overridden event handling routines
 	*************************************************************************/
-    virtual void    onCursorMove(CursorInputEventArgs& e);
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void	onCaptureLost(WindowEventArgs& e) override;
 
 
 	/*************************************************************************

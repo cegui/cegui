@@ -50,14 +50,14 @@ public:
     GameMenuSample();
 
     // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
     // method to perform any required cleanup operations.
-    virtual void deinitialise();
+    void deinitialise() override;
 
-    virtual void onEnteringSample();
+    void onEnteringSample() override;
 
-    virtual void update(float timeSinceLastUpdate);
+    void update(float timeSinceLastUpdate) override;
 
 protected:
     void setupWindows();

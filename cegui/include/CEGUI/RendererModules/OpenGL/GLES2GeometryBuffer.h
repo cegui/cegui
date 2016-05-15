@@ -47,9 +47,9 @@ public:
     virtual ~GLES2GeometryBuffer();
 
     // Overrides of virtual and abstract methods from GeometryBuffer
-    virtual void draw() const;
-    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
-    virtual void reset();
+    void draw() const override;
+    void appendGeometry(const float* vertex_data, std::size_t array_size) override;
+    void reset() override;
 
     // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
     void finaliseVertexAttributes();

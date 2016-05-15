@@ -839,7 +839,7 @@ protected:
     void    destroyListSegment(ListHeaderSegment* segment) const;
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
 	/*************************************************************************
 		New List header event handlers

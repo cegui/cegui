@@ -273,7 +273,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialiseComponents(void);
+    void	initialiseComponents(void) override;
 
     /*!
     \brief
@@ -344,7 +344,8 @@ protected:
     \return
         Nothing
     */
-    virtual	void	drawSelf(const RenderingContext&) { /* do nothing; rendering handled by children */ }
+    void drawSelf(const RenderingContext&) override
+    { /* do nothing; rendering handled by children */ }
 
     /*!
     \brief
@@ -412,11 +413,11 @@ protected:
     Window* getTabPane() const;
 
     void performChildWindowLayout(bool nonclient_sized_hint = false,
-                                  bool client_sized_hint = false);
-    int writeChildWindowsXML(XMLSerializer& xml_stream) const;
+                                  bool client_sized_hint = false) override;
+    int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*!
     \brief
@@ -449,7 +450,7 @@ protected:
 		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
 		event the trigger window is always 'this'.
 	*/
-	virtual void	onFontChanged(WindowEventArgs& e);
+    void	onFontChanged(WindowEventArgs& e) override;
 
 	/*************************************************************************
 		Implementation Data
@@ -491,11 +492,11 @@ protected:
 	*************************************************************************/
 	void	addTabControlProperties(void);
 
-    void    addChild_impl(Element* element);
-    void    removeChild_impl(Element* element);
+    void    addChild_impl(Element* element) override;
+    void    removeChild_impl(Element* element) override;
 
     //! \copydoc Window::getChildByNamePath_impl
-    virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
+    NamedElement* getChildByNamePath_impl(const String& name_path) const override;
 
     /*************************************************************************
     Event handlers

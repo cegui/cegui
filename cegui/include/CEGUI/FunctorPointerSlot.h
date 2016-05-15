@@ -45,7 +45,7 @@ public:
         d_functor(functor)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return (*d_functor)(args);
     }

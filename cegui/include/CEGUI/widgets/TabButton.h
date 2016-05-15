@@ -130,10 +130,10 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    virtual void onCursorActivate(CursorInputEventArgs& e);
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    virtual void onScroll(CursorInputEventArgs& e);
-    virtual void onCursorMove(CursorInputEventArgs& e);
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onScroll(CursorInputEventArgs& e) override;
+    void onCursorMove(CursorInputEventArgs& e) override;
 };
 
 

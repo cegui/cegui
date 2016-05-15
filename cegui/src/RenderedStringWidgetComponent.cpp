@@ -36,7 +36,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent() :
     d_windowPtrSynched(true),
-    d_window(0),
+    d_window(nullptr),
     d_selected(false)
 {
 }
@@ -46,7 +46,7 @@ RenderedStringWidgetComponent::RenderedStringWidgetComponent(
                                                     const String& widget_name) :
     d_windowName(widget_name),
     d_windowPtrSynched(false),
-    d_window(0),
+    d_window(nullptr),
     d_selected(false)
 {
 }
@@ -64,7 +64,7 @@ void RenderedStringWidgetComponent::setWindow(const String& widget_name)
 {
     d_windowName = widget_name;
     d_windowPtrSynched = false;
-    d_window = 0;
+    d_window = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -77,7 +77,7 @@ void RenderedStringWidgetComponent::setWindow(Window* widget)
 //----------------------------------------------------------------------------//
 const Window* RenderedStringWidgetComponent::getWindow() const
 {
-    return getEffectiveWindow(0); // FIXME: Perhaps?
+    return getEffectiveWindow(nullptr); // FIXME: Perhaps?
 }
 
 //----------------------------------------------------------------------------//
@@ -176,7 +176,7 @@ Window* RenderedStringWidgetComponent::getEffectiveWindow(
     if (!d_windowPtrSynched)
     {
         if (!ref_wnd)
-            return 0;
+            return nullptr;
 
         d_window = ref_wnd->getChild(d_windowName);
         d_windowPtrSynched = true;

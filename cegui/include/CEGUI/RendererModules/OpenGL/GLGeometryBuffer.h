@@ -51,7 +51,7 @@ public:
     OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
     // Overrides of virtual and abstract methods inherited from GeometryBuffer
-    virtual void draw() const;
+    void draw() const override;
 
     /*
     \brief

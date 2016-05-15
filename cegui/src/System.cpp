@@ -94,7 +94,7 @@ const String System::EventNamespace("System");
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> System* Singleton<System>::ms_Singleton	= 0;
+template<> System* Singleton<System>::ms_Singleton	= nullptr;
 // instance of class that can convert string encodings
 #if defined(__WIN32__) || defined(_WIN32)
 const Win32StringTranscoder System::d_stringTranscoder;
@@ -131,12 +131,12 @@ System::System(Renderer& renderer,
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
   d_ourXmlParser(false),
-  d_parserModule(0),
+  d_parserModule(nullptr),
   d_imageCodec(imageCodec),
   d_ourImageCodec(false),
-  d_imageCodecModule(0),
-  d_ourLogger(Logger::getSingletonPtr() == 0),
-  d_customRenderedStringParser(0)
+  d_imageCodecModule(nullptr),
+  d_ourLogger(Logger::getSingletonPtr() == nullptr),
+  d_customRenderedStringParser(nullptr)
 {
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
@@ -267,7 +267,7 @@ System::~System(void)
 
 	}
 
-    if (d_nativeClipboardProvider != 0)
+    if (d_nativeClipboardProvider != nullptr)
         delete d_nativeClipboardProvider;
 
     cleanupImageCodec();
@@ -775,7 +775,7 @@ void System::cleanupXMLParser()
 
         // delete the dynamic module for the xml parser
         delete d_parserModule;
-        d_parserModule = 0;
+        d_parserModule = nullptr;
     }
 #ifdef CEGUI_STATIC
     else
@@ -783,7 +783,7 @@ void System::cleanupXMLParser()
         destroyParser(d_xmlParser);
 #endif
 
-    d_xmlParser = 0;
+    d_xmlParser = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -848,7 +848,7 @@ void System::setImageCodec(ImageCodec& codec)
     cleanupImageCodec();
     d_imageCodec = &codec;
     d_ourImageCodec = false;
-    d_imageCodecModule = 0;
+    d_imageCodecModule = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -889,14 +889,14 @@ void System::cleanupImageCodec()
             getSymbolAddress("destroyImageCodec"))(d_imageCodec);
 
         delete d_imageCodecModule;
-        d_imageCodecModule = 0;
+        d_imageCodecModule = nullptr;
     }
 #if defined(CEGUI_STATIC)
     else
         destroyImageCodec(d_imageCodec);
 #endif
 
-    d_imageCodec = 0;
+    d_imageCodec = nullptr;
 }
 
 //----------------------------------------------------------------------------//

@@ -101,7 +101,7 @@ public:
     void setCallingColourPicker(ColourPicker* colourPicker);
 
     // overridden from window
-    void initialiseComponents();
+    void initialiseComponents() override;
 
 protected:
     //! Widget name for the cancel button component.

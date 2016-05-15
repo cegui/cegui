@@ -56,8 +56,8 @@ namespace CEGUI
         d_dragging(false),
         d_dragThreshold(8.0f),
         d_dragAlpha(0.5f),
-        d_dropTarget(0),
-        d_dragIndicatorImage(0),
+        d_dropTarget(nullptr),
+        d_dragIndicatorImage(nullptr),
         d_dropflag(false),
         d_stickyMode(false),
         d_pickedUp(false),
@@ -168,7 +168,7 @@ namespace CEGUI
 
         CEGUI_DEFINE_PROPERTY(DragContainer, Image*,
             "DragIndicatorImage", "Property to get/set the cursor image used when dragging.  Value should be \"set:<imageset name> image:<image name>\".",
-            &DragContainer::setDragIndicatorImage, &DragContainer::getDragIndicatorImage, 0
+            &DragContainer::setDragIndicatorImage, &DragContainer::getDragIndicatorImage, nullptr
         );
 
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
@@ -343,7 +343,7 @@ namespace CEGUI
         }
 
         d_leftPointerHeld = false;
-        d_dropTarget = 0;
+        d_dropTarget = nullptr;
 
         ++e.handled;
     }
@@ -485,7 +485,7 @@ namespace CEGUI
         // update to new target
         d_dropTarget = e.window;
 
-        while ((d_dropTarget != 0) && !d_dropTarget->isDragDropTarget())
+        while ((d_dropTarget != nullptr) && !d_dropTarget->isDragDropTarget())
             d_dropTarget = d_dropTarget->getParent();
 
         // Notify new target window that someone has dragged a DragContainer over it

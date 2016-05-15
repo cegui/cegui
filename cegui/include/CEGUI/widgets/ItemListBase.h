@@ -233,7 +233,7 @@ public:
     \return
         Nothing
     */
-    virtual void initialiseComponents(void);
+    void initialiseComponents(void) override;
 
 
 	/*!
@@ -343,12 +343,12 @@ public:
         Triggers a ListContentsChanged event.
         These are not fired during initialisation for optimization purposes.
     */
-    virtual void endInitialisation(void);
+    void endInitialisation(void) override;
 
 
     //! \copydoc Window::performChildWindowLayout(bool ,bool)
     void performChildWindowLayout(bool nonclient_sized_hint = false,
-                                  bool client_sized_hint = false);
+                                  bool client_sized_hint = false) override;
 
 
     /*!
@@ -511,7 +511,7 @@ protected:
 	bool	resetList_impl(void);
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*!
     \brief
@@ -543,7 +543,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-    virtual void onParentSized(ElementEventArgs& e);
+    void onParentSized(ElementEventArgs& e) override;
 	//virtual void    onChildRemoved(WindowEventArgs& e);
     //virtual void    onDestructionStarted(WindowEventArgs& e);
 
@@ -590,7 +590,7 @@ private:
 	/*!
 	\copydoc Element::addChild_impl
 	*/
-	virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 };
 
 

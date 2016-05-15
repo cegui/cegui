@@ -55,24 +55,24 @@ public:
     virtual ~QuaternionSlerpInterpolator() {}
 
     //! \copydoc Interpolator::getType
-    virtual const String& getType() const;
+    const String& getType() const override;
     
     //! \copydoc Interpolator::interpolateAbsolute
-    virtual String interpolateAbsolute(const String& value1,
+    String interpolateAbsolute(const String& value1,
                                        const String& value2,
-                                       float position);
+                                       float position) override;
     
     //! \copydoc Interpolator::interpolateRelative
-    virtual String interpolateRelative(const String& base,
+    String interpolateRelative(const String& base,
                                        const String& value1,
                                        const String& value2,
-                                       float position);
+                                       float position) override;
     
     //! \copydoc Interpolator::interpolateRelativeMultiply
-    virtual String interpolateRelativeMultiply(const String& base,
+    String interpolateRelativeMultiply(const String& base,
                                                const String& value1,
                                                const String& value2,
-                                               float position);
+                                               float position) override;
 };
 
 }

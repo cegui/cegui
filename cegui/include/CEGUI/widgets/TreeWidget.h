@@ -55,7 +55,7 @@ public:
 
     void addItem(StandardItem* item);
 protected:
-    virtual void initialiseComponents();
+    void initialiseComponents() override;
     StandardItemModel d_itemModel;
 };
 

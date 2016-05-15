@@ -100,7 +100,7 @@ namespace CEGUI
         */
         void    setBackgroundEnabled(bool setting);
 
-        virtual void createRenderGeometry();
+        void createRenderGeometry() override;
 
         /*!
         \brief

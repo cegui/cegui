@@ -280,7 +280,7 @@ namespace CEGUI
                 return &(*i);
             ++i;
         }
-        return 0;
+        return nullptr;
     }
 
     bool WidgetComponent::handleFontRenderSizeChange(Window& window,

@@ -48,7 +48,7 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_pivot(0, 0, 0),
     d_customTransform(1.0f),
     d_matrixValid(false),
-    d_lastRenderTarget(0),
+    d_lastRenderTarget(nullptr),
     d_lastRenderTargetActivationCount(0),
     d_blendMode(BM_NORMAL),
     d_polygonFillRule(PFR_NONE),

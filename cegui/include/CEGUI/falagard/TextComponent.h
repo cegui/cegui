@@ -330,7 +330,7 @@ namespace CEGUI
         float getVerticalTextExtent(const Window& window) const;
     
         // overridden from ComponentBase.
-        bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+        bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 
 
         //! Update string formatting.

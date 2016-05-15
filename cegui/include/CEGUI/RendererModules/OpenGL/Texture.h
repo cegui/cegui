@@ -44,6 +44,20 @@ namespace CEGUI
 class OPENGL_GUIRENDERER_API OpenGLTexture : public Texture
 {
 public:
+    //! Basic constructor.
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name);
+    //! Destructor.
+    virtual ~OpenGLTexture();
+
+    //! initialise method that creates a Texture.
+    void initialise();
+    //! initialise method that creates a Texture from an image file.
+    void initialise(const String& filename, const String& resourceGroup);
+    //! initialise method that creates a Texture with a given size.
+    void initialise(const Sizef& size);
+    //! Constructor that wraps an existing GL texture.
+    void initialise(GLuint tex, const Sizef& size);
+
     /*!
     \brief
         set the openGL texture that this Texture is based on to the specified
@@ -99,38 +113,18 @@ public:
     void restoreTexture();
 
     // implement abstract members from base class.
-    const String& getName() const;
-    const Sizef& getSize() const;
-    const Sizef& getOriginalDataSize() const;
-    const glm::vec2& getTexelScaling() const;
-    void loadFromFile(const String& filename, const String& resourceGroup);
+    const String& getName() const override;
+    const Sizef& getSize() const override;
+    const Sizef& getOriginalDataSize() const override;
+    const glm::vec2& getTexelScaling() const override;
+    void loadFromFile(const String& filename, const String& resourceGroup) override;
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
-                        PixelFormat pixel_format);
-    void blitFromMemory(const void* sourceData, const Rectf& area);
-    virtual void blitToMemory(void* targetData) = 0;
-    bool isPixelFormatSupported(const PixelFormat fmt) const;
+                        PixelFormat pixel_format) override;
+    void blitFromMemory(const void* sourceData, const Rectf& area) override;
+    void blitToMemory(void* targetData) override = 0;
+    bool isPixelFormatSupported(const PixelFormat fmt) const override;
 
 protected:
-    // Friends (to allow construction and destruction)
-    friend Texture& OpenGLRendererBase::createTexture(const String&);
-    friend Texture& OpenGLRendererBase::createTexture(const String&, const String&, const String&);
-    friend Texture& OpenGLRendererBase::createTexture(const String&, const Sizef&);
-    friend Texture& OpenGLRendererBase::createTexture(const String&, GLuint, const Sizef&);
-    friend void OpenGLRendererBase::destroyTexture(Texture&);
-    friend void OpenGLRendererBase::destroyTexture(const String&);
-
-    //! Basic constructor.
-    OpenGLTexture(OpenGLRendererBase& owner, const String& name);
-    //! initliase method that creates a Texture.
-    void initialise();
-    //! initliase method that creates a Texture from an image file.
-    void initialise(const String& filename, const String& resourceGroup);
-    //! initialise method that creates a Texture with a given size.
-    void initialise(const Sizef& size);
-    //! Constructor that wraps an existing GL texture.
-    void initialise(GLuint tex, const Sizef& size);
-    //! Destructor.
-    virtual ~OpenGLTexture();
 
     //! generate the OpenGL texture and set some initial options.
     void generateOpenGLTexture();

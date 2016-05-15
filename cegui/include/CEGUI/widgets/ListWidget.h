@@ -109,7 +109,7 @@ public:
     virtual void ensureIndexIsVisible(const StandardItem* item);
 
 protected:
-    virtual void initialiseComponents();
+    void initialiseComponents() override;
 
     StandardItemModel d_itemModel;
 };

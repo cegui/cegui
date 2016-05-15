@@ -313,7 +313,7 @@ void ScrolledContainer::addScrolledContainerProperties(void)
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
         "ChildExtentsArea", "Property to get the current content extents rectangle."
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        0, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
+        nullptr, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
     );
 }
 

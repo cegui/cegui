@@ -62,7 +62,7 @@ struct DynamicModule::Impl
 {
     Impl(const String& name) :
         d_moduleName(name),
-        d_handle(0)
+        d_handle(nullptr)
     {}
 
     ~Impl()
@@ -137,12 +137,12 @@ static String getFailureString()
     if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
                       FORMAT_MESSAGE_FROM_SYSTEM | 
                       FORMAT_MESSAGE_IGNORE_INSERTS,
-                      0,
+                      nullptr,
                       GetLastError(),
                       MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
                       reinterpret_cast<LPTSTR>(&msgBuffer),
                       0,
-                      0))
+                      nullptr))
     {
         retMsg = reinterpret_cast<LPTSTR>(msgBuffer);
         LocalFree(msgBuffer);
@@ -160,7 +160,7 @@ static String getFailureString()
 //----------------------------------------------------------------------------//
 static DYNLIB_HANDLE DynLibLoad(const String& name)
 {
-    DYNLIB_HANDLE handle = 0;
+    DYNLIB_HANDLE handle = nullptr;
 
     // prefer whatever location is set in CEGUI_MODULE_DIR environment var
     const String envModuleDir(getModuleDirEnvVar());

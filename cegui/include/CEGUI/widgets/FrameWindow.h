@@ -117,7 +117,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialiseComponents(void);
+    void	initialiseComponents(void) override;
 
 
 	/*!
@@ -468,7 +468,7 @@ public:
     void setNESWSizingIndicatorImage(const String& name);
 
     // overridden from Window class
-    bool isHit(const glm::vec2& position, const bool allow_disabled) const;
+    bool isHit(const glm::vec2& position, const bool allow_disabled) const override;
 
     /*!
     \brief
@@ -669,13 +669,13 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    virtual void    onCursorMove(CursorInputEventArgs& e);
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-    virtual void    onCursorActivate(CursorInputEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void    onTextChanged(WindowEventArgs& e);
-	virtual void	onActivated(ActivationEventArgs& e);
-	virtual void	onDeactivated(ActivationEventArgs& e);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void	onCaptureLost(WindowEventArgs& e) override;
+    void    onTextChanged(WindowEventArgs& e) override;
+    void	onActivated(ActivationEventArgs& e) override;
+    void	onDeactivated(ActivationEventArgs& e) override;
 
 
 	/*************************************************************************

@@ -72,13 +72,13 @@ public:
 
     // Implement CEGUI::Image interface
     std::vector<GeometryBuffer*> createRenderGeometry(
-        const ImageRenderSettings& render_settings) const override;   
+        const ImageRenderSettings& render_settings) const override;
 
-    virtual void addToRenderGeometry(
+    void addToRenderGeometry(
         GeometryBuffer& geomBuffer,
         const Rectf& renderArea,
         const Rectf* clipArea,
-        const ColourRect& colours) const;
+        const ColourRect& colours) const override;
 
     /*!
     \brief

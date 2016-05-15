@@ -127,7 +127,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
 AnimationDefinitionHandler::AnimationDefinitionHandler(
                                 const XMLAttributes& attributes,
                                 const String& name_prefix) :
-    d_anim(0)
+    d_anim(nullptr)
 {
     const String anim_name(name_prefix +
                            attributes.getValueAsString(NameAttribute));
@@ -191,7 +191,7 @@ void AnimationDefinitionHandler::elementEndLocal(const String& element)
 AnimationAffectorHandler::AnimationAffectorHandler(
                                             const XMLAttributes& attributes,
                                             Animation& anim) :
-    d_affector(0)
+    d_affector(nullptr)
 {
     CEGUI_LOGINSANE(
         "\tAdding affector for property: " +

@@ -49,12 +49,12 @@ public:
     WidgetsSample();
 
     // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
     void handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage);
 
     // method to perform any required cleanup operations.
-    virtual void deinitialise();
+    void deinitialise() override;
 
 protected:
     // initialisation helpers

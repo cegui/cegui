@@ -56,9 +56,9 @@ public:
         Defines the name of the variable inside the shader which represents the
         final color for each fragment.
     */
-    virtual void bindFragDataLocation(const std::string &name);
+    void bindFragDataLocation(const std::string &name) override;
 
-    virtual void link();
+    void link() override;
 };
 
 }

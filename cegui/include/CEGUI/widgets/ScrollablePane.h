@@ -113,7 +113,7 @@ public:
     //! Destructor for the ScrollablePane base class.
     ~ScrollablePane(void);
 
-    virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
+    int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     /*!
     \brief
@@ -414,8 +414,8 @@ public:
     Scrollbar* getHorzScrollbar() const;
 
     // Overridden from Window
-    void initialiseComponents(void);
-    void destroy(void);
+    void initialiseComponents(void) override;
+    void destroy(void) override;
 
 protected:
     /*!
@@ -467,7 +467,7 @@ protected:
     ScrolledContainer* getScrolledContainer() const;
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*************************************************************************
         Event triggers
@@ -562,14 +562,14 @@ protected:
     bool handleAutoSizePaneChanged(const EventArgs& e);
 
     // Overridden from Window
-    void addChild_impl(Element* element);
-    void removeChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
+    void removeChild_impl(Element* element) override;
     
-    void onSized_impl(ElementEventArgs& e);
-    void onScroll(CursorInputEventArgs& e);
+    void onSized_impl(ElementEventArgs& e) override;
+    void onScroll(CursorInputEventArgs& e) override;
 
     //! \copydoc Window::getChildByNamePath_impl
-    NamedElement* getChildByNamePath_impl(const String& name_path) const;
+    NamedElement* getChildByNamePath_impl(const String& name_path) const override;
 
     //! true if vertical scrollbar should always be displayed
     bool d_forceVertScroll;

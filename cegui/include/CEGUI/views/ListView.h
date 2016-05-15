@@ -90,27 +90,27 @@ public:
 
     const std::vector<ListViewItemRenderingState*>& getItems() const;
 
-    virtual void prepareForRender();
+    void prepareForRender() override;
 
-    virtual ModelIndex indexAt(const glm::vec2& position);
+    ModelIndex indexAt(const glm::vec2& position) override;
 
 protected:
-    virtual bool onChildrenAdded(const EventArgs& args);
-    virtual bool onChildrenRemoved(const EventArgs& args);
+    bool onChildrenAdded(const EventArgs& args) override;
+    bool onChildrenRemoved(const EventArgs& args) override;
 
 private:
     std::vector<ListViewItemRenderingState> d_items;
     std::vector<ListViewItemRenderingState*> d_sortedItems;
 
     void resortListView();
-    virtual void resortView();
+    void resortView() override;
 
     //! Updates the rendering state for the specified \a item using the specified
     //! \a index as the data source.
     void updateItem(ListViewItemRenderingState& item, ModelIndex index,
         float& max_width, float& total_height);
 
-    virtual Rectf getIndexRect(const ModelIndex& index);
+    Rectf getIndexRect(const ModelIndex& index) override;
 };
 
 }

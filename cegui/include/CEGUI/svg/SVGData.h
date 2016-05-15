@@ -177,8 +177,8 @@ public:
 protected:
     // implement chained xml handler abstract interface
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 
     /*!
     \brief

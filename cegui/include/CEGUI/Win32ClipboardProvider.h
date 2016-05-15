@@ -41,8 +41,8 @@ public:
     ~Win32ClipboardProvider();
 
     // NativeClipboardProvider implementation
-    void sendToClipboard(const String& mime_type, void* buffer, size_t size);
-    void retrieveFromClipboard(String& mime_type, void*& buffer, size_t& size);
+    void sendToClipboard(const String& mime_type, void* buffer, size_t size) override;
+    void retrieveFromClipboard(String& mime_type, void*& buffer, size_t& size) override;
 
 private:
    char* d_buffer;

@@ -956,7 +956,7 @@ const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(const String&
     PropertyInitialiserCollator::const_iterator i = pic.find(propertyName);
 
     if (i == pic.end())
-        return 0;
+        return nullptr;
 
     return *i;
 }

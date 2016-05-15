@@ -967,7 +967,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, Image*,
         "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"set:[imageset name] image:[image name]\".",
-        &MultiLineEditbox::setSelectionBrushImage, &MultiLineEditbox::getSelectionBrushImage, 0
+        &MultiLineEditbox::setSelectionBrushImage, &MultiLineEditbox::getSelectionBrushImage, nullptr
         );
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,

@@ -182,8 +182,8 @@ public:
         { return d_imagesetDefaultResourceGroup; }
 
     // XMLHandler overrides
-    const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
+    const String& getSchemaName() const override;
+    const String& getDefaultResourceGroup() const override;
 
     //! One entry in the image container.
     typedef std::pair<Image*, ImageFactory*> ImagePair;
@@ -203,8 +203,8 @@ public:
 
 private:
     // implement chained xml handler abstract interface
-    void elementStartLocal(const String& element, const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+    void elementStartLocal(const String& element, const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 
     //! container type used to hold the registered Image types.
     typedef std::unordered_map<String, ImageFactory*> ImageFactoryRegistry;

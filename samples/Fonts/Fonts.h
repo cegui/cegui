@@ -43,11 +43,11 @@ public:
     FontsSample();
 
     // method to initialse the samples windows and events.
-    bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
     void initialiseSampleFonts();
     void initialiseFontEditorInfoLabel();
-    void deinitialise();
+    void deinitialise() override;
 
 protected:
     void initialiseLangToTextMap();

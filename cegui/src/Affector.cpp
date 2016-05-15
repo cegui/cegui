@@ -46,7 +46,7 @@ Affector::Affector(Animation* parent):
     d_parent(parent),
     d_applicationMethod(AM_Absolute),
     d_targetProperty(""),
-    d_interpolator(0)
+    d_interpolator(nullptr)
 {}
 
 //----------------------------------------------------------------------------//
@@ -291,8 +291,8 @@ void Affector::apply(AnimationInstance* instance)
         return;
     }
 
-    KeyFrame* left = 0;
-    KeyFrame* right = 0;
+    KeyFrame* left = nullptr;
+    KeyFrame* right = nullptr;
 
     // find 2 neighbouring keyframes
     for (KeyFrameMap::const_iterator it = d_keyFrames.begin();

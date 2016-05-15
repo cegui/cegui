@@ -173,7 +173,7 @@ const Image* FrameComponent::getImage(FrameImageComponent imageComponent,
     assert(imageComponent < FIC_FRAME_IMAGE_COUNT);
 
     if (!d_frameImages[imageComponent].d_specified)
-        return 0;
+        return nullptr;
 
     if (d_frameImages[imageComponent].d_propertyName.empty())
         return d_frameImages[imageComponent].d_image;
@@ -187,12 +187,12 @@ const Image* FrameComponent::getImage(FrameImageComponent imageComponent) const
     assert(imageComponent < FIC_FRAME_IMAGE_COUNT);
 
     if (!d_frameImages[imageComponent].d_specified)
-        return 0;
+        return nullptr;
 
     if (d_frameImages[imageComponent].d_propertyName.empty())
         return d_frameImages[imageComponent].d_image;
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -201,7 +201,7 @@ void FrameComponent::setImage(FrameImageComponent part, const Image* image)
     assert(part < FIC_FRAME_IMAGE_COUNT);
 
     d_frameImages[part].d_image = image;
-    d_frameImages[part].d_specified = image != 0;
+    d_frameImages[part].d_specified = image != nullptr;
     d_frameImages[part].d_propertyName.clear();
 }
 
@@ -215,7 +215,7 @@ void FrameComponent::setImage(FrameImageComponent part, const String& name)
     }
     catch (UnknownObjectException&)
     {
-        image = 0;
+        image = nullptr;
     }
 
     setImage(part, image);
@@ -227,7 +227,7 @@ void FrameComponent::setImagePropertySource(FrameImageComponent part,
 {
     assert(part < FIC_FRAME_IMAGE_COUNT);
 
-    d_frameImages[part].d_image = 0;
+    d_frameImages[part].d_image = nullptr;
     d_frameImages[part].d_specified = !name.empty();
     d_frameImages[part].d_propertyName = name;
 }
@@ -674,7 +674,7 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
     // Create the render geometry
     std::vector<GeometryBuffer*> geomBuffers;
 
-    ImageRenderSettings renderSettings(Rectf(), 0, !clip_to_display, colours);
+    ImageRenderSettings renderSettings(Rectf(), nullptr, !clip_to_display, colours);
 
     Rectf& renderSettingDestArea = renderSettings.d_destArea;
     renderSettingDestArea.d_min.y = ypos;

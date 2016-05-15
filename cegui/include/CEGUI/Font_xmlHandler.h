@@ -95,11 +95,11 @@ public:
     std::vector<Font*>& getObjects();
 
     // XMLHandler overrides
-    const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
+    const String& getSchemaName() const override;
+    const String& getDefaultResourceGroup() const override;
 
-    void elementStart(const String& element, const XMLAttributes& attributes);
-    void elementEnd(const String& element);
+    void elementStart(const String& element, const XMLAttributes& attributes) override;
+    void elementEnd(const String& element) override;
 
 private:
     //! handles the opening Fonts XML element.

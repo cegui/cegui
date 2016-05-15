@@ -33,8 +33,6 @@
 #include "CEGUI/System.h" // this being here is a bit nasty IMO
 #include "CEGUI/CoordConverter.h"
 
-#include <glm/glm.hpp>
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -54,7 +52,7 @@ const String ImageNativeVertResAttribute( "nativeVertRes" );
 //----------------------------------------------------------------------------//
 BitmapImage::BitmapImage(const String& name) :
     Image(name),
-    d_texture(0)
+    d_texture(nullptr)
 {
 }
 

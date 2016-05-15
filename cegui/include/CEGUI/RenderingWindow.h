@@ -280,9 +280,9 @@ public:
     void unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out);
 
     // overrides from base
-    void draw();
-    void invalidate();
-    bool isRenderingWindow() const;
+    void draw() override;
+    void invalidate() override;
+    bool isRenderingWindow() const override;
 
 protected:
     //! default generates geometry to draw window as a single quad.

@@ -183,7 +183,7 @@ ShaderParameter* ShaderParameterBindings::getParameter(const std::string& parame
     if (found_iterator != d_shaderParameterBindings.end())
         return found_iterator->second;
     else
-        return 0;
+        return nullptr;
 }
 
 

@@ -107,7 +107,7 @@ public:
     void setCaretBlinkTimeout(float seconds);
 
     // overridden from base class
-    bool handleFontRenderSizeChange(const Font* const font);
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
 protected:
     /*!

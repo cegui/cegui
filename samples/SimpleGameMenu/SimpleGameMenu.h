@@ -35,8 +35,8 @@ class SimpleGameMenuSample : public Sample
 {
 public:
     SimpleGameMenuSample();
-    virtual bool initialise(CEGUI::GUIContext* gui_context);
-    virtual void deinitialise();
+    bool initialise(CEGUI::GUIContext* gui_context) override;
+    void deinitialise() override;
 
 private:
     CEGUI::Window*      d_layout;

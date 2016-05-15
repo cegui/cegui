@@ -360,7 +360,7 @@ protected:
     {
         FrameImageSource() :
             d_specified(false),
-            d_image(0)
+            d_image(nullptr)
         {}
 
         bool operator==(const FrameImageSource& rhs) const

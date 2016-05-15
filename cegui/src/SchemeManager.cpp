@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton = 0;
+template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton = nullptr;
 
 //----------------------------------------------------------------------------//
 SchemeManager::SchemeManager() :

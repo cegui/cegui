@@ -69,7 +69,7 @@ Event::~Event()
 
     for (; iter != end_iter; ++iter)
     {
-        iter->second->d_event = 0;
+        iter->second->d_event = nullptr;
         iter->second->d_subscriber->cleanup();
     }
 

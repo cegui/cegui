@@ -92,7 +92,7 @@ public:
 	\return
 		Nothing.
 	*/
-	virtual void	fireEvent(const String& name, EventArgs& args, const String& eventNamespace = "");
+    void fireEvent(const String& name, EventArgs& args, const String& eventNamespace = "") override;
 };
 
 } // End of  CEGUI namespace section

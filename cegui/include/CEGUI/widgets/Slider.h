@@ -188,7 +188,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual	void	initialiseComponents(void);
+    void initialiseComponents(void) override;
 
 
 	/*!
@@ -340,7 +340,7 @@ protected:
 	bool	handleThumbTrackEnded(const EventArgs& e);
 
     // validate window renderer
-	virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
 
 	/*************************************************************************
@@ -370,8 +370,8 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-    virtual void    onScroll(CursorInputEventArgs& e);
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onScroll(CursorInputEventArgs& e) override;
 
 
 	/*************************************************************************

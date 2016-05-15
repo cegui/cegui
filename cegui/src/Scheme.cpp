@@ -496,10 +496,10 @@ void Scheme::unloadWindowFactories()
         if ((*cmod).dynamicModule)
         {
             delete (*cmod).dynamicModule;
-            (*cmod).dynamicModule = 0;
+            (*cmod).dynamicModule = nullptr;
         }
 
-        (*cmod).factoryModule = 0;
+        (*cmod).factoryModule = nullptr;
     }
 }
 
@@ -534,10 +534,10 @@ void Scheme::unloadWindowRendererFactories()
         if ((*cmod).dynamicModule)
         {
             delete (*cmod).dynamicModule;
-            (*cmod).dynamicModule = 0;
+            (*cmod).dynamicModule = nullptr;
         }
 
-        (*cmod).factoryModule = 0;
+        (*cmod).factoryModule = nullptr;
     }
 }
 

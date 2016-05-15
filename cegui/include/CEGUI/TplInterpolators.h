@@ -48,7 +48,7 @@ public:
     virtual ~TplInterpolatorBase() {}
     
     //! \copydoc Interpolator::getType
-    virtual const String& getType() const
+    const String& getType() const override
     {
         return d_type;
     }
@@ -77,9 +77,9 @@ public:
     virtual ~TplLinearInterpolator() {}
     
     //! \copydoc Interpolator::interpolateAbsolute
-    virtual String interpolateAbsolute(const String& value1,
+    String interpolateAbsolute(const String& value1,
                                        const String& value2,
-                                       float position)
+                                       float position) override
     {
         typename Helper::return_type val1 = Helper::fromString(value1);
         typename Helper::return_type val2 = Helper::fromString(value2);
@@ -90,10 +90,10 @@ public:
     }
     
     //! \copydoc Interpolator::interpolateRelative
-    virtual String interpolateRelative(const String& base,
+    String interpolateRelative(const String& base,
                                        const String& value1,
                                        const String& value2,
-                                       float position)
+                                       float position) override
     {
         typename Helper::return_type bas = Helper::fromString(base);
         typename Helper::return_type val1 = Helper::fromString(value1);
@@ -105,10 +105,10 @@ public:
     }
     
     //! \copydoc Interpolator::interpolateRelativeMultiply
-    virtual String interpolateRelativeMultiply(const String& base,
+    String interpolateRelativeMultiply(const String& base,
                                                const String& value1,
                                                const String& value2,
-                                               float position)
+                                               float position) override
     {
         typename Helper::return_type bas = Helper::fromString(base);
         typename PropertyHelper<float>::return_type val1 = PropertyHelper<float>::fromString(value1);
@@ -143,9 +143,9 @@ public:
     virtual ~TplDiscreteInterpolator() {}
     
     //! \copydoc Interpolator::interpolateAbsolute
-    virtual String interpolateAbsolute(const String& value1,
+    String interpolateAbsolute(const String& value1,
                                        const String& value2,
-                                       float position)
+                                       float position) override
     {
         typename Helper::return_type val1 = Helper::fromString(value1);
         typename Helper::return_type val2 = Helper::fromString(value2);
@@ -156,10 +156,10 @@ public:
     }
     
     //! \copydoc Interpolator::interpolateRelative
-    virtual String interpolateRelative(const String& /*base*/,
+    String interpolateRelative(const String& /*base*/,
                                        const String& value1,
                                        const String& value2,
-                                       float position)
+                                       float position) override
     {
         //typename Helper::return_type bas = Helper::fromString(base);
         typename Helper::return_type val1 = Helper::fromString(value1);
@@ -171,10 +171,10 @@ public:
     }
     
     //! \copydoc Interpolator::interpolateRelativeMultiply
-    virtual String interpolateRelativeMultiply(const String& base,
+    String interpolateRelativeMultiply(const String& base,
                                                const String& /*value1*/,
                                                const String& /*value2*/,
-                                               float /*position*/)
+                                               float /*position*/) override
     {
         typename Helper::return_type bas = Helper::fromString(base);
         /*const float val1 = PropertyHelper<float>::fromString(value1);
@@ -209,10 +209,10 @@ public:
     virtual ~TplDiscreteRelativeInterpolator() {}
     
     //! \copydoc Interpolator::interpolateRelative
-    virtual String interpolateRelative(const String& base,
+    String interpolateRelative(const String& base,
                                        const String& value1,
                                        const String& value2,
-                                       float position)
+                                       float position) override
     {
         typename Helper::return_type bas = Helper::fromString(base);
         typename Helper::return_type val1 = Helper::fromString(value1);

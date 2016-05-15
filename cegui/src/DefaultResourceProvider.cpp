@@ -88,7 +88,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #       endif
 #   endif
     
-    if (file == 0)
+    if (file == nullptr)
         throw FileIOException(final_filename + " does not exist");
     
     fseek(file, 0, SEEK_END);

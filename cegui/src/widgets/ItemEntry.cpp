@@ -52,7 +52,7 @@ const String ItemEntry::EventSelectionChanged("SelectionChanged");
 *************************************************************************/
 ItemEntry::ItemEntry(const String& type, const String& name)
 	: Window(type, name),
-	d_ownerList(0),
+	d_ownerList(nullptr),
     d_selected(false),
     d_selectable(false)
 {
@@ -65,7 +65,7 @@ ItemEntry::ItemEntry(const String& type, const String& name)
 *************************************************************************/
 Sizef ItemEntry::getItemPixelSize(void) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         return static_cast<ItemEntryWindowRenderer*>(d_windowRenderer)->getItemPixelSize();
     }
@@ -121,7 +121,7 @@ void ItemEntry::onSelectionChanged(WindowEventArgs& e)
 
 bool ItemEntry::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ItemEntryWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const ItemEntryWindowRenderer*>(renderer) != nullptr;
 }
 
 /*************************************************************************

@@ -34,7 +34,7 @@ namespace CEGUI
 {
 
 Renderer::Renderer():
-    d_activeRenderTarget(0)
+    d_activeRenderTarget(nullptr)
 {}
 
 //----------------------------------------------------------------------------//

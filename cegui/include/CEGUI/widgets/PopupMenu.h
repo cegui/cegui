@@ -165,7 +165,7 @@ protected:
     \return
     Nothing.
     */
-    virtual void    updateSelf(float elapsed);
+    void    updateSelf(float elapsed) override;
 
 
     /*!
@@ -175,7 +175,7 @@ protected:
     \return
         Nothing.
     */
-    virtual void    layoutItemWidgets(void);
+    void    layoutItemWidgets(void) override;
 
 
     /*!
@@ -185,17 +185,17 @@ protected:
     \return
         Nothing.
     */
-    virtual Sizef getContentSize(void) const;
+    Sizef getContentSize(void) const override;
 
     /*************************************************************************
         Overridden event handlers
     *************************************************************************/
-    virtual void onAlphaChanged(WindowEventArgs& e);
-	virtual void onDestructionStarted(WindowEventArgs& e);
-	virtual void onShown(WindowEventArgs& e);
-	virtual void onHidden(WindowEventArgs& e);
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    virtual void onCursorActivate(CursorInputEventArgs& e);
+    void onAlphaChanged(WindowEventArgs& e) override;
+    void onDestructionStarted(WindowEventArgs& e) override;
+    void onShown(WindowEventArgs& e) override;
+    void onHidden(WindowEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
 
 
     /*************************************************************************

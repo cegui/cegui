@@ -65,7 +65,7 @@ namespace CEGUI
         FalagardToggleButton(const String& type);
 
     protected:
-        String actualStateName(const String& s) const;
+        String actualStateName(const String& s) const override;
     };
 
 } // End of  CEGUI namespace section

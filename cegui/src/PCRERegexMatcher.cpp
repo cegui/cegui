@@ -35,7 +35,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 PCRERegexMatcher::PCRERegexMatcher() :
-    d_regex(0)
+    d_regex(nullptr)
 {
 }
 
@@ -59,7 +59,7 @@ void PCRERegexMatcher::setRegexString(const String& regex)
                            &prce_error, &pcre_erroff, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
-        &prce_error, &pcre_erroff, 0);
+        &prce_error, &pcre_erroff, nullptr);
 #endif
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
@@ -67,7 +67,7 @@ void PCRERegexMatcher::setRegexString(const String& regex)
         &prce_error, &pcre_erroff, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
-        &prce_error, &pcre_erroff, 0);
+        &prce_error, &pcre_erroff, nullptr);
 #endif
 
     // handle failure
@@ -105,7 +105,7 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 
 #ifdef PCRE_PARTIAL_SOFT
     // we are using a new version of pcre
-    const std::int32_t result = pcre_exec(d_regex, 0, utf8_str, len, 0,
+    const std::int32_t result = pcre_exec(d_regex, nullptr, utf8_str, len, 0,
                                  PCRE_PARTIAL_SOFT | PCRE_ANCHORED, match, 3);
 #else
     // PCRE_PARTIAL is a backwards compatible synonym for PCRE_PARTIAL_SOFT
@@ -143,7 +143,7 @@ void PCRERegexMatcher::release()
     if (d_regex)
     {
         pcre_free(d_regex);
-        d_regex = 0;
+        d_regex = nullptr;
     }
 }
 

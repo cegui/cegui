@@ -126,7 +126,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
                 addChildToPosition(previous, x, y);
             }
 
-            oldChildren[oldIdx] = 0;
+            oldChildren[oldIdx] = nullptr;
         }
     }
 

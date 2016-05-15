@@ -74,7 +74,7 @@ const String NativeVersion( "5" );
 
 //----------------------------------------------------------------------------//
 Scheme_xmlHandler::Scheme_xmlHandler():
-    d_scheme(0),
+    d_scheme(nullptr),
     d_objectRead(false)
 {}
 
@@ -229,8 +229,8 @@ void Scheme_xmlHandler::elementWindowSetStart(const XMLAttributes& attributes)
 {
     Scheme::UIModule module;
     module.name = attributes.getValueAsString(FilenameAttribute);
-    module.dynamicModule = 0;
-    module.factoryModule = 0;
+    module.dynamicModule = nullptr;
+    module.factoryModule = nullptr;
 
     d_scheme->d_widgetModules.push_back(module);
 }
@@ -250,8 +250,8 @@ void Scheme_xmlHandler::elementWindowRendererSetStart(
 {
     Scheme::UIModule module;
     module.name = attributes.getValueAsString(FilenameAttribute);
-    module.dynamicModule = 0;
-    module.factoryModule = 0;
+    module.dynamicModule = nullptr;
+    module.factoryModule = nullptr;
 
     d_scheme->d_windowRendererModules.push_back(module);
 }

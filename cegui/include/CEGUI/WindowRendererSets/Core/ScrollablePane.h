@@ -71,8 +71,8 @@ namespace CEGUI
 
     protected:
         // overridden from WindowRenderer base class.
-        void onLookNFeelAssigned();
-        void onLookNFeelUnassigned();
+        void onLookNFeelAssigned() override;
+        void onLookNFeelUnassigned() override;
 
         //! flag whether target window has looknfeel assigned yet.
         bool d_widgetLookAssigned;

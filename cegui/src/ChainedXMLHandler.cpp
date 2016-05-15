@@ -31,7 +31,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 ChainedXMLHandler::ChainedXMLHandler() :
-    d_chainedHandler(0),
+    d_chainedHandler(nullptr),
     d_completed(false),
     d_deleteChainedHandler(true)
 {
@@ -102,7 +102,7 @@ void ChainedXMLHandler::cleanupChainedHandler()
     if (d_deleteChainedHandler)
         delete d_chainedHandler;
 
-    d_chainedHandler = 0;
+    d_chainedHandler = nullptr;
 }
 
 //----------------------------------------------------------------------------//

@@ -87,7 +87,7 @@ ItemListBase::ItemListBase(const String& type, const String& name)
 	d_autoResize(false),
 	d_sortEnabled(false),
 	d_sortMode(Ascending),
-	d_sortCallback(0),
+	d_sortCallback(nullptr),
 	d_resort(false)
 {
     // by default we dont have a content pane, but to make sure things still work
@@ -178,7 +178,7 @@ ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* s
 	}
 
 	// no items matched.
-	return 0;
+	return nullptr;
 }
 
 
@@ -548,7 +548,7 @@ void ItemListBase::sizeToContent_impl(void)
 ************************************************************************/
 Rectf ItemListBase::getItemRenderArea(void) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         ItemListBaseWindowRenderer* wr = (ItemListBaseWindowRenderer*)d_windowRenderer;
         return wr->getItemRenderArea();
@@ -654,7 +654,7 @@ void ItemListBase::sortList(bool relayout)
 
 bool ItemListBase::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ItemListBaseWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const ItemListBaseWindowRenderer*>(renderer) != nullptr;
 }
 
 /************************************************************************
@@ -671,7 +671,7 @@ ItemListBase::SortCallback ItemListBase::getRealSortCallback() const
         return &ItemEntry_greater;
 
     case UserSort:
-        return (d_sortCallback!=0) ? d_sortCallback : &ItemEntry_less;
+        return (d_sortCallback != nullptr) ? d_sortCallback : &ItemEntry_less;
 
     // we default to ascending sorting
     default:

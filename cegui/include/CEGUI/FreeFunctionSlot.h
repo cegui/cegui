@@ -47,7 +47,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return d_function(args);
     }
@@ -75,7 +75,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         d_function(args);
 
@@ -101,7 +101,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& /*args*/)
+    bool operator()(const EventArgs& /*args*/) override
     {
         return d_function();
     }
@@ -130,7 +130,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs&)
+    bool operator()(const EventArgs&) override
     {
         d_function();
 

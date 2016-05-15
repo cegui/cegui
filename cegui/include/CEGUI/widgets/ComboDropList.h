@@ -73,7 +73,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialiseComponents(void);
+    void	initialiseComponents(void) override;
 
 
 	/*!
@@ -168,12 +168,12 @@ protected:
 	/*************************************************************************
 		Overridden Event handling
 	*************************************************************************/
-    virtual void    onCursorMove(CursorInputEventArgs& e);
-    virtual void    onCursorPressHold(CursorInputEventArgs& e);
-    virtual void    onCursorActivate(CursorInputEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
-    virtual void    onViewContentsChanged(WindowEventArgs& e);
-    virtual void    onSelectionChanged(ItemViewEventArgs& e);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void	onCaptureLost(WindowEventArgs& e) override;
+    void    onViewContentsChanged(WindowEventArgs& e) override;
+    void    onSelectionChanged(ItemViewEventArgs& e) override;
 
 	/*************************************************************************
 		Implementation Data

@@ -139,9 +139,9 @@ public:
 
     const TreeViewItemRenderingState& getRootItemState() const;
 
-    virtual void prepareForRender();
+    void prepareForRender() override;
 
-    virtual ModelIndex indexAt(const glm::vec2& position);
+    ModelIndex indexAt(const glm::vec2& position) override;
 
     float getSubtreeExpanderMargin() const;
     //! Allows setting extra margin around the subtree expander component.
@@ -170,14 +170,14 @@ public:
     void toggleSubtree(TreeViewItemRenderingState& item);
 
 protected:
-    virtual TreeViewWindowRenderer* getViewRenderer();
-    virtual bool handleSelection(const glm::vec2& position, bool should_select,
-        bool is_cumulative, bool is_range);
-    virtual bool handleSelection(const ModelIndex& index, bool should_select,
-        bool is_cumulative, bool is_range);
+    TreeViewWindowRenderer* getViewRenderer() override;
+    bool handleSelection(const glm::vec2& position, bool should_select,
+        bool is_cumulative, bool is_range) override;
+    bool handleSelection(const ModelIndex& index, bool should_select,
+        bool is_cumulative, bool is_range) override;
 
-    virtual bool onChildrenRemoved(const EventArgs& args);
-    virtual bool onChildrenAdded(const EventArgs& args);
+    bool onChildrenRemoved(const EventArgs& args) override;
+    bool onChildrenAdded(const EventArgs& args) override;
 
     virtual void onSubtreeExpanded(ItemViewEventArgs& args);
     virtual void onSubtreeCollapsed(ItemViewEventArgs& args);
@@ -213,9 +213,9 @@ private:
 
     void noopAction(TreeViewItemRenderingState& /*item*/, bool /*toggles_expander*/) {}
 
-    virtual void resortView();
+    void resortView() override;
 
-    virtual Rectf getIndexRect(const ModelIndex& index);
+    Rectf getIndexRect(const ModelIndex& index) override;
 };
 
 };

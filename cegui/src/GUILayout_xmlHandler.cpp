@@ -171,7 +171,7 @@ void GUILayout_xmlHandler::cleanupLoadedWindows(void)
         d_stack.pop_back();
     }
 
-    d_root = 0;
+    d_root = nullptr;
 }
 
 
@@ -397,7 +397,7 @@ void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attribu
                 d_userData);
 
         // attach the imported layout to the window being defined
-        if ((subLayout != 0) && (!d_stack.empty()))
+        if ((subLayout != nullptr) && (!d_stack.empty()))
             d_stack.back().first->addChild(subLayout);
     }
     // something failed when loading the sub-layout

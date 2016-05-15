@@ -38,7 +38,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent() :
-    d_font(0),
+    d_font(nullptr),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_selectionStart(0),
     d_selectionLength(0)
@@ -48,7 +48,7 @@ RenderedStringTextComponent::RenderedStringTextComponent() :
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent(const String& text) :
     d_text(text),
-    d_font(0),
+    d_font(nullptr),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_selectionStart(0),
     d_selectionLength(0)
@@ -152,7 +152,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     if (window)
         return window->getFont();
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//

@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/Clipboard.h"
 
-#include <cstring>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,15 +39,15 @@ NativeClipboardProvider::~NativeClipboardProvider()
 //----------------------------------------------------------------------------//
 Clipboard::Clipboard():
     d_mimeType("text/plain"), // reasonable default I think
-    d_buffer(0),
+    d_buffer(nullptr),
     d_bufferSize(0),
-    d_nativeProvider(0)
+    d_nativeProvider(nullptr)
 {}
 
 //----------------------------------------------------------------------------//    
 Clipboard::~Clipboard()
 {
-    if (d_buffer != 0)
+    if (d_buffer != nullptr)
     {
         delete[] d_buffer;
     }
@@ -73,10 +72,10 @@ void Clipboard::setData(const String& mimeType, const void* buffer, size_t size)
     
     if (size != d_bufferSize)
     {
-        if (d_buffer != 0)
+        if (d_buffer != nullptr)
         {
             delete[] d_buffer;
-            d_buffer = 0;
+            d_buffer = nullptr;
         }
         
         d_bufferSize = size;
@@ -110,7 +109,7 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
             if (d_buffer != nullptr)
             {
                 delete[] d_buffer;
-                d_buffer = 0;
+                d_buffer = nullptr;
             }
             
             d_bufferSize = retrievedSize;

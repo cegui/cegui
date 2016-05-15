@@ -84,16 +84,16 @@ UDim BaseDim::getUpperBoundAsUDim(const Window& wnd, DimensionType /*type*/) con
 
 //----------------------------------------------------------------------------//
 OperatorDim::OperatorDim() :
-    d_left(0),
-    d_right(0),
+    d_left(nullptr),
+    d_right(nullptr),
     d_op(DOP_NOOP)
 {
 }
 
 //----------------------------------------------------------------------------//
 OperatorDim::OperatorDim(DimensionOperator op) :
-    d_left(0),
-    d_right(0),
+    d_left(nullptr),
+    d_right(nullptr),
     d_op(op)
 {
 }
@@ -915,7 +915,7 @@ void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) cons
 //----------------------------------------------------------------------------//
 Dimension::Dimension()
 {
-    d_value = 0;
+    d_value = nullptr;
     d_type = DT_INVALID;
 }
 
