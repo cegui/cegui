@@ -49,15 +49,6 @@ public:
 };
 
 //----------------------------------------------------------------------------//
-// Helper struct to handle widget properties
-//----------------------------------------------------------------------------//
-struct WidgetPropertiesObject
-{
-    std::vector<const CEGUI::Property*> d_propertyList;
-    const CEGUI::Window* d_widget;
-};
-
-//----------------------------------------------------------------------------//
 // Helper class to deal with the different event names, used to output the name
 // of the event for generic events
 //----------------------------------------------------------------------------//
