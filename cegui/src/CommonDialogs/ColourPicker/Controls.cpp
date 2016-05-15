@@ -122,11 +122,11 @@ const String ColourPickerControls::ColourPickerCursorName("__colourpickercursor_
 //----------------------------------------------------------------------------//
 ColourPickerControls::ColourPickerControls(const String& type, const String& name) :
     Window(type, name),
-    d_callingColourPicker(0),
-    d_colourPickerIndicator(0),
+    d_callingColourPicker(nullptr),
+    d_colourPickerIndicator(nullptr),
     d_sliderMode(SliderMode_Lab_L),
     d_selectedColour(0.75f, 0.75f, 0.75f),
-    d_colourPickerControlsTextureTarget(0),
+    d_colourPickerControlsTextureTarget(nullptr),
     d_colourPickerImageOffset(2),
     d_colourPickerPickingImageHeight(260),
     d_colourPickerPickingImageWidth(260),
@@ -1184,7 +1184,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerLeaves(
 //----------------------------------------------------------------------------//
 void ColourPickerControls::onCancelButtonClicked(WindowEventArgs& e)
 {
-    if (this->getParent() != 0)
+    if (this->getParent() != nullptr)
         this->getParent()->removeChild(this);
 
     fireEvent(EventClosed, e, EventNamespace);
@@ -1195,7 +1195,7 @@ void ColourPickerControls::onAcceptButtonClicked(WindowEventArgs& e)
 {
     d_callingColourPicker->setColour(d_selectedColour);
 
-    if (this->getParent() != 0)
+    if (this->getParent() != nullptr)
         this->getParent()->removeChild(this);
 
     fireEvent(EventColourAccepted, e, EventNamespace);

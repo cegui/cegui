@@ -174,7 +174,7 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
 
     setupCursor();
 
-    srand(static_cast<unsigned int >(time(0)));
+    srand(static_cast<unsigned int >(time(nullptr)));
 
     d_lifeBar = static_cast<CEGUI::ProgressBar*>(d_rootIngame->getChild("TopBar/LifeBar"));
 

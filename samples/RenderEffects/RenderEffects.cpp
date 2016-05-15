@@ -740,7 +740,7 @@ bool RenderEffectsSample::handleEffectsComboboxSelectionChanged(const CEGUI::Eve
     }
     else
     {
-        effectsWindowRenderingWnd->setRenderEffect(0);
+        effectsWindowRenderingWnd->setRenderEffect(nullptr);
     }
 
     return true;

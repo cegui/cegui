@@ -55,7 +55,7 @@ const Colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 *************************************************************************/
 ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 #ifndef CEGUI_BIDI_SUPPORT
-    d_bidiVisualMapping(0),
+    d_bidiVisualMapping(nullptr),
 #elif defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
@@ -68,9 +68,9 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
     d_selected(false),
 	d_disabled(disabled),
     d_autoDelete(auto_delete),
-	d_owner(0),
+	d_owner(nullptr),
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
-	d_selectBrush(0)
+	d_selectBrush(nullptr)
 {
    setText(text);
 }

@@ -161,7 +161,7 @@ public:
     */
     bool isValid() const
     {
-        return d_object != 0;
+        return d_object != nullptr;
     }
 
 private:
@@ -187,7 +187,7 @@ private:
 
             delete d_count;
             d_object = 0;
-            d_count = 0;
+            d_count = nullptr;
         }
     }
 

@@ -51,7 +51,7 @@ SampleBrowserManager::SampleBrowserManager(SampleBrowser* owner, CEGUI::Window* 
     d_root(samplesWindow),
     d_childCount(0),
     d_aspectRatio(1.0f),
-    d_selectedWindow(0)
+    d_selectedWindow(nullptr)
 {
     init();
 }

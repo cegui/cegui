@@ -49,7 +49,7 @@ public:
     ~NullShaderWrapper();
 
     //Implementation of ShaderWrapper interface
-    void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
+    void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings) override;
 };
 
 

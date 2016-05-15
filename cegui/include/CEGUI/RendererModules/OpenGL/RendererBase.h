@@ -262,7 +262,7 @@ public:
     virtual ~OGLTextureTargetFactory() {}
     virtual TextureTarget* create
       (OpenGLRendererBase&, bool /*addStencilBuffer*/) const
-        { return 0; }
+        { return nullptr; }
 };
 
 }

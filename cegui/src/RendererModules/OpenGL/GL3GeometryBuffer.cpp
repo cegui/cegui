@@ -142,7 +142,7 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
     glGenBuffers(1, &d_verticesVBO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
 
     if (OpenGLInfo::getSingleton().isVaoSupported())
     {
@@ -233,7 +233,7 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     float* vertexData;
     if(d_vertexData.empty())
-        vertexData = 0;
+        vertexData = nullptr;
     else
         vertexData = &d_vertexData[0];
 

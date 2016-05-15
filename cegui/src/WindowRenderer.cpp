@@ -37,7 +37,7 @@ namespace CEGUI
     Constructor
 *************************************************************************/
 WindowRenderer::WindowRenderer(const String& name, const String& class_name) :
-    d_window(0),
+    d_window(nullptr),
     d_name(name),
     d_class(class_name)
 {

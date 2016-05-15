@@ -28,8 +28,6 @@ author:     Lukas E Meindl
 #include "Sample.h"
 
 #include "CEGUI/DynamicModule.h"
-#include "CEGUI/Version.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/TextureTarget.h"
 #include "CEGUI/BitmapImage.h"
@@ -45,12 +43,12 @@ using namespace CEGUI;
 SampleHandler::SampleHandler(Sample* sample)
     : d_sample(sample)
     , d_usedFilesString("")
-    , d_sampleWindow(0)
-    , d_guiContext(0)
-    , d_inputAggregator(0)
+    , d_sampleWindow(nullptr)
+    , d_guiContext(nullptr)
+    , d_inputAggregator(nullptr)
     , d_nonDefaultInputAggregator(false)
-    , d_textureTarget(0)
-    , d_textureTargetImage(0)
+    , d_textureTarget(nullptr)
+    , d_textureTargetImage(nullptr)
 {
 }
 
@@ -114,25 +112,25 @@ void SampleHandler::deinitialise()
     if(d_guiContext)
     {
         system.destroyGUIContext(*d_guiContext);
-        d_guiContext = 0;
+        d_guiContext = nullptr;
     }
 
     if (d_inputAggregator && !d_nonDefaultInputAggregator)
     {
         delete d_inputAggregator;
-        d_inputAggregator = 0;
+        d_inputAggregator = nullptr;
     }
 
     if(d_textureTarget)
     {
         system.getRenderer()->destroyTextureTarget(d_textureTarget);
-        d_textureTarget = 0;
+        d_textureTarget = nullptr;
     }
 
     if(d_textureTargetImage)
     {
         CEGUI::ImageManager::getSingleton().destroy(*d_textureTargetImage);
-        d_textureTargetImage = 0;
+        d_textureTargetImage = nullptr;
     }
 }
 
@@ -210,7 +208,7 @@ void SampleHandler::initialiseSample()
 void SampleHandler::initialiseInputAggregator()
 {
     // If the sample has its own non-default InputAggregator, we will use that one, otherwise we create a default one
-    if (d_sample->getInputAggregator() != 0)
+    if (d_sample->getInputAggregator() != nullptr)
     {
         d_inputAggregator = d_sample->getInputAggregator();
         d_nonDefaultInputAggregator = true;

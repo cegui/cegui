@@ -165,7 +165,7 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
             caretArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), w->getVertScrollbar()->getScrollPosition()));
 
             // Create the render geometry for the caret image
-            caretImagery.render(*w, caretArea, 0, &textArea);
+            caretImagery.render(*w, caretArea, nullptr, &textArea);
         }
     }
 }
@@ -244,7 +244,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
         // if it is a simple 'no selection area' case
         if ((currLine.d_startIdx >= w->getSelectionEnd()) ||
             ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStart()) ||
-            (w->getSelectionBrushImage() == 0))
+            (w->getSelectionBrushImage() == nullptr))
         {
             colours = normalTextCol;
             

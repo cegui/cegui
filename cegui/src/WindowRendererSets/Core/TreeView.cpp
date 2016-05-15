@@ -40,8 +40,8 @@ static ColourRect ICON_COLOUR_RECT(Colour(1, 1, 1, 1));
 //----------------------------------------------------------------------------//
 FalagardTreeView::FalagardTreeView(const String& type) :
     TreeViewWindowRenderer(type),
-    d_subtreeExpanderImagery(0),
-    d_subtreeCollapserImagery(0),
+    d_subtreeExpanderImagery(nullptr),
+    d_subtreeCollapserImagery(nullptr),
     d_subtreeExpanderImagerySize(0, 0)
 {
 }
@@ -95,7 +95,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
             button_rect.setSize(d_subtreeExpanderImagerySize);
 
             Rectf button_clipper(button_rect.getIntersection(items_area));
-            section->render(*tree_view, button_rect, 0, &button_clipper);
+            section->render(*tree_view, button_rect, nullptr, &button_clipper);
 
             indent = button_rect.getWidth() + expander_margin * 2;
         }

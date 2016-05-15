@@ -50,7 +50,7 @@ public:
 		Constructor for RawDataContainer class
 	*/
     RawDataContainer()
-      : mData(0),
+      : mData(nullptr),
         mSize(0)
     {
     }

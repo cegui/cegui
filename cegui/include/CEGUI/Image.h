@@ -163,7 +163,7 @@ struct ImageRenderSettings
 {
     //! Constructor
     ImageRenderSettings(const Rectf& dest_area,
-                        const Rectf* clip_area = 0,
+                        const Rectf* clip_area = nullptr,
                         bool clipping_enabled = false,
                         const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
                         float alpha = 1.0f) :

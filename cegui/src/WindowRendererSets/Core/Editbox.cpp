@@ -281,7 +281,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
 
         // create render geometry for the selection imagery.
         const String& stateName = active ? "ActiveSelection" : "InactiveSelection";
-        wlf.getStateImagery(stateName).render(*w, hlarea, 0, &text_area);
+        wlf.getStateImagery(stateName).render(*w, hlarea, nullptr, &text_area);
     }
 
     // create render geometry for pre-highlight text
@@ -437,7 +437,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
         Rectf caretRect(text_area);
         caretRect.d_min.x += extent_to_caret + text_offset;
 
-        imagery.render(*d_window, caretRect, 0, &text_area);
+        imagery.render(*d_window, caretRect, nullptr, &text_area);
     }
 }
 

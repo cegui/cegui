@@ -160,7 +160,7 @@ void ItemView::addItemViewProperties()
         "SelectionBrushImage",
         "Property to get/set the selection brush image for the item view. "
         "Value should be \"set:[imageset name] image:[image name]\".",
-        &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, 0
+        &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, nullptr
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
@@ -235,10 +235,10 @@ void ItemView::setModel(ItemModel* item_model)
     if (item_model == d_itemModel)
         return;
 
-    if (d_itemModel != 0)
+    if (d_itemModel != nullptr)
     {
         disconnectModelEvents();
-        d_lastSelectedIndex = ModelIndex(0);
+        d_lastSelectedIndex = ModelIndex(nullptr);
     }
 
     d_itemModel = item_model;
@@ -254,7 +254,7 @@ void ItemView::setModel(ItemModel* item_model)
 //----------------------------------------------------------------------------//
 void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return;
 
     d_eventChildrenWillBeAddedConnection = d_itemModel->subscribeEvent(
@@ -312,7 +312,7 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
 //----------------------------------------------------------------------------//
 bool ItemView::onChildrenWillBeRemoved(const EventArgs& args)
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return false;
 
     const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
@@ -326,7 +326,7 @@ bool ItemView::onChildrenWillBeRemoved(const EventArgs& args)
             state.d_childId <= model_args.d_startId + model_args.d_count)
         {
             if (d_itemModel->areIndicesEqual(d_lastSelectedIndex, state.d_selectedIndex))
-                d_lastSelectedIndex = ModelIndex(0);
+                d_lastSelectedIndex = ModelIndex(nullptr);
 
             itor = d_indexSelectionStates.erase(itor);
         }
@@ -401,7 +401,7 @@ void ItemView::onCursorMove(CursorInputEventArgs& e)
 
 static void disconnectIfNotNull(Event::Connection& connection)
 {
-    if (connection != 0)
+    if (connection != nullptr)
         connection->disconnect();
 }
 
@@ -616,7 +616,7 @@ ScrollbarDisplayMode ItemView::getHorzScrollbarDisplayMode() const
 //----------------------------------------------------------------------------//
 ItemViewWindowRenderer* ItemView::getViewRenderer()
 {
-    if (d_windowRenderer == 0)
+    if (d_windowRenderer == nullptr)
     {
         throw InvalidRequestException(
             "The view should have a window renderer attached!");
@@ -675,7 +675,7 @@ void ItemView::setItemTooltipsEnabled(bool enabled)
 //----------------------------------------------------------------------------//
 void ItemView::setupTooltip(glm::vec2 position)
 {
-    if (d_itemModel == 0)
+    if (d_itemModel == nullptr)
         return;
 
     static ModelIndex last_model_index;
@@ -685,7 +685,7 @@ void ItemView::setupTooltip(glm::vec2 position)
         return;
 
     Tooltip* tooltip = getTooltip();
-    if (tooltip == 0)
+    if (tooltip == nullptr)
         return;
 
     if (tooltip->getTargetWindow() != this)
@@ -768,7 +768,7 @@ bool ItemView::handleSelection(const glm::vec2& position, bool should_select,
 bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
     bool is_cumulative, bool is_range)
 {
-    if (d_itemModel == 0 ||
+    if (d_itemModel == nullptr ||
         !d_itemModel->isValidIndex(index))
         return false;
 
@@ -796,7 +796,7 @@ bool ItemView::handleSelection(const ModelIndex& index, bool should_select,
     ModelIndex parent_index = d_itemModel->getParentIndex(index);
     size_t end_child_id = d_itemModel->getChildId(index);
     size_t start_child_id = end_child_id;
-    if (is_range && is_cumulative && d_lastSelectedIndex.d_modelData != 0)
+    if (is_range && is_cumulative && d_lastSelectedIndex.d_modelData != nullptr)
     {
         start_child_id = d_itemModel->getChildId(d_lastSelectedIndex);
     }

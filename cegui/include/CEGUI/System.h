@@ -120,10 +120,10 @@ public:
         This must be set to CEGUI_VERSION_ABI
     */
     static System& create(Renderer& renderer,
-                          ResourceProvider* resourceProvider = 0,
-                          XMLParser* xmlParser = 0,
-                          ImageCodec* imageCodec = 0,
-                          ScriptModule* scriptModule = 0,
+                          ResourceProvider* resourceProvider = nullptr,
+                          XMLParser* xmlParser = nullptr,
+                          ImageCodec* imageCodec = nullptr,
+                          ScriptModule* scriptModule = nullptr,
                           const String& configFile = "",
                           const String& logFile = "CEGUI.log",
                           const int abi = CEGUI_VERSION_ABI);

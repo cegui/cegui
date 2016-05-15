@@ -59,7 +59,7 @@ NullRenderer& NullRenderer::bootstrapSystem(const int abi)
 
 	// TODO: Create image codec?
 	// NullImageCodec& ic = createNullImageCodec();
-    System::create(renderer, rp, static_cast<XMLParser*>(0), 0);
+    System::create(renderer, rp, static_cast<XMLParser*>(nullptr), nullptr);
 
     return renderer;
 }

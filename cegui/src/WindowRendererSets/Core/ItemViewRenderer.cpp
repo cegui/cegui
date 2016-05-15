@@ -87,7 +87,7 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
     ItemView* view, RenderedString& rendered_string,
     Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected)
 {
-    if (view->getSelectionBrushImage() != 0 && is_selected)
+    if (view->getSelectionBrushImage() != nullptr && is_selected)
     {
         ImageRenderSettings renderSettings(
             draw_rect,
@@ -109,7 +109,7 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
 
         auto stringGeomBuffers = rendered_string.createRenderGeometry(
             view, i,
-            draw_pos, 0, item_clipper, 0.0f);
+            draw_pos, nullptr, item_clipper, 0.0f);
 
         view->appendGeometryBuffers(stringGeomBuffers);
 

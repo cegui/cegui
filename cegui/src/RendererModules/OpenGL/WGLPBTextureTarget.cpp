@@ -58,11 +58,11 @@ int pbAttrs[] =
 OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
     OpenGLTextureTarget(owner, addStencilBuffer),
     d_pixfmt(0),
-    d_pbuffer(0),
-    d_context(0),
-    d_hdc(0),
-    d_prevContext(0),
-    d_prevDC(0)
+    d_pbuffer(nullptr),
+    d_context(nullptr),
+    d_hdc(nullptr),
+    d_prevContext(nullptr),
+    d_prevDC(nullptr)
 {
     if (!WGLEW_ARB_pbuffer)
         throw RendererException("WGL_ARB_pbuffer extension is needed to "
@@ -71,7 +71,7 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bo
     HDC hdc = wglGetCurrentDC();
 
     unsigned int fmtcnt;
-    wglChoosePixelFormatARB(hdc, pbAttrs, 0, 1, &d_pixfmt, &fmtcnt);
+    wglChoosePixelFormatARB(hdc, pbAttrs, nullptr, 1, &d_pixfmt, &fmtcnt);
 
     if (!fmtcnt)
         throw RendererException(

@@ -43,16 +43,16 @@ class NULL_GUIRENDERER_API NullTexture : public Texture
 {
 public:
     // implement CEGUI::Texture interface
-    const String& getName() const;
-    const Sizef& getSize() const;
-    const Sizef& getOriginalDataSize() const;
-    const glm::vec2& getTexelScaling() const;
-    void loadFromFile(const String& filename, const String& resourceGroup);
+    const String& getName() const override;
+    const Sizef& getSize() const override;
+    const Sizef& getOriginalDataSize() const override;
+    const glm::vec2& getTexelScaling() const override;
+    void loadFromFile(const String& filename, const String& resourceGroup) override;
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
-                                PixelFormat pixel_format);
-    void blitFromMemory(const void* sourceData, const Rectf& area);
-    void blitToMemory(void* targetData);
-    bool isPixelFormatSupported(const PixelFormat fmt) const;
+                                PixelFormat pixel_format) override;
+    void blitFromMemory(const void* sourceData, const Rectf& area) override;
+    void blitToMemory(void* targetData) override;
+    bool isPixelFormatSupported(const PixelFormat fmt) const override;
 
 protected:
     // we all need a little help from out friends ;)

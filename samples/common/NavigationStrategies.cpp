@@ -36,14 +36,14 @@ Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& pay
 {
     std::vector<Window*>::const_iterator itor;
     // start at the beginning
-    if (neighbour == 0)
+    if (neighbour == nullptr)
         return *d_windows.begin();
     else
         itor = std::find(d_windows.begin(), d_windows.end(), neighbour);
 
     // no such neighbour window in here
     if (itor == d_windows.end())
-        return 0;
+        return nullptr;
 
     if (payload == NAVIGATE_PREVIOUS)
     {
@@ -110,12 +110,12 @@ Window* MatrixNavigationStrategy::getWindow(Window* neighbour, const String& pay
 
 CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload)
 {
-    if (d_targetWindow == 0)
-        return 0;
+    if (d_targetWindow == nullptr)
+        return nullptr;
 
     size_t child_count = d_targetWindow->getChildCount();
     if (child_count == 0)
-        return 0;
+        return nullptr;
 
     bool found = false;
     size_t index = 0;
@@ -158,7 +158,7 @@ CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighb
         if (child != neighbour)
             return getWindow(child, payload);
         else
-            return 0;
+            return nullptr;
     }
 
     return child;

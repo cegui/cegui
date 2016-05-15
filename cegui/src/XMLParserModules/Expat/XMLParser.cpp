@@ -49,7 +49,7 @@ ExpatParser::~ExpatParser(void)
 void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/, bool /*allowXmlValidation*/)
 {
     // All stuff goes here
-    XML_Parser parser = XML_ParserCreate(0); // Create a parser
+    XML_Parser parser = XML_ParserCreate(nullptr); // Create a parser
 
     if (!parser)
     {

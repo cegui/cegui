@@ -64,7 +64,7 @@ public:
         }
     }
 
-    bool injectInputEvent(const InputEvent& event)
+    bool injectInputEvent(const InputEvent& event) override
     {
         HandlersMap::const_iterator itor = d_handlersMap.find(event.d_eventType);
         if (itor != d_handlersMap.end())

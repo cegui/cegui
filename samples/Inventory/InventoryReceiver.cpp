@@ -202,7 +202,7 @@ void InventoryReceiver::populateGeometryBuffer()
     const Sizef square_size(squarePixelSize());
 
     ImageRenderSettings imgRenderSettings(
-        Rectf(), 0);
+        Rectf(), nullptr);
 
     for (int y = 0; y < d_content.height(); ++y)
     {

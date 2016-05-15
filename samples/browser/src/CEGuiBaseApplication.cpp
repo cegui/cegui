@@ -61,14 +61,14 @@
     Static / Const data
 *************************************************************************/
 const char CEGuiBaseApplication::DATAPATH_VAR_NAME[] = "CEGUI_SAMPLE_DATAPATH";
-SampleBrowserBase* CEGuiBaseApplication::d_sampleApp(0);
+SampleBrowserBase* CEGuiBaseApplication::d_sampleApp(nullptr);
 
 //----------------------------------------------------------------------------//
 CEGuiBaseApplication::CEGuiBaseApplication() :
     d_quitting(false),
-    d_renderer(0),
-    d_imageCodec(0),
-    d_resourceProvider(0),
+    d_renderer(nullptr),
+    d_imageCodec(nullptr),
+    d_resourceProvider(nullptr),
     d_logoGeometry(0),
     d_FPSGeometry(0),
     d_FPSElapsed(1.0f),
@@ -118,7 +118,7 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
             "Base application subclass did not create Renderer!");
 
     // start up CEGUI system using objects created in subclass constructor.
-    CEGUI::System::create(*d_renderer, d_resourceProvider, 0, d_imageCodec, 0,
+    CEGUI::System::create(*d_renderer, d_resourceProvider, nullptr, d_imageCodec, nullptr,
                           "", logFile);
 
     // initialise resource system
@@ -350,7 +350,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
             d_FPSGeometry.clear();
 
             auto textGeomBuffers = fnt->createRenderGeometryForText(
-                sstream.str(), glm::vec2(0, 0), 0, false,
+                sstream.str(), glm::vec2(0, 0), nullptr, false,
                 CEGUI::Colour(0xFFFFFFFF));
 
             d_FPSGeometry.insert(d_FPSGeometry.end(), textGeomBuffers.begin(),

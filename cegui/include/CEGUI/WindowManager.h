@@ -199,7 +199,7 @@ public:
     \return
         Pointer to the root Window object defined in the layout.
     */
-    Window* loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback = 0, void* userdata = 0);
+    Window* loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback = nullptr, void* userdata = nullptr);
 
 	/*!
 	\brief
@@ -225,7 +225,7 @@ public:
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadLayoutFromFile(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+	Window*	loadLayoutFromFile(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = nullptr, void* userdata = nullptr);
 
     /*!
     \brief
@@ -245,7 +245,7 @@ public:
     \return
         Pointer to the root Window object defined in the layout.
     */
-    Window* loadLayoutFromString(const String& source, PropertyCallback* callback = 0, void* userdata = 0);
+    Window* loadLayoutFromString(const String& source, PropertyCallback* callback = nullptr, void* userdata = nullptr);
 
     /*!
     \brief

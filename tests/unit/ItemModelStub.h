@@ -33,15 +33,15 @@
 class ItemModelStub : public CEGUI::ItemModel
 {
 public:
-    virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
-    virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& model_index);
-    virtual bool areIndicesEqual(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2) const;
-    virtual int compareIndices(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2) const;
-    virtual CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index) const;
-    virtual int getChildId(const CEGUI::ModelIndex& model_index) const;
-    virtual size_t getChildCount(const CEGUI::ModelIndex& model_index) const;
-    virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
-    virtual CEGUI::ModelIndex getRootIndex() const;
+    bool isValidIndex(const CEGUI::ModelIndex& model_index) const override;
+    CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& model_index) override;
+    bool areIndicesEqual(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2) const override;
+    int compareIndices(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2) const override;
+    CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index) const override;
+    int getChildId(const CEGUI::ModelIndex& model_index) const override;
+    size_t getChildCount(const CEGUI::ModelIndex& model_index) const override;
+    CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text) override;
+    CEGUI::ModelIndex getRootIndex() const override;
 
     std::vector<CEGUI::String> d_items;
 };

@@ -104,7 +104,7 @@ namespace CEGUI
         catch(...)
         {
         	// make sure we don't allow rawXMLData to release String owned data no matter what!
-        	rawXMLData.setData(0);
+        	rawXMLData.setData(nullptr);
 			rawXMLData.setSize(0);
 
 			throw;
@@ -112,7 +112,7 @@ namespace CEGUI
 
         // !!! We must not allow DataContainer to delete String owned data,
         //     therefore, we set it's data to 0 to avoid double-deletion
-        rawXMLData.setData(0);
+        rawXMLData.setData(nullptr);
         rawXMLData.setSize(0);
     }
 

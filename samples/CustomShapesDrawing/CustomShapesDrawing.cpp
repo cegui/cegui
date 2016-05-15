@@ -130,7 +130,7 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setRootWindow(d_root);
 
     // Initialise random-seed
-    srand(static_cast<unsigned int>(time(0)));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     // We create a checkbox to switch between showing randomly generated FPS and real FPS
     createCheckboxShowRealFPS();

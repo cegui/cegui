@@ -79,7 +79,7 @@ const String ListHeader::SegmentNameSuffix("__auto_seg_");
 *************************************************************************/
 ListHeader::ListHeader(const String& type, const String& name) :
 	Window(type, name),
-	d_sortSegment(0),
+	d_sortSegment(nullptr),
 	d_sizingEnabled(true),
 	d_sortingEnabled(true),
 	d_movingEnabled(true),
@@ -572,7 +572,7 @@ void ListHeader::removeColumn(unsigned int column)
 			// no columns, set sort segment to NULL
 			else
 			{
-				d_sortSegment = 0;
+				d_sortSegment = nullptr;
 			}
 
 		}
@@ -768,7 +768,7 @@ void ListHeader::layoutSegments(void)
 
 bool ListHeader::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ListHeaderWindowRenderer*>(renderer) != 0;
+	return dynamic_cast<const ListHeaderWindowRenderer*>(renderer) != nullptr;
 }
 
 /*************************************************************************
@@ -1079,7 +1079,7 @@ void ListHeader::addHeaderProperties(void)
 *************************************************************************/
 ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
         return wr->createNewSegment(name);
@@ -1097,7 +1097,7 @@ ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
 *************************************************************************/
 void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
         wr->destroyListSegment(segment);

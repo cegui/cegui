@@ -105,8 +105,8 @@
     Constructor
 *************************************************************************/
 SampleBrowserBase::SampleBrowserBase() :
-        d_rendererSelector(0),
-        d_baseApp(0),
+        d_rendererSelector(nullptr),
+        d_baseApp(nullptr),
         d_quitting(false),
         d_appWindowWidth(0),
         d_appWindowHeight(0)
@@ -287,7 +287,7 @@ bool SampleBrowserBase::initialise
     }
 
     delete d_rendererSelector;
-    d_rendererSelector = 0;
+    d_rendererSelector = nullptr;
 
 #endif
 
@@ -303,7 +303,7 @@ void SampleBrowserBase::cleanup()
     {
         d_baseApp->cleanup();
         delete d_baseApp;
-        d_baseApp = 0;
+        d_baseApp = nullptr;
     }
 }
 
@@ -318,7 +318,7 @@ void SampleBrowserBase::renderSingleFrame(float elapsed)
 void SampleBrowserBase::outputExceptionMessage(const char* message)
 {
 #if defined(__WIN32__) || defined(_WIN32)
-    MessageBoxA(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
+    MessageBoxA(nullptr, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
 #elif defined(__ANDROID__)
     __android_log_write (ANDROID_LOG_ERROR, "CEGUISampleFramework_NDK",
       "An exception was thrown within the sample framework:");

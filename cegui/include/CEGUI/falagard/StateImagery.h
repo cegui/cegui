@@ -76,7 +76,7 @@ namespace CEGUI
         \param srcWindow
             Window to use when convering BaseDim values to pixels.
         */
-        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0) const;
+        void render(Window& srcWindow, const ColourRect* modcols = nullptr, const Rectf* clipper = nullptr) const;
 
         /*!
         \brief
@@ -88,7 +88,7 @@ namespace CEGUI
         \param baseRect
             Rect to use when convering BaseDim values to pixels.
         */
-        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = nullptr, const Rectf* clipper = nullptr) const;
 
         /*!
         \brief

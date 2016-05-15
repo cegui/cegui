@@ -63,7 +63,7 @@ namespace CEGUI
         d_textCols(0xFFFFFFFF),
         d_enableVertScrollbar(false),
         d_enableHorzScrollbar(false),
-        d_formattedRenderedString(0),
+        d_formattedRenderedString(nullptr),
         d_formatValid(false)
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, ColourRect,
@@ -99,13 +99,13 @@ namespace CEGUI
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, float,
             "HorzExtent", "Property to get the current horizontal extent of the formatted text string."
             "  Value is a float indicating the pixel extent.",
-            0, &FalagardStaticText::getHorizontalTextExtent,
+            nullptr, &FalagardStaticText::getHorizontalTextExtent,
             0);
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, float,
             "VertExtent", "Property to get the current vertical extent of the formatted text string."
             "  Value is a float indicating the pixel extent.",
-            0, &FalagardStaticText::getVerticalTextExtent,
+            nullptr, &FalagardStaticText::getVerticalTextExtent,
             0);
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, NumOfTextLinesToShow,
@@ -722,7 +722,7 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
     {
         // delete any existing formatter
         delete d_formattedRenderedString;
-        d_formattedRenderedString = 0;
+        d_formattedRenderedString = nullptr;
 
         // create new formatter of whichever type...
         switch(getActualHorizontalFormatting())

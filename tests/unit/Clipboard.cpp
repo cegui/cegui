@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(InternalClipboard)
 }
 
 static CEGUI::String g_MimeType = "";
-static std::uint8_t* g_ClipboardBuffer = 0;
+static std::uint8_t* g_ClipboardBuffer = nullptr;
 static size_t g_ClipboardSize = 0;
 
 class TestNativeClipboardProvider : public CEGUI::NativeClipboardProvider
@@ -83,7 +83,7 @@ public:
         }
     }
 
-    virtual void sendToClipboard(const CEGUI::String& mimeType, void* buffer, size_t size)
+    void sendToClipboard(const CEGUI::String& mimeType, void* buffer, size_t size) override
     {
         g_MimeType = mimeType;
         g_ClipboardSize = size;
@@ -92,7 +92,7 @@ public:
         d_allocatedMemory.push_back(g_ClipboardBuffer);
     }
 
-    virtual void retrieveFromClipboard(CEGUI::String& mimeType, void*& buffer, size_t& size)
+    void retrieveFromClipboard(CEGUI::String& mimeType, void*& buffer, size_t& size) override
     {
         mimeType = g_MimeType;
         size = g_ClipboardSize;

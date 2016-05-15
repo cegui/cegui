@@ -66,7 +66,7 @@ void ListWidget::setIndexSelectionState(size_t item_index, bool state)
 //----------------------------------------------------------------------------//
 void ListWidget::setIndexSelectionState(StandardItem* item, bool /*state*/)
 {
-    if (item == 0)
+    if (item == nullptr)
     {
         throw InvalidRequestException("the item passed was null.");
     }
@@ -76,20 +76,20 @@ void ListWidget::setIndexSelectionState(StandardItem* item, bool /*state*/)
 //----------------------------------------------------------------------------//
 StandardItem* ListWidget::getFirstSelectedItem()
 {
-    return getNextSelectedItem(0);
+    return getNextSelectedItem(nullptr);
 }
 
 //----------------------------------------------------------------------------//
 StandardItem* ListWidget::getNextSelectedItem(const StandardItem* start_item)
 {
     if (d_indexSelectionStates.empty())
-        return 0;
+        return nullptr;
 
     int child_id = d_itemModel.getChildId(start_item);
-    if (start_item != 0 && child_id == -1)
-        return 0;
+    if (start_item != nullptr && child_id == -1)
+        return nullptr;
 
-    size_t index = start_item == 0 ? 0 : (static_cast<size_t>(child_id) + 1);
+    size_t index = start_item == nullptr ? 0 : (static_cast<size_t>(child_id) + 1);
     size_t list_size = getItemCount();
 
     for (; index < list_size; ++index)
@@ -100,7 +100,7 @@ StandardItem* ListWidget::getNextSelectedItem(const StandardItem* start_item)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -156,11 +156,11 @@ StandardItem* ListWidget::getItemAtIndex(size_t index)
 StandardItem* ListWidget::findItemWithText(const String& text, const StandardItem* start_item)
 {
     int child_id = d_itemModel.getChildId(start_item);
-    if (start_item != 0 && child_id == -1)
-        return 0;
+    if (start_item != nullptr && child_id == -1)
+        return nullptr;
 
     // if start_item is NULL begin search at beginning, else start at item after start_item
-    size_t index = start_item == 0 ? 0 : (static_cast<size_t>(child_id) + 1);
+    size_t index = start_item == nullptr ? 0 : (static_cast<size_t>(child_id) + 1);
     size_t list_size = getItemCount();
 
     while (index < list_size)
@@ -173,7 +173,7 @@ StandardItem* ListWidget::findItemWithText(const String& text, const StandardIte
         index++;
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//

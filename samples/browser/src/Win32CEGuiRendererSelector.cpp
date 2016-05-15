@@ -80,7 +80,7 @@ bool Win32CEGuiRendererSelector::invokeDialog()
     }
 
     // multiple renderer modules available, so show dialog & return result
-    return (1 == DialogBoxIndirectParam(GetModuleHandle(0), d_template, 0, Win32CEGuiRendererSelector::dialogProcedure, reinterpret_cast<LPARAM>(this)));
+    return (1 == DialogBoxIndirectParam(GetModuleHandle(nullptr), d_template, nullptr, Win32CEGuiRendererSelector::dialogProcedure, reinterpret_cast<LPARAM>(this)));
 }
 
 
@@ -334,7 +334,7 @@ LPDLGTEMPLATE Win32CEGuiRendererSelector::createDialogTemplate()
         return dialogTemplate;
     }
 
-    return 0;
+    return nullptr;
 }
 
 /*************************************************************************

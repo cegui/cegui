@@ -278,7 +278,7 @@ bool TabControlSample::handleAddTab(const EventArgs&)
                 // Next
                 continue;
 
-            Window* pg = 0;
+            Window* pg = nullptr;
 
             pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
             try
@@ -382,7 +382,7 @@ TabControl* TabControlSample::getTabControl(Window* root)
     {
         return static_cast<TabControl*>(root->getChild(control_id));
     }
-    return 0;
+    return nullptr;
 }
 
 ListWidget* TabControlSample::getPageListWidget(Window* root)
@@ -392,5 +392,5 @@ ListWidget* TabControlSample::getPageListWidget(Window* root)
     {
         return static_cast<ListWidget*>(root->getChild(page_list_id));
     }
-    return 0;
+    return nullptr;
 }

@@ -36,7 +36,7 @@ namespace CEGUI
 /*************************************************************************
     Static data
 *************************************************************************/
-template<> WindowRendererManager* Singleton<WindowRendererManager>::ms_Singleton = 0;
+template<> WindowRendererManager* Singleton<WindowRendererManager>::ms_Singleton = nullptr;
 WindowRendererManager::OwnedFactoryList WindowRendererManager::d_ownedFactories;
 
 /*************************************************************************
@@ -108,7 +108,7 @@ WindowRendererFactory* WindowRendererManager::getFactory(const String& name) con
 *************************************************************************/
 void WindowRendererManager::addFactory(WindowRendererFactory* wr)
 {
-    if (wr == 0)
+    if (wr == nullptr)
     {
         return;
     }

@@ -131,7 +131,7 @@ void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 
     if (e.source == CIS_Left)
 	{
-		if ((d_parent != 0) && d_dragEnabled)
+		if ((d_parent != nullptr) && d_dragEnabled)
 		{
             // we want all cursor inputs from now on
 			if (captureInput())

@@ -56,9 +56,9 @@ SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buf
     d_geometryBuffer(geometry_buffer),
     d_paintStyle(paint_style),
     d_maxScale(max_scale),
-    d_prevPoint(0),
-    d_curPoint(0),
-    d_nextPoint(0)
+    d_prevPoint(nullptr),
+    d_curPoint(nullptr),
+    d_nextPoint(nullptr)
 {
     // Get and add the stroke colour
     d_strokeVertex.d_colour = SVGTesselator::getStrokeColour(paint_style);

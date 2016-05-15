@@ -31,7 +31,7 @@ WindowNavigator::WindowNavigator(SemanticMappingsMap mappings,
     NavigationStrategy* strategy) :
     d_mappings(mappings),
     d_strategy(strategy),
-    d_currentFocusedWindow(0)
+    d_currentFocusedWindow(nullptr)
 {
 }
 
@@ -42,13 +42,13 @@ void WindowNavigator::handleSemanticEvent(const SemanticInputEvent& event)
 
     if (itor != d_mappings.end())
     {
-        if (d_currentFocusedWindow != 0)
+        if (d_currentFocusedWindow != nullptr)
             d_currentFocusedWindow->unfocus();
 
         d_currentFocusedWindow = 
             d_strategy->getWindow(d_currentFocusedWindow, itor->second);
 
-        if (d_currentFocusedWindow != 0)
+        if (d_currentFocusedWindow != nullptr)
             d_currentFocusedWindow->focus();
     }
 }
