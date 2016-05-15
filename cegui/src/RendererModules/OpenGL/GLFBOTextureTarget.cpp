@@ -52,7 +52,7 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner, bool a
     initialiseRenderTexture();
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
+    OpenGLFBOTextureTarget::declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//

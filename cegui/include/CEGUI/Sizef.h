@@ -142,7 +142,7 @@ public:
         assert(ratio > 0);
 
         const float expectedWidth = d_height * ratio;
-        bool keepHeight(false);
+        bool keepHeight;
         switch (mode)
         {
         case AM_SHRINK:

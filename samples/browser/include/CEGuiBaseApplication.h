@@ -123,10 +123,6 @@ public:
     */
     void renderSingleFrame(const float elapsed);
 
-    /* Returns if the renderer (DX or OpenGL) was selected and the initialisation
-    was subsequently finished */
-    bool isInitialised();
-
     /*!
      \brief
         Return the path prefix to use for datafiles.  The value returned

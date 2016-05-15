@@ -37,7 +37,6 @@ class Sample
 {
 public:
     Sample(int priority = 0) :
-        d_inputAggregator(0), 
         d_priority(priority)
     {}
 
@@ -67,8 +66,11 @@ public:
     bool operator< (const Sample& other) const { return d_priority > other.getPriority(); }
 
 protected:
+    //! The GUIContext that the Sample is a part of
+    CEGUI::GUIContext*          d_guiContext = nullptr;
+
     CEGUI::String               d_usedFiles;
-    CEGUI::InputAggregator*     d_inputAggregator;
+    CEGUI::InputAggregator*     d_inputAggregator = nullptr;
 
     //! The name of the sample
     CEGUI::String               d_name;

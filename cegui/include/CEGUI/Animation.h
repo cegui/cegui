@@ -235,7 +235,7 @@ public:
     \par
         This is internal method! Only use if you know what you're doing!
     */
-    void autoUnsubscribe(AnimationInstance* instance);
+    static void autoUnsubscribe(AnimationInstance* instance);
 
     /*!
      \brief

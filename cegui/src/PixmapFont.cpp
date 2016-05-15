@@ -52,7 +52,7 @@ PixmapFont::PixmapFont(const String& font_name, const String& imageset_filename,
     addPixmapFontProperties();
 
     reinit();
-    updateFont();
+    PixmapFont::updateFont();
 }
 
 //----------------------------------------------------------------------------//

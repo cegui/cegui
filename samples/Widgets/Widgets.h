@@ -77,8 +77,6 @@ protected:
 
     void initialiseEventHandlerObjects();
 
-    void createListContent(CEGUI::Window* root);
-
     bool handleSkinSelectionAccepted(const CEGUI::EventArgs& args);
     bool handleWidgetSelectionChanged(const CEGUI::EventArgs& args);
 

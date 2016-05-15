@@ -125,7 +125,7 @@ NullTexture::NullTexture(const String& name, const String& filename,
     d_texelScaling(0, 0),
     d_name(name)
 {
-    loadFromFile(filename, resourceGroup);
+    NullTexture::loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//

@@ -67,10 +67,12 @@ NullRenderer& NullRenderer::bootstrapSystem(const int abi)
 //----------------------------------------------------------------------------//
 void NullRenderer::destroySystem()
 {
-    System* sys;
-    if (!(sys = System::getSingletonPtr()))
+    System* sys = System::getSingletonPtr();
+    if (sys == nullptr)
+    {
         throw InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed.");
+    }
 
     NullRenderer* renderer = static_cast<NullRenderer*>(sys->getRenderer());
     ResourceProvider* rp = sys->getResourceProvider();
@@ -341,8 +343,8 @@ NullRenderer::~NullRenderer()
     delete d_shaderWrapperSolid;
 
     destroyAllGeometryBuffers();
-    destroyAllTextureTargets();
-    destroyAllTextures();
+    NullRenderer::destroyAllTextureTargets();
+    NullRenderer::destroyAllTextures();
 
     delete d_defaultTarget;
 }

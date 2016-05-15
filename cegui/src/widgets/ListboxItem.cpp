@@ -72,7 +72,7 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
 	d_selectBrush(nullptr)
 {
-   setText(text);
+    ListboxItem::setText(text);
 }
 
 //----------------------------------------------------------------------------//

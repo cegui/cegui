@@ -72,8 +72,6 @@ protected:
 
     //! destructor.
     virtual ~NullTexture();
-    //! updates cached scale value used to map pixels to texture co-ords.
-    void updateCachedScaleValues();
 
     //! Counter used to provide unique texture names.
     static std::uint32_t d_textureNumber;

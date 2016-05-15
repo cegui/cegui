@@ -80,7 +80,7 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bo
     initialiseTexture();
 
     // set default size (and cause initialisation of the pbuffer)
-    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
+    OpenGLWGLPBTextureTarget::declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//

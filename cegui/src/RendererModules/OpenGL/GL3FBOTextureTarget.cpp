@@ -56,7 +56,7 @@ OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner, bool ad
     initialiseRenderTexture();
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
+    OpenGL3FBOTextureTarget::declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//

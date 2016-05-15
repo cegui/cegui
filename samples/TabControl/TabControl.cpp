@@ -278,19 +278,8 @@ bool TabControlSample::handleAddTab(const EventArgs&)
                 // Next
                 continue;
 
-            Window* pg = nullptr;
-
-            pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-            try
-            {
-                pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-                pg->setName(String(pgNameStream.str()));
-            }
-            catch (CEGUI::Exception&)
-            {
-                Logger::getSingleton().logEvent("Some error occured while adding a tabpage. Please see the logfile.");
-                break;
-            }
+            Window* pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
+            pg->setName(String(pgNameStream.str()));
 
             // This window has just been created while loading the layout
             if (pg->isChild("Text"))
