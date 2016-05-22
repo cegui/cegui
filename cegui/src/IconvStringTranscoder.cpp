@@ -191,7 +191,7 @@ char16_t* IconvStringTranscoder::stringToUTF16(const String& input) const
 {
     IconvHelper ich(UTF16PE, "UTF-8");
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     return iconvTranscode<char16_t>(
         ich, input.c_str(), getStringLength(input.c_str()));
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
@@ -205,7 +205,7 @@ std::wstring IconvStringTranscoder::stringToStdWString(const String& input) cons
 {
     IconvHelper ich("WCHAR_T", "UTF-8");
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     return iconvTranscode<std::wstring, wchar_t>(
         ich, input.c_str(), getStringLength(input.c_str()));
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
@@ -222,7 +222,7 @@ String IconvStringTranscoder::stringFromUTF16(const char16_t* input) const
     return iconvTranscode<String, char>(
         ich, reinterpret_cast<const char*>(input),
         getStringLength(input) * sizeof(char16_t));
-#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD)
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     IconvHelper ich("WCHAR_T", UTF16PE);
     return stringFromStdWString(iconvTranscode<std::wstring, wchar_t>(
         ich, reinterpret_cast<const char*>(input), getStringLength(input)));

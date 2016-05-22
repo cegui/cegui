@@ -88,7 +88,7 @@ namespace CEGUI
         // Put the source string into a RawDataContainer
         RawDataContainer rawXMLData;
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         const char* c_str = source.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         const char* c_str = source.toUtf8String().c_str();

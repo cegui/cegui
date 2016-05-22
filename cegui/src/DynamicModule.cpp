@@ -166,7 +166,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
     const String envModuleDir(getModuleDirEnvVar());
 
     if (!envModuleDir.empty())
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(envModuleDir + '/' + name);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         handle = DYNLIB_LOAD( (envModuleDir + '/' + name).toUtf8String() );
@@ -179,7 +179,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 
     if (!handle)
         // try loading without any explicit location (i.e. use OS search path)
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(name);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         handle = DYNLIB_LOAD(name.toUtf8String());
@@ -188,7 +188,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
     // finally, try using the compiled-in module directory
     #if defined(CEGUI_MODULE_DIR)
     if (!handle)
-        #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+        #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
         #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
         handle = DYNLIB_LOAD( (CEGUI_MODULE_DIR + name).toUtf8String() );
@@ -251,7 +251,7 @@ const String& DynamicModule::getModuleName() const
 //----------------------------------------------------------------------------//
 void* DynamicModule::getSymbolAddress(const String& symbol) const
 {
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbol));
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbol.toUtf8String()));
