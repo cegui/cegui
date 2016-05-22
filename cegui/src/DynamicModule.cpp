@@ -254,7 +254,8 @@ void* DynamicModule::getSymbolAddress(const String& symbol) const
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbol));
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbol.toUtf8String()));
+    std::string symbolAsUtf8String = symbol.toUtf8String();
+    return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbolAsUtf8String));
 #endif
 }
 
