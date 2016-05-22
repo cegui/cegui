@@ -476,7 +476,7 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
         // Forward script exceptions with line number and file info
-        CEGUI_CATCH(ScriptException& e)
+        CEGUI_CATCH(ScriptException&)
         {
             CEGUI_RETHROW;
         }
@@ -508,7 +508,7 @@ int	System::executeScriptGlobal(const String& function_name) const
 			return d_scriptModule->executeScriptGlobal(function_name);
 		}
         // Forward script exceptions with line number and file info
-        CEGUI_CATCH(ScriptException& e)
+        CEGUI_CATCH(ScriptException&)
         {
             CEGUI_RETHROW;
         }
@@ -541,7 +541,7 @@ void System::executeScriptString(const String& str) const
             d_scriptModule->executeString(str);
         }
         // Forward script exceptions with line number and file info
-        CEGUI_CATCH(ScriptException& e)
+        CEGUI_CATCH(ScriptException&)
         {
             CEGUI_RETHROW;
         }
