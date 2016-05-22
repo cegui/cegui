@@ -64,7 +64,7 @@ public:
     */
     static std::stringstream& GetPreparedStream(const String& initialValue);
 
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_STD
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_ASCII
     /*!
     \brief
         Helper function for getting the stringstream with its value set to the

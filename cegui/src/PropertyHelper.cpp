@@ -826,7 +826,7 @@ PropertyHelper<glm::quat>::fromString(const String& str)
 
     if (str.empty())
         return val;
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     else if (str.find("w", 0) != std::string::npos || 
              str.find("W", 0) != std::string::npos)
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32

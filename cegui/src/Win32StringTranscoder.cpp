@@ -40,7 +40,7 @@ Win32StringTranscoder::Win32StringTranscoder()
 //----------------------------------------------------------------------------//
 char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
 {
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), 
                                         -1, 0, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
@@ -53,7 +53,7 @@ char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
             "MultiByteToWideChar failed");
 
     wchar_t* buff = new wchar_t[len];
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
                         reinterpret_cast<LPWSTR>(buff), len);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32

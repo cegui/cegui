@@ -5433,7 +5433,7 @@ struct hash<CEGUI::String>
 #   pragma warning(pop)
 #endif
 
-#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII
 
 namespace CEGUI
 {

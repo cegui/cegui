@@ -49,7 +49,7 @@ void SharedStringstream::setPrecision(int precision)
     d_sharedStream.precision(precision);
 }
 
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_STD
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_ASCII
 std::stringstream& SharedStringstream::GetPreparedStream(const String& initialValue)
 {
     std::stringstream& sstream = s_sharedStreamInstance.d_sharedStream;

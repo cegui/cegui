@@ -146,7 +146,7 @@ void FalagardEditbox::setupVisualString(String& visual) const
 
     if (w->isTextMaskingEnabled())
     {
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) 
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) 
         visual.assign(w->getText().length(), static_cast<String::value_type>(w->getTextMaskingCodepoint()));
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) 
         visual.assign(w->getText().length(), static_cast<char32_t>(w->getTextMaskingCodepoint()));
@@ -454,7 +454,7 @@ size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     // Return the proper index
     if (w->isTextMaskingEnabled())
     {
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD) 
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) 
         return w->getFont()->getCharAtPixel(
                 String(w->getTextVisual().length(), static_cast<String::value_type>(w->getTextMaskingCodepoint())),
                 wndx);
