@@ -27,7 +27,7 @@
 
 #include "CEGUI/FreeTypeFontGlyph.h"
 
-#include <freetype/freetype.h>
+//#include <freetype/freetype.h>
 
 namespace CEGUI
 {

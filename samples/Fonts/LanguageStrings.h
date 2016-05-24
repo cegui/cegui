@@ -35,9 +35,9 @@ static const unsigned int LangListSize = 12;
 
 static struct
 {
-    char* Language;
-    char* Font;
-    char* Text;
+    const char* Language;
+    const char* Font;
+    const char* Text;
 } LangList[LangListSize] =
 {
     // A list of strings in different languages stored as hexadecimal UTF-8 code units
