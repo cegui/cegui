@@ -143,7 +143,7 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-String EventAction::makeConnectionKeyName(const Window& widget) const
+String EventAction::makeConnectionKeyName(const Window& /*widget*/) const
 {
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 

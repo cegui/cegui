@@ -170,8 +170,8 @@ static void dumpBacktrace(size_t frames)
             if (!info.dli_sname)
             {
                 std::stringstream sstream;
-                sstream << "#" << i << " " << static_cast<const void*>(buffer[i]) << " (" <<
-                    << info.dli_fname << ")";
+                sstream << "#" << i << " " << static_cast<const void*>(buffer[i]) << " ("
+                        << info.dli_fname << ")";
                 outstr = sstream.str();
             }
             else
@@ -183,7 +183,7 @@ static void dumpBacktrace(size_t frames)
                 char* demangle_name = abi::__cxa_demangle(info.dli_sname, 0, 0, &demangle_result);
 
                 std::stringstream sstream;
-                sstream << "#" << i << " " << demangle_name ? demangle_name : info.dli_sname <<
+                sstream << "#" << i << " " << (demangle_name ? demangle_name : info.dli_sname) <<
                     " +" << std::hex << std::uppercase << std::showbase << offset << " (" <<
                     info.dli_fname << ")";
                 outstr = sstream.str();

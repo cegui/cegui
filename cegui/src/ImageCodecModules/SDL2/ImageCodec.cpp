@@ -104,7 +104,7 @@ Texture* SDL2ImageCodec::load(const RawDataContainer& data, Texture* result)
     }
     else
     {
-        CEGUI_THROW(FileIOException("Could not load image from memory."));
+        throw FileIOException("Could not load image from memory.");
     }
     
     return result;

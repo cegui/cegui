@@ -148,8 +148,8 @@ std::vector<GeometryBuffer*> SVGImage::createRenderGeometry(
 }
 
 void SVGImage::addToRenderGeometry(
-    GeometryBuffer& geomBuffer, const Rectf& renderArea,
-    const Rectf* clipArea, const ColourRect& colours
+    GeometryBuffer&, const Rectf& /*renderArea*/,
+    const Rectf* /*clipArea*/, const ColourRect& /*colours*/
     ) const
 {
     throw std::runtime_error("not implemented");
