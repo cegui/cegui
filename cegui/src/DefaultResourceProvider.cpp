@@ -34,6 +34,7 @@
 #   include <io.h>
 #   include <windows.h>
 #   include <string>
+#   include <cstdio> 
 #else
 #   include <sys/types.h>
 #   include <sys/stat.h>
