@@ -172,8 +172,8 @@ Image& ImageManager::create(const XMLAttributes& attributes)
 {
     static const String type_default("BasicImage");
     
-    const String& type(attributes.getValueAsString(ImageTypeAttribute, type_default));
-    const String& name(attributes.getValueAsString(ImageNameAttribute));
+    const String type = attributes.getValueAsString(ImageTypeAttribute, type_default);
+    const String name = attributes.getValueAsString(ImageNameAttribute);
 
     if (name.empty())
         CEGUI_THROW(InvalidRequestException(
