@@ -228,6 +228,7 @@ SampleDataModule::SampleDataModule(CEGUI::String sampleName,
 
 SampleDataModule::~SampleDataModule()
 {
+    delete d_dynamicModule;
 }
 
 void SampleDataModule::initialise(int width, int height)
@@ -250,8 +251,8 @@ void SampleDataModule::deinitialise()
 
 void SampleDataModule::getSampleInstanceFromDLL()
 {
-    CEGUI::DynamicModule* sampleModule = new CEGUI::DynamicModule(d_name);
-    getSampleInstance functionPointerGetSample = (getSampleInstance)sampleModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName));
+    d_dynamicModule = new CEGUI::DynamicModule(d_name);
+    getSampleInstance functionPointerGetSample = static_cast<getSampleInstance>(d_dynamicModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName)));
 
     if(functionPointerGetSample == 0)
     {
