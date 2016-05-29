@@ -171,7 +171,8 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     for (int y = 0; y < ds_yPivotCount; ++y)
     {
-        for (int x = 0; x < ds_xPivotCount; ++x)
+        for (int
+        x = 0; x < ds_xPivotCount; ++x)
         {
             const float factorMinX = static_cast<float>(ds_xPivotCount - 1- x) / (ds_xPivotCount - 1);
             const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);

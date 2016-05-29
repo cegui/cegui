@@ -102,14 +102,14 @@ void freeFunctionSubscriberVoidNoArgs()
     g_GlobalEventValue = 13;
 }
 
-bool freeFunctionSubscriberOtherArgs(const CEGUI::EventArgs& args, const int arg)
+bool freeFunctionSubscriberOtherArgs(const CEGUI::EventArgs&, const int arg)
 {
     g_GlobalEventValue = arg;
 
     return true;
 }
 
-void freeFunctionSubscriberFirstOtherArgs(const int arg, const CEGUI::EventArgs& args)
+void freeFunctionSubscriberFirstOtherArgs(const int arg, const CEGUI::EventArgs&)
 {
     g_GlobalEventValue = arg;
 }
