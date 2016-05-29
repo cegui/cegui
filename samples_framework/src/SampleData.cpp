@@ -252,7 +252,7 @@ void SampleDataModule::deinitialise()
 void SampleDataModule::getSampleInstanceFromDLL()
 {
     d_dynamicModule = new CEGUI::DynamicModule(d_name);
-    getSampleInstance functionPointerGetSample = static_cast<getSampleInstance>(d_dynamicModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName)));
+    getSampleInstance functionPointerGetSample = reinterpret_cast<getSampleInstance>(d_dynamicModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName)));
 
     if(functionPointerGetSample == 0)
     {
