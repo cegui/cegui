@@ -62,9 +62,9 @@ void WobblyWindowEffect::syncPivots(CEGUI::RenderingWindow& window)
 {
     const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
 
-    for (size_t y = 0; y < ds_yPivotCount; ++y)
+    for (int y = 0; y < ds_yPivotCount; ++y)
     {
-        for (size_t x = 0; x < ds_xPivotCount; ++x)
+        for (int x = 0; x < ds_xPivotCount; ++x)
         {
             const float factorMinX = static_cast<float>(ds_xPivotCount - x) / (ds_xPivotCount - 1);
             const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);
@@ -169,9 +169,9 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     bool changed = false;
 
-    for (size_t y = 0; y < ds_yPivotCount; ++y)
+    for (int y = 0; y < ds_yPivotCount; ++y)
     {
-        for (size_t x = 0; x < ds_xPivotCount; ++x)
+        for (int x = 0; x < ds_xPivotCount; ++x)
         {
             const float factorMinX = static_cast<float>(ds_xPivotCount - 1- x) / (ds_xPivotCount - 1);
             const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);
