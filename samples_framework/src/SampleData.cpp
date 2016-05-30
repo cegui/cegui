@@ -228,7 +228,7 @@ SampleDataModule::SampleDataModule(CEGUI::String sampleName,
 
 SampleDataModule::~SampleDataModule()
 {
-    delete d_dynamicModule;
+    //delete d_dynamicModule;
 }
 
 void SampleDataModule::initialise(int width, int height)
