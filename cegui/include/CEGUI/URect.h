@@ -241,6 +241,11 @@ public:
         return URect(d_min - r.d_min, d_max - r.d_max);
     }
 
+    inline bool isAbsolute() const
+    {
+        return d_min.isAbsolute() && d_max.isAbsolute();
+    }
+
     /*!
     \brief Writes a URect to a stream
     */

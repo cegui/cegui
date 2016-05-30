@@ -64,11 +64,11 @@ public:
     area larger than the ScrollablePane itself and these child windows can be
     scrolled into view using the scrollbars of the scrollable pane.
 
-    Note: If the content pane is set to be auto-sized, and not both (horizontal
-    and vertical) scrollbars are set to be always visible, and any of the
-    children's size is not set to be an absolute dimension (i.e. its relative
-    component is non-zero), this creates a circular dependency which may lead to
-    a crash. Please don't use such a combination. It'll probably not be allowed
+    Note: A relative component in a child's area is taken relative to the size
+    of content area, not the size of the scrollable pane. Therefore, when a
+    child uses a non-absolute area (i.e. which has any unified dimension with a
+    non-zero relative component) while auto-size is set to "true", this creates
+    a circular dependency and is therefore not allowed.
     in future versions of CEGUI.
 */
 class CEGUIEXPORT ScrollablePane : public Window
@@ -215,11 +215,11 @@ public:
     \brief
         Set whether the content pane should be auto-sized.
 
-        Note: If the content pane is set to be auto-sized, and not both
-        (horizontal and vertical) scrollbars are set to be always visible, and
-        any of the children's size is not set to be an absolute dimension (i.e.
-        its relative component is non-zero), this creates a circular dependency
-        which may lead to a crash. Please don't use such a combination. It'll
+        Note: A relative component in a child's area is taken relative to the
+        size of content area, not the size of the scrollable pane. Therefore,
+        when a child uses a non-absolute area (i.e. which has any unified
+        dimension with a non-zero relative component) while auto-size is set to
+        "true", this creates a circular dependency and is therefore not allowed.
         probably not be allowed in future versions of CEGUI.
 
     \param setting

@@ -97,6 +97,11 @@ public:
         return USize(d_width - s.d_width, d_height - s.d_height);
     }
 
+    inline bool isAbsolute() const
+    {
+        return d_width.isAbsolute() && d_height.isAbsolute();
+    }
+
     /*!
     \brief Writes a USize to a stream
     */

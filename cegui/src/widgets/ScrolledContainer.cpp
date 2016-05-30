@@ -52,6 +52,7 @@ ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
 {
     addScrolledContainerProperties();
     setCursorInputPropagationEnabled(true);
+    setSize(USize::zero());
 }
 
 //----------------------------------------------------------------------------//
@@ -90,6 +91,7 @@ void ScrolledContainer::setContentArea(const Rectf& area)
     if (!d_autosizePane)
     {
         d_contentArea = area;
+        setSize(USize(cegui_absdim(d_contentArea.getWidth()), cegui_absdim(d_contentArea.getHeight())));
 
         // Fire event
         WindowEventArgs args(this);
@@ -169,6 +171,10 @@ void ScrolledContainer::onContentChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void ScrolledContainer::onAutoSizeSettingChanged(WindowEventArgs& e)
 {
+    if (d_autosizePane)
+        for (const Element* child : d_children)
+            makeSureChildUsesAbsoluteArea(child);
+
     fireEvent(EventAutoSizeSettingChanged, e, EventNamespace);
 
     if (d_autosizePane)
@@ -179,8 +185,11 @@ void ScrolledContainer::onAutoSizeSettingChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildSized(const EventArgs&)
+bool ScrolledContainer::handleChildSized(const ElementEventArgs& e)
 {
+    if (d_autosizePane)
+        makeSureChildUsesAbsoluteArea(e.element);
+
     // Fire event that notifies that a child's area has changed.
     WindowEventArgs args(this);
     onContentChanged(args);
@@ -188,8 +197,11 @@ bool ScrolledContainer::handleChildSized(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildMoved(const EventArgs&)
+bool ScrolledContainer::handleChildMoved(const ElementEventArgs& e)
 {
+    if (d_autosizePane)
+        makeSureChildUsesAbsoluteArea(e.element);
+
     // Fire event that notifies that a child's area has changed.
     WindowEventArgs args(this);
     onContentChanged(args);
@@ -246,13 +258,16 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
 {
     Window::onChildAdded(e);
 
+    if (d_autosizePane)
+        makeSureChildUsesAbsoluteArea(e.element);
+
     // subscribe to some events on this child
     d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
         static_cast<Window*>(e.element)->subscribeEvent(Window::EventSized,
-            Event::Subscriber(&ScrolledContainer::handleChildSized, this))));
+            Event::Subscriber(reinterpret_cast<void (ScrolledContainer::*)(const EventArgs&)>(&ScrolledContainer::handleChildSized), this))));
     d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
         static_cast<Window*>(e.element)->subscribeEvent(Window::EventMoved,
-            Event::Subscriber(&ScrolledContainer::handleChildMoved, this))));
+            Event::Subscriber(reinterpret_cast<void (ScrolledContainer::*)(const EventArgs&)>(&ScrolledContainer::handleChildMoved), this))));
 
     // force window to update what it thinks it's screen / pixel areas are.
     static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
@@ -315,6 +330,17 @@ void ScrolledContainer::addScrolledContainerProperties(void)
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         nullptr, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
     );
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledContainer::makeSureChildUsesAbsoluteArea(const Element* child) const
+{
+    if (!child->getArea().isAbsolute())
+        throw InvalidRequestException(
+          "A relative component in a child's area is taken relative to the size of content area, not the size of the "
+          "scrollable pane. Therefore, when a child uses a non-absolute area (i.e. which has any unified dimension "
+          "with a non-zero relative component) while auto-size is set to \"true\", this creates a circular dependency "
+          "and is therefore not allowed.");
 }
 
 //----------------------------------------------------------------------------//
