@@ -154,6 +154,11 @@ public:
     {
         return !(operator==(vec));
     }
+
+    inline bool isAbsolute() const
+    {
+        return d_x.isAbsolute() && d_y.isAbsolute();
+    }
     
     /*!
     \brief Writes a Vector2 to a stream

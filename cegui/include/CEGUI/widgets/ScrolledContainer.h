@@ -170,9 +170,9 @@ protected:
     virtual void onAutoSizeSettingChanged(WindowEventArgs& e);
 
     //! handles notifications about child windows being moved.
-    bool handleChildSized(const EventArgs& e);
+    bool handleChildSized(const ElementEventArgs& e);
     //! handles notifications about child windows being sized.
-    bool handleChildMoved(const EventArgs& e);
+    bool handleChildMoved(const ElementEventArgs& e);
 
     // overridden from Window.
     void drawSelf(const RenderingContext&) override
@@ -199,6 +199,7 @@ protected:
 
 private:
     void addScrolledContainerProperties(void);
+    void makeSureChildUsesAbsoluteArea(const Element* child) const;
 };
 
 } // End of  CEGUI namespace section

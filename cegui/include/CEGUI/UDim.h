@@ -184,6 +184,11 @@ public:
     {
         return UDim(d_scale / divisor, d_offset / divisor);
     }
+
+    inline bool isAbsolute() const
+    {
+        return d_scale == 0.f;
+    }
     
     /*!
     \brief Writes a UDim to a stream
