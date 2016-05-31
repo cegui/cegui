@@ -145,6 +145,10 @@ public:
      * the current text.
      */
     static const String EventTextAccepted;
+    /** Mouse cursor image property name to use when the edit box is
+     * in read-only mode.
+     */
+    static const String ReadOnlyMouseCursorImagePropertyName;
 
     /*!
     \brief
@@ -457,6 +461,9 @@ public:
     
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
+
+    //! \copydoc Window::setEnabled
+    virtual void setEnabled(bool enabled);
     
     //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
@@ -601,6 +608,24 @@ protected:
     */
     virtual void onTextAcceptedEvent(WindowEventArgs& e);
 
+    /*!
+    \brief
+        return the the read-only mouse cursor image.
+    \return
+        The read-only mouse cursor image.
+    */
+    const Image* getReadOnlyMouseCursorImage(void) const
+        { return d_readOnlyMouseCursorImage; }
+
+    /*!
+    \brief
+        Set the read only mouse cursor image.
+    \param image
+        The Image* to be used.
+    */
+    void setReadOnlyMouseCursorImage(const Image* image)
+        { d_readOnlyMouseCursorImage = image; }
+
     // Overridden event handlers
     void onMouseButtonDown(MouseEventArgs& e);
     void onMouseButtonUp(MouseEventArgs& e);
@@ -614,6 +639,8 @@ protected:
 
     //! True if the editbox is in read-only mode
     bool d_readOnly;
+    //! The read only mouse cursor image.
+    const Image* d_readOnlyMouseCursorImage;
     //! True if the editbox text should be rendered masked.
     bool d_maskText;
     //! Code point to use when rendering masked text.
