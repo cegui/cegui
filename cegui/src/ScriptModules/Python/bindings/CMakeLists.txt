@@ -6,9 +6,13 @@ execute_process(
 
 set( CEGUI_PYTHON_INSTALL_DIR "${CEGUI_PYTHON_INSTALL_DIR}/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-                    ${PYTHON_INCLUDE_DIR}
-                    ${Boost_INCLUDE_DIR})
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs -Wno-unused-parameter")
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+include_directories(SYSTEM
+                        ${PYTHON_INCLUDE_DIR}
+                        ${Boost_INCLUDE_DIR})
 
 cegui_add_python_module( ${CEGUI_PYCEGUI_CORE_LIBNAME} "output/CEGUI" "" )
 

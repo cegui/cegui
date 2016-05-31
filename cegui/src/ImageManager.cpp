@@ -180,7 +180,7 @@ Image& ImageManager::create(const String& type, const String& name)
 //----------------------------------------------------------------------------//
 Image& ImageManager::create(const XMLAttributes& attributes)
 {
-    const String& name(attributes.getValueAsString(ImageNameAttribute));
+    const String name = attributes.getValueAsString(ImageNameAttribute);
 
     if (name.empty())
         throw InvalidRequestException(
