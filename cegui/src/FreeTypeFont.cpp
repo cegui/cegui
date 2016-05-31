@@ -57,11 +57,24 @@ static int ft_usage_count = 0;
 static FT_Library ft_lib;
 
 //----------------------------------------------------------------------------//
-#undef __FTERRORS_H__
-#define FT_ERRORDEF( e, v, s ) s,
-#define FT_ERROR_START_LIST static const char* ft_errors[] = {
-#define FT_ERROR_END_LIST 0};
-#include FT_ERRORS_H
+
+#undef __FTERRORS_H__                                           
+#define FT_ERRORDEF( e, v, s )  { e, s },                       
+#define FT_ERROR_START_LIST     {                               
+#define FT_ERROR_END_LIST       { 0, 0 } };                     
+                                                                         
+struct FreeTypeErrorDescription                                                 
+{                                                               
+int          err_code;                                        
+const char*  err_msg;                                         
+};
+
+static const FreeTypeErrorDescription ftErrorDescs[] =
+#include FT_ERRORS_H 
+
+static const std::vector<FreeTypeErrorDescription> freeTypeErrorDescriptions
+    (ftErrorDescs, ftErrorDescs + sizeof(ftErrorDescs) / sizeof(FreeTypeErrorDescription) );
+
 
 //----------------------------------------------------------------------------//
 FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
@@ -394,9 +407,23 @@ void FreeTypeFont::updateFont()
     if ((error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
                            static_cast<FT_Long>(d_fontData.getSize()), 0,
                            &d_fontFace)) != 0)
-        throw GenericException("Failed to create face from font file '" +
-            d_filename + "' error was: " +
-            ((error < FT_Err_Max) ? ft_errors[error] : "unknown error"));
+    {
+        String errorMsg = "Unknown freetype error occurred: " + error;
+  
+        for(size_t i = 0; i < freeTypeErrorDescriptions.size(); ++i)
+        {
+            const FreeTypeErrorDescription& currentFreetypeError = freeTypeErrorDescriptions[i];
+
+            if(currentFreetypeError.err_code == error)
+            {
+                errorMsg = currentFreetypeError.err_msg;
+            }
+        }
+
+
+
+        throw GenericException("Failed to create face from font file '" + d_filename + "' error was: " + errorMsg);
+    }
 
     // check that default Unicode character map is available
     if (!d_fontFace->charmap)

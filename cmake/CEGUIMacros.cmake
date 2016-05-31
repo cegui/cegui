@@ -464,7 +464,7 @@ endmacro()
 macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
     file( GLOB ${PYTHON_MODULE_NAME}_SOURCE_FILES ${SOURCE_DIR}/*.cpp )
 
-    include_directories(BEFORE ${SOURCE_DIR})
+    include_directories(BEFORE SYSTEM ${SOURCE_DIR})
 
     add_library(${PYTHON_MODULE_NAME} MODULE ${${PYTHON_MODULE_NAME}_SOURCE_FILES})
     target_link_libraries(${PYTHON_MODULE_NAME} ${CEGUI_BASE_LIBNAME} ${Boost_PYTHON_LIBRARY} ${PYTHON_LIBRARIES} ${EXTRA_LIBS} )
