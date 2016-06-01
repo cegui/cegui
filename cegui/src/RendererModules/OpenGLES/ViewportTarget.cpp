@@ -35,14 +35,16 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner) :
-    OpenGLESRenderTarget<>(owner)
+    OpenGLESRenderTarget(owner)
 {
     // viewport area defaults to whatever the current OpenGLES viewport is set to
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
 
-    Rectf init_area(Vector2f(static_cast<float>(vp[0]), static_cast<float>(vp[1])),
-                   Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3])));
+    const Rectf init_area(
+        glm::vec2(static_cast<float>(vp[0]), static_cast<float>(vp[1])),
+        Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3]))
+    );
 
     setArea(init_area);
 }
@@ -50,7 +52,7 @@ OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner) :
 //----------------------------------------------------------------------------//
 OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner,
                                                const Rectf& area) :
-        OpenGLESRenderTarget<>(owner)
+        OpenGLESRenderTarget(owner)
 {
     setArea(area);
 }
@@ -64,8 +66,4 @@ bool OpenGLESViewportTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 

@@ -48,7 +48,11 @@ namespace CEGUI
     States:
         - Enabled: Rendering for when the editbox is in enabled and is in
                    read-write mode.
+        - EnabledFocused: Rendering for when the editbox is focused and is in
+                   read-write mode.
         - ReadOnly: Rendering for when the editbox is in enabled and is in
+                    read-only mode.
+        - ReadOnlyFocused: Rendering for when the editbox is focused and is in
                     read-only mode.
         - Disabled: Rendering for when the editbox is disabled.
         - ActiveSelection: additional state rendered for text selection
@@ -147,13 +151,13 @@ public:
     void setTextFormatting(const HorizontalTextFormatting format);
     HorizontalTextFormatting getTextFormatting() const;
 
-    void render();
+    void createRenderGeometry() override;
 
     // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const Vector2f& pt) const;
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
     // overridden from WindowRenderer class
-    void update(float elapsed);
-    bool handleFontRenderSizeChange(const Font* const font);
+    void update(float elapsed) override;
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
 protected:
     //! helper to draw the base imagery (container and what have you)
@@ -165,7 +169,7 @@ protected:
                               const float text_extent,
                               const float caret_width,
                               const float extent_to_caret);
-    void renderTextNoBidi(const WidgetLookFeel& wlf,
+    void createRenderGeometryForTextWithoutBidi(const WidgetLookFeel& wlf,
                           const String& text,
                           const Rectf& text_area,
                           float text_offset);

@@ -132,15 +132,15 @@ public:
         that could contain all the attached windows.
     */
     Rectf getChildExtentsArea(void) const;
-    
-    virtual const CachedRectf& getClientChildContentArea() const;
-    virtual const CachedRectf& getNonClientChildContentArea() const;
 
-    virtual void notifyScreenAreaChanged(bool recursive);
+    const CachedRectf& getClientChildContentArea() const override;
+    const CachedRectf& getNonClientChildContentArea() const override;
+
+    void notifyScreenAreaChanged(bool recursive) override;
     
 protected:
     // Overridden from Window.
-    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
+    Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     
     Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
     
@@ -170,20 +170,21 @@ protected:
     virtual void onAutoSizeSettingChanged(WindowEventArgs& e);
 
     //! handles notifications about child windows being moved.
-    bool handleChildSized(const EventArgs& e);
+    bool handleChildSized(const ElementEventArgs& e);
     //! handles notifications about child windows being sized.
-    bool handleChildMoved(const EventArgs& e);
+    bool handleChildMoved(const ElementEventArgs& e);
 
     // overridden from Window.
-    void drawSelf(const RenderingContext&) {};
-    Rectf getInnerRectClipper_impl() const;
+    void drawSelf(const RenderingContext&) override
+    {}
+    Rectf getInnerRectClipper_impl() const override;
 
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,
-                      bool adjust_size=true);
-    Rectf getHitTestRect_impl() const;
-    void onChildAdded(ElementEventArgs& e);
-    void onChildRemoved(ElementEventArgs& e);
-    void onParentSized(ElementEventArgs& e);
+                      bool adjust_size=true) override;
+    Rectf getHitTestRect_impl() const override;
+    void onChildAdded(ElementEventArgs& e) override;
+    void onChildRemoved(ElementEventArgs& e) override;
+    void onParentSized(ElementEventArgs& e) override;
 
     //! type definition for collection used to track event connections.
     typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
@@ -198,6 +199,7 @@ protected:
 
 private:
     void addScrolledContainerProperties(void);
+    void makeSureChildUsesAbsoluteArea(const Element* child) const;
 };
 
 } // End of  CEGUI namespace section

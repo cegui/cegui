@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface for a 'Thumb' widget.  Intended to be used as
 				part of other widgets such as scrollers and sliders.
 *************************************************************************/
@@ -31,7 +31,11 @@
 #define _CEGUIThumb_h_
 
 #include "./PushButton.h"
+#include <glm/glm.hpp>
 #include <utility>
+
+
+#include "CEGUI/StreamHelper.h"
 
 
 #if defined(_MSC_VER)
@@ -48,7 +52,7 @@ namespace CEGUI
 /*!
 \brief
 	Base class for Thumb widget.
-	
+
 	The thumb widget is used to compose other widgets (like sliders and scroll bars).  You would
 	not normally need to use this widget directly unless you are making a new widget of some type.
 */
@@ -83,7 +87,7 @@ public:
 
 	/*************************************************************************
 		Accessor Functions
-	*************************************************************************/ 
+	*************************************************************************/
 	/*!
 	\brief
 		return whether hot-tracking is enabled or not.
@@ -122,7 +126,7 @@ public:
 		a std::pair describing the current vertical range.  The first element is the minimum value,
 		the second element is the maximum value.
 	*/
-	std::pair<float, float>	getVertRange(void) const;
+	glm::vec2 getVertRange(void) const;
 
 
 	/*!
@@ -133,7 +137,7 @@ public:
 		a std::pair describing the current horizontal range.  The first element is the minimum value,
 		the second element is the maximum value.
 	*/
-	std::pair<float, float>	getHorzRange(void) const;
+	glm::vec2 getHorzRange(void) const;
 
 
 	/*************************************************************************
@@ -176,7 +180,7 @@ public:
 		nothing.
 	*/
 	void	setHorzFree(bool setting)						{d_horzFree = setting;}
-	
+
 
 	/*!
 	\brief
@@ -194,14 +198,15 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setVertRange(float min, float max);
+	void setVertRange(float min, float max);
 
 	/*!
 	\brief
-		set the movement range of the thumb for the vertical axis.
+		Set the movement range of the thumb for the vertical axis - range.x is the minimum, range.y
+        the maximum of the range.
 
-		The values specified here are relative to the parent window for the thumb, and are specified in whichever
-		metrics mode is active for the widget.
+		The values specified here are relative to the parent window for the thumb, and are specified
+        in whichever metrics mode is active for the widget.
 
 	\param range
 		the setting for the thumb on the vertical axis.
@@ -209,7 +214,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setVertRange(const std::pair<float, float> &range);
+	void setVertRange(const glm::vec2& range);
 
 
 	/*!
@@ -228,10 +233,11 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setHorzRange(float min, float max);
+	void setHorzRange(float min, float max);
 	/*!
 	\brief
-		set the movement range of the thumb for the horizontal axis.
+        Set the movement range of the thumb for the vertical axis - range.x is the minimum, range.y
+        the maximum of the range.
 
 		The values specified here are relative to the parent window for the thumb, and are specified in whichever
 		metrics mode is active for the widget.
@@ -242,7 +248,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setHorzRange(const std::pair<float, float> &range);
+	void setHorzRange(const glm::vec2& range);
 
 
 	/*************************************************************************
@@ -264,7 +270,7 @@ public:
 
 protected:
     // overridden from base class
-    void banPropertiesForAutoWindow();
+    void banPropertiesForAutoWindow() override;
 
 	/*************************************************************************
 		New Thumb Events
@@ -278,7 +284,7 @@ protected:
 
 	/*!
 	\brief
-		Handler triggered when the user begins to drag the thumb. 
+		Handler triggered when the user begins to drag the thumb.
 	*/
 	virtual void	onThumbTrackStarted(WindowEventArgs& e);
 
@@ -294,9 +300,9 @@ protected:
 	/*************************************************************************
 		Overridden event handling routines
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void	onCaptureLost(WindowEventArgs& e) override;
 
 
 	/*************************************************************************
@@ -313,7 +319,7 @@ protected:
 
 	// internal state
 	bool	d_beingDragged;				//!< true if thumb is being dragged
-	Vector2f d_dragPoint;				//!< point where we are being dragged at.
+    glm::vec2 d_dragPoint;				//!< point where we are being dragged at.
 
 
 private:
@@ -321,40 +327,6 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addThumbProperties(void);
-};
-
-/*
-TODO: This is horrible, PropertyHelper for std::pair<float, float> would be fine but enforcing min: %f max: %f is just horrible
-*/
-template<>
-class PropertyHelper<std::pair<float,float> >
-{
-public:
-    typedef std::pair<float,float> return_type;
-    typedef return_type safe_method_return_type;
-    typedef const std::pair<float,float>& pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("std::pair<float,float>");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        float rangeMin = 0, rangeMax = 0;
-        sscanf(str.c_str(), " min:%f max:%f", &rangeMin, &rangeMax);
-        return std::pair<float,float>(rangeMin,rangeMax);
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        sprintf(buff, "min:%f max:%f", val.first, val.second);
-        return buff;
-    }
 };
 
 } // End of  CEGUI namespace section

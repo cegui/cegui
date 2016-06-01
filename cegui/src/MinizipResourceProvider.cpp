@@ -70,7 +70,11 @@ struct MinizipResourceProvider::Impl
 // Helper function that matches names against the pattern.
 bool nameMatchesPattern(const String& name, const String& pattern)
 {
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     return !FNMATCH(pattern.c_str(), name.c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    return !FNMATCH(pattern.toUtf8String().c_str(), name.toUtf8String().c_str());
+#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -109,7 +113,12 @@ void MinizipResourceProvider::setArchive(const String& archive)
 //----------------------------------------------------------------------------//
 bool MinizipResourceProvider::doesFileExist(const String& filename)
 {
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::ifstream dataFile(filename.c_str(), std::ios::binary | std::ios::ate);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    std::ifstream dataFile(filename.toUtf8String().c_str(), 
+                           std::ios::binary | std::ios::ate);
+#endif
 
     if (dataFile)
         return true;
@@ -120,12 +129,16 @@ bool MinizipResourceProvider::doesFileExist(const String& filename)
 //----------------------------------------------------------------------------//
 void MinizipResourceProvider::openArchive()
 {
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     d_pimpl->d_zfile = unzOpen(d_pimpl->d_archive.c_str());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    d_pimpl->d_zfile = unzOpen(d_pimpl->d_archive.toUtf8String().c_str());
+#endif
 
     if (d_pimpl->d_zfile == 0)
     {
-        CEGUI_THROW(InvalidRequestException(
-            "'" + d_pimpl->d_archive + "' does not exist"));
+        throw InvalidRequestException(
+            "'" + d_pimpl->d_archive + "' does not exist");
     }
 }
 
@@ -163,15 +176,19 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
 
     if (d_pimpl->d_zfile == 0)
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "'" + final_filename + "' cannot be "
-            "loaded because the archive has not been set"));
+            "loaded because the archive has not been set");
     }
 
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     if (unzLocateFile(d_pimpl->d_zfile, final_filename.c_str(), 0) != UNZ_OK)
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    if (unzLocateFile(d_pimpl->d_zfile, final_filename.toUtf8String().c_str(), 0) != UNZ_OK)
+#endif
     {
-        CEGUI_THROW(InvalidRequestException("'" + final_filename +
-            "' does not exist"));
+        throw InvalidRequestException("'" + final_filename +
+            "' does not exist");
     }
 
     unz_file_info file_info;
@@ -179,29 +196,29 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
     if (unzGetCurrentFileInfo(d_pimpl->d_zfile, &file_info,
                               0, 0, 0, 0, 0, 0) != UNZ_OK)
     {
-        CEGUI_THROW(FileIOException("'" + final_filename +
-            "' error reading file header"));
+        throw FileIOException("'" + final_filename +
+            "' error reading file header");
     }
 
     if (unzOpenCurrentFile(d_pimpl->d_zfile) != Z_OK)
     {
-        CEGUI_THROW(FileIOException("'" + final_filename +
-            "' error opening file"));
+        throw FileIOException("'" + final_filename +
+            "' error opening file");
     }
 
-    ulong size = file_info.uncompressed_size;
-    uint8* buffer = CEGUI_NEW_ARRAY_PT(uint8, size, RawDataContainer);
+    std::uint64_t size = file_info.uncompressed_size;
+    std::uint8_t* buffer = new std::uint8_t[size];
 
     if (unzReadCurrentFile(d_pimpl->d_zfile, buffer, size) < 0)
     {
-        CEGUI_THROW(FileIOException("'" + final_filename +
-            "' error reading file"));
+        throw FileIOException("'" + final_filename +
+            "' error reading file");
     }
 
     if (unzCloseCurrentFile(d_pimpl->d_zfile) != UNZ_OK)
     {
-        CEGUI_THROW(GenericException("'" + final_filename +
-            "' error validating file"));
+        throw GenericException("'" + final_filename +
+            "' error validating file");
     }
 
     output.setData(buffer);

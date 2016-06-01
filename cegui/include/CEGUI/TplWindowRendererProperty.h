@@ -51,15 +51,15 @@ public:
                           defaultValue, writesXML)
     {}
 
-    virtual Property* clone() const
+    Property* clone() const override
     {
-        return CEGUI_NEW_AO TplWindowRendererProperty<C, T>(*this);
+        return new TplWindowRendererProperty<C, T>(*this);
     }
 
 protected:
     //! \copydoc TypedProperty::setNative_impl
     void setNative_impl(PropertyReceiver* receiver,
-                        typename TplProperty<C, T>::Helper::pass_type value)
+                        typename TplProperty<C, T>::Helper::pass_type value) override
     {
         C* instance = static_cast<C*>(
             static_cast<const Window*>(receiver)->getWindowRenderer());
@@ -69,7 +69,7 @@ protected:
 
     //! \copydoc TypedProperty::getNative_impl
     typename TplProperty<C, T>::Helper::safe_method_return_type
-    getNative_impl(const PropertyReceiver* receiver) const
+    getNative_impl(const PropertyReceiver* receiver) const override
     {
         const C* instance = static_cast<const C*>(
             static_cast<const Window*>(receiver)->getWindowRenderer());

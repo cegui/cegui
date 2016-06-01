@@ -28,12 +28,14 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/PropertyHelper.h"
 
+#include <cstring>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 PCRERegexMatcher::PCRERegexMatcher() :
-    d_regex(0)
+    d_regex(nullptr)
 {
 }
 
@@ -52,14 +54,27 @@ void PCRERegexMatcher::setRegexString(const String& regex)
     // try to compile this new regex string
     const char* prce_error;
     int pcre_erroff;
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     d_regex = pcre_compile(regex.c_str(), PCRE_UTF8,
                            &prce_error, &pcre_erroff, 0);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
+        &prce_error, &pcre_erroff, nullptr);
+#endif
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    d_regex = pcre_compile(regex.c_str(), PCRE_UTF8,
+        &prce_error, &pcre_erroff, 0);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
+        &prce_error, &pcre_erroff, nullptr);
+#endif
 
     // handle failure
     if (!d_regex)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Bad RegEx set: '" + regex + "'.  Additional Information: " +
-            prce_error));
+            prce_error);
 
     // set this last so that upon failure object is in consistant state.
     d_string = regex;
@@ -77,16 +92,20 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 {
     // if the regex is not valid, then an exception is thrown
     if (!d_regex)
-        CEGUI_THROW(InvalidRequestException(
-            "Attempt to use invalid RegEx '" + d_string + "'."));
+        throw InvalidRequestException(
+            "Attempt to use invalid RegEx '" + d_string + "'.");
 
     int match[3];
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     const char* utf8_str = str.c_str();
-    const int len = static_cast<int>(strlen(utf8_str));
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    const char* utf8_str = str.toUtf8String().c_str();
+#endif
+    const int len = static_cast<int>(std::strlen(utf8_str));
 
 #ifdef PCRE_PARTIAL_SOFT
     // we are using a new version of pcre
-    const int result = pcre_exec(d_regex, 0, utf8_str, len, 0,
+    const std::int32_t result = pcre_exec(d_regex, nullptr, utf8_str, len, 0,
                                  PCRE_PARTIAL_SOFT | PCRE_ANCHORED, match, 3);
 #else
     // PCRE_PARTIAL is a backwards compatible synonym for PCRE_PARTIAL_SOFT
@@ -112,10 +131,10 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
         return MS_INVALID;
 
     // anything else is an error
-    CEGUI_THROW(InvalidRequestException(
-        "PCRE Error: " + PropertyHelper<int>::toString(result) +
+    throw InvalidRequestException(
+        "PCRE Error: " + PropertyHelper<std::int32_t>::toString(result) +
         " occurred while attempting to match the RegEx '" +
-        d_string + "'."));
+        d_string + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -124,7 +143,7 @@ void PCRERegexMatcher::release()
     if (d_regex)
     {
         pcre_free(d_regex);
-        d_regex = 0;
+        d_regex = nullptr;
     }
 }
 

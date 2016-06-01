@@ -52,25 +52,35 @@ setting CMake options and regenerating, rather than editing directly.
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// CEGUI supports custom memory allocation (optional)
+// CEGUI offers three CEGUI::String class configurations
 //////////////////////////////////////////////////////////////////////////
-// if this is defined, allocation can be customised
-#cmakedefine CEGUI_CUSTOM_ALLOCATORS
-// if this is defined, allocations will pass debug info to allocators
-#cmakedefine CEGUI_CUSTOM_ALLOCATORS_DEBUG
-// the file that contains allocators and allocation config
-// (not used if CEGUI_CUSTOM_ALLOCATORS isn't defined)
-#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "@CEGUI_CUSTOM_ALLOCATORS_INCLUDE@"
-
-//////////////////////////////////////////////////////////////////////////
-// CEGUI allows 3 different string class configurations
-//////////////////////////////////////////////////////////////////////////
-// Inbuilt Unicode (utf8 and utf32 aware)
-#define CEGUI_STRING_CLASS_UNICODE 1
-// plain std::string without allocators (makes pass by reference easy)
-#define CEGUI_STRING_CLASS_STD 2
-// std::basic_string allocated according to allocator config
-#define CEGUI_STRING_CLASS_STD_AO 3
+/*
+    Stores UTF-8 encoded strings (std::string) internally. This String
+    class is ASCII/UTF-8 (std::string and char) and UTF-32 (std::u32string
+    and char32_t) aware.
+    Features: Minimal storage space, supports UTF-8, UTF-32 and ASCII,
+    String manipulation (editing, inserting, counting, splitting) is a bit
+    slower than with a plain ASCII std::string or UTF-32 strings, since it
+    the code units require extra operations, such as counting. This might
+    be neglectible in your application. If using the String directly,
+    the user has to pay attention to the fact that each char inside the
+    String represents a code unit and not a code point.
+*/
+#define CEGUI_STRING_CLASS_UTF_8            1
+/*
+    Stores UTF-32 encoded strings (std::u32string) internally. This String
+    class is ASCII/UTF-8 (std::string and char) and UTF-32 (std::u32string
+    and char32_t) aware.
+    Features: Takes more storage space than UTF-8 (namely always 32 bit per
+    characters), supports UTF-8, UTF-32 and ASCII, String manipulation is
+    easy and straight-forward.
+*/
+#define CEGUI_STRING_CLASS_UTF_32           2
+/* A plain std::string is used as CEGUI::String, nothing else.
+   Features: Not UTF-8, UTF-32 aware. Only supports ASCII. Storage space
+   is equal to that of an UTF-8 String (if it only stores ASCII characters).
+*/
+#define CEGUI_STRING_CLASS_STD              3
 
 #define CEGUI_STRING_CLASS @CEGUI_STRING_CLASS@
 

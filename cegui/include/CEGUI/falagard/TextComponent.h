@@ -330,7 +330,7 @@ namespace CEGUI
         float getVerticalTextExtent(const Window& window) const;
     
         // overridden from ComponentBase.
-        bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+        bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 
 
         //! Update string formatting.
@@ -346,8 +346,10 @@ namespace CEGUI
         void updateFormatting(const Window& srcWindow, const Sizef& size) const;
 
     protected:
-        // implemets abstract from base
-        void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
+        void addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
+            const CEGUI::ColourRect* modColours, const Rectf* clipper,
+            bool clipToDisplay) const override;
+
         //! helper to set up an appropriate FormattedRenderedString
         void setupStringFormatter(const Window& window,
                                   const RenderedString& rendered_string) const;

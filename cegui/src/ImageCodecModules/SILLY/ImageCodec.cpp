@@ -30,7 +30,7 @@
 #include "CEGUI/ImageCodecModules/SILLY/ImageCodec.h"
 #include <SILLY.h>
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,7 +40,7 @@ SILLYImageCodec::SILLYImageCodec()
 {
     d_supportedFormat = "tga jpg png";
     if (! SILLY::SILLYInit())
-        CEGUI_THROW(GenericException("Unable to initialize SILLY library"));
+        throw GenericException("Unable to initialize SILLY library");
 
 }
 
@@ -56,7 +56,7 @@ Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
     if (!img.loadImageHeader())
     {
         Logger::getSingletonPtr()->logEvent("SILLYImageCodec::load - Invalid image header", Errors);
-        return 0;
+        return nullptr;
     }
 
     SILLY::PixelFormat dstfmt;
@@ -74,13 +74,13 @@ Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
         break;
     default:
         Logger::getSingletonPtr()->logEvent("SILLYImageCodec::load - Unsupported pixel format", Errors);
-        return 0;
+        return nullptr;
     }
 
     if (!img.loadImageData(dstfmt, SILLY::PO_TOP_LEFT))
     { 
         Logger::getSingletonPtr()->logEvent("SILLYImageCodec::load - Invalid image data", Errors);
-        return 0;
+        return nullptr;
     }
 
     result->loadFromMemory(img.getPixelsDataPtr(),
