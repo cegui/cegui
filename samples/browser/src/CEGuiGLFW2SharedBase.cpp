@@ -28,8 +28,6 @@ author:     Yaron Cohen-Tal
 #include "SampleBrowserBase.h"
 #include "CEGUI/CEGUI.h"
 
-#include <gl/glfw.h>
-
 #include <stdexcept>
 #include <sstream>
 
