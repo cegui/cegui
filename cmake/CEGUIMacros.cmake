@@ -481,7 +481,7 @@ macro (cegui_add_test_executable _NAME)
 
     cegui_gather_files()
 
-    include_directories(${Boost_INCLUDE_DIR})
+    include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
     ###########################################################################
     #                     Statically Linked Executable
