@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(Subscribing)
         connection->disconnect();
     }
 
-// These should be fixed!:
+// These should! be fixed!:
 #   if 0
 
 // C++11 only!

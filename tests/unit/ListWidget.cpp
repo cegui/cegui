@@ -133,7 +133,7 @@ struct OnListSelectionQueriesFirstSelectedItemTestFixture : public ListWidgetFix
                 this));
     }
 
-    bool onSelectionChanged(const EventArgs& args)
+    bool onSelectionChanged(const EventArgs&)
     {
         d_firstSelectedItem = view->getFirstSelectedItem();
         return true;
