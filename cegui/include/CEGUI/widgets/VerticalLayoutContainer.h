@@ -64,7 +64,7 @@ public:
     virtual ~VerticalLayoutContainer(void);
 
     //! @copydoc LayoutContainer::layout
-    virtual void layout();
+    void layout() override;
 };
 
 } // End of  CEGUI namespace section

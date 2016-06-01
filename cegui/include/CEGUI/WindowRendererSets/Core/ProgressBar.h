@@ -79,7 +79,7 @@ namespace CEGUI
         void setVertical(bool setting);
         void setReversed(bool setting);
 
-        void render();
+        void createRenderGeometry() override;
 
     protected:
         // settings to make this class universal.

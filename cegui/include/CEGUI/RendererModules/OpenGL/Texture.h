@@ -44,6 +44,20 @@ namespace CEGUI
 class OPENGL_GUIRENDERER_API OpenGLTexture : public Texture
 {
 public:
+    //! Basic constructor.
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name);
+    //! Destructor.
+    virtual ~OpenGLTexture();
+
+    //! initialise method that creates a Texture.
+    void initialise();
+    //! initialise method that creates a Texture from an image file.
+    void initialise(const String& filename, const String& resourceGroup);
+    //! initialise method that creates a Texture with a given size.
+    void initialise(const Sizef& size);
+    //! Constructor that wraps an existing GL texture.
+    void initialise(GLuint tex, const Sizef& size);
+
     /*!
     \brief
         set the openGL texture that this Texture is based on to the specified
@@ -99,39 +113,18 @@ public:
     void restoreTexture();
 
     // implement abstract members from base class.
-    const String& getName() const;
-    const Sizef& getSize() const;
-    const Sizef& getOriginalDataSize() const;
-    const Vector2f& getTexelScaling() const;
-    void loadFromFile(const String& filename, const String& resourceGroup);
+    const String& getName() const override;
+    const Sizef& getSize() const override;
+    const Sizef& getOriginalDataSize() const override;
+    const glm::vec2& getTexelScaling() const override;
+    void loadFromFile(const String& filename, const String& resourceGroup) override;
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
-                        PixelFormat pixel_format);
-    void blitFromMemory(const void* sourceData, const Rectf& area);
-    void blitToMemory(void* targetData);
-    bool isPixelFormatSupported(const PixelFormat fmt) const;
+                        PixelFormat pixel_format) override;
+    void blitFromMemory(const void* sourceData, const Rectf& area) override;
+    void blitToMemory(void* targetData) override = 0;
+    bool isPixelFormatSupported(const PixelFormat fmt) const override;
 
 protected:
-    // Friends (to allow construction and destruction)
-    friend Texture& OpenGLRendererBase::createTexture(const String&);
-    friend Texture& OpenGLRendererBase::createTexture(const String&, const String&, const String&);
-    friend Texture& OpenGLRendererBase::createTexture(const String&, const Sizef&);
-    friend Texture& OpenGLRendererBase::createTexture(const String&, GLuint, const Sizef&);
-    friend void OpenGLRendererBase::destroyTexture(Texture&);
-    friend void OpenGLRendererBase::destroyTexture(const String&);
-
-    //! Basic constructor.
-    OpenGLTexture(OpenGLRendererBase& owner, const String& name);
-    //! Constructor that creates a Texture from an image file.
-    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                  const String& filename, const String& resourceGroup);
-    //! Constructor that creates a Texture with a given size.
-    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                  const Sizef& size);
-    //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
-                  GLuint tex, const Sizef& size);
-    //! Destructor.
-    virtual ~OpenGLTexture();
 
     //! generate the OpenGL texture and set some initial options.
     void generateOpenGLTexture();
@@ -145,10 +138,10 @@ protected:
     GLint internalFormat() const;
 
     //! initialise the internal format flags for the given CEGUI::PixelFormat.
-    void initInternalPixelFormatFields(const PixelFormat fmt);
+    virtual void initInternalPixelFormatFields(const PixelFormat fmt) = 0;
 
     //! internal texture resize function (does not reset format or other fields)
-    void setTextureSize_impl(const Sizef& sz);
+    virtual void setTextureSize_impl(const Sizef& sz) = 0;
 
     void loadUncompressedTextureBuffer(const Rectf& dest_area,
                                        const GLvoid* buffer) const;
@@ -156,18 +149,21 @@ protected:
     void loadCompressedTextureBuffer(const Rectf& dest_area,
                                      const GLvoid* buffer) const;
 
-    GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
+    virtual GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
+
+    //! OpenGL method to set glTexEnv which is deprecated in GL 3.2 and GLES 2.0 and above
+    virtual void setTextureEnvironment();
 
     //! The OpenGL texture we're wrapping.
     GLuint d_ogltexture;
     //! Size of the texture.
     Sizef d_size;
     //! cached image data for restoring the texture.
-    uint8* d_grabBuffer;
+    std::uint8_t* d_grabBuffer;
     //! original size of pixel data loaded into texture
     Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2f d_texelScaling;
+    glm::vec2 d_texelScaling;
     //! OpenGLRenderer that created and owns this OpenGLTexture
     OpenGLRendererBase& d_owner;
     //! The name given for this texture.

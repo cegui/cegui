@@ -28,11 +28,10 @@
 #define _CEGUINullRenderer_h_
 
 #include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
+#include "../../Sizef.h"
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUINULLRENDERER_EXPORTS
@@ -55,6 +54,7 @@ namespace CEGUI
 {
 class NullGeometryBuffer;
 class NullTexture;
+class NullShaderWrapper;
 
 //! CEGUI::Renderer implementation for no particular engine
 class NULL_GUIRENDERER_API NullRenderer : public Renderer
@@ -102,51 +102,35 @@ public:
     */
     static NullRenderer& create(const int abi = CEGUI_VERSION_ABI);
 
-    //! destory an NullRenderer object.
+    //! destroy an NullRenderer object.
     static void destroy(NullRenderer& renderer);
-    
-    /*!
-    \brief
-        Returns if the texture coordinate system is vertically flipped or not. The original of a
-        texture coordinate system is typically located either at the the top-left or the bottom-left.
-        CEGUI, Direct3D and most rendering engines assume it to be on the top-left. OpenGL assumes it to
-        be at the bottom left.        
- 
-        This function is intended to be used when generating geometry for rendering the TextureTarget
-        onto another surface. It is also intended to be used when trying to use a custom texture (RTT)
-        inside CEGUI using the Image class, in order to determine the Image coordinates correctly.
-
-    \return
-        - true if flipping is required: the texture coordinate origin is at the bottom left
-        - false if flipping is not required: the texture coordinate origin is at the top left
-    */
-    bool isTexCoordSystemFlipped() const { return false; }
 
     // implement CEGUI::Renderer interface
-    RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
-    TextureTarget* createTextureTarget();
-    void destroyTextureTarget(TextureTarget* target);
-    void destroyAllTextureTargets();
-    Texture& createTexture(const String& name);
+    RenderTarget& getDefaultRenderTarget() override;
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const override;
+    GeometryBuffer& createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial) override;
+    GeometryBuffer& createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial) override;
+    TextureTarget* createTextureTarget(bool addStencilBuffer) override;
+    void destroyTextureTarget(TextureTarget* target) override;
+    void destroyAllTextureTargets() override;
+    Texture& createTexture(const String& name) override;
     Texture& createTexture(const String& name,
                            const String& filename,
-                           const String& resourceGroup);
-    Texture& createTexture(const String& name, const Sizef& size);
-    void destroyTexture(Texture& texture);
-    void destroyTexture(const String& name);
-    void destroyAllTextures();
-    Texture& getTexture(const String& name) const;
-    bool isTextureDefined(const String& name) const;
-    void beginRendering();
-    void endRendering();
-    void setDisplaySize(const Sizef& sz);
-    const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
-    uint getMaxTextureSize() const;
-    const String& getIdentifierString() const;
+                           const String& resourceGroup) override;
+    Texture& createTexture(const String& name, const Sizef& size) override;
+    void destroyTexture(Texture& texture) override;
+    void destroyTexture(const String& name) override;
+    void destroyAllTextures() override;
+    Texture& getTexture(const String& name) const override;
+    bool isTextureDefined(const String& name) const override;
+    void beginRendering() override;
+    void endRendering() override;
+    void setDisplaySize(const Sizef& sz) override;
+    const Sizef& getDisplaySize() const override;
+    const glm::vec2& getDisplayDPI() const override;
+    unsigned int getMaxTextureSize() const override;
+    const String& getIdentifierString() const override;
+    bool isTexCoordSystemFlipped() const override;
 
 protected:
     //! default constructor.
@@ -168,7 +152,7 @@ protected:
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2f d_displayDPI;
+    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
@@ -180,12 +164,16 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, NullTexture*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, NullTexture*)> TextureMap;
+    typedef std::unordered_map<String, NullTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
+
+    //! Shaderwrapper for textured & coloured vertices
+    NullShaderWrapper* d_shaderWrapperTextured;
+    //! Shaderwrapper for coloured vertices
+    NullShaderWrapper* d_shaderWrapperSolid;
 };
 
 

@@ -27,7 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/DevIL/ImageCodec.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Exceptions.h"
 #include <IL/il.h>
 #include <string.h>
@@ -37,7 +37,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 // prototypes for internal helper functions
-uchar* getCompressedPixelData(ILenum dxtc_fmt);
+std::uint8_t* getCompressedPixelData(ILenum dxtc_fmt);
 
 //----------------------------------------------------------------------------//
 DevILImageCodec::DevILImageCodec()
@@ -72,7 +72,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         const size_t height = ilGetInteger(IL_IMAGE_HEIGHT);
 
         Texture::PixelFormat cefmt;
-        uchar* pixel_data;
+        std::uint8_t* pixel_data;
 
         switch (const ILenum dxtc_fmt = ilGetInteger(IL_DXTC_DATA_FORMAT))
         {
@@ -109,14 +109,14 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
             };
 
             // allocate temp buffer to receive image data
-            pixel_data = new uchar[width * height * 4];
+            pixel_data = new std::uint8_t[width * height * 4];
             ilCopyPixels(0, 0, 0, width, height, 1, ilfmt, IL_UNSIGNED_BYTE,
                          static_cast<void*>(pixel_data));
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "Unsupported DXTC data format returned."));
+            throw InvalidRequestException(
+                "Unsupported DXTC data format returned.");
         }
 
         // delete DevIL image
@@ -124,14 +124,14 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         ilPopAttrib();
 
         // create cegui texture
-        CEGUI_TRY
+        try
         {
             result->loadFromMemory(pixel_data, Sizef(width, height), cefmt);
         }
-        CEGUI_CATCH(...)
+        catch (...)
         {
             delete[] pixel_data;
-            CEGUI_RETHROW;
+            throw;
         }
 
         // free temp buffer
@@ -150,10 +150,10 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
 }
 
 //----------------------------------------------------------------------------//
-uchar* getCompressedPixelData(ILenum dxtc_fmt)
+std::uint8_t* getCompressedPixelData(ILenum dxtc_fmt)
 {
     ILuint data_size = ilGetDXTCData(0, 0, dxtc_fmt);
-    uchar* pixel_data = new uchar[data_size];
+    std::uint8_t* pixel_data = new std::uint8_t[data_size];
     ilGetDXTCData(pixel_data, data_size, dxtc_fmt);
 
     return pixel_data;
