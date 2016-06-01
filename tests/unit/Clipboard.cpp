@@ -72,16 +72,9 @@ static size_t g_ClipboardSize = 0;
 class TestNativeClipboardProvider : public CEGUI::NativeClipboardProvider
 {
 private:
-    std::vector<void*> d_allocatedMemory;
+    std::vector<std::unique_ptr<uint8_t[]>> d_allocatedMemory;
 public:
-    virtual ~TestNativeClipboardProvider()
-    {
-        for (std::vector<void*>::iterator itor = d_allocatedMemory.begin();
-            itor != d_allocatedMemory.end(); ++itor)
-        {
-            delete[] *itor;
-        }
-    }
+    virtual ~TestNativeClipboardProvider() {}
 
     void sendToClipboard(const CEGUI::String& mimeType, void* buffer, size_t size) override
     {
@@ -89,7 +82,7 @@ public:
         g_ClipboardSize = size;
         g_ClipboardBuffer = new std::uint8_t[size];
         memcpy(g_ClipboardBuffer, buffer, size);
-        d_allocatedMemory.push_back(g_ClipboardBuffer);
+        d_allocatedMemory.emplace_back(static_cast<std::uint8_t*>(g_ClipboardBuffer));
     }
 
     void retrieveFromClipboard(CEGUI::String& mimeType, void*& buffer, size_t& size) override
@@ -100,7 +93,7 @@ public:
         // we have to allocate buffer for the user of the native clipboard provider!
         buffer = new std::uint8_t[g_ClipboardSize];
         memcpy(buffer, g_ClipboardBuffer, g_ClipboardSize);
-        d_allocatedMemory.push_back(buffer);
+        d_allocatedMemory.emplace_back(static_cast<std::uint8_t*>(buffer));
     }
 };
 

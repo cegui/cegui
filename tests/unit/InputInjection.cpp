@@ -89,13 +89,13 @@ struct InputInjectionFixture
         WindowManager::getSingleton().destroyWindow(d_window);
     }
 
-    bool handleButtonEvent(const EventArgs& e)
+    bool handleButtonEvent(const EventArgs&)
     {
         ++d_buttonHandledCount;
         return true;
     }
 
-    bool handleWindowEvent(const EventArgs& e)
+    bool handleWindowEvent(const EventArgs&)
     {
         ++d_windowHandledCount;
         return true;

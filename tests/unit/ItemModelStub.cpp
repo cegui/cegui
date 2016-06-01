@@ -37,20 +37,20 @@ bool ItemModelStub::isValidIndex(const ModelIndex& model_index) const
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex ItemModelStub::makeIndex(size_t child, const ModelIndex& model_index)
+ModelIndex ItemModelStub::makeIndex(size_t child, const ModelIndex&)
 {
     assert(child < d_items.size());
     return ModelIndex(&d_items.at(child));
 }
 
 //----------------------------------------------------------------------------//
-size_t ItemModelStub::getChildCount(const ModelIndex& model_index) const
+size_t ItemModelStub::getChildCount(const ModelIndex&) const
 {
     return d_items.size();
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex ItemModelStub::getParentIndex(const ModelIndex& model_index) const
+ModelIndex ItemModelStub::getParentIndex(const ModelIndex&) const
 {
     return ModelIndex();
 }
