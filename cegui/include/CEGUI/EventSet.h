@@ -37,7 +37,7 @@
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4251 4521 4522)
+#   pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
@@ -427,9 +427,7 @@ protected:
     ScriptModule* getScriptModule() const;
 
     // Do not allow copying, assignment, or any other usage than simple creation.
-    EventSet(EventSet&) {} //! \deprecated
     EventSet(const EventSet&) {}
-    EventSet& operator=(EventSet&) { return *this; } //! \deprecated
     EventSet& operator=(const EventSet&) { return *this; }
 
     typedef std::map<String, Event*, StringFastLessCompare
