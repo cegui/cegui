@@ -62,20 +62,20 @@ public:
                 d_model.addItemAtPosition(
                     new StandardItem(PropertyHelper<std::uint32_t>::toString(child)),
                     index, 0);
-                d_window->render();
+                d_window->draw();
             }
         }
-        d_window->render();
+        d_window->draw();
 
         d_window->expandAllSubtrees();
-        d_window->render();
+        d_window->draw();
 
         ModelIndex root = d_model.getRootIndex();
         for (size_t i = 0; i < 30; ++i)
         {
             d_model.removeItem(d_model.makeIndex(i, root));
         }
-        d_window->render();
+        d_window->draw();
 
         d_window->setSortMode(VSM_Ascending);
     }

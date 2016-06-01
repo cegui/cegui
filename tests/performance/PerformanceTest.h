@@ -104,7 +104,7 @@ public:
 
     virtual void render()
     {
-        d_window->render();
+        d_window->draw();
     }
 
     TWindow* d_window;
