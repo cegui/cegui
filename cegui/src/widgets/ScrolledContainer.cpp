@@ -185,10 +185,10 @@ void ScrolledContainer::onAutoSizeSettingChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildSized(const ElementEventArgs& e)
+bool ScrolledContainer::handleChildSized(const EventArgs& e)
 {
     if (d_autosizePane)
-        makeSureChildUsesAbsoluteArea(e.element);
+        makeSureChildUsesAbsoluteArea(static_cast<const ElementEventArgs&>(e).element);
 
     // Fire event that notifies that a child's area has changed.
     WindowEventArgs args(this);
@@ -197,10 +197,10 @@ bool ScrolledContainer::handleChildSized(const ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildMoved(const ElementEventArgs& e)
+bool ScrolledContainer::handleChildMoved(const EventArgs& e)
 {
     if (d_autosizePane)
-        makeSureChildUsesAbsoluteArea(e.element);
+        makeSureChildUsesAbsoluteArea(static_cast<const ElementEventArgs&>(e).element);
 
     // Fire event that notifies that a child's area has changed.
     WindowEventArgs args(this);
@@ -264,10 +264,10 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
     // subscribe to some events on this child
     d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
         static_cast<Window*>(e.element)->subscribeEvent(Window::EventSized,
-            Event::Subscriber(reinterpret_cast<void (ScrolledContainer::*)(const EventArgs&)>(&ScrolledContainer::handleChildSized), this))));
+            Event::Subscriber(&ScrolledContainer::handleChildSized, this))));
     d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
         static_cast<Window*>(e.element)->subscribeEvent(Window::EventMoved,
-            Event::Subscriber(reinterpret_cast<void (ScrolledContainer::*)(const EventArgs&)>(&ScrolledContainer::handleChildMoved), this))));
+            Event::Subscriber(&ScrolledContainer::handleChildMoved, this))));
 
     // force window to update what it thinks it's screen / pixel areas are.
     static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);

@@ -170,9 +170,9 @@ protected:
     virtual void onAutoSizeSettingChanged(WindowEventArgs& e);
 
     //! handles notifications about child windows being moved.
-    bool handleChildSized(const ElementEventArgs& e);
+    bool handleChildSized(const EventArgs& e);
     //! handles notifications about child windows being sized.
-    bool handleChildMoved(const ElementEventArgs& e);
+    bool handleChildMoved(const EventArgs& e);
 
     // overridden from Window.
     void drawSelf(const RenderingContext&) override
