@@ -458,7 +458,7 @@ LPBYTE Win32CEGuiRendererSelector::alignPointer(LPBYTE buff)
     Converts the Ansi string in 'pAnsiIn' into wide characters and
     copies the result into the WORD array at 'pWCStr'.
 *************************************************************************/
-int Win32CEGuiRendererSelector::copyAnsiToWideChar(LPBYTE outBuff, PTSTR ansiString)
+int Win32CEGuiRendererSelector::copyAnsiToWideChar(LPBYTE outBuff, PCTSTR ansiString)
 {
     LPWSTR pWCStr = reinterpret_cast<LPWSTR>(outBuff);
 

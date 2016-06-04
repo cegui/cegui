@@ -34,20 +34,14 @@
 #   if defined(_MSC_VER)
 #       pragma warning(disable : 4552)  // warning: operator has no effect; expected operator with side-effect
 #   endif
-#   define WIN32_LEAN_AND_MEAN
-#   include <windows.h>
 #   define DYNLIB_LOAD( a ) LoadLibrary( (a).c_str() )
 #   define DYNLIB_GETSYM( a, b ) GetProcAddress( a, (b).c_str() )
 #   define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
-    typedef HMODULE DYNLIB_HANDLE;
-#endif
-
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
 #   include "dlfcn.h"
 #   define DYNLIB_LOAD( a ) dlopen( (a).c_str(), RTLD_LAZY )
 #   define DYNLIB_GETSYM( a, b ) dlsym( a, (b).c_str() )
 #   define DYNLIB_UNLOAD( a ) dlclose( a )
-    typedef void* DYNLIB_HANDLE;
 #endif
 
 // setup default-default path
@@ -249,13 +243,12 @@ const String& DynamicModule::getModuleName() const
 }
 
 //----------------------------------------------------------------------------//
-void* DynamicModule::getSymbolAddress(const String& symbol) const
+ModuleFuncHandle DynamicModule::getSymbolAddress(const String& symbol) const
 {
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-    return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbol));
+    return DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    std::string symbolAsUtf8String = symbol.toUtf8String();
-    return static_cast<void*>(DYNLIB_GETSYM(d_pimpl->d_handle, symbolAsUtf8String));
+    return DYNLIB_GETSYM(d_pimpl->d_handle, symbol.toUtf8String());
 #endif
 }
 
