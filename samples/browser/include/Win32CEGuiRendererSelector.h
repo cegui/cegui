@@ -118,7 +118,7 @@ protected:
     \return
         The number of wide characters copied, including the trailing wide char NULL.
     */
-    static int copyAnsiToWideChar(LPBYTE outBuff, PTSTR ansiString);
+    static int copyAnsiToWideChar(LPBYTE outBuff, PCTSTR ansiString);
 
 
     /*************************************************************************

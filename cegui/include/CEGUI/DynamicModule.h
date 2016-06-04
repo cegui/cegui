@@ -30,8 +30,24 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 
+#if defined(__WIN32__) || defined(_WIN32)
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <windows.h>
+#endif
+
 namespace CEGUI
 {
+
+#if defined(__WIN32__) || defined(_WIN32)
+    typedef HMODULE DYNLIB_HANDLE;
+    typedef PROC ModuleFuncHandle;
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || \
+      defined(__CYGWIN__)
+    typedef void* DYNLIB_HANDLE;
+    typedef void* ModuleFuncHandle;
+#endif
 
 /*!
 \brief
@@ -77,7 +93,7 @@ public:
     \exception
         InvalidRequestException thrown if the symbol does not exist.
     */
-    void* getSymbolAddress(const String& symbol) const;
+    ModuleFuncHandle getSymbolAddress(const String& symbol) const;
 
 private:
     struct Impl;
