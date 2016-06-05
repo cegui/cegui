@@ -38,8 +38,6 @@
 // add CEGUI version defines
 #include "CEGUI/Version.h"
 
-typedef int wiojoiwejf;
-
 #include <cassert>
 #include <algorithm>
 #include <cstdint>
