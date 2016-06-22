@@ -56,8 +56,13 @@ void OgreResourceProvider::loadRawDataContainer(const String& filename,
     else
         orpGroup = resourceGroup;
 
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().
         openResource(filename.c_str(), orpGroup.c_str());
+#else
+    Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().
+        openResource(filename.toUtf8String().c_str(), orpGroup.toUtf8String().c_str());
+#endif
 
     if (input.isNull())
         throw InvalidRequestException(
@@ -91,12 +96,21 @@ size_t OgreResourceProvider::getResourceGroupFileNames(
     const String& resource_group)
 {
     // get list of files in the group that match the pattern.
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     Ogre::StringVectorPtr vp =
         Ogre::ResourceGroupManager::getSingleton().findResourceNames(
             (resource_group.empty() ?
                 d_defaultResourceGroup.c_str() :
                 resource_group.c_str()),
             file_pattern.c_str());
+#else
+    Ogre::StringVectorPtr vp =
+        Ogre::ResourceGroupManager::getSingleton().findResourceNames(
+            (resource_group.empty() ?
+                d_defaultResourceGroup.toUtf8String().c_str() :
+                resource_group.toUtf8String().c_str()),
+            file_pattern.toUtf8String().c_str());
+#endif
 
     size_t entries = 0;
     Ogre::StringVector::iterator i = vp->begin();

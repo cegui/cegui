@@ -63,7 +63,11 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // load the image
     Ogre::Image image;
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     image.load(stream, d_dataTypeID.c_str());
+#else
+    image.load(stream, d_dataTypeID.toUtf8String().c_str());
+#endif
 
     const PixelFormat ogre_pf = image.getFormat();
     const Texture::PixelFormat cegui_pf =
