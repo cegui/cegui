@@ -321,6 +321,7 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 #endif
         
     // for each resource type, set a resource group directory
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemes").c_str(), type, "schemes");
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("samples").c_str(), type, "samples");
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("imagesets").c_str(), type, "imagesets");
@@ -330,6 +331,17 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("lua_scripts").c_str(), type, "lua_scripts");
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("animations").c_str(), type, "animations");
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemas").c_str(), type, "schemas");
+#else
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemes").toUtf8String().c_str(), type, "schemes");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("samples").toUtf8String().c_str(), type, "samples");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("imagesets").toUtf8String().c_str(), type, "imagesets");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("fonts").toUtf8String().c_str(), type, "fonts");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("layouts").toUtf8String().c_str(), type, "layouts");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("looknfeel").toUtf8String().c_str(), type, "looknfeels");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("lua_scripts").toUtf8String().c_str(), type, "lua_scripts");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("animations").toUtf8String().c_str(), type, "animations");
+    ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemas").toUtf8String().c_str(), type, "schemas");
+#endif
 }
 
 CEGUI::String CEGuiOgreBaseApplication::getResourcePath(CEGUI::String resource) {

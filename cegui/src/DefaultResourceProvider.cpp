@@ -65,9 +65,12 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     struct android_app* app = AndroidUtils::getAndroidApp();
     if (!app->activity->assetManager)
         throw FileIOException("Android AAssetManager is not valid ");
-    //AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_BUFFER);
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_UNKNOWN);
-    
+#else
+    AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.toUtf8String().c_str(), AASSET_MODE_UNKNOWN);
+#endif
+   
     if (file == 0)
         throw FileIOException(final_filename + " does not exist");
 
@@ -224,7 +227,11 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
         throw FileIOException("AndroidUtils::android_app has not been set for CEGUI");
     struct android_app* app = AndroidUtils::getAndroidApp();
     AAssetDir* dirp;
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.c_str()))) 
+#else
+    if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.toUtf8String().c_str()))) 
+#endif
     {
         const char* filename;
         while ((filename =  AAssetDir_getNextFileName(dirp)))
