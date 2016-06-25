@@ -59,6 +59,7 @@ set( CEGUI_ABI_AGE 4)
 MATH( EXPR CEGUI_SOVERSION ${CEGUI_ABI_CURRENT}-${CEGUI_ABI_AGE} )
 set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION} )
 
+cegui_check_mingw()
 
 ################################################################################
 # Check for libs and other packages we might use.
