@@ -26,8 +26,8 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
     endif()
 endif()
 
-cegui_add_dependency(${CEGUI_TARGET_NAME} TOLUAPP)
-cegui_add_dependency(${CEGUI_TARGET_NAME} LUA51)
+cegui_add_dependency(${CEGUI_TARGET_NAME} TOLUAPP PRIVATE TRUE)
+cegui_add_dependency(${CEGUI_TARGET_NAME} LUA51 PRIVATE TRUE)
 
 install(TARGETS ${CEGUI_TARGET_NAME}
     RUNTIME DESTINATION bin

@@ -7,7 +7,8 @@ if(CEGUI_BUILD_RENDERER_OPENGL)
         
         cegui_target_link_libraries(CEGUITemplate_SDL2 ${CEGUI_BASE_LIBNAME})
         cegui_target_link_libraries(CEGUITemplate_SDL2 ${CEGUI_OPENGL_RENDERER_LIBNAME})
-        cegui_add_dependency(CEGUITemplate_SDL2 SDL2)
+        cegui_add_dependency(CEGUITemplate_SDL2 SDL2 PRIVATE TRUE)
+        cegui_add_dependency(CEGUITemplate_SDL2 GLEW PRIVATE TRUE)
     endif()
 
     if(${CEGUI_BUILD_APPLICATION_TEMPLATE_GLFW3})
@@ -18,7 +19,7 @@ if(CEGUI_BUILD_RENDERER_OPENGL)
         
         cegui_target_link_libraries(CEGUITemplate_GLFW3 ${CEGUI_BASE_LIBNAME})
         cegui_target_link_libraries(CEGUITemplate_GLFW3 ${CEGUI_OPENGL_RENDERER_LIBNAME})
-        cegui_add_dependency(CEGUITemplate_GLFW3 GLFW3)
+        cegui_add_dependency(CEGUITemplate_GLFW3 GLFW3 PRIVATE TRUE)
 
     endif()
 endif()
