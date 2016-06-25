@@ -330,7 +330,7 @@ if (CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10
     if (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME})
         if (MINGW)
-            cegui_target_link_libraries(${CEGUI_TARGET_NAME} d3xd11_43)
+            cegui_target_link_libraries(${CEGUI_TARGET_NAME} d3dx11_43)
         else ()
             cegui_target_link_libraries(${CEGUI_TARGET_NAME} d3d11)
         endif()
