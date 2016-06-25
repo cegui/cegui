@@ -356,13 +356,13 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     // create the main effect from the shader source.
     ID3D10Blob* errors = 0;
 
-	DWORD DefaultOptions=NULL;//D3D10_SHADER_PACK_MATRIX_ROW_MAJOR|D3D10_SHADER_PARTIAL_PRECISION|D3D10_SHADER_SKIP_VALIDATION;
+	UINT DefaultOptions=0;//D3D10_SHADER_PACK_MATRIX_ROW_MAJOR|D3D10_SHADER_PARTIAL_PRECISION|D3D10_SHADER_SKIP_VALIDATION;
 
 	ID3D10Blob* ShaderBlob=NULL;//first we compile shader, then create effect from it
 
 	if (FAILED(D3DX11CompileFromMemory(shaderSource,sizeof(shaderSource),
 		"shaderSource",NULL,NULL,NULL,"fx_5_0",
-		DefaultOptions,NULL,NULL,&ShaderBlob,&errors,NULL)))
+		DefaultOptions,0,NULL,&ShaderBlob,&errors,NULL)))
 	{
 		std::string msg(static_cast<const char*>(errors->GetBufferPointer()),
 			errors->GetBufferSize());
