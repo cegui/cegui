@@ -29,7 +29,14 @@
 #include "../../RenderTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
 #include "../../Rect.h"
-#include <d3dx10.h>
+
+// Unfortunately, MinGW-w64 doesn't have <d3dx10.h>
+#ifdef __MINGW32__
+    #include <d3d11.h>
+    #include <d3dx9.h>
+#else
+    #include <d3dx10.h>
+#endif
 
 
 #if defined(_MSC_VER)
