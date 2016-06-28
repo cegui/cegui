@@ -1,7 +1,7 @@
 ################################################################################
 # Top-level CMakeLists.txt file for Crazy Eddie's GUI System
 ################################################################################
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.12)
 if (POLICY CMP0017)
     cmake_policy(SET CMP0017 OLD)
 endif()
@@ -59,6 +59,7 @@ set( CEGUI_ABI_AGE 4)
 MATH( EXPR CEGUI_SOVERSION ${CEGUI_ABI_CURRENT}-${CEGUI_ABI_AGE} )
 set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION} )
 
+cegui_check_mingw()
 
 ################################################################################
 # Check for libs and other packages we might use.
@@ -70,7 +71,7 @@ if ((WIN32 OR APPLE) AND NOT CMAKE_PREFIX_PATH)
     set (CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
-if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
 elseif (NOT CMAKE_VERSION VERSION_LESS "3.1")
@@ -270,16 +271,16 @@ option (CEGUI_WARNINGS_AS_ERRORS "Specifies whether to treat warnings as errors.
 
 set (CEGUI_EXTRA_FLAGS "")
 
-if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
     set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -fsigned-char")
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Wall -Wextra")
+if (CMAKE_COMPILER_IS_GNUCXX)
+    set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Wall -Wextra -Wundef")
 endif ()
 
 if (CEGUI_WARNINGS_AS_ERRORS)
-    if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
         set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Werror")
     elseif (MSVC)
         set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} /WX")
