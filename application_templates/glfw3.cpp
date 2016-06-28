@@ -134,17 +134,17 @@ CEGUI::Key::Scan toCEGUIKey(int glfwKey)
     }
 }
 
-void charCallback(GLFWwindow* window, unsigned int char_pressed)
+void charCallback(GLFWwindow*, unsigned int char_pressed)
 {
     CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(char_pressed);
 }
 
-void cursorPosCallback(GLFWwindow* window, double x, double y)
+void cursorPosCallback(GLFWwindow*, double x, double y)
 {
     CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(x, y);
 }
 
-void keyCallback(GLFWwindow* window, int key, int scan, int action, int mod)
+void keyCallback(GLFWwindow*, int key, int /*scan*/, int action, int /*mod*/)
 {
     CEGUI::Key::Scan cegui_key = toCEGUIKey(key);
     if (action == GLFW_PRESS)
@@ -157,7 +157,7 @@ void keyCallback(GLFWwindow* window, int key, int scan, int action, int mod)
     }
 }
 
-void mouseButtonCallback(GLFWwindow* window, int button, int state, int mod)
+void mouseButtonCallback(GLFWwindow*, int button, int state, int /*mod*/)
 {
     if (state == GLFW_PRESS)
     {
@@ -169,7 +169,7 @@ void mouseButtonCallback(GLFWwindow* window, int button, int state, int mod)
     }
 }
 
-void mouseWheelCallback(GLFWwindow* window, double x, double y)
+void mouseWheelCallback(GLFWwindow*, double /*x*/, double y)
 {
     if (y < 0.f)
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(-1.f);
@@ -177,14 +177,14 @@ void mouseWheelCallback(GLFWwindow* window, double x, double y)
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(+1.f);
 }
 
-void windowResizedCallback(GLFWwindow* window, int width, int height)
+void windowResizedCallback(GLFWwindow*, int width, int height)
 {
     CEGUI::System::getSingleton().notifyDisplaySizeChanged(
         CEGUI::Sizef(static_cast<float>(width), static_cast<float>(height)));
     glViewport(0, 0, width, height);
 }
 
-void errorCallback(int error, const char* message)
+void errorCallback(int /*error*/, const char* message)
 {
     CEGUI::Logger::getSingleton().logEvent(message, CEGUI::Errors);
 }
@@ -298,7 +298,7 @@ void initWindows()
 #ifdef _MSC_VER
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #else
-int main(int argc, char* argv[])
+int main()
 #endif
 {
     using namespace CEGUI;
