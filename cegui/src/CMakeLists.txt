@@ -85,23 +85,23 @@ source_group("Header Files\\falagard" FILES ${FALAGARD_HEADER_FILES})
 source_group("Header Files\\svg" FILES ${SVG_HEADER_FILES})
 
 if (NOT WIN32 AND NOT ANDROID)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} ICONV PRIVATE TRUE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} ICONV)
 endif()
 
 if (CEGUI_HAS_FREETYPE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE PRIVATE TRUE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
 endif ()
 
 if (CEGUI_HAS_PCRE_REGEX)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} PCRE PRIVATE TRUE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} PCRE)
 endif ()
 
 if (CEGUI_USE_FRIBIDI)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI PRIVATE TRUE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
 endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} MINIZIP PRIVATE TRUE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} MINIZIP)
     if (MINGW)
         target_link_libraries(${CEGUI_TARGET_NAME} shlwapi)
     endif ()

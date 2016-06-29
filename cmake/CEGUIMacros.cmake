@@ -125,46 +125,15 @@ endmacro()
 #
 # add a dependency to a target (and it's static equivalent, if it exists).
 #
-# An optional "SCOPE" 3rd argument can be specified to determine the "scope"
-# argument passed to "target_include_directories". This argument can be one of
-# "INTERFACE", "PUBLIC" and "PRIVATE", the default being "PRIVATE". In general,
-# u should use "PUBLIC" if every target that depends on "_TARGET_NAME" should also
-# compile with "_DEP_NAME"'s include directories. Please refer to the
-# documentation of "target_include_directories" for more details.
-#
-# An optional "IS_SYSTEM" 4th argument can be specified to determine whether to
-# treat the headers of the dependency as system headers. This usually means that
-# the compiler won't generate warnings for these headers. The default is
-# "FALSE".
-#
 macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
-# Optional additional arguments: "SCOPE" "IS_SYSTEM"
     get_target_property(_DYNAMIC_EXISTS ${_TARGET_NAME} TYPE)
     get_target_property(_STATIC_EXISTS ${_TARGET_NAME}_Static TYPE)
-    if ("${ARGC}" GREATER 2)
-        if (("${ARGC}" GREATER 3) AND "${ARGV3}")
-            if (_DYNAMIC_EXISTS)
-                target_include_directories(${_TARGET_NAME} SYSTEM "${ARGV2}" ${${_DEP_NAME}_INCLUDE_DIR})
-            endif()
-            if (_STATIC_EXISTS)
-                target_include_directories(${_TARGET_NAME}_Static SYSTEM "${ARGV2}" ${${_DEP_NAME}_INCLUDE_DIR})
-            endif()
-        else ()
-            if (_DYNAMIC_EXISTS)
-                target_include_directories(${_TARGET_NAME} "${ARGV2}" ${${_DEP_NAME}_INCLUDE_DIR})
-            endif()
-            if (_STATIC_EXISTS)
-                target_include_directories(${_TARGET_NAME}_Static "${ARGV2}" ${${_DEP_NAME}_INCLUDE_DIR})
-            endif()
-        endif ()
-    else ()
-        if (_DYNAMIC_EXISTS)
-            target_include_directories(${_TARGET_NAME} PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
-        endif()
-        if (_STATIC_EXISTS)
-            target_include_directories(${_TARGET_NAME}_Static PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
-        endif()
-    endif ()
+    if (_DYNAMIC_EXISTS)
+        target_include_directories(${_TARGET_NAME} SYSTEM PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
+    endif()
+    if (_STATIC_EXISTS)
+        target_include_directories(${_TARGET_NAME}_Static SYSTEM PRIVATE ${${_DEP_NAME}_INCLUDE_DIR})
+    endif()
 
     ###########################################################################
     #                    NON-STATIC VERSION OF TARGET
@@ -787,5 +756,15 @@ macro( cegui_check_mingw )
         else()
             message( WARNING "If you use MinGW, only the MinGW-w64 flavour (version 3.1 and up) is officially supported." )
         endif()
+    endif()
+endmacro()
+
+macro( cegui_check_msvc )
+    if(MSVC)
+        # Older than minimally supported version of Visual Studio 2013
+        if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 18.0) 
+            message(FATAL_ERROR "You are trying to use a version of Visual Studio older than Visual Studio 2013. Please"
+                " use Visual Studio 2013 or newer, since older versions are not supported and will neither compile nor run.")
+        endif ()
     endif()
 endmacro()
