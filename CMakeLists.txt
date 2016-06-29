@@ -63,13 +63,7 @@ set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION}
 # Check for unsupported compilers
 ################################################################################
 cegui_check_mingw()
-if(MSVC)
-    # Older than minimally supported version of Visual Studio 2013
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 18.0) 
-        message(FATAL_ERROR "You are trying to use a version of Visual Studio older than Visual Studio 2013. Please"
-            " use Visual Studio 2013 or newer, since older versions are not supported and will neither compile nor run.")
-    endif ()
-endif()
+cegui_check_msvc()
 
 ################################################################################
 # Check for libs and other packages we might use.
