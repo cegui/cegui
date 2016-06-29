@@ -80,7 +80,7 @@ setting CMake options and regenerating, rather than editing directly.
    Features: Not UTF-8, UTF-32 aware. Only supports ASCII. Storage space
    is equal to that of an UTF-8 String (if it only stores ASCII characters).
 */
-#define CEGUI_STRING_CLASS_STD              3
+#define CEGUI_STRING_CLASS_ASCII            3
 
 #define CEGUI_STRING_CLASS @CEGUI_STRING_CLASS@
 
