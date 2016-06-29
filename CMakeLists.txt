@@ -62,6 +62,7 @@ set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION}
 ################################################################################
 # Check for unsupported compilers
 ################################################################################
+cegui_check_mingw()
 if(MSVC)
     # Older than minimally supported version of Visual Studio 2013
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 18.0) 
@@ -85,7 +86,7 @@ if(ANDROID)
     set (CMAKE_LIBRARY_ARCHITECTURE ${ANDROID_ABI})
 endif()
 
-if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 elseif (NOT CMAKE_VERSION VERSION_LESS "3.1")
@@ -285,16 +286,16 @@ option (CEGUI_WARNINGS_AS_ERRORS "Specifies whether to treat warnings as errors.
 
 set (CEGUI_EXTRA_FLAGS "")
 
-if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
     set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -fsigned-char")
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Wall -Wextra")
+if (CMAKE_COMPILER_IS_GNUCXX)
+    set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Wall -Wextra -Wundef")
 endif ()
 
 if (CEGUI_WARNINGS_AS_ERRORS)
-    if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
         set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} -Werror")
     elseif (MSVC)
         set (CEGUI_EXTRA_FLAGS "${CEGUI_EXTRA_FLAGS} /WX")

@@ -39,6 +39,24 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
+#ifdef __MINGW32__
+
+extern "C" HRESULT WINAPI D3D11CreateDeviceAndSwapChain(
+    IDXGIAdapter* pAdapter,
+    D3D_DRIVER_TYPE DriverType,
+    HMODULE Software,
+    UINT Flags,
+    CONST D3D_FEATURE_LEVEL* pFeatureLevels,
+    UINT FeatureLevels,
+    UINT SDKVersion,
+    CONST DXGI_SWAP_CHAIN_DESC* pSwapChainDesc,
+    IDXGISwapChain** ppSwapChain,
+    ID3D11Device** ppDevice,
+    D3D_FEATURE_LEVEL* pFeatureLevel,
+    ID3D11DeviceContext** ppImmediateContext );
+
+#endif
+
 //----------------------------------------------------------------------------//
 struct CEGuiBaseApplication11Impl
 {
@@ -55,7 +73,7 @@ CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
     pimpl(new CEGuiBaseApplication11Impl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
+    if ((pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight)))
     {
         if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, true))
         {
@@ -124,8 +142,6 @@ void CEGuiD3D11BaseApplication::run()
     {
         if (idle)
         {
-            CEGUI::System& guiSystem = CEGUI::System::getSingleton();
-
             // do time based updates
             const DWORD thisTime = GetTickCount();
             const float elapsed =
@@ -164,7 +180,7 @@ void CEGuiD3D11BaseApplication::destroyWindow()
 
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D11BaseApplication::beginRendering(const float elapsed)
+void CEGuiD3D11BaseApplication::beginRendering(const float /*elapsed*/)
 {
 }
 

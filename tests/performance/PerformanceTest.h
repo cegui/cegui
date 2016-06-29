@@ -27,10 +27,11 @@
 #ifndef _CEGUITestsPerformanceTest_h_
 #define _CEGUITestsPerformanceTest_h_
 
-#include <boost/timer/timer.hpp>
-#include <fstream>
-
 #include "CEGUI/WindowManager.h"
+
+#include <boost/timer/timer.hpp>
+
+#include <iostream>
 
 /*!
 \brief
