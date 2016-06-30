@@ -57,12 +57,67 @@ public:
 
     const RenderedString& getRenderedString() const;
 
+    /*
+    \brief
+        During the last call to "format", was any word split between 2 or more
+        lines?
+
+        This can happen e.g. if word wrapping is used, and the width of a word
+        is more than that of the area of the string.
+
+    \see setWasWordSplit
+    */
+    bool wasWordSplit() const;
+
+    /*
+    \brief
+        Set a flag which indicates whether in the last call to "format", any
+        word split between 2 or more lines.
+
+        See the documentation for "wasWordSplit" for more details.
+
+    \see wasWordSplit
+    */
+    void setWasWordSplit(bool value);
+
+    /*
+    \brief
+        Get the number of text lines in the original (non-formatted) string
+        (i.e. "d_renderedString");
+
+    \see getNumOfFormattedTextLines
+    */
+    std::size_t getNumOfOriginalTextLines() const;
+
+    /*
+    \brief
+        Get the number of text lines in the formatted string.
+
+        That takes into account e.g. word-wrapping.
+
+    \see getNumOfOriginalTextLines
+    */
+    virtual std::size_t getNumOfFormattedTextLines() const;
+
 protected:
     //! Constructor.
     FormattedRenderedString(const RenderedString& string);
 
     //! RenderedString that we handle formatting for.
     const RenderedString* d_renderedString;
+
+private:
+    /*
+    \brief
+        During the last call to "format", was any word split between 2 or more
+        lines?
+
+        See the documentation for "wasWordSplit" for more details.
+
+    \see wasWordSplit
+    \see setWasWordSplit
+    */
+    bool d_wasWordSplit;
 };
 
 } // End of  CEGUI namespace section

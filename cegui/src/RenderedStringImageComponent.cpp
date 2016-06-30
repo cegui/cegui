@@ -204,7 +204,8 @@ bool RenderedStringImageComponent::canSplit() const
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent* RenderedStringImageComponent::split(
-    const Window* /*ref_wnd*/ ,float /*split_point*/, bool /*first_component*/)
+    const Window* /*ref_wnd*/ ,float /*split_point*/, bool /*first_component*/,
+    bool& /*was_word_split*/)
 {
     CEGUI_THROW(InvalidRequestException(
         "this component does not support being split."));
