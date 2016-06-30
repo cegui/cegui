@@ -100,6 +100,61 @@ public:
     //! perform any processing required due to the given font having changed.
     virtual bool handleFontRenderSizeChange(Window& window,
                                             const Font* font) const;
+
+    /*!
+    \brief
+        Get a lower bound for this dimension as an affine function of "type".
+
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
+
+        Let:
+            - "ret" be the value returned by this method.
+            - "t" be the value of this dimension.
+            - "m" be the value of "type". For instance, if "type" is "DT_WIDTH",
+              "m" would be the width of the window.
+        Then:
+            t >= ret.d_scale*m + ret.d_offset
+
+        The default implementation simply returns "UDim(0.f, getValue(wnd))".
+
+        This method is used by
+        "ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth" and
+        "ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight".
+
+    \see getUpperBoundAsUDim
+    \see ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth
+    \see ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight
+    */
+    virtual UDim getLowerBoundAsUDim(const Window& wnd, DimensionType type) const;
+
+    /*!
+    \brief
+        Get a upper bound for this dimension as an affine function of "type".
+
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
+
+        Let:
+            - "ret" be the value returned by this method.
+            - "t" be the value of this dimension.
+            - "m" be the value of "type". For instance, if "type" is "DT_WIDTH",
+              "m" would be the width of the window.
+        Then:
+            t <= ret.d_scale*m +ret.d_offset
+
+        The default implementation simply returns "UDim(0.f, getValue(wnd))".
+
+        This method is used by
+        "ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth" and
+        "ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight".
+
+    \see getLowerBoundAsUDim
+    \see ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth
+    \see ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight
+    */
+    virtual UDim getUpperBoundAsUDim(const Window& wnd, DimensionType type) const;
+
 protected:
     //! Implementataion method to output real xml element name.
     virtual void writeXMLElementName_impl(XMLSerializer& xml_stream) const = 0;
@@ -146,6 +201,8 @@ public:
     float getValue(const Window& wnd) const;
     float getValue(const Window& wnd, const Rectf& container) const;
     BaseDim* clone() const;
+    UDim getLowerBoundAsUDim(const Window& wnd, DimensionType type) const;
+    UDim getUpperBoundAsUDim(const Window& wnd, DimensionType type) const;
 
 protected:
     float getValueImpl(const float lval, const float rval) const;
@@ -157,6 +214,9 @@ protected:
     BaseDim* d_left;
     BaseDim* d_right;
     DimensionOperator d_op;
+
+private:
+    UDim getBoundAsUDim(const UDim& lval, const UDim& rval) const;
 };
 
 /*!
@@ -451,12 +511,18 @@ public:
     float getValue(const Window& wnd, const Rectf& container) const;
     BaseDim* clone() const;
 
+    UDim getLowerBoundAsUDim(const Window& wnd, DimensionType type) const;
+
+    UDim getUpperBoundAsUDim(const Window& wnd, DimensionType type) const;
+
 protected:
     // Implementation of the base class interface
     void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
     void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
 
 private:
+    UDim getBoundAsUDim(const Window& wnd, DimensionType type, float round_err) const;
+
     //! The UDim value.
     UDim d_value;
     //! what to use as the base / reference for scale.
@@ -886,6 +952,53 @@ public:
 
     //! perform any processing required due to the given font having changed.
     bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+
+    /*!
+    \brief
+        Get a lower bound for the width of this area as an affine function of
+        the window width.
+
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
+        the window width.
+
+        Let:
+            - "ret" be the value returned by this method.
+            - "t" be the width of this area.
+            - "m" be the window width.
+        Then:
+            t >= ret.d_scale*m +ret.d_offset
+
+        This method can be used to implement
+        "Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth".
+
+    \see Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
+    \see getHeightLowerBoundAsFuncOfWindowHeight
+    */
+    UDim getWidthLowerBoundAsFuncOfWindowWidth(const Window& wnd) const;
+
+    /*!
+    \brief
+        Get a lower bound for the height of this area as an affine function of
+        the window height.
+
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
+
+        Let:
+            - "ret" be the value returned by this method.
+            - "t" be the height of this area.
+            - "m" be the window height.
+        Then:
+            t >= ret.d_scale*m +ret.d_offset
+
+        This method can be used to implement
+        "Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight".
+
+    \see Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
+    \see getWidthLowerBoundAsFuncOfWindowWidth
+    */
+    UDim getHeightLowerBoundAsFuncOfWindowHeight(const Window& wnd) const;
 
     //! Left edge of the area.
     Dimension d_left;
