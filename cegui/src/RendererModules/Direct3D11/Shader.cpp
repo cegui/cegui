@@ -46,10 +46,10 @@ Direct3D11Shader::Direct3D11Shader(Direct3D11Renderer& owner,
     : d_device(owner.getDirect3DDevice())
     , d_deviceContext(owner.getDirect3DDeviceContext())
     , d_vertShader(0)
-    , d_pixelShader(0)
     , d_vertexShaderBuffer(0)
-    , d_pixelShaderBuffer(0)
     , d_vertexShaderReflection(0)
+    , d_pixelShader(0)
+    , d_pixelShaderBuffer(0)
     , d_pixelShaderReflection(0)
 {
     createVertexShader(vertexShaderSource);

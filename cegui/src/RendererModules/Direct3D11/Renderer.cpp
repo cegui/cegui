@@ -50,13 +50,20 @@ const String Direct3D11Renderer::d_rendererID(
 //----------------------------------------------------------------------------//
 Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,
                                        ID3D11DeviceContext*deviceContext)
-    : d_device(device)
+    : d_shaderWrapperTextured(nullptr)
+    , d_shaderWrapperSolid(nullptr)
+    , d_device(device)
     , d_deviceContext(deviceContext)
+    , d_blendStateNormal(nullptr)
+    , d_blendStatePreMultiplied(nullptr)
+    , d_currentBlendState(0)
+    , d_rasterizerStateScissorEnabled(nullptr)
+    , d_rasterizerStateScissorDisabled(nullptr)
+    , d_currentRasterizerState(0)
+    , d_depthStencilStateDefault(nullptr)
     , d_displayDPI(96, 96)
     , d_defaultTarget(0)
     , d_samplerState(0)
-    , d_currentBlendState(0)
-    , d_currentRasterizerState(0)
 {
  
 	if(!device || !deviceContext) 
@@ -584,7 +591,7 @@ void Direct3D11Renderer::initialiseRasterizerStates()
     cmdesc.DepthClipEnable = TRUE;
     cmdesc.ScissorEnable = TRUE;
 
-    HRESULT result = d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorEnabled);
+    d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorEnabled);
 
     ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
 
@@ -593,7 +600,7 @@ void Direct3D11Renderer::initialiseRasterizerStates()
     cmdesc.DepthClipEnable = TRUE;
     cmdesc.ScissorEnable = FALSE;
 
-    result = d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorDisabled);
+    d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorDisabled);
 
     ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
 }

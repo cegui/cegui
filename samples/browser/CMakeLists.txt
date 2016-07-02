@@ -403,8 +403,12 @@ if(CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} DIRECTXSDK)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME})
+    if( MINGW )
+        cegui_target_link_libraries(${CEGUI_TARGET_NAME} dinput8 )
+    else()
+        target_include_directories( ${CEGUI_TARGET_NAME} SYSTEM PRIVATE ${DIRECTXSDK_INCLUDE_DIR} )
+    endif()
 endif()
 
 if(CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE)

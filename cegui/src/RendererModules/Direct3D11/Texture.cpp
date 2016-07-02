@@ -76,26 +76,6 @@ static size_t calculateDataWidth(const size_t width, Texture::PixelFormat fmt)
 }
 
 //----------------------------------------------------------------------------//
-// Helper utility function that copies an RGBA buffer into a region of a second
-// buffer as D3DCOLOR data values
-static void blitToSurface(const std::uint32_t* src, std::uint32_t* dst,
-                   const Sizef& sz, size_t dest_pitch)
-{
-    for (unsigned int i = 0; i < sz.d_height; ++i)
-    {
-        for (unsigned int j = 0; j < sz.d_width; ++j)
-        {
-            const std::uint32_t pixel = src[j];
-            const std::uint32_t tmp = pixel & 0x00FF00FF;
-            dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
-        }
-
-        dst += dest_pitch / sizeof(std::uint32_t);
-        src += static_cast<std::uint32_t>(sz.d_width);
-    }
-}
-
-//----------------------------------------------------------------------------//
 // Helper utility function that copies a region of a buffer containing D3DCOLOR
 // values into a second buffer as RGBA values.
 static void blitFromSurface(const std::uint32_t* src, std::uint32_t* dst,
@@ -107,7 +87,7 @@ static void blitFromSurface(const std::uint32_t* src, std::uint32_t* dst,
         {
             const std::uint32_t pixel = src[j];
             const std::uint32_t tmp = pixel & 0x00FF00FF;
-            dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
+            dst[j] = (pixel & 0xFF00FF00) | (tmp << 16) | (tmp >> 16);
         }
 
         src += source_pitch / sizeof(std::uint32_t);
@@ -217,10 +197,11 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
     cleanupDirect3D11Texture();
 
     const void* img_src = buffer;
+    unsigned char* dest(0);
     if (pixel_format == PF_RGB)
     {
         const unsigned char* src = static_cast<const unsigned char*>(buffer);
-        unsigned char* dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
+        dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
 
         for (int i = 0; i < buffer_size.d_width * buffer_size.d_height; ++i)
         {
@@ -254,8 +235,7 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
 
     HRESULT hr = d_device.CreateTexture2D(&tex_desc, &data, &d_texture);
 
-    if (pixel_format == PF_RGB)
-        delete[] img_src;
+    delete[] dest;
 
     if (FAILED(hr))
         throw RendererException(

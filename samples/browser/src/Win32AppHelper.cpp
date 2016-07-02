@@ -189,10 +189,9 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
 
     case WM_PAINT:
         {
-            HDC         hDC;
             PAINTSTRUCT ps;
 
-            hDC = BeginPaint(hWnd, &ps);
+            BeginPaint(hWnd, &ps);
             EndPaint(hWnd, &ps);
             break;
         }

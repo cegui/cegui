@@ -39,11 +39,11 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 Direct3D11ShaderWrapper::Direct3D11ShaderWrapper(Direct3D11Shader& shader,
                                                  Direct3D11Renderer* renderer)
-    : d_shader(shader)
+    : d_deviceContext(renderer->getDirect3DDeviceContext())
     , d_device(renderer->getDirect3DDevice())
-    , d_deviceContext(renderer->getDirect3DDeviceContext())
     , d_perObjectUniformVarBufferVert(0)
     , d_perObjectUniformVarBufferPixel(0)
+    , d_shader(shader)
 {
     createPerObjectBuffer(ST_VERTEX);
     createPerObjectBuffer(ST_PIXEL);
