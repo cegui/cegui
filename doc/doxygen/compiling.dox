@@ -7,7 +7,7 @@
 CEGUI uses CMake build generation system (http://www.cmake.org/) to configure
 the build and generate makefiles or project files of whatever kind you choose
 – basically this means that if cmake can spit out build files for it,
-then you should be able to successfully use it to build CEGUI.
+then you should be able to successfully use it to build CEGUI. CMake 2.8.12 or later is required.
 
 The CEGUI developers have personally tested the build of CEGUI on a variety
 systems, and can say the CEGUI is known to build using the following in both
