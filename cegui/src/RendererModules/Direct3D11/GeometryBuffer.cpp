@@ -45,9 +45,9 @@ Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner, CE
     , d_owner(owner)
     , d_device(d_owner.getDirect3DDevice())
     , d_deviceContext(d_owner.getDirect3DDeviceContext())
+    , d_vertexBuffer(0)
     , d_bufferSize(0)
     , d_inputLayout(0)
-    , d_vertexBuffer(0)
 {
 }
 

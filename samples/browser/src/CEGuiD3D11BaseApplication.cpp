@@ -34,28 +34,12 @@
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 
+#include "d3d11-mingw-supplements.h"
+
 #include <stdexcept>
 #include <d3d11.h>
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
-
-#ifdef __MINGW32__
-
-extern "C" HRESULT WINAPI D3D11CreateDeviceAndSwapChain(
-    IDXGIAdapter* pAdapter,
-    D3D_DRIVER_TYPE DriverType,
-    HMODULE Software,
-    UINT Flags,
-    CONST D3D_FEATURE_LEVEL* pFeatureLevels,
-    UINT FeatureLevels,
-    UINT SDKVersion,
-    CONST DXGI_SWAP_CHAIN_DESC* pSwapChainDesc,
-    IDXGISwapChain** ppSwapChain,
-    ID3D11Device** ppDevice,
-    D3D_FEATURE_LEVEL* pFeatureLevel,
-    ID3D11DeviceContext** ppImmediateContext );
-
-#endif
 
 //----------------------------------------------------------------------------//
 struct CEGuiBaseApplication11Impl
@@ -263,7 +247,7 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
                  d3dInfoQueue->Release();
              }
 
-             d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL);
+             d3dDebug->ReportLiveDeviceObjects(static_cast<D3D11_RLDO_FLAGS>(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL));
 
              d3dDebug->Release();
          }
