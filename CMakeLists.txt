@@ -389,6 +389,16 @@ cmake_dependent_option( CEGUI_BUILD_DATAFILES_TEST "Specifies whether to build t
 
 option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to the install location (TRUE) or with no RPATH set (FALSE)." FALSE )
 
+# custom install locations
+option( CEGUI_LIB_INSTALL_DIR "Specifies custom location for CEGUI_LIB_INSTALL_DIR"  )
+option( CEGUI_DATA_INSTALL_DIR "Specifies custom location for CEGUI_DATA_INSTALL_DIR" )  
+option( CEGUI_DOC_INSTALL_DIR "Specifies custom location for CEGUI_DOC_INSTALL_DIR" )  
+option( CEGUI_PKGCONFIG_INSTALL_DIR "Specifies custom location for CEGUI_PKGCONFIG_INSTALL_DIR" )  
+option( CEGUI_MODULE_INSTALL_DIR "Specifies custom location for CEGUI_MODULE_INSTALL_DIR" )  
+option( CEGUI_SAMPLE_INSTALL_DIR "Specifies custom location for CEGUI_SAMPLE_INSTALL_DIR" ) # TODO: put into /samples subdir!  
+option( CEGUI_INCLUDE_INSTALL_DIR "Specifies custom location for CEGUI_INCLUDE_INSTALL_DIR" ) 
+
+
 ################################################################################
 # Define vars holding the names for all the libs we can build for CEGUI.
 ################################################################################
@@ -583,13 +593,30 @@ else()
 endif()
 
 set( CEGUI_VER_INSTALL_SUBDIR "/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}" )
-set( CEGUI_DATA_INSTALL_DIR "share${CEGUI_VER_INSTALL_SUBDIR}" )
-set( CEGUI_DOC_INSTALL_DIR "share/doc${CEGUI_VER_INSTALL_SUBDIR}" )
 
-set( CEGUI_PKGCONFIG_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/pkgconfig" )
-set( CEGUI_MODULE_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
-set( CEGUI_SAMPLE_INSTALL_DIR "${CEGUI_MODULE_INSTALL_DIR}" ) # TODO: put into /samples subdir!
-set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_VER_INSTALL_SUBDIR}" )
+if (NOT CEGUI_DATA_INSTALL_DIR)
+  set( CEGUI_DATA_INSTALL_DIR "share${CEGUI_VER_INSTALL_SUBDIR}" )
+endif()
+
+if (NOT CEGUI_DOC_INSTALL_DIR)
+  set( CEGUI_DOC_INSTALL_DIR "share/doc${CEGUI_VER_INSTALL_SUBDIR}" )
+endif()
+
+if (NOT CEGUI_PKGCONFIG_INSTALL_DIR)
+  set( CEGUI_PKGCONFIG_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/pkgconfig" )
+endif()
+
+if (NOT CEGUI_MODULE_INSTALL_DIR)
+  set( CEGUI_MODULE_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
+endif()
+
+if (NOT CEGUI_SAMPLE_INSTALL_DIR)
+  set( CEGUI_SAMPLE_INSTALL_DIR "${CEGUI_MODULE_INSTALL_DIR}" ) # TODO: put into /samples subdir!
+endif()
+
+if (NOT CEGUI_INCLUDE_INSTALL_DIR)
+  set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_VER_INSTALL_SUBDIR}" )
+endif()
 
 ################################################################################
 # Deal with files we generate from template files
