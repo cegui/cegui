@@ -121,7 +121,8 @@ bool CEGuiBaseApplication::init(SamplesFrameworkBase* sampleApp,
                           "", logFile);
 
     // initialise resource system
-    initialiseResourceGroupDirectories(dataPathPrefixOverride);
+    initDataPathPrefix(dataPathPrefixOverride);
+    initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
 
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
@@ -186,14 +187,12 @@ void CEGuiBaseApplication::destroyRenderer()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::initialiseResourceGroupDirectories
-  (const CEGUI::String& dataPathPrefixOverride)
+void CEGuiBaseApplication::initialiseResourceGroupDirectories()
 {
     // initialise the required dirs for the DefaultResourceProvider
     CEGUI::DefaultResourceProvider* rp =
         static_cast<CEGUI::DefaultResourceProvider*>
             (CEGUI::System::getSingleton().getResourceProvider());
-    initDataPathPrefix(dataPathPrefixOverride);
     CEGUI::String dataPathPrefix(getDataPathPrefix());
 
     /* for each resource type, set a resource group directory. We cast strings

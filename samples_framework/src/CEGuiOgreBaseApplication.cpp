@@ -140,14 +140,6 @@ bool CEGuiOgreBaseApplication::init(SamplesFrameworkBase* sampleApp,
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-    // start rendering via Ogre3D engine.
-    CEGUI_TRY
-    {
-        d_ogreRoot->startRendering();
-    }
-    CEGUI_CATCH(...)
-    {}
-
     return true;
 }
 
@@ -258,6 +250,18 @@ bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args
 bool CEGuiOgreBaseApplication::isInitialised()
 {
     return d_initialised;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::run()
+{
+    // start rendering via Ogre3D engine.
+    CEGUI_TRY
+    {
+        d_ogreRoot->startRendering();
+    }
+    CEGUI_CATCH(...)
+    {}
 }
 
 //----------------------------------------------------------------------------//
