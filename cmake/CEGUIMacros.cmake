@@ -300,23 +300,23 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         endif()
 
         install(TARGETS ${_LIB_NAME}
-          RUNTIME DESTINATION bin COMPONENT cegui_lib
+          RUNTIME DESTINATION bin COMPONENT cegui_bin
           LIBRARY DESTINATION ${_CEGUI_LIB_DEST} COMPONENT cegui_lib
-          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
         )
 
         if (CEGUI_BUILD_STATIC_CONFIGURATION)
             install(TARGETS ${_LIB_NAME}_Static
-              RUNTIME DESTINATION bin COMPONENT cegui_lib
+              RUNTIME DESTINATION bin COMPONENT cegui_bin
               LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
-              ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+              ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
             )
         endif()
     endif()
 
     if (${_INSTALL_HEADERS})
         string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
-        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/${_REL_HEADER_DIR}" COMPONENT cegui_headers)
+        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/${_REL_HEADER_DIR}" COMPONENT cegui_devel)
     endif()
 endmacro()
 
@@ -555,16 +555,16 @@ macro (cegui_add_test_executable _NAME)
     #                           INSTALLATION
     ###########################################################################
     install(TARGETS ${CEGUI_TARGET_NAME}
-      RUNTIME DESTINATION bin COMPONENT cegui_lib
+      RUNTIME DESTINATION bin COMPONENT cegui_bin
       LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
-      ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+      ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
     )
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
-          RUNTIME DESTINATION bin COMPONENT cegui_lib
+          RUNTIME DESTINATION bin COMPONENT cegui_bin
           LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib 
-          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
     )
     endif()
 
