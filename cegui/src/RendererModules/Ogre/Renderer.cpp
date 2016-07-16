@@ -642,20 +642,15 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
-#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-    if ( !d_pimpl->d_previousVP ) 
-    {
-        d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
-        if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
-            d_pimpl->d_previousProjMatrix =
-                d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
-    }
-
-    //FIXME: ???
-    System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
-#endif
-
-    initialiseRenderStateSettings();
+    #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
+        if ( !d_pimpl->d_previousVP ) 
+        {
+            d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
+            if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
+                d_pimpl->d_previousProjMatrix =
+                    d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+        }
+    #endif
 
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_beginFrame();
@@ -666,25 +661,23 @@ void OgreRenderer::endRendering()
 {
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_endFrame();
-#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-    //FIXME: ???
-    System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
-    if ( d_pimpl->d_previousVP ) 
-    {
-        d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
-
-        if ( d_pimpl->d_previousVP->getCamera() )
+    #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
+        if ( d_pimpl->d_previousVP ) 
         {
-            d_pimpl->d_renderSystem->_setProjectionMatrix(
-                d_pimpl->d_previousProjMatrix);
-            d_pimpl->d_renderSystem->_setViewMatrix(
-                d_pimpl->d_previousVP->getCamera()->getViewMatrix());
+            d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
+
+            if ( d_pimpl->d_previousVP->getCamera() )
+            {
+                d_pimpl->d_renderSystem->_setProjectionMatrix(
+                    d_pimpl->d_previousProjMatrix);
+                d_pimpl->d_renderSystem->_setViewMatrix(
+                    d_pimpl->d_previousVP->getCamera()->getViewMatrix());
+            }
+            d_pimpl->d_previousVP = 0;
+            d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
         }
-        d_pimpl->d_previousVP = 0;
-        d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
-    }
-#endif    
+    #endif    
 }
 
 //----------------------------------------------------------------------------//
