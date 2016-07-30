@@ -629,7 +629,7 @@ configure_file( cegui/include/CEGUI/ModuleConfig.h.in cegui/include/CEGUI/Module
 configure_file( samples/common/include/CEGUISamplesConfig.h.in samples/common/include/CEGUISamplesConfig.h )
 configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
 
-if (UNIX AND NOT APPLE)
+if (CMAKE_HOST_UNIX AND NOT CMAKE_HOST_APPLE)
     configure_file( cegui/CEGUI.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}.pc @ONLY )
     install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_devel)
 
