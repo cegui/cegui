@@ -65,7 +65,7 @@ endif()
 
 # handle the QUIETLY and REQUIRED arguments and set LIBXML2_FOUND to TRUE if
 # all listed variables are TRUE
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(LibXml2
                                   REQUIRED_VARS LIBXML2_LIBRARIES LIBXML2_INCLUDE_DIR
                                   VERSION_VAR LIBXML2_VERSION_STRING)
