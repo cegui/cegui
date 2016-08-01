@@ -633,7 +633,7 @@ configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
 # Perhaps install pkg-config ("*.pc") files.
 ################################################################################
 if( (UNIX AND NOT APPLE) OR NOT (CMAKE_VERSION VERSION_LESS 3.6) )
-    if( UNIX AND NOT APPLE AND FALSE )
+    if( UNIX AND NOT APPLE )
         set( CEGUI_PKGCONFIG_PERHAPS_EXCLUDE )
     else()
         set( CEGUI_PKGCONFIG_PERHAPS_EXCLUDE EXCLUDE_FROM_ALL )
