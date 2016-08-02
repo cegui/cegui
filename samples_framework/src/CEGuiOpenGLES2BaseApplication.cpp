@@ -52,6 +52,16 @@ void CEGuiOpenGLES2BaseApplication::setGLFWWindowCreationHints()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+    #if (      (GLFW_VERSION_MAJOR >= 4) \
+         ||    ((GLFW_VERSION_MAJOR == 3)  &&  (GLFW_VERSION_MINOR >= 2)))
+        #if CEGUI_SAMPLES_OPENGL_ES_2_CONTEXT_CREATION_API == CEGUI_SAMPLES_OPENGL_CONTEXT_CREATION_API_EGL
+            glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
+        #elif CEGUI_SAMPLES_OPENGL_ES_2_CONTEXT_CREATION_API == CEGUI_SAMPLES_OPENGL_CONTEXT_CREATION_API_NATIVE
+            glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
+        #else
+            #error Invalid "CEGUI_SAMPLES_OPENGL_ES_2_CONTEXT_CREATION_API"
+        #endif
+    #endif
 }
 
 //----------------------------------------------------------------------------//

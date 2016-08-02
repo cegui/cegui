@@ -39,10 +39,10 @@ Specifies whether to use Epoxy as an OpenGL loading library.
 choose only one of these options.
 @subsection build_options_glfw_ver CEGUI_GLFW_VER
 Specifies which major version of GLFW to use for the samples (2 or 3). The
-default is to look for both, giving priority to version 2.
-@note For desktop OpenGL rendering, either version 2 or 3 is required. For
-OpenGL ES 2.0 renderering, version 3 is required. To use OpenGL ES 2.0 with EGL,
-GLFW 3 must be used, and GLFW 3 must be built configured with
+default is to look for both, giving priority to version 2.x.
+@note For desktop OpenGL rendering, either GLFW 2.x or 3.x is required. For
+OpenGL ES 2.0 renderering, GLFW 3.x is required. To use OpenGL ES 2.0 with EGL,
+GLFW 3.x must be used, and if GLFW version is less than 3.2, it must be built configured with
 "-DGLFW_USE_EGL=ON -DGLFW_CLIENT_LIBRARY=glesv2".
 @subsection build_options_string_class CEGUI_STRING_CLASS
 Which string class should CEGUI use:
