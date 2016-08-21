@@ -30,7 +30,7 @@
 #include <boost/test/unit_test.hpp>
 
 // it's not worth it to test std::string, is it?
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
 
 BOOST_AUTO_TEST_SUITE(String)
 
