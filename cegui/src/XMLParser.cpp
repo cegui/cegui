@@ -91,7 +91,8 @@ namespace CEGUI
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         const char* c_str = source.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-        const char* c_str = source.toUtf8String().c_str();
+        std::string utf8StdStr = String::convertUtf32ToUtf8(source);
+        const char* c_str = utf8StdStr.c_str();
 #endif
         rawXMLData.setData(reinterpret_cast<std::uint8_t*>(const_cast<char*>(c_str)));
         rawXMLData.setSize(std::strlen(c_str));

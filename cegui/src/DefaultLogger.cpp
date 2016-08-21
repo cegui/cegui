@@ -123,7 +123,7 @@ void DefaultLogger::logEvent(const String& message,
 
     if (d_caching)
     {
-        d_cache.push_back(std::make_pair(d_workstream.str().c_str(), level));
+        d_cache.push_back(std::make_pair(String(d_workstream.str().c_str()), level));
     }
     if (d_level >= level)
     {
