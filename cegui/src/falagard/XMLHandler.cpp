@@ -1365,10 +1365,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementAreaPropertyStart(const XMLAttributes& attributes)
     {
         if (d_area != nullptr)
-        {
-            throwExceptionChildOfSameNode(d_widgetlook, AreaPropertyElement);
-        }
-
+            throwExceptionNotChildOfNode(d_widgetlook, AreaPropertyElement, AreaElement);
         d_area->setAreaPropertySource(attributes.getValueAsString(NameAttribute));
     }
 

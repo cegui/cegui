@@ -95,9 +95,9 @@ if (${CEGUI_USE_EPOXY})
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLM)
     cegui_add_dependency(${CEGUI_TARGET_NAME} EPOXY)
 elseif (${CEGUI_USE_GLEW})
-    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLM)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL PRIVATE TRUE)
 endif()
 
 

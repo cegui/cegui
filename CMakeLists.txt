@@ -212,7 +212,7 @@ option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA onl
 option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" ${PVRTOOLS_FOUND} )
 cegui_dependent_option( CEGUI_BUILD_IMAGECODEC_SDL2 "Specifies whether to build the SDL2 ImageCodec module" "SDL2_FOUND;SDL2IMAGE_FOUND" )
 
-cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the old OpenGL renderer module" "OPENGL_gl_LIBRARY;GLM_FOUND;GLEW_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the old OpenGL 1.2 (fixed pipeline) renderer module." "OPENGL_gl_LIBRARY;GLM_FOUND;GLEW_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the renderer module that supports OpenGL 3.2 (core profile) and OpenGL ES 2.0." "OPENGL_gl_LIBRARY;GLM_FOUND;OPENGL_LOADER_FOUND")
 option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" ${OGRE_FOUND} )
 option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" ${IRRLICHT_FOUND} )
@@ -239,7 +239,7 @@ if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
     message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
 endif()
 
-
+set( CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API NONE )
 
 if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
     if (GLEW_FOUND AND EPOXY_FOUND)
@@ -253,8 +253,9 @@ if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
         set (CEGUI_USE_EPOXY "${EPOXY_FOUND}")
     endif ()
     if (CEGUI_BUILD_RENDERER_OPENGL AND NOT CEGUI_USE_GLEW)
-        message (FATAL_ERROR "Building the old OpenGL renderer module is only supported using GLEW.")
+        message (FATAL_ERROR "Building the old OpenGL 1.2 (fixed pipeline) renderer module is only supported using GLEW.")
     endif ()
+    set( CEGUI_USE_GLFW_VER none )
     if (NOT ANDROID)
         set (CEGUI_GLFW_VER "" CACHE STRING "Specifies which major version of GLFW to use for the samples (2 or 3). The default is to look for both, giving priority to version 2.")
 
@@ -263,15 +264,24 @@ if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
         elseif (((CEGUI_GLFW_VER STREQUAL "3")  OR (CEGUI_GLFW_VER STREQUAL "")) AND GLFW3_FOUND)
             set (CEGUI_USE_GLFW_VER "3")
         endif ()
+        if( CEGUI_USE_GLFW_VER STREQUAL 3 )
+            set( CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API NATIVE CACHE STRING "In the sample framework, which API to use for desktop OpenGL context creation. Possible values are \"EGL\" and \"NATIVE\" (default). This variable is only used with GLFW >= 3.2." )
+            mark_as_advanced( CEGUI_SAMPLES_DEKSTOP_OPENGL_CONTEXT_CREATION_API )
+        endif()
     endif ()
 endif ()
 
+set( CEGUI_SAMPLES_OPENGL_ES_2_CONTEXT_CREATION_API NONE )
 if (CEGUI_BUILD_RENDERER_OPENGL3 AND CEGUI_USE_EPOXY)
     set (CEGUI_SUPPORT_RENDERER_OPENGLES2 TRUE)
     set (CEGUI_OPENGL_VER_MAJOR_FORCE "" CACHE STRING "Run the samples as if a specific OpenGL (desktop or ES) major version is used. Useful for testing.")
     mark_as_advanced (CEGUI_OPENGL_VER_MAJOR_FORCE)
     set (CEGUI_OPENGL_VER_MINOR_FORCE "0" CACHE STRING "Run the samples as if a specific OpenGL (desktop or ES) minor version is used. Useful for testing.")
     mark_as_advanced (CEGUI_OPENGL_VER_MINOR_FORCE)
+    if( CEGUI_GLFW_VER STREQUAL 3 )
+        set( CEGUI_SAMPLES_OPENGL_ES_2_CONTEXT_CREATION_API EGL CACHE STRING "In the sample framework, which API to use for OpenGL ES 2.0 context creation. Possible values are \"EGL\" (default) and \"NATIVE\". This variable is only used with GLFW >= 3.2." )
+        mark_as_advanced( CEGUI_SAMPLES_OPENGL_ES_2_CONTEXT_CREATION_API )
+    endif()
 else ()
     set (CEGUI_SUPPORT_RENDERER_OPENGLES2 FALSE)
 endif ()
@@ -422,6 +432,16 @@ endif()
 cmake_dependent_option( CEGUI_BUILD_DATAFILES_TEST "Specifies whether to build the datafiles test." FALSE "PYTHONINTERP_FOUND" FALSE )
 
 option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to the install location (TRUE) or with no RPATH set (FALSE)." FALSE )
+
+# custom install locations
+option( CEGUI_LIB_INSTALL_DIR "Specifies custom location for CEGUI_LIB_INSTALL_DIR"  )
+option( CEGUI_DATA_INSTALL_DIR "Specifies custom location for CEGUI_DATA_INSTALL_DIR" )  
+option( CEGUI_DOC_INSTALL_DIR "Specifies custom location for CEGUI_DOC_INSTALL_DIR" )  
+option( CEGUI_PKGCONFIG_INSTALL_DIR "Specifies custom location for CEGUI_PKGCONFIG_INSTALL_DIR" )  
+option( CEGUI_MODULE_INSTALL_DIR "Specifies custom location for CEGUI_MODULE_INSTALL_DIR" )  
+option( CEGUI_SAMPLE_INSTALL_DIR "Specifies custom location for CEGUI_SAMPLE_INSTALL_DIR" ) # TODO: put into /samples subdir!  
+option( CEGUI_INCLUDE_INSTALL_DIR "Specifies custom location for CEGUI_INCLUDE_INSTALL_DIR" ) 
+
 
 ################################################################################
 # Define vars holding the names for all the libs we can build for CEGUI.
@@ -615,22 +635,41 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 # set up install sub-directories
-if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib64")
+if (NOT CEGUI_LIB_INSTALL_DIR)
+  if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib64")
     set( CEGUI_LIB_INSTALL_DIR lib64 )
-elseif (CMAKE_SIZEOF_VOID_P EQUAL 4 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib32")
+  elseif (CMAKE_SIZEOF_VOID_P EQUAL 4 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib32")
     set( CEGUI_LIB_INSTALL_DIR lib32 )
-else()
+  else()
     set( CEGUI_LIB_INSTALL_DIR lib )
+  endif()
 endif()
 
 set( CEGUI_VER_INSTALL_SUBDIR "/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}" )
-set( CEGUI_DATA_INSTALL_DIR "share${CEGUI_VER_INSTALL_SUBDIR}" )
-set( CEGUI_DOC_INSTALL_DIR "share/doc${CEGUI_VER_INSTALL_SUBDIR}" )
 
-set( CEGUI_PKGCONFIG_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/pkgconfig" )
-set( CEGUI_MODULE_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
-set( CEGUI_SAMPLE_INSTALL_DIR "${CEGUI_MODULE_INSTALL_DIR}" ) # TODO: put into /samples subdir!
-set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_VER_INSTALL_SUBDIR}" )
+if (NOT CEGUI_DATA_INSTALL_DIR)
+  set( CEGUI_DATA_INSTALL_DIR "share${CEGUI_VER_INSTALL_SUBDIR}" )
+endif()
+
+if (NOT CEGUI_DOC_INSTALL_DIR)
+  set( CEGUI_DOC_INSTALL_DIR "share/doc${CEGUI_VER_INSTALL_SUBDIR}" )
+endif()
+
+if (NOT CEGUI_PKGCONFIG_INSTALL_DIR)
+  set( CEGUI_PKGCONFIG_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/pkgconfig" )
+endif()
+
+if (NOT CEGUI_MODULE_INSTALL_DIR)
+  set( CEGUI_MODULE_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/${CMAKE_PROJECT_NAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
+endif()
+
+if (NOT CEGUI_SAMPLE_INSTALL_DIR)
+  set( CEGUI_SAMPLE_INSTALL_DIR "${CEGUI_MODULE_INSTALL_DIR}" ) # TODO: put into /samples subdir!
+endif()
+
+if (NOT CEGUI_INCLUDE_INSTALL_DIR)
+  set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_VER_INSTALL_SUBDIR}" )
+endif()
 
 ################################################################################
 # Deal with files we generate from template files
@@ -641,36 +680,40 @@ configure_file( cegui/include/CEGUI/ModuleConfig.h.in cegui/include/CEGUI/Module
 configure_file( samples/common/include/CEGUISamplesConfig.h.in samples/common/include/CEGUISamplesConfig.h )
 configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
 
-if (UNIX AND NOT APPLE)
+################################################################################
+# Perhaps install pkg-config ("*.pc") files.
+################################################################################
+cegui_dependent_option( CEGUI_INSTALL_PKGCONFIG "Whether to install pkg-config (\"*.pc\") files." "UNIX;NOT APPLE" )
+mark_as_advanced( CEGUI_INSTALL_PKGCONFIG )
+if( CEGUI_INSTALL_PKGCONFIG )
     configure_file( cegui/CEGUI.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}.pc @ONLY )
-    install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+    install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
 
     if (CEGUI_BUILD_RENDERER_NULL)
         configure_file( cegui/CEGUI-NULL.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}-NULL.pc @ONLY )
-        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-NULL.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-NULL.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
     endif()
     if (CEGUI_BUILD_RENDERER_IRRLICHT)
         configure_file( cegui/CEGUI-IRRLICHT.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}-IRRLICHT.pc @ONLY )
-        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-IRRLICHT.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-IRRLICHT.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
     endif()
     if (CEGUI_BUILD_RENDERER_OGRE)
         configure_file( cegui/CEGUI-OGRE.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OGRE.pc @ONLY )
-        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OGRE.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OGRE.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
     endif()
     if (CEGUI_BUILD_RENDERER_OPENGL)
         configure_file( cegui/CEGUI-OPENGL.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OPENGL.pc @ONLY )
-        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OPENGL.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OPENGL.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
     endif()
     if (CEGUI_BUILD_RENDERER_OPENGL3)
         configure_file( cegui/CEGUI-OPENGL3.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OPENGL3.pc @ONLY )
-        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OPENGL3.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-OPENGL3.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
     endif()
     if (CEGUI_BUILD_LUA_MODULE)
         configure_file( cegui/CEGUI-LUA.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}-LUA.pc @ONLY )
-        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-LUA.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
+        install(FILES ${PROJECT_BINARY_DIR}/cegui/CEGUI-${CEGUI_VERSION_MAJOR}-LUA.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR} COMPONENT cegui_pkgconfig)
     endif()
 endif()
-
 
 # Activating the default multi-processor build setting for all Visual Studio versions
 if (MSVC)

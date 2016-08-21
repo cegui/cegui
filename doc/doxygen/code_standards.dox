@@ -369,6 +369,16 @@ a_ptr = &an_object;
 #include <algorithm>
 @endcode
 
+- Do not reinterpret_cast function pointers to different signatures. For example for event handlers that have a subclass as parameter type, do not do the following:
+@code
+Event::Subscriber(reinterpret_cast<void (ScrolledContainer::*)(const EventArgs&)>(&ScrolledContainer::handleChildSized), this))));
+@endcode
+and instead use the superclass type and take the event-handler directly, like this:
+@code
+Event::Subscriber(&ScrolledContainer::handleChildSized, this))));
+@endcode
+The reason is that the function pointer cast is unsafe and non-conforming. You can simply cast the event parameter to the subtype you need inside the function.
+
 @subsection code_standards_sec_2_3 astyle - Artistic Style
 The following parameters for astyle may be used to get a subset of all the code standards outlined in this document. It is by no means enough to just run this on dirty source code but it will get you closer.
 

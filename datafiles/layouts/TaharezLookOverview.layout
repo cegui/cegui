@@ -216,8 +216,8 @@
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="TooltipText" value="Hi, I am a tooltip." />
             <Property name="TooltipType" value="TaharezLook/Tooltip" />
-            <Property name="HorzScrollPageSize" value="108" />
-            <Property name="VertScrollPageSize" value="10" />
+                <Property name="HorzScrollPageSize" value="110" />
+                <Property name="VertScrollPageSize" value="12" />
             <Property name="HorzScrollDocumentSize" value="107" />
             <Property name="VertScrollDocumentSize" value="13.6796" />
         </Window>
@@ -227,7 +227,7 @@
             <Property name="ForceHorzScrollbar" value="true" />
             <Property name="ForceVertScrollbar" value="true" />
             <Window type="TaharezLook/Button" name="Button" >
-                <Property name="Area" value="{{4.25532,0},{8.16327,0},{5.53191,0},{8.36735,0}}" />
+                    <Property name="Area" value="{{0,800},{0,604},{0,1040},{0,619}}" />
                 <Property name="Text" value="You found the secret button!" />
             </Window>
         </Window>
@@ -354,10 +354,10 @@
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="HorzFormatting" value="WordWrapLeftAligned" />
             <Property name="VertFormatting" value="TopAligned" />
-            <Property name="HorzScrollPageSize" value="153" />
-            <Property name="VertScrollPageSize" value="51" />
-            <Property name="HorzScrollDocumentSize" value="152" />
-            <Property name="VertScrollDocumentSize" value="145.484" />
+                <Property name="HorzScrollPageSize" value="155" />
+                <Property name="VertScrollPageSize" value="53" />
+                <Property name="HorzScrollDocumentSize" value="124" />
+                <Property name="VertScrollDocumentSize" value="27.3591" />
         </Window>
         <Window type="TaharezLook/StaticText" name="StaticText" >
             <Property name="Area" value="{{0.519531,0},{0.173611,0},{0.648438,0},{0.277778,0}}" />
@@ -366,10 +366,10 @@
             <Property name="HorzScrollbar" value="true" />
             <Property name="VertScrollbar" value="true" />
             <Property name="HorzFormatting" value="WordWrapLeftAligned" />
-            <Property name="HorzScrollPageSize" value="147" />
-            <Property name="VertScrollPageSize" value="63" />
-            <Property name="HorzScrollDocumentSize" value="146" />
-            <Property name="VertScrollDocumentSize" value="165.539" />
+                <Property name="HorzScrollPageSize" value="143" />
+                <Property name="VertScrollPageSize" value="59" />
+                <Property name="HorzScrollDocumentSize" value="141" />
+                <Property name="VertScrollDocumentSize" value="155.648" />
         </Window>
         <Window type="Generic/Label" name="Label2" >
             <Property name="Area" value="{{0.436719,0},{0.119445,0},{0.514844,0},{0.1625,0}}" />

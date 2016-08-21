@@ -97,6 +97,7 @@ void OgreRenderTarget::activate()
     d_renderSystem._setViewport(d_viewport);
 
     d_owner.setViewProjectionMatrix(RenderTarget::d_matrix);
+    d_owner.initialiseRenderStateSettings();
 
     RenderTarget::activate();
 }
