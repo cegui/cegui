@@ -36,6 +36,7 @@
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4275)
+#   pragma warning(disable : 4251)
 #endif
 
 
@@ -181,7 +182,7 @@ protected:
     String d_what;
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     //! Holds the default error message in utf-8
-    std::string d_whatStdStr;
+    mutable std::string d_whatStdStr;
 #endif
 };
 

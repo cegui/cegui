@@ -90,7 +90,7 @@ std::string String::convertUtf32ToUtf8(const char32_t* utf32String)
     if (utf32String == nullptr)
         return std::string();
 
-    std::size_t codeUnitCount = std::char_traits<char32_t>::length(utf32String);
+    size_t codeUnitCount = std::char_traits<char32_t>::length(utf32String);
     return convertUtf32ToUtf8(utf32String, codeUnitCount);
 }
 
@@ -800,7 +800,7 @@ std::basic_ostream<char>& operator<<(std::basic_ostream<char>& outputStream, con
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     outputStream << str.d_string;
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
-    outputStream << str.toUtf8String();
+    outputStream << String::convertUtf32ToUtf8(str.getString()).c_str();
 #endif
     return outputStream;
 }
