@@ -175,7 +175,7 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
                    (append ? std::ios_base::app : std::ios_base::trunc));
 #   else
 #       if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    d_ostream.open(filename.toUtf8String().c_str(),
+    d_ostream.open(String::convertUtf32ToUtf8(filename.getString()).c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
 #       else

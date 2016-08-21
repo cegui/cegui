@@ -61,7 +61,7 @@ void OgreResourceProvider::loadRawDataContainer(const String& filename,
         openResource(filename.c_str(), orpGroup.c_str());
 #else
     Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().
-        openResource(filename.toUtf8String().c_str(), orpGroup.toUtf8String().c_str());
+        openResource(String::convertUtf32ToUtf8(filename.getString()).c_str(), String::convertUtf32ToUtf8(orpGroup.getString()).c_str());
 #endif
 
     if (input.isNull())
@@ -107,9 +107,9 @@ size_t OgreResourceProvider::getResourceGroupFileNames(
     Ogre::StringVectorPtr vp =
         Ogre::ResourceGroupManager::getSingleton().findResourceNames(
             (resource_group.empty() ?
-                d_defaultResourceGroup.toUtf8String().c_str() :
-                resource_group.toUtf8String().c_str()),
-            file_pattern.toUtf8String().c_str());
+                String::convertUtf32ToUtf8(d_defaultResourceGroup.getString()).c_str() :
+                String::convertUtf32ToUtf8(resource_group.getString()).c_str()),
+            String::convertUtf32ToUtf8(file_pattern.getString()).c_str());
 #endif
 
     size_t entries = 0;

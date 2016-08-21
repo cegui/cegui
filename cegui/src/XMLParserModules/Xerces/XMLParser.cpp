@@ -248,7 +248,7 @@ namespace CEGUI
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
                 schemaName.c_str(),
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-                schemaName.toUtf8String().c_str(),
+                String::convertUtf32ToUtf8(schemaName.getString()).c_str(),
 #endif
                 false);
             reader->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
@@ -259,7 +259,7 @@ namespace CEGUI
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
             XMLCh* pval = XMLString::transcode(schemaName.c_str());
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-            XMLCh* pval = XMLString::transcode(schemaName.toUtf8String().c_str());
+            XMLCh* pval = XMLString::transcode(String::convertUtf32ToUtf8(schemaName.getString()).c_str());
 #endif
             reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
             XMLString::release(&pval);
