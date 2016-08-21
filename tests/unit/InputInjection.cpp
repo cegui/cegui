@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(MouseSelectAllTextCopyAndPaste)
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW rocksWoW rocks");
 #else
-    //BOOST_REQUIRE_EQUAL(d_editbox->getText().toUtf8String(), "WoW rocksWoW rocks");
+    //BOOST_REQUIRE_EQUAL(String::convertUtf32ToUtf8(d_editbox->getText().getString()).c_str(), "WoW rocksWoW rocks");
 #endif
 }
 

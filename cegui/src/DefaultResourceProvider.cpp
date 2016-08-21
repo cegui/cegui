@@ -68,7 +68,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.c_str(), AASSET_MODE_UNKNOWN);
 #else
-    AAsset *file = AAssetManager_open(app->activity->assetManager, final_filename.toUtf8String().c_str(), AASSET_MODE_UNKNOWN);
+    AAsset *file = AAssetManager_open(app->activity->assetManager, String::convertUtf32ToUtf8(final_filename.getString()).c_str(), AASSET_MODE_UNKNOWN);
 #endif
    
     if (file == 0)
@@ -85,7 +85,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
 #   else
 #       if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-        FILE* file = fopen(final_filename.toUtf8String().c_str(), "rb");
+        FILE* file = fopen(String::convertUtf32ToUtf8(final_filename.getString()).c_str(), "rb");
 #       else
         FILE* file = fopen(final_filename.c_str(), "rb");
 #       endif
@@ -230,7 +230,7 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.c_str()))) 
 #else
-    if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.toUtf8String().c_str()))) 
+    if ((dirp == AAssetManager_openDir(app->activity->assetManager, String::convertUtf32ToUtf8(dir_name.getString()).c_str()))) 
 #endif
     {
         const char* filename;
@@ -246,7 +246,7 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
     DIR* dirp;
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    dirp = opendir(dir_name.toUtf8String().c_str());
+    dirp = opendir(String::convertUtf32ToUtf8(dir_name.getString()).c_str());
 #else
     dirp = opendir(dir_name.c_str());
 #endif
@@ -261,9 +261,9 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
             struct stat s;
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-            if ((stat(filename.toUtf8String().c_str(), &s) == 0) &&
+            if ((stat(String::convertUtf32ToUtf8(filename.getString()).c_str(), &s) == 0) &&
                     S_ISREG(s.st_mode) &&
-                    (fnmatch(file_pattern.toUtf8String().c_str(), dp->d_name, 0) == 0))
+                    (fnmatch(String::convertUtf32ToUtf8(file_pattern.getString()).c_str(), dp->d_name, 0) == 0))
 #else
             if ((stat(filename.c_str(), &s) == 0) &&
                     S_ISREG(s.st_mode) &&

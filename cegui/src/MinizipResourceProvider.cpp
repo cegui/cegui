@@ -73,7 +73,7 @@ bool nameMatchesPattern(const String& name, const String& pattern)
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     return !FNMATCH(pattern.c_str(), name.c_str());
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    return !FNMATCH(pattern.toUtf8String().c_str(), name.toUtf8String().c_str());
+    return !FNMATCH(String::convertUtf32ToUtf8(pattern.getString()).c_str(), String::convertUtf32ToUtf8(name.getString()).c_str());
 #endif
 }
 
@@ -116,7 +116,7 @@ bool MinizipResourceProvider::doesFileExist(const String& filename)
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::ifstream dataFile(filename.c_str(), std::ios::binary | std::ios::ate);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    std::ifstream dataFile(filename.toUtf8String().c_str(), 
+    std::ifstream dataFile(String::convertUtf32ToUtf8(filename.getString()).c_str(), 
                            std::ios::binary | std::ios::ate);
 #endif
 
@@ -132,7 +132,7 @@ void MinizipResourceProvider::openArchive()
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     d_pimpl->d_zfile = unzOpen(d_pimpl->d_archive.c_str());
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    d_pimpl->d_zfile = unzOpen(d_pimpl->d_archive.toUtf8String().c_str());
+    d_pimpl->d_zfile = unzOpen(String::convertUtf32ToUtf8(d_pimpl->d_archive.getString()).c_str());
 #endif
 
     if (d_pimpl->d_zfile == 0)
@@ -184,7 +184,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     if (unzLocateFile(d_pimpl->d_zfile, final_filename.c_str(), 0) != UNZ_OK)
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    if (unzLocateFile(d_pimpl->d_zfile, final_filename.toUtf8String().c_str(), 0) != UNZ_OK)
+    if (unzLocateFile(d_pimpl->d_zfile, String::convertUtf32ToUtf8(final_filename.getString()).c_str(), 0) != UNZ_OK)
 #endif
     {
         throw InvalidRequestException("'" + final_filename +
