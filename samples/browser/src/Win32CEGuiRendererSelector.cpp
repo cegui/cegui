@@ -107,8 +107,8 @@ LPDLGTEMPLATE Win32CEGuiRendererSelector::createDialogTemplate()
         header->style           = DS_MODALFRAME|WS_CAPTION|WS_VISIBLE;
         header->dwExtendedStyle = 0;
         header->cdit            = 6;
-        header->x               = static_cast<short>(0x8000);
-        header->y               = static_cast<short>(0x8000);
+        header->x               = 20;
+        header->y               = 20;
         header->cx              = 150;
         header->cy              = 75;
 
