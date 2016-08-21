@@ -95,6 +95,8 @@ find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
 find_package(Fribidi)
+find_package(LIBRAQM)
+
 if (NOT WIN32 AND NOT ANDROID)
     find_package(Iconv REQUIRED)
 endif()
@@ -230,10 +232,14 @@ option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validati
 cegui_dependent_option( CEGUI_USE_FRIBIDI "Specifies whether bi-directional text will be supported via the fribidi library." "FRIBIDI_FOUND" )
 cegui_dependent_option( CEGUI_USE_MINIBIDI "Specifies whether bi-directional text will be supported via the embedded minibidi." FALSE )
 
+cegui_dependent_option( CEGUI_USE_LIBRAQM "Specifies whether to include support for kerning and for complex text layout using in CEGUI. This requires libraqm, harfbuzz, freetype and fribidi" "LIBRAQM_FOUND;HARFBUZZ_FOUND;FREETYPE_FOUND;FRIBIDI_FOUND" )
+
 # sanity check on bidi options
 if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
     message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
 endif()
+
+
 
 if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
     if (GLEW_FOUND AND EPOXY_FOUND)
