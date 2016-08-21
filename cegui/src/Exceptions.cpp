@@ -259,7 +259,7 @@ const char* Exception::what() const throw()
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     return d_what.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    d_whatStdStr = String::convertUtf32ToUtf8(d_what.c_str());
+    d_whatStdStr = String::convertUtf32ToUtf8(d_what.getString());
     return d_whatStdStr.c_str();
 #endif
 }

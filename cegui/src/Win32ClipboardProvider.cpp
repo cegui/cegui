@@ -105,7 +105,7 @@ void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buf
          const char* utf8Characters = str.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
          // We need the actual byte count which can be different from str.size() when using UTF-8!
-         std::string utf8String = str.toUtf8String();
+         std::string utf8String = String::convertUtf32ToUtf8(str.getString());
          const char* utf8Characters = utf8String.c_str();
 #endif
          const size_t characterCount = std::char_traits<char>::length(utf8Characters);

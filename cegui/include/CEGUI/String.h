@@ -647,21 +647,6 @@ public:
 #endif
 
     //////////////////////////////////////////////////////////////////////////
-    // Getter for internal storage
-    //////////////////////////////////////////////////////////////////////////
-
-    /*!
-    \brief
-        Getter for the internally stored representation of the string.
-    \return
-        Returns a const reference to the internally stored basic_string.
-    */
-    const std::basic_string<value_type>& getString()
-    {
-        return d_string;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
     // Static public members
     //////////////////////////////////////////////////////////////////////////
 
@@ -4527,7 +4512,7 @@ public:
         return d_string.find_last_not_of(ch, pos);
     }
 
-    /*
+    /*!
     \brief
         Returns the underlying std::basic_string that
         is used to store the code units for this

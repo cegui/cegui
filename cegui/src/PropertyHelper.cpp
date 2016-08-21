@@ -830,8 +830,8 @@ PropertyHelper<glm::quat>::fromString(const String& str)
     else if (str.find("w", 0) != std::string::npos || 
              str.find("W", 0) != std::string::npos)
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    else if (str.toUtf8String().find("w", 0) != std::string::npos || 
-             str.toUtf8String().find("W", 0) != std::string::npos)
+    else if (str.getString().find(String("w").c_str(), 0) != std::string::npos || 
+             str.getString().find(String("W").c_str(), 0) != std::string::npos)
 #endif
     {
         std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);

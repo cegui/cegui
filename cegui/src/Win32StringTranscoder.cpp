@@ -44,7 +44,7 @@ char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), 
                                         -1, 0, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    const int len = MultiByteToWideChar(CP_UTF8, 0, input.toUtf8String().c_str(),
+    const int len = MultiByteToWideChar(CP_UTF8, 0, String::convertUtf32ToUtf8(input.getString()).c_str(),
                                         -1, nullptr, 0);
 #endif
 
@@ -57,7 +57,7 @@ char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
     MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
                         reinterpret_cast<LPWSTR>(buff), len);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    MultiByteToWideChar(CP_UTF8, 0, input.toUtf8String().c_str(), -1,
+    MultiByteToWideChar(CP_UTF8, 0, String::convertUtf32ToUtf8(input.getString()).c_str(), -1,
                         buff, len);
 #endif
 

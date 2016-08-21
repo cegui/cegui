@@ -58,7 +58,7 @@ void PCRERegexMatcher::setRegexString(const String& regex)
     d_regex = pcre_compile(regex.c_str(), PCRE_UTF8,
                            &prce_error, &pcre_erroff, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
+    d_regex = pcre_compile(String::convertUtf32ToUtf8(regex.getString()).c_str(), PCRE_UTF8,
         &prce_error, &pcre_erroff, nullptr);
 #endif
 
@@ -66,7 +66,7 @@ void PCRERegexMatcher::setRegexString(const String& regex)
     d_regex = pcre_compile(regex.c_str(), PCRE_UTF8,
         &prce_error, &pcre_erroff, 0);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    d_regex = pcre_compile(regex.toUtf8String().c_str(), PCRE_UTF8,
+    d_regex = pcre_compile(String::convertUtf32ToUtf8(regex.getString()).c_str(), PCRE_UTF8,
         &prce_error, &pcre_erroff, nullptr);
 #endif
 
@@ -76,7 +76,7 @@ void PCRERegexMatcher::setRegexString(const String& regex)
             "Bad RegEx set: '" + regex + "'.  Additional Information: " +
             prce_error);
 
-    // set this last so that upon failure object is in consistant state.
+    // set this last so that upon failure object is in consistent state.
     d_string = regex;
 }
 
@@ -99,7 +99,7 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     const char* utf8_str = str.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    std::string utf8StdStr = String::convertUtf32ToUtf8(str);
+    std::string utf8StdStr = String::convertUtf32ToUtf8(str.getString());
     const char* utf8_str = utf8StdStr.c_str();
 #endif
     const int len = static_cast<int>(std::strlen(utf8_str));

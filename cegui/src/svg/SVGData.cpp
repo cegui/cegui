@@ -570,7 +570,7 @@ glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String& colourString,
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     std::string currentSubStr = colourString.getString().substr(0, 2);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    std::string currentSubStr = colourString.substr(0, 2).toUtf8String();
+    std::string currentSubStr = String::convertUtf32ToUtf8(colourString.substr(0, 2).getString());
 #endif
     strStream.clear();
     strStream.str(currentSubStr);
@@ -587,7 +587,7 @@ glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String& colourString,
 #elif(CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     currentSubStr = colourString.getString().substr(2, 2);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    currentSubStr = colourString.substr(2, 2).toUtf8String();
+    currentSubStr = String::convertUtf32ToUtf8(colourString.substr(2, 2).getString());
 #endif
     strStream.clear();
     strStream.str(currentSubStr);
@@ -604,7 +604,7 @@ glm::vec3 SVGData::parseRgbHexColour(const CEGUI::String& colourString,
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     currentSubStr = colourString.getString().substr(4, 2);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    currentSubStr = colourString.substr(4, 2).toUtf8String();
+    currentSubStr = String::convertUtf32ToUtf8(colourString.substr(4, 2).getString());
 #endif
     strStream.clear();
     strStream.str(currentSubStr);

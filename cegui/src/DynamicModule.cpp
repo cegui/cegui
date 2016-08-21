@@ -163,7 +163,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(envModuleDir + '/' + name);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-        handle = DYNLIB_LOAD( (envModuleDir + '/' + name).toUtf8String() );
+        handle = DYNLIB_LOAD( String::convertUtf32ToUtf8((envModuleDir + '/' + name).getString()) );
 #endif
     #ifdef __APPLE__
     if (!handle)
@@ -176,7 +176,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(name);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-        handle = DYNLIB_LOAD(name.toUtf8String());
+        handle = DYNLIB_LOAD( String::convertUtf32ToUtf8(name.getString()) );
 #endif
 
     // finally, try using the compiled-in module directory
@@ -185,7 +185,7 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
         #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
         #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-        handle = DYNLIB_LOAD( (CEGUI_MODULE_DIR + name).toUtf8String() );
+        handle = DYNLIB_LOAD( String::convertUtf32ToUtf8((CEGUI_MODULE_DIR + name).getString()) );
         #endif
     #endif
 
@@ -248,7 +248,7 @@ ModuleFuncHandle DynamicModule::getSymbolAddress(const String& symbol) const
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     return DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    return DYNLIB_GETSYM(d_pimpl->d_handle, symbol.toUtf8String());
+    return DYNLIB_GETSYM(d_pimpl->d_handle, String::convertUtf32ToUtf8(symbol.getString()));
 #endif
 }
 
