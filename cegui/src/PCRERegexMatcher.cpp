@@ -99,7 +99,8 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     const char* utf8_str = str.c_str();
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    const char* utf8_str = str.toUtf8String().c_str();
+    std::string utf8StdStr = String::convertUtf32ToUtf8(str);
+    const char* utf8_str = utf8StdStr.c_str();
 #endif
     const int len = static_cast<int>(std::strlen(utf8_str));
 

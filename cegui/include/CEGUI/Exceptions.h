@@ -179,6 +179,10 @@ protected:
     String d_function;
     //! Holds the default error message.
     String d_what;
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    //! Holds the default error message in utf-8
+    std::string d_whatStdStr;
+#endif
 };
 
 //----------------------------------------------------------------------------//
