@@ -4541,20 +4541,6 @@ public:
         return d_string;
     }
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
-    /*
-    \brief
-        Converts this String to UTF-8 encoding and returns it.
-    \return
-        A std::string containing the UTF-8 encoded code units converted from
-        this String class.
-    */
-    std::string toUtf8String() const
-    {
-        return convertUtf32ToUtf8(d_string);
-    }
-#endif
-
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     /*
     \brief
