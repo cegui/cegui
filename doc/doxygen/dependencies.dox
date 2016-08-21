@@ -21,7 +21,7 @@ The following is a list of all libraries that CEGUI can make use of:
 @subsection dependencies_rendering Rendering
 - OpenGL loading libraries:
   - GLEW (http://glew.sourceforge.net/)
-  - Epoxy (https://github.com/yaronct/libepoxy), major version 1.
+  - Epoxy (https://github.com/yaronct/libepoxy)
   - Either GLEW or Epoxy is required for the desktop OpenGL 3.2 renderer module.
   - Epoxy is required for the OpenGL ES 2.0 renderer module.
   - GLEW is required for the old desktop OpenGL 1.2 renderer module.

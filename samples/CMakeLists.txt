@@ -58,3 +58,4 @@ list(APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/samples/common/include"
 
 # finally, include the samples browser directory
 add_subdirectory(browser/)
+        DESTINATION ${CEGUI_DATA_INSTALL_DIR}/samples/ COMPONENT cegui_samples)
