@@ -36,6 +36,9 @@ if (NOT CEGUI_HAS_FREETYPE)
     list (REMOVE_ITEM CORE_SOURCE_FILES FreeTypeFontGlyph.cpp)
 endif()
 
+if (NOT CEGUI_HAS_LIBRAQM)
+endif()
+
 if (NOT CEGUI_HAS_PCRE_REGEX)
     list (REMOVE_ITEM CORE_SOURCE_FILES PCRERegexMatcher.cpp)
 endif()
@@ -92,11 +95,22 @@ if (CEGUI_HAS_FREETYPE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
 endif ()
 
+if (CEGUI_HAS_LIBRAQM)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} LIBRAQM)
+endif ()
+
 if (CEGUI_HAS_PCRE_REGEX)
     cegui_add_dependency(${CEGUI_TARGET_NAME} PCRE)
 endif ()
 
 if (CEGUI_USE_FRIBIDI)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
+endif ()
+
+if (CEGUI_USE_LIBRAQM)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} HARFBUZZ)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
 endif ()
 
