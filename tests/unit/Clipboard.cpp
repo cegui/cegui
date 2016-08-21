@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(NativeClipboardProvider)
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32
     BOOST_CHECK(memcmp(g_ClipboardBuffer, CEGUI::String(asciiTest).c_str(), g_ClipboardSize) == 0);
 #else
-    BOOST_CHECK(memcmp(g_ClipboardBuffer, String::convertUtf32ToUtf8(CEGUI::String(asciiTest).getString()).c_str(), g_ClipboardSize) == 0);
+    BOOST_CHECK(memcmp(g_ClipboardBuffer, CEGUI::String::convertUtf32ToUtf8(CEGUI::String(asciiTest).getString()).c_str(), g_ClipboardSize) == 0);
 #endif
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32 || CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
