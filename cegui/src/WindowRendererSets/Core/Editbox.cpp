@@ -316,13 +316,13 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     w->appendGeometryBuffers(postHighlitTextGeomBuffers);
 }
 
+#ifdef CEGUI_BIDI_SUPPORT
 //----------------------------------------------------------------------------//
 void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                                      const String& text,
                                      const Rectf& text_area,
                                      float text_offset)
 {
-#ifdef CEGUI_BIDI_SUPPORT
     const Font* const font = d_window->getFont();
 
     // setup initial rect for text formatting
@@ -404,13 +404,8 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
 
         }
     }
-#else
-    CEGUI_UNUSED(wlf);
-    CEGUI_UNUSED(text);
-    CEGUI_UNUSED(text_area);
-    CEGUI_UNUSED(text_offset);
-#endif
 }
+#endif
 
 //----------------------------------------------------------------------------//
 bool FalagardEditbox::editboxIsFocussed() const
