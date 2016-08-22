@@ -76,7 +76,7 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-#if CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
     delete d_bidiVisualMapping;
 #endif
 }
@@ -117,7 +117,7 @@ void ListboxItem::setText( const String& text )
 {
    d_textLogical = text;
 
-#ifdef CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
    d_bidiDataValid = false;
 #endif
 }
