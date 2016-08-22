@@ -241,16 +241,17 @@ Window::Window(const String& type, const String& name):
 
     // text system set up
     d_font(nullptr),
-#ifndef CEGUI_BIDI_SUPPORT
-    d_bidiVisualMapping(nullptr),
-#elif defined (CEGUI_USE_FRIBIDI)
+
+#if defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiDataValid(false),
 #elif defined (CEGUI_USE_MINIBIDI)
     d_bidiVisualMapping(new MinibidiVisualMapping),
-#else
+    d_bidiDataValid(false),
+#elif defined (CEGUI_USE_BIDI)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-    d_bidiDataValid(false),
+    
     d_renderedStringValid(false),
     d_customStringParser(nullptr),
     d_textParsingEnabled(true),
@@ -321,7 +322,9 @@ Window::~Window(void)
     // most cleanup actually happened earlier in Window::destroy.
     destroyGeometryBuffers();
 
+#if CEGUI_USE_BIDI
     delete d_bidiVisualMapping;
+#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -795,7 +798,10 @@ void Window::setText(const String& text)
 {
     d_textLogical = text;
     d_renderedStringValid = false;
+
+#ifdef CEGUI_USE_BIDI
     d_bidiDataValid = false;
+#endif
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -3089,7 +3095,10 @@ void Window::insertText(const String& text, const String::size_type position)
 {
     d_textLogical.insert(position, text);
     d_renderedStringValid = false;
+
+#ifdef CEGUI_USE_BIDI
     d_bidiDataValid = false;
+#endif
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -3100,7 +3109,10 @@ void Window::appendText(const String& text)
 {
     d_textLogical.append(text);
     d_renderedStringValid = false;
+
+#ifdef CEGUI_USE_BIDI
     d_bidiDataValid = false;
+#endif
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -3493,6 +3505,9 @@ glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
 //----------------------------------------------------------------------------//
 const String& Window::getTextVisual() const
 {
+    return d_textLogical;
+
+#ifdef CEGUI_BIDI_SUPPORT
     // no bidi support
     if (!d_bidiVisualMapping)
         return d_textLogical;
@@ -3504,6 +3519,7 @@ const String& Window::getTextVisual() const
     }
 
     return d_bidiVisualMapping->getTextVisual();
+#endif
 }
 
 //----------------------------------------------------------------------------//

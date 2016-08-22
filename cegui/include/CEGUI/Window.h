@@ -2599,9 +2599,11 @@ public:
     //! return glm::vec2 \a pos after being fully unprojected for this Window.
     glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
 
+#ifdef CEGUI_USE_BIDI
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const
         {return d_bidiVisualMapping;}
+#endif
 
     /*!
     \brief
@@ -3699,10 +3701,14 @@ protected:
     const Font* d_font;
     //! Holds the text / label / caption for this Window.
     String d_textLogical;
+
+#ifdef CEGUI_BIDI_SUPPORT
     //! pointer to bidirection support object
     BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
+#endif
+
     //! RenderedString representation of text string as ouput from a parser.
     mutable RenderedString d_renderedString;
     //! true if d_renderedString is valid, false if needs re-parse.

@@ -54,13 +54,11 @@ const Colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 	Base class constructor
 *************************************************************************/
 ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
-#ifndef CEGUI_BIDI_SUPPORT
-    d_bidiVisualMapping(nullptr),
-#elif defined (CEGUI_USE_FRIBIDI)
+#if defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
     d_bidiVisualMapping(new MinibidiVisualMapping),
-#else
+#elif defined(CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
 	d_itemID(item_id),
@@ -78,7 +76,9 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
+#if CEGUI_USE_BIDI
     delete d_bidiVisualMapping;
+#endif
 }
 
 /*************************************************************************
@@ -116,12 +116,18 @@ void ListboxItem::setSelectionColours(Colour top_left_colour, Colour top_right_c
 void ListboxItem::setText( const String& text )
 {
    d_textLogical = text;
+
+#ifdef CEGUI_USE_BIDI
    d_bidiDataValid = false;
+#endif
 }
 
 //----------------------------------------------------------------------------//
 const String& ListboxItem::getTextVisual() const
 {
+    return d_textLogical;
+
+#ifdef CEGUI_BIDI_SUPPORT
     // no bidi support
     if (!d_bidiVisualMapping)
         return d_textLogical;
@@ -133,6 +139,7 @@ const String& ListboxItem::getTextVisual() const
     }
 
     return d_bidiVisualMapping->getTextVisual();
+#endif
 }
 
 //----------------------------------------------------------------------------//

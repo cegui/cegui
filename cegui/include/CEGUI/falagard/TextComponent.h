@@ -359,10 +359,14 @@ namespace CEGUI
     private:
         //! text rendered by this component.
         String d_textLogical;
+
+#ifdef CEGUI_BIDI_SUPPORT
         //! pointer to bidirection support object
         BidiVisualMapping* d_bidiVisualMapping;
         //! whether bidi visual mapping has been updated since last text change.
         mutable bool d_bidiDataValid;
+#endif
+
         //! RenderedString used when not using the one from the target Window.
         mutable RenderedString d_renderedString;
         //! FormattedRenderedString object that applies formatting to the string
