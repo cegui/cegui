@@ -248,7 +248,7 @@ Window::Window(const String& type, const String& name):
 #elif defined (CEGUI_USE_MINIBIDI)
     d_bidiVisualMapping(new MinibidiVisualMapping),
     d_bidiDataValid(false),
-#elif defined (CEGUI_USE_BIDI)
+#elif defined (CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
     
@@ -322,7 +322,7 @@ Window::~Window(void)
     // most cleanup actually happened earlier in Window::destroy.
     destroyGeometryBuffers();
 
-#if CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
     delete d_bidiVisualMapping;
 #endif
 }
@@ -799,7 +799,7 @@ void Window::setText(const String& text)
     d_textLogical = text;
     d_renderedStringValid = false;
 
-#ifdef CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
 #endif
 
@@ -3096,7 +3096,7 @@ void Window::insertText(const String& text, const String::size_type position)
     d_textLogical.insert(position, text);
     d_renderedStringValid = false;
 
-#ifdef CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
 #endif
 
@@ -3110,7 +3110,7 @@ void Window::appendText(const String& text)
     d_textLogical.append(text);
     d_renderedStringValid = false;
 
-#ifdef CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
 #endif
 

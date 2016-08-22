@@ -2599,7 +2599,7 @@ public:
     //! return glm::vec2 \a pos after being fully unprojected for this Window.
     glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
 
-#ifdef CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const
         {return d_bidiVisualMapping;}

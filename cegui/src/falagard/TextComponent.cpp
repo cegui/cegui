@@ -56,7 +56,7 @@ namespace CEGUI
 #elif defined (CEGUI_USE_MINIBIDI)
         d_bidiVisualMapping(new MinibidiVisualMapping),
         d_bidiDataValid(false),
-#elif defined (CEGUI_USE_BIDI)
+#elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
         
@@ -82,7 +82,7 @@ namespace CEGUI
 #elif defined (CEGUI_USE_MINIBIDI)
         d_bidiVisualMapping(new MinibidiVisualMapping),
         d_bidiDataValid(false),
-#elif defined (CEGUI_USE_BIDI)
+#elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
         
@@ -108,7 +108,7 @@ namespace CEGUI
         // note we do not assign the BidiVisualMapping object, we just mark our
         // existing one as invalid so it's data gets regenerated next time it's
         // needed.
-#if CEGUI_USE_BIDI
+#ifdef CEGUI_BIDI_SUPPORT
         d_bidiDataValid = false;
 #endif
         d_renderedString = other.d_renderedString;
@@ -517,7 +517,7 @@ String TextComponent::getEffectiveVisualText(const Window& wnd) const
     else if (d_textLogical.empty())
         return wnd.getTextVisual();
     else
-        getTextVisual();
+        return getTextVisual();
 #endif
 }
 
