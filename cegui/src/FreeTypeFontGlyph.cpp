@@ -27,15 +27,13 @@
 
 #include "CEGUI/FreeTypeFontGlyph.h"
 
-//#include <freetype/freetype.h>
-
 namespace CEGUI
 {
 
 float FreeTypeFontGlyph::getRenderedAdvance(
     const FontGlyph* nextGlyph,
     float x_scale
-    ) const
+) const
 {
     bool isFollowedByAnotherCharacter = (nextGlyph != nullptr);
     const FreeTypeFontGlyph* nextGlyphFT = dynamic_cast<const FreeTypeFontGlyph*>(nextGlyph);
@@ -44,7 +42,7 @@ float FreeTypeFontGlyph::getRenderedAdvance(
     {
         InvalidRequestException("FreeTypeFontGlyph::getRenderedAdvance - Attempted to "
         "cast following Font Glyph to a FreeTypeFontGlyph has failed. This should not "
-        "occur because FreeTypeFontGlyphs shall be followed by FreeTypeFontGlyphs only.");
+        "occur because FreeTypeFontGlyphs must be followed by FreeTypeFontGlyphs only.");
     }
 
     float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
