@@ -50,16 +50,16 @@
 namespace CEGUI
 {
     TextComponent::TextComponent() :
-#ifndef CEGUI_BIDI_SUPPORT
-        d_bidiVisualMapping(nullptr),
-#elif defined (CEGUI_USE_FRIBIDI)
+#if defined (CEGUI_USE_FRIBIDI)
         d_bidiVisualMapping(new FribidiVisualMapping),
+        d_bidiDataValid(false),
 #elif defined (CEGUI_USE_MINIBIDI)
         d_bidiVisualMapping(new MinibidiVisualMapping),
-#else
-    #error "BIDI Configuration is inconsistant, check your config!"
-#endif
         d_bidiDataValid(false),
+#elif defined (CEGUI_USE_BIDI)
+        #error "BIDI Configuration is inconsistant, check your config!"
+#endif
+        
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
@@ -68,20 +68,24 @@ namespace CEGUI
 
     TextComponent::~TextComponent()
     {
+#ifdef CEGUI_BIDI_SUPPORT
         delete d_bidiVisualMapping;
+#endif
     }
 
     TextComponent::TextComponent(const TextComponent& obj) :
         FalagardComponentBase(obj),
         d_textLogical(obj.d_textLogical),
-#ifndef CEGUI_BIDI_SUPPORT
-        d_bidiVisualMapping(nullptr),
-#elif defined (CEGUI_USE_FRIBIDI)
+#if defined (CEGUI_USE_FRIBIDI)
         d_bidiVisualMapping(new FribidiVisualMapping),
+        d_bidiDataValid(false),
 #elif defined (CEGUI_USE_MINIBIDI)
         d_bidiVisualMapping(new MinibidiVisualMapping),
-#endif
         d_bidiDataValid(false),
+#elif defined (CEGUI_USE_BIDI)
+        #error "BIDI Configuration is inconsistant, check your config!"
+#endif
+        
         d_renderedString(obj.d_renderedString),
         d_formattedRenderedString(obj.d_formattedRenderedString),
         d_lastHorzFormatting(obj.d_lastHorzFormatting),
@@ -104,7 +108,9 @@ namespace CEGUI
         // note we do not assign the BidiVisualMapping object, we just mark our
         // existing one as invalid so it's data gets regenerated next time it's
         // needed.
+#if CEGUI_USE_BIDI
         d_bidiDataValid = false;
+#endif
         d_renderedString = other.d_renderedString;
         d_formattedRenderedString = other.d_formattedRenderedString;
         d_lastHorzFormatting = other.d_lastHorzFormatting;
@@ -125,7 +131,9 @@ namespace CEGUI
     void TextComponent::setText(const String& text)
     {
         d_textLogical = text;
+#ifdef CEGUI_BIDI_SUPPORT
         d_bidiDataValid = false;
+#endif
     }
 
     const String& TextComponent::getFont() const
@@ -383,6 +391,9 @@ namespace CEGUI
 
     const String& TextComponent::getTextVisual() const
     {
+        return d_textLogical;
+
+#ifdef CEGUI_BIDI_SUPPORT
         // no bidi support
         if (!d_bidiVisualMapping)
             return d_textLogical;
@@ -394,6 +405,7 @@ namespace CEGUI
         }
 
         return d_bidiVisualMapping->getTextVisual();
+#endif
     }
 
     float TextComponent::getHorizontalTextExtent(const Window& window) const
