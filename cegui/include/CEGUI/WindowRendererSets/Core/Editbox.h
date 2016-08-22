@@ -173,10 +173,12 @@ protected:
                           const String& text,
                           const Rectf& text_area,
                           float text_offset);
+#ifdef CEGUI_BIDI_SUPPORT
     void renderTextBidi(const WidgetLookFeel& wlf,
                         const String& text,
                         const Rectf& text_area,
                         float text_offset);
+#endif
     bool editboxIsFocussed() const;
     bool editboxIsReadOnly() const;
     void renderCaret(const ImagerySection& imagery,
