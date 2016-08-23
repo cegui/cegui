@@ -3,7 +3,7 @@
 ################################################################################
 include(FindPackageHandleStandardArgs)
 
-find_path(HARFBUZZ_H_PATH NAMES harfbuzz/src/hb.h)
+find_path(HARFBUZZ_H_PATH NAMES hb.h PATH_SUFFIXES harfbuzz/src)
 find_library(HARFBUZZ_LIB NAMES harfbuzz PATH_SUFFIXES dynamic)
 find_library(HARFBUZZ_LIB_DBG NAMES harfbuzz_d PATH_SUFFIXES dynamic)
 mark_as_advanced(HARFBUZZ_H_PATH HARFBUZZ_LIB HARFBUZZ_LIB_DBG)
