@@ -111,6 +111,7 @@ if (CEGUI_USE_LIBRAQM)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} HARFBUZZ)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} LIBRAQM)
 endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
