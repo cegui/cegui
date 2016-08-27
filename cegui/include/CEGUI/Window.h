@@ -47,6 +47,7 @@
 #include "CEGUI/TextUtils.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
+#include "CEGUI/DrawMode.h"
 #include <vector>
 #include <set>
 
@@ -2367,6 +2368,20 @@ public:
     */
     void render();
 
+    
+    /*!
+    \brief
+        Causes the Window object to render itself and all of it's attached
+        children
+
+    \param drawMode
+        The drawMode specifies if this window (and which of its children) shall be rendered in this pass.
+
+    \return
+        Nothing
+    */
+    void render(DrawMode drawMode);
+
     /*!
     \brief
         Cause window to update itself and any attached children.  Client code
@@ -3364,6 +3379,20 @@ protected:
     virtual void onTextParsingChanged(WindowEventArgs& e);
 
     virtual void onMarginChanged(WindowEventArgs& e);
+
+
+    /*!
+    \brief
+        Checks if the "DrawMode" property of this window is compatible with
+        the drawMode that is supplied in the call.
+
+    \param drawMode
+        The DrawMode to check this window against.
+
+    \return
+        True if the window should be drawn in the supplied DrawMode, false if not.
+    */
+    bool checkIfDrawModeMatchesProperty(DrawMode drawMode) const;
 
     /*************************************************************************
         Implementation Functions
