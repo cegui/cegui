@@ -287,6 +287,16 @@ void GUIContext::draw()
     RenderingSurface::draw();
 }
 
+
+//----------------------------------------------------------------------------//
+void GUIContext::draw(DrawMode drawMode)
+{
+    if (d_isDirty)
+        drawWindowContentToTarget(drawMode);
+
+    RenderingSurface::draw();
+}
+
 //----------------------------------------------------------------------------//
 void GUIContext::drawContent()
 {
@@ -296,10 +306,32 @@ void GUIContext::drawContent()
 }
 
 //----------------------------------------------------------------------------//
+void GUIContext::drawContent(DrawMode drawMode)
+{
+    RenderingSurface::drawContent();
+
+    if(drawMode == DM_ALL || drawMode == DM_ONLY_NON_OPAQUE)
+    {
+        d_mouseCursor.draw();
+    }
+}
+
+//----------------------------------------------------------------------------//
 void GUIContext::drawWindowContentToTarget()
 {
     if (d_rootWindow)
         renderWindowHierarchyToSurfaces();
+    else
+        clearGeometry();
+
+    d_isDirty = false;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::drawWindowContentToTarget(DrawMode drawMode)
+{
+    if (d_rootWindow)
+        renderWindowHierarchyToSurfaces(drawMode);
     else
         clearGeometry();
 
@@ -316,6 +348,18 @@ void GUIContext::renderWindowHierarchyToSurfaces()
         static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
 
     d_rootWindow->render();
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::renderWindowHierarchyToSurfaces(DrawMode drawMode)
+{
+    RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
+    rs.clearGeometry();
+
+    if (rs.isRenderingWindow())
+        static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
+
+    d_rootWindow->render(drawMode);
 }
 
 //----------------------------------------------------------------------------//

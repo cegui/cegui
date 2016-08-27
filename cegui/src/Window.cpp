@@ -1134,6 +1134,65 @@ void Window::render()
 }
 
 //----------------------------------------------------------------------------//
+void Window::render(DrawMode drawMode)
+{
+    // don't do anything if window is not visible
+    if (!isEffectiveVisible())
+        return;
+    
+    // get rendering context
+    RenderingContext ctx;
+    getRenderingContext(ctx);
+
+    // clear geometry from surface if it's ours
+    if (ctx.owner == this)
+        ctx.surface->clearGeometry();
+
+    // redraw if no surface set, or if surface is invalidated
+    if (!d_surface || d_surface->isInvalidated())
+    {
+        bool allowDrawing = checkIfDrawModeMatchesProperty(drawMode);
+
+        if(allowDrawing)
+        {
+            // perform drawing for 'this' Window
+            drawSelf(ctx);
+        }
+
+        // render any child windows
+        for (ChildDrawList::iterator it = d_drawList.begin(); it != d_drawList.end(); ++it)
+        {
+            (*it)->render(drawMode);
+        }
+    }
+
+    // do final rendering for surface if it's ours
+    if (ctx.owner == this)
+        ctx.surface->draw();
+}
+
+bool Window::checkIfDrawModeMatchesProperty(DrawMode drawMode) const
+{
+    bool allowDrawing = false;
+
+    if(drawMode == DM_ALL)
+    {
+        allowDrawing = true;
+    }
+    else if(drawMode == DM_ONLY_OPAQUE || drawMode == DM_ONLY_NON_OPAQUE)
+    {
+        bool isDrawModePresent = isPropertyPresent("DrawMode");
+        if(isDrawModePresent)
+        {
+            int windowDrawMode = getProperty<int>("DrawMode");
+            allowDrawing = windowDrawMode == drawMode;
+        }
+    }
+
+    return allowDrawing;
+}
+
+//----------------------------------------------------------------------------//
 void Window::drawSelf(const RenderingContext& ctx)
 {
     bufferGeometry(ctx);
