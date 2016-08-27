@@ -1184,7 +1184,8 @@ bool Window::checkIfDrawModeMatchesProperty(DrawMode drawMode) const
         bool isDrawModePresent = isPropertyPresent("DrawMode");
         if(isDrawModePresent)
         {
-            int windowDrawMode = getProperty<int>("DrawMode");
+            String drawModeProperty = getProperty("DrawMode");
+            int windowDrawMode = PropertyHelper<DrawMode>::fromString(drawModeProperty);
             allowDrawing = windowDrawMode == drawMode;
         }
     }

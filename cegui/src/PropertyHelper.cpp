@@ -51,6 +51,10 @@ const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
 const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");
 const CEGUI::String PropertyHelper<AspectMode>::Ignore("Ignore");
 
+const CEGUI::String PropertyHelper<DrawMode>::All("All");
+const CEGUI::String PropertyHelper<DrawMode>::OnlyOpaque("OnlyOpaque");
+const CEGUI::String PropertyHelper<DrawMode>::OnlyNonOpaque("OnlyNonOpaque");
+
 //----------------------------------------------------------------------------//
 PropertyHelper<Image*>::return_type
 PropertyHelper<Image*>::fromString(const String& str)
