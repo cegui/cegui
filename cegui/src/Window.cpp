@@ -99,6 +99,7 @@ const String Window::MarginPropertyName("MarginProperty");
 const String Window::UpdateModePropertyName("UpdateMode");
 const String Window::MouseInputPropagationEnabledPropertyName("MouseInputPropagationEnabled");
 const String Window::AutoWindowPropertyName("AutoWindow");
+const String Window::DrawModePropertyName("DrawMode");
 //----------------------------------------------------------------------------//
 const String Window::EventNamespace("Window");
 const String Window::EventUpdated ("Updated");
@@ -1181,13 +1182,7 @@ bool Window::checkIfDrawModeMatchesProperty(DrawMode drawMode) const
     }
     else if(drawMode == DM_ONLY_OPAQUE || drawMode == DM_ONLY_NON_OPAQUE)
     {
-        bool isDrawModePresent = isUserStringDefined(PropertyHelper<DrawMode>::getDataTypeName());
-        if(isDrawModePresent)
-        {
-            String drawModeProperty = getUserString(PropertyHelper<DrawMode>::getDataTypeName());
-            int windowDrawMode = PropertyHelper<DrawMode>::fromString(drawModeProperty);
-            allowDrawing = windowDrawMode == drawMode;
-        }
+        allowDrawing = getDrawMode() == drawMode;
     }
 
     return allowDrawing;
@@ -1596,6 +1591,14 @@ void Window::addWindowProperties(void)
         "automatically created sub-component window."
         "Value is either \"true\" or \"false\".",
         &Window::setAutoWindow, &Window::isAutoWindow, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, DrawMode,
+        DrawModePropertyName, "Property to get/set whether the window should be drawn or not drawn in a "
+        "draw call that specifies a DrawMode."
+        "Value is either \"" + PropertyHelper<DrawMode>::All + "\", \"" + PropertyHelper<DrawMode>::OnlyOpaque + 
+        "\" or \"" + PropertyHelper<DrawMode>::OnlyNonOpaque + "\".",
+        &Window::setDrawMode, &Window::getDrawMode, DM_ALL
     );
 }
 
@@ -3981,6 +3984,29 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 bool Window::isMouseContainedInArea() const
 {
     return d_containsMouse;
+}
+
+
+//----------------------------------------------------------------------------//
+void Window::setDrawMode(DrawMode drawMode)
+{
+    //TODO v0: use a member variable instead
+    String drawModeProperty = PropertyHelper<DrawMode>::toString(drawMode);
+    setUserString(PropertyHelper<DrawMode>::getDataTypeName(), drawModeProperty);
+}
+
+//----------------------------------------------------------------------------//
+DrawMode Window::getDrawMode() const
+{
+    //TODO v0: use a member variable instead
+    bool isDrawModePresent = isUserStringDefined(PropertyHelper<DrawMode>::getDataTypeName());
+    if(isDrawModePresent)
+    {
+        String drawModeProperty = getUserString(PropertyHelper<DrawMode>::getDataTypeName());
+        return PropertyHelper<DrawMode>::fromString(drawModeProperty);
+    }
+
+    return DM_ALL;
 }
 
 //----------------------------------------------------------------------------//
