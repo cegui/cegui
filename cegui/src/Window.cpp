@@ -1588,7 +1588,7 @@ void Window::addWindowProperties(void)
         "a bitmask with all bits at 1 is taken. The bitmask of the draw call and the Window are compared "
         "using a bitwise AND, only if the result is not zero the Window will be drawn."
         "Value is a bitmask of 32 bit size, which will be checked against the bitmask specified for the draw call.",
-        &Window::setDrawMode, &Window::getDrawMode, DrawModeFlagRegular
+        &Window::setDrawMode, &Window::getDrawMode, DrawModeFlagWindowRegular
     );
 }
 
@@ -3996,7 +3996,7 @@ uint32 Window::getDrawMode() const
         return PropertyHelper<uint32>::fromString(drawModeProperty);
     }
 
-    return DrawModeFlagRegular;
+    return DrawModeFlagWindowRegular;
 }
 
 //----------------------------------------------------------------------------//
