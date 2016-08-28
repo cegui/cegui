@@ -216,6 +216,8 @@ public:
     static const String MouseInputPropagationEnabledPropertyName;
     //! Name of property to access whether the system considers this window to be an automatically created sub-component window.
     static const String AutoWindowPropertyName;
+    //! Name of property to access the DrawMode that is set for this Window, which decides in what draw call it will or will not be drawn.
+    static const String DrawModePropertyName;
 
     /*************************************************************************
         Event name constants
@@ -2846,6 +2848,28 @@ public:
         to ensure correct handling of certain events.
     */
     bool isMouseContainedInArea() const;
+
+    /*!
+    \brief
+        Sets the DrawMode of this Window.
+
+        The DrawMode of this Window specifies if it should be or should not be
+        rendered. The effect depends on the DrawMode of the draw call.
+    \param drawMode
+        The drawMode to be set for this Window.
+    */
+    void setDrawMode(DrawMode drawMode);
+
+    /*!
+    \brief
+        Gets the DrawMode of this Window.
+
+        The DrawMode of this Window specifies if it should be or should not be
+        rendered. The effect depends on the DrawMode of the draw call.
+    \return
+        The drawMode that is set for this Window.
+    */
+    DrawMode getDrawMode() const;
 
     // overridden from Element
     const Sizef& getRootContainerSize() const;
