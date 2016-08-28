@@ -238,6 +238,11 @@ public:
         rendered in this pass. The bit flags that are active in each Window's
         bit-mask will be checked against the supplied mask. If any of them matches,
         then the Window will be rendered, otherwise it won't.
+
+        The default draw bitmask has all bits set to 1. The default flag for is
+        Windows is Window::DrawModeFlagWindowRegular and the flag bit for the cursor
+        is Window::DrawModeFlagMouseCursor.
+
     */
     virtual void draw(uint32 drawMode);
 
