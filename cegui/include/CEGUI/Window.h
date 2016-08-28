@@ -523,7 +523,7 @@ public:
     //! Draw bitmask for drawing all objects (default draw mode)
     static const uint32 DrawModeMaskAll = ~0U;
     //! Draw bit flag signifying a regular window (default window flag)
-    static const uint32 DrawModeFlagRegular = 1U << 0;
+    static const uint32 DrawModeFlagWindowRegular = 1U << 0;
     //! Draw bit flag signifying a mouse cursor
     static const uint32 DrawModeFlagMouseCursor = 1U << 1;
 
