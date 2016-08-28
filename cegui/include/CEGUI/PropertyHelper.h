@@ -37,7 +37,6 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/Rect.h"
-#include "CEGUI/DrawMode.h"
 
 #include <cstdio>
 
@@ -991,71 +990,6 @@ public:
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
 };
-
-
-template<> 
-class CEGUIEXPORT PropertyHelper<DrawMode>
-{
-public:
-    typedef DrawMode return_type;
-    typedef return_type safe_method_return_type;
-    typedef DrawMode pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("DrawMode");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        if (str == All)
-        {
-            return DM_ALL;
-        }
-
-        if (str == OnlyOpaque)
-        {
-            return DM_ONLY_OPAQUE;
-        }
-
-        if(str == OnlyNonOpaque)
-        {
-            return DM_ONLY_NON_OPAQUE;
-        }
-
-        return DM_ALL;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == DM_ALL)
-        {
-            return All;
-        }
-
-        if (val == DM_ONLY_OPAQUE)
-        {
-            return OnlyOpaque;
-        }
-
-        if (val == DM_ONLY_NON_OPAQUE)
-        {
-            return OnlyNonOpaque;
-        }
-
-        assert(false && "Invalid DrawMode");
-        return All;
-    }
-
-    //! Definitions of the possible values represented as Strings
-    static const String All;
-    static const String OnlyOpaque;
-    static const String OnlyNonOpaque;
-};
-
 
 }
 

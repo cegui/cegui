@@ -225,6 +225,24 @@ public:
 
     /*!
     \brief
+        Draw the GeometryBuffers for all rendering queues to the RenderTarget
+        that this RenderingSurface is targetting.
+
+        The GeometryBuffers remain in the rendering queues after the draw
+        operation is complete.  This allows the next draw operation to occur
+        without needing to requeue all the GeometryBuffers (if for instance the
+        sequence of buffers to be drawn remains unchanged).
+
+    \param drawMode
+        The drawMode is a bit-mask that specifies which Windows shall be
+        rendered in this pass. The bit flags that are active in each Window's
+        bit-mask will be checked against the supplied mask. If any of them matches,
+        then the Window will be rendered, otherwise it won't.
+    */
+    virtual void draw(uint32 drawMode);
+
+    /*!
+    \brief
         Marks the RenderingSurface as invalid, causing the geometry to be
         rerendered to the RenderTarget next time draw is called.
 
@@ -334,6 +352,7 @@ protected:
      * NB: Called between RenderTarget activate and deactivate calls.
      */
     virtual void drawContent();
+    virtual void drawContent(uint32 drawModeMask);
 
     //! draw a rendering queue, firing events before and after.
     void draw(const RenderQueue& queue, RenderQueueEventArgs& args);

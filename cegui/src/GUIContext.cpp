@@ -289,12 +289,12 @@ void GUIContext::draw()
 
 
 //----------------------------------------------------------------------------//
-void GUIContext::draw(DrawMode drawMode)
+void GUIContext::draw(uint32 drawModeMask)
 {
     if (d_isDirty)
-        drawWindowContentToTarget(drawMode);
+        drawWindowContentToTarget(drawModeMask);
 
-    RenderingSurface::draw();
+    RenderingSurface::draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
@@ -306,11 +306,11 @@ void GUIContext::drawContent()
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::drawContent(DrawMode drawMode)
+void GUIContext::drawContent(uint32 drawModeMask)
 {
     RenderingSurface::drawContent();
 
-    if(drawMode == DM_ALL || drawMode == DM_ONLY_NON_OPAQUE)
+    if(drawModeMask & Window::DrawModeFlagMouseCursor)
     {
         d_mouseCursor.draw();
     }
@@ -328,10 +328,10 @@ void GUIContext::drawWindowContentToTarget()
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::drawWindowContentToTarget(DrawMode drawMode)
+void GUIContext::drawWindowContentToTarget(uint32 drawModeMask)
 {
     if (d_rootWindow)
-        renderWindowHierarchyToSurfaces(drawMode);
+        renderWindowHierarchyToSurfaces(drawModeMask);
     else
         clearGeometry();
 
@@ -351,7 +351,7 @@ void GUIContext::renderWindowHierarchyToSurfaces()
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::renderWindowHierarchyToSurfaces(DrawMode drawMode)
+void GUIContext::renderWindowHierarchyToSurfaces(uint32 drawModeMask)
 {
     RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
     rs.clearGeometry();
@@ -359,7 +359,7 @@ void GUIContext::renderWindowHierarchyToSurfaces(DrawMode drawMode)
     if (rs.isRenderingWindow())
         static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
 
-    d_rootWindow->render(drawMode);
+    d_rootWindow->render(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

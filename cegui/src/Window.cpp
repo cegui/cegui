@@ -1135,7 +1135,7 @@ void Window::render()
 }
 
 //----------------------------------------------------------------------------//
-void Window::render(DrawMode drawMode)
+void Window::render(uint32 drawModeMask)
 {
     // don't do anything if window is not visible
     if (!isEffectiveVisible())
@@ -1149,7 +1149,7 @@ void Window::render(DrawMode drawMode)
     if (ctx.owner == this)
         ctx.surface->clearGeometry();
 
-    bool allowDrawing = checkIfDrawModeMatchesProperty(drawMode);
+    bool allowDrawing = checkIfDrawingAllowed(drawModeMask);
 
     // redraw if no surface set, or if surface is invalidated
     if (!d_surface || d_surface->isInvalidated())
@@ -1163,7 +1163,7 @@ void Window::render(DrawMode drawMode)
         // render any child windows
         for (ChildDrawList::iterator it = d_drawList.begin(); it != d_drawList.end(); ++it)
         {
-            (*it)->render(drawMode);
+            (*it)->render(drawModeMask);
         }
     }
 
@@ -1172,20 +1172,9 @@ void Window::render(DrawMode drawMode)
         ctx.surface->draw();
 }
 
-bool Window::checkIfDrawModeMatchesProperty(DrawMode drawMode) const
+bool Window::checkIfDrawingAllowed(uint32 drawModeMask) const
 {
-    bool allowDrawing = false;
-
-    if(drawMode == DM_ALL)
-    {
-        allowDrawing = true;
-    }
-    else if(drawMode == DM_ONLY_OPAQUE || drawMode == DM_ONLY_NON_OPAQUE)
-    {
-        allowDrawing = getDrawMode() == drawMode;
-    }
-
-    return allowDrawing;
+    return (getDrawMode() & drawModeMask) != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1593,12 +1582,13 @@ void Window::addWindowProperties(void)
         &Window::setAutoWindow, &Window::isAutoWindow, false
     );
 
-    CEGUI_DEFINE_PROPERTY(Window, DrawMode,
-        DrawModePropertyName, "Property to get/set whether the window should be drawn or not drawn in a "
-        "draw call that specifies a DrawMode."
-        "Value is either \"" + PropertyHelper<DrawMode>::All + "\", \"" + PropertyHelper<DrawMode>::OnlyOpaque + 
-        "\" or \"" + PropertyHelper<DrawMode>::OnlyNonOpaque + "\".",
-        &Window::setDrawMode, &Window::getDrawMode, DM_ALL
+    CEGUI_DEFINE_PROPERTY(Window, uint32,
+        DrawModePropertyName, "Property to get/set a bitmask that specifies whether the window should be "
+        "drawn or not be drawn in a draw call. The draw call may have its own bitmask specified otherwise "
+        "a bitmask with all bits at 1 is taken. The bitmask of the draw call and the Window are compared "
+        "using a bitwise AND, only if the result is not zero the Window will be drawn."
+        "Value is a bitmask of 32 bit size, which will be checked against the bitmask specified for the draw call.",
+        &Window::setDrawMode, &Window::getDrawMode, DrawModeFlagRegular
     );
 }
 
@@ -3988,25 +3978,25 @@ bool Window::isMouseContainedInArea() const
 
 
 //----------------------------------------------------------------------------//
-void Window::setDrawMode(DrawMode drawMode)
+void Window::setDrawMode(uint32 drawModeMask)
 {
     //TODO v0: use a member variable instead
-    String drawModeProperty = PropertyHelper<DrawMode>::toString(drawMode);
-    setUserString(PropertyHelper<DrawMode>::getDataTypeName(), drawModeProperty);
+    String drawModeProperty = PropertyHelper<uint32>::toString(drawModeMask);
+    setUserString(DrawModePropertyName, drawModeProperty);
 }
 
 //----------------------------------------------------------------------------//
-DrawMode Window::getDrawMode() const
+uint32 Window::getDrawMode() const
 {
     //TODO v0: use a member variable instead
-    bool isDrawModePresent = isUserStringDefined(PropertyHelper<DrawMode>::getDataTypeName());
+    bool isDrawModePresent = isUserStringDefined(DrawModePropertyName);
     if(isDrawModePresent)
     {
-        String drawModeProperty = getUserString(PropertyHelper<DrawMode>::getDataTypeName());
-        return PropertyHelper<DrawMode>::fromString(drawModeProperty);
+        String drawModeProperty = getUserString(DrawModePropertyName);
+        return PropertyHelper<uint32>::fromString(drawModeProperty);
     }
 
-    return DM_ALL;
+    return DrawModeFlagRegular;
 }
 
 //----------------------------------------------------------------------------//

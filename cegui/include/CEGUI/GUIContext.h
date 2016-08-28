@@ -31,7 +31,6 @@
 #include "CEGUI/InjectedInputReceiver.h"
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/SystemKeys.h"
-#include "CEGUI/DrawMode.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -282,23 +281,14 @@ public:
 
     // public overrides
     void draw();
-
-
-    /*!
-    \brief
-        Draws this GuiContext
-
-    \param drawMode
-        The DrawMode specifies which windows shall be rendered in this pass.
-    */
-    void draw(DrawMode drawMode);
+    void draw(uint32 drawMode);
 
 protected:
     void updateRootWindowAreaRects() const;
     void drawWindowContentToTarget();
-    void drawWindowContentToTarget(DrawMode drawMode);
+    void drawWindowContentToTarget(uint32 drawModeMask);
     void renderWindowHierarchyToSurfaces();
-    void renderWindowHierarchyToSurfaces(DrawMode drawMode);
+    void renderWindowHierarchyToSurfaces(uint32 drawModeMask);
 
     void createDefaultTooltipWindowInstance() const;
     void destroyDefaultTooltipWindowInstance();
@@ -330,11 +320,10 @@ protected:
     virtual void onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args);
     virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
     virtual void onDefaultFontChanged(EventArgs& args);
-  
-    void drawContent(DrawMode drawMode);
 
     // protected overrides
     void drawContent();
+    void drawContent(uint32 drawModeMask);
 
     Window* d_rootWindow;
     bool d_isDirty;
