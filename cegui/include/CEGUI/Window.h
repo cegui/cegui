@@ -47,7 +47,6 @@
 #include "CEGUI/TextUtils.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
-#include "CEGUI/DrawMode.h"
 #include <vector>
 #include <set>
 
@@ -519,6 +518,15 @@ public:
     static const String AutoWindowNamePathXMLAttributeName;
     static const String UserStringNameXMLAttributeName;
     static const String UserStringValueXMLAttributeName;
+
+    
+    //! Draw bitmask for drawing all objects (default draw mode)
+    static const uint32 DrawModeMaskAll = ~0U;
+    //! Draw bit flag signifying a regular window (default window flag)
+    static const uint32 DrawModeFlagRegular = 1U << 0;
+    //! Draw bit flag signifying a mouse cursor
+    static const uint32 DrawModeFlagMouseCursor = 1U << 1;
+
 
     /*!
     \brief
@@ -2382,7 +2390,7 @@ public:
     \return
         Nothing
     */
-    void render(DrawMode drawMode);
+    void render(uint32 drawMode);
 
     /*!
     \brief
@@ -2851,28 +2859,43 @@ public:
 
     /*!
     \brief
-        Sets the DrawMode of this Window.
+        Sets the DrawMode bitmask for this Window.
 
-        The DrawMode of this Window specifies if it should be or should not be
-        rendered. The effect depends on the DrawMode of the draw call.
+        The DrawMode of this Window specifies when the Window should be
+        drawn. The bitmask of this window is checked against the mask supplied
+        in the draw call in that case.
     \param drawMode
-        The drawMode to be set for this Window.
+        The drawMode bitmask to be set for this Window.
     */
-    void setDrawMode(DrawMode drawMode);
+    void setDrawMode(uint32 drawMode);
 
     /*!
     \brief
-        Gets the DrawMode of this Window.
+        Gets the DrawMode bitmask of this Window.
 
-        The DrawMode of this Window specifies if it should be or should not be
-        rendered. The effect depends on the DrawMode of the draw call.
+        The DrawMode of this Window specifies when the Window should be
+        drawn. The bitmask of this window is checked against the mask supplied
+        in the draw call in that case.
     \return
-        The drawMode that is set for this Window.
+        The drawMode bitmask that is set for this Window.
     */
-    DrawMode getDrawMode() const;
+    uint32 getDrawMode() const;
 
     // overridden from Element
     const Sizef& getRootContainerSize() const;
+ 
+    /*!
+    \brief
+        Checks if the "DrawMode" property of this window is compatible with
+        the drawMode bitmask that is supplied-
+
+    \param drawMode
+        The "DrawMode" bitmask to check this window's bitmask against.
+
+    \return
+        True if a bitwise and between the masks return non-zero.
+    */
+    bool checkIfDrawingAllowed(uint32 drawModeMask) const;
 
 protected:
     // friend classes for construction / initialisation purposes (for now)
@@ -3403,20 +3426,6 @@ protected:
     virtual void onTextParsingChanged(WindowEventArgs& e);
 
     virtual void onMarginChanged(WindowEventArgs& e);
-
-
-    /*!
-    \brief
-        Checks if the "DrawMode" property of this window is compatible with
-        the drawMode that is supplied in the call.
-
-    \param drawMode
-        The DrawMode to check this window against.
-
-    \return
-        True if the window should be drawn in the supplied DrawMode, false if not.
-    */
-    bool checkIfDrawModeMatchesProperty(DrawMode drawMode) const;
 
     /*************************************************************************
         Implementation Functions

@@ -105,6 +105,16 @@ void RenderingSurface::draw()
 }
 
 //----------------------------------------------------------------------------//
+void RenderingSurface::draw(uint32 drawMode)
+{
+    d_target->activate();
+
+    drawContent(drawMode);
+
+    d_target->deactivate();
+}
+
+//----------------------------------------------------------------------------//
 void RenderingSurface::drawContent()
 {
     RenderQueueEventArgs evt_args(RQ_USER_0);
@@ -117,6 +127,14 @@ void RenderingSurface::drawContent()
         evt_args.queueID = i->first;
         draw(i->second, evt_args);
     }
+}
+
+//----------------------------------------------------------------------------//
+void RenderingSurface::drawContent(uint32 drawModeMask)
+{
+    drawContent();
+
+    CEGUI_UNUSED(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
