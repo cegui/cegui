@@ -1148,11 +1148,11 @@ void Window::render(DrawMode drawMode)
     if (ctx.owner == this)
         ctx.surface->clearGeometry();
 
+    bool allowDrawing = checkIfDrawModeMatchesProperty(drawMode);
+
     // redraw if no surface set, or if surface is invalidated
     if (!d_surface || d_surface->isInvalidated())
     {
-        bool allowDrawing = checkIfDrawModeMatchesProperty(drawMode);
-
         if(allowDrawing)
         {
             // perform drawing for 'this' Window
@@ -1167,7 +1167,7 @@ void Window::render(DrawMode drawMode)
     }
 
     // do final rendering for surface if it's ours
-    if (ctx.owner == this)
+    if (ctx.owner == this && allowDrawing)
         ctx.surface->draw();
 }
 
@@ -1181,10 +1181,10 @@ bool Window::checkIfDrawModeMatchesProperty(DrawMode drawMode) const
     }
     else if(drawMode == DM_ONLY_OPAQUE || drawMode == DM_ONLY_NON_OPAQUE)
     {
-        bool isDrawModePresent = isPropertyPresent("DrawMode");
+        bool isDrawModePresent = isUserStringDefined(PropertyHelper<DrawMode>::getDataTypeName());
         if(isDrawModePresent)
         {
-            String drawModeProperty = getProperty("DrawMode");
+            String drawModeProperty = getUserString(PropertyHelper<DrawMode>::getDataTypeName());
             int windowDrawMode = PropertyHelper<DrawMode>::fromString(drawModeProperty);
             allowDrawing = windowDrawMode == drawMode;
         }
