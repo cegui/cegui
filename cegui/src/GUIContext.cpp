@@ -291,6 +291,10 @@ void GUIContext::draw()
 //----------------------------------------------------------------------------//
 void GUIContext::draw(uint32 drawModeMask)
 {
+    //TODO v0: store last drawModeMask used for this GUIContext and only mark
+    //dirty if it is different in this draw-call
+    d_isDirty = true;
+
     if (d_isDirty)
         drawWindowContentToTarget(drawModeMask);
 
