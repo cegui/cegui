@@ -37,7 +37,7 @@ namespace CEGUI
     TinyXML2Parser::TinyXML2Parser(void)
     {
         // set ID string
-        d_identifierString = "CEGUI::TinyXML2Parser - TinyXML2 CEGUI XML parser implementation by Vladimir 'Niello' Orlov";
+        d_identifierString = "CEGUI::TinyXML2Parser - Official TinyXML2 based parser module for CEGUI";
     }
 
     TinyXML2Parser::~TinyXML2Parser(void)
