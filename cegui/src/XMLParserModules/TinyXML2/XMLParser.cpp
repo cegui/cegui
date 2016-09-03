@@ -44,7 +44,7 @@ namespace CEGUI
     {
     }
 
-    void TinyXML2Parser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void TinyXML2Parser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/)
     {
         // Parse the document
         tinyxml2::XMLDocument doc;
