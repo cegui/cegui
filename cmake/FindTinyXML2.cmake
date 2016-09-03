@@ -1,9 +1,6 @@
 ################################################################################
 # Custom cmake module for CEGUI to find tinyxml2
 ################################################################################
-include(FindPackageHandleStandardArgs)
-include(CheckCXXSourceCompiles)
-
 find_path(TINYXML2_H_PATH NAMES tinyxml2.h)
 find_library(TINYXML2_LIB NAMES tinyxml2 libtinyxml2 PATH_SUFFIXES dynamic)
 find_library(TINYXML2_LIB_DBG NAMES tinyxml2_d libtinyxml2_d PATH_SUFFIXES dynamic)
@@ -18,10 +15,6 @@ endif()
 cegui_find_package_handle_standard_args(TINYXML2 TINYXML2_LIB TINYXML2_H_PATH)
 
 if (TINYXML2_FOUND)
-    # what API version do we have here?
-    set(CMAKE_REQUIRED_INCLUDES ${TINYXML2_H_PATH})
-    set(CMAKE_REQUIRED_LIBRARIES ${TINYXML2_LIB})
-
     set (TINYXML2_INCLUDE_DIR ${TINYXML2_H_PATH})
     set (TINYXML2_LIBRARIES ${TINYXML2_LIB})
     if (TINYXML2_LIB_DBG)
