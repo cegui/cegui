@@ -1538,7 +1538,7 @@ public:
     \return
         Nothing
     */
-    void setEnabled(bool setting);
+    virtual void setEnabled(bool enabled);
 
     /*!
     \brief
@@ -1548,29 +1548,20 @@ public:
     \param setting
         - true to disable the Window
         - false to enable the Window.
-
-    \return
-        Nothing
     */
-    void setDisabled(bool setting);
+    void setDisabled(bool disabled) { setEnabled(!disabled); }
 
     /*!
     \brief
         enable the Window to allow interaction.
-
-    \return
-        Nothing
     */
-    void enable(void)   {setEnabled(true);}
+    void enable()   { setEnabled(true); }
 
     /*!
     \brief
         disable the Window to prevent interaction.
-
-    \return
-        Nothing
     */
-    void disable(void)  {setEnabled(false);}
+    void disable()  { setEnabled(false); }
 
     /*!
     \brief
@@ -2897,6 +2888,14 @@ public:
     */
     bool checkIfDrawingAllowed(uint32 drawModeMask) const;
 
+    float getContentWidth() const;
+    float getContentHeight() const;
+    UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const;
+    UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const;
+    void adjustSizeToContent();
+    bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const;
+    bool contentFits() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -2915,7 +2914,7 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onSized(ElementEventArgs& e);
+    virtual void onSized_impl(ElementEventArgs& e);
 
     /*!
     \brief
@@ -3545,7 +3544,8 @@ protected:
     void initialiseClippers(const RenderingContext& ctx);
 
     //! \copydoc Element::setArea_impl
-    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing = false, bool fireEvents = true);
+    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false,
+                              bool fireEvents=true, bool adjust_size_to_content=true);
     
     /*!
     \brief

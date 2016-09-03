@@ -698,13 +698,13 @@ void Window::setAlwaysOnTop(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setEnabled(bool setting)
+void Window::setEnabled(bool enabled)
 {
     // only react if setting has changed
-    if (d_enabled == setting)
+    if (d_enabled == enabled)
         return;
 
-    d_enabled = setting;
+    d_enabled = enabled;
     WindowEventArgs args(this);
 
     if (d_enabled)
@@ -722,12 +722,6 @@ void Window::setEnabled(bool setting)
     }
 
     getGUIContext().updateWindowContainingMouse();
-}
-
-//----------------------------------------------------------------------------//
-void Window::setDisabled(bool setting)
-{
-    setEnabled(!setting);
 }
 
 //----------------------------------------------------------------------------//
@@ -1952,11 +1946,11 @@ void Window::setInheritsTooltipText(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setArea_impl(const UVector2& pos, const USize& size,
-                          bool topLeftSizing, bool fireEvents)
+void Window::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
+                          bool adjust_size_to_content)
 {
     markCachedWindowRectsInvalid();
-    Element::setArea_impl(pos, size, topLeftSizing, fireEvents);
+    Element::setArea_impl(pos, size, topLeftSizing, fireEvents, adjust_size_to_content);
 
     //if (moved || sized)
     // FIXME: This is potentially wasteful
@@ -2302,10 +2296,10 @@ Window* Window::getActiveSibling()
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSized(ElementEventArgs& e)
+void Window::onSized_impl(ElementEventArgs& e)
 {
     /*
-     * Why are we not calling Element::onSized?  It's because that function
+     * Why are we not calling Element::onSized_impl?  It's because that function
      * always calls the onParentSized notification for all children - we really
      * want that to be done via performChildWindowLayout instead and we
      * definitely don't want it done twice.
@@ -3933,6 +3927,69 @@ void Window::setGUIContext(GUIContext* context)
 const Sizef& Window::getRootContainerSize() const
 {
     return getGUIContext().getSurfaceSize();
+}
+
+//----------------------------------------------------------------------------//
+float Window::getContentWidth() const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->getContentWidth();
+    return Element::getContentWidth();
+}
+
+//----------------------------------------------------------------------------//
+float Window::getContentHeight() const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->getContentHeight();
+    return Element::getContentHeight();
+}
+
+//----------------------------------------------------------------------------//
+UDim Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth()
+  const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth();
+    return Element::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth();
+}
+
+//----------------------------------------------------------------------------//
+UDim Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight()
+  const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()-> getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight();
+    return Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight();
+}
+
+//----------------------------------------------------------------------------//
+void Window::adjustSizeToContent()
+{
+    if (!isSizeAdjustedToContent())
+        return;
+    if (getWindowRenderer())
+    {
+        getWindowRenderer()->adjustSizeToContent();
+        return;
+    }
+    Element::adjustSizeToContent();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::contentFitsForSpecifiedElementSize(const Sizef& element_size) const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->contentFitsForSpecifiedWindowSize(element_size);
+    return Element::contentFitsForSpecifiedElementSize(element_size);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::contentFits() const
+{
+    if (getWindowRenderer())
+        return getWindowRenderer()->contentFits();
+    return Element::contentFits();
 }
 
 //----------------------------------------------------------------------------//

@@ -149,10 +149,14 @@ public:
         RenderedString object that will receieve the left portion of the split.
         Any existing content in the RenderedString is replaced.
 
+    \return
+        True if any word was split into 2 or more lines, because it couldn't fit
+        in a single line?
+
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void split(const Window* ref_wnd,
+    bool split(const Window* ref_wnd,
                const size_t line, float split_point, RenderedString& left);
 
     //! return the total number of spacing characters in the specified line.
