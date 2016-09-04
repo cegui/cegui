@@ -220,18 +220,6 @@ public:
         operation is complete.  This allows the next draw operation to occur
         without needing to requeue all the GeometryBuffers (if for instance the
         sequence of buffers to be drawn remains unchanged).
-    */
-    virtual void draw();
-
-    /*!
-    \brief
-        Draw the GeometryBuffers for all rendering queues to the RenderTarget
-        that this RenderingSurface is targetting.
-
-        The GeometryBuffers remain in the rendering queues after the draw
-        operation is complete.  This allows the next draw operation to occur
-        without needing to requeue all the GeometryBuffers (if for instance the
-        sequence of buffers to be drawn remains unchanged).
 
     \param drawMode
         The drawMode is a bit-mask that specifies which Windows shall be
@@ -244,7 +232,7 @@ public:
         is Window::DrawModeFlagMouseCursor.
 
     */
-    virtual void draw(uint32 drawMode);
+    virtual void draw(uint32 drawMode = DrawModeMaskAll);
 
     /*!
     \brief
@@ -356,11 +344,10 @@ protected:
     /** draw the surface content. Default impl draws the render queues.
      * NB: Called between RenderTarget activate and deactivate calls.
      */
-    virtual void drawContent();
     virtual void drawContent(uint32 drawModeMask);
 
     //! draw a rendering queue, firing events before and after.
-    void draw(const RenderQueue& queue, RenderQueueEventArgs& args);
+    void draw(const RenderQueue& queue, RenderQueueEventArgs& args, uint32 drawModeMask);
 
     //! detatch ReneringWindow from this RenderingSurface
     void detatchWindow(RenderingWindow& w);

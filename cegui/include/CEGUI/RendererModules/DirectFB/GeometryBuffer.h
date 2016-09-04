@@ -50,7 +50,7 @@ public:
     ~DirectFBGeometryBuffer();
 
     // Implement GeometryBuffer interface.
-    void draw() const;
+    void draw(uint32 drawModeMask = DrawModeMaskAll) const;
     void setTranslation(const Vector3f& v);
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3f& p);

@@ -57,16 +57,16 @@ Direct3D10RenderTarget<T>::Direct3D10RenderTarget(Direct3D10Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void Direct3D10RenderTarget<T>::draw(const GeometryBuffer& buffer)
+void Direct3D10RenderTarget<T>::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void Direct3D10RenderTarget<T>::draw(const RenderQueue& queue)
+void Direct3D10RenderTarget<T>::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

@@ -161,8 +161,10 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::draw() const
+void OgreGeometryBuffer::draw(uint32 drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     if (!d_sync)
         syncHardwareBuffer();
 

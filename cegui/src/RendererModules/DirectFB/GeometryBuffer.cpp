@@ -52,8 +52,10 @@ DirectFBGeometryBuffer::~DirectFBGeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::draw() const
+void DirectFBGeometryBuffer::draw(uint32 drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     IDirectFBSurface* target_surface = &d_owner.getTargetSurface();
 
     DFBRegion saved_clip;

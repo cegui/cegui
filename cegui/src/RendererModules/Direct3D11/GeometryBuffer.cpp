@@ -57,8 +57,10 @@ Direct3D11GeometryBuffer::~Direct3D11GeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::draw() const
+void Direct3D11GeometryBuffer::draw(uint32 drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask):
+    
     // setup clip region
     D3D11_RECT clip;
     clip.left   = static_cast<LONG>(d_clipRect.left());

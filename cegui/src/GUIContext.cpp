@@ -93,6 +93,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_modalWindow(0),
     d_captureWindow(0),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
+    d_lastDrawModeMask(0),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -279,21 +280,15 @@ bool GUIContext::isDirty() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::draw()
-{
-    if (d_isDirty)
-        drawWindowContentToTarget();
-
-    RenderingSurface::draw();
-}
-
-
-//----------------------------------------------------------------------------//
 void GUIContext::draw(uint32 drawModeMask)
 {
-    //TODO v0: store last drawModeMask used for this GUIContext and only mark
-    //dirty if it is different in this draw-call
-    d_isDirty = true;
+    // Dirtify if the last draw call had a different drawModeMask than this one
+    if(d_lastDrawModeMask != drawModeMask)
+    {
+        d_isDirty = true;
+        d_lastDrawModeMask = drawModeMask;
+    }
+    
 
     if (d_isDirty)
         drawWindowContentToTarget(drawModeMask);
@@ -302,35 +297,15 @@ void GUIContext::draw(uint32 drawModeMask)
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::drawContent()
-{
-    RenderingSurface::drawContent();
-
-    d_mouseCursor.draw();
-}
-
-//----------------------------------------------------------------------------//
 void GUIContext::drawContent(uint32 drawModeMask)
 {
-    RenderingSurface::drawContent();
+    RenderingSurface::drawContent(drawModeMask);
 
-    if(drawModeMask & Window::DrawModeFlagMouseCursor)
+    if(drawModeMask & DrawModeFlagMouseCursor)
     {
         d_mouseCursor.draw();
     }
 }
-
-//----------------------------------------------------------------------------//
-void GUIContext::drawWindowContentToTarget()
-{
-    if (d_rootWindow)
-        renderWindowHierarchyToSurfaces();
-    else
-        clearGeometry();
-
-    d_isDirty = false;
-}
-
 //----------------------------------------------------------------------------//
 void GUIContext::drawWindowContentToTarget(uint32 drawModeMask)
 {
@@ -340,18 +315,6 @@ void GUIContext::drawWindowContentToTarget(uint32 drawModeMask)
         clearGeometry();
 
     d_isDirty = false;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::renderWindowHierarchyToSurfaces()
-{
-    RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
-    rs.clearGeometry();
-
-    if (rs.isRenderingWindow())
-        static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
-
-    d_rootWindow->render();
 }
 
 //----------------------------------------------------------------------------//

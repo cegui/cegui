@@ -280,14 +280,11 @@ public:
     bool injectPasteRequest();
 
     // public overrides
-    void draw();
-    void draw(uint32 drawMode);
+    void draw(uint32 drawMode = DrawModeMaskAll);
 
 protected:
     void updateRootWindowAreaRects() const;
-    void drawWindowContentToTarget();
     void drawWindowContentToTarget(uint32 drawModeMask);
-    void renderWindowHierarchyToSurfaces();
     void renderWindowHierarchyToSurfaces(uint32 drawModeMask);
 
     void createDefaultTooltipWindowInstance() const;
@@ -322,8 +319,7 @@ protected:
     virtual void onDefaultFontChanged(EventArgs& args);
 
     // protected overrides
-    void drawContent();
-    void drawContent(uint32 drawModeMask);
+    void drawContent(uint32 drawModeMask = DrawModeMaskAll);
 
     Window* d_rootWindow;
     bool d_isDirty;
@@ -352,6 +348,9 @@ protected:
     mutable bool    d_windowContainingMouseIsUpToDate;
     Window* d_modalWindow;
     Window* d_captureWindow;
+
+    //! The draw mode mask that was used in the last draw call 
+    uint32 d_lastDrawModeMask;
 
     SystemKeys d_systemKeys;
     MouseClickTracker* d_mouseClickTrackers;

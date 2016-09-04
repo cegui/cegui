@@ -56,16 +56,16 @@ Direct3D11RenderTarget<T>::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void Direct3D11RenderTarget<T>::draw(const GeometryBuffer& buffer)
+void Direct3D11RenderTarget<T>::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void Direct3D11RenderTarget<T>::draw(const RenderQueue& queue)
+void Direct3D11RenderTarget<T>::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
