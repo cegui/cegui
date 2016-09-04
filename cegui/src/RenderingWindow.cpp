@@ -195,7 +195,7 @@ void RenderingWindow::setOwner(RenderingSurface& owner)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::draw()
+void RenderingWindow::draw(uint32 drawModeMask)
 {
     // update geometry if needed.
     if (!d_geometryValid)
@@ -204,7 +204,7 @@ void RenderingWindow::draw()
     if (d_invalidated)
     {
         // base class will render out queues for us
-        RenderingSurface::draw();
+        RenderingSurface::draw(drawModeMask);
         // mark as no longer invalidated
         d_invalidated = false;
     }

@@ -48,16 +48,16 @@ NullRenderTarget<T>::~NullRenderTarget()
 
 //----------------------------------------------------------------------------//
 template<typename T>
-void NullRenderTarget<T>::draw(const GeometryBuffer& buffer)
+void NullRenderTarget<T>::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
 template<typename T>
-void NullRenderTarget<T>::draw(const RenderQueue& queue)
+void NullRenderTarget<T>::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

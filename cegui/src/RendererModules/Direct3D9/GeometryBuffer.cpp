@@ -50,8 +50,10 @@ Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(Direct3D9Renderer& owner,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::draw() const
+void Direct3D9GeometryBuffer::draw(uint32 drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     RECT saved_clip;
     d_device->GetScissorRect(&saved_clip);
 

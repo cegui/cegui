@@ -95,16 +95,6 @@ void RenderingSurface::clearGeometry()
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::draw()
-{
-    d_target->activate();
-
-    drawContent();
-
-    d_target->deactivate();
-}
-
-//----------------------------------------------------------------------------//
 void RenderingSurface::draw(uint32 drawMode)
 {
     d_target->activate();
@@ -115,7 +105,7 @@ void RenderingSurface::draw(uint32 drawMode)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::drawContent()
+void RenderingSurface::drawContent(uint32 drawModeMask)
 {
     RenderQueueEventArgs evt_args(RQ_USER_0);
 
@@ -125,25 +115,19 @@ void RenderingSurface::drawContent()
     {
         evt_args.handled = 0;
         evt_args.queueID = i->first;
-        draw(i->second, evt_args);
+        draw(i->second, evt_args, drawModeMask);
     }
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::drawContent(uint32 drawModeMask)
-{
-    drawContent();
-
-    CEGUI_UNUSED(drawModeMask);
-}
-
-//----------------------------------------------------------------------------//
-void RenderingSurface::draw(const RenderQueue& queue,
-    RenderQueueEventArgs& args)
+void RenderingSurface::draw(
+    const RenderQueue& queue,
+    RenderQueueEventArgs& args,
+    uint32 drawModeMask)
 {
     fireEvent(EventRenderQueueStarted, args, EventNamespace);
 
-    d_target->draw(queue);
+    d_target->draw(queue, drawModeMask);
 
     args.handled = 0;
     fireEvent(EventRenderQueueEnded, args, EventNamespace);

@@ -46,15 +46,15 @@ DirectFBRenderTarget::DirectFBRenderTarget(DirectFBRenderer& owner,
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBRenderTarget::draw(const GeometryBuffer& buffer)
+void DirectFBRenderTarget::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBRenderTarget::draw(const RenderQueue& queue)
+void DirectFBRenderTarget::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

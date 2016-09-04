@@ -58,8 +58,10 @@ Direct3D10GeometryBuffer::~Direct3D10GeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10GeometryBuffer::draw() const
+void Direct3D10GeometryBuffer::draw(uint32 drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     // setup clip region
     D3D10_RECT clip;
     clip.left   = static_cast<LONG>(d_clipRect.left());

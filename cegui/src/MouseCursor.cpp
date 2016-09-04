@@ -145,7 +145,7 @@ const Image* MouseCursor::getDefaultImage() const
 /*************************************************************************
 	Draw the mouse cursor
 *************************************************************************/
-void MouseCursor::draw(void) const
+void MouseCursor::draw(uint32 drawModeMask) const
 {
     if (!d_visible || !d_cursorImage)
         return;
@@ -153,7 +153,7 @@ void MouseCursor::draw(void) const
     if (!d_cachedGeometryValid)
         cacheGeometry();
 
-    d_geometry->draw();
+    d_geometry->draw(drawModeMask);
 }
 
 

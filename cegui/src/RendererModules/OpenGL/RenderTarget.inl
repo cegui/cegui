@@ -62,16 +62,16 @@ OpenGLRenderTarget<T>::~OpenGLRenderTarget()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGLRenderTarget<T>::draw(const GeometryBuffer& buffer)
+void OpenGLRenderTarget<T>::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGLRenderTarget<T>::draw(const RenderQueue& queue)
+void OpenGLRenderTarget<T>::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
