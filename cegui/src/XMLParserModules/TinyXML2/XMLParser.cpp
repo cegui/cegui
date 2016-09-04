@@ -48,10 +48,10 @@ namespace CEGUI
     {
         // Parse the document
         tinyxml2::XMLDocument doc;
-        tinyxml2::XMLError Result = doc.Parse((const char*)source.getDataPtr(), source.getSize());
+        tinyxml2::XMLError Result = doc.Parse(reinterpret_cast<const char*>(source.getDataPtr()), source.getSize());
         if (Result == tinyxml2::XML_ERROR_EMPTY_DOCUMENT) return;
 
-        // Check if any actual error occured
+        // Check if any actual error occurred
         if (Result != tinyxml2::XML_SUCCESS)
         {
             CEGUI_THROW(FileIOException("TinyXML2Parser: an error occurred while "
@@ -61,16 +61,7 @@ namespace CEGUI
         // Parse root element recursively
         const tinyxml2::XMLElement* currElement = doc.RootElement();
         if (currElement)
-        {
-            CEGUI_TRY
-            {
-                processElement(handler, currElement);
-            }
-            CEGUI_CATCH(...)
-            {
-                CEGUI_RETHROW;
-            }
-        }
+            processElement(handler, currElement);
     }
 
     void TinyXML2Parser::processElement(XMLHandler& handler, const tinyxml2::XMLElement* element)
@@ -81,11 +72,11 @@ namespace CEGUI
         const tinyxml2::XMLAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add((utf8*)currAttr->Name(), (utf8*)currAttr->Value());
+            attrs.add(reinterpret_cast<const encoded_char*>(currAttr->Name()), reinterpret_cast<const encoded_char*>(currAttr->Value()));
             currAttr = currAttr->Next();
         }
 
-        handler.elementStart((utf8*)element->Value(), attrs);
+        handler.elementStart(reinterpret_cast<const encoded_char*>(element->Value()), attrs);
 
         const tinyxml2::XMLNode* pChildNode = element->FirstChild();
         while (pChildNode)
@@ -94,7 +85,7 @@ namespace CEGUI
             {
                 const char* pValue = pChildNode->ToText()->Value();
                 if (pValue && *pValue)
-                    handler.text((utf8*)pValue);
+                    handler.text(reinterpret_cast<const encoded_char*>(pValue));
             }
             else if (pChildNode->ToElement())
                 processElement(handler, pChildNode->ToElement());
@@ -104,7 +95,7 @@ namespace CEGUI
             pChildNode = pChildNode->NextSibling();
         }
 
-        handler.elementEnd((utf8*)element->Value());
+        handler.elementEnd(reinterpret_cast<const encoded_char*>(element->Value()));
     }
     
     bool TinyXML2Parser::initialiseImpl(void)
@@ -116,4 +107,4 @@ namespace CEGUI
     {
     }
 
-} // End of  CEGUI namespace section
+} // End of CEGUI namespace section
