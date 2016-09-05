@@ -75,7 +75,7 @@ namespace CEGUI
 
         // Parse the document
         TiXmlDocument doc;
-        if (!doc.Parse((const char*)buf))
+        if (!doc.Parse(static_cast<const char*>(buf)))
         {
             // error detected, cleanup out buffers
             delete[] buf;
@@ -113,12 +113,12 @@ namespace CEGUI
         const TiXmlAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add((encoded_char*)currAttr->Name(), (encoded_char*)currAttr->Value());
+            attrs.add(reinterpret_cast<const encoded_char*>(currAttr->Name()), reinterpret_cast<const encoded_char*>(currAttr->Value()));
             currAttr = currAttr->Next();
         }
 
         // start element
-        d_handler->elementStart((encoded_char*)element->Value(), attrs);
+        d_handler->elementStart(reinterpret_cast<const encoded_char*>(element->Value()), attrs);
 
         // do children
         const TiXmlNode* childNode = element->FirstChild();
@@ -131,7 +131,7 @@ namespace CEGUI
                 break;
             case TiXmlNode::CEGUI_TINYXML_TEXT:
                 if (childNode->ToText()->Value() != '\0')
-                    d_handler->text((encoded_char*)childNode->ToText()->Value());
+                    d_handler->text(reinterpret_cast<const encoded_char*>(childNode->ToText()->Value()));
                 break;
 
                 // Silently ignore unhandled node type
@@ -140,7 +140,7 @@ namespace CEGUI
         }
 
         // end element
-        d_handler->elementEnd((encoded_char*)element->Value());
+        d_handler->elementEnd(reinterpret_cast<const encoded_char*>(element->Value()));
     }
 
     TinyXMLParser::TinyXMLParser(void)
