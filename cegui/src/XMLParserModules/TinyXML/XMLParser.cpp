@@ -75,7 +75,7 @@ namespace CEGUI
 
         // Parse the document
         TiXmlDocument doc;
-        if (!doc.Parse((const char*)buf))
+        if (!doc.Parse(static_cast<const char*>(buf)))
         {
             // error detected, cleanup out buffers
             delete[] buf;
