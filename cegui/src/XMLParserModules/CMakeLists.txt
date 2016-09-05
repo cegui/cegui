@@ -14,6 +14,10 @@ if (CEGUI_BUILD_XMLPARSER_TINYXML)
     add_subdirectory(TinyXML)
 endif()
 
+if (CEGUI_BUILD_XMLPARSER_TINYXML2)
+    add_subdirectory(TinyXML2)
+endif()
+
 if (CEGUI_BUILD_XMLPARSER_RAPIDXML)
     add_subdirectory(RapidXML)
 endif()
