@@ -800,7 +800,7 @@ std::basic_ostream<char>& operator<<(std::basic_ostream<char>& outputStream, con
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     outputStream << str.d_string;
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
-    outputStream << String::convertUtf32ToUtf8(str.getString()).c_str();
+    outputStream << String::convertUtf32ToUtf8(str.getString());
 #endif
     return outputStream;
 }
