@@ -905,6 +905,9 @@ public:
         return d_rotation;
     }
 
+    UVector3 getPivot() const;
+    void setPivot(const UVector3& pivot);
+
     /*!
     \brief
         Add the specified Element as a child of this Element.
@@ -1871,6 +1874,7 @@ protected:
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
     Quaternion d_rotation;
+    UVector3 d_pivot;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;

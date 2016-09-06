@@ -3839,6 +3839,8 @@ private:
     //! Not intended for public use, only used as a "MouseCursor" property getter
     const Image* property_getMouseCursor() const;
 
+    void updatePivot();
+
     //! connection for event listener for font render size changes.
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
 };
