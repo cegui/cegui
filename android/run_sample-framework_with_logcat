@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+myScriptsDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. "$myScriptsDir/sample-framework_common"
+cd "$androidSampleFrameworkDir"
+adb logcat -c
+adb shell am start -a android.intent.action.MAIN -n sample_framework.cegui/.MainActivity
+adb logcat CEGUIBase:V MainActivity:V DEBUG:I *:F

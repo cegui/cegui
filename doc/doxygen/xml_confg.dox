@@ -1,0 +1,296 @@
+/**
+@page xml_config CEGUI Configuration XML files.
+@author Paul D Turner
+
+A config XML file defines settings and configuration information used by CEGUI
+at system creation time.
+
+@section xml_config_contents Config Element List:
+@ref xml_config_autoload <br>
+@ref xml_config_ceguiconfig <br>
+@ref xml_config_font <br>
+@ref xml_config_guisheet <br>
+@ref xml_config_imagecodec <br>
+@ref xml_config_mousecursor <br>
+@ref xml_config_defaultresourcegroup <br>
+@ref xml_config_xmlparser <br>
+@ref xml_config_logging <br>
+@ref xml_config_resourcedirectory <br>
+@ref xml_config_scripting <br>
+@ref xml_config_tooltip <br>
+
+<br>
+@section xml_config_overview Overview
+The reference for each element is arranged into sections, as described below:
+- Purpose:
+    - This section describes what the elements general purpose is within the
+      specifications.
+
+- Attributes:
+    - This section describes available attributes for the elements, and whether
+      they are required or optional.
+
+- Usage:
+    - Describes where the element may appear, whether the element may have
+      sub-elements, and other important usage information.
+
+- Examples:
+    - For many elements, this section will contain brief examples showing the
+      element used in context.
+
+
+<br>
+@section xml_config_ceguiconfig \<CEGUIConfig\>
+- Purpose:
+    - The \<CEGUIConfig\> is the root element of a config file.
+
+- Attributes:
+    - None.
+
+- Usage:
+    - The \<CEGUIConfig\> is the root element for config file.
+    - The \<CEGUIConfig\> may contain the following sub-elements:
+        - \<Logging\> elements.
+        - \<AutoLoad\> elements.
+        - \<ResourceDirectory\> elements.
+        - \<DefaultResourceGroup\> elements.
+        - \<Scripting\> elements.
+        - \<DefaultXMLParser\> elements.
+        - \<DefaultImageCodec\> elements.
+        - \<DefaultFont\> elements.
+        - \<DefaultMouseCursor\> elements.
+        - \<DefaultTooltip\> elements.
+        - \<DefaultGUISheet\> elements.
+    - No element may contain \<CEGUIConfig\> as a sub-element.
+
+- Examples:
+
+<br>
+@section xml_config_logging \<Logging\>
+- Purpose:
+    - Specifies the log filename and logging level to be used.  If this element
+      appears multiple times, the last occurence is the setting ultimately used.
+
+- Attributes:
+    - @c filename: Specifies the name to use for the log file.
+      Optional attribute, default is "CEGUI.log"
+    - @c level: Specifies the logging level.  Optional attribute, default is
+      "Standard".  Must otherwise be set to one of the following:
+        - Errors
+        - Standard
+        - Informative
+        - Insane
+
+- Usage:
+    - The \<Logging\> element may only appear as a sub-element of the
+      \<CEGUIConfig\> element.
+    - The \<Logging\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_autoload \<AutoLoad\>
+- Purpose:
+    - Specifies a batch of resources to be automatically loaded.
+
+- Attributes:
+    - @c type: Specifies the type of resource to be loaded.  Required attribute,
+      must be one of the following values:
+        - @c Imageset
+        - @c Font
+        - @c Scheme
+        - @c LookNFeel
+        - @c Layout
+    - @c group: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the files.  Optional attribute, default is
+      the default group for the resource type being loaded.
+    - @c pattern: Specifies a file name pattern that files in the resource group
+      location will be matched against.  Optional attribute,  default is "*"
+      (all files).
+
+- Usage:
+    - The \<AutoLoad\> element may only appear as a sub-element of the
+      \<CEGUIConfig\> element.
+    - The \<AutoLoad\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_resourcedirectory \<ResourceDirectory\>
+- Purpose:
+    - Specifies a resource group directory location.  This is currently only
+      used with automatically created instances of the DefaultResourceProvider,
+      using this element with any other configuration will have no effect.
+
+- Attributes:
+    - @c group: Specifies the name of the resource group to create.  Required
+      attribute.
+    - @c directory: Specifies the directory location to set for the created
+      resource group.  Required attribute.
+
+- Usage:
+    - The \<ResourceDirectory\> element may only appear as a sub-element of the
+      \<CEGUIConfig\> element.
+    - The \<ResourceDirectory\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_defaultresourcegroup \<DefaultResourceGroup\>
+- Purpose:
+    - Sets the default resource group for a specified resource type.
+
+- Attributes:
+    - @c type: Specifies the type of resource to set the default resource group
+      for.  Optional attribute, default is "Default" (global default group).  If
+      specified, must be one of:
+        - @c Default
+        - @c Imageset
+        - @c Font
+        - @c Scheme
+        - @c LookNFeel
+        - @c Layout
+        - @c Script
+        - @c XMLSchema
+    - @c group: Specifies the resource group identifier to use as the default
+      group for the specified resource type.  Required attribute.
+
+- Usage:
+    - The \<DefaultResourceGroup\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultResourceGroup\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_scripting \<Scripting\>
+- Purpose:
+    - Specifies start up and shutdown scripts that will be automatically
+      executed.  Only works when a script module is in use.  Scripts must be
+      valid for the language in use!  If this element appears multiple times,
+      only the last occurence is used.
+
+- Attributes:
+    - @c initScript: Specifies the name of the initialisation script.  The
+      script indicated will be called directly after the system object is
+      constructed.  Optional attribute, default is none.
+    - @c terminateScript: Specifies the name of the termination script.  The
+      script indicated will be called just prior to system destruction.
+      Optional attribute, default is none.
+
+- Usage:
+    - The \<Scripting\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<Scripting\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_xmlparser \<DefaultXMLParser\>
+- Purpose:
+    - Specifies the name of the default XMLParser module to use.  Due to the
+      config file being XML, we actually already have a parser loaded, this is
+      a means of replacing that parser with some other module.  If this element
+      appears multiple times, only the last occurence is used.
+
+- Attributes:
+    - @c name: Specifies the name of the XMLParser module to use.  Required
+      attribute.
+
+- Usage:
+    - The \<DefaultXMLParser\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultXMLParser\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_imagecodec \<DefaultImageCodec\>
+- Purpose:
+    - Specifies the name of the default ImageCodec to use for loading image
+      files.  If this element appears multiple times, only the last occurence is
+      used.
+
+- Attributes:
+    - @c name: Specifies the name of the ImageCodec module to use.  Required
+      attribute.
+
+- Usage:
+    - The \<DefaultImageCodec\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultImageCodec\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_font \<DefaultFont\>
+- Purpose:
+    - Sets the name of the system default font.  If this element appears
+      multiple times, only the last occurence is used.
+
+- Attributes:
+    - @c name: Specifies the name of the font to be used as the default.
+      Required attribute.
+
+- Usage:
+    - The \<DefaultFont\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultFont\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_mousecursor \<DefaultMouseCursor\>
+- Purpose:
+    - Sets the system default mouse cursor image.  If this element appears
+      multiple times, only the last occurence is used.
+
+- Attributes:
+    - @c imageset: Specifies the name of the Imageset containing the image to
+      be used as the default mouse cursor.  Required attribute.
+    - @c image: Specifies the name of the image in the imagset specified in
+      the @c imageset attribute to be used as the default mouse cursor image.
+      Required attribute.
+
+- Usage:
+    - The \<DefaultMouseCursor\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultMouseCursor\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_tooltip \<DefaultTooltip\>
+- Purpose:
+    - Sets the window type name to use for the system default tool-tip.  If this
+      element appears multiple times, only the last occurence is used.
+
+- Attributes:
+    - @c name: Specifies the type name of the Tooltip based window type to be
+      used as the system default tooltip.  Required attribute.
+
+- Usage:
+    - The \<DefaultTooltip\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultTooltip\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_config_guisheet \<DefaultGUISheet\>
+- Purpose:
+    - Sets the initial gui sheet to the named window (the window must exist, so
+      should be loaded via the \<AutoLoad\> element).  If this element appears
+      multiple times, only the last occurence is used.
+
+- Attributes:
+    - @c name: Specifies the name of the window to be set as the initial gui
+      sheet.  Required attribute.
+
+- Usage:
+    - The \<DefaultGUISheet\> element may only appear as a sub-element of
+      the \<CEGUIConfig\> element.
+    - The \<DefaultGUISheet\> element may not contain any sub-elements.
+
+- Examples:
+*/

@@ -1,0 +1,224 @@
+namespace CEGUI {
+/**
+@page datafile_tutorial 3 - The Beginners Guide to Data Files and Defaults Initialisation
+@author Paul D Turner 
+@tableofcontents
+
+It is assumed that prior to reading this tutorial you are already familiar with
+the concepts surrounding CEGUI's ResourceProvider and have correctly initialised
+your Renderer and the CEGUI System objects.  If you've not yet covered these
+topics, it is highly recommended that you read @ref rendering_tutorial and
+@ref resprov_tutorial.
+
+<br>
+@section datafile_tutorial_intro Introduction
+CEGUI uses a variety of different data files and - at least initially - it's
+possible there may be some confusion as to what exactly all these files are and
+how they relate to one another.  In addition, there are some system wide
+defaults that - while not technically <em>required</em> to be set - you will
+almost certainly want to set for the majority of your applications using CEGUI.
+
+This tutorial will serve as an introduction to these topics in order that you
+can be more comfortable with the data files and with setting the basic default
+options used with CEGUI.
+
+<br>
+@section datafile_tutorial_allxml Font, Imageset, LookNFeel, Scheme, XSD?  It's all XML!
+With the exception of graphical image files, script language files and loadable
+modules (.dll /. so files, etc), all the data files used with CEGUI are XML
+based.  This actually leads us to the first potential obstacle that you may run
+into: the .xsd schema files.
+
+@subsection datafile_tutorial_validation Schema Validation with Xerces-C++
+Although the Expat based XML parser module is the default choice for parsing the
+XML data files, CEGUI also supports a parser based upon the Xerces-C++ library
+from the Apache Software Foundation (see http://xerces.apache.org/xerces-c).
+
+The advantage of using this particular parser is that it provides
+<em>schema validation</em>.  For the uninitiated, schema validation is a means
+by which the incoming XML data can be checked to ensure it is well formed and
+that it contains the required information.  In order for this validation to
+work, some additional files - unsurprisingly known as schema files (not to be
+confused with CEGUI's own <em>scheme files</em> described below) - are required.
+The schema files used to validate the XML for CEGUI can be found in the
+<c>datafiles/xml_schema/</c> directory within the CEGUI distribution, and have
+the .xsd file extension.
+
+The main thing you need to know for now is that when using the Xerces-C++
+based XML parser, these .xsd files must be available to the ResourceProvider
+system; this is probably best achieved by setting up a resource group to the
+directory containing the schema files and setting that group as the default to
+be used by CEGUI::XercesParser when loading schema files (the specifics on how
+to do this are covered in @ref resprov_tutorial).
+
+The CEGUI developers recommend using Xerces-C++ during development and testing,
+and then switching to Expat (or one of the other lightweight parsers) for final
+deployment -- this way you minimise the chances of bad XML files slipping into
+your product.
+
+<br>
+@section datafile_tutorial_files The Data Files
+As previously mentioned, the majority of the data files in CEGUI are XML based.
+Rather than using a generic '.xml' file extension, the data files are usually
+named according to what the files actually represent; for example .imageset for
+an Imageset and .font for a Font (this naming convention is not, however, a
+requirement of the system - you are free to name the files any way you like).
+There now follows a very brief overview of the purpose each file type.
+
+@subsection datafile_tutorial_imageset Imageset
+An Imageset is a collection of named regions upon some source surface, such as
+an image file or texture.  In CEGUI terminology, each of these named regions is
+an Image and is the basic level of imagery used by CEGUI.  By modifying the
+source image file or texture content, or by modifying the areas of the defined
+regions within the Imageset file, you can easily change the appearance of what
+gets drawn by CEGUI.
+
+For a complete description of imageset files, please see @ref xml_imageset
+
+@subsection datafile_tutorial_font Font
+A Font file, unsurprisingly, defines a font for use in CEGUI.  There are at
+present two types of font which may be defined:
+- FreeTypeFont: This is a font based upon a standard font file (such as a
+true-type '.ttf' font).  A FreeTypeFont is specified via the attribute
+<c>Type="FreeType"</c> in the .font XML file.
+- PixmapFont: This type of font is based upon an Imageset which defines Images
+for the font glyphs, and is best thought of as a bitmapped font.  A PixmapFont
+is specified via the attribute <c>Type="Pixmap"</c> in the .font XML file.
+
+For a complete description of font files, please see @ref xml_font
+
+@subsection datafile_tutorial_looknfeel LookNFeel
+LookNFeel files form a major part of CEGUI's skinning system.  Each will contain
+one or more WidgetLook definitions that describe to the system various imagery
+and child widget components, their locations, additional property values
+and so on an so forth.  These WidgetLook specifications are later bound to
+concrete elements within the system to form what are ultimately represented as
+the windows and widgets in CEGUI.
+
+For a complete description of looknfeel files (and other skinning related
+material), please see @ref fal_man
+
+@subsection datafile_tutorial_scheme Scheme
+A Scheme file is a largely means to group other data files and resources
+together, and to define some of their interactions, and form a single point
+to load what might be considered a 'skin' for CEGUI's windows and widgets.
+A Scheme can contain one or more of the following:
+- @c Imageset Specifies an Imageset file to be loaded as part of the scheme.
+- @c Font Specifies a Font file to be loaded as part of the scheme.
+- @c LookNFeel Specifies a LookNFeel file to be loaded as part of the scheme.
+- @c WindowSet Specifies the name of a loadable module, and a set of widget
+  names contained within that module that you wish to register with the system
+  (if no names are listed, all available types in the module are registered).
+  This is a convenient way of adding additional core widget types to CEGUI
+  (especially if the module is provided by a third party).
+- @c WindowRendererSet Specifies the name of a loadable module, and a set of
+  window renderer names contained within that module that you wish to register
+  with the system (if no names are listed, all available types in the module are
+  registered).  A 'Window Renderer' is an object that can control rendering for
+  some base window type(s), all the window renderer objects supplied with CEGUI
+  perform rendering by making use of the 'Falagard' skinning system
+  (though this is not a strict requirement).
+- @c WindowAlias Provides a means to refer to a window / widget type by
+  alternative names, it can also be used to 'hide' an already registered widget
+  type with another widget type (so that other widget type gets used instead).
+- @c FalagardMapping  Creates a new usable window type by linking a concrete
+  window/widget type, a window renderer type, a widget look definition and --
+  optionally -- a render effect.
+
+For a complete description of scheme files, please see @ref xml_scheme
+
+@subsection datafile_tutorial_layout Layout
+A layout file contains an XML representation of a window layout.  Each nested
+'Window' element defines a window or widget to be created, the 'Property'
+elements define the desired settings and property values for each window
+defined.
+
+For a complete description of layout files, please see @ref xml_layout
+
+@subsection datafile_tutorial_config Config
+CEGUI's config file support allows you to specify all the system defaults,
+initial resources to be loaded, as well as initialisation and termination script
+files to execute (when using a ScriptModule), without writing a line of C++ code
+beyond that which creates the Renderer and System objects.
+
+For a complete description of config files, please see @ref xml_config
+
+<br>
+@section datafile_tutorial_load_basics Loading the Basic Files
+In order to get things up and running you need to load in some files.
+The typical set of files needed are:
+- Imageset
+- Font
+- LookNFeel
+- Scheme
+
+The good thing about the Scheme file - as you may have gathered from the above
+description - is that it can automatically load the other files for you.  For
+the purposes of this tutorial, we will load a scheme file and a font file -
+it is assumed the scheme automatically loads an Imageset and LookNFeel for us.
+Loading the scheme and font files is done as follows:
+@code
+// create (load) the TaharezLook scheme file
+// (this auto-loads the TaharezLook looknfeel and imageset files)
+CEGUI::SchemeManager::getSingleton().createFromFile( "TaharezLook.scheme" );
+
+// create (load) a font.
+// The first font loaded automatically becomes the default font, but note
+// that the scheme might have already loaded a font, so there may already
+// be a default set - if we want the "DejaVuSans-10" font to definitely
+// be the default, we should set the default explicitly afterwards.
+CEGUI::FontManager::getSingleton().createFromFile( "DejaVuSans-10.font" );
+@endcode
+
+In the above code (and in the CEGUI samples) it is assumed that the resource
+group locations and the default groups have all been set up as described in
+@ref resprov_tutorial.
+
+The `TaharezLook.scheme` file used as an example in this tutorial, as well as the corresponding imageset, font and looknfeel files (including `DejaVuSans-10.font`), are shipped with CEGUI's source package, SDK and other forms of distribution by default. Depending on how you installed CEGUI, these files might therefore already be available on your system (e.g., in `/usr/share/cegui/datafiles` on a Linux system). If you downloaded the source package or got CEGUI from the repository, then the files should be in the folder `datafiles/` of your CEGUI folder, which is the default folder and the structure that the CEGUI SampleBrowser uses on Windows for the samples.
+
+If you do not have the files, download the CEGUI source tarball or zip corresponding to your version of CEGUI from the download page (http://cegui.org.uk/download) and extract it. Inside it you will find a directory `datafiles/` whose inner structure corresponds to the structure recommended in the previous tutorial: @ref resprov_tutorial. Copy the files from there into the directories you set up (or simply copy the entire `datafiles/`directory if you are lazy). If you don’t do this, CEGUI will complain about these files being not found and will crash your program with an exception.
+
+<br>
+@section datafile_tutorial_setup_defaults System Defaults Initialisation
+Finally, you need to specify some default options for the System.  This ensures
+that the system always has a font and mouse cursor available for when a window
+or widget specifies no preference of its own.
+
+The FontManager automatically sets the first loaded font as the system default.
+If this is not the default font you require, or if you can not guarantee the
+order fonts are loaded, you should set the default explicitly, as in this code:
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont( "DejaVuSans-10" );
+@endcode
+
+Another default object you'll normally set is a mouse cursor.  This ensures
+that when you move the mouse over any element that does not set a cursor of its
+own, the cursor does not disappear.  The code to set the default mouse cursor
+for the initial, default GUIContext is as follows:
+@note This uses the TaharezLook imageset which was loaded as part of the
+TaharezLook scheme we loaded above.
+
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().
+    getMouseCursor().setDefaultImage( "TaharezLook/MouseArrow" );
+@endcode
+
+Finally, if you intend to use tool tips, you should specify the type of the
+ToolTip based widget that you want used for that purpose.  It is actually
+possible to set this on a per-window basis, though this is not normally
+required, and is beyond the scope of this introductory tutorial.  The code to
+set the default tool tip window type for the initial, default GUIContext looks
+like this:
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().
+    setDefaultTooltipType( "TaharezLook/Tooltip" );
+@endcode
+
+<br>
+@section datafile_tutorial_conclusion Conclusion
+Here we have discovered the very basics of what the various data files used by
+CEGUI are, how they are loaded, and the minimal initialisation needed for CEGUI
+applications.
+
+*/
+}

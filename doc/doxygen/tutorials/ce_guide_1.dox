@@ -1,0 +1,285 @@
+namespace CEGUI {
+/**
+@page rendering_tutorial 1 - The Beginners Guide to Initialising CEGUI
+@author Paul D Turner
+@tableofcontents
+
+@section rendering_tutorial_intro Introduction
+In order to get CEGUI initialised and rendering -- regardless of your target API
+or engine -- there are basically three steps that need to be performed:
+- Create an instance of a CEGUI::Renderer based object.
+- Create the CEGUI::System object (passing in the renderer created above).
+- Each frame, call the CEGUI::System::renderAllGUIContexts function to perform
+the rendering.
+
+Obviously you also need to load some data and perform other basic initialisation,
+which is covered in @ref resprov_tutorial and @ref datafile_tutorial.  You'll also need
+to get your inputs into the system so that you can interact with the GUI
+elements, this is covered in @ref input_tutorial.
+
+<br>
+@section rendering_tutorial_bootstrap The Easy Way: Renderer 'bootstrapSystem' functions
+This section describes the quickest and easiest way to get CEGUI up and running,
+and that is to use the static 'bootstrap' helper functions that are available on the
+Renderer class for your chosen API or engine.  Unless you're doing something advanced or
+otherwise unusual, these are the fuctions you'll want to use, since they enable the
+creation of all the initial CEGUI objects in a single call.
+
+
+Note that the Renderers also have destroySystem functions for cleaning up afterwards.
+
+The Ogre3D and Irrlicht engines each have their own intergrated file loading and
+image parsing functionality which CEGUI can seamlessly make use of via custom
+implementations of the CEGUI::ResourceProvider and CEGUI::ImageCodec interfaces.
+In order to make use of these implementations, the user would typically be
+required to create instances of these objects and pass them, along with the
+CEGUI::Renderer, to the System::create function.  Since this over-complicates
+system construction for the majority of cases, the bootstrapSystem functions for
+those Renderers will create all the engine specific supporting objects
+automatically.
+
+As stated above, when using the boostrapSystem functions, initialising CEGUI is
+as simple as a single function call:
+
+@subsection rendering_tutorial_bootstrap_opengl Old desktop OpenGL 1.2 (Fixed Function)
+- Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
+- Library: CEGUIOpenGLRenderer-0
+@code
+// Bootstrap CEGUI::System with an OpenGLRenderer object that uses the
+// current GL viewport, the DefaultResourceProvider, and the default
+// ImageCodec.
+//
+// NB: Your OpenGL context must already be initialised when you call this; CEGUI
+// will not create the OpenGL context itself.
+CEGUI::OpenGLRenderer& myRenderer =
+    CEGUI::OpenGLRenderer::bootstrapSystem();
+@endcode
+
+@subsection rendering_tutorial_bootstrap_opengl3 Desktop OpenGL 3.2 or OpenGL ES 2.0
+- Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
+- Library: CEGUIOpenGLRenderer-0
+- Note: to use this renderer with OpenGL ES 2.0, the Epoxy OpenGL loading library
+  (https://github.com/yaronct/libepoxy, major version 1)
+  must first be installed, and CEGUI must be configured with
+  "-DCEGUI_BUILD_RENDERER_OPENGL=OFF -DCEGUI_BUILD_RENDERER_OPENGL3=ON
+   -DCEGUI_USE_EPOXY=ON -DCEGUI_USE_GLEW=OFF".
+@code
+// Bootstrap CEGUI::System with an OpenGL3Renderer object that uses the
+// current GL viewport, the DefaultResourceProvider, and the default
+// ImageCodec.
+//
+// NB: Your OpenGL context must already be initialised when you call this; CEGUI
+// will not create the OpenGL context itself. Nothing special has to be done to
+// choose between desktop OpenGL and OpenGL ES: the type is automatically
+// determined by the type of the current OpenGL context.
+CEGUI::OpenGL3Renderer& myRenderer =
+    CEGUI::OpenGL3Renderer::bootstrapSystem();
+@endcode
+
+@subsection rendering_tutorial_bootstrap_d3d Direct3D
+- Header: <CEGUI/RendererModules/Direct3D9/Renderer.h>
+- Library: CEGUIDirect3D9Renderer-0
+@code
+// Bootstrap CEGUI::System with a Direct3D9Renderer object that uses the
+// DefaultResourceProvider, and the default ImageCodec.
+CEGUI::Direct3D9Renderer& myRenderer =
+    CEGUI::Direct3D9Renderer::bootstrapSystem( myD3D9Device );
+@endcode
+@note This example shows the D3D9 renderer, but the D3D10 and D3D11 renderers
+are largely the same.
+
+@subsection rendering_tutorial_bootstrap_ogre Ogre3D
+- Header: <CEGUI/RendererModules/Ogre/Renderer.h>
+- Library: CEGUIOgreRenderer-0
+@code
+// Bootstrap CEGUI::System with an OgreRenderer object that uses the
+// default Ogre rendering window as the default output surface, an Ogre based
+// ResourceProvider, and an Ogre based ImageCodec.
+CEGUI::OgreRenderer& myRenderer =
+    CEGUI::OgreRenderer::bootstrapSystem();
+@endcode
+
+@subsection rendering_tutorial_bootstrap_irrlicht Irrlicht
+- Header: <CEGUI/RendererModules/Irrlicht/Renderer.h>
+- Library: CEGUIIrrlichtRenderer-0
+@code
+// Bootstrap CEGUI::System with an IrrlichtRenderer object, an Irrlicht based
+// ResourceProvider, and an Irrlicht based ImageCodec.
+CEGUI::IrrlichtRenderer& myRenderer =
+    CEGUI::IrrlichtRenderer::bootstrapSystem( myIrrlichtDevice );
+@endcode
+
+<br>
+@section rendering_tutorial_nonbootstrap The Hard Way: Manual object creation.
+If for some reason you don't want to use the bootstrapSystem functions, you
+can still, of course, create all the required objects manually.  The following
+describes the creation of the Renderer and System objects via separate calls.
+Note that if you have already used the boostrapSystem function, you do not need
+to perform the following steps, and can instead skip to @ref rendering_tutorial_draw
+
+<br>
+@subsection rendering_tutorial_renderer Create an instance of a CEGUI::Renderer based object
+This is fairly straight forward and should pose no major obstacles for any of
+the supported renderers.  You must of course remember to include the header file
+for the renderer that you will be using.
+
+The basic renderer creation code is:
+@subsubsection rendering_tutorial_renderer_d3d9 Direct3D 9
+- Header: <CEGUI/RendererModules/Direct3D9/Renderer.h>
+- Library: CEGUIDirect3D9Renderer-0
+@code
+CEGUI::Direct3D9Renderer& myRenderer =
+    CEGUI::Direct3D9Renderer::create( myD3D9Device );
+@endcode
+
+@subsubsection rendering_tutorial_renderer_d3d10 Direct3D 10
+- Header: <CEGUI/RendererModules/Direct3D10/Renderer.h>
+- Library: CEGUIDirect3D10Renderer-0
+@code
+CEGUI::Direct3D10Renderer& myRenderer =
+    CEGUI::Direct3D10Renderer::create( myD3D10Device );
+@endcode
+
+@subsubsection rendering_tutorial_renderer_ogl old Desktop OpenGL 1.2 (Fixed Function)
+- Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
+- Library: CEGUIOpenGLRenderer-0
+@code
+// Create an OpenGLRenderer object that uses the current GL viewport as
+// the default output surface.
+CEGUI::OpenGLRenderer& myRenderer =
+    CEGUI::OpenGLRenderer::create();
+@endcode
+
+@subsubsection rendering_tutorial_renderer_ogl3 Desktop OpenGL 3.2 or OpenGL ES 2.0
+- Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
+- Library: CEGUIOpenGL3Renderer-0
+@code
+// Create an OpenGL3Renderer object that uses the current GL viewport as
+// the default output surface.
+CEGUI::OpenGL3Renderer& myRenderer =
+    CEGUI::OpenGL3Renderer::create();
+@endcode
+
+@subsubsection rendering_tutorial_renderer_ogre Ogre3D
+- Header: <CEGUI/RendererModules/Ogre/Renderer.h>
+- Library: CEGUIOgreRenderer-0
+@code
+// Create an OgreRenderer object that uses the default Ogre rendering
+// window as the default output surface.
+CEGUI::OgreRenderer& myRenderer =
+    CEGUI::OgreRenderer::create();
+@endcode
+
+@subsubsection rendering_tutorial_renderer_irrlicht Irrlicht Engine
+- Header: <CEGUI/RendererModules/Irrlicht/Renderer.h>
+- Library: CEGUIIrrlichtRenderer-0
+@code
+CEGUI::IrrlichtRenderer& myRenderer =
+    CEGUI::IrrlichtRenderer::create( myIrrlichtDevice );
+@endcode
+
+<br>
+@subsection rendering_tutorial_system Create the CEGUI::System object to initialise the system
+Another extremely simple step.  Just instantiate the CEGUI::System object by
+using the System::create function, passing in the reference to the
+CEGUI::Renderer that you created in the previous step.  This will cause the
+core CEGUI system to initialise itself.
+@code
+CEGUI::System::create( myRenderer );
+@endcode
+
+
+<br>
+@section Deinitialisation
+Don't forget to deinitialise your CEGUI System and your CEGUI Renderer. This must be done in the following order:
+1. Call @code CEGUI::System::destroy(); @endcode to destroy the CEGUI System.
+2. Then destroy your CEGUI renderer (which you should store in a pointer, such as d_renderer) , e.g.:
+ @code CEGUI::OpenGL3Renderer::destroy(static_cast<CEGUI::OpenGL3Renderer&>(*d_renderer)); @endcode
+
+The above expression inside the call casts the pointer, which is of type Renderer*, to the specific subtype Renderer class - in this case OpenGL3Renderer. You can of course store the reference to the Renderer using the correct subtype (here: OpenGL3Renderer) from the beginning.
+
+In order to prevent leaks you will also need to destroy any GUIContexts, Textures and GeometryBuffers that you <b>manually</b> created. Windows, Images and other regularly created parts of CEGUI will be destroyed following the above two destruction calls automatically. In case you dynamically create a large amount of CEGUI windows or other objects in your application during run-time, you are advised to destroy them to reduce memory usage.
+
+
+
+<br>
+@section rendering_tutorial_draw Call the function to render the GUI
+This is the only step that, depending upon your target engine, can be done
+differently.  Basically what you need to do call the
+CEGUI::System::renderAllGUIContexts function at the end of your rendering loop.
+For users of the Ogre3D engine, this step is taken care of automatically.  For
+everybody else, some simple example code can be seen below:
+@subsection rendering_tutorial_draw_d3d9 Direct3D 9
+@code
+// Start the scene
+myD3DDevice->BeginScene();
+// clear display
+myD3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+// user function to draw 3D scene
+draw3DScene();
+
+    // draw GUI
+    CEGUI::System::getSingleton().renderAllGUIContexts();
+
+// end the scene
+myD3DDevice->EndScene();
+// finally present the frame.
+myD3DDevice->Present(0, 0, 0, 0);
+@endcode
+
+@subsection rendering_tutorial_draw_d3d10 Direct3D 10
+@code
+// define colour view will be cleared to
+float clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+// clear display
+myD3DDevice->ClearRenderTargetView(myRenderTargetView, clear_colour);
+
+// user function to draw 3D scene
+draw3DScene();
+
+    // draw GUI
+    CEGUI::System::getSingleton().renderAllGUIContexts();
+
+// present the newly drawn frame.
+mySwapChain->Present(0, 0);
+@endcode
+
+@subsection rendering_tutorial_draw_ogl OpenGL (desktop or ES)
+@code
+// user function to draw 3D scene
+draw3DScene();
+
+// make sure that before calling renderAllGUIContexts, that any bound textures
+// and shaders used to render the scene above are disabled using
+// glBindTexture(0) and glUseProgram(0) respectively also set
+// glActiveTexture(GL_TEXTURE_0) 
+
+    // draw GUI
+    // NB: When using the old desktop OpenGL 1.2 renderer, this call should not
+    // occur between glBegin/glEnd calls.
+    CEGUI::System::getSingleton().renderAllGUIContexts();
+@endcode
+
+@subsection rendering_tutorial_draw_irrlicht Irrlicht
+@code
+// start the scene
+myIrrlichtDriver->beginScene(true, true, irr::video::SColor(150,50,50,50));
+// draw main scene
+myIrrlichtSceneManager->drawAll();
+
+    // draw gui
+    CEGUI::System::getSingleton().renderAllGUIContexts();
+
+// end the scene
+myIrrlichtDriver->endScene();
+@endcode
+
+<br>
+@section rendering_tutorial_conclusion Conclusion
+This is the <em>most basic</em> introduction to setting up CEGUI to render.
+There are things not covered here, such as using different rendering targets in
+Ogre and advanced options such as user specified resource providers, and so on.
+
+*/ 
+}

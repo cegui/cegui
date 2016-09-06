@@ -1,0 +1,53 @@
+/**
+@mainpage Crazy Eddie's GUI System Mk-2: Developer Documentation
+http://www.cegui.org.uk
+
+Copyright (c) 2004 - 2015 Paul D Turner & The CEGUI Development Team
+
+This is Crazy Eddie's GUI System Mk-2; a free library providing windowing and
+widgets for graphics APIs and engines where such functionality is not natively
+available or is severely lacking. The library is written in C++, is object
+orientated, and is primarily targeted at games developers who should be spending
+their time creating great games, not building GUI sub-systems...
+
+Note: In various documentation and online, the system is additionally referred
+to as both CEGUI (which is the main namespace name), and cegui_mk2 (which was the
+CVS module name of the Mk2 version of the system, and is now the mercurial
+repository name for this part of the system).
+
+@section main_sec_1 Documentation Sections
+The documentation for CEGUI is split into the following sections:
+- General Information
+    - @ref licensing
+    - @ref authors
+    - @ref change_log
+
+- Code related topics
+    - @ref downloading
+    - @ref compiling
+    - @ref code_standards
+    - @ref devel
+    - @ref arch_overview
+
+- Beginners Tutorials
+    - @ref rendering_tutorial
+    - @ref resprov_tutorial
+    - @ref datafile_tutorial
+    - @ref window_tutorial
+    - @ref input_tutorial
+
+- Porting Guides
+    - @ref porting7to8
+    - @ref porting6to7
+
+- Additional reference material
+    - @ref xml_imageset
+    - @ref xml_font
+    - @ref xml_scheme
+    - @ref xml_layout
+    - @ref xml_config
+    - @ref xml_animation
+    - @ref fal_man
+
+Have Fun!
+*/

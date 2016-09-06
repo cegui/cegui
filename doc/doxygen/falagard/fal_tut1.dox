@@ -1,0 +1,507 @@
+/**
+@page fal_tut1 Introduction to Falagard 'looknfeel' XML
+
+Before we get to the good stuff, I'd just like to point out that this section (or, indeed, the entire document) is not intended to teach you anything about XML in general. It is assumed the reader has some familiarity with XML and how to use it properly.
+
+@section fal_tut1_empty_skin Before we begin: An empty skin
+Before we can start adding widget skins, or WidgetLooks as they are known in the system, to our XML file, we need the basic file outline initialised. This is extremely trivial, and looks like this:
+@code
+<?xml version="1.0" ?>
+<Falagard version="7">
+</Falagard>
+@endcode
+
+We will be placing our WidgetLook definitions between the @c \<Falagard\>\</Falagard\> pair. It is possible to specify as many sub-elements as we require within these tags, so all of our definitions can go into a single file (in most cases this ends up being a very large file!)
+
+@section fal_tut1_button Starting Simple: A Button
+Without a doubt, the humble push button is the most common widget we're ever likely to see; without this workhorse, any UI would be virtually useless. So, this is where we will start.
+
+To define any widget skin, you use the WidgetLook element and specify a name for the widget type that you're defining by using the name attribute. So we'll start off by adding the following empty WidgetLook to our initial skin file:
+@code
+<WidgetLook name="TaharezLook/Button">
+</WidgetLook>
+@endcode
+
+As you can see from the reference for the Falagard/Button window renderer, we are required to specify imagery for numerous states, namely these are:
+@arg @c Normal
+@arg @c Hover
+@arg @c Pushed
+@arg @c Disabled
+
+Since we now know what states are required for the widget, it's a good idea to add the framework for these first; this effectively makes the WidgetLook complete and usable, although obviously nothing would be drawn for it at this stage since we have not defined any imagery.  So, we add empty StateImagery elements for the required states, and we end up with this:
+@code
+<WidgetLook name="TaharezLook/Button">
+
+  <StateImagery name="Normal">
+  </StateImagery>
+
+  <StateImagery name="Hover">
+  </StateImagery>
+
+  <StateImagery name="Pushed">
+  </StateImagery>
+
+  <StateImagery name="PushedOff">
+  </StateImagery>
+
+  <StateImagery name="Disabled">
+  </StateImagery>
+
+</WidgetLook>
+@endcode
+
+To specify rendering to be used for a widget, we use the ImagerySection element. Each imagery section is given a name; this name is used later to 'include' the imagery section within layers defined for each of the state imagery definitions.
+
+For our button, we will have an imagery section for each of the button states. We can add the outline of these to our existing, work-in-progress, widget-look:
+@code
+<WidgetLook name="TaharezLook/Button">
+
+  <ImagerySection name="normal_imagery">
+  </ImagerySection>
+
+  <ImagerySection name="hover_imagery">
+  </ImagerySection>
+
+  <ImagerySection name="pushed_imagery">
+  </ImagerySection>
+
+  <StateImagery name="Normal">
+  </StateImagery>
+
+  <StateImagery name="Hover">
+  </StateImagery>
+
+  <StateImagery name="Pushed">
+  </StateImagery>
+
+  <StateImagery name="PushedOff">
+  </StateImagery>
+
+  <StateImagery name="Disabled">
+  </StateImagery>
+
+</WidgetLook>
+@endcode
+
+Now we can start to define the ImageyComponents for each section; this will tell the system how we want our button to appear on screen.
+
+The imagery for TaharezLook gives us three sections for each button state (except Disabled; for this we'll just re-use the 'normal_imagery' and use some different colours!). The available imagery sections give us a left end, a right end, and a middle section.
+
+There are various ways that we can approach applying these image sections to the widget; although the intended use is to have the end pieces drawn at their 'natural' horizontal size and the middle section stretched to fill the space in between the two ends. This all sounds simple enough, although there is one issue; the actual pixel sizes of the imagery is not fixed. The TaharezLook imageset uses the auto-scaling feature, which means that the source images will have variable sizes dependant upon the display resolution. All this needs to be taken into account when specifying the imagery; this way we ensure the results will be what we expect - at all resolutions.
+
+To specify an image to be drawn, we use the ImageryComponent element.  This should be added as a sub-element of ImagerySection. So we'll start by adding an empty imagery component to the definition for 'normal_imagery':
+@code
+...
+<ImagerySection name="normal_imagery">
+
+  <ImageryComponent>
+  </ImageryComponent>
+
+</ImagerySection>
+...
+@endcode
+
+The first thing we need to add to the ImageryComponent is an area definition telling the system where this image should be drawn:
+@code
+<ImageryComponent>
+
+  <Area>
+  </Area>
+
+</ImageryComponent>
+@endcode
+
+We'll start by placing the image for the left end of the button. This is the simplest component to place, since its position is known as being (0, 0). To specify these absolute values, we use the AbsoluteDim element.
+
+We start defining the required dimensions for our image area by using the Dim element, and using AbsoluteDim sub-element to indicate values to be used:
+@code
+<ImageryComponent>
+  <Area>
+
+    <Dim type="LeftEdge">
+      <AbsoluteDim value="0" />
+    </Dim>
+
+    <Dim type="TopEdge">
+      <AbsoluteDim value="0" />
+    </Dim>
+
+  </Area>
+</ImageryComponent>
+@endcode
+
+We have defined the left and top edges which gives our image its position.  Next we will specify dimensions to establish the area size.
+
+We want the width of the area to come from the source image itself, to do this we use the ImageDim element and tell it to access the image that we will be using for this component:
+@code
+<Dim type="Width">
+
+  <ImageDim
+    imageset="TaharezLook"
+    image="ButtonLeftNormal"
+    dimension="Width"
+  />
+
+</Dim>
+@endcode
+
+This tells the system that for the width of the area being defined, use the width of the image named ButtonLeftNormal from the TaharezLook imageset.
+
+The last part of our area is the height. This is another simple thing to specify, since we want the height to be the same as the full height of the widget being defined. We could use either the UnifiedDim element or the WidgetDim element for this purpose; we'll use the UnifiedDim here as it does not need to look up the widget by name and so is likely more economical:
+
+@code
+<Dim type="Height">
+
+  <UnifiedDim scale="1.0" type="Height" />
+
+</Dim>
+@endcode
+
+Here we use a scale value of 1.0 to indicate we want the full height of the widget.
+
+Now we have completed our area definition for this first image, and it looks like this:
+@code
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge">
+      <AbsoluteDim value="0" />
+    </Dim>
+    <Dim type="TopEdge">
+      <AbsoluteDim value="0" />
+    </Dim>
+    <Dim type="Width">
+      <ImageDim
+        imageset="TaharezLook"
+        image="ButtonLeftNormal"
+        dimension="Width"
+      />
+    </Dim>
+    <Dim type="Height">
+      <UnifiedDim scale="1.0" type="Height" />
+    </Dim>
+  </Area>
+</ImageryComponent>
+@endcode
+
+The next thing we need to do here is tell the system which image it should draw, this is done by using the Image element, and this should be placed immediately after the area definition:
+@code
+...
+<Image imageset="TaharezLook" image="ButtonLeftNormal" />
+...
+@endcode
+
+The final element that we need to add to this ImageryComponent definition is the VertFormat element. Using this we will tell the system to stretch the image vertically so that it covers the full height of our defined area:
+@code
+...
+<VertFormat type="Stretched" />
+...
+@endcode
+
+This completes the definition for the left end of the button, and the final xml for this component looks like this:
+@code
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge">
+      <AbsoluteDim value="0" />
+    </Dim>
+    <Dim type="TopEdge">
+      <AbsoluteDim value="0" />
+    </Dim>
+    <Dim type="Width">
+      <ImageDim
+        imageset="TaharezLook"
+        image="ButtonLeftNormal"
+        dimension="Width"
+      />
+    </Dim>
+    <Dim type="Height">
+      <UnifiedDim scale="1.0" type="Height" />
+    </Dim>
+  </Area>
+  <Image imageset="TaharezLook" image="ButtonLeftNormal" />
+  <VertFormat type="Stretched" />
+</ImageryComponent>
+@endcode
+
+The next image we will set up is the right end. To show another approach for image placement, rather than precisely defining the area where the image will appear, here we will define the target area as covering the entire widget and use the image alignment formatting to draw the image on the right hand side of the widget.
+
+The area definition that specifies the entire widget is something that you'll likely use a lot, and looks like this:
+@code
+<Area>
+  <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+  <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+  <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+  <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+</Area>
+@endcode
+
+Next comes comes the image specification:
+@code
+<Image imageset="TaharezLook" image="ButtonRightNormal" />
+@endcode
+
+Then the vertical formatting option:
+@code
+<VertFormat type="Stretched" />
+@endcode
+
+Finally, we add the horizontal formatting option which tells the system to align this image on the right edge of the defined area:
+@code
+<HorzFormat type="RightAligned" />
+@endcode
+
+The completed definition for the right end image now looks like this:
+@code
+<ImageryComponent>
+
+  <Area>
+    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+    <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+    <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+
+  <Image imageset="TaharezLook" image="ButtonRightNormal" />
+  <VertFormat type="Stretched" />
+  <HorzFormat type="RightAligned" />
+
+</ImageryComponent>
+@endcode
+
+The last image we need to place for the "normal_imagery" section is the middle section. Remember that we want this image to occupy the space between to two end pieces. The main part of achieving this is to correctly define the destination area for the image.
+
+The vertical aspects of the image definition for the middle section will be the same as for the two ends, and as such these will not be discussed any further.
+
+The first thing we need is to tell the system where the left edge of the middle section should appear. We know that the left edge of the image for the middle section needs to join to the right edge of the image for the left section. To achieve this we can make use of the ImageDim element to get the width of the left end image, and use this as the co-ordinate for the left edge of the middle section area:
+@code
+<Area>
+  <Dim type="LeftEdge">
+    <ImageDim
+      imageset="TaharezLook"
+      image="ButtonLeftNormal"
+      dimension="Width"
+    />
+  </Dim>
+  ...
+</Area>
+@endcode
+
+Now comes the fun part. Due to the fact we want the skin to operate correctly
+without knowing ahead of time how large the images are, we must use mathematical
+calculations in order to establish the required width of the middle section. If
+we knew for sure the image sizes, this could all be pre-calculated and we could
+simply use AbsoluteDim to tell the system the width we require. Unfortunately we
+are not this lucky. We are lucky, however, in the fact that the system provides
+a means for us to specify, within the XML, what calculations should be done to
+arrive at the final value for a dimension. The OperatorDim element is what
+provides this ability.
+
+Before going further we should look at what we need to calculate.  The width of the middle section is basically the width of the widget, minus the combined width of the two end sections:
+
+@f$ middleWidth=widgetWidth-(leftEndWidth+rightEndWidth) @f$
+
+However, due to the fact that the area can accept either a width or right edge co-ordinate, we can simplify this a little by specifying the right edge co-ordinate instead of the width. The right edge location for this middle image will be equal to the width of the widget, minus the width of the right end image. So the final calculation we need to do is this:
+
+@f$ rightEdge=widgetWidth-rightEndWidth @f$
+
+The result from both calculations is the same, so wherever possible we will use
+the simpler option. Since we need to perform some calculation, to specify this
+in XML we start off with an OperatorDim element that specifies the mathematical
+operation that we need to perform:
+@code
+<Dim type="RightEdge">
+
+  <OperatorDim op="Subtract">
+  </OperatorDim>
+
+</Dim>
+@endcode
+
+Next we will specify the first operand, which will be the left side of the
+operation being defined.  In this example this will be the width of the
+widget:
+@code
+<Dim type="RightEdge">
+  <OperatorDim op="Subtract">
+
+  <UnifiedDim scale="1" type="Width" />
+
+  </OperatorDim>
+</Dim>
+@endcode
+
+To complete the dimension specification we just insert a second *Dim element to
+tell the system what is to be subtracted. In this case it's the width of the
+image for the right end, so we will use the ImageDim element for this purpose.
+The final specification for this dimension looks as follows:
+@code
+<Dim type="RightEdge">
+  <OperatorDim op="Subtract">
+    <UnifiedDim scale="1" type="Width" />
+
+    <ImageDim
+      imageset="TaharezLook"
+      image="ButtonRightNormal"
+      dimension="Width"
+    />
+
+  </OperatorDim>
+</Dim>
+@endcode
+
+It is possible to chain further mathematical operations within the dimension
+specification. It would have been possible to do our original width calculation
+using two OperatorDim elements chained together to form an expression tree. The
+system is flexible enough that any expression using the supported operators
+can be expressed in this manner.
+
+Anyway, I digress slightly. Lets get back to our button imagery. We now have
+enough information to define the middle section of the button, which looks like
+this:
+@code
+<ImageryComponent>
+  <Area>
+    <Dim type="LeftEdge">
+      <ImageDim
+        imageset="TaharezLook"
+        image="ButtonLeftNormal"
+        dimension="Width"
+      />
+    </Dim>
+    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+    <Dim type="RightEdge">
+      <OperatorDim op="Subtract">
+        <UnifiedDim scale="1" type="Width" />
+        <ImageDim
+          imageset="TaharezLook"
+          image="ButtonRightNormal"
+          dimension="Width"
+        />
+      </OperatorDim>
+    </Dim>
+    <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+  </Area>
+  <Image imageset="TaharezLook" image="ButtonMiddleNormal" />
+  <VertFormat type="Stretched" />
+  <HorzFormat type="Stretched" />
+</ImageryComponent>
+@endcode
+
+This completes the imagery within the normal_imagery section. You can now add in the other two sections in the same manner, just replacing the image names used for the hover and pushed imagery as appropriate - everything else will be exactly the same as what you've done for the normal imagery.
+
+Now we can add references to the imagery sections within the elements that define the various states. The imagery for state imagery elements must be specified in layers. It is possible to specify multiple imagery sections to use within each layer, though for most simple cases, you'll only need one layer.
+
+Here we've added the imagery specification for the Normal state:
+@code
+<StateImagery name="Normal">
+
+  <Layer>
+    <Section section="normal_imagery" />
+  </Layer>
+
+</StateImagery>
+@endcode
+
+The Hover and Pushed states are defined in a similar fashion; just replace the name "normal_imagery" with the name of the appropriate imagery section for the state.
+
+The Disabled state is somewhat different though; we do not have any specific imagery for this state, so instead we will re-use the normal_imagery but specify some colours that will be applied to make the button appear darker. This is done by embedding a Colours element within the Section element, as demonstrated here:
+@code
+<StateImagery name="Disabled">
+  <Layer>
+    <Section section="normal_imagery">
+
+      <Colours
+        topLeft="FF7F7F7F"
+        topRight="FF7F7F7F"
+        bottomLeft="FF7F7F7F"
+        bottomRight="FF7F7F7F"
+      />
+
+    </Section>
+  </Layer>
+</StateImagery>
+@endcode
+
+Now we have a nice button with imagery defined for all the required states. There's just one thing missing - we need to put some label text on the button.
+
+To specify text, you use the TextComponent element, which goes in an ImagerySection the same as the ImageryComponent elements do. We could have put a TextComponent in each of the imagery sections we defined to display the label, however this is wasteful repetition.  A better approach is to define a imagery section what contains the label by itself, then we can re-use that for all of the states.
+
+So, start by defining the containing ImagerySection:
+@code
+...
+<ImagerySection name="label">
+
+  <TextComponent>
+  </TextComponent>
+
+</ImagerySection>
+...
+@endcode
+
+The definition of the TextComponent is extremely similar to that of ImageryComponent. We specify an area for the text and the formatting that we require. We can also optionally specify a Text element which is used to explicitly set the font and / or text string to be drawn.  Without these explicit settings, these items will be obtained from the base widget itself.
+
+We want our label to be centred within the entire area of the widget, so we need to use the area that defines the entire widget (this was shown above, so will not be repeated here.)
+
+We also need to set the formatting options for the text. For the vertical formatting we will use:
+@code
+<VertFormat type="CentreAligned" />
+@endcode
+
+And for the horizontal formatting:
+@code
+<HorzFormat type="WordWrapCentreAligned" />
+@endcode
+
+The final definition for our label imagery section looks like this:
+@code
+<ImagerySection name="label">
+  <TextComponent>
+    <Area>
+      <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+      <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+      <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+      <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+    </Area>
+    <VertFormat type="CentreAligned" />
+    <HorzFormat type="WordWrapCentreAligned" />
+  </TextComponent>
+</ImagerySection>
+@endcode
+
+Now all that is left is to add this to the layer specification for the state imagery. Normal state now looks like this (with Hover and Pushed being very similar):
+@code
+<StateImagery name="Normal">
+  <Layer>
+    <Section section="normal_imagery" />
+    <Section section="label" />
+  </Layer>
+</StateImagery>
+@endcode
+
+And for Disabled we again specify some additional colours:
+@code
+<StateImagery name="Disabled">
+  <Layer>
+    <Section section="normal_imagery">
+      <Colours
+        topLeft="FF7F7F7F"
+        topRight="FF7F7F7F"
+        bottomLeft="FF7F7F7F"
+        bottomRight="FF7F7F7F"
+      />
+    </Section>
+    <Section section="label">
+      <Colours
+        topLeft="FF7F7F7F"
+        topRight="FF7F7F7F"
+        bottomLeft="FF7F7F7F"
+        bottomRight="FF7F7F7F"
+      />
+    </Section>
+  </Layer>
+</StateImagery>
+@endcode
+
+This concludes the introduction tutorial. For full examples of this, and all the other WidgetLook specifications, see the example 'looknfeel' files in the CEGUI distribution, in the directory: @e cegui/datafiles/looknfeel/ 
+
+*/
