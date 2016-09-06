@@ -892,6 +892,8 @@ public:
         intuitive they cause Gimbal locks when animating and are overall the worse
         solution than using Quaternions. You can still use Euler angles, see
         the CEGUI::Quaternion class for more info about that.
+
+    \see Element::getRotation
     */
     void setRotation(const Quaternion& rotation);
 
@@ -904,6 +906,30 @@ public:
     {
         return d_rotation;
     }
+
+    /*!
+    \brief
+        Retrieves the pivot point (the point around which the widget is rotated).
+
+        The point is defined in 3D so you can also rotate around the Z axis.
+
+        The point is defined with "UDim"-s, so you can use relative dimensions. They're relative to the size of the widget. The depth of the widget is currently always 0.
+
+        The default is the widget's center.
+
+    \see Element::setPivot
+    \see Element::getRotation
+    */
+    UVector3 getPivot() const;
+
+    /*!
+    \brief
+        Sets the pivot point (the point around which the widget is rotated).
+
+    \see Element::getPivot
+    \see Element::setRotation
+    */
+    void setPivot(const UVector3& pivot);
 
     /*!
     \brief
@@ -1871,6 +1897,8 @@ protected:
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
     Quaternion d_rotation;
+    //! Pivot point (the point around which the widget is rotated).
+    UVector3 d_pivot;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;

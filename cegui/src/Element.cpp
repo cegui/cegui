@@ -79,6 +79,7 @@ Element::Element():
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
     d_rotation(Quaternion::IDENTITY),
+    d_pivot(UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))),
 
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
@@ -550,6 +551,21 @@ bool Element::contentFits() const
 void Element::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
+
+    ElementEventArgs args(this);
+    onRotated(args);
+}
+
+//----------------------------------------------------------------------------//
+UVector3 Element::getPivot() const
+{
+    return d_pivot;
+}
+
+//----------------------------------------------------------------------------//
+void Element::setPivot(const UVector3& pivot)
+{
+    d_pivot = pivot;
 
     ElementEventArgs args(this);
     onRotated(args);
