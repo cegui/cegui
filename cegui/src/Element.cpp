@@ -756,6 +756,12 @@ void Element::addElementProperties()
         &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
     );
 
+    CEGUI_DEFINE_PROPERTY(Element, UVector3,
+        "Pivot", "Property to get/set the Element's rotation's pivot point.",
+        &Element::setPivot, &Element::getPivot,
+        UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))
+    );
+
     CEGUI_DEFINE_PROPERTY(Element, bool,
         "NonClient", "Property to get/set whether the Element is 'non-client'. "
         "Value is either \"true\" or \"false\".",
