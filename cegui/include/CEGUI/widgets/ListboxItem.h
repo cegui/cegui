@@ -41,6 +41,13 @@
 #  pragma warning(disable : 4251)
 #endif
 
+#ifdef CEGUI_USE_LIBRAQM
+namespace CEGUI
+{
+    class RaqmTextData;
+}
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -454,6 +461,15 @@ protected:
     BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
+#endif
+
+#ifdef CEGUI_USE_LIBRAQM
+    //! raqm text object
+    RaqmTextData* d_raqmTextData;
+    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
+     the last update
+    */
+    mutable bool d_raqmTextNeedsUpdate;
 #endif
 
     String  d_tooltipText;  //!< Text for the individual tooltip of this item

@@ -42,6 +42,10 @@
     #include "CEGUI/BidiVisualMapping.h"
 #endif
 
+#ifdef CEGUI_USE_LIBRAQM
+    #include "CEGUI/RaqmTextData.h"
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -70,12 +74,20 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
 	d_selectBrush(nullptr)
 {
+#ifdef CEGUI_USE_LIBRAQM
+    d_raqmTextData = new RaqmTextData();
+#endif
+
     ListboxItem::setText(text);
 }
 
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
+#ifdef CEGUI_USE_LIBRAQM
+    delete d_raqmTextData;
+#endif
+
 #ifdef CEGUI_BIDI_SUPPORT
     delete d_bidiVisualMapping;
 #endif
@@ -119,6 +131,10 @@ void ListboxItem::setText( const String& text )
 
 #ifdef CEGUI_BIDI_SUPPORT
    d_bidiDataValid = false;
+#endif
+
+#ifdef CEGUI_USE_LIBRAQM
+   d_raqmTextNeedsUpdate = true;
 #endif
 }
 
