@@ -50,8 +50,9 @@ struct MouseClickTracker :
 {
     MouseClickTracker() :
         d_click_count(0),
-        d_click_area(0, 0, 0, 0)
-    {}
+        d_click_area(0, 0, 0, 0),
+        d_target_window(0)
+        {}
 
     //! Timer used to track clicks for this button.
     SimpleTimer d_timer;
