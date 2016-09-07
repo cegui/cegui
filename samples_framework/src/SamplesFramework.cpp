@@ -551,21 +551,26 @@ bool SamplesFramework::updateInitialisationStep()
         {
             bool fallbackSuccess = false;
 
-            #if defined(_WIN32) || defined(__WIN32__)
             CEGUI_TRY
             {
                 fallbackSuccess = true;
-                Logger::getSingleton().logEvent("Loading samples file from the datafiles directory "
-                    "has failed. Trying fallback directory.", Errors);
+
+                // Output log info to the log and console
+                String logInfo = "Loading the samples.xml file from the datafiles directory "
+                    "has failed. Trying to load from the fallback path relative to the "
+                    "executable: \"../datafiles/samples/samples.xml\"";
+
+                Logger::getSingleton().logEvent(logInfo, Errors);
+                std::cerr << logInfo << std::endl;
+
+
                 //As a Windows fallback, let's try the relative path from
                 //inside the build folder            
                 loadSamplesDataFromXML("../datafiles/samples/samples.xml");
             }
             CEGUI_CATCH(...)
             {
-                fallbackSuccess = false;
             }
-            #endif
        
             if(!fallbackSuccess)
             {
@@ -576,6 +581,11 @@ bool SamplesFramework::updateInitialisationStep()
 
                CEGUI_RETHROW;
             }
+
+            String logInfo = "Loading from the fallback path was a success!";
+
+            Logger::getSingleton().logEvent(logInfo, Errors);
+            std::cerr << logInfo << std::endl;
         }
         ++step;
         displaySampleBrowserLayoutLoadProgress();
