@@ -31,7 +31,8 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 FormattedRenderedString::FormattedRenderedString(const RenderedString& string) :
-    d_renderedString(&string)
+    d_renderedString(&string),
+    d_wasWordSplit(false)
 {
 }
 
@@ -53,5 +54,27 @@ const RenderedString& FormattedRenderedString::getRenderedString() const
 }
 
 //----------------------------------------------------------------------------//
+bool FormattedRenderedString::wasWordSplit() const
+{
+    return d_wasWordSplit;
+}
+
+//----------------------------------------------------------------------------//
+void FormattedRenderedString::setWasWordSplit(bool value)
+{
+    d_wasWordSplit = value;
+}
+
+//----------------------------------------------------------------------------//
+std::size_t FormattedRenderedString::getNumOfOriginalTextLines() const
+{
+    return getRenderedString().getLineCount();
+}
     
+//----------------------------------------------------------------------------//
+std::size_t FormattedRenderedString::getNumOfFormattedTextLines() const
+{
+    return getNumOfOriginalTextLines();
+}
+
 } // End of  CEGUI namespace section
