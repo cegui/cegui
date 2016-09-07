@@ -49,6 +49,8 @@ const CEGUI::String PropertyHelper<bool>::False("false");
 
 const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
 const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");
+const CEGUI::String PropertyHelper<AspectMode>::AdjustHeight("AdjustHeight");
+const CEGUI::String PropertyHelper<AspectMode>::AdjustWidth("AdjustWidth");
 const CEGUI::String PropertyHelper<AspectMode>::Ignore("Ignore");
 
 //----------------------------------------------------------------------------//

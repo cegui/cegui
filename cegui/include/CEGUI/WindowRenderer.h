@@ -153,6 +153,89 @@ public:
     */
     virtual bool handleFontRenderSizeChange(const Font* const font);
 
+    /*!
+    \brief
+        Get the width of the content of the window.
+
+        See the documentaion for "Window::getContentWidth" for more details.
+
+    \see Window::getContentWidth
+    */
+    virtual float getContentWidth() const;
+
+    /*!
+    \brief
+        Get the height of the content of the window.
+
+        See the documentaion for "Window::getContentHeight" for more details.
+
+    \see Window::getContentHeight
+    */
+    virtual float getContentHeight() const;
+
+    /*!
+    \brief
+        Get a lower bound for the width of the area of the window which is
+        reserved for content as an affine function of the window width.
+
+        See the documentaion for
+        "Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth"
+        for more details.
+    
+    \see Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth
+    */
+    virtual UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth() const;
+
+    /*!
+    \brief
+        Get a lower bound for the height of the area of the window which is
+        reserved for content as an affine function of the window height.
+
+        See the documentaion for
+        "Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight"
+        for more details.
+    
+    \see Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight
+    */
+    virtual UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight() const;
+
+    /*!
+    \brief
+        Set the size of the window to the minimal value in which the whole
+        window content is visible without the need for scrollbars (if possible),
+        and while the content remains "intact" (if possible).
+
+        See the documentaion for "Window::adjustSizeToContent" for more details.
+
+    \see Window::adjustSizeToContent
+    */
+    virtual void adjustSizeToContent();
+
+    /*!
+    \brief
+        Return whether setting the window size to "window_size" would make the
+        whole window content visible without the need for scrollbars (if
+        possible), and while the content remains "intact" (if possible).
+
+        See the documentaion for "Window::contentFitsForSpecifiedElementSize"
+        for more details.
+
+    \see Window::contentFitsForSpecifiedElementSize
+    */
+    virtual bool contentFitsForSpecifiedWindowSize(const Sizef& window_size) const;
+
+    /*!
+    \brief
+        Return whether the whole window content is visible without the need for
+        scrollbars (if possible), and while the content remains "intact" (if
+        possible).
+
+        See the documentaion for "Window::contentFits" for more details.
+
+    \see Window::contentFits
+    */
+    virtual bool contentFits() const;
+
 protected:
     /*************************************************************************
         Implementation methods
