@@ -144,7 +144,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        return (functor.*member_fn)(args);
     }
 
     template<typename T>
@@ -158,7 +158,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        return (functor.*member_fn)(args);
     }
 
     template<typename T>
@@ -172,7 +172,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        (functor.*member_fn)(args);
         return true;
     }
 
@@ -187,7 +187,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        (functor.*member_fn)(args);
         return true;
     }
 
@@ -202,7 +202,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        return (functor.*member_fn)();
     }
 
     template<typename T>
@@ -216,7 +216,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        return (functor.*member_fn)();
     }
 
     template<typename T>
@@ -230,7 +230,7 @@ namespace FunctorCopySlot_detail
         void* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        (functor.*member_fn)();
         return true;
     }
 
@@ -245,7 +245,7 @@ namespace FunctorCopySlot_detail
         typename DisableIf<HasVoidNoArgsConstOp<T> >::Type* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        (functor.*member_fn)();
         return true;
     }
 }

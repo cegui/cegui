@@ -64,7 +64,7 @@ protected:
         C* instance = static_cast<C*>(
             static_cast<const Window*>(receiver)->getWindowRenderer());
 
-        CEGUI_CALL_MEMBER_FN(*instance, this->d_setter)(value);
+        (*instance.*this->d_setter)(value);
     }
 
     //! \copydoc TypedProperty::getNative_impl

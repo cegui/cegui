@@ -363,7 +363,7 @@ public:
                 return get();
             }
 
-            return CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(skipAllPixelAlignment);
+            return ((*d_element).*d_generator)(skipAllPixelAlignment);
         }
 
         /*!
@@ -386,7 +386,7 @@ public:
         {
             // false, since when we are caching we don't want to skip anything, we want everything to act
             // exactly as it was setup
-            d_cachedData = CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(false);
+            d_cachedData = (*d_element.*d_generator)(false);
 
             d_cacheValid = true;
         }

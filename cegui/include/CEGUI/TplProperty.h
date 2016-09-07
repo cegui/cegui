@@ -96,15 +96,15 @@ public:
             // FIXME: Ideally we want this to be done during compilation, not runtime
 
             if (d_plainGetter)
-                return CEGUI_CALL_MEMBER_FN(*instance, d_plainGetter)();
+                return (*instance.*d_plainGetter)();
             if (d_constRefGetter)
-                return CEGUI_CALL_MEMBER_FN(*instance, d_constRefGetter)();
+                return (*instance.*d_constRefGetter)();
             if (d_refGetter)
-                return CEGUI_CALL_MEMBER_FN(*instance, d_refGetter)();
+                return (*instance.*d_refGetter)();
 
             assert(false);
             // just to get rid of the warning
-            return CEGUI_CALL_MEMBER_FN(*instance, d_plainGetter)();
+            return (*instance.*d_plainGetter)();
         }
 
         PlainGetter d_plainGetter;
