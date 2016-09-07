@@ -128,9 +128,6 @@ static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical
 typedef std::ostream OutStream;     //!< Output stream class.
 }  // end of CEGUI namespace section
 
-// improve readability - http://www.parashift.com/c++-faq-lite/pointers-to-members.html#faq-33.6
-#define CEGUI_CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember)) 
-
 /*************************************************************************
 	Bring in forward references to all GUI base system classes
 *************************************************************************/
