@@ -177,20 +177,8 @@ void SamplesFramework::loadSamplesDataFromXML(const String& filename)
     Samples_xmlHandler handler(this);
 
     // do parse (which uses handler to create actual data)
-    CEGUI_TRY
-    {
-        System::getSingleton().getXMLParser()->
-            parseXMLFile(handler, filename, XMLSchemaName, "");
-    }
-    CEGUI_CATCH(...)
-    {
-        Logger::getSingleton().logEvent(
-            "SamplesFramework::loadSamplesDataFromXML: "
-            "loading of sample data from file '" + filename + "' has failed.",
-            Errors);
-
-        CEGUI_RETHROW;
-    }
+    System::getSingleton().getXMLParser()->
+        parseXMLFile(handler, filename, XMLSchemaName, "");
 }
 
 
@@ -550,11 +538,45 @@ bool SamplesFramework::updateInitialisationStep()
     {
     case 0:
     {
-        const String filename(d_samplesXMLFilename.empty() ?
-            d_baseApp->getDataPathPrefix() + "/samples/samples.xml" :
-            d_samplesXMLFilename);
 
-        loadSamplesDataFromXML(filename);
+        CEGUI_TRY
+        {
+            // Try the regular samples folder and command line path folder
+            const String sampleFilePath(d_samplesXMLFilename.empty() ?
+                d_baseApp->getDataPathPrefix() + "/samples/samples.xml" :
+                d_samplesXMLFilename);
+            loadSamplesDataFromXML(sampleFilePath);
+        }
+        CEGUI_CATCH(...)
+        {
+            bool fallbackSuccess = false;
+
+            #if defined(_WIN32) || defined(__WIN32__)
+            CEGUI_TRY
+            {
+                fallbackSuccess = true;
+                Logger::getSingleton().logEvent("Loading samples file from the datafiles directory "
+                    "has failed. Trying fallback directory.", Errors);
+                //As a Windows fallback, let's try the relative path from
+                //inside the build folder            
+                loadSamplesDataFromXML("../datafiles/samples/samples.xml");
+            }
+            CEGUI_CATCH(...)
+            {
+                fallbackSuccess = false;
+            }
+            #endif
+       
+            if(!fallbackSuccess)
+            {
+                Logger::getSingleton().logEvent(
+                    "SamplesFramework::loadSamplesDataFromXML: "
+                    "loading of sample data from file '" + d_samplesXMLFilename + "' has failed.",
+                    Errors);
+
+               CEGUI_RETHROW;
+            }
+        }
         ++step;
         displaySampleBrowserLayoutLoadProgress();
 
