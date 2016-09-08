@@ -57,6 +57,7 @@ public:
     size_t getFormattedLineCount() const;
     float getHorizontalExtent(const Window* ref_wnd) const;
     float getVerticalExtent(const Window* ref_wnd) const;
+    std::size_t getNumOfFormattedTextLines() const;
 
 protected:
     //! Delete the current formatters and associated RenderedStrings
@@ -95,6 +96,8 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
 {
     deleteFormatters();
 
+    bool was_word_split = false;
+
     RenderedString rstring, lstring;
     rstring = *d_renderedString;
     float rs_width;
@@ -110,7 +113,7 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
                 break;
 
             // split rstring at width into lstring and remaining rstring
-            rstring.split(ref_wnd, line, area_size.d_width, lstring);
+            was_word_split = rstring.split(ref_wnd, line, area_size.d_width, lstring) || was_word_split;
             frs = CEGUI_NEW_AO T(*new RenderedString(lstring));
             frs->format(ref_wnd, area_size);
             d_lines.push_back(frs);
@@ -122,6 +125,8 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
     frs = CEGUI_NEW_AO T(*new RenderedString(rstring));
     frs->format(ref_wnd, area_size);
     d_lines.push_back(frs);
+
+    setWasWordSplit(was_word_split);
 }
 
 //----------------------------------------------------------------------------//
@@ -178,6 +183,17 @@ float RenderedStringWordWrapper<T>::getVerticalExtent(const Window* ref_wnd) con
         h += (*i)->getVerticalExtent(ref_wnd);
 
     return h;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+std::size_t RenderedStringWordWrapper<T>::getNumOfFormattedTextLines() const
+{
+    std::size_t ret(0);
+    for ( LineList::const_iterator line(d_lines.begin());
+          line != d_lines.end();  ++line)
+        ret += (*line)->getNumOfOriginalTextLines();
+    return ret;
 }
 
 //----------------------------------------------------------------------------//
