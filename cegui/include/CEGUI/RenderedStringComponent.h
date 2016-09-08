@@ -98,13 +98,32 @@ public:
         new RenderedStringComponent of the same type as '*this' holding the
         left side of the split, and leaving the right side of the split in
         this object.
+
+    \param was_word_split
+        return whether any word was split into 2 or more lines, because it
+        couldn't fit in a single line.
     
     \exception InvalidRequestException
         thrown if the RenderedStringComponent does not support being split.
     */
     virtual RenderedStringComponent* split(const Window* ref_wnd,
                                            float split_point,
-                                           bool first_component) = 0;
+                                           bool first_component,
+                                           bool& was_word_split) = 0;
+
+    /*!
+    \brief
+        split the component as close to split_point as possible, returning a
+        new RenderedStringComponent of the same type as '*this' holding the
+        left side of the split, and leaving the right side of the split in
+        this object.
+    
+    \exception InvalidRequestException
+        thrown if the RenderedStringComponent does not support being split.
+    */
+    RenderedStringComponent* split(const Window* ref_wnd,
+                                   float split_point,
+                                   bool first_component);
 
     //! clone this component.
     virtual RenderedStringComponent* clone() const = 0;
