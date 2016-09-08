@@ -58,7 +58,8 @@ public:
     bool canSplit() const;
     RenderedStringWidgetComponent* split(const Window* ref_wnd,
                                          float split_point,
-                                         bool first_component);
+                                         bool first_component,
+                                         bool& was_word_split);
     RenderedStringWidgetComponent* clone() const;
     size_t getSpaceCount() const;
     void setSelection(const Window* ref_wnd,

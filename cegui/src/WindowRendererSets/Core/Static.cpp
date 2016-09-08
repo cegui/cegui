@@ -57,7 +57,7 @@ namespace CEGUI
         if (d_frameEnabled != setting)
         {
             d_frameEnabled = setting;
-            d_window->invalidate();
+            onIsFrameEnabledChanged();
         }
     }
 
@@ -101,6 +101,11 @@ namespace CEGUI
 
         // render basic imagery
         wlf.getStateImagery(is_enabled ? "Enabled" : "Disabled").render(*d_window);
+    }
+
+    void FalagardStatic::onIsFrameEnabledChanged()
+    {
+        d_window->invalidate();
     }
 
 } // End of  CEGUI namespace section
