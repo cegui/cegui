@@ -50,8 +50,10 @@ The following is a list of all libraries that CEGUI can make use of:
     - Required for xerces-c based XMLParser module.
 - LibXml2 (http://www.xmlsoft.org/)
     - Required for libxml2 based XMLParser module.
-- TinyXML (http://sourceforge.net/projects/tinyxml/)
-    - Required for tinyxml based XMLParser module.
+- TinyXML (http://www.grinninglizard.com/tinyxml/)
+    - Required for TinyXML based XMLParser module.
+- TinyXML2 (http://www.grinninglizard.com/tinyxml2/index.html)
+    - Required for TinyXML2 based XMLParser module.
 - RapidXML (http://rapidxml.sourceforge.net/)
     - Required for RapidXML based XMLParser module.
 
