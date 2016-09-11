@@ -29,21 +29,19 @@
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Exceptions.h"
-#include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/RightAlignedRenderedString.h"
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
-#include <iostream>
-
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUI/MinibidiVisualMapping.h"
-#else
-    #include "CEGUI/BidiVisualMapping.h"
+#endif
+#if defined(CEGUI_USE_LIBRAQM)
+    #include "CEGUI/RaqmTextData.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -59,12 +57,17 @@ namespace CEGUI
 #elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-        
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
-        d_horzFormatting(HTF_LEFT_ALIGNED)
-    {}
+        d_horzFormatting(HTF_LEFT_ALIGNED),
+        d_raqmTextData(nullptr)
+    {
+#ifdef CEGUI_USE_LIBRAQM
+        
+        d_raqmTextData = new RaqmTextData();
+#endif        
+    }
 
     TextComponent::~TextComponent()
     {
@@ -391,9 +394,7 @@ namespace CEGUI
 
     const String& TextComponent::getTextVisual() const
     {
-        return d_textLogical;
-
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT)
         // no bidi support
         if (!d_bidiVisualMapping)
             return d_textLogical;
@@ -405,6 +406,8 @@ namespace CEGUI
         }
 
         return d_bidiVisualMapping->getTextVisual();
+#else
+        return d_textLogical;
 #endif
     }
 
@@ -519,22 +522,6 @@ String TextComponent::getEffectiveVisualText(const Window& wnd) const
     else
         return getTextVisual();
 #endif
-}
-
-//----------------------------------------------------------------------------//
-String TextComponent::getEffectiveFont(const Window& wnd) const
-{
-    if (!d_fontPropertyName.empty())
-        return wnd.getProperty(d_fontPropertyName);
-    else if (d_font.empty())
-    {
-        if (const Font* font = wnd.getFont())
-            return font->getName();
-        else
-            return String();
-    }
-    else
-        return d_font;
 }
 
 //----------------------------------------------------------------------------//

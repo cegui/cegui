@@ -36,14 +36,12 @@
 #include "CEGUI/Sizef.h"
 #include "CEGUI/USize.h"
 #include "CEGUI/EventSet.h"
-#include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/System.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
-#include "CEGUI/TextUtils.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include <vector>
@@ -855,7 +853,12 @@ public:
     */
     const String& getText(void) const {return d_textLogical;}
 
-    //! return text string with \e visual ordering of glyphs.
+    /*!
+    \brief
+        Return text string with \e visual ordering of glyphs. This
+        only returns meaningful data if using only bidi. Will return
+        the regular text String if using raqm or no bidi.
+    */
     const String& getTextVisual() const;
 
     /*!
@@ -3707,6 +3710,15 @@ protected:
     BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
+#endif
+
+#ifdef CEGUI_USE_LIBRAQM
+    //! raqm text object
+    RaqmTextData* d_raqmTextData;
+    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
+     the last update
+    */
+    mutable bool d_raqmTextNeedsUpdate;
 #endif
 
     //! RenderedString representation of text string as ouput from a parser.

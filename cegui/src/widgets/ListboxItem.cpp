@@ -30,21 +30,19 @@
 #   include "config.h"
 #endif
 
+#include "CEGUI/Config.h"
 #include "CEGUI/widgets/ListboxItem.h"
+#if defined(CEGUI_USE_LIBRAQM)
+#include "CEGUI/RaqmTextData.h"
+#endif
 #include "CEGUI/System.h"
 #include "CEGUI/ImageManager.h"
-
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUI/MinibidiVisualMapping.h"
-#else
-    #include "CEGUI/BidiVisualMapping.h"
 #endif
 
-#ifdef CEGUI_USE_LIBRAQM
-    #include "CEGUI/RaqmTextData.h"
-#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -141,9 +139,7 @@ void ListboxItem::setText( const String& text )
 //----------------------------------------------------------------------------//
 const String& ListboxItem::getTextVisual() const
 {
-    return d_textLogical;
-
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT)
     // no bidi support
     if (!d_bidiVisualMapping)
         return d_textLogical;
@@ -155,6 +151,8 @@ const String& ListboxItem::getTextVisual() const
     }
 
     return d_bidiVisualMapping->getTextVisual();
+#else
+    return d_textLogical;
 #endif
 }
 
