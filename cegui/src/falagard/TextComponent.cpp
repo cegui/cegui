@@ -57,11 +57,13 @@ namespace CEGUI
 #elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
+#ifdef CEGUI_USE_LIBRAQM
+        d_raqmTextData(nullptr),
+#endif 
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
-        d_horzFormatting(HTF_LEFT_ALIGNED),
-        d_raqmTextData(nullptr)
+        d_horzFormatting(HTF_LEFT_ALIGNED)
     {
 #ifdef CEGUI_USE_LIBRAQM
         
