@@ -31,7 +31,6 @@
 
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/ForwardRefs.h"
 #include "CEGUI/views/ItemView.h"
 #include <vector>
 

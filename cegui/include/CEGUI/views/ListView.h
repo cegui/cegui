@@ -29,7 +29,6 @@
 #ifndef _CEGUIListView_h_
 #define _CEGUIListView_h_
 
-#include "CEGUI/ForwardRefs.h"
 #include "CEGUI/views/ItemView.h"
 #include <vector>
 
