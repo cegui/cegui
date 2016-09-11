@@ -28,7 +28,6 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #define _Minesweeper_h_
 
 #include "Sample.h"
-#include "CEGUI/ForwardRefs.h"
 #include "Minesweeper_Timer.h"
 
 #include <ctime>

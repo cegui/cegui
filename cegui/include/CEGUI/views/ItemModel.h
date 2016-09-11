@@ -33,7 +33,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/EventSet.h"
-#include "CEGUI/ForwardRefs.h"
 #include "CEGUI/String.h"
 
 namespace CEGUI

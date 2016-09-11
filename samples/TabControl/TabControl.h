@@ -28,7 +28,6 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #define _TabControlSample_h_
 
 #include "Sample.h"
-#include "CEGUI/ForwardRefs.h"
 
 using namespace CEGUI;
 
