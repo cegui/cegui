@@ -27,16 +27,28 @@
 #ifndef _CEGUIRaqmTextData_h_
 #define _CEGUIRaqmTextData_h_
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include <raqm.h>
 
 namespace CEGUI
 {
+
+class String;
+
 class RaqmTextData
 {
 public:
+    RaqmTextData();
+    ~RaqmTextData();
+
+    void updateText(const String& newText);
+private:
+    void update(FT_Face fontFace, raqm_direction_t parseDirection);
+
     raqm_t* d_raqmObject;
 };
 
 }
 
-#endif  // end of guard _CEGUIRaqmTextData_h_
+#endif

@@ -24,17 +24,59 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef CEGUI_USE_LIBRAQM
-
 #include "CEGUI/RaqmTextData.h"
-
-#include "CEGUI/Config.h"
 #include "CEGUI/Logger.h"
-
+#include "CEGUI/Exceptions.h"
 
 namespace CEGUI
 {
+RaqmTextData::RaqmTextData()
+    : d_raqmObject(nullptr)
+{
+    d_raqmObject = raqm_create();
 
+    if (d_raqmObject == nullptr)
+    {
+        throw InvalidRequestException("Could not create raqm object");
+    }
 }
 
+void RaqmTextData::update(FT_Face fontFace, raqm_direction_t parseDirection)
+{
+    if (!raqm_set_freetype_face(d_raqmObject, fontFace))
+    {
+        throw InvalidRequestException("Could not set the Freetype font Face for "
+            "a raqm object");
+    }
+    
+    if (!raqm_set_par_direction(d_raqmObject, parseDirection))
+    {
+        throw InvalidRequestException("Could not set the parse direction for "
+            "a raqm object");
+    }
+}
+
+RaqmTextData::~RaqmTextData()
+{
+    if (d_raqmObject)
+    {
+        raqm_destroy(d_raqmObject);
+    }
+}
+
+void RaqmTextData::updateText(const String& newText)
+{
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
+    bool wasSuccess = raqm_set_text_utf8(d_raqmObject, newText.c_str(), newText.length())
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
+    const uint32_t* newTextPointer = reinterpret_cast<const std::uint32_t*>(newText.c_str());
+    bool wasSuccess = raqm_set_text(d_raqmObject, newTextPointer, newText.length());
 #endif
+
+    if(!wasSuccess)
+    {
+        throw InvalidRequestException("Setting raqm text was unsuccessful");
+    }
+}
+
+}

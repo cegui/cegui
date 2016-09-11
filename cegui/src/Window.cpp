@@ -46,18 +46,19 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/SharedStringStream.h"
+#if defined (CEGUI_USE_FRIBIDI)
+#include "CEGUI/FribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+#include "CEGUI/MinibidiVisualMapping.h"
+#endif
+#if defined(CEGUI_USE_LIBRAQM)
+    #include "CEGUI/RaqmTextData.h"
+#endif
+
 #include <algorithm>
 #include <iterator>
 #include <stdio.h>
 #include <queue>
-
-#if defined (CEGUI_USE_FRIBIDI)
-    #include "CEGUI/FribidiVisualMapping.h"
-#elif defined (CEGUI_USE_MINIBIDI)
-    #include "CEGUI/MinibidiVisualMapping.h"
-#else
-    #include "CEGUI/BidiVisualMapping.h"
-#endif
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -312,6 +313,10 @@ Window::Window(const String& type, const String& name):
             "Font/RenderSizeChanged",
             Event::Subscriber(&Window::handleFontRenderSizeChange, this)))
 {
+#ifdef CEGUI_USE_LIBRAQM
+    d_raqmTextData = new RaqmTextData();
+#endif
+
     // add properties
     addWindowProperties();
 }
@@ -3505,9 +3510,7 @@ glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
 //----------------------------------------------------------------------------//
 const String& Window::getTextVisual() const
 {
-    return d_textLogical;
-
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT)
     // no bidi support
     if (!d_bidiVisualMapping)
         return d_textLogical;
@@ -3519,6 +3522,8 @@ const String& Window::getTextVisual() const
     }
 
     return d_bidiVisualMapping->getTextVisual();
+#else
+    return d_textLogical;
 #endif
 }
 

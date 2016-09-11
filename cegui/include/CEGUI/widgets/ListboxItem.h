@@ -41,13 +41,6 @@
 #  pragma warning(disable : 4251)
 #endif
 
-#ifdef CEGUI_USE_LIBRAQM
-namespace CEGUI
-{
-    class RaqmTextData;
-}
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -98,7 +91,12 @@ public:
 
     const String& getText(void) const {return d_textLogical;}
 
-    //! return text string with \e visual ordering of glyphs.
+    /*!
+    \brief
+        Return text string with \e visual ordering of glyphs. This
+        only returns meaningful data if using only bidi. Will return
+        the regular text String if using raqm or no bidi.
+    */
     const String& getTextVisual() const;
 
     /*!
