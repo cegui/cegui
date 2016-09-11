@@ -113,6 +113,7 @@ class ScriptModule;
 class Sizef;
 class SimpleTimer;
 class SVGImage;
+class String;
 class StringTranscoder;
 class System;
 class Texture;
@@ -226,6 +227,14 @@ class SVGRect;
 
 class SVGPaint;
 class SVGPaintStyle;
+
+
+/*************************************************************************
+    Dependency-specific classes.
+*************************************************************************/
+#ifdef CEGUI_USE_LIBRAQM
+class RaqmTextData;
+#endif
 
 
 } // End of  CEGUI namespace section
