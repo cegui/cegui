@@ -607,12 +607,12 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 void OgreRenderer::beginRendering()
 {
     #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-    if ( !d_pimpl->d_previousVP )
+        if ( !d_pimpl->d_previousVP ) 
         {
             d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
             if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
                 d_pimpl->d_previousProjMatrix =
-            d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+                    d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
         }
     #endif
 

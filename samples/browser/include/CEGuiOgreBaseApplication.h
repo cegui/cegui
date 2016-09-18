@@ -85,6 +85,7 @@ public:
     bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
     bool isInitialised();
+    void run();
 
 protected:
     // override from base class since we use a non-default resource provider.

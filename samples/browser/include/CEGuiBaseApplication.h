@@ -164,8 +164,7 @@ protected:
         the CEGUI::DefaultResourceProvider - override if the sample base app
         being implemented uses something else!
     */
-    virtual void initialiseResourceGroupDirectories
-      (const CEGUI::String& dataPathPrefixOverride);
+    virtual void initialiseResourceGroupDirectories();
 
     //! initialise the standard default resource groups used by the samples.
     virtual void initialiseDefaultResourceGroups();
