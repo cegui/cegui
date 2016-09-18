@@ -283,9 +283,9 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
 
         if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
             install(TARGETS ${_LIB_NAME}
-          RUNTIME DESTINATION bin COMPONENT cegui_bin
-          LIBRARY DESTINATION ${_CEGUI_LIB_DEST} COMPONENT cegui_lib
-          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
+                RUNTIME DESTINATION bin COMPONENT cegui_bin
+                LIBRARY DESTINATION ${_CEGUI_LIB_DEST} COMPONENT cegui_lib
+                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
                 )
         endif()
 
@@ -403,9 +403,9 @@ macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE
     # Setup custom install location
     if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}
-      RUNTIME DESTINATION bin COMPONENT cegui_samples
-      LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
-      ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
+            RUNTIME DESTINATION bin COMPONENT cegui_samples
+            LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
+            ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
             )
     endif()
 
@@ -560,9 +560,9 @@ macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXT
     ###########################################################################
     if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}
-      RUNTIME DESTINATION bin COMPONENT cegui_bin
-      LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
-      ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
+            RUNTIME DESTINATION bin COMPONENT cegui_bin
+            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
             )
     endif()
 
