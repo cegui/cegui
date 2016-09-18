@@ -95,7 +95,7 @@ find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
 find_package(Fribidi)
-find_package(LIBRAQM)
+#find_package(LIBRAQM)
 
 if (NOT WIN32 AND NOT ANDROID)
     find_package(Iconv REQUIRED)
