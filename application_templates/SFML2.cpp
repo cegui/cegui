@@ -3,7 +3,7 @@
     author:     Georger Araujo <georger_br@yahoo.com.br>
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
+*   Copyright (C) 2004 - 2016 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -53,35 +53,35 @@ const int HEIGHT = 600;
 
 
 // Convert SFML2 keyboard code to CEGUI key code
-CEGUI::Key::Scan toCEGUIKey(const sf::Keyboard::Key & ro_key)
+CEGUI::Key::Scan toCEGUIKey(const sf::Keyboard::Key& ro_key)
 {
     return static_cast<CEGUI::Key::Scan>(sfKeyToCEGUIKey[static_cast<int>(ro_key)]);
 }
 
 
 // Convert SFML2 mouse button to CEGUI mouse button
-CEGUI::MouseButton toCEGUIButton(const sf::Mouse::Button & ro_button)
+CEGUI::MouseButton toCEGUIButton(const sf::Mouse::Button& ro_button)
 {
     using namespace CEGUI;
 
-    switch(ro_button)
+    switch (ro_button)
     {
-    case sf::Mouse::Left :
+    case sf::Mouse::Left:
         return LeftButton;
 
-    case sf::Mouse::Middle :
+    case sf::Mouse::Middle:
         return MiddleButton;
 
-    case sf::Mouse::Right :
+    case sf::Mouse::Right:
         return RightButton;
 
-    case sf::Mouse::XButton1 :
+    case sf::Mouse::XButton1:
         return X1Button;
 
-    case sf::Mouse::XButton2 :
+    case sf::Mouse::XButton2:
         return X2Button;
 
-    default :
+    default:
         return NoButton;
     }
 }
@@ -92,14 +92,14 @@ void initCEGUI()
     using namespace CEGUI;
 
     // create renderer and enable extra states
-    OpenGL3Renderer & cegui_renderer = OpenGL3Renderer::create(Sizef(WIDTH, HEIGHT));
+    OpenGL3Renderer& cegui_renderer = OpenGL3Renderer::create(Sizef(WIDTH, HEIGHT));
     cegui_renderer.enableExtraStateSettings(true);
 
     // create CEGUI system object
     CEGUI::System::create(cegui_renderer);
 
     // setup resource directories
-    DefaultResourceProvider * rp = static_cast<DefaultResourceProvider *>(
+    DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(
                 System::getSingleton().getResourceProvider());
     rp->setResourceGroupDirectory("schemes", "datafiles/schemes/");
     rp->setResourceGroupDirectory("imagesets", "datafiles/imagesets/");
@@ -117,7 +117,7 @@ void initCEGUI()
     WindowManager::setDefaultResourceGroup("layouts");
     ScriptModule::setDefaultResourceGroup("lua_scripts");
 
-    XMLParser * parser = System::getSingleton().getXMLParser();
+    XMLParser* parser = System::getSingleton().getXMLParser();
 
     if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
         parser->setProperty("SchemaDefaultResourceGroup", "schemas");
@@ -146,42 +146,42 @@ void initWindows()
     /////////////////////////////////////////////////////////////
 
     // load layout
-    Window * root = WindowManager::getSingleton().loadLayoutFromFile("application_templates.layout");
+    Window* root = WindowManager::getSingleton().loadLayoutFromFile("application_templates.layout");
     System::getSingleton().getDefaultGUIContext().setRootWindow(root);
 }
 
 
-bool guiHandleEvent(const sf::Event & ro_event, const sf::Window & ro_window)
+bool guiHandleEvent(const sf::Event& ro_event, const sf::Window& ro_window)
 {
-    switch(ro_event.type)
+    switch (ro_event.type)
     {
-    case sf::Event::TextEntered :
+    case sf::Event::TextEntered:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(ro_event.text.unicode);
 
-    case sf::Event::KeyPressed :
+    case sf::Event::KeyPressed:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(toCEGUIKey(ro_event.key.code));
 
-    case sf::Event::KeyReleased :
+    case sf::Event::KeyReleased:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(toCEGUIKey(ro_event.key.code));
 
-    case sf::Event::MouseMoved :
+    case sf::Event::MouseMoved:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(
                     static_cast<float>(sf::Mouse::getPosition(ro_window).x),
                     static_cast<float>(sf::Mouse::getPosition(ro_window).y));
 
-    case sf::Event::MouseButtonPressed :
+    case sf::Event::MouseButtonPressed:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(
                     toCEGUIButton(ro_event.mouseButton.button));
 
-    case sf::Event::MouseButtonReleased :
+    case sf::Event::MouseButtonReleased:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(
                     toCEGUIButton(ro_event.mouseButton.button));
 
-    case sf::Event::MouseWheelMoved :
+    case sf::Event::MouseWheelMoved:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(
                     static_cast<float>(ro_event.mouseWheel.delta));
 
-    default :
+    default:
         return false;
     }
 
@@ -198,7 +198,7 @@ int main()
         sf::VideoMode(WIDTH, HEIGHT),
         "SFML + OpenGL + CEGUI",
         sf::Style::Default,
-        sf::ContextSettings(32, 0, 0, 3, 2, sf::ContextSettings::Core));
+        sf::ContextSettings(0, 0, 0, 3, 2, sf::ContextSettings::Core));
     window.setMouseCursorVisible(false);
     window.setVerticalSyncEnabled(false);
 
@@ -214,19 +214,19 @@ int main()
     // Initialise windows and setup layout
     initWindows();
 
-    CEGUI::OpenGL3Renderer * renderer =
-            static_cast<CEGUI::OpenGL3Renderer *>(CEGUI::System::getSingleton().getRenderer());
+    CEGUI::OpenGL3Renderer* renderer =
+            static_cast<CEGUI::OpenGL3Renderer*>(CEGUI::System::getSingleton().getRenderer());
 
     // Run the main loop
     sf::Clock clock;
     bool running = true;
 
-    while(running)
+    while (running)
     {
         // Handle events
         sf::Event event;
 
-        while(window.pollEvent(event))
+        while (window.pollEvent(event))
         {
             if (guiHandleEvent(event, window))
                 continue;
