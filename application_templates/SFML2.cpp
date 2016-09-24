@@ -53,18 +53,18 @@ const int HEIGHT = 600;
 
 
 // Convert SFML2 keyboard code to CEGUI key code
-CEGUI::Key::Scan toCEGUIKey(const sf::Keyboard::Key& ro_key)
+CEGUI::Key::Scan toCEGUIKey(const sf::Keyboard::Key& key)
 {
-    return static_cast<CEGUI::Key::Scan>(sfKeyToCEGUIKey[static_cast<int>(ro_key)]);
+    return static_cast<CEGUI::Key::Scan>(sfKeyToCEGUIKey[static_cast<int>(key)]);
 }
 
 
 // Convert SFML2 mouse button to CEGUI mouse button
-CEGUI::MouseButton toCEGUIButton(const sf::Mouse::Button& ro_button)
+CEGUI::MouseButton toCEGUIButton(const sf::Mouse::Button& button)
 {
     using namespace CEGUI;
 
-    switch (ro_button)
+    switch (button)
     {
     case sf::Mouse::Left:
         return LeftButton;
@@ -151,35 +151,35 @@ void initWindows()
 }
 
 
-bool guiHandleEvent(const sf::Event& ro_event, const sf::Window& ro_window)
+bool guiHandleEvent(const sf::Event& event, const sf::Window& window)
 {
-    switch (ro_event.type)
+    switch (event.type)
     {
     case sf::Event::TextEntered:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(ro_event.text.unicode);
+        return CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(event.text.unicode);
 
     case sf::Event::KeyPressed:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(toCEGUIKey(ro_event.key.code));
+        return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(toCEGUIKey(event.key.code));
 
     case sf::Event::KeyReleased:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(toCEGUIKey(ro_event.key.code));
+        return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(toCEGUIKey(event.key.code));
 
     case sf::Event::MouseMoved:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(
-                    static_cast<float>(sf::Mouse::getPosition(ro_window).x),
-                    static_cast<float>(sf::Mouse::getPosition(ro_window).y));
+                    static_cast<float>(sf::Mouse::getPosition(window).x),
+                    static_cast<float>(sf::Mouse::getPosition(window).y));
 
     case sf::Event::MouseButtonPressed:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(
-                    toCEGUIButton(ro_event.mouseButton.button));
+                    toCEGUIButton(event.mouseButton.button));
 
     case sf::Event::MouseButtonReleased:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(
-                    toCEGUIButton(ro_event.mouseButton.button));
+                    toCEGUIButton(event.mouseButton.button));
 
     case sf::Event::MouseWheelMoved:
         return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(
-                    static_cast<float>(ro_event.mouseWheel.delta));
+                    static_cast<float>(event.mouseWheel.delta));
 
     default:
         return false;
@@ -208,9 +208,6 @@ int main()
     // Init CEGUI
     initCEGUI();
 
-    // Notify system of the window size
-    CEGUI::System::getSingleton().notifyDisplaySizeChanged(CEGUI::Sizef(WIDTH, HEIGHT));
-
     // Initialise windows and setup layout
     initWindows();
 
@@ -233,13 +230,12 @@ int main()
 
             if (event.type == sf::Event::Closed)
             {
-                // End the program
                 running = false;
             }
             else if (event.type == sf::Event::Resized)
             {
-                // Adjust the viewport when the window is resized
-                glViewport(0, 0, event.size.width, event.size.height);
+                CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+                            CEGUI::Sizef(event.size.width, event.size.height));
             }
         }
 
