@@ -24,6 +24,7 @@ if(CEGUI_BUILD_RENDERER_OPENGL)
         cegui_target_link_libraries(CEGUITemplate_GLFW3 ${CEGUI_BASE_LIBNAME})
         cegui_target_link_libraries(CEGUITemplate_GLFW3 ${CEGUI_OPENGL_RENDERER_LIBNAME})
         cegui_add_dependency(CEGUITemplate_GLFW3 GLFW3 PRIVATE TRUE)
+        cegui_add_dependency(CEGUITemplate_GLFW3 GLEW PRIVATE TRUE)
 
     endif()
 
