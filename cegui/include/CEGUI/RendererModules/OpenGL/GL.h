@@ -33,9 +33,11 @@
 
 #include <epoxy/gl.h>
 
-#elif defined CEGUI_USE_GLEW
+#elif defined(CEGUI_USE_GLEW)
 
+#   if !defined(CEGUI_DONT_USE_GLEW_LOCALLY)
 #include <GL/glew.h>
+#   endif
 
 // When using GLEW, there's no need to "#include" the OpenGL headers.
 #ifndef __APPLE__
