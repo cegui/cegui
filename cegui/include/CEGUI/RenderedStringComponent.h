@@ -27,9 +27,11 @@
 #ifndef _CEGUIRenderedStringComponent_h_
 #define _CEGUIRenderedStringComponent_h_
 
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/falagard/Enums.h"
+
+#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -44,8 +46,7 @@ namespace CEGUI
     Base class representing a part of a rendered string.  The 'part' represented
     may be a text string, an image or some other entity.
 */
-class CEGUIEXPORT RenderedStringComponent :
-    public AllocatedObject<RenderedStringComponent>
+class CEGUIEXPORT RenderedStringComponent
 {
 public:
     //! Destructor.
@@ -81,10 +82,11 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-                      const Vector2f& position, const ColourRect* mod_colours,
-                      const Rectf* clip_rect, const float vertical_space,
-                      const float space_extra) const = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+        const Window* ref_wnd,
+        const glm::vec2& position, const ColourRect* mod_colours,
+        const Rectf* clip_rect, const float vertical_space,
+        const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
     virtual Sizef getPixelSize(const Window* ref_wnd) const = 0;

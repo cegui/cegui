@@ -44,7 +44,7 @@ namespace CEGUI
         "");
     }
 
-    void FalagardTabControl::render()
+    void FalagardTabControl::createRenderGeometry()
     {
         const StateImagery* imagery;
         // get WidgetLookFeel for the assigned look.
@@ -58,8 +58,8 @@ namespace CEGUI
     {
         if (d_tabButtonType.empty())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "d_tabButtonType has not been set!"));
+            throw InvalidRequestException(
+                "d_tabButtonType has not been set!");
         }
 
         Window* button = WindowManager::getSingleton().createWindow(d_tabButtonType, name);

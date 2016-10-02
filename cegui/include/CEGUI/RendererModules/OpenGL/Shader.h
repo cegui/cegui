@@ -24,8 +24,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _CEGUIOpenGL3Shader_h_
-#define _CEGUIOpenGL3Shader_h_
+#ifndef _CEGUIOpenGLBaseShader_h_
+#define _CEGUIOpenGLBaseShader_h_
 
 #include "CEGUI/Exceptions.h"
 #include "RendererBase.h"
@@ -39,9 +39,9 @@ author:     Lukas E Meindl
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class OpenGLBaseStateChangeWrapper;
 
-class OPENGL_GUIRENDERER_API OpenGL3Shader :
-    public AllocatedObject<OpenGL3Shader>
+class OPENGL_GUIRENDERER_API OpenGLBaseShader
 {
 public:
 
@@ -49,10 +49,11 @@ public:
     \brief
         Creates and loads shader programs from the two strings supplied to it
     */
-    OpenGL3Shader(const std::string& vertex_shader_source,
-                  const std::string& fragment_shader_source);
+    OpenGLBaseShader(const std::string& vertex_shader_source,
+                  const std::string& fragment_shader_source,
+                  OpenGLBaseStateChangeWrapper* glStateChanger);
 
-    ~OpenGL3Shader();
+    virtual ~OpenGLBaseShader();
 
     /*!
     \brief
@@ -62,32 +63,26 @@ public:
 
     /*!
     \brief
-        Unbind the shader
-    */
-    void unbind() const;
-
-    /*!
-    \brief
         Query the location of a vertex attribute inside the shader.
     */
-    GLuint getAttribLocation(const std::string &name) const;
+    GLint getAttribLocation(const std::string &name) const;
 
     /*!
     \brief
         Query the location of a uniform variable inside the shader.
     */
-    GLuint getUniformLocation(const std::string &name) const;
+    GLint getUniformLocation(const std::string &name) const;
 
     /*!
     \brief
         Defines the name of the variable inside the shader which represents the
         final color for each fragment.
     */
-    void bindFragDataLocation(const std::string &name);
+    virtual void bindFragDataLocation(const std::string &name);
 
     bool isCreatedSuccessfully();
 
-    void link();
+    virtual void link();
 
 private:
     GLuint compile(GLuint type, const std::string &source);
@@ -95,12 +90,14 @@ private:
     void outputShaderLog(GLuint shader);
     void outputProgramLog(GLuint program);
 
-    std::string d_shaderName;
-    bool d_createdSucessfully;
+    OpenGLBaseStateChangeWrapper* d_glStateChanger;
+
+    bool d_createdSuccessfully;
 
     GLuint d_vertexShader;
     GLuint d_fragmentShader;
     GLuint d_geometryShader;
+protected:
     GLuint d_program;
 };
 

@@ -31,6 +31,8 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
 
+#include <vector>
+
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
@@ -66,20 +68,21 @@ public:
     const Sizef& getSize() const;
 
     // implementation of abstract base interface
-    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-              const Vector2f& position, const ColourRect* mod_colours,
-              const Rectf* clip_rect, const float vertical_space,
-              const float space_extra) const;
-    Sizef getPixelSize(const Window* ref_wnd) const;
-    bool canSplit() const;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Window* ref_wnd,
+        const glm::vec2& position, const ColourRect* mod_colours,
+        const Rectf* clip_rect, const float vertical_space,
+        const float space_extra) const override;
+    Sizef getPixelSize(const Window* ref_wnd) const override;
+    bool canSplit() const override;
     RenderedStringImageComponent* split(const Window* ref_wnd,
                                         float split_point,
                                         bool first_component,
-                                        bool& was_word_split);
-    RenderedStringImageComponent* clone() const;
-    size_t getSpaceCount() const;
+                                        bool& was_word_split) override;
+    RenderedStringImageComponent* clone() const override;
+    size_t getSpaceCount() const override;
     void setSelection(const Window* ref_wnd,
-                      const float start, const float end);
+                      const float start, const float end) override;
 protected:
     //! pointer to the image drawn by the component.
     const Image* d_image;

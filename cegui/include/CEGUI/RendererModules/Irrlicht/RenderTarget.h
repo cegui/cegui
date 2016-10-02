@@ -43,9 +43,8 @@ namespace CEGUI
 {
 class IrrlichtRenderer;
 
-//! Intermediate RenderTarget implementing common parts for Irrlicht engine.
-template <typename T = RenderTarget>
-class IRR_GUIRENDERER_API IrrlichtRenderTarget : public T
+//! RenderTarget base class for RenderTargets of the Irrlicht engine.
+class IRR_GUIRENDERER_API IrrlichtRenderTarget : virtual public RenderTarget
 {
 public:
     //! Constructor
@@ -62,7 +61,7 @@ public:
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2f& p_in, Vector2f& p_out) const;
+                        const glm::vec2& p_in, glm::vec2& p_out) const;
 protected:
     //! helper that initialises the cached matrix
     void updateMatrix() const;

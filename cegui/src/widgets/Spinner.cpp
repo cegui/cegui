@@ -29,6 +29,8 @@
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/SharedStringStream.h"
+
 #include <stdio.h>
 #include <sstream>
 #include <iomanip>
@@ -64,7 +66,7 @@ namespace CEGUI
         d_currentValue(1.0f),
         d_maxValue(32767.0f),
         d_minValue(-32768.0f),
-        d_inputMode((TextInputMode)-1)
+        d_inputMode(static_cast<TextInputMode>(-1))
     {
         addSpinnerProperties();
     }
@@ -84,20 +86,16 @@ namespace CEGUI
         // ban properties forwarded from here
         editbox->banPropertyFromXML(Window::TextPropertyName);
         editbox->banPropertyFromXML("ValidationString");
-        increaseButton->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
-        increaseButton->banPropertyFromXML(Window::MouseAutoRepeatEnabledPropertyName);
-        decreaseButton->banPropertyFromXML(Window::WantsMultiClickEventsPropertyName);
-        decreaseButton->banPropertyFromXML(Window::MouseAutoRepeatEnabledPropertyName);
+        increaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
+        decreaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
 
         // setup component controls
-        increaseButton->setWantsMultiClickEvents(false);
-        increaseButton->setMouseAutoRepeatEnabled(true);
-        decreaseButton->setWantsMultiClickEvents(false);
-        decreaseButton->setMouseAutoRepeatEnabled(true);
+        increaseButton->setCursorAutoRepeatEnabled(true);
+        decreaseButton->setCursorAutoRepeatEnabled(true);
 
         // perform event subscriptions.
-        increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+        increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+        decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
         editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation
@@ -136,7 +134,7 @@ namespace CEGUI
         if (value != d_currentValue)
         {
             // limit input value to within valid range for spinner
-            value = ceguimax(ceguimin(value, d_maxValue), d_minValue);
+            value = std::max(std::min(value, d_maxValue), d_minValue);
 
             d_currentValue = value;
 
@@ -197,8 +195,8 @@ namespace CEGUI
                 getEditbox()->setValidationString(OctalValidator);
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException(
-                    "An unknown TextInputMode was specified."));
+                throw InvalidRequestException(
+                    "An unknown TextInputMode was specified.");
             }
 
             d_inputMode = mode;
@@ -216,22 +214,22 @@ namespace CEGUI
             "CurrentValue", "Property to get/set the current value of the spinner.  Value is a float.",
             &Spinner::setCurrentValue, &Spinner::getCurrentValue, 0.0f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, double,
             "StepSize", "Property to get/set the step size of the spinner.  Value is a float.",
             &Spinner::setStepSize, &Spinner::getStepSize, 1.0f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, double,
             "MinimumValue", "Property to get/set the minimum value setting of the spinner.  Value is a float.",
             &Spinner::setMinimumValue, &Spinner::getMinimumValue, -32768.000000f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, double,
             "MaximumValue", "Property to get/set the maximum value setting of the spinner.  Value is a float.",
             &Spinner::setMaximumValue, &Spinner::getMaximumValue, 32767.000000f
         );
-        
+
         CEGUI_DEFINE_PROPERTY(Spinner, Spinner::TextInputMode,
             "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
             &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::Integer
@@ -248,45 +246,54 @@ namespace CEGUI
             return 0.0f;
         }
 
-        int res, tmp;
-        uint utmp;
+        int tmp;
+        unsigned int utmp;
         double val;
+
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
 
         switch (d_inputMode)
         {
         case FloatingPoint:
-            res = sscanf(tmpTxt.c_str(), "%lf", &val);
+            sstream << tmpTxt;
+            sstream >> val;
             break;
         case Integer:
-            res = sscanf(tmpTxt.c_str(), "%d", &tmp);
+            sstream << tmpTxt;
+            sstream >> tmp;
             val = static_cast<double>(tmp);
             break;
         case Hexadecimal:
-            res = sscanf(tmpTxt.c_str(), "%x", &utmp);
+            sstream << std::hex << tmpTxt;
+            sstream >> utmp;
+            sstream << std::dec;
             val = static_cast<double>(utmp);
             break;
         case Octal:
-            res = sscanf(tmpTxt.c_str(), "%o", &utmp);
+            sstream << std::oct << tmpTxt;
+            sstream >> utmp;
+            sstream << std::dec;
             val = static_cast<double>(utmp);
             break;
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown TextInputMode was encountered."));
+            throw InvalidRequestException(
+                "An unknown TextInputMode was encountered.");
         }
 
-        if (res)
+        if (!sstream.fail())
         {
             return val;
         }
 
-        CEGUI_THROW(InvalidRequestException(
-            "The string '" + getEditbox()->getText() +
-            "' can not be converted to numerical representation."));
+        throw InvalidRequestException("The string '" + getEditbox()->getText() +
+                                      "' could not be converted to numerical representation.");
+
+        return 0.0f;
     }
 
     String Spinner::getTextFromValue(void) const
     {
-        std::stringstream tmp;
+        std::stringstream& tmp = SharedStringstream::GetPreparedStream();
 
         switch (d_inputMode)
         {
@@ -297,14 +304,14 @@ namespace CEGUI
             tmp << static_cast<int>(d_currentValue);
             break;
         case Hexadecimal:
-            tmp << std::hex << std::uppercase << static_cast<int>(d_currentValue);
+            tmp << std::hex << std::uppercase << static_cast<int>(d_currentValue) << std::dec;
             break;
         case Octal:
-            tmp << std::oct << static_cast<int>(d_currentValue);
+            tmp << std::oct << static_cast<int>(d_currentValue) << std::dec;
             break;
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "An unknown TextInputMode was encountered."));
+            throw InvalidRequestException(
+                "An unknown TextInputMode was encountered.");
         }
 
         return String(tmp.str().c_str());
@@ -414,7 +421,7 @@ namespace CEGUI
 
     bool Spinner::handleIncreaseButton(const EventArgs& e)
     {
-        if (((const MouseEventArgs&)e).button == LeftButton)
+        if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
         {
             setCurrentValue(d_currentValue + d_stepSize);
             return true;
@@ -425,7 +432,7 @@ namespace CEGUI
 
     bool Spinner::handleDecreaseButton(const EventArgs& e)
     {
-        if (((const MouseEventArgs&)e).button == LeftButton)
+        if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
         {
             setCurrentValue(d_currentValue - d_stepSize);
             return true;

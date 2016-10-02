@@ -68,10 +68,10 @@ public:
 
     void loadRawDataContainer(const String& filename,
                               RawDataContainer& output,
-                              const String& resourceGroup);
+                              const String& resourceGroup) override;
     size_t getResourceGroupFileNames(std::vector<String>& out_vec,
                                      const String& file_pattern,
-                                     const String& resource_group);
+                                     const String& resource_group) override;
 protected:
     bool doesFileExist(const String& filename);
     void openArchive();
@@ -87,5 +87,5 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIMinizipResourceProvider_h_
+#endif
 
