@@ -318,11 +318,11 @@ void ScrolledContainer::addScrolledContainerProperties(void)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::setArea_impl(const UVector2& pos, const USize& size,
-                                     bool topLeftSizing, bool fireEvents)
+void ScrolledContainer::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
+                                     bool adjust_size)
 {
     d_clientChildContentArea.invalidateCache();
-    Window::setArea_impl(pos, size, topLeftSizing, fireEvents);
+    Window::setArea_impl(pos, size, topLeftSizing, fireEvents, adjust_size);
 }
 
 //----------------------------------------------------------------------------//
