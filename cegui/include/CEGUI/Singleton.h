@@ -72,7 +72,8 @@ public:
         assert( !ms_Singleton );
         ms_Singleton = static_cast<T*>(this);
     }
-   ~Singleton( void )
+
+    virtual ~Singleton( void )
         {  assert( ms_Singleton );  ms_Singleton = 0;  }
     static T& getSingleton( void )
         {  assert( ms_Singleton );  return ( *ms_Singleton );  }

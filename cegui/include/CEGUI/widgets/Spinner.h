@@ -130,7 +130,7 @@ namespace CEGUI
 	    \return
 		    Nothing
 	    */
-        void initialiseComponents(void);
+        void initialiseComponents(void) override;
 
 
         /*************************************************************************
@@ -321,9 +321,9 @@ namespace CEGUI
         /*************************************************************************
         	Overrides for Event handler methods
         *************************************************************************/
-        virtual	void onFontChanged(WindowEventArgs& e);
-        virtual void onTextChanged(WindowEventArgs& e);
-        virtual void onActivated(ActivationEventArgs& e);
+        void onFontChanged(WindowEventArgs& e) override;
+        void onTextChanged(WindowEventArgs& e) override;
+        void onActivated(ActivationEventArgs& e) override;
 
         /*************************************************************************
         	New Event handler methods

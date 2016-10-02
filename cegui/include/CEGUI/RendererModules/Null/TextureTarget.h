@@ -39,27 +39,26 @@
 namespace CEGUI
 {
 //! CEGUI::TextureTarget implementation for the Null engine.
-class NULL_GUIRENDERER_API NullTextureTarget : public NullRenderTarget<TextureTarget>
+class NULL_GUIRENDERER_API NullTextureTarget : public NullRenderTarget, public TextureTarget
 {
 public:
     //! Constructor.
-    NullTextureTarget(NullRenderer& owner);
+    NullTextureTarget(NullRenderer& owner, bool addStencilBuffer);
     //! Destructor.
     virtual ~NullTextureTarget();
 
     // implementation of RenderTarget interface
-    bool isImageryCache() const;
+    bool isImageryCache() const override;
     // implement CEGUI::TextureTarget interface.
-    void clear();
-    Texture& getTexture() const;
-    void declareRenderSize(const Sizef& sz);
-    bool isRenderingInverted() const;
+    void clear() override;
+    Texture& getTexture() const override;
+    void declareRenderSize(const Sizef& sz) override;
 
 protected:
     //! helper to generate unique texture names
     static String generateTextureName();
     //! static data used for creating texture names
-    static uint s_textureNumber;
+    static std::uint32_t s_textureNumber;
     //! default / initial size for the underlying texture.
     static const float DEFAULT_SIZE;
     //! This wraps d_texture so it can be used by the core CEGUI lib.

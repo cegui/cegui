@@ -1,8 +1,9 @@
 /***********************************************************************
-    created:    Wed May 5 2010
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,8 +29,7 @@
 
 #include "../../Texture.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
+#include "../../Sizef.h"
 
 // d3d forward refs
 struct ID3D11Device;
@@ -51,26 +51,26 @@ class D3D11_GUIRENDERER_API Direct3D11Texture : public Texture
 public:
     /*!
     \brief
-        set the D3D10 texture that this Texture is based on to the specified
+        set the texture that this Texture is based on to the specified
         texture.
     */
     void setDirect3DTexture(ID3D11Texture2D* tex);
 
     /*!
     \brief
-        Return the internal D3D10 texture used by this Texture object.
+        Return the internal texture used by this Texture object.
 
     \return
-        Pointer to the D3D10 texture interface that this object is using.
+        Pointer to the texture interface that this object is using.
     */
     ID3D11Texture2D* getDirect3DTexture() const;
 
     /*!
     \brief
-        Return the internal D3D10 shader resource view for the texture.
+        Return the internal shader resource view for the texture.
 
     \return
-        Pointer to the ID3D10ShaderResourceView interface.
+        Pointer to the ShaderResourceView interface.
     */
     ID3D11ShaderResourceView* getDirect3DShaderResourceView() const;
 
@@ -87,7 +87,7 @@ public:
     const String& getName() const;
     const Sizef& getSize() const;
     const Sizef& getOriginalDataSize() const;
-    const Vector2f& getTexelScaling() const;
+    const glm::vec2& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
@@ -103,19 +103,18 @@ protected:
                                                       const String&);
     friend Texture& Direct3D11Renderer::createTexture(const String&,
                                                       const Sizef&);
-    //friend Texture& Direct3D11Renderer::createTexture(ID3D10Texture2D* tex);
     friend void Direct3D11Renderer::destroyTexture(Texture&);
     friend void Direct3D11Renderer::destroyTexture(const String&);
 
     //! Basic constructor.
-    Direct3D11Texture(IDevice11& device, const String& name);
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name);
     //! Construct texture from an image file.
-    Direct3D11Texture(IDevice11& device, const String& name, const String& filename,
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, const String& filename,
                       const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D11Texture(IDevice11& device, const String& name, const Sizef& sz);
-    //! Construct texture that wraps an existing D3D10 texture.
-    Direct3D11Texture(IDevice11& device, const String& name, ID3D11Texture2D* tex);
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, const Sizef& sz);
+    //! Construct texture that wraps an existing texture.
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, ID3D11Texture2D* tex);
     //! Destructor.
     virtual ~Direct3D11Texture();
 
@@ -128,8 +127,10 @@ protected:
     //! creates shader resource view for the current D3D texture
     void initialiseShaderResourceView();
 
-    //! D3D device used to do the business.
-    IDevice11& d_device;
+    //! The D3D Device
+    ID3D11Device& d_device;
+    //! The D3D DeviceContext
+    ID3D11DeviceContext& d_deviceContext;
     //! The D3D 10 texture we're wrapping.
     ID3D11Texture2D* d_texture;
     //! Shader resource view for the texture.
@@ -139,7 +140,7 @@ protected:
     //! original pixel of size data loaded into texture
     Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2f d_texelScaling;
+    glm::vec2 d_texelScaling;
     //! The name we were created with.
     const String d_name;
 };

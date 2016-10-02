@@ -254,7 +254,7 @@ public:
                                    size_t gridX, size_t gridY);
 
     //! @copydoc LayoutContainer::layout
-    virtual void layout();
+    void layout() override;
 
 protected:
     /*!
@@ -319,9 +319,9 @@ protected:
     bool isDummy(Window* wnd) const;
 
     /// @copydoc Window::addChild_impl
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
     /// @copydoc Window::removeChild_impl
-    virtual void removeChild_impl(Element* element);
+    void removeChild_impl(Element* element) override;
 
 private:
     void addGridLayoutContainerProperties(void);

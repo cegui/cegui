@@ -36,15 +36,11 @@
 #include "CEGUI/Logger.h"
 #include <fribidi.h>
 
-#ifdef _MSC_VER
-    #pragma comment(lib,"fribidi_dll")
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-BidiCharType FribidiVisualMapping::getBidiCharType(const utf32 char_to_check) const
+BidiCharType FribidiVisualMapping::getBidiCharType(const char32_t char_to_check) const
 {
     switch (fribidi_get_type((FriBidiChar)char_to_check))
     {
@@ -77,15 +73,24 @@ bool FribidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
     FriBidiCharType input_base_direction = FRIBIDI_TYPE_L;
     l2v.resize(logical.length());
     v2l.resize(logical.length());
-    String logicalNotConst(logical);
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    const FriBidiChar* inputFribidiStr = reinterpret_cast<const FriBidiChar*>(logical.c_str());
+    size_t fribidiStringLength = logical.length();
+#else
+    std::u32string inputUtf32Str = String::convertUtf8ToUtf32(logical.c_str());
+    const FriBidiChar* inputFribidiStr = reinterpret_cast<const FriBidiChar*>(inputUtf32Str.c_str());
+    size_t fribidiStringLength = inputUtf32Str.length();
+#endif
+
+    FriBidiChar* outputFribidiStr = new FriBidiChar[fribidiStringLength];
 
     fribidi_boolean res =
-        fribidi_log2vis(static_cast<FriBidiChar *>(logicalNotConst.ptr()),
+        fribidi_log2vis(inputFribidiStr,
                         static_cast<FriBidiStrIndex>(logical.length()),
                         &input_base_direction,
-                        /* output */
-                        static_cast<FriBidiChar *>(visual.ptr()),
-                        &l2v[0], &v2l[0], 0);
+                        outputFribidiStr,
+                        &l2v[0], &v2l[0], nullptr);
 
     // success?
     if (res)
@@ -95,6 +100,9 @@ bool FribidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
     Logger::getSingleton().logEvent(
         "FribidiVisualMapping::reorderFromLogicalToVisual: fribidi_log2vis "
         "call failed on logical string: " + logical, Errors);
+
+    visual = String(reinterpret_cast<const char32_t*>(outputFribidiStr), fribidiStringLength);
+    delete[] outputFribidiStr;
 
     return false;
 }
