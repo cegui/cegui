@@ -361,8 +361,10 @@ if(CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
     endif ()  
     if (CEGUI_USE_GLFW_VER STREQUAL "3")
         cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW3)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW PRIVATE TRUE)
     else () # CEGUI_USE_GLFW_VER STREQUAL "2"
         cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW PRIVATE TRUE)
     endif ()
 endif ()
 
