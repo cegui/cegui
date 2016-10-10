@@ -108,6 +108,13 @@ find_package(GLFW)
 find_package(GLFW3)
 find_package(SDL2)
 find_package(SDL2_image)
+
+set( CEGUI_SFML_COMPONENTS system window graphics )
+if( WIN32 OR ANDROID OR IOS )
+    list( APPEND CEGUI_SFML_COMPONENTS main )
+endif()
+find_package(SFML 2.3 COMPONENTS ${CEGUI_SFML_COMPONENTS})
+
 find_package(DirectXSDK)
 find_package(Irrlicht)
 find_package(Ogre)
