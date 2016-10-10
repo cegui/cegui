@@ -62,6 +62,8 @@ The following have made large, important, or on-going contributions to the syste
     - Font class rewrite.
 - Vladimir 'Niello' Orlov:
     - TinyXML2Parser module.
+- Georger Araujo:
+    - SFML2 application template.
 
 <br>
 @section authors_sec_5 Other Contributors
