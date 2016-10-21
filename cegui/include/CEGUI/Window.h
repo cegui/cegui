@@ -3826,6 +3826,8 @@ private:
     //! Not intended for public use, only used as a "Cursor" property getter
     const Image* property_getCursor() const;
 
+    void updatePivot();
+
     //! connection for event listener for font render size changes.
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
 };

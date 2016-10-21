@@ -82,6 +82,7 @@ Element::Element():
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
     d_rotation(1, 0, 0, 0), // <-- IDENTITY
+    d_pivot(UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))),
 
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
@@ -559,6 +560,21 @@ void Element::setRotation(const glm::quat& rotation)
 }
 
 //----------------------------------------------------------------------------//
+UVector3 Element::getPivot() const
+{
+    return d_pivot;
+}
+
+//----------------------------------------------------------------------------//
+void Element::setPivot(const UVector3& pivot)
+{
+    d_pivot = pivot;
+
+    ElementEventArgs args(this);
+    onRotated(args);
+}
+
+//----------------------------------------------------------------------------//
 void Element::addChild(Element* element)
 {
     if (!element)
@@ -740,6 +756,12 @@ void Element::addElementProperties()
         "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\""
         "or \"x:[x_float] y:[y_float] z:[z_float]\" to convert from Euler angles (in degrees).",
         &Element::setRotation, &Element::getRotation, glm::quat(1.0, 0.0, 0.0, 0.0)
+    );
+
+    CEGUI_DEFINE_PROPERTY(Element, UVector3,
+        "Pivot", "Property to get/set the Element's rotation's pivot point.",
+        &Element::setPivot, &Element::getPivot,
+        UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))
     );
 
     CEGUI_DEFINE_PROPERTY(Element, bool,

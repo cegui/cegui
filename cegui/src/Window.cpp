@@ -3012,12 +3012,7 @@ void Window::updateGeometryRenderSettings()
     {
         static_cast<RenderingWindow*>(ctx.surface)->
             setPosition(getUnclippedOuterRect().get().getPosition());
-        static_cast<RenderingWindow*>(d_surface)->setPivot(
-            glm::vec3(
-                d_pixelSize.d_width / 2.0f,
-                d_pixelSize.d_height / 2.0f,
-                0.0f
-            )
+        updatePivot();
         );
 
         d_translation = glm::vec3(0, 0, 0);
@@ -3426,8 +3421,7 @@ void Window::onRotated(ElementEventArgs& e)
 
         // Checks / setup complete!  Now we can finally set the rotation.
         static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
-        static_cast<RenderingWindow*>(d_surface)->setPivot(
-            glm::vec3(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
+        updatePivot();
     }
 }
 
@@ -3819,6 +3813,15 @@ const Font* Window::property_getFont() const
 const Image* Window::property_getCursor() const
 {
     return getCursor();
+}
+
+//----------------------------------------------------------------------------//
+void Window::updatePivot()
+{
+    static_cast<RenderingWindow*>(d_surface)->setPivot(
+      Vector3f(CoordConverter::asAbsolute(d_pivot.d_x, d_pixelSize.d_width,  false),
+               CoordConverter::asAbsolute(d_pivot.d_y, d_pixelSize.d_height, false),
+               CoordConverter::asAbsolute(d_pivot.d_z, 0,                    false)));
 }
 
 //----------------------------------------------------------------------------//
