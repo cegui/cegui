@@ -3013,7 +3013,6 @@ void Window::updateGeometryRenderSettings()
         static_cast<RenderingWindow*>(ctx.surface)->
             setPosition(getUnclippedOuterRect().get().getPosition());
         updatePivot();
-        );
 
         d_translation = glm::vec3(0, 0, 0);
     }
@@ -3819,9 +3818,9 @@ const Image* Window::property_getCursor() const
 void Window::updatePivot()
 {
     static_cast<RenderingWindow*>(d_surface)->setPivot(
-      Vector3f(CoordConverter::asAbsolute(d_pivot.d_x, d_pixelSize.d_width,  false),
-               CoordConverter::asAbsolute(d_pivot.d_y, d_pixelSize.d_height, false),
-               CoordConverter::asAbsolute(d_pivot.d_z, 0,                    false)));
+      glm::vec3(CoordConverter::asAbsolute(d_pivot.d_x, d_pixelSize.d_width,  false),
+                CoordConverter::asAbsolute(d_pivot.d_y, d_pixelSize.d_height, false),
+                CoordConverter::asAbsolute(d_pivot.d_z, 0,                    false)));
 }
 
 //----------------------------------------------------------------------------//

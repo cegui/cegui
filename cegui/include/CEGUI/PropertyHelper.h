@@ -412,6 +412,20 @@ public:
 };
 
 template<>
+class CEGUIEXPORT PropertyHelper<UVector3>
+{
+public:
+    typedef UVector3 return_type;
+    typedef return_type safe_method_return_type;
+    typedef const UVector3& pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
 class CEGUIEXPORT PropertyHelper<USize>
 {
 public:
@@ -516,6 +530,7 @@ extern template CEGUIEXPORT class PropertyHelper<Colour>;
 extern template CEGUIEXPORT class PropertyHelper<ColourRect>;
 extern template CEGUIEXPORT class PropertyHelper<UDim>;
 extern template CEGUIEXPORT class PropertyHelper<UVector2>;
+extern template CEGUIEXPORT class PropertyHelper<UVector3>;
 extern template CEGUIEXPORT class PropertyHelper<Rectf>;
 extern template CEGUIEXPORT class PropertyHelper<Sizef>;
 extern template CEGUIEXPORT class PropertyHelper<URect>;
