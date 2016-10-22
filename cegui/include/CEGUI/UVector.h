@@ -206,6 +206,188 @@ public:
     UDim d_y;
 };
 
+/*!
+\brief
+    Class used as a two dimensional vector (aka a Point)
+
+\par
+    A Vector class featuring two UDims as elements.
+*/
+class UVector3
+{
+public:
+    inline UVector3()
+    {}
+    
+    inline UVector3(const UDim x, const UDim y, const UDim z):
+        d_x(x),
+        d_y(y),
+        d_z(z)
+    {}
+
+    inline UVector3(const UVector3& v):
+        d_x(v.d_x),
+        d_y(v.d_y),
+        d_z(v.d_z)
+    {}
+
+    inline UVector3& operator*=(const UVector3& vec)
+    {
+        d_x *= vec.d_x;
+        d_y *= vec.d_y;
+        d_z *= vec.d_z;
+
+        return *this;
+    }
+
+    inline UVector3& operator/=(const UVector3& vec)
+    {
+        d_x /= vec.d_x;
+        d_y /= vec.d_y;
+        d_z /= vec.d_z;
+
+        return *this;
+    }
+
+    inline UVector3& operator+=(const UVector3& vec)
+    {
+        d_x += vec.d_x;
+        d_y += vec.d_y;
+        d_z += vec.d_z;
+
+        return *this;
+    }
+
+    inline UVector3& operator-=(const UVector3& vec)
+    {
+        d_x -= vec.d_x;
+        d_y -= vec.d_y;
+        d_z -= vec.d_z;
+
+        return *this;
+    }
+
+    inline UVector3 operator+(const UVector3& vec) const
+    {
+        return UVector3(d_x + vec.d_x, d_y + vec.d_y, d_z + vec.d_z);
+    }
+
+    inline UVector3 operator-(const UVector3& vec) const
+    {
+        return UVector3(d_x - vec.d_x, d_y - vec.d_y, d_z - vec.d_z);
+    }
+
+    inline UVector3 operator*(const UVector3& vec) const
+    {
+        return UVector3(d_x * vec.d_x, d_y * vec.d_y, d_z * vec.d_z);
+    }
+
+    inline UVector3 operator* (const float c)
+    {
+        return UVector3(d_x * c, d_y * c, d_z * c);
+    }
+
+    inline UVector3 operator/(const UVector3& vec) const
+    {
+        return UVector3(d_x / vec.d_x, d_y / vec.d_y, d_z / vec.d_z);
+    }
+
+    inline UVector3 operator*(const UDim c) const
+    {
+        return UVector3(d_x * c, d_y * c, d_z * c);
+    }
+
+    inline UVector3& operator*=(const UDim c)
+    {
+        d_x *= c;
+        d_y *= c;
+        d_z *= c;
+
+        return *this;
+    }
+
+    inline UVector3 operator/(const UDim c) const
+    {
+        return UVector3(d_x / c, d_y / c, d_z / c);
+    }
+
+    inline UVector3 operator/=(const UDim c)
+    {
+        d_x /= c;
+        d_y /= c;
+        d_z /= c;
+
+        return *this;
+    }
+
+    inline bool operator==(const UVector3& vec) const
+    {
+        return ((d_x == vec.d_x) && (d_y == vec.d_y) && (d_z == vec.d_z));
+    }
+
+    inline bool operator!=(const UVector3& vec) const
+    {
+        return !(operator==(vec));
+    }
+
+    inline bool isAbsolute() const
+    {
+        return d_x.isAbsolute() && d_y.isAbsolute() && d_z.isAbsolute();
+    }
+    
+    /*!
+    \brief Writes a Vector3 to a stream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const UVector3& val)
+    {
+        s << val.d_x << "," << val.d_y << "," << val.d_z;
+        return s;
+    }
+
+    /*!
+    \brief Extracts a UVector3 from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& s, UVector3& val)
+    {
+        s >> optionalChar<'{'> >> val.d_x >> optionalChar<','> >> val.d_y >> optionalChar<','> >> val.d_z >> optionalChar<'}'>;
+        return s;
+    }
+
+    //! \brief finger saving alias for UVector3(0, 0)
+    inline static UVector3 zero()
+    {
+        return UVector3(TypeSensitiveZero<UDim>(), TypeSensitiveZero<UDim>(), TypeSensitiveZero<UDim>());
+    }
+
+    //! \brief finger saving alias for UVector3(1, 1)
+    inline static UVector3 one()
+    {
+        return UVector3(TypeSensitiveOne<UDim>(), TypeSensitiveOne<UDim>(), TypeSensitiveOne<UDim>());
+    }
+    
+    //! \brief finger saving alias for UVector3(1, 0, 0)
+    inline static UVector3 one_x()
+    {
+        return UVector3(TypeSensitiveOne<UDim>(), TypeSensitiveZero<UDim>(), TypeSensitiveZero<UDim>());
+    }
+    
+    //! \brief finger saving alias for UVector3(0, 1, 0)
+    inline static UVector3 one_y()
+    {
+        return UVector3(TypeSensitiveZero<UDim>(), TypeSensitiveOne<UDim>(), TypeSensitiveZero<UDim>());
+    }
+    
+    //! \brief finger saving alias for UVector3(0, 0, 1)
+    inline static UVector3 one_z()
+    {
+        return UVector3(TypeSensitiveZero<UDim>(), TypeSensitiveZero<UDim>(), TypeSensitiveOne<UDim>());
+    }
+
+    UDim d_x;
+    UDim d_y;
+    UDim d_z;
+};
+
 } // End of  CEGUI namespace section
 
 #endif

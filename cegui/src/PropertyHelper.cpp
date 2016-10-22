@@ -300,6 +300,38 @@ PropertyHelper<UVector2>::string_return_type PropertyHelper<UVector2>::toString(
     return String(sstream.str());
 }
 
+const String& PropertyHelper<UVector3>::getDataTypeName()
+{
+    static const String type("UVector3");
+
+    return type;
+}
+
+PropertyHelper<UVector3>::return_type
+PropertyHelper<UVector3>::fromString(const String& str)
+{
+    UVector3 uv(UDim(0.0f, 0.0f), UDim(0.0f, 0.0f), UDim(0.0f, 0.0f));
+
+    if (str.empty())
+        return uv;
+
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+    sstream >> uv;
+    if (sstream.fail())
+        throwParsingException(getDataTypeName(), str);
+
+    return uv;
+}
+
+PropertyHelper<UVector3>::string_return_type PropertyHelper<UVector3>::toString(
+    PropertyHelper<UVector3>::pass_type val)
+{
+    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    sstream << val;
+
+    return String(sstream.str());
+}
+
 const String& PropertyHelper<USize>::getDataTypeName()
 {
     static const String type("USize");
