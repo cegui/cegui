@@ -161,10 +161,13 @@ protected:
     //! helper to set 'visual' to the string we will render (part of)
     void setupVisualString(String& visual) const;
     size_t getCaretIndex(const String& visual_text) const;
+    float extentToCarretLogical(const float extent_to_caret_visual, const float text_extent,
+                                const float caret_width) const;
     float calculateTextOffset(const Rectf& text_area,
                               const float text_extent,
                               const float caret_width,
                               const float extent_to_caret);
+    float textOffsetVisual(const Rectf& text_area, const float text_extent) const;
     void renderTextNoBidi(const WidgetLookFeel& wlf,
                           const String& text,
                           const Rectf& text_area,
