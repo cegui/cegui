@@ -93,25 +93,23 @@ void FalagardEditbox::render()
 
     const ImagerySection& caret_imagery = wlf.getImagerySection("Caret");
 
-    // get destination area for text
     const Rectf text_area(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
-
     const size_t caret_index = getCaretIndex(visual_text);
-    const float extent_to_caret = font->getTextAdvance(visual_text.substr(0, caret_index));
     const float caret_width = caret_imagery.getBoundingRect(*d_window, text_area).getWidth();
     const float text_extent = font->getTextExtent(visual_text);
-    const float text_offset = calculateTextOffset(text_area, text_extent, caret_width, extent_to_caret);
+    const float extent_to_caret_visual = font->getTextAdvance(visual_text.substr(0, caret_index));
+    const float extent_to_caret_logical = extentToCarretLogical(extent_to_caret_visual, text_extent, caret_width);
+    const float text_offset_logical = calculateTextOffset(text_area, text_extent, caret_width, extent_to_caret_logical);
+    d_lastTextOffset = text_offset_logical;
+    const float text_offset_visual = textOffsetVisual(text_area, text_extent);
 
 #ifdef CEGUI_BIDI_SUPPORT
-    renderTextBidi(wlf, visual_text, text_area, text_offset);
+    renderTextBidi(wlf, visual_text, text_area, text_offset_visual);
 #else
-    renderTextNoBidi(wlf, visual_text, text_area, text_offset);
+    renderTextNoBidi(wlf, visual_text, text_area, text_offset_visual);
 #endif
 
-    // remember this for next time.
-    d_lastTextOffset = text_offset;
-
-    renderCaret(caret_imagery, text_area, text_offset, extent_to_caret);
+    renderCaret(caret_imagery, text_area, text_offset_visual, extent_to_caret_visual);
 }
 
 //----------------------------------------------------------------------------//
@@ -195,8 +193,25 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 }
 
 //----------------------------------------------------------------------------//
+float FalagardEditbox::extentToCarretLogical(const float extent_to_caret_visual, const float text_extent,
+                                             const float caret_width) const
+{
+    switch (d_textFormatting)
+    {
+    case HTF_LEFT_ALIGNED:
+        return extent_to_caret_visual;
+    case HTF_CENTRE_ALIGNED:
+        return (text_extent -caret_width) /2;
+    case HTF_RIGHT_ALIGNED:
+        return text_extent -extent_to_caret_visual -caret_width;
+    default:
+        CEGUI_THROW(InvalidRequestException("Invalid horizontal text formatting."));
+    }
+}
+
+//----------------------------------------------------------------------------//
 float FalagardEditbox::calculateTextOffset(const Rectf& text_area,
-                                           const float text_extent,
+                                           const float /*text_extent*/,
                                            const float caret_width,
                                            const float extent_to_caret)
 {
@@ -204,22 +219,28 @@ float FalagardEditbox::calculateTextOffset(const Rectf& text_area,
     if ((d_lastTextOffset + extent_to_caret) < 0)
         return -extent_to_caret;
 
-    // if caret is off to the right.
+    // if caret is off to the right
     if ((d_lastTextOffset + extent_to_caret) >= (text_area.getWidth() - caret_width))
         return text_area.getWidth() - extent_to_caret - caret_width;
 
-    // handle formatting of text when it's shorter than the available space
-    if (text_extent < text_area.getWidth())
-    {
-        if (d_textFormatting == HTF_CENTRE_ALIGNED)
-            return (text_area.getWidth() - text_extent) / 2;
-
-        if (d_textFormatting == HTF_RIGHT_ALIGNED)
-            return text_area.getWidth() - text_extent;
-    }
-
     // no change to text position; re-use last offset value.
     return d_lastTextOffset;
+}
+
+//----------------------------------------------------------------------------//
+float FalagardEditbox::textOffsetVisual(const Rectf& text_area, const float text_extent) const
+{
+    switch (d_textFormatting)
+    {
+    case HTF_LEFT_ALIGNED:
+        return d_lastTextOffset;
+    case HTF_CENTRE_ALIGNED:
+        return (text_area.getWidth() - text_extent) / 2;
+    case HTF_RIGHT_ALIGNED:
+        return text_area.getWidth() -d_lastTextOffset -text_extent;
+    default:
+        CEGUI_THROW(InvalidRequestException("Invalid horizontal text formatting."));
+    } 
 }
 
 //----------------------------------------------------------------------------//
@@ -422,19 +443,16 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 size_t FalagardEditbox::getTextIndexFromPosition(const Vector2f& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
-
-    // calculate final window position to be checked
+    const Font* font = w->getFont();
+    if (!font)
+        return w->getText().length();
     float wndx = CoordConverter::screenToWindowX(*w, pt.d_x);
-
-    wndx -= d_lastTextOffset;
-
-    // Return the proper index
-    if (w->isTextMasked())
-        return w->getFont()->getCharAtPixel(
-                String(w->getTextVisual().length(), w->getMaskCodePoint()),
-                wndx);
-    else
-        return w->getFont()->getCharAtPixel(w->getTextVisual(), wndx);
+    String visual_text;
+    setupVisualString(visual_text);
+    const Rectf text_area(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window));
+    const float text_extent = font->getTextExtent(visual_text);
+    wndx -= textOffsetVisual(text_area, text_extent);
+    return w->getFont()->getCharAtPixel(visual_text, wndx);
 }
 
 //----------------------------------------------------------------------------//
