@@ -371,7 +371,7 @@ void FalagardStaticText::addScrolledTextRenderGeometry()
             absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
             break;
         default:
-            throw InvalidRequestException("Invalid actual horizontal formatting.");
+                throw InvalidRequestException("Invalid actual horizontal text formatting.");
         }
     }
 
@@ -395,7 +395,7 @@ void FalagardStaticText::addScrolledTextRenderGeometry()
         case VTF_TOP_ALIGNED:
             break;
         default:
-            throw InvalidRequestException("Invalid actual vertical formatting.");
+                throw InvalidRequestException("Invalid actual vertical text formatting.");
         }
 
     // calculate final colours
