@@ -378,7 +378,7 @@ bool FalagardStaticText::contentFits() const
                 absarea.offset(Vector2f(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException("Invalid actual horizontal formatting."));
+                CEGUI_THROW(InvalidRequestException("Invalid actual horizontal text formatting."));
             }
         }
 
@@ -402,7 +402,7 @@ bool FalagardStaticText::contentFits() const
             case VTF_TOP_ALIGNED:
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException("Invalid actual vertical formatting."));
+                CEGUI_THROW(InvalidRequestException("Invalid actual vertical text formatting."));
             }
 
         // calculate final colours
