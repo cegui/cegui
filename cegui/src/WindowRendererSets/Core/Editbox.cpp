@@ -215,11 +215,11 @@ float FalagardEditbox::calculateTextOffset(const Rectf& text_area,
                                            const float caret_width,
                                            const float extent_to_caret)
 {
-    // If caret is to the left of the box.
+    // if caret is to the left of the box
     if ((d_lastTextOffset + extent_to_caret) < 0)
         return -extent_to_caret;
 
-    // If caret is off to the right.
+    // if caret is off to the right
     if ((d_lastTextOffset + extent_to_caret) >= (text_area.getWidth() - caret_width))
         return text_area.getWidth() - extent_to_caret - caret_width;
 

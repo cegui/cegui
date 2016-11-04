@@ -161,13 +161,27 @@ protected:
     //! helper to set 'visual' to the string we will render (part of)
     void setupVisualString(String& visual) const;
     size_t getCaretIndex(const String& visual_text) const;
+
+    /*!
+    \brief
+        "Logical" here means that if the text is e.g. right aligned, then it's measured from the right end of the text,
+        whereas "visual" is always measured from the left end of the text.
+    */
     float extentToCarretLogical(const float extent_to_caret_visual, const float text_extent,
                                 const float caret_width) const;
+
     float calculateTextOffset(const Rectf& text_area,
                               const float text_extent,
                               const float caret_width,
                               const float extent_to_caret);
+
+    /*!
+    \brief
+        "Visual" here means that it's always measured from the right end of the text area rect, whereas "logical" means
+        that if the text is e.g. right aligned, then it's measured from the right end of the text area rect.
+    */
     float textOffsetVisual(const Rectf& text_area, const float text_extent) const;
+
     void renderTextNoBidi(const WidgetLookFeel& wlf,
                           const String& text,
                           const Rectf& text_area,
