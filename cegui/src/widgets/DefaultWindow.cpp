@@ -42,9 +42,6 @@ const String DefaultWindow::WidgetTypeName("DefaultWindow");
 DefaultWindow::DefaultWindow(const String& type, const String& name) :
     Window(type, name)
 {
-    const float maximum_float = std::numeric_limits<float>::max();
-    setMaxSize(USize(cegui_absdim(maximum_float), cegui_absdim(maximum_float)));
-
     setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 }
 
