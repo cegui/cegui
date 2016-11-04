@@ -125,7 +125,6 @@ class Window : public NamedElement
     bool isInFront(const Window& wnd) const;
     bool isBehind(const Window& wnd) const;
 
-    bool wantsMultiClickEvents(void) const;
     void setWantsMultiClickEvents(bool setting);
 
     bool isMouseAutoRepeatEnabled(void) const;

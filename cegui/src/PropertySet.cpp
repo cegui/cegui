@@ -41,12 +41,12 @@ void PropertySet::addProperty(Property* property)
 {
 	if (!property)
 	{
-		CEGUI_THROW(NullObjectException("The given Property object pointer is invalid."));
+		throw NullObjectException("The given Property object pointer is invalid.");
 	}
 
 	if (!d_properties.insert(std::make_pair(property->getName(), property)).second)
 	{
-		CEGUI_THROW(AlreadyExistsException("A Property named '" + property->getName() + "' already exists in the PropertySet."));
+		throw AlreadyExistsException("A Property named '" + property->getName() + "' already exists in the PropertySet.");
 	}
 
     property->initialisePropertyReceiver(this);
@@ -74,7 +74,7 @@ Property* PropertySet::getPropertyInstance(const String& name) const
 
     if (pos == d_properties.end())
     {
-        CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+        throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
     }
 
     return pos->second;
@@ -105,7 +105,7 @@ const String& PropertySet::getPropertyHelp(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->getHelp();
@@ -120,7 +120,7 @@ String PropertySet::getProperty(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->get(this);
@@ -135,7 +135,7 @@ void PropertySet::setProperty(const String& name,const String& value)
 
 	if (pos == d_properties.end())
 	{
-		CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	pos->second->set(this, value);
@@ -161,7 +161,7 @@ bool PropertySet::isPropertyDefault(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->isDefault(this);
@@ -177,7 +177,7 @@ String PropertySet::getPropertyDefault(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->getDefault(this);

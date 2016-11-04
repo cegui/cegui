@@ -35,7 +35,7 @@ namespace CEGUI
         Static Data Definitions
     *************************************************************************/
     // singleton instance pointer
-    template<> Logger* Singleton<Logger>::ms_Singleton  = 0;
+    template<> Logger* Singleton<Logger>::ms_Singleton  = nullptr;
 
 
     /*************************************************************************

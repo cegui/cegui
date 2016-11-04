@@ -26,12 +26,48 @@
  ***************************************************************************/
 #include "CEGUI/Image.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/System.h"
 
 #include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+Image::Image(const String& name) :
+    d_name(name),
+    d_imageArea(0.0f, 0.0f, 0.0f, 0.0f),
+    d_pixelOffset(0.0f, 0.0f),
+    d_autoScaled(ASM_Disabled),
+    d_nativeResolution(640, 480),
+    d_scaledSize(0, 0),
+    d_scaledOffset(0, 0)
+{
+    // force initialisation of the autoscaling fields.
+    updateScaledSizeAndOffset(
+        System::getSingleton().getRenderer()->getDisplaySize());
+}
+
+//----------------------------------------------------------------------------//
+Image::Image(const String& name,
+             const glm::vec2& pixel_offset,
+             const Rectf& image_area,
+             AutoScaledMode auto_scaled,
+             const Sizef& native_resolution
+             ) :
+    d_name(name),
+    d_imageArea(image_area),
+    d_pixelOffset(pixel_offset),
+    d_autoScaled(auto_scaled),
+    d_nativeResolution(native_resolution),
+    d_scaledSize(0, 0),
+    d_scaledOffset(0, 0)
+{
+    // force initialisation of the autoscaling fields.
+    updateScaledSizeAndOffset(
+        System::getSingleton().getRenderer()->getDisplaySize());
+}
+    
 
 //----------------------------------------------------------------------------//
 Image::~Image()
@@ -99,6 +135,120 @@ void Image::elementEndLocal(const String& element)
 }
 
 //----------------------------------------------------------------------------//
+const String& Image::getName() const
+{
+    return d_name;
+}
 
-} // End of  CEGUI namespace section
+//----------------------------------------------------------------------------//
+const Sizef& Image::getRenderedSize() const
+{
+    return d_scaledSize;
+}
 
+//----------------------------------------------------------------------------//
+const glm::vec2& Image::getRenderedOffset() const
+{
+    return d_scaledOffset;
+}
+
+//----------------------------------------------------------------------------//
+void Image::setImageArea(const Rectf& image_area)
+{
+    d_imageArea = image_area;
+
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSizeAndOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+    else
+    {
+        d_scaledSize = d_imageArea.getSize();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Image::setOffset(const glm::vec2& pixel_offset)
+{
+    d_pixelOffset = pixel_offset;
+
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+    else
+        d_scaledOffset = d_pixelOffset;
+}
+
+//----------------------------------------------------------------------------//
+void Image::setAutoScaled(const AutoScaledMode autoscaled)
+{
+    d_autoScaled = autoscaled;
+
+    if (d_autoScaled != ASM_Disabled)
+    {
+        updateScaledSizeAndOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+    }
+    else
+    {
+        d_scaledSize = d_imageArea.getSize();
+        d_scaledOffset = d_pixelOffset;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Image::setNativeResolution(const Sizef& native_res)
+{
+    d_nativeResolution = native_res;
+
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSizeAndOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+}
+
+
+//----------------------------------------------------------------------------//
+void Image::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
+{
+    //If we use autoscaling of any sort we must update the scaled size and offset
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSizeAndOffset(renderer_display_size);
+}
+
+//----------------------------------------------------------------------------//
+
+void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
+{
+    glm::vec2 scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.x, scaleFactors.y);
+
+    d_scaledSize = d_imageArea.getSize() * scaleFactors;
+    d_scaledOffset = d_pixelOffset * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+void Image::updateScaledSize(const Sizef& renderer_display_size)
+{
+    glm::vec2 scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.x, scaleFactors.y);
+
+    d_scaledSize = d_imageArea.getSize() * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+void Image::updateScaledOffset(const Sizef& renderer_display_size)
+{
+    glm::vec2 scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.x, scaleFactors.y);
+
+    d_scaledOffset = d_pixelOffset * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+
+}

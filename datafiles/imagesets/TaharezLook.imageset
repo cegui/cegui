@@ -241,5 +241,9 @@
     <Image height="5" name="PopupMenuArrowLeft" width="5" xPos="179" yPos="210" />
     <Image height="11" name="TreeListClosed" width="7" xPos="175" yPos="111" />
     <Image height="7" name="TreeListOpened" width="11" xPos="164" yPos="111" />
+    <Image height="16" name="ButtonLeftFocused" width="13" xPos="120" yPos="77" />    
     <Image height="14" name="UpArrow" width="11" xPos="27" yPos="146" />
+    <Image height="16" name="ButtonMiddleFocused" width="12" xPos="134" yPos="77" />
+    <Image height="16" name="ButtonRightFocused" width="13" xPos="147" yPos="77" />
+    <Image height="12" name="CheckboxFocused" width="12" xPos="110" yPos="45" />
 </Imageset>

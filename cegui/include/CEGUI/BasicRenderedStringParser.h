@@ -29,11 +29,11 @@
 
 #include "CEGUI/RenderedStringParser.h"
 
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
 #include "CEGUI/falagard/Enums.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -139,7 +139,7 @@ public:
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string,
                          const Font* active_font,
-                         const ColourRect* active_colours);
+                         const ColourRect* active_colours) override;
 
 protected:
     //! append the text string \a text to the RenderedString \a rs.
@@ -193,7 +193,7 @@ protected:
     typedef void (BasicRenderedStringParser::*TagHandler)(RenderedString&,
                                                           const String&);
     //! definition of type used to despatch tag handler functions
-    typedef std::map<String, TagHandler, StringFastLessCompare> TagHandlerMap;
+    typedef std::unordered_map<String, TagHandler> TagHandlerMap;
     //! Collection to map tag names to their handler functions.
     TagHandlerMap d_tagHandlers;
 };

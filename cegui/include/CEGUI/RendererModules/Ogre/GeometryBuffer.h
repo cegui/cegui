@@ -1,6 +1,6 @@
 /***********************************************************************
     created:    Tue Feb 17 2009
-    author:     Paul D Turner
+    author:     Henri I Hyyryläinen (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
@@ -29,20 +29,16 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
-#include "CEGUI/Rect.h"
-#include "CEGUI/Quaternion.h"
+#include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
+#include "CEGUI/Rectf.h"
 
-#include <OgreMatrix4.h>
 #include <OgreColourValue.h>
 #include <OgreRenderOperation.h>
 #include <OgreTexture.h>
+#include <OgreMatrix4.h>
 
 #include <utility>
 #include <vector>
-
-#ifdef CEGUI_USE_OGRE_HLMS
-#include <OgreRenderable.h>
-#endif
 
 // Ogre forward refs
 namespace Ogre
@@ -57,105 +53,64 @@ namespace CEGUI
 class OGRE_GUIRENDERER_API OgreGeometryBuffer : public GeometryBuffer
 {
 public:
+
+    enum MANUALOBJECT_TYPE
+    {
+        MT_COLOURED,
+        MT_TEXTURED,
+        MT_INVALID
+    };
+
     //! Constructor
-    OgreGeometryBuffer(OgreRenderer& owner, Ogre::RenderSystem& rs);
+    OgreGeometryBuffer(OgreRenderer& owner, Ogre::RenderSystem& rs, 
+        CEGUI::RefCounted<RenderMaterial> renderMaterial);
+
     //! Destructor
     virtual ~OgreGeometryBuffer();
 
-    //! return the transformation matrix used for this buffer.
-    const Ogre::Matrix4& getMatrix() const;
-
-    // implement CEGUI::GeometryBuffer interface.
     virtual void draw() const;
-    virtual void setTranslation(const Vector3f& v);
-    virtual void setRotation(const Quaternion& r);
-    virtual void setPivot(const Vector3f& p);
-    virtual void setClippingRegion(const Rectf& region);
-    virtual void appendVertex(const Vertex& vertex);
-    virtual void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-    virtual void setActiveTexture(Texture* texture);
+    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
     virtual void reset();
-    virtual Texture* getActiveTexture() const;
-    virtual uint getVertexCount() const;
-    virtual uint getBatchCount() const;
-    virtual void setRenderEffect(RenderEffect* effect);
-    virtual RenderEffect* getRenderEffect();
-    void setClippingActive(const bool active);
-    bool isClippingActive() const;
+    virtual int getVertexAttributeElementCount() const;
+
+    void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
 
 protected:
-    //! convert CEGUI::colour into something Ogre can use
-    Ogre::RGBA colourToOgre(const Colour& col) const;
-    //! update cached matrix
+
+    //! Updates the cached matrix. This should only be called after the RenderTarget was set.
     void updateMatrix() const;
-    //! Synchronise data in the hardware buffer with what's been added
-    void syncHardwareBuffer() const;
-    //! set up texture related states
-    void initialiseTextureStates() const;
+    //! Sets the current scissor rect active
+    void setScissorRects() const;
 
-    //! vertex structure used internally and also by Ogre.
-    struct OgreVertex
-    {
-        float x, y, z;
-        Ogre::RGBA diffuse;
-        float u, v;
-    };
+    void syncVertexData() const;
 
-    //! type to track info for per-texture sub batches of geometry
-    struct BatchInfo
-    {
-        Ogre::TexturePtr texture;
-        uint vertexCount;
-        bool clip;
-    };
+    void setVertexBuffer(size_t count) const;
+
+    void cleanUpVertexAttributes();
 
     //! Renderer object that owns this GeometryBuffer
     OgreRenderer& d_owner;
     //! Ogre render system we're to use.
     Ogre::RenderSystem& d_renderSystem;
-    //! Texture that is set as active
-    OgreTexture* d_activeTexture;
-    //! rectangular clip region
-    Rectf d_clipRect;
-    //! whether clipping will be active for the current batch
-    bool d_clippingActive;
-    //! translation vector
-    Vector3f d_translation;
-    //! rotation quaternion
-    Quaternion d_rotation;
-    //! pivot point for rotation
-    Vector3f d_pivot;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect* d_effect;
-    //! offset to be applied to all geometry
-    Vector2f d_texelOffset;
+
     //! model matrix cache
-    mutable Ogre::Matrix4 d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
-#ifdef CEGUI_USE_OGRE_HLMS
-    //! Render operation for this buffer.
-    mutable Ogre::v1::RenderOperation d_renderOp;
-    //! H/W buffer where the vertices are rendered from.
-    mutable Ogre::v1::HardwareVertexBufferSharedPtr d_hwBuffer;
-#else
+    mutable glm::mat4 d_matrix;
+
+    //! The type of vertex data we expect
+    MANUALOBJECT_TYPE d_expectedData;
+
     //! Render operation for this buffer.
     mutable Ogre::RenderOperation d_renderOp;
+
     //! H/W buffer where the vertices are rendered from.
     mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;
-#endif
-    //! whether the h/w buffer is in sync with the added geometry
-    mutable bool d_sync;
-    //! type of container that tracks BatchInfos.
-    typedef std::vector<BatchInfo> BatchList;
-    //! list of texture batches added to the geometry buffer
-    BatchList d_batches;
-    //! type of container used to queue the geometry
-    typedef std::vector<OgreVertex> VertexList;
-    //! container where added geometry is stored.
-    VertexList d_vertices;
-};
 
+    //! Marks the d_hwBuffer as being out of date
+    mutable bool d_dataAppended;
+
+    //! The old alpha value
+    mutable float d_previousAlphaValue;
+};
 
 } // End of  CEGUI namespace section
 
