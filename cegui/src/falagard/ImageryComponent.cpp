@@ -33,7 +33,7 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
 #include <iostream>
-#include <cstdlib>
+#include <stddef.h>
 
 // void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours);
 
@@ -41,7 +41,7 @@
 namespace CEGUI
 {
     ImageryComponent::ImageryComponent() :
-        d_image(0),
+        d_image(nullptr),
         d_vertFormatting(VF_TOP_ALIGNED),
         d_horzFormatting(HF_LEFT_ALIGNED)
     {}
@@ -58,13 +58,13 @@ namespace CEGUI
 
     void ImageryComponent::setImage(const String& name)
     {
-        CEGUI_TRY
+        try
         {
             d_image = &ImageManager::getSingleton().get(name);
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
-            d_image = 0;
+            d_image = nullptr;
         }
     }
 
@@ -120,7 +120,10 @@ namespace CEGUI
         d_vertFormatting.setPropertySource(property_name);
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
+    void ImageryComponent::addImageRenderGeometryToWindow_impl(
+        Window& srcWindow, Rectf& destRect,
+        const CEGUI::ColourRect* modColours, const Rectf* clipper,
+        bool clip_to_display) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -134,7 +137,7 @@ namespace CEGUI
         const HorizontalFormatting horzFormatting = d_horzFormatting.get(srcWindow);
         const VerticalFormatting vertFormatting = d_vertFormatting.get(srcWindow);
 
-        uint horzTiles, vertTiles;
+        unsigned int horzTiles, vertTiles;
         float xpos, ypos;
 
         Sizef imgSz(img->getRenderedSize());
@@ -174,8 +177,8 @@ namespace CEGUI
                 break;
 
             default:
-                CEGUI_THROW(InvalidRequestException(
-                    "An unknown HorizontalFormatting value was specified."));
+                throw InvalidRequestException(
+                    "An unknown HorizontalFormatting value was specified.");
         }
 
         // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -209,46 +212,60 @@ namespace CEGUI
                 break;
 
             default:
-                CEGUI_THROW(InvalidRequestException(
-                    "An unknown VerticalFormatting value was specified."));
+                throw InvalidRequestException(
+                    "An unknown VerticalFormatting value was specified.");
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
-        Rectf finalRect;
-        Rectf finalClipper;
-        const Rectf* clippingRect;
-        finalRect.top(ypos);
-        finalRect.bottom(ypos + imgSz.d_height);
+        ImageRenderSettings imgRenderSettings(
+            Rectf(), nullptr,
+            !clip_to_display, finalColours);
 
-        for (uint row = 0; row < vertTiles; ++row)
+        Rectf& renderSettingDestArea = imgRenderSettings.d_destArea;
+        renderSettingDestArea.top(ypos);
+        renderSettingDestArea.bottom(ypos + imgSz.d_height);
+
+        for (unsigned int row = 0; row < vertTiles; ++row)
         {
-            finalRect.left(xpos);
-            finalRect.right(xpos + imgSz.d_width);
+            renderSettingDestArea.left(xpos);
+            renderSettingDestArea.right(xpos + imgSz.d_width);
 
-            for (uint col = 0; col < horzTiles; ++col)
+            for (unsigned int col = 0; col < horzTiles; ++col)
             {
+                Rectf clippedDestRect;
+
                 // use custom clipping for right and bottom edges when tiling the imagery
                 if (((vertFormatting == VF_TILED) && row == vertTiles - 1) ||
                     ((horzFormatting == HF_TILED) && col == horzTiles - 1))
                 {
-                    finalClipper = clipper ? clipper->getIntersection(destRect) : destRect;
-                    clippingRect = &finalClipper;
+                    if(clipper != nullptr)
+                    {
+                        clippedDestRect = clipper->getIntersection(destRect);
+                        imgRenderSettings.d_clipArea = &clippedDestRect;
+                    }
+                    else
+                    {
+                        imgRenderSettings.d_clipArea = &destRect; 
+                    }
                 }
-                // not tiliing, or not on far edges, just used passed in clipper (if any).
+                // not tiling, or not on far edges, just used passed in clipper (if any).
                 else
                 {
-                    clippingRect = clipper;
+                    imgRenderSettings.d_clipArea = clipper;
                 }
 
                 // add geometry for image to the target window.
-                img->render(srcWindow.getGeometryBuffer(), finalRect, clippingRect, finalColours);
+                std::vector<GeometryBuffer*> geomBuffers = 
+                    img->createRenderGeometry(imgRenderSettings);
 
-                finalRect.d_min.d_x += imgSz.d_width;
-                finalRect.d_max.d_x += imgSz.d_width;
+                srcWindow.appendGeometryBuffers(geomBuffers);
+
+                renderSettingDestArea.d_min.x += imgSz.d_width;
+                renderSettingDestArea.d_max.x += imgSz.d_width;
             }
 
-            finalRect.d_min.d_y += imgSz.d_height;
-            finalRect.d_max.d_y += imgSz.d_height;
+            renderSettingDestArea.d_min.y += imgSz.d_height;
+            renderSettingDestArea.d_max.y += imgSz.d_height;
         }
     }
 

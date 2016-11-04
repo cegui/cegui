@@ -29,8 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 
-#include "CEGUI/RendererModules/OpenGL/StandardShaderVert.h"
-#include "CEGUI/RendererModules/OpenGL/StandardShaderFrag.h"
+#include "Shaders.inl"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 #include "CEGUI/Logger.h"
@@ -40,75 +39,90 @@
 
 namespace CEGUI
 {
-    OpenGL3ShaderManager::OpenGL3ShaderManager()
-    {
-        d_shadersInitialised = false;
-    }
 
-    OpenGL3ShaderManager::~OpenGL3ShaderManager()
-    {
-        deinitialiseShaders();
-        d_shadersInitialised = false;
-    }
+OpenGLBaseShaderManager::OpenGLBaseShaderManager(OpenGLBaseStateChangeWrapper* glStateChanger,
+        ShaderVersion shaderVersion)
+    : d_shaderVersion(shaderVersion),
+      d_glStateChanger(glStateChanger)
+{
+    d_shadersInitialised = false;
+}
 
-    OpenGL3Shader* OpenGL3ShaderManager::getShader(GLuint id)
-    {
-        if(d_shaders.find(id) != d_shaders.end())
-            return d_shaders[id];
-        else
-            return 0;
-    }
+OpenGLBaseShaderManager::~OpenGLBaseShaderManager()
+{
+    deinitialiseShaders();
+    d_shadersInitialised = false;
+}
 
-    void OpenGL3ShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)
+OpenGLBaseShader* OpenGLBaseShaderManager::getShader(GLuint id)
+{
+    if(d_shaders.find(id) != d_shaders.end())
+        return d_shaders[id];
+    else
+        return nullptr;
+}
+
+void OpenGLBaseShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)
+{
+    if(d_shaders.find(id) == d_shaders.end())
     {
-        if(d_shaders.find(id) == d_shaders.end())
+        d_shaders[id] = new OpenGLBaseShader(vertexShader, fragmentShader, d_glStateChanger);
+        d_shaders[id]->link();
+    }
+}
+
+void OpenGLBaseShaderManager::initialiseShaders()
+{
+    if(!d_shadersInitialised)
+    {
+        if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
         {
-            d_shaders[id] = CEGUI_NEW_AO OpenGL3Shader(vertexShader, fragmentShader);
-            d_shaders[id]->link();
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertDesktopOpengl3, StandardShaderTexturedFragDesktopOpengl3);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertDesktopOpengl3, StandardShaderSolidFragDesktopOpengl3);
         }
-    }
-
-    void OpenGL3ShaderManager::initialiseShaders()
-    {
-        if(!d_shadersInitialised)
+        else if (OpenGLInfo::getSingleton().verMajor() <= 2) // Open GL ES < 3
         {
-            if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
-                loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_Opengl3,
-                           StandardShaderFrag_Opengl3);
-            else // OpenGL ES
-            {
-                if (OpenGLInfo::getSingleton().verMajor() <= 2)
-                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenglEs2,
-                               StandardShaderFrag_OpenglEs2);
-                else
-                    loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert_OpenglEs3,
-                               StandardShaderFrag_OpenglEs3);
-            }
-            if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
-            {
-                const CEGUI::String errorString("Critical Error - One or "
-                  "multiple shader programs weren't created successfully");
-                CEGUI_THROW(RendererException(errorString));
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs2, StandardShaderTexturedFragOpenglEs2);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertOpenglEs2, StandardShaderSolidFragOpenglEs2);
+        }
+        else // OpenGL ES >= 3
+        {
+            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs3, StandardShaderTexturedFragOpenglEs3);
+            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertOpenglEs3, StandardShaderSolidFragOpenglEs3);
+        }
 
-                return;
-            }
-
-            const CEGUI::String notify("OpenGL3Renderer: Notification - "
-              "Successfully initialised OpenGL3Renderer shader programs.");
-            if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
-                logger->logEvent(notify);
+            
+        if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
+           !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
+        {
+            throw RendererException("Critical Error - One or multiple shader "
+                                    "programs weren't created successfully");
 
             return;
         }
+
+        const CEGUI::String notify("OpenGL3Renderer: Notification - "
+          "Successfully initialised OpenGL3Renderer shader programs.");
+        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
+            logger->logEvent(notify);
     }
 
-    void OpenGL3ShaderManager::deinitialiseShaders()
+     
+
+
+
+   
+  
+
+}
+
+void OpenGLBaseShaderManager::deinitialiseShaders()
+{
+    for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
     {
-        for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
-        {
-            CEGUI_DELETE_AO iter->second;
-        }
-        d_shaders.clear();
+        delete iter->second;
     }
+    d_shaders.clear();
+}
 
 }

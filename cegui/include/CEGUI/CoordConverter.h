@@ -28,9 +28,11 @@
 #define _CEGUICoordConverter_h_
 
 #include "CEGUI/UDim.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/UVector.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/URect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -61,7 +63,7 @@ public:
     */
     inline static float alignToPixels(float x)
     {
-        return (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f));
+        return static_cast<float>(static_cast<int>(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)));
     }
     
     /*!
@@ -84,36 +86,36 @@ public:
 
     /*!
     \brief
-        converts given Vector2<UDim> to absolute Vector2f
+        converts given UVector2 to absolute glm::vec2
     */
-    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
     {
-        return Vector2f(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
+        return glm::vec2(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Vector2<UDim> to relative Vector2f
+        converts given UVector2 to relative glm::vec2
     */
-    inline static Vector2f asRelative(const Vector2<UDim>& v, const Sizef& base)
+    inline static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
     {
-        return Vector2f(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
+        return glm::vec2(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }
 
 	/*!
     \brief
-        converts given Size<UDim> to absolute Sizef
+        converts given USize to absolute Sizef
     */
-    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static Sizef asAbsolute(const USize& v, const Sizef& base, bool pixelAlign = true)
     {
         return Sizef(asAbsolute(v.d_width, base.d_width, pixelAlign), asAbsolute(v.d_height, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Size<UDim> to relative Sizef
+        converts given USize to relative Sizef
     */
-    inline static Sizef asRelative(const Size<UDim>& v, const Sizef& base)
+    inline static Sizef asRelative(const USize& v, const Sizef& base)
     {
         return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
     }
@@ -218,10 +220,10 @@ public:
         UVector2 object describing the point to be converted
 
     \return
-        Vector2 object describing a window co-ordinate point that is equivalent
+        glm::vec2 object describing a window co-ordinate point that is equivalent
         to screen based UVector2 point \a vec.
     */
-    static Vector2f screenToWindow(const Window& window, const UVector2& vec);
+    static glm::vec2 screenToWindow(const Window& window, const UVector2& vec);
 
     /*!
     \brief
@@ -235,10 +237,10 @@ public:
         Vector2 object describing the point to be converted.
 
     \return
-        Vector2 object describing a window co-ordinate point that is equivalent
+        glm::vec2 object describing a window co-ordinate point that is equivalent
         to screen based Vector2 point \a vec.
     */
-    static Vector2f screenToWindow(const Window& window, const Vector2f& vec);
+    static glm::vec2 screenToWindow(const Window& window, const glm::vec2& vec);
 
     /*!
     \brief
@@ -310,10 +312,10 @@ private:
         Window object to return base position for.
 
     \return
-        Vector2 value indicating the base on-screen pixel location of the window
+        glm::vec2 value indicating the base on-screen pixel location of the window
         object. (i.e. The screen co-ord of the window's top-left corner).
     */
-    static Vector2f getBaseValue(const Window& window);
+    static glm::vec2 getBaseValue(const Window& window);
 };
 
 } // End of  CEGUI namespace section
