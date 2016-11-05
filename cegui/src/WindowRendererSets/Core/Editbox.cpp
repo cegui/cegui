@@ -225,7 +225,7 @@ float FalagardEditbox::extentToCarretLogical(const float extent_to_caret_visual,
     case HTF_RIGHT_ALIGNED:
         return text_extent -extent_to_caret_visual -caret_width;
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid horizontal text formatting."));
+        throw InvalidRequestException("Invalid horizontal text formatting.");
     }
 }
 
@@ -259,7 +259,7 @@ float FalagardEditbox::textOffsetVisual(const Rectf& text_area, const float text
     case HTF_RIGHT_ALIGNED:
         return text_area.getWidth() -d_lastTextOffset -text_extent;
     default:
-        CEGUI_THROW(InvalidRequestException("Invalid horizontal text formatting."));
+        throw InvalidRequestException("Invalid horizontal text formatting.");
     } 
 }
 
@@ -464,7 +464,7 @@ size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     const Font* font = w->getFont();
     if (!font)
         return w->getText().length();
-    float wndx = CoordConverter::screenToWindowX(*w, pt.d_x);
+    float wndx = CoordConverter::screenToWindowX(*w, pt.x);
     String visual_text;
     setupVisualString(visual_text);
     const Rectf text_area(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window));
