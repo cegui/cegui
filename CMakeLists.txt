@@ -700,7 +700,7 @@ configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
 ################################################################################
 # Perhaps install pkg-config ("*.pc") files.
 ################################################################################
-cegui_dependent_option( CEGUI_INSTALL_PKGCONFIG "Whether to install pkg-config (\"*.pc\") files." "UNIX;NOT APPLE" )
+cegui_dependent_option( CEGUI_INSTALL_PKGCONFIG "Whether to install pkg-config (\"*.pc\") files." "CMAKE_HOST_UNIX;NOT CMAKE_HOST_APPLE" )
 mark_as_advanced( CEGUI_INSTALL_PKGCONFIG )
 if( CEGUI_INSTALL_PKGCONFIG )
     configure_file( cegui/CEGUI.pc.in cegui/CEGUI-${CEGUI_VERSION_MAJOR}.pc @ONLY )
