@@ -309,7 +309,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     String sect = text.substr(0, w->getSelectionStart());
     colours = unselectedColours;
 
-    auto preHighlightTextGeomBuffers = font->createRenderGeometryForText(
+    auto preHighlightTextGeomBuffers = font->createTextRenderGeometry(
         sect, text_part_rect.d_min.x,
         text_part_rect.getPosition(),
         &text_area, true, colours);
@@ -320,7 +320,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
 
-    auto highlitTextGeomBuffers = font->createRenderGeometryForText(
+    auto highlitTextGeomBuffers = font->createTextRenderGeometry(
         sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
         &text_area, true, colours);
 
@@ -330,7 +330,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     sect = text.substr(w->getSelectionEnd());
     colours = unselectedColours;
 
-     auto postHighlitTextGeomBuffers = font->createRenderGeometryForText(
+     auto postHighlitTextGeomBuffers = font->createTextRenderGeometry(
         sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
         &text_area, true, colours);
 

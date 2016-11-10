@@ -137,7 +137,7 @@ public:
         Returns a list of GeometryBuffers representing the render geometry of
         the text.
     */
-    std::vector<GeometryBuffer*> createRenderGeometryForText(
+    std::vector<GeometryBuffer*> createTextRenderGeometry(
         const String& text, float& nextGlyphPosX,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours,
@@ -180,14 +180,14 @@ public:
         Returns a list of GeometryBuffers representing the render geometry of
         the text.
     */
-    std::vector<GeometryBuffer*> createRenderGeometryForText(
+    std::vector<GeometryBuffer*> createTextRenderGeometry(
         const String& text,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours,
         const float space_extra = 0.0f, const float x_scale = 1.0f,
         const float y_scale = 1.0f) const;
 
-    /*!
+  /*!
     \brief
         Set the native resolution for this Font
 
@@ -506,6 +506,22 @@ protected:
 
     //! finds FontGlyph in map and returns it, or 0 if none.
     virtual const FontGlyph* findFontGlyph(const char32_t codepoint) const;
+
+    //! The old way of rendering glyphs, without kerning and extended layouting
+    void renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
+        const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, const float x_scale, 
+        const float y_scale, ImageRenderSettings imgRenderSettings, 
+        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const;
+
+#ifdef CEGUI_USE_LIBRAQM
+    //! The recommended way of rendering a glyph
+    virtual void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+        const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, const float x_scale,
+        const float y_scale, ImageRenderSettings imgRenderSettings,
+        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const = 0;
+#endif
 
     //! Name of this font.
     String d_name;

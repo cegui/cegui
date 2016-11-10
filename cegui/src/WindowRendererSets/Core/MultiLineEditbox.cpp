@@ -250,7 +250,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             
             // Create Geometry buffers for the text and add to the Window
             float nextGlyphPos = 0.0f;
-            auto textGeomBuffers = fnt->createRenderGeometryForText(lineText, nextGlyphPos,
+            auto textGeomBuffers = fnt->createTextRenderGeometry(lineText, nextGlyphPos,
                 lineRect.getPosition(), &dest_area, true, colours);
 
             w->appendGeometryBuffers(textGeomBuffers);
@@ -293,7 +293,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 #endif          
                 // Create the render geometry for this portion of the text
                 colours = normalTextCol;
-                auto geomBuffers = fnt->createRenderGeometryForText(sect,
+                auto geomBuffers = fnt->createTextRenderGeometry(sect,
                               lineRect.getPosition(), &dest_area, true, colours);
 
                 // set position ready for next portion of text
@@ -330,7 +330,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
             // Create the render geometry for the text for this section
             colours = selectTextCol;
-            auto textGeomBuffers = fnt->createRenderGeometryForText(sect,
+            auto textGeomBuffers = fnt->createTextRenderGeometry(sect,
                 lineRect.getPosition(), &dest_area, true, colours);
             w->appendGeometryBuffers(textGeomBuffers);
 
@@ -350,7 +350,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                 // render the text for this section.
                 colours = normalTextCol;
-                auto textAfterSelectionGeomBuffers = fnt->createRenderGeometryForText(sect,
+                auto textAfterSelectionGeomBuffers = fnt->createTextRenderGeometry(sect,
                     lineRect.getPosition(), &dest_area, true, colours);
                 w->appendGeometryBuffers(textAfterSelectionGeomBuffers);
             }

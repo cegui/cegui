@@ -30,7 +30,6 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/TextUtils.h"
-#include "CEGUI/GUIContext.h"
 #include "CEGUI/Window.h"
 
 // Start of CEGUI namespace section
@@ -155,26 +154,8 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     return nullptr;
 }
 
-//----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
-    const Window* ref_wnd,
-    const glm::vec2& position,
-    const ColourRect* mod_colours,
-    const Rectf* clip_rect,
-    const float vertical_space,
-    const float space_extra) const
+void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos, float& y_scale) const
 {
-    const Font* fnt = getEffectiveFont(ref_wnd); 
-
-    if (!fnt)
-    {
-        return std::vector<GeometryBuffer*>();
-    }
-
-    glm::vec2 final_pos(position);
-    float y_scale = 1.0f;
-
-    // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
@@ -197,6 +178,46 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
         throw InvalidRequestException(
             "unknown VerticalFormatting option specified.");
     }
+}
+
+void RenderedStringTextComponent::createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const {
+    float sel_start_extent = 0;
+
+    if (d_selectionStart > 0)
+        sel_start_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart));
+
+    float sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
+
+    Rectf sel_rect(position.x + sel_start_extent,
+                   position.y,
+                   position.x + sel_end_extent,
+                   position.y + vertical_space);
+
+    ImageRenderSettings imgRenderSettings(
+        sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
+
+    d_selectionImage->createRenderGeometry(imgRenderSettings);
+}
+
+//----------------------------------------------------------------------------//
+std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const ColourRect* mod_colours,
+    const Rectf* clip_rect,
+    const float vertical_space,
+    const float space_extra) const
+{
+    const Font* fnt = getEffectiveFont(ref_wnd); 
+    if (fnt == nullptr)
+    {
+        return std::vector<GeometryBuffer*>();
+    }
+
+    glm::vec2 final_pos(position);
+    float y_scale = 1.0f;
+
+    handleFormattingOptions(ref_wnd, vertical_space, final_pos, y_scale);
 
     // apply padding to position:
     final_pos += d_padding.getPosition();
@@ -207,27 +228,12 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
         final_cols *= *mod_colours;
 
     // render selection
-    if (d_selectionImage && d_selectionLength)
+    if (d_selectionImage && (d_selectionLength > 0))
     {
-        float sel_start_extent = 0, sel_end_extent = 0;
-
-        if (d_selectionStart > 0)
-            sel_start_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart));
-
-        sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
-
-        Rectf sel_rect(position.x + sel_start_extent,
-                       position.y,
-                       position.x + sel_end_extent,
-                       position.y + vertical_space);
-
-        ImageRenderSettings imgRenderSettings(
-            sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
-
-        d_selectionImage->createRenderGeometry(imgRenderSettings);
+        createSelectionRenderGeometry(position, clip_rect, vertical_space, fnt);
     }
     // Create the geometry for rendering for the given text.
-    return fnt->createRenderGeometryForText(
+    return fnt->createTextRenderGeometry(
         d_text, final_pos,
         clip_rect, true, final_cols,
         space_extra, 1.0f, y_scale);

@@ -59,6 +59,7 @@ namespace CEGUI
 #endif
 #ifdef CEGUI_USE_LIBRAQM
         d_raqmTextData(nullptr),
+        d_raqmTextNeedsUpdate(true),
 #endif 
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
@@ -66,7 +67,6 @@ namespace CEGUI
         d_horzFormatting(HTF_LEFT_ALIGNED)
     {
 #ifdef CEGUI_USE_LIBRAQM
-        
         d_raqmTextData = new RaqmTextData();
 #endif        
     }
@@ -266,7 +266,7 @@ namespace CEGUI
     }
 
     void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
-      const CEGUI::ColourRect* modColours, const Rectf* clipper,
+      const ColourRect* modColours, const Rectf* clipper,
       bool /*clipToDisplay*/) const
     {
         updateFormatting(srcWindow, destRect.getSize());

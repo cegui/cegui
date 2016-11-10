@@ -116,9 +116,6 @@ public:
 
     // Gets the font face
     const FT_Face& getFontFace() const;
-
-    // Gets the kerning mode
-    FT_Kerning_Mode getKerningMode() const;
 protected:
     /*!
     \brief
@@ -164,6 +161,15 @@ protected:
     void rasterise(char32_t start_codepoint, char32_t end_codepoint) const override;
     void updateFont() override;
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
+#ifdef CEGUI_USE_LIBRAQM
+    //! The recommended way of rendering a glyph
+    void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+        const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, const float x_scale,
+        const float y_scale, ImageRenderSettings imgRenderSettings,
+        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const override;
+
+#endif
 
     //! If non-zero, the overridden line spacing that we're to report.
     float d_specificLineSpacing;
@@ -182,8 +188,6 @@ protected:
     typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
-    //! Kerning mode
-    FT_Kerning_Mode d_kerningMode;
 };
 
 } // End of  CEGUI namespace section
