@@ -112,6 +112,14 @@ protected:
     // override of functions in Font base class.
     void updateFont () override;
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
+#ifdef CEGUI_USE_LIBRAQM
+    //! The recommended way of rendering a glyph
+    void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+        const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, const float x_scale,
+        const float y_scale, ImageRenderSettings imgRenderSettings,
+        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const override;
+#endif
 
     //! The Image name prefix used for the glyphs
     String d_imageNamePrefix;

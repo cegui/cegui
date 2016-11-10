@@ -37,9 +37,12 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/FreeTypeFontGlyph.h"
 
+#ifdef CEGUI_USE_LIBRAQM
+#include <raqm.h>
+#endif
+
 #include <cmath>
 #include <cstdio>
-
 
 
 namespace CEGUI
@@ -88,8 +91,7 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
     d_specificLineSpacing(specific_line_spacing),
     d_ptSize(point_size),
     d_antiAliased(anti_aliased),
-    d_fontFace(nullptr),
-    d_kerningMode(FT_KERNING_DEFAULT)
+    d_fontFace(nullptr)
 {
     if (!ft_usage_count++)
         FT_Init_FreeType(&ft_lib);
@@ -609,9 +611,110 @@ const FT_Face& FreeTypeFont::getFontFace() const
     return d_fontFace;
 }
 
-FT_Kerning_Mode FreeTypeFont::getKerningMode() const
+void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
+    const glm::vec2& position, const Rectf* clip_rect,
+    const ColourRect& colours, const float space_extra,
+    const float x_scale, const float y_scale,
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos,
+    GeometryBuffer*& textGeometryBuffer) const
 {
-    return d_kerningMode;
+    textGeometryBuffer = nullptr;
+
+    if (text.empty())
+    {
+        return;
+    }
+
+    const float base_y = position.y + getBaseline(y_scale);
+    glyph_pos = position;
+
+    raqm_t* raqmObject = raqm_create();
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
+    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(utf32Text.c_str());
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
+    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
+#endif
+    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, text.length());
+    if (!wasSuccess)
+    {
+        throw InvalidRequestException("Setting raqm text was unsuccessful");
+    }
+
+    FT_Face face = getFontFace();
+    if (!raqm_set_freetype_face(raqmObject, face))
+    {
+        throw InvalidRequestException("Could not set the Freetype font Face for "
+            "a raqm object");
+    }
+
+    if (!raqm_set_par_direction(raqmObject, RAQM_DIRECTION_DEFAULT))
+    {
+        throw InvalidRequestException("Could not set the parse direction for "
+            "a raqm object");
+    }
+
+    wasSuccess = raqm_layout(raqmObject);
+    if (!wasSuccess)
+    {
+        throw InvalidRequestException("Layouting raqm text was unsuccessful");
+    }
+
+    size_t count = 0;
+    raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
+    if (glyphs == nullptr)
+    {
+        throw InvalidRequestException("Layouting raqm text was unsuccessful");
+    }
+
+    for (size_t i = 0; i < count; i++)
+    {
+        raqm_glyph_t& currentGlyph = glyphs[i];
+
+        const FontGlyph* glyph = getGlyphData(originalTextArray[currentGlyph.cluster]);
+        if (glyph != nullptr)
+        {
+            const Image* const img = glyph->getImage();
+
+            glyph_pos.y = base_y - (img->getRenderedOffset().y -
+                img->getRenderedOffset().y * y_scale);
+
+            imgRenderSettings.d_destArea =
+                Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
+
+            // We only fully create the first GeometryBuffer
+            if (textGeometryBuffer == nullptr)
+            {
+                std::vector<GeometryBuffer*> currentGeombuffs =
+                    img->createRenderGeometry(imgRenderSettings);
+
+                assert(currentGeombuffs.size() <= 1 && "Glyphs are expected to "
+                    "be built from a single GeometryBuffer (or none)");
+
+                if (currentGeombuffs.size() == 1)
+                {
+                    textGeometryBuffer = currentGeombuffs.back();
+                }
+            }
+            else
+            {
+                // Else we add geometry to the rendering batch of the existing geometry
+                img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
+                    clip_rect, colours);
+            }
+
+            glyph_pos.x += glyph->getAdvance(x_scale);
+            // apply extra spacing to space chars
+            if (currentGlyph.index == ' ')
+            {
+                glyph_pos.x += space_extra;
+            }
+        }
+    }
+
+    raqm_destroy(raqmObject);
 }
+
 
 } // End of  CEGUI namespace section

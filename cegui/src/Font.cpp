@@ -33,6 +33,7 @@
 
 #include <iterator>
 
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -328,7 +329,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
     return char_count;
 }
 
-std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
+std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
     const ColourRect& colours, const float space_extra,
@@ -336,26 +337,22 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
 {
     float nextGlyphPos = 0.0f;
 
-    return createRenderGeometryForText(
+    return createTextRenderGeometry(
         text, nextGlyphPos, position, clip_rect, clipping_enabled,
         colours, space_extra, x_scale, y_scale);
 }
 
-std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
-    const String& text, float& nextGlyphPosX, const glm::vec2& position,
-    const Rectf* clip_rect, const bool clipping_enabled,
-    const ColourRect& colours, const float space_extra,
-    const float x_scale, const float y_scale) const
+void Font::renderGlyphsUsingDefaultFallback(
+    const String& text, const glm::vec2& position,
+    const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra, const float x_scale, const float y_scale,
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos,
+    GeometryBuffer*& textGeometryBuffer) const
 {
     const float base_y = position.y + getBaseline(y_scale);
-    glm::vec2 glyph_pos(position);
-    std::vector<GeometryBuffer*> geomBuffers;
-    GeometryBuffer* textGeometryBuffer = nullptr;
+    glyph_pos = position;
+    textGeometryBuffer = nullptr;
 
-    ImageRenderSettings imgRenderSettings(
-        Rectf(), clip_rect,
-        clipping_enabled, colours);
-    
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
@@ -395,7 +392,7 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
             {
                 // Else we add geometry to the rendering batch of the existing geometry
                 img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
-                    clip_rect, colours);
+                                         clip_rect, colours);
             }
 
             glyph_pos.x += glyph->getAdvance(x_scale);
@@ -409,6 +406,31 @@ std::vector<GeometryBuffer*> Font::createRenderGeometryForText(
          ++currentCodePointIter;
 #endif
     }
+}
+
+std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
+    const String& text, float& nextGlyphPosX, const glm::vec2& position,
+    const Rectf* clip_rect, const bool clipping_enabled,
+    const ColourRect& colours, const float space_extra,
+    const float x_scale, const float y_scale) const
+{
+    ImageRenderSettings imgRenderSettings(
+        Rectf(), clip_rect,
+        clipping_enabled, colours);
+
+    glm::vec2 glyph_pos;
+    std::vector<GeometryBuffer*> geomBuffers;
+    GeometryBuffer* textGeometryBuffer;
+
+#if defined(CEGUI_USE_LIBRAQM)
+    layoutAndRenderGlyphs(text, position, clip_rect, colours,
+        space_extra, x_scale, y_scale, imgRenderSettings,
+        glyph_pos, textGeometryBuffer);
+#else
+    renderGlyphsUsingDefaultFallback(text, position, clip_rect, colours,
+        space_extra, x_scale, y_scale, imgRenderSettings,
+        glyph_pos, textGeometryBuffer);
+#endif
 
     if (textGeometryBuffer != nullptr)
     {

@@ -243,6 +243,17 @@ void PixmapFont::setImageNamePrefix(const String& name_prefix)
     reinit();
 }
 
+void PixmapFont::layoutAndRenderGlyphs(const String& text,
+    const glm::vec2& position, const Rectf* clip_rect,
+    const ColourRect& colours, const float space_extra,
+    const float x_scale, const float y_scale,
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos,
+    GeometryBuffer*& textGeometryBuffer) const
+{
+    renderGlyphsUsingDefaultFallback(text, position, clip_rect, colours,
+        space_extra, x_scale, y_scale, imgRenderSettings, glyph_pos, textGeometryBuffer);
+}
+
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
