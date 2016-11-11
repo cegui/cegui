@@ -40,7 +40,7 @@
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUI/MinibidiVisualMapping.h"
 #endif
-#if defined(CEGUI_USE_LIBRAQM)
+#if defined(CEGUI_USE_RAQM)
     #include "CEGUI/RaqmTextData.h"
 #endif
 
@@ -57,7 +57,7 @@ namespace CEGUI
 #elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
         d_raqmTextData(nullptr),
         d_raqmTextNeedsUpdate(true),
 #endif 
@@ -66,7 +66,7 @@ namespace CEGUI
         d_vertFormatting(VTF_TOP_ALIGNED),
         d_horzFormatting(HTF_LEFT_ALIGNED)
     {
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
         d_raqmTextData = new RaqmTextData();
 #endif        
     }

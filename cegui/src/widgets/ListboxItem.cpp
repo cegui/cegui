@@ -32,7 +32,7 @@
 
 #include "CEGUI/Config.h"
 #include "CEGUI/widgets/ListboxItem.h"
-#if defined(CEGUI_USE_LIBRAQM)
+#if defined(CEGUI_USE_RAQM)
 #include "CEGUI/RaqmTextData.h"
 #endif
 #include "CEGUI/System.h"
@@ -63,7 +63,7 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
 #elif defined(CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     d_raqmTextData(nullptr),
 #endif 
 	d_itemID(item_id),
@@ -75,7 +75,7 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
 	d_selectBrush(nullptr)
 {
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     d_raqmTextData = new RaqmTextData();
 #endif
 
@@ -85,7 +85,7 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     delete d_raqmTextData;
 #endif
 
@@ -134,7 +134,7 @@ void ListboxItem::setText( const String& text )
    d_bidiDataValid = false;
 #endif
 
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
    d_raqmTextNeedsUpdate = true;
 #endif
 }

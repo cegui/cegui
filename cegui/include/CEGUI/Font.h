@@ -514,7 +514,7 @@ protected:
         const float y_scale, ImageRenderSettings imgRenderSettings, 
         glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const;
 
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
     virtual void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,

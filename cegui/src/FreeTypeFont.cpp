@@ -37,7 +37,7 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/FreeTypeFontGlyph.h"
 
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
 #include <raqm.h>
 #endif
 
