@@ -51,7 +51,7 @@
 #elif defined (CEGUI_USE_MINIBIDI)
 #include "CEGUI/MinibidiVisualMapping.h"
 #endif
-#if defined(CEGUI_USE_LIBRAQM)
+#if defined(CEGUI_USE_RAQM)
     #include "CEGUI/RaqmTextData.h"
 #endif
 
@@ -252,7 +252,7 @@ Window::Window(const String& type, const String& name):
 #elif defined (CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     d_raqmTextData(nullptr),
 #endif 
     
@@ -316,7 +316,7 @@ Window::Window(const String& type, const String& name):
             "Font/RenderSizeChanged",
             Event::Subscriber(&Window::handleFontRenderSizeChange, this)))
 {
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     d_raqmTextData = new RaqmTextData();
 #endif
 

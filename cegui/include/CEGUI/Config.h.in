@@ -186,7 +186,7 @@ setting CMake options and regenerating, rather than editing directly.
 #cmakedefine CEGUI_USE_FRIBIDI
 // - or -
 // Uncomment this to use the libraqm library.
-#cmakedefine CEGUI_USE_LIBRAQM
+#cmakedefine CEGUI_USE_RAQM
 
 // Controls whether to use GLEW as an OpenGL loading library.
 #cmakedefine CEGUI_USE_GLEW

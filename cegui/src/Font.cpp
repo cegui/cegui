@@ -422,7 +422,7 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     std::vector<GeometryBuffer*> geomBuffers;
     GeometryBuffer* textGeometryBuffer;
 
-#if defined(CEGUI_USE_LIBRAQM)
+#if defined(CEGUI_USE_RAQM)
     layoutAndRenderGlyphs(text, position, clip_rect, colours,
         space_extra, x_scale, y_scale, imgRenderSettings,
         glyph_pos, textGeometryBuffer);

@@ -1,5 +1,5 @@
 ﻿################################################################################
-# Custom cmake module for CEGUI to find libraqm
+# Custom cmake module for CEGUI to find harfbuzz
 ################################################################################
 include(FindPackageHandleStandardArgs)
 

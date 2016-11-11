@@ -360,7 +360,7 @@ public:
     mutable bool d_bidiDataValid;
 #endif
 
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
     //! raqm text object
     RaqmTextData* d_raqmTextData;
     /*! Stores whether raqm text is up-to-date or if the logical text has changed since

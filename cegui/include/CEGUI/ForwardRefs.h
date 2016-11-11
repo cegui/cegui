@@ -232,7 +232,7 @@ class SVGPaintStyle;
 /*************************************************************************
     Dependency-specific classes.
 *************************************************************************/
-#ifdef CEGUI_USE_LIBRAQM
+#ifdef CEGUI_USE_RAQM
 class RaqmTextData;
 #endif
 

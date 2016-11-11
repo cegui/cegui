@@ -95,7 +95,7 @@ find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
 find_package(Fribidi)
-#find_package(LIBRAQM)
+find_package(Raqm)
 
 if (NOT WIN32 AND NOT ANDROID)
     find_package(Iconv REQUIRED)
@@ -113,6 +113,7 @@ set( CEGUI_SFML_COMPONENTS system window graphics )
 if( WIN32 OR ANDROID OR IOS )
     list( APPEND CEGUI_SFML_COMPONENTS main )
 endif()
+set( SFML_FIND_REQUIRED FALSE )
 find_package(SFML 2.3 COMPONENTS ${CEGUI_SFML_COMPONENTS})
 
 find_package(DirectXSDK)
@@ -241,14 +242,14 @@ option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validati
 cegui_dependent_option( CEGUI_USE_FRIBIDI "Specifies whether bi-directional text will be supported via the fribidi library." FALSE )
 cegui_dependent_option( CEGUI_USE_MINIBIDI "Specifies whether bi-directional text will be supported via the embedded minibidi." FALSE )
 
-cegui_dependent_option( CEGUI_USE_LIBRAQM "Specifies whether to include support for kerning and for complex text layout using in CEGUI. This requires libraqm, harfbuzz, freetype and fribidi" "LIBRAQM_FOUND;HARFBUZZ_FOUND;FREETYPE_FOUND;FRIBIDI_FOUND" )
+cegui_dependent_option( CEGUI_USE_RAQM "Specifies whether to include support for kerning and for complex text layout using in CEGUI. This requires libraqm, harfbuzz, freetype and fribidi" "RAQM_FOUND;HARFBUZZ_FOUND;FREETYPE_FOUND;FRIBIDI_FOUND" )
 
 # sanity check on bidi options
 if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
     message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
 endif()
-if (CEGUI_USE_LIBRAQM AND (CEGUI_USE_FRIBIDI OR CEGUI_USE_MINIBIDI))
-    message(SEND_ERROR "You may not enable both CEGUI_USE_LIBRAQM and one of the bidi options (CEGUI_USE_FRIBIDI or CEGUI_USE_MINIBIDI). Please choose only libraqm, which internally uses fribidi, if you want the latest layouting AND kerning support.")
+if (CEGUI_USE_RAQM AND (CEGUI_USE_FRIBIDI OR CEGUI_USE_MINIBIDI))
+    message(SEND_ERROR "You may not enable both CEGUI_USE_RAQM and one of the bidi options (CEGUI_USE_FRIBIDI or CEGUI_USE_MINIBIDI). Please choose only libraqm, which internally uses fribidi, if you want the latest layouting AND kerning support.")
 endif()
 
 set( CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API NONE )
