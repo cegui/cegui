@@ -437,11 +437,11 @@ void FreeTypeFont::updateFont()
             "cannot be used.");
     }
 
-    const unsigned int horzdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDPI().x);
-    const unsigned int vertdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDPI().y);
+    const unsigned int horzdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().x);
+    const unsigned int vertdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().y);
 
-    float hps = d_ptSize * 64;
-    float vps = d_ptSize * 64;
+    float hps = d_ptSize / static_cast<float>(FT_POS_COEF);
+    float vps = d_ptSize / static_cast<float>(FT_POS_COEF);
     if (d_autoScaled != ASM_Disabled)
     {
         hps *= d_horzScaling;
@@ -467,7 +467,7 @@ void FreeTypeFont::updateFont()
         }
 
         if ((best_size <= 0) ||
-                FT_Set_Char_Size(d_fontFace, 0, FT_F26Dot6(best_size * 64), 0, 0))
+                FT_Set_Char_Size(d_fontFace, 0, FT_F26Dot6(best_size / FT_POS_COEF), 0, 0))
         {
             std::stringstream& sstream = SharedStringstream::GetPreparedStream();
             sstream << "%g" << d_ptSize;
@@ -672,7 +672,9 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
     {
         raqm_glyph_t& currentGlyph = glyphs[i];
 
-        const FontGlyph* glyph = getGlyphData(originalTextArray[currentGlyph.cluster]);
+        uint32_t& originalArrayIndex = currentGlyph.cluster;
+        const char32_t curCodePoint = originalTextArray[originalArrayIndex];
+        const FontGlyph* glyph = getGlyphData(curCodePoint);
         if (glyph != nullptr)
         {
             const Image* const img = glyph->getImage();
@@ -704,9 +706,10 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
                     clip_rect, colours);
             }
 
-            glyph_pos.x += glyph->getAdvance(x_scale);
+            glyph_pos.x += glyph->getAdvance(x_scale);//currentGlyph.x_advance * x_scale * FT_POS_COEF;
+            glyph_pos.x = std::roundf(glyph_pos.x);
             // apply extra spacing to space chars
-            if (currentGlyph.index == ' ')
+            if (curCodePoint == ' ')
             {
                 glyph_pos.x += space_extra;
             }
