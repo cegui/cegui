@@ -85,8 +85,6 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
 //----------------------------------------------------------------------------//
 void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 {
-    d_displayDPI.x = 96;
-    d_displayDPI.y = 96;
     d_isStateResettingEnabled = true;
     d_activeBlendMode = BM_INVALID;
 #if defined CEGUI_USE_GLEW
@@ -323,13 +321,6 @@ const Sizef& OpenGLRendererBase::getDisplaySize() const
 {
     return d_displaySize;
 }
-
-//----------------------------------------------------------------------------//
-const glm::vec2& OpenGLRendererBase::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
 //----------------------------------------------------------------------------//
 unsigned int OpenGLRendererBase::getMaxTextureSize() const
 {

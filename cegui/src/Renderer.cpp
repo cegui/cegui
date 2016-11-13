@@ -28,13 +28,12 @@
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/GeometryBuffer.h"
 
-#include <algorithm>
-
 namespace CEGUI
 {
 
-Renderer::Renderer():
-    d_activeRenderTarget(nullptr)
+Renderer::Renderer(glm::vec2 displayDpi):
+    d_activeRenderTarget(nullptr),
+    d_displayDpi(displayDpi)
 {}
 
 //----------------------------------------------------------------------------//

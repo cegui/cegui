@@ -226,7 +226,6 @@ public:
     virtual void endRendering();
     virtual void setDisplaySize(const Sizef& sz);
     virtual const Sizef& getDisplaySize() const;
-    virtual const glm::vec2& getDisplayDPI() const;
     virtual unsigned int getMaxTextureSize() const;
     virtual const String& getIdentifierString() const;
     virtual bool isTexCoordSystemFlipped() const;
@@ -353,8 +352,6 @@ private:
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
-    //! What the renderer considers to be the current display DPI resolution.
-    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.

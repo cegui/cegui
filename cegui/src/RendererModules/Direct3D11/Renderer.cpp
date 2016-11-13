@@ -61,7 +61,6 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,
     , d_rasterizerStateScissorDisabled(nullptr)
     , d_currentRasterizerState(0)
     , d_depthStencilStateDefault(nullptr)
-    , d_displayDPI(96, 96)
     , d_defaultTarget(0)
     , d_samplerState(0)
 {
@@ -332,12 +331,6 @@ void Direct3D11Renderer::setDisplaySize(const Sizef& sz)
 const Sizef& Direct3D11Renderer::getDisplaySize() const
 {
     return d_displaySize;
-}
-
-//----------------------------------------------------------------------------//
-const glm::vec2& Direct3D11Renderer::getDisplayDPI() const
-{
-    return d_displayDPI;
 }
 
 //----------------------------------------------------------------------------//

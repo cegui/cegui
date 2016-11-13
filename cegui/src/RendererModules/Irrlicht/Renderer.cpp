@@ -342,12 +342,6 @@ const Sizef& IrrlichtRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const glm::vec2& IrrlichtRenderer::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
-//----------------------------------------------------------------------------//
 unsigned int IrrlichtRenderer::getMaxTextureSize() const
 {
     return d_maxTextureSize;
@@ -365,7 +359,6 @@ IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice& device) :
     d_driver(d_device.getVideoDriver()),
     d_displaySize(static_cast<float>(d_driver->getScreenSize().Width),
                   static_cast<float>(d_driver->getScreenSize().Height)),
-    d_displayDPI(96, 96),
     d_defaultTarget(new IrrlichtWindowTarget(*this, *d_driver)),
     d_maxTextureSize(2048),
     d_eventPusher(new IrrlichtEventPusher(d_device.getCursorControl())),

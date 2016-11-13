@@ -124,7 +124,6 @@ typedef std::unordered_map<String, OgreTexture*> TextureMap;
 struct OgreRenderer_impl
 {
     OgreRenderer_impl() :
-        d_displayDPI(96, 96),
         //! TODO: Currently there is no way to do this easily using Ogre
         d_maxTextureSize(2048),
         d_ogreRoot(Ogre::Root::getSingletonPtr()),
@@ -151,8 +150,6 @@ struct OgreRenderer_impl
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
-    //! What the renderer considers to be the current display DPI resolution.
-    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     OgreWindowTarget* d_defaultTarget;
     //! Container used to track texture targets.
@@ -649,13 +646,6 @@ const Sizef& OgreRenderer::getDisplaySize() const
 {
     return d_pimpl->d_displaySize;
 }
-
-//----------------------------------------------------------------------------//
-const glm::vec2& OgreRenderer::getDisplayDPI() const
-{
-    return d_pimpl->d_displayDPI;
-}
-
 //----------------------------------------------------------------------------//
 unsigned int OgreRenderer::getMaxTextureSize() const
 {

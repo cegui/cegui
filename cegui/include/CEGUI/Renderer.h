@@ -96,7 +96,7 @@ enum DefaultShaderType
 class CEGUIEXPORT Renderer
 {
 public:
-    Renderer();
+    Renderer(glm::vec2 displayDpi = glm::vec2(96, 96));
 
     virtual ~Renderer() {}
 
@@ -374,16 +374,6 @@ public:
 
     /*!
     \brief
-        Returns the resolution of the display or host window in dots per inch.
-
-    \return
-        vec2 object that describes the resolution of the display or host
-        window in DPI.
-    */
-    virtual const glm::vec2& getDisplayDPI() const = 0;
-
-    /*!
-    \brief
         Returns the pixel size of the maximum supported texture.
 
     \return
@@ -476,6 +466,30 @@ public:
     */
     virtual bool isTexCoordSystemFlipped() const = 0;
 
+    /*!
+    \brief
+        Gets the display DPI to be used when rendering Fonts (except Bitmap Fonts).
+
+    \return
+        An object containing the horizontal and vertical display DPI.
+    */
+    const glm::vec2& getDisplayDpi() const
+    {
+        return d_displayDpi;
+    }
+
+    /*!
+    \brief
+        Sets the display DPI to be used when rendering Fonts (except Bitmap Fonts).
+
+    \return
+        An object containing the horizontal and vertical display DPI.
+    */
+    void setDisplayDpi(const glm::vec2& displayDpi)
+    {
+        d_displayDpi = displayDpi;
+    }
+
 protected:
     /*!
     \brief
@@ -497,6 +511,13 @@ private:
     typedef std::set<GeometryBuffer*> GeometryBufferSet;
     //! Container used to track geometry buffers.
     GeometryBufferSet d_geometryBuffers;
+
+    /*!
+    \brief
+        The horizontal and vertical DPI (dots per inch) value to
+        be considered when rendering Fonts (except Bitmap Fonts).
+    */
+    glm::vec2 d_displayDpi;
 
 };
 
