@@ -127,7 +127,6 @@ public:
     void endRendering() override;
     void setDisplaySize(const Sizef& sz) override;
     const Sizef& getDisplaySize() const override;
-    const glm::vec2& getDisplayDPI() const override;
     unsigned int getMaxTextureSize() const override;
     const String& getIdentifierString() const override;
     bool isTexCoordSystemFlipped() const override;
@@ -151,8 +150,6 @@ protected:
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
-    //! What the renderer considers to be the current display DPI resolution.
-    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.

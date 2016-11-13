@@ -310,12 +310,6 @@ const Sizef& NullRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const glm::vec2& NullRenderer::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
-//----------------------------------------------------------------------------//
 unsigned int NullRenderer::getMaxTextureSize() const
 {
     return d_maxTextureSize;
@@ -329,7 +323,6 @@ const String& NullRenderer::getIdentifierString() const
 
 //----------------------------------------------------------------------------//
 NullRenderer::NullRenderer() :
-    d_displayDPI(96, 96),
     // TODO: should be set to correct value
     d_maxTextureSize(2048)
 {

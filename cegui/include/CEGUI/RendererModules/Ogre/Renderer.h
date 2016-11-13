@@ -359,7 +359,6 @@ public:
 
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;
-    const glm::vec2& getDisplayDPI() const;
     unsigned int getMaxTextureSize() const;
     const String& getIdentifierString() const;
 

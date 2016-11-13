@@ -284,12 +284,6 @@ const Sizef& DirectFBRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const glm::vec2& DirectFBRenderer::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
-//----------------------------------------------------------------------------//
 unsigned int DirectFBRenderer::getMaxTextureSize() const
 {
     return 2048;
@@ -307,7 +301,6 @@ DirectFBRenderer::DirectFBRenderer(IDirectFB& directfb,
     d_directfb(directfb),
     d_rootSurface(surface),
     d_targetSurface(&d_rootSurface),
-    d_displayDPI(96, 96),
     d_defaultTarget(new DirectFBRenderTarget(*this, d_rootSurface))
 {
     int w, h;

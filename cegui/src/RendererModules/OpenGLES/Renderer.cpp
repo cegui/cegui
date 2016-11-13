@@ -202,7 +202,6 @@ bool OpenGLESRenderer::isGLExtensionSupported( const char* extension )
 
 //----------------------------------------------------------------------------//
 OpenGLESRenderer::OpenGLESRenderer(const TextureTargetType tt_type) :
-    d_displayDPI(96, 96),
     d_initExtraStates(false)
 {
     // get rough max texture size
@@ -224,7 +223,6 @@ OpenGLESRenderer::OpenGLESRenderer(const TextureTargetType tt_type) :
 OpenGLESRenderer::OpenGLESRenderer(const Sizef& display_size,
                                    const TextureTargetType tt_type) :
     d_displaySize(display_size),
-    d_displayDPI(96, 96),
     d_initExtraStates(false)
 {
     // get rough max texture size
@@ -474,12 +472,6 @@ void OpenGLESRenderer::endRendering()
 const Sizef& OpenGLESRenderer::getDisplaySize() const
 {
     return d_displaySize;
-}
-
-//----------------------------------------------------------------------------//
-const glm::vec2& OpenGLESRenderer::getDisplayDPI() const
-{
-    return d_displayDPI;
 }
 
 //----------------------------------------------------------------------------//
