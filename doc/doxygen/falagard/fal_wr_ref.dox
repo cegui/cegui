@@ -30,6 +30,7 @@
 @ref fal_wr_ref_sec_26 <br>
 @ref fal_wr_ref_sec_27 <br>
 @ref fal_wr_ref_sec_28 <br>
+@ref fal_wr_ref_sec_29 <br>
 
 
 @section fal_wr_ref_sec_1 Falagard/Button
@@ -83,7 +84,7 @@ Assigned WidgetLook should provide the following:
     <li>PropertyDefinition specifications (optional, defaults will be black):
     <ul>
         <li>NormalTextColour - property that accesses a colour value to be used to render normal unselected text.
-        <li>SelectedTextColour - property that accesses a colour value to be used to render selected text.    
+        <li>SelectedTextColour - property that accesses a colour value to be used to render selected text.
     </ul>
 
     <li>ImagerySection definitions:
@@ -142,24 +143,25 @@ Assigned WidgetLook should provide the following:
 </ul>
 
 
-@section fal_wr_ref_sec_6 Falagard/ItemListbox
-Improved single column list widget that is able to make use of ItemEntry based windows for listbox items.
+@section fal_wr_ref_sec_6 Falagard/ListView
+General purpose single column list view.
 
 Assigned WidgetLook should provide the following:
 <ul>
     <li>StateImagery definitions:
     <ul>
-        <li>Enabled - General imagery for when the widget is enabled.
-        <li>Disabled - General imagery for when the widget is disabled.
+        <li>Enabled - General imagery for when the view is enabled.
+        <li>Disabled - General imagery for when the view is disabled.
+        <li>\a Optional EnabledFocused - General imagery for when the view is enabled *and* focused.
     </ul>
-    
+
     <li>NamedArea definitions (you should choose one set, or the other):
     <ul>
         <li>ItemRenderArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
         <li>ItemRenderAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
         <li>ItemRenderAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
         <li>ItemRenderAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
-    </ul>    
+    </ul>
     <li>OR:
     <ul>
         <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
@@ -170,7 +172,7 @@ Assigned WidgetLook should provide the following:
 </ul>
 
 
-@section fal_wr_ref_sec_7 Falagard/Listbox
+@section fal_wr_ref_sec_7 Falagard/ListWidget
 General purpose single column list widget.
 
 Assigned WidgetLook should provide the following:
@@ -179,8 +181,9 @@ Assigned WidgetLook should provide the following:
     <ul>
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
+        <li>_Optional_ EnabledFocused - General imagery for when the widget is enabled *and* focused.
     </ul>
-    
+
     <li>NamedArea definitions (you should choose one set, or the other):
     <ul>
         <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
@@ -194,7 +197,7 @@ Assigned WidgetLook should provide the following:
         <li>ItemRenderAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
         <li>ItemRenderAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
         <li>ItemRenderAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
-    </ul>    
+    </ul>
 </ul>
 
 
@@ -208,7 +211,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>Property initialiser definitions:
     <ul>
         <li>SegmentWidgetType - specifies the name of a "ListHeaderSegment" based widget type; an instance of which will be created for each column within the header. (Required)
@@ -232,7 +235,7 @@ Assigned WidgetLook should provide the following:
         <li>GhostAscendingSortIcon - Additional imagery used for the drag-moving 'ghost' when the segment has the ascending sort direction set.
         <li>GhostDescendingSortDown - Additional imagery used for the drag-moving 'ghost' when the segment has the descending sort direction set.
     </ul>
-    
+
     <li>Property initialiser definitions:
     <ul>
         <li>MovingCursorImage - Property to define a mouse cursor image to use when drag-moving the widget. (Optional).
@@ -250,7 +253,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ItemRenderArea - Target area where menu items will appear.
@@ -276,7 +279,7 @@ Assigned WidgetLook should provide the following:
         <li>PopupClosedIcon - Additional imagery used when the item is attached to a popup menu widget and has a a 'sub' popup menu attached to itself, and that popup is closed.
         <li>PopupOpenIcon - Additional imagery used when the item is attached to a popup menu widget and has a a 'sub' popup menu attached to itself, and that popup is open.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ContentSize - Area defining the size of this item's content. Required.
@@ -295,7 +298,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
@@ -317,7 +320,7 @@ Assigned WidgetLook should provide the following:
         <li>Disabled - Imagery used when widget is disabled.
         <li>ReadOnly - Imagery used when widget is in 'Read Only' state.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>TextArea - Target area where text lines will appear when no scrollbars are visible (also acts as default area). Required.
@@ -325,12 +328,12 @@ Assigned WidgetLook should provide the following:
         <li>TextAreaVScroll - Target area where text lines will appear when the vertical scrollbar is visible. Optional.
         <li>TextAreaHVScroll - Target area where text lines will appear when both the horizontal and vertical scrollbars are visible. Optional.
     </ul>
-    
+
     <li>ImagerySection definitions:
     <ul>
         <li>Carat - Additional imagery used to display the insertion position carat.
     </ul>
-    
+
     <li>PropertyDefinition specifications (optional, defaults will be black):
     <ul>
         <li>NormalTextColour - property that accesses a colour value to be used to render normal unselected text.
@@ -351,7 +354,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ItemRenderArea - Target area where menu items will appear.
@@ -371,12 +374,12 @@ Assigned WidgetLook should provide the following:
         <li>EnabledProgress - imagery for 100\ progress used when widget is enabled.  The drawn imagery will appear in named area "ProgressArea" and will be clipped appropriately according to widget settings and the current progress value.
         <li>DisabledProgress - imagery for 100\ progress used when widget is disabled. The drawn imagery will appear in named area "ProgressArea" and will be clipped appropriately according to widget settings and the current progress value.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ProgressArea - Target area where progress imagery will appear.
     </ul>
-    
+
     <li>Property initialiser definitions:
     <ul>
         <li>VerticalProgress - boolean property. Determines whether the progress widget is horizontal or vertical. Default is horizontal. Optional.
@@ -416,7 +419,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ViewableArea - Target area where visible content will appear when no scrollbars are visible (also acts as default area). Required.
@@ -460,12 +463,12 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>ThumbTrackArea - Target area in which thumb may be moved.
     </ul>
-    
+
     <li>Property initialiser definitions:
     <ul>
         <li>VerticalSlider - boolean property. Indicates whether this slider will operate in the vertical or horizontal direction. Default is for horizontal. Optional.
@@ -528,7 +531,7 @@ Assigned WidgetLook should provide the following:
         <li>NoFrameEnabledBackground - Additional imagery used when the widget is enabled, the widget frame is disabled, and the widget background is enabled.
         <li>NoFrameDisabledBackground - Additional imagery used when the widgetis disabled, the widget frame is disabled, and the widget background is enabled.
     </ul>
-    
+
     <li>NamedArea definitions (missing areas will default to WithFrameTextRenderArea):
     <ul>
         <li>WithFrameTextRenderArea - Target area where text will appear when the frame is enabled and no scrollbars are visible (also acts as default area). Required.
@@ -540,11 +543,11 @@ Assigned WidgetLook should provide the following:
         <li>NoFrameTextRenderAreaVScroll - Target area where text will appear when the frame is disabled and the vertical scrollbar is visible. Optional.
         <li>NoFrameTextRenderAreaHVScroll - Target area where text will appear when the frame is disabled and both the horizontal and vertical scrollbars are visible. Optional.
     </ul>
-    
+
     <li>Child widget definitions:
     <ul>
         <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.
-        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position. 
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.
     </ul>
 </ul>
 
@@ -592,7 +595,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>Property initialiser definitions:
     <ul>
         <li>TabButtonType - specifies a TabButton based widget type to be created each time a new tab button is required.
@@ -624,7 +627,7 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-    
+
     <li>NamedArea definitions:
     <ul>
         <li>TextArea - Typically this would be the same area as the TextComponent you define to receive the tool-tip text. This named area is used when deciding how to dynamically size the tool-tip so that text is not clipped.
@@ -632,7 +635,28 @@ Assigned WidgetLook should provide the following:
 </ul>
 
 
-@section fal_wr_ref_sec_28 Falagard/Tree
+@section fal_wr_ref_sec_28 Falagard/TreeView
+Basic Tree type view.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>StateImagery definitions:
+    <ul>
+        <li>Enabled - General imagery for when the view is enabled.
+        <li>Disabled - General imagery for when the view is disabled.
+    </ul>
+
+    <li>NamedArea definitions:
+    <ul>
+        <li>ItemRenderingArea - Target area where tree items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderingAreaHScroll - Target area where tree items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderingAreaVScroll - Target area where tree items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderingAreaHVScroll - Target area where tree items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>
+</ul>
+
+
+@section fal_wr_ref_sec_29 Falagard/TreeWidget
 Basic Tree type widget.
 
 Assigned WidgetLook should provide the following:
@@ -651,5 +675,4 @@ Assigned WidgetLook should provide the following:
         <li>ItemRenderingAreaHVScroll - Target area where tree items will appear when both the horizontal and vertical scrollbars are visible. Optional.
     </ul>
 </ul>
-
 */

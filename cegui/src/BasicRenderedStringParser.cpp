@@ -71,7 +71,7 @@ BasicRenderedStringParser::BasicRenderedStringParser() :
     d_aspectLock(false),
     d_initialised(false)
 {
-    initialiseDefaultState();
+    BasicRenderedStringParser::initialiseDefaultState();
 }
 
 //----------------------------------------------------------------------------//
@@ -84,7 +84,7 @@ BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
     d_aspectLock(false),
     d_initialised(false)
 {
-    initialiseDefaultState();
+    BasicRenderedStringParser::initialiseDefaultState();
 }
 
 //----------------------------------------------------------------------------//
@@ -206,43 +206,54 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
 void BasicRenderedStringParser::processControlString(RenderedString& rs,
                                                      const String& ctrl_str)
 {
-    // all our default strings are of the form <var> = <val>
-    // so do a quick check for the = char and abort if it's not there.
-    if (String::npos == ctrl_str.find('='))
+    // All our default strings are of the form <var> = '<val>'
+    // so let's get the variables using '=' as delimiter:
+    size_t findPos = ctrl_str.find_first_of('=');
+
+    
+    if(findPos == String::npos)
     {
         Logger::getSingleton().logEvent(
-            "BasicRenderedStringParser::processControlString: unable to make "
-            "sense of control string '" + ctrl_str + "'.  Ignoring!");
-        
+            "BasicRenderedStringParser::processControlString: invalid "
+            "control string declared (format must be <var> = '<val>'): "
+            "'" + ctrl_str + "'.  Ignoring!");
         return;
     }
 
-    char var_buf[128];
-    char val_buf[128];
-    int successfullyFilledItems = sscanf(ctrl_str.c_str(), " %127[^ =] = '%127[^']", var_buf, val_buf);
+    String variable = ctrl_str.substr(0, findPos);
+    String value = ctrl_str.substr(findPos + 1); 
 
-    const String var_str(var_buf);
-    // look up handler function
-    TagHandlerMap::iterator i = d_tagHandlers.find(var_str);
-    // dispatch handler, or log error
-    if (successfullyFilledItems >= 1 && i != d_tagHandlers.end())
+    // We were able to split the variable and value, let's see if we get a
+    // valid value:
+    bool correctValueFormat = true;
+    if ( (value.front() != '\'') || (value.back() != '\'' ) ||
+            ( value.length() < 3 ) )
+        correctValueFormat = false;
+    else
     {
-        // If both variables were read correctly, proceed as usual
-        if(successfullyFilledItems == 2)
+        value.pop_back();
+        value.erase(0, 1);
+    }
+
+    // look up handler function
+    TagHandlerMap::iterator i = d_tagHandlers.find(variable);
+    // dispatch handler, or log error
+    if (i != d_tagHandlers.end())
+    {
+        if(correctValueFormat)
         {
-            const String val_str(val_buf);
-            (this->*(*i).second)(rs, val_str);
+            (this->*(*i).second)(rs, value);
         }
-        // Otherwise, since the handler was found, we are sure that the
-        // second variable couldn't be read, meaning it was empty. We will supply
-        // and empty string
         else
+            // Otherwise, since the handler was found, we are sure that the
+            // second variable couldn't be read, meaning it was empty. We will supply
+            // and empty string
             (this->*(*i).second)(rs, "");
     }
     else
         Logger::getSingleton().logEvent(
-            "BasicRenderedStringParser::processControlString: unknown "
-            "control variable '" + var_str + "'.  Ignoring!");
+            "BasicRenderedStringParser::processControlString:  unknown "
+            "control variable in string: '" + value + "'.  Ignoring!");
 }
 
 //----------------------------------------------------------------------------//
@@ -366,28 +377,28 @@ void BasicRenderedStringParser::handlePadding(RenderedString&,
 void BasicRenderedStringParser::handleTopPadding(RenderedString&,
                                                  const String& value)
 {
-    d_padding.d_min.d_y = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleBottomPadding(RenderedString&,
                                                     const String& value)
 {
-    d_padding.d_max.d_y = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleLeftPadding(RenderedString&,
                                                   const String& value)
 {
-    d_padding.d_min.d_x = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleRightPadding(RenderedString&,
                                                    const String& value)
 {
-    d_padding.d_max.d_x = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

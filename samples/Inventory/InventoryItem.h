@@ -72,15 +72,15 @@ public:
     bool currentDropTargetIsValid() const;
 
     // base class overrides
-    bool isHit(const Vector2f& position, const bool allow_disabled = false) const;
-    void setContentSize(int width, int height);
+    bool isHit(const glm::vec2& position, const bool allow_disabled = false) const override;
+    void setContentSize(int width, int height) override;
 
 protected:
     // base class overrides
-    void onMoved(ElementEventArgs& e);
-    void onDragDropTargetChanged(DragDropEventArgs& e);
-    void populateGeometryBuffer();
-    Rectf gridBasePixelRect() const;
+    void onMoved(ElementEventArgs& e) override;
+    void onDragDropTargetChanged(DragDropEventArgs& e) override;
+    void populateGeometryBuffer() override;
+    Rectf gridBasePixelRect() const override;
 
     // whether the current drag / drop target is a valid drop location for this
     // item

@@ -155,7 +155,7 @@ String::size_type TextUtils::getNextWordStartIdx(const String& str, String::size
 
 /*************************************************************************
     Trim all characters from the set specified in \a chars from the
-    begining of 'str'.
+    beginning of 'str'.
 *************************************************************************/
 void TextUtils::trimLeadingChars(String& str, const String& chars)
 {

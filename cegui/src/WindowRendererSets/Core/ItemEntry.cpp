@@ -38,7 +38,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardItemEntry::render()
+    void FalagardItemEntry::createRenderGeometry()
     {
         ItemEntry* item = static_cast<ItemEntry*>(d_window);
 

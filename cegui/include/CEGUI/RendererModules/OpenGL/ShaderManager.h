@@ -25,8 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#ifndef _CEGUIOpenGL3ShaderManager_h_
-#define _CEGUIOpenGL3ShaderManager_h_
+#ifndef _CEGUIOpenGLBaseShaderManager_h_
+#define _CEGUIOpenGLBaseShaderManager_h_
 
 #include "CEGUI/Base.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
@@ -42,34 +42,46 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class OpenGL3Shader;
+    class OpenGLBaseShader;
+    class OpenGLBaseStateChangeWrapper;
 
-    enum OpenGL3ShaderID
+    enum OpenGLBaseShaderID
     {
-        SHADER_ID_STANDARDSHADER,
+        SHADER_ID_STANDARD_TEXTURED,
+        SHADER_ID_STANDARD_SOLID,
 
         SHADER_ID_COUNT
     };
 
-    class OpenGL3ShaderManager :
-        public AllocatedObject<OpenGL3ShaderManager>
+    enum ShaderVersion
+    {
+        SHADER_GLSL,
+        SHADER_GLSLES1,
+        SHADER_GLSLES3
+    };
+
+
+    class OpenGLBaseShaderManager
     {
     public:
-        OpenGL3ShaderManager();
-        virtual ~OpenGL3ShaderManager();
+        OpenGLBaseShaderManager(OpenGLBaseStateChangeWrapper* glStateChanger, ShaderVersion shaderVersion);
+        virtual ~OpenGLBaseShaderManager();
 
-        OpenGL3Shader* getShader(GLuint id);
+        OpenGLBaseShader* getShader(GLuint id);
         void loadShader(GLuint id, std::string vertexShader, std::string fragmentShader);
 
         void initialiseShaders();
         void deinitialiseShaders();
 
     private:
-
-        typedef std::map<GLuint, OpenGL3Shader*> shaderContainerType;
+        typedef std::map<GLuint, OpenGLBaseShader*> shaderContainerType;
         shaderContainerType d_shaders;
 
+        ShaderVersion d_shaderVersion;
+
         bool d_shadersInitialised;
+
+        OpenGLBaseStateChangeWrapper* d_glStateChanger;
     };
 
 }
