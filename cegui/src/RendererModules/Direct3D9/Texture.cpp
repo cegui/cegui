@@ -568,10 +568,18 @@ void Direct3D9Texture::createDirect3D9Texture(const Sizef sz, D3DFORMAT format)
 
     const Sizef tex_sz(d_owner.getAdjustedSize(sz));
 
+    // Check for Managed Memory support (D3D9Ex does not support it)
+    D3DCAPS9 caps;
+    device->GetDeviceCaps(&caps);
+
+    D3DPOOL pool = (caps.Caps2 & D3DCAPS2_CANMANAGERESOURCE) ?
+      D3DPOOL_MANAGED :
+      D3DPOOL_DEFAULT;
+
     HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
                                    static_cast<UINT>(tex_sz.d_width),
                                    static_cast<UINT>(tex_sz.d_height),
-                                   1, 0, format, D3DPOOL_MANAGED, &d_texture);
+                                   1, 0, format, pool, &d_texture);
 
     if (FAILED(hr))
         CEGUI_THROW(RendererException("D3DXCreateTexture failed."));
