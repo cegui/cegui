@@ -84,11 +84,11 @@ void OpenGLInfo::initTypeAndVer()
         if (!ver)
         {
             if (isUsingDesktopOpengl())
-                CEGUI_THROW(RendererException
-                  ("Failed to obtain desktop OpenGL version."));
+                throw RendererException
+                        ("Failed to obtain desktop OpenGL version.");
             else
-                CEGUI_THROW(RendererException
-                  ("Failed to obtain OpenGL ES version."));
+                throw RendererException
+                        ("Failed to obtain OpenGL ES version.");
         }
         d_verMajor = ver / 10;
         d_verMinor = ver % 10;

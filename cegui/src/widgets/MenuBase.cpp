@@ -48,7 +48,7 @@ const String MenuBase::EventPopupClosed("PopupClosed");
 MenuBase::MenuBase(const String& type, const String& name)
     : ItemListBase(type, name),
       d_itemSpacing(0.0f),
-      d_popupItem(0),
+      d_popupItem(nullptr),
       d_allowMultiplePopups(false),
       d_autoCloseNestedPopups(false)
 {
@@ -71,11 +71,11 @@ void MenuBase::changePopupMenuItem(MenuItem* item)
     if (!d_allowMultiplePopups && d_popupItem == item)
         return;
 
-    if (!d_allowMultiplePopups && d_popupItem != 0)
+    if (!d_allowMultiplePopups && d_popupItem != nullptr)
     {
         WindowEventArgs we(d_popupItem->getPopupMenu());
         d_popupItem->closePopupMenu(false);
-        d_popupItem = 0;
+        d_popupItem = nullptr;
         onPopupClosed(we);
     }
 
@@ -160,7 +160,7 @@ void MenuBase::onChildRemoved(ElementEventArgs& e)
 {
     // if the removed window was our tracked popup item, zero ptr to it.
     if (static_cast<Window*>(e.element) == d_popupItem)
-        d_popupItem = 0;
+        d_popupItem = nullptr;
 
     // base class version
     ItemListBase::onChildRemoved(e);
@@ -171,7 +171,7 @@ void MenuBase::onHidden(WindowEventArgs&)
     if (!getAutoCloseNestedPopups())
         return;
 
-    changePopupMenuItem(0);
+    changePopupMenuItem(nullptr);
 
     if (d_allowMultiplePopups)
     {

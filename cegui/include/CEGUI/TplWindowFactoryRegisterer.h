@@ -45,11 +45,11 @@ public:
     //! Constructor.
     TplWindowFactoryRegisterer();
 
-    void unregisterFactory() const;
+    void unregisterFactory() const override;
 
 protected:
-    void doFactoryAdd() const;
-    bool isAlreadyRegistered() const;
+    void doFactoryAdd() const override;
+    bool isAlreadyRegistered() const override;
 };
 
 

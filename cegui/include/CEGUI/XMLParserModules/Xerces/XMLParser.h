@@ -92,7 +92,7 @@ namespace CEGUI
         ~XercesParser(void);
 
         // Implementation of public abstract interface
-        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
+        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool allowXmlValidation = true);
 
         // Internal methods
         /*!
@@ -137,6 +137,32 @@ namespace CEGUI
         static const String& getSchemaDefaultResourceGroup()
             { return d_defaultSchemaResourceGroup; }
 
+        /*!
+        \brief 
+            Sets whether xml validation is allowed or not.
+            If it's 'false' it will not allow any xml validation.
+            If it's 'true' the validation behaviour is dependending
+            on what is passed to parseXML.
+
+        \param isEnabled
+            Boolean, either true or false.
+
+        \return
+            Nothing.
+        */
+        void setXmlValidationEnabled(const bool isEnabled)
+            { d_xmlValidationEnabled = isEnabled; }
+
+        /*!
+        \brief
+            Returns whether xml validation is allowed or not.
+
+        \return
+            'true' if enabled otherwise 'false'
+        */
+        bool isXmlValidationEnabled(void) const
+            { return d_xmlValidationEnabled; }
+
     protected:
         static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName);
         static XERCES_CPP_NAMESPACE::SAX2XMLReader* createReader(XERCES_CPP_NAMESPACE::DefaultHandler& handler);
@@ -148,6 +174,8 @@ namespace CEGUI
 
         //! holds the default resource group ID for loading schemas.
         static String d_defaultSchemaResourceGroup;
+        //! holds whether xml validation is allowed or not.
+        bool d_xmlValidationEnabled;
         //! Property for accessing the default schema resource group ID.
         static XercesParserProperties::SchemaDefaultResourceGroup
             s_schemaDefaultResourceGroupProperty;

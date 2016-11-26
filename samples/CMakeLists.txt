@@ -1,50 +1,60 @@
-# We clear the samples.xml file, which will be used by the samples browser, and
-# add the samples header to it before starting to add the samples 
-file(WRITE ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "")
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlHeader.xml DEMO_META_DATA)
-file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
+# macro to list all subdirectories of a given directory
+macro(subdirlist result curdir)
+    file(GLOB children RELATIVE ${curdir} ${curdir}/*)
+    set(dirlist "")
+    foreach(child ${children})
+        if(IS_DIRECTORY ${curdir}/${child})
+            list(APPEND dirlist ${child})
+        endif()
+    endforeach()
+    set(${result} ${dirlist})
+endmacro()
 
-add_subdirectory(HelloWorld)
-add_subdirectory(LookNFeelOverview)
+# initialize variables
+set(ADDITIONAL_INCLUDE_DIRS "")
+set(SAMPLES_LIST "")
+set(SAMPLES_SUBDIRS "")
+set(SAMPLES_SOURCES_LIST "")
+set(SAMPLES_HEADERS_LIST "")
 
-add_subdirectory(GameMenu)
-add_subdirectory(RestaurantGame)
-add_subdirectory(DragDrop)
-add_subdirectory(Inventory)
-add_subdirectory(RenderEffects)
-add_subdirectory(Fonts)
-add_subdirectory(Demo6)
+set(SAMPLE_LIST_HEADER ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.h)
+set(SAMPLE_LIST_CODE ${CMAKE_CURRENT_BINARY_DIR}/common/include/samples.inc)
 
-add_subdirectory(EditboxValidation)
-add_subdirectory(Minesweeper)
-add_subdirectory(ScrollablePane)
-add_subdirectory(TabControl)
-add_subdirectory(CommonDialogs)
-add_subdirectory(Widgets)
-add_subdirectory(Text)
-add_subdirectory(Tree)
-
+# gather sample dirs
+subdirlist(SAMPLES_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 
-if (CEGUI_BUILD_LUA_MODULE)
-    # add_subdirectory(Demo8)
-endif()
 
-# Simple test for GLES renderer.
-#
-# Commented since it's does not use the samples framework and is merely included
-# such that recreation from scratch is not required in the future.  Aka, it's
-# one of CrazyEddie's hacks that he wants to keep around :-p
-#if (CEGUI_BUILD_RENDERER_OPENGLES)
-#    add_subdirectory(GLESTest)
-#endif()
+# loop through samples and exclude those that should not be build 
+foreach(dir ${SAMPLES_SUBDIRS})
+    if("${dir}" MATCHES "^GLESTest$") # exclude the GLES demo until CE gives his OK
+    elseif("${dir}" MATCHES "^common$") # exclude common folder; samples include files from there directly if necessary
+    elseif("${dir}" MATCHES "^samples$") # exclude this directory
+    elseif("${dir}" MATCHES "^Demo8$") # this demo doesn't work at the moment
+    elseif("${dir}" MATCHES "^browser$") # the directory has to be included at the end because it needs all samples' sources and headers
+    elseif("${dir}" MATCHES "^CommonDialogs$" AND ANDROID) # exclude this directory
+    elseif("${dir}" MATCHES "^CustomShapesDrawing$" AND ANDROID) # exclude this directory
+    elseif("${dir}" MATCHES "^RenderEffects$" AND ANDROID) # exclude this directory
+    elseif("${dir}" MATCHES "^SVG$" AND ANDROID) # exclude this directory
+    else()
+        add_subdirectory(${dir})
+    endif()
+endforeach()
 
+# add all registered samples to samples.inc and samples.h file
+file(WRITE ${SAMPLE_LIST_HEADER} "#ifndef _SamplesListHeader_h_\n#define _SamplesListHeader_h_\n\n#include \"Sample.h\"\n")
+file(WRITE ${SAMPLE_LIST_CODE} "std::vector<Sample*> samples;")
+foreach(sample ${SAMPLES_LIST})
+    set(_PATH "${sample}/${sample}.h")
+    file(APPEND ${SAMPLE_LIST_HEADER} "\n#include \"${_PATH}\"")
+    file(APPEND ${SAMPLE_LIST_CODE} "\nsamples.push_back(new ${sample}Sample());")
+endforeach()
+file(APPEND ${SAMPLE_LIST_HEADER} "\n#endif")
 
-# Finally we add the samples footer to the samples.xml
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlFooter.xml DEMO_META_DATA)
-file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
+# additional include directories have to appear here
+list(APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/common/include")
+list(APPEND ADDITIONAL_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/samples/common/include")
 
-# And add it to the install
-install(FILES ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml
-        DESTINATION ${CEGUI_DATA_INSTALL_DIR}/samples/ COMPONENT cegui_samples)
+# finally, include the samples browser directory
+add_subdirectory(browser/)

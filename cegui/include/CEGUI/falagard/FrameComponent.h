@@ -360,7 +360,7 @@ protected:
     {
         FrameImageSource() :
             d_specified(false),
-            d_image(0)
+            d_image(nullptr)
         {}
 
         bool operator==(const FrameImageSource& rhs) const
@@ -380,16 +380,17 @@ protected:
         String d_propertyName;
     };
 
-    // implemets abstract from base
-    void render_impl(Window& srcWindow, Rectf& destRect,
-                     const CEGUI::ColourRect* modColours,
-                     const Rectf* clipper, bool clipToDisplay) const;
+    void addImageRenderGeometryToWindow_impl(
+        Window& srcWindow, Rectf& destRect,
+        const CEGUI::ColourRect* modColours,
+        const Rectf* clipper, bool clipToDisplay) const override;
 
-    void renderImage(GeometryBuffer& buffer, const Image* image,
-                            VerticalFormatting vertFmt,
-                            HorizontalFormatting horzFmt,
-                            Rectf& destRect, const ColourRect& colours,
-                            const Rectf* clipper, bool clipToDisplay) const;
+    std::vector<GeometryBuffer*> createRenderGeometryForImage(
+        const Image* image,
+        VerticalFormatting vertFmt,
+        HorizontalFormatting horzFmt,
+        Rectf& destRect, const ColourRect& colours,
+        const Rectf* clipper, bool clipToDisplay) const;
 
     FormattingSetting<VerticalFormatting>   d_leftEdgeFormatting;
     FormattingSetting<VerticalFormatting>   d_rightEdgeFormatting;

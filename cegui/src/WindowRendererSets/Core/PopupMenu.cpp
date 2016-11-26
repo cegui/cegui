@@ -39,7 +39,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardPopupMenu::render()
+    void FalagardPopupMenu::createRenderGeometry()
     {
         const StateImagery* imagery;
 

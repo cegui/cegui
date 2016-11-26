@@ -67,9 +67,9 @@ void NamedElement::setName(const String& name)
 
         if (parent && parent->isChild(name))
         {
-            CEGUI_THROW(AlreadyExistsException("Failed to rename "
+            throw AlreadyExistsException("Failed to rename "
                 "NamedElement at: " + getNamePath() + " as: " + name + ". A Window "
-                "with that name is already attached as a sibling."));
+                "with that name is already attached as a sibling.");
         }
     }
 
@@ -107,13 +107,13 @@ String NamedElement::getNamePath() const
 //----------------------------------------------------------------------------//
 bool NamedElement::isChild(const String& name_path) const
 {
-    return getChildByNamePath_impl(name_path) != 0;
+    return getChildByNamePath_impl(name_path) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
 bool NamedElement::isChildRecursive(const String& name) const
 {
-    return getChildByNameRecursive_impl(name) != 0;
+    return getChildByNameRecursive_impl(name) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -145,9 +145,9 @@ NamedElement* NamedElement::getChildElement(const String& name_path) const
     if (e)
         return e;
 
-    CEGUI_THROW(UnknownObjectException("The Element object "
+    throw UnknownObjectException("The Element object "
         "referenced by '" + name_path + "' is not attached to Element at '"
-        + getNamePath() + "'."));
+        + getNamePath() + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -164,9 +164,9 @@ void NamedElement::removeChild(const String& name_path)
     if (e)
         removeChild(e);
     else
-        CEGUI_THROW(UnknownObjectException("The Element object "
+        throw UnknownObjectException("The Element object "
             "referenced by '" + name_path + "' is not attached to Element at '"
-            + getNamePath() + "'."));
+            + getNamePath() + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -179,10 +179,10 @@ void NamedElement::addChild_impl(Element* element)
         const NamedElement* const existing = getChildByNamePath_impl(named_element->getName());
 
         if (existing && named_element != existing)
-            CEGUI_THROW(AlreadyExistsException("Failed to add "
+            throw AlreadyExistsException("Failed to add "
                 "Element named: " + named_element->getName() + " to element at: " +
                 getNamePath() + " since an Element with that name is already "
-                "attached."));
+                "attached.");
     }
 
     Element::addChild_impl(element);
@@ -213,7 +213,7 @@ NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) con
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -250,7 +250,7 @@ NamedElement* NamedElement::getChildByNameRecursive_impl(const String& name) con
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -266,7 +266,7 @@ void NamedElement::addNamedElementProperties()
 
     CEGUI_DEFINE_PROPERTY_NO_XML(NamedElement, String,
         "NamePath", "Property to get the absolute name path of this Element.",
-        0, &NamedElement::getNamePath, ""
+        nullptr, &NamedElement::getNamePath, ""
     );
 }
 

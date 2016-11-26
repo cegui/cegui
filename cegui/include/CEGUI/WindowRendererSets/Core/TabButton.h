@@ -39,8 +39,8 @@ namespace CEGUI
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States (missing states will default to 'Normal'):
-            - Normal    - Rendering for when the tab button is neither selected nor has the mouse hovering over it.
-            - Hover     - Rendering for then the tab button has the mouse hovering over it.
+            - Normal    - Rendering for when the tab button is neither selected nor has the cursor hovering over it.
+            - Hover     - Rendering for then the tab button has the cursor hovering over it.
             - Selected  - Rendering for when the tab button is the button for the selected tab.
             - Disabled  - Rendering for when the tab button is disabled.
     */
@@ -55,7 +55,7 @@ namespace CEGUI
         */
         FalagardTabButton(const String& type);
 
-        void render();
+        void createRenderGeometry() override;
     };
 
 } // End of  CEGUI namespace section
