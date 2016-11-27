@@ -96,7 +96,7 @@ enum DefaultShaderType
 class CEGUIEXPORT Renderer
 {
 public:
-    Renderer(glm::vec2 displayDpi = glm::vec2(96, 96));
+    Renderer(const float fontScale = 1.0f);
 
     virtual ~Renderer() {}
 
@@ -468,26 +468,42 @@ public:
 
     /*!
     \brief
-        Gets the display DPI to be used when rendering Fonts (except Bitmap Fonts).
+        Gets the Font scale factor to be used when rendering scalable Fonts.
 
     \return
-        An object containing the horizontal and vertical display DPI.
+        The currently set Font scale factor
     */
-    const glm::vec2& getDisplayDpi() const
+    float getFontScale() const
     {
-        return d_displayDpi;
+        return d_fontScale;
     }
 
     /*!
     \brief
-        Sets the display DPI to be used when rendering Fonts (except Bitmap Fonts).
+        Sets the Font scale factor to be used when rendering scalable Fonts.
+    */
+    void setFontScale(const float fontScale)
+    {
+        d_fontScale = fontScale;
+    }
+
+    /*!
+    \brief
+        Calculates and returns the font scale factor, based on the 
+        reference DPI value of 96, which was assumed as fixed DPI up to
+        CEGUI 0.8.X. Point sizes are rendered in CEGUI based on this fixed
+        DPI. If you want to render point sizes according to a higher DPI,
+        use this function together with setFontScale.
 
     \return
-        An object containing the horizontal and vertical display DPI.
+        The result of dpiValue / ReferenceDpiValue
+
+    \see Renderer::setFontScale
+    \see System::getSystemDPI
     */
-    void setDisplayDpi(const glm::vec2& displayDpi)
+    static float dpiToFontScale(const float dpiValue)
     {
-        d_displayDpi = displayDpi;
+         return dpiValue / static_cast<float>(ReferenceDpiValue);
     }
 
 protected:
@@ -507,18 +523,15 @@ protected:
     //! The currently active view projection matrix 
     glm::mat4 d_viewProjectionMatrix;
 private:
+    //! This is the DPI value that was assumed up to CEGUI version 0.8.X
+    static const int ReferenceDpiValue = 96;
+
     //! container type used to hold GeometryBuffers created.
     typedef std::set<GeometryBuffer*> GeometryBufferSet;
     //! Container used to track geometry buffers.
     GeometryBufferSet d_geometryBuffers;
-
-    /*!
-    \brief
-        The horizontal and vertical DPI (dots per inch) value to
-        be considered when rendering Fonts (except Bitmap Fonts).
-    */
-    glm::vec2 d_displayDpi;
-
+    //! The Font scale factor to be used when rendering Fonts (except Bitmap Fonts).
+    float d_fontScale;
 };
 
 }

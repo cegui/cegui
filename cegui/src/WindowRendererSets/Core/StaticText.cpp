@@ -303,10 +303,10 @@ bool FalagardStaticText::isSizeAdjustedToContentKeepingAspectRatio() const
     if (getNumOfTextLinesToShow().isAuto())
         return (getWindow()->isWidthAdjustedToContent() &&
                   getWindow()->isHeightAdjustedToContent())  ||
-               (getWindow()->getAspectMode() != AM_IGNORE);
+               (getWindow()->getAspectMode() != AspectMode::IGNORE_);
     return getWindow()->isWidthAdjustedToContent()  &&
            !getWindow()->isHeightAdjustedToContent()  &&
-           (getWindow()->getAspectMode() != AM_IGNORE);
+           (getWindow()->getAspectMode() != AspectMode::IGNORE_);
 }
 
 //----------------------------------------------------------------------------//
@@ -1023,7 +1023,7 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(const L
         window_size.d_width = (content_max_width+epsilon)*size_func.d_width.d_scale + size_func.d_width.d_offset;
         window_size.d_height = (orig_str.getVerticalExtent(getWindow())+epsilon)*size_func.d_height.d_scale +
                                 size_func.d_height.d_offset;
-        window_size.scaleToAspect(AM_EXPAND, getWindow()->getAspectRatio());
+        window_size.scaleToAspect(AspectMode::EXPAND, getWindow()->getAspectRatio());
         getWindow()->setSize(USize(UDim(0.f, window_size.d_width), UDim(0.f, window_size.d_height)), false);
     }
 }

@@ -83,13 +83,13 @@ public:
         RawDataContainer holding the XML source to be used when creating the
         new Scheme instance.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Scheme with the specified name
         already exists within the collection.
     */
     Scheme& createFromContainer(const RawDataContainer& source,
-                                XMLResourceExistsAction action = XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
     /*!
     \brief
@@ -108,13 +108,13 @@ public:
         String holding the name of the resource group identifier to be used
         when loading the XML file described by \a xml_filename.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Scheme with the specified name
         already exists within the collection.
     */
     Scheme& createFromFile(const String& xml_filename, const String& resource_group = "",
-                           XMLResourceExistsAction action = XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
     /*!
     \brief
@@ -128,13 +128,13 @@ public:
         String holding the XML source to be used when creating the
         new Scheme instance.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when an Scheme with the specified name
         already exists within the collection.
     */
     Scheme& createFromString(const String& source,
-                             XMLResourceExistsAction action = XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
         /*!
     \brief
@@ -215,9 +215,9 @@ protected:
     //! implementation of object destruction.
     void destroyObject(SchemeRegistry::iterator ob);
 
-    //! function to enforce XMLResourceExistsAction policy.
+    //! function to enforce XmlResourceExistsAction policy.
     Scheme& doExistingObjectAction(const String scheme_name, Scheme* objeschemect,
-                                    const XMLResourceExistsAction action);
+                                    const XmlResourceExistsAction resourceExistsAction);
 
     //! Function called each time a new object is added to the collection.
     void doPostObjectAdditionAction(Scheme& scheme);

@@ -31,9 +31,9 @@
 namespace CEGUI
 {
 
-Renderer::Renderer(glm::vec2 displayDpi):
+Renderer::Renderer(const float fontScale):
     d_activeRenderTarget(nullptr),
-    d_displayDpi(displayDpi)
+    d_fontScale(fontScale)
 {}
 
 //----------------------------------------------------------------------------//

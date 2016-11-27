@@ -68,8 +68,10 @@ public:
     static const String FontNativeVertResAttribute;
     //! Attribute name that stores the line height that we'll report for this font.
     static const String FontLineSpacingAttribute;
-    //! Attribute name that stores the font point size.
+    //! Attribute name that stores the font size.
     static const String FontSizeAttribute;
+    //! Attribute name that stores the font size unit.
+    static const String FontSizeUnitAttribute;
     //! Attribute name that stores the font anti-aliasing setting.
     static const String FontAntiAliasedAttribute;
     //! Attribute name that stores the codepoint value for a mapping

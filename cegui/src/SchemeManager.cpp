@@ -80,36 +80,36 @@ void SchemeManager::doPostObjectAdditionAction(Scheme& scheme)
 }
 
 Scheme& SchemeManager::createFromContainer(const RawDataContainer& source,
-    XMLResourceExistsAction action)
+    XmlResourceExistsAction resourceExistsAction)
 {
     Scheme_xmlHandler xml_loader;
 
-    xml_loader.handleContainer(source);
+    xml_loader.handleContainer(source, resourceExistsAction);
     return doExistingObjectAction(xml_loader.getObjectName(),
-        &xml_loader.getObject(), action);
+        &xml_loader.getObject(), resourceExistsAction);
 }
 
 
 Scheme& SchemeManager::createFromFile(const String& xml_filename,
     const String& resource_group,
-    XMLResourceExistsAction action)
+    XmlResourceExistsAction resourceExistsAction)
 {
     Scheme_xmlHandler xml_loader;
 
-    xml_loader.handleFile(xml_filename, resource_group);
+    xml_loader.handleFile(xml_filename, resource_group, resourceExistsAction);
     return doExistingObjectAction(xml_loader.getObjectName(),
-        &xml_loader.getObject(), action);
+        &xml_loader.getObject(), resourceExistsAction);
 }
 
 
 Scheme& SchemeManager::createFromString(const String& source,
-    XMLResourceExistsAction action)
+    XmlResourceExistsAction resourceExistsAction)
 {
     Scheme_xmlHandler xml_loader;
 
-    xml_loader.handleString(source);
+    xml_loader.handleString(source, resourceExistsAction);
     return doExistingObjectAction(xml_loader.getObjectName(),
-        &xml_loader.getObject(), action);
+        &xml_loader.getObject(), resourceExistsAction);
 }
 
 
@@ -186,15 +186,15 @@ void SchemeManager::destroyObject(
 Scheme& SchemeManager::doExistingObjectAction(
     const String object_name,
     Scheme* object,
-    const XMLResourceExistsAction action)
+    const XmlResourceExistsAction resourceExistsAction)
 {
     String event_name;
 
     if (isDefined(object_name))
     {
-        switch (action)
+        switch (resourceExistsAction)
         {
-        case XREA_RETURN:
+        case XmlResourceExistsAction::XREA_RETURN:
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
             // delete any new object we already had created
@@ -202,7 +202,7 @@ Scheme& SchemeManager::doExistingObjectAction(
             // return existing instance of object.
             return *d_registeredSchemes[object_name];
 
-        case XREA_REPLACE:
+        case XmlResourceExistsAction::XREA_REPLACE:
             Logger::getSingleton().logEvent("---- Replacing existing instance "
                 "of " + d_resourceType + " named '" + object_name +
                 "' (DANGER!).");
@@ -210,7 +210,7 @@ Scheme& SchemeManager::doExistingObjectAction(
             event_name = EventResourceReplaced;
             break;
 
-        case XREA_THROW:
+        case XmlResourceExistsAction::XREA_THROW:
             delete object;
             throw AlreadyExistsException(
                 "an object of type '" + d_resourceType + "' named '" +
@@ -219,7 +219,7 @@ Scheme& SchemeManager::doExistingObjectAction(
         default:
             delete object;
             throw InvalidRequestException(
-                "Invalid CEGUI::XMLResourceExistsAction was specified.");
+                "Invalid CEGUI::XmlResourceExistsAction was specified.");
         }
     }
     else

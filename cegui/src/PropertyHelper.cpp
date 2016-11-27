@@ -34,21 +34,26 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/StreamHelper.h"
 #include "CEGUI/SharedStringStream.h"
+#include "CEGUI/AspectMode.h"
 
 #include <sstream>
+
 
 namespace CEGUI
 {
 
 //! Definitions of static constants
-const CEGUI::String PropertyHelper<bool>::ValueTrue("true");
-const CEGUI::String PropertyHelper<bool>::ValueFalse("false");
+const String PropertyHelper<bool>::ValueTrue("true");
+const String PropertyHelper<bool>::ValueFalse("false");
 
-const CEGUI::String PropertyHelper<AspectMode>::Shrink("Shrink");
-const CEGUI::String PropertyHelper<AspectMode>::Expand("Expand");
-const CEGUI::String PropertyHelper<AspectMode>::AdjustHeight("AdjustHeight");
-const CEGUI::String PropertyHelper<AspectMode>::AdjustWidth("AdjustWidth");
-const CEGUI::String PropertyHelper<AspectMode>::Ignore("Ignore");
+const String PropertyHelper<AspectMode>::Shrink("Shrink");
+const String PropertyHelper<AspectMode>::Expand("Expand");
+const String PropertyHelper<AspectMode>::AdjustHeight("AdjustHeight");
+const String PropertyHelper<AspectMode>::AdjustWidth("AdjustWidth");
+const String PropertyHelper<AspectMode>::Ignore("Ignore");
+
+const String PropertyHelper<FontSizeUnit>::Points("Points");
+const String PropertyHelper<FontSizeUnit>::Pixels("Pixels");
 
 //! Helper function for throwing errors
 static void throwParsingException(const String& typeName, const String& parsedstring)
@@ -83,23 +88,23 @@ const String& PropertyHelper<AspectMode>::getDataTypeName()
 PropertyHelper<AspectMode>::string_return_type PropertyHelper<AspectMode>::toString(
     PropertyHelper<AspectMode>::pass_type val)
 {
-    if (val == AM_IGNORE)
+    if (val == AspectMode::IGNORE_)
     {
         return Ignore;
     }
-    else if (val == AM_SHRINK)
+    else if (val == AspectMode::SHRINK)
     {
         return Shrink;
     }
-    else if (val == AM_EXPAND)
+    else if (val == AspectMode::EXPAND)
     {
         return Expand;
     }
-    else if (val == AM_ADJUST_HEIGHT)
+    else if (val == AspectMode::ADJUST_HEIGHT)
     {
         return AdjustHeight;
     }
-    else if (val == AM_ADJUST_WIDTH)
+    else if (val == AspectMode::ADJUST_WIDTH)
     {
         return AdjustWidth;
     }
@@ -114,23 +119,23 @@ PropertyHelper<AspectMode>::return_type PropertyHelper<AspectMode>::fromString(c
 {
     if (str == Shrink)
     {
-        return AM_SHRINK;
+        return AspectMode::SHRINK;
     }
     else if (str == Expand)
     {
-        return AM_EXPAND;
+        return AspectMode::EXPAND;
     }
     else if (str == AdjustHeight)
     {
-        return AM_ADJUST_HEIGHT;
+        return AspectMode::ADJUST_HEIGHT;
     }
     else if (str == AdjustWidth)
     {
-        return AM_ADJUST_WIDTH;
+        return AspectMode::ADJUST_WIDTH;
     }
     else
     {
-        return AM_IGNORE;
+        return AspectMode::IGNORE_;
     }
 }
 
@@ -913,6 +918,46 @@ PropertyHelper<String>::string_return_type PropertyHelper<String>::toString(
     return val;
 }
 
+const String& PropertyHelper<FontSizeUnit>::getDataTypeName()
+{
+    static const String type("FontSizeUnit");
+
+    return type;
+}
+
+PropertyHelper<FontSizeUnit>::string_return_type PropertyHelper<FontSizeUnit>::toString(
+    pass_type val)
+{
+    if (val == FontSizeUnit::FSU_PIXELS)
+    {
+        return Pixels;
+    }
+
+    if (val == FontSizeUnit::FSU_POINTS)
+    {
+        return Points;
+    }
+
+    assert(false && "Invalid FontSizeUnit specified");
+    return Pixels;
+}
+
+PropertyHelper<FontSizeUnit>::return_type PropertyHelper<FontSizeUnit>::fromString(const String& str)
+{
+    if (str == Pixels)
+    {
+        return FontSizeUnit::FSU_PIXELS;
+    }
+
+    if (str == Points)
+    {
+        return FontSizeUnit::FSU_POINTS;
+    }
+
+    return FontSizeUnit::FSU_PIXELS;
+}
+
+
 // Explicit instantiation definitions
 template class PropertyHelper<String>;
 template class PropertyHelper<float>;
@@ -937,6 +982,7 @@ template class PropertyHelper<UVector2>;
 template class PropertyHelper<URect>;
 template class PropertyHelper<Rectf>;
 template class PropertyHelper<UBox>;
+template class PropertyHelper<FontSizeUnit>;
 template class PropertyHelper<Font*>;
 
 }

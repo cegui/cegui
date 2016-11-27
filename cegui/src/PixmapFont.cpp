@@ -67,6 +67,7 @@ void PixmapFont::addPixmapFontProperties ()
 {
     const String propertyOrigin("PixmapFont");
 
+    /*
     CEGUI_DEFINE_PROPERTY(PixmapFont, String,
         "ImageNamePrefix",
         "This is the name prefix used by the images that contain the glyph "
@@ -80,6 +81,7 @@ void PixmapFont::addPixmapFontProperties ()
         "Format is: codepoint,advance,imagename",
         &PixmapFont::defineMapping, 0, ""
     );
+    */
 }
 
 //----------------------------------------------------------------------------//

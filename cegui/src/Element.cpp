@@ -77,7 +77,7 @@ Element::Element():
     d_verticalAlignment(VA_TOP),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(0), cegui_reldim(0)),
-    d_aspectMode(AM_IGNORE),
+    d_aspectMode(AspectMode::IGNORE_),
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
@@ -267,7 +267,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     else if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
         ret.d_height = absMax.d_height;
 
-    if (d_aspectMode != AM_IGNORE)
+    if (d_aspectMode != AspectMode::IGNORE_)
     {
         // make sure we respect current aspect mode and ratio
         ret.scaleToAspect(d_aspectMode, d_aspectRatio);
@@ -441,25 +441,25 @@ void Element::adjustSizeToContent_direct()
         new_pixel_size.d_height = std::ceil((getContentHeight()+epsilon)*size_func.d_height.d_scale  +
                                              size_func.d_height.d_offset);
     }
-    if (getAspectMode() != AM_IGNORE)
+    if (getAspectMode() != AspectMode::IGNORE_)
     {
         if (isWidthAdjustedToContent())
         {
             if (isHeightAdjustedToContent())
-                new_pixel_size.scaleToAspect(AM_EXPAND, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::EXPAND, getAspectRatio());
             else
-                new_pixel_size.scaleToAspect(AM_ADJUST_HEIGHT, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::ADJUST_HEIGHT, getAspectRatio());
         }
         else
         {
             if (isHeightAdjustedToContent())
-                new_pixel_size.scaleToAspect(AM_ADJUST_WIDTH, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::ADJUST_WIDTH, getAspectRatio());
         }
     }
     USize new_size(getSize());
-    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AM_IGNORE))
+    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AspectMode::IGNORE_))
         new_size.d_width = UDim(0.f, new_pixel_size.d_width);
-    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AM_IGNORE))
+    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AspectMode::IGNORE_))
         new_size.d_height = UDim(0.f, new_pixel_size.d_height);
     setSize(new_size, false);
 }
@@ -737,7 +737,7 @@ void Element::addElementProperties()
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\", "
         "\"Expand\", \"AdjustHeight\" or \"AdjustWidth\".",
-        &Element::setAspectMode, &Element::getAspectMode, AM_IGNORE
+        &Element::setAspectMode, &Element::getAspectMode, AspectMode::IGNORE_
     );
 
     CEGUI_DEFINE_PROPERTY(Element, float,

@@ -67,7 +67,6 @@ public:
 
     //! Destructor.
     ~FontManager();
-
     //! Map container that maps Font names (String) to Font pointers
     typedef std::unordered_map<String, Font*> FontRegistry;
 
@@ -85,13 +84,13 @@ public:
         RawDataContainer holding the XML source to be used when creating the
         new Font instances.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Font with the specified name already 
         exists within the collection.
     */
-    FontList createFromContainer(const RawDataContainer& source,
-                                           XMLResourceExistsAction action = XREA_RETURN);
+    static FontList createFromContainer(const RawDataContainer& source,
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
     /*!
     \brief
@@ -110,13 +109,13 @@ public:
         String holding the name of the resource group identifier to be used
         when loading the XML file described by \a xml_filename.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Font with the specified name already
         exists within the collection.
     */
-    FontList createFromFile(const String& xml_filename, const String& resource_group = "",
-                                      XMLResourceExistsAction action = XREA_RETURN);
+    static FontList createFromFile(const String& xml_filename, const String& resource_group = "",
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
     /*!
     \brief
@@ -130,13 +129,13 @@ public:
         String holding the XML source to be used when creating the
         new Font instances.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
-        action should be taken when a Font with the specified name already
-        exists within the collection.
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
+        action should be taken when an Scheme with the specified name
+        already exists within the collection.
     */
-    FontList createFromString(const String& source,
-                                        XMLResourceExistsAction action = XREA_RETURN);
+    static FontList createFromString(const String& source,
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
        /*!
     \brief
@@ -187,8 +186,11 @@ public:
     \param font_name
         The name that the font will use within the CEGUI system.
 
-    \param point_size
-        Specifies the point size that the font is to be rendered at.
+    \param size
+        Specifies the size that the font is to be rendered at.
+
+    \param sizeUnit
+        Specifies the size unit of the Font size.
 
     \param anti_aliased
         Specifies whether the font should be rendered using anti aliasing.
@@ -215,20 +217,24 @@ public:
         auto scaling is enabled.
 
     \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Font with the specified name
         already exists.
 
     \return
         Reference to the newly create Font object.
     */
-    Font& createFreeTypeFont(const String& font_name, const float point_size,
-                             const bool anti_aliased,
-                             const String& font_filename,
-                             const String& resource_group = "",
-                             const AutoScaledMode auto_scaled = ASM_Disabled,
-                             const Sizef& native_res = Sizef(640.0f, 480.0f),
-                             XMLResourceExistsAction action = XREA_RETURN);
+    Font& createFreeTypeFont(
+        const String& font_name,
+        const float size,
+        const FontSizeUnit sizeUnit,
+        const bool anti_aliased,
+        const String& font_filename,
+        const String& resource_group = "",
+        const AutoScaledMode auto_scaled = ASM_Disabled,
+        const Sizef& native_res = Sizef(640.0f, 480.0f),
+        const float specificLineSpacing = 0.0f,
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
     /*!
     \brief
@@ -262,8 +268,8 @@ public:
         The vertical native resolution value.  This is only significant when
         auto scaling is enabled.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Font with the specified name
         already exists.
 
@@ -275,7 +281,7 @@ public:
                            const String& resource_group = "",
                            const AutoScaledMode auto_scaled = ASM_Disabled,
                            const Sizef& native_res = Sizef(640.0f, 480.0f),
-                           XMLResourceExistsAction action = XREA_RETURN);
+                           XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 
     /*!
     \brief
@@ -307,16 +313,20 @@ public:
     */
     const FontRegistry& getRegisteredFonts() const;
 
+    //! The name of the resource type handled by this class
+    static const String ResourceTypeName;
+
 protected:
     //! implementation of object destruction.
     void destroyObject(FontRegistry::iterator fontRegistry);
-    //! function to enforce XMLResourceExistsAction policy.
-    Font& doExistingObjectAction(Font* font, const XMLResourceExistsAction action);
-    //! function to enforce XMLResourceExistsAction policy.
-    void doExistingObjectsAction(FontList& fonts, const XMLResourceExistsAction action);
 
-    //! String holding the text for the resource type managed.
-    const String d_resourceType;
+    /*!
+    \brief
+        Helper function to check if a resource exists and act accordingly, i.e.
+        return a Font, throw an error or return a nullptr
+    */
+    Font* handleResourceExistsAction(const String& font_name,
+        XmlResourceExistsAction resourceExistsAction, String& event_name);
 
     //! Map of registered Fonts, containing name and pointer to the instance
     FontRegistry d_registeredFonts;

@@ -1,11 +1,11 @@
 /***********************************************************************
-	created:	19th August 2015
-	author:		Lukas Meindl (based on code by Paul D Turner)
+	created:	26th November 2016
+	author:		Lukas Meindl
 	
-	purpose:	Defines the AspectMode enum
+	purpose:	Defines CEGUI Base library enums
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2016 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -26,39 +26,29 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIAspectMode_h_
-#define _CEGUIAspectMode_h_
+#ifndef _CeguiXmlResourceExistsAction_h_
+#define _CeguiXmlResourceExistsAction_h_
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    
+
 /*
 \brief
-    The AspectMode enumerators are used for the auto scale features of CEGUI
+    Possible actions when loading an XML resource that already exists.
 */
-enum class AspectMode
+enum class XmlResourceExistsAction
 {
-    //! Ignores the target aspect (default)
-    IGNORE_,
-    /*!
-    Satisfies the aspect ratio by shrinking the size as little
-    as possible to fit inside it
-    */
-    SHRINK,
-    /*!
-    Satisfies the aspect ratio by expanding the widget as little
-    as possible outside it
-    */
-    EXPAND,
-    //! Satisfy the aspect ratio by adjusting the height according to the width.
-    ADJUST_HEIGHT,
-    //! Satisfy the aspect ratio by adjusting the width according to the height.
-    ADJUST_WIDTH
+    //! Do not load the resource, return the existing instance.
+    XREA_RETURN,
+    //! Destroy the existing instance and replace with the newly loaded one.
+    XREA_REPLACE,
+    //! Throw an AlreadyExistsException.
+    XREA_THROW
 };
 
 
-} // End of  CEGUI namespace section
+
+}
+
 
 #endif

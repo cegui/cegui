@@ -781,7 +781,7 @@ public:
         16.0f / 9.0.f, ...
 
     \note
-        This is ignored if AspectMode is AM_IGNORE.
+        This is ignored if AspectMode is IGNORE.
 
     \see Element::setAspectMode
     */
@@ -1479,7 +1479,7 @@ public:
         Note that in this implementation the width and height are treated
         independently of each other.
 
-        If "getAspectMode() != AM_IGNORE", this method respects the aspect ratio
+        If "getAspectMode() != IGNORE", this method respects the aspect ratio
         using the following logic:
             - If only "isWidthAdjustedToContent()" is true, compute the height
               from the width and the aspect ratio.
