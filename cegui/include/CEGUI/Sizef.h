@@ -34,6 +34,8 @@
 
 #include "AspectMode.h"
 
+#include <glm/glm.hpp>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -45,8 +47,7 @@ namespace CEGUI
 class Sizef
 {
 public:
-    Sizef()
-    {}
+    Sizef(): d_width(0), d_height(0) {}
 
     Sizef(const float width, const float height):
         d_width(width),
