@@ -453,11 +453,7 @@ public:
      */
     static const String EventCursorActivate;
     /** Event fired when the Window receives a character key input event.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the character input,
-     * KeyEventArgs::codepoint set to the Unicode UTF32 / UCS-4 value for the
-     * input, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the character input was received.
+     * Handlers are passed a const CursorInputEventArgs reference.
      */
     static const String EventCharacterKey;
     /** Event fired when the Window receives a semantic input event.
