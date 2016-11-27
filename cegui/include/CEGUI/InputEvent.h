@@ -225,24 +225,6 @@ enum MouseButton
 
 /*!
 \brief
-	System key flag values
-*/
-enum SystemKey
-{
-	LeftMouse		= 0x0001,			//!< The left mouse button.
-	RightMouse		= 0x0002,			//!< The right mouse button.
-	Shift			= 0x0004,			//!< Either shift key.
-	Control			= 0x0008,			//!< Either control key.
-	MiddleMouse		= 0x0010,			//!< The middle mouse button.
-	X1Mouse			= 0x0020,			//!< The first 'extra' mouse button
-	X2Mouse			= 0x0040,			//!< The second 'extra' mouse button.
-	Alt				= 0x0080,			//!< Either alt key.
-    InvalidSysKey   = 0x8000
-};
-
-
-/*!
-\brief
 	EventArgs based class that is used for objects passed to handlers triggered for events
 	concerning some Window object.
 */
@@ -261,7 +243,7 @@ public:
 class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
 {
 public:
-    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd), d_semanticValue(-1) {}
 
     int d_semanticValue;            //!< The type of the semantic value
     SemanticPayload d_payload;      //!< The payload of the event
