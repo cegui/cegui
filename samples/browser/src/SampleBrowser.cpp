@@ -453,7 +453,8 @@ bool SampleBrowser::initialiseSampleStepwise(std::int32_t sampleNumber)
 void SampleBrowser::initialiseSampleBrowserLayout()
 {
     CEGUI::FontManager::getSingleton().
-        createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
+        createFreeTypeFont("DejaVuSans-14", 14.f, FontSizeUnit::FSU_PIXELS,
+            true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
 

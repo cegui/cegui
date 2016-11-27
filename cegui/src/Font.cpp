@@ -101,6 +101,7 @@ void Font::addFontProperties()
 {
     const String propertyOrigin("Font");
 
+    /*
     CEGUI_DEFINE_PROPERTY(Font, Sizef,
         "NativeRes", "Native screen resolution for this font."
         "Value uses the 'w:# h:#' format.",
@@ -117,6 +118,7 @@ void Font::addFontProperties()
         "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
         &Font::setAutoScaled, &Font::getAutoScaled, ASM_Disabled
     );
+    */
 }
 
 //----------------------------------------------------------------------------//
@@ -482,7 +484,7 @@ AutoScaledMode Font::getAutoScaled() const
 void Font::notifyDisplaySizeChanged(const Sizef& size)
 {
     Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution,
-                                 d_horzScaling, d_vertScaling);
+        d_horzScaling, d_vertScaling);
 
     if (d_autoScaled != ASM_Disabled)
     {

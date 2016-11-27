@@ -237,7 +237,7 @@ void RestaurantGameSample::setupCursor()
 
     d_cursorWnd = winMgr.createWindow("Generic/Image");
     d_cursorWnd->setProperty("Image", "RestaurantGameSample/Spoon");
-    d_cursorWnd->setAspectMode(CEGUI::AM_EXPAND);
+    d_cursorWnd->setAspectMode(AspectMode::EXPAND);
     d_cursorWnd->setAspectRatio(1.0f);
     d_cursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_cursorWnd->setAlwaysOnTop(true);
@@ -267,7 +267,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
 
     CEGUI::Window* plateRoot = winMgr.createWindow("DefaultWindow");
     plateRoot->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.16f)));
-    plateRoot->setAspectMode(CEGUI::AM_EXPAND);
+    plateRoot->setAspectMode(CEGUI::AspectMode::EXPAND);
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
@@ -278,7 +278,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateImgWnd->setProperty("Image", s_imageNamePlate);
     plateImgWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(0.0f)));
     plateImgWnd->setAspectRatio(3.308f);
-    plateImgWnd->setAspectMode(CEGUI::AM_EXPAND);
+    plateImgWnd->setAspectMode(CEGUI::AspectMode::EXPAND);
     plateImgWnd->setVerticalAlignment(CEGUI::VA_BOTTOM);
     plateImgWnd->setCursorPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
@@ -290,7 +290,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateTopping->setProperty("Image", image);
     plateTopping->setSize(CEGUI::USize(cegui_reldim(0.88f), cegui_absdim(0.0f)));
     plateTopping->setAspectRatio(1.0f);
-    plateTopping->setAspectMode(CEGUI::AM_EXPAND);
+    plateTopping->setAspectMode(CEGUI::AspectMode::EXPAND);
     plateTopping->setHorizontalAlignment(CEGUI::HA_CENTRE);
     plateTopping->setCursorPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);

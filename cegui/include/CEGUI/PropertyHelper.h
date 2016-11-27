@@ -38,13 +38,10 @@
 #include "CEGUI/UDim.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
-#include "CEGUI/Logger.h"
-#include "CEGUI/Exceptions.h"
+#include "CEGUI/FontSizeUnit.h"
 
-#include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include <cstdio>
 
 namespace CEGUI
 {
@@ -71,17 +68,17 @@ public:
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
-    static inline const String& getDataTypeName()
+    static const String& getDataTypeName()
     {
         return PropertyHelper<T>::getDataTypeName();
     }
 
-    static inline return_type fromString(const String& str)
+    static return_type fromString(const String& str)
     {
         return PropertyHelper<T>::fromString(str);
     }
 
-    static inline String toString(pass_type val)
+    static String toString(pass_type val)
     {
         return PropertyHelper<T>::toString(val);
     }
@@ -99,17 +96,17 @@ public:
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
-    static inline const String& getDataTypeName()
+    static const String& getDataTypeName()
     {
         return PropertyHelper<T>::getDataTypeName();
     }
 
-    static inline return_type fromString(const String& str)
+    static return_type fromString(const String& str)
     {
         return PropertyHelper<T>::fromString(str);
     }
 
-    static inline String toString(pass_type val)
+    static String toString(pass_type val)
     {
         return PropertyHelper<T>::toString(val);
     }
@@ -125,17 +122,17 @@ public:
     typedef typename PropertyHelper<T*>::pass_type pass_type;
     typedef typename PropertyHelper<T*>::string_return_type string_return_type;
 
-    static inline const String& getDataTypeName()
+    static const String& getDataTypeName()
     {
         return PropertyHelper<T>::getDataTypeName();
     }
 
-    static inline return_type fromString(const String& str)
+    static return_type fromString(const String& str)
     {
         return PropertyHelper<T*>::fromString(str);
     }
 
-    static inline String toString(pass_type val)
+    static String toString(pass_type val)
     {
         return PropertyHelper<T*>::toString(val);
     }
@@ -292,11 +289,11 @@ public:
     static string_return_type toString(pass_type val);
 
     //! Definitions of the possible values represented as Strings
-    static const CEGUI::String Shrink;
-    static const CEGUI::String Expand;
-    static const CEGUI::String AdjustHeight;
-    static const CEGUI::String AdjustWidth;
-    static const CEGUI::String Ignore;
+    static const String Shrink;
+    static const String Expand;
+    static const String AdjustHeight;
+    static const String AdjustWidth;
+    static const String Ignore;
 };
 
 template<>
@@ -494,6 +491,23 @@ public:
     static const String& getDataTypeName();
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<FontSizeUnit>
+{
+public:
+    typedef FontSizeUnit return_type;
+    typedef return_type safe_method_return_type;
+    typedef const FontSizeUnit pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+
+    static const String Points;
+    static const String Pixels;
 };
 
 

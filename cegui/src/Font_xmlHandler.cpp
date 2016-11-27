@@ -36,12 +36,14 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/PixmapFont.h"
 #include "CEGUI/SharedStringStream.h"
+#include "CEGUI/FontManager.h"
 
 #ifdef CEGUI_HAS_FREETYPE
 #   include "CEGUI/FreeTypeFont.h"
 #endif
 
 #include <sstream>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,6 +62,7 @@ const String Font_xmlHandler::FontNativeHorzResAttribute("nativeHorzRes");
 const String Font_xmlHandler::FontNativeVertResAttribute("nativeVertRes");
 const String Font_xmlHandler::FontLineSpacingAttribute("lineSpacing");
 const String Font_xmlHandler::FontSizeAttribute("size");
+const String Font_xmlHandler::FontSizeUnitAttribute("sizeUnit");
 const String Font_xmlHandler::FontAntiAliasedAttribute("antiAlias");
 const String Font_xmlHandler::MappingCodepointAttribute("codepoint");
 const String Font_xmlHandler::MappingImageAttribute("image");
@@ -242,10 +245,11 @@ void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
 //----------------------------------------------------------------------------//
 void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
 {
-    const String name(attributes.getValueAsString(FontNameAttribute));
+    const String fontName(attributes.getValueAsString(FontNameAttribute));
     const String filename(attributes.getValueAsString(FontFilenameAttribute));
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
+ 
 #ifdef CEGUI_HAS_FREETYPE
     if (d_font != nullptr)
     {
@@ -254,23 +258,39 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
             " previous font has not been finished.");
     }
 
-    CEGUI_LOGINSANE("---- CEGUI font name: " + name);
+    CEGUI_LOGINSANE("---- CEGUI font name: " + fontName);
     CEGUI_LOGINSANE("----       Font type: FreeType");
     CEGUI_LOGINSANE("----     Source file: " + filename +
                     " in resource group: " + (resource_group.empty() ?
                                               "(Default)" : resource_group));
-    CEGUI_LOGINSANE("---- Real point size: " +
-            attributes.getValueAsString(FontSizeAttribute, "12"));
 
-    d_font = new FreeTypeFont(name,
-        attributes.getValueAsFloat(FontSizeAttribute, 12.0f),
-        attributes.getValueAsBool(FontAntiAliasedAttribute, true),
-        filename, resource_group,
-        PropertyHelper<AutoScaledMode>::fromString(
-                attributes.getValueAsString(FontAutoScaledAttribute)),
-        Sizef(attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
-              attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f)),
-        attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f));
+    auto fontSize = attributes.getValueAsFloat(FontSizeAttribute, 12.0f);
+    CEGUI_LOGINSANE("---- Requested Font size: " +
+        attributes.getValueAsString(FontSizeAttribute, "12"));
+    String fontSizeUnitStr = attributes.getValueAsString(FontSizeUnitAttribute, "Points");
+    auto fontSizeUnit = PropertyHelper<FontSizeUnit>::fromString(fontSizeUnitStr);
+    CEGUI_LOGINSANE("---- Requested Font size unit: " +
+        attributes.getValueAsString(FontSizeUnitAttribute, PropertyHelper<FontSizeUnit>::Points));
+    auto autoScaledmode = PropertyHelper<AutoScaledMode>::fromString(
+        attributes.getValueAsString(FontAutoScaledAttribute));
+    auto nativeResolution = Sizef(
+        attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
+        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));
+    auto fontLineSpacing = attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f);
+    auto usingAliasing = attributes.getValueAsBool(FontAntiAliasedAttribute, true);
+
+    FontManager& fontManager = FontManager::getSingleton();
+    d_font = &fontManager.createFreeTypeFont(
+        fontName,
+        fontSize,
+        fontSizeUnit,
+        usingAliasing,
+        filename,
+        resource_group,
+        autoScaledmode,
+        nativeResolution,
+        fontLineSpacing,
+        d_resourceExistsAction);
 #else
     throw InvalidRequestException(
         "CEGUI was compiled without freetype support.");

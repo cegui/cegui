@@ -29,12 +29,13 @@
 #ifndef _CEGUISizef_h_
 #define _CEGUISizef_h_
 
-#include "CEGUI/AspectMode.h"
+#include "CEGUI/Enums.h"
 #include "CEGUI/StreamHelper.h"
 #include "CEGUI/Exceptions.h"
 #include <typeinfo>
 
 #include <glm/glm.hpp>
+#include "AspectMode.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -133,7 +134,7 @@ public:
 
     inline void scaleToAspect(AspectMode mode, float ratio)
     {
-        if (mode == AM_IGNORE)
+        if (mode == AspectMode::IGNORE_)
             return;
 
         if(d_width <= 0 && d_height <= 0)
@@ -145,16 +146,16 @@ public:
         bool keepHeight;
         switch (mode)
         {
-        case AM_SHRINK:
+        case AspectMode::SHRINK:
             keepHeight = expectedWidth <= d_width;
             break;
-        case AM_EXPAND:
+        case AspectMode::EXPAND:
             keepHeight = expectedWidth >= d_width;
             break;
-        case AM_ADJUST_WIDTH:
+        case AspectMode::ADJUST_WIDTH:
             keepHeight = true;
             break;
-        case AM_ADJUST_HEIGHT:
+        case AspectMode::ADJUST_HEIGHT:
             keepHeight = false;
             break;
         default:

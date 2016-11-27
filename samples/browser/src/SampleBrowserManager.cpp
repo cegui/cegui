@@ -247,7 +247,7 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
 
-    sampleWindow->setAspectMode(AM_EXPAND);
+    sampleWindow->setAspectMode(AspectMode::EXPAND);
 
     return sampleWindow;
 }
@@ -272,7 +272,7 @@ CEGUI::PushButton* SampleBrowserManager::createPreviewHeaderEnterButton()
     CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleEntryButton"));
 
     button->setSize(CEGUI::USize(cegui_absdim(1.0f), cegui_reldim(0.7f)));
-    button->setAspectMode(AM_EXPAND);
+    button->setAspectMode(AspectMode::EXPAND);
     button->setAspectRatio(1.0f);
     button->setPosition(CEGUI::UVector2(cegui_absdim(-7.f), cegui_absdim(0.0f)));
     button->setCursorInputPropagationEnabled(true);

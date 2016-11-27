@@ -48,9 +48,10 @@ namespace CEGUI
 // singleton instance pointer
 template<> FontManager* Singleton<FontManager>::ms_Singleton = nullptr;
 
+const String FontManager::ResourceTypeName = "Font";
 
-FontManager::FontManager() :
-    d_resourceType("Font")
+
+FontManager::FontManager()
 {
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
@@ -71,26 +72,93 @@ FontManager::~FontManager()
         "CEGUI::FontManager singleton destroyed. (" + addressStr + ")");
 }
 
-Font& FontManager::createFreeTypeFont(const String& font_name,
-                                      const float point_size,
-                                      const bool anti_aliased,
-                                      const String& font_filename,
-                                      const String& resource_group,
-                                      const AutoScaledMode auto_scaled,
-                                      const Sizef& native_res,
-                                      XMLResourceExistsAction action)
+Font* FontManager::handleResourceExistsAction(
+    const String& font_name,
+    XmlResourceExistsAction resourceExistsAction,
+    String& event_name)
+{
+    bool isAlreadyDefined = isDefined(font_name);
+
+    if (!isAlreadyDefined)
+    {
+        event_name = EventResourceCreated;
+        return nullptr;
+    }
+
+    switch (resourceExistsAction)
+    {
+        case XmlResourceExistsAction::XREA_RETURN:
+        {
+            Logger::getSingleton().logEvent("---- Using existing instance "
+                "of " + ResourceTypeName + " named '" + font_name + "'.");
+
+            return &get(font_name);
+        }
+        case XmlResourceExistsAction::XREA_REPLACE:
+        {
+            Logger::getSingleton().logEvent("---- Replacing existing instance "
+                "of " + ResourceTypeName + " named '" + font_name +
+                "' (DANGER!).");
+            destroy(font_name);
+
+            event_name = EventResourceReplaced;
+            return nullptr;
+        }
+        case XmlResourceExistsAction::XREA_THROW:
+        {
+            destroy(font_name);
+            throw AlreadyExistsException(
+                "an object of type '" + FontManager::ResourceTypeName + "' named '" +
+                font_name + "' already exists in the collection.");
+        }
+        default:
+        {
+            destroy(font_name);
+            throw InvalidRequestException(
+                "Invalid CEGUI::XmlResourceExistsAction was specified.");
+        }
+    }
+}
+
+Font& FontManager::createFreeTypeFont(
+    const String& font_name,
+    const float size,
+    const FontSizeUnit sizeUnit,
+    const bool anti_aliased,
+    const String& font_filename,
+    const String& resource_group,
+    const AutoScaledMode auto_scaled,
+    const Sizef& native_res,
+    float specificLineSpacing,
+    XmlResourceExistsAction resourceExistsAction)
 {
 #ifdef CEGUI_HAS_FREETYPE
     CEGUI_LOGINSANE("Attempting to create FreeType font '" +
         font_name + "' using font file '" + font_filename + "'.");
 
-    // create new object ahead of time
-    Font* newFont = new FreeTypeFont(font_name, point_size, anti_aliased,
-                                    font_filename, resource_group, auto_scaled,
-                                    native_res);
+    String event_name;
+    Font* fontObject = handleResourceExistsAction(
+        font_name, resourceExistsAction, event_name);
+    
+    if(fontObject != nullptr)
+    {
+        return *fontObject;
+    }
 
-    // return appropriate object instance (deleting any not required)
-    return doExistingObjectAction(newFont, action);
+    fontObject = new FreeTypeFont(
+        font_name, size, sizeUnit,
+        anti_aliased, font_filename,
+        resource_group, auto_scaled,
+        native_res, specificLineSpacing);
+
+    d_registeredFonts[font_name] = fontObject;
+
+    // fire event about this resource change
+    ResourceEventArgs args(ResourceTypeName, font_name);
+    fireEvent(event_name, args, EventNamespace);
+
+    return *fontObject;
+
 
 #else
     throw InvalidRequestException(
@@ -103,17 +171,31 @@ Font& FontManager::createPixmapFont(const String& font_name,
                                     const String& resource_group,
                                     const AutoScaledMode auto_scaled,
                                     const Sizef& native_res,
-                                    XMLResourceExistsAction action)
+                                    XmlResourceExistsAction resourceExistsAction)
 {
     CEGUI_LOGINSANE("Attempting to create Pixmap font '" +
         font_name + "' using imageset file '" + imageset_filename + "'.");
 
-    // create new object ahead of time
-    Font* newFont = new PixmapFont(font_name, imageset_filename, resource_group,
+    String event_name;
+    Font* fontObject = handleResourceExistsAction(
+        font_name, resourceExistsAction, event_name);
+
+    if (fontObject != nullptr)
+    {
+        return *fontObject;
+    }
+
+    fontObject = new PixmapFont(font_name, imageset_filename, resource_group,
                                   auto_scaled, native_res);
 
+    d_registeredFonts[font_name] = fontObject;
+
+    // fire event about this resource change
+    ResourceEventArgs args(ResourceTypeName, font_name);
+    fireEvent(event_name, args, EventNamespace);
+
     // return appropriate object instance (deleting any not required)
-    return doExistingObjectAction(newFont, action);
+    return *fontObject;
 }
 
 void FontManager::notifyDisplaySizeChanged(const Sizef& size)
@@ -132,43 +214,35 @@ void FontManager::writeFontToStream(const String& name,
     get(name).writeXMLToStream(xml);
 }
 
-FontManager::FontList FontManager::createFromContainer(const RawDataContainer& source, XMLResourceExistsAction action)
+FontManager::FontList FontManager::createFromContainer(const RawDataContainer& source,
+    XmlResourceExistsAction resourceExistsAction)
 {
     Font_xmlHandler xml_loader;
-
-    xml_loader.handleContainer(source);
+    xml_loader.handleContainer(source, resourceExistsAction);
 
     FontList& createdFonts = xml_loader.getObjects();
-    doExistingObjectsAction(createdFonts, action);
-
-
     return createdFonts;
 }
 
 
 FontManager::FontList FontManager::createFromFile(const String& xml_filename,
     const String& resource_group,
-    XMLResourceExistsAction action)
+    XmlResourceExistsAction resourceExistsAction)
 {
     Font_xmlHandler xml_loader;
-
-    xml_loader.handleFile(xml_filename, resource_group);
+    xml_loader.handleFile(xml_filename, resource_group, resourceExistsAction);
 
     FontList& createdFonts = xml_loader.getObjects();
-    doExistingObjectsAction(createdFonts, action);
-
     return createdFonts;
 }
 
-FontManager::FontList FontManager::createFromString(const String& source, XMLResourceExistsAction action)
+FontManager::FontList FontManager::createFromString(const String& source,
+    XmlResourceExistsAction resourceExistsAction)
 {
     Font_xmlHandler xml_loader;
-
-    xml_loader.handleString(source);
+    xml_loader.handleString(source, resourceExistsAction);
 
     FontList& createdFonts = xml_loader.getObjects();
-    doExistingObjectsAction(createdFonts, action);
-
     return createdFonts;
 }
 
@@ -209,7 +283,7 @@ Font& FontManager::get(const String& font_name) const
 
     if (i == d_registeredFonts.end())
         throw UnknownObjectException(
-        "No object of type '" + d_resourceType + "' named '" + font_name +
+        "No object of type '" + ResourceTypeName + "' named '" + font_name +
         "' is present in the collection.");
 
     return *i->second;
@@ -224,80 +298,18 @@ void FontManager::destroyObject(
     FontRegistry::iterator ob)
 {
         String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
-    Logger::getSingleton().logEvent("Object of type '" + d_resourceType +
+    Logger::getSingleton().logEvent("Object of type '" + ResourceTypeName +
         "' named '" + ob->first + "' has been destroyed. " +
         addressStr, Informative);
 
     // Set up event args for event notification
-    ResourceEventArgs args(d_resourceType, ob->first);
+    ResourceEventArgs args(ResourceTypeName, ob->first);
 
     delete ob->second;
     d_registeredFonts.erase(ob);
 
-    // fire event signalling an object has been destroyed
+    // fire event signaling an object has been destroyed
     fireEvent(EventResourceDestroyed, args, EventNamespace);
-}
-
-Font& FontManager::doExistingObjectAction(Font* font_instance, const XMLResourceExistsAction action)
-{
-    String fontName = font_instance->getName();
-    String event_name;
-
-    if (isDefined(fontName))
-    {
-        switch (action)
-        {
-        case XREA_RETURN:
-            Logger::getSingleton().logEvent("---- Returning existing instance "
-                "of " + d_resourceType + " named '" + fontName + "'.");
-            // delete any new object we already had created
-            delete font_instance;
-            // return existing instance of object.
-            return *d_registeredFonts[fontName];
-
-        case XREA_REPLACE:
-            Logger::getSingleton().logEvent("---- Replacing existing instance "
-                "of " + d_resourceType + " named '" + fontName +
-                "' (DANGER!).");
-            destroy(fontName);
-            event_name = EventResourceReplaced;
-            break;
-
-        case XREA_THROW:
-            delete font_instance;
-            throw AlreadyExistsException(
-                "an object of type '" + d_resourceType + "' named '" +
-                fontName + "' already exists in the collection.");
-
-        default:
-            delete font_instance;
-            throw InvalidRequestException(
-                "Invalid CEGUI::XMLResourceExistsAction was specified.");
-        }
-    }
-    else
-        event_name = EventResourceCreated;
-
-    d_registeredFonts[fontName] = font_instance;
-
-    // fire event about this resource change
-    ResourceEventArgs args(d_resourceType, fontName);
-    fireEvent(event_name, args, EventNamespace);
-
-    return *font_instance;
-}
-
-void FontManager::doExistingObjectsAction(FontList& fonts, const XMLResourceExistsAction action)
-{
-    String event_name;
-
-    FontList::iterator curIter = fonts.begin();
-
-    for (auto iter = fonts.begin(); iter != fonts.end(); ++iter)
-    {
-        //! We replacing the pointers to the font object, which is necessary in case 
-        *iter = &doExistingObjectAction(*iter, action);
-    }
 }
 
 void FontManager::createAll(const String& pattern,
