@@ -29,12 +29,9 @@
 #ifndef _CEGUISizef_h_
 #define _CEGUISizef_h_
 
-#include "CEGUI/Enums.h"
 #include "CEGUI/StreamHelper.h"
 #include "CEGUI/Exceptions.h"
-#include <typeinfo>
 
-#include <glm/glm.hpp>
 #include "AspectMode.h"
 
 // Start of CEGUI namespace section
@@ -48,50 +45,50 @@ namespace CEGUI
 class Sizef
 {
 public:
-    inline Sizef()
+    Sizef()
     {}
 
-    inline Sizef(const float width, const float height):
+    Sizef(const float width, const float height):
         d_width(width),
         d_height(height)
     {}
 
-    inline Sizef(const Sizef& v):
+    Sizef(const Sizef& v):
         d_width(v.d_width),
         d_height(v.d_height)
     {}
 
-    inline bool operator==(const Sizef& other) const
+    bool operator==(const Sizef& other) const
     {
         return d_width == other.d_width && d_height == other.d_height;
     }
 
-    inline bool operator!=(const Sizef& other) const
+    bool operator!=(const Sizef& other) const
     {
         return !operator==(other);
     }
 
-    inline Sizef operator*(const float c) const
+    Sizef operator*(const float c) const
     {
         return Sizef(d_width * c, d_height * c);
     }
 
-    inline Sizef operator*(const Sizef& s) const
+    Sizef operator*(const Sizef& s) const
     {
         return Sizef(d_width * s.d_width, d_height * s.d_height);
     }
 
-    inline Sizef operator*(const glm::vec2& vec) const
+    Sizef operator*(const glm::vec2& vec) const
     {
         return Sizef(d_width * vec.x, d_height * vec.y);
     }
 
-    inline Sizef operator+(const Sizef& s) const
+    Sizef operator+(const Sizef& s) const
     {
         return Sizef(d_width + s.d_width, d_height + s.d_height);
     }
 
-    inline Sizef operator-(const Sizef& s) const
+    Sizef operator-(const Sizef& s) const
     {
         return Sizef(d_width - s.d_width, d_height - s.d_height);
     }
@@ -99,7 +96,7 @@ public:
     /*!
     \brief Writes a Sizef to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const Sizef& val)
+    friend std::ostream& operator << (std::ostream& s, const Sizef& val)
     {
         s << "w:" << val.d_width << " h:" << val.d_height;
         
@@ -109,14 +106,14 @@ public:
     /*!
     \brief Extracts a Sizef from a stream
     */
-    inline friend std::istream& operator >> (std::istream& s, Sizef& val)
+    friend std::istream& operator >> (std::istream& s, Sizef& val)
     {
         s >> MandatoryString(" w :") >> val.d_width >> MandatoryString(" h :") >> val.d_height;
 
         return s;
     }
 
-    inline void clamp(const Sizef& min, const Sizef& max)
+    void clamp(const Sizef& min, const Sizef& max)
     {
         assert(min.d_width <= max.d_width);
         assert(min.d_height <= max.d_height);
@@ -132,7 +129,7 @@ public:
             d_height = max.d_height;
     }
 
-    inline void scaleToAspect(AspectMode mode, float ratio)
+    void scaleToAspect(AspectMode mode, float ratio)
     {
         if (mode == AspectMode::IGNORE_)
             return;
@@ -172,31 +169,31 @@ public:
     }
 
     //! \brief finger saving alias for Sizef(side, side)
-    inline static Sizef square(const float side)
+    static Sizef square(const float side)
     {
         return Sizef(side, side);
     }
 
     //! \brief finger saving alias for Sizef(0, 0)
-    inline static Sizef zero()
+    static Sizef zero()
     {
         return square(0.0f);
     }
     
     //! \brief finger saving alias for Sizef(1, 1)
-    inline static Sizef one()
+    static Sizef one()
     {
         return square(1.0f);
     }
     
     //! \brief finger saving alias for Sizef(1, 0)
-    inline static Sizef one_width()
+    static Sizef one_width()
     {
         return Sizef(1.0f, 0.0f);
     }
     
     //! \brief finger saving alias for Sizef(0, 1)
-    inline static Sizef one_height()
+    static Sizef one_height()
     {
         return Sizef(0.0f, 1.0f);
     }

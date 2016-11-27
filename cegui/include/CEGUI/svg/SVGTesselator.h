@@ -236,10 +236,10 @@ private:
     };
 
     //! Constructor.
-    SVGTesselator();
+    SVGTesselator() = default;
 
     //! Destructor.
-    ~SVGTesselator();
+    ~SVGTesselator() = default;
 
     //! Helper function for creating a fill based on a list of polygon points
     static void createFill(const std::vector<glm::vec2>& points,
