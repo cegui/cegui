@@ -80,16 +80,20 @@ static const std::vector<FreeTypeErrorDescription> freeTypeErrorDescriptions
 
 
 //----------------------------------------------------------------------------//
-FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
-                           const bool anti_aliased, const String& font_filename,
-                           const String& resource_group,
-                           const AutoScaledMode auto_scaled,
-                           const Sizef& native_res,
-                           const float specific_line_spacing) :
+FreeTypeFont::FreeTypeFont(
+    const String& font_name,
+    const float size,
+    const FontSizeUnit sizeUnit,
+    const bool anti_aliased, const String& font_filename,
+    const String& resource_group,
+    const AutoScaledMode auto_scaled,
+    const Sizef& native_res,
+    const float specific_line_spacing) :
     Font(font_name, Font_xmlHandler::FontTypeFreeType, font_filename,
          resource_group, auto_scaled, native_res),
     d_specificLineSpacing(specific_line_spacing),
-    d_ptSize(point_size),
+    d_size(size),
+    d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
     d_fontFace(nullptr)
 {
@@ -120,8 +124,13 @@ void FreeTypeFont::addFreeTypeFontProperties ()
     const String propertyOrigin("FreeTypeFont");
 
     CEGUI_DEFINE_PROPERTY(FreeTypeFont, float,
-        "PointSize", "This is the point size of the font.",
-        &FreeTypeFont::setPointSize, &FreeTypeFont::getPointSize, 0
+        "Size", "This is the size of the font.",
+        &FreeTypeFont::setSize, &FreeTypeFont::getSize, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(FreeTypeFont, FontSizeUnit,
+        "SizeUnit", "This is the point size of the font.",
+        &FreeTypeFont::setSizeUnit, &FreeTypeFont::getSizeUnit, FontSizeUnit::FSU_PIXELS
     );
 
     CEGUI_DEFINE_PROPERTY(FreeTypeFont, bool,
@@ -394,6 +403,91 @@ void FreeTypeFont::free()
     System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
 }
 
+void FreeTypeFont::createFreetypeMemoryFace()
+{
+    // create face using input font
+    FT_Error error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
+        static_cast<FT_Long>(d_fontData.getSize()), 0,
+        &d_fontFace);
+
+    if (error != 0)
+    {
+        findAndThrowFreeTypeError(error, "Failed to create face from font file");
+    }
+}
+
+void FreeTypeFont::findAndThrowFreeTypeError(
+    FT_Error error,
+    const String& errorMessageIntro) const
+{
+    String errorMsg = "Unknown freetype error occurred: " + error;
+
+    for (size_t i = 0; i < freeTypeErrorDescriptions.size(); ++i)
+    {
+        const FreeTypeErrorDescription& currentFreetypeError = freeTypeErrorDescriptions[i];
+
+        if (currentFreetypeError.err_code == error)
+        {
+            errorMsg = currentFreetypeError.err_msg;
+        }
+    }
+
+    throw GenericException(errorMessageIntro + " - '" +
+        d_filename + "' error was: " + errorMsg);
+}
+
+void FreeTypeFont::checkUnicodeCharMapAvailability()
+{
+    if (d_fontFace->charmap != nullptr)
+    {
+        return;
+    }
+    FT_Done_Face(d_fontFace);
+    d_fontFace = nullptr;
+    throw GenericException(
+        "The font '" + d_name + "' does not have a Unicode charmap, and "
+        "cannot be used.");
+}
+
+void FreeTypeFont::tryToCreateFontWithClosestFontHeight(
+    FT_Error errorResult,
+    int requestedFontPixelHeight) const
+{
+    FT_Short closestAvailableFontHeight = -1;
+    int closestHeightDelta = std::numeric_limits<int>::max();
+
+    FT_Int fixedSizesCount = d_fontFace->num_fixed_sizes;
+    for (FT_Int i = 0; i < fixedSizesCount; i++)
+    {
+        FT_Short currentFontHeight = d_fontFace->available_sizes[i].height;
+        int currentFontHeightDelta = std::abs(requestedFontPixelHeight - currentFontHeight);
+        if(currentFontHeightDelta < closestHeightDelta)
+        {
+            closestAvailableFontHeight = currentFontHeight;
+            closestHeightDelta = currentFontHeightDelta;
+        }
+    }
+
+    if (closestAvailableFontHeight > 0)
+    {
+        errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, closestAvailableFontHeight);
+        if (errorResult != 0)
+        {
+            findAndThrowFreeTypeError(errorResult, "Failed to create Font using "
+                "the closest available Font size that was found");
+        }
+    }
+
+    if (errorResult != 0)
+    {
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+        sstream << d_size;
+        throw GenericException("The font '" + d_name + "' requested at height "
+            "of " + sstream.str() + " pixels, could not be created and therefore"
+            " not used");
+    }
+}
+
 //----------------------------------------------------------------------------//
 void FreeTypeFont::updateFont()
 {
@@ -403,83 +497,36 @@ void FreeTypeFont::updateFont()
         d_filename, d_fontData, d_resourceGroup.empty() ?
             getDefaultResourceGroup() : d_resourceGroup);
 
-    FT_Error error;
+    createFreetypeMemoryFace();
 
-    // create face using input font
-    if ((error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
-                           static_cast<FT_Long>(d_fontData.getSize()), 0,
-                           &d_fontFace)) != 0)
-    {
-        String errorMsg = "Unknown freetype error occurred: " + error;
-  
-        for(size_t i = 0; i < freeTypeErrorDescriptions.size(); ++i)
-        {
-            const FreeTypeErrorDescription& currentFreetypeError = freeTypeErrorDescriptions[i];
+    checkUnicodeCharMapAvailability();
 
-            if(currentFreetypeError.err_code == error)
-            {
-                errorMsg = currentFreetypeError.err_msg;
-            }
-        }
+   // const unsigned int horzdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().x);
+   // const unsigned int vertdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().y);
 
-
-
-        throw GenericException("Failed to create face from font file '" + d_filename + "' error was: " + errorMsg);
-    }
-
-    // check that default Unicode character map is available
-    if (!d_fontFace->charmap)
-    {
-        FT_Done_Face(d_fontFace);
-        d_fontFace = nullptr;
-        throw GenericException(
-            "The font '" + d_name + "' does not have a Unicode charmap, and "
-            "cannot be used.");
-    }
-
-    const unsigned int horzdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().x);
-    const unsigned int vertdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().y);
-
-    float hps = d_ptSize / static_cast<float>(FT_POS_COEF);
-    float vps = d_ptSize / static_cast<float>(FT_POS_COEF);
+    float fontScaleFactor = System::getSingleton().getRenderer()->getFontScale();
     if (d_autoScaled != ASM_Disabled)
     {
-        hps *= d_horzScaling;
-        vps *= d_vertScaling;
+        fontScaleFactor *= d_vertScaling;
     }
 
-    if (FT_Set_Char_Size(d_fontFace, FT_F26Dot6(hps), FT_F26Dot6(vps), horzdpi, vertdpi))
-    {
-        // For bitmap fonts we can render only at specific point sizes.
-        // Try to find nearest point size and use it, if that is possible
-        float ptSize_72 = (d_ptSize * 72.0f) / vertdpi;
-        float best_delta = 99999;
-        float best_size = 0;
-        for (int i = 0; i < d_fontFace->num_fixed_sizes; i++)
-        {
-            float size = d_fontFace->available_sizes [i].size * float(FT_POS_COEF);
-            float delta = fabs(size - ptSize_72);
-            if (delta < best_delta)
-            {
-                best_delta = delta;
-                best_size = size;
-            }
-        }
+    int requestedFontPixelHeight = std::lround(getSizeInPixels() * fontScaleFactor);
 
-        if ((best_size <= 0) ||
-                FT_Set_Char_Size(d_fontFace, 0, FT_F26Dot6(best_size / FT_POS_COEF), 0, 0))
-        {
-            std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-            sstream << "%g" << d_ptSize;
-            throw GenericException("The font '" + d_name + "' cannot be "
-                "rasterised at a size of " + sstream.str() + " points, and cannot be "
-                "used.");
-        }
+
+    FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, requestedFontPixelHeight);
+    if(errorResult != 0)
+    {
+        // Usually, an error occurs with a fixed-size font format (like FNT or PCF)
+        // when trying to set the pixel size to a value that is not listed in the
+        // face->fixed_sizes array.For bitmap fonts we can render only at specific
+        // point sizes.
+        // Try to find Font with closest pixel height and use it instead
+
+        tryToCreateFontWithClosestFontHeight(errorResult, requestedFontPixelHeight);
     }
 
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
     {
-        //float x_scale = d_fontFace->size->metrics.x_scale * FT_POS_COEF * (1.0/65536.0);
         float y_scale = d_fontFace->size->metrics.y_scale * float(FT_POS_COEF) * (1.0f / 65536.0f);
         d_ascender = d_fontFace->ascender * y_scale;
         d_descender = d_fontFace->descender * y_scale;
@@ -559,7 +606,7 @@ void FreeTypeFont::initialiseFontGlyph(CodepointMap::iterator cp) const
 void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
 {
     xml_stream.attribute(Font_xmlHandler::FontSizeAttribute,
-                         PropertyHelper<float>::toString(d_ptSize));
+                         PropertyHelper<float>::toString(d_size));
     if (!d_antiAliased)
         xml_stream.attribute(Font_xmlHandler::FontAntiAliasedAttribute, "false");
 
@@ -569,29 +616,99 @@ void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-float FreeTypeFont::getPointSize() const
-{
-    return d_ptSize;
-}
-
-//----------------------------------------------------------------------------//
 bool FreeTypeFont::isAntiAliased() const
 {
     return d_antiAliased;
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::setPointSize(const float point_size)
+void FreeTypeFont::setSize(const float size)
 {
-    if (point_size == d_ptSize)
-        return;
+    setSizeAndUnit(size, d_sizeUnit);
+}
 
-    d_ptSize = point_size;
+void FreeTypeFont::setSizeUnit(const FontSizeUnit sizeUnit)
+{
+    setSizeAndUnit(d_size, sizeUnit);
+}
+
+void FreeTypeFont::setSizeInPixels(const float pixelSize)
+{
+    setSizeAndUnit(pixelSize, FontSizeUnit::FSU_PIXELS);
+}
+
+void FreeTypeFont::setSizeInPoints(const float pointSize)
+{
+    setSizeAndUnit(pointSize, FontSizeUnit::FSU_POINTS);
+}
+
+void FreeTypeFont::setSizeAndUnit(const float size, const FontSizeUnit sizeUnit)
+{
+    if (d_size == size && d_sizeUnit == sizeUnit)
+    {
+        return;
+    }
+
+    d_size = size;
+    d_sizeUnit = sizeUnit;
+
+    handleFontSizeOrFontUnitChange();
+}
+
+float FreeTypeFont::getSize() const
+{
+    return d_size;
+}
+
+FontSizeUnit FreeTypeFont::getSizeUnit() const
+{
+    return d_sizeUnit;
+}
+
+float FreeTypeFont::getSizeInPixels() const
+{
+    if (d_sizeUnit == FontSizeUnit::FSU_PIXELS)
+    {
+        return d_size;
+    }
+
+    if (d_sizeUnit == FontSizeUnit::FSU_POINTS)
+    {
+        //TODO
+        return d_size;
+    }
+
+    throw InvalidRequestException("FreeTypeFont::getSizeInPixels - Requesting "
+        "font size in pixels but the Font size unit is invalid.");
+    return -1.0f;
+}
+
+float FreeTypeFont::getSizeInPoints() const
+{
+    if (d_sizeUnit == FontSizeUnit::FSU_PIXELS)
+    {
+        return d_size;
+    }
+
+    if (d_sizeUnit == FontSizeUnit::FSU_POINTS)
+    {
+        //TODO
+        return d_size;
+    }
+
+    throw InvalidRequestException("FreeTypeFont::getSizeInPixels - Requesting "
+        "font size in pixels but the Font size unit is invalid.");
+    return -1.0f;
+}
+
+void FreeTypeFont::handleFontSizeOrFontUnitChange()
+{
     updateFont();
 
     FontEventArgs args(this);
     onRenderSizeChanged(args);
 }
+
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::setAntiAliased(const bool anti_alaised)
@@ -675,44 +792,46 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
         uint32_t& originalArrayIndex = currentGlyph.cluster;
         const char32_t curCodePoint = originalTextArray[originalArrayIndex];
         const FontGlyph* glyph = getGlyphData(curCodePoint);
-        if (glyph != nullptr)
+        if (glyph == nullptr)
         {
-            const Image* const img = glyph->getImage();
+            continue;
+        }
 
-            glyph_pos.y = base_y - (img->getRenderedOffset().y -
-                img->getRenderedOffset().y * y_scale);
+        const Image* const img = glyph->getImage();
 
-            imgRenderSettings.d_destArea =
-                Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
+        glyph_pos.y = base_y - (img->getRenderedOffset().y -
+            img->getRenderedOffset().y * y_scale);
 
-            // We only fully create the first GeometryBuffer
-            if (textGeometryBuffer == nullptr)
+        imgRenderSettings.d_destArea =
+            Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
+
+        // We only fully create the first GeometryBuffer
+        if (textGeometryBuffer == nullptr)
+        {
+            std::vector<GeometryBuffer*> currentGeombuffs =
+                img->createRenderGeometry(imgRenderSettings);
+
+            assert(currentGeombuffs.size() <= 1 && "Glyphs are expected to "
+                "be built from a single GeometryBuffer (or none)");
+
+            if (currentGeombuffs.size() == 1)
             {
-                std::vector<GeometryBuffer*> currentGeombuffs =
-                    img->createRenderGeometry(imgRenderSettings);
-
-                assert(currentGeombuffs.size() <= 1 && "Glyphs are expected to "
-                    "be built from a single GeometryBuffer (or none)");
-
-                if (currentGeombuffs.size() == 1)
-                {
-                    textGeometryBuffer = currentGeombuffs.back();
-                }
+                textGeometryBuffer = currentGeombuffs.back();
             }
-            else
-            {
-                // Else we add geometry to the rendering batch of the existing geometry
-                img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
-                    clip_rect, colours);
-            }
+        }
+        else
+        {
+            // Else we add geometry to the rendering batch of the existing geometry
+            img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
+                clip_rect, colours);
+        }
 
-            glyph_pos.x += glyph->getAdvance(x_scale);//currentGlyph.x_advance * x_scale * FT_POS_COEF;
-            glyph_pos.x = std::roundf(glyph_pos.x);
-            // apply extra spacing to space chars
-            if (curCodePoint == ' ')
-            {
-                glyph_pos.x += space_extra;
-            }
+        glyph_pos.x += glyph->getAdvance(x_scale);//currentGlyph.x_advance * x_scale * FT_POS_COEF;
+        glyph_pos.x = std::roundf(glyph_pos.x);
+        // apply extra spacing to space chars
+        if (curCodePoint == ' ')
+        {
+            glyph_pos.x += space_extra;
         }
     }
 
