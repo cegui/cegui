@@ -62,17 +62,16 @@ public:
 
     // implement GeometryBuffer interface
     void draw() const;
-    void setTranslation(const Vector3f& v);
-    void setRotation(const Quaternion& r);
-    void setPivot(const Vector3f& p);
-    void setClippingRegion(const Rectf& region);
+    void setTranslation(const glm::vec3& v);
+    void setRotation(const glm::quat& r);
+    void setPivot(const glm::vec3& p);
     void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    void appendGeometry(const Vertex* const vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
+    unsigned int getVertexCount() const;
+    unsigned int getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
     void setClippingActive(const bool active);
@@ -90,7 +89,7 @@ protected:
     struct BatchInfo
     {
         irr::video::ITexture* texture;
-        uint vertexCount;
+        unsigned int vertexCount;
         bool clip;
     };
 
@@ -100,8 +99,6 @@ protected:
     IrrlichtTexture* d_activeTexture;
     //! material used with the texture for rendering.
     mutable irr::video::SMaterial d_material;
-    //! rectangular clip region
-    Rectf d_clipRect;
     //! whether clipping will be active for the current batch
     bool d_clippingActive;
     //! translation vector

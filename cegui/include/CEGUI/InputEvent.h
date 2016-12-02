@@ -32,8 +32,8 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/SemanticInputEvent.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -201,7 +201,6 @@ struct CEGUIEXPORT Key
 
 };
 
-
 /*!
 \brief
     Enumeration of mouse buttons
@@ -224,25 +223,6 @@ enum MouseButton
     NoButton
 };
 
-
-/*!
-\brief
-	System key flag values
-*/
-enum SystemKey
-{
-	LeftMouse		= 0x0001,			//!< The left mouse button.
-	RightMouse		= 0x0002,			//!< The right mouse button.
-	Shift			= 0x0004,			//!< Either shift key.
-	Control			= 0x0008,			//!< Either control key.
-	MiddleMouse		= 0x0010,			//!< The middle mouse button.
-	X1Mouse			= 0x0020,			//!< The first 'extra' mouse button
-	X2Mouse			= 0x0040,			//!< The second 'extra' mouse button.
-	Alt				= 0x0080,			//!< Either alt key.
-    InvalidSysKey   = 0x8000
-};
-
-
 /*!
 \brief
 	EventArgs based class that is used for objects passed to handlers triggered for events
@@ -254,6 +234,19 @@ public:
 	WindowEventArgs(Window* wnd) : window(wnd) {}
 
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
+};
+
+/*!
+\brief
+    Event arguments used by semantic input event handlers
+*/
+class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
+{
+public:
+    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd), d_semanticValue(-1) {}
+
+    int d_semanticValue;            //!< The type of the semantic value
+    SemanticPayload d_payload;      //!< The payload of the event
 };
 
 /*!
@@ -271,56 +264,56 @@ public:
 	float d_timeSinceLastFrame; //!< Time since the last frame update
 };
 
+/*!
+\brief
+    EventArgs based class that is used for objects passed to input event handlers
+    concerning cursor input.
+*/
+class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
+{
+public:
+    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
+    //!< holds current cursor position.
+    glm::vec2 position;
+    //!< holds variation of cursor position from last cursor input
+    glm::vec2 moveDelta;
+    // one of the CursorInputSource enumerated values describing the source causing the event
+    CursorInputSource source;
+    // holds the amount of the scroll
+    float scroll;
+
+    // current state (hold: true/false) of cursors sources. Addressable by members of \ref CursorInputSource
+    CursorsState state;
+};
+
+/*!
+\brief
+    EventArgs based class that is used for objects passed to input event handlers
+    concerning cursor events.
+*/
+class CEGUIEXPORT CursorEventArgs : public EventArgs
+{
+public:
+    CursorEventArgs(Cursor* cursor) : d_cursor(cursor) {}
+
+    Cursor* d_cursor;  //!< pointer to a Cursor object of relevance to the event.
+    const Image* d_image; //!< pointer to an Image object of relevance to the event.
+};
 
 /*!
 \brief
 	EventArgs based class that is used for objects passed to input event handlers
-	concerning mouse input.
+	concerning text input.
 */
-class CEGUIEXPORT MouseEventArgs : public WindowEventArgs
+class CEGUIEXPORT TextEventArgs : public WindowEventArgs
 {
 public:
-	MouseEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+	TextEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	Vector2f	position;		//!< holds current mouse position.
-	Vector2f	moveDelta;		//!< holds variation of mouse position from last mouse input
-	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
-	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
-	float		wheelChange;	//!< Holds the amount the scroll wheel has changed.
-	uint        clickCount;     //!< Holds number of mouse button down events currently counted in a multi-click sequence (for button inputs only).
+    //! char32_t codepoint representing the character of the text event.
+	char32_t d_character; 
 };
-
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning mouse cursor events.
-*/
-class CEGUIEXPORT MouseCursorEventArgs : public EventArgs
-{
-public:
-	MouseCursorEventArgs(MouseCursor* cursor) : mouseCursor(cursor) {}
-
-	MouseCursor* mouseCursor;	//!< pointer to a MouseCursor object of relevance to the event.
-	const Image* image;			//!< pointer to an Image object of relevance to the event.
-};
-
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning keyboard input.
-*/
-class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
-{
-public:
-	KeyEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
-
-	String::value_type codepoint; //!< utf32 or char (depends on used String class) codepoint for the key (only used for Character inputs).
-	Key::Scan          scancode;  //!< Scan code of key that caused event (only used for key up & down inputs.
-	uint               sysKeys;   //!< current state of the system keys and mouse buttons.
-};
-
 
 /*!
 \brief

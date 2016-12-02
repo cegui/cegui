@@ -49,8 +49,7 @@ namespace CEGUI
     lifetime of the GeometryBuffer objects (and to remove them from any
     RenderQueue to which they may be attached prior to destoying them).
 */
-class CEGUIEXPORT RenderQueue :
-    public AllocatedObject<RenderQueue> 
+class CEGUIEXPORT RenderQueue 
 {
 public:
     /*!
@@ -63,13 +62,23 @@ public:
 
     /*!
     \brief
-        Add a GeometryBuffer to the RenderQueue.  Ownership of the
+        Add a list of GeometryBuffers to the RenderQueue. Ownership of the
         GeometryBuffer does not pass to the RenderQueue.
 
-    \param buffer
-        GeometryBuffer that is to be added to the RenderQueue for later drawing.
+    \param geometry_buffers
+        List of GeometryBuffers that are to be added to the RenderQueue for later drawing.
     */
-    void addGeometryBuffer(const GeometryBuffer& buffer);
+    void addGeometryBuffers(const std::vector<GeometryBuffer*>& geometry_buffers);
+
+    /*!
+    \brief
+        Add a GeometryBuffer to the RenderQueue. Ownership of the GeometryBuffer does not
+        pass to the RenderQueue.
+
+    \param geometry_buffers
+        The GeometryBuffer that is to be added to the RenderQueue for later drawing.
+    */
+    void addGeometryBuffer(const GeometryBuffer& geometry_buffer);
 
     /*!
     \brief
@@ -92,8 +101,7 @@ public:
 
 private:
     //! Type to use for the GeometryBuffer collection.
-    typedef std::vector<const GeometryBuffer*
-        CEGUI_VECTOR_ALLOC(const GeometryBuffer)> BufferList;
+    typedef std::vector<const GeometryBuffer*> BufferList;
     //! Collection of GeometryBuffer objects that comprise this RenderQueue.
     BufferList d_buffers;
 };

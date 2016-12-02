@@ -24,7 +24,7 @@ if (WIN32 OR APPLE)
 endif()
 
 cegui_find_package_handle_standard_args(IL IL_LIB IL_H_PATH)
-cegui_find_package_handle_standard_args(ILU ILU_LIB)
+cegui_find_package_handle_standard_args(ILU ILU_LIB IL_H_PATH)
 
 # set up output vars
 if (IL_FOUND AND ILU_FOUND)

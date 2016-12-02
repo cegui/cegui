@@ -82,7 +82,7 @@ public:
     \brief
         Return the index of the first character of the word at \a idx.
 
-    /note
+    \note
         This currently uses DefaultWhitespace and DefaultAlphanumerical to determine groupings for what constitutes a 'word'.
 
     \param str
@@ -92,7 +92,7 @@ public:
         Index into \a str where search for start of word is to begin.
 
     \return
-        Index into \a str which marks the begining of the word at index \a idx.
+        Index into \a str which marks the beginning of the word at index \a idx.
     */
     static  String::size_type   getWordStartIdx(const String& str, String::size_type idx);
 
@@ -101,7 +101,7 @@ public:
     \brief
         Return the index of the first character of the word after the word at \a idx.
 
-    /note
+    \note
         This currently uses DefaultWhitespace and DefaultAlphanumerical to determine groupings for what constitutes a 'word'.
 
     \param str
@@ -111,7 +111,7 @@ public:
         Index into \a str where search is to begin.
 
     \return
-        Index into \a str which marks the begining of the word at after the word at index \a idx.
+        Index into \a str which marks the beginning of the word at after the word at index \a idx.
         If \a idx is within the last word, then the return is the last index in \a str.
     */
     static  String::size_type   getNextWordStartIdx(const String& str, String::size_type idx);
@@ -119,7 +119,7 @@ public:
 
     /*!
     \brief
-        Trim all characters from the set specified in \a chars from the begining of \a str.
+        Trim all characters from the set specified in \a chars from the beginning of \a str.
 
     \param str
         String object to be trimmed.

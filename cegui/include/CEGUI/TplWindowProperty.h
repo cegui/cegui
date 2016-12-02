@@ -47,23 +47,23 @@ public:
                           defaultValue, writesXML)
     {}
 
-    virtual Property* clone() const
+    Property* clone() const override
     {
-        return CEGUI_NEW_AO TplWindowProperty<C, T>(*this);
+        return new TplWindowProperty<C, T>(*this);
     }
 
 protected:
     //! \copydoc TypedProperty::setNative_impl
     void setNative_impl(PropertyReceiver* receiver,
-                        typename TplProperty<C, T>::Helper::pass_type value)
+                        typename TplProperty<C, T>::Helper::pass_type value) override
     {
         C* instance = static_cast<C*>(receiver);
-        CEGUI_CALL_MEMBER_FN(*instance, this->d_setter)(value);
+        (*instance.*this->d_setter)(value);
     }
 
     //! \copydoc TypedProperty::getNative_impl
     typename TplProperty<C, T>::Helper::safe_method_return_type
-    getNative_impl(const PropertyReceiver* receiver) const
+    getNative_impl(const PropertyReceiver* receiver) const override
     {
         const C* instance = static_cast<const C*>(receiver);
         return this->d_getter(instance);
