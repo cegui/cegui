@@ -74,7 +74,9 @@ class Size:
 public:
     typedef T value_type;
 
-    inline Size()
+    inline Size() :    
+        d_width(TypeSensitiveZero<T>()),
+        d_height(TypeSensitiveZero<T>())
     {}
 
     inline Size(const T width, const T height):
