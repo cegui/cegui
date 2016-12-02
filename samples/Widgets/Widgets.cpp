@@ -3,7 +3,7 @@ created:    12/7/2012
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2012 Paul D Turner & Thce CEGUI Development Team
+*   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -117,8 +117,7 @@ Sample specific initialisation goes here.
 const CEGUI::String WidgetsSample::s_widgetSampleWindowPrefix = "WidgetSampleWindow_";
 
 WidgetsSample::WidgetsSample() :
-    Sample(89),
-    d_currentlyDisplayedWidgetRoot(nullptr)
+    Sample(89)
 {
     Sample::d_name = "WidgetsSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
