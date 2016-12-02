@@ -117,7 +117,8 @@ Sample specific initialisation goes here.
 const CEGUI::String WidgetsSample::s_widgetSampleWindowPrefix = "WidgetSampleWindow_";
 
 WidgetsSample::WidgetsSample() :
-    Sample(89)
+    Sample(89),
+    d_currentlyDisplayedWidgetRoot(nullptr)
 {
     Sample::d_name = "WidgetsSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
@@ -513,7 +514,11 @@ void WidgetsSample::deinitWidgetListItems()
 
         ++iter;
     }
-    d_widgetSelectorListWidget->clearList();
+
+    if (d_widgetSelectorListWidget != nullptr)
+    {
+        d_widgetSelectorListWidget->clearList();
+    }
 }
 
 void WidgetsSample::destroyWidgetWindows()

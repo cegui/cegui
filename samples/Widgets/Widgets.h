@@ -119,20 +119,20 @@ protected:
     void saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow);
     static const CEGUI::String s_widgetSampleWindowPrefix;
 
-    CEGUI::GUIContext* d_guiContext;
+    CEGUI::GUIContext* d_guiContext = nullptr;
 
-    CEGUI::ListWidget* d_widgetSelectorListWidget;
-    CEGUI::Combobox* d_skinSelectionCombobox;
-    CEGUI::Window* d_widgetDisplayWindow;
-    CEGUI::Window* d_widgetDisplayWindowInnerWindow;
-    CEGUI::Window* d_widgetsEventsLog;
+    CEGUI::ListWidget* d_widgetSelectorListWidget = nullptr;
+    CEGUI::Combobox* d_skinSelectionCombobox = nullptr;
+    CEGUI::Window* d_widgetDisplayWindow = nullptr;
+    CEGUI::Window* d_widgetDisplayWindowInnerWindow = nullptr;
+    CEGUI::Window* d_widgetsEventsLog = nullptr;
 
-    CEGUI::Window* d_currentlyDisplayedWidgetRoot;
+    CEGUI::Window* d_currentlyDisplayedWidgetRoot = nullptr;
 
-    CEGUI::Window* d_windowLightCursorMoveEvent;
-    CEGUI::Window* d_windowLightUpdatedEvent;
+    CEGUI::Window* d_windowLightCursorMoveEvent = nullptr;
+    CEGUI::Window* d_windowLightUpdatedEvent = nullptr;
 
-    CEGUI::MultiColumnList* d_widgetPropertiesDisplayWindow;
+    CEGUI::MultiColumnList* d_widgetPropertiesDisplayWindow = nullptr;
 
     std::map<CEGUI::String, WidgetListType> d_skinListItemsMap;
     std::map<CEGUI::String, CEGUI::Window*> d_widgetsMap;
