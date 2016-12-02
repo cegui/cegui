@@ -3,7 +3,7 @@ created:    12/7/2012
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2012 Paul D Turner & Thce CEGUI Development Team
+*   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -513,7 +513,11 @@ void WidgetsSample::deinitWidgetListItems()
 
         ++iter;
     }
-    d_widgetSelectorListWidget->clearList();
+
+    if (d_widgetSelectorListWidget != nullptr)
+    {
+        d_widgetSelectorListWidget->clearList();
+    }
 }
 
 void WidgetsSample::destroyWidgetWindows()
