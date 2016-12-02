@@ -241,8 +241,7 @@ class directly. You most likely want to use CEGUI::Window.
 */
 class CEGUIEXPORT Element :
     public PropertySet,
-    public EventSet,
-    public AllocatedObject<Element>
+    public EventSet
 {
 public:
     //! Namespace for global events
@@ -364,7 +363,7 @@ public:
                 return get();
             }
 
-            return CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(skipAllPixelAlignment);
+            return ((*d_element).*d_generator)(skipAllPixelAlignment);
         }
 
         /*!
@@ -387,7 +386,7 @@ public:
         {
             // false, since when we are caching we don't want to skip anything, we want everything to act
             // exactly as it was setup
-            d_cachedData = CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(false);
+            d_cachedData = (*d_element.*d_generator)(false);
 
             d_cacheValid = true;
         }
@@ -782,7 +781,7 @@ public:
         16.0f / 9.0.f, ...
 
     \note
-        This is ignored if AspectMode is AM_IGNORE.
+        This is ignored if AspectMode is IGNORE.
 
     \see Element::setAspectMode
     */
@@ -839,9 +838,9 @@ public:
         Return the element's absolute (or screen, depending on the type of the element) position in pixels.
 
     \return
-        Vector2f object describing this element's absolute position in pixels.
+        glm::vec2 object describing this element's absolute position in pixels.
     */
-    inline const Vector2f& getPixelPosition() const
+    inline glm::vec2 getPixelPosition() const
     {
         return getUnclippedOuterRect().get().d_min;
     }
@@ -891,18 +890,18 @@ public:
         CEGUI used Euler angles previously. While these are easy to use and seem
         intuitive they cause Gimbal locks when animating and are overall the worse
         solution than using Quaternions. You can still use Euler angles, see
-        the CEGUI::Quaternion class for more info about that.
+        the glm::quat class for more info about that.
 
     \see Element::getRotation
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief retrieves rotation of this widget
 
     \see Element::setRotation
     */
-    inline const Quaternion& getRotation() const
+    inline const glm::quat& getRotation() const
     {
         return d_rotation;
     }
@@ -1480,7 +1479,7 @@ public:
         Note that in this implementation the width and height are treated
         independently of each other.
 
-        If "getAspectMode() != AM_IGNORE", this method respects the aspect ratio
+        If "getAspectMode() != IGNORE", this method respects the aspect ratio
         using the following logic:
             - If only "isWidthAdjustedToContent()" is true, compute the height
               from the width and the aspect ratio.
@@ -1837,8 +1836,7 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child elements.
-    typedef std::vector<Element*
-        CEGUI_VECTOR_ALLOC(Element*)> ChildList;
+    typedef std::vector<Element*> ChildList;
 
     //! The list of child element objects attached to this.
     ChildList d_children;
@@ -1896,7 +1894,7 @@ protected:
     //! Current constrained pixel size of the element.
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! Pivot point (the point around which the widget is rotated).
     UVector3 d_pivot;
 

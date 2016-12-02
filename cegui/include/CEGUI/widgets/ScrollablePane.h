@@ -64,11 +64,11 @@ public:
     area larger than the ScrollablePane itself and these child windows can be
     scrolled into view using the scrollbars of the scrollable pane.
 
-    Note: If the content pane is set to be auto-sized, and not both (horizontal
-    and vertical) scrollbars are set to be always visible, and any of the
-    children's size is not set to be an absolute dimension (i.e. its relative
-    component is non-zero), this creates a circular dependency which may lead to
-    a crash. Please don't use such a combination. It'll probably not be allowed
+    Note: A relative component in a child's area is taken relative to the size
+    of content area, not the size of the scrollable pane. Therefore, when a
+    child uses a non-absolute area (i.e. which has any unified dimension with a
+    non-zero relative component) while auto-size is set to "true", this creates
+    a circular dependency and is therefore not allowed.
     in future versions of CEGUI.
 */
 class CEGUIEXPORT ScrollablePane : public Window
@@ -120,7 +120,7 @@ public:
     //! Destructor for the ScrollablePane base class.
     ~ScrollablePane(void);
 
-    virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
+    int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     /*!
     \brief
@@ -215,11 +215,11 @@ public:
     \brief
         Set whether the content pane should be auto-sized.
 
-        Note: If the content pane is set to be auto-sized, and not both
-        (horizontal and vertical) scrollbars are set to be always visible, and
-        any of the children's size is not set to be an absolute dimension (i.e.
-        its relative component is non-zero), this creates a circular dependency
-        which may lead to a crash. Please don't use such a combination. It'll
+        Note: A relative component in a child's area is taken relative to the
+        size of content area, not the size of the scrollable pane. Therefore,
+        when a child uses a non-absolute area (i.e. which has any unified
+        dimension with a non-zero relative component) while auto-size is set to
+        "true", this creates a circular dependency and is therefore not allowed.
         probably not be allowed in future versions of CEGUI.
 
     \param setting
@@ -442,8 +442,8 @@ public:
     Scrollbar* getHorzScrollbar() const;
 
     // Overridden from Window
-    void initialiseComponents(void);
-    void destroy(void);
+    void initialiseComponents(void) override;
+    void destroy(void) override;
 
 protected:
     /*!
@@ -495,7 +495,7 @@ protected:
     ScrolledContainer* getScrolledContainer() const;
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*************************************************************************
         Event triggers
@@ -590,14 +590,14 @@ protected:
     bool handleAutoSizePaneChanged(const EventArgs& e);
 
     // Overridden from Window
-    void addChild_impl(Element* element);
-    void removeChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
+    void removeChild_impl(Element* element) override;
     
-    void onSized_impl(ElementEventArgs& e);
-    void onMouseWheel(MouseEventArgs& e);
+    void onSized_impl(ElementEventArgs& e) override;
+    void onScroll(CursorInputEventArgs& e) override;
 
     //! \copydoc Window::getChildByNamePath_impl
-    NamedElement* getChildByNamePath_impl(const String& name_path) const;
+    NamedElement* getChildByNamePath_impl(const String& name_path) const override;
 
     //! true if vertical scrollbar should always be displayed
     bool d_forceVertScroll;

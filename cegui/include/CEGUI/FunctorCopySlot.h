@@ -45,7 +45,7 @@ namespace FunctorCopySlot_detail
         template<typename U, bool (U::*)(const EventArgs&) const> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     template<typename T>
@@ -54,7 +54,7 @@ namespace FunctorCopySlot_detail
         template<typename U, bool (U::*)(const EventArgs&)> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     template<typename T>
@@ -63,7 +63,7 @@ namespace FunctorCopySlot_detail
         template<typename U, void (U::*)(const EventArgs&) const> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     template<typename T>
@@ -72,7 +72,7 @@ namespace FunctorCopySlot_detail
         template<typename U, void (U::*)(const EventArgs&)> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     template<typename T>
@@ -81,7 +81,7 @@ namespace FunctorCopySlot_detail
         template<typename U, bool (U::*)() const> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     template<typename T>
@@ -90,7 +90,7 @@ namespace FunctorCopySlot_detail
         template<typename U, bool (U::*)()> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     template<typename T>
@@ -99,7 +99,7 @@ namespace FunctorCopySlot_detail
         template<typename U, void (U::*)() const> struct SFINAE {};
         template<typename U> static Yes Test(SFINAE<U, &U::operator()>*);
         template<typename U> static No Test(...);
-        static const bool Value = sizeof(Test<T>(0)) == sizeof(Yes);
+        static const bool Value = sizeof(Test<T>(nullptr)) == sizeof(Yes);
     };
 
     // The following 3 templates use the same idea as boost::disable_if
@@ -135,117 +135,117 @@ namespace FunctorCopySlot_detail
 
     template<typename T>
     inline bool call(const T& functor, bool(T::*member_fn)(const EventArgs&) const, const EventArgs& args,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        return (functor.*member_fn)(args);
     }
 
     template<typename T>
     inline bool call(T& functor, bool(T::*member_fn)(const EventArgs&), const EventArgs& args,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        return (functor.*member_fn)(args);
     }
 
     template<typename T>
     inline bool call(const T& functor, void(T::*member_fn)(const EventArgs&) const, const EventArgs& args,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        (functor.*member_fn)(args);
         return true;
     }
 
     template<typename T>
     inline bool call(T& functor, void(T::*member_fn)(const EventArgs&), const EventArgs& args,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)(args);
+        (functor.*member_fn)(args);
         return true;
     }
 
     template<typename T>
     inline bool call(const T& functor, bool(T::*member_fn)() const, const EventArgs& /*args*/,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = 0,
-        void* = 0,
-        void* = 0,
-        void* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = nullptr,
+        void* = nullptr,
+        void* = nullptr,
+        void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        return (functor.*member_fn)();
     }
 
     template<typename T>
     inline bool call(T& functor, bool(T::*member_fn)(), const EventArgs& /*args*/,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolNoArgsConstOp<T> >::Type* = 0,
-        void* = 0,
-        void* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolNoArgsConstOp<T> >::Type* = nullptr,
+        void* = nullptr,
+        void* = nullptr
     )
     {
-        return CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        return (functor.*member_fn)();
     }
 
     template<typename T>
     inline bool call(const T& functor, void(T::*member_fn)() const, const EventArgs& /*args*/,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolNoArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolNoArgsOp<T> >::Type* = 0,
-        void* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolNoArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolNoArgsOp<T> >::Type* = nullptr,
+        void* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        (functor.*member_fn)();
         return true;
     }
 
     template<typename T>
     inline bool call(T& functor, void(T::*member_fn)(), const EventArgs& /*args*/,
-        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolNoArgsConstOp<T> >::Type* = 0,
-        typename DisableIf<HasBoolNoArgsOp<T> >::Type* = 0,
-        typename DisableIf<HasVoidNoArgsConstOp<T> >::Type* = 0
+        typename DisableIf<HasBoolEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidEventArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolNoArgsConstOp<T> >::Type* = nullptr,
+        typename DisableIf<HasBoolNoArgsOp<T> >::Type* = nullptr,
+        typename DisableIf<HasVoidNoArgsConstOp<T> >::Type* = nullptr
     )
     {
-        CEGUI_CALL_MEMBER_FN(functor, member_fn)();
+        (functor.*member_fn)();
         return true;
     }
 }
@@ -256,14 +256,14 @@ namespace FunctorCopySlot_detail
     functor object.
 */
 template<typename T>
-class FunctorCopySlot : public SlotFunctorBase
+class FunctorCopySlot : public SlotFunctorBase<EventArgs>
 {
 public:
     FunctorCopySlot(const T& functor):
         d_functor(functor)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return FunctorCopySlot_detail::call<T>(d_functor, &T::operator(), args);
     }

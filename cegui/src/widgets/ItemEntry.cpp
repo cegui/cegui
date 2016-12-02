@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	31/3/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
+
 	purpose:	Implementation of ItemEntry widget base class
 *************************************************************************/
 /***************************************************************************
@@ -52,7 +52,7 @@ const String ItemEntry::EventSelectionChanged("SelectionChanged");
 *************************************************************************/
 ItemEntry::ItemEntry(const String& type, const String& name)
 	: Window(type, name),
-	d_ownerList(0),
+	d_ownerList(nullptr),
     d_selected(false),
     d_selectable(false)
 {
@@ -65,15 +65,15 @@ ItemEntry::ItemEntry(const String& type, const String& name)
 *************************************************************************/
 Sizef ItemEntry::getItemPixelSize(void) const
 {
-    if (d_windowRenderer != 0)
+    if (d_windowRenderer != nullptr)
     {
         return static_cast<ItemEntryWindowRenderer*>(d_windowRenderer)->getItemPixelSize();
     }
     else
     {
         //return getItemPixelSize_impl();
-        CEGUI_THROW(InvalidRequestException(
-            "This function must be implemented by the window renderer module"));
+        throw InvalidRequestException(
+            "This function must be implemented by the window renderer module");
     }
 }
 
@@ -86,7 +86,7 @@ void ItemEntry::setSelected_impl(bool setting, bool notify)
     {
         d_selected = setting;
 
-        // notify the ItemListbox if there is one that we just got selected
+        // notify the ItemListBase if there is one that we just got selected
         // to ensure selection scheme is not broken when setting selection from code
         if (d_ownerList && notify)
         {
@@ -121,24 +121,7 @@ void ItemEntry::onSelectionChanged(WindowEventArgs& e)
 
 bool ItemEntry::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ItemEntryWindowRenderer*>(renderer) != 0;
-}
-
-/*************************************************************************
-    Handle 'MouseClicked' event
-*************************************************************************/
-void ItemEntry::onMouseClicked(MouseEventArgs& e)
-{
-    Window::onMouseClicked(e);
-
-    if (d_selectable && e.button == LeftButton)
-    {
-        if (d_ownerList)
-            d_ownerList->notifyItemClicked(this);
-        else
-            setSelected(!isSelected());
-        ++e.handled;
-    }
+	return dynamic_cast<const ItemEntryWindowRenderer*>(renderer) != nullptr;
 }
 
 /*************************************************************************
@@ -147,16 +130,33 @@ void ItemEntry::onMouseClicked(MouseEventArgs& e)
 void ItemEntry::addItemEntryProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
             "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"true\" or \"false\".",
             &ItemEntry::setSelectable, &ItemEntry::isSelectable, false
     );
-    
+
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
             "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"true\" or \"false\".",
             &ItemEntry::setSelected, &ItemEntry::isSelected, false
     );
+}
+
+void ItemEntry::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool range_selection = e.d_semanticValue == SV_SelectRange;
+    bool cumulative_selection = e.d_semanticValue == SV_SelectCumulative;
+
+    if (d_selectable &&
+        (e.d_semanticValue == SV_CursorActivate || range_selection || cumulative_selection) &&
+         e.d_payload.source == CIS_Left)
+    {
+        if (d_ownerList)
+            d_ownerList->notifyItemActivated(this, cumulative_selection, range_selection);
+        else
+            setSelected(!isSelected());
+        ++e.handled;
+    }
 }
 
 } // End of  CEGUI namespace section

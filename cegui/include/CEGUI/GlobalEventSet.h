@@ -48,8 +48,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT GlobalEventSet :
     public EventSet,
-    public Singleton<GlobalEventSet>,
-    public AllocatedObject<GlobalEventSet>
+    public Singleton<GlobalEventSet>
 {
 public:
 	GlobalEventSet();
@@ -93,7 +92,7 @@ public:
 	\return
 		Nothing.
 	*/
-	virtual void	fireEvent(const String& name, EventArgs& args, const String& eventNamespace = "");
+    void fireEvent(const String& name, EventArgs& args, const String& eventNamespace = "") override;
 };
 
 } // End of  CEGUI namespace section

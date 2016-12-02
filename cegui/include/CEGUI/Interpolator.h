@@ -50,12 +50,11 @@ namespace CEGUI
 \see
     AnimationManager
 */
-class CEGUIEXPORT Interpolator :
-    public AllocatedObject<Interpolator>
+class CEGUIEXPORT Interpolator
 {
 public:
     //! destructor
-    virtual ~Interpolator() {};
+    virtual ~Interpolator() {}
 
     //! returns type string of this interpolator
     virtual const String& getType() const = 0;

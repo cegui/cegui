@@ -153,10 +153,26 @@ exposes the same property).
 
 For example:
 @code
+<<<<<<< local
+CEGUI::System::getSingleton().getDefaultGUIContext().
+    getCursor().setDefaultImage( "TaharezLook/MouseArrow" );
+@endcode
+
+Finally, if you intend to use tool tips, you should specify the type of the
+ToolTip based widget that you want used for that purpose.  It is actually
+possible to set this on a per-window basis, though this is not normally
+required, and is beyond the scope of this introductory tutorial.  The code to
+set the default tool tip window type for the initial, default GUIContext looks
+like this:
+@code
+CEGUI::System::getSingleton().getDefaultGUIContext().
+    setDefaultTooltipType( "TaharezLook/Tooltip" );
+=======
 // setup default group for validation schemas
 CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
 if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
     parser->setProperty("SchemaDefaultResourceGroup", "schemas");
+>>>>>>> other
 @endcode
 
 <br>

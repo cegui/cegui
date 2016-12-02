@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	15/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to list header segment class.
 *************************************************************************/
 /***************************************************************************
@@ -92,12 +92,12 @@ public:
      * be dragged.
      */
 	static const String EventSegmentDragStart;
-    /** Event fired when segment dragging has stopped (via mouse release).
-     * Hanlders are passed a const WindowEventArgs reference with
+    /** Event fired when segment dragging has stopped (via cursor release).
+     * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ListHeaderSegment that is no longer
      * being dragged.
      */
-	static const String EventSegmentDragStop;
+    static const String EventSegmentDragStop;
     /** Event fired when the segment drag position has changed.
      * Hanlders are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ListHeaderSegment whose position has
@@ -118,8 +118,8 @@ public:
 	static const String EventClickableSettingChanged;
 
 	// Defaults
-	static const float	DefaultSizingArea;		//!< Default size of the sizing area.
-	static const float	SegmentMoveThreshold;	//!< Amount the mouse must be dragged before drag-moving is initiated.
+    static const float DefaultSizingArea;       //!< Default size of the sizing area.
+    static const float SegmentMoveThreshold;    //!< Amount the cursor must be dragged before drag-moving is initiated.
 
 
 	/*************************************************************************
@@ -182,7 +182,7 @@ public:
 	\return
 		Point object describing the drag move offset position.
 	*/
-	const Vector2f& getDragMoveOffset(void) const	{return d_dragPosition;}
+    const glm::vec2& getDragMoveOffset(void) const	{return d_dragPosition;}
 
 
 	/*!
@@ -325,26 +325,26 @@ protected:
 	\brief
 		Update state for drag sizing.
 
-	\param local_mouse
-		Mouse position as a pixel offset from the top-left corner of this window.
+    \param local_cursor
+        Cursor position as a pixel offset from the top-left corner of this window.
 
 	\return
 		Nothing.
 	*/
-	void	doDragSizing(const Vector2f& local_mouse);
+    void    doDragSizing(const glm::vec2& local_cursor);
 
 
 	/*!
 	\brief
 		Update state for drag moving.
 
-	\param local_mouse
-		Mouse position as a pixel offset from the top-left corner of this window.
+    \param local_cursor
+        Cursor position as a pixel offset from the top-left corner of this window.
 
 	\return
 		Nothing.
 	*/
-	void	doDragMoving(const Vector2f& local_mouse);
+    void    doDragMoving(const glm::vec2& local_cursor);
 
 
 	/*!
@@ -373,14 +373,14 @@ protected:
 		Return whether the required minimum movement threshold before initiating drag-moving
 		has been exceeded.
 
-	\param local_mouse
-		Mouse position as a pixel offset from the top-left corner of this window.
+    \param local_cursor
+        Cursor position as a pixel offset from the top-left corner of this window.
 
 	\return
 		true if the threshold has been exceeded and drag-moving should be initiated, or false
 		if the threshold has not been exceeded.
-	*/		
-	bool	isDragMoveThresholdExceeded(const Vector2f& local_mouse);
+	*/
+    bool    isDragMoveThresholdExceeded(const glm::vec2& local_cursor);
 
 	/*************************************************************************
 		New Event Handlers
@@ -429,7 +429,7 @@ protected:
 
 	/*!
 	\brief
-		Handler called when the user stops dragging the segment (releases mouse button)
+        Handler called when the user stops dragging the segment (releases cursor source)
 	*/
 	virtual void	onSegmentDragStop(WindowEventArgs& e);
 
@@ -458,34 +458,34 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
-	virtual void	onMouseLeaves(MouseEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCursorLeaves(CursorInputEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	const Image*	d_sizingMouseCursor;	//!< Image to use for mouse when sizing (typically set by derived class).
-	const Image*	d_movingMouseCursor;	//!< Image to use for mouse when moving (typically set by derived class).
+    const Image*    d_sizingCursor;   //!< Image to use for cursor when sizing (typically set by derived class).
+    const Image*    d_movingCursor;   //!< Image to use for cursor when moving (typically set by derived class).
 
-	float	d_splitterSize;		//!< pixel width of the sizing area.
-	bool	d_splitterHover;	//!< True if the mouse is over the splitter
+    float   d_splitterSize;     //!< pixel width of the sizing area.
+    bool    d_splitterHover;    //!< True if the cursor is over the splitter
 
 	bool	d_dragSizing;		//!< true when we are being sized.
-	Vector2f d_dragPoint;		//!< point we are being dragged at when sizing or moving.
+    glm::vec2 d_dragPoint;		//!< point we are being dragged at when sizing or moving.
 
 	SortDirection	d_sortDir;	//!< Direction for sorting (used for deciding what icon to display).
 
-	bool	d_segmentHover;		//!< true when the mouse is within the segment area (and not in sizing area).
-	bool	d_segmentPushed;	//!< true when the left mouse button has been pressed within the confines of the segment.
+    bool    d_segmentHover;     //!< true when the cursor is within the segment area (and not in sizing area).
+    bool    d_segmentPushed;    //!< true when the left cursor source has been activated within the confines of the segment.
 	bool	d_sizingEnabled;	//!< true when sizing is enabled for this segment.
 	bool	d_movingEnabled;	//!< True when drag-moving is enabled for this segment;
 	bool	d_dragMoving;		//!< true when segment is being drag moved.
-	Vector2f d_dragPosition;		//!< position of dragged segment.
+    glm::vec2 d_dragPosition;    //!< position of dragged segment.
 	bool	d_allowClicks;		//!< true if the segment can be clicked.
 
 private:
