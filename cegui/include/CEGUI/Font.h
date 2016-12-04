@@ -362,8 +362,6 @@ public:
     */
     void getGlyphExtents(
         char32_t currentCodePoint,
-        char32_t nextCodePoint,
-        bool isFollowedByAnotherCharacter,
         float& cur_extent,
         float& adv_extent, float x_scale) const;
 

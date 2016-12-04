@@ -190,41 +190,19 @@ float Font::getTextExtent(const String& text, float x_scale) const
     for (size_t c = 0; c < text.length(); ++c)
     {
         char32_t currentCodePoint = text[c];
-        size_t nextIndex = c + 1;
-        char32_t nextCodePoint = -1;
-        bool isFollowedByAnotherCharacter = false;
 
-        if(nextIndex < text.length())
-        {
-            nextCodePoint = text[nextIndex];
-            isFollowedByAnotherCharacter = true;
-        }
-
-        getGlyphExtents(currentCodePoint, nextCodePoint, isFollowedByAnotherCharacter,
-            cur_extent, adv_extent, x_scale);
+        getGlyphExtents(currentCodePoint, cur_extent, adv_extent, x_scale);
     }
 #else
     String::codepoint_iterator codePointIter(text.begin(), text.begin(), text.end());
 
-    if (!codePointIter.isAtEnd())
+    while (!codePointIter.isAtEnd())
     {
-        // Start "behind" the first code point
-        char32_t currentCodePoint = -1;
-        char32_t nextCodePoint = *codePointIter;
+        char32_t currentCodePoint = *codePointIter;
 
-        // Check the next code point
-        while (!codePointIter.isAtEnd())
-        {
-            nextCodePoint = *codePointIter;
-            getGlyphExtents(currentCodePoint, nextCodePoint, true, cur_extent, adv_extent, x_scale);
+        getGlyphExtents(currentCodePoint, cur_extent, adv_extent, x_scale);
 
-            ++codePointIter;
-            currentCodePoint = nextCodePoint;
-        }
-
-
-        //Add the final character
-        getGlyphExtents(nextCodePoint, -1, false, cur_extent, adv_extent, x_scale);
+        ++codePointIter;
     }
 #endif
 
@@ -234,8 +212,6 @@ float Font::getTextExtent(const String& text, float x_scale) const
 
 void Font::getGlyphExtents(
     char32_t currentCodePoint,
-    char32_t nextCodePoint,
-    bool isFollowedByAnotherCharacter,
     float& cur_extent,
     float& adv_extent,
     float x_scale) const
@@ -246,11 +222,6 @@ void Font::getGlyphExtents(
     {
         const FontGlyph* nextGlyph = nullptr;
         
-        if(isFollowedByAnotherCharacter)
-        {
-            nextGlyph = getGlyphData(nextCodePoint);
-        }
-
         float width = currentGlyph->getRenderedAdvance(nextGlyph, x_scale);
 
         if (adv_extent + width > cur_extent)
