@@ -721,6 +721,7 @@ const FT_Face& FreeTypeFont::getFontFace() const
     return d_fontFace;
 }
 
+#ifdef CEGUI_USE_RAQM
 void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
     const glm::vec2& position, const Rectf* clip_rect,
     const ColourRect& colours, const float space_extra,
@@ -830,6 +831,7 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
 
     raqm_destroy(raqmObject);
 }
+#endif
 
 
 } // End of  CEGUI namespace section

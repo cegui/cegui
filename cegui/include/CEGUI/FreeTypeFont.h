@@ -250,6 +250,7 @@ protected:
     const FontGlyph* findFontGlyph(const char32_t codepoint) const override;
     void rasterise(char32_t start_codepoint, char32_t end_codepoint) const override;
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
+
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
     void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
@@ -257,7 +258,6 @@ protected:
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
         glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const override;
-
 #endif
 
     //! If non-zero, the overridden line spacing that we're to report.
