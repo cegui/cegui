@@ -565,14 +565,17 @@ protected:
         const float y_scale, ImageRenderSettings imgRenderSettings, 
         glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const;
 
-#ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
     virtual void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const = 0;
-#endif
+        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const
+    {
+        renderGlyphsUsingDefaultFallback(text, position, clip_rect,
+            colours, space_extra, x_scale, y_scale, imgRenderSettings,
+            glyph_pos, textGeometryBuffer);
+    }
 
     //! Name of this font.
     String d_name;
