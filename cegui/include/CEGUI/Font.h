@@ -73,6 +73,48 @@ public:
     //! Destructor.
     virtual ~Font();
 
+    /*!
+    \brief
+        Helper function that converts point sizes of Fonts into 
+        pixel sizes. Points are a physical unit. 1 point is
+        equal to 1/72th of an inch. The function takes the dots per
+        inch as well as the pixel size. 
+
+    \param pointSize
+        The point size to be converted.
+
+    \param dotsPerInch
+        The dots per inch resolution to be used for the conversion.
+
+    \return
+        Returns the calculated Font size in pixels.
+
+    \see Render::ReferenceDpiValue
+    \see Font::convertPixelsToPoints
+    */
+    static float convertPointsToPixels(const float pointSize, const int dotsPerInch);
+
+        /*!
+    \brief
+        Helper function that converts pixel sizes of Fonts into 
+        point sizes. Points are a physical unit. 1 point is
+        equal to 1/72th of an inch. The function takes the dots per
+        inch as well as the pixel size. 
+
+    \param pixelSize
+        The pixel size to be converted.
+
+    \param dotsPerInch
+        The dots per inch resolution to be used for the conversion.
+
+    \return
+        Returns the calculated Font size in points.
+
+    \see Render::ReferenceDpiValue
+    \see Font::convertPointsToPixels
+    */
+    static float convertPixelsToPoints(const float pixelSize, const int dotsPerInch);
+
     //! Return the string holding the font name.
     const String& getName() const;
 

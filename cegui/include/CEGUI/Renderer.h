@@ -100,6 +100,9 @@ public:
 
     virtual ~Renderer() {}
 
+    //! This is the DPI value that was assumed up to CEGUI version 0.8.X
+    static const int ReferenceDpiValue = 96;
+
     /*!
     \brief
         Returns the default RenderTarget object.  The default render target is
@@ -523,9 +526,6 @@ protected:
     //! The currently active view projection matrix 
     glm::mat4 d_viewProjectionMatrix;
 private:
-    //! This is the DPI value that was assumed up to CEGUI version 0.8.X
-    static const int ReferenceDpiValue = 96;
-
     //! container type used to hold GeometryBuffers created.
     typedef std::set<GeometryBuffer*> GeometryBufferSet;
     //! Container used to track geometry buffers.
