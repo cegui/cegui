@@ -78,6 +78,16 @@ Font::~Font()
 {
 }
 
+float Font::convertPointsToPixels(const float pointSize, const int dotsPerInch)
+{
+    return pointSize * dotsPerInch / 72.f;
+}
+
+float Font::convertPixelsToPoints(const float pixelSize, const int dotsPerInch)
+{
+    return pixelSize * 72.f / static_cast<float>(dotsPerInch);
+}
+
 //----------------------------------------------------------------------------//
 const String& Font::getName() const
 {
