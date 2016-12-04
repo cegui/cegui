@@ -484,11 +484,12 @@ public:
     /*!
     \brief
         Sets the Font scale factor to be used when rendering scalable Fonts.
+
+        This updates all Fonts but will not invalidate the Windows. If you
+        want to also invalidate all Windows to be affected by all Fonts,
+        you have to do this after setting the new Font scale manually.
     */
-    void setFontScale(const float fontScale)
-    {
-        d_fontScale = fontScale;
-    }
+    void setFontScale(const float fontScale);
 
     /*!
     \brief

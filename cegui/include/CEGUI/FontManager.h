@@ -313,6 +313,9 @@ public:
     */
     const FontRegistry& getRegisteredFonts() const;
 
+    //! Updates all Fonts, this means that all Fonts will be regenerated.
+    void updateAllFonts();
+
     //! The name of the resource type handled by this class
     static const String ResourceTypeName;
 

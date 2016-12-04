@@ -83,6 +83,8 @@ public:
     //! Destructor.
     ~PixmapFont();
 
+    void updateFont () override;
+
     void defineMapping(const char32_t codePoint, const String& imageName, 
                        const float horzAdvance);
     void defineMapping(const String& value);
@@ -110,7 +112,6 @@ protected:
     void addPixmapFontProperties();
 
     // override of functions in Font base class.
-    void updateFont () override;
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph

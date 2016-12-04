@@ -297,7 +297,7 @@ bool FontManager::isDefined(const String& font_name) const
 void FontManager::destroyObject(
     FontRegistry::iterator ob)
 {
-        String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
+    String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + ResourceTypeName +
         "' named '" + ob->first + "' has been destroyed. " +
         addressStr, Informative);
@@ -326,6 +326,14 @@ void FontManager::createAll(const String& pattern,
 const FontManager::FontRegistry& FontManager::getRegisteredFonts() const
 {
     return d_registeredFonts;
+}
+
+void FontManager::updateAllFonts()
+{
+    for(auto& currentFont : d_registeredFonts)
+    {
+        currentFont.second->updateFont();
+    }
 }
 
 
