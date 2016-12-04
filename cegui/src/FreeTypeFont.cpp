@@ -5,7 +5,7 @@
     purpose:    Implements FreeTypeFont class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2016 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -500,10 +500,7 @@ void FreeTypeFont::updateFont()
     createFreetypeMemoryFace();
 
     checkUnicodeCharMapAvailability();
-
-   // const unsigned int horzdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().x);
-   // const unsigned int vertdpi = static_cast<unsigned int>(System::getSingleton().getRenderer()->getDisplayDpi().y);
-
+    
     float fontScaleFactor = System::getSingleton().getRenderer()->getFontScale();
     if (d_autoScaled != ASM_Disabled)
     {
@@ -674,31 +671,27 @@ float FreeTypeFont::getSizeInPixels() const
 
     if (d_sizeUnit == FontSizeUnit::FSU_POINTS)
     {
-        //TODO
-        return d_size;
+        return convertPointsToPixels(d_size, Renderer::ReferenceDpiValue);
     }
 
     throw InvalidRequestException("FreeTypeFont::getSizeInPixels - Requesting "
         "font size in pixels but the Font size unit is invalid.");
-    return -1.0f;
 }
 
 float FreeTypeFont::getSizeInPoints() const
 {
     if (d_sizeUnit == FontSizeUnit::FSU_PIXELS)
     {
-        return d_size;
+        return convertPixelsToPoints(d_size, Renderer::ReferenceDpiValue);
     }
 
     if (d_sizeUnit == FontSizeUnit::FSU_POINTS)
     {
-        //TODO
         return d_size;
     }
 
     throw InvalidRequestException("FreeTypeFont::getSizeInPixels - Requesting "
         "font size in pixels but the Font size unit is invalid.");
-    return -1.0f;
 }
 
 void FreeTypeFont::handleFontSizeOrFontUnitChange()
