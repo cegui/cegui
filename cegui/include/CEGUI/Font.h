@@ -505,6 +505,16 @@ public:
     */
     const FontGlyph* getGlyphData(char32_t codepoint) const;
 
+
+    /*!
+    \brief
+        Update the font as needed, according to the current parameters.
+        This should only be called if really necessary and will only 
+        internally update the Font, without firing events or updating
+        any Windows using this Font.
+    */
+    virtual void updateFont() = 0;
+
 protected:
     //! Constructor.
     Font(const String& name, const String& type_name, const String& filename,
@@ -527,10 +537,9 @@ protected:
     */
     virtual void rasterise(char32_t start_codepoint, char32_t end_codepoint) const;
 
-    //! Update the font as needed, according to the current parameters.
-    virtual void updateFont() = 0;
 
-    //! implementaion version of writeXMLToStream.
+
+    //! implementation version of writeXMLToStream.
     virtual void writeXMLToStream_impl(XMLSerializer& xml_stream) const = 0;
 
     //! Register all properties of this class.

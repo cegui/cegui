@@ -27,6 +27,7 @@
 #include "CEGUI/Renderer.h"
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/FontManager.h"
 
 namespace CEGUI
 {
@@ -116,6 +117,11 @@ const glm::mat4& Renderer::getViewProjectionMatrix() const
     return d_viewProjectionMatrix;
 }
 
-//----------------------------------------------------------------------------//
+void Renderer::setFontScale(const float fontScale)
+{
+    d_fontScale = fontScale;
+
+    FontManager::getSingleton().updateAllFonts();
+}
 
 }

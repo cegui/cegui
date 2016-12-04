@@ -106,6 +106,8 @@ public:
 
     //! Destructor.
     virtual ~FreeTypeFont();
+    
+    void updateFont() override;
 
     /*!
     \brief
@@ -247,7 +249,6 @@ protected:
     // overrides of functions in Font base class.
     const FontGlyph* findFontGlyph(const char32_t codepoint) const override;
     void rasterise(char32_t start_codepoint, char32_t end_codepoint) const override;
-    void updateFont() override;
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
