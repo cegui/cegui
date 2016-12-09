@@ -131,19 +131,19 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
     // handle formatting options
     switch (d_verticalFormatting)
     {
-    case VF_BOTTOM_ALIGNED:
+    case VerticalFormatting::BOTTOM_ALIGNED:
         dest.d_min.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
-    case VF_CENTRE_ALIGNED:
+    case VerticalFormatting::CENTRE_ALIGNED:
         dest.d_min.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
-    case VF_STRETCHED:
+    case VerticalFormatting::STRETCHED:
         y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
         break;
 
-    case VF_TOP_ALIGNED:
+    case VerticalFormatting::TOP_ALIGNED:
         // nothing additional to do for this formatting option.
         break;
 

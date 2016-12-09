@@ -110,7 +110,7 @@ public:
         Let:
             - "ret" be the value returned by this method.
             - "t" be the value of this dimension.
-            - "m" be the value of "type". For instance, if "type" is "DT_WIDTH",
+            - "m" be the value of "type". For instance, if "type" is "DimensionType::WIDTH",
               "m" would be the width of the window.
         Then:
             t >= ret.d_scale*m + ret.d_offset
@@ -137,7 +137,7 @@ public:
         Let:
             - "ret" be the value returned by this method.
             - "t" be the value of this dimension.
-            - "m" be the value of "type". For instance, if "type" is "DT_WIDTH",
+            - "m" be the value of "type". For instance, if "type" is "DimensionType::WIDTH",
               "m" would be the width of the window.
         Then:
             t <= ret.d_scale*m +ret.d_offset
@@ -649,10 +649,10 @@ public:
     \param type
         DimensionType value indicating what dimension named property
         represents.  The possible DimensionType values are as follows:
-        - DT_INVALID the property should represent a simple float value.
-        - DT_WIDTH the property should represent a UDim value where the
+        - DimensionType::INVALID the property should represent a simple float value.
+        - DimensionType::WIDTH the property should represent a UDim value where the
         scale is relative to the targetted Window's width.
-        - DT_HEIGHT the property should represent a UDim value where the
+        - DimensionType::HEIGHT the property should represent a UDim value where the
         scale is relative to the targetted Window's height.
         - All other values will cause an InvalidRequestException exception
         to be thrown.
@@ -708,9 +708,9 @@ public:
         DimensionType value indicating which dimension of the target window to
         use as the reference / base value when accessing a property that
         represents a unified dimension:
-            - DT_INVALID if the property does not represent a unified dim.
-            - DT_WIDTH to use target width as reference value.
-            - DT_HEIGHT to use target hight as reference value.
+            - DimensionType::INVALID if the property does not represent a unified dim.
+            - DimensionType::WIDTH to use target width as reference value.
+            - DimensionType::HEIGHT to use target hight as reference value.
     */
     DimensionType getSourceDimension() const;
 
@@ -722,9 +722,9 @@ public:
         DimensionType value indicating which dimension of the target window to
         use as the reference / base value when accessing a property that
         represents a unified dimension:
-            - DT_INVALID if the property does not represent a unified dim.
-            - DT_WIDTH to use target width as reference value.
-            - DT_HEIGHT to use target hight as reference value.
+            - DimensionType::INVALID if the property does not represent a unified dim.
+            - DimensionType::WIDTH to use target width as reference value.
+            - DimensionType::HEIGHT to use target hight as reference value.
     */
     void setSourceDimension(DimensionType dim);
 

@@ -115,23 +115,23 @@ namespace CEGUI
             "setHorizontalFormatting".
 
             There are cases when "getHorizontalFormatting()" is different than
-            "HTF_WORDWRAP_CENTRE_ALIGNED" and "HTF_CENTRE_ALIGNED",
+            "HorizontalTextFormatting::WORDWRAP_CENTRE_ALIGNED" and "HorizontalTextFormatting::CENTRE_ALIGNED",
             "getWindow()->isWidthAdjustedToContent()" is "true", and the number
             of formatted text lines ("getNumOfFormattedTextLines()") is 1, and
             it's obvious that the single line of text takes the whole width of
             the area reserved for the text. Consider, for example, the case
-            where "getHorizontalFormatting()" is "HTF_LEFT_ALIGNED", and the
+            where "getHorizontalFormatting()" is "HorizontalTextFormatting::LEFT_ALIGNED", and the
             number of original text lines ("getNumOfOriginalTextLines()") is 1.
             Then the width of the widget is automatically adjusted to the width
             of that line. Therefore we know that the single line of text takes
             the whole width of the area reserved for the text. So using an
-            acutal horizontal text formatting of "HTF_CENTRE_ALIGNED" wouldn't
+            acutal horizontal text formatting of "HorizontalTextFormatting::CENTRE_ALIGNED" wouldn't
             hurt. The reason we prefer center horizontal text formatting in this
             case is that even though theoretically the single line of text takes
             the whole width of the area reserved for the text, in practice the
             width of text might be a pixel or 2 less, due to various reasons
             rooted in the computations performed. By using an actual horizontal
-            text formatting of "HTF_CENTRE_ALIGNED", we make sure the text
+            text formatting of "HorizontalTextFormatting::CENTRE_ALIGNED", we make sure the text
             appears in the center (horizontally). The spaces in the sides may be
             tiny, but it can still make a difference visually.
 
@@ -153,22 +153,22 @@ namespace CEGUI
             from the vertical text formatting set with "setVerticalFormatting".
 
             There are cases when "getVerticalFormatting()" is different than
-            "VTF_CENTRE_ALIGNED", "getWindow()->isHeightAdjustedToContent()" is
+            "VerticalTextFormatting::CENTRE_ALIGNED", "getWindow()->isHeightAdjustedToContent()" is
             "true", and it's obvious that the text takes the whole height of the
             area reserved for the text. Consider, for example, the case where
-            "getVerticalFormatting()" is "VTF_TOP_ALIGNED",
-            "getHorizontalFormatting()" is "HTF_CENTRE_ALIGNED", and the
+            "getVerticalFormatting()" is "VerticalTextFormatting::TOP_ALIGNED",
+            "getHorizontalFormatting()" is "HorizontalTextFormatting::CENTRE_ALIGNED", and the
             "NumOfTextLinesToShow" property is set to "Auto". Then the height of
             the widget is automatically adjusted to the height of the text.
             Therefore we know that the text takes the whole height of the area
             reserved for the text. So using an acutal vertical text formatting
-            of "VTF_CENTRE_ALIGNED" wouldn't hurt. The reason we prefer center
+            of "VerticalTextFormatting::CENTRE_ALIGNED" wouldn't hurt. The reason we prefer center
             vertical text formatting in this
             case is thatThe reason this matters at all is that even though
             theoretically the text takes the whole height of the area reserved
             for the text, in practice the height of the text might be a pixel or
             2 less, due to various reasons rooted in the computations performed.
-            By using an actual vertical text formatting of "VTF_CENTRE_ALIGNED",
+            By using an actual vertical text formatting of "VerticalTextFormatting::CENTRE_ALIGNED",
             we make sure the text appears in the center (vertically). The spaces
             in the top and bottom may be tiny, but it can still make a
             difference visually.

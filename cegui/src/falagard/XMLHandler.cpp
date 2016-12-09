@@ -370,20 +370,20 @@ namespace CEGUI
         {
             switch (dim.getDimensionType())
             {
-            case DT_LEFT_EDGE:
-            case DT_X_POSITION:
+            case DimensionType::LEFT_EDGE:
+            case DimensionType::X_POSITION:
                 d_area->d_left = dim;
                 break;
-            case DT_TOP_EDGE:
-            case DT_Y_POSITION:
+            case DimensionType::TOP_EDGE:
+            case DimensionType::Y_POSITION:
                 d_area->d_top = dim;
                 break;
-            case DT_RIGHT_EDGE:
-            case DT_WIDTH:
+            case DimensionType::RIGHT_EDGE:
+            case DimensionType::WIDTH:
                 d_area->d_right_or_width = dim;
                 break;
-            case DT_BOTTOM_EDGE:
-            case DT_HEIGHT:
+            case DimensionType::BOTTOM_EDGE:
+            case DimensionType::HEIGHT:
                 d_area->d_bottom_or_height = dim;
                 break;
             default:
@@ -702,13 +702,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FIC_LEFT_EDGE:
+                case FrameImageComponent::LEFT_EDGE:
                     d_framecomponent->setLeftEdgeFormatting(fmt);
                     break;
-                case FIC_RIGHT_EDGE:
+                case FrameImageComponent::RIGHT_EDGE:
                     d_framecomponent->setRightEdgeFormatting(fmt);
                     break;
-                case FIC_BACKGROUND:
+                case FrameImageComponent::BACKGROUND:
                     d_framecomponent->setBackgroundVerticalFormatting(fmt);
                     break;
                 default:
@@ -750,13 +750,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FIC_TOP_EDGE:
+                case FrameImageComponent::TOP_EDGE:
                     d_framecomponent->setTopEdgeFormatting(fmt);
                     break;
-                case FIC_BOTTOM_EDGE:
+                case FrameImageComponent::BOTTOM_EDGE:
                     d_framecomponent->setBottomEdgeFormatting(fmt);
                     break;
-                case FIC_BACKGROUND:
+                case FrameImageComponent::BACKGROUND:
                     d_framecomponent->setBackgroundHorizontalFormatting(fmt);
                     break;
                 default:
@@ -928,7 +928,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementPropertyDimStart(const XMLAttributes& attributes)
     {
         String str_type = attributes.getValueAsString(TypeAttribute);
-        DimensionType type = DT_INVALID;
+        DimensionType type = DimensionType::INVALID;
         if (!str_type.empty())
             type = FalagardXMLHelper<DimensionType>::fromString(str_type);
 
@@ -1295,13 +1295,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FIC_LEFT_EDGE:
+                case FrameImageComponent::LEFT_EDGE:
                     d_framecomponent->setLeftEdgeFormatting(fmt);
                     break;
-                case FIC_RIGHT_EDGE:
+                case FrameImageComponent::RIGHT_EDGE:
                     d_framecomponent->setRightEdgeFormatting(fmt);
                     break;
-                case FIC_BACKGROUND:
+                case FrameImageComponent::BACKGROUND:
                     d_framecomponent->setBackgroundVerticalFormatting(fmt);
                     break;
                 default:
@@ -1335,13 +1335,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FIC_TOP_EDGE:
+                case FrameImageComponent::TOP_EDGE:
                     d_framecomponent->setTopEdgeFormatting(fmt);
                     break;
-                case FIC_BOTTOM_EDGE:
+                case FrameImageComponent::BOTTOM_EDGE:
                     d_framecomponent->setBottomEdgeFormatting(fmt);
                     break;
-                case FIC_BACKGROUND:
+                case FrameImageComponent::BACKGROUND:
                     d_framecomponent->setBackgroundHorizontalFormatting(fmt);
                     break;
                 default:

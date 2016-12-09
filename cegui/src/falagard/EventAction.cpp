@@ -46,19 +46,17 @@ struct EventActionFunctor
     {
         switch (action)
         {
-        case CEA_REDRAW:
+        case ChildEventAction::REDRAW:
             window.invalidate(false);
             return true;
 
-        case CEA_LAYOUT:
+        case ChildEventAction::LAYOUT:
             window.performChildWindowLayout();
             return true;
 
         default:
             throw InvalidRequestException("invalid action.");
         }
-
-        return false;
     }
 
     Window& window;
