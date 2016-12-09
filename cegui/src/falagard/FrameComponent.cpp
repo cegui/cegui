@@ -204,9 +204,11 @@ void FrameComponent::setImage(FrameImageComponent part, const Image* image)
 {
     assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    d_frameImages[part].d_image = image;
-    d_frameImages[part].d_specified = image != nullptr;
-    d_frameImages[part].d_propertyName.clear();
+    const int frameImageIndex = static_cast<int>(part);
+
+    d_frameImages[frameImageIndex].d_image = image;
+    d_frameImages[frameImageIndex].d_specified = image != nullptr;
+    d_frameImages[frameImageIndex].d_propertyName.clear();
 }
 
 //----------------------------------------------------------------------------//
@@ -231,9 +233,11 @@ void FrameComponent::setImagePropertySource(FrameImageComponent part,
 {
     assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    d_frameImages[part].d_image = nullptr;
-    d_frameImages[part].d_specified = !name.empty();
-    d_frameImages[part].d_propertyName = name;
+    const int frameImageIndex = static_cast<int>(part);
+
+    d_frameImages[frameImageIndex].d_image = nullptr;
+    d_frameImages[frameImageIndex].d_specified = !name.empty();
+    d_frameImages[frameImageIndex].d_propertyName = name;
 }
 
 //----------------------------------------------------------------------------//
@@ -241,7 +245,9 @@ bool FrameComponent::isImageSpecified(FrameImageComponent part) const
 {
     assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    return d_frameImages[part].d_specified;
+    const int frameImageIndex = static_cast<int>(part);
+
+    return d_frameImages[frameImageIndex].d_specified;
 }
 
 //----------------------------------------------------------------------------//
@@ -249,8 +255,10 @@ bool FrameComponent::isImageFetchedFromProperty(FrameImageComponent part) const
 {
     assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    return d_frameImages[part].d_specified &&
-           !d_frameImages[part].d_propertyName.empty();
+    const int frameImageIndex = static_cast<int>(part);
+
+    return d_frameImages[frameImageIndex].d_specified &&
+           !d_frameImages[frameImageIndex].d_propertyName.empty();
 }
 
 //----------------------------------------------------------------------------//
@@ -259,7 +267,9 @@ const String& FrameComponent::getImagePropertySource(
 {
     assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    return d_frameImages[part].d_propertyName;
+    const int frameImageIndex = static_cast<int>(part);
+
+    return d_frameImages[frameImageIndex].d_propertyName;
 }
 
 //----------------------------------------------------------------------------//
@@ -563,7 +573,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
     }
 
-    if (const Image* const componentImage = getImage(FIC_BACKGROUND, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::BACKGROUND, srcWindow))
     {
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -739,7 +749,8 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     d_area.writeXMLToStream(xml_stream);
 
     // write images
-    for (int i = 0; i < FrameImageComponent::FRAME_IMAGE_COUNT; ++i)
+    const int imageCount = static_cast<int>(FrameImageComponent::FRAME_IMAGE_COUNT);
+    for (int i = 0; i < imageCount; ++i)
     {
         if (d_frameImages[i].d_specified)
         {
@@ -818,7 +829,9 @@ bool FrameComponent::operator==(const FrameComponent& rhs) const
         d_backgroundHorzFormatting != rhs.d_backgroundHorzFormatting)
             return false;
 
-    for (int i = 0; i < FrameImageComponent::FRAME_IMAGE_COUNT; ++i)
+    const int frameImageCount = static_cast<int>(FrameImageComponent::FRAME_IMAGE_COUNT);
+
+    for (int i = 0; i < frameImageCount; ++i)
         if (d_frameImages[i] != rhs.d_frameImages[i])
             return false;
 
