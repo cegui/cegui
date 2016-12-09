@@ -41,7 +41,7 @@ namespace CEGUI
 enum class AspectMode
 {
     //! Ignores the target aspect (default)
-    IGNORE_,
+    NONE,
     /*!
     Satisfies the aspect ratio by shrinking the size as little
     as possible to fit inside it

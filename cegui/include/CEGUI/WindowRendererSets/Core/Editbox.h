@@ -144,9 +144,9 @@ public:
     \param format
         Specifies the formatting to use.  Currently can only be one of the
         following HorizontalTextFormatting values:
-            - HTF_LEFT_ALIGNED (default)
-            - HTF_RIGHT_ALIGNED
-            - HTF_CENTRE_ALIGNED
+            - HorizontalTextFormatting::LEFT_ALIGNED (default)
+            - HorizontalTextFormatting::RIGHT_ALIGNED
+            - HorizontalTextFormatting::CENTRE_ALIGNED
     */
     void setTextFormatting(const HorizontalTextFormatting format);
     HorizontalTextFormatting getTextFormatting() const;

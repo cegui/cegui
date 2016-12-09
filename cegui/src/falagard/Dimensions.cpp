@@ -86,7 +86,7 @@ UDim BaseDim::getUpperBoundAsUDim(const Window& wnd, DimensionType /*type*/) con
 OperatorDim::OperatorDim() :
     d_left(nullptr),
     d_right(nullptr),
-    d_op(DOP_NOOP)
+    d_op(DimensionOperator::NOOP)
 {
 }
 
@@ -188,21 +188,21 @@ float OperatorDim::getValueImpl(const float lval, const float rval) const
 {
     switch(d_op)
     {
-    case DOP_NOOP:
+    case DimensionOperator::NOOP:
         return 0.0f;
 
-    case DOP_ADD:
+    case DimensionOperator::ADD:
         return lval + rval;
 
-    case DOP_SUBTRACT:
+    case DimensionOperator::SUBTRACT:
         return lval - rval;
 
-    case DOP_MULTIPLY:
+    case DimensionOperator::MULTIPLY:
         return lval * rval;
 
     // divide by zero returns zero.  Not 100% correct but is better than the
     // alternatives in the majority of cases where LookNFeels are concerned.
-    case DOP_DIVIDE:
+    case DimensionOperator::DIVIDE:
         return rval == 0.0f ? rval : lval / rval;
 
     default:
@@ -268,24 +268,24 @@ void OperatorDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) cons
 ------------------------------------------------------------------------------*/
 UDim OperatorDim::getBoundAsUDim(const UDim& lval, const UDim& rval) const
 {
-    if (d_op == DOP_NOOP)
+    if (d_op == DimensionOperator::NOOP)
         return UDim::zero();
     else
     {
         switch (d_op)
         {
-        case DOP_ADD:
+        case DimensionOperator::ADD:
             return lval +rval;
-        case DOP_SUBTRACT:
+        case DimensionOperator::SUBTRACT:
             return lval -rval;
-        case DOP_MULTIPLY:
+        case DimensionOperator::MULTIPLY:
             if      (rval.d_scale == 0.f)
                 return lval *rval.d_offset;
             else if (lval.d_scale == 0.f)
                 return rval *lval.d_offset;
             else
                 throw InvalidRequestException("Multiplication gives a non-affine function");
-        case DOP_DIVIDE:
+        case DimensionOperator::DIVIDE:
             if(rval.d_scale == 0.f)
             {
                 if (rval.d_offset == 0.f)
@@ -385,19 +385,19 @@ float ImageDimBase::getValue(const Window& wnd) const
 
     switch (d_what)
     {
-        case DT_WIDTH:
+        case DimensionType::WIDTH:
             return img->getRenderedSize().d_width;
             break;
 
-        case DT_HEIGHT:
+        case DimensionType::HEIGHT:
             return img->getRenderedSize().d_height;
             break;
 
-        case DT_X_OFFSET:
+        case DimensionType::X_OFFSET:
             return img->getRenderedOffset().x;
             break;
 
-        case DT_Y_OFFSET:
+        case DimensionType::Y_OFFSET:
             return img->getRenderedOffset().y;
             break;
 
@@ -573,39 +573,39 @@ float WidgetDim::getValue(const Window& wnd) const
 
     switch (d_dimensionType)
     {
-        case DT_WIDTH:
+        case DimensionType::WIDTH:
             return widget->getPixelSize().d_width;
             break;
 
-        case DT_HEIGHT:
+        case DimensionType::HEIGHT:
             return widget->getPixelSize().d_height;
             break;
 
-        case DT_X_OFFSET:
-            Logger::getSingleton().logEvent("WigetDim::getValue - Nonsensical DimensionType of DT_X_OFFSET specified!  returning 0.0f");
+        case DimensionType::X_OFFSET:
+            Logger::getSingleton().logEvent("WigetDim::getValue - Nonsensical DimensionType of DimensionType::X_OFFSET specified!  returning 0.0f");
             return 0.0f;
             break;
 
-        case DT_Y_OFFSET:
-            Logger::getSingleton().logEvent("WigetDim::getValue - Nonsensical DimensionType of DT_Y_OFFSET specified!  returning 0.0f");
+        case DimensionType::Y_OFFSET:
+            Logger::getSingleton().logEvent("WigetDim::getValue - Nonsensical DimensionType of DimensionType::Y_OFFSET specified!  returning 0.0f");
             return 0.0f;
             break;
 
-        case DT_LEFT_EDGE:
-        case DT_X_POSITION:
+        case DimensionType::LEFT_EDGE:
+        case DimensionType::X_POSITION:
             return CoordConverter::asAbsolute(widget->getPosition().d_x, parentSize.d_width);
             break;
 
-        case DT_TOP_EDGE:
-        case DT_Y_POSITION:
+        case DimensionType::TOP_EDGE:
+        case DimensionType::Y_POSITION:
             return CoordConverter::asAbsolute(widget->getPosition().d_y, parentSize.d_height);
             break;
 
-        case DT_RIGHT_EDGE:
+        case DimensionType::RIGHT_EDGE:
             return CoordConverter::asAbsolute(widget->getArea().d_max.d_x, parentSize.d_width);
             break;
 
-        case DT_BOTTOM_EDGE:
+        case DimensionType::BOTTOM_EDGE:
             return CoordConverter::asAbsolute(widget->getArea().d_max.d_y, parentSize.d_height);
             break;
 
@@ -729,13 +729,13 @@ float FontDim::getValue(const Window& wnd) const
     {
         switch (d_metric)
         {
-            case FMT_LINE_SPACING:
+            case FontMetricType::LINE_SPACING:
                 return fontObj->getLineSpacing() + d_padding;
                 break;
-            case FMT_BASELINE:
+            case FontMetricType::BASELINE:
                 return fontObj->getBaseline() + d_padding;
                 break;
-            case FMT_HORZ_EXTENT:
+            case FontMetricType::HORZ_EXTENT:
                 return fontObj->getTextExtent(d_text.empty() ? sourceWindow.getText() : d_text) + d_padding;
                 break;
             default:
@@ -854,7 +854,7 @@ float PropertyDim::getValue(const Window& wnd) const
     // get window to use.
     const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
 
-    if (d_type == DT_INVALID)
+    if (d_type == DimensionType::INVALID)
     {
         // check property data type and convert to float if necessary
         Property* pi = sourceWindow.getPropertyInstance(d_property);
@@ -870,10 +870,10 @@ float PropertyDim::getValue(const Window& wnd) const
 
     switch (d_type)
     {
-        case DT_WIDTH:
+        case DimensionType::WIDTH:
             return CoordConverter::asAbsolute(d, s.d_width);
 
-        case DT_HEIGHT:
+        case DimensionType::HEIGHT:
             return CoordConverter::asAbsolute(d, s.d_height);
 
         default:
@@ -906,7 +906,7 @@ void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) cons
     if (!d_childName.empty())
         xml_stream.attribute(Falagard_xmlHandler::WidgetAttribute, d_childName);
     xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_property);
-    if (d_type != DT_INVALID)
+    if (d_type != DimensionType::INVALID)
         xml_stream.attribute(Falagard_xmlHandler::TypeAttribute, FalagardXMLHelper<DimensionType>::toString(d_type));
 }
 
@@ -916,7 +916,7 @@ void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) cons
 Dimension::Dimension()
 {
     d_value = nullptr;
-    d_type = DT_INVALID;
+    d_type = DimensionType::INVALID;
 }
 
 //----------------------------------------------------------------------------//
@@ -1039,19 +1039,19 @@ float UnifiedDim::getValue(const Window& wnd) const
 {
     switch (d_what)
     {
-        case DT_LEFT_EDGE:
-        case DT_RIGHT_EDGE:
-        case DT_X_POSITION:
-        case DT_X_OFFSET:
-        case DT_WIDTH:
+        case DimensionType::LEFT_EDGE:
+        case DimensionType::RIGHT_EDGE:
+        case DimensionType::X_POSITION:
+        case DimensionType::X_OFFSET:
+        case DimensionType::WIDTH:
             return CoordConverter::asAbsolute(d_value, wnd.getPixelSize().d_width);
             break;
 
-        case DT_TOP_EDGE:
-        case DT_BOTTOM_EDGE:
-        case DT_Y_POSITION:
-        case DT_Y_OFFSET:
-        case DT_HEIGHT:
+        case DimensionType::TOP_EDGE:
+        case DimensionType::BOTTOM_EDGE:
+        case DimensionType::Y_POSITION:
+        case DimensionType::Y_OFFSET:
+        case DimensionType::HEIGHT:
             return CoordConverter::asAbsolute(d_value, wnd.getPixelSize().d_height);
             break;
 
@@ -1067,19 +1067,19 @@ float UnifiedDim::getValue(const Window&, const Rectf& container) const
 {
     switch (d_what)
     {
-        case DT_LEFT_EDGE:
-        case DT_RIGHT_EDGE:
-        case DT_X_POSITION:
-        case DT_X_OFFSET:
-        case DT_WIDTH:
+        case DimensionType::LEFT_EDGE:
+        case DimensionType::RIGHT_EDGE:
+        case DimensionType::X_POSITION:
+        case DimensionType::X_OFFSET:
+        case DimensionType::WIDTH:
             return CoordConverter::asAbsolute(d_value, container.getWidth());
             break;
 
-        case DT_TOP_EDGE:
-        case DT_BOTTOM_EDGE:
-        case DT_Y_POSITION:
-        case DT_Y_OFFSET:
-        case DT_HEIGHT:
+        case DimensionType::TOP_EDGE:
+        case DimensionType::BOTTOM_EDGE:
+        case DimensionType::Y_POSITION:
+        case DimensionType::Y_OFFSET:
+        case DimensionType::HEIGHT:
             return CoordConverter::asAbsolute(d_value, container.getHeight());
             break;
 
@@ -1102,20 +1102,20 @@ UDim UnifiedDim::getBoundAsUDim(const Window& wnd, DimensionType type, float rou
 {
     switch (d_what)
     {
-        case DT_LEFT_EDGE:
-        case DT_RIGHT_EDGE:
-        case DT_X_POSITION:
-        case DT_X_OFFSET:
-        case DT_WIDTH:
-            return      type == DT_WIDTH
+        case DimensionType::LEFT_EDGE:
+        case DimensionType::RIGHT_EDGE:
+        case DimensionType::X_POSITION:
+        case DimensionType::X_OFFSET:
+        case DimensionType::WIDTH:
+            return      type == DimensionType::WIDTH
                    ?    UDim(d_value.d_scale, d_value.d_offset +round_err)
                    :    UDim(0.f, getValue(wnd));
-        case DT_TOP_EDGE:
-        case DT_BOTTOM_EDGE:
-        case DT_Y_POSITION:
-        case DT_Y_OFFSET:
-        case DT_HEIGHT:
-            return      type == DT_HEIGHT
+        case DimensionType::TOP_EDGE:
+        case DimensionType::BOTTOM_EDGE:
+        case DimensionType::Y_POSITION:
+        case DimensionType::Y_OFFSET:
+        case DimensionType::HEIGHT:
+            return      type == DimensionType::HEIGHT
                    ?    UDim(d_value.d_scale, d_value.d_offset +round_err)
                    :    UDim(0.f, getValue(wnd));
         default:
@@ -1163,10 +1163,10 @@ void UnifiedDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
 
 //----------------------------------------------------------------------------//
 ComponentArea::ComponentArea() :
-    d_left(AbsoluteDim(0.0f), DT_LEFT_EDGE),
-    d_top(AbsoluteDim(0.0f), DT_TOP_EDGE),
-    d_right_or_width(UnifiedDim(UDim(1.0f, 0.0f), DT_WIDTH), DT_RIGHT_EDGE),
-    d_bottom_or_height(UnifiedDim(UDim(1.0f, 0.0f), DT_HEIGHT), DT_BOTTOM_EDGE)
+    d_left(AbsoluteDim(0.0f), DimensionType::LEFT_EDGE),
+    d_top(AbsoluteDim(0.0f), DimensionType::TOP_EDGE),
+    d_right_or_width(UnifiedDim(UDim(1.0f, 0.0f), DimensionType::WIDTH), DimensionType::RIGHT_EDGE),
+    d_bottom_or_height(UnifiedDim(UDim(1.0f, 0.0f), DimensionType::HEIGHT), DimensionType::BOTTOM_EDGE)
 {}
 
 //----------------------------------------------------------------------------//
@@ -1192,20 +1192,20 @@ Rectf ComponentArea::getPixelRect(const Window& wnd) const
     else
     {
         // sanity check, we mus be able to form a Rect from what we represent.
-        assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
-        assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
-        assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
-        assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
+        assert(d_left.getDimensionType() == DimensionType::LEFT_EDGE || d_left.getDimensionType() == DimensionType::X_POSITION);
+        assert(d_top.getDimensionType() == DimensionType::TOP_EDGE || d_top.getDimensionType() == DimensionType::Y_POSITION);
+        assert(d_right_or_width.getDimensionType() == DimensionType::RIGHT_EDGE || d_right_or_width.getDimensionType() == DimensionType::WIDTH);
+        assert(d_bottom_or_height.getDimensionType() == DimensionType::BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DimensionType::HEIGHT);
 
         pixelRect.left(d_left.getBaseDimension().getValue(wnd));
         pixelRect.top(d_top.getBaseDimension().getValue(wnd));
 
-        if (d_right_or_width.getDimensionType() == DT_WIDTH)
+        if (d_right_or_width.getDimensionType() == DimensionType::WIDTH)
             pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd));
         else
             pixelRect.right(d_right_or_width.getBaseDimension().getValue(wnd));
 
-        if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
+        if (d_bottom_or_height.getDimensionType() == DimensionType::HEIGHT)
             pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd));
         else
             pixelRect.bottom(d_bottom_or_height.getBaseDimension().getValue(wnd));
@@ -1237,20 +1237,20 @@ Rectf ComponentArea::getPixelRect(const Window& wnd, const Rectf& container) con
     else
     {
         // sanity check, we mus be able to form a Rect from what we represent.
-        assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
-        assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
-        assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
-        assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
+        assert(d_left.getDimensionType() == DimensionType::LEFT_EDGE || d_left.getDimensionType() == DimensionType::X_POSITION);
+        assert(d_top.getDimensionType() == DimensionType::TOP_EDGE || d_top.getDimensionType() == DimensionType::Y_POSITION);
+        assert(d_right_or_width.getDimensionType() == DimensionType::RIGHT_EDGE || d_right_or_width.getDimensionType() == DimensionType::WIDTH);
+        assert(d_bottom_or_height.getDimensionType() == DimensionType::BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DimensionType::HEIGHT);
 
         pixelRect.left(d_left.getBaseDimension().getValue(wnd, container) + container.left());
         pixelRect.top(d_top.getBaseDimension().getValue(wnd, container) + container.top());
 
-        if (d_right_or_width.getDimensionType() == DT_WIDTH)
+        if (d_right_or_width.getDimensionType() == DimensionType::WIDTH)
             pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd, container));
         else
             pixelRect.right(d_right_or_width.getBaseDimension().getValue(wnd, container) + container.left());
 
-        if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
+        if (d_bottom_or_height.getDimensionType() == DimensionType::HEIGHT)
             pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd, container));
         else
             pixelRect.bottom(d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.top());
@@ -1356,11 +1356,11 @@ UDim ComponentArea::getWidthLowerBoundAsFuncOfWindowWidth(const Window& wnd) con
 {
     switch (d_right_or_width.getDimensionType())
     {
-    case DT_RIGHT_EDGE:
-        return d_right_or_width.getBaseDimension() .getLowerBoundAsUDim(wnd, DT_WIDTH) -
-               d_top.getBaseDimension().getUpperBoundAsUDim(wnd, DT_WIDTH);
-    case DT_WIDTH:
-        return d_right_or_width.getBaseDimension().getLowerBoundAsUDim(wnd, DT_WIDTH);
+    case DimensionType::RIGHT_EDGE:
+        return d_right_or_width.getBaseDimension() .getLowerBoundAsUDim(wnd, DimensionType::WIDTH) -
+               d_top.getBaseDimension().getUpperBoundAsUDim(wnd, DimensionType::WIDTH);
+    case DimensionType::WIDTH:
+        return d_right_or_width.getBaseDimension().getLowerBoundAsUDim(wnd, DimensionType::WIDTH);
     default:
         throw InvalidRequestException("Invalid or unsupported dimension type.");
     }
@@ -1371,11 +1371,11 @@ UDim ComponentArea::getHeightLowerBoundAsFuncOfWindowHeight(const Window& wnd) c
 {
     switch (d_bottom_or_height.getDimensionType())
     {
-    case DT_BOTTOM_EDGE:
-        return d_bottom_or_height.getBaseDimension().getLowerBoundAsUDim(wnd, DT_HEIGHT) -
-               d_top.getBaseDimension().getUpperBoundAsUDim(wnd, DT_HEIGHT);
-    case DT_HEIGHT:
-        return d_bottom_or_height.getBaseDimension().getLowerBoundAsUDim(wnd, DT_HEIGHT);
+    case DimensionType::BOTTOM_EDGE:
+        return d_bottom_or_height.getBaseDimension().getLowerBoundAsUDim(wnd, DimensionType::HEIGHT) -
+               d_top.getBaseDimension().getUpperBoundAsUDim(wnd, DimensionType::HEIGHT);
+    case DimensionType::HEIGHT:
+        return d_bottom_or_height.getBaseDimension().getLowerBoundAsUDim(wnd, DimensionType::HEIGHT);
     default:
         throw InvalidRequestException("Invalid or unsupported dimension type.");
     }

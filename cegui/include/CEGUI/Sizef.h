@@ -132,7 +132,7 @@ public:
 
     void scaleToAspect(AspectMode mode, float ratio)
     {
-        if (mode == AspectMode::IGNORE_)
+        if (mode == AspectMode::NONE)
             return;
 
         if(d_width <= 0 && d_height <= 0)

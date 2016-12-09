@@ -36,8 +36,8 @@ namespace CEGUI
 {
 
 //! Default values
-const HorizontalFormatting FrameComponent::HorizontalFormattingDefault(HF_STRETCHED);
-const VerticalFormatting FrameComponent::VerticalFormattingDefault(VF_STRETCHED);
+const HorizontalFormatting FrameComponent::HorizontalFormattingDefault(HorizontalFormatting::STRETCHED);
+const VerticalFormatting FrameComponent::VerticalFormattingDefault(VerticalFormatting::STRETCHED);
 
 //----------------------------------------------------------------------------//
 FrameComponent::FrameComponent() :
@@ -170,7 +170,7 @@ HorizontalFormatting FrameComponent::getBackgroundHorizontalFormatting(
 const Image* FrameComponent::getImage(FrameImageComponent imageComponent,
                                       const Window& wnd) const
 {
-    assert(imageComponent < FIC_FRAME_IMAGE_COUNT);
+    assert(imageComponent < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     if (!d_frameImages[imageComponent].d_specified)
         return nullptr;
@@ -184,7 +184,7 @@ const Image* FrameComponent::getImage(FrameImageComponent imageComponent,
 //----------------------------------------------------------------------------//
 const Image* FrameComponent::getImage(FrameImageComponent imageComponent) const
 {
-    assert(imageComponent < FIC_FRAME_IMAGE_COUNT);
+    assert(imageComponent < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     if (!d_frameImages[imageComponent].d_specified)
         return nullptr;
@@ -198,7 +198,7 @@ const Image* FrameComponent::getImage(FrameImageComponent imageComponent) const
 //----------------------------------------------------------------------------//
 void FrameComponent::setImage(FrameImageComponent part, const Image* image)
 {
-    assert(part < FIC_FRAME_IMAGE_COUNT);
+    assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     d_frameImages[part].d_image = image;
     d_frameImages[part].d_specified = image != nullptr;
@@ -225,7 +225,7 @@ void FrameComponent::setImage(FrameImageComponent part, const String& name)
 void FrameComponent::setImagePropertySource(FrameImageComponent part,
                                             const String& name)
 {
-    assert(part < FIC_FRAME_IMAGE_COUNT);
+    assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     d_frameImages[part].d_image = nullptr;
     d_frameImages[part].d_specified = !name.empty();
@@ -235,7 +235,7 @@ void FrameComponent::setImagePropertySource(FrameImageComponent part,
 //----------------------------------------------------------------------------//
 bool FrameComponent::isImageSpecified(FrameImageComponent part) const
 {
-    assert(part < FIC_FRAME_IMAGE_COUNT);
+    assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     return d_frameImages[part].d_specified;
 }
@@ -243,7 +243,7 @@ bool FrameComponent::isImageSpecified(FrameImageComponent part) const
 //----------------------------------------------------------------------------//
 bool FrameComponent::isImageFetchedFromProperty(FrameImageComponent part) const
 {
-    assert(part < FIC_FRAME_IMAGE_COUNT);
+    assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     return d_frameImages[part].d_specified &&
            !d_frameImages[part].d_propertyName.empty();
@@ -253,7 +253,7 @@ bool FrameComponent::isImageFetchedFromProperty(FrameImageComponent part) const
 const String& FrameComponent::getImagePropertySource(
                                     FrameImageComponent part) const
 {
-    assert(part < FIC_FRAME_IMAGE_COUNT);
+    assert(part < FrameImageComponent::FRAME_IMAGE_COUNT);
 
     return d_frameImages[part].d_propertyName;
 }
@@ -289,7 +289,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     calcColoursPerImage = !renderSettingFinalColours.isMonochromatic();
     
     // top-left image
-    if (const Image* const componentImage = getImage(FIC_TOP_LEFT_CORNER, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::TOP_LEFT_CORNER, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -323,7 +323,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     }
 
     // top-right image
-    if (const Image* const componentImage = getImage(FIC_TOP_RIGHT_CORNER, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::TOP_RIGHT_CORNER, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -357,7 +357,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     }
 
     // bottom-left image
-    if (const Image* const componentImage = getImage(FIC_BOTTOM_LEFT_CORNER, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::BOTTOM_LEFT_CORNER, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -391,7 +391,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     }
 
     // bottom-right image
-    if (const Image* const componentImage = getImage(FIC_BOTTOM_RIGHT_CORNER, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::BOTTOM_RIGHT_CORNER, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -424,7 +424,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     }
 
     // top image
-    if (const Image* const componentImage = getImage(FIC_TOP_EDGE, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::TOP_EDGE, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -451,14 +451,14 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         std::vector<GeometryBuffer*> imageGeomBuffers =
             createRenderGeometryForImage(componentImage,
-                VF_TOP_ALIGNED, d_topEdgeFormatting.get(srcWindow),
+                VerticalFormatting::TOP_ALIGNED, d_topEdgeFormatting.get(srcWindow),
                 renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
 
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
     }
 
     // bottom image
-    if (const Image* const componentImage = getImage(FIC_BOTTOM_EDGE, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::BOTTOM_EDGE, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -485,14 +485,14 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         std::vector<GeometryBuffer*> imageGeomBuffers =
             createRenderGeometryForImage(componentImage,
-                VF_BOTTOM_ALIGNED, d_bottomEdgeFormatting.get(srcWindow),
+                VerticalFormatting::BOTTOM_ALIGNED, d_bottomEdgeFormatting.get(srcWindow),
                 renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
 
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
     }
 
     // left image
-    if (const Image* const componentImage = getImage(FIC_LEFT_EDGE, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::LEFT_EDGE, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -519,14 +519,14 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         std::vector<GeometryBuffer*> imageGeomBuffers =
             createRenderGeometryForImage(componentImage,
-                d_leftEdgeFormatting.get(srcWindow), HF_LEFT_ALIGNED,
+                d_leftEdgeFormatting.get(srcWindow), HorizontalFormatting::LEFT_ALIGNED,
                 renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
 
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
     }
 
     // right image
-    if (const Image* const componentImage = getImage(FIC_RIGHT_EDGE, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::RIGHT_EDGE, srcWindow))
     {
         // calculate final destination area
         imageSize = componentImage->getRenderedSize();
@@ -553,13 +553,13 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         std::vector<GeometryBuffer*> imageGeomBuffers =
             createRenderGeometryForImage(componentImage,
-                d_rightEdgeFormatting.get(srcWindow), HF_RIGHT_ALIGNED,
+                d_rightEdgeFormatting.get(srcWindow), HorizontalFormatting::RIGHT_ALIGNED,
                 renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
 
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
     }
 
-    if (const Image* const componentImage = getImage(FIC_BACKGROUND, srcWindow))
+    if (const Image* const componentImage = getImage(FrameImageComponent::BACKGROUND, srcWindow))
     {
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
@@ -604,29 +604,29 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
     // calculate initial x co-ordinate and horizontal tile count according to formatting options
     switch (horzFmt)
     {
-        case HF_STRETCHED:
+        case HorizontalFormatting::STRETCHED:
             imgSz.d_width = destRect.getWidth();
             xpos = destRect.left();
             horzTiles = 1;
             break;
 
-        case HF_TILED:
+        case HorizontalFormatting::TILED:
             xpos = destRect.left();
             horzTiles = std::abs(static_cast<int>(
                 (destRect.getWidth() + (imgSz.d_width - 1)) / imgSz.d_width));
             break;
 
-        case HF_LEFT_ALIGNED:
+        case HorizontalFormatting::LEFT_ALIGNED:
             xpos = destRect.left();
             horzTiles = 1;
             break;
 
-        case HF_CENTRE_ALIGNED:
+        case HorizontalFormatting::CENTRE_ALIGNED:
             xpos = destRect.left() + CoordConverter::alignToPixels((destRect.getWidth() - imgSz.d_width) * 0.5f);
             horzTiles = 1;
             break;
 
-        case HF_RIGHT_ALIGNED:
+        case HorizontalFormatting::RIGHT_ALIGNED:
             xpos = destRect.right() - imgSz.d_width;
             horzTiles = 1;
             break;
@@ -639,29 +639,29 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
     // calculate initial y co-ordinate and vertical tile count according to formatting options
     switch (vertFmt)
     {
-        case VF_STRETCHED:
+        case VerticalFormatting::STRETCHED:
             imgSz.d_height = destRect.getHeight();
             ypos = destRect.top();
             vertTiles = 1;
             break;
 
-        case VF_TILED:
+        case VerticalFormatting::TILED:
             ypos = destRect.top();
             vertTiles = std::abs(static_cast<int>(
                 (destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height));
             break;
 
-        case VF_TOP_ALIGNED:
+        case VerticalFormatting::TOP_ALIGNED:
             ypos = destRect.top();
             vertTiles = 1;
             break;
 
-        case VF_CENTRE_ALIGNED:
+        case VerticalFormatting::CENTRE_ALIGNED:
             ypos = destRect.top() + CoordConverter::alignToPixels((destRect.getHeight() - imgSz.d_height) * 0.5f);
             vertTiles = 1;
             break;
 
-        case VF_BOTTOM_ALIGNED:
+        case VerticalFormatting::BOTTOM_ALIGNED:
             ypos = destRect.bottom() - imgSz.d_height;
             vertTiles = 1;
             break;
@@ -690,8 +690,8 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
             Rectf clipperRect;
 
             // use custom clipping for right and bottom edges when tiling the imagery
-            if (((vertFmt == VF_TILED) && row == vertTiles - 1) ||
-                ((horzFmt == HF_TILED) && col == horzTiles - 1))
+            if (((vertFmt == VerticalFormatting::TILED) && row == vertTiles - 1) ||
+                ((horzFmt == HorizontalFormatting::TILED) && col == horzTiles - 1))
             {
                 if(clipper)
                 {
@@ -735,7 +735,7 @@ void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     d_area.writeXMLToStream(xml_stream);
 
     // write images
-    for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
+    for (int i = 0; i < FrameImageComponent::FRAME_IMAGE_COUNT; ++i)
     {
         if (d_frameImages[i].d_specified)
         {
@@ -814,7 +814,7 @@ bool FrameComponent::operator==(const FrameComponent& rhs) const
         d_backgroundHorzFormatting != rhs.d_backgroundHorzFormatting)
             return false;
 
-    for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
+    for (int i = 0; i < FrameImageComponent::FRAME_IMAGE_COUNT; ++i)
         if (d_frameImages[i] != rhs.d_frameImages[i])
             return false;
 

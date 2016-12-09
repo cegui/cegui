@@ -43,7 +43,7 @@ RenderedStringComponent* RenderedStringComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
-    d_verticalFormatting(VF_BOTTOM_ALIGNED),
+    d_verticalFormatting(VerticalFormatting::BOTTOM_ALIGNED),
     d_aspectLock(false),
     d_selectionImage(nullptr)
 {
