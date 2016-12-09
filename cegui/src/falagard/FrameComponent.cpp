@@ -172,13 +172,15 @@ const Image* FrameComponent::getImage(FrameImageComponent imageComponent,
 {
     assert(imageComponent < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    if (!d_frameImages[imageComponent].d_specified)
+    const int frameImageIndex = static_cast<int>(imageComponent);
+
+    if (!d_frameImages[frameImageIndex].d_specified)
         return nullptr;
 
-    if (d_frameImages[imageComponent].d_propertyName.empty())
-        return d_frameImages[imageComponent].d_image;
+    if (d_frameImages[frameImageIndex].d_propertyName.empty())
+        return d_frameImages[frameImageIndex].d_image;
 
-    return wnd.getProperty<Image*>(d_frameImages[imageComponent].d_propertyName);
+    return wnd.getProperty<Image*>(d_frameImages[frameImageIndex].d_propertyName);
 }
 
 //----------------------------------------------------------------------------//
@@ -186,11 +188,13 @@ const Image* FrameComponent::getImage(FrameImageComponent imageComponent) const
 {
     assert(imageComponent < FrameImageComponent::FRAME_IMAGE_COUNT);
 
-    if (!d_frameImages[imageComponent].d_specified)
+    const int frameImageIndex = static_cast<int>(imageComponent);
+
+    if (!d_frameImages[frameImageIndex].d_specified)
         return nullptr;
 
-    if (d_frameImages[imageComponent].d_propertyName.empty())
-        return d_frameImages[imageComponent].d_image;
+    if (d_frameImages[frameImageIndex].d_propertyName.empty())
+        return d_frameImages[frameImageIndex].d_image;
 
     return nullptr;
 }
@@ -559,7 +563,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
     }
 
-    if (const Image* const componentImage = getImage(FrameImageComponent::BACKGROUND, srcWindow))
+    if (const Image* const componentImage = getImage(FIC_BACKGROUND, srcWindow))
     {
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
