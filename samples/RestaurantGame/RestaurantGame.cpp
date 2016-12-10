@@ -58,7 +58,7 @@ GamePlate::GamePlate(RestaurantGameSample* RestaurantGameSample)
 
     if(d_isComingFromRight)
     {
-        d_window->setHorizontalAlignment(HA_RIGHT);
+        d_window->setHorizontalAlignment(HorizontalAlignment::RIGHT);
         d_window->setPosition(d_window->getPosition() + CEGUI::UVector2(cegui_reldim(0.2f), cegui_absdim(0.0f)));
     }
     else
@@ -279,7 +279,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateImgWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(0.0f)));
     plateImgWnd->setAspectRatio(3.308f);
     plateImgWnd->setAspectMode(CEGUI::AspectMode::EXPAND);
-    plateImgWnd->setVerticalAlignment(CEGUI::VA_BOTTOM);
+    plateImgWnd->setVerticalAlignment(CEGUI::VerticalAlignment::BOTTOM);
     plateImgWnd->setCursorPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
     plateRoot->addChild(plateImgWnd);
@@ -291,7 +291,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateTopping->setSize(CEGUI::USize(cegui_reldim(0.88f), cegui_absdim(0.0f)));
     plateTopping->setAspectRatio(1.0f);
     plateTopping->setAspectMode(CEGUI::AspectMode::EXPAND);
-    plateTopping->setHorizontalAlignment(CEGUI::HA_CENTRE);
+    plateTopping->setHorizontalAlignment(CEGUI::HorizontalAlignment::CENTRE);
     plateTopping->setCursorPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);
     plateRoot->addChild(plateTopping);

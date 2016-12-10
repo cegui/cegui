@@ -261,41 +261,41 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
 			// return appropriate 'SizingLocation' value
 			if (top && left)
 			{
-				return SizingTopLeft;
+				return SizingLocation::TOP_LEFT;
 			}
 			else if (top && right)
 			{
-				return SizingTopRight;
+				return SizingLocation::TOP_RIGHT;
 			}
 			else if (bottom && left)
 			{
-				return SizingBottomLeft;
+				return SizingLocation::BOTTOM_LEFT;
 			}
 			else if (bottom && right)
 			{
-				return SizingBottomRight;
+				return SizingLocation::BOTTOM_RIGHT;
 			}
 			else if (top)
 			{
-				return SizingTop;
+				return SizingLocation::TOP;
 			}
 			else if (bottom)
 			{
-				return SizingBottom;
+				return SizingLocation::BOTTOM;
 			}
 			else if (left)
 			{
-				return SizingLeft;
+				return SizingLocation::LEFT;
 			}
 			else if (right)
 			{
-				return SizingRight;
+				return SizingLocation::RIGHT;
 			}
 		}
 	}
 
     // default: None.
-	return SizingNone;
+	return SizingLocation::NONE;
 }
 
 
@@ -324,11 +324,11 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // ensure adjustment will be whole pixel
     float adjustment = /*PixelAligned(*/delta/*)*/;
 
-    if (d_horizontalAlignment == HA_RIGHT)
+    if (d_horizontalAlignment == HorizontalAlignment::RIGHT)
     {
         out_area.d_max.d_x.d_offset -= adjustment;
     }
-    else if (d_horizontalAlignment == HA_CENTRE)
+    else if (d_horizontalAlignment == HorizontalAlignment::CENTRE)
     {
         out_area.d_max.d_x.d_offset -= adjustment * 0.5f;
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
@@ -338,7 +338,7 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
         out_area.d_min.d_x.d_offset += adjustment;
     }
 
-    return d_horizontalAlignment == HA_LEFT;
+    return d_horizontalAlignment == HorizontalAlignment::LEFT;
 }
 /*************************************************************************
 	move the window's right edge by 'delta'.  The rest of the window
@@ -368,12 +368,12 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
 
     out_area.d_max.d_x.d_offset += adjustment;
 
-    if (d_horizontalAlignment == HA_RIGHT)
+    if (d_horizontalAlignment == HorizontalAlignment::RIGHT)
     {
         out_area.d_max.d_x.d_offset += adjustment;
         out_area.d_min.d_x.d_offset += adjustment;
     }
-    else if (d_horizontalAlignment == HA_CENTRE)
+    else if (d_horizontalAlignment == HorizontalAlignment::CENTRE)
     {
         out_area.d_max.d_x.d_offset += adjustment * 0.5f;
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
@@ -382,7 +382,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // move the dragging point so cursor remains 'attached' to edge of window
     d_dragPoint.x += adjustment;
 
-    return d_horizontalAlignment == HA_RIGHT;
+    return d_horizontalAlignment == HorizontalAlignment::RIGHT;
 }
 
 /*************************************************************************
@@ -410,11 +410,11 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // ensure adjustment will be whole pixel
     float adjustment = /*PixelAligned(*/delta/*)*/;
 
-    if (d_verticalAlignment == VA_BOTTOM)
+    if (d_verticalAlignment == VerticalAlignment::BOTTOM)
     {
         out_area.d_max.d_y.d_offset -= adjustment;
     }
-    else if (d_verticalAlignment == VA_CENTRE)
+    else if (d_verticalAlignment == VerticalAlignment::CENTRE)
     {
         out_area.d_max.d_y.d_offset -= adjustment * 0.5f;
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
@@ -424,7 +424,7 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
         out_area.d_min.d_y.d_offset += adjustment;
     }
 
-    return d_verticalAlignment == VA_TOP;
+    return d_verticalAlignment == VerticalAlignment::TOP;
 }
 
 
@@ -456,12 +456,12 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
 
     out_area.d_max.d_y.d_offset += adjustment;
 
-    if (d_verticalAlignment == VA_BOTTOM)
+    if (d_verticalAlignment == VerticalAlignment::BOTTOM)
     {
         out_area.d_max.d_y.d_offset += adjustment;
         out_area.d_min.d_y.d_offset += adjustment;
     }
-    else if (d_verticalAlignment == VA_CENTRE)
+    else if (d_verticalAlignment == VerticalAlignment::CENTRE)
     {
         out_area.d_max.d_y.d_offset += adjustment * 0.5f;
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
@@ -470,7 +470,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // move the dragging point so cursor remains 'attached' to edge of window
     d_dragPoint.y += adjustment;
 
-    return d_verticalAlignment == VA_BOTTOM;
+    return d_verticalAlignment == VerticalAlignment::BOTTOM;
 }
 
 
@@ -494,26 +494,26 @@ void FrameWindow::setIndicatorForPoint(const glm::vec2& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
-	case SizingTop:
-	case SizingBottom:
+	case SizingLocation::TOP:
+	case SizingLocation::BOTTOM:
 		getGUIContext().
             getCursor().setImage(d_nsSizingCursor);
 		break;
 
-	case SizingLeft:
-	case SizingRight:
+	case SizingLocation::LEFT:
+	case SizingLocation::RIGHT:
 		getGUIContext().
             getCursor().setImage(d_ewSizingCursor);
 		break;
 
-	case SizingTopLeft:
-	case SizingBottomRight:
+	case SizingLocation::TOP_LEFT:
+	case SizingLocation::BOTTOM_RIGHT:
 		getGUIContext().
             getCursor().setImage(d_nwseSizingCursor);
 		break;
 
-	case SizingTopRight:
-	case SizingBottomLeft:
+	case SizingLocation::TOP_RIGHT:
+	case SizingLocation::BOTTOM_LEFT:
 		getGUIContext().
             getCursor().setImage(d_neswSizingCursor);
 		break;
@@ -627,7 +627,7 @@ void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
             const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
             // if the cursor is on the sizing border
-			if (getSizingBorderAtPoint(localPos) != SizingNone)
+			if (getSizingBorderAtPoint(localPos) != SizingLocation::NONE)
 			{
 				// ensure all inputs come to us for now
 				if (captureInput())

@@ -178,7 +178,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
     {
         switch(d_vertexAttributes.at(i))
         {
-        case VAT_POSITION0:
+        case VertexAttributeType::POSITION0:
             {
                 GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
                 glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
@@ -186,7 +186,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
                 dataOffset += 3;
             }
             break;
-        case VAT_COLOUR0:
+        case VertexAttributeType::COLOUR0:
             {
                 GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
                 glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
@@ -194,7 +194,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
                 dataOffset += 4;
             }
             break;
-        case VAT_TEXCOORD0:
+        case VertexAttributeType::TEXCOORD0:
             {
                 GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
                 glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
@@ -260,14 +260,14 @@ void OpenGL3GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 {
-    if(d_polygonFillRule == PFR_NONE)
+    if(d_polygonFillRule == PolygonFillRule::NONE)
     {
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);
 
         glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
-    else if(d_polygonFillRule == PFR_EVEN_ODD)
+    else if(d_polygonFillRule == PolygonFillRule::EVEN_ODD)
     {
         //We use a stencil buffer to determine the insideness
         //of a fragment. Every draw inverts the precious value
@@ -288,7 +288,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
         glDrawArrays(GL_TRIANGLES, postStencilStart, d_postStencilVertexCount);
     }
-    else if(d_polygonFillRule == PFR_NON_ZERO)
+    else if(d_polygonFillRule == PolygonFillRule::NON_ZERO)
     {
         //We use a stencil buffer to determine the insideness
         //of a fragment. We draw the front sides while increasing

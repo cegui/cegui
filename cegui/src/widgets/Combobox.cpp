@@ -361,7 +361,7 @@ size_t Combobox::getItemIndex(const StandardItem* item) const
 *************************************************************************/
 bool Combobox::isSortEnabled(void) const
 {
-    return getDropList()->getSortMode() != VSM_None;
+    return getDropList()->getSortMode() != ViewSortMode::None;
 }
 
 
@@ -440,7 +440,7 @@ void Combobox::clearAllSelections(void)
 void Combobox::setSortingEnabled(bool setting)
 {
     //TODO: migrate the sorting.
-    getDropList()->setSortMode(setting ? VSM_Ascending : VSM_None);
+    getDropList()->setSortMode(setting ? ViewSortMode::Ascending : ViewSortMode::None);
 }
 
 
@@ -450,7 +450,7 @@ void Combobox::setSortingEnabled(bool setting)
 void Combobox::setShowVertScrollbar(bool setting)
 {
     //TODO: migrate the scrollbar display mode
-    getDropList()->setVertScrollbarDisplayMode(setting ? SDM_Shown : SDM_WhenNeeded);
+    getDropList()->setVertScrollbarDisplayMode(setting ? ScrollbarDisplayMode::Shown : ScrollbarDisplayMode::WhenNeeded);
 }
 
 
@@ -460,7 +460,7 @@ void Combobox::setShowVertScrollbar(bool setting)
 void Combobox::setShowHorzScrollbar(bool setting)
 {
     //TODO: migrate the scrollbar display mode
-    getDropList()->setHorzScrollbarDisplayMode(setting ? SDM_Shown : SDM_WhenNeeded);
+    getDropList()->setHorzScrollbarDisplayMode(setting ? ScrollbarDisplayMode::Shown : ScrollbarDisplayMode::WhenNeeded);
 }
 
 
@@ -844,7 +844,7 @@ bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
 bool Combobox::isVertScrollbarAlwaysShown(void) const
 {
     //TODO: migrate the combobox's sorting option to the new one
-    return getDropList()->getVertScrollbarDisplayMode() == SDM_Shown;
+    return getDropList()->getVertScrollbarDisplayMode() == ScrollbarDisplayMode::Shown;
 }
 
 
@@ -854,7 +854,7 @@ bool Combobox::isVertScrollbarAlwaysShown(void) const
 bool Combobox::isHorzScrollbarAlwaysShown(void) const
 {
     //TODO: migrate the combobox's sorting option to the new one
-    return getDropList()->getHorzScrollbarDisplayMode() == SDM_Shown;
+    return getDropList()->getHorzScrollbarDisplayMode() == ScrollbarDisplayMode::Shown;
 }
 
 

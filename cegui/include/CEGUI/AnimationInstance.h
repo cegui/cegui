@@ -399,7 +399,7 @@ private:
 
     //! this is called when animation ends
     void onAnimationEnded();
-    //! this is called when animation loops (in RM_Loop or RM_Bounce mode)
+    //! this is called when animation loops (in ReplayMode::LOOP or ReplayMode::BOUNCE mode)
     void onAnimationLooped();
 
     //! parent Animation definition
@@ -421,7 +421,7 @@ private:
     float d_position;
     //! playback speed, 1.0 means normal playback
     float d_speed;
-    //! needed for RM_Bounce mode, if true, we bounce backwards
+    //! needed for ReplayMode::BOUNCE mode, if true, we bounce backwards
     bool d_bounceBackwards;
     //! true if this animation is unpaused
     bool d_running;

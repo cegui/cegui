@@ -403,22 +403,22 @@ SVGData::SVGLength SVGData::parseLengthDataType(const String& length_string)
     else if(unitString.length() == 2)
     {
         if(unitString.compare("in") == 0)
-            length.d_unit = SLU_IN;
+            length.d_unit = SvgLengthUnit::IN;
         else if(unitString.compare("cm") == 0)
-            length.d_unit = SLU_CM;
+            length.d_unit = SvgLengthUnit::CM;
         else if(unitString.compare("mm") == 0)
-            length.d_unit = SLU_MM;
+            length.d_unit = SvgLengthUnit::MM;
         else if(unitString.compare("pt") == 0)
-            length.d_unit = SLU_PT;
+            length.d_unit = SvgLengthUnit::PT;
         else if(unitString.compare("pc") == 0)
-            length.d_unit = SLU_PC;
+            length.d_unit = SvgLengthUnit::PC;
         else if(unitString.compare("px") == 0)
-            length.d_unit = SLU_PX;
+            length.d_unit = SvgLengthUnit::PX;
     }
     else if(unitString.length() == 1)
     {
         if(unitString.compare("%") == 0)
-            length.d_unit = SLU_PERCENT;
+            length.d_unit = SvgLengthUnit::PERCENT;
     }
     else
     // Parse error
@@ -661,11 +661,11 @@ void SVGData::parsePaintStyleFillRule(const String& fillRuleString, SVGPaintStyl
 {
     if(fillRuleString.empty())
         // Inherit value or use default
-        paint_style.d_fillRule = PFR_NON_ZERO;
+        paint_style.d_fillRule = PolygonFillRule::NON_ZERO;
     else if(fillRuleString.compare("nonzero"))
-        paint_style.d_fillRule = PFR_NON_ZERO;
+        paint_style.d_fillRule = PolygonFillRule::NON_ZERO;
     else if(fillRuleString.compare("evenodd"))
-        paint_style.d_fillRule = PFR_EVEN_ODD;
+        paint_style.d_fillRule = PolygonFillRule::EVEN_ODD;
 }
 
 
@@ -716,7 +716,7 @@ void SVGData::parsePaintStyleStrokeWidth(const String& strokeWidthString, SVGPai
         Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for "
                                         "stroke-width was specified in the SVG file. The value was "
                                         "set to the initial value '1'. String: " +
-                                        strokeWidthString, Errors);
+                                        strokeWidthString, LoggingLevel::LOG_ERROR);
     }
 }
 
@@ -724,11 +724,11 @@ void SVGData::parsePaintStyleStrokeWidth(const String& strokeWidthString, SVGPai
 void SVGData::parsePaintStyleStrokeLinecap(const String& strokeLinecapString, SVGPaintStyle& paint_style)
 {
     if(strokeLinecapString.compare("butt") == 0)
-        paint_style.d_strokeLinecap = SVGPaintStyle::SLC_BUTT;
+        paint_style.d_strokeLinecap = SVGPaintStyle::SvgLinecap::BUTT;
     else if(strokeLinecapString.compare("round") == 0)
-        paint_style.d_strokeLinecap = SVGPaintStyle::SLC_ROUND;
+        paint_style.d_strokeLinecap = SVGPaintStyle::SvgLinecap::ROUND;
     else if(strokeLinecapString.compare("square") == 0)
-        paint_style.d_strokeLinecap = SVGPaintStyle::SLC_SQUARE;
+        paint_style.d_strokeLinecap = SVGPaintStyle::SvgLinecap::SQUARE;
     else
         throw SVGParsingException(
         "SVG file parsing was aborted because of an invalid value for the SVG 'linecap' type");
@@ -738,11 +738,11 @@ void SVGData::parsePaintStyleStrokeLinecap(const String& strokeLinecapString, SV
 void SVGData::parsePaintStyleStrokeLinejoin(const String& strokeLinejoinString, SVGPaintStyle& paint_style)
 {
     if(strokeLinejoinString.compare("miter") == 0)
-        paint_style.d_strokeLinejoin = SVGPaintStyle::SLJ_MITER;
+        paint_style.d_strokeLinejoin = SVGPaintStyle::SVGLinejoin::MITER;
     else if(strokeLinejoinString.compare("round") == 0)
-        paint_style.d_strokeLinejoin = SVGPaintStyle::SLJ_ROUND;
+        paint_style.d_strokeLinejoin = SVGPaintStyle::SVGLinejoin::ROUND;
     else if(strokeLinejoinString.compare("bevel") == 0)
-        paint_style.d_strokeLinejoin = SVGPaintStyle::SLJ_BEVEL;
+        paint_style.d_strokeLinejoin = SVGPaintStyle::SVGLinejoin::BEVEL;
     else
         throw SVGParsingException(
         "SVG file parsing was aborted because of an invalid value for the SVG 'linejoin' type");
@@ -764,7 +764,7 @@ void SVGData::parsePaintStyleMiterlimitString(const String& strokeMiterLimitStri
         Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for "
                                         "stroke-miterlimit was specified in the SVG file. The "
                                         " value was set to the initial value '4'. String: " +
-                                        strokeMiterLimitString, Errors);
+                                        strokeMiterLimitString, LoggingLevel::LOG_ERROR);
     }
 }
 

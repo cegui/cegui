@@ -42,7 +42,7 @@ namespace CEGUI
 Animation::Animation(const String& name):
         d_name(name),
 
-        d_replayMode(RM_Loop), // the right default value that confirms things are working
+        d_replayMode(ReplayMode::LOOP), // the right default value that confirms things are working
         d_duration(0.0f),
         d_autoStart(false)
 {}
@@ -298,13 +298,13 @@ void Animation::writeXMLToStream(XMLSerializer& xml_stream, const String& name_o
     String replayMode;
     switch(getReplayMode())
     {
-        case RM_Once:
+        case ReplayMode::PLAY_ONCE:
             replayMode = AnimationDefinitionHandler::ReplayModeOnce;
             break;
-        case RM_Loop:
+        case ReplayMode::LOOP:
             replayMode = AnimationDefinitionHandler::ReplayModeLoop;
             break;
-        case RM_Bounce:
+        case ReplayMode::BOUNCE:
             replayMode = AnimationDefinitionHandler::ReplayModeBounce;
             break;
         default:

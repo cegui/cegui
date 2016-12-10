@@ -155,10 +155,10 @@ public:
     {
         switch (val)
         {
-        case VA_BOTTOM:
+        case VerticalAlignment::BOTTOM:
             return BottomAligned;
 
-        case VA_CENTRE:
+        case VerticalAlignment::CENTRE:
             return CentreAligned;
 
         default:
@@ -169,13 +169,13 @@ public:
     static return_type fromString(const String& str)
     {
         if (str == CentreAligned)
-            return VA_CENTRE;
+            return VerticalAlignment::CENTRE;
 
         else if (str == BottomAligned)
-            return VA_BOTTOM;
+            return VerticalAlignment::BOTTOM;
 
         else
-            return VA_TOP;
+            return VerticalAlignment::TOP;
     }
 
     //! Definitions of the possible values represented as Strings
@@ -195,10 +195,10 @@ public:
     {
         switch (val)
         {
-        case HA_RIGHT:
+        case HorizontalAlignment::RIGHT:
             return RightAligned;
 
-        case HA_CENTRE:
+        case HorizontalAlignment::CENTRE:
             return CentreAligned;
 
         default:
@@ -209,13 +209,13 @@ public:
     static return_type fromString(const String& str)
     {
         if (str == CentreAligned)
-            return HA_CENTRE;
+            return HorizontalAlignment::CENTRE;
 
         else if (str == RightAligned)
-            return HA_RIGHT;
+            return HorizontalAlignment::RIGHT;
 
         else
-            return HA_LEFT;
+            return HorizontalAlignment::LEFT;
     }
 
     //! Definitions of the possible values represented as Strings

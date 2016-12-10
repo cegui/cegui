@@ -47,7 +47,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = getLookNFeel();
 
         TabControl* tc = w->getParent() ? dynamic_cast<TabControl*>(w->getParent()->getParent()) : 0;
-        String prefix((tc && tc->getTabPanePosition() == TabControl::Bottom) ? "Bottom" : "Top");
+        String prefix((tc && tc->getTabPanePosition() == TabControl::TabPanePosition::BOTTOM) ? "Bottom" : "Top");
 
         String state;
         if (w->isEffectiveDisabled())

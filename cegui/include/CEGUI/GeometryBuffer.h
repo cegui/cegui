@@ -57,14 +57,14 @@ class RenderMaterial;
     Enumerated type that contains the valid options to specify a vertex attribute
     of a vertex used in CEGUI
 */
-enum VertexAttributeType
+enum class VertexAttributeType : int
 {
     //! Position 0 attribute
-    VAT_POSITION0,
-    //! Colour 0 attribute
-    VAT_COLOUR0,
+    POSITION0,
+    //! Colour 0 
+    COLOUR0,
     //! Texture coordinate 0 attribute
-    VAT_TEXCOORD0
+    TEXCOORD0
 };
 
 //----------------------------------------------------------------------------//
@@ -76,14 +76,14 @@ enum VertexAttributeType
     should be rendered. For further information see "fill-rule" in the SVG
     standard: http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
 */
-enum PolygonFillRule
+enum class PolygonFillRule : int
 {
     //! Draw the polygon normally - without a fill-rule.
-    PFR_NONE,
+    NONE,
     //! Uses the nonzero rule to determine how the polygon is to be filled.
-    PFR_NON_ZERO,
+    NON_ZERO,
     //! Uses the  evenodd rule to determine how the polygon is to be filled.
-    PFR_EVEN_ODD
+    EVEN_ODD
 };
 
 //----------------------------------------------------------------------------//

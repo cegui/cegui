@@ -240,7 +240,7 @@ void AnimationInstance::start(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::start - Starting an animation instance with "
-            "no animation definition or 0 duration has no effect!", Warnings);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING);
         onAnimationStarted();
         onAnimationEnded();
     }
@@ -275,7 +275,7 @@ void AnimationInstance::unpause(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::unpause - Unpausing an animation instance with "
-            "no animation definition or 0 duration has no effect!", Warnings);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING);
         onAnimationUnpaused();
         onAnimationEnded();
     }
@@ -364,8 +364,8 @@ void AnimationInstance::step(float delta)
     // the position could have gotten out of the desired range, we have to
     // alter it depending on replay method of our animation definition
 
-    // first a simple clamp with RM_Once
-    if (d_definition->getReplayMode() == Animation::RM_Once)
+    // first a simple clamp with ReplayMode::PLAY_ONCE
+    if (d_definition->getReplayMode() == Animation::ReplayMode::PLAY_ONCE)
     {
         float newPosition = d_position + delta;
 
@@ -381,8 +381,8 @@ void AnimationInstance::step(float delta)
 
         setPosition(newPosition);
     }
-    // a both sided wrap with RM_Loop
-    else if (d_definition->getReplayMode() == Animation::RM_Loop)
+    // a both sided wrap with ReplayMode::LOOP
+    else if (d_definition->getReplayMode() == Animation::ReplayMode::LOOP)
     {
         float newPosition = d_position + delta;
 
@@ -394,8 +394,8 @@ void AnimationInstance::step(float delta)
 
         setPosition(newPosition);
     }
-    // bounce back and forth with RM_Bounce
-    else if (d_definition->getReplayMode() == Animation::RM_Bounce)
+    // bounce back and forth with ReplayMode::BOUNCE
+    else if (d_definition->getReplayMode() == Animation::ReplayMode::BOUNCE)
     {
         if (d_bounceBackwards)
         {

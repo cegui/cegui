@@ -52,22 +52,22 @@ public:
      * fill the grid without specifying gridX and gridY positions for each
      * addChild.
      */
-    enum AutoPositioning
+    enum class AutoPositioning : int
     {
         //! no auto positioning!
-        AP_Disabled,
+        DISABLED,
         /**
          * Left to right positioning:
          * - 1 2 3
          * - 4 5 6
          */
-        AP_LeftToRight,
+        LEFT_TO_RIGHT,
         /**
          * Top to bottom positioning
          * - 1 3 5
          * - 2 4 6
          */
-        AP_TopToBottom
+        TOP_TO_BOTTOM
     };
 
     /*************************************************************************
@@ -295,16 +295,16 @@ protected:
     //! stores currently used auto positioning method
     AutoPositioning d_autoPositioning;
     /** stores next auto positioning index (will be used for next
-     * added window if d_autoPositioning != AP_Disabled)
+     * added window if d_autoPositioning != AutoPositioning::DISABLED)
      */
     size_t d_nextAutoPositioningIdx;
 
     /** stores next used grid X position
-     * (only used if d_autoPositioning == AP_Disabled)
+     * (only used if d_autoPositioning == AutoPositioning::DISABLED)
      */
     size_t d_nextGridX;
     /** stores next used grid Y position
-     * (only used if d_autoPositioning == AP_Disabled)
+     * (only used if d_autoPositioning == AutoPositioning::DISABLED)
      */
     size_t d_nextGridY;
 
@@ -347,29 +347,29 @@ public:
     {
         if (str == "Disabled")
         {
-            return GridLayoutContainer::AP_Disabled;
+            return GridLayoutContainer::AutoPositioning::DISABLED;
         }
         else if (str == "Top to Bottom")
         {
-            return GridLayoutContainer::AP_TopToBottom;
+            return GridLayoutContainer::AutoPositioning::TOP_TO_BOTTOM;
         }
         else
         {
-            return GridLayoutContainer::AP_LeftToRight;
+            return GridLayoutContainer::AutoPositioning::LEFT_TO_RIGHT;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == GridLayoutContainer::AP_LeftToRight)
+        if (val == GridLayoutContainer::AutoPositioning::LEFT_TO_RIGHT)
         {
             return "Left to Right";
         }
-        else if (val == GridLayoutContainer::AP_Disabled)
+        else if (val == GridLayoutContainer::AutoPositioning::DISABLED)
         {
             return "Disabled";
         }
-        else if (val == GridLayoutContainer::AP_TopToBottom)
+        else if (val == GridLayoutContainer::AutoPositioning::TOP_TO_BOTTOM)
         {
             return "Top to Bottom";
         }

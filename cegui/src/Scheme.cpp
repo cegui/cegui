@@ -88,7 +88,7 @@ Scheme::~Scheme(void)
 
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
     Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been "
-        "unloaded (object destructor). " + addressStr, Informative);
+        "unloaded (object destructor). " + addressStr, LoggingLevel::INFORMATIVE);
 }
 
 
@@ -97,7 +97,7 @@ Scheme::~Scheme(void)
 *************************************************************************/
 void Scheme::loadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Beginning resource loading for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource loading for GUI scheme '" + d_name + "' ----", LoggingLevel::INFORMATIVE);
 
     // load all resources specified for this scheme.
     loadXMLImagesets();
@@ -109,7 +109,7 @@ void Scheme::loadResources(void)
     loadFactoryAliases();
     loadFalagardMappings();
 
-    Logger::getSingleton().logEvent("---- Resource loading for GUI scheme '" + d_name + "' completed ----", Informative);
+    Logger::getSingleton().logEvent("---- Resource loading for GUI scheme '" + d_name + "' completed ----", LoggingLevel::INFORMATIVE);
 }
 
 
@@ -118,7 +118,7 @@ void Scheme::loadResources(void)
 *************************************************************************/
 void Scheme::unloadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Beginning resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource cleanup for GUI scheme '" + d_name + "' ----", LoggingLevel::INFORMATIVE);
 
     // unload all resources specified for this scheme.
     //unloadFonts(); FIXME: Prevent unloading of cross-used fonts
@@ -130,7 +130,7 @@ void Scheme::unloadResources(void)
     unloadFalagardMappings();
     unloadLookNFeels();
 
-    Logger::getSingleton().logEvent("---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", Informative);
+    Logger::getSingleton().logEvent("---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", LoggingLevel::INFORMATIVE);
 }
 
 

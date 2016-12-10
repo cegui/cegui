@@ -46,12 +46,12 @@ namespace CEGUI
 \brief
     The default input events used inside CEGUI
 */
-enum InputEventType
+enum class InputEventType : int
 {
-    IET_TextInputEventType              = 0x0001,   //!< Text was inputted.
-    IET_SemanticInputEventType          = 0x0002,   //!< An event with a certain semantic
+    TextInputEventType              = 0x0001,   //!< Text was inputted.
+    SemanticInputEventType          = 0x0002,   //!< An event with a certain semantic
 
-    IET_UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
+    UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
 };
 
 /*!
@@ -61,10 +61,11 @@ enum InputEventType
 class CEGUIEXPORT InputEvent
 {
 public:
-    InputEvent(int event_type) : d_eventType(event_type) {}
+    InputEvent(InputEventType eventType) : d_eventType(eventType) {}
     virtual ~InputEvent() {}
 
-    int d_eventType;        //!< The type of the input event
+    //!< The type of the input event
+    InputEventType d_eventType;
 };
 
 /*!
@@ -74,7 +75,7 @@ public:
 class CEGUIEXPORT TextInputEvent : public InputEvent
 {
 public:
-    TextInputEvent() : InputEvent(IET_TextInputEventType) {}
+    TextInputEvent() : InputEvent(InputEventType::TextInputEventType) {}
 
     //! The input character
     char32_t d_character;         

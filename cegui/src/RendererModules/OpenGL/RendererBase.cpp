@@ -151,9 +151,9 @@ GeometryBuffer& OpenGLRendererBase::createGeometryBufferTextured(CEGUI::RefCount
 {
     OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
-    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
@@ -165,8 +165,8 @@ GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCount
 {
     OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);

@@ -49,7 +49,7 @@ author:     Luca Ebach <lucaebach@gmail.com>
 /*************************************************************************
 Custom implementation of InputAggregator
 *************************************************************************/
-enum SampleSemanticValue
+enum class SampleSemanticValue : int
 {
     // we start from the user-defined value
     SpawnNewDialog = CEGUI::SV_UserDefinedSemanticValue
@@ -65,7 +65,8 @@ public:
 
     void initialise()
     {
-        d_keyValuesMappings[CEGUI::Key::Space] = SpawnNewDialog;
+        d_keyValuesMappings[static_cast<unsigned char>(CEGUI::Key::Scan::SPACE)] =
+            static_cast<int>(SampleSemanticValue::SpawnNewDialog);
     }
 };
 

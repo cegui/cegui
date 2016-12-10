@@ -329,7 +329,7 @@ namespace CEGUI
         // no handler existed
         else
         {
-            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", Errors);
+            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", LoggingLevel::LOG_ERROR);
         }
     }
 
@@ -464,7 +464,7 @@ namespace CEGUI
         d_widgetlook = new WidgetLookFeel(attributes.getValueAsString(NameAttribute),
                                                    attributes.getValueAsString(InheritsAttribute));
 
-        Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
+        Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::INFORMATIVE);
     }
 
     /*************************************************************************
@@ -1094,7 +1094,7 @@ namespace CEGUI
             if (type != GenericDataType && type != "String")
             {
                 // type was specified but wasn't recognised
-                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", Warnings);
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", LoggingLevel::WARNING);
             }
 
             prop = new PropertyDefinition<String>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -1252,7 +1252,7 @@ namespace CEGUI
             if (type != GenericDataType && type != PropertyHelper<String>::getDataTypeName())
             {
                 // type was specified but wasn't recognised
-                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", Warnings);
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", LoggingLevel::WARNING);
             }
 
             d_propertyLink = new PropertyLinkDefinition<String>(name,
@@ -1451,7 +1451,7 @@ namespace CEGUI
     {
         assert(d_widgetlook != nullptr);
 
-        Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
+        Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::INFORMATIVE);
         d_manager->addWidgetLook(*d_widgetlook);
         delete d_widgetlook;
         d_widgetlook = nullptr;

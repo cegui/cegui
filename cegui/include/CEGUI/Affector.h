@@ -56,20 +56,20 @@ class CEGUIEXPORT Affector
 {
 public:
     //! enumerates the possible methods of application
-    enum ApplicationMethod
+    enum class ApplicationMethod : int
     {
         //! applies values as absolutes
-        AM_Absolute,
+        APPLY_ABSOLUTE,
 
         /** saves a base value after the animation is started and applies
          * relatively to that
          */
-        AM_Relative,
+        APPLY_RELATIVE,
 
         /** saves a base value after the animation is started and applies
          * by multiplying this base value with key frame floats
          */
-        AM_RelativeMultiply
+        APPLY_RELATIVE_MULTIPLY
     };
 
     /** internal constructor, please construct Affectors via
@@ -84,7 +84,7 @@ public:
     \brief
     	Retrieves the parent animation of this keyframe
     */
-    inline Animation* getParent() const
+    Animation* getParent() const
     {
     	return d_parent;
     }
@@ -168,7 +168,7 @@ public:
         the KeyFrame
     */
     KeyFrame* createKeyFrame(float position, const String& value,
-                             KeyFrame::Progression progression = KeyFrame::P_Linear,
+                             KeyFrame::Progression progression = KeyFrame::Progression::LINEAR,
                              const String& sourceProperty = "");
 
     /*!

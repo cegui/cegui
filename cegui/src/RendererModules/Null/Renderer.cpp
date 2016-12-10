@@ -136,9 +136,9 @@ GeometryBuffer& NullRenderer::createGeometryBufferTextured(RefCounted<RenderMate
 {
     NullGeometryBuffer* geom_buffer = new NullGeometryBuffer(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
-    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -149,8 +149,8 @@ GeometryBuffer& NullRenderer::createGeometryBufferColoured(RefCounted<RenderMate
 {
     NullGeometryBuffer* geom_buffer = new NullGeometryBuffer(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;

@@ -70,8 +70,6 @@ public:
     static const float DefaultMouseButtonClickTimeout;
     static const float DefaultMouseButtonMultiClickTimeout;
     static const Sizef DefaultMouseButtonMultiClickTolerance;
-    // The highest scancode number must be below this
-    static const size_t KeyValueCount = 0xFF;
 
     /** Name of Event fired when the mouse click timeout is changed.
      * Handlers are passed a const reference to a GUIContextEventArgs struct.
@@ -258,8 +256,8 @@ protected:
     float d_mouseMovementScalingFactor;
 
     glm::vec2 d_pointerPosition;
-    int d_keyValuesMappings[KeyValueCount]; //!< Mapping from a key to its semantic
-    bool d_keysPressed[KeyValueCount];
+    int d_keyValuesMappings[sizeof(Key::Scan)]; //!< Mapping from a key to its semantic
+    bool d_keysPressed[sizeof(Key::Scan)];
 };
 
 } // End of  CEGUI namespace section

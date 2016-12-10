@@ -65,16 +65,16 @@ class CEGUIEXPORT Animation
 {
 public:
     //! enumerates possible replay modes
-    enum ReplayMode
+    enum class ReplayMode : int
     {
         //! plays the animation just once, then stops
-        RM_Once,
+        PLAY_ONCE,
         //! loops the animation infinitely
-        RM_Loop,
+        LOOP,
         /** infinitely plays the animation forward, when it reaches the end, it
          * plays it backwards, etc...
          */
-        RM_Bounce
+        BOUNCE
     };
 
     /** internal constructor, please only construct animations via

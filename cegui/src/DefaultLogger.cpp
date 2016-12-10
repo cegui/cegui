@@ -67,7 +67,7 @@ DefaultLogger::~DefaultLogger(void)
 
 //----------------------------------------------------------------------------//
 void DefaultLogger::logEvent(const String& message,
-                             LoggingLevel level /* = Standard */)
+                             LoggingLevel level /* = LoggingLevel::STANDARD */)
 {
     using namespace std;
 
@@ -94,23 +94,23 @@ void DefaultLogger::logEvent(const String& message,
     // write event type code
     switch(level)
     {
-    case Errors:
+    case LoggingLevel::LOG_ERROR:
         d_workstream << "(Error)\t";
         break;
 
-    case Warnings:
+    case LoggingLevel::WARNING:
         d_workstream << "(Warn)\t";
         break;
 
-    case Standard:
+    case LoggingLevel::STANDARD:
         d_workstream << "(Std) \t";
         break;
 
-    case Informative:
+    case LoggingLevel::INFORMATIVE:
         d_workstream << "(Info) \t";
         break;
 
-    case Insane:
+    case LoggingLevel::INSANE:
         d_workstream << "(Insan)\t";
         break;
 
@@ -139,19 +139,19 @@ void DefaultLogger::logEvent(const String& message,
             int priority(ANDROID_LOG_UNKNOWN);
             switch (level)
             {
-            case Errors:
+            case LoggingLevel::LOG_ERROR:
                 priority = ANDROID_LOG_ERROR;
                 break;
-            case Warnings:
+            case LoggingLevel::WARNING:
                 priority = ANDROID_LOG_WARN;
                 break;
-            case Standard:
+            case LoggingLevel::STANDARD:
                 priority = ANDROID_LOG_INFO;
                 break;
-            case Informative:
+            case LoggingLevel::INFORMATIVE:
                 priority = ANDROID_LOG_DEBUG;
                 break;
-            case Insane:
+            case LoggingLevel::INSANE:
             default:
                 priority = ANDROID_LOG_VERBOSE;
                 break;

@@ -73,8 +73,8 @@ Element::Element():
     d_isHeightAdjustedToContent(false),
 
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
-    d_horizontalAlignment(HA_LEFT),
-    d_verticalAlignment(VA_TOP),
+    d_horizontalAlignment(HorizontalAlignment::LEFT),
+    d_verticalAlignment(VerticalAlignment::TOP),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(0), cegui_reldim(0)),
     d_aspectMode(AspectMode::NONE),
@@ -710,12 +710,12 @@ void Element::addElementProperties()
 
     CEGUI_DEFINE_PROPERTY(Element, VerticalAlignment,
         "VerticalAlignment", "Property to get/set the vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
-        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VA_TOP
+        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VerticalAlignment::TOP
     );
 
     CEGUI_DEFINE_PROPERTY(Element, HorizontalAlignment,
         "HorizontalAlignment", "Property to get/set the horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
-        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HA_LEFT
+        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HorizontalAlignment::LEFT
     );
 
     CEGUI_DEFINE_PROPERTY_NO_XML(Element, USize,
@@ -902,10 +902,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     switch (getHorizontalAlignment())
     {
-        case HA_CENTRE:
+        case HorizontalAlignment::CENTRE:
             offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
             break;
-        case HA_RIGHT:
+        case HorizontalAlignment::RIGHT:
             offset.x += parent_size.d_width - pixel_size.d_width;
             break;
         default:
@@ -914,10 +914,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     switch (getVerticalAlignment())
     {
-        case VA_CENTRE:
+        case VerticalAlignment::CENTRE:
             offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
             break;
-        case VA_BOTTOM:
+        case VerticalAlignment::BOTTOM:
             offset.y += parent_size.d_height - pixel_size.d_height;
             break;
         default:
@@ -988,7 +988,7 @@ void Element::onParentSized(ElementEventArgs& e)
 
     const bool moved =
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
-         (d_horizontalAlignment != HA_LEFT) || (d_verticalAlignment != VA_TOP));
+         (d_horizontalAlignment != HorizontalAlignment::LEFT) || (d_verticalAlignment != VerticalAlignment::TOP));
 
     fireAreaChangeEvents(moved, sized);
 

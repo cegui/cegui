@@ -104,21 +104,21 @@ void OpenGLGeometryBuffer::setupVertexDataPointers() const
     {
         switch(d_vertexAttributes.at(i))
         {
-        case VAT_POSITION0:
+        case VertexAttributeType::POSITION0:
             {
                 glVertexPointer(3, GL_FLOAT, stride,
                     &d_vertexData[dataOffset]);
                 dataOffset += 3;
             }
             break;
-        case VAT_COLOUR0:
+        case VertexAttributeType::COLOUR0:
             {
                 glColorPointer(4, GL_FLOAT, stride,
                     &d_vertexData[dataOffset]);
                 dataOffset += 4;
             }
             break;
-        case VAT_TEXCOORD0:
+        case VertexAttributeType::TEXCOORD0:
             {
                 glTexCoordPointer(2, GL_FLOAT, stride,
                     &d_vertexData[dataOffset]);

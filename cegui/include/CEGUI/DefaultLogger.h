@@ -53,7 +53,7 @@ public:
     ~DefaultLogger(void);
 
     // overridden from Logger
-    void logEvent(const String& message, LoggingLevel level = Standard) override;
+    void logEvent(const String& message, LoggingLevel level = LoggingLevel::STANDARD) override;
     void setLogFilename(const String& filename, bool append = false) override;
 
 protected:

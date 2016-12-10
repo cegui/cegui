@@ -99,7 +99,7 @@ namespace CEGUI
         editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation
-        setTextInputMode(Integer);
+        setTextInputMode(TextInputMode::INTEGER);
         setCurrentValue(0.0f);
         performChildWindowLayout();
     }
@@ -182,16 +182,16 @@ namespace CEGUI
         {
             switch (mode)
             {
-            case FloatingPoint:
+            case TextInputMode::FLOATING_POINT:
                 getEditbox()->setValidationString(FloatValidator);
                 break;
-            case Integer:
+            case TextInputMode::INTEGER:
                 getEditbox()->setValidationString(IntegerValidator);
                 break;
-            case Hexadecimal:
+            case TextInputMode::HEXADECIMAL:
                 getEditbox()->setValidationString(HexValidator);
                 break;
-            case Octal:
+            case TextInputMode::OCTAL:
                 getEditbox()->setValidationString(OctalValidator);
                 break;
             default:
@@ -232,7 +232,7 @@ namespace CEGUI
 
         CEGUI_DEFINE_PROPERTY(Spinner, Spinner::TextInputMode,
             "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
-            &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::Integer
+            &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::TextInputMode::INTEGER
         );
     }
 
@@ -254,22 +254,22 @@ namespace CEGUI
 
         switch (d_inputMode)
         {
-        case FloatingPoint:
+        case TextInputMode::FLOATING_POINT:
             sstream << tmpTxt;
             sstream >> val;
             break;
-        case Integer:
+        case TextInputMode::INTEGER:
             sstream << tmpTxt;
             sstream >> tmp;
             val = static_cast<double>(tmp);
             break;
-        case Hexadecimal:
+        case TextInputMode::HEXADECIMAL:
             sstream << std::hex << tmpTxt;
             sstream >> utmp;
             sstream << std::dec;
             val = static_cast<double>(utmp);
             break;
-        case Octal:
+        case TextInputMode::OCTAL:
             sstream << std::oct << tmpTxt;
             sstream >> utmp;
             sstream << std::dec;
@@ -287,8 +287,6 @@ namespace CEGUI
 
         throw InvalidRequestException("The string '" + getEditbox()->getText() +
                                       "' could not be converted to numerical representation.");
-
-        return 0.0f;
     }
 
     String Spinner::getTextFromValue(void) const
@@ -297,16 +295,16 @@ namespace CEGUI
 
         switch (d_inputMode)
         {
-        case FloatingPoint:
+        case TextInputMode::FLOATING_POINT:
             return CEGUI::PropertyHelper<float>::toString( static_cast<float>(d_currentValue) );
             break;
-        case Integer:
+        case TextInputMode::INTEGER:
             tmp << static_cast<int>(d_currentValue);
             break;
-        case Hexadecimal:
+        case TextInputMode::HEXADECIMAL:
             tmp << std::hex << std::uppercase << static_cast<int>(d_currentValue) << std::dec;
             break;
-        case Octal:
+        case TextInputMode::OCTAL:
             tmp << std::oct << static_cast<int>(d_currentValue) << std::dec;
             break;
         default:

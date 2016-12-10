@@ -109,16 +109,16 @@ public:
 
 private:
     //! enumeration of resource types.
-    enum ResourceType
+    enum class ResourceType : int
     {
-        RT_IMAGESET,
-        RT_FONT,
-        RT_SCHEME,
-        RT_LOOKNFEEL,
-        RT_LAYOUT,
-        RT_SCRIPT,
-        RT_XMLSCHEMA,
-        RT_DEFAULT
+        IMAGESET,
+        FONT,
+        SCHEME,
+        LOOKNFEEL,
+        LAYOUT,
+        SCRIPT,
+        XMLSCHEMA,
+        DEFAULT
     };
 
     //! struct to track a resource group directory specification.

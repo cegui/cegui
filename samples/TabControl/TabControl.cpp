@@ -136,14 +136,14 @@ bool TabControlSample::initialise(CEGUI::GUIContext* guiContext)
 
     RadioButton* rb = static_cast<RadioButton*>(
         background->getChild("Frame/TabControl/Page1/TabPaneTop"));
-    rb->setSelected(tc->getTabPanePosition() == TabControl::Top);
+    rb->setSelected(tc->getTabPanePosition() == TabControl::TabPanePosition::TOP);
     rb->subscribeEvent(
         RadioButton::EventSelectStateChanged,
         Event::Subscriber(&TabControlSample::handleTabPanePos, this));
 
     rb = static_cast<RadioButton*>(
         background->getChild("Frame/TabControl/Page1/TabPaneBottom"));
-    rb->setSelected(tc->getTabPanePosition() == TabControl::Bottom);
+    rb->setSelected(tc->getTabPanePosition() == TabControl::TabPanePosition::BOTTOM);
     rb->subscribeEvent(
         RadioButton::EventSelectStateChanged,
         Event::Subscriber(&TabControlSample::handleTabPanePos, this));
@@ -200,10 +200,10 @@ bool TabControlSample::handleTabPanePos(const EventArgs& e)
     switch (static_cast<const WindowEventArgs&>(e).window->getID())
     {
     case 0:
-        tpp = TabControl::Top;
+        tpp = TabControl::TabPanePosition::TOP;
         break;
     case 1:
-        tpp = TabControl::Bottom;
+        tpp = TabControl::TabPanePosition::BOTTOM;
         break;
     default:
         return false;

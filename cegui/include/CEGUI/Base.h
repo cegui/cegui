@@ -77,13 +77,13 @@
 #endif
 
 
-// include this to see if it defines _STLPORT_VERION
+// include this to see if it defines _STLPOResourceType::VERION
 #	include <string>
 
 // fix to undefine _STLP_DEBUG if STLport is not actually being used
 // (resolves some unresolved externals concerning boost)
 #if defined(_STLP_DEBUG) && defined(_MSC_VER)
-#   if !defined(_STLPORT_VERSION)
+#   if !defined(_STLPOResourceType::VERSION)
 #       undef _STLP_DEBUG
 #   endif
 #endif

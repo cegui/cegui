@@ -231,7 +231,7 @@ public:
         const bool anti_aliased,
         const String& font_filename,
         const String& resource_group = "",
-        const AutoScaledMode auto_scaled = ASM_Disabled,
+        const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
         const Sizef& native_res = Sizef(640.0f, 480.0f),
         const float specificLineSpacing = 0.0f,
         XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
@@ -279,7 +279,7 @@ public:
     Font& createPixmapFont(const String& font_name,
                            const String& imageset_filename,
                            const String& resource_group = "",
-                           const AutoScaledMode auto_scaled = ASM_Disabled,
+                           const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                            const Sizef& native_res = Sizef(640.0f, 480.0f),
                            XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
 

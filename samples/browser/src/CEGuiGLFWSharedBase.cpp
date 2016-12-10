@@ -76,10 +76,10 @@ CEGUI::MouseButton CEGuiGLFWSharedBase::GlfwToCeguiMouseButton(int glfwButton)
 {
     switch(glfwButton)
     {
-    case GLFW_MOUSE_BUTTON_LEFT     : return CEGUI::LeftButton;
-    case GLFW_MOUSE_BUTTON_RIGHT    : return CEGUI::RightButton;
-    case GLFW_MOUSE_BUTTON_MIDDLE   : return CEGUI::MiddleButton;
-    default                         : return CEGUI::NoButton;
+    case GLFW_MOUSE_BUTTON_LEFT     : return CEGUI::MouseButton::LEFT_BUTTON;
+    case GLFW_MOUSE_BUTTON_RIGHT    : return CEGUI::MouseButton::RIGHT_BUTTON;
+    case GLFW_MOUSE_BUTTON_MIDDLE   : return CEGUI::MouseButton::MIDDLE_BUTTON;
+    default                         : return CEGUI::MouseButton::NONE;
     }
 }
 

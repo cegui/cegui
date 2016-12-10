@@ -45,13 +45,13 @@ namespace CEGUI
 
 static CursorInputSource convertToCursorInputSource(MouseButton button)
 {
-    if (button == LeftButton)
+    if (button == MouseButton::LEFT_BUTTON)
         return CIS_Left;
 
-    if (button == RightButton)
+    if (button == MouseButton::RIGHT_BUTTON)
         return CIS_Right;
 
-    if (button == MiddleButton)
+    if (button == MouseButton::MIDDLE_BUTTON)
         return CIS_Middle;
 
     return CIS_None;
@@ -98,7 +98,7 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
     d_generateMouseClickEvents(true),
-    d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
+    d_mouseClickTrackers(new MouseClickTracker[static_cast<int>(MouseButton::COUNT)]),
     d_handleInKeyUp(true),
     d_mouseMovementScalingFactor(1.0f),
     d_pointerPosition(0.0f, 0.0f),
@@ -212,69 +212,69 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 int InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
     bool alt_down, bool ctrl_down) const
 {
-    int value = d_keyValuesMappings[scan_code];
+    int value = d_keyValuesMappings[static_cast<signed char>(scan_code)];
 
     // handle combined keys
     if (ctrl_down && shift_down)
     {
-        if (scan_code == Key::ArrowLeft)
+        if (scan_code == Key::Scan::ARROW_LEFT)
             value = SV_SelectPreviousWord;
-        else if (scan_code == Key::ArrowRight)
+        else if (scan_code == Key::Scan::ARROW_RIGHT)
             value = SV_SelectNextWord;
-        else if (scan_code == Key::End)
+        else if (scan_code == Key::Scan::END)
             value = SV_SelectToEndOfDocument;
-        else if (scan_code == Key::Home)
+        else if (scan_code == Key::Scan::HOME)
             value = SV_SelectToStartOfDocument;
-        else if (scan_code == Key::Z)
+        else if (scan_code == Key::Scan::Z)
             value = SV_Redo;
     }
     else if (ctrl_down)
     {
-        if (scan_code == Key::ArrowLeft)
+        if (scan_code == Key::Scan::ARROW_LEFT)
             value = SV_GoToPreviousWord;
-        else if (scan_code == Key::ArrowRight)
+        else if (scan_code == Key::Scan::ARROW_RIGHT)
             value = SV_GoToNextWord;
-        else if (scan_code == Key::End)
+        else if (scan_code == Key::Scan::END)
             value = SV_GoToEndOfDocument;
-        else if (scan_code == Key::Home)
+        else if (scan_code == Key::Scan::HOME)
             value = SV_GoToStartOfDocument;
-        else if (scan_code == Key::A)
+        else if (scan_code == Key::Scan::A)
             value = SV_SelectAll;
-        else if (scan_code == Key::C)
+        else if (scan_code == Key::Scan::C)
             value = SV_Copy;
-        else if (scan_code == Key::V)
+        else if (scan_code == Key::Scan::V)
             value = SV_Paste;
-        else if (scan_code == Key::X)
+        else if (scan_code == Key::Scan::X)
             value = SV_Cut;
-        else if (scan_code == Key::Tab)
+        else if (scan_code == Key::Scan::TAB)
             value = SV_NavigateToPrevious;
-        else if (scan_code == Key::Z)
+        else if (scan_code == Key::Scan::Z)
             value = SV_Undo;
-        else if (scan_code == Key::Y)
+        else if (scan_code == Key::Scan::Y)
             value = SV_Redo;
     }
     else if (shift_down)
     {
-        if (scan_code == Key::ArrowLeft)
+        if (scan_code == Key::Scan::ARROW_LEFT)
             value = SV_SelectPreviousCharacter;
-        else if (scan_code == Key::ArrowRight)
+        else if (scan_code == Key::Scan::ARROW_RIGHT)
             value = SV_SelectNextCharacter;
-        else if (scan_code == Key::ArrowUp)
+        else if (scan_code == Key::Scan::ARROW_UP)
             value = SV_SelectUp;
-        else if (scan_code == Key::ArrowDown)
+        else if (scan_code == Key::Scan::ARROW_DOWN)
             value = SV_SelectDown;
-        else if (scan_code == Key::End)
+        else if (scan_code == Key::Scan::END)
             value = SV_SelectToEndOfLine;
-        else if (scan_code == Key::Home)
+        else if (scan_code == Key::Scan::HOME)
             value = SV_SelectToStartOfLine;
-        else if (scan_code == Key::PageUp)
+        else if (scan_code == Key::Scan::PAGE_UP)
             value = SV_SelectPreviousPage;
-        else if (scan_code == Key::PageDown)
+        else if (scan_code == Key::Scan::PAGE_DOWN)
             value = SV_SelectNextPage;
     }
     if (alt_down)
     {
-        if(scan_code == Key::Backspace)
+        if(scan_code == Key::Scan::BACKSPACE)
             value = SV_Undo;
     }
 
@@ -341,7 +341,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
     //
     // Handling for multi-click generation
     //
-    MouseClickTracker& tkr = d_mouseClickTrackers[button];
+    MouseClickTracker& tkr = d_mouseClickTrackers[static_cast<int>(button)];
 
     tkr.d_click_count++;
 
@@ -404,7 +404,7 @@ bool InputAggregator::injectKeyDown(Key::Scan scan_code)
     if (d_inputReceiver == nullptr)
         return false;
     
-    d_keysPressed[scan_code] = true;
+    d_keysPressed[static_cast<unsigned char>(scan_code)] = true;
 
     if (d_handleInKeyUp)
         return true;
@@ -418,7 +418,7 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     if (d_inputReceiver == nullptr)
         return false;
     
-    d_keysPressed[scan_code] = false;
+    d_keysPressed[static_cast<unsigned char>(scan_code)] = false;
 
     if (!d_handleInKeyUp)
         return true;
@@ -520,51 +520,54 @@ void InputAggregator::initialise(bool handle_on_keyup /*= true*/)
 {
     d_handleInKeyUp = handle_on_keyup;
     
-    d_keyValuesMappings[Key::Backspace] = SV_DeletePreviousCharacter;
-    d_keyValuesMappings[Key::Delete] = SV_DeleteNextCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::BACKSPACE)] = SV_DeletePreviousCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::KEY_DELETE)] = SV_DeleteNextCharacter;
 
-    d_keyValuesMappings[Key::NumpadEnter] = SV_Confirm;
-    d_keyValuesMappings[Key::Return] = SV_Confirm;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::NUMPAD_ENTER)] = SV_Confirm;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::RETURN)] = SV_Confirm;
 
-    d_keyValuesMappings[Key::Tab] = SV_NavigateToNext;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::TAB)] = SV_NavigateToNext;
 
-    d_keyValuesMappings[Key::ArrowLeft] = SV_GoToPreviousCharacter;
-    d_keyValuesMappings[Key::ArrowRight] = SV_GoToNextCharacter;
-    d_keyValuesMappings[Key::ArrowDown] = SV_GoDown;
-    d_keyValuesMappings[Key::ArrowUp] = SV_GoUp;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_LEFT)] = SV_GoToPreviousCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_RIGHT)] = SV_GoToNextCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_DOWN)] = SV_GoDown;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_UP)] = SV_GoUp;
 
-    d_keyValuesMappings[Key::End] = SV_GoToEndOfLine;
-    d_keyValuesMappings[Key::Home] = SV_GoToStartOfLine;
-    d_keyValuesMappings[Key::PageDown] = SV_GoToNextPage;
-    d_keyValuesMappings[Key::PageUp] = SV_GoToPreviousPage;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::END)] = SV_GoToEndOfLine;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::HOME)] = SV_GoToStartOfLine;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PAGE_DOWN)] = SV_GoToNextPage;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PAGE_UP)] = SV_GoToPreviousPage;
 }
 
 bool InputAggregator::isShiftPressed()
 {
-    return d_keysPressed[Key::LeftShift] || d_keysPressed[Key::RightShift];
+    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_SHIFT)] ||
+        d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_SHIFT)];
 }
 
 bool InputAggregator::isAltPressed()
 {
-    return d_keysPressed[Key::LeftAlt] || d_keysPressed[Key::RightAlt];
+    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_ALT)] ||
+        d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_ALT)];
 }
 
 bool InputAggregator::isControlPressed()
 {
-    return d_keysPressed[Key::LeftControl] || d_keysPressed[Key::RightControl];
+    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_CONTROL)] ||
+        d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_CONTROL)];
 }
 //----------------------------------------------------------------------------//
 void InputAggregator::setModifierKeys(bool shift_down, bool alt_down,
     bool ctrl_down)
 {
-    d_keysPressed[Key::LeftShift] = shift_down;
-    d_keysPressed[Key::RightShift] = shift_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_SHIFT)] = shift_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_SHIFT)] = shift_down;
 
-    d_keysPressed[Key::LeftAlt] = alt_down;
-    d_keysPressed[Key::RightAlt] = alt_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_ALT)] = alt_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_ALT)] = alt_down;
 
-    d_keysPressed[Key::LeftControl] = ctrl_down;
-    d_keysPressed[Key::RightControl] = ctrl_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_CONTROL)] = ctrl_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_CONTROL)] = ctrl_down;
 }
 //----------------------------------------------------------------------------//
 void InputAggregator::recomputeMultiClickAbsoluteTolerance()

@@ -79,28 +79,28 @@ public:
 \brief
     This enumeration controls the \b display mode of the scrollbar, that is,
     it's visibility. This does not affect the scrollbar behaviour. For example,
-    even if the scrollbar is SDM_Hidden, one can still scroll it if the size
+    even if the scrollbar is ScrollbarDisplayMode::Hidden, one can still scroll it if the size
     allows it (content is bigger than the view).
 */
-enum ScrollbarDisplayMode
+enum class ScrollbarDisplayMode : int
 {
     //! The scrollbar will be shown always, even if the content is smaller than
     //! the view.
-    SDM_Shown,
+    Shown,
     //! The scrollbar will be hidden, even if the content is bigger than the
     //! view and scrolling is possible.
-    SDM_Hidden,
+    Hidden,
     //! The scrollbar will be shown only if the underlining view's size is too
     //! small to contain its items.
-    SDM_WhenNeeded
+    WhenNeeded
 };
 
-enum ViewSortMode
+enum class ViewSortMode : int
 {
     //! Items are not sorted, but shown in the same order as they are provided by the model.
-    VSM_None,
-    VSM_Ascending,
-    VSM_Descending
+    None,
+    Ascending,
+    Descending
 };
 
 template<>

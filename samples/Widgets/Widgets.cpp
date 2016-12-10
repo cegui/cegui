@@ -396,8 +396,8 @@ void WidgetsSample::initialiseWidgetSelectorListWidget()
     d_widgetSelectorListWidget = static_cast<ListWidget*>(winMgr.createWindow("Vanilla/ListWidget", "WidgetSelectorListWidget"));
     d_widgetSelectorListWidget->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.075f)));
     d_widgetSelectorListWidget->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.925f)));
-    d_widgetSelectorListWidget->setVertScrollbarDisplayMode(SDM_WhenNeeded);
-    d_widgetSelectorListWidget->setSortMode(VSM_Ascending);
+    d_widgetSelectorListWidget->setVertScrollbarDisplayMode(ScrollbarDisplayMode::WhenNeeded);
+    d_widgetSelectorListWidget->setSortMode(ViewSortMode::Ascending);
 
     d_widgetSelectorListWidget->subscribeEvent(ListWidget::EventSelectionChanged,
         Event::Subscriber(&WidgetsSample::handleWidgetSelectionChanged, this));
@@ -968,7 +968,7 @@ void WidgetsSample::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widge
     d_widgetPropertiesDisplayWindow->setUserColumnSizingEnabled(true);
 
     d_widgetPropertiesDisplayWindow->setSortColumnByID(0);
-    d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::Ascending);
+    d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::SortDirection::ASCENDING);
 }
 
 void WidgetsSample::initMenubar(CEGUI::Menubar* menuBar)

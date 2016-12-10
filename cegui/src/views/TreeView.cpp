@@ -94,11 +94,11 @@ void TreeViewItemRenderingState::sortChildren()
         (*itor).sortChildren();
     }
 
-    if (d_attachedTreeView->getSortMode() == VSM_None)
+    if (d_attachedTreeView->getSortMode() == ViewSortMode::None)
         return;
 
     sort(d_renderedChildren.begin(), d_renderedChildren.end(),
-        d_attachedTreeView->getSortMode() == VSM_Ascending
+        d_attachedTreeView->getSortMode() == ViewSortMode::Ascending
         ? &treeViewItemPointerLess : &treeViewItemPointerGreater);
 }
 
@@ -284,7 +284,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
         text, getFont(), &d_textColourRect);
     item.d_string = rendered_string;
     item.d_text = text;
-    item.d_icon = d_itemModel->getData(index, IDR_Icon);
+    item.d_icon = d_itemModel->getData(index, ItemDataRole::ICON);
 
     item.d_size = Sizef(
         rendered_string.getHorizontalExtent(this),

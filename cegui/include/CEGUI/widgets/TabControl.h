@@ -81,10 +81,10 @@ public:
 	static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
-	enum TabPanePosition
+	enum class TabPanePosition : int
 	{
-		Top,
-		Bottom
+		TOP,
+		BOTTOM
 	};
 
 	/*************************************************************************
@@ -528,21 +528,21 @@ public:
     {
         if (str == "Bottom")
         {
-            return TabControl::Bottom;
+            return TabControl::TabPanePosition::BOTTOM;
         }
         else
         {
-            return TabControl::Top;
+            return TabControl::TabPanePosition::TOP;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == TabControl::Top)
+        if (val == TabControl::TabPanePosition::TOP)
         {
             return "Top";
         }
-        else if (val == TabControl::Bottom)
+        else if (val == TabControl::TabPanePosition::BOTTOM)
         {
             return "Bottom";
         }

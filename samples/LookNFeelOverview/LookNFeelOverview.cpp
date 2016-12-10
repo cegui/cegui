@@ -100,7 +100,7 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
 
     CEGUI::Window* skinSelectionComboboxLabel = winMgr.createWindow("Vanilla/Label", "SkinSelectionComboboxLabel");
     skinSelectionContainer->addChild(skinSelectionComboboxLabel);
-    skinSelectionComboboxLabel->setHorizontalAlignment(HA_CENTRE);
+    skinSelectionComboboxLabel->setHorizontalAlignment(HorizontalAlignment::CENTRE);
     skinSelectionComboboxLabel->setText("Choose a Look N' Feel (= a skin) to display");
     skinSelectionComboboxLabel->setPosition(CEGUI::UVector2(cegui_reldim(-0.18f), cegui_reldim(0.0f)));
     skinSelectionComboboxLabel->setSize(CEGUI::USize(cegui_reldim(0.36f), cegui_reldim(0.04f)));
@@ -109,7 +109,7 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
 
     CEGUI::Combobox* skinSelectionCombobox = static_cast<CEGUI::Combobox*>(winMgr.createWindow("Vanilla/Combobox", "SkinSelectionCombobox"));
     skinSelectionContainer->addChild(skinSelectionCombobox);
-    skinSelectionCombobox->setHorizontalAlignment(HA_CENTRE);
+    skinSelectionCombobox->setHorizontalAlignment(HorizontalAlignment::CENTRE);
     skinSelectionCombobox->setPosition(CEGUI::UVector2(cegui_reldim(0.08f), cegui_reldim(0.003f)));
     skinSelectionCombobox->setSize(CEGUI::USize(cegui_reldim(0.15f), cegui_reldim(0.3f)));
     skinSelectionCombobox->setReadOnly(true);

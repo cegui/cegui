@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
     The Font size units used for the Font sizes of CEGUI
 */
-enum class FontSizeUnit
+enum class FontSizeUnit : int
 {
     //! Size unit is measured in pixels (px)
     FSU_PIXELS,

@@ -38,7 +38,7 @@ namespace CEGUI
 \brief
     The AspectMode enumerators are used for the auto scale features of CEGUI
 */
-enum class AspectMode
+enum class AspectMode : int
 {
     //! Ignores the target aspect (default)
     NONE,

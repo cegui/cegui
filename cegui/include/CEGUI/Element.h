@@ -49,23 +49,23 @@ namespace CEGUI
 
 \see VerticalAlignment
  */
-enum HorizontalAlignment
+enum class HorizontalAlignment : int
 {
     /**
      * Element's position specifies an offset of it's left edge from the left
      * edge of it's parent.
      */
-    HA_LEFT,
+    LEFT,
     /**
      * Element's position specifies an offset of it's horizontal centre from the
      * horizontal centre of it's parent.
      */
-    HA_CENTRE,
+    CENTRE,
     /**
      * Element's position specifies an offset of it's right edge from the right
      * edge of it's parent.
      */
-    HA_RIGHT
+    RIGHT
 };
 
 template<>
@@ -88,29 +88,29 @@ public:
     {
         if (str == "Centre")
         {
-            return HA_CENTRE;
+            return HorizontalAlignment::CENTRE;
         }
         else if (str == "Right")
         {
-            return HA_RIGHT;
+            return HorizontalAlignment::RIGHT;
         }
         else
         {
-            return HA_LEFT;
+            return HorizontalAlignment::LEFT;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == HA_CENTRE)
+        if (val == HorizontalAlignment::CENTRE)
         {
             return "Centre";
         }
-        else if (val == HA_RIGHT)
+        else if (val == HorizontalAlignment::RIGHT)
         {
             return "Right";
         }
-        else if (val == HA_LEFT)
+        else if (val == HorizontalAlignment::LEFT)
         {
             return "Left";
         }
@@ -127,23 +127,23 @@ public:
 
 \see HorizontalAlignment
  */
-enum VerticalAlignment
+enum class VerticalAlignment : int
 {
     /**
      * Element's position specifies an offset of it's top edge from the top edge
      * of it's parent.
      */
-    VA_TOP,
+    TOP,
     /**
      * Element's position specifies an offset of it's vertical centre from the
      * vertical centre of it's parent.
      */
-    VA_CENTRE,
+    CENTRE,
     /**
      * Element's position specifies an offset of it's bottom edge from the
      * bottom edge of it's parent.
      */
-    VA_BOTTOM
+    BOTTOM
 };
 
 template<>
@@ -166,29 +166,29 @@ public:
     {
       if (str == "Centre")
       {
-          return VA_CENTRE;
+          return VerticalAlignment::CENTRE;
       }
       else if (str == "Bottom")
       {
-          return VA_BOTTOM;
+          return VerticalAlignment::BOTTOM;
       }
       else
       {
-          return VA_TOP;
+          return VerticalAlignment::TOP;
       }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == VA_CENTRE)
+        if (val == VerticalAlignment::CENTRE)
         {
             return "Centre";
         }
-        else if (val == VA_BOTTOM)
+        else if (val == VerticalAlignment::BOTTOM)
         {
             return "Bottom";
         }
-        else if (val == VA_TOP)
+        else if (val == VerticalAlignment::TOP)
         {
             return "Top";
         }

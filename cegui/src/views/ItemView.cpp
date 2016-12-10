@@ -57,11 +57,11 @@ const String& PropertyHelper<ScrollbarDisplayMode>::getDataTypeName()
 PropertyHelper<ScrollbarDisplayMode>::return_type
 PropertyHelper<ScrollbarDisplayMode>::fromString(const String& str)
 {
-    if (str == "Shown") return SDM_Shown;
-    if (str == "Hidden") return SDM_Hidden;
+    if (str == "Shown") return ScrollbarDisplayMode::Shown;
+    if (str == "Hidden") return ScrollbarDisplayMode::Hidden;
 
     // default
-    return SDM_WhenNeeded;
+    return ScrollbarDisplayMode::WhenNeeded;
 }
 
 //----------------------------------------------------------------------------//
@@ -70,9 +70,9 @@ PropertyHelper<ScrollbarDisplayMode>::toString(pass_type val)
 {
     switch(val)
     {
-    case SDM_Shown: return "Shown";
-    case SDM_Hidden: return "Hidden";
-    case SDM_WhenNeeded: return "WhenNeeded";
+    case ScrollbarDisplayMode::Shown: return "Shown";
+    case ScrollbarDisplayMode::Hidden: return "Hidden";
+    case ScrollbarDisplayMode::WhenNeeded: return "WhenNeeded";
     default: return "InvalidDisplayMode";
     }
 }
@@ -89,11 +89,11 @@ const String& PropertyHelper<ViewSortMode>::getDataTypeName()
 PropertyHelper<ViewSortMode>::return_type
 PropertyHelper<ViewSortMode>::fromString(const String& str)
 {
-    if (str == "Ascending") return VSM_Ascending;
-    if (str == "Descending") return VSM_Descending;
+    if (str == "Ascending") return ViewSortMode::Ascending;
+    if (str == "Descending") return ViewSortMode::Descending;
 
     // default
-    return VSM_None;
+    return ViewSortMode::None;
 }
 
 //----------------------------------------------------------------------------//
@@ -102,8 +102,8 @@ PropertyHelper<ViewSortMode>::toString(pass_type val)
 {
     switch (val)
     {
-    case VSM_Ascending: return "Ascending";
-    case VSM_Descending: return "Descending";
+    case ViewSortMode::Ascending: return "Ascending";
+    case ViewSortMode::Descending: return "Descending";
     default: return "None";
     }
 }
@@ -130,11 +130,11 @@ ItemView::ItemView(const String& type, const String& name) :
     d_needsFullRender(true),
     d_lastSelectedIndex(nullptr),
     d_selectionBrush(nullptr),
-    d_vertScrollbarDisplayMode(SDM_WhenNeeded),
-    d_horzScrollbarDisplayMode(SDM_WhenNeeded),
+    d_vertScrollbarDisplayMode(ScrollbarDisplayMode::WhenNeeded),
+    d_horzScrollbarDisplayMode(ScrollbarDisplayMode::WhenNeeded),
     d_isItemTooltipsEnabled(false),
     d_isMultiSelectEnabled(false),
-    d_sortMode(VSM_None),
+    d_sortMode(ViewSortMode::None),
     d_isAutoResizeHeightEnabled(false),
     d_isAutoResizeWidthEnabled(false),
     d_renderedMaxWidth(0),
@@ -168,7 +168,7 @@ void ItemView::addItemViewProperties()
         "Property to get/set the display mode of the vertical scroll bar of the "
         "item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
         &ItemView::setVertScrollbarDisplayMode,
-        &ItemView::getVertScrollbarDisplayMode, SDM_WhenNeeded
+        &ItemView::getVertScrollbarDisplayMode, ScrollbarDisplayMode::WhenNeeded
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
@@ -176,7 +176,7 @@ void ItemView::addItemViewProperties()
         "Property to get/set the display mode of the horizontal scroll bar of "
         "the item view. Value can be \"Shown\", \"Hidden\" or \"WhenNeeded\".",
         &ItemView::setHorzScrollbarDisplayMode,
-        &ItemView::getHorzScrollbarDisplayMode, SDM_WhenNeeded
+        &ItemView::getHorzScrollbarDisplayMode, ScrollbarDisplayMode::WhenNeeded
         )
 
     CEGUI_DEFINE_PROPERTY(ItemView, bool,
@@ -197,7 +197,7 @@ void ItemView::addItemViewProperties()
         "SortMode",
         "Property to get/set how the item view is sorting its items. "
         "Value is either \"None\", \"Ascending\" or \"Descending\".",
-        &ItemView::setSortMode, &ItemView::getSortMode, VSM_None
+        &ItemView::setSortMode, &ItemView::getSortMode, ViewSortMode::None
         )
 
 
@@ -571,13 +571,13 @@ void ItemView::updateScrollbar(Scrollbar* scrollbar, float available_area,
     scrollbar->setStepSize(std::max(1.0f, rendered_area / 10.0f));
     scrollbar->setScrollPosition(scrollbar->getScrollPosition());
 
-    if (display_mode == SDM_Hidden)
+    if (display_mode == ScrollbarDisplayMode::Hidden)
     {
         scrollbar->hide();
         return;
     }
 
-    if (display_mode == SDM_Shown ||
+    if (display_mode == ScrollbarDisplayMode::Shown ||
         rendered_area > available_area)
     {
         scrollbar->show();
@@ -698,7 +698,7 @@ void ItemView::setupTooltip(glm::vec2 position)
     if (!d_itemModel->isValidIndex(index))
         setTooltipText("");
     else
-        setTooltipText(d_itemModel->getData(index, IDR_Tooltip));
+        setTooltipText(d_itemModel->getData(index, ItemDataRole::TOOLTIP));
 }
 
 //----------------------------------------------------------------------------//

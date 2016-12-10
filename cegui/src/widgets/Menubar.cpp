@@ -75,7 +75,7 @@ void Menubar::layoutItemWidgets()
 	{
 		const Sizef optimal = (*item)->getItemPixelSize();
 
-		(*item)->setVerticalAlignment(VA_CENTRE);
+		(*item)->setVerticalAlignment(VerticalAlignment::CENTRE);
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(0)) );
 		rect.setSize(USize(cegui_absdim(CoordConverter::alignToPixels(optimal.d_width)),
                            cegui_absdim(CoordConverter::alignToPixels(optimal.d_height))));

@@ -170,14 +170,14 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
         BidiCharType charBeforeCaretType = w->getBidiVisualMapping()->
             getBidiCharType(visual_text[curCaretIndex - 1]);
         // for neutral chars you decide by the char after
-        for (; BCT_NEUTRAL == charBeforeCaretType &&
+        for (; BidiCharType::NEUTRAL == charBeforeCaretType &&
                (visual_text.size() > curCaretIndex); curCaretIndex++)
         {
             charBeforeCaretType = w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[curCaretIndex - 1]);
         }
 
-        currCharIsRtl  = (BCT_RIGHT_TO_LEFT == charBeforeCaretType);
+        currCharIsRtl  = (BidiCharType::RIGHT_TO_LEFT == charBeforeCaretType);
     }
 
     const bool isFirstChar = caretIndex == 0;
@@ -199,7 +199,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     {
         bool firstCharRtl =
             !visual_text.empty() &&
-            (BCT_RIGHT_TO_LEFT == w->getBidiVisualMapping()->
+            (BidiCharType::RIGHT_TO_LEFT == w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[0]));
 
         if (!firstCharRtl)

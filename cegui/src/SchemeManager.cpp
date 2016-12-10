@@ -170,7 +170,7 @@ void SchemeManager::destroyObject(
     String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + d_resourceType +
         "' named '" + ob->first + "' has been destroyed. " +
-        addressStr, Informative);
+        addressStr, LoggingLevel::INFORMATIVE);
 
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);
