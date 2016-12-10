@@ -101,17 +101,6 @@ protected:
     GLuint d_program;
 };
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define AT __FILE__ ":" TOSTRING(__LINE__)
-#define checkGLErrors() getGLErrors(AT)
-
-/*!
-\brief
-    Query OpenGL errors and process them in CEGUI
-*/
-void getGLErrors(const char *location);
-
 }
 
 #endif

@@ -55,7 +55,7 @@ OpenGLBaseShader::OpenGLBaseShader(const std::string& vertex_shader_source,
     if (d_vertexShader == 0)
         return;
 
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 
     if(fragment_shader_source.length() > 0)
     {
@@ -65,7 +65,7 @@ OpenGLBaseShader::OpenGLBaseShader(const std::string& vertex_shader_source,
             return;
     }
 
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 
     d_program = glCreateProgram();
 }
@@ -120,7 +120,7 @@ bool OpenGLBaseShader::isCreatedSuccessfully()
 GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
 {
     // Create shader object
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
     GLuint shader = glCreateShader(type);
 
     if (shader == 0)
@@ -131,7 +131,7 @@ GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
         return 0;
     }
 
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 
     // Define shader source and compile
 
@@ -152,7 +152,7 @@ GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
         return 0;
     }
 
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 
     return shader;
 }
@@ -185,13 +185,13 @@ void OpenGLBaseShader::link()
         d_program = 0;
     }
 
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 
     if (d_program == 0)
         return;
 
     d_createdSuccessfully = true;
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 
 
 }
@@ -227,45 +227,6 @@ void OpenGLBaseShader::outputShaderLog(GLuint shader)
         std::stringstream ss;
         ss << "OpenGLBaseShader compilation has failed.\n" << logBuffer;
           throw RendererException(ss.str().c_str());
-    }
-}
-
-//----------------------------------------------------------------------------//
-void getGLErrors(const char *location)
-{
-    GLenum error = glGetError();
-
-    if (error != GL_NO_ERROR)
-    {
-        std::stringstream stringStream;
-        stringStream << "OpenGLBaseRenderer: Notification - OpenGL error at ";
-        stringStream << location << ": " << std::endl; 
-
-        switch (error)
-        {
-        case GL_INVALID_ENUM:
-            stringStream << "GL_INVALID_ENUM: enum argument out of range." << std::endl;
-            break;
-        case GL_INVALID_VALUE:
-            stringStream << "GL_INVALID_VALUE: Numeric argument out of range." << std::endl;
-            break;
-        case GL_INVALID_OPERATION:
-            stringStream << "GL_INVALID_OPERATION: Operation illegal in current state." << std::endl;
-            break;
-        case GL_INVALID_FRAMEBUFFER_OPERATION:
-            stringStream << "GL_INVALID_FRAMEBUFFER_OPERATION: Framebuffer object is not complete." << std::endl;
-            break;
-        case GL_OUT_OF_MEMORY:
-            stringStream << "GL_OUT_OF_MEMORY: Not enough memory left to execute command." << std::endl;
-            break;
-        default:
-            stringStream << "GL_ERROR: Unknown error." << std::endl;
-        }
-
-        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
-            logger->logEvent(stringStream.str().c_str());
-        else
-            std::cerr << stringStream.str() << std::endl;
     }
 }
 

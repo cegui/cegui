@@ -48,17 +48,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-// The following are some GL extension / version dependant related items.
-// This is all done totally internally here; no need for external interface
-// to show any of this.
-//----------------------------------------------------------------------------//
-// we only really need this with MSVC / Windows(?) and by now it should already
-// be defined on that platform, so we just define it as empty macro so the
-// compile does not break on other systems.
-#ifndef APIENTRY
-#   define APIENTRY
-#endif
 
 //----------------------------------------------------------------------------//
 // template specialised class that does the real work for us
@@ -309,7 +298,7 @@ OpenGLBaseStateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
-    checkGLErrors();
+    checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
     d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, SHADER_GLSL);
     d_shaderManager->initialiseShaders();
 
