@@ -437,6 +437,46 @@ bool OpenGLRendererBase::isTexCoordSystemFlipped() const
 }
 
 //----------------------------------------------------------------------------//
+void OpenGLRendererBase::checkGLErrors(const String& fileName, int line, const String& function)
+{
+    GLenum error = glGetError();
+
+    if (error != GL_NO_ERROR)
+    {
+        std::stringstream stringStream;
+        stringStream << "OpenGLBaseRenderer - One or multiple OpenGL error have occured."
+           <<  "Detected in function '" << function << "' (" << fileName << ":" << 
+            line << ")" << std::endl;
+
+        switch (error)
+        {
+        case GL_INVALID_ENUM:
+            stringStream << "GL_INVALID_ENUM: enum argument out of range." << std::endl;
+            break;
+        case GL_INVALID_VALUE:
+            stringStream << "GL_INVALID_VALUE: Numeric argument out of range." << std::endl;
+            break;
+        case GL_INVALID_OPERATION:
+            stringStream << "GL_INVALID_OPERATION: Operation illegal in current state." << std::endl;
+            break;
+        case GL_INVALID_FRAMEBUFFER_OPERATION:
+            stringStream << "GL_INVALID_FRAMEBUFFER_OPERATION: Framebuffer object is not complete." << std::endl;
+            break;
+        case GL_OUT_OF_MEMORY:
+            stringStream << "GL_OUT_OF_MEMORY: Not enough memory left to execute command." << std::endl;
+            break;
+        default:
+            stringStream << "GL_ERROR: Unknown error." << std::endl;
+        }
+
+        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
+            logger->logEvent(stringStream.str().c_str());
+        else
+            std::cerr << stringStream.str() << std::endl;
+    }
+}
+
+//----------------------------------------------------------------------------//
 
 }
 

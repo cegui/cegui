@@ -69,7 +69,7 @@ void OpenGL3Shader::link()
         glBindFragDataLocation(d_program, 6, "out6");
         glBindFragDataLocation(d_program, 7, "out7");
     }
-    checkGLErrors();
+    OpenGLRendererBase::checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
 }
 
 //----------------------------------------------------------------------------//

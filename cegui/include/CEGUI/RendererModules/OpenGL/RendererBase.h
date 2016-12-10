@@ -56,6 +56,14 @@ class RenderMaterial;
 class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
+    /*!
+    \brief
+        Query for OpenGL errors and log them in CEGUI
+    */
+    static void checkGLErrors(const String& fileName = "unknown", int line = 0,
+        const String& function = "unknown");
+    
+
     // implement Renderer interface
     RenderTarget& getDefaultRenderTarget() override;
     GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
@@ -172,6 +180,7 @@ public:
         The viewport.
     */
     const CEGUI::Rectf& getActiveViewPort();
+
 
 protected:
     OpenGLRendererBase();
