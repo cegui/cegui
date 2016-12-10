@@ -34,6 +34,7 @@
 #include "./ItemEntry.h"
 
 #include <vector>
+#include <CEGUI/WindowRendererSets/Core/ItemViewRenderer.h>
 
 
 #if defined(_MSC_VER)
@@ -84,11 +85,11 @@ public:
     \brief
         Sort modes for ItemListBase
     */
-    enum SortMode
+    enum class SortMode : int
     {
-        Ascending,
-        Descending,
-        UserSort
+        ASCENDING,
+        DESCENDING,
+        USERSORT
     };
 
     //!< Sorting callback type
@@ -614,37 +615,36 @@ public:
     {
         if (str == "Ascending")
         {
-            return ItemListBase::Ascending;
+            return ItemListBase::SortMode::ASCENDING;
         }
-        else if (str == "Descending")
+
+        if (str == "Descending")
         {
-            return ItemListBase::Descending;
+            return ItemListBase::SortMode::DESCENDING;
         }
-        else
-        {
-            return ItemListBase::UserSort;
-        }
+        
+        return ItemListBase::SortMode::USERSORT;
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == ItemListBase::UserSort)
+        if (val == ItemListBase::SortMode::USERSORT)
         {
             return "UserSort";
         }
-        else if (val == ItemListBase::Ascending)
+        
+        if (val == ItemListBase::SortMode::ASCENDING)
         {
             return "Ascending";
         }
-        else if (val == ItemListBase::Descending)
+
+        if (val == ItemListBase::SortMode::DESCENDING)
         {
             return "Descending";
         }
-        else
-        {
-            assert(false && "Invalid sort mode");
-            return "Ascending";
-        }
+
+        assert(false && "Invalid sort mode");
+        return "Ascending";
     }
 };
 

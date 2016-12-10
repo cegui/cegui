@@ -176,11 +176,11 @@ void ListView::resortListView()
         d_sortedItems.push_back(&(*itor));
     }
 
-    if (d_sortMode == VSM_None)
+    if (d_sortMode == ViewSortMode::None)
         return;
 
     sort(d_sortedItems.begin(), d_sortedItems.end(),
-        d_sortMode == VSM_Ascending ? &listViewItemPointerLess : &listViewItemPointerGreater);
+        d_sortMode == ViewSortMode::Ascending ? &listViewItemPointerLess : &listViewItemPointerGreater);
 }
 
 //----------------------------------------------------------------------------//
@@ -201,7 +201,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
     item.d_string = rendered_string;
     item.d_index = index;
     item.d_text = text;
-    item.d_icon = d_itemModel->getData(index, IDR_Icon);
+    item.d_icon = d_itemModel->getData(index, ItemDataRole::ICON);
 
     item.d_size = Sizef(
         rendered_string.getHorizontalExtent(this),

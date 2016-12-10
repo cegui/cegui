@@ -44,7 +44,7 @@ KeyFrame::KeyFrame(Affector* parent, float position):
         d_parent(parent),
         d_position(position),
 
-        d_progression(P_Linear)
+        d_progression(Progression::LINEAR)
 {}
 
 //----------------------------------------------------------------------------//
@@ -146,16 +146,16 @@ float KeyFrame::alterInterpolationPosition(float position)
 {
     switch (d_progression)
     {
-    case P_Linear:
+    case Progression::LINEAR:
         return position;
 
-    case P_QuadraticAccelerating:
+    case Progression::QUADRATIC_ACCELERATING:
         return position * position;
 
-    case P_QuadraticDecelerating:
+    case Progression::QUADRATIC_DECELERATING:
         return sqrtf(position);
 
-    case P_Discrete:
+    case Progression::DISCRETE:
         return position < 1.0f ? 0.0f : 1.0f;
     }
 
@@ -197,16 +197,16 @@ void KeyFrame::writeXMLToStream(XMLSerializer& xml_stream) const
     String progression;
     switch(getProgression())
     {
-    case P_Linear:
+    case Progression::LINEAR:
         progression = AnimationKeyFrameHandler::ProgressionLinear;
         break;
-    case P_Discrete:
+    case Progression::DISCRETE:
         progression = AnimationKeyFrameHandler::ProgressionDiscrete;
         break;
-    case P_QuadraticAccelerating:
+    case Progression::QUADRATIC_ACCELERATING:
         progression = AnimationKeyFrameHandler::ProgressionQuadraticAccelerating;
         break;
-    case P_QuadraticDecelerating:
+    case Progression::QUADRATIC_DECELERATING:
         progression = AnimationKeyFrameHandler::ProgressionQuadraticDecelerating;
         break;
 

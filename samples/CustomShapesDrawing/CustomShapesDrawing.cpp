@@ -421,7 +421,7 @@ void CustomShapesDrawingSample::setupCustomSVGImage()
     std::vector<glm::vec2> pointsList;
     d_customPolyline = new SVGPolyline(SVGPaintStyle(), glm::mat3x3(1.0f), pointsList);
     d_customPolyline->d_paintStyle.d_stroke.d_colour = glm::vec3(0.0f, 1.0f, 0.0f);
-    d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SLJ_ROUND;
+    d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SVGLinejoin::ROUND;
     d_customPolyline->d_paintStyle.d_strokeWidth = 2.0f;
     //By default the SVG standard has the default fill set to black. We do not want any fill so we switch it to "none".
     d_customPolyline->d_paintStyle.d_fill.d_none = true;
@@ -452,7 +452,7 @@ void CustomShapesDrawingSample::createCheckboxShowRealFPS()
     // We create a button and subscribe to its click events
     ToggleButton* checkboxShowRealFPS = static_cast<CEGUI::ToggleButton*>(winMgr.createWindow("WindowsLook/Checkbox"));
     checkboxShowRealFPS->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.035f)));
-    checkboxShowRealFPS->setHorizontalAlignment(HA_CENTRE);
+    checkboxShowRealFPS->setHorizontalAlignment(HorizontalAlignment::CENTRE);
     checkboxShowRealFPS->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.13f)));
     checkboxShowRealFPS->setText("Show randomly generated FPS values");
     checkboxShowRealFPS->subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&CustomShapesDrawingSample::handleToggleButtonShowRandomisedFpsSelectionChanged, this));
@@ -470,7 +470,7 @@ void CustomShapesDrawingSample::createLastFPSLabel()
     // We create a button and subscribe to its click events
     d_lastFPSLabel = winMgr.createWindow("Generic/Label");
     d_lastFPSLabel->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.035f)));
-    d_lastFPSLabel->setHorizontalAlignment(HA_CENTRE);
+    d_lastFPSLabel->setHorizontalAlignment(HorizontalAlignment::CENTRE);
     d_lastFPSLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.18f)));
     d_root->addChild(d_lastFPSLabel);
 }
@@ -485,7 +485,7 @@ void CustomShapesDrawingSample::createDescriptionLabel()
     // We create a button and subscribe to its click events
     CEGUI::Window* descriptionLabel = winMgr.createWindow("Generic/Label");
     descriptionLabel->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(0.25f)));
-    descriptionLabel->setHorizontalAlignment(HA_CENTRE);
+    descriptionLabel->setHorizontalAlignment(HorizontalAlignment::CENTRE);
     descriptionLabel->setProperty("HorzFormatting", "WordWrapCentreAligned");
     descriptionLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_absdim(400.0f)));
     d_root->addChild(descriptionLabel);

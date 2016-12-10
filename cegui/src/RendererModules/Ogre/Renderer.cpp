@@ -1164,8 +1164,8 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
         *d_pimpl->d_renderSystem, renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
     geom_buffer->finaliseVertexAttributes(
         OgreGeometryBuffer::MT_COLOURED);
 
@@ -1180,9 +1180,9 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
         *d_pimpl->d_renderSystem, renderMaterial);
     
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
-    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
     geom_buffer->finaliseVertexAttributes(
         OgreGeometryBuffer::MT_TEXTURED);
 

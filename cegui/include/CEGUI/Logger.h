@@ -53,13 +53,13 @@ namespace CEGUI
 \brief
 	Enumeration of logging levels
 */
-enum LoggingLevel
+enum class LoggingLevel : int
 {
-	Errors,			//!< Only actual error conditions will be logged.
-    Warnings,       //!< Warnings will be logged as well.
-	Standard,		//!< Basic events will be logged (default level).
-	Informative,	//!< Useful tracing (object creations etc) information will be logged.
-	Insane			//!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).
+	LOG_ERROR,      //!< Only actual error conditions will be logged.
+    WARNING,        //!< LoggingLevel::WARNING will be logged as well.
+	STANDARD,       //!< Basic events will be logged (default level).
+	INFORMATIVE,    //!< Useful tracing (object creations etc) information will be logged.
+	INSANE          //!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).
 };
 
 /*!
@@ -121,7 +121,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void logEvent(const String& message, LoggingLevel level = Standard) = 0;
+	virtual void logEvent(const String& message, LoggingLevel level = LoggingLevel::STANDARD) = 0;
 
     /*!
     \brief
@@ -155,11 +155,11 @@ private:
 };
 
 /*************************************************************************
-	This macro is used for 'Insane' level logging so that those items are
+	This macro is used for 'LoggingLevel::INSANE' level logging so that those items are
 	excluded from non-debug builds
 *************************************************************************/
 #if defined(DEBUG) || defined (_DEBUG)
-#	define CEGUI_LOGINSANE( message ) CEGUI::Logger::getSingleton().logEvent((message), CEGUI::Insane);
+#	define CEGUI_LOGINSANE( message ) CEGUI::Logger::getSingleton().logEvent((message), CEGUI::LoggingLevel::INSANE);
 #else
 #	define CEGUI_LOGINSANE( message ) (void)0
 #endif

@@ -95,16 +95,17 @@ public:
         Enumeration that defines the set of possible locations for the cursor
         on a frame windows sizing border.
     */
-	enum SizingLocation {
-		SizingNone,			//!< Position is not a sizing location.
-		SizingTopLeft,		//!< Position will size from the top-left.
-		SizingTopRight,		//!< Position will size from the top-right.
-		SizingBottomLeft,	//!< Position will size from the bottom left.
-		SizingBottomRight,	//!< Position will size from the bottom right.
-		SizingTop,			//!< Position will size from the top.
-		SizingLeft,			//!< Position will size from the left.
-		SizingBottom,		//!< Position will size from the bottom.
-		SizingRight         //!< Position will size from the right.
+	enum class SizingLocation : int
+    {
+		NONE,			//!< Position is not a sizing location.
+		TOP_LEFT,		//!< Position will size from the top-left.
+		TOP_RIGHT,		//!< Position will size from the top-right.
+		BOTTOM_LEFT,	//!< Position will size from the bottom left.
+		BOTTOM_RIGHT,	//!< Position will size from the bottom right.
+		TOP,			//!< Position will size from the top.
+		LEFT,			//!< Position will size from the left.
+		BOTTOM,         //!< Position will size from the bottom.
+		RIGHT           //!< Position will size from the right.
 	};
 
 	/*!
@@ -581,7 +582,7 @@ protected:
 	\return
 		true if \a loc is on the left edge.  false if \a loc is not on the left edge.
 	*/
-	bool	isLeftSizingLocation(SizingLocation loc) const			{return ((loc == SizingLeft) || (loc == SizingTopLeft) || (loc == SizingBottomLeft));}
+	bool	isLeftSizingLocation(SizingLocation loc) const			{return ((loc == SizingLocation::LEFT) || (loc == SizingLocation::TOP_LEFT) || (loc == SizingLocation::BOTTOM_LEFT));}
 
 
 	/*!
@@ -594,7 +595,7 @@ protected:
 	\return
 		true if \a loc is on the right edge.  false if \a loc is not on the right edge.
 	*/
-	bool	isRightSizingLocation(SizingLocation loc) const			{return ((loc == SizingRight) || (loc == SizingTopRight) || (loc == SizingBottomRight));}
+	bool	isRightSizingLocation(SizingLocation loc) const			{return ((loc == SizingLocation::RIGHT) || (loc == SizingLocation::TOP_RIGHT) || (loc == SizingLocation::BOTTOM_RIGHT));}
 
 
 	/*!
@@ -607,7 +608,7 @@ protected:
 	\return
 		true if \a loc is on the top edge.  false if \a loc is not on the top edge.
 	*/
-	bool	isTopSizingLocation(SizingLocation loc) const			{return ((loc == SizingTop) || (loc == SizingTopLeft) || (loc == SizingTopRight));}
+	bool	isTopSizingLocation(SizingLocation loc) const			{return ((loc == SizingLocation::TOP) || (loc == SizingLocation::TOP_LEFT) || (loc == SizingLocation::TOP_RIGHT));}
 
 
 	/*!
@@ -620,7 +621,7 @@ protected:
 	\return
 		true if \a loc is on the bottom edge.  false if \a loc is not on the bottom edge.
 	*/
-	bool	isBottomSizingLocation(SizingLocation loc) const		{return ((loc == SizingBottom) || (loc == SizingBottomLeft) || (loc == SizingBottomRight));}
+	bool	isBottomSizingLocation(SizingLocation loc) const		{return ((loc == SizingLocation::BOTTOM) || (loc == SizingLocation::BOTTOM_LEFT) || (loc == SizingLocation::BOTTOM_RIGHT));}
 
 
 	/*!

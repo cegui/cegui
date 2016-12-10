@@ -260,7 +260,7 @@ CEGUI::HorizontalLayoutContainer* SampleBrowserManager::createPreviewHeader()
     header->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(40.0f)));
     header->setCursorInputPropagationEnabled(true);
     header->setMargin(CEGUI::UBox(UDim(0.0f, 12.f),UDim(0.0f, 0.0f),UDim(0.0f, 0), UDim(0.0f, 0.0f)));
-    header->setHorizontalAlignment(HA_CENTRE);
+    header->setHorizontalAlignment(HorizontalAlignment::CENTRE);
 
     return header;
 }
@@ -281,8 +281,8 @@ CEGUI::PushButton* SampleBrowserManager::createPreviewHeaderEnterButton()
     button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");
     button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SampleBrowserManager::handleSampleEnterButtonClicked, this));
     button->setAlwaysOnTop(true);
-    button->setHorizontalAlignment(HA_RIGHT);
-    button->setVerticalAlignment(VA_CENTRE);
+    button->setHorizontalAlignment(HorizontalAlignment::RIGHT);
+    button->setVerticalAlignment(VerticalAlignment::CENTRE);
     button->setAlwaysOnTop(true);
 
     return button;

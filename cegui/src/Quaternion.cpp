@@ -76,7 +76,7 @@ String QuaternionSlerpInterpolator::interpolateRelativeMultiply(
                                             const String& /*value2*/,
                                             float /*position*/)
 {
-    throw InvalidRequestException("AM_RelativeMultiply doesn't make sense "
+    throw InvalidRequestException("ApplicationMethod::RELATIVE_MULTIPLY doesn't make sense "
         "with Quaternions! Please use absolute or relative application method.");
 
     return Helper::toString(glm::quat(1, 0, 0, 0));

@@ -66,7 +66,7 @@ const String Config_xmlHandler::NameAttribute("name");
 
 //----------------------------------------------------------------------------//
 Config_xmlHandler::Config_xmlHandler() :
-    d_logLevel(Standard)
+    d_logLevel(LoggingLevel::STANDARD)
 {
 }
 
@@ -116,7 +116,7 @@ void Config_xmlHandler::elementStart(const String& element,
         handleDefaultTooltipElement(attributes);
     else
         Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", Errors);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//
@@ -141,14 +141,14 @@ void Config_xmlHandler::handleLoggingElement(const XMLAttributes& attr)
 
     const String logLevel(attr.getValueAsString(LevelAttribute, ""));
 
-    if (logLevel == "Errors")
-        d_logLevel = Errors;
-    else if (logLevel == "Informative")
-        d_logLevel = Informative;
-    else if (logLevel == "Insane")
-        d_logLevel = Insane;
+    if (logLevel == "LoggingLevel::LOG_ERROR")
+        d_logLevel = LoggingLevel::LOG_ERROR;
+    else if (logLevel == "LoggingLevel::INFORMATIVE")
+        d_logLevel = LoggingLevel::INFORMATIVE;
+    else if (logLevel == "LoggingLevel::INSANE")
+        d_logLevel = LoggingLevel::INSANE;
     else
-        d_logLevel = Standard;
+        d_logLevel = LoggingLevel::STANDARD;
 }
 
 //----------------------------------------------------------------------------//
@@ -262,31 +262,31 @@ void Config_xmlHandler::initialiseDefaultResourceGroups() const
     {
         switch ((*i).type)
         {
-        case RT_IMAGESET:
+        case ResourceType::IMAGESET:
             ImageManager::setImagesetDefaultResourceGroup((*i).group);
             break;
 
-        case RT_FONT:
+        case ResourceType::FONT:
             Font::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_SCHEME:
+        case ResourceType::SCHEME:
             Scheme::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_LOOKNFEEL:
+        case ResourceType::LOOKNFEEL:
             WidgetLookManager::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_LAYOUT:
+        case ResourceType::LAYOUT:
             WindowManager::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_SCRIPT:
+        case ResourceType::SCRIPT:
             ScriptModule::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_XMLSCHEMA:
+        case ResourceType::XMLSCHEMA:
             if (System::getSingleton().getXMLParser()->
                 isPropertyPresent("SchemaDefaultResourceGroup"))
             {
@@ -311,19 +311,19 @@ void Config_xmlHandler::loadAutoResources() const
     {
         switch ((*i).type)
         {
-        case RT_IMAGESET:
+        case ResourceType::IMAGESET:
             autoLoadImagesets((*i).pattern, (*i).group);
             break;
 
-        case RT_FONT:
+        case ResourceType::FONT:
             FontManager::getSingleton().createAll((*i).pattern, (*i).group);
             break;
 
-        case RT_SCHEME:
+        case ResourceType::SCHEME:
             SchemeManager::getSingleton().createAll((*i).pattern, (*i).group);
             break;
 
-        case RT_LOOKNFEEL:
+        case ResourceType::LOOKNFEEL:
             autoLoadLookNFeels((*i).pattern, (*i).group);
             break;
 
@@ -378,21 +378,21 @@ Config_xmlHandler::ResourceType Config_xmlHandler::stringToResourceType(
     const String& type) const
 {
     if (type == "Imageset")
-        return RT_IMAGESET;
+        return ResourceType::IMAGESET;
     else if (type == "Font")
-        return RT_FONT;
+        return ResourceType::FONT;
     else if (type == "Scheme")
-        return RT_SCHEME;
+        return ResourceType::SCHEME;
     else if (type == "LookNFeel")
-        return RT_LOOKNFEEL;
+        return ResourceType::LOOKNFEEL;
     else if (type == "Layout")
-        return RT_LAYOUT;
+        return ResourceType::LAYOUT;
     else if (type == "Script")
-        return RT_SCRIPT;
+        return ResourceType::SCRIPT;
     else if (type == "XMLSchema")
-        return RT_XMLSCHEMA;
+        return ResourceType::XMLSCHEMA;
     else
-        return RT_DEFAULT;
+        return ResourceType::DEFAULT;
 }
 
 //----------------------------------------------------------------------------//

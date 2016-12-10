@@ -136,9 +136,9 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
             CoordConverter::asAbsolute(wnd->getPosition(), d_pixelSize),
             wnd->getPixelSize());
 
-        if (wnd->getHorizontalAlignment() == HA_CENTRE)
+        if (wnd->getHorizontalAlignment() == HorizontalAlignment::CENTRE)
             area.setPosition(area.getPosition() - glm::vec2(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
-        if (wnd->getVerticalAlignment() == VA_CENTRE)
+        if (wnd->getVerticalAlignment() == VerticalAlignment::CENTRE)
             area.setPosition(area.getPosition() - glm::vec2(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
 
         if (area.d_min.x < extents.d_min.x)

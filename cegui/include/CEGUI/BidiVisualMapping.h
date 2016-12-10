@@ -39,11 +39,11 @@
 namespace CEGUI
 {
 //! Enumeration of possible character classes, used for bi-directional text.
-enum BidiCharType
+enum BidiCharType : int
 {
-    BCT_RIGHT_TO_LEFT,
-    BCT_LEFT_TO_RIGHT,
-    BCT_NEUTRAL
+    RIGHT_TO_LEFT,
+    LEFT_TO_RIGHT,
+    NEUTRAL
 };
 
 //! Abstract class to wrap a Bidi visual mapping of a text string.

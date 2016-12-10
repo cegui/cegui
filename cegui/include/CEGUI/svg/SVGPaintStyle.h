@@ -70,23 +70,23 @@ public:
     \brief
         Specifies the shape which shall be used at the end of open subpaths when they are stroked.
     */
-    enum SVGLinecap
+    enum class SvgLinecap : int
     {
         //! A simple linear cap through the endpoint.
-        SLC_BUTT,
+        BUTT,
         //! A rounded cap with the endpoint as center.
-        SLC_ROUND,
+        ROUND,
         //! A simple linear cap that is offset from the endpoint by the stroke width.
-        SLC_SQUARE,
+        SQUARE,
 
-        SLC_COUNT
+        COUNT
     };
 
     /*!
     \brief
         Specifies the shape which shall be used at the corners of shapes when they are stroked. 
     */
-    enum SVGLinejoin
+    enum class SVGLinejoin : int
     {
         /*!
         \brief
@@ -94,13 +94,13 @@ public:
             by the value set for stroke-miterlimit. In the case the miter is exceedingly long a bevel
             linejoin will then be used for that corner.
         */
-        SLJ_MITER,
+        MITER,
         //! A rounded linejoin.
-        SLJ_ROUND,
+        ROUND,
         //! A linejoin with two corners.
-        SLJ_BEVEL,
+        BEVEL,
 
-        SLJ_COUNT
+        COUNT
     };
 
 
@@ -138,7 +138,7 @@ public:
     \brief
         Specifies the shape which shall be used at the end of open subpaths when they are stroked.
     */
-    SVGLinecap d_strokeLinecap;
+    SvgLinecap d_strokeLinecap;
 
     /*!
     \brief

@@ -86,19 +86,19 @@ public:
     Enumeration that specifies which type of data is required from the ItemModel
     in order for the view to render it.
 
-    Users can use the IDR_User member as a starting base for custom roles. Anything
+    Users can use the ItemDataRole::User member as a starting base for custom roles. Anything
     below is reserved for CEGUI usage.
 */
-enum ItemDataRole
+enum class ItemDataRole : int
 {
-    IDR_Text,
+    TEXT,
     //! The string returned for the icon must be an image name that can
     //! retrieved from ImageManager
-    IDR_Icon,
-    IDR_Tooltip,
+    ICON,
+    TOOLTIP,
 
     //! This marks the beginning of the user-defined item data roles
-    IDR_User = 0x1000
+    USER = 0x1000
 };
 
 /*
@@ -281,7 +281,7 @@ public:
         }
         \endcode
     */
-    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text) = 0;
+    virtual String getData(const ModelIndex& model_index, ItemDataRole role = ItemDataRole::TEXT) = 0;
 
     /*!
     \brief

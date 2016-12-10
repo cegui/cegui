@@ -225,14 +225,14 @@ private:
 	\brief
 		Enumeration that defines how two lines are or are not intersecting with each other.
 	*/
-    enum LineIntersectResult
+    enum class LineIntersectResult : int
     {
-        LIR_PARALLEL,
-        LIR_COINCIDENT,
-        LIR_NOT_INTERSECTING,
-        LIR_INTERESECTING,
+        PARALLEL,
+        COINCIDENT,
+        NOT_INTERSECTING,
+        INTERSECTING,
 
-        LIR_COUNT
+        COUNT
     };
 
     //! Constructor.

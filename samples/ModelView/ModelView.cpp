@@ -233,9 +233,9 @@ bool ModelViewSample::toggleMultiSelect(const EventArgs&)
 bool ModelViewSample::toggleSorting(const EventArgs&)
 {
     Window* switch_button = d_root->getChild("btnSwitchSortingMode");
-    ViewSortMode sort_mode = d_listView->getSortMode();
+    int sortMode = static_cast<int>(d_listView->getSortMode());
 
-    ViewSortMode next_sort_mode = static_cast<ViewSortMode>((sort_mode + 1) % 3);
+    ViewSortMode next_sort_mode = static_cast<ViewSortMode>((sortMode + 1) % 3);
 
     d_listView->setSortMode(next_sort_mode);
     d_treeView->setSortMode(next_sort_mode);

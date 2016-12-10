@@ -106,7 +106,7 @@ static void dumpBacktrace(size_t frames)
     symbol->MaxNameLen = sizeof(symbol_buffer) - sizeof(SYMBOL_INFO);
 
     Logger& logger(Logger::getSingleton());
-    logger.logEvent("========== Start of Backtrace ==========", Errors);
+    logger.logEvent("========== Start of Backtrace ==========", LoggingLevel::LOG_ERROR);
 
     size_t frame_no = 0;
     while (StackWalk64(machine_arch, GetCurrentProcess(), thread, &stackframe,
@@ -141,7 +141,7 @@ static void dumpBacktrace(size_t frames)
         sstream << " (" << have_image_name ? modinfo.LoadedImageName : "????";
         sstream << ")";
 
-        logger.logEvent(CEGUI::String(sstream.str()), Errors);
+        logger.logEvent(CEGUI::String(sstream.str()), LoggingLevel::LOG_ERROR);
 
         if (++frame_no >= frames)
             break;
@@ -150,7 +150,7 @@ static void dumpBacktrace(size_t frames)
             break;
     }
 
-    logger.logEvent("==========  End of Backtrace  ==========", Errors);
+    logger.logEvent("==========  End of Backtrace  ==========", LoggingLevel::LOG_ERROR);
 
     SymCleanup(GetCurrentProcess());
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
@@ -159,7 +159,7 @@ static void dumpBacktrace(size_t frames)
 
     Logger& logger(Logger::getSingleton());
 
-    logger.logEvent("========== Start of Backtrace ==========", Errors);
+    logger.logEvent("========== Start of Backtrace ==========", LoggingLevel::LOG_ERROR);
 
     for (int i = 0; i < received; ++i)
     {
@@ -198,10 +198,10 @@ static void dumpBacktrace(size_t frames)
             outstr = sstream.str();
         }
 
-        logger.logEvent(outstr, Errors);
+        logger.logEvent(outstr, LoggingLevel::LOG_ERROR);
     }
 
-    logger.logEvent("==========  End of Backtrace  ==========", Errors);
+    logger.logEvent("==========  End of Backtrace  ==========", LoggingLevel::LOG_ERROR);
 
 #else
 
@@ -233,7 +233,7 @@ Exception::Exception(const String& message, const String& name,
     // Log exception if possible
     if (Logger* const logger = Logger::getSingletonPtr())
     {
-        logger->logEvent(d_what, Errors);
+        logger->logEvent(d_what, LoggingLevel::LOG_ERROR);
         dumpBacktrace(64);
     }
 

@@ -54,12 +54,12 @@ namespace CEGUI
         \brief
             Enumerated type specifying possible input and/or display modes for the spinner.
         */
-        enum TextInputMode
+        enum class TextInputMode : int
         {
-            FloatingPoint,  //!< Floating point decimal.
-            Integer,        //!< Integer decimal.
-            Hexadecimal,    //!< Hexadecimal.
-            Octal           //!< Octal
+            FLOATING_POINT, //!< Floating point decimal.
+            INTEGER,        //!< Integer decimal.
+            HEXADECIMAL,    //!< Hexadecimal.
+            OCTAL           //!< Octal
         };
 
         /*************************************************************************
@@ -441,37 +441,37 @@ public:
     {
         if (str == "FloatingPoint")
         {
-            return Spinner::FloatingPoint;
+            return Spinner::TextInputMode::FLOATING_POINT;
         }
         else if (str == "Hexadecimal")
         {
-            return Spinner::Hexadecimal;
+            return Spinner::TextInputMode::HEXADECIMAL;
         }
         else if (str == "Octal")
         {
-            return Spinner::Octal;
+            return Spinner::TextInputMode::OCTAL;
         }
         else
         {
-            return Spinner::Integer;
+            return Spinner::TextInputMode::INTEGER;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == Spinner::Octal)
+        if (val == Spinner::TextInputMode::OCTAL)
         {
             return "Octal";
         }
-        else if (val == Spinner::FloatingPoint)
+        else if (val == Spinner::TextInputMode::FLOATING_POINT)
         {
             return "FloatingPoint";
         }
-        else if (val == Spinner::Hexadecimal)
+        else if (val == Spinner::TextInputMode::HEXADECIMAL)
         {
             return "Hexadecimal";
         }
-        else if (val == Spinner::Integer)
+        else if (val == Spinner::TextInputMode::INTEGER)
         {
             return "Integer";
         }

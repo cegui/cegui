@@ -391,9 +391,9 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferTextured(CEGUI::RefCount
 {
     Direct3D11GeometryBuffer* geom_buffer = new Direct3D11GeometryBuffer(*this, renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
-    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
@@ -405,8 +405,8 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferColoured(CEGUI::RefCount
 {
     Direct3D11GeometryBuffer* geom_buffer = new Direct3D11GeometryBuffer(*this, renderMaterial);
 
-    geom_buffer->addVertexAttribute(VAT_POSITION0);
-    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);

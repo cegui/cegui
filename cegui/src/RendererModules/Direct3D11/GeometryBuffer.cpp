@@ -196,14 +196,14 @@ void Direct3D11GeometryBuffer::cleanupVertexBuffer() const
 void Direct3D11GeometryBuffer::drawDependingOnFillRule() const
 {
     //TODO IDENT
-/*    if(d_polygonFillRule == PFR_NONE)
+/*    if(d_polygonFillRule == PolygonFillRule::NONE)
     {
     */
 
         d_deviceContext->Draw(d_vertexCount, 0);
             /* 
     }
-    else if(d_polygonFillRule == PFR_EVEN_ODD)
+    else if(d_polygonFillRule == PolygonFillRule::EVEN_ODD)
 //....
 */
 }
@@ -221,7 +221,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
     {
         switch(d_vertexAttributes.at(i))
         {
-        case VAT_POSITION0:
+        case VertexAttributeType::POSITION0:
             {
                 D3D11_INPUT_ELEMENT_DESC inputEleDescription = {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, dataOffset, D3D11_INPUT_PER_VERTEX_DATA, 0};
                 vertexLayoutVector.push_back( inputEleDescription );
@@ -229,7 +229,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
                 dataOffset += 12;
             }
             break;
-        case VAT_COLOUR0:
+        case VertexAttributeType::COLOUR0:
             {
                 D3D11_INPUT_ELEMENT_DESC inputEleDescription = {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, dataOffset, D3D11_INPUT_PER_VERTEX_DATA, 0};
                 vertexLayoutVector.push_back(inputEleDescription);
@@ -237,7 +237,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
                 dataOffset += 16;
             }
             break;
-        case VAT_TEXCOORD0:
+        case VertexAttributeType::TEXCOORD0:
             {
                 D3D11_INPUT_ELEMENT_DESC inputEleDescription = {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, dataOffset, D3D11_INPUT_PER_VERTEX_DATA, 0};
                 vertexLayoutVector.push_back(inputEleDescription);

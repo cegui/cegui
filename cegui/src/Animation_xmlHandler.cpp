@@ -107,7 +107,7 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", Errors);
+            "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//
@@ -119,7 +119,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementEnd: "
-            "</" + element + "> is invalid at this location.", Errors);
+            "</" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//
@@ -149,11 +149,11 @@ AnimationDefinitionHandler::AnimationDefinitionHandler(
     const String replayMode(attributes.getValueAsString(ReplayModeAttribute,
                                                         ReplayModeLoop));
     if (replayMode == ReplayModeOnce)
-        d_anim->setReplayMode(Animation::RM_Once);
+        d_anim->setReplayMode(Animation::ReplayMode::PLAY_ONCE);
     else if (replayMode == ReplayModeBounce)
-        d_anim->setReplayMode(Animation::RM_Bounce);
+        d_anim->setReplayMode(Animation::ReplayMode::BOUNCE);
     else
-        d_anim->setReplayMode(Animation::RM_Loop);
+        d_anim->setReplayMode(Animation::ReplayMode::LOOP);
 
     d_anim->setAutoStart(attributes.getValueAsBool(AutoStartAttribute));
 }
@@ -175,7 +175,7 @@ void AnimationDefinitionHandler::elementStartLocal(
     else
         Logger::getSingleton().logEvent(
             "AnimationDefinitionHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", Errors);
+            "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//
@@ -208,16 +208,16 @@ AnimationAffectorHandler::AnimationAffectorHandler(
     if (attributes.getValueAsString(ApplicationMethodAttribute) ==
         ApplicationMethodRelative)
     {
-        d_affector->setApplicationMethod(Affector::AM_Relative);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::APPLY_RELATIVE);
     }
 	else if (attributes.getValueAsString(ApplicationMethodAttribute) ==
         ApplicationMethodRelativeMultiply)
     {
-        d_affector->setApplicationMethod(Affector::AM_RelativeMultiply);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::APPLY_RELATIVE_MULTIPLY);
     }
     else
     {
-        d_affector->setApplicationMethod(Affector::AM_Absolute);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::APPLY_ABSOLUTE);
     }
 }
 
@@ -236,7 +236,7 @@ void AnimationAffectorHandler::elementStartLocal(
     else
         Logger::getSingleton().logEvent(
             "AnimationAffectorHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", Errors);
+            "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//
@@ -270,13 +270,13 @@ AnimationKeyFrameHandler::AnimationKeyFrameHandler(
 
     KeyFrame::Progression progression;
     if (progressionStr == ProgressionDiscrete)
-        progression = KeyFrame::P_Discrete;
+        progression = KeyFrame::Progression::DISCRETE;
     else if (progressionStr == ProgressionQuadraticAccelerating)
-        progression = KeyFrame::P_QuadraticAccelerating;
+        progression = KeyFrame::Progression::QUADRATIC_ACCELERATING;
     else if (progressionStr == ProgressionQuadraticDecelerating)
-        progression = KeyFrame::P_QuadraticDecelerating;
+        progression = KeyFrame::Progression::QUADRATIC_DECELERATING;
     else
-        progression = KeyFrame::P_Linear;
+        progression = KeyFrame::Progression::LINEAR;
 
     affector.createKeyFrame(
         attributes.getValueAsFloat(PositionAttribute),
@@ -304,7 +304,7 @@ void AnimationKeyFrameHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "<" + element + "> is invalid at this location.", Errors);
+        "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//
@@ -346,7 +346,7 @@ void AnimationSubscriptionHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "</" + element + "> is invalid at this location.", Errors);
+        "</" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
 }
 
 //----------------------------------------------------------------------------//

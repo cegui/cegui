@@ -1960,7 +1960,7 @@ void Window::setLookNFeel(const String& look)
 
     d_lookName = look;
     Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +
-        "' to window '" + d_name + "'.", Informative);
+        "' to window '" + d_name + "'.", LoggingLevel::INFORMATIVE);
 
     // Work to initialise the look and feel...
     const WidgetLookFeel& wlf = wlMgr.getWidgetLook(look);
@@ -2029,7 +2029,7 @@ void Window::layoutLookNFeelChildWidgets()
     {
         Logger::getSingleton().logEvent(
             "Window::layoutLookNFeelChildWidgets: "
-            "WidgetLook '" + d_lookName + "' was not found.", Errors);
+            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::LOG_ERROR);
     }
 }
 
@@ -2107,7 +2107,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                 // This catches errors from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent(
                     "Window::writePropertiesXML: property receiving failed.  "
-                    "Continuing...", Errors);
+                    "Continuing...", LoggingLevel::LOG_ERROR);
             }
         }
 
@@ -2780,7 +2780,7 @@ void Window::setWindowRenderer(const String& name)
     if (!name.empty())
     {
         Logger::getSingleton().logEvent("Assigning the window renderer '" +
-            name + "' to the window '" + d_name + "'", Informative);
+            name + "' to the window '" + d_name + "'", LoggingLevel::INFORMATIVE);
         d_windowRenderer = wrm.createWindowRenderer(name);
         WindowEventArgs e(this);
         onWindowRendererAttached(e);
@@ -2843,7 +2843,7 @@ void Window::banPropertyFromXML(const String& property_name)
 	{
 		Logger::getSingleton().logEvent("Property '" + property_name + "' "
 				"is not writable so it's implicitly banned from XML. No need "
-				"to ban it manually", Warnings);
+				"to ban it manually", LoggingLevel::WARNING);
 
 		return;
 	}
@@ -3292,7 +3292,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
         {
             Logger::getSingleton().logEvent("Window::allocateRenderingWindow - "
                 "Failed to create a suitable TextureTarget for use by Window '"
-                + d_name + "'", Errors);
+                + d_name + "'", LoggingLevel::LOG_ERROR);
 
             d_surface = nullptr;
             return;
@@ -3400,7 +3400,7 @@ void Window::onRotated(ElementEventArgs& e)
             Logger::getSingleton().logEvent("Window::setRotation - "
                 "Failed to obtain a suitable ReneringWindow surface for "
                 "Window '" + d_name + "'.  Rotation will not be available.",
-                Errors);
+                LoggingLevel::LOG_ERROR);
 
             return;
         }
@@ -3413,7 +3413,7 @@ void Window::onRotated(ElementEventArgs& e)
         {
             Logger::getSingleton().logEvent("Window::setRotation - "
                 "Window '" + d_name + "' has a manual RenderingSurface that is not "
-                "a RenderingWindow.  Rotation will not be available.", Errors);
+                "a RenderingWindow.  Rotation will not be available.", LoggingLevel::LOG_ERROR);
 
             return;
         }

@@ -43,28 +43,28 @@
 namespace CEGUI
 {
 
-enum AutoScaledMode
+enum class AutoScaledMode : int
 {
     //! No auto scaling takes place
-    ASM_Disabled,
+    Disabled,
     /*!
     Objects are auto scaled depending on their original height and current
     resolution height. Horizontal scaling is computed to keep aspect ratio.
     */
-    ASM_Vertical,
+    Vertical,
     /*!
     Objects are auto scaled depending on their original width and current
     resolution width. Horizontal scaling is computed to keep aspect ratio.
     */
-    ASM_Horizontal,
+    Horizontal,
     /*!
     Objects are auto scaled by the smaller scaling factor of the two.
     */
-    ASM_Min,
+    Min,
     /*!
     Objects are auto scaled by the larger scaling factor of the two.
     */
-    ASM_Max,
+    Max,
     /*!
     Objects are auto scaled depending on their original size and current
     resolution. Both dimensions are scaled accordingly.
@@ -72,7 +72,7 @@ enum AutoScaledMode
     This was the only auto scaling behavior available in 0.7 and it might
     break aspect ratios!
     */
-    ASM_Both
+    Both
 };
 
 
@@ -96,53 +96,53 @@ public:
     {
         if (str == "vertical")
         {
-            return ASM_Vertical;
+            return AutoScaledMode::Vertical;
         }
         else if (str == "horizontal")
         {
-            return ASM_Horizontal;
+            return AutoScaledMode::Horizontal;
         }
         else if (str == "min")
         {
-            return ASM_Min;
+            return AutoScaledMode::Min;
         }
         else if (str == "max")
         {
-            return ASM_Max;
+            return AutoScaledMode::Max;
         }
         else if (str == "true" || str == "True")
         {
-            return ASM_Both;
+            return AutoScaledMode::Both;
         }
         else
         {
-            return ASM_Disabled;
+            return AutoScaledMode::Disabled;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == ASM_Disabled)
+        if (val == AutoScaledMode::Disabled)
         {
             return "false";
         }
-        else if (val == ASM_Vertical)
+        else if (val == AutoScaledMode::Vertical)
         {
             return "vertical";
         }
-        else if (val == ASM_Horizontal)
+        else if (val == AutoScaledMode::Horizontal)
         {
             return "horizontal";
         }
-        else if (val == ASM_Min)
+        else if (val == AutoScaledMode::Min)
         {
             return "min";
         }
-        else if (val == ASM_Max)
+        else if (val == AutoScaledMode::Max)
         {
             return "max";
         }
-        else if (val == ASM_Both)
+        else if (val == AutoScaledMode::Both)
         {
             return "true";
         }

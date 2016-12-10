@@ -493,10 +493,10 @@ Window* GUIContext::getInputTargetWindow() const
 //----------------------------------------------------------------------------//
 bool GUIContext::injectInputEvent(const InputEvent& event)
 {
-    if (event.d_eventType == IET_TextInputEventType)
+    if (event.d_eventType == InputEventType::TextInputEventType)
         return handleTextInputEvent(static_cast<const TextInputEvent&>(event));
 
-    if (event.d_eventType == IET_SemanticInputEventType)
+    if (event.d_eventType == InputEventType::SemanticInputEventType)
     {
         const SemanticInputEvent& semantic_event =
             static_cast<const SemanticInputEvent&>(event);

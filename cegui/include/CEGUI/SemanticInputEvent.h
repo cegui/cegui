@@ -164,7 +164,7 @@ class CEGUIEXPORT SemanticInputEvent : public InputEvent
 {
 public:
     SemanticInputEvent(int value) :
-        InputEvent(IET_SemanticInputEventType),
+        InputEvent(InputEventType::SemanticInputEventType),
         d_value(value),
         d_payload()
     {

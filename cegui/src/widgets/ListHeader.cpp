@@ -85,7 +85,7 @@ ListHeader::ListHeader(const String& type, const String& name) :
 	d_movingEnabled(true),
 	d_uniqueIDNumber(0),
 	d_segmentOffset(0.0f),
-	d_sortDir(ListHeaderSegment::None)
+	d_sortDir(ListHeaderSegment::SortDirection::NONE)
 {
 	addHeaderProperties();
 }
@@ -429,7 +429,7 @@ void ListHeader::setSortColumn(unsigned int column)
 			// set sort direction on 'old' sort segment to none.
 			if (d_sortSegment)
 			{
-				d_sortSegment->setSortDirection(ListHeaderSegment::None);
+				d_sortSegment->setSortDirection(ListHeaderSegment::SortDirection::NONE);
 			}
 
 			// set-up new sort segment
@@ -566,7 +566,7 @@ void ListHeader::removeColumn(unsigned int column)
 			if (getColumnCount() > 0)
 			{
 				// put first column in as sort column
-				d_sortDir = ListHeaderSegment::None;
+				d_sortDir = ListHeaderSegment::SortDirection::NONE;
 				setSortColumn(0);
 			}
 			// no columns, set sort segment to NULL
@@ -957,7 +957,7 @@ bool ListHeader::segmentClickedHandler(const EventArgs& e)
 		// is this a new sort column?
 		if (d_sortSegment != seg)
 		{
-			d_sortDir = ListHeaderSegment::Descending;
+			d_sortDir = ListHeaderSegment::SortDirection::DESCENDING;
 			setSortSegment(*seg);
 		}
 		// not a new segment, toggle current direction
@@ -968,16 +968,16 @@ bool ListHeader::segmentClickedHandler(const EventArgs& e)
 			// set new direction based on the current value.
 			switch (currDir)
 			{
-			case ListHeaderSegment::None:
-				setSortDirection(ListHeaderSegment::Descending);
+			case ListHeaderSegment::SortDirection::NONE:
+				setSortDirection(ListHeaderSegment::SortDirection::DESCENDING);
 				break;
 
-			case ListHeaderSegment::Ascending:
-				setSortDirection(ListHeaderSegment::Descending);
+			case ListHeaderSegment::SortDirection::ASCENDING:
+				setSortDirection(ListHeaderSegment::SortDirection::DESCENDING);
 				break;
 
-			case ListHeaderSegment::Descending:
-				setSortDirection(ListHeaderSegment::Ascending);
+			case ListHeaderSegment::SortDirection::DESCENDING:
+				setSortDirection(ListHeaderSegment::SortDirection::ASCENDING);
 				break;
 			}
 
@@ -1070,7 +1070,7 @@ void ListHeader::addHeaderProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ListHeader, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.",
-        &ListHeader::setSortDirection, &ListHeader::getSortDirection, ListHeaderSegment::None
+        &ListHeader::setSortDirection, &ListHeader::getSortDirection, ListHeaderSegment::SortDirection::NONE
     );
 }
 

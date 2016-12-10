@@ -59,29 +59,29 @@ class CEGUIEXPORT SVGData :
 {
 public:
     //! Enumerator describing the available unit types in the SVG standard for the length type
-    enum SVGUnit
+    enum class SvgLengthUnit : int
     {
-        SLU_UNDEFINED,
-        SLU_IN,
-        SLU_CM,
-        SLU_MM,
-        SLU_PT,
-        SLU_PC,
-        SLU_PX,
-        SLU_PERCENT,
+        UNDEFINED,
+        IN,
+        CM,
+        MM,
+        PT,
+        PC,
+        PX,
+        PERCENT,
 
-        SLU_COUNT
+        COUNT
     };
 
     struct SVGLength
     {
         SVGLength() :
             d_value(0.f),
-            d_unit(SLU_UNDEFINED)
+            d_unit(SvgLengthUnit::UNDEFINED)
         {}
 
         float           d_value;
-        SVGUnit         d_unit;
+        SvgLengthUnit   d_unit;
     };
 
     SVGData(const String& name);
