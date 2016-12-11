@@ -107,7 +107,7 @@ void PixmapFont::reinit()
 //----------------------------------------------------------------------------//
 void PixmapFont::updateFont()
 {
-    const float factor = (d_autoScaled != AutoScaledMode::Disabled ? d_horzScaling : 1.0f) / d_origHorzScaling;
+    const float factor = (d_autoScaled != AutoScaledMode::DISABLED ? d_horzScaling : 1.0f) / d_origHorzScaling;
 
     d_ascender = 0;
     d_descender = 0;
@@ -140,7 +140,7 @@ void PixmapFont::updateFont()
     d_descender = -d_descender;
     d_height = d_ascender - d_descender;
 
-    d_origHorzScaling = d_autoScaled != AutoScaledMode::Disabled ? d_horzScaling : 1.0f;
+    d_origHorzScaling = d_autoScaled != AutoScaledMode::DISABLED ? d_horzScaling : 1.0f;
 }
 
 //----------------------------------------------------------------------------//
@@ -171,7 +171,7 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
         static_cast<float>(static_cast<int>(image.getRenderedSize().d_width + image.getRenderedOffset().x)) :
         horzAdvance;
 
-    if (d_autoScaled != AutoScaledMode::Disabled)
+    if (d_autoScaled != AutoScaledMode::DISABLED)
         adv *= d_origHorzScaling;
 
     if (codePoint > d_maxCodepoint)

@@ -110,7 +110,7 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     //Here we create a font and apply it to the renew font name button
     CEGUI::Font& buttonFont = fontManager.createFreeTypeFont(
         "DejaVuSans-14", 14.f, FontSizeUnit::FSU_POINTS, true, "DejaVuSans.ttf",
-        Font::getDefaultResourceGroup(), AutoScaledMode::Vertical, CEGUI::Sizef(1280.0f, 720.0f));
+        Font::getDefaultResourceGroup(), AutoScaledMode::VERTICAL, CEGUI::Sizef(1280.0f, 720.0f));
 
     d_renewFontNameButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontsSampleWindow/FontCreator/RenewNameButton"));
     d_renewFontNameButton->setFont(&buttonFont);
@@ -571,37 +571,37 @@ void FontsSample::initialiseSampleFonts()
     FontManager& fontManager(FontManager::getSingleton());
     fontManager.createFreeTypeFont("Junicode-14", 14.f, FontSizeUnit::FSU_PIXELS,
         true, "Junicode.ttf", Font::getDefaultResourceGroup(), 
-        AutoScaledMode::Vertical, CEGUI::Sizef(1280.0f, 720.0f));
+        AutoScaledMode::VERTICAL, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("Klingon-pIqaD-HaSta-24", 24.f, FontSizeUnit::FSU_PIXELS,
         true, "Klingon-pIqaD-HaSta.ttf", Font::getDefaultResourceGroup(),
-        AutoScaledMode::Vertical, CEGUI::Sizef(1280.0f, 720.0f));
+        AutoScaledMode::VERTICAL, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("TnuaLibre-12", 12.f, FontSizeUnit::FSU_PIXELS,
         true, "Tnua-Libre.ttf", Font::getDefaultResourceGroup(),
-        AutoScaledMode::Vertical, CEGUI::Sizef(1280.0f, 720.0f));
+        AutoScaledMode::VERTICAL, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("RichStyle-22", 22.f, FontSizeUnit::FSU_POINTS,
         true, "RichStyle.ttf", Font::getDefaultResourceGroup(),     
-        AutoScaledMode::Vertical, CEGUI::Sizef(1280.0f, 720.0f));
+        AutoScaledMode::VERTICAL, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("FetteUNZFraktur-20", 20.0f, FontSizeUnit::FSU_POINTS,
         true, "FetteClassicUNZFraktur.ttf", Font::getDefaultResourceGroup(),
-        AutoScaledMode::Disabled, CEGUI::Sizef(1280.0f, 720.0f));
+        AutoScaledMode::DISABLED, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("GreatVibes-22", 22.f, FontSizeUnit::FSU_POINTS,
         true, "GreatVibes-Regular.ttf", Font::getDefaultResourceGroup(),
-        AutoScaledMode::Disabled, CEGUI::Sizef(1280.0f, 720.0f));
+        AutoScaledMode::DISABLED, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("FellType-12.5", 12.5f, FontSizeUnit::FSU_POINTS,
-        true, "IMFePIrm29P.ttf", Font::getDefaultResourceGroup(), AutoScaledMode::Disabled,
+        true, "IMFePIrm29P.ttf", Font::getDefaultResourceGroup(), AutoScaledMode::DISABLED,
         CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("FutharkAdapted-18", 18.f, FontSizeUnit::FSU_POINTS,
-        true, "Futhark Adapted.ttf", Font::getDefaultResourceGroup(), AutoScaledMode::Disabled,
+        true, "Futhark Adapted.ttf", Font::getDefaultResourceGroup(), AutoScaledMode::DISABLED,
         CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("mizufalp-12", 12.f, FontSizeUnit::FSU_POINTS,
-        true, "mizufalp.ttf", Font::getDefaultResourceGroup(), AutoScaledMode::Disabled,
+        true, "mizufalp.ttf", Font::getDefaultResourceGroup(), AutoScaledMode::DISABLED,
         CEGUI::Sizef(1280.0f, 720.0f));
 }

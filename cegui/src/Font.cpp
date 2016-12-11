@@ -467,7 +467,7 @@ void Font::notifyDisplaySizeChanged(const Sizef& size)
     Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution,
         d_horzScaling, d_vertScaling);
 
-    if (d_autoScaled != AutoScaledMode::Disabled)
+    if (d_autoScaled != AutoScaledMode::DISABLED)
     {
         updateFont();
 
@@ -502,7 +502,7 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
         xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
             PropertyHelper<std::uint32_t>::toString(static_cast<std::uint32_t>(d_nativeResolution.d_height)));
 
-    if (d_autoScaled != AutoScaledMode::Disabled)
+    if (d_autoScaled != AutoScaledMode::DISABLED)
         xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute,
             PropertyHelper<AutoScaledMode>::toString(d_autoScaled));
 

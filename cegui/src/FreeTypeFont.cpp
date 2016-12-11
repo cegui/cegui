@@ -258,7 +258,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                     const glm::vec2 offset(0, 0);
                     const String name(PropertyHelper<std::uint32_t>::toString(s->first));
                     BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
+                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::DISABLED,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second->setImage(img);
@@ -297,7 +297,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
 
                     const String name(PropertyHelper<std::uint32_t>::toString(s->first));
                     BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
+                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::DISABLED,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second->setImage(img);
@@ -502,7 +502,7 @@ void FreeTypeFont::updateFont()
     checkUnicodeCharMapAvailability();
     
     float fontScaleFactor = System::getSingleton().getRenderer()->getFontScale();
-    if (d_autoScaled != AutoScaledMode::Disabled)
+    if (d_autoScaled != AutoScaledMode::DISABLED)
     {
         fontScaleFactor *= d_vertScaling;
     }
