@@ -299,7 +299,7 @@ OpenGLBaseStateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors(__FILE__, __LINE__, CEGUI_FUNCTION_NAME);
-    d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, SHADER_GLSL);
+    d_shaderManager = new OpenGLBaseShaderManager(d_openGLStateChanger, ShaderVersion::GLSL);
     d_shaderManager->initialiseShaders();
 
     initialiseStandardTexturedShaderWrapper();
@@ -333,7 +333,7 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 {
-    OpenGLBaseShader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
+    OpenGLBaseShader* shader_standard_textured =  d_shaderManager->getShader(OpenGLBaseShaderID::STANDARD_TEXTURED);
     d_shaderWrapperTextured = new OpenGLBaseShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
 
     d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
@@ -349,7 +349,7 @@ void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseStandardColouredShaderWrapper()
 {
-    OpenGLBaseShader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
+    OpenGLBaseShader* shader_standard_solid =  d_shaderManager->getShader(OpenGLBaseShaderID::STANDARD_SOLID);
     d_shaderWrapperSolid = new OpenGLBaseShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
 
     d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix");

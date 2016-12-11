@@ -49,45 +49,45 @@ void OpenGL1Texture::initInternalPixelFormatFields(const PixelFormat fmt)
 
     switch(fmt)
     {
-    case PF_RGBA:
+    case PixelFormat::RGBA:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB:
+    case PixelFormat::RGB:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB_565:
+    case PixelFormat::RGB_565:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
         break;
 
-    case PF_RGBA_4444:
+    case PixelFormat::RGBA_4444:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
         break;
 
-    case PF_RGB_DXT1:
+    case PixelFormat::RGB_DXT1:
         d_format = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
         d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
-    case PF_RGBA_DXT1:
+    case PixelFormat::RGBA_DXT1:
         d_format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
         d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
-    case PF_RGBA_DXT3:
+    case PixelFormat::RGBA_DXT3:
         d_format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
         d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
-    case PF_RGBA_DXT5:
+    case PixelFormat::RGBA_DXT5:
         d_format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
         d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;

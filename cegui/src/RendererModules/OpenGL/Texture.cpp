@@ -56,14 +56,14 @@ OpenGLTexture::~OpenGLTexture()
 //----------------------------------------------------------------------------//
 void OpenGLTexture::initialise() 
 {
-    initInternalPixelFormatFields(PF_RGBA);
+    initInternalPixelFormatFields(PixelFormat::RGBA);
     generateOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLTexture::initialise(const String& filename, const String& resourceGroup)
 {
-    initInternalPixelFormatFields(PF_RGBA);
+    initInternalPixelFormatFields(PixelFormat::RGBA);
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
@@ -106,7 +106,7 @@ GLint OpenGLTexture::internalFormat() const
 //----------------------------------------------------------------------------//
 void OpenGLTexture::initialise(const Sizef& size)
 {
-    initInternalPixelFormatFields(PF_RGBA);
+    initInternalPixelFormatFields(PixelFormat::RGBA);
     generateOpenGLTexture();
     setTextureSize(size);
 }
@@ -117,7 +117,7 @@ void OpenGLTexture::initialise(GLuint tex, const Sizef& size)
     d_ogltexture = tex;
     d_size = size;
     d_dataSize = size;
-    initInternalPixelFormatFields(PF_RGBA);
+    initInternalPixelFormatFields(PixelFormat::RGBA);
     updateCachedScaleValues();
 }
 
@@ -240,7 +240,7 @@ GLsizei OpenGLTexture::getCompressedTextureSize(const Sizef& pixel_size) const
 //----------------------------------------------------------------------------//
 void OpenGLTexture::setTextureSize(const Sizef& sz)
 {
-    initInternalPixelFormatFields(PF_RGBA);
+    initInternalPixelFormatFields(PixelFormat::RGBA);
 
     setTextureSize_impl(sz);
 
@@ -394,16 +394,16 @@ bool OpenGLTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
     switch (fmt)
     {
-    case PF_RGBA:
-    case PF_RGB:
-    case PF_RGBA_4444:
-    case PF_RGB_565:
+    case PixelFormat::RGBA:
+    case PixelFormat::RGB:
+    case PixelFormat::RGBA_4444:
+    case PixelFormat::RGB_565:
         return true;
 
-    case PF_RGB_DXT1:
-    case PF_RGBA_DXT1:
-    case PF_RGBA_DXT3:
-    case PF_RGBA_DXT5:
+    case PixelFormat::RGB_DXT1:
+    case PixelFormat::RGBA_DXT1:
+    case PixelFormat::RGBA_DXT3:
+    case PixelFormat::RGBA_DXT5:
         return OpenGLInfo::getSingleton().isS3tcSupported();
 
     default:

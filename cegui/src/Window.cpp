@@ -302,7 +302,7 @@ Window::Window(const String& type, const String& name):
     d_hitTestRectValid(false),
 
     // Initial update mode
-    d_updateMode(WUM_VISIBLE),
+    d_updateMode(WindowUpdateMode::VISIBLE),
 
     // Don't propagate cursor inputs by default.
     d_propagatePointerInputs(false),
@@ -1529,7 +1529,7 @@ void Window::addWindowProperties(void)
     CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
         UpdateModePropertyName, "Property to get/set the window update mode setting.  "
         "Value is one of \"Always\", \"Never\" or \"Visible\".",
-        &Window::setUpdateMode,&Window::getUpdateMode, WUM_VISIBLE
+        &Window::setUpdateMode,&Window::getUpdateMode, WindowUpdateMode::VISIBLE
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1626,8 +1626,8 @@ void Window::update(float elapsed)
     for (size_t i = 0; i < getChildCount(); ++i)
     {
         // update children based on their WindowUpdateMode setting.
-        if (getChildAtIdx(i)->d_updateMode == WUM_ALWAYS ||
-                (getChildAtIdx(i)->d_updateMode == WUM_VISIBLE &&
+        if (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::ALWAYS ||
+                (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::VISIBLE &&
                  getChildAtIdx(i)->isVisible()))
         {
             getChildAtIdx(i)->update(elapsed);

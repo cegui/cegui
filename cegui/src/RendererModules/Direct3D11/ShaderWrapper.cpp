@@ -45,8 +45,8 @@ Direct3D11ShaderWrapper::Direct3D11ShaderWrapper(Direct3D11Shader& shader,
     , d_perObjectUniformVarBufferPixel(0)
     , d_shader(shader)
 {
-    createPerObjectBuffer(ST_VERTEX);
-    createPerObjectBuffer(ST_PIXEL);
+    createPerObjectBuffer(ShaderType::VERTEX);
+    createPerObjectBuffer(ShaderType::PIXEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -139,9 +139,9 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
         // Get the data pointer pointing to the memory position of our current uniform variable
         unsigned char* paramDataPointer = 0;
-        if (parameterDescription.d_shaderType == ST_VERTEX)
+        if (parameterDescription.d_shaderType == ShaderType::VERTEX)
             paramDataPointer = resourceDataVS + parameterDescription.d_boundLocation;
-        else if (parameterDescription.d_shaderType == ST_PIXEL)
+        else if (parameterDescription.d_shaderType == ShaderType::PIXEL)
             paramDataPointer = resourceDataPS + parameterDescription.d_boundLocation;
 
         switch(parameterType)
@@ -177,9 +177,9 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
                 ID3D11ShaderResourceView* shaderResourceView = texture->getDirect3DShaderResourceView();
 
-                if (parameterDescription.d_shaderType == ST_PIXEL)
+                if (parameterDescription.d_shaderType == ShaderType::PIXEL)
                     d_deviceContext->PSSetShaderResources(parameterDescription.d_boundLocation, 1, &shaderResourceView);
-                else if (parameterDescription.d_shaderType == ST_VERTEX)
+                else if (parameterDescription.d_shaderType == ShaderType::VERTEX)
                     d_deviceContext->VSSetShaderResources(parameterDescription.d_boundLocation, 1, &shaderResourceView);
             }
             break;
@@ -233,9 +233,9 @@ void Direct3D11ShaderWrapper::createPerObjectBuffer(ShaderType shaderType)
         bufferDescription.MiscFlags      = 0;
         bufferDescription.ByteWidth      = shaderBufferDesc.Size;
     
-        if (shaderType == ST_VERTEX)
+        if (shaderType == ShaderType::VERTEX)
             d_device->CreateBuffer(&bufferDescription, 0, &d_perObjectUniformVarBufferVert);
-        else if (shaderType == ST_PIXEL)
+        else if (shaderType == ShaderType::PIXEL)
             d_device->CreateBuffer(&bufferDescription, 0, &d_perObjectUniformVarBufferPixel);
     }
 }

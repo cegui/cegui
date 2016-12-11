@@ -54,7 +54,7 @@ OpenGLBaseShaderManager::~OpenGLBaseShaderManager()
     d_shadersInitialised = false;
 }
 
-OpenGLBaseShader* OpenGLBaseShaderManager::getShader(GLuint id)
+OpenGLBaseShader* OpenGLBaseShaderManager::getShader(OpenGLBaseShaderID id)
 {
     if(d_shaders.find(id) != d_shaders.end())
         return d_shaders[id];
@@ -62,7 +62,7 @@ OpenGLBaseShader* OpenGLBaseShaderManager::getShader(GLuint id)
         return nullptr;
 }
 
-void OpenGLBaseShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)
+void OpenGLBaseShaderManager::loadShader(OpenGLBaseShaderID id, std::string vertexShader, std::string fragmentShader)
 {
     if(d_shaders.find(id) == d_shaders.end())
     {
@@ -77,23 +77,23 @@ void OpenGLBaseShaderManager::initialiseShaders()
     {
         if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertDesktopOpengl3, StandardShaderTexturedFragDesktopOpengl3);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertDesktopOpengl3, StandardShaderSolidFragDesktopOpengl3);
+            loadShader(OpenGLBaseShaderID::STANDARD_TEXTURED, StandardShaderTexturedVertDesktopOpengl3, StandardShaderTexturedFragDesktopOpengl3);
+            loadShader(OpenGLBaseShaderID::STANDARD_SOLID, StandardShaderSolidVertDesktopOpengl3, StandardShaderSolidFragDesktopOpengl3);
         }
         else if (OpenGLInfo::getSingleton().verMajor() <= 2) // Open GL ES < 3
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs2, StandardShaderTexturedFragOpenglEs2);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertOpenglEs2, StandardShaderSolidFragOpenglEs2);
+            loadShader(OpenGLBaseShaderID::STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs2, StandardShaderTexturedFragOpenglEs2);
+            loadShader(OpenGLBaseShaderID::STANDARD_SOLID, StandardShaderSolidVertOpenglEs2, StandardShaderSolidFragOpenglEs2);
         }
         else // OpenGL ES >= 3
         {
-            loadShader(SHADER_ID_STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs3, StandardShaderTexturedFragOpenglEs3);
-            loadShader(SHADER_ID_STANDARD_SOLID, StandardShaderSolidVertOpenglEs3, StandardShaderSolidFragOpenglEs3);
+            loadShader(OpenGLBaseShaderID::STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs3, StandardShaderTexturedFragOpenglEs3);
+            loadShader(OpenGLBaseShaderID::STANDARD_SOLID, StandardShaderSolidVertOpenglEs3, StandardShaderSolidFragOpenglEs3);
         }
 
             
-        if(!getShader(SHADER_ID_STANDARD_TEXTURED)->isCreatedSuccessfully() ||
-           !getShader(SHADER_ID_STANDARD_SOLID)->isCreatedSuccessfully() )
+        if(!getShader(OpenGLBaseShaderID::STANDARD_TEXTURED)->isCreatedSuccessfully() ||
+           !getShader(OpenGLBaseShaderID::STANDARD_SOLID)->isCreatedSuccessfully() )
         {
             throw RendererException("Critical Error - One or multiple shader "
                                     "programs weren't created successfully");
@@ -118,9 +118,9 @@ void OpenGLBaseShaderManager::initialiseShaders()
 
 void OpenGLBaseShaderManager::deinitialiseShaders()
 {
-    for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
+    for(auto& currentShader : d_shaders)
     {
-        delete iter->second;
+        delete currentShader.second;
     }
     d_shaders.clear();
 }

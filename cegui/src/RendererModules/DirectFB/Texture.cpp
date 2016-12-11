@@ -121,7 +121,7 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
     }
 
     // Copy data in.
-    const size_t pix_sz = (pixel_format == PF_RGB) ? 3 : 4;
+    const size_t pix_sz = (pixel_format == PixelFormat::RGB) ? 3 : 4;
     const char* src = static_cast<const char*>(buffer);
 
     for (int i = 0; i < buffer_size.d_height; ++i)
@@ -262,7 +262,7 @@ void DirectFBTexture::updateCachedScaleValues()
 //----------------------------------------------------------------------------//
 bool DirectFBTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    return fmt == PixelFormat::RGBA || fmt == PixelFormat::RGB;
 }
 
 //----------------------------------------------------------------------------//

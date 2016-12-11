@@ -45,19 +45,19 @@ namespace CEGUI
     class OpenGLBaseShader;
     class OpenGLBaseStateChangeWrapper;
 
-    enum OpenGLBaseShaderID
+    enum class OpenGLBaseShaderID : int
     {
-        SHADER_ID_STANDARD_TEXTURED,
-        SHADER_ID_STANDARD_SOLID,
+        STANDARD_TEXTURED,
+        STANDARD_SOLID,
 
-        SHADER_ID_COUNT
+        COUNT
     };
 
-    enum ShaderVersion
+    enum class ShaderVersion : int
     {
-        SHADER_GLSL,
-        SHADER_GLSLES1,
-        SHADER_GLSLES3
+        GLSL,
+        GLSLES1,
+        GLSLES3
     };
 
 
@@ -67,15 +67,15 @@ namespace CEGUI
         OpenGLBaseShaderManager(OpenGLBaseStateChangeWrapper* glStateChanger, ShaderVersion shaderVersion);
         virtual ~OpenGLBaseShaderManager();
 
-        OpenGLBaseShader* getShader(GLuint id);
-        void loadShader(GLuint id, std::string vertexShader, std::string fragmentShader);
+        OpenGLBaseShader* getShader(OpenGLBaseShaderID id);
+        void loadShader(OpenGLBaseShaderID id, std::string vertexShader, std::string fragmentShader);
 
         void initialiseShaders();
         void deinitialiseShaders();
 
     private:
-        typedef std::map<GLuint, OpenGLBaseShader*> shaderContainerType;
-        shaderContainerType d_shaders;
+        typedef std::map<OpenGLBaseShaderID, OpenGLBaseShader*> ShaderContainerType;
+        ShaderContainerType d_shaders;
 
         ShaderVersion d_shaderVersion;
 

@@ -194,7 +194,7 @@ Scheme& SchemeManager::doExistingObjectAction(
     {
         switch (resourceExistsAction)
         {
-        case XmlResourceExistsAction::XREA_RETURN:
+        case XmlResourceExistsAction::RETURN:
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
             // delete any new object we already had created
@@ -202,7 +202,7 @@ Scheme& SchemeManager::doExistingObjectAction(
             // return existing instance of object.
             return *d_registeredSchemes[object_name];
 
-        case XmlResourceExistsAction::XREA_REPLACE:
+        case XmlResourceExistsAction::REPLACE:
             Logger::getSingleton().logEvent("---- Replacing existing instance "
                 "of " + d_resourceType + " named '" + object_name +
                 "' (DANGER!).");
@@ -210,7 +210,7 @@ Scheme& SchemeManager::doExistingObjectAction(
             event_name = EventResourceReplaced;
             break;
 
-        case XmlResourceExistsAction::XREA_THROW:
+        case XmlResourceExistsAction::THROW:
             delete object;
             throw AlreadyExistsException(
                 "an object of type '" + d_resourceType + "' named '" +

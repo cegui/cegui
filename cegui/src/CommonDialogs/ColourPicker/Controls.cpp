@@ -124,7 +124,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
     Window(type, name),
     d_callingColourPicker(nullptr),
     d_colourPickerIndicator(nullptr),
-    d_sliderMode(SliderMode_Lab_L),
+    d_sliderMode(LAB_L),
     d_selectedColour(0.75f, 0.75f, 0.75f),
     d_colourPickerControlsTextureTarget(nullptr),
     d_colourPickerImageOffset(2),
@@ -168,11 +168,11 @@ Lab_Colour ColourPickerControls::getColourPickingPositionColourLAB(float xAbs,
     float xRel = xAbs / static_cast<float>(d_colourPickerPickingImageWidth - 1);
     float yRel = yAbs / static_cast<float>(d_colourPickerPickingImageHeight - 1);
 
-    if (d_sliderMode != SliderMode_Lab_L)
+    if (d_sliderMode != LAB_L)
     {
         L = LAB_L_MAX - LAB_L_DIFF * yRel ;
 
-        if (d_sliderMode != SliderMode_Lab_A)
+        if (d_sliderMode != LAB_A)
         {
             b = d_selectedColourLAB.b;
             a = LAB_A_MAX - LAB_A_DIFF * xRel;
@@ -202,7 +202,7 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
     float xRel = xAbs / static_cast<float>(d_colourPickerPickingImageWidth - 1);
     float yRel = yAbs / static_cast<float>(d_colourPickerPickingImageHeight - 1);
 
-    if (d_sliderMode != SliderMode_HSV_H)
+    if (d_sliderMode != SliderMode::HSV_H)
     {
         float xCoord = (xRel - 0.5f) * 2.0f;
         float yCoord = (yRel - 0.5f) * 2.0f;
@@ -218,7 +218,7 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
         float length = std::sqrt(xCoord * xCoord + yCoord * yCoord);
         float value = std::min(length, 1.0f);
 
-        if (d_sliderMode != SliderMode_HSV_S)
+        if (d_sliderMode != SliderMode::HSV_S)
         {
             colour.V = d_selectedColourHSV.V;
             colour.S = value;
@@ -247,31 +247,31 @@ glm::vec2 ColourPickerControls::getColourPickingColourPosition()
 
     switch (d_sliderMode)
     {
-    case SliderMode_Lab_L:
+    case LAB_L:
         x = 1.0f - (d_selectedColourLAB.a - LAB_A_MIN) / LAB_A_DIFF;
         y = 1.0f - (d_selectedColourLAB.b - LAB_B_MIN) / LAB_B_DIFF;
         break;
 
-    case SliderMode_Lab_A:
+    case LAB_A:
         x = 1.0f - (d_selectedColourLAB.b - LAB_B_MIN) / LAB_B_DIFF;
         y = 1.0f - (d_selectedColourLAB.L - LAB_L_MIN) / LAB_L_DIFF;
         break;
 
-    case SliderMode_Lab_B:
+    case SliderMode::LAB_B:
         x = 1.0f - (d_selectedColourLAB.a - LAB_A_MIN) / LAB_A_DIFF;
         y = 1.0f - (d_selectedColourLAB.L - LAB_L_MIN) / LAB_L_DIFF;
         break;
 
-    case SliderMode_HSV_H:
+    case SliderMode::HSV_H:
         x = d_selectedColourHSV.S;
         y = 1.0f - d_selectedColourHSV.V;
         break;
 
-    case SliderMode_HSV_S:
+    case SliderMode::HSV_S:
         getColourPickingColourPositionHSV(x, y);
         break;
 
-    case SliderMode_HSV_V:
+    case SliderMode::HSV_V:
         getColourPickingColourPositionHSV(x, y);
         break;
 
@@ -289,11 +289,11 @@ void ColourPickerControls::getColourPickingColourPositionHSV(float& x, float& y)
 
     switch (d_sliderMode)
     {
-    case SliderMode_HSV_S:
+    case SliderMode::HSV_S:
         radius = d_selectedColourHSV.V;
         break;
 
-    case SliderMode_HSV_V:
+    case SliderMode::HSV_V:
         radius = d_selectedColourHSV.S;
         break;
 
@@ -316,15 +316,15 @@ Lab_Colour ColourPickerControls::getColourSliderPositionColourLAB(float value)
 
     switch (d_sliderMode)
     {
-    case SliderMode_Lab_L:
+    case LAB_L:
         colour.L = LAB_L_MAX - LAB_L_DIFF * value;
         break;
 
-    case SliderMode_Lab_A:
+    case LAB_A:
         colour.a = LAB_A_MAX - LAB_A_DIFF * value;
         break;
 
-    case SliderMode_Lab_B:
+    case SliderMode::LAB_B:
         colour.b = LAB_B_MAX - LAB_B_DIFF * value;
         break;
 
@@ -342,15 +342,15 @@ HSV_Colour ColourPickerControls::getColourSliderPositionColourHSV(float value)
 
     switch (d_sliderMode)
     {
-    case SliderMode_HSV_H:
+    case SliderMode::HSV_H:
         colour.H = 1.0f - value;
         break;
 
-    case SliderMode_HSV_S:
+    case SliderMode::HSV_S:
         colour.S = 1.0f - value;
         break;
 
-    case SliderMode_HSV_V:
+    case SliderMode::HSV_V:
         colour.V = 1.0f - value;
         break;
 
@@ -1035,17 +1035,17 @@ bool ColourPickerControls::handleRadioButtonModeSelection(const EventArgs& args)
                                    static_cast<const WindowEventArgs&>(args).window);
 
     if (getLabRadioButtonL() == radioButton)
-        d_sliderMode = SliderMode_Lab_L;
+        d_sliderMode = LAB_L;
     else if (getLabRadioButtonA() == radioButton)
-        d_sliderMode = SliderMode_Lab_A;
+        d_sliderMode = LAB_A;
     else if (getLabRadioButtonB() == radioButton)
-        d_sliderMode = SliderMode_Lab_B;
+        d_sliderMode = SliderMode::LAB_B;
     else if (getHSVRadioButtonH() == radioButton)
-        d_sliderMode = SliderMode_HSV_H;
+        d_sliderMode = SliderMode::HSV_H;
     else if (getHSVRadioButtonS() == radioButton)
-        d_sliderMode = SliderMode_HSV_S;
+        d_sliderMode = SliderMode::HSV_S;
     else if (getHSVRadioButtonV() == radioButton)
-        d_sliderMode = SliderMode_HSV_V;
+        d_sliderMode = SliderMode::HSV_V;
 
     refreshColourPickerIndicatorPosition();
 
@@ -1073,32 +1073,32 @@ bool ColourPickerControls::handleColourPickerSliderValueChanged(
 
     switch (d_sliderMode)
     {
-    case SliderMode_Lab_L:
+    case LAB_L:
         colourLAB.L = LAB_L_MIN + LAB_L_DIFF * sliderValue;
         setColours(colourLAB);
         break;
 
-    case SliderMode_Lab_A:
+    case LAB_A:
         colourLAB.a = LAB_A_MIN + LAB_A_DIFF * sliderValue;
         setColours(colourLAB);
         break;
 
-    case SliderMode_Lab_B:
+    case SliderMode::LAB_B:
         colourLAB.b = LAB_B_MIN + LAB_B_DIFF * sliderValue;
         setColours(colourLAB);
         break;
 
-    case SliderMode_HSV_H:
+    case SliderMode::HSV_H:
         colourHSV.H = sliderValue;
         setColours(colourHSV);
         break;
 
-    case SliderMode_HSV_S:
+    case SliderMode::HSV_S:
         colourHSV.S = sliderValue;
         setColours(colourHSV);
         break;
 
-    case SliderMode_HSV_V:
+    case SliderMode::HSV_V:
         colourHSV.V = sliderValue;
         setColours(colourHSV);
         break;
@@ -1206,7 +1206,7 @@ void ColourPickerControls::onAcceptButtonClicked(WindowEventArgs& e)
 void ColourPickerControls::refreshColourPickingImage()
 {
     if (d_sliderMode &
-            (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
+            (LAB_L | LAB_A | SliderMode::LAB_B))
     {
         for (int y = 0; y < d_colourPickerPickingImageHeight; ++y)
         {
@@ -1223,7 +1223,7 @@ void ColourPickerControls::refreshColourPickingImage()
         }
     }
     else if (d_sliderMode &
-             (SliderMode_HSV_H | SliderMode_HSV_S | SliderMode_HSV_V))
+             (SliderMode::HSV_H | SliderMode::HSV_S | SliderMode::HSV_V))
     {
         for (int y = 0; y < d_colourPickerPickingImageHeight; ++y)
         {
@@ -1245,7 +1245,7 @@ void ColourPickerControls::refreshColourPickingImage()
 void ColourPickerControls::refreshColourSliderImage()
 {
     if (d_sliderMode &
-            (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
+            (LAB_L | LAB_A | SliderMode::LAB_B))
     {
         for (int y = 0; y < d_colourPickerPickingImageHeight; ++y)
         {
@@ -1262,7 +1262,7 @@ void ColourPickerControls::refreshColourSliderImage()
         }
     }
     else if (d_sliderMode &
-             (SliderMode_HSV_H | SliderMode_HSV_S | SliderMode_HSV_V))
+             (SliderMode::HSV_H | SliderMode::HSV_S | SliderMode::HSV_V))
     {
         for (int y = 0; y < d_colourPickerPickingImageHeight; ++y)
         {
@@ -1329,7 +1329,7 @@ void ColourPickerControls::initColourPicker()
 {
     initColourPickerControlsImageSet();
 
-    d_sliderMode = SliderMode_Lab_L;
+    d_sliderMode = LAB_L;
     getLabRadioButtonL()->setSelected(true);
 
     d_colourPickerIndicator = WindowManager::getSingleton().createWindow(
@@ -1414,13 +1414,13 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition(
     positionColourPickerIndicatorAbsolute(x, y);
 
     if (d_sliderMode &
-        (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
+        (LAB_L | LAB_A | SliderMode::LAB_B))
     {
         Lab_Colour col = getColourPickingPositionColourLAB(x, y);
         setColours(col);
     }
     else if (d_sliderMode &
-             (SliderMode_HSV_H | SliderMode_HSV_S | SliderMode_HSV_V))
+             (SliderMode::HSV_H | SliderMode::HSV_S | SliderMode::HSV_V))
     {
         HSV_Colour col = getColourPickingPositionColourHSV(x, y);
         setColours(col);
@@ -1436,27 +1436,27 @@ void ColourPickerControls::refreshColourSliderPosition()
 
     switch (d_sliderMode)
     {
-    case SliderMode_Lab_L:
+    case LAB_L:
         editboxText = getLabEditBoxL()->getText();
         break;
 
-    case SliderMode_Lab_A:
+    case LAB_A:
         editboxText = getLabEditBoxA()->getText();
         break;
 
-    case SliderMode_Lab_B:
+    case SliderMode::LAB_B:
         editboxText = getLabEditBoxB()->getText();
         break;
 
-    case SliderMode_HSV_H:
+    case SliderMode::HSV_H:
         editboxText = getHSVEditBoxH()->getText();
         break;
 
-    case SliderMode_HSV_S:
+    case SliderMode::HSV_S:
         editboxText = getHSVEditBoxS()->getText();
         break;
 
-    case SliderMode_HSV_V:
+    case SliderMode::HSV_V:
         editboxText = getHSVEditBoxV()->getText();
         break;
 
@@ -1471,27 +1471,27 @@ void ColourPickerControls::refreshColourSliderPosition()
 
     switch (d_sliderMode)
     {
-    case SliderMode_Lab_L:
+    case LAB_L:
         sliderValue = 1.0f - (LAB_L_MAX - value) / LAB_L_DIFF;
         break;
 
-    case SliderMode_Lab_A:
+    case LAB_A:
         sliderValue = 1.0f - (LAB_A_MAX - value) / LAB_A_DIFF;
         break;
 
-    case SliderMode_Lab_B:
+    case SliderMode::LAB_B:
         sliderValue = 1.0f - (LAB_B_MAX - value) / LAB_B_DIFF;
         break;
 
-    case SliderMode_HSV_H:
+    case SliderMode::HSV_H:
         sliderValue = value;
         break;
 
-    case SliderMode_HSV_S:
+    case SliderMode::HSV_S:
         sliderValue = value;
         break;
 
-    case SliderMode_HSV_V:
+    case SliderMode::HSV_V:
         sliderValue = value;
         break;
 

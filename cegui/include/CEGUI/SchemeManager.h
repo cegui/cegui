@@ -89,7 +89,7 @@ public:
         already exists within the collection.
     */
     Scheme& createFromContainer(const RawDataContainer& source,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
     /*!
     \brief
@@ -114,7 +114,7 @@ public:
         already exists within the collection.
     */
     Scheme& createFromFile(const String& xml_filename, const String& resource_group = "",
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
     /*!
     \brief
@@ -134,7 +134,7 @@ public:
         already exists within the collection.
     */
     Scheme& createFromString(const String& source,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
         /*!
     \brief

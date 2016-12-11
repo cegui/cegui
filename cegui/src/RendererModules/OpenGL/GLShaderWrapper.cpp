@@ -59,7 +59,7 @@ void OpenGLShaderWrapper::prepareForRendering(const ShaderParameterBindings* sha
 
         switch(parameter_type)
         {
-        case SPT_TEXTURE:
+        case ShaderParamType::TEXTURE:
             {
                 const CEGUI::ShaderParameterTexture* parameterTexture = static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
                 const CEGUI::OpenGLTexture* openglTexture = static_cast<const CEGUI::OpenGLTexture*>(parameterTexture->d_parameterValue);

@@ -41,7 +41,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name) :
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::RGBA);
     generateOpenGLESTexture();
 }
 
@@ -55,7 +55,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::RGBA);
     generateOpenGLESTexture();
     loadFromFile(filename, resourceGroup);
 }
@@ -69,7 +69,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::RGBA);
     generateOpenGLESTexture();
     setTextureSize(size);
 }
@@ -84,7 +84,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::RGBA);
     updateCachedScaleValues();
 }
 
@@ -245,7 +245,7 @@ void OpenGLESTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::setTextureSize(const Sizef& sz)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::RGBA);
 
     setTextureSize_impl(sz);
 
@@ -385,10 +385,10 @@ bool OpenGLESTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
     switch (fmt)
     {
-    case PF_RGBA:
-    case PF_RGB:
-    case PF_RGBA_4444:
-    case PF_RGB_565:
+    case PixelFormat::RGBA:
+    case PixelFormat::RGB:
+    case PixelFormat::RGBA_4444:
+    case PixelFormat::RGB_565:
         return true;
 
     case PF_PVRTC4:
@@ -407,22 +407,22 @@ void OpenGLESTexture::initPixelFormatFields(const PixelFormat fmt)
 
     switch (fmt)
     {
-    case PF_RGBA:
+    case PixelFormat::RGBA:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB:
+    case PixelFormat::RGB:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB_565:
+    case PixelFormat::RGB_565:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
         break;
 
-    case PF_RGBA_4444:
+    case PixelFormat::RGBA_4444:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
         break;
