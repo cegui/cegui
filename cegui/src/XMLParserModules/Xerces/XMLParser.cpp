@@ -128,7 +128,7 @@ namespace CEGUI
         {
             delete reader;
 
-            Logger::getSingleton().logEvent("An unexpected error occurred while parsing XML", Errors);
+            Logger::getSingleton().logEvent("An unexpected error occurred while parsing XML", LoggingLevel::ERROR_LEVEL);
             throw;
         }
 

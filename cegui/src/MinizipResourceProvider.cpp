@@ -152,7 +152,7 @@ void MinizipResourceProvider::closeArchive()
         {
             CEGUI::Logger::getSingleton().logEvent(
                 "MinizipResourceProvider::closeArchive: '" +
-                d_pimpl->d_archive + "' error upon closing", Errors);
+                d_pimpl->d_archive + "' error upon closing", LoggingLevel::ERROR_LEVEL);
         }
     }
 
@@ -257,7 +257,7 @@ size_t MinizipResourceProvider::getResourceGroupFileNames(
     {
         Logger::getSingleton().logEvent(
             "MinizipResourceProvider::getResourceGroupFileNames: "
-            "unzGoToFirstFile failed, skipping zip file scan.", Errors);
+            "unzGoToFirstFile failed, skipping zip file scan.", LoggingLevel::ERROR_LEVEL);
 
         return entries;
     }
@@ -269,7 +269,7 @@ size_t MinizipResourceProvider::getResourceGroupFileNames(
         {
             Logger::getSingleton().logEvent(
                 "MinizipResourceProvider::getResourceGroupFileNames: "
-                "unzGetCurrentFileInfo failed, terminating scan.", Errors);
+                "unzGetCurrentFileInfo failed, terminating scan.", LoggingLevel::ERROR_LEVEL);
 
             return entries;
         }

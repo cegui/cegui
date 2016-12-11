@@ -99,7 +99,7 @@ bool FribidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
     // log failure and continue anyway :-p
     Logger::getSingleton().logEvent(
         "FribidiVisualMapping::reorderFromLogicalToVisual: fribidi_log2vis "
-        "call failed on logical string: " + logical, Errors);
+        "call failed on logical string: " + logical, LoggingLevel::ERROR_LEVEL);
 
     visual = String(reinterpret_cast<const char32_t*>(outputFribidiStr), fribidiStringLength);
     delete[] outputFribidiStr;
