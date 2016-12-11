@@ -280,7 +280,7 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 				// erase the alias name also
 				d_aliasRegistry.erase(aliasName);
 
-				Logger::getSingleton().logEvent("Window type alias named '" + aliasName + "' has no more targets and has been removed.", LoggingLevel::LOG_ERROR);
+				Logger::getSingleton().logEvent("Window type alias named '" + aliasName + "' has no more targets and has been removed.", LoggingLevel::ERROR_LEVEL);
 			}
 
 		}

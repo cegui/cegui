@@ -329,7 +329,7 @@ namespace CEGUI
         // no handler existed
         else
         {
-            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", LoggingLevel::LOG_ERROR);
+            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", LoggingLevel::ERROR_LEVEL);
         }
     }
 
@@ -1094,7 +1094,7 @@ namespace CEGUI
             if (type != GenericDataType && type != "String")
             {
                 // type was specified but wasn't recognised
-                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", LoggingLevel::WARNING);
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", LoggingLevel::WARNING_LEVEL);
             }
 
             prop = new PropertyDefinition<String>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -1252,7 +1252,7 @@ namespace CEGUI
             if (type != GenericDataType && type != PropertyHelper<String>::getDataTypeName())
             {
                 // type was specified but wasn't recognised
-                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", LoggingLevel::WARNING);
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", LoggingLevel::WARNING_LEVEL);
             }
 
             d_propertyLink = new PropertyLinkDefinition<String>(name,

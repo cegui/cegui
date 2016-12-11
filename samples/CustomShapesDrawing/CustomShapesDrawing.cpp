@@ -195,7 +195,7 @@ void CustomShapesDrawingSample::positionCustomGeometryFPSGraph()
 *************************************************************************/
 bool CustomShapesDrawingSample::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
 {
-    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
+    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::OVERLAY)
         return false;
 
     // draw FPS value
@@ -378,13 +378,13 @@ void CustomShapesDrawingSample::setupCustomGeometryGraph(CEGUI::GUIContext* guiC
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
 
     // GeometryBuffer used for drawing in this Sample
-    d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
+    d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DefaultShaderType::SOLID));
 
     // Calculate and save our custom graph background
     setupCustomGeometryGraphBackground();
 
     // Clearing this queue actually makes sure it's created(!)
-    guiContext->clearGeometry(CEGUI::RQ_OVERLAY);
+    guiContext->clearGeometry(CEGUI::RenderQueueID::OVERLAY);
 
     // Subscribe handler to render overlay items
     guiContext->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,

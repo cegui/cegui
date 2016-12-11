@@ -147,7 +147,7 @@ void Scheme_xmlHandler::elementStart(const String& element,
     // anything else is a non-fatal error.
     else
         Logger::getSingleton().logEvent("Scheme_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", LoggingLevel::LOG_ERROR);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//

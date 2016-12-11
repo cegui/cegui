@@ -249,7 +249,7 @@ void TabControl::addTab(Window* wnd)
     if (!wnd)
     {
         Logger::getSingleton().logEvent("Attempt to add null window pointer as "
-            "tab to TabControl '" + getName() + "'.  Ignoring!", LoggingLevel::LOG_ERROR);
+            "tab to TabControl '" + getName() + "'.  Ignoring!", LoggingLevel::ERROR_LEVEL);
 
         return;
     }
@@ -779,7 +779,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 {
     const CursorInputEventArgs& pe = static_cast<const CursorInputEventArgs&>(e);
 
-    if (pe.source == CIS_Middle)
+    if (pe.source == CursorInputSource::Middle)
     {
         // This is the middle cursor source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
@@ -787,7 +787,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
             but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
-    else if (pe.source == CIS_None)
+    else if (pe.source == CursorInputSource::None)
     {
         // Regular cursor move event
         Window *but_pane = getTabButtonPane();

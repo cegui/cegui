@@ -805,7 +805,7 @@ bool Combobox::droplist_HiddenHandler(const EventArgs&)
 bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
 {
     // only interested in left source
-    if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
+    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
     {
         Editbox* editbox = getEditbox();
 

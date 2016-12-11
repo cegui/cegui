@@ -36,9 +36,9 @@
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/SharedStringStream.h"
-#include <iostream>
+#include <fstream>
 #include <sstream>
-#include <algorithm>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -149,7 +149,7 @@ void WindowManager::initialiseRenderEffect(
     {
         logger.logEvent("Missing RenderEffect '" + effect + "' requested for "
             "window '" + wnd->getName() + "' - continuing without effect...",
-            LoggingLevel::LOG_ERROR);
+            LoggingLevel::ERROR_LEVEL);
 
        return;
     }
@@ -179,7 +179,7 @@ void WindowManager::initialiseRenderEffect(
         logger.logEvent("Unable to set effect for window '" +
             wnd->getName() + "' since RenderingSurface is either missing "
             "or of wrong type (i.e. not a RenderingWindow).",
-            LoggingLevel::LOG_ERROR);
+            LoggingLevel::ERROR_LEVEL);
     }
 }
 
@@ -200,7 +200,7 @@ void WindowManager::destroyWindow(Window* window)
         Logger::getSingleton().logEvent("[WindowManager] Attempt to delete "
             "Window that does not exist!  Address was: " + addressStr +
             ". WARNING: This could indicate a double-deletion issue!!",
-            LoggingLevel::LOG_ERROR);
+            LoggingLevel::ERROR_LEVEL);
         return;
     }
 
@@ -257,7 +257,7 @@ Window* WindowManager::loadLayoutFromContainer(const RawDataContainer& source, P
     }
     catch (...)
     {
-        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from a RawDataContainer failed.", LoggingLevel::LOG_ERROR);
+        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from a RawDataContainer failed.", LoggingLevel::ERROR_LEVEL);
         throw;
     }
 
@@ -289,7 +289,7 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 	}
 	catch (...)
 	{
-        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromFile - loading of layout from file '" + filename +"' failed.", LoggingLevel::LOG_ERROR);
+        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromFile - loading of layout from file '" + filename +"' failed.", LoggingLevel::ERROR_LEVEL);
         throw;
 	}
 
@@ -314,7 +314,7 @@ Window* WindowManager::loadLayoutFromString(const String& source, PropertyCallba
     }
     catch (...)
     {
-        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromString - loading of layout from string failed.", LoggingLevel::LOG_ERROR);
+        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromString - loading of layout from string failed.", LoggingLevel::ERROR_LEVEL);
         throw;
     }
 

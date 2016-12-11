@@ -716,7 +716,7 @@ void SVGData::parsePaintStyleStrokeWidth(const String& strokeWidthString, SVGPai
         Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for "
                                         "stroke-width was specified in the SVG file. The value was "
                                         "set to the initial value '1'. String: " +
-                                        strokeWidthString, LoggingLevel::LOG_ERROR);
+                                        strokeWidthString, LoggingLevel::ERROR_LEVEL);
     }
 }
 
@@ -764,7 +764,7 @@ void SVGData::parsePaintStyleMiterlimitString(const String& strokeMiterLimitStri
         Logger::getSingleton().logEvent("SVGData::parsePaintStyle - An unsupported value for "
                                         "stroke-miterlimit was specified in the SVG file. The "
                                         " value was set to the initial value '4'. String: " +
-                                        strokeMiterLimitString, LoggingLevel::LOG_ERROR);
+                                        strokeMiterLimitString, LoggingLevel::ERROR_LEVEL);
     }
 }
 

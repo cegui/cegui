@@ -514,7 +514,7 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 	}
 	else
 	{
-		Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", LoggingLevel::LOG_ERROR);
+		Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", LoggingLevel::ERROR_LEVEL);
 	}
 
 }
@@ -546,7 +546,7 @@ int	System::executeScriptGlobal(const String& function_name) const
 	}
 	else
 	{
-		Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", LoggingLevel::LOG_ERROR);
+		Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", LoggingLevel::ERROR_LEVEL);
 	}
 
 	return 0;
@@ -579,7 +579,7 @@ void System::executeScriptString(const String& str) const
     }
     else
     {
-        Logger::getSingleton().logEvent("System::executeScriptString - the script code could not be executed as no ScriptModule is available.", LoggingLevel::LOG_ERROR);
+        Logger::getSingleton().logEvent("System::executeScriptString - the script code could not be executed as no ScriptModule is available.", LoggingLevel::ERROR_LEVEL);
     }
 }
 
@@ -802,7 +802,7 @@ void System::setXMLParser(const String& parserName)
     CEGUI_UNUSED(parserName);
     Logger::getSingleton().logEvent(
         "System::setXMLParser(const String& parserName) called from statically "
-        "linked CEGUI library - unable to load dynamic module!", LoggingLevel::LOG_ERROR);
+        "linked CEGUI library - unable to load dynamic module!", LoggingLevel::ERROR_LEVEL);
 #endif
 }
 

@@ -236,7 +236,7 @@ void OpenGLRenderer::beginRendering()
     glEnable(GL_BLEND);
 
     // force set blending ops to get to a known state.
-    setupRenderingBlendMode(BM_NORMAL, true);
+    setupRenderingBlendMode(BlendMode::NORMAL, true);
 
     // enable arrays that we'll be using in the batches
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -363,7 +363,7 @@ void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
 
     d_activeBlendMode = mode;
 
-    if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
+    if (d_activeBlendMode == BlendMode::RTT_PREMULTIPLIED)
     {
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
@@ -406,13 +406,13 @@ void OpenGLRenderer::initialiseGLExtensions()
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    if(shaderType == DS_TEXTURED)
+    if(shaderType == DefaultShaderType::TEXTURED)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
-    else if(shaderType == DS_SOLID)
+    else if(shaderType == DefaultShaderType::SOLID)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 

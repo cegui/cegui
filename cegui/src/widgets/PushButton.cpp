@@ -72,7 +72,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 *************************************************************************/
 void PushButton::onCursorActivate(CursorInputEventArgs& e)
 {
-    if ((e.source == CIS_Left) && isPushed())
+    if ((e.source == CursorInputSource::Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 
@@ -100,7 +100,7 @@ void PushButton::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_Confirm)
+    if (e.d_semanticValue == SemanticValue::Confirm)
     {
         onClicked(e);
 

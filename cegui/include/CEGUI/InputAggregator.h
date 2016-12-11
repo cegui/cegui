@@ -165,7 +165,7 @@ public:
     \brief
         Returns a semantic action matching the scan_code
     */
-    int getSemanticAction(Key::Scan scan_code, bool shift_down, bool alt_down,
+    SemanticValue getSemanticAction(Key::Scan scan_code, bool shift_down, bool alt_down,
         bool ctrl_down) const;
 
     /*!
@@ -256,7 +256,8 @@ protected:
     float d_mouseMovementScalingFactor;
 
     glm::vec2 d_pointerPosition;
-    int d_keyValuesMappings[sizeof(Key::Scan)]; //!< Mapping from a key to its semantic
+    //! Mapping from a key to its semantic value
+    SemanticValue d_keyValuesMappings[sizeof(Key::Scan)]; 
     bool d_keysPressed[sizeof(Key::Scan)];
 };
 

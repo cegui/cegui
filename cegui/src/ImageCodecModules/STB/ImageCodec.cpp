@@ -70,10 +70,10 @@ Texture* STBImageCodec::load(const RawDataContainer& data, Texture* result)
     switch (comp) 
     {
     case 4:
-        format = Texture::PF_RGBA;
+        format = Texture::PixelFormat::RGBA;
         break;
     case 3:
-        format = Texture::PF_RGB;
+        format = Texture::PixelFormat::RGB;
         break;
     default:
         Logger::getSingletonPtr()->logEvent(

@@ -44,12 +44,12 @@ namespace CEGUI
 \brief
     Represents the source of an event that uses the cursor.
 */
-enum CursorInputSource
+enum class CursorInputSource : int
 {
-    CIS_None,        //!< No specific cursor source
-    CIS_Left,        //!< Left cursor source
-    CIS_Right,       //!< Right cursor source
-    CIS_Middle,      //!< Middle cursor source
+    None,        //!< No specific cursor source
+    Left,        //!< Left cursor source
+    Right,       //!< Right cursor source
+    Middle,      //!< Middle cursor source
 };
 
 /*!
@@ -68,17 +68,17 @@ public:
 
     bool isHeld(CursorInputSource source)
     {
-        return (d_state & (1 << source)) != 0;
+        return (d_state & (1 << static_cast<int>(source))) != 0;
     }
 
     void pointerHold(CursorInputSource source)
     {
-        d_state |= (1 << source);
+        d_state |= (1 << static_cast<int>(source));
     }
 
     void pointerDeactivated(CursorInputSource source)
     {
-        d_state &= ~(1 << source);
+        d_state &= ~(1 << static_cast<int>(source));
     }
 
 private:
@@ -90,59 +90,60 @@ private:
     Represents the value of a semantic input event, generated from a specific
     operation or sequence of operations.
 */
-enum SemanticValue
+enum class SemanticValue : int
 {
-    SV_NoValue = 0x0000,
-    SV_CursorActivate,
-    SV_PointerDeactivate,
-    SV_CursorPressHold,
-    SV_CursorMove,
-    SV_PointerLeave,
-    SV_SelectRange,
-    SV_SelectCumulative,
-    SV_SelectWord,
-    SV_SelectAll,
-    SV_SelectPreviousCharacter,
-    SV_SelectNextCharacter,
-    SV_SelectPreviousWord,
-    SV_SelectNextWord,
-    SV_SelectToStartOfLine,
-    SV_SelectToEndOfLine,
-    SV_GoToPreviousCharacter,
-    SV_GoToNextCharacter,
-    SV_GoToPreviousWord,
-    SV_GoToNextWord,
-    SV_GoToStartOfLine,
-    SV_GoToEndOfLine,
-    SV_GoToStartOfDocument,
-    SV_GoToEndOfDocument,
-    SV_GoToNextPage,
-    SV_GoToPreviousPage,
-    SV_DeleteNextCharacter,
-    SV_DeletePreviousCharacter,
-    SV_Confirm,
-    SV_Back,
-    SV_Undo,
-    SV_Redo,
-    SV_Cut,
-    SV_Copy,
-    SV_Paste,
-    SV_HorizontalScroll,
-    SV_VerticalScroll,
-    SV_SelectToStartOfDocument,
-    SV_SelectToEndOfDocument,
-    SV_SelectToNextPage,
-    SV_SelectToPreviousPage,
-    SV_SelectNextPage,
-    SV_SelectPreviousPage,
-    SV_GoUp,
-    SV_GoDown,
-    SV_SelectUp,
-    SV_SelectDown,
-    SV_NavigateToNext,
-    SV_NavigateToPrevious,
+    NoValue = 0x0000,
+    CursorActivate,
+    PointerDeactivate,
+    CursorPressHold,
+    CursorMove,
+    PointerLeave,
+    SelectRange,
+    SelectCumulative,
+    SelectWord,
+    SelectAll,
+    SelectPreviousCharacter,
+    SelectNextCharacter,
+    SelectPreviousWord,
+    SelectNextWord,
+    SelectToStartOfLine,
+    SelectToEndOfLine,
+    GoToPreviousCharacter,
+    GoToNextCharacter,
+    GoToPreviousWord,
+    GoToNextWord,
+    GoToStartOfLine,
+    GoToEndOfLine,
+    GoToStartOfDocument,
+    GoToEndOfDocument,
+    GoToNextPage,
+    GoToPreviousPage,
+    DeleteNextCharacter,
+    DeletePreviousCharacter,
+    Confirm,
+    Back,
+    Undo,
+    Redo,
+    Cut,
+    Copy,
+    Paste,
+    HorizontalScroll,
+    VerticalScroll,
+    SelectToStartOfDocument,
+    SelectToEndOfDocument,
+    SelectToNextPage,
+    SelectToPreviousPage,
+    SelectNextPage,
+    SelectPreviousPage,
+    GoUp,
+    GoDown,
+    SelectUp,
+    SelectDown,
+    NavigateToNext,
+    NavigateToPrevious,
+    SpawnNewDialog,
 
-    SV_UserDefinedSemanticValue = 0x5000,   //!< This marks the beginning of user-defined semantic values.
+    UserDefinedSemanticValue = 0x5000,   //!< This marks the beginning of user-defined semantic values.
 };
 
 /*!
@@ -163,14 +164,14 @@ union SemanticPayload
 class CEGUIEXPORT SemanticInputEvent : public InputEvent
 {
 public:
-    SemanticInputEvent(int value) :
+    SemanticInputEvent(SemanticValue value) :
         InputEvent(InputEventType::SemanticInputEventType),
         d_value(value),
         d_payload()
     {
     }
 
-    int d_value;                //!< The semantic value of this event
+    SemanticValue d_value;                //!< The semantic value of this event
     SemanticPayload d_payload;  //!< Extra data associated to this event
 };
 

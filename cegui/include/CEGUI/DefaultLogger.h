@@ -30,6 +30,9 @@
 #define _CEGUIDefaultLogger_h_
 
 #include "CEGUI/Logger.h"
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -66,7 +69,7 @@ protected:
     typedef std::vector<CacheItem> Cache;
     //! Used to cache log entries before log file is created. 
     Cache d_cache;
-    //! true while log entries are beign cached (prior to logfile creation)
+    //! true while log entries are being cached (prior to logfile creation)
     bool d_caching;
 };
 

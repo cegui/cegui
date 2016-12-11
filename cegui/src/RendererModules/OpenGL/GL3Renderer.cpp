@@ -215,7 +215,7 @@ void OpenGL3Renderer::beginRendering()
     d_openGLStateChanger->enable(GL_BLEND);
 
     // force set blending ops to get to a known state.
-    setupRenderingBlendMode(BM_NORMAL, true);
+    setupRenderingBlendMode(BlendMode::NORMAL, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -273,7 +273,7 @@ void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
 
     d_activeBlendMode = mode;
 
-    if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
+    if (d_activeBlendMode == BlendMode::RTT_PREMULTIPLIED)
     {
         d_openGLStateChanger->blendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
@@ -309,13 +309,13 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    if(shaderType == DS_TEXTURED)
+    if(shaderType == DefaultShaderType::TEXTURED)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
-    else if(shaderType == DS_SOLID)
+    else if(shaderType == DefaultShaderType::SOLID)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 

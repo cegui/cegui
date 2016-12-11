@@ -65,7 +65,7 @@ void Renderer::destroyAllGeometryBuffers()
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferTextured()
 {
-    GeometryBuffer& geometry_buffer = createGeometryBufferTextured(createRenderMaterial(DS_TEXTURED));
+    GeometryBuffer& geometry_buffer = createGeometryBufferTextured(createRenderMaterial(DefaultShaderType::TEXTURED));
 
     return geometry_buffer;
 }
@@ -73,7 +73,7 @@ GeometryBuffer& Renderer::createGeometryBufferTextured()
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferColoured()
 {
-    GeometryBuffer& geometry_buffer = createGeometryBufferColoured(createRenderMaterial(DS_SOLID));
+    GeometryBuffer& geometry_buffer = createGeometryBufferColoured(createRenderMaterial(DefaultShaderType::SOLID));
 
     return geometry_buffer;
 }

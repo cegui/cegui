@@ -71,7 +71,7 @@ namespace CEGUI
         {
             // hint the related file name in the log
             Logger::getSingleton().logEvent("The last thrown exception was related to XML file '" +
-                                            filename + "' from resource group '" + resourceGroup + "'.", LoggingLevel::LOG_ERROR);
+                                            filename + "' from resource group '" + resourceGroup + "'.", LoggingLevel::ERROR_LEVEL);
 
             // exception safety
             System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);

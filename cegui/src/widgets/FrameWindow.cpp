@@ -619,7 +619,7 @@ void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
 	// default processing (this is now essential as it controls event firing).
     Window::onCursorPressHold(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
 	{
 		if (isSizingEnabled())
 		{
@@ -656,7 +656,7 @@ void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
 	// default processing (this is now essential as it controls event firing).
     Window::onCursorActivate(e);
 
-    if (e.source == CIS_Left && isCapturedByThis())
+    if (e.source == CursorInputSource::Left && isCapturedByThis())
 	{
 		// release our capture on the input data
 		releaseInput();

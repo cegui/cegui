@@ -102,7 +102,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     switch (pvr_header->dwpfFlags & PVRTEX_PIXELTYPE)
     {
     case OGL_RGBA_4444:
-        cefmt = CEGUI::Texture::PF_RGBA_4444;
+        cefmt = CEGUI::Texture::PixelFormat::RGBA_4444;
         break;
 
     case OGL_RGBA_5551:
@@ -111,7 +111,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0;
 
     case OGL_RGB_565:
-        cefmt = CEGUI::Texture::PF_RGB_565;
+        cefmt = CEGUI::Texture::PixelFormat::RGB_565;
         break;
 
     case OGL_RGB_555:
@@ -135,22 +135,22 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0;
 
     case OGL_RGBA_8888:
-        cefmt = CEGUI::Texture::PF_RGBA;
+        cefmt = CEGUI::Texture::PixelFormat::RGBA;
         break;
 
     case OGL_RGB_888:
-        cefmt = CEGUI::Texture::PF_RGB;
+        cefmt = CEGUI::Texture::PixelFormat::RGB;
         break;
 
     case MGLPT_PVRTC2:
     case OGL_PVRTC2:
-        cefmt = CEGUI::Texture::PF_PVRTC2;
+        cefmt = CEGUI::Texture::PixelFormat::PVRTC2;
         is_compressed_format = true;
         break;
 
     case MGLPT_PVRTC4:
     case OGL_PVRTC4:
-        cefmt = CEGUI::Texture::PF_PVRTC4;
+        cefmt = CEGUI::Texture::PixelFormat::PVRTC4;
         is_compressed_format = true;
         break;
 
@@ -183,7 +183,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
             PVRTDecompressPVRTC(texture_data, bit_mode, size_x, size_y,
                                 decompressed_texture);
 
-            cefmt = CEGUI::Texture::PF_RGBA; // Redefine to uncompressed format
+            cefmt = CEGUI::Texture::PixelFormat::RGBA; // Redefine to uncompressed format
             result->loadFromMemory(decompressed_texture,
                                    Sizef(static_cast<float>(size_x),
                                          static_cast<float>(size_y)),

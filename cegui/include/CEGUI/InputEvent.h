@@ -243,9 +243,9 @@ public:
 class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
 {
 public:
-    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd), d_semanticValue(-1) {}
+    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd), d_semanticValue(SemanticValue::NoValue) {}
 
-    int d_semanticValue;            //!< The type of the semantic value
+    SemanticValue d_semanticValue;  //!< The type of the semantic value
     SemanticPayload d_payload;      //!< The payload of the event
 };
 

@@ -95,7 +95,7 @@ Font_xmlHandler::~Font_xmlHandler()
     {
         Logger::getSingleton().logEvent("Font_xmlHandler::~Font_xmlHandler: "
             "Font XML Handler is being destroyed, but loading of Font with name \"" + d_font->getName() + "\" has not been completed.",
-            LoggingLevel::WARNING);
+            LoggingLevel::WARNING_LEVEL);
 
         delete d_font;
     }
@@ -142,7 +142,7 @@ void Font_xmlHandler::elementStart(const String& element,
     // anything else is a non-fatal error.
     else
         Logger::getSingleton().logEvent("Font_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", LoggingLevel::LOG_ERROR);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -234,7 +234,7 @@ void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
     if (d_font->getTypeName() != FontTypePixmap)
         Logger::getSingleton().logEvent(
             "Imageset_xmlHandler::elementMappingStart: <Mapping> element is "
-            "only valid for Pixmap type fonts.", LoggingLevel::LOG_ERROR);
+            "only valid for Pixmap type fonts.", LoggingLevel::ERROR_LEVEL);
     else
         static_cast<PixmapFont*>(d_font)->defineMapping(
             attributes.getValueAsInteger(MappingCodepointAttribute),

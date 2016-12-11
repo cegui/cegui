@@ -240,7 +240,7 @@ void AnimationInstance::start(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::start - Starting an animation instance with "
-            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING_LEVEL);
         onAnimationStarted();
         onAnimationEnded();
     }
@@ -275,7 +275,7 @@ void AnimationInstance::unpause(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::unpause - Unpausing an animation instance with "
-            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING_LEVEL);
         onAnimationUnpaused();
         onAnimationEnded();
     }
