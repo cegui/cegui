@@ -61,7 +61,7 @@ Texture* STBImageCodec::load(const RawDataContainer& data, Texture* result)
     if (!image) 
     {
         Logger::getSingletonPtr()->logEvent(
-            "STBImageCodec::load - Invalid image data", Errors);
+            "STBImageCodec::load - Invalid image data", LoggingLevel::ERROR_LEVEL);
 
         return 0;
     }
@@ -78,7 +78,7 @@ Texture* STBImageCodec::load(const RawDataContainer& data, Texture* result)
     default:
         Logger::getSingletonPtr()->logEvent(
             "STBImageCodec::load - Invalid image format. "
-            "Only RGB and RGBA images are supported", Errors);
+            "Only RGB and RGBA images are supported", LoggingLevel::ERROR_LEVEL);
 
         stbi_image_free(image);
         return 0;

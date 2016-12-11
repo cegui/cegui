@@ -38,7 +38,7 @@ namespace
     void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message)
     {
         CEGUI::Logger::getSingleton().logEvent(
-            CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::Errors);
+            CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::LoggingLevel::ERROR_LEVEL);
     }
 
 }

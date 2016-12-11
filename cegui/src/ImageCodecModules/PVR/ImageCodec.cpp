@@ -73,7 +73,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         // Unknow or old format
         Logger::getSingletonPtr()->logEvent(
             "PVRImageCodec::load - unknown or old texture format.  "
-            "Use PVRTexTool to save in appropriate format.", Errors);
+            "Use PVRTexTool to save in appropriate format.", LoggingLevel::ERROR_LEVEL);
         return 0;
     }
 
@@ -81,7 +81,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         //Cube maps are not supported
         Logger::getSingletonPtr()->logEvent(
-            "PVRImageCodec::load - cubemap textures unsupported.", Errors);
+            "PVRImageCodec::load - cubemap textures unsupported.", LoggingLevel::ERROR_LEVEL);
         return 0;
     }
 
@@ -92,7 +92,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         // We need to load untwiddled textures -- hw will twiddle for us.
         Logger::getSingletonPtr()->logEvent(
-            "PVRImageCodec::load - Texture should be untwiddled", Errors);
+            "PVRImageCodec::load - Texture should be untwiddled", LoggingLevel::ERROR_LEVEL);
         return 0;
     }
 
@@ -107,7 +107,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
 
     case OGL_RGBA_5551:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format RGBA_5551 not supported.", Errors);
+            "pixel format RGBA_5551 not supported.", LoggingLevel::ERROR_LEVEL);
         return 0;
 
     case OGL_RGB_565:
@@ -116,22 +116,22 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
 
     case OGL_RGB_555:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format RGB_555 not supported.", Errors);
+            "pixel format RGB_555 not supported.", LoggingLevel::ERROR_LEVEL);
         return 0;
 
     case OGL_I_8:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format I_8 not supported.", Errors);
+            "pixel format I_8 not supported.", LoggingLevel::ERROR_LEVEL);
         return 0;
 
     case OGL_AI_88:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format AI_88 not supported.", Errors);
+            "pixel format AI_88 not supported.", LoggingLevel::ERROR_LEVEL);
         return 0;
 
     case OGL_BGRA_8888:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format BGRA8888 not supported.", Errors);
+            "pixel format BGRA8888 not supported.", LoggingLevel::ERROR_LEVEL);
         return 0;
 
     case OGL_RGBA_8888:
@@ -156,7 +156,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
 
     default:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "wrong pvr pixel format.", Errors);
+            "wrong pvr pixel format.", LoggingLevel::ERROR_LEVEL);
         return 0;
     }
 
