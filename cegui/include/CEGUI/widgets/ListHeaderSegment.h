@@ -524,7 +524,7 @@ public:
         }
         else
         {
-            return ListHeaderSegment::ListHeaderSegment::SortDirection::NONE;
+            return ListHeaderSegment::SortDirection::NONE;
         }
     }
 
