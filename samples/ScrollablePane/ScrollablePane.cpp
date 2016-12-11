@@ -194,7 +194,7 @@ bool ScrollablePaneSample::SampleNewDialog(const CEGUI::EventArgs&)
 bool ScrollablePaneSample::semanticEventHandler(const CEGUI::EventArgs& e)
 {
     const CEGUI::SemanticEventArgs& args = static_cast<const CEGUI::SemanticEventArgs&>(e);
-    if (args.d_semanticValue == static_cast<int>(SampleSemanticValue::SpawnNewDialog))
+    if (args.d_semanticValue == CEGUI::SemanticValue::SpawnNewDialog)
     {
         // this handler does not use the event args at all so this is fine :)
         // though maybe a bit hack-ish...

@@ -94,11 +94,11 @@ void DefaultLogger::logEvent(const String& message,
     // write event type code
     switch(level)
     {
-    case LoggingLevel::LOG_ERROR:
+    case LoggingLevel::ERROR_LEVEL:
         d_workstream << "(Error)\t";
         break;
 
-    case LoggingLevel::WARNING:
+    case LoggingLevel::WARNING_LEVEL:
         d_workstream << "(Warn)\t";
         break;
 
@@ -139,10 +139,10 @@ void DefaultLogger::logEvent(const String& message,
             int priority(ANDROID_LOG_UNKNOWN);
             switch (level)
             {
-            case LoggingLevel::LOG_ERROR:
+            case LoggingLevel::ERROR_LEVEL:
                 priority = ANDROID_LOG_ERROR;
                 break;
-            case LoggingLevel::WARNING:
+            case LoggingLevel::WARNING_LEVEL:
                 priority = ANDROID_LOG_WARN;
                 break;
             case LoggingLevel::STANDARD:

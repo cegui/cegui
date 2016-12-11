@@ -76,7 +76,7 @@ void ToggleButton::onSelectStateChange(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void ToggleButton::onCursorActivate(CursorInputEventArgs& e)
 {
-    if (e.source == CIS_Left && isPushed())
+    if (e.source == CursorInputSource::Left && isPushed())
     {
         if (const Window* const sheet = getGUIContext().getRootWindow())
         {
@@ -107,7 +107,7 @@ void ToggleButton::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_Confirm)
+    if (e.d_semanticValue == SemanticValue::Confirm)
     {
         setSelected(getPostClickSelectState());
 

@@ -116,7 +116,7 @@ void Config_xmlHandler::elementStart(const String& element,
         handleDefaultTooltipElement(attributes);
     else
         Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", LoggingLevel::LOG_ERROR);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -141,8 +141,8 @@ void Config_xmlHandler::handleLoggingElement(const XMLAttributes& attr)
 
     const String logLevel(attr.getValueAsString(LevelAttribute, ""));
 
-    if (logLevel == "LoggingLevel::LOG_ERROR")
-        d_logLevel = LoggingLevel::LOG_ERROR;
+    if (logLevel == "LoggingLevel::ERROR")
+        d_logLevel = LoggingLevel::ERROR_LEVEL;
     else if (logLevel == "LoggingLevel::INFORMATIVE")
         d_logLevel = LoggingLevel::INFORMATIVE;
     else if (logLevel == "LoggingLevel::INSANE")

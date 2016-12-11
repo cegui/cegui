@@ -86,7 +86,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
 void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 {
     d_isStateResettingEnabled = true;
-    d_activeBlendMode = BM_INVALID;
+    d_activeBlendMode = BlendMode::INVALID;
 #if defined CEGUI_USE_GLEW
     if (init_glew)
     {

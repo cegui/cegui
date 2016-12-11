@@ -419,7 +419,7 @@ namespace CEGUI
 
     bool Spinner::handleIncreaseButton(const EventArgs& e)
     {
-        if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
+        if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
         {
             setCurrentValue(d_currentValue + d_stepSize);
             return true;
@@ -430,7 +430,7 @@ namespace CEGUI
 
     bool Spinner::handleDecreaseButton(const EventArgs& e)
     {
-        if (static_cast<const CursorInputEventArgs&>(e).source == CIS_Left)
+        if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
         {
             setCurrentValue(d_currentValue - d_stepSize);
             return true;

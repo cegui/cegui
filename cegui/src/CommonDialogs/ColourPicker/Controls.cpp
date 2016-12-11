@@ -443,7 +443,7 @@ void ColourPickerControls::reloadColourPickerControlsTexture()
         d_colourPickingTexture,
         Sizef(static_cast<float>(d_colourPickerControlsTextureSize),
               static_cast<float>(d_colourPickerControlsTextureSize)),
-        Texture::PF_RGB);
+        Texture::PixelFormat::RGB);
 
     getColourPickerImageSlider()->invalidate();
     getColourPickerAlphaSlider()->invalidate();
@@ -925,9 +925,9 @@ bool ColourPickerControls::handleLABEditboxTextChanged(const EventArgs&)
     String LabBString = getLabEditBoxB()->getText();
 
     bool matchingRegEx = true;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabLString) == RegexMatcher::MS_VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabAString) == RegexMatcher::MS_VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabBString) == RegexMatcher::MS_VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabLString) == RegexMatcher::MatchState::VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabAString) == RegexMatcher::MatchState::VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabBString) == RegexMatcher::MatchState::VALID;
 
     if (!matchingRegEx)
         return true;
@@ -963,9 +963,9 @@ bool ColourPickerControls::handleHSVEditboxTextChanged(const EventArgs&)
     String VString = getHSVEditBoxV()->getText();
 
     bool matchingRegEx = true;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(HString) == RegexMatcher::MS_VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(SString) == RegexMatcher::MS_VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(VString) == RegexMatcher::MS_VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(HString) == RegexMatcher::MatchState::VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(SString) == RegexMatcher::MatchState::VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(VString) == RegexMatcher::MatchState::VALID;
 
     if (!matchingRegEx)
         return true;
@@ -997,7 +997,7 @@ bool ColourPickerControls::handleAlphaEditboxTextChanged(const EventArgs&)
     d_regexMatcher.setRegexString(labRegEx);
 
     String ValueString = getAlphaEditBox()->getText();
-    bool matchingRegEx = d_regexMatcher.getMatchStateOfString(ValueString) == RegexMatcher::MS_VALID;
+    bool matchingRegEx = d_regexMatcher.getMatchStateOfString(ValueString) == RegexMatcher::MatchState::VALID;
 
     if (!matchingRegEx)
         return true;
@@ -1138,7 +1138,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 {
     const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (cursor_args.source == CIS_Left)
+    if (cursor_args.source == CursorInputSource::Left)
         d_draggingColourPickerIndicator = false;
 
     return true;
@@ -1150,7 +1150,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
 {
     const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (cursor_args.source == CIS_Left)
+    if (cursor_args.source == CursorInputSource::Left)
     {
         d_draggingColourPickerIndicator = true;
 

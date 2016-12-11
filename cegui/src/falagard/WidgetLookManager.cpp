@@ -87,7 +87,7 @@ namespace CEGUI
         }
         catch (...)
         {
-            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecificationFromContainer - loading of look and feel data from raw data container has failed.", LoggingLevel::LOG_ERROR);
+            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecificationFromContainer - loading of look and feel data from raw data container has failed.", LoggingLevel::ERROR_LEVEL);
             throw;
         }
     }
@@ -113,7 +113,7 @@ namespace CEGUI
         }
         catch (...)
         {
-            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from file '" + filename +"' has failed.", LoggingLevel::LOG_ERROR);
+            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from file '" + filename +"' has failed.", LoggingLevel::ERROR_LEVEL);
             throw;
         }
     }
@@ -131,7 +131,7 @@ namespace CEGUI
         }
         catch (...)
         {
-            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from string has failed.", LoggingLevel::LOG_ERROR);
+            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from string has failed.", LoggingLevel::ERROR_LEVEL);
             throw;
         }
     }
@@ -201,7 +201,7 @@ namespace CEGUI
         }
         catch (UnknownObjectException&)
         {
-            Logger::getSingleton().logEvent("WidgetLookManager::writeWidgetLookToStream - Failed to write widget look XML data to stream.", LoggingLevel::LOG_ERROR);
+            Logger::getSingleton().logEvent("WidgetLookManager::writeWidgetLookToStream - Failed to write widget look XML data to stream.", LoggingLevel::ERROR_LEVEL);
         }
 
         // close the root tags to terminate the file

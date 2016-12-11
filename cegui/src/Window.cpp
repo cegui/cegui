@@ -276,7 +276,7 @@ Window::Window(const String& type, const String& name):
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
     d_repeatRate(0.06f),
-    d_repeatPointerSource(CIS_None),
+    d_repeatPointerSource(CursorInputSource::None),
     d_repeating(false),
     d_repeatElapsed(0.0f),
 
@@ -1584,7 +1584,7 @@ void Window::setCursorAutoRepeatEnabled(bool setting)
         return;
 
     d_autoRepeat = setting;
-    d_repeatPointerSource = CIS_None;
+    d_repeatPointerSource = CursorInputSource::None;
 
     // FIXME: There is a potential issue here if this setting is
     // FIXME: changed _while_ the cursor is auto-repeating, and
@@ -1639,7 +1639,7 @@ void Window::update(float elapsed)
 void Window::updateSelf(float elapsed)
 {
     // cursor autorepeat processing.
-    if (d_autoRepeat && d_repeatPointerSource != CIS_None)
+    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::None)
     {
         d_repeatElapsed += elapsed;
 
@@ -2029,7 +2029,7 @@ void Window::layoutLookNFeelChildWidgets()
     {
         Logger::getSingleton().logEvent(
             "Window::layoutLookNFeelChildWidgets: "
-            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::LOG_ERROR);
+            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::ERROR_LEVEL);
     }
 }
 
@@ -2107,7 +2107,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                 // This catches errors from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent(
                     "Window::writePropertiesXML: property receiving failed.  "
-                    "Continuing...", LoggingLevel::LOG_ERROR);
+                    "Continuing...", LoggingLevel::ERROR_LEVEL);
             }
         }
 
@@ -2445,7 +2445,7 @@ void Window::onCaptureGained(WindowEventArgs& e)
 void Window::onCaptureLost(WindowEventArgs& e)
 {
     // reset auto-repeat state
-    d_repeatPointerSource = CIS_None;
+    d_repeatPointerSource = CursorInputSource::None;
 
     // handle restore of previous capture window as required.
     if (d_restoreOldCapture && (d_oldCapture != nullptr)) {
@@ -2456,7 +2456,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // handle case where cursor is now in a different window
     // (this is a bit of a hack that uses the injection of a semantic event to handle
     // this for us).
-    SemanticInputEvent moveEvent(SV_CursorMove);
+    SemanticInputEvent moveEvent(SemanticValue::CursorMove);
     const glm::vec2 cursorPosition = getGUIContext().getCursor().getPosition();
     moveEvent.d_payload.array[0] = cursorPosition.x;
     moveEvent.d_payload.array[1] = cursorPosition.y;
@@ -2655,7 +2655,7 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     if (tip)
         tip->setTargetWindow(nullptr);
 
-    if ((e.source == CIS_Left) && moveToFront_impl(true))
+    if ((e.source == CursorInputSource::Left) && moveToFront_impl(true))
         ++e.handled;
 
     // if auto repeat is enabled and we are not currently tracking
@@ -2663,7 +2663,7 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     // it could be us that generated this event via auto-repeat).
     if (d_autoRepeat)
     {
-        if (d_repeatPointerSource == CIS_None)
+        if (d_repeatPointerSource == CursorInputSource::None)
             captureInput();
 
         if ((d_repeatPointerSource != e.source) && isCapturedByThis())
@@ -2695,10 +2695,10 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
 void Window::onCursorActivate(CursorInputEventArgs& e)
 {
     // reset auto-repeat state
-    if (d_autoRepeat && d_repeatPointerSource != CIS_None)
+    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::None)
     {
         releaseInput();
-        d_repeatPointerSource = CIS_None;
+        d_repeatPointerSource = CursorInputSource::None;
     }
 
     fireEvent(EventCursorActivate, e, EventNamespace);
@@ -2843,7 +2843,7 @@ void Window::banPropertyFromXML(const String& property_name)
 	{
 		Logger::getSingleton().logEvent("Property '" + property_name + "' "
 				"is not writable so it's implicitly banned from XML. No need "
-				"to ban it manually", LoggingLevel::WARNING);
+				"to ban it manually", LoggingLevel::WARNING_LEVEL);
 
 		return;
 	}
@@ -3149,7 +3149,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
         ctx.surface = d_surface;
         ctx.owner = this;
         ctx.offset = getUnclippedOuterRect().get().getPosition();
-        ctx.queue = RQ_BASE;
+        ctx.queue = RenderQueueID::BASE;
     }
     else if (d_parent)
     {
@@ -3160,7 +3160,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
         ctx.surface = &getGUIContext();
         ctx.owner = nullptr;
         ctx.offset = glm::vec2(0, 0);
-        ctx.queue = RQ_BASE;
+        ctx.queue = RenderQueueID::BASE;
     }
 }
 
@@ -3292,7 +3292,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
         {
             Logger::getSingleton().logEvent("Window::allocateRenderingWindow - "
                 "Failed to create a suitable TextureTarget for use by Window '"
-                + d_name + "'", LoggingLevel::LOG_ERROR);
+                + d_name + "'", LoggingLevel::ERROR_LEVEL);
 
             d_surface = nullptr;
             return;
@@ -3400,7 +3400,7 @@ void Window::onRotated(ElementEventArgs& e)
             Logger::getSingleton().logEvent("Window::setRotation - "
                 "Failed to obtain a suitable ReneringWindow surface for "
                 "Window '" + d_name + "'.  Rotation will not be available.",
-                LoggingLevel::LOG_ERROR);
+                LoggingLevel::ERROR_LEVEL);
 
             return;
         }
@@ -3413,7 +3413,7 @@ void Window::onRotated(ElementEventArgs& e)
         {
             Logger::getSingleton().logEvent("Window::setRotation - "
                 "Window '" + d_name + "' has a manual RenderingSurface that is not "
-                "a RenderingWindow.  Rotation will not be available.", LoggingLevel::LOG_ERROR);
+                "a RenderingWindow.  Rotation will not be available.", LoggingLevel::ERROR_LEVEL);
 
             return;
         }

@@ -246,7 +246,7 @@ void Thumb::onCursorPressHold(CursorInputEventArgs& e)
 	// default processing
     PushButton::onCursorPressHold(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
 	{
 		// initialise the dragging state
 		d_beingDragged = true;

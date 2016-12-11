@@ -359,7 +359,7 @@ bool GUIContext::updateWindowContainingCursor_impl() const
         return false;
 
     ciea.scroll = 0;
-    ciea.source = CIS_None;
+    ciea.source = CursorInputSource::None;
 
     Window* oldWindow = d_windowContainingCursor;
     d_windowContainingCursor = window_with_cursor;
@@ -664,7 +664,7 @@ bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
 bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
 {
     // dispatch to a handler if we have one
-    std::map<int, SlotFunctorBase<InputEvent>*>::const_iterator itor =
+    std::map<SemanticValue, SlotFunctorBase<InputEvent>*>::const_iterator itor =
         d_semanticEventHandlers.find(event.d_value);
     if (itor != d_semanticEventHandlers.end())
     {
@@ -695,34 +695,34 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
 void GUIContext::initializeSemanticEventHandlers()
 {
     d_semanticEventHandlers.insert(
-        std::make_pair(SV_Undo,
+        std::make_pair(SemanticValue::Undo,
                        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
                            &GUIContext::handleUndoRequest, this)));
     d_semanticEventHandlers.insert(
-        std::make_pair(SV_Redo,
+        std::make_pair(SemanticValue::Redo,
                        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
                            &GUIContext::handleRedoRequest, this)));
 
-    d_semanticEventHandlers.insert(std::make_pair(SV_Cut,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::Cut,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCutRequest, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SV_Copy,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::Copy,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCopyRequest, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SV_Paste,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::Paste,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handlePasteRequest, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SV_VerticalScroll,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::VerticalScroll,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleScrollEvent, this)));
 
-    d_semanticEventHandlers.insert(std::make_pair(SV_CursorActivate,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorActivate,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
         &GUIContext::handleCursorActivateEvent, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SV_CursorPressHold,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorPressHold,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
         &GUIContext::handleCursorPressHoldEvent, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SV_CursorMove,
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorMove,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCursorMoveEvent, this)));
 }
@@ -730,7 +730,7 @@ void GUIContext::initializeSemanticEventHandlers()
 //----------------------------------------------------------------------------//
 void GUIContext::deleteSemanticEventHandlers()
 {
-    for (std::map<int, SlotFunctorBase<InputEvent>*>::iterator itor = d_semanticEventHandlers.begin();
+    for (std::map<SemanticValue, SlotFunctorBase<InputEvent>*>::iterator itor = d_semanticEventHandlers.begin();
         itor != d_semanticEventHandlers.end(); ++itor)
     {
         delete itor->second;
@@ -787,7 +787,7 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
     CursorInputEventArgs ciea(nullptr);
     ciea.position = d_cursor.getPosition();
     ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = CIS_None;
+    ciea.source = CursorInputSource::None;
     ciea.scroll = event.d_payload.single;
     ciea.window = getTargetWindow(ciea.position, false);
     // make cursor position sane for this target window
@@ -838,7 +838,7 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
         return false;
 
     ciea.scroll = 0;
-    ciea.source = CIS_None;
+    ciea.source = CursorInputSource::None;
     ciea.state = d_cursorsState;
 
     // move cursor to new position
@@ -859,7 +859,7 @@ bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(
         d_cursor.getPosition());
     ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = CIS_None;
+    ciea.source = CursorInputSource::None;
     ciea.scroll = 0;
     ciea.window = getWindowContainingCursor();
 

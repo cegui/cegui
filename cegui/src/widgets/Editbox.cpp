@@ -57,7 +57,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_readOnlyMouseCursorImage(nullptr),
     d_validator(System::getSingleton().createRegexMatcher()),
     d_weOwnValidator(true),
-    d_validatorMatchState(RegexMatcher::MS_VALID),
+    d_validatorMatchState(RegexMatcher::MatchState::VALID),
     d_previousValidityChangeResponse(true)
 {
     addEditboxProperties();
@@ -166,7 +166,7 @@ void Editbox::eraseSelectedText(bool modify_text)
         {
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
@@ -187,7 +187,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 Editbox::MatchState Editbox::getStringMatchState(const String& str) const
 {
     return d_validator ? d_validator->getMatchStateOfString(str) :
-                         RegexMatcher::MS_VALID;
+                         RegexMatcher::MatchState::VALID;
 }
 
 
@@ -244,7 +244,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     String tmp(getText());
 
     UndoHandler::UndoAction undoSelection;
-    undoSelection.d_type = UndoHandler::UAT_DELETE;
+    undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
     undoSelection.d_startIdx = getSelectionStart();
     undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -254,7 +254,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     if (tmp.length() < d_maxTextLen)
     {
         UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UAT_INSERT;
+        undo.d_type = UndoHandler::UndoActionType::INSERT;
         undo.d_startIdx = getCaretIndex();
         undo.d_text = clipboardText;
 
@@ -302,7 +302,7 @@ void Editbox::onCharacter(TextEventArgs& e)
         String tmp(getText());
 
         UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UAT_DELETE;
+        undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
         undoSelection.d_startIdx = getSelectionStart();
         undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -312,7 +312,7 @@ void Editbox::onCharacter(TextEventArgs& e)
         if (tmp.length() < d_maxTextLen)
         {
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_type = UndoHandler::UndoActionType::INSERT;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = e.d_character;
 
@@ -360,7 +360,7 @@ void Editbox::handleBackspace(void)
         if (getSelectionLength() != 0)
         {
             UndoHandler::UndoAction undoSelection;
-            undoSelection.d_type = UndoHandler::UAT_DELETE;
+            undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
             undoSelection.d_startIdx = getSelectionStart();
             undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -380,7 +380,7 @@ void Editbox::handleBackspace(void)
         else if (getCaretIndex() > 0)
         {
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
             size_t deleteStartPos = d_caretPos - 1;
@@ -423,7 +423,7 @@ void Editbox::handleDelete(void)
         if (getSelectionLength() != 0)
         {
             UndoHandler::UndoAction undoSelection;
-            undoSelection.d_type = UndoHandler::UAT_DELETE;
+            undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
             undoSelection.d_startIdx = getSelectionStart();
             undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -443,7 +443,7 @@ void Editbox::handleDelete(void)
         else if (getCaretIndex() < tmp.length())
         {
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
             undo.d_startIdx = d_caretPos;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
@@ -539,14 +539,14 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == CIS_Left)
+    if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
     {
         d_dragAnchorIdx = 0;
         setCaretIndex(getText().length());
         setSelection(d_dragAnchorIdx, d_caretPos);
         ++e.handled;
     }
-    else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left)
+    else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
     {
         // if masked, set up to select all
         if (isTextMaskingEnabled())
@@ -592,7 +592,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 
             switch (e.d_semanticValue)
             {
-            case SV_Confirm:
+            case SemanticValue::Confirm:
             {
                 WindowEventArgs args(this);
                 // Fire 'input accepted' event
@@ -600,19 +600,19 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
                 break;
             }
 
-            case SV_GoToStartOfLine:
+            case SemanticValue::GoToStartOfLine:
                 handleHome(false);
                 break;
 
-            case SV_GoToEndOfLine:
+            case SemanticValue::GoToEndOfLine:
                 handleEnd(false);
                 break;
 
-            case SV_SelectToStartOfLine:
+            case SemanticValue::SelectToStartOfLine:
                 handleHome(true);
                 break;
 
-            case SV_SelectToEndOfLine:
+            case SemanticValue::SelectToEndOfLine:
                 handleEnd(true);
                 break;
 

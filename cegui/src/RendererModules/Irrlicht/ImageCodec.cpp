@@ -63,12 +63,12 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     switch (image->getColorFormat())
     {
         case video::ECF_A8R8G8B8:
-            format = Texture::PF_RGBA;
+            format = Texture::PixelFormat::RGBA;
             components = 4;
             break;
 
         case video::ECF_R8G8B8:
-            format = Texture::PF_RGB;
+            format = Texture::PixelFormat::RGB;
             components = 3;
             break;
 
@@ -84,7 +84,7 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // ONLY for RGBA, switch R and B components
     // (we should probably check the R and B masks and decide based on those)
-    if (format == Texture::PF_RGBA)
+    if (format == Texture::PixelFormat::RGBA)
     {
         for (s32 j = 0; j < sz.Height; ++j)
         {

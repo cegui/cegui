@@ -170,7 +170,7 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 	else
 	{
 		// if left cursor is held, clear any selection
-		if (e.state.isHeld(CIS_Left))
+		if (e.state.isHeld(CursorInputSource::Left))
 		{
             clearSelections();
 		}
@@ -185,7 +185,7 @@ void ComboDropList::onCursorPressHold(CursorInputEventArgs& e)
 {
     ListWidget::onCursorPressHold(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
 	{
 		if (!isHit(e.position))
 		{
@@ -209,7 +209,7 @@ void ComboDropList::onCursorActivate(CursorInputEventArgs& e)
 {
     ListWidget::onCursorActivate(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
 	{
 		if (d_armed && (getChildAtPosition(e.position) == nullptr))
 		{

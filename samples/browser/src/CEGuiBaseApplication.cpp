@@ -147,7 +147,7 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     updateLogoGeometryRotation();
 
     // clearing this queue actually makes sure it's created(!)
-    CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RQ_OVERLAY);
+    CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RenderQueueID::OVERLAY);
 
     // subscribe handler to render overlay items
     CEGUI::System::getSingleton().getDefaultGUIContext().
@@ -289,7 +289,7 @@ void CEGuiBaseApplication::initDataPathPrefix(const CEGUI::String &override)
 //----------------------------------------------------------------------------//
 bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& args)
 {
-    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
+    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::OVERLAY)
         return false;
 
     // draw the logo
@@ -310,7 +310,7 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
 //----------------------------------------------------------------------------//
 bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
 {
-    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
+    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::OVERLAY)
         return false;
 
     // Draw FPS value
@@ -435,7 +435,7 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
 void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_context)
 {
     // clearing this queue actually makes sure it's created(!)
-    gui_context->clearGeometry(CEGUI::RQ_OVERLAY);
+    gui_context->clearGeometry(CEGUI::RenderQueueID::OVERLAY);
 
     // subscribe handler to render overlay items
     gui_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,

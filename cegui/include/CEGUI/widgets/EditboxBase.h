@@ -583,7 +583,7 @@ private:
     void addEditboxBaseProperties();
 };
 
-bool isSelectionSemanticValue(int value);
+bool isSelectionSemanticValue(SemanticValue value);
 
 } // End of  CEGUI namespace section
 

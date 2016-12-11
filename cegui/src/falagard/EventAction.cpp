@@ -128,7 +128,7 @@ void EventAction::cleanupWidget(Window& widget) const
         Logger::getSingleton().logEvent("EventAction::cleanupWidget: "
             "An event connection with key '" + keyname + "' was not "
             "found.  This may be harmless, but most likely could point "
-            "to a double-deletion or some other serious issue.", LoggingLevel::LOG_ERROR);
+            "to a double-deletion or some other serious issue.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//

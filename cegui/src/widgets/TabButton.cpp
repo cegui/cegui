@@ -88,7 +88,7 @@ void TabButton::onClicked(WindowEventArgs& e)
 *************************************************************************/
 void TabButton::onCursorPressHold(CursorInputEventArgs& e)
 {
-    if (e.source == CIS_Middle)
+    if (e.source == CursorInputSource::Middle)
     {
         captureInput ();
         ++e.handled;
@@ -103,7 +103,7 @@ void TabButton::onCursorPressHold(CursorInputEventArgs& e)
 
 void TabButton::onCursorActivate(CursorInputEventArgs& e)
 {
-    if ((e.source == CIS_Left) && isPushed())
+    if ((e.source == CursorInputSource::Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 
@@ -122,7 +122,7 @@ void TabButton::onCursorActivate(CursorInputEventArgs& e)
 
 		++e.handled;
     }
-    else if (e.source == CIS_Middle)
+    else if (e.source == CursorInputSource::Middle)
     {
         d_dragging = false;
         releaseInput ();

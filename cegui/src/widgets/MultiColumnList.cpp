@@ -1918,7 +1918,7 @@ void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
     // base class processing
     Window::onCursorPressHold(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
     {
         const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
         handleSelection(local_point, false, false);
@@ -1929,8 +1929,8 @@ void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
 
 void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
 {
-    bool cumulative = e.d_semanticValue == SV_SelectCumulative;
-    bool range = e.d_semanticValue == SV_SelectRange;
+    bool cumulative = e.d_semanticValue == SemanticValue::SelectCumulative;
+    bool range = e.d_semanticValue == SemanticValue::SelectRange;
 
     if (cumulative || range)
     {
@@ -2468,7 +2468,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 		catch (InvalidRequestException&)
 		{
 			// This catches error(s) from the MultiLineColumnList for example
-			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", LoggingLevel::LOG_ERROR);
+			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", LoggingLevel::ERROR_LEVEL);
 		}
 
     return propCnt;

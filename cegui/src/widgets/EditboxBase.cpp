@@ -250,7 +250,7 @@ void EditboxBase::eraseSelectedText(bool modify_text)
         {
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
@@ -298,7 +298,7 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
     // base class handling
     Window::onCursorPressHold(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
     {
         // grab inputs
         if (captureInput())
@@ -325,7 +325,7 @@ void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
     // base class processing
     Window::onCursorActivate(e);
 
-    if (e.source == CIS_Left)
+    if (e.source == CursorInputSource::Left)
     {
         releaseInput();
         ++e.handled;
@@ -644,63 +644,63 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
 {
     switch (e.d_semanticValue)
     {
-    case SV_DeletePreviousCharacter:
+    case SemanticValue::DeletePreviousCharacter:
         handleBackspace();
         break;
 
-    case SV_DeleteNextCharacter:
+    case SemanticValue::DeleteNextCharacter:
         handleDelete();
         break;
 
-    case SV_GoToPreviousCharacter:
+    case SemanticValue::GoToPreviousCharacter:
         handleCharLeft(false);
         break;
 
-    case SV_GoToNextCharacter:
+    case SemanticValue::GoToNextCharacter:
         handleCharRight(false);
         break;
 
-    case SV_SelectPreviousCharacter:
+    case SemanticValue::SelectPreviousCharacter:
         handleCharLeft(true);
         break;
 
-    case SV_SelectNextCharacter:
+    case SemanticValue::SelectNextCharacter:
         handleCharRight(true);
         break;
 
-    case SV_GoToPreviousWord:
+    case SemanticValue::GoToPreviousWord:
         handleWordLeft(false);
         break;
 
-    case SV_GoToNextWord:
+    case SemanticValue::GoToNextWord:
         handleWordRight(false);
         break;
 
-    case SV_SelectPreviousWord:
+    case SemanticValue::SelectPreviousWord:
         handleWordLeft(true);
         break;
 
-    case SV_SelectNextWord:
+    case SemanticValue::SelectNextWord:
         handleWordRight(true);
         break;
 
-    case SV_GoToStartOfDocument:
+    case SemanticValue::GoToStartOfDocument:
         handleHome(false);
         break;
 
-    case SV_GoToEndOfDocument:
+    case SemanticValue::GoToEndOfDocument:
         handleEnd(false);
         break;
 
-    case SV_SelectToStartOfDocument:
+    case SemanticValue::SelectToStartOfDocument:
         handleHome(true);
         break;
 
-    case SV_SelectToEndOfDocument:
+    case SemanticValue::SelectToEndOfDocument:
         handleEnd(true);
         break;
 
-    case SV_SelectAll:
+    case SemanticValue::SelectAll:
         handleSelectAll();
         break;
 
@@ -711,10 +711,10 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
     return true;
 }
 
-bool isSelectionSemanticValue(int value)
+bool isSelectionSemanticValue(SemanticValue value)
 {
-    return (value >= SV_SelectRange && value <= SV_SelectToEndOfLine) ||
-        (value >= SV_SelectToStartOfDocument && value <= SV_SelectToPreviousPage);
+    return (value >= SemanticValue::SelectRange && value <= SemanticValue::SelectToEndOfLine) ||
+        (value >= SemanticValue::SelectToStartOfDocument && value <= SemanticValue::SelectToPreviousPage);
 }
 
 }

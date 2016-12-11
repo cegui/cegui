@@ -79,11 +79,11 @@ Texture* SDL2ImageCodec::load(const RawDataContainer& data, Texture* result)
         switch (img->format->BitsPerPixel)
         {
             case 24:
-                pixel_fmt = Texture::PF_RGB;
+                pixel_fmt = Texture::PixelFormat::RGB;
                 break;
                 
             case 32:
-                pixel_fmt = Texture::PF_RGBA;
+                pixel_fmt = Texture::PixelFormat::RGBA;
                 break;
                 
             default:

@@ -56,12 +56,12 @@ public:
 
     /*!
     \brief
-        enum representing undo type (insert, delete)
+        Undo action types (insert, delete)
     */
-    enum UndoActionType
+    enum class UndoActionType : int
     {
-        UAT_INSERT = 1,
-        UAT_DELETE = 2
+        INSERT = 1,
+        DELETE = 2
     };
 
     /*!

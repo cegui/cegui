@@ -246,7 +246,7 @@ namespace CEGUI
     {
         Window::onCursorPressHold(e);
 
-        if (e.source == CIS_Left)
+        if (e.source == CursorInputSource::Left)
         {
             // ensure all inputs come to us for now
             if (captureInput())
@@ -268,7 +268,7 @@ namespace CEGUI
     {
         Window::onCursorActivate(e);
 
-        if (e.source == CIS_Left)
+        if (e.source == CursorInputSource::Left)
         {
             if (d_dragging)
             {
@@ -509,7 +509,7 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
     ctx.offset = ctx.owner ? ctx.owner->getOuterRectClipper().getPosition() :
                              glm::vec2(0, 0);
     // draw to overlay queue
-    ctx.queue = RQ_OVERLAY;
+    ctx.queue = RenderQueueID::OVERLAY;
 }
 
 //----------------------------------------------------------------------------//

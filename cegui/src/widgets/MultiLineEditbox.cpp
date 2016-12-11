@@ -492,7 +492,7 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
@@ -532,7 +532,7 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
     {
         String newText = getText();
         UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UAT_INSERT;
+        undo.d_type = UndoHandler::UndoActionType::INSERT;
         undo.d_startIdx = getCaretIndex();
         undo.d_text = clipboardText;
         d_undoHandler->addUndoHistory(undo);
@@ -569,7 +569,7 @@ void MultiLineEditbox::handleBackspace(void)
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
             size_t deleteStartPos = d_caretPos - 1;
@@ -610,7 +610,7 @@ void MultiLineEditbox::handleDelete(void)
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_type = UndoHandler::UndoActionType::DELETE;
             undo.d_startIdx = d_caretPos;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
@@ -749,7 +749,7 @@ void MultiLineEditbox::handleNewLine()
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_type = UndoHandler::UndoActionType::INSERT;
             undo.d_startIdx = getCaretIndex();
             undo.d_text = "\x0a";
             d_undoHandler->addUndoHistory(undo);
@@ -834,7 +834,7 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
         {
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_type = UndoHandler::UndoActionType::INSERT;
             undo.d_startIdx = getCaretIndex();
             undo.d_text = e.d_character;
             d_undoHandler->addUndoHistory(undo);
@@ -1060,13 +1060,13 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == CIS_Left)
+    if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
     {
         handleSelectAllText(e);
 
         ++e.handled;
     }
-    else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == CIS_Left)
+    else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
     {
         d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
             (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
@@ -1102,47 +1102,47 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
             switch (e.d_semanticValue)
             {
 
-            case SV_Confirm:
+            case SemanticValue::Confirm:
                 handleNewLine();
                 break;
 
-            case SV_GoUp:
+            case SemanticValue::GoUp:
                 handleLineUp(false);
                 break;
 
-            case SV_SelectUp:
+            case SemanticValue::SelectUp:
                 handleLineUp(true);
                 break;
 
-            case SV_GoDown:
+            case SemanticValue::GoDown:
                 handleLineDown(false);
                 break;
 
-            case SV_SelectDown:
+            case SemanticValue::SelectDown:
                 handleLineDown(true);
                 break;
 
-            case SV_GoToStartOfLine:
+            case SemanticValue::GoToStartOfLine:
                 handleLineHome(false);
                 break;
 
-            case SV_SelectToStartOfLine:
+            case SemanticValue::SelectToStartOfLine:
                 handleLineHome(true);
                 break;
 
-            case SV_GoToEndOfLine:
+            case SemanticValue::GoToEndOfLine:
                 handleLineEnd(false);
                 break;
 
-            case SV_SelectToEndOfLine:
+            case SemanticValue::SelectToEndOfLine:
                 handleLineEnd(true);
                 break;
 
-            case SV_GoToPreviousPage:
+            case SemanticValue::GoToPreviousPage:
                 handlePageUp(false);
                 break;
 
-            case SV_GoToNextPage:
+            case SemanticValue::GoToNextPage:
                 handlePageDown(false);
                 break;
 

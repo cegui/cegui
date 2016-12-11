@@ -364,7 +364,7 @@ void ImageManager::elementStartLocal(const String& element,
     else
         Logger::getSingleton().logEvent(
             "[ImageManager] Unknown XML element encountered: <" +
-            element + ">", LoggingLevel::LOG_ERROR);
+            element + ">", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//

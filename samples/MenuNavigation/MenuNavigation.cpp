@@ -179,26 +179,26 @@ bool MenuNavigationSample::handleTabSelectionChanged(const CEGUI::EventArgs& e)
     return true;
 }
 
-std::map<int, String> MenuNavigationSample::createMatrixNavigationMappings()
+std::map<SemanticValue, String> MenuNavigationSample::createMatrixNavigationMappings()
 {
-    std::map<int, String> mappings;
+    std::map<SemanticValue, String> mappings;
 
-    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
-    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
-    mappings[SV_GoToPreviousCharacter] = NAVIGATE_LEFT;
-    mappings[SV_GoToNextCharacter] = NAVIGATE_RIGHT;
-    mappings[SV_GoDown] = NAVIGATE_DOWN;
-    mappings[SV_GoUp] = NAVIGATE_UP;
+    mappings[SemanticValue::NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SemanticValue::NavigateToPrevious] = NAVIGATE_PREVIOUS;
+    mappings[SemanticValue::GoToPreviousCharacter] = NAVIGATE_LEFT;
+    mappings[SemanticValue::GoToNextCharacter] = NAVIGATE_RIGHT;
+    mappings[SemanticValue::GoDown] = NAVIGATE_DOWN;
+    mappings[SemanticValue::GoUp] = NAVIGATE_UP;
 
     return mappings;
 }
 
-std::map<int, CEGUI::String> MenuNavigationSample::createLinearNavigationMappings()
+std::map<SemanticValue, CEGUI::String> MenuNavigationSample::createLinearNavigationMappings()
 {
-    std::map<int, String> mappings;
+    std::map<SemanticValue, String> mappings;
 
-    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
-    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
+    mappings[SemanticValue::NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SemanticValue::NavigateToPrevious] = NAVIGATE_PREVIOUS;
 
     return mappings;
 }

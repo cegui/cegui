@@ -73,11 +73,11 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         case corona::PF_R8G8B8:
             texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8);
-            cefmt = Texture::PF_RGB;
+            cefmt = Texture::PixelFormat::RGB;
             break;
         default:
             texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);
-            cefmt = Texture::PF_RGBA;
+            cefmt = Texture::PixelFormat::RGBA;
             break;
     }
     texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);

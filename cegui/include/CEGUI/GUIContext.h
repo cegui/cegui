@@ -298,7 +298,7 @@ protected:
 
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_windowDestroyedEventConnection;
-    std::map<int, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
+    std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
     //! the window navigator (if any) used to navigate the GUI
     WindowNavigator* d_windowNavigator;

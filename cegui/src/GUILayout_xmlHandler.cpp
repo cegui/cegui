@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/GUILayout_xmlHandler.h"
 #include "CEGUI/Exceptions.h"
-#include "CEGUI/System.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/WindowManager.h"
@@ -100,7 +99,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
     // anything else is an error which *should* have already been caught by XML validation
     else
     {
-        Logger::getSingleton().logEvent("GUILayout_xmlHandler::startElement - Unexpected data was found while parsing the gui-layout file: '" + element + "' is unknown.", LoggingLevel::LOG_ERROR);
+        Logger::getSingleton().logEvent("GUILayout_xmlHandler::startElement - Unexpected data was found while parsing the gui-layout file: '" + element + "' is unknown.", LoggingLevel::ERROR_LEVEL);
     }
 }
 

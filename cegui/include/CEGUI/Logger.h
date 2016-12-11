@@ -31,10 +31,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <utility>
 #include "CEGUI/Singleton.h"
 
 
@@ -55,8 +51,8 @@ namespace CEGUI
 */
 enum class LoggingLevel : int
 {
-	LOG_ERROR,      //!< Only actual error conditions will be logged.
-    WARNING,        //!< LoggingLevel::WARNING will be logged as well.
+	ERROR_LEVEL,      //!< Only actual error conditions will be logged.
+    WARNING_LEVEL,        //!< LoggingLevel::WARNING will be logged as well.
 	STANDARD,       //!< Basic events will be logged (default level).
 	INFORMATIVE,    //!< Useful tracing (object creations etc) information will be logged.
 	INSANE          //!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).

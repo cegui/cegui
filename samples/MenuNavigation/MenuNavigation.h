@@ -53,8 +53,8 @@ private:
     bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
     bool handleTabSelectionChanged(const CEGUI::EventArgs& e);
 
-   std::map<int, CEGUI::String> createMatrixNavigationMappings();
-   std::map<int, CEGUI::String> createLinearNavigationMappings();
+   std::map<CEGUI::SemanticValue, CEGUI::String> createMatrixNavigationMappings();
+   std::map<CEGUI::SemanticValue, CEGUI::String> createLinearNavigationMappings();
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_

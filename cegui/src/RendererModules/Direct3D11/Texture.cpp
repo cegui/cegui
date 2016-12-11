@@ -44,11 +44,11 @@ static DXGI_FORMAT toD3DPixelFormat(const Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-        case Texture::PF_RGBA:      return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case Texture::PF_RGB:       return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case Texture::PF_RGBA_DXT1: return DXGI_FORMAT_BC1_UNORM;
-        case Texture::PF_RGBA_DXT3: return DXGI_FORMAT_BC2_UNORM;
-        case Texture::PF_RGBA_DXT5: return DXGI_FORMAT_BC3_UNORM;
+        case Texture::PixelFormat::RGBA:      return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case Texture::PixelFormat::RGB:       return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case Texture::PixelFormat::RGBA_DXT1: return DXGI_FORMAT_BC1_UNORM;
+        case Texture::PixelFormat::RGBA_DXT3: return DXGI_FORMAT_BC2_UNORM;
+        case Texture::PixelFormat::RGBA_DXT5: return DXGI_FORMAT_BC3_UNORM;
         default:                    return DXGI_FORMAT_UNKNOWN;
     }
 }
@@ -59,15 +59,15 @@ static size_t calculateDataWidth(const size_t width, Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-    case Texture::PF_RGBA:
-    case Texture::PF_RGB: // also 4 because we convert to RGBA
+    case Texture::PixelFormat::RGBA:
+    case Texture::PixelFormat::RGB: // also 4 because we convert to RGBA
         return width * 4;
 
-    case Texture::PF_RGBA_DXT1:
+    case Texture::PixelFormat::RGBA_DXT1:
         return ((width + 3) / 4) * 8;
 
-    case Texture::PF_RGBA_DXT3:
-    case Texture::PF_RGBA_DXT5:
+    case Texture::PixelFormat::RGBA_DXT3:
+    case Texture::PixelFormat::RGBA_DXT5:
         return ((width + 3) / 4) * 16;
 
     default:

@@ -114,7 +114,7 @@ void RenderingSurface::draw()
 //----------------------------------------------------------------------------//
 void RenderingSurface::drawContent()
 {
-    RenderQueueEventArgs evt_args(RQ_USER_0);
+    RenderQueueEventArgs evt_args(RenderQueueID::USER_0);
 
     for (RenderQueueList::iterator i = d_queues.begin();
          d_queues.end() != i;

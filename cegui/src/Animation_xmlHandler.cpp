@@ -107,7 +107,7 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
+            "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -119,7 +119,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementEnd: "
-            "</" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
+            "</" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -175,7 +175,7 @@ void AnimationDefinitionHandler::elementStartLocal(
     else
         Logger::getSingleton().logEvent(
             "AnimationDefinitionHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
+            "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -236,7 +236,7 @@ void AnimationAffectorHandler::elementStartLocal(
     else
         Logger::getSingleton().logEvent(
             "AnimationAffectorHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
+            "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -304,7 +304,7 @@ void AnimationKeyFrameHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "<" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
+        "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//
@@ -346,7 +346,7 @@ void AnimationSubscriptionHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "</" + element + "> is invalid at this location.", LoggingLevel::LOG_ERROR);
+        "</" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
 }
 
 //----------------------------------------------------------------------------//

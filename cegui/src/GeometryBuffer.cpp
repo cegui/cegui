@@ -50,7 +50,7 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_matrixValid(false),
     d_lastRenderTarget(nullptr),
     d_lastRenderTargetActivationCount(0),
-    d_blendMode(BM_NORMAL),
+    d_blendMode(BlendMode::NORMAL),
     d_polygonFillRule(PolygonFillRule::NONE),
     d_postStencilVertexCount(0),
     d_effect(nullptr),

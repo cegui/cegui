@@ -55,14 +55,14 @@ namespace CEGUI
     Enumerated type that contains the valid options that specify the type of
     blending that is to be performed for subsequent rendering operations.
 */
-enum BlendMode
+enum class BlendMode : int
 {
     //! Invalid mode indicator.
-    BM_INVALID,
+    INVALID,
     //! Use normal blending mode.
-    BM_NORMAL,
+    NORMAL,
     //! Use blending mode suitable for textures with premultiplied colours.
-    BM_RTT_PREMULTIPLIED
+    RTT_PREMULTIPLIED
 };
 
 
@@ -72,14 +72,14 @@ enum BlendMode
 \brief
     Enum for the default shader types that the Renderers have to offer
 */
-enum DefaultShaderType
+enum class DefaultShaderType : int
 {
     //! A shader for solid, coloured geometry
-    DS_SOLID,
+    SOLID,
     //! A shader for textured geometry, used in most CEGUI widgets
-    DS_TEXTURED,
+    TEXTURED,
     //! Count of types
-    DS_COUNT
+    COUNT
 };
 
 //----------------------------------------------------------------------------//

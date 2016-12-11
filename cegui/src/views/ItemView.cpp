@@ -382,7 +382,7 @@ bool ItemView::onScrollPositionChanged(const EventArgs&)
 void ItemView::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
-    if (e.source != CIS_Left)
+    if (e.source != CursorInputSource::Left)
         return;
 
     handleSelection(e.position, true, false, false);
@@ -736,11 +736,11 @@ void ItemView::onMultiselectModeChanged(WindowEventArgs& args)
 //----------------------------------------------------------------------------//
 void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 {
-    if (e.d_semanticValue == SV_SelectRange ||
-        e.d_semanticValue == SV_SelectCumulative)
+    if (e.d_semanticValue == SemanticValue::SelectRange ||
+        e.d_semanticValue == SemanticValue::SelectCumulative)
     {
         handleSelection(getGUIContext().getCursor().getPosition(),
-            true, d_isMultiSelectEnabled, e.d_semanticValue == SV_SelectRange);
+            true, d_isMultiSelectEnabled, e.d_semanticValue == SemanticValue::SelectRange);
     }
 
     handleSelectionNavigation(e);
@@ -880,14 +880,14 @@ void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
         return;
 
     int next_selected_child_id = last_selected_child_id;
-    if (e.d_semanticValue == SV_GoDown)
+    if (e.d_semanticValue == SemanticValue::GoDown)
     {
         next_selected_child_id = std::min(
             next_selected_child_id + 1,
             static_cast<int>(children_count)-1
             );
     }
-    else if (e.d_semanticValue == SV_GoUp)
+    else if (e.d_semanticValue == SemanticValue::GoUp)
     {
         next_selected_child_id = std::max(0, next_selected_child_id - 1);
     }

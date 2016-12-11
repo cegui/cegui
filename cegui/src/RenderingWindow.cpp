@@ -48,7 +48,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_size(0, 0),
     d_rotation(1, 0, 0, 0) // <-- IDENTITY
 {
-    d_geometryBuffer.setBlendMode(BM_RTT_PREMULTIPLIED);
+    d_geometryBuffer.setBlendMode(BlendMode::RTT_PREMULTIPLIED);
 }
 
 //----------------------------------------------------------------------------//
@@ -207,7 +207,7 @@ void RenderingWindow::draw()
     }
 
     // add our geometry to our owner for rendering
-    d_owner->addGeometryBuffer(RQ_BASE, d_geometryBuffer);
+    d_owner->addGeometryBuffer(RenderQueueID::BASE, d_geometryBuffer);
 }
 
 //----------------------------------------------------------------------------//

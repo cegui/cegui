@@ -374,7 +374,7 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
         Logger::getSingleton().logEvent(
             "AnimationManager::loadAnimationsFromXML: "
             "loading of animations from file '" + filename + "' has failed.",
-            LoggingLevel::LOG_ERROR);
+            LoggingLevel::ERROR_LEVEL);
 
         throw;
     }
@@ -391,7 +391,7 @@ void AnimationManager::loadAnimationsFromString(const String& source)
     }
     catch (...)
     {
-        Logger::getSingleton().logEvent("AnimationManager::loadAnimationsFromString - loading of animations from string failed.", LoggingLevel::LOG_ERROR);
+        Logger::getSingleton().logEvent("AnimationManager::loadAnimationsFromString - loading of animations from string failed.", LoggingLevel::ERROR_LEVEL);
         throw;
     }
 }

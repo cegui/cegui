@@ -165,12 +165,12 @@ bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs&)
     return true;
 }
 
-std::map<int, String> FormNavigationSample::getNavigationMappings()
+std::map<SemanticValue, String> FormNavigationSample::getNavigationMappings()
 {
-    std::map<int, String> mappings;
+    std::map<SemanticValue, String> mappings;
 
-    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
-    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
+    mappings[SemanticValue::NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SemanticValue::NavigateToPrevious] = NAVIGATE_PREVIOUS;
 
     return mappings;
 }

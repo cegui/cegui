@@ -45,7 +45,7 @@ private:
     CEGUI::Window* createWidget(const CEGUI::String& type, float position_x, float position_y, const CEGUI::String& text = "");
     bool resetForm(const CEGUI::EventArgs& e);
     bool disableConfirmButton(const CEGUI::EventArgs& e);
-    std::map<int, CEGUI::String> getNavigationMappings();
+    std::map<CEGUI::SemanticValue, CEGUI::String> getNavigationMappings();
 
     CEGUI::DefaultWindow*       d_root;
     CEGUI::ToggleButton*        d_isGameMasterCheckbox;

@@ -121,15 +121,15 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 #endif
 
     if (result == PCRE_ERROR_PARTIAL)
-        return MS_PARTIAL;
+        return MatchState::PARTIAL;
 
     // a match must be for the entire string
     if (result >= 0)
-        return (match[1] - match[0] == len) ? MS_VALID : MS_INVALID;
+        return (match[1] - match[0] == len) ? MatchState::VALID : MatchState::INVALID;
 
     // no match found or if test string or regex is 0
     if (result == PCRE_ERROR_NOMATCH || result == PCRE_ERROR_NULL)
-        return MS_INVALID;
+        return MatchState::INVALID;
 
     // anything else is an error
     throw InvalidRequestException(

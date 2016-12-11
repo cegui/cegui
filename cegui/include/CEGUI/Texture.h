@@ -56,28 +56,28 @@ public:
         Enumerated type containing the supported pixel formats that can be
         passed to loadFromMemory
     */
-    enum PixelFormat
+    enum class PixelFormat : int
     {
         //! Each pixel is 3 bytes. RGB in that order.
-        PF_RGB,
+        RGB,
         //! Each pixel is 4 bytes. RGBA in that order.
-        PF_RGBA,
+        RGBA,
         //! Each pixel is 2 bytes. RGBA in that order.
-        PF_RGBA_4444,
+        RGBA_4444,
         //! Each pixel is 2 bytes. RGB in that order.
-        PF_RGB_565,
+        RGB_565,
         //! PVR texture compression. Each pixel is 2 bits.
-        PF_PVRTC2,
+        PVRTC2,
         //! PVR texture compression. Each pixel is 4 bits.
-        PF_PVRTC4,
+        PVRTC4,
         //! S3 DXT1 texture compression (RGB).
-        PF_RGB_DXT1,
+        RGB_DXT1,
         //! S3 DXT1 texture compression (RGBA).
-        PF_RGBA_DXT1,
+        RGBA_DXT1,
         //! S3 DXT1 texture compression (RGBA).
-        PF_RGBA_DXT3,
+        RGBA_DXT3,
         //! S3 DXT1 texture compression (RGBA).
-        PF_RGBA_DXT5
+        RGBA_DXT5
     };
 
     /*!
