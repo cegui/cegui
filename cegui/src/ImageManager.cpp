@@ -99,7 +99,7 @@ const String NativeVersion( "2" );
 static Texture* s_texture = nullptr;
 static SVGData* s_SVGData = nullptr;
 static CEGUI::String s_imagesetType = "";
-static AutoScaledMode s_autoScaled = AutoScaledMode::Disabled;
+static AutoScaledMode s_autoScaled = AutoScaledMode::DISABLED;
 static Sizef s_nativeResolution(640.0f, 480.0f);
 
 //----------------------------------------------------------------------------//
