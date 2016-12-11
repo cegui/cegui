@@ -340,7 +340,7 @@ a_ptr = &an_object;
 
 - Only use C++ style casts (primarily static_cast).  C style casts should not be used.  Or better yet, use a type consistently if possible so you do not need to cast in the first place!
 
-- In %CEGUI default branch and %CEGUI version 1.X or higher: Only use <tt>enum class</tt> for enums.
+- In %CEGUI default branch and %CEGUI version 1.X or higher: By default use <tt>enum class MyEnum : int</tt> for enums. In the rare cases where it is required, another type than int can be used. Please always follow the naming style for enumerators mentioned earlier in those document.
 
 - In %CEGUI 0.X: Only use regular \c enum.
 
