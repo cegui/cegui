@@ -100,7 +100,7 @@ public:
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
                  const String& resource_group = "",
-                 const AutoScaledMode auto_scaled = ASM_Disabled,
+                 const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
                  const float specific_line_spacing = 0.0f);
 
@@ -279,6 +279,8 @@ protected:
     typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
+    
+    mutable std::unordered_map<FT_UInt, char32_t> d_indexToCodepointMap;
 };
 
 } // End of  CEGUI namespace section

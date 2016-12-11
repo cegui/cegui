@@ -608,8 +608,10 @@ protected:
     /*!
     \brief
         This bitmap holds information about loaded 'pages' of glyphs.
-        A glyph page is a set of 256 codepoints, starting at 256-multiples.
-        For example, the 1st glyph page is 0-255, fourth is 1024-1279 etc.
+        A glyph page is a set of GLYPHS_PER_PAGE codepoints, starting at
+        a multiple of GLYPHS_PER_PAGE each.
+        For example, the 1st glyph page is 0 to GLYPHS_PER_PAGE, fourth is 
+        4*GLYPHS_PER_PAGE to 5*GLYPHS_PER_PAGE etc.
         When a specific glyph is required for painting, the corresponding
         bit is checked to see if the respective page has been rasterised.
         If not, the rasterise() method is invoked, which prepares the
