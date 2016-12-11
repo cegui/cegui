@@ -47,14 +47,14 @@ class ColourPicker;
 class CEGUI_COMMONDIALOGS_API ColourPickerControls : public Window
 {
 public:
-    enum SliderMode
+    enum SliderMode : int
     {
-        SliderMode_Lab_L = 1,
-        SliderMode_Lab_A = 1 << 1,
-        SliderMode_Lab_B = 1 << 2,
-        SliderMode_HSV_H = 1 << 3,
-        SliderMode_HSV_S = 1 << 4,
-        SliderMode_HSV_V = 1 << 5
+        LAB_L = 1,
+        LAB_A = 1 << 1,
+        LAB_B = 1 << 2,
+        HSV_H = 1 << 3,
+        HSV_S = 1 << 4,
+        HSV_V = 1 << 5
     };
 
     //! Constructor for ColourPickerControls class.

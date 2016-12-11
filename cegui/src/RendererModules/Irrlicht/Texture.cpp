@@ -135,7 +135,7 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     updateCachedScaleValues();
 
-    const size_t pix_sz = (pixel_format == PF_RGB) ? 3 : 4;
+    const size_t pix_sz = (pixel_format == PixelFormat::RGB) ? 3 : 4;
     const char* src = static_cast<const char*>(buffer);
     char* dest = static_cast<char*>(d_texture->lock());
 
@@ -379,7 +379,7 @@ void IrrlichtTexture::updateCachedScaleValues()
 //----------------------------------------------------------------------------//
 bool IrrlichtTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    return fmt == PixelFormat::RGBA || fmt == PixelFormat::RGB;
 }
 
 //----------------------------------------------------------------------------//

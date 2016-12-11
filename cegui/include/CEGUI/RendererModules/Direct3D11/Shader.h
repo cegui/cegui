@@ -46,16 +46,16 @@ namespace CEGUI
 \brief Enumerated type used when specifying the type of a shader (e.g. vertex shader, or pixel shader)
 
  */
-enum ShaderType
+enum class ShaderType : int
 {
     /**
      * The ShaderType represents a vertex shader
      */
-    ST_VERTEX,
+    ShaderType::VERTEX,
     /**
      * The ShaderType represents a pixel shader
      */
-    ST_PIXEL
+    ShaderType::PIXEL
 };
 //----------------------------------------------------------------------------//
 

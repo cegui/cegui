@@ -229,9 +229,9 @@ D3D11_SHADER_INPUT_BIND_DESC Direct3D11Shader::getTextureBindingDesc(const std::
     HRESULT result;
 
     ID3D11ShaderReflection* shaderReflection = 0;
-    if(shaderType == ST_VERTEX)
+    if(shaderType == ShaderType::VERTEX)
         shaderReflection = d_vertexShaderReflection;
-    else if(shaderType == ST_PIXEL)
+    else if(shaderType == ShaderType::PIXEL)
         shaderReflection = d_pixelShaderReflection;
 
     D3D11_SHADER_DESC shaderDescription;
@@ -286,9 +286,9 @@ ID3D11ShaderReflectionConstantBuffer* Direct3D11Shader::getShaderReflectionConst
     HRESULT result;
 
     ID3D11ShaderReflection* shaderReflection = 0;
-    if(shaderType == ST_VERTEX)
+    if(shaderType == ShaderType::VERTEX)
         shaderReflection = d_vertexShaderReflection;
-    else if(shaderType == ST_PIXEL)
+    else if(shaderType == ShaderType::PIXEL)
         shaderReflection = d_pixelShaderReflection;
 
     D3D11_SHADER_DESC shaderDescription;

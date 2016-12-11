@@ -40,7 +40,7 @@ OpenGLInfo OpenGLInfo::s_instance;
 
 //----------------------------------------------------------------------------//
 OpenGLInfo::OpenGLInfo() :
-    d_type(TYPE_NONE),
+    d_type(Type::None),
     d_verMajor(-1),
     d_verMinor(-1),
     d_verMajorForce(-1),
@@ -94,7 +94,7 @@ void OpenGLInfo::initTypeAndVer()
         d_verMinor = ver % 10;
     }
 #elif defined CEGUI_USE_GLEW
-    d_type = TYPE_DESKTOP;
+    d_type = Type::TYPE_DESKTOP;
     glGetError ();
     d_verMajor = d_verMinor = -1;
 #endif

@@ -90,7 +90,7 @@ public:
         exists within the collection.
     */
     static FontList createFromContainer(const RawDataContainer& source,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
     /*!
     \brief
@@ -115,7 +115,7 @@ public:
         exists within the collection.
     */
     static FontList createFromFile(const String& xml_filename, const String& resource_group = "",
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
     /*!
     \brief
@@ -135,7 +135,7 @@ public:
         already exists within the collection.
     */
     static FontList createFromString(const String& source,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
        /*!
     \brief
@@ -234,7 +234,7 @@ public:
         const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
         const Sizef& native_res = Sizef(640.0f, 480.0f),
         const float specificLineSpacing = 0.0f,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
     /*!
     \brief
@@ -281,7 +281,7 @@ public:
                            const String& resource_group = "",
                            const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                            const Sizef& native_res = Sizef(640.0f, 480.0f),
-                           XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::XREA_RETURN);
+                           XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
 
     /*!
     \brief

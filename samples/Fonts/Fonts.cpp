@@ -184,13 +184,13 @@ bool FontsSample::handleFontCreationButtonClicked(const EventArgs&)
     if (pos != String::npos)
     {
         fontMgr.createPixmapFont(fontName, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
-            CEGUI::Sizef(1280.0f, 720.0f), XmlResourceExistsAction::XREA_THROW);
+            CEGUI::Sizef(1280.0f, 720.0f), XmlResourceExistsAction::THROW);
     }
     else
     {
        fontMgr.createFreeTypeFont(fontName, fontSize, FontSizeUnit::FSU_PIXELS,
            antiAlias, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
-            CEGUI::Sizef(1280.0f, 720.0f), 0.0f, XmlResourceExistsAction::XREA_THROW);
+            CEGUI::Sizef(1280.0f, 720.0f), 0.0f, XmlResourceExistsAction::THROW);
     }
 
     d_fontSelector->addItem(fontName);

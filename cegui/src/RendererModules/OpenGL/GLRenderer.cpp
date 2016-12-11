@@ -308,7 +308,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
 {
     // prefer FBO
 
-    if (((tt_type == TTT_AUTO) || (tt_type == TTT_FBO)) &&
+    if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::FBO)) &&
         GLEW_EXT_framebuffer_object)
     {
         d_rendererID += "  TextureTarget support enabled via FBO extension.";
@@ -318,7 +318,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
 
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // on linux (etc), we can try for GLX pbuffer support
-    else if (((tt_type == TTT_AUTO) || (tt_type == TTT_PBUFFER)) &&
+    else if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::PBUFFER)) &&
              GLXEW_VERSION_1_3)
     {
         d_rendererID += "  TextureTarget support enabled via GLX pbuffers.";
@@ -327,7 +327,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
     }
 #elif defined(_WIN32) || defined(__WIN32__)
     // on Windows, we can try for WGL based pbuffer support
-    else if (((tt_type == TTT_AUTO) || (tt_type == TTT_PBUFFER)) &&
+    else if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::PBUFFER)) &&
              WGLEW_ARB_pbuffer)
     {
         d_rendererID += "  TextureTarget support enabled via WGL_ARB_pbuffer.";
@@ -336,7 +336,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
     }
 #elif defined(__APPLE__)
     // on Apple Mac, we can try for Apple's pbuffer support
-    else if (((tt_type == TTT_AUTO) || (tt_type == TTT_PBUFFER)) &&
+    else if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::PBUFFER)) &&
              GLEW_APPLE_pixel_buffer)
     {
         d_rendererID += "  TextureTarget support enabled via "

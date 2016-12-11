@@ -48,6 +48,8 @@ private:
     WindowChildrenNavigationStrategy*   d_navigationStrategy;
     CEGUI::WindowNavigator*             d_windowNavigator;
 
+    static std::map<CEGUI::SemanticValue, CEGUI::String> createNavigationMappings();
+
     bool handleContinueGameButtonClick(const CEGUI::EventArgs& e);
     bool handleNewGameButtonClick(const CEGUI::EventArgs& e);
     bool handleOptionsButtonClick(const CEGUI::EventArgs& e);
@@ -60,7 +62,6 @@ private:
 
     void showMenu(CEGUI::String MainMenu);
     void createEventHandlers();
-    std::map<CEGUI::SemanticValue, CEGUI::String> createNavigationMappings();
 };
 
 #endif  // end of guard _Sample_SimpleGameMenuSample_h_

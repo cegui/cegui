@@ -198,7 +198,7 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
 
     const void* img_src = buffer;
     unsigned char* dest(0);
-    if (pixel_format == PF_RGB)
+    if (pixel_format == PixelFormat::RGB)
     {
         const unsigned char* src = static_cast<const unsigned char*>(buffer);
         dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
@@ -493,11 +493,11 @@ bool Direct3D11Texture::isPixelFormatSupported(const PixelFormat fmt) const
 {
     switch (fmt)
     {
-        case PF_RGBA:
-        case PF_RGB:
-        case PF_RGBA_DXT1:
-        case PF_RGBA_DXT3:
-        case PF_RGBA_DXT5:
+        case PixelFormat::RGBA:
+        case PixelFormat::RGB:
+        case PixelFormat::RGBA_DXT1:
+        case PixelFormat::RGBA_DXT3:
+        case PixelFormat::RGBA_DXT5:
             return true;
 
         default:

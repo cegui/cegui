@@ -36,14 +36,14 @@ namespace CEGUI
 \brief
     Possible actions when loading an XML resource that already exists.
 */
-enum class XmlResourceExistsAction
+enum class XmlResourceExistsAction : int
 {
     //! Do not load the resource, return the existing instance.
-    XREA_RETURN,
+    RETURN,
     //! Destroy the existing instance and replace with the newly loaded one.
-    XREA_REPLACE,
+    REPLACE,
     //! Throw an AlreadyExistsException.
-    XREA_THROW
+    THROW
 };
 
 

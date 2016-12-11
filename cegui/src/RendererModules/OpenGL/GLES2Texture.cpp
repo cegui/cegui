@@ -54,22 +54,22 @@ void GLES2Texture::initInternalPixelFormatFields(const PixelFormat fmt)
 
     switch(fmt)
     {
-    case PF_RGBA:
+    case PixelFormat::RGBA:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB:
+    case PixelFormat::RGB:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB_565:
+    case PixelFormat::RGB_565:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
         break;
 
-    case PF_RGBA_4444:
+    case PixelFormat::RGBA_4444:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
         break;

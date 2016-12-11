@@ -69,7 +69,7 @@ namespace CEGUI
         setCursorPassThroughEnabled(true);
 
         // we need updates even when not visible
-        setUpdateMode(WUM_ALWAYS);
+        setUpdateMode(WindowUpdateMode::ALWAYS);
 
         switchToInactiveState();
         hide();

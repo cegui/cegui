@@ -61,18 +61,18 @@ namespace CEGUI
 \brief
     Enumerated type used for specifying Window::update mode to be used.  Note
     that the setting specified will also have an effect on child window
-    content; for WUM_NEVER and WUM_VISIBLE, if the parent's update function is
+    content; for WindowUpdateMode::NEVER and WindowUpdateMode::VISIBLE, if the parent's update function is
     not called, then no child window will have it's update function called
-    either - even if it specifies WUM_ALWAYS as it's WindowUpdateMode.
+    either - even if it specifies WindowUpdateMode::ALWAYS as it's WindowUpdateMode.
 */
-enum WindowUpdateMode
+enum class WindowUpdateMode : int
 {
     //! Always call the Window::update function for this window.
-    WUM_ALWAYS,
+    ALWAYS,
     //! Never call the Window::update function for this window.
-    WUM_NEVER,
+    NEVER,
     //! Only call the Window::update function for this window if it is visible.
-    WUM_VISIBLE
+    VISIBLE
 };
 
 template<>
@@ -96,29 +96,29 @@ public:
 
         if (str == "Always")
         {
-            return WUM_ALWAYS;
+            return WindowUpdateMode::ALWAYS;
         }
         else if (str == "Never")
         {
-            return WUM_NEVER;
+            return WindowUpdateMode::NEVER;
         }
         else
         {
-            return WUM_VISIBLE;
+            return WindowUpdateMode::VISIBLE;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == WUM_ALWAYS)
+        if (val == WindowUpdateMode::ALWAYS)
         {
             return "Always";
         }
-        else if (val == WUM_NEVER)
+        else if (val == WindowUpdateMode::NEVER)
         {
             return "Never";
         }
-        else if (val == WUM_VISIBLE)
+        else if (val == WindowUpdateMode::VISIBLE)
         {
             return "Visible";
         }
@@ -2696,7 +2696,7 @@ public:
         Disabling updates can have negative effects on the behaviour of CEGUI
         windows and widgets; updates should be disabled selectively and
         cautiously - if you are unsure of what you are doing, leave the mode
-        set to WUM_ALWAYS.
+        set to WindowUpdateMode::ALWAYS.
 
     \param mode
         One of the WindowUpdateMode enumerated values indicating the mode to
@@ -2715,7 +2715,7 @@ public:
         Disabling updates can have negative effects on the behaviour of CEGUI
         windows and widgets; updates should be disabled selectively and
         cautiously - if you are unsure of what you are doing, leave the mode
-        set to WUM_ALWAYS.
+        set to WindowUpdateMode::ALWAYS.
 
     \return
         One of the WindowUpdateMode enumerated values indicating the current

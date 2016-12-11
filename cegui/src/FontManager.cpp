@@ -87,14 +87,14 @@ Font* FontManager::handleResourceExistsAction(
 
     switch (resourceExistsAction)
     {
-        case XmlResourceExistsAction::XREA_RETURN:
+        case XmlResourceExistsAction::RETURN:
         {
             Logger::getSingleton().logEvent("---- Using existing instance "
                 "of " + ResourceTypeName + " named '" + font_name + "'.");
 
             return &get(font_name);
         }
-        case XmlResourceExistsAction::XREA_REPLACE:
+        case XmlResourceExistsAction::REPLACE:
         {
             Logger::getSingleton().logEvent("---- Replacing existing instance "
                 "of " + ResourceTypeName + " named '" + font_name +
@@ -104,7 +104,7 @@ Font* FontManager::handleResourceExistsAction(
             event_name = EventResourceReplaced;
             return nullptr;
         }
-        case XmlResourceExistsAction::XREA_THROW:
+        case XmlResourceExistsAction::THROW:
         {
             destroy(font_name);
             throw AlreadyExistsException(
