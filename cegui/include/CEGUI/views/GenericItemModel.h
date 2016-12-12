@@ -244,7 +244,7 @@ public:
     int getChildId(const ModelIndex& model_index) const override;
     ModelIndex getRootIndex() const override;
     size_t getChildCount(const ModelIndex& model_index) const override;
-    String getData(const ModelIndex& model_index, ItemDataRole role = TEXT) override;
+    String getData(const ModelIndex& model_index, ItemDataRole role = ItemDataRole::TEXT) override;
 
 protected:
     //! Deletes all children of the specified item, optionally invoking the
