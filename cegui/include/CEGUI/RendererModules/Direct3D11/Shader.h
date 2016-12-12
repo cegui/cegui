@@ -51,11 +51,11 @@ enum class ShaderType : int
     /**
      * The ShaderType represents a vertex shader
      */
-    ShaderType::VERTEX,
+    VERTEX,
     /**
      * The ShaderType represents a pixel shader
      */
-    ShaderType::PIXEL
+    PIXEL
 };
 //----------------------------------------------------------------------------//
 
