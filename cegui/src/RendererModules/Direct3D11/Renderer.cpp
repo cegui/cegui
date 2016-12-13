@@ -442,11 +442,11 @@ void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
     Direct3D11Shader* shader_standard_textured = new Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured);
     d_shaderWrapperTextured = new Direct3D11ShaderWrapper(*shader_standard_textured, this);
 
-    d_shaderWrapperTextured->addUniformVariable("texture0", ShaderType::PIXEL, SPT_TEXTURE);
+    d_shaderWrapperTextured->addUniformVariable("texture0", ShaderType::PIXEL, ShaderParamType::TEXTURE);
 
-    d_shaderWrapperTextured->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, SPT_MATRIX_4X4);
+    d_shaderWrapperTextured->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::MATRIX_4X4);
     d_shaderWrapperTextured->addUniformVariable("alphaPercentage", ShaderType::PIXEL, 
-        SPT_FLOAT);
+        ShaderParamType::FLOAT);
 }
 
 //----------------------------------------------------------------------------//
@@ -455,9 +455,9 @@ void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
     Direct3D11Shader* shader_standard_solid = new Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured);
     d_shaderWrapperSolid = new Direct3D11ShaderWrapper(*shader_standard_solid, this);
 
-    d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, SPT_MATRIX_4X4);
+    d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::MATRIX_4X4);
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage", ShaderType::PIXEL, 
-        SPT_FLOAT);
+        ShaderParamType::FLOAT);
 }
 
 //----------------------------------------------------------------------------//

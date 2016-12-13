@@ -73,9 +73,9 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
         return;
     }
 
-    d_paramTypeToIndex[SPT_MATRIX_4X4] = target->second.physicalIndex;
-    d_paramTypeToIndex[SPT_FLOAT] = target2->second.physicalIndex;
-    d_paramTypeToIndex[SPT_TEXTURE] = 0;
+    d_paramTypeToIndex[ShaderParamType::MATRIX_4X4] = target->second.physicalIndex;
+    d_paramTypeToIndex[ShaderParamType::FLOAT] = target2->second.physicalIndex;
+    d_paramTypeToIndex[ShaderParamType::TEXTURE] = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -131,7 +131,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
         switch (parameterType)
         {
-        case SPT_TEXTURE:
+        case ShaderParamType::TEXTURE:
         {
             const CEGUI::ShaderParameterTexture* parameterTexture = 
                 static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
@@ -151,7 +151,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
             break;
         }
-        case SPT_MATRIX_4X4:
+        case ShaderParamType::MATRIX_4X4:
         {
             // This is the "modelViewProjMatrix"
             const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
@@ -166,7 +166,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             } 
             break;
         }
-        case SPT_FLOAT:
+        case ShaderParamType::FLOAT:
         {
             // This is the alpha value
             const CEGUI::ShaderParameterFloat* new_alpha = static_cast<const 

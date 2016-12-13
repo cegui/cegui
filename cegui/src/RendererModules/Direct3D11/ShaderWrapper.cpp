@@ -65,7 +65,7 @@ void Direct3D11ShaderWrapper::addUniformVariable(const std::string& variableName
     UINT variableBindingLoc = -1;
     UINT size = -1;
 
-    if(paramType == SPT_TEXTURE)
+    if(paramType == ShaderParamType::TEXTURE)
     {
         D3D11_SHADER_INPUT_BIND_DESC variableDesc = d_shader.getTextureBindingDesc(variableName, shaderType);
         variableBindingLoc = variableDesc.BindPoint;
@@ -154,7 +154,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 memcpy(paramDataPointer, &(parameterInt->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
-        case SPT_FLOAT:
+        case ShaderParamType::FLOAT:
             {
                 const CEGUI::ShaderParameterFloat* parameterFloat = static_cast<const CEGUI::ShaderParameterFloat*>(parameter);
 
@@ -162,7 +162,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 memcpy(paramDataPointer, &(parameterFloat->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
-        case SPT_MATRIX_4X4:
+        case ShaderParamType::MATRIX_4X4:
             {
                 const CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<const CEGUI::ShaderParameterMatrix*>(parameter);
 
@@ -170,7 +170,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 memcpy(paramDataPointer, glm::value_ptr(parameterMatrix->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
-        case SPT_TEXTURE:
+        case ShaderParamType::TEXTURE:
             {
                 const CEGUI::ShaderParameterTexture* parameterTexture = static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
                 const CEGUI::Direct3D11Texture* texture = static_cast<const CEGUI::Direct3D11Texture*>(parameterTexture->d_parameterValue);
