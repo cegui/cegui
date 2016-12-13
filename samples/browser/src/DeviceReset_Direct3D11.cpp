@@ -76,7 +76,7 @@ void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer)
                                          DXGI_FORMAT_R8G8B8A8_UNORM, 0)))
     {
         CEGUI::Logger::getSingleton().logEvent(
-            "Direct3D 11: Failed to resize swap chain buffers.", CEGUI::Errors);
+            "Direct3D 11: Failed to resize swap chain buffers.", CEGUI::LoggingLevel::ERROR_LEVEL);
 
         return;
     }
