@@ -533,7 +533,7 @@ void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
 {
     const FLOAT blendFactor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    if (d_blendMode == BM_NORMAL)
+    if (d_blendMode == BlendMode::NORMAL)
     {
         if (d_currentBlendState != d_blendStateNormal)
         {
@@ -542,7 +542,7 @@ void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
         }
     }
 
-    if (d_blendMode == BM_RTT_PREMULTIPLIED)
+    if (d_blendMode == BlendMode::RTT_PREMULTIPLIED)
     {
         if (d_currentBlendState != d_blendStatePreMultiplied)
         {
