@@ -146,7 +146,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
         switch(parameterType)
         {
-        case SPT_INT:
+        case ShaderParamType::INT:
             {
                 const CEGUI::ShaderParameterInt* parameterInt = static_cast<const CEGUI::ShaderParameterInt*>(parameter);
 
