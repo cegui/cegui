@@ -1135,14 +1135,14 @@ void OgreRenderer::bindBlendMode(BlendMode blend)
 RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     const DefaultShaderType shaderType) const
 {
-    if (shaderType == DS_TEXTURED)
+    if (shaderType == DefaultShaderType::TEXTURED)
     {
         RefCounted<RenderMaterial> render_material(new 
             RenderMaterial(d_pimpl->d_texturedShaderWrapper));
 
         return render_material;
     }
-    else if (shaderType == DS_SOLID)
+    else if (shaderType == DefaultShaderType::SOLID)
     {
         RefCounted<RenderMaterial> render_material(new 
             RenderMaterial(d_pimpl->d_colouredShaderWrapper));
