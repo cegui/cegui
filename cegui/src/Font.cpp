@@ -37,12 +37,6 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// amount of bits in a uint
-#define BITS_PER_UINT   (sizeof (unsigned int) * 8)
-// must be a power of two
-#define GLYPHS_PER_PAGE 256
-
-//----------------------------------------------------------------------------//
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 
@@ -111,7 +105,6 @@ void Font::addFontProperties()
 {
     const String propertyOrigin("Font");
 
-    /*
     CEGUI_DEFINE_PROPERTY(Font, Sizef,
         "NativeRes", "Native screen resolution for this font."
         "Value uses the 'w:# h:#' format.",
@@ -128,7 +121,6 @@ void Font::addFontProperties()
         "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
         &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::Disabled
     );
-    */
 }
 
 //----------------------------------------------------------------------------//
@@ -136,11 +128,14 @@ void Font::setMaxCodepoint(char32_t codepoint)
 {
     d_maxCodepoint = codepoint;
 
+    /* TODO:
     const unsigned int npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
     const unsigned int size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
+    
 
     d_loadedGlyphPages.resize(size);
     std::fill(d_loadedGlyphPages.begin(), d_loadedGlyphPages.end(), 0);
+    */
 }
 
 //----------------------------------------------------------------------------//
@@ -151,6 +146,7 @@ const FontGlyph* Font::getGlyphData(char32_t codepoint) const
 
     const FontGlyph* const glyph = findFontGlyph(codepoint);
 
+    /* TODO:
     if (!d_loadedGlyphPages.empty())
     {
         // Check if glyph page has been rasterised
@@ -163,6 +159,7 @@ const FontGlyph* Font::getGlyphData(char32_t codepoint) const
                       codepoint | (GLYPHS_PER_PAGE - 1));
         }
     }
+    */
 
     return glyph;
 }
