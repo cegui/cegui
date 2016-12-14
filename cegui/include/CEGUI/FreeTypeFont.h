@@ -279,6 +279,8 @@ protected:
     typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
+    
+    mutable std::unordered_map<FT_UInt, char32_t> d_indexToCodepointMap;
 };
 
 } // End of  CEGUI namespace section
