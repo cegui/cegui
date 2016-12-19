@@ -56,9 +56,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
     d_descender(0),
     d_height(0),
     d_autoScaled(auto_scaled),
-    d_nativeResolution(native_res),
-    d_maxCodepoint(0),
-    d_loadedGlyphPages(0)
+    d_nativeResolution(native_res)
 {
     addFontProperties();
 
@@ -119,63 +117,20 @@ void Font::addFontProperties()
     CEGUI_DEFINE_PROPERTY(Font, AutoScaledMode,
         "AutoScaled", "This indicating whether and how to autoscale font depending on "
         "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
-        &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::Disabled
+        &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::DISABLED
     );
-}
-
-//----------------------------------------------------------------------------//
-void Font::setMaxCodepoint(char32_t codepoint)
-{
-    d_maxCodepoint = codepoint;
-
-    /* TODO:
-    const unsigned int npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-    const unsigned int size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
-    
-
-    d_loadedGlyphPages.resize(size);
-    std::fill(d_loadedGlyphPages.begin(), d_loadedGlyphPages.end(), 0);
-    */
 }
 
 //----------------------------------------------------------------------------//
 const FontGlyph* Font::getGlyphData(char32_t codepoint) const
 {
-    if (codepoint > d_maxCodepoint)
-        return nullptr;
+    const FontGlyph* const glyph = getGlyph(codepoint);
 
-    const FontGlyph* const glyph = findFontGlyph(codepoint);
-
-    /* TODO:
-    if (!d_loadedGlyphPages.empty())
-    {
-        // Check if glyph page has been rasterised
-        unsigned int page = codepoint / GLYPHS_PER_PAGE;
-        unsigned int mask = 1 << (page & (BITS_PER_UINT - 1));
-        if (!(d_loadedGlyphPages[page / BITS_PER_UINT] & mask))
-        {
-            d_loadedGlyphPages[page / BITS_PER_UINT] |= mask;
-            rasterise(codepoint & ~(GLYPHS_PER_PAGE - 1),
-                      codepoint | (GLYPHS_PER_PAGE - 1));
-        }
-    }
-    */
+    // Check if glyph page has been rasterised
+    rasterise(codepoint, codepoint);
 
     return glyph;
 }
-
-//----------------------------------------------------------------------------//
-const FontGlyph* Font::findFontGlyph(const char32_t codepoint) const
-{
-    CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
-    if (pos != d_cp_map.end())
-    {
-        return pos->second;
-    }
-
-    return nullptr;
-}
-
 
 
 float Font::getTextExtent(const String& text, float x_scale) const

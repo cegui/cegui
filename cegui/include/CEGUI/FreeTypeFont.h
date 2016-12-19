@@ -33,9 +33,11 @@
 #include "CEGUI/DataContainer.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/FreeTypeFontGlyph.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -108,6 +110,8 @@ public:
     virtual ~FreeTypeFont();
     
     void updateFont() override;
+    bool isCodepointAvailable(char32_t codePoint) const override;
+    const FreeTypeFontGlyph* getGlyph(const char32_t codePoint) const override;
 
     /*!
     \brief
@@ -197,7 +201,15 @@ public:
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const;
+
+
+    FreeTypeFontGlyph* getGlyphFromIndex(FT_UInt glyphIndex) const;
 protected:
+    //! Type for mapping codepoints to the corresponding Freetype Font glyphs
+    typedef std::unordered_map<char32_t, FreeTypeFontGlyph*> CodePointToGlyphMap;
+    //! Type for mapping Freetype indices to the corresponding Freetype Font glyphs
+    typedef std::unordered_map<FT_UInt, FreeTypeFontGlyph*> IndexToGlyphMap;
+
     /*!
     \brief
         Copy the current glyph data into \a buffer, which has a width of
@@ -224,8 +236,8 @@ protected:
     \param e
         The last glyph in set
     */
-    unsigned int getTextureSize(CodepointMap::const_iterator s,
-                        CodepointMap::const_iterator e) const;
+    unsigned int getTextureSize(CodePointToGlyphMap::const_iterator s,
+                        CodePointToGlyphMap::const_iterator e) const;
 
     //! Register all properties of this class.
     void addFreeTypeFontProperties();
@@ -240,14 +252,13 @@ protected:
     void tryToCreateFontWithClosestFontHeight(
         FT_Error errorResult, int requestedFontPixelHeight) const;
     //! initialise FontGlyph for given codepoint.
-    void initialiseFontGlyph(CodepointMap::iterator cp) const;
+    void initialiseFontGlyph(FreeTypeFontGlyph* glyph, FT_UInt glyphIndex) const;
 
     void initialiseGlyphMap();
 
     void handleFontSizeOrFontUnitChange();
 
     // overrides of functions in Font base class.
-    const FontGlyph* findFontGlyph(const char32_t codepoint) const override;
     void rasterise(char32_t start_codepoint, char32_t end_codepoint) const override;
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
 
@@ -279,8 +290,12 @@ protected:
     typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
-    
-    mutable std::unordered_map<FT_UInt, char32_t> d_indexToCodepointMap;
+
+private:
+    //! Contains mappings from code points to Font glyphs
+    mutable CodePointToGlyphMap d_codePointToGlyphMap;
+    //! Contains mappings from freetype indices to Font glyphs
+    mutable IndexToGlyphMap d_indexToGlyphMap;
 };
 
 } // End of  CEGUI namespace section

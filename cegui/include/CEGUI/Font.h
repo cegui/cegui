@@ -135,8 +135,7 @@ public:
         true if the font contains a mapping for code point \a cp,
         false if it does not contain a mapping for \a cp.
     */
-    bool isCodepointAvailable(char32_t cp) const
-    { return (d_cp_map.find(cp) != d_cp_map.end()); }
+    virtual bool isCodepointAvailable(char32_t codePoint) const = 0;
 
     /*!
     \brief
@@ -523,7 +522,7 @@ protected:
     \brief
         This function prepares a certain range of glyphs to be ready for
         displaying. This means that after returning from this function
-        glyphs from d_cp_map[start_codepoint] to d_cp_map[end_codepoint]
+        glyphs from d_codePointToGlyphMap[start_codepoint] to d_codePointToGlyphMap[end_codepoint]
         should have their d_image member set. If there is an error
         during rasterisation of some glyph, it's okay to leave the
         d_image field set to NULL, in which case such glyphs will
@@ -546,15 +545,8 @@ protected:
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
-    /*!
-    \brief
-        Set the maximal glyph index. This reserves the respective
-        number of bits in the d_loadedGlyphPages array.
-    */
-    void setMaxCodepoint(char32_t codepoint);
-
-    //! finds FontGlyph in map and returns it, or 0 if none.
-    virtual const FontGlyph* findFontGlyph(const char32_t codepoint) const;
+    //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
+    virtual const FontGlyph* getGlyph(const char32_t codePoint) const = 0;
 
     //! The old way of rendering glyphs, without kerning and extended layouting
     void renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
@@ -601,31 +593,6 @@ protected:
     float d_horzScaling;
     //! current vertical scaling factor.
     float d_vertScaling;
-
-    //! Maximal codepoint for font glyphs
-    char32_t d_maxCodepoint;
-
-    /*!
-    \brief
-        This bitmap holds information about loaded 'pages' of glyphs.
-        A glyph page is a set of GLYPHS_PER_PAGE codepoints, starting at
-        a multiple of GLYPHS_PER_PAGE each.
-        For example, the 1st glyph page is 0 to GLYPHS_PER_PAGE, fourth is 
-        4*GLYPHS_PER_PAGE to 5*GLYPHS_PER_PAGE etc.
-        When a specific glyph is required for painting, the corresponding
-        bit is checked to see if the respective page has been rasterised.
-        If not, the rasterise() method is invoked, which prepares the
-        glyphs from the respective glyph page for being painted.
-
-        This array is big enough to hold at least max_codepoint bits.
-        If this member is NULL, all glyphs are considered pre-rasterised.
-    */
-    mutable std::vector<unsigned int> d_loadedGlyphPages;
-
-    //! Definition of CodepointMap type.
-    typedef std::map<char32_t, FontGlyph*, std::less<char32_t> > CodepointMap;
-    //! Contains mappings from code points to Image objects
-    mutable CodepointMap d_cp_map;
 };
 
 
