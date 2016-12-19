@@ -110,13 +110,9 @@ void PixmapFont::updateFont()
     d_ascender = 0;
     d_descender = 0;
     d_height = 0;
-    d_maxCodepoint = 0;
 
-    for (CodepointMap::iterator i = d_cp_map.begin(); i != d_cp_map.end(); ++i)
+    for (CodePointToGlyphMap::iterator i = d_codePointToGlyphMap.begin(); i != d_codePointToGlyphMap.end(); ++i)
     {
-        if (i->first > d_maxCodepoint)
-            d_maxCodepoint = i->first;
-
         i->second->setAdvance(i->second->getAdvance() * factor);
 
         Image* img = i->second->getImage();
@@ -145,7 +141,7 @@ void PixmapFont::updateFont()
 void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
 {
     float advscale = 1.0f / d_origHorzScaling;
-    for (CodepointMap::const_iterator i = d_cp_map.begin(); i != d_cp_map.end(); ++i)
+    for (CodePointToGlyphMap::const_iterator i = d_codePointToGlyphMap.begin(); i != d_codePointToGlyphMap.end(); ++i)
     {
         xml_stream.openTag("Mapping")
             .attribute(Font_xmlHandler::MappingCodepointAttribute,
@@ -172,11 +168,8 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
     if (d_autoScaled != AutoScaledMode::DISABLED)
         adv *= d_origHorzScaling;
 
-    if (codePoint > d_maxCodepoint)
-        d_maxCodepoint = codePoint;
-
     // create a new FontGlyph with given character code
-    FontGlyph* const glyph = new FontGlyph(adv, &image, true);
+    FontGlyph* const glyph = new FontGlyph(adv, &image);
 
     if (image.getRenderedOffset().y < -d_ascender)
         d_ascender = -image.getRenderedOffset().y;
@@ -186,13 +179,13 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
     d_height = d_ascender - d_descender;
 
     // add glyph to the map
-    if (d_cp_map.find(codePoint) != d_cp_map.end())
+    if (d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end())
     {
         throw InvalidRequestException("PixmapFont::defineMapping - Requesting "
             "adding an already added glyph to the codepoint glyph map.");
     }
 
-    d_cp_map[codePoint] = glyph;
+    d_codePointToGlyphMap[codePoint] = glyph;
 }
 
 //----------------------------------------------------------------------------//
@@ -243,6 +236,21 @@ void PixmapFont::setImageNamePrefix(const String& name_prefix)
     reinit();
 }
 
-//----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
+bool PixmapFont::isCodepointAvailable(char32_t codePoint) const
+{
+    return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
+}
+
+const FontGlyph* PixmapFont::getGlyph(const char32_t codepoint) const
+{
+    CodePointToGlyphMap::const_iterator pos = d_codePointToGlyphMap.find(codepoint);
+    if (pos != d_codePointToGlyphMap.end())
+    {
+        return pos->second;
+    }
+
+    return nullptr;
+}
+
+}
