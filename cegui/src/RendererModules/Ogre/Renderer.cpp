@@ -135,7 +135,7 @@ struct OgreRenderer_impl
         d_dummyCamera(0),
         d_workspace(0),
 #endif
-        d_activeBlendMode(BlendMode::INVALID),
+        d_activeBlendMode(BlendMode::Invalid),
         d_makeFrameControlCalls(true),
         d_useGLSL(false),
         d_useGLSLES(false),
@@ -1007,7 +1007,7 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
 
     d_pimpl->d_activeBlendMode = mode;
 
-    if (d_pimpl->d_activeBlendMode == BlendMode::RTT_PREMULTIPLIED)
+    if (d_pimpl->d_activeBlendMode == BlendMode::RttPremultiplied)
         d_pimpl->d_renderSystem->_setSceneBlending(SBF_ONE,
                                                     SBF_ONE_MINUS_SOURCE_ALPHA);
     else
@@ -1084,7 +1084,7 @@ void OgreRenderer::initialiseRenderStateSettings()
     d_pimpl->d_renderSystem->setScissorTest(false);
 
     // set alpha blending to known state
-    setupRenderingBlendMode(BlendMode::NORMAL, true);
+    setupRenderingBlendMode(BlendMode::Normal, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -1135,14 +1135,14 @@ void OgreRenderer::bindBlendMode(BlendMode blend)
 RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     const DefaultShaderType shaderType) const
 {
-    if (shaderType == DefaultShaderType::TEXTURED)
+    if (shaderType == DefaultShaderType::Textured)
     {
         RefCounted<RenderMaterial> render_material(new 
             RenderMaterial(d_pimpl->d_texturedShaderWrapper));
 
         return render_material;
     }
-    else if (shaderType == DefaultShaderType::SOLID)
+    else if (shaderType == DefaultShaderType::Solid)
     {
         RefCounted<RenderMaterial> render_material(new 
             RenderMaterial(d_pimpl->d_colouredShaderWrapper));
@@ -1164,8 +1164,8 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
         *d_pimpl->d_renderSystem, renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
     geom_buffer->finaliseVertexAttributes(
         OgreGeometryBuffer::MT_COLOURED);
 
@@ -1180,9 +1180,9 @@ GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
         *d_pimpl->d_renderSystem, renderMaterial);
     
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TexCoord0);
     geom_buffer->finaliseVertexAttributes(
         OgreGeometryBuffer::MT_TEXTURED);
 

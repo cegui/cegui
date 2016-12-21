@@ -132,7 +132,7 @@ public:
 
     void scaleToAspect(AspectMode mode, float ratio)
     {
-        if (mode == AspectMode::NONE)
+        if (mode == AspectMode::None)
             return;
 
         if(d_width <= 0 && d_height <= 0)
@@ -144,16 +144,16 @@ public:
         bool keepHeight;
         switch (mode)
         {
-        case AspectMode::SHRINK:
+        case AspectMode::Shrink:
             keepHeight = expectedWidth <= d_width;
             break;
-        case AspectMode::EXPAND:
+        case AspectMode::Expand:
             keepHeight = expectedWidth >= d_width;
             break;
-        case AspectMode::ADJUST_WIDTH:
+        case AspectMode::AdjustWidth:
             keepHeight = true;
             break;
-        case AspectMode::ADJUST_HEIGHT:
+        case AspectMode::AdjustHeight:
             keepHeight = false;
             break;
         default:

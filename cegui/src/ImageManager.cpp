@@ -99,7 +99,7 @@ const String NativeVersion( "2" );
 static Texture* s_texture = nullptr;
 static SVGData* s_SVGData = nullptr;
 static CEGUI::String s_imagesetType = "";
-static AutoScaledMode s_autoScaled = AutoScaledMode::DISABLED;
+static AutoScaledMode s_autoScaled = AutoScaledMode::Disabled;
 static Sizef s_nativeResolution(640.0f, 480.0f);
 
 //----------------------------------------------------------------------------//
@@ -364,7 +364,7 @@ void ImageManager::elementStartLocal(const String& element,
     else
         Logger::getSingleton().logEvent(
             "[ImageManager] Unknown XML element encountered: <" +
-            element + ">", LoggingLevel::ERROR_LEVEL);
+            element + ">", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//

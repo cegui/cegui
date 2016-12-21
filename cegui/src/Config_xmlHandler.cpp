@@ -66,7 +66,7 @@ const String Config_xmlHandler::NameAttribute("name");
 
 //----------------------------------------------------------------------------//
 Config_xmlHandler::Config_xmlHandler() :
-    d_logLevel(LoggingLevel::STANDARD)
+    d_logLevel(LoggingLevel::Standard)
 {
 }
 
@@ -116,7 +116,7 @@ void Config_xmlHandler::elementStart(const String& element,
         handleDefaultTooltipElement(attributes);
     else
         Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", LoggingLevel::ERROR_LEVEL);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -141,14 +141,14 @@ void Config_xmlHandler::handleLoggingElement(const XMLAttributes& attr)
 
     const String logLevel(attr.getValueAsString(LevelAttribute, ""));
 
-    if (logLevel == "LoggingLevel::ERROR")
-        d_logLevel = LoggingLevel::ERROR_LEVEL;
-    else if (logLevel == "LoggingLevel::INFORMATIVE")
-        d_logLevel = LoggingLevel::INFORMATIVE;
-    else if (logLevel == "LoggingLevel::INSANE")
-        d_logLevel = LoggingLevel::INSANE;
+    if (logLevel == "LoggingLevel::Error")
+        d_logLevel = LoggingLevel::Error;
+    else if (logLevel == "LoggingLevel::Informative")
+        d_logLevel = LoggingLevel::Informative;
+    else if (logLevel == "LoggingLevel::Insane")
+        d_logLevel = LoggingLevel::Insane;
     else
-        d_logLevel = LoggingLevel::STANDARD;
+        d_logLevel = LoggingLevel::Standard;
 }
 
 //----------------------------------------------------------------------------//
@@ -262,31 +262,31 @@ void Config_xmlHandler::initialiseDefaultResourceGroups() const
     {
         switch ((*i).type)
         {
-        case ResourceType::IMAGESET:
+        case ResourceType::Imageset:
             ImageManager::setImagesetDefaultResourceGroup((*i).group);
             break;
 
-        case ResourceType::FONT:
+        case ResourceType::Font:
             Font::setDefaultResourceGroup((*i).group);
             break;
 
-        case ResourceType::SCHEME:
+        case ResourceType::Scheme:
             Scheme::setDefaultResourceGroup((*i).group);
             break;
 
-        case ResourceType::LOOKNFEEL:
+        case ResourceType::LookNFeel:
             WidgetLookManager::setDefaultResourceGroup((*i).group);
             break;
 
-        case ResourceType::LAYOUT:
+        case ResourceType::Layout:
             WindowManager::setDefaultResourceGroup((*i).group);
             break;
 
-        case ResourceType::SCRIPT:
+        case ResourceType::Script:
             ScriptModule::setDefaultResourceGroup((*i).group);
             break;
 
-        case ResourceType::XMLSCHEMA:
+        case ResourceType::XmlSchema:
             if (System::getSingleton().getXMLParser()->
                 isPropertyPresent("SchemaDefaultResourceGroup"))
             {
@@ -311,19 +311,19 @@ void Config_xmlHandler::loadAutoResources() const
     {
         switch ((*i).type)
         {
-        case ResourceType::IMAGESET:
+        case ResourceType::Imageset:
             autoLoadImagesets((*i).pattern, (*i).group);
             break;
 
-        case ResourceType::FONT:
+        case ResourceType::Font:
             FontManager::getSingleton().createAll((*i).pattern, (*i).group);
             break;
 
-        case ResourceType::SCHEME:
+        case ResourceType::Scheme:
             SchemeManager::getSingleton().createAll((*i).pattern, (*i).group);
             break;
 
-        case ResourceType::LOOKNFEEL:
+        case ResourceType::LookNFeel:
             autoLoadLookNFeels((*i).pattern, (*i).group);
             break;
 
@@ -378,21 +378,21 @@ Config_xmlHandler::ResourceType Config_xmlHandler::stringToResourceType(
     const String& type) const
 {
     if (type == "Imageset")
-        return ResourceType::IMAGESET;
+        return ResourceType::Imageset;
     else if (type == "Font")
-        return ResourceType::FONT;
+        return ResourceType::Font;
     else if (type == "Scheme")
-        return ResourceType::SCHEME;
+        return ResourceType::Scheme;
     else if (type == "LookNFeel")
-        return ResourceType::LOOKNFEEL;
+        return ResourceType::LookNFeel;
     else if (type == "Layout")
-        return ResourceType::LAYOUT;
+        return ResourceType::Layout;
     else if (type == "Script")
-        return ResourceType::SCRIPT;
+        return ResourceType::Script;
     else if (type == "XMLSchema")
-        return ResourceType::XMLSCHEMA;
+        return ResourceType::XmlSchema;
     else
-        return ResourceType::DEFAULT;
+        return ResourceType::Default;
 }
 
 //----------------------------------------------------------------------------//

@@ -647,47 +647,47 @@ bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs& args)
         switch (item->getId())
         {
         case 0:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::ROW_SINGLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::RowSingle);
             break;
 
         case 1:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::ROW_MULTIPLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::RowMultiple);
             break;
 
         case 2:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::COLUMN_SINGLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::ColumnSingle);
             break;
 
         case 3:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::COLUMN_MULTIPLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::ColumnMultiple);
             break;
 
         case 4:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::CELL_SINGLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::CellSingle);
             break;
 
         case 5:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::CELL_MULTIPLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::CellMultiple);
             break;
 
         case 6:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::NOMINATED_COLUMN_SINGLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::NominatedColumnSingle);
             break;
 
         case 7:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::NOMINATED_COLUMN_MULTIPLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::NominatedColumnMultiple);
             break;
 
         case 8:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::NOMINATED_ROW_SINGLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::NominatedRowSingle);
             break;
 
         case 9:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::NOMINATED_ROW_MULTIPLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::NominatedRowMultiple);
             break;
 
         default:
-            mcl->setSelectionMode(MultiColumnList::SelectionMode::ROW_SINGLE);
+            mcl->setSelectionMode(MultiColumnList::SelectionMode::RowSingle);
             break;
 
         }

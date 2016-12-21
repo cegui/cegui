@@ -66,7 +66,7 @@ const String BasicRenderedStringParser::StretchAlignedValueName("stretch");
 //----------------------------------------------------------------------------//
 BasicRenderedStringParser::BasicRenderedStringParser() :
     d_initialColours(0xFFFFFFFF),
-    d_vertAlignment(VerticalFormatting::BOTTOM_ALIGNED),
+    d_vertAlignment(VerticalFormatting::BottomAligned),
     d_imageSize(0, 0),
     d_aspectLock(false),
     d_initialised(false)
@@ -79,7 +79,7 @@ BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
                                             const ColourRect& initial_colours) :
     d_initialFontName(initial_font),
     d_initialColours(initial_colours),
-    d_vertAlignment(VerticalFormatting::BOTTOM_ALIGNED),
+    d_vertAlignment(VerticalFormatting::BottomAligned),
     d_imageSize(0, 0),
     d_aspectLock(false),
     d_initialised(false)
@@ -265,7 +265,7 @@ void BasicRenderedStringParser::initialiseDefaultState()
     //!  \deprecated This assignment is deprecated and will be replaced by assignment Colour 0xFFFFFFFF in the next major version */
     d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
-    d_vertAlignment = VerticalFormatting::BOTTOM_ALIGNED;
+    d_vertAlignment = VerticalFormatting::BottomAligned;
     d_aspectLock = false;
 }
 
@@ -353,13 +353,13 @@ void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& v
 void BasicRenderedStringParser::handleVertAlignment(RenderedString&, const String& value)
 {
     if (value == TopAlignedValueName)
-        d_vertAlignment = VerticalFormatting::TOP_ALIGNED;
+        d_vertAlignment = VerticalFormatting::TopAligned;
     else if (value == BottomAlignedValueName)
-        d_vertAlignment = VerticalFormatting::BOTTOM_ALIGNED;
+        d_vertAlignment = VerticalFormatting::BottomAligned;
     else if (value == CentreAlignedValueName)
-        d_vertAlignment = VerticalFormatting::CENTRE_ALIGNED;
+        d_vertAlignment = VerticalFormatting::CentreAligned;
     else if (value == StretchAlignedValueName)
-        d_vertAlignment = VerticalFormatting::STRETCHED;
+        d_vertAlignment = VerticalFormatting::Stretched;
     else
         Logger::getSingleton().logEvent(
             "BasicRenderedStringParser::handleVertAlignment: unknown "

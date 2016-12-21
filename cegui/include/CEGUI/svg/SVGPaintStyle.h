@@ -73,13 +73,13 @@ public:
     enum class SvgLinecap : int
     {
         //! A simple linear cap through the endpoint.
-        BUTT,
+        Butt,
         //! A rounded cap with the endpoint as center.
-        ROUND,
+        Round,
         //! A simple linear cap that is offset from the endpoint by the stroke width.
-        SQUARE,
+        Square,
 
-        COUNT
+        Count
     };
 
     /*!
@@ -94,13 +94,13 @@ public:
             by the value set for stroke-miterlimit. In the case the miter is exceedingly long a bevel
             linejoin will then be used for that corner.
         */
-        MITER,
+        Miter,
         //! A rounded linejoin.
-        ROUND,
+        Round,
         //! A linejoin with two corners.
-        BEVEL,
+        Bevel,
 
-        COUNT
+        Count
     };
 
 

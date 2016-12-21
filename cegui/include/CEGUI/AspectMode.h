@@ -41,21 +41,21 @@ namespace CEGUI
 enum class AspectMode : int
 {
     //! Ignores the target aspect (default)
-    NONE,
+    None,
     /*!
     Satisfies the aspect ratio by shrinking the size as little
     as possible to fit inside it
     */
-    SHRINK,
+    Shrink,
     /*!
     Satisfies the aspect ratio by expanding the widget as little
     as possible outside it
     */
-    EXPAND,
+    Expand,
     //! Satisfy the aspect ratio by adjusting the height according to the width.
-    ADJUST_HEIGHT,
+    AdjustHeight,
     //! Satisfy the aspect ratio by adjusting the width according to the height.
-    ADJUST_WIDTH
+    AdjustWidth
 };
 
 

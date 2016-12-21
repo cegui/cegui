@@ -122,7 +122,7 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
 {
     switch(glfwKey)
     {
-    case GLFW_KEY_ESC       : return CEGUI::Key::Scan::ESCAPE;
+    case GLFW_KEY_ESC       : return CEGUI::Key::Scan::Esc;
     case GLFW_KEY_F1        : return CEGUI::Key::Scan::F1;
     case GLFW_KEY_F2        : return CEGUI::Key::Scan::F2;
     case GLFW_KEY_F3        : return CEGUI::Key::Scan::F3;
@@ -138,27 +138,27 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
     case GLFW_KEY_F13       : return CEGUI::Key::Scan::F13;
     case GLFW_KEY_F14       : return CEGUI::Key::Scan::F14;
     case GLFW_KEY_F15       : return CEGUI::Key::Scan::F15;
-    case GLFW_KEY_UP        : return CEGUI::Key::Scan::ARROW_UP;
-    case GLFW_KEY_DOWN      : return CEGUI::Key::Scan::ARROW_DOWN;
-    case GLFW_KEY_LEFT      : return CEGUI::Key::Scan::ARROW_LEFT;
-    case GLFW_KEY_RIGHT     : return CEGUI::Key::Scan::ARROW_RIGHT;
-    case GLFW_KEY_LSHIFT    : return CEGUI::Key::Scan::LEFT_SHIFT;
-    case GLFW_KEY_RSHIFT    : return CEGUI::Key::Scan::RIGHT_SHIFT;
-    case GLFW_KEY_LCTRL     : return CEGUI::Key::Scan::LEFT_CONTROL;
-    case GLFW_KEY_RCTRL     : return CEGUI::Key::Scan::RIGHT_CONTROL;
-    case GLFW_KEY_LALT      : return CEGUI::Key::Scan::LEFT_ALT;
-    case GLFW_KEY_RALT      : return CEGUI::Key::Scan::RIGHT_ALT;
-    case GLFW_KEY_TAB       : return CEGUI::Key::Scan::TAB;
-    case GLFW_KEY_ENTER     : return CEGUI::Key::Scan::RETURN;
-    case GLFW_KEY_BACKSPACE : return CEGUI::Key::Scan::BACKSPACE;
-    case GLFW_KEY_INSERT    : return CEGUI::Key::Scan::INSERT;
-    case GLFW_KEY_DEL       : return CEGUI::Key::Scan::KEY_DELETE;
-    case GLFW_KEY_PAGEUP    : return CEGUI::Key::Scan::PAGE_UP;
-    case GLFW_KEY_PAGEDOWN  : return CEGUI::Key::Scan::PAGE_DOWN;
-    case GLFW_KEY_HOME      : return CEGUI::Key::Scan::HOME;
-    case GLFW_KEY_END       : return CEGUI::Key::Scan::END;
-    case GLFW_KEY_KP_ENTER  : return CEGUI::Key::Scan::NUMPAD_ENTER;
-    case GLFW_KEY_SPACE     : return CEGUI::Key::Scan::SPACE;
+    case GLFW_KEY_UP        : return CEGUI::Key::Scan::ArrowUp;
+    case GLFW_KEY_DOWN      : return CEGUI::Key::Scan::ArrowDown;
+    case GLFW_KEY_LEFT      : return CEGUI::Key::Scan::ArrowLeft;
+    case GLFW_KEY_RIGHT     : return CEGUI::Key::Scan::ArrowRight;
+    case GLFW_KEY_LSHIFT    : return CEGUI::Key::Scan::LeftShift;
+    case GLFW_KEY_RSHIFT    : return CEGUI::Key::Scan::RightShift;
+    case GLFW_KEY_LCTRL     : return CEGUI::Key::Scan::LeftControl;
+    case GLFW_KEY_RCTRL     : return CEGUI::Key::Scan::RightControl;
+    case GLFW_KEY_LALT      : return CEGUI::Key::Scan::LeftAlt;
+    case GLFW_KEY_RALT      : return CEGUI::Key::Scan::RightAlt;
+    case GLFW_KEY_TAB       : return CEGUI::Key::Scan::Tab;
+    case GLFW_KEY_ENTER     : return CEGUI::Key::Scan::Return;
+    case GLFW_KEY_BACKSPACE : return CEGUI::Key::Scan::Backspace;
+    case GLFW_KEY_INSERT    : return CEGUI::Key::Scan::Insert;
+    case GLFW_KEY_DEL       : return CEGUI::Key::Scan::KeyDelete;
+    case GLFW_KEY_PAGEUP    : return CEGUI::Key::Scan::PageUp;
+    case GLFW_KEY_PAGEDOWN  : return CEGUI::Key::Scan::PageDown;
+    case GLFW_KEY_HOME      : return CEGUI::Key::Scan::Home;
+    case GLFW_KEY_END       : return CEGUI::Key::Scan::End;
+    case GLFW_KEY_KP_ENTER  : return CEGUI::Key::Scan::NumpadEnter;
+    case GLFW_KEY_SPACE     : return CEGUI::Key::Scan::Space;
     case 'A'                : return CEGUI::Key::Scan::A;
     case 'B'                : return CEGUI::Key::Scan::B;
     case 'C'                : return CEGUI::Key::Scan::C;
@@ -185,7 +185,7 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
     case 'X'                : return CEGUI::Key::Scan::X;
     case 'Y'                : return CEGUI::Key::Scan::Y;
     case 'Z'                : return CEGUI::Key::Scan::Z;
-    default                 : return CEGUI::Key::Scan::UNKNOWN;
+    default                 : return CEGUI::Key::Scan::Unknown;
     }
 }
 

@@ -244,7 +244,7 @@ public:
     int getChildId(const ModelIndex& model_index) const override;
     ModelIndex getRootIndex() const override;
     size_t getChildCount(const ModelIndex& model_index) const override;
-    String getData(const ModelIndex& model_index, ItemDataRole role = ItemDataRole::TEXT) override;
+    String getData(const ModelIndex& model_index, ItemDataRole role = ItemDataRole::Text) override;
 
 protected:
     //! Deletes all children of the specified item, optionally invoking the
@@ -396,9 +396,9 @@ String GenericItemModel<TGenericItem>::getData(const ModelIndex& model_index,
         return "";
 
     GenericItem* item = static_cast<GenericItem*>(model_index.d_modelData);
-    if (role == ItemDataRole::TEXT) return item->getText();
-    if (role == ItemDataRole::ICON) return item->getIcon();
-    if (role == ItemDataRole::TOOLTIP) return "Tooltip for " + item->getText();
+    if (role == ItemDataRole::Text) return item->getText();
+    if (role == ItemDataRole::Icon) return item->getIcon();
+    if (role == ItemDataRole::Tooltip) return "Tooltip for " + item->getText();
 
     return "";
 }

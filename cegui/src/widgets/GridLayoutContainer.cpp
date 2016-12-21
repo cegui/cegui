@@ -56,7 +56,7 @@ GridLayoutContainer::GridLayoutContainer(const String& type,
     d_gridWidth(0),
     d_gridHeight(0),
 
-    d_autoPositioning(AutoPositioning::LEFT_TO_RIGHT),
+    d_autoPositioning(AutoPositioning::LeftToRight),
     d_nextAutoPositioningIdx(0),
 
     d_nextGridX(std::numeric_limits<size_t>::max()),
@@ -208,7 +208,7 @@ void GridLayoutContainer::addChildToPosition(Window* window,
                                              size_t gridX, size_t gridY)
 {
     // when user starts to add windows to specific locations, AO has to be disabled
-    setAutoPositioning(AutoPositioning::DISABLED);
+    setAutoPositioning(AutoPositioning::Disabled);
     d_nextGridX = gridX;
     d_nextGridY = gridY;
 
@@ -447,16 +447,16 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
 {
     // todo: more auto positioning variants? will someone use them?
 
-    if (d_autoPositioning == AutoPositioning::DISABLED)
+    if (d_autoPositioning == AutoPositioning::Disabled)
     {
         assert(0);
     }
-    else if (d_autoPositioning == AutoPositioning::LEFT_TO_RIGHT)
+    else if (d_autoPositioning == AutoPositioning::LeftToRight)
     {
         // this is the same positioning as implementation
         return APIdx;
     }
-    else if (d_autoPositioning == AutoPositioning::TOP_TO_BOTTOM)
+    else if (d_autoPositioning == AutoPositioning::TopToBottom)
     {
         // we want
         // 1 3 5
@@ -545,7 +545,7 @@ void GridLayoutContainer::addChild_impl(Element* element)
         // idx is the future index of the child that's being added
         size_t idx;
 
-        if (d_autoPositioning == AutoPositioning::DISABLED)
+        if (d_autoPositioning == AutoPositioning::Disabled)
         {
             if ((d_nextGridX == std::numeric_limits<size_t>::max()) &&
                 (d_nextGridY == std::numeric_limits<size_t>::max()))
@@ -617,7 +617,7 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
     CEGUI_DEFINE_PROPERTY(GridLayoutContainer, AutoPositioning,
         "AutoPositioning", "Sets the method used for auto positioning. "
         "Possible values: 'Disabled', 'Left to Right', 'Top to Bottom'.",
-        &GridLayoutContainer::setAutoPositioning, &GridLayoutContainer::getAutoPositioning, GridLayoutContainer::AutoPositioning::LEFT_TO_RIGHT
+        &GridLayoutContainer::setAutoPositioning, &GridLayoutContainer::getAutoPositioning, GridLayoutContainer::AutoPositioning::LeftToRight
     );
 
 }

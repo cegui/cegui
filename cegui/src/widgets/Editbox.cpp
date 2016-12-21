@@ -57,7 +57,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_readOnlyMouseCursorImage(nullptr),
     d_validator(System::getSingleton().createRegexMatcher()),
     d_weOwnValidator(true),
-    d_validatorMatchState(RegexMatcher::MatchState::VALID),
+    d_validatorMatchState(RegexMatcher::MatchState::Valid),
     d_previousValidityChangeResponse(true)
 {
     addEditboxProperties();
@@ -166,7 +166,7 @@ void Editbox::eraseSelectedText(bool modify_text)
         {
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
@@ -187,7 +187,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 Editbox::MatchState Editbox::getStringMatchState(const String& str) const
 {
     return d_validator ? d_validator->getMatchStateOfString(str) :
-                         RegexMatcher::MatchState::VALID;
+                         RegexMatcher::MatchState::Valid;
 }
 
 
@@ -244,7 +244,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     String tmp(getText());
 
     UndoHandler::UndoAction undoSelection;
-    undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
+    undoSelection.d_type = UndoHandler::UndoActionType::Delete;
     undoSelection.d_startIdx = getSelectionStart();
     undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -254,7 +254,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     if (tmp.length() < d_maxTextLen)
     {
         UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::INSERT;
+        undo.d_type = UndoHandler::UndoActionType::Insert;
         undo.d_startIdx = getCaretIndex();
         undo.d_text = clipboardText;
 
@@ -302,7 +302,7 @@ void Editbox::onCharacter(TextEventArgs& e)
         String tmp(getText());
 
         UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
+        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
         undoSelection.d_startIdx = getSelectionStart();
         undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -312,7 +312,7 @@ void Editbox::onCharacter(TextEventArgs& e)
         if (tmp.length() < d_maxTextLen)
         {
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::INSERT;
+            undo.d_type = UndoHandler::UndoActionType::Insert;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = e.d_character;
 
@@ -360,7 +360,7 @@ void Editbox::handleBackspace(void)
         if (getSelectionLength() != 0)
         {
             UndoHandler::UndoAction undoSelection;
-            undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
+            undoSelection.d_type = UndoHandler::UndoActionType::Delete;
             undoSelection.d_startIdx = getSelectionStart();
             undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -380,7 +380,7 @@ void Editbox::handleBackspace(void)
         else if (getCaretIndex() > 0)
         {
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
             size_t deleteStartPos = d_caretPos - 1;
@@ -423,7 +423,7 @@ void Editbox::handleDelete(void)
         if (getSelectionLength() != 0)
         {
             UndoHandler::UndoAction undoSelection;
-            undoSelection.d_type = UndoHandler::UndoActionType::DELETE;
+            undoSelection.d_type = UndoHandler::UndoActionType::Delete;
             undoSelection.d_startIdx = getSelectionStart();
             undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
@@ -443,7 +443,7 @@ void Editbox::handleDelete(void)
         else if (getCaretIndex() < tmp.length())
         {
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
             undo.d_startIdx = d_caretPos;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8

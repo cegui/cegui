@@ -250,7 +250,7 @@ void EditboxBase::eraseSelectedText(bool modify_text)
         {
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);

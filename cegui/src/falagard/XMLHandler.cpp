@@ -329,7 +329,7 @@ namespace CEGUI
         // no handler existed
         else
         {
-            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", LoggingLevel::ERROR_LEVEL);
+            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", LoggingLevel::Error);
         }
     }
 
@@ -370,20 +370,20 @@ namespace CEGUI
         {
             switch (dim.getDimensionType())
             {
-            case DimensionType::LEFT_EDGE:
-            case DimensionType::X_POSITION:
+            case DimensionType::LeftEdge:
+            case DimensionType::XPosition:
                 d_area->d_left = dim;
                 break;
-            case DimensionType::TOP_EDGE:
-            case DimensionType::Y_POSITION:
+            case DimensionType::TopEdge:
+            case DimensionType::YPosition:
                 d_area->d_top = dim;
                 break;
-            case DimensionType::RIGHT_EDGE:
-            case DimensionType::WIDTH:
+            case DimensionType::RightEdge:
+            case DimensionType::Width:
                 d_area->d_right_or_width = dim;
                 break;
-            case DimensionType::BOTTOM_EDGE:
-            case DimensionType::HEIGHT:
+            case DimensionType::BottomEdge:
+            case DimensionType::Height:
                 d_area->d_bottom_or_height = dim;
                 break;
             default:
@@ -464,7 +464,7 @@ namespace CEGUI
         d_widgetlook = new WidgetLookFeel(attributes.getValueAsString(NameAttribute),
                                                    attributes.getValueAsString(InheritsAttribute));
 
-        Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::INFORMATIVE);
+        Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::Informative);
     }
 
     /*************************************************************************
@@ -702,13 +702,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FrameImageComponent::LEFT_EDGE:
+                case FrameImageComponent::LeftEdge:
                     d_framecomponent->setLeftEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::RIGHT_EDGE:
+                case FrameImageComponent::RightEdge:
                     d_framecomponent->setRightEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::BACKGROUND:
+                case FrameImageComponent::Background:
                     d_framecomponent->setBackgroundVerticalFormatting(fmt);
                     break;
                 default:
@@ -750,13 +750,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FrameImageComponent::TOP_EDGE:
+                case FrameImageComponent::TopEdge:
                     d_framecomponent->setTopEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::BOTTOM_EDGE:
+                case FrameImageComponent::BottomEdge:
                     d_framecomponent->setBottomEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::BACKGROUND:
+                case FrameImageComponent::Background:
                     d_framecomponent->setBackgroundHorizontalFormatting(fmt);
                     break;
                 default:
@@ -928,7 +928,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementPropertyDimStart(const XMLAttributes& attributes)
     {
         String str_type = attributes.getValueAsString(TypeAttribute);
-        DimensionType type = DimensionType::INVALID;
+        DimensionType type = DimensionType::Invalid;
         if (!str_type.empty())
             type = FalagardXMLHelper<DimensionType>::fromString(str_type);
 
@@ -1094,7 +1094,7 @@ namespace CEGUI
             if (type != GenericDataType && type != "String")
             {
                 // type was specified but wasn't recognised
-                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", LoggingLevel::WARNING_LEVEL);
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", LoggingLevel::Warning);
             }
 
             prop = new PropertyDefinition<String>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -1252,7 +1252,7 @@ namespace CEGUI
             if (type != GenericDataType && type != PropertyHelper<String>::getDataTypeName())
             {
                 // type was specified but wasn't recognised
-                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", LoggingLevel::WARNING_LEVEL);
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", LoggingLevel::Warning);
             }
 
             d_propertyLink = new PropertyLinkDefinition<String>(name,
@@ -1295,13 +1295,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FrameImageComponent::LEFT_EDGE:
+                case FrameImageComponent::LeftEdge:
                     d_framecomponent->setLeftEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::RIGHT_EDGE:
+                case FrameImageComponent::RightEdge:
                     d_framecomponent->setRightEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::BACKGROUND:
+                case FrameImageComponent::Background:
                     d_framecomponent->setBackgroundVerticalFormatting(fmt);
                     break;
                 default:
@@ -1335,13 +1335,13 @@ namespace CEGUI
 
             switch(what)
             {
-                case FrameImageComponent::TOP_EDGE:
+                case FrameImageComponent::TopEdge:
                     d_framecomponent->setTopEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::BOTTOM_EDGE:
+                case FrameImageComponent::BottomEdge:
                     d_framecomponent->setBottomEdgeFormatting(fmt);
                     break;
-                case FrameImageComponent::BACKGROUND:
+                case FrameImageComponent::Background:
                     d_framecomponent->setBackgroundHorizontalFormatting(fmt);
                     break;
                 default:
@@ -1451,7 +1451,7 @@ namespace CEGUI
     {
         assert(d_widgetlook != nullptr);
 
-        Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::INFORMATIVE);
+        Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::Informative);
         d_manager->addWidgetLook(*d_widgetlook);
         delete d_widgetlook;
         d_widgetlook = nullptr;

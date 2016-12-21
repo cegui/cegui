@@ -236,7 +236,7 @@ void OpenGLRenderer::beginRendering()
     glEnable(GL_BLEND);
 
     // force set blending ops to get to a known state.
-    setupRenderingBlendMode(BlendMode::NORMAL, true);
+    setupRenderingBlendMode(BlendMode::Normal, true);
 
     // enable arrays that we'll be using in the batches
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -308,7 +308,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
 {
     // prefer FBO
 
-    if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::FBO)) &&
+    if (((tt_type == TextureTargetType::Auto) || (tt_type == TextureTargetType::Fbo)) &&
         GLEW_EXT_framebuffer_object)
     {
         d_rendererID += "  TextureTarget support enabled via FBO extension.";
@@ -318,7 +318,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
 
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // on linux (etc), we can try for GLX pbuffer support
-    else if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::PBUFFER)) &&
+    else if (((tt_type == TextureTargetType::Auto) || (tt_type == TextureTargetType::Pbuffer)) &&
              GLXEW_VERSION_1_3)
     {
         d_rendererID += "  TextureTarget support enabled via GLX pbuffers.";
@@ -327,7 +327,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
     }
 #elif defined(_WIN32) || defined(__WIN32__)
     // on Windows, we can try for WGL based pbuffer support
-    else if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::PBUFFER)) &&
+    else if (((tt_type == TextureTargetType::Auto) || (tt_type == TextureTargetType::Pbuffer)) &&
              WGLEW_ARB_pbuffer)
     {
         d_rendererID += "  TextureTarget support enabled via WGL_ARB_pbuffer.";
@@ -336,7 +336,7 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
     }
 #elif defined(__APPLE__)
     // on Apple Mac, we can try for Apple's pbuffer support
-    else if (((tt_type == TextureTargetType::AUTO) || (tt_type == TextureTargetType::PBUFFER)) &&
+    else if (((tt_type == TextureTargetType::Auto) || (tt_type == TextureTargetType::Pbuffer)) &&
              GLEW_APPLE_pixel_buffer)
     {
         d_rendererID += "  TextureTarget support enabled via "
@@ -363,7 +363,7 @@ void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
 
     d_activeBlendMode = mode;
 
-    if (d_activeBlendMode == BlendMode::RTT_PREMULTIPLIED)
+    if (d_activeBlendMode == BlendMode::RttPremultiplied)
     {
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
@@ -406,13 +406,13 @@ void OpenGLRenderer::initialiseGLExtensions()
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    if(shaderType == DefaultShaderType::TEXTURED)
+    if(shaderType == DefaultShaderType::Textured)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
-    else if(shaderType == DefaultShaderType::SOLID)
+    else if(shaderType == DefaultShaderType::Solid)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 

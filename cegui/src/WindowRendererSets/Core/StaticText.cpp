@@ -56,10 +56,10 @@ namespace CEGUI
     *************************************************************************/
     FalagardStaticText::FalagardStaticText(const String& type) :
         FalagardStatic(type),
-        d_horzFormatting(HorizontalTextFormatting::LEFT_ALIGNED),
-        d_actualHorzFormatting(HorizontalTextFormatting::LEFT_ALIGNED),
-        d_vertFormatting(VerticalTextFormatting::CENTRE_ALIGNED),
-        d_actualVertFormatting(VerticalTextFormatting::CENTRE_ALIGNED),
+        d_horzFormatting(HorizontalTextFormatting::LeftAligned),
+        d_actualHorzFormatting(HorizontalTextFormatting::LeftAligned),
+        d_vertFormatting(VerticalTextFormatting::CentreAligned),
+        d_actualVertFormatting(VerticalTextFormatting::CentreAligned),
         d_textCols(0xFFFFFFFF),
         d_enableVertScrollbar(false),
         d_enableHorzScrollbar(false),
@@ -76,13 +76,13 @@ namespace CEGUI
             "HorzFormatting", "Property to get/set the horizontal formatting mode."
             "  Value is one of the HorzFormatting strings.",
             &FalagardStaticText::setHorizontalFormatting, &FalagardStaticText::getHorizontalFormatting,
-            HorizontalTextFormatting::LEFT_ALIGNED);
+            HorizontalTextFormatting::LeftAligned);
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, VerticalTextFormatting,
             "VertFormatting", "Property to get/set the vertical formatting mode."
             "  Value is one of the VertFormatting strings.",
             &FalagardStaticText::setVerticalFormatting, &FalagardStaticText::getVerticalFormatting,
-            VerticalTextFormatting::CENTRE_ALIGNED);
+            VerticalTextFormatting::CentreAligned);
 
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
             "VertScrollbar", "Property to get/set the setting for the vertical scroll bar."
@@ -223,15 +223,15 @@ bool FalagardStaticText::isWordWrapOn() const
 {
     switch (getHorizontalFormatting())
     {
-    case HorizontalTextFormatting::LEFT_ALIGNED:
-    case HorizontalTextFormatting::RIGHT_ALIGNED:
-    case HorizontalTextFormatting::CENTRE_ALIGNED:
-    case HorizontalTextFormatting::JUSTIFIED:
+    case HorizontalTextFormatting::LeftAligned:
+    case HorizontalTextFormatting::RightAligned:
+    case HorizontalTextFormatting::CentreAligned:
+    case HorizontalTextFormatting::Justified:
         return false;
-    case HorizontalTextFormatting::WORDWRAP_LEFT_ALIGNED:
-    case HorizontalTextFormatting::WORDWRAP_RIGHT_ALIGNED:
-    case HorizontalTextFormatting::WORDWRAP_CENTRE_ALIGNED:
-    case HorizontalTextFormatting::WORDWRAP_JUSTIFIED:
+    case HorizontalTextFormatting::WordWrapLeftAligned:
+    case HorizontalTextFormatting::WordWrapRightAligned:
+    case HorizontalTextFormatting::WordWrapCentreAligned:
+    case HorizontalTextFormatting::WordWraperJustified:
         return true;
     default:
         throw InvalidRequestException("Invalid horizontal formatting.");
@@ -303,10 +303,10 @@ bool FalagardStaticText::isSizeAdjustedToContentKeepingAspectRatio() const
     if (getNumOfTextLinesToShow().isAuto())
         return (getWindow()->isWidthAdjustedToContent() &&
                   getWindow()->isHeightAdjustedToContent())  ||
-               (getWindow()->getAspectMode() != AspectMode::NONE);
+               (getWindow()->getAspectMode() != AspectMode::None);
     return getWindow()->isWidthAdjustedToContent()  &&
            !getWindow()->isHeightAdjustedToContent()  &&
-           (getWindow()->getAspectMode() != AspectMode::NONE);
+           (getWindow()->getAspectMode() != AspectMode::None);
 }
 
 //----------------------------------------------------------------------------//
@@ -353,21 +353,21 @@ void FalagardStaticText::addScrolledTextRenderGeometry()
 
         switch(getActualHorizontalFormatting())
         {
-        case HorizontalTextFormatting::LEFT_ALIGNED:
-        case HorizontalTextFormatting::WORDWRAP_LEFT_ALIGNED:
-        case HorizontalTextFormatting::JUSTIFIED:
-        case HorizontalTextFormatting::WORDWRAP_JUSTIFIED:
+        case HorizontalTextFormatting::LeftAligned:
+        case HorizontalTextFormatting::WordWrapLeftAligned:
+        case HorizontalTextFormatting::Justified:
+        case HorizontalTextFormatting::WordWraperJustified:
             absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
             break;
 
-        case HorizontalTextFormatting::CENTRE_ALIGNED:
-        case HorizontalTextFormatting::WORDWRAP_CENTRE_ALIGNED:
+        case HorizontalTextFormatting::CentreAligned:
+        case HorizontalTextFormatting::WordWrapCentreAligned:
             absarea.setWidth(horzScrollbar->getDocumentSize());
             absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
             break;
 
-        case HorizontalTextFormatting::RIGHT_ALIGNED:
-        case HorizontalTextFormatting::WORDWRAP_RIGHT_ALIGNED:
+        case HorizontalTextFormatting::RightAligned:
+        case HorizontalTextFormatting::WordWrapRightAligned:
             absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
             break;
         default:
@@ -386,13 +386,13 @@ void FalagardStaticText::addScrolledTextRenderGeometry()
     else
         switch(getActualVerticalFormatting())
         {
-        case VerticalTextFormatting::CENTRE_ALIGNED:
+        case VerticalTextFormatting::CentreAligned:
             absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
             break;
-        case VerticalTextFormatting::BOTTOM_ALIGNED:
+        case VerticalTextFormatting::BottomAligned:
             absarea.d_min.y = absarea.d_max.y - textHeight;
             break;
-        case VerticalTextFormatting::TOP_ALIGNED:
+        case VerticalTextFormatting::TopAligned:
             break;
         default:
                 throw InvalidRequestException("Invalid actual vertical text formatting.");
@@ -727,45 +727,45 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
         // create new formatter of whichever type...
         switch(getActualHorizontalFormatting())
         {
-        case HorizontalTextFormatting::LEFT_ALIGNED:
+        case HorizontalTextFormatting::LeftAligned:
             d_formattedRenderedString =
                 new LeftAlignedRenderedString(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::RIGHT_ALIGNED:
+        case HorizontalTextFormatting::RightAligned:
             d_formattedRenderedString =
                 new RightAlignedRenderedString(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::CENTRE_ALIGNED:
+        case HorizontalTextFormatting::CentreAligned:
             d_formattedRenderedString =
                 new CentredRenderedString(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::JUSTIFIED:
+        case HorizontalTextFormatting::Justified:
             d_formattedRenderedString =
                 new JustifiedRenderedString(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_LEFT_ALIGNED:
+        case HorizontalTextFormatting::WordWrapLeftAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <LeftAlignedRenderedString>(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_RIGHT_ALIGNED:
+        case HorizontalTextFormatting::WordWrapRightAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <RightAlignedRenderedString>(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_CENTRE_ALIGNED:
+        case HorizontalTextFormatting::WordWrapCentreAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <CentredRenderedString>(d_window->getRenderedString());
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_JUSTIFIED:
+        case HorizontalTextFormatting::WordWraperJustified:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <JustifiedRenderedString>(d_window->getRenderedString());
@@ -867,14 +867,14 @@ void FalagardStaticText::updateFormatting() const
         if (getWindow()->isWidthAdjustedToContent()  &&
             (getNumOfFormattedTextLines() == 1))
         {
-            d_actualHorzFormatting = isWordWrapOn() ? HorizontalTextFormatting::WORDWRAP_CENTRE_ALIGNED : HorizontalTextFormatting::CENTRE_ALIGNED;
+            d_actualHorzFormatting = isWordWrapOn() ? HorizontalTextFormatting::WordWrapCentreAligned : HorizontalTextFormatting::CentreAligned;
             setupStringFormatter();
             d_formattedRenderedString->format(getWindow(), getTextRenderArea().getSize());
         }
         if (getWindow()->isHeightAdjustedToContent()    &&
             (getNumOfTextLinesToShow().isAuto()  ||
                (getNumOfTextLinesToShow() <= getNumOfFormattedTextLines())))
-            d_actualVertFormatting = VerticalTextFormatting::CENTRE_ALIGNED;
+            d_actualVertFormatting = VerticalTextFormatting::CentreAligned;
     }
     d_formatValid = true;
 }
@@ -1023,7 +1023,7 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(const L
         window_size.d_width = (content_max_width+epsilon)*size_func.d_width.d_scale + size_func.d_width.d_offset;
         window_size.d_height = (orig_str.getVerticalExtent(getWindow())+epsilon)*size_func.d_height.d_scale +
                                 size_func.d_height.d_offset;
-        window_size.scaleToAspect(AspectMode::EXPAND, getWindow()->getAspectRatio());
+        window_size.scaleToAspect(AspectMode::Expand, getWindow()->getAspectRatio());
         getWindow()->setSize(USize(UDim(0.f, window_size.d_width), UDim(0.f, window_size.d_height)), false);
     }
 }

@@ -35,8 +35,8 @@ namespace CEGUI
 {
 
     //! Default values
-    const HorizontalAlignment WidgetComponent::HorizontalAlignmentDefault(HorizontalAlignment::LEFT);
-    const VerticalAlignment WidgetComponent::VerticalAlignmentDefault(VerticalAlignment::TOP);
+    const HorizontalAlignment WidgetComponent::HorizontalAlignmentDefault(HorizontalAlignment::Left);
+    const VerticalAlignment WidgetComponent::VerticalAlignmentDefault(VerticalAlignment::Top);
 
 
     WidgetComponent::WidgetComponent(const String& targetType,

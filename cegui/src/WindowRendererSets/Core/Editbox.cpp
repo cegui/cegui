@@ -57,7 +57,7 @@ FalagardEditbox::FalagardEditbox(const String& type) :
     d_caretBlinkTimeout(DefaultCaretBlinkTimeout),
     d_caretBlinkElapsed(0.0f),
     d_showCaret(true),
-    d_textFormatting(HorizontalTextFormatting::LEFT_ALIGNED)
+    d_textFormatting(HorizontalTextFormatting::LeftAligned)
 {
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, bool,
         "BlinkCaret", "Property to get/set whether the Editbox caret should blink.  "
@@ -73,7 +73,7 @@ FalagardEditbox::FalagardEditbox(const String& type) :
         "TextFormatting", "Property to get/set the horizontal formatting mode. "
         "Value is one of: LeftAligned, RightAligned or HorzCentred",
         &FalagardEditbox::setTextFormatting, &FalagardEditbox::getTextFormatting,
-        HorizontalTextFormatting::LEFT_ALIGNED);
+        HorizontalTextFormatting::LeftAligned);
 }
 
 //----------------------------------------------------------------------------//
@@ -218,11 +218,11 @@ float FalagardEditbox::extentToCarretLogical(const float extent_to_caret_visual,
 {
     switch (d_textFormatting)
     {
-    case HorizontalTextFormatting::LEFT_ALIGNED:
+    case HorizontalTextFormatting::LeftAligned:
         return extent_to_caret_visual;
-    case HorizontalTextFormatting::CENTRE_ALIGNED:
+    case HorizontalTextFormatting::CentreAligned:
         return (text_extent -caret_width) /2;
-    case HorizontalTextFormatting::RIGHT_ALIGNED:
+    case HorizontalTextFormatting::RightAligned:
         return text_extent -extent_to_caret_visual -caret_width;
     default:
         throw InvalidRequestException("Invalid horizontal text formatting.");
@@ -252,11 +252,11 @@ float FalagardEditbox::textOffsetVisual(const Rectf& text_area, const float text
 {
     switch (d_textFormatting)
     {
-    case HorizontalTextFormatting::LEFT_ALIGNED:
+    case HorizontalTextFormatting::LeftAligned:
         return d_lastTextOffset;
-    case HorizontalTextFormatting::CENTRE_ALIGNED:
+    case HorizontalTextFormatting::CentreAligned:
         return (text_area.getWidth() - text_extent) / 2;
-    case HorizontalTextFormatting::RIGHT_ALIGNED:
+    case HorizontalTextFormatting::RightAligned:
         return text_area.getWidth() -d_lastTextOffset -text_extent;
     default:
         throw InvalidRequestException("Invalid horizontal text formatting.");
@@ -560,9 +560,9 @@ void FalagardEditbox::setTextFormatting(const HorizontalTextFormatting format)
 //----------------------------------------------------------------------------//
 bool FalagardEditbox::isUnsupportedFormat(const HorizontalTextFormatting format)
 {
-    return !(format == HorizontalTextFormatting::LEFT_ALIGNED ||
-             format == HorizontalTextFormatting::RIGHT_ALIGNED ||
-             format == HorizontalTextFormatting::CENTRE_ALIGNED);
+    return !(format == HorizontalTextFormatting::LeftAligned ||
+             format == HorizontalTextFormatting::RightAligned ||
+             format == HorizontalTextFormatting::CentreAligned);
 }
 
 //----------------------------------------------------------------------------//

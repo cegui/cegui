@@ -88,23 +88,23 @@ const String& PropertyHelper<AspectMode>::getDataTypeName()
 PropertyHelper<AspectMode>::string_return_type PropertyHelper<AspectMode>::toString(
     PropertyHelper<AspectMode>::pass_type val)
 {
-    if (val == AspectMode::NONE)
+    if (val == AspectMode::None)
     {
         return Ignore;
     }
-    else if (val == AspectMode::SHRINK)
+    else if (val == AspectMode::Shrink)
     {
         return Shrink;
     }
-    else if (val == AspectMode::EXPAND)
+    else if (val == AspectMode::Expand)
     {
         return Expand;
     }
-    else if (val == AspectMode::ADJUST_HEIGHT)
+    else if (val == AspectMode::AdjustHeight)
     {
         return AdjustHeight;
     }
-    else if (val == AspectMode::ADJUST_WIDTH)
+    else if (val == AspectMode::AdjustWidth)
     {
         return AdjustWidth;
     }
@@ -119,23 +119,23 @@ PropertyHelper<AspectMode>::return_type PropertyHelper<AspectMode>::fromString(c
 {
     if (str == Shrink)
     {
-        return AspectMode::SHRINK;
+        return AspectMode::Shrink;
     }
     else if (str == Expand)
     {
-        return AspectMode::EXPAND;
+        return AspectMode::Expand;
     }
     else if (str == AdjustHeight)
     {
-        return AspectMode::ADJUST_HEIGHT;
+        return AspectMode::AdjustHeight;
     }
     else if (str == AdjustWidth)
     {
-        return AspectMode::ADJUST_WIDTH;
+        return AspectMode::AdjustWidth;
     }
     else
     {
-        return AspectMode::NONE;
+        return AspectMode::None;
     }
 }
 
@@ -928,12 +928,12 @@ const String& PropertyHelper<FontSizeUnit>::getDataTypeName()
 PropertyHelper<FontSizeUnit>::string_return_type PropertyHelper<FontSizeUnit>::toString(
     pass_type val)
 {
-    if (val == FontSizeUnit::FSU_PIXELS)
+    if (val == FontSizeUnit::Pixels)
     {
         return Pixels;
     }
 
-    if (val == FontSizeUnit::FSU_POINTS)
+    if (val == FontSizeUnit::Points)
     {
         return Points;
     }
@@ -946,15 +946,15 @@ PropertyHelper<FontSizeUnit>::return_type PropertyHelper<FontSizeUnit>::fromStri
 {
     if (str == Pixels)
     {
-        return FontSizeUnit::FSU_PIXELS;
+        return FontSizeUnit::Pixels;
     }
 
     if (str == Points)
     {
-        return FontSizeUnit::FSU_POINTS;
+        return FontSizeUnit::Points;
     }
 
-    return FontSizeUnit::FSU_PIXELS;
+    return FontSizeUnit::Pixels;
 }
 
 

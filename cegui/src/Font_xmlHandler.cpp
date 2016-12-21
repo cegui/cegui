@@ -95,7 +95,7 @@ Font_xmlHandler::~Font_xmlHandler()
     {
         Logger::getSingleton().logEvent("Font_xmlHandler::~Font_xmlHandler: "
             "Font XML Handler is being destroyed, but loading of Font with name \"" + d_font->getName() + "\" has not been completed.",
-            LoggingLevel::WARNING_LEVEL);
+            LoggingLevel::Warning);
 
         delete d_font;
     }
@@ -142,7 +142,7 @@ void Font_xmlHandler::elementStart(const String& element,
     // anything else is a non-fatal error.
     else
         Logger::getSingleton().logEvent("Font_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", LoggingLevel::ERROR_LEVEL);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -206,7 +206,7 @@ void Font_xmlHandler::elementFontEnd()
 {
     String addressStr = SharedStringstream::GetPointerAddressAsString(d_font);
     Logger::getSingleton().logEvent("Finished creation of Font '" +
-        d_font->getName() + "' via XML file. " + addressStr, LoggingLevel::INFORMATIVE);
+        d_font->getName() + "' via XML file. " + addressStr, LoggingLevel::Informative);
 
     d_loadedFonts.push_back(d_font);
     d_font = nullptr;
@@ -221,7 +221,7 @@ void Font_xmlHandler::elementFontsEnd()
     std::ostringstream stream;
     stream << "Finished Fonts loading. Number of loaded fonts: " << d_loadedFonts.size();
 
-    Logger::getSingleton().logEvent(stream.str(), LoggingLevel::INFORMATIVE);
+    Logger::getSingleton().logEvent(stream.str(), LoggingLevel::Informative);
 }
 
 void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
@@ -234,7 +234,7 @@ void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
     if (d_font->getTypeName() != FontTypePixmap)
         Logger::getSingleton().logEvent(
             "Imageset_xmlHandler::elementMappingStart: <Mapping> element is "
-            "only valid for Pixmap type fonts.", LoggingLevel::ERROR_LEVEL);
+            "only valid for Pixmap type fonts.", LoggingLevel::Error);
     else
         static_cast<PixmapFont*>(d_font)->defineMapping(
             attributes.getValueAsInteger(MappingCodepointAttribute),

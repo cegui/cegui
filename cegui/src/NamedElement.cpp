@@ -75,7 +75,7 @@ void NamedElement::setName(const String& name)
 
     // log this under informative level
     Logger::getSingleton().logEvent("Renamed element at: " + getNamePath() +
-                                    " as: " + name, LoggingLevel::INFORMATIVE);
+                                    " as: " + name, LoggingLevel::Informative);
 
     d_name = name;
 

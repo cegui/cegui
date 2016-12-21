@@ -36,17 +36,17 @@ namespace CEGUI
     */
     enum class DimensionType : int
     {
-        LEFT_EDGE,       //!< Dimension represents the left edge of some entity (same as X_POSITION).
-        X_POSITION,      //!< Dimension represents the x position of some entity (same as LEFT_EDGE).
-        TOP_EDGE,        //!< Dimension represents the top edge of some entity (same as Y_POSITION).
-        Y_POSITION,      //!< Dimension represents the y position of some entity (same as TOP_EDGE).
-        RIGHT_EDGE,      //!< Dimension represents the right edge of some entity.
-        BOTTOM_EDGE,     //!< Dimension represents the bottom edge of some entity.
-        WIDTH,           //!< Dimension represents the width of some entity.
-        HEIGHT,          //!< Dimension represents the height of some entity.
-        X_OFFSET,        //!< Dimension represents the x offset of some entity (usually only applies to an Image entity).
-        Y_OFFSET,        //!< Dimension represents the y offset of some entity (usually only applies to an Image entity).
-        INVALID          //!< Invalid / uninitialised DimensionType.
+        LeftEdge,       //!< Dimension represents the left edge of some entity (same as XPosition).
+        XPosition,      //!< Dimension represents the x position of some entity (same as LeftEdge).
+        TopEdge,        //!< Dimension represents the top edge of some entity (same as YPosition).
+        YPosition,      //!< Dimension represents the y position of some entity (same as TopEdge).
+        RightEdge,      //!< Dimension represents the right edge of some entity.
+        BottomEdge,     //!< Dimension represents the bottom edge of some entity.
+        Width,          //!< Dimension represents the width of some entity.
+        Height,         //!< Dimension represents the height of some entity.
+        XOffset,        //!< Dimension represents the x offset of some entity (usually only applies to an Image entity).
+        YOffset,        //!< Dimension represents the y offset of some entity (usually only applies to an Image entity).
+        Invalid         //!< Invalid / uninitialised DimensionType.
     };
 
     /*!
@@ -55,11 +55,11 @@ namespace CEGUI
     */
     enum class VerticalFormatting : int
     {
-        TOP_ALIGNED,         //!< Top of Image should be aligned with the top of the destination area.
-        CENTRE_ALIGNED,      //!< Image should be vertically centred within the destination area.
-        BOTTOM_ALIGNED,      //!< Bottom of Image should be aligned with the bottom of the destination area.
-        STRETCHED,           //!< Image should be stretched vertically to fill the destination area.
-        TILED                //!< Image should be tiled vertically to fill the destination area (bottom-most tile may be clipped).
+        TopAligned,         //!< Top of Image should be aligned with the top of the destination area.
+        CentreAligned,      //!< Image should be vertically centred within the destination area.
+        BottomAligned,      //!< Bottom of Image should be aligned with the bottom of the destination area.
+        Stretched,          //!< Image should be stretched vertically to fill the destination area.
+        Tiled               //!< Image should be tiled vertically to fill the destination area (bottom-most tile may be clipped).
     };
 
     /*!
@@ -68,11 +68,11 @@ namespace CEGUI
     */
     enum class HorizontalFormatting : int
     {
-        LEFT_ALIGNED,        //!< Left of Image should be aligned with the left of the destination area.
-        CENTRE_ALIGNED,      //!< Image should be horizontally centred within the destination area.
-        RIGHT_ALIGNED,       //!< Right of Image should be aligned with the right of the destination area.
-        STRETCHED,           //!< Image should be stretched horizontally to fill the destination area.
-        TILED                //!< Image should be tiled horizontally to fill the destination area (right-most tile may be clipped).
+        LeftAligned,        //!< Left of Image should be aligned with the left of the destination area.
+        CentreAligned,      //!< Image should be horizontally centred within the destination area.
+        RightAligned,       //!< Right of Image should be aligned with the right of the destination area.
+        Stretched,          //!< Image should be stretched horizontally to fill the destination area.
+        Tiled               //!< Image should be tiled horizontally to fill the destination area (right-most tile may be clipped).
     };
 
     /*!
@@ -81,9 +81,9 @@ namespace CEGUI
     */
     enum class VerticalTextFormatting : int
     {
-        TOP_ALIGNED,         //!< Top of text should be aligned with the top of the destination area.
-        CENTRE_ALIGNED,      //!< text should be vertically centred within the destination area.
-        BOTTOM_ALIGNED       //!< Bottom of text should be aligned with the bottom of the destination area.
+        TopAligned,         //!< Top of text should be aligned with the top of the destination area.
+        CentreAligned,      //!< text should be vertically centred within the destination area.
+        BottomAligned       //!< Bottom of text should be aligned with the bottom of the destination area.
     };
 
     /*!
@@ -92,14 +92,14 @@ namespace CEGUI
     */
     enum class HorizontalTextFormatting : int
     {
-        LEFT_ALIGNED,        //!< Left of text should be aligned with the left of the destination area (single line of text only).
-        RIGHT_ALIGNED,       //!< Right of text should be aligned with the right of the destination area  (single line of text only).
-        CENTRE_ALIGNED,      //!< text should be horizontally centred within the destination area  (single line of text only).
-        JUSTIFIED,           //!< text should be spaced so that it takes the full width of the destination area (single line of text only).
-        WORDWRAP_LEFT_ALIGNED,    //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
-        WORDWRAP_RIGHT_ALIGNED,   //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
-        WORDWRAP_CENTRE_ALIGNED,  //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
-        WORDWRAP_JUSTIFIED        //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
+        LeftAligned,                //!< Left of text should be aligned with the left of the destination area (single line of text only).
+        RightAligned,               //!< Right of text should be aligned with the right of the destination area  (single line of text only).
+        CentreAligned,              //!< text should be horizontally centred within the destination area  (single line of text only).
+        Justified,                  //!< text should be spaced so that it takes the full width of the destination area (single line of text only).
+        WordWrapLeftAligned,        //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
+        WordWrapRightAligned,       //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
+        WordWrapCentreAligned,      //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
+        WordWraperJustified         //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
     };
 
     /*!
@@ -108,9 +108,9 @@ namespace CEGUI
     */
     enum class FontMetricType : int
     {
-        LINE_SPACING,       //!< Vertical line spacing value for font.
-        BASELINE,           //!< Vertical baseline value for font.
-        HORZ_EXTENT         //!< Horizontal extent of a string.
+        LineSpacing,        //!< Vertical line spacing value for font.
+        Baseline,           //!< Vertical baseline value for font.
+        HorzExtent          //!< Horizontal extent of a string.
     };
 
     /*!
@@ -119,11 +119,11 @@ namespace CEGUI
     */
     enum class DimensionOperator : int
     {
-        NOOP,       //!< Do nothing operator.
-        ADD,        //!< Dims should be added.
-        SUBTRACT,   //!< Dims should be subtracted.
-        MULTIPLY,   //!< Dims should be multiplied.
-        DIVIDE      //!< Dims should be divided.
+        NoOp,       //!< Do nothing operator.
+        Add,        //!< Dims should be added.
+        Subtract,   //!< Dims should be subtracted.
+        Multiply,   //!< Dims should be multiplied.
+        Divide      //!< Dims should be divided.
     };
 
     /*!
@@ -132,16 +132,16 @@ namespace CEGUI
     */
     enum class FrameImageComponent : int
     {
-        BACKGROUND,             //!< References image used for the background.
-        TOP_LEFT_CORNER,        //!< References image used for the top-left corner.
-        TOP_RIGHT_CORNER,       //!< References image used for the top-right corner.
-        BOTTOM_LEFT_CORNER,     //!< References image used for the bottom-left corner.
-        BOTTOM_RIGHT_CORNER,    //!< References image used for the bottom-right corner.
-        LEFT_EDGE,              //!< References image used for the left edge.
-        RIGHT_EDGE,             //!< References image used for the right edge.
-        TOP_EDGE,               //!< References image used for the top edge.
-        BOTTOM_EDGE,            //!< References image used for the bottom edge.
-        FRAME_IMAGE_COUNT       //!< Max number of images for a frame.
+        Background,         //!< References image used for the background.
+        TopLeftCorner,      //!< References image used for the top-left corner.
+        TopRightCorner,     //!< References image used for the top-right corner.
+        BottomLeftCorner,   //!< References image used for the bottom-left corner.
+        BottomRightCorner,  //!< References image used for the bottom-right corner.
+        LeftEdge,           //!< References image used for the left edge.
+        RightEdge,          //!< References image used for the right edge.
+        TopEdge,            //!< References image used for the top edge.
+        BottomEdge,         //!< References image used for the bottom edge.
+        FrameImageCount     //!< Max number of images for a frame.
     };
 
     /*!
@@ -152,9 +152,9 @@ namespace CEGUI
     enum class ChildEventAction : int
     {
         //! The window with the WidgetComponent as child is redrawn.
-        REDRAW,
+        Redraw,
         //! The window with the WidgetComponent as child performs child layout.
-        LAYOUT
+        Layout
     };
 
 

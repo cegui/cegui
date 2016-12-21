@@ -50,8 +50,8 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_matrixValid(false),
     d_lastRenderTarget(nullptr),
     d_lastRenderTargetActivationCount(0),
-    d_blendMode(BlendMode::NORMAL),
-    d_polygonFillRule(PolygonFillRule::NONE),
+    d_blendMode(BlendMode::Normal),
+    d_polygonFillRule(PolygonFillRule::None),
     d_postStencilVertexCount(0),
     d_effect(nullptr),
     d_clippingRegion(0, 0, 0, 0),
@@ -219,13 +219,13 @@ int GeometryBuffer::getVertexAttributeElementCount() const
     {
         switch(d_vertexAttributes.at(i))
         {
-            case VertexAttributeType::POSITION0:
+            case VertexAttributeType::Position0:
                 count += 3;
                 break;
-            case VertexAttributeType::COLOUR0:
+            case VertexAttributeType::Colour0:
                 count += 4;
                 break;
-            case VertexAttributeType::TEXCOORD0:
+            case VertexAttributeType::TexCoord0:
                 count += 2;
                 break;
             default:

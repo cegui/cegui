@@ -34,7 +34,7 @@ namespace CEGUI
     // default handler does nothing.
 
     XMLHandler::XMLHandler(void)
-        : d_resourceExistsAction(XmlResourceExistsAction::THROW)
+        : d_resourceExistsAction(XmlResourceExistsAction::Throw)
     {}
 
     XMLHandler::~XMLHandler(void)

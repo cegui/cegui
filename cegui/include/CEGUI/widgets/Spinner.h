@@ -56,10 +56,10 @@ namespace CEGUI
         */
         enum class TextInputMode : int
         {
-            FLOATING_POINT, //!< Floating point decimal.
-            INTEGER,        //!< Integer decimal.
-            HEXADECIMAL,    //!< Hexadecimal.
-            OCTAL           //!< Octal
+            FloatingPoint,  //!< Floating point decimal.
+            Integer,        //!< Integer decimal.
+            Hexadecimal,    //!< Hexadecimal.
+            Octal           //!< Octal
         };
 
         /*************************************************************************
@@ -441,37 +441,37 @@ public:
     {
         if (str == "FloatingPoint")
         {
-            return Spinner::TextInputMode::FLOATING_POINT;
+            return Spinner::TextInputMode::FloatingPoint;
         }
         else if (str == "Hexadecimal")
         {
-            return Spinner::TextInputMode::HEXADECIMAL;
+            return Spinner::TextInputMode::Hexadecimal;
         }
         else if (str == "Octal")
         {
-            return Spinner::TextInputMode::OCTAL;
+            return Spinner::TextInputMode::Octal;
         }
         else
         {
-            return Spinner::TextInputMode::INTEGER;
+            return Spinner::TextInputMode::Integer;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == Spinner::TextInputMode::OCTAL)
+        if (val == Spinner::TextInputMode::Octal)
         {
             return "Octal";
         }
-        else if (val == Spinner::TextInputMode::FLOATING_POINT)
+        else if (val == Spinner::TextInputMode::FloatingPoint)
         {
             return "FloatingPoint";
         }
-        else if (val == Spinner::TextInputMode::HEXADECIMAL)
+        else if (val == Spinner::TextInputMode::Hexadecimal)
         {
             return "Hexadecimal";
         }
-        else if (val == Spinner::TextInputMode::INTEGER)
+        else if (val == Spinner::TextInputMode::Integer)
         {
             return "Integer";
         }

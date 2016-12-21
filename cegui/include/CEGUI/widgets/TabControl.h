@@ -83,8 +83,8 @@ public:
 
 	enum class TabPanePosition : int
 	{
-		TOP,
-		BOTTOM
+		Top,
+		Bottom
 	};
 
 	/*************************************************************************
@@ -528,21 +528,21 @@ public:
     {
         if (str == "Bottom")
         {
-            return TabControl::TabPanePosition::BOTTOM;
+            return TabControl::TabPanePosition::Bottom;
         }
         else
         {
-            return TabControl::TabPanePosition::TOP;
+            return TabControl::TabPanePosition::Top;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == TabControl::TabPanePosition::TOP)
+        if (val == TabControl::TabPanePosition::Top)
         {
             return "Top";
         }
-        else if (val == TabControl::TabPanePosition::BOTTOM)
+        else if (val == TabControl::TabPanePosition::Bottom)
         {
             return "Bottom";
         }

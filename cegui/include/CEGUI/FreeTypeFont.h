@@ -100,7 +100,7 @@ public:
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
                  const String& resource_group = "",
-                 const AutoScaledMode auto_scaled = AutoScaledMode::DISABLED,
+                 const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
                  const float specific_line_spacing = 0.0f);
 

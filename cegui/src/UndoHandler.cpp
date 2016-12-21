@@ -57,7 +57,7 @@ bool UndoHandler::undo(size_t &cursor)
             UndoAction &action = d_undoList[d_undoPosition--];
 
             String newText = d_attachedWindow->getText();
-            if (action.d_type == UndoActionType::INSERT)
+            if (action.d_type == UndoActionType::Insert)
             {
                 newText.erase(action.d_startIdx, action.d_text.length());
                 cursor = action.d_startIdx;
@@ -86,7 +86,7 @@ bool UndoHandler::redo(size_t &cursor)
         UndoAction &action = d_undoList[++d_undoPosition];
 
         String newText = d_attachedWindow->getText();
-        if (action.d_type == UndoActionType::INSERT)
+        if (action.d_type == UndoActionType::Insert)
         {
             newText.insert(action.d_startIdx, action.d_text);
             cursor = action.d_startIdx + action.d_text.length();

@@ -385,9 +385,9 @@ SVGTesselator::LineIntersectResult SVGTesselator::intersectLines(const glm::vec2
     if(denom == 0.0f)
     {
         if(nume_a == 0.0f && nume_b == 0.0f)
-            return LineIntersectResult::COINCIDENT;
+            return LineIntersectResult::Coincident;
         else
-            return LineIntersectResult::PARALLEL;
+            return LineIntersectResult::Parallel;
     }
 
     float ua = nume_a / denom;
@@ -399,10 +399,10 @@ SVGTesselator::LineIntersectResult SVGTesselator::intersectLines(const glm::vec2
         intersection.x = line1_start.x + ua*(line1_end.x - line1_start.x);
         intersection.y = line1_start.y + ua*(line1_end.y - line1_start.y);
 
-        return LineIntersectResult::INTERSECTING;
+        return LineIntersectResult::Intersecting;
     }
 
-    return LineIntersectResult::NOT_INTERSECTING;
+    return LineIntersectResult::NotIntersecting;
 }
 
 //----------------------------------------------------------------------------//
@@ -560,11 +560,11 @@ void SVGTesselator::createStrokeLinejoin(StrokeSegmentData& stroke_data,
     const glm::vec2& segment_end_right = polygon_is_clockwise ? inner_intersection : outer_point;
 
     //If the stroke miter is exceeded we fall back to bevel
-    if(linejoin == SVGPaintStyle::SVGLinejoin::MITER)
+    if(linejoin == SVGPaintStyle::SVGLinejoin::Miter)
         handleStrokeMiterExceedance(stroke_data, cur_point, inner_intersection, linejoin);
 
     //Switch through the types and render them if required 
-    if(linejoin == SVGPaintStyle::SVGLinejoin::MITER)
+    if(linejoin == SVGPaintStyle::SVGLinejoin::Miter)
     {
         //We calculate the connection point of the outer lines
         outer_point = cur_point + cur_point - inner_intersection;
@@ -578,7 +578,7 @@ void SVGTesselator::createStrokeLinejoin(StrokeSegmentData& stroke_data,
             calculateAAMiterAndSetConnectionPoints(stroke_data, segment_end_left, segment_end_right, polygon_is_clockwise,
                                                    prev_to_cur, cur_to_next, prev_dir_to_inside, next_dir_to_inside, scale_factors);
     }
-    else if(linejoin == SVGPaintStyle::SVGLinejoin::BEVEL || linejoin == SVGPaintStyle::SVGLinejoin::ROUND)
+    else if(linejoin == SVGPaintStyle::SVGLinejoin::Bevel || linejoin == SVGPaintStyle::SVGLinejoin::Round)
     {
         //Is the first bevel corner point
         outer_point = cur_point - prev_vec_to_inside;
@@ -629,7 +629,7 @@ void SVGTesselator::createStrokeLinecap(StrokeSegmentData& stroke_data,
     glm::vec2 linecap_center_point = *stroke_data.d_curPoint;
 
     //We offset the linecap points in case we want a squared cap
-    if(linecap == SVGPaintStyle::SvgLinecap::SQUARE)
+    if(linecap == SVGPaintStyle::SvgLinecap::Square)
         linecap_center_point += stroke_data.d_strokeHalfWidth * linecap_dir;
 
     //We get the lincap points
@@ -650,7 +650,7 @@ void SVGTesselator::createStrokeLinecap(StrokeSegmentData& stroke_data,
         linecap_right_AA = linecap_right + stroke_data.d_antiAliasingOffsets.x * -lineside_offset_vec;
     }
 
-    if( linecap == SVGPaintStyle::SvgLinecap::BUTT || linecap == SVGPaintStyle::SvgLinecap::SQUARE )
+    if( linecap == SVGPaintStyle::SvgLinecap::Butt || linecap == SVGPaintStyle::SvgLinecap::Square )
     {
         if(render_settings.d_antiAliasing)
         {
@@ -672,7 +672,7 @@ void SVGTesselator::createStrokeLinecap(StrokeSegmentData& stroke_data,
     }
 
     //In case we got rounded linecaps we want to determine our points first and draw then
-    if(linecap == SVGPaintStyle::SvgLinecap::ROUND)
+    if(linecap == SVGPaintStyle::SvgLinecap::Round)
     {
         static const float half_circle_angle = glm::pi<float>();
 
@@ -1087,7 +1087,7 @@ void SVGTesselator::handleStrokeMiterExceedance(const StrokeSegmentData& stroke_
 
     float half_miter_extension = glm::length(cur_point - inner_intersection);
     if(half_miter_extension > (miterlimit * stroke_data.d_strokeHalfWidth))
-        linejoin = SVGPaintStyle::SVGLinejoin::BEVEL;
+        linejoin = SVGPaintStyle::SVGLinejoin::Bevel;
 }
 
 //----------------------------------------------------------------------------//
@@ -1106,12 +1106,12 @@ void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_d
     {
         setStrokeDataCurrentPoints(stroke_data, segment_end_left, segment_end_right);
 
-        if(linejoin == SVGPaintStyle::SVGLinejoin::BEVEL)
+        if(linejoin == SVGPaintStyle::SVGLinejoin::Bevel)
         {
             //Simply add a triangle for the bevel
             addTriangleGeometry(segment_end_left, segment_end_right, second_bevel_point, stroke_data.d_geometryBuffer, stroke_data.d_strokeVertex);
         }
-        else if(linejoin == SVGPaintStyle::SVGLinejoin::ROUND)
+        else if(linejoin == SVGPaintStyle::SVGLinejoin::Round)
         {
             //Determine the linejoin angle
             float arc_angle = std::acos( glm::dot(prev_dir_to_inside, next_dir_to_inside) );
@@ -1209,7 +1209,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA
     bool are_lines_overlapping = false;
     glm::vec2 intersection_point;
     if(could_vectors_overlap)
-        are_lines_overlapping = ( intersectLines(outer_point, outer_fade_AA, second_bevel_point, outer2_fade_AA, intersection_point) == LineIntersectResult::INTERSECTING );
+        are_lines_overlapping = ( intersectLines(outer_point, outer_fade_AA, second_bevel_point, outer2_fade_AA, intersection_point) == LineIntersectResult::Intersecting );
 
    
     if(are_lines_overlapping)
@@ -1239,7 +1239,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA
     }
     else 
     { 
-        if(draw && linejoin == SVGPaintStyle::SVGLinejoin::BEVEL)
+        if(draw && linejoin == SVGPaintStyle::SVGLinejoin::Bevel)
         {
             //Add the geometry for bevel
             addTriangleGeometry(outer2_AA, inner_AA, outer_AA,
@@ -1248,7 +1248,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA
             addStrokeQuadAA(outer_AA, outer2_AA, outer_fade_AA, outer2_fade_AA,
                             geometry_buffer, stroke_vertex, stroke_fade_vertex);
         }
-        else if(draw && linejoin == SVGPaintStyle::SVGLinejoin::ROUND)
+        else if(draw && linejoin == SVGPaintStyle::SVGLinejoin::Round)
         {
             //Add the geometry for rounded linejoin
             float arc_angle = std::acos( glm::dot(prev_dir_to_inside, next_dir_to_inside) );

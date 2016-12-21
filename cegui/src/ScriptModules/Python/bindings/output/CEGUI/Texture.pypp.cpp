@@ -65,16 +65,16 @@ void register_Texture_class(){
         Texture_exposer_t Texture_exposer = Texture_exposer_t( "Texture" );
         bp::scope Texture_scope( Texture_exposer );
         bp::enum_< CEGUI::Texture::PixelFormat>("PixelFormat")
-            .value("PixelFormat::RGB", CEGUI::Texture::PixelFormat::RGB)
-            .value("PixelFormat::RGBA", CEGUI::Texture::PixelFormat::RGBA)
-            .value("PixelFormat::RGBA_4444", CEGUI::Texture::PixelFormat::RGBA_4444)
-            .value("PixelFormat::RGB_565", CEGUI::Texture::PixelFormat::RGB_565)
-            .value("PF_PVRTC2", CEGUI::Texture::PixelFormat::PVRTC2)
-            .value("PF_PVRTC4", CEGUI::Texture::PixelFormat::PVRTC4)
-            .value("PixelFormat::RGB_DXT1", CEGUI::Texture::PixelFormat::RGB_DXT1)
-            .value("PixelFormat::RGBA_DXT1", CEGUI::Texture::PixelFormat::RGBA_DXT1)
-            .value("PixelFormat::RGBA_DXT3", CEGUI::Texture::PixelFormat::RGBA_DXT3)
-            .value("PixelFormat::RGBA_DXT5", CEGUI::Texture::PixelFormat::RGBA_DXT5)
+            .value("PixelFormat::Rgb", CEGUI::Texture::PixelFormat::Rgb)
+            .value("PixelFormat::Rgba", CEGUI::Texture::PixelFormat::Rgba)
+            .value("PixelFormat::Rgba4444", CEGUI::Texture::PixelFormat::Rgba4444)
+            .value("PixelFormat::Rgb565", CEGUI::Texture::PixelFormat::Rgb565)
+            .value("PF_PVRTC2", CEGUI::Texture::PixelFormat::Pvrtc2)
+            .value("PF_PVRTC4", CEGUI::Texture::PixelFormat::Pvrtc4)
+            .value("PixelFormat::RgbDxt1", CEGUI::Texture::PixelFormat::RgbDxt1)
+            .value("PixelFormat::RgbaDxt1", CEGUI::Texture::PixelFormat::RgbaDxt1)
+            .value("PixelFormat::RgbaDxt3", CEGUI::Texture::PixelFormat::RgbaDxt3)
+            .value("PixelFormat::RgbaDxt5", CEGUI::Texture::PixelFormat::RgbaDxt5)
             .export_values()
             ;
         { //::CEGUI::Texture::blitFromMemory

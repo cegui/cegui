@@ -227,12 +227,12 @@ private:
 	*/
     enum class LineIntersectResult : int
     {
-        PARALLEL,
-        COINCIDENT,
-        NOT_INTERSECTING,
-        INTERSECTING,
+        Parallel,
+        Coincident,
+        NotIntersecting,
+        Intersecting,
 
-        COUNT
+        Count
     };
 
     //! Constructor.

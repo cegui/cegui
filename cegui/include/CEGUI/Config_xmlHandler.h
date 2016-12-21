@@ -111,14 +111,14 @@ private:
     //! enumeration of resource types.
     enum class ResourceType : int
     {
-        IMAGESET,
-        FONT,
-        SCHEME,
-        LOOKNFEEL,
-        LAYOUT,
-        SCRIPT,
-        XMLSCHEMA,
-        DEFAULT
+        Imageset,
+        Font,
+        Scheme,
+        LookNFeel,
+        Layout,
+        Script,
+        XmlSchema,
+        Default
     };
 
     //! struct to track a resource group directory specification.

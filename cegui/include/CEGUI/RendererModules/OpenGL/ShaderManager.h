@@ -47,17 +47,17 @@ namespace CEGUI
 
     enum class OpenGLBaseShaderID : int
     {
-        STANDARD_TEXTURED,
-        STANDARD_SOLID,
+        StandardTextured,
+        StandardSolid,
 
-        COUNT
+        Count
     };
 
     enum class ShaderVersion : int
     {
-        GLSL,
-        GLSLES1,
-        GLSLES3
+        Glsl,
+        GlslEs1,
+        GlslEs3
     };
 
 

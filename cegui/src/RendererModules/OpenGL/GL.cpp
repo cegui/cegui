@@ -94,7 +94,7 @@ void OpenGLInfo::initTypeAndVer()
         d_verMinor = ver % 10;
     }
 #elif defined CEGUI_USE_GLEW
-    d_type = Type::TYPE_DESKTOP;
+    d_type = Type::TypeDesktop;
     glGetError ();
     d_verMajor = d_verMinor = -1;
 #endif

@@ -59,13 +59,13 @@ class Texture;
 enum class ShaderParamType : int
 {
     //! A regular integer type
-    INT,
+    Int,
     //! A regular float type
-    FLOAT,
+    Float,
     //! A pointer to a CEGUI Texture
-    TEXTURE,
+    Texture,
     //! A pointer to a 4x4 Matrix
-    MATRIX_4X4,
+    Matrix4X4,
 
     //! Total number of shader parameter types
     COUNT
@@ -142,7 +142,7 @@ public:
 
     //! Implementation of the shader_parameter interface
     ShaderParamType getType() const override
-    { return ShaderParamType::FLOAT; }
+    { return ShaderParamType::Float; }
 
     ShaderParameterFloat* clone() const override
     { return new ShaderParameterFloat(*this); }
@@ -167,7 +167,7 @@ public:
 
     //! Implementation of the shader_parameter interface
     ShaderParamType getType() const override
-    { return ShaderParamType::INT; }
+    { return ShaderParamType::Int; }
 
     ShaderParameterInt* clone() const override
     { return new ShaderParameterInt(*this); }
@@ -192,7 +192,7 @@ public:
 
     //! Implementation of the shader_parameter interface
     ShaderParamType getType() const override
-    { return ShaderParamType::TEXTURE; }
+    { return ShaderParamType::Texture; }
 
     ShaderParameterTexture* clone() const override
     { return new ShaderParameterTexture(*this); }
@@ -217,7 +217,7 @@ public:
 
     //! Implementation of the shader_parameter interface
     ShaderParamType getType() const override
-    { return ShaderParamType::MATRIX_4X4; }
+    { return ShaderParamType::Matrix4X4; }
 
     ShaderParameterMatrix* clone() const override
     { return new ShaderParameterMatrix(*this); }

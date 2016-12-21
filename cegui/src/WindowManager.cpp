@@ -110,7 +110,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 
     String addressStr = SharedStringstream::GetPointerAddressAsString(newWindow);
     Logger::getSingleton().logEvent("Window '" + finalName +"' of type '" +
-        type + "' has been created. " + addressStr, LoggingLevel::INFORMATIVE);
+        type + "' has been created. " + addressStr, LoggingLevel::Informative);
 
     // see if we need to assign a look to this window
     if (wfMgr.isFalagardMappedType(type))
@@ -149,7 +149,7 @@ void WindowManager::initialiseRenderEffect(
     {
         logger.logEvent("Missing RenderEffect '" + effect + "' requested for "
             "window '" + wnd->getName() + "' - continuing without effect...",
-            LoggingLevel::ERROR_LEVEL);
+            LoggingLevel::Error);
 
        return;
     }
@@ -179,7 +179,7 @@ void WindowManager::initialiseRenderEffect(
         logger.logEvent("Unable to set effect for window '" +
             wnd->getName() + "' since RenderingSurface is either missing "
             "or of wrong type (i.e. not a RenderingWindow).",
-            LoggingLevel::ERROR_LEVEL);
+            LoggingLevel::Error);
     }
 }
 
@@ -200,14 +200,14 @@ void WindowManager::destroyWindow(Window* window)
         Logger::getSingleton().logEvent("[WindowManager] Attempt to delete "
             "Window that does not exist!  Address was: " + addressStr +
             ". WARNING: This could indicate a double-deletion issue!!",
-            LoggingLevel::ERROR_LEVEL);
+            LoggingLevel::Error);
         return;
     }
 
     d_windowRegistry.erase(iter);
 
     Logger::getSingleton().logEvent("Window at '" + window->getNamePath() +
-        "' will be added to dead pool. " + addressStr, LoggingLevel::INFORMATIVE);
+        "' will be added to dead pool. " + addressStr, LoggingLevel::Informative);
 
     // do 'safe' part of cleanup
     window->destroy();
@@ -245,7 +245,7 @@ bool WindowManager::isAlive(const Window* window) const
 Window* WindowManager::loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback, void* userdata)
 {
     // log the fact we are about to load a layout
-    Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from a RawDataContainer ----", LoggingLevel::INFORMATIVE);
+    Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from a RawDataContainer ----", LoggingLevel::Informative);
 
     // create handler object
     GUILayout_xmlHandler handler(callback, userdata);
@@ -257,12 +257,12 @@ Window* WindowManager::loadLayoutFromContainer(const RawDataContainer& source, P
     }
     catch (...)
     {
-        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from a RawDataContainer failed.", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from a RawDataContainer failed.", LoggingLevel::Error);
         throw;
     }
 
     // log the completion of loading
-    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from a RawDataContainer ----", LoggingLevel::STANDARD);
+    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from a RawDataContainer ----", LoggingLevel::Standard);
 
     return handler.getLayoutRootWindow();
 }
@@ -276,7 +276,7 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 	}
 
 	// log the fact we are about to load a layout
-	Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from '" + filename + "' ----", LoggingLevel::INFORMATIVE);
+	Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from '" + filename + "' ----", LoggingLevel::Informative);
 
     // create handler object
     GUILayout_xmlHandler handler(callback, userdata);
@@ -289,12 +289,12 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 	}
 	catch (...)
 	{
-        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromFile - loading of layout from file '" + filename +"' failed.", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromFile - loading of layout from file '" + filename +"' failed.", LoggingLevel::Error);
         throw;
 	}
 
     // log the completion of loading
-    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from '" + filename + "' ----", LoggingLevel::STANDARD);
+    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from '" + filename + "' ----", LoggingLevel::Standard);
 
 	return handler.getLayoutRootWindow();
 }
@@ -302,7 +302,7 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 Window* WindowManager::loadLayoutFromString(const String& source, PropertyCallback* callback, void* userdata)
 {
     // log the fact we are about to load a layout
-    Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from string ----", LoggingLevel::INFORMATIVE);
+    Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from string ----", LoggingLevel::Informative);
 
     // create handler object
     GUILayout_xmlHandler handler(callback, userdata);
@@ -314,12 +314,12 @@ Window* WindowManager::loadLayoutFromString(const String& source, PropertyCallba
     }
     catch (...)
     {
-        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromString - loading of layout from string failed.", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromString - loading of layout from string failed.", LoggingLevel::Error);
         throw;
     }
 
     // log the completion of loading
-    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from string ----", LoggingLevel::STANDARD);
+    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from string ----", LoggingLevel::Standard);
 
     return handler.getLayoutRootWindow();
 }

@@ -65,7 +65,7 @@ void Direct3D11ShaderWrapper::addUniformVariable(const std::string& variableName
     UINT variableBindingLoc = -1;
     UINT size = -1;
 
-    if(paramType == ShaderParamType::TEXTURE)
+    if(paramType == ShaderParamType::Texture)
     {
         D3D11_SHADER_INPUT_BIND_DESC variableDesc = d_shader.getTextureBindingDesc(variableName, shaderType);
         variableBindingLoc = variableDesc.BindPoint;
@@ -146,7 +146,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
         switch(parameterType)
         {
-        case ShaderParamType::INT:
+        case ShaderParamType::Int:
             {
                 const CEGUI::ShaderParameterInt* parameterInt = static_cast<const CEGUI::ShaderParameterInt*>(parameter);
 
@@ -154,7 +154,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 memcpy(paramDataPointer, &(parameterInt->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
-        case ShaderParamType::FLOAT:
+        case ShaderParamType::Float:
             {
                 const CEGUI::ShaderParameterFloat* parameterFloat = static_cast<const CEGUI::ShaderParameterFloat*>(parameter);
 
@@ -162,7 +162,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 memcpy(paramDataPointer, &(parameterFloat->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
-        case ShaderParamType::MATRIX_4X4:
+        case ShaderParamType::Matrix4X4:
             {
                 const CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<const CEGUI::ShaderParameterMatrix*>(parameter);
 
@@ -170,7 +170,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 memcpy(paramDataPointer, glm::value_ptr(parameterMatrix->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
-        case ShaderParamType::TEXTURE:
+        case ShaderParamType::Texture:
             {
                 const CEGUI::ShaderParameterTexture* parameterTexture = static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
                 const CEGUI::Direct3D11Texture* texture = static_cast<const CEGUI::Direct3D11Texture*>(parameterTexture->d_parameterValue);

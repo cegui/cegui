@@ -43,13 +43,13 @@ public:
     enum class MatchState : int
     {
         //! String matches the regular expression completely.
-        VALID,
+        Valid,
         //! String does not match the regular expression at all.
-        INVALID,
+        Invalid,
         /** String partially matches. Changes to the string could result in
          * either an MatchState::VALID or MatchState::INVALID MatchState.
          */
-        PARTIAL
+        Partial
     };
 
     //! Destructor.

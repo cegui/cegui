@@ -87,14 +87,14 @@ Font* FontManager::handleResourceExistsAction(
 
     switch (resourceExistsAction)
     {
-        case XmlResourceExistsAction::RETURN:
+        case XmlResourceExistsAction::Return:
         {
             Logger::getSingleton().logEvent("---- Using existing instance "
                 "of " + ResourceTypeName + " named '" + font_name + "'.");
 
             return &get(font_name);
         }
-        case XmlResourceExistsAction::REPLACE:
+        case XmlResourceExistsAction::Replace:
         {
             Logger::getSingleton().logEvent("---- Replacing existing instance "
                 "of " + ResourceTypeName + " named '" + font_name +
@@ -104,7 +104,7 @@ Font* FontManager::handleResourceExistsAction(
             event_name = EventResourceReplaced;
             return nullptr;
         }
-        case XmlResourceExistsAction::THROW:
+        case XmlResourceExistsAction::Throw:
         {
             destroy(font_name);
             throw AlreadyExistsException(
@@ -300,7 +300,7 @@ void FontManager::destroyObject(
     String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + ResourceTypeName +
         "' named '" + ob->first + "' has been destroyed. " +
-        addressStr, LoggingLevel::ERROR_LEVEL);
+        addressStr, LoggingLevel::Error);
 
     // Set up event args for event notification
     ResourceEventArgs args(ResourceTypeName, ob->first);

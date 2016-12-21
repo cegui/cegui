@@ -90,7 +90,7 @@ public:
         exists within the collection.
     */
     static FontList createFromContainer(const RawDataContainer& source,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!
     \brief
@@ -115,7 +115,7 @@ public:
         exists within the collection.
     */
     static FontList createFromFile(const String& xml_filename, const String& resource_group = "",
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!
     \brief
@@ -135,7 +135,7 @@ public:
         already exists within the collection.
     */
     static FontList createFromString(const String& source,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
        /*!
     \brief
@@ -231,10 +231,10 @@ public:
         const bool anti_aliased,
         const String& font_filename,
         const String& resource_group = "",
-        const AutoScaledMode auto_scaled = AutoScaledMode::DISABLED,
+        const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
         const Sizef& native_res = Sizef(640.0f, 480.0f),
         const float specificLineSpacing = 0.0f,
-        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!
     \brief
@@ -279,9 +279,9 @@ public:
     Font& createPixmapFont(const String& font_name,
                            const String& imageset_filename,
                            const String& resource_group = "",
-                           const AutoScaledMode auto_scaled = AutoScaledMode::DISABLED,
+                           const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                            const Sizef& native_res = Sizef(640.0f, 480.0f),
-                           XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::RETURN);
+                           XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!
     \brief

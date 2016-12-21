@@ -99,7 +99,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
     // anything else is an error which *should* have already been caught by XML validation
     else
     {
-        Logger::getSingleton().logEvent("GUILayout_xmlHandler::startElement - Unexpected data was found while parsing the gui-layout file: '" + element + "' is unknown.", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("GUILayout_xmlHandler::startElement - Unexpected data was found while parsing the gui-layout file: '" + element + "' is unknown.", LoggingLevel::Error);
     }
 }
 

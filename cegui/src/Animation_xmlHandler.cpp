@@ -107,7 +107,7 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
+            "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -119,7 +119,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementEnd: "
-            "</" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
+            "</" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -149,11 +149,11 @@ AnimationDefinitionHandler::AnimationDefinitionHandler(
     const String replayMode(attributes.getValueAsString(ReplayModeAttribute,
                                                         ReplayModeLoop));
     if (replayMode == ReplayModeOnce)
-        d_anim->setReplayMode(Animation::ReplayMode::PLAY_ONCE);
+        d_anim->setReplayMode(Animation::ReplayMode::PlayOnce);
     else if (replayMode == ReplayModeBounce)
-        d_anim->setReplayMode(Animation::ReplayMode::BOUNCE);
+        d_anim->setReplayMode(Animation::ReplayMode::Bounce);
     else
-        d_anim->setReplayMode(Animation::ReplayMode::LOOP);
+        d_anim->setReplayMode(Animation::ReplayMode::Loop);
 
     d_anim->setAutoStart(attributes.getValueAsBool(AutoStartAttribute));
 }
@@ -175,7 +175,7 @@ void AnimationDefinitionHandler::elementStartLocal(
     else
         Logger::getSingleton().logEvent(
             "AnimationDefinitionHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
+            "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -208,16 +208,16 @@ AnimationAffectorHandler::AnimationAffectorHandler(
     if (attributes.getValueAsString(ApplicationMethodAttribute) ==
         ApplicationMethodRelative)
     {
-        d_affector->setApplicationMethod(Affector::ApplicationMethod::APPLY_RELATIVE);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::ApplyRelative);
     }
 	else if (attributes.getValueAsString(ApplicationMethodAttribute) ==
         ApplicationMethodRelativeMultiply)
     {
-        d_affector->setApplicationMethod(Affector::ApplicationMethod::APPLY_RELATIVE_MULTIPLY);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::ApplyRelativeMultiply);
     }
     else
     {
-        d_affector->setApplicationMethod(Affector::ApplicationMethod::APPLY_ABSOLUTE);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::ApplyAbsolute);
     }
 }
 
@@ -236,7 +236,7 @@ void AnimationAffectorHandler::elementStartLocal(
     else
         Logger::getSingleton().logEvent(
             "AnimationAffectorHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
+            "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -270,13 +270,13 @@ AnimationKeyFrameHandler::AnimationKeyFrameHandler(
 
     KeyFrame::Progression progression;
     if (progressionStr == ProgressionDiscrete)
-        progression = KeyFrame::Progression::DISCRETE;
+        progression = KeyFrame::Progression::Discrete;
     else if (progressionStr == ProgressionQuadraticAccelerating)
-        progression = KeyFrame::Progression::QUADRATIC_ACCELERATING;
+        progression = KeyFrame::Progression::QuadraticAccelerating;
     else if (progressionStr == ProgressionQuadraticDecelerating)
-        progression = KeyFrame::Progression::QUADRATIC_DECELERATING;
+        progression = KeyFrame::Progression::QuadraticDecelerating;
     else
-        progression = KeyFrame::Progression::LINEAR;
+        progression = KeyFrame::Progression::Linear;
 
     affector.createKeyFrame(
         attributes.getValueAsFloat(PositionAttribute),
@@ -304,7 +304,7 @@ void AnimationKeyFrameHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "<" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
+        "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -346,7 +346,7 @@ void AnimationSubscriptionHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "</" + element + "> is invalid at this location.", LoggingLevel::ERROR_LEVEL);
+        "</" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//

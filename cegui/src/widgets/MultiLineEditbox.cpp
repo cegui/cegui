@@ -492,7 +492,7 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
             undo.d_startIdx = getSelectionStart();
             undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
             d_undoHandler->addUndoHistory(undo);
@@ -532,7 +532,7 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
     {
         String newText = getText();
         UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::INSERT;
+        undo.d_type = UndoHandler::UndoActionType::Insert;
         undo.d_startIdx = getCaretIndex();
         undo.d_text = clipboardText;
         d_undoHandler->addUndoHistory(undo);
@@ -569,7 +569,7 @@ void MultiLineEditbox::handleBackspace(void)
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
             size_t deleteStartPos = d_caretPos - 1;
@@ -610,7 +610,7 @@ void MultiLineEditbox::handleDelete(void)
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::DELETE;
+            undo.d_type = UndoHandler::UndoActionType::Delete;
             undo.d_startIdx = d_caretPos;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
@@ -749,7 +749,7 @@ void MultiLineEditbox::handleNewLine()
 		{
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::INSERT;
+            undo.d_type = UndoHandler::UndoActionType::Insert;
             undo.d_startIdx = getCaretIndex();
             undo.d_text = "\x0a";
             d_undoHandler->addUndoHistory(undo);
@@ -834,7 +834,7 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
         {
             String newText = getText();
             UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::INSERT;
+            undo.d_type = UndoHandler::UndoActionType::Insert;
             undo.d_startIdx = getCaretIndex();
             undo.d_text = e.d_character;
             d_undoHandler->addUndoHistory(undo);

@@ -102,7 +102,7 @@ void OpenGLBaseShaderWrapper::prepareForRendering(const ShaderParameterBindings*
     {
         const CEGUI::ShaderParameter* parameter = iter->second;
 
-        if(parameter->getType() != ShaderParamType::TEXTURE)
+        if(parameter->getType() != ShaderParamType::Texture)
         {
             std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterStates.find(iter->first);
             if(found_iterator != d_shaderParameterStates.end())
@@ -137,25 +137,25 @@ void OpenGLBaseShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
         switch(parameter_type)
         {
-        case ShaderParamType::INT:
+        case ShaderParamType::Int:
             {
                 const CEGUI::ShaderParameterInt* parameterInt = static_cast<const CEGUI::ShaderParameterInt*>(parameter);
                 glUniform1i(location, parameterInt->d_parameterValue);
             }
             break;
-        case ShaderParamType::FLOAT:
+        case ShaderParamType::Float:
             {
                 const CEGUI::ShaderParameterFloat* parameterFloat = static_cast<const CEGUI::ShaderParameterFloat*>(parameter);
                 glUniform1f(location, parameterFloat->d_parameterValue);
             }
             break;
-        case ShaderParamType::MATRIX_4X4:
+        case ShaderParamType::Matrix4X4:
             {
                 const CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<const CEGUI::ShaderParameterMatrix*>(parameter);
                 glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(parameterMatrix->d_parameterValue));
             }
             break;
-        case ShaderParamType::TEXTURE:
+        case ShaderParamType::Texture:
             {
                 const CEGUI::ShaderParameterTexture* parameterTexture = static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
                 const CEGUI::OpenGLTexture* openglTexture = static_cast<const CEGUI::OpenGLTexture*>(parameterTexture->d_parameterValue);

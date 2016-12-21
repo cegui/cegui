@@ -698,7 +698,7 @@ void ItemView::setupTooltip(glm::vec2 position)
     if (!d_itemModel->isValidIndex(index))
         setTooltipText("");
     else
-        setTooltipText(d_itemModel->getData(index, ItemDataRole::TOOLTIP));
+        setTooltipText(d_itemModel->getData(index, ItemDataRole::Tooltip));
 }
 
 //----------------------------------------------------------------------------//

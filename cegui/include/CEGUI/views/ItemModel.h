@@ -91,14 +91,14 @@ public:
 */
 enum class ItemDataRole : int
 {
-    TEXT,
+    Text,
     //! The string returned for the icon must be an image name that can
     //! retrieved from ImageManager
-    ICON,
-    TOOLTIP,
+    Icon,
+    Tooltip,
 
     //! This marks the beginning of the user-defined item data roles
-    USER = 0x1000
+    User = 0x1000
 };
 
 /*
@@ -281,7 +281,7 @@ public:
         }
         \endcode
     */
-    virtual String getData(const ModelIndex& model_index, ItemDataRole role = ItemDataRole::TEXT) = 0;
+    virtual String getData(const ModelIndex& model_index, ItemDataRole role = ItemDataRole::Text) = 0;
 
     /*!
     \brief

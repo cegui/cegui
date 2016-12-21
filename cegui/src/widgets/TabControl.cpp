@@ -81,7 +81,7 @@ TabControl::TabControl(const String& type, const String& name)
     d_tabHeight(0, -1), // means 'to be initialized later'
     d_tabPadding(0, 5),
     d_firstTabOffset(0),
-    d_tabPanePos(TabPanePosition::TOP)
+    d_tabPanePos(TabPanePosition::Top)
 {
 	addTabControlProperties();
 }
@@ -249,7 +249,7 @@ void TabControl::addTab(Window* wnd)
     if (!wnd)
     {
         Logger::getSingleton().logEvent("Attempt to add null window pointer as "
-            "tab to TabControl '" + getName() + "'.  Ignoring!", LoggingLevel::ERROR_LEVEL);
+            "tab to TabControl '" + getName() + "'.  Ignoring!", LoggingLevel::Error);
 
         return;
     }
@@ -457,7 +457,7 @@ void TabControl::addTabControlProperties(void)
 
     CEGUI_DEFINE_PROPERTY(TabControl, TabPanePosition,
         "TabPanePosition", "Property to get/set the position of the buttons pane.",
-        &TabControl::setTabPanePosition, &TabControl::getTabPanePosition, TabControl::TabPanePosition::TOP
+        &TabControl::setTabPanePosition, &TabControl::getTabPanePosition, TabControl::TabPanePosition::Top
     );
 }
 /*************************************************************************
@@ -570,13 +570,13 @@ void TabControl::performChildWindowLayout(bool nonclient_sized_hint,
     // Enable top/bottom edges of the tabPane control,
     // if supported by looknfeel
     if (tabContentPane->isPropertyPresent (EnableTop))
-        tabContentPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::TOP) ? n0 : n1);
+        tabContentPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
     if (tabContentPane->isPropertyPresent (EnableBottom))
-        tabContentPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::TOP) ? n1 : n0);
+        tabContentPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
     if (tabButtonPane->isPropertyPresent (EnableTop))
-        tabButtonPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::TOP) ? n0 : n1);
+        tabButtonPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
     if (tabButtonPane->isPropertyPresent (EnableBottom))
-        tabButtonPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::TOP) ? n1 : n0);
+        tabButtonPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
 
     Window::performChildWindowLayout(nonclient_sized_hint,
                                      client_sized_hint);

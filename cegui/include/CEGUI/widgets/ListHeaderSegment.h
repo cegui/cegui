@@ -131,9 +131,9 @@ public:
 	*/
 	enum class SortDirection : int
 	{
-		NONE,		//!< Items under this segment should not be sorted.
-		ASCENDING,	//!< Items under this segment should be sorted in ascending order.
-		DESCENDING	//!< Items under this segment should be sorted in descending order.
+		None,		//!< Items under this segment should not be sorted.
+		Ascending,	//!< Items under this segment should be sorted in ascending order.
+		Descending	//!< Items under this segment should be sorted in descending order.
 	};
 
 
@@ -516,29 +516,29 @@ public:
     {
         if (str == "Ascending")
         {
-            return ListHeaderSegment::SortDirection::ASCENDING;
+            return ListHeaderSegment::SortDirection::Ascending;
         }
         else if (str == "Descending")
         {
-            return ListHeaderSegment::SortDirection::DESCENDING;
+            return ListHeaderSegment::SortDirection::Descending;
         }
         else
         {
-            return ListHeaderSegment::SortDirection::NONE;
+            return ListHeaderSegment::SortDirection::None;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == ListHeaderSegment::SortDirection::NONE)
+        if (val == ListHeaderSegment::SortDirection::None)
         {
             return "None";
         }
-        else if (val == ListHeaderSegment::SortDirection::ASCENDING)
+        else if (val == ListHeaderSegment::SortDirection::Ascending)
         {
             return "Ascending";
         }
-        else if (val == ListHeaderSegment::SortDirection::DESCENDING)
+        else if (val == ListHeaderSegment::SortDirection::Descending)
         {
             return "Descending";
         }

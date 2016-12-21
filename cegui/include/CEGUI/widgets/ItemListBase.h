@@ -87,9 +87,9 @@ public:
     */
     enum class SortMode : int
     {
-        ASCENDING,
-        DESCENDING,
-        USERSORT
+        Ascending,
+        Descending,
+        UserSort
     };
 
     //!< Sorting callback type
@@ -615,30 +615,30 @@ public:
     {
         if (str == "Ascending")
         {
-            return ItemListBase::SortMode::ASCENDING;
+            return ItemListBase::SortMode::Ascending;
         }
 
         if (str == "Descending")
         {
-            return ItemListBase::SortMode::DESCENDING;
+            return ItemListBase::SortMode::Descending;
         }
         
-        return ItemListBase::SortMode::USERSORT;
+        return ItemListBase::SortMode::UserSort;
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == ItemListBase::SortMode::USERSORT)
+        if (val == ItemListBase::SortMode::UserSort)
         {
             return "UserSort";
         }
         
-        if (val == ItemListBase::SortMode::ASCENDING)
+        if (val == ItemListBase::SortMode::Ascending)
         {
             return "Ascending";
         }
 
-        if (val == ItemListBase::SortMode::DESCENDING)
+        if (val == ItemListBase::SortMode::Descending)
         {
             return "Descending";
         }

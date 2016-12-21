@@ -86,8 +86,8 @@ public:
     enum class Type : int
     {
         None, /*!< Not initalized yet */
-        TYPE_DESKTOP, /*!< Desktop OpenGL */
-        TYPE_ES /*!< OpenGL ES */
+        TypeDesktop, /*!< Desktop OpenGL */
+        TypeEs /*!< OpenGL ES */
     };
 
     static OpenGLInfo& getSingleton() { return s_instance; }
@@ -111,13 +111,13 @@ public:
     \brief
         Returns true if using Desktop OpenGL.
     */
-    bool isUsingDesktopOpengl() const { return type() == Type::TYPE_DESKTOP; }
+    bool isUsingDesktopOpengl() const { return type() == Type::TypeDesktop; }
     
     /*!
     \brief
         Returns true if using OpenGL ES.
     */
-    bool isUsingOpenglEs() const { return type() == Type::TYPE_ES; }
+    bool isUsingOpenglEs() const { return type() == Type::TypeEs; }
 
     /*!
     \brief

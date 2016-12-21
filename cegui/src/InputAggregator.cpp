@@ -45,13 +45,13 @@ namespace CEGUI
 
 static CursorInputSource convertToCursorInputSource(MouseButton button)
 {
-    if (button == MouseButton::LEFT_BUTTON)
+    if (button == MouseButton::Left)
         return CursorInputSource::Left;
 
-    if (button == MouseButton::RIGHT_BUTTON)
+    if (button == MouseButton::Right)
         return CursorInputSource::Right;
 
-    if (button == MouseButton::MIDDLE_BUTTON)
+    if (button == MouseButton::Middle)
         return CursorInputSource::Middle;
 
     return CursorInputSource::None;
@@ -98,7 +98,7 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
     d_generateMouseClickEvents(true),
-    d_mouseClickTrackers(new MouseClickTracker[static_cast<int>(MouseButton::COUNT)]),
+    d_mouseClickTrackers(new MouseClickTracker[static_cast<int>(MouseButton::Count)]),
     d_handleInKeyUp(true),
     d_mouseMovementScalingFactor(1.0f),
     d_pointerPosition(0.0f, 0.0f),
@@ -217,26 +217,26 @@ SemanticValue InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift
     // handle combined keys
     if (ctrl_down && shift_down)
     {
-        if (scan_code == Key::Scan::ARROW_LEFT)
+        if (scan_code == Key::Scan::ArrowLeft)
             value = SemanticValue::SelectPreviousWord;
-        else if (scan_code == Key::Scan::ARROW_RIGHT)
+        else if (scan_code == Key::Scan::ArrowRight)
             value = SemanticValue::SelectNextWord;
-        else if (scan_code == Key::Scan::END)
+        else if (scan_code == Key::Scan::End)
             value = SemanticValue::SelectToEndOfDocument;
-        else if (scan_code == Key::Scan::HOME)
+        else if (scan_code == Key::Scan::Home)
             value = SemanticValue::SelectToStartOfDocument;
         else if (scan_code == Key::Scan::Z)
             value = SemanticValue::Redo;
     }
     else if (ctrl_down)
     {
-        if (scan_code == Key::Scan::ARROW_LEFT)
+        if (scan_code == Key::Scan::ArrowLeft)
             value = SemanticValue::GoToPreviousWord;
-        else if (scan_code == Key::Scan::ARROW_RIGHT)
+        else if (scan_code == Key::Scan::ArrowRight)
             value = SemanticValue::GoToNextWord;
-        else if (scan_code == Key::Scan::END)
+        else if (scan_code == Key::Scan::End)
             value = SemanticValue::GoToEndOfDocument;
-        else if (scan_code == Key::Scan::HOME)
+        else if (scan_code == Key::Scan::Home)
             value = SemanticValue::GoToStartOfDocument;
         else if (scan_code == Key::Scan::A)
             value = SemanticValue::SelectAll;
@@ -246,7 +246,7 @@ SemanticValue InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift
             value = SemanticValue::Paste;
         else if (scan_code == Key::Scan::X)
             value = SemanticValue::Cut;
-        else if (scan_code == Key::Scan::TAB)
+        else if (scan_code == Key::Scan::Tab)
             value = SemanticValue::NavigateToPrevious;
         else if (scan_code == Key::Scan::Z)
             value = SemanticValue::Undo;
@@ -255,26 +255,26 @@ SemanticValue InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift
     }
     else if (shift_down)
     {
-        if (scan_code == Key::Scan::ARROW_LEFT)
+        if (scan_code == Key::Scan::ArrowLeft)
             value = SemanticValue::SelectPreviousCharacter;
-        else if (scan_code == Key::Scan::ARROW_RIGHT)
+        else if (scan_code == Key::Scan::ArrowRight)
             value = SemanticValue::SelectNextCharacter;
-        else if (scan_code == Key::Scan::ARROW_UP)
+        else if (scan_code == Key::Scan::ArrowUp)
             value = SemanticValue::SelectUp;
-        else if (scan_code == Key::Scan::ARROW_DOWN)
+        else if (scan_code == Key::Scan::ArrowDown)
             value = SemanticValue::SelectDown;
-        else if (scan_code == Key::Scan::END)
+        else if (scan_code == Key::Scan::End)
             value = SemanticValue::SelectToEndOfLine;
-        else if (scan_code == Key::Scan::HOME)
+        else if (scan_code == Key::Scan::Home)
             value = SemanticValue::SelectToStartOfLine;
-        else if (scan_code == Key::Scan::PAGE_UP)
+        else if (scan_code == Key::Scan::PageUp)
             value = SemanticValue::SelectPreviousPage;
-        else if (scan_code == Key::Scan::PAGE_DOWN)
+        else if (scan_code == Key::Scan::PageDown)
             value = SemanticValue::SelectNextPage;
     }
     if (alt_down)
     {
-        if(scan_code == Key::Scan::BACKSPACE)
+        if(scan_code == Key::Scan::Backspace)
             value = SemanticValue::Undo;
     }
 
@@ -520,54 +520,54 @@ void InputAggregator::initialise(bool handle_on_keyup /*= true*/)
 {
     d_handleInKeyUp = handle_on_keyup;
     
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::BACKSPACE)] = SemanticValue::DeletePreviousCharacter;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::KEY_DELETE)] = SemanticValue::DeleteNextCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::Backspace)] = SemanticValue::DeletePreviousCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::KeyDelete)] = SemanticValue::DeleteNextCharacter;
 
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::NUMPAD_ENTER)] = SemanticValue::Confirm;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::RETURN)] = SemanticValue::Confirm;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::NumpadEnter)] = SemanticValue::Confirm;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::Return)] = SemanticValue::Confirm;
 
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::TAB)] = SemanticValue::NavigateToNext;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::Tab)] = SemanticValue::NavigateToNext;
 
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_LEFT)] = SemanticValue::GoToPreviousCharacter;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_RIGHT)] = SemanticValue::GoToNextCharacter;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_DOWN)] = SemanticValue::GoDown;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ARROW_UP)] = SemanticValue::GoUp;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ArrowLeft)] = SemanticValue::GoToPreviousCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ArrowRight)] = SemanticValue::GoToNextCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ArrowDown)] = SemanticValue::GoDown;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::ArrowUp)] = SemanticValue::GoUp;
 
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::END)] = SemanticValue::GoToEndOfLine;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::HOME)] = SemanticValue::GoToStartOfLine;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PAGE_DOWN)] = SemanticValue::GoToNextPage;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PAGE_UP)] = SemanticValue::GoToPreviousPage;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::End)] = SemanticValue::GoToEndOfLine;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::Home)] = SemanticValue::GoToStartOfLine;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PageDown)] = SemanticValue::GoToNextPage;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PageUp)] = SemanticValue::GoToPreviousPage;
 }
 
 bool InputAggregator::isShiftPressed()
 {
-    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_SHIFT)] ||
-        d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_SHIFT)];
+    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftShift)] ||
+        d_keysPressed[static_cast<unsigned char>(Key::Scan::RightShift)];
 }
 
 bool InputAggregator::isAltPressed()
 {
-    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_ALT)] ||
-        d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_ALT)];
+    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftAlt)] ||
+        d_keysPressed[static_cast<unsigned char>(Key::Scan::RightAlt)];
 }
 
 bool InputAggregator::isControlPressed()
 {
-    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_CONTROL)] ||
-        d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_CONTROL)];
+    return d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftControl)] ||
+        d_keysPressed[static_cast<unsigned char>(Key::Scan::RightControl)];
 }
 //----------------------------------------------------------------------------//
 void InputAggregator::setModifierKeys(bool shift_down, bool alt_down,
     bool ctrl_down)
 {
-    d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_SHIFT)] = shift_down;
-    d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_SHIFT)] = shift_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftShift)] = shift_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::RightShift)] = shift_down;
 
-    d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_ALT)] = alt_down;
-    d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_ALT)] = alt_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftAlt)] = alt_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::RightAlt)] = alt_down;
 
-    d_keysPressed[static_cast<unsigned char>(Key::Scan::LEFT_CONTROL)] = ctrl_down;
-    d_keysPressed[static_cast<unsigned char>(Key::Scan::RIGHT_CONTROL)] = ctrl_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftControl)] = ctrl_down;
+    d_keysPressed[static_cast<unsigned char>(Key::Scan::RightControl)] = ctrl_down;
 }
 //----------------------------------------------------------------------------//
 void InputAggregator::recomputeMultiClickAbsoluteTolerance()

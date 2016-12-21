@@ -86,7 +86,7 @@ ItemListBase::ItemListBase(const String& type, const String& name)
 	: Window(type, name),
 	d_autoResize(false),
 	d_sortEnabled(false),
-	d_sortMode(SortMode::ASCENDING),
+	d_sortMode(SortMode::Ascending),
 	d_sortCallback(nullptr),
 	d_resort(false)
 {
@@ -444,7 +444,7 @@ void ItemListBase::addItemListBaseProperties(void)
         );
         CEGUI_DEFINE_PROPERTY(ItemListBase, ItemListBase::SortMode,
             "SortMode", "Property to get/set the sorting mode for the ItemListBase.  Value is either \"Ascending\", \"Descending\" or \"UserSort\".",
-            &ItemListBase::setSortMode, &ItemListBase::getSortMode, SortMode::ASCENDING
+            &ItemListBase::setSortMode, &ItemListBase::getSortMode, SortMode::Ascending
         );
 }
 
@@ -664,13 +664,13 @@ ItemListBase::SortCallback ItemListBase::getRealSortCallback() const
 {
     switch (d_sortMode)
     {
-    case SortMode::ASCENDING:
+    case SortMode::Ascending:
         return &ItemEntry_less;
 
-    case SortMode::DESCENDING:
+    case SortMode::Descending:
         return &ItemEntry_greater;
 
-    case SortMode::USERSORT:
+    case SortMode::UserSort:
         return (d_sortCallback != nullptr) ? d_sortCallback : &ItemEntry_less;
 
     // we default to ascending sorting

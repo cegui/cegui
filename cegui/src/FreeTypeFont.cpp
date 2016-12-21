@@ -106,7 +106,7 @@ FreeTypeFont::FreeTypeFont(
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << "Successfully loaded " << d_cp_map.size() << " glyphs";
-    Logger::getSingleton().logEvent(sstream.str(), LoggingLevel::INFORMATIVE);
+    Logger::getSingleton().logEvent(sstream.str(), LoggingLevel::Informative);
 }
 
 //----------------------------------------------------------------------------//
@@ -130,7 +130,7 @@ void FreeTypeFont::addFreeTypeFontProperties ()
 
     CEGUI_DEFINE_PROPERTY(FreeTypeFont, FontSizeUnit,
         "SizeUnit", "This is the point size of the font.",
-        &FreeTypeFont::setSizeUnit, &FreeTypeFont::getSizeUnit, FontSizeUnit::FSU_PIXELS
+        &FreeTypeFont::setSizeUnit, &FreeTypeFont::getSizeUnit, FontSizeUnit::Pixels
     );
 
     CEGUI_DEFINE_PROPERTY(FreeTypeFont, bool,
@@ -251,14 +251,14 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                     err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
                     err << static_cast<unsigned int>(s->first);
                     err << ".  Will use an empty image for this glyph!";
-                    Logger::getSingleton().logEvent(err.str().c_str(), LoggingLevel::ERROR_LEVEL);
+                    Logger::getSingleton().logEvent(err.str().c_str(), LoggingLevel::Error);
 
                     // Create a 'null' image for this glyph so we do not seg later
                     const Rectf area(0, 0, 0, 0);
                     const glm::vec2 offset(0, 0);
                     const String name(PropertyHelper<std::uint32_t>::toString(s->first));
                     BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::DISABLED,
+                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second->setImage(img);
@@ -297,7 +297,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
 
                     const String name(PropertyHelper<std::uint32_t>::toString(s->first));
                     BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::DISABLED,
+                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second->setImage(img);
@@ -326,7 +326,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
         }
 
         // Copy our memory buffer into the texture and free it
-        texture.loadFromMemory(&mem_buffer[0], Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PixelFormat::RGBA);
+        texture.loadFromMemory(&mem_buffer[0], Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PixelFormat::Rgba);
 
         if (finished)
             break;
@@ -502,7 +502,7 @@ void FreeTypeFont::updateFont()
     checkUnicodeCharMapAvailability();
     
     float fontScaleFactor = System::getSingleton().getRenderer()->getFontScale();
-    if (d_autoScaled != AutoScaledMode::DISABLED)
+    if (d_autoScaled != AutoScaledMode::Disabled)
     {
         fontScaleFactor *= d_vertScaling;
     }
@@ -631,12 +631,12 @@ void FreeTypeFont::setSizeUnit(const FontSizeUnit sizeUnit)
 
 void FreeTypeFont::setSizeInPixels(const float pixelSize)
 {
-    setSizeAndUnit(pixelSize, FontSizeUnit::FSU_PIXELS);
+    setSizeAndUnit(pixelSize, FontSizeUnit::Pixels);
 }
 
 void FreeTypeFont::setSizeInPoints(const float pointSize)
 {
-    setSizeAndUnit(pointSize, FontSizeUnit::FSU_POINTS);
+    setSizeAndUnit(pointSize, FontSizeUnit::Points);
 }
 
 void FreeTypeFont::setSizeAndUnit(const float size, const FontSizeUnit sizeUnit)
@@ -664,12 +664,12 @@ FontSizeUnit FreeTypeFont::getSizeUnit() const
 
 float FreeTypeFont::getSizeInPixels() const
 {
-    if (d_sizeUnit == FontSizeUnit::FSU_PIXELS)
+    if (d_sizeUnit == FontSizeUnit::Pixels)
     {
         return d_size;
     }
 
-    if (d_sizeUnit == FontSizeUnit::FSU_POINTS)
+    if (d_sizeUnit == FontSizeUnit::Points)
     {
         return convertPointsToPixels(d_size, Renderer::ReferenceDpiValue);
     }
@@ -680,12 +680,12 @@ float FreeTypeFont::getSizeInPixels() const
 
 float FreeTypeFont::getSizeInPoints() const
 {
-    if (d_sizeUnit == FontSizeUnit::FSU_PIXELS)
+    if (d_sizeUnit == FontSizeUnit::Pixels)
     {
         return convertPixelsToPoints(d_size, Renderer::ReferenceDpiValue);
     }
 
-    if (d_sizeUnit == FontSizeUnit::FSU_POINTS)
+    if (d_sizeUnit == FontSizeUnit::Points)
     {
         return d_size;
     }

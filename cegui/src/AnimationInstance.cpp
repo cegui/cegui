@@ -240,7 +240,7 @@ void AnimationInstance::start(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::start - Starting an animation instance with "
-            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING_LEVEL);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::Warning);
         onAnimationStarted();
         onAnimationEnded();
     }
@@ -275,7 +275,7 @@ void AnimationInstance::unpause(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::unpause - Unpausing an animation instance with "
-            "no animation definition or 0 duration has no effect!", LoggingLevel::WARNING_LEVEL);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::Warning);
         onAnimationUnpaused();
         onAnimationEnded();
     }
@@ -365,7 +365,7 @@ void AnimationInstance::step(float delta)
     // alter it depending on replay method of our animation definition
 
     // first a simple clamp with ReplayMode::PLAY_ONCE
-    if (d_definition->getReplayMode() == Animation::ReplayMode::PLAY_ONCE)
+    if (d_definition->getReplayMode() == Animation::ReplayMode::PlayOnce)
     {
         float newPosition = d_position + delta;
 
@@ -382,7 +382,7 @@ void AnimationInstance::step(float delta)
         setPosition(newPosition);
     }
     // a both sided wrap with ReplayMode::LOOP
-    else if (d_definition->getReplayMode() == Animation::ReplayMode::LOOP)
+    else if (d_definition->getReplayMode() == Animation::ReplayMode::Loop)
     {
         float newPosition = d_position + delta;
 
@@ -395,7 +395,7 @@ void AnimationInstance::step(float delta)
         setPosition(newPosition);
     }
     // bounce back and forth with ReplayMode::BOUNCE
-    else if (d_definition->getReplayMode() == Animation::ReplayMode::BOUNCE)
+    else if (d_definition->getReplayMode() == Animation::ReplayMode::Bounce)
     {
         if (d_bounceBackwards)
         {

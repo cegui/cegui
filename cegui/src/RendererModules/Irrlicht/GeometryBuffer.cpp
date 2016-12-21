@@ -59,8 +59,8 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_material.ZWriteEnable = false;
 
     // force upate of blending options to suit the default 'normal' mode
-    d_blendMode = BlendMode::INVALID;
-    setBlendMode(BlendMode::NORMAL);
+    d_blendMode = BlendMode::Invalid;
+    setBlendMode(BlendMode::Normal);
 }
 
 //----------------------------------------------------------------------------//
@@ -283,7 +283,7 @@ void IrrlichtGeometryBuffer::setBlendMode(const BlendMode mode)
     // If anybody knows the above information to be incorrect, and has a fix
     // for this issue, please let us know! :)
 
-/*    if (d_blendMode == BlendMode::RTT_PREMULTIPLIED)
+/*    if (d_blendMode == BlendMode::RttPremultiplied)
     {
         d_material.MaterialType = irr::video::EMT_ONETEXTURE_BLEND;
         d_material.MaterialTypeParam = irr::video::pack_texureBlendFunc(

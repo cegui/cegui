@@ -443,7 +443,7 @@ void ColourPickerControls::reloadColourPickerControlsTexture()
         d_colourPickingTexture,
         Sizef(static_cast<float>(d_colourPickerControlsTextureSize),
               static_cast<float>(d_colourPickerControlsTextureSize)),
-        Texture::PixelFormat::RGB);
+        Texture::PixelFormat::Rgb);
 
     getColourPickerImageSlider()->invalidate();
     getColourPickerAlphaSlider()->invalidate();
@@ -925,9 +925,9 @@ bool ColourPickerControls::handleLABEditboxTextChanged(const EventArgs&)
     String LabBString = getLabEditBoxB()->getText();
 
     bool matchingRegEx = true;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabLString) == RegexMatcher::MatchState::VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabAString) == RegexMatcher::MatchState::VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabBString) == RegexMatcher::MatchState::VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabLString) == RegexMatcher::MatchState::Valid;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabAString) == RegexMatcher::MatchState::Valid;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabBString) == RegexMatcher::MatchState::Valid;
 
     if (!matchingRegEx)
         return true;
@@ -963,9 +963,9 @@ bool ColourPickerControls::handleHSVEditboxTextChanged(const EventArgs&)
     String VString = getHSVEditBoxV()->getText();
 
     bool matchingRegEx = true;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(HString) == RegexMatcher::MatchState::VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(SString) == RegexMatcher::MatchState::VALID;
-    matchingRegEx &= d_regexMatcher.getMatchStateOfString(VString) == RegexMatcher::MatchState::VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(HString) == RegexMatcher::MatchState::Valid;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(SString) == RegexMatcher::MatchState::Valid;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(VString) == RegexMatcher::MatchState::Valid;
 
     if (!matchingRegEx)
         return true;
@@ -997,7 +997,7 @@ bool ColourPickerControls::handleAlphaEditboxTextChanged(const EventArgs&)
     d_regexMatcher.setRegexString(labRegEx);
 
     String ValueString = getAlphaEditBox()->getText();
-    bool matchingRegEx = d_regexMatcher.getMatchStateOfString(ValueString) == RegexMatcher::MatchState::VALID;
+    bool matchingRegEx = d_regexMatcher.getMatchStateOfString(ValueString) == RegexMatcher::MatchState::Valid;
 
     if (!matchingRegEx)
         return true;

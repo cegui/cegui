@@ -55,16 +55,16 @@ public:
     enum class Progression : int
     {
         //! linear progression
-        LINEAR,
+        Linear,
         //! progress is accelerated, starts slow and speeds up
-        QUADRATIC_ACCELERATING,
+        QuadraticAccelerating,
         //! progress is decelerated, starts fast and slows down
-        QUADRATIC_DECELERATING,
+        QuadraticDecelerating,
         /** left neighbour's value is picked if interpolation position is lower
          * than 1.0, right is only picked when interpolation position is exactly
          * 1.0
          */
-        DISCRETE
+        Discrete
     };
 
     //! internal constructor, please use Affector::createKeyFrame

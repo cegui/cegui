@@ -509,7 +509,7 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
     ctx.offset = ctx.owner ? ctx.owner->getOuterRectClipper().getPosition() :
                              glm::vec2(0, 0);
     // draw to overlay queue
-    ctx.queue = RenderQueueID::OVERLAY;
+    ctx.queue = RenderQueueID::Overlay;
 }
 
 //----------------------------------------------------------------------------//

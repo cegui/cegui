@@ -61,23 +61,23 @@ public:
     //! Enumerator describing the available unit types in the SVG standard for the length type
     enum class SvgLengthUnit : int
     {
-        UNDEFINED,
-        IN,
-        CM,
-        MM,
-        PT,
-        PC,
-        PX,
-        PERCENT,
+        Undefined,
+        In,
+        Cm,
+        Mm,
+        Pt,
+        Pc,
+        Px,
+        Percent,
 
-        COUNT
+        Count
     };
 
     struct SVGLength
     {
         SVGLength() :
             d_value(0.f),
-            d_unit(SvgLengthUnit::UNDEFINED)
+            d_unit(SvgLengthUnit::Undefined)
         {}
 
         float           d_value;

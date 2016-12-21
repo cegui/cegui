@@ -400,7 +400,7 @@ protected:
     FormattingSetting<HorizontalFormatting> d_backgroundHorzFormatting;
 
     //! FrameImageSource array describing images to be used.
-    FrameImageSource d_frameImages[static_cast<int>(FrameImageComponent::FRAME_IMAGE_COUNT)];
+    FrameImageSource d_frameImages[static_cast<int>(FrameImageComponent::FrameImageCount)];
 };
 
 }

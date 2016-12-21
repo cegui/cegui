@@ -284,7 +284,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
         text, getFont(), &d_textColourRect);
     item.d_string = rendered_string;
     item.d_text = text;
-    item.d_icon = d_itemModel->getData(index, ItemDataRole::ICON);
+    item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
 
     item.d_size = Sizef(
         rendered_string.getHorizontalExtent(this),

@@ -46,22 +46,22 @@ namespace CEGUI
 //! Enumerated type for valid render queue IDs.
 enum class RenderQueueID : int
 {
-    USER_0,
+    User0,
     //! Queue for rendering that appears beneath base imagery.
-    UNDERLAY,
-    USER_1,
+    Underlay,
+    User1,
     //! Queue for base level rendering by the surface owner.
-    BASE,
-    USER_2,
+    Base,
+    User2,
     //! Queue for first level of 'content' rendering.
-    CONTENT_1,
-    USER_3,
+    Content1,
+    User3,
     //! Queue for second level of 'content' rendering.
-    CONTENT_2,
-    USER_4,
+    Content2,
+    User4,
     //! Queue for overlay rendering that appears above other regular rendering.
-    OVERLAY,
-    USER_5
+    Overlay,
+    User5
 };
 
 //----------------------------------------------------------------------------//
@@ -98,7 +98,7 @@ public:
 
     A RenderingSurface has a number of queues that can be used for rendering;
     normal window rendering will typically be done on RenderQueueID::BASE queue, things that
-    are overlaid everything else are rendered to RenderQueueID::OVERLAY.
+    are overlaid everything else are rendered to RenderQueueID::Overlay.
     \par
     The event EventRenderQueueStarted is fired before each queue is rendered and
     the event EventRenderQueueEnded is fired after each queue is rendered.
