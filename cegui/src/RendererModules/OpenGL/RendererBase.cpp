@@ -86,7 +86,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
 void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 {
     d_isStateResettingEnabled = true;
-    d_activeBlendMode = BlendMode::INVALID;
+    d_activeBlendMode = BlendMode::Invalid;
 #if defined CEGUI_USE_GLEW
     if (init_glew)
     {
@@ -151,9 +151,9 @@ GeometryBuffer& OpenGLRendererBase::createGeometryBufferTextured(CEGUI::RefCount
 {
     OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TexCoord0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
@@ -165,8 +165,8 @@ GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCount
 {
     OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);

@@ -55,7 +55,7 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     }
     else 
     {
-        Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PixelFormat::RGB : Texture::PixelFormat::RGBA;
+        Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PixelFormat::Rgb : Texture::PixelFormat::Rgba;
         result->loadFromMemory(img->data, Sizef(static_cast<float>(img->sizeX), static_cast<float>(img->sizeY)), fmt);
         if (img->data)
         {

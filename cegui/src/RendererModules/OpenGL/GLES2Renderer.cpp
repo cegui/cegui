@@ -219,7 +219,7 @@ void GLES2Renderer::beginRendering()
     d_openGLStateChanger->enable(GL_BLEND);
 
     // force set blending ops to get to a known state.
-    setupRenderingBlendMode(BlendMode::NORMAL, true);
+    setupRenderingBlendMode(BlendMode::Normal, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -260,7 +260,7 @@ void GLES2Renderer::setupRenderingBlendMode(const BlendMode mode,
 
     d_activeBlendMode = mode;
 
-    if (d_activeBlendMode == BlendMode::RTT_PREMULTIPLIED)
+    if (d_activeBlendMode == BlendMode::RttPremultiplied)
     {
         d_openGLStateChanger->blendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
@@ -325,13 +325,13 @@ void GLES2Renderer::initialiseGLExtensions()
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> GLES2Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    if(shaderType == DefaultShaderType::TEXTURED)
+    if(shaderType == DefaultShaderType::Textured)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
-    else if(shaderType == DefaultShaderType::SOLID)
+    else if(shaderType == DefaultShaderType::Solid)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 

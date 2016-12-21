@@ -55,19 +55,19 @@ public:
     enum class AutoPositioning : int
     {
         //! no auto positioning!
-        DISABLED,
+        Disabled,
         /**
          * Left to right positioning:
          * - 1 2 3
          * - 4 5 6
          */
-        LEFT_TO_RIGHT,
+        LeftToRight,
         /**
          * Top to bottom positioning
          * - 1 3 5
          * - 2 4 6
          */
-        TOP_TO_BOTTOM
+        TopToBottom
     };
 
     /*************************************************************************
@@ -347,29 +347,29 @@ public:
     {
         if (str == "Disabled")
         {
-            return GridLayoutContainer::AutoPositioning::DISABLED;
+            return GridLayoutContainer::AutoPositioning::Disabled;
         }
         else if (str == "Top to Bottom")
         {
-            return GridLayoutContainer::AutoPositioning::TOP_TO_BOTTOM;
+            return GridLayoutContainer::AutoPositioning::TopToBottom;
         }
         else
         {
-            return GridLayoutContainer::AutoPositioning::LEFT_TO_RIGHT;
+            return GridLayoutContainer::AutoPositioning::LeftToRight;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == GridLayoutContainer::AutoPositioning::LEFT_TO_RIGHT)
+        if (val == GridLayoutContainer::AutoPositioning::LeftToRight)
         {
             return "Left to Right";
         }
-        else if (val == GridLayoutContainer::AutoPositioning::DISABLED)
+        else if (val == GridLayoutContainer::AutoPositioning::Disabled)
         {
             return "Disabled";
         }
-        else if (val == GridLayoutContainer::AutoPositioning::TOP_TO_BOTTOM)
+        else if (val == GridLayoutContainer::AutoPositioning::TopToBottom)
         {
             return "Top to Bottom";
         }

@@ -60,8 +60,8 @@ public:
     */
     enum class UndoActionType : int
     {
-        INSERT = 1,
-        DELETE = 2
+        Insert = 1,
+        Delete = 2
     };
 
     /*!

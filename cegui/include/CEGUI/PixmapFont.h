@@ -77,7 +77,7 @@ public:
     */
     PixmapFont(const String& font_name, const String& imageset_filename,
                const String& resource_group = "",
-               const AutoScaledMode auto_scaled = AutoScaledMode::DISABLED,
+               const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                const Sizef& native_res = Sizef(640.0f, 480.0f));
 
     //! Destructor.

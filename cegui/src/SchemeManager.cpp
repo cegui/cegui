@@ -170,7 +170,7 @@ void SchemeManager::destroyObject(
     String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + d_resourceType +
         "' named '" + ob->first + "' has been destroyed. " +
-        addressStr, LoggingLevel::INFORMATIVE);
+        addressStr, LoggingLevel::Informative);
 
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);
@@ -194,7 +194,7 @@ Scheme& SchemeManager::doExistingObjectAction(
     {
         switch (resourceExistsAction)
         {
-        case XmlResourceExistsAction::RETURN:
+        case XmlResourceExistsAction::Return:
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
             // delete any new object we already had created
@@ -202,7 +202,7 @@ Scheme& SchemeManager::doExistingObjectAction(
             // return existing instance of object.
             return *d_registeredSchemes[object_name];
 
-        case XmlResourceExistsAction::REPLACE:
+        case XmlResourceExistsAction::Replace:
             Logger::getSingleton().logEvent("---- Replacing existing instance "
                 "of " + d_resourceType + " named '" + object_name +
                 "' (DANGER!).");
@@ -210,7 +210,7 @@ Scheme& SchemeManager::doExistingObjectAction(
             event_name = EventResourceReplaced;
             break;
 
-        case XmlResourceExistsAction::THROW:
+        case XmlResourceExistsAction::Throw:
             delete object;
             throw AlreadyExistsException(
                 "an object of type '" + d_resourceType + "' named '" +

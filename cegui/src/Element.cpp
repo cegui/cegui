@@ -73,11 +73,11 @@ Element::Element():
     d_isHeightAdjustedToContent(false),
 
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
-    d_horizontalAlignment(HorizontalAlignment::LEFT),
-    d_verticalAlignment(VerticalAlignment::TOP),
+    d_horizontalAlignment(HorizontalAlignment::Left),
+    d_verticalAlignment(VerticalAlignment::Top),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(0), cegui_reldim(0)),
-    d_aspectMode(AspectMode::NONE),
+    d_aspectMode(AspectMode::None),
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
@@ -267,7 +267,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     else if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
         ret.d_height = absMax.d_height;
 
-    if (d_aspectMode != AspectMode::NONE)
+    if (d_aspectMode != AspectMode::None)
     {
         // make sure we respect current aspect mode and ratio
         ret.scaleToAspect(d_aspectMode, d_aspectRatio);
@@ -441,25 +441,25 @@ void Element::adjustSizeToContent_direct()
         new_pixel_size.d_height = std::ceil((getContentHeight()+epsilon)*size_func.d_height.d_scale  +
                                              size_func.d_height.d_offset);
     }
-    if (getAspectMode() != AspectMode::NONE)
+    if (getAspectMode() != AspectMode::None)
     {
         if (isWidthAdjustedToContent())
         {
             if (isHeightAdjustedToContent())
-                new_pixel_size.scaleToAspect(AspectMode::EXPAND, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::Expand, getAspectRatio());
             else
-                new_pixel_size.scaleToAspect(AspectMode::ADJUST_HEIGHT, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::AdjustHeight, getAspectRatio());
         }
         else
         {
             if (isHeightAdjustedToContent())
-                new_pixel_size.scaleToAspect(AspectMode::ADJUST_WIDTH, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::AdjustWidth, getAspectRatio());
         }
     }
     USize new_size(getSize());
-    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AspectMode::NONE))
+    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AspectMode::None))
         new_size.d_width = UDim(0.f, new_pixel_size.d_width);
-    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AspectMode::NONE))
+    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AspectMode::None))
         new_size.d_height = UDim(0.f, new_pixel_size.d_height);
     setSize(new_size, false);
 }
@@ -710,12 +710,12 @@ void Element::addElementProperties()
 
     CEGUI_DEFINE_PROPERTY(Element, VerticalAlignment,
         "VerticalAlignment", "Property to get/set the vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
-        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VerticalAlignment::TOP
+        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VerticalAlignment::Top
     );
 
     CEGUI_DEFINE_PROPERTY(Element, HorizontalAlignment,
         "HorizontalAlignment", "Property to get/set the horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
-        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HorizontalAlignment::LEFT
+        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HorizontalAlignment::Left
     );
 
     CEGUI_DEFINE_PROPERTY_NO_XML(Element, USize,
@@ -737,7 +737,7 @@ void Element::addElementProperties()
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\", "
         "\"Expand\", \"AdjustHeight\" or \"AdjustWidth\".",
-        &Element::setAspectMode, &Element::getAspectMode, AspectMode::NONE
+        &Element::setAspectMode, &Element::getAspectMode, AspectMode::None
     );
 
     CEGUI_DEFINE_PROPERTY(Element, float,
@@ -902,10 +902,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     switch (getHorizontalAlignment())
     {
-        case HorizontalAlignment::CENTRE:
+        case HorizontalAlignment::Centre:
             offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
             break;
-        case HorizontalAlignment::RIGHT:
+        case HorizontalAlignment::Right:
             offset.x += parent_size.d_width - pixel_size.d_width;
             break;
         default:
@@ -914,10 +914,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     switch (getVerticalAlignment())
     {
-        case VerticalAlignment::CENTRE:
+        case VerticalAlignment::Centre:
             offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
             break;
-        case VerticalAlignment::BOTTOM:
+        case VerticalAlignment::Bottom:
             offset.y += parent_size.d_height - pixel_size.d_height;
             break;
         default:
@@ -988,7 +988,7 @@ void Element::onParentSized(ElementEventArgs& e)
 
     const bool moved =
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
-         (d_horizontalAlignment != HorizontalAlignment::LEFT) || (d_verticalAlignment != VerticalAlignment::TOP));
+         (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top));
 
     fireAreaChangeEvents(moved, sized);
 

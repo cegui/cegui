@@ -120,10 +120,10 @@ float CoordConverter::getBaseXValue(const Window& window)
 
     switch(window.getHorizontalAlignment())
     {
-        case HorizontalAlignment::CENTRE:
+        case HorizontalAlignment::Centre:
             baseX += (parent_width - window.getPixelSize().d_width) * 0.5f;
             break;
-        case HorizontalAlignment::RIGHT:
+        case HorizontalAlignment::Right:
             baseX += parent_width - window.getPixelSize().d_width;
             break;
         default:
@@ -151,10 +151,10 @@ float CoordConverter::getBaseYValue(const Window& window)
 
     switch(window.getVerticalAlignment())
     {
-        case VerticalAlignment::CENTRE:
+        case VerticalAlignment::Centre:
             baseY += (parent_height - window.getPixelSize().d_height) * 0.5f;
             break;
-        case VerticalAlignment::BOTTOM:
+        case VerticalAlignment::Bottom:
             baseY += parent_height - window.getPixelSize().d_height;
             break;
         default:

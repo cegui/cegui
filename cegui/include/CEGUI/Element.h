@@ -55,17 +55,17 @@ enum class HorizontalAlignment : int
      * Element's position specifies an offset of it's left edge from the left
      * edge of it's parent.
      */
-    LEFT,
+    Left,
     /**
      * Element's position specifies an offset of it's horizontal centre from the
      * horizontal centre of it's parent.
      */
-    CENTRE,
+    Centre,
     /**
      * Element's position specifies an offset of it's right edge from the right
      * edge of it's parent.
      */
-    RIGHT
+    Right
 };
 
 template<>
@@ -88,29 +88,29 @@ public:
     {
         if (str == "Centre")
         {
-            return HorizontalAlignment::CENTRE;
+            return HorizontalAlignment::Centre;
         }
         else if (str == "Right")
         {
-            return HorizontalAlignment::RIGHT;
+            return HorizontalAlignment::Right;
         }
         else
         {
-            return HorizontalAlignment::LEFT;
+            return HorizontalAlignment::Left;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == HorizontalAlignment::CENTRE)
+        if (val == HorizontalAlignment::Centre)
         {
             return "Centre";
         }
-        else if (val == HorizontalAlignment::RIGHT)
+        else if (val == HorizontalAlignment::Right)
         {
             return "Right";
         }
-        else if (val == HorizontalAlignment::LEFT)
+        else if (val == HorizontalAlignment::Left)
         {
             return "Left";
         }
@@ -133,17 +133,17 @@ enum class VerticalAlignment : int
      * Element's position specifies an offset of it's top edge from the top edge
      * of it's parent.
      */
-    TOP,
+    Top,
     /**
      * Element's position specifies an offset of it's vertical centre from the
      * vertical centre of it's parent.
      */
-    CENTRE,
+    Centre,
     /**
      * Element's position specifies an offset of it's bottom edge from the
      * bottom edge of it's parent.
      */
-    BOTTOM
+    Bottom
 };
 
 template<>
@@ -166,29 +166,29 @@ public:
     {
       if (str == "Centre")
       {
-          return VerticalAlignment::CENTRE;
+          return VerticalAlignment::Centre;
       }
       else if (str == "Bottom")
       {
-          return VerticalAlignment::BOTTOM;
+          return VerticalAlignment::Bottom;
       }
       else
       {
-          return VerticalAlignment::TOP;
+          return VerticalAlignment::Top;
       }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == VerticalAlignment::CENTRE)
+        if (val == VerticalAlignment::Centre)
         {
             return "Centre";
         }
-        else if (val == VerticalAlignment::BOTTOM)
+        else if (val == VerticalAlignment::Bottom)
         {
             return "Bottom";
         }
-        else if (val == VerticalAlignment::TOP)
+        else if (val == VerticalAlignment::Top)
         {
             return "Top";
         }

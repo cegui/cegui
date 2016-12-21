@@ -68,13 +68,13 @@ public:
     enum class ReplayMode : int
     {
         //! plays the animation just once, then stops
-        PLAY_ONCE,
+        PlayOnce,
         //! loops the animation infinitely
-        LOOP,
+        Loop,
         /** infinitely plays the animation forward, when it reaches the end, it
          * plays it backwards, etc...
          */
-        BOUNCE
+        Bounce
     };
 
     /** internal constructor, please only construct animations via

@@ -58,11 +58,11 @@ namespace CEGUI
 enum class BlendMode : int
 {
     //! Invalid mode indicator.
-    INVALID,
+    Invalid,
     //! Use normal blending mode.
-    NORMAL,
+    Normal,
     //! Use blending mode suitable for textures with premultiplied colours.
-    RTT_PREMULTIPLIED
+    RttPremultiplied
 };
 
 
@@ -75,11 +75,11 @@ enum class BlendMode : int
 enum class DefaultShaderType : int
 {
     //! A shader for solid, coloured geometry
-    SOLID,
+    Solid,
     //! A shader for textured geometry, used in most CEGUI widgets
-    TEXTURED,
+    Textured,
     //! Count of types
-    COUNT
+    Count
 };
 
 //----------------------------------------------------------------------------//

@@ -158,19 +158,19 @@ void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd,
 {
     switch (d_verticalFormatting)
     {
-    case VerticalFormatting::BOTTOM_ALIGNED:
+    case VerticalFormatting::BottomAligned:
         final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
-    case VerticalFormatting::CENTRE_ALIGNED:
+    case VerticalFormatting::CentreAligned:
         final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
-    case VerticalFormatting::STRETCHED:
+    case VerticalFormatting::Stretched:
         y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
         break;
 
-    case VerticalFormatting::TOP_ALIGNED:
+    case VerticalFormatting::TopAligned:
         // nothing additional to do for this formatting option.
         break;
 

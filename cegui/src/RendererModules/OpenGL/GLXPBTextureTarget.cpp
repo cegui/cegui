@@ -105,7 +105,7 @@ void OpenGLGLXPBTextureTarget::activate()
 
     // we clear the blend mode here so the next setupRenderingBlendMode call
     // is forced to update states for our local context.
-    d_owner.setupRenderingBlendMode(BlendMode::INVALID);
+    d_owner.setupRenderingBlendMode(BlendMode::Invalid);
 
     OpenGLTextureTarget::activate();
 }
@@ -124,7 +124,7 @@ void OpenGLGLXPBTextureTarget::deactivate()
 
     // Clear the blend mode again so the next setupRenderingBlendMode call
     // is forced to update states for the main / previous context.
-    d_owner.setupRenderingBlendMode(BlendMode::INVALID);
+    d_owner.setupRenderingBlendMode(BlendMode::Invalid);
 
     OpenGLTextureTarget::deactivate();
 }

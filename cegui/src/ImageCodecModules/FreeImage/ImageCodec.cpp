@@ -38,7 +38,7 @@ namespace
     void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message)
     {
         CEGUI::Logger::getSingleton().logEvent(
-            CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::LoggingLevel::ERROR_LEVEL);
+            CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::LoggingLevel::Error);
     }
 
 }
@@ -158,7 +158,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         FreeImage_Unload(img);
         img = 0;
 
-        result->loadFromMemory(rawBuf, Sizef(width, height), Texture::PixelFormat::RGBA);
+        result->loadFromMemory(rawBuf, Sizef(width, height), Texture::PixelFormat::Rgba);
         delete [] rawBuf;
         retval = result;
     }

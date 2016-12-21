@@ -67,7 +67,7 @@ DefaultLogger::~DefaultLogger(void)
 
 //----------------------------------------------------------------------------//
 void DefaultLogger::logEvent(const String& message,
-                             LoggingLevel level /* = LoggingLevel::STANDARD */)
+                             LoggingLevel level)
 {
     using namespace std;
 
@@ -94,23 +94,23 @@ void DefaultLogger::logEvent(const String& message,
     // write event type code
     switch(level)
     {
-    case LoggingLevel::ERROR_LEVEL:
+    case LoggingLevel::Error:
         d_workstream << "(Error)\t";
         break;
 
-    case LoggingLevel::WARNING_LEVEL:
+    case LoggingLevel::Warning:
         d_workstream << "(Warn)\t";
         break;
 
-    case LoggingLevel::STANDARD:
+    case LoggingLevel::Standard:
         d_workstream << "(Std) \t";
         break;
 
-    case LoggingLevel::INFORMATIVE:
+    case LoggingLevel::Informative:
         d_workstream << "(Info) \t";
         break;
 
-    case LoggingLevel::INSANE:
+    case LoggingLevel::Insane:
         d_workstream << "(Insan)\t";
         break;
 
@@ -139,19 +139,19 @@ void DefaultLogger::logEvent(const String& message,
             int priority(ANDROID_LOG_UNKNOWN);
             switch (level)
             {
-            case LoggingLevel::ERROR_LEVEL:
+            case LoggingLevel::Error:
                 priority = ANDROID_LOG_ERROR;
                 break;
-            case LoggingLevel::WARNING_LEVEL:
+            case LoggingLevel::Warning:
                 priority = ANDROID_LOG_WARN;
                 break;
-            case LoggingLevel::STANDARD:
+            case LoggingLevel::Standard:
                 priority = ANDROID_LOG_INFO;
                 break;
-            case LoggingLevel::INFORMATIVE:
+            case LoggingLevel::Informative:
                 priority = ANDROID_LOG_DEBUG;
                 break;
-            case LoggingLevel::INSANE:
+            case LoggingLevel::Insane:
             default:
                 priority = ANDROID_LOG_VERBOSE;
                 break;

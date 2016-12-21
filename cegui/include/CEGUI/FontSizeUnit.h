@@ -40,9 +40,9 @@ namespace CEGUI
 enum class FontSizeUnit : int
 {
     //! Size unit is measured in pixels (px)
-    FSU_PIXELS,
+    Pixels,
     //! Size unit is measured in points (pt)
-    FSU_POINTS
+    Points
 };
 
 }

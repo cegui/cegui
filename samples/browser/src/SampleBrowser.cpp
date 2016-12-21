@@ -207,7 +207,7 @@ void SampleBrowser::unloadSamples()
 //----------------------------------------------------------------------------//
 bool SampleBrowser::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
-    if (Key::Scan::ESCAPE != ceguiKey)
+    if (Key::Scan::Esc != ceguiKey)
         return getCurrentInputAggregator()->injectKeyDown(ceguiKey);
     else
     {
@@ -387,7 +387,7 @@ void SampleBrowser::stopDisplaySample()
     // Since we switch our contexts, the mouse release won't be injected if we
     // don't do it manually
     if (getCurrentInputAggregator() != nullptr)
-        getCurrentInputAggregator()->injectMouseButtonUp(MouseButton::LEFT_BUTTON);
+        getCurrentInputAggregator()->injectMouseButtonUp(MouseButton::Left);
     sampleGUIContext->injectTimePulse(0.0f);
 
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
@@ -453,7 +453,7 @@ bool SampleBrowser::initialiseSampleStepwise(std::int32_t sampleNumber)
 void SampleBrowser::initialiseSampleBrowserLayout()
 {
     CEGUI::FontManager::getSingleton().
-        createFreeTypeFont("DejaVuSans-14", 14.f, FontSizeUnit::FSU_PIXELS,
+        createFreeTypeFont("DejaVuSans-14", 14.f, FontSizeUnit::Pixels,
             true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
@@ -482,8 +482,8 @@ void SampleBrowser::initialiseSampleBrowserLayout()
                                              cegui_absdim(34.f)));
     d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.0f),
                                                     cegui_absdim(0.0f)));
-    d_sampleExitButton->setHorizontalAlignment(HorizontalAlignment::RIGHT);
-    d_sampleExitButton->setVerticalAlignment(VerticalAlignment::TOP);
+    d_sampleExitButton->setHorizontalAlignment(HorizontalAlignment::Right);
+    d_sampleExitButton->setVerticalAlignment(VerticalAlignment::Top);
     d_sampleExitButton->setProperty(
         "NormalImage", "SampleBrowserSkin/ExitButtonNormal");
     d_sampleExitButton->setProperty(

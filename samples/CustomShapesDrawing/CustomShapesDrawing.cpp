@@ -195,7 +195,7 @@ void CustomShapesDrawingSample::positionCustomGeometryFPSGraph()
 *************************************************************************/
 bool CustomShapesDrawingSample::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
 {
-    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::OVERLAY)
+    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::Overlay)
         return false;
 
     // draw FPS value
@@ -378,13 +378,13 @@ void CustomShapesDrawingSample::setupCustomGeometryGraph(CEGUI::GUIContext* guiC
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
 
     // GeometryBuffer used for drawing in this Sample
-    d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DefaultShaderType::SOLID));
+    d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DefaultShaderType::Solid));
 
     // Calculate and save our custom graph background
     setupCustomGeometryGraphBackground();
 
     // Clearing this queue actually makes sure it's created(!)
-    guiContext->clearGeometry(CEGUI::RenderQueueID::OVERLAY);
+    guiContext->clearGeometry(CEGUI::RenderQueueID::Overlay);
 
     // Subscribe handler to render overlay items
     guiContext->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
@@ -421,7 +421,7 @@ void CustomShapesDrawingSample::setupCustomSVGImage()
     std::vector<glm::vec2> pointsList;
     d_customPolyline = new SVGPolyline(SVGPaintStyle(), glm::mat3x3(1.0f), pointsList);
     d_customPolyline->d_paintStyle.d_stroke.d_colour = glm::vec3(0.0f, 1.0f, 0.0f);
-    d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SVGLinejoin::ROUND;
+    d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SVGLinejoin::Round;
     d_customPolyline->d_paintStyle.d_strokeWidth = 2.0f;
     //By default the SVG standard has the default fill set to black. We do not want any fill so we switch it to "none".
     d_customPolyline->d_paintStyle.d_fill.d_none = true;
@@ -452,7 +452,7 @@ void CustomShapesDrawingSample::createCheckboxShowRealFPS()
     // We create a button and subscribe to its click events
     ToggleButton* checkboxShowRealFPS = static_cast<CEGUI::ToggleButton*>(winMgr.createWindow("WindowsLook/Checkbox"));
     checkboxShowRealFPS->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.035f)));
-    checkboxShowRealFPS->setHorizontalAlignment(HorizontalAlignment::CENTRE);
+    checkboxShowRealFPS->setHorizontalAlignment(HorizontalAlignment::Centre);
     checkboxShowRealFPS->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.13f)));
     checkboxShowRealFPS->setText("Show randomly generated FPS values");
     checkboxShowRealFPS->subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&CustomShapesDrawingSample::handleToggleButtonShowRandomisedFpsSelectionChanged, this));
@@ -470,7 +470,7 @@ void CustomShapesDrawingSample::createLastFPSLabel()
     // We create a button and subscribe to its click events
     d_lastFPSLabel = winMgr.createWindow("Generic/Label");
     d_lastFPSLabel->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.035f)));
-    d_lastFPSLabel->setHorizontalAlignment(HorizontalAlignment::CENTRE);
+    d_lastFPSLabel->setHorizontalAlignment(HorizontalAlignment::Centre);
     d_lastFPSLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.18f)));
     d_root->addChild(d_lastFPSLabel);
 }
@@ -485,7 +485,7 @@ void CustomShapesDrawingSample::createDescriptionLabel()
     // We create a button and subscribe to its click events
     CEGUI::Window* descriptionLabel = winMgr.createWindow("Generic/Label");
     descriptionLabel->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(0.25f)));
-    descriptionLabel->setHorizontalAlignment(HorizontalAlignment::CENTRE);
+    descriptionLabel->setHorizontalAlignment(HorizontalAlignment::Centre);
     descriptionLabel->setProperty("HorzFormatting", "WordWrapCentreAligned");
     descriptionLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_absdim(400.0f)));
     d_root->addChild(descriptionLabel);

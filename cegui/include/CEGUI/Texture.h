@@ -59,25 +59,25 @@ public:
     enum class PixelFormat : int
     {
         //! Each pixel is 3 bytes. RGB in that order.
-        RGB,
+        Rgb,
         //! Each pixel is 4 bytes. RGBA in that order.
-        RGBA,
+        Rgba,
         //! Each pixel is 2 bytes. RGBA in that order.
-        RGBA_4444,
+        Rgba4444,
         //! Each pixel is 2 bytes. RGB in that order.
-        RGB_565,
+        Rgb565,
         //! PVR texture compression. Each pixel is 2 bits.
-        PVRTC2,
+        Pvrtc2,
         //! PVR texture compression. Each pixel is 4 bits.
-        PVRTC4,
+        Pvrtc4,
         //! S3 DXT1 texture compression (RGB).
-        RGB_DXT1,
+        RgbDxt1,
         //! S3 DXT1 texture compression (RGBA).
-        RGBA_DXT1,
+        RgbaDxt1,
         //! S3 DXT1 texture compression (RGBA).
-        RGBA_DXT3,
+        RgbaDxt3,
         //! S3 DXT1 texture compression (RGBA).
-        RGBA_DXT5
+        RgbaDxt5
     };
 
     /*!

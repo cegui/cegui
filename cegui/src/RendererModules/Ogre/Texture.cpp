@@ -42,27 +42,27 @@ static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-    case Texture::PixelFormat::RGBA:
+    case Texture::PixelFormat::Rgba:
         return static_cast<size_t>(size.d_width * size.d_height * 4);
 
-    case Texture::PixelFormat::RGB:
+    case Texture::PixelFormat::Rgb:
         return static_cast<size_t>(size.d_width * size.d_height * 3);
 
-    case Texture::PixelFormat::RGB_565:
-    case Texture::PixelFormat::RGBA_4444:
+    case Texture::PixelFormat::Rgb565:
+    case Texture::PixelFormat::Rgba4444:
         return static_cast<size_t>(size.d_width * size.d_height * 2);
 
-    case Texture::PixelFormat::PVRTC2:
+    case Texture::PixelFormat::Pvrtc2:
         return (static_cast<size_t>(size.d_width * size.d_height) * 2 + 7) / 8;
 
-    case Texture::PixelFormat::PVRTC4:
+    case Texture::PixelFormat::Pvrtc4:
         return (static_cast<size_t>(size.d_width * size.d_height) * 4 + 7) / 8;
 
-    case Texture::PixelFormat::RGBA_DXT1:
+    case Texture::PixelFormat::RgbaDxt1:
         return static_cast<size_t>( std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 8 );
 
-    case Texture::PixelFormat::RGBA_DXT3:
-    case Texture::PixelFormat::RGBA_DXT5:
+    case Texture::PixelFormat::RgbaDxt3:
+    case Texture::PixelFormat::RgbaDxt5:
         return static_cast<size_t>( std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 16 );
 
     default:
@@ -367,15 +367,15 @@ Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-        case Texture::PixelFormat::RGBA:       return Ogre::PF_A8B8G8R8;
-        case Texture::PixelFormat::RGB:        return Ogre::PF_B8G8R8;
-        case Texture::PixelFormat::RGB_565:    return Ogre::PF_R5G6B5;
-        case Texture::PixelFormat::RGBA_4444:  return Ogre::PF_A4R4G4B4;
-        case Texture::PixelFormat::PVRTC2:     return Ogre::PF_PVRTC_RGBA2;
-        case Texture::PixelFormat::PVRTC4:     return Ogre::PF_PVRTC_RGBA4;
-        case Texture::PixelFormat::RGBA_DXT1:  return Ogre::PF_DXT1;
-        case Texture::PixelFormat::RGBA_DXT3:  return Ogre::PF_DXT3;
-        case Texture::PixelFormat::RGBA_DXT5:  return Ogre::PF_DXT5;
+        case Texture::PixelFormat::Rgba:       return Ogre::PF_A8B8G8R8;
+        case Texture::PixelFormat::Rgb:        return Ogre::PF_B8G8R8;
+        case Texture::PixelFormat::Rgb565:    return Ogre::PF_R5G6B5;
+        case Texture::PixelFormat::Rgba4444:  return Ogre::PF_A4R4G4B4;
+        case Texture::PixelFormat::Pvrtc2:     return Ogre::PF_PVRTC_RGBA2;
+        case Texture::PixelFormat::Pvrtc4:     return Ogre::PF_PVRTC_RGBA4;
+        case Texture::PixelFormat::RgbaDxt1:  return Ogre::PF_DXT1;
+        case Texture::PixelFormat::RgbaDxt3:  return Ogre::PF_DXT3;
+        case Texture::PixelFormat::RgbaDxt5:  return Ogre::PF_DXT5;
         
         default:
             throw InvalidRequestException(
@@ -389,17 +389,17 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
 {
     switch (fmt)
     {
-        case Ogre::PF_A8R8G8B8:     return Texture::PixelFormat::RGBA;
-        case Ogre::PF_A8B8G8R8:     return Texture::PixelFormat::RGBA;
-        case Ogre::PF_R8G8B8:       return Texture::PixelFormat::RGB;
-        case Ogre::PF_B8G8R8:       return Texture::PixelFormat::RGB;
-        case Ogre::PF_R5G6B5:       return Texture::PixelFormat::RGB_565;
-        case Ogre::PF_A4R4G4B4:     return Texture::PixelFormat::RGBA_4444;
-        case Ogre::PF_PVRTC_RGBA2:  return Texture::PixelFormat::PVRTC2;
-        case Ogre::PF_PVRTC_RGBA4:  return Texture::PixelFormat::PVRTC4;
-        case Ogre::PF_DXT1:         return Texture::PixelFormat::RGBA_DXT1;
-        case Ogre::PF_DXT3:         return Texture::PixelFormat::RGBA_DXT3;
-        case Ogre::PF_DXT5:         return Texture::PixelFormat::RGBA_DXT5;
+        case Ogre::PF_A8R8G8B8:     return Texture::PixelFormat::Rgba;
+        case Ogre::PF_A8B8G8R8:     return Texture::PixelFormat::Rgba;
+        case Ogre::PF_R8G8B8:       return Texture::PixelFormat::Rgb;
+        case Ogre::PF_B8G8R8:       return Texture::PixelFormat::Rgb;
+        case Ogre::PF_R5G6B5:       return Texture::PixelFormat::Rgb565;
+        case Ogre::PF_A4R4G4B4:     return Texture::PixelFormat::Rgba4444;
+        case Ogre::PF_PVRTC_RGBA2:  return Texture::PixelFormat::Pvrtc2;
+        case Ogre::PF_PVRTC_RGBA4:  return Texture::PixelFormat::Pvrtc4;
+        case Ogre::PF_DXT1:         return Texture::PixelFormat::RgbaDxt1;
+        case Ogre::PF_DXT3:         return Texture::PixelFormat::RgbaDxt3;
+        case Ogre::PF_DXT5:         return Texture::PixelFormat::RgbaDxt5;
         
         default:
             throw InvalidRequestException(

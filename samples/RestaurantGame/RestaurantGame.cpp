@@ -58,7 +58,7 @@ GamePlate::GamePlate(RestaurantGameSample* RestaurantGameSample)
 
     if(d_isComingFromRight)
     {
-        d_window->setHorizontalAlignment(HorizontalAlignment::RIGHT);
+        d_window->setHorizontalAlignment(HorizontalAlignment::Right);
         d_window->setPosition(d_window->getPosition() + CEGUI::UVector2(cegui_reldim(0.2f), cegui_absdim(0.0f)));
     }
     else
@@ -237,7 +237,7 @@ void RestaurantGameSample::setupCursor()
 
     d_cursorWnd = winMgr.createWindow("Generic/Image");
     d_cursorWnd->setProperty("Image", "RestaurantGameSample/Spoon");
-    d_cursorWnd->setAspectMode(AspectMode::EXPAND);
+    d_cursorWnd->setAspectMode(AspectMode::Expand);
     d_cursorWnd->setAspectRatio(1.0f);
     d_cursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_cursorWnd->setAlwaysOnTop(true);
@@ -267,7 +267,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
 
     CEGUI::Window* plateRoot = winMgr.createWindow("DefaultWindow");
     plateRoot->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.16f)));
-    plateRoot->setAspectMode(CEGUI::AspectMode::EXPAND);
+    plateRoot->setAspectMode(CEGUI::AspectMode::Expand);
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
@@ -278,8 +278,8 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateImgWnd->setProperty("Image", s_imageNamePlate);
     plateImgWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(0.0f)));
     plateImgWnd->setAspectRatio(3.308f);
-    plateImgWnd->setAspectMode(CEGUI::AspectMode::EXPAND);
-    plateImgWnd->setVerticalAlignment(CEGUI::VerticalAlignment::BOTTOM);
+    plateImgWnd->setAspectMode(CEGUI::AspectMode::Expand);
+    plateImgWnd->setVerticalAlignment(CEGUI::VerticalAlignment::Bottom);
     plateImgWnd->setCursorPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
     plateRoot->addChild(plateImgWnd);
@@ -290,8 +290,8 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateTopping->setProperty("Image", image);
     plateTopping->setSize(CEGUI::USize(cegui_reldim(0.88f), cegui_absdim(0.0f)));
     plateTopping->setAspectRatio(1.0f);
-    plateTopping->setAspectMode(CEGUI::AspectMode::EXPAND);
-    plateTopping->setHorizontalAlignment(CEGUI::HorizontalAlignment::CENTRE);
+    plateTopping->setAspectMode(CEGUI::AspectMode::Expand);
+    plateTopping->setHorizontalAlignment(CEGUI::HorizontalAlignment::Centre);
     plateTopping->setCursorPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);
     plateRoot->addChild(plateTopping);

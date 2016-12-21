@@ -78,17 +78,17 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         {
         case IL_DXT1:
             pixel_data = getCompressedPixelData(dxtc_fmt);
-            cefmt = Texture::PixelFormat::RGBA_DXT1;
+            cefmt = Texture::PixelFormat::RgbaDxt1;
             break;
 
         case IL_DXT3:
             pixel_data = getCompressedPixelData(dxtc_fmt);
-            cefmt = Texture::PixelFormat::RGBA_DXT3;
+            cefmt = Texture::PixelFormat::RgbaDxt3;
             break;
 
         case IL_DXT5:
             pixel_data = getCompressedPixelData(dxtc_fmt);
-            cefmt = Texture::PixelFormat::RGBA_DXT5;
+            cefmt = Texture::PixelFormat::RgbaDxt5;
             break;
 
         case IL_DXT_NO_COMP:
@@ -99,12 +99,12 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
             case IL_RGBA:
             case IL_BGRA:
                 ilfmt = IL_RGBA;
-                cefmt = Texture::PixelFormat::RGBA;
+                cefmt = Texture::PixelFormat::Rgba;
                 break;
 
             default:
                 ilfmt = IL_RGB;
-                cefmt = Texture::PixelFormat::RGB;
+                cefmt = Texture::PixelFormat::Rgb;
                 break;
             };
 

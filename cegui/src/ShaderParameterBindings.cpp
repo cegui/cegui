@@ -148,7 +148,7 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name,
     const glm::mat4& matrix)
 {
     ShaderParameter* shader_param = getParameter(parameter_name);
-    if (shader_param && ( shader_param->getType() == ShaderParamType::MATRIX_4X4 ) )
+    if (shader_param && ( shader_param->getType() == ShaderParamType::Matrix4X4 ) )
         static_cast<ShaderParameterMatrix*>(shader_param)->d_parameterValue = matrix;
     else
         setNewParameter(parameter_name, new ShaderParameterMatrix(matrix));
@@ -158,7 +158,7 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name,
 void ShaderParameterBindings::setParameter(const std::string& parameter_name, const CEGUI::Texture* texture)
 {
     ShaderParameter* shader_param = getParameter(parameter_name);
-    if (shader_param && ( shader_param->getType() == ShaderParamType::TEXTURE ) )
+    if (shader_param && ( shader_param->getType() == ShaderParamType::Texture ) )
         static_cast<ShaderParameterTexture*>(shader_param)->d_parameterValue = texture;
     else
         setNewParameter(parameter_name, new ShaderParameterTexture(texture));
@@ -169,7 +169,7 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name,
     const float fvalue)
 {
     ShaderParameter* shader_param = getParameter(parameter_name);
-    if (shader_param && (shader_param->getType() == ShaderParamType::FLOAT))
+    if (shader_param && (shader_param->getType() == ShaderParamType::Float))
         static_cast<ShaderParameterFloat*>(shader_param)->d_parameterValue = 
         fvalue;
     else

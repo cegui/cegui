@@ -181,21 +181,21 @@ void GLES2GeometryBuffer::bindVertexAttributes() const {
     {
         switch(d_vertexAttributes.at(i))
         {
-        case VertexAttributeType::POSITION0:
+        case VertexAttributeType::Position0:
             {
                 glVertexAttribPointer(d_posAttrib, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
                 glEnableVertexAttribArray(d_posAttrib);
                 dataOffset += 3;
             }
             break;
-        case VertexAttributeType::COLOUR0:
+        case VertexAttributeType::Colour0:
             {
                 glVertexAttribPointer(d_colAttrib, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
                 glEnableVertexAttribArray(d_colAttrib);
                 dataOffset += 4;
             }
             break;
-        case VertexAttributeType::TEXCOORD0:
+        case VertexAttributeType::TexCoord0:
             {
                 glVertexAttribPointer(d_texAttrib, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
                 glEnableVertexAttribArray(d_texAttrib);
@@ -261,14 +261,14 @@ void GLES2GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t a
 //----------------------------------------------------------------------------//
 void GLES2GeometryBuffer::drawDependingOnFillRule() const
 {
-    if(d_polygonFillRule == PolygonFillRule::NONE)
+    if(d_polygonFillRule == PolygonFillRule::None)
     {
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);
 
         glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
-    else if(d_polygonFillRule == PolygonFillRule::EVEN_ODD)
+    else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
     {
         //We use a stencil buffer to determine the insideness
         //of a fragment. Every draw inverts the precious value
@@ -289,7 +289,7 @@ void GLES2GeometryBuffer::drawDependingOnFillRule() const
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
         glDrawArrays(GL_TRIANGLES, postStencilStart, d_postStencilVertexCount);
     }
-    else if(d_polygonFillRule == PolygonFillRule::NON_ZERO)
+    else if(d_polygonFillRule == PolygonFillRule::NonZero)
     {
         //We use a stencil buffer to determine the insideness
         //of a fragment. We draw the front sides while increasing

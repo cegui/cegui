@@ -38,7 +38,7 @@ Image::Image(const String& name) :
     d_name(name),
     d_imageArea(0.0f, 0.0f, 0.0f, 0.0f),
     d_pixelOffset(0.0f, 0.0f),
-    d_autoScaled(AutoScaledMode::DISABLED),
+    d_autoScaled(AutoScaledMode::Disabled),
     d_nativeResolution(640, 480),
     d_scaledSize(0, 0),
     d_scaledOffset(0, 0)
@@ -81,34 +81,34 @@ void Image::computeScalingFactors(AutoScaledMode mode,
                                   float& x_scale,
                                   float& y_scale)
 {
-    if (mode == AutoScaledMode::DISABLED)
+    if (mode == AutoScaledMode::Disabled)
     {
         x_scale = 1.0f;
         y_scale = 1.0f;
     }
-    else if (mode == AutoScaledMode::VERTICAL)
+    else if (mode == AutoScaledMode::Vertical)
     {
         x_scale = display_size.d_height / native_display_size.d_height;
         y_scale = x_scale;
     }
-    else if (mode == AutoScaledMode::HORIZONTAL)
+    else if (mode == AutoScaledMode::Horizontal)
     {
         x_scale = display_size.d_width / native_display_size.d_width;
         y_scale = x_scale;
     }
-    else if (mode == AutoScaledMode::MIN)
+    else if (mode == AutoScaledMode::Min)
     {
         x_scale = std::min(display_size.d_width / native_display_size.d_width,
                            display_size.d_height / native_display_size.d_height);
         y_scale = x_scale;
     }
-    else if (mode == AutoScaledMode::MAX)
+    else if (mode == AutoScaledMode::Max)
     {
         x_scale = std::max(display_size.d_width / native_display_size.d_width,
                            display_size.d_height / native_display_size.d_height);
         y_scale = x_scale;
     }
-    else if (mode == AutoScaledMode::BOTH)
+    else if (mode == AutoScaledMode::Both)
     {
         x_scale = display_size.d_width / native_display_size.d_width;
         y_scale = display_size.d_height / native_display_size.d_height;
@@ -157,7 +157,7 @@ void Image::setImageArea(const Rectf& image_area)
 {
     d_imageArea = image_area;
 
-    if (d_autoScaled != AutoScaledMode::DISABLED)
+    if (d_autoScaled != AutoScaledMode::Disabled)
         updateScaledSizeAndOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
     else
@@ -171,7 +171,7 @@ void Image::setOffset(const glm::vec2& pixel_offset)
 {
     d_pixelOffset = pixel_offset;
 
-    if (d_autoScaled != AutoScaledMode::DISABLED)
+    if (d_autoScaled != AutoScaledMode::Disabled)
         updateScaledOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
     else
@@ -183,7 +183,7 @@ void Image::setAutoScaled(const AutoScaledMode autoscaled)
 {
     d_autoScaled = autoscaled;
 
-    if (d_autoScaled != AutoScaledMode::DISABLED)
+    if (d_autoScaled != AutoScaledMode::Disabled)
     {
         updateScaledSizeAndOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
@@ -200,7 +200,7 @@ void Image::setNativeResolution(const Sizef& native_res)
 {
     d_nativeResolution = native_res;
 
-    if (d_autoScaled != AutoScaledMode::DISABLED)
+    if (d_autoScaled != AutoScaledMode::Disabled)
         updateScaledSizeAndOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
 }
@@ -210,7 +210,7 @@ void Image::setNativeResolution(const Sizef& native_res)
 void Image::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
 {
     //If we use autoscaling of any sort we must update the scaled size and offset
-    if (d_autoScaled != AutoScaledMode::DISABLED)
+    if (d_autoScaled != AutoScaledMode::Disabled)
         updateScaledSizeAndOffset(renderer_display_size);
 }
 

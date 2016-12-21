@@ -52,22 +52,22 @@ struct CEGUIEXPORT Key
 	// enumeration of scan codes.  Customised from table taken from Ogre, which took them from DirectInput...
 	enum class Scan : unsigned char
     {
-        UNKNOWN         =0x00,
-        ESCAPE          =0x01,
-        ONE             =0x02,
-        TWO             =0x03,
-        THREE           =0x04,
-        FOUR            =0x05,
-        FIVE            =0x06,
-        SIX             =0x07,
-        SEVEN           =0x08,
-        EIGHT           =0x09,
-        NINE            =0x0A,
-        ZERO            =0x0B,
-        MINUS           =0x0C,  /* - on main keyboard */
-        EQUALS			=0x0D,
-        BACKSPACE		=0x0E,  /* backspace */
-        TAB				=0x0F,
+        Unknown         =0x00,
+        Esc             =0x01,
+        One             =0x02,
+        Two             =0x03,
+        Three           =0x04,
+        Four            =0x05,
+        Five            =0x06,
+        Six             =0x07,
+        Seven           =0x08,
+        Eight           =0x09,
+        Nine            =0x0A,
+        Zero            =0x0B,
+        Minus           =0x0C,  /* - on main keyboard */
+        Equals			=0x0D,
+        Backspace		=0x0E,  /* backspace */
+        Tab				=0x0F,
         Q               =0x10,
         W               =0x11,
         E               =0x12,
@@ -78,10 +78,10 @@ struct CEGUIEXPORT Key
         I               =0x17,
         O               =0x18,
         P               =0x19,
-        LEFT_BRACKET    =0x1A,
-        RIGHT_BRACKET   =0x1B,
-        RETURN			=0x1C,  /* Enter on main keyboard */
-        LEFT_CONTROL    =0x1D,
+        LeftBracket     =0x1A,
+        RightBracket    =0x1B,
+        Return			=0x1C,  /* Enter on main keyboard */
+        LeftControl     =0x1D,
         A               =0x1E,
         S               =0x1F,
         D               =0x20,
@@ -91,11 +91,11 @@ struct CEGUIEXPORT Key
         J               =0x24,
         K               =0x25,
         L               =0x26,
-        SEMICOLON       =0x27,
-        APOSTROPHE		=0x28,
-        GRAVE           =0x29,  /* accent grave */
-        LEFT_SHIFT      =0x2A,
-        BACKSLASH       =0x2B,
+        Semicolon       =0x27,
+        Apostrophe		=0x28,
+        Grave           =0x29,  /* accent grave */
+        LeftShift       =0x2A,
+        Backslash       =0x2B,
         Z               =0x2C,
         X               =0x2D,
         C               =0x2E,
@@ -103,14 +103,14 @@ struct CEGUIEXPORT Key
         B               =0x30,
         N               =0x31,
         M               =0x32,
-        COMMA           =0x33,
-        PERIOD          =0x34,  /* . on main keyboard */
-        SLASH           =0x35,  /* '/' on main keyboard */
-        RIGHT_SHIFT     =0x36,
-        MULTIPLY        =0x37,  /* * on numeric keypad */
-        LEFT_ALT        =0x38,  /* left Alt */
-        SPACE           =0x39,
-        CAPITAL         =0x3A,
+        Comma           =0x33,
+        Period          =0x34,  /* . on main keyboard */
+        ForwardSlash    =0x35,  /* '/' on main keyboard */
+        RightShift      =0x36,
+        Multiply        =0x37,  /* * on numeric keypad */
+        LeftAlt         =0x38,  /* left Alt */
+        Space           =0x39,
+        Capital         =0x3A,
         F1              =0x3B,
         F2              =0x3C,
         F3              =0x3D,
@@ -121,82 +121,82 @@ struct CEGUIEXPORT Key
         F8              =0x42,
         F9              =0x43,
         F10             =0x44,
-        NUM_LOCK        =0x45,
-        SCROLL_LOCK     =0x46,  /* Scroll Lock */
-        NUMPAD_7        =0x47,
-        NUMPAD_8        =0x48,
-        NUMPAD_9        =0x49,
-        SUBTRACT        =0x4A,  /* - on numeric keypad */
-        NUMPAD_4        =0x4B,
-        NUMPAD_5        =0x4C,
-        NUMPAD_6        =0x4D,
-        ADD				=0x4E,  /* + on numeric keypad */
-        NUMPAD_1        =0x4F,
-        NUMPAD_2        =0x50,
-        NUMPAD_3        =0x51,
-        NUMPAD_0        =0x52,
-        DECIMAL			=0x53,  /* . on numeric keypad */
-        OEM_102         =0x56,  /* < > | on UK/Germany keyboards */
+        NumLock         =0x45,
+        ScrollLock      =0x46,  /* Scroll Lock */
+        Numpad7         =0x47,
+        Numpad_8        =0x48,
+        Numpad_9        =0x49,
+        Subtract        =0x4A,  /* - on numeric keypad */
+        Numpad_4        =0x4B,
+        Numpad_5        =0x4C,
+        Numpad_6        =0x4D,
+        Add				=0x4E,  /* + on numeric keypad */
+        Numpad_1        =0x4F,
+        Numpad_2        =0x50,
+        Numpad_3        =0x51,
+        Numpad_0        =0x52,
+        Decimal			=0x53,  /* . on numeric keypad */
+        Oem102          =0x56,  /* < > | on UK/Germany keyboards */
         F11             =0x57,
         F12             =0x58,
         F13             =0x64,  /*                     (NEC PC98) */
         F14             =0x65,  /*                     (NEC PC98) */
         F15             =0x66,  /*                     (NEC PC98) */
-        KANA            =0x70,  /* (Japanese keyboard)            */
-        ABNT_C1         =0x73,  /* / ? on Portugese (Brazilian) keyboards */
-        CONVERT         =0x79,  /* (Japanese keyboard)            */
-        NO_CONVERT      =0x7B,  /* (Japanese keyboard)            */
-        YEN             =0x7D,  /* (Japanese keyboard)            */
-        ABNT_C2         =0x7E,  /* Numpad . on Portugese (Brazilian) keyboards */
-        NUMPAD_EQUALS   =0x8D,  /* = on numeric keypad (NEC PC98) */
-        PREV_TRACK      =0x90,  /* Previous Track (KC_CIRCUMFLEX on Japanese keyboard) */
-        AT              =0x91,  /*                     (NEC PC98) */
-        COLON           =0x92,  /*                     (NEC PC98) */
-        UNDERLINE       =0x93,  /*                     (NEC PC98) */
-        KANJI           =0x94,  /* (Japanese keyboard)            */
-        STOP            =0x95,  /*                     (NEC PC98) */
-        AX              =0x96,  /*                     (Japan AX) */
-        UNLABELED       =0x97,  /*                        (J3100) */
-        NEXT_TRACK      =0x99,  /* Next Track */
-        NUMPAD_ENTER    =0x9C,  /* Enter on numeric keypad */
-        RIGHT_CONTROL   =0x9D,
-        MUTE            =0xA0,  /* Mute */
-        CALCULATOR      =0xA1,  /* Calculator */
-        PLAY_PAUSE      =0xA2,  /* Play / Pause */
-        MEDIA_STOP      =0xA4,  /* Media Stop */
-        VOLUME_DOWN     =0xAE,  /* Volume - */
-        VOLUME_UP       =0xB0,  /* Volume + */
-        WEB_HOME        =0xB2,  /* Web home */
-        NUMPAD_COMMA    =0xB3,  /* , on numeric keypad (NEC PC98) */
-        DIVIDE          =0xB5,  /* / on numeric keypad */
-        SYS_RQ          =0xB7,
-        RIGHT_ALT       =0xB8,  /* right Alt */
-        PAUSE           =0xC5,  /* Pause */
-        HOME            =0xC7,  /* Home on arrow keypad */
-        ARROW_UP        =0xC8,  /* UpArrow on arrow keypad */
-        PAGE_UP         =0xC9,  /* PgUp on arrow keypad */
-        ARROW_LEFT      =0xCB,  /* LeftArrow on arrow keypad */
-        ARROW_RIGHT     =0xCD,  /* RightArrow on arrow keypad */
-        END             =0xCF,  /* End on arrow keypad */
-        ARROW_DOWN      =0xD0,  /* DownArrow on arrow keypad */
-        PAGE_DOWN		=0xD1,  /* PgDn on arrow keypad */
-        INSERT          =0xD2,  /* Insert on arrow keypad */
-        KEY_DELETE      =0xD3,  /* Delete on arrow keypad */
-        LEFT_WINDOWS    =0xDB,  /* Left Windows key */
-        RIGHT_WINDOWS   =0xDC,  /* Right Windows key - Correct spelling :) */
-        APP_MENU        =0xDD,  /* AppMenu key */
-        POWER           =0xDE,  /* System Power */
-        SLEEP           =0xDF,  /* System Sleep */
-        WAKE			=0xE3,  /* System Wake */
-        WEB_SEARCH		=0xE5,  /* Web Search */
-        WEB_FAVORITES	=0xE6,  /* Web Favorites */
-        WEB_REFRESH		=0xE7,  /* Web Refresh */
-        WEB_STOP        =0xE8,  /* Web Stop */
-        WEB_FORWARD		=0xE9,  /* Web Forward */
-        WEB_BACK        =0xEA,  /* Web Back */
-        MY_COMPUTER		=0xEB,  /* My Computer */
-        MAIL			=0xEC,  /* Mail */
-        MEDIA_SELECT    =0xED   /* Media Select */
+        Kana            =0x70,  /* (Japanese keyboard)            */
+        AbntC1          =0x73,  /* / ? on Portugese (Brazilian) keyboards */
+        Convert         =0x79,  /* (Japanese keyboard)            */
+        NoConvert       =0x7B,  /* (Japanese keyboard)            */
+        Yen             =0x7D,  /* (Japanese keyboard)            */
+        AbntC2          =0x7E,  /* Numpad . on Portugese (Brazilian) keyboards */
+        NumpadEquals    =0x8D,  /* = on numeric keypad (NEC PC98) */
+        PrevTrack       =0x90,  /* Previous Track (KC_CIRCUMFLEX on Japanese keyboard) */
+        At              =0x91,  /*                     (NEC PC98) */
+        Colon           =0x92,  /*                     (NEC PC98) */
+        Underline       =0x93,  /*                     (NEC PC98) */
+        Kanji           =0x94,  /* (Japanese keyboard)            */
+        Stop            =0x95,  /*                     (NEC PC98) */
+        Ax              =0x96,  /*                     (Japan AX) */
+        Unlabeled       =0x97,  /*                        (J3100) */
+        NextTrack       =0x99,  /* Next Track */
+        NumpadEnter     =0x9C,  /* Enter on numeric keypad */
+        RightControl    =0x9D,
+        Mute            =0xA0,  /* Mute */
+        Calculator      =0xA1,  /* Calculator */
+        PlayPause       =0xA2,  /* Play / Pause */
+        MediaStop       =0xA4,  /* Media Stop */
+        VolumeDown      =0xAE,  /* Volume - */
+        VolumeUp        =0xB0,  /* Volume + */
+        WebHome         =0xB2,  /* Web home */
+        NumpadComma     =0xB3,  /* , on numeric keypad (NEC PC98) */
+        Divide          =0xB5,  /* / on numeric keypad */
+        SysRq           =0xB7,
+        RightAlt        =0xB8,  /* right Alt */
+        Pause           =0xC5,  /* Pause */
+        Home            =0xC7,  /* Home on arrow keypad */
+        ArrowUp         =0xC8,  /* UpArrow on arrow keypad */
+        PageUp          =0xC9,  /* PgUp on arrow keypad */
+        ArrowLeft       =0xCB,  /* LeftArrow on arrow keypad */
+        ArrowRight      =0xCD,  /* RightArrow on arrow keypad */
+        End             =0xCF,  /* End on arrow keypad */
+        ArrowDown       =0xD0,  /* DownArrow on arrow keypad */
+        PageDown		=0xD1,  /* PgDn on arrow keypad */
+        Insert          =0xD2,  /* Insert on arrow keypad */
+        KeyDelete       =0xD3,  /* Delete on arrow keypad */
+        LeftWindows     =0xDB,  /* Left Windows key */
+        RightWindows    =0xDC,  /* Right Windows key - Correct spelling :) */
+        AppMenu         =0xDD,  /* AppMenu key */
+        Power           =0xDE,  /* System Power */
+        Sleep           =0xDF,  /* System Sleep */
+        Wake			=0xE3,  /* System Wake */
+        WebSearch		=0xE5,  /* Web Search */
+        WebFavorites	=0xE6,  /* Web Favorites */
+        WebRefresh		=0xE7,  /* Web Refresh */
+        WebStop         =0xE8,  /* Web Stop */
+        WebForward		=0xE9,  /* Web Forward */
+        WebBack         =0xEA,  /* Web Back */
+        MyComputer		=0xEB,  /* My Computer */
+        Mail            =0xEC,  /* Mail */
+        MediaSelect     =0xED   /* Media Select */
     };
 
 };
@@ -208,19 +208,19 @@ struct CEGUIEXPORT Key
 enum class MouseButton : int
 {
     //! The left mouse button.
-    LEFT_BUTTON,
+    Left,
     //! The right mouse button.
-    RIGHT_BUTTON,
+    Right,
     //! The middle mouse button.
-    MIDDLE_BUTTON,
+    Middle,
     //! The first 'extra' mouse button.
-    X1_BUTTON,
+    X1,
     //! The second 'extra' mouse button.
-    X2_BUTTON,
+    X2,
     //! Value that equals the number of mouse buttons supported by CEGUI.
-    COUNT,
+    Count,
     //! Value set for no mouse button.  NB: This is not 0, do not assume!
-    NONE
+    None
 };
 
 /*!

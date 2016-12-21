@@ -77,23 +77,23 @@ void OpenGLBaseShaderManager::initialiseShaders()
     {
         if (OpenGLInfo::getSingleton().isUsingDesktopOpengl())
         {
-            loadShader(OpenGLBaseShaderID::STANDARD_TEXTURED, StandardShaderTexturedVertDesktopOpengl3, StandardShaderTexturedFragDesktopOpengl3);
-            loadShader(OpenGLBaseShaderID::STANDARD_SOLID, StandardShaderSolidVertDesktopOpengl3, StandardShaderSolidFragDesktopOpengl3);
+            loadShader(OpenGLBaseShaderID::StandardTextured, StandardShaderTexturedVertDesktopOpengl3, StandardShaderTexturedFragDesktopOpengl3);
+            loadShader(OpenGLBaseShaderID::StandardSolid, StandardShaderSolidVertDesktopOpengl3, StandardShaderSolidFragDesktopOpengl3);
         }
         else if (OpenGLInfo::getSingleton().verMajor() <= 2) // Open GL ES < 3
         {
-            loadShader(OpenGLBaseShaderID::STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs2, StandardShaderTexturedFragOpenglEs2);
-            loadShader(OpenGLBaseShaderID::STANDARD_SOLID, StandardShaderSolidVertOpenglEs2, StandardShaderSolidFragOpenglEs2);
+            loadShader(OpenGLBaseShaderID::StandardTextured, StandardShaderTexturedVertOpenglEs2, StandardShaderTexturedFragOpenglEs2);
+            loadShader(OpenGLBaseShaderID::StandardSolid, StandardShaderSolidVertOpenglEs2, StandardShaderSolidFragOpenglEs2);
         }
         else // OpenGL ES >= 3
         {
-            loadShader(OpenGLBaseShaderID::STANDARD_TEXTURED, StandardShaderTexturedVertOpenglEs3, StandardShaderTexturedFragOpenglEs3);
-            loadShader(OpenGLBaseShaderID::STANDARD_SOLID, StandardShaderSolidVertOpenglEs3, StandardShaderSolidFragOpenglEs3);
+            loadShader(OpenGLBaseShaderID::StandardTextured, StandardShaderTexturedVertOpenglEs3, StandardShaderTexturedFragOpenglEs3);
+            loadShader(OpenGLBaseShaderID::StandardSolid, StandardShaderSolidVertOpenglEs3, StandardShaderSolidFragOpenglEs3);
         }
 
             
-        if(!getShader(OpenGLBaseShaderID::STANDARD_TEXTURED)->isCreatedSuccessfully() ||
-           !getShader(OpenGLBaseShaderID::STANDARD_SOLID)->isCreatedSuccessfully() )
+        if(!getShader(OpenGLBaseShaderID::StandardTextured)->isCreatedSuccessfully() ||
+           !getShader(OpenGLBaseShaderID::StandardSolid)->isCreatedSuccessfully() )
         {
             throw RendererException("Critical Error - One or multiple shader "
                                     "programs weren't created successfully");

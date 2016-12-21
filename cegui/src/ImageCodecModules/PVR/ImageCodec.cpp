@@ -73,7 +73,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         // Unknow or old format
         Logger::getSingletonPtr()->logEvent(
             "PVRImageCodec::load - unknown or old texture format.  "
-            "Use PVRTexTool to save in appropriate format.", LoggingLevel::ERROR_LEVEL);
+            "Use PVRTexTool to save in appropriate format.", LoggingLevel::Error);
         return 0;
     }
 
@@ -81,7 +81,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         //Cube maps are not supported
         Logger::getSingletonPtr()->logEvent(
-            "PVRImageCodec::load - cubemap textures unsupported.", LoggingLevel::ERROR_LEVEL);
+            "PVRImageCodec::load - cubemap textures unsupported.", LoggingLevel::Error);
         return 0;
     }
 
@@ -92,7 +92,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         // We need to load untwiddled textures -- hw will twiddle for us.
         Logger::getSingletonPtr()->logEvent(
-            "PVRImageCodec::load - Texture should be untwiddled", LoggingLevel::ERROR_LEVEL);
+            "PVRImageCodec::load - Texture should be untwiddled", LoggingLevel::Error);
         return 0;
     }
 
@@ -102,61 +102,61 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     switch (pvr_header->dwpfFlags & PVRTEX_PIXELTYPE)
     {
     case OGL_RGBA_4444:
-        cefmt = CEGUI::Texture::PixelFormat::RGBA_4444;
+        cefmt = CEGUI::Texture::PixelFormat::Rgba4444;
         break;
 
     case OGL_RGBA_5551:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format RGBA_5551 not supported.", LoggingLevel::ERROR_LEVEL);
+            "pixel format RGBA_5551 not supported.", LoggingLevel::Error);
         return 0;
 
     case OGL_RGB_565:
-        cefmt = CEGUI::Texture::PixelFormat::RGB_565;
+        cefmt = CEGUI::Texture::PixelFormat::Rgb565;
         break;
 
     case OGL_RGB_555:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format RGB_555 not supported.", LoggingLevel::ERROR_LEVEL);
+            "pixel format RGB_555 not supported.", LoggingLevel::Error);
         return 0;
 
     case OGL_I_8:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format I_8 not supported.", LoggingLevel::ERROR_LEVEL);
+            "pixel format I_8 not supported.", LoggingLevel::Error);
         return 0;
 
     case OGL_AI_88:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format AI_88 not supported.", LoggingLevel::ERROR_LEVEL);
+            "pixel format AI_88 not supported.", LoggingLevel::Error);
         return 0;
 
     case OGL_BGRA_8888:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format BGRA8888 not supported.", LoggingLevel::ERROR_LEVEL);
+            "pixel format BGRA8888 not supported.", LoggingLevel::Error);
         return 0;
 
     case OGL_RGBA_8888:
-        cefmt = CEGUI::Texture::PixelFormat::RGBA;
+        cefmt = CEGUI::Texture::PixelFormat::Rgba;
         break;
 
     case OGL_RGB_888:
-        cefmt = CEGUI::Texture::PixelFormat::RGB;
+        cefmt = CEGUI::Texture::PixelFormat::Rgb;
         break;
 
     case MGLPT_PVRTC2:
     case OGL_PVRTC2:
-        cefmt = CEGUI::Texture::PixelFormat::PVRTC2;
+        cefmt = CEGUI::Texture::PixelFormat::Pvrtc2;
         is_compressed_format = true;
         break;
 
     case MGLPT_PVRTC4:
     case OGL_PVRTC4:
-        cefmt = CEGUI::Texture::PixelFormat::PVRTC4;
+        cefmt = CEGUI::Texture::PixelFormat::Pvrtc4;
         is_compressed_format = true;
         break;
 
     default:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "wrong pvr pixel format.", LoggingLevel::ERROR_LEVEL);
+            "wrong pvr pixel format.", LoggingLevel::Error);
         return 0;
     }
 
@@ -183,7 +183,7 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
             PVRTDecompressPVRTC(texture_data, bit_mode, size_x, size_y,
                                 decompressed_texture);
 
-            cefmt = CEGUI::Texture::PixelFormat::RGBA; // Redefine to uncompressed format
+            cefmt = CEGUI::Texture::PixelFormat::Rgba; // Redefine to uncompressed format
             result->loadFromMemory(decompressed_texture,
                                    Sizef(static_cast<float>(size_x),
                                          static_cast<float>(size_y)),

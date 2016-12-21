@@ -186,16 +186,16 @@ public:
 	*/
 	enum class SelectionMode : int
 	{
-		ROW_SINGLE,					// Any single row may be selected.  All items in the row are selected.
-		ROW_MULTIPLE,				// Multiple rows may be selected.  All items in the row are selected.
-		CELL_SINGLE,                // Any single cell may be selected.
-		CELL_MULTIPLE,				// Multiple cells bay be selected.
-		NOMINATED_COLUMN_SINGLE,    // Any single item in a nominated column may be selected.
-		NOMINATED_COLUMN_MULTIPLE,	// Multiple items in a nominated column may be selected.
-		COLUMN_SINGLE,				// Any single column may be selected.  All items in the column are selected.
-		COLUMN_MULTIPLE,            // Multiple columns may be selected.  All items in the column are selected.
-		NOMINATED_ROW_SINGLE,       // Any single item in a nominated row may be selected.
-		NOMINATED_ROW_MULTIPLE		// Multiple items in a nominated row may be selected.
+		RowSingle,					// Any single row may be selected.  All items in the row are selected.
+		RowMultiple,				// Multiple rows may be selected.  All items in the row are selected.
+		CellSingle,                 // Any single cell may be selected.
+		CellMultiple,				// Multiple cells bay be selected.
+		NominatedColumnSingle,      // Any single item in a nominated column may be selected.
+		NominatedColumnMultiple,	// Multiple items in a nominated column may be selected.
+		ColumnSingle,				// Any single column may be selected.  All items in the column are selected.
+		ColumnMultiple,             // Multiple columns may be selected.  All items in the column are selected.
+		NominatedRowSingle,         // Any single item in a nominated row may be selected.
+		NominatedRowMultiple		// Multiple items in a nominated row may be selected.
 	};
 
 
@@ -1761,43 +1761,43 @@ public:
 
         if (str == "RowMultiple")
         {
-            mode = MultiColumnList::SelectionMode::ROW_MULTIPLE;
+            mode = MultiColumnList::SelectionMode::RowMultiple;
         }
         else if (str == "ColumnSingle")
         {
-            mode = MultiColumnList::SelectionMode::COLUMN_SINGLE;
+            mode = MultiColumnList::SelectionMode::ColumnSingle;
         }
         else if (str == "ColumnMultiple")
         {
-            mode = MultiColumnList::SelectionMode::COLUMN_MULTIPLE;
+            mode = MultiColumnList::SelectionMode::ColumnMultiple;
         }
         else if (str == "CellSingle")
         {
-            mode = MultiColumnList::SelectionMode::CELL_SINGLE;
+            mode = MultiColumnList::SelectionMode::CellSingle;
         }
         else if (str == "CellMultiple")
         {
-            mode = MultiColumnList::SelectionMode::CELL_MULTIPLE;
+            mode = MultiColumnList::SelectionMode::CellMultiple;
         }
         else if (str == "NominatedColumnSingle")
         {
-            mode = MultiColumnList::SelectionMode::NOMINATED_COLUMN_SINGLE;
+            mode = MultiColumnList::SelectionMode::NominatedColumnSingle;
         }
         else if (str == "NominatedColumnMultiple")
         {
-            mode = MultiColumnList::SelectionMode::NOMINATED_COLUMN_MULTIPLE;
+            mode = MultiColumnList::SelectionMode::NominatedColumnMultiple;
         }
         else if (str == "NominatedRowSingle")
         {
-            mode = MultiColumnList::SelectionMode::NOMINATED_ROW_SINGLE;
+            mode = MultiColumnList::SelectionMode::NominatedRowSingle;
         }
         else if (str == "NominatedRowMultiple")
         {
-            mode = MultiColumnList::SelectionMode::NOMINATED_ROW_MULTIPLE;
+            mode = MultiColumnList::SelectionMode::NominatedRowMultiple;
         }
         else
         {
-            mode = MultiColumnList::SelectionMode::ROW_SINGLE;
+            mode = MultiColumnList::SelectionMode::RowSingle;
         }
         return mode;
     }
@@ -1806,39 +1806,39 @@ public:
     {
         switch(val)
         {
-        case MultiColumnList::SelectionMode::ROW_MULTIPLE:
+        case MultiColumnList::SelectionMode::RowMultiple:
             return String("RowMultiple");
             break;
 
-        case MultiColumnList::SelectionMode::COLUMN_SINGLE:
+        case MultiColumnList::SelectionMode::ColumnSingle:
             return String("ColumnSingle");
             break;
 
-        case MultiColumnList::SelectionMode::COLUMN_MULTIPLE:
+        case MultiColumnList::SelectionMode::ColumnMultiple:
             return String("ColumnMultiple");
             break;
 
-        case MultiColumnList::SelectionMode::CELL_SINGLE:
+        case MultiColumnList::SelectionMode::CellSingle:
             return String("CellSingle");
             break;
 
-        case MultiColumnList::SelectionMode::CELL_MULTIPLE:
+        case MultiColumnList::SelectionMode::CellMultiple:
             return String("CellMultiple");
             break;
 
-        case MultiColumnList::SelectionMode::NOMINATED_COLUMN_SINGLE:
+        case MultiColumnList::SelectionMode::NominatedColumnSingle:
             return String("NominatedColumnSingle");
             break;
 
-        case MultiColumnList::SelectionMode::NOMINATED_COLUMN_MULTIPLE:
+        case MultiColumnList::SelectionMode::NominatedColumnMultiple:
             return String("NominatedColumnMultiple");
             break;
 
-        case MultiColumnList::SelectionMode::NOMINATED_ROW_SINGLE:
+        case MultiColumnList::SelectionMode::NominatedRowSingle:
             return String("NominatedRowSingle");
             break;
 
-        case MultiColumnList::SelectionMode::NOMINATED_ROW_MULTIPLE:
+        case MultiColumnList::SelectionMode::NominatedRowMultiple:
             return String("NominatedRowMultiple");
             break;
 

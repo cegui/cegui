@@ -44,7 +44,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 Affector::Affector(Animation* parent):
     d_parent(parent),
-    d_applicationMethod(ApplicationMethod::APPLY_ABSOLUTE),
+    d_applicationMethod(ApplicationMethod::ApplyAbsolute),
     d_targetProperty(""),
     d_interpolator(nullptr)
 {}
@@ -248,8 +248,8 @@ void Affector::savePropertyValues(AnimationInstance* instance)
 {
     switch (d_applicationMethod)
     {
-    case ApplicationMethod::APPLY_RELATIVE:
-    case ApplicationMethod::APPLY_RELATIVE_MULTIPLY:
+    case ApplicationMethod::ApplyRelative:
+    case ApplicationMethod::ApplyRelativeMultiply:
         instance->savePropertyValue(d_targetProperty);
         break;
 
@@ -280,14 +280,14 @@ void Affector::apply(AnimationInstance* instance)
     if (d_targetProperty.empty())
     {
         Logger::getSingleton().logEvent(
-            "Affector can't be applied when target property is empty!", LoggingLevel::WARNING_LEVEL);
+            "Affector can't be applied when target property is empty!", LoggingLevel::Warning);
         return;
     }
 
     if (!d_interpolator)
     {
         Logger::getSingleton().logEvent(
-            "Affector can't be applied when no interpolator is set!", LoggingLevel::WARNING_LEVEL);
+            "Affector can't be applied when no interpolator is set!", LoggingLevel::Warning);
         return;
     }
 
@@ -348,7 +348,7 @@ void Affector::apply(AnimationInstance* instance)
             leftDistance / (leftDistance + rightDistance));
 
     // absolute application method
-    if (d_applicationMethod == ApplicationMethod::APPLY_ABSOLUTE)
+    if (d_applicationMethod == ApplicationMethod::ApplyAbsolute)
     {
         const String result = d_interpolator->interpolateAbsolute(
                                   left->getValueForAnimation(instance),
@@ -358,7 +358,7 @@ void Affector::apply(AnimationInstance* instance)
         target->setProperty(d_targetProperty, result);
     }
     // relative application method
-    else if (d_applicationMethod == ApplicationMethod::APPLY_RELATIVE)
+    else if (d_applicationMethod == ApplicationMethod::ApplyRelative)
     {
         const String& base = instance->getSavedPropertyValue(getTargetProperty());
 
@@ -371,7 +371,7 @@ void Affector::apply(AnimationInstance* instance)
         target->setProperty(d_targetProperty, result);
     }
     // relative multiply application method
-    else if (d_applicationMethod == ApplicationMethod::APPLY_RELATIVE_MULTIPLY)
+    else if (d_applicationMethod == ApplicationMethod::ApplyRelativeMultiply)
     {
         const String& base = instance->getSavedPropertyValue(getTargetProperty());
 
@@ -397,13 +397,13 @@ void Affector::writeXMLToStream(XMLSerializer& xml_stream) const
     String applicationMethod;
     switch(getApplicationMethod())
     {
-    case ApplicationMethod::APPLY_ABSOLUTE:
+    case ApplicationMethod::ApplyAbsolute:
         applicationMethod = AnimationAffectorHandler::ApplicationMethodAbsolute;
         break;
-    case ApplicationMethod::APPLY_RELATIVE:
+    case ApplicationMethod::ApplyRelative:
         applicationMethod = AnimationAffectorHandler::ApplicationMethodRelative;
         break;
-    case ApplicationMethod::APPLY_RELATIVE_MULTIPLY:
+    case ApplicationMethod::ApplyRelativeMultiply:
         applicationMethod = AnimationAffectorHandler::ApplicationMethodRelativeMultiply;
         break;
 

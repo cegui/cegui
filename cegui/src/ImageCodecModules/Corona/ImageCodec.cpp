@@ -58,14 +58,14 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
     corona::File* texFile = corona::CreateMemoryFile(data.getDataPtr(), (int)data.getSize());
     if (texFile == 0)
     {
-        Logger::getSingleton().logEvent("Unable to create corona::File object", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("Unable to create corona::File object", LoggingLevel::Error);
         return 0;
     }
     corona::Image* texImg = corona::OpenImage(texFile);
     delete texFile;
     if (texImg == 0)
     {
-        Logger::getSingleton().logEvent("Unable to load image, corona::OpenImage failed", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("Unable to load image, corona::OpenImage failed", LoggingLevel::Error);
         return 0;
     }
     Texture::PixelFormat cefmt;
@@ -73,17 +73,17 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         case corona::PF_R8G8B8:
             texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8);
-            cefmt = Texture::PixelFormat::RGB;
+            cefmt = Texture::PixelFormat::Rgb;
             break;
         default:
             texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);
-            cefmt = Texture::PixelFormat::RGBA;
+            cefmt = Texture::PixelFormat::Rgba;
             break;
     }
     texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);
     if (texImg == 0)
     {
-        Logger::getSingleton().logEvent("Unable to convert image to RGBA", LoggingLevel::ERROR_LEVEL);
+        Logger::getSingleton().logEvent("Unable to convert image to RGBA", LoggingLevel::Error);
         return 0; 
     }
     result->loadFromMemory(texImg->getPixels(),

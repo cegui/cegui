@@ -133,27 +133,27 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
         break;
 
     case WM_LBUTTONDOWN:
-        s_sampleBrowser->injectMouseButtonDown(CEGUI::MouseButton::LEFT_BUTTON);
+        s_sampleBrowser->injectMouseButtonDown(CEGUI::MouseButton::Left);
         break;
 
     case WM_LBUTTONUP:
-        s_sampleBrowser->injectMouseButtonUp(CEGUI::MouseButton::LEFT_BUTTON);
+        s_sampleBrowser->injectMouseButtonUp(CEGUI::MouseButton::Left);
         break;
 
     case WM_RBUTTONDOWN:
-        s_sampleBrowser->injectMouseButtonDown(CEGUI::MouseButton::RIGHT_BUTTON);
+        s_sampleBrowser->injectMouseButtonDown(CEGUI::MouseButton::Right);
         break;
 
     case WM_RBUTTONUP:
-        s_sampleBrowser->injectMouseButtonUp(CEGUI::MouseButton::RIGHT_BUTTON);
+        s_sampleBrowser->injectMouseButtonUp(CEGUI::MouseButton::Right);
         break;
 
     case WM_MBUTTONDOWN:
-        s_sampleBrowser->injectMouseButtonDown(CEGUI::MouseButton::MIDDLE_BUTTON);
+        s_sampleBrowser->injectMouseButtonDown(CEGUI::MouseButton::Middle);
         break;
 
     case WM_MBUTTONUP:
-        s_sampleBrowser->injectMouseButtonUp(CEGUI::MouseButton::MIDDLE_BUTTON);
+        s_sampleBrowser->injectMouseButtonUp(CEGUI::MouseButton::Middle);
         break;
 
     case 0x020A: // WM_MOUSEWHEEL:

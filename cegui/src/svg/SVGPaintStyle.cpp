@@ -41,12 +41,12 @@ SVGPaint::SVGPaint() :
 //----------------------------------------------------------------------------//
 SVGPaintStyle::SVGPaintStyle() :
     d_fill(),
-    d_fillRule(PolygonFillRule::NON_ZERO),
+    d_fillRule(PolygonFillRule::NonZero),
     d_fillOpacity(1.0f),
     d_stroke(),
     d_strokeWidth(1.0f),
-    d_strokeLinecap(SvgLinecap::BUTT),
-    d_strokeLinejoin(SVGLinejoin::MITER),
+    d_strokeLinecap(SvgLinecap::Butt),
+    d_strokeLinejoin(SVGLinejoin::Miter),
     d_strokeMiterlimit(4.0f),
     d_strokeDashArray(),
     d_strokeDashOffset(0.0f),

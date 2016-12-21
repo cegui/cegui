@@ -147,7 +147,7 @@ void Scheme_xmlHandler::elementStart(const String& element,
     // anything else is a non-fatal error.
     else
         Logger::getSingleton().logEvent("Scheme_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", LoggingLevel::ERROR_LEVEL);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -308,7 +308,7 @@ void Scheme_xmlHandler::elementGUISchemeEnd()
 
     String addressStr = SharedStringstream::GetPointerAddressAsString(d_scheme);
     Logger::getSingleton().logEvent("Finished creation of GUIScheme '" +
-        d_scheme->getName() + "' via XML file. " + addressStr, LoggingLevel::INFORMATIVE);
+        d_scheme->getName() + "' via XML file. " + addressStr, LoggingLevel::Informative);
 }
 
 } // End of  CEGUI namespace section

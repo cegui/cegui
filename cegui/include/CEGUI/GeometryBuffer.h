@@ -60,11 +60,11 @@ class RenderMaterial;
 enum class VertexAttributeType : int
 {
     //! Position 0 attribute
-    POSITION0,
+    Position0,
     //! Colour 0 
-    COLOUR0,
+    Colour0,
     //! Texture coordinate 0 attribute
-    TEXCOORD0
+    TexCoord0
 };
 
 //----------------------------------------------------------------------------//
@@ -79,11 +79,11 @@ enum class VertexAttributeType : int
 enum class PolygonFillRule : int
 {
     //! Draw the polygon normally - without a fill-rule.
-    NONE,
+    None,
     //! Uses the nonzero rule to determine how the polygon is to be filled.
-    NON_ZERO,
+    NonZero,
     //! Uses the  evenodd rule to determine how the polygon is to be filled.
-    EVEN_ODD
+    EvenOdd
 };
 
 //----------------------------------------------------------------------------//

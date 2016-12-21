@@ -68,7 +68,7 @@ ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	d_splitterSize(DefaultSizingArea),
 	d_splitterHover(false),
 	d_dragSizing(false),
-	d_sortDir(SortDirection::NONE),
+	d_sortDir(SortDirection::None),
 	d_segmentHover(false),
 	d_segmentPushed(false),
 	d_sizingEnabled(true),
@@ -616,7 +616,7 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header segment.  Value is the text of one of the SortDirection enumerated value names.",
-        &ListHeaderSegment::setSortDirection, &ListHeaderSegment::getSortDirection, ListHeaderSegment::SortDirection::NONE
+        &ListHeaderSegment::setSortDirection, &ListHeaderSegment::getSortDirection, ListHeaderSegment::SortDirection::None
     );
 
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,

@@ -302,7 +302,7 @@ Window::Window(const String& type, const String& name):
     d_hitTestRectValid(false),
 
     // Initial update mode
-    d_updateMode(WindowUpdateMode::VISIBLE),
+    d_updateMode(WindowUpdateMode::Visible),
 
     // Don't propagate cursor inputs by default.
     d_propagatePointerInputs(false),
@@ -1529,7 +1529,7 @@ void Window::addWindowProperties(void)
     CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
         UpdateModePropertyName, "Property to get/set the window update mode setting.  "
         "Value is one of \"Always\", \"Never\" or \"Visible\".",
-        &Window::setUpdateMode,&Window::getUpdateMode, WindowUpdateMode::VISIBLE
+        &Window::setUpdateMode,&Window::getUpdateMode, WindowUpdateMode::Visible
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1626,8 +1626,8 @@ void Window::update(float elapsed)
     for (size_t i = 0; i < getChildCount(); ++i)
     {
         // update children based on their WindowUpdateMode setting.
-        if (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::ALWAYS ||
-                (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::VISIBLE &&
+        if (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::Always ||
+                (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::Visible &&
                  getChildAtIdx(i)->isVisible()))
         {
             getChildAtIdx(i)->update(elapsed);
@@ -1960,7 +1960,7 @@ void Window::setLookNFeel(const String& look)
 
     d_lookName = look;
     Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +
-        "' to window '" + d_name + "'.", LoggingLevel::INFORMATIVE);
+        "' to window '" + d_name + "'.", LoggingLevel::Informative);
 
     // Work to initialise the look and feel...
     const WidgetLookFeel& wlf = wlMgr.getWidgetLook(look);
@@ -2029,7 +2029,7 @@ void Window::layoutLookNFeelChildWidgets()
     {
         Logger::getSingleton().logEvent(
             "Window::layoutLookNFeelChildWidgets: "
-            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::ERROR_LEVEL);
+            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
     }
 }
 
@@ -2107,7 +2107,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                 // This catches errors from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent(
                     "Window::writePropertiesXML: property receiving failed.  "
-                    "Continuing...", LoggingLevel::ERROR_LEVEL);
+                    "Continuing...", LoggingLevel::Error);
             }
         }
 
@@ -2780,7 +2780,7 @@ void Window::setWindowRenderer(const String& name)
     if (!name.empty())
     {
         Logger::getSingleton().logEvent("Assigning the window renderer '" +
-            name + "' to the window '" + d_name + "'", LoggingLevel::INFORMATIVE);
+            name + "' to the window '" + d_name + "'", LoggingLevel::Informative);
         d_windowRenderer = wrm.createWindowRenderer(name);
         WindowEventArgs e(this);
         onWindowRendererAttached(e);
@@ -2843,7 +2843,7 @@ void Window::banPropertyFromXML(const String& property_name)
 	{
 		Logger::getSingleton().logEvent("Property '" + property_name + "' "
 				"is not writable so it's implicitly banned from XML. No need "
-				"to ban it manually", LoggingLevel::WARNING_LEVEL);
+				"to ban it manually", LoggingLevel::Warning);
 
 		return;
 	}
@@ -3149,7 +3149,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
         ctx.surface = d_surface;
         ctx.owner = this;
         ctx.offset = getUnclippedOuterRect().get().getPosition();
-        ctx.queue = RenderQueueID::BASE;
+        ctx.queue = RenderQueueID::Base;
     }
     else if (d_parent)
     {
@@ -3160,7 +3160,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
         ctx.surface = &getGUIContext();
         ctx.owner = nullptr;
         ctx.offset = glm::vec2(0, 0);
-        ctx.queue = RenderQueueID::BASE;
+        ctx.queue = RenderQueueID::Base;
     }
 }
 
@@ -3292,7 +3292,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
         {
             Logger::getSingleton().logEvent("Window::allocateRenderingWindow - "
                 "Failed to create a suitable TextureTarget for use by Window '"
-                + d_name + "'", LoggingLevel::ERROR_LEVEL);
+                + d_name + "'", LoggingLevel::Error);
 
             d_surface = nullptr;
             return;
@@ -3400,7 +3400,7 @@ void Window::onRotated(ElementEventArgs& e)
             Logger::getSingleton().logEvent("Window::setRotation - "
                 "Failed to obtain a suitable ReneringWindow surface for "
                 "Window '" + d_name + "'.  Rotation will not be available.",
-                LoggingLevel::ERROR_LEVEL);
+                LoggingLevel::Error);
 
             return;
         }
@@ -3413,7 +3413,7 @@ void Window::onRotated(ElementEventArgs& e)
         {
             Logger::getSingleton().logEvent("Window::setRotation - "
                 "Window '" + d_name + "' has a manual RenderingSurface that is not "
-                "a RenderingWindow.  Rotation will not be available.", LoggingLevel::ERROR_LEVEL);
+                "a RenderingWindow.  Rotation will not be available.", LoggingLevel::Error);
 
             return;
         }

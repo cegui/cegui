@@ -110,13 +110,13 @@ RenderTarget& NullRenderer::getDefaultRenderTarget()
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> NullRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    if(shaderType == DefaultShaderType::TEXTURED)
+    if(shaderType == DefaultShaderType::Textured)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
-    else if(shaderType == DefaultShaderType::SOLID)
+    else if(shaderType == DefaultShaderType::Solid)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 
@@ -136,9 +136,9 @@ GeometryBuffer& NullRenderer::createGeometryBufferTextured(RefCounted<RenderMate
 {
     NullGeometryBuffer* geom_buffer = new NullGeometryBuffer(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TexCoord0);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -149,8 +149,8 @@ GeometryBuffer& NullRenderer::createGeometryBufferColoured(RefCounted<RenderMate
 {
     NullGeometryBuffer* geom_buffer = new NullGeometryBuffer(renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;

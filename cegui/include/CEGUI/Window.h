@@ -68,11 +68,11 @@ namespace CEGUI
 enum class WindowUpdateMode : int
 {
     //! Always call the Window::update function for this window.
-    ALWAYS,
+    Always,
     //! Never call the Window::update function for this window.
-    NEVER,
+    Never,
     //! Only call the Window::update function for this window if it is visible.
-    VISIBLE
+    Visible
 };
 
 template<>
@@ -96,29 +96,29 @@ public:
 
         if (str == "Always")
         {
-            return WindowUpdateMode::ALWAYS;
+            return WindowUpdateMode::Always;
         }
         else if (str == "Never")
         {
-            return WindowUpdateMode::NEVER;
+            return WindowUpdateMode::Never;
         }
         else
         {
-            return WindowUpdateMode::VISIBLE;
+            return WindowUpdateMode::Visible;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == WindowUpdateMode::ALWAYS)
+        if (val == WindowUpdateMode::Always)
         {
             return "Always";
         }
-        else if (val == WindowUpdateMode::NEVER)
+        else if (val == WindowUpdateMode::Never)
         {
             return "Never";
         }
-        else if (val == WindowUpdateMode::VISIBLE)
+        else if (val == WindowUpdateMode::Visible)
         {
             return "Visible";
         }

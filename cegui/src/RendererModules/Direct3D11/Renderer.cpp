@@ -391,9 +391,9 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferTextured(CEGUI::RefCount
 {
     Direct3D11GeometryBuffer* geom_buffer = new Direct3D11GeometryBuffer(*this, renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::TEXCOORD0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TexCoord0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
@@ -405,8 +405,8 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferColoured(CEGUI::RefCount
 {
     Direct3D11GeometryBuffer* geom_buffer = new Direct3D11GeometryBuffer(*this, renderMaterial);
 
-    geom_buffer->addVertexAttribute(VertexAttributeType::POSITION0);
-    geom_buffer->addVertexAttribute(VertexAttributeType::COLOUR0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
     geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
@@ -416,13 +416,13 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferColoured(CEGUI::RefCount
 //----------------------------------------------------------------------------//
 RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    if(shaderType == DefaultShaderType::TEXTURED)
+    if(shaderType == DefaultShaderType::Textured)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperTextured));
 
         return render_material;
     }
-    else if(shaderType == DefaultShaderType::SOLID)
+    else if(shaderType == DefaultShaderType::Solid)
     {
         RefCounted<RenderMaterial> render_material(new RenderMaterial(d_shaderWrapperSolid));
 
@@ -442,11 +442,11 @@ void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
     Direct3D11Shader* shader_standard_textured = new Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured);
     d_shaderWrapperTextured = new Direct3D11ShaderWrapper(*shader_standard_textured, this);
 
-    d_shaderWrapperTextured->addUniformVariable("texture0", ShaderType::PIXEL, ShaderParamType::TEXTURE);
+    d_shaderWrapperTextured->addUniformVariable("texture0", ShaderType::PIXEL, ShaderParamType::Texture);
 
-    d_shaderWrapperTextured->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::MATRIX_4X4);
+    d_shaderWrapperTextured->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::Matrix4X4);
     d_shaderWrapperTextured->addUniformVariable("alphaPercentage", ShaderType::PIXEL, 
-        ShaderParamType::FLOAT);
+        ShaderParamType::Float);
 }
 
 //----------------------------------------------------------------------------//
@@ -455,9 +455,9 @@ void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
     Direct3D11Shader* shader_standard_solid = new Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured);
     d_shaderWrapperSolid = new Direct3D11ShaderWrapper(*shader_standard_solid, this);
 
-    d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::MATRIX_4X4);
+    d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::Matrix4X4);
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage", ShaderType::PIXEL, 
-        ShaderParamType::FLOAT);
+        ShaderParamType::Float);
 }
 
 //----------------------------------------------------------------------------//
@@ -533,7 +533,7 @@ void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
 {
     const FLOAT blendFactor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    if (d_blendMode == BlendMode::NORMAL)
+    if (d_blendMode == BlendMode::Normal)
     {
         if (d_currentBlendState != d_blendStateNormal)
         {
@@ -542,7 +542,7 @@ void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
         }
     }
 
-    if (d_blendMode == BlendMode::RTT_PREMULTIPLIED)
+    if (d_blendMode == BlendMode::RttPremultiplied)
     {
         if (d_currentBlendState != d_blendStatePreMultiplied)
         {

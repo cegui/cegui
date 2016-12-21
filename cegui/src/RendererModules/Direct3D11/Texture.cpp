@@ -44,11 +44,11 @@ static DXGI_FORMAT toD3DPixelFormat(const Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-        case Texture::PixelFormat::RGBA:      return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case Texture::PixelFormat::RGB:       return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case Texture::PixelFormat::RGBA_DXT1: return DXGI_FORMAT_BC1_UNORM;
-        case Texture::PixelFormat::RGBA_DXT3: return DXGI_FORMAT_BC2_UNORM;
-        case Texture::PixelFormat::RGBA_DXT5: return DXGI_FORMAT_BC3_UNORM;
+        case Texture::PixelFormat::Rgba:      return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case Texture::PixelFormat::Rgb:       return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case Texture::PixelFormat::RgbaDxt1: return DXGI_FORMAT_BC1_UNORM;
+        case Texture::PixelFormat::RgbaDxt3: return DXGI_FORMAT_BC2_UNORM;
+        case Texture::PixelFormat::RgbaDxt5: return DXGI_FORMAT_BC3_UNORM;
         default:                    return DXGI_FORMAT_UNKNOWN;
     }
 }
@@ -59,15 +59,15 @@ static size_t calculateDataWidth(const size_t width, Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-    case Texture::PixelFormat::RGBA:
-    case Texture::PixelFormat::RGB: // also 4 because we convert to RGBA
+    case Texture::PixelFormat::Rgba:
+    case Texture::PixelFormat::Rgb: // also 4 because we convert to RGBA
         return width * 4;
 
-    case Texture::PixelFormat::RGBA_DXT1:
+    case Texture::PixelFormat::RgbaDxt1:
         return ((width + 3) / 4) * 8;
 
-    case Texture::PixelFormat::RGBA_DXT3:
-    case Texture::PixelFormat::RGBA_DXT5:
+    case Texture::PixelFormat::RgbaDxt3:
+    case Texture::PixelFormat::RgbaDxt5:
         return ((width + 3) / 4) * 16;
 
     default:
@@ -198,7 +198,7 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
 
     const void* img_src = buffer;
     unsigned char* dest(0);
-    if (pixel_format == PixelFormat::RGB)
+    if (pixel_format == PixelFormat::Rgb)
     {
         const unsigned char* src = static_cast<const unsigned char*>(buffer);
         dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
@@ -493,11 +493,11 @@ bool Direct3D11Texture::isPixelFormatSupported(const PixelFormat fmt) const
 {
     switch (fmt)
     {
-        case PixelFormat::RGBA:
-        case PixelFormat::RGB:
-        case PixelFormat::RGBA_DXT1:
-        case PixelFormat::RGBA_DXT3:
-        case PixelFormat::RGBA_DXT5:
+        case PixelFormat::Rgba:
+        case PixelFormat::Rgb:
+        case PixelFormat::RgbaDxt1:
+        case PixelFormat::RgbaDxt3:
+        case PixelFormat::RgbaDxt5:
             return true;
 
         default:

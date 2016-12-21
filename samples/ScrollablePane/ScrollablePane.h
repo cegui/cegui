@@ -59,7 +59,7 @@ public:
 
     void initialise()
     {
-        d_keyValuesMappings[static_cast<unsigned char>(CEGUI::Key::Scan::SPACE)] =
+        d_keyValuesMappings[static_cast<unsigned char>(CEGUI::Key::Scan::Space)] =
             CEGUI::SemanticValue::SpawnNewDialog;
     }
 };

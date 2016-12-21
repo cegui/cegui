@@ -247,7 +247,7 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
 
-    sampleWindow->setAspectMode(AspectMode::EXPAND);
+    sampleWindow->setAspectMode(AspectMode::Expand);
 
     return sampleWindow;
 }
@@ -260,7 +260,7 @@ CEGUI::HorizontalLayoutContainer* SampleBrowserManager::createPreviewHeader()
     header->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(40.0f)));
     header->setCursorInputPropagationEnabled(true);
     header->setMargin(CEGUI::UBox(UDim(0.0f, 12.f),UDim(0.0f, 0.0f),UDim(0.0f, 0), UDim(0.0f, 0.0f)));
-    header->setHorizontalAlignment(HorizontalAlignment::CENTRE);
+    header->setHorizontalAlignment(HorizontalAlignment::Centre);
 
     return header;
 }
@@ -272,7 +272,7 @@ CEGUI::PushButton* SampleBrowserManager::createPreviewHeaderEnterButton()
     CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleEntryButton"));
 
     button->setSize(CEGUI::USize(cegui_absdim(1.0f), cegui_reldim(0.7f)));
-    button->setAspectMode(AspectMode::EXPAND);
+    button->setAspectMode(AspectMode::Expand);
     button->setAspectRatio(1.0f);
     button->setPosition(CEGUI::UVector2(cegui_absdim(-7.f), cegui_absdim(0.0f)));
     button->setCursorInputPropagationEnabled(true);
@@ -281,8 +281,8 @@ CEGUI::PushButton* SampleBrowserManager::createPreviewHeaderEnterButton()
     button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");
     button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SampleBrowserManager::handleSampleEnterButtonClicked, this));
     button->setAlwaysOnTop(true);
-    button->setHorizontalAlignment(HorizontalAlignment::RIGHT);
-    button->setVerticalAlignment(VerticalAlignment::CENTRE);
+    button->setHorizontalAlignment(HorizontalAlignment::Right);
+    button->setVerticalAlignment(VerticalAlignment::Centre);
     button->setAlwaysOnTop(true);
 
     return button;

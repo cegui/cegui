@@ -59,17 +59,17 @@ public:
     enum class ApplicationMethod : int
     {
         //! applies values as absolutes
-        APPLY_ABSOLUTE,
+        ApplyAbsolute,
 
         /** saves a base value after the animation is started and applies
          * relatively to that
          */
-        APPLY_RELATIVE,
+        ApplyRelative,
 
         /** saves a base value after the animation is started and applies
          * by multiplying this base value with key frame floats
          */
-        APPLY_RELATIVE_MULTIPLY
+        ApplyRelativeMultiply
     };
 
     /** internal constructor, please construct Affectors via
@@ -168,7 +168,7 @@ public:
         the KeyFrame
     */
     KeyFrame* createKeyFrame(float position, const String& value,
-                             KeyFrame::Progression progression = KeyFrame::Progression::LINEAR,
+                             KeyFrame::Progression progression = KeyFrame::Progression::Linear,
                              const String& sourceProperty = "");
 
     /*!

@@ -39,11 +39,11 @@ namespace CEGUI
 enum class XmlResourceExistsAction : int
 {
     //! Do not load the resource, return the existing instance.
-    RETURN,
+    Return,
     //! Destroy the existing instance and replace with the newly loaded one.
-    REPLACE,
+    Replace,
     //! Throw an AlreadyExistsException.
-    THROW
+    Throw
 };
 
 

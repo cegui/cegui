@@ -62,9 +62,9 @@ namespace CEGUI
         d_raqmTextNeedsUpdate(true),
 #endif 
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
-        d_lastHorzFormatting(HorizontalTextFormatting::LEFT_ALIGNED),
-        d_vertFormatting(VerticalTextFormatting::TOP_ALIGNED),
-        d_horzFormatting(HorizontalTextFormatting::LEFT_ALIGNED)
+        d_lastHorzFormatting(HorizontalTextFormatting::LeftAligned),
+        d_vertFormatting(VerticalTextFormatting::TopAligned),
+        d_horzFormatting(HorizontalTextFormatting::LeftAligned)
     {
 #ifdef CEGUI_USE_RAQM
         d_raqmTextData = new RaqmTextData();
@@ -219,45 +219,45 @@ namespace CEGUI
 
         switch(horzFormatting)
         {
-        case HorizontalTextFormatting::LEFT_ALIGNED:
+        case HorizontalTextFormatting::LeftAligned:
             d_formattedRenderedString =
                 new LeftAlignedRenderedString(rendered_string);
             break;
 
-        case HorizontalTextFormatting::CENTRE_ALIGNED:
+        case HorizontalTextFormatting::CentreAligned:
             d_formattedRenderedString =
                 new CentredRenderedString(rendered_string);
             break;
 
-        case HorizontalTextFormatting::RIGHT_ALIGNED:
+        case HorizontalTextFormatting::RightAligned:
             d_formattedRenderedString =
                 new RightAlignedRenderedString(rendered_string);
             break;
 
-        case HorizontalTextFormatting::JUSTIFIED:
+        case HorizontalTextFormatting::Justified:
             d_formattedRenderedString =
                 new JustifiedRenderedString(rendered_string);
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_LEFT_ALIGNED:
+        case HorizontalTextFormatting::WordWrapLeftAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <LeftAlignedRenderedString>(rendered_string);
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_CENTRE_ALIGNED:
+        case HorizontalTextFormatting::WordWrapCentreAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <CentredRenderedString>(rendered_string);
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_RIGHT_ALIGNED:
+        case HorizontalTextFormatting::WordWrapRightAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <RightAlignedRenderedString>(rendered_string);
             break;
 
-        case HorizontalTextFormatting::WORDWRAP_JUSTIFIED:
+        case HorizontalTextFormatting::WordWraperJustified:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <JustifiedRenderedString>(rendered_string);
@@ -279,11 +279,11 @@ namespace CEGUI
 
         switch(vertFormatting)
         {
-        case VerticalTextFormatting::CENTRE_ALIGNED:
+        case VerticalTextFormatting::CentreAligned:
             destRect.d_min.y += (destRect.getHeight() - textHeight) * 0.5f;
             break;
 
-        case VerticalTextFormatting::BOTTOM_ALIGNED:
+        case VerticalTextFormatting::BottomAligned:
             destRect.d_min.y = destRect.d_max.y - textHeight;
             break;
 

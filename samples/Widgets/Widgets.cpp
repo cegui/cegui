@@ -544,7 +544,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     d_windowLightUpdatedEvent = winMgr.createWindow("SampleBrowserSkin/Light");
     horizontalLayout->addChild(d_windowLightUpdatedEvent);
     d_windowLightUpdatedEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
-    d_windowLightUpdatedEvent->setAspectMode(CEGUI::AspectMode::EXPAND);
+    d_windowLightUpdatedEvent->setAspectMode(CEGUI::AspectMode::Expand);
     d_windowLightUpdatedEvent->setProperty("LightColour", "FF66FF66");
 
     CEGUI::Window* updateEventLabel = winMgr.createWindow("Vanilla/Label");
@@ -557,7 +557,7 @@ void WidgetsSample::initialiseEventLights(CEGUI::Window* container)
     d_windowLightCursorMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
     horizontalLayout->addChild(d_windowLightCursorMoveEvent);
     d_windowLightCursorMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
-    d_windowLightCursorMoveEvent->setAspectMode(CEGUI::AspectMode::EXPAND);
+    d_windowLightCursorMoveEvent->setAspectMode(CEGUI::AspectMode::Expand);
     d_windowLightCursorMoveEvent->setProperty("LightColour", "FF77BBFF");
 
     CEGUI::Window* cursor_move_event_label = winMgr.createWindow("Vanilla/Label");
@@ -968,7 +968,7 @@ void WidgetsSample::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widge
     d_widgetPropertiesDisplayWindow->setUserColumnSizingEnabled(true);
 
     d_widgetPropertiesDisplayWindow->setSortColumnByID(0);
-    d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::SortDirection::ASCENDING);
+    d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::SortDirection::Ascending);
 }
 
 void WidgetsSample::initMenubar(CEGUI::Menubar* menuBar)

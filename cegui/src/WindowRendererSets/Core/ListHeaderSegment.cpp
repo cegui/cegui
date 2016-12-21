@@ -70,12 +70,12 @@ namespace CEGUI
 
         // Render sorting icon as needed
         ListHeaderSegment::SortDirection sort_dir = w->getSortDirection();
-        if (sort_dir == ListHeaderSegment::SortDirection::ASCENDING)
+        if (sort_dir == ListHeaderSegment::SortDirection::Ascending)
         {
             imagery = &wlf.getStateImagery("AscendingSortIcon");
             imagery->render(*w);
         }
-        else if (sort_dir == ListHeaderSegment::SortDirection::DESCENDING)
+        else if (sort_dir == ListHeaderSegment::SortDirection::Descending)
         {
             imagery = &wlf.getStateImagery("DescendingSortIcon");
             imagery->render(*w);
@@ -91,12 +91,12 @@ namespace CEGUI
             imagery->render(*w, targetArea);
 
             // Render sorting icon as needed
-            if (sort_dir == ListHeaderSegment::SortDirection::ASCENDING)
+            if (sort_dir == ListHeaderSegment::SortDirection::Ascending)
             {
                 imagery = &wlf.getStateImagery("GhostAscendingSortIcon");
                 imagery->render(*w, targetArea);
             }
-            else if (sort_dir == ListHeaderSegment::SortDirection::DESCENDING)
+            else if (sort_dir == ListHeaderSegment::SortDirection::Descending)
             {
                 imagery = &wlf.getStateImagery("GhostDescendingSortIcon");
                 imagery->render(*w, targetArea);

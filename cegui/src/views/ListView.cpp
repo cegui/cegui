@@ -201,7 +201,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
     item.d_string = rendered_string;
     item.d_index = index;
     item.d_text = text;
-    item.d_icon = d_itemModel->getData(index, ItemDataRole::ICON);
+    item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
 
     item.d_size = Sizef(
         rendered_string.getHorizontalExtent(this),

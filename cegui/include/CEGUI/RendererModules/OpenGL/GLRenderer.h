@@ -44,13 +44,13 @@ public:
     enum class TextureTargetType : int
     {
         //! Automatically choose the best type available.
-        AUTO,
+        Auto,
         //! Use targets based on frame buffer objects if available, else none.
-        FBO,
+        Fbo,
         //! Use targets based on pbuffer support if available, else none.
-        PBUFFER,
+        Pbuffer,
         //! Disable texture targets.
-        NONE
+        None
     };
 
     /*!
@@ -77,7 +77,7 @@ public:
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
     static OpenGLRenderer& bootstrapSystem(
-                                    const TextureTargetType tt_type = TextureTargetType::AUTO,
+                                    const TextureTargetType tt_type = TextureTargetType::Auto,
                                     const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -107,7 +107,7 @@ public:
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
     static OpenGLRenderer& bootstrapSystem(const Sizef& display_size,
-                                           const TextureTargetType tt_type = TextureTargetType::AUTO,
+                                           const TextureTargetType tt_type = TextureTargetType::Auto,
                                            const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -138,7 +138,7 @@ public:
     \param abi
         This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGLRenderer& create(const TextureTargetType tt_type = TextureTargetType::AUTO,
+    static OpenGLRenderer& create(const TextureTargetType tt_type = TextureTargetType::Auto,
                                   const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -156,7 +156,7 @@ public:
         This must be set to CEGUI_VERSION_ABI
     */
     static OpenGLRenderer& create(const Sizef& display_size,
-                                  const TextureTargetType tt_type = TextureTargetType::AUTO,
+                                  const TextureTargetType tt_type = TextureTargetType::Auto,
                                   const int abi = CEGUI_VERSION_ABI);
 
     /*!

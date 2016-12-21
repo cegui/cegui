@@ -93,8 +93,8 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	addMultiColumnListProperties();
 
 	// set default selection mode
-	d_selectMode = SelectionMode::CELL_SINGLE;		// hack to ensure call below does what it should.
-	setSelectionMode(SelectionMode::ROW_SINGLE);
+	d_selectMode = SelectionMode::CellSingle;		// hack to ensure call below does what it should.
+	setSelectionMode(SelectionMode::RowSingle);
 }
 
 
@@ -643,7 +643,7 @@ void MultiColumnList::initialiseComponents(void)
 
 
 	// final initialisation now widget is complete
-	setSortDirection(ListHeaderSegment::SortDirection::NONE);
+	setSortDirection(ListHeaderSegment::SortDirection::None);
 
 	// Perform initial layout
 	configureScrollbars();
@@ -875,10 +875,10 @@ unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, uns
 
 	// if sorting is enabled, insert at an appropriate position
     const ListHeaderSegment::SortDirection dir = getSortDirection();
-	if (dir != ListHeaderSegment::SortDirection::NONE)
+	if (dir != ListHeaderSegment::SortDirection::None)
 	{
         // calculate where the row should be inserted
-        ListItemGrid::iterator ins_pos = dir == ListHeaderSegment::SortDirection::DESCENDING ?
+        ListItemGrid::iterator ins_pos = dir == ListHeaderSegment::SortDirection::Descending ?
             std::upper_bound(d_grid.begin(), d_grid.end(), row, pred_descend) :
             std::upper_bound(d_grid.begin(), d_grid.end(), row);
         // insert item and get final inserted position.
@@ -916,7 +916,7 @@ unsigned int MultiColumnList::insertRow(unsigned int row_idx, unsigned int row_i
 unsigned int MultiColumnList::insertRow(ListboxItem* item, unsigned int col_id, unsigned int row_idx, unsigned int row_id)
 {
 	// if sorting is enabled, use add instead of insert
-	if (getSortDirection() != ListHeaderSegment::SortDirection::NONE)
+	if (getSortDirection() != ListHeaderSegment::SortDirection::None)
 	{
 		return addRow(item, col_id, row_id);
 	}
@@ -1053,7 +1053,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 
 		switch(d_selectMode)
 		{
-		case SelectionMode::ROW_SINGLE:
+		case SelectionMode::RowSingle:
 			d_multiSelect		= false;
 			d_fullRowSelect		= true;
 			d_fullColSelect		= false;
@@ -1061,7 +1061,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-        case SelectionMode::ROW_MULTIPLE:
+        case SelectionMode::RowMultiple:
 			d_multiSelect		= true;
 			d_fullRowSelect		= true;
 			d_fullColSelect		= false;
@@ -1069,7 +1069,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::CELL_SINGLE:
+		case SelectionMode::CellSingle:
 			d_multiSelect		= false;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= false;
@@ -1077,7 +1077,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::CELL_MULTIPLE:
+		case SelectionMode::CellMultiple:
 			d_multiSelect		= true;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= false;
@@ -1085,7 +1085,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::NOMINATED_COLUMN_SINGLE:
+		case SelectionMode::NominatedColumnSingle:
 			d_multiSelect		= false;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= false;
@@ -1093,7 +1093,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::NOMINATED_COLUMN_MULTIPLE:
+		case SelectionMode::NominatedColumnMultiple:
 			d_multiSelect		= true;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= false;
@@ -1101,7 +1101,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::COLUMN_SINGLE:
+		case SelectionMode::ColumnSingle:
 			d_multiSelect		= false;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= true;
@@ -1109,7 +1109,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::COLUMN_MULTIPLE:
+		case SelectionMode::ColumnMultiple:
 			d_multiSelect		= true;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= true;
@@ -1117,7 +1117,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= false;
 			break;
 
-		case SelectionMode::NOMINATED_ROW_SINGLE:
+		case SelectionMode::NominatedRowSingle:
 			d_multiSelect		= false;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= false;
@@ -1125,7 +1125,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			d_useNominatedRow	= true;
 			break;
 
-		case SelectionMode::NOMINATED_ROW_MULTIPLE:
+		case SelectionMode::NominatedRowMultiple:
 			d_multiSelect		= true;
 			d_fullRowSelect		= false;
 			d_fullColSelect		= false;
@@ -2250,7 +2250,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
     CEGUI_DEFINE_PROPERTY(MultiColumnList, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the list."
         "  Value is the text of one of the SortDirection enumerated value names.",
-        &MultiColumnList::setSortDirection, &MultiColumnList::getSortDirection, ListHeaderSegment::SortDirection::NONE
+        &MultiColumnList::setSortDirection, &MultiColumnList::getSortDirection, ListHeaderSegment::SortDirection::None
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
@@ -2283,7 +2283,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
     CEGUI_DEFINE_PROPERTY(MultiColumnList, MultiColumnList::SelectionMode,
         "SelectionMode", "Property to get/set the selection mode setting of the list."
         "  Value is the text of one of the SelectionMode enumerated value names.",
-        &MultiColumnList::setSelectionMode, &MultiColumnList::getSelectionMode, MultiColumnList::SelectionMode::ROW_SINGLE
+        &MultiColumnList::setSelectionMode, &MultiColumnList::getSelectionMode, MultiColumnList::SelectionMode::RowSingle
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
@@ -2468,7 +2468,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 		catch (InvalidRequestException&)
 		{
 			// This catches error(s) from the MultiLineColumnList for example
-			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", LoggingLevel::ERROR_LEVEL);
+			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", LoggingLevel::Error);
 		}
 
     return propCnt;
@@ -2696,11 +2696,11 @@ void MultiColumnList::resortList()
     // re-sort list according to direction
     ListHeaderSegment::SortDirection dir = getSortDirection();
 
-    if (dir == ListHeaderSegment::SortDirection::DESCENDING)
+    if (dir == ListHeaderSegment::SortDirection::Descending)
     {
         std::sort(d_grid.begin(), d_grid.end(), pred_descend);
     }
-    else if (dir == ListHeaderSegment::SortDirection::ASCENDING)
+    else if (dir == ListHeaderSegment::SortDirection::Ascending)
     {
         std::sort(d_grid.begin(), d_grid.end());
     }
