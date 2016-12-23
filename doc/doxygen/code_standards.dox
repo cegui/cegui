@@ -91,7 +91,9 @@ The following details the general code style and layout that should be used.
 
 - All types (namespaces, classes, structs, typedefs and enums) should have descriptive names and use PascalCase; where each word of the name is capitalised - such as in @b MyClass.
 
-- Constants should be all upper case with words separated by an underscore, such as in @b THIS_IS_CONSTANT.  Please note that this rule does also apply to class member constants and enumeration values.
+- Constants should be all upper case with words separated by an underscore, such as in @b THIS_IS_CONSTANT.  Please note that this rule does also apply to class member constants.
+
+- Enumeration values (enumerators) should be named in camel case with a leading capital in CEGUI 1.X+ and default branch, but should be named all upper-case with underscores in CEGUI v0 and lower.
 
 - Don't use global variables. Exception: Sample code for platforms where we don't have a main function, e.g. Android.
 
@@ -340,7 +342,7 @@ a_ptr = &an_object;
 
 - Only use C++ style casts (primarily static_cast).  C style casts should not be used.  Or better yet, use a type consistently if possible so you do not need to cast in the first place!
 
-- In %CEGUI default branch and %CEGUI version 1.X or higher: By default use <tt>enum class MyEnum : int</tt> for enums. In the rare cases where it is required, another type than int can be used. Please always follow the naming style for enumerators mentioned earlier in those document.
+- In %CEGUI default branch and %CEGUI version 1.X or higher: By default use <tt>enum class MyEnum : int</tt> for enums. In the rare cases where it is required, another type than int can be used. Use camel case with a leading capital for enumerators and the enum itself.
 
 - In %CEGUI 0.X: Only use regular \c enum.
 
