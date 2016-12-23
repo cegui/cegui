@@ -42,7 +42,6 @@
 #endif
 
 #include <cmath>
-#include <cstdio>
 
 
 namespace CEGUI
@@ -51,7 +50,7 @@ namespace CEGUI
 // Pixels to put between glyphs
 #define INTER_GLYPH_PAD_SPACE 2
 // A multiplication coefficient to convert FT_Pos values into normal floats
-#define FT_POS_COEF  (1.0/64.0)
+#define FT_POS_COEF  (1.0f/64.f)
 
 //----------------------------------------------------------------------------//
 // Font objects usage count
@@ -105,7 +104,7 @@ FreeTypeFont::FreeTypeFont(
     FreeTypeFont::updateFont();
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << "Successfully loaded " << d_cp_map.size() << " glyphs";
+    sstream << "Successfully loaded " << d_codePointToGlyphMap.size() << " glyphs";
     Logger::getSingleton().logEvent(sstream.str(), LoggingLevel::Informative);
 }
 
@@ -141,8 +140,8 @@ void FreeTypeFont::addFreeTypeFontProperties ()
 }
 
 //----------------------------------------------------------------------------//
-unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
-                                  CodepointMap::const_iterator e) const
+unsigned int FreeTypeFont::getTextureSize(CodePointToGlyphMap::const_iterator s,
+                                  CodePointToGlyphMap::const_iterator e) const
 {
     unsigned int texsize = 32; // start with 32x32
     unsigned int max_texsize = System::getSingleton().getRenderer()->getMaxTextureSize();
@@ -153,7 +152,7 @@ unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
     {
         unsigned int x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
         unsigned int yb = INTER_GLYPH_PAD_SPACE;
-        for (CodepointMap::const_iterator c = s; c != e; ++c)
+        for (CodePointToGlyphMap::const_iterator c = s; c != e; ++c)
         {
             // skip glyphs that are already rendered
             if (c->second->getImage())
@@ -197,12 +196,12 @@ unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
 //----------------------------------------------------------------------------//
 void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) const
 {
-    CodepointMap::iterator s = d_cp_map.lower_bound(start_codepoint);
-    if (s == d_cp_map.end())
+    CodePointToGlyphMap::iterator s = d_codePointToGlyphMap.lower_bound(start_codepoint);
+    if (s == d_codePointToGlyphMap.end())
         return;
 
-    CodepointMap::iterator orig_s = s;
-    CodepointMap::iterator e = d_cp_map.upper_bound(end_codepoint);
+    CodePointToGlyphMap::iterator orig_s = s;
+    CodePointToGlyphMap::iterator e = d_codePointToGlyphMap.upper_bound(end_codepoint);
     while (true)
     {
         // Create a new Imageset for glyphs
@@ -226,16 +225,16 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
 
         // Set to true when we finish rendering all glyphs we were asked to
         bool finished = false;
-        // Set to false when we reach d_cp_map.end() and we start going backward
+        // Set to false when we reach d_codePointToGlyphMap.end() and we start going backward
         bool forward = true;
 
         /* To conserve texture space we will render more glyphs than asked,
          * but never less than asked. First we render all glyphs from s to e
-         * and after that we render glyphs until we reach d_cp_map.end(),
+         * and after that we render glyphs until we reach d_codePointToGlyphMap.end(),
          * and if there's still free texture space we will go backward
-         * from s until we hit d_cp_map.begin().
+         * from s until we hit d_codePointToGlyphMap.begin().
          */
-        while (s != d_cp_map.end())
+        while (s != d_codePointToGlyphMap.end())
         {
             // Check if we finished rendering all the required glyphs
             finished |= (s == e);
@@ -277,7 +276,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                         y = yb;
                     }
 
-                    // Check if glyph bottom margine does not exceed texture size
+                    // Check if glyph bottom margin does not exceed texture size
                     unsigned int y_bot = y + glyph_h;
                     if (y_bot > texsize)
                         break;
@@ -313,7 +312,7 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
 
             // Go to next glyph, if we are going forward
             if (forward)
-                if (++s == d_cp_map.end())
+                if (++s == d_codePointToGlyphMap.end())
                 {
                     finished = true;
                     forward = false;
@@ -321,12 +320,13 @@ void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) c
                 }
             // Go to previous glyph, if we are going backward
             if (!forward)
-                if ((s == d_cp_map.begin()) || (--s == d_cp_map.begin()))
+                if ((s == d_codePointToGlyphMap.begin()) || (--s == d_codePointToGlyphMap.begin()))
                     break;
         }
 
         // Copy our memory buffer into the texture and free it
-        texture.loadFromMemory(&mem_buffer[0], Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PixelFormat::Rgba);
+        Sizef textureSize(static_cast<float>(texsize), static_cast<float>(texsize));
+        texture.loadFromMemory(&mem_buffer[0], textureSize, Texture::PixelFormat::Rgba);
 
         if (finished)
             break;
@@ -383,12 +383,13 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
-    for(auto codePointMapEntry : d_cp_map)
+    for(auto codePointMapEntry : d_codePointToGlyphMap)
     {
         delete codePointMapEntry.second;
     }
 
-    d_cp_map.clear();
+    d_codePointToGlyphMap.clear();
+    d_indexToGlyphMap.clear();
 
     for (size_t i = 0; i < d_glyphImages.size(); ++i)
         delete d_glyphImages[i];
@@ -549,54 +550,41 @@ void FreeTypeFont::initialiseGlyphMap()
 {
     FT_UInt gindex;
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
-    FT_ULong max_codepoint = codepoint;
 
     while (gindex != 0)
     {
-        if (max_codepoint < codepoint)
-            max_codepoint = codepoint;
 
-        if(d_cp_map.find(codepoint) != d_cp_map.end())
+        if(d_codePointToGlyphMap.find(codepoint) != d_codePointToGlyphMap.end())
         {
             throw InvalidRequestException("FreeTypeFont::initialiseGlyphMap - Requesting "
                 "adding an already added glyph to the codepoint glyph map.");        
         }
 
-        d_cp_map[codepoint] = new FreeTypeFontGlyph(this, gindex);
+        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(this);
+        d_codePointToGlyphMap[codepoint] = newFontGlyph;
+        d_indexToGlyphMap[gindex] = newFontGlyph;
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
-
-    setMaxCodepoint(max_codepoint);
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* FreeTypeFont::findFontGlyph(const char32_t codepoint) const
+void FreeTypeFont::initialiseFontGlyph(FreeTypeFontGlyph* glyph, FT_UInt glyphIndex) const
 {
-    CodepointMap::iterator pos = d_cp_map.find(codepoint);
-
-    if (pos == d_cp_map.end())
-        return nullptr;
-
-    if (!pos->second->isValid())
-        initialiseFontGlyph(pos);
-
-    return pos->second;
-}
-
-//----------------------------------------------------------------------------//
-void FreeTypeFont::initialiseFontGlyph(CodepointMap::iterator cp) const
-{
-    // load-up required glyph metrics (don't render)
-    if (FT_Load_Char(d_fontFace, cp->first,
-                     FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
+    // load glyph image into the slot (erase previous one)
+    FT_Error result = FT_Load_Glyph(d_fontFace, glyphIndex,
+        FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT);
+    
+    if (result != 0)
+    {
         return;
+    }
 
     const float adv =
         d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(FT_POS_COEF);
 
-    cp->second->setAdvance(adv);
-    cp->second->setValid(true);
+    glyph->setAdvance(adv);
+    glyph->setValid(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -721,6 +709,18 @@ const FT_Face& FreeTypeFont::getFontFace() const
     return d_fontFace;
 }
 
+FreeTypeFontGlyph* FreeTypeFont::getGlyphFromIndex(FT_UInt glyphIndex) const {
+    auto foundIter = d_indexToGlyphMap.find(glyphIndex);
+    if (foundIter == d_indexToGlyphMap.end())
+    {
+        throw InvalidRequestException("Could not find a codepoint associated with the "
+            "requested index.");
+        return nullptr;
+    }
+
+    return foundIter->second;
+}
+
 #ifdef CEGUI_USE_RAQM
 void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
     const glm::vec2& position, const Rectf* clip_rect,
@@ -774,21 +774,28 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
 
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
-    if (glyphs == nullptr)
-    {
-        throw InvalidRequestException("Layouting raqm text was unsuccessful");
-    }
 
     for (size_t i = 0; i < count; i++)
     {
         raqm_glyph_t& currentGlyph = glyphs[i];
 
-        uint32_t& originalArrayIndex = currentGlyph.cluster;
-        const char32_t curCodePoint = originalTextArray[originalArrayIndex];
-        const FontGlyph* glyph = getGlyphData(curCodePoint);
+        if (currentGlyph.index == 0)
+        {
+            glyph_pos.x += currentGlyph.x_advance * x_scale * FT_POS_COEF;
+            glyph_pos.x = std::roundf(glyph_pos.x);
+            continue;
+        }
+
+
+        FreeTypeFontGlyph* glyph =  getGlyphFromIndex(currentGlyph.index);
         if (glyph == nullptr)
         {
             continue;
+        }
+
+        if (!glyph->isValid())
+        {
+            initialiseFontGlyph(glyph, currentGlyph.index);
         }
 
         const Image* const img = glyph->getImage();
@@ -822,16 +829,28 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
 
         glyph_pos.x += glyph->getAdvance(x_scale);//currentGlyph.x_advance * x_scale * FT_POS_COEF;
         glyph_pos.x = std::roundf(glyph_pos.x);
-        // apply extra spacing to space chars
-        if (curCodePoint == ' ')
-        {
-            glyph_pos.x += space_extra;
-        }
     }
+
 
     raqm_destroy(raqmObject);
 }
 #endif
+
+bool FreeTypeFont::isCodepointAvailable(char32_t codePoint) const
+{
+    return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
+}
+
+const FreeTypeFontGlyph* FreeTypeFont::getGlyph(const char32_t codepoint) const
+{
+    CodePointToGlyphMap::const_iterator pos = d_codePointToGlyphMap.find(codepoint);
+    if (pos != d_codePointToGlyphMap.end())
+    {
+        return pos->second;
+    }
+
+    return nullptr;
+}
 
 
 } // End of  CEGUI namespace section
