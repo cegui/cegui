@@ -787,7 +787,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
             but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
-    else if (pe.source == CursorInputSource::None)
+    else if (pe.source == CursorInputSource::NotSpecified)
     {
         // Regular cursor move event
         Window *but_pane = getTabButtonPane();

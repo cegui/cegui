@@ -295,7 +295,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
 	}
 
     // default: None.
-	return SizingLocation::None;
+	return SizingLocation::Invalid;
 }
 
 
@@ -627,7 +627,7 @@ void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
             const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
             // if the cursor is on the sizing border
-			if (getSizingBorderAtPoint(localPos) != SizingLocation::None)
+			if (getSizingBorderAtPoint(localPos) != SizingLocation::Invalid)
 			{
 				// ensure all inputs come to us for now
 				if (captureInput())

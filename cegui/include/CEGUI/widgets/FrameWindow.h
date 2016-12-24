@@ -97,7 +97,7 @@ public:
     */
 	enum class SizingLocation : int
     {
-		None,			//!< Position is not a sizing location.
+		Invalid,			//!< Position is not a sizing location.
 		TopLeft,		//!< Position will size from the top-left.
 		TopRight,		//!< Position will size from the top-right.
 		BottomLeft,	    //!< Position will size from the bottom left.
