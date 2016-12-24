@@ -77,7 +77,7 @@ Element::Element():
     d_verticalAlignment(VerticalAlignment::Top),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(0), cegui_reldim(0)),
-    d_aspectMode(AspectMode::None),
+    d_aspectMode(AspectMode::Ignore),
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
@@ -267,7 +267,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     else if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
         ret.d_height = absMax.d_height;
 
-    if (d_aspectMode != AspectMode::None)
+    if (d_aspectMode != AspectMode::Ignore)
     {
         // make sure we respect current aspect mode and ratio
         ret.scaleToAspect(d_aspectMode, d_aspectRatio);
@@ -441,7 +441,7 @@ void Element::adjustSizeToContent_direct()
         new_pixel_size.d_height = std::ceil((getContentHeight()+epsilon)*size_func.d_height.d_scale  +
                                              size_func.d_height.d_offset);
     }
-    if (getAspectMode() != AspectMode::None)
+    if (getAspectMode() != AspectMode::Ignore)
     {
         if (isWidthAdjustedToContent())
         {
@@ -457,9 +457,9 @@ void Element::adjustSizeToContent_direct()
         }
     }
     USize new_size(getSize());
-    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AspectMode::None))
+    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AspectMode::Ignore))
         new_size.d_width = UDim(0.f, new_pixel_size.d_width);
-    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AspectMode::None))
+    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AspectMode::Ignore))
         new_size.d_height = UDim(0.f, new_pixel_size.d_height);
     setSize(new_size, false);
 }
@@ -737,7 +737,7 @@ void Element::addElementProperties()
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\", "
         "\"Expand\", \"AdjustHeight\" or \"AdjustWidth\".",
-        &Element::setAspectMode, &Element::getAspectMode, AspectMode::None
+        &Element::setAspectMode, &Element::getAspectMode, AspectMode::Ignore
     );
 
     CEGUI_DEFINE_PROPERTY(Element, float,

@@ -94,7 +94,7 @@ void TreeViewItemRenderingState::sortChildren()
         (*itor).sortChildren();
     }
 
-    if (d_attachedTreeView->getSortMode() == ViewSortMode::None)
+    if (d_attachedTreeView->getSortMode() == ViewSortMode::NoSorting)
         return;
 
     sort(d_renderedChildren.begin(), d_renderedChildren.end(),

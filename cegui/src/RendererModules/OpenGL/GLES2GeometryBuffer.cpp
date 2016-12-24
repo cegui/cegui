@@ -261,7 +261,7 @@ void GLES2GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t a
 //----------------------------------------------------------------------------//
 void GLES2GeometryBuffer::drawDependingOnFillRule() const
 {
-    if(d_polygonFillRule == PolygonFillRule::None)
+    if(d_polygonFillRule == PolygonFillRule::NoFilling)
     {
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);
