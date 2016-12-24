@@ -117,7 +117,7 @@ void Font::addFontProperties()
     CEGUI_DEFINE_PROPERTY(Font, AutoScaledMode,
         "AutoScaled", "This indicating whether and how to autoscale font depending on "
         "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
-        &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::DISABLED
+        &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::Disabled
     );
 }
 
