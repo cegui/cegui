@@ -79,7 +79,7 @@ enum class VertexAttributeType : int
 enum class PolygonFillRule : int
 {
     //! Draw the polygon normally - without a fill-rule.
-    None,
+    NoFilling,
     //! Uses the nonzero rule to determine how the polygon is to be filled.
     NonZero,
     //! Uses the  evenodd rule to determine how the polygon is to be filled.

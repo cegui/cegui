@@ -51,7 +51,7 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
     d_lastRenderTarget(nullptr),
     d_lastRenderTargetActivationCount(0),
     d_blendMode(BlendMode::Normal),
-    d_polygonFillRule(PolygonFillRule::None),
+    d_polygonFillRule(PolygonFillRule::NoFilling),
     d_postStencilVertexCount(0),
     d_effect(nullptr),
     d_clippingRegion(0, 0, 0, 0),
