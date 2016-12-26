@@ -257,8 +257,8 @@ protected:
 
     glm::vec2 d_pointerPosition;
     //! Mapping from a key to its semantic value
-    SemanticValue d_keyValuesMappings[sizeof(Key::Scan)]; 
-    bool d_keysPressed[sizeof(Key::Scan)];
+    SemanticValue d_keyValuesMappings[std::numeric_limits<unsigned char>::max()]; 
+    bool d_keysPressed[std::numeric_limits<unsigned char>::max()];
 };
 
 } // End of  CEGUI namespace section
