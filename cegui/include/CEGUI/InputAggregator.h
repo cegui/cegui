@@ -36,6 +36,8 @@
 #include "CEGUI/InputEventReceiver.h"
 #include "CEGUI/SemanticInputEvent.h"
 
+#include <cstdint>
+
 #if defined (_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -257,8 +259,8 @@ protected:
 
     glm::vec2 d_pointerPosition;
     //! Mapping from a key to its semantic value
-    SemanticValue d_keyValuesMappings[255]; 
-    bool d_keysPressed[255];
+    SemanticValue d_keyValuesMappings[UCHAR_MAX]; 
+    bool d_keysPressed[UCHAR_MAX];
 };
 
 } // End of  CEGUI namespace section
