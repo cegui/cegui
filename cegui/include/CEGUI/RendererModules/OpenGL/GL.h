@@ -85,7 +85,7 @@ public:
     */
     enum class Type : int
     {
-        None, /*!< Not initalized yet */
+        Uninitialised, /*!< Not initalized yet */
         TypeDesktop, /*!< Desktop OpenGL */
         TypeEs /*!< OpenGL ES */
     };

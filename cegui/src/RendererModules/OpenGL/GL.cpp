@@ -40,7 +40,7 @@ OpenGLInfo OpenGLInfo::s_instance;
 
 //----------------------------------------------------------------------------//
 OpenGLInfo::OpenGLInfo() :
-    d_type(Type::None),
+    d_type(Type::Uninitialised),
     d_verMajor(-1),
     d_verMinor(-1),
     d_verMajorForce(-1),

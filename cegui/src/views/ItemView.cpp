@@ -104,7 +104,7 @@ PropertyHelper<ViewSortMode>::toString(pass_type val)
     {
     case ViewSortMode::Ascending: return "Ascending";
     case ViewSortMode::Descending: return "Descending";
-    default: return "None";
+    default: return "NoSorting";
     }
 }
 
@@ -196,7 +196,7 @@ void ItemView::addItemViewProperties()
     CEGUI_DEFINE_PROPERTY(ItemView, ViewSortMode,
         "SortMode",
         "Property to get/set how the item view is sorting its items. "
-        "Value is either \"None\", \"Ascending\" or \"Descending\".",
+        "Value is either \"NoSorting\", \"Ascending\" or \"Descending\".",
         &ItemView::setSortMode, &ItemView::getSortMode, ViewSortMode::NoSorting
         )
 

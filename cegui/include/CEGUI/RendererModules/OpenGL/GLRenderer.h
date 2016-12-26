@@ -50,7 +50,7 @@ public:
         //! Use targets based on pbuffer support if available, else none.
         Pbuffer,
         //! Disable texture targets.
-        None
+        Uninitialised
     };
 
     /*!
