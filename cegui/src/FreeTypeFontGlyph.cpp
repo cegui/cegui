@@ -41,14 +41,14 @@ float FreeTypeFontGlyph::getRenderedAdvance(
     return sizeX;
 }
 
-unsigned int FreeTypeFontGlyph::getGlyphIndex() const
+void FreeTypeFontGlyph::setValid(bool valid)
 {
-    return d_glyphIndex;
+    d_valid = valid;
 }
 
-void FreeTypeFontGlyph::setGlyphIndex(unsigned int val)
+bool FreeTypeFontGlyph::isValid() const
 {
-    d_glyphIndex = val;
+    return d_valid;
 }
 
 }

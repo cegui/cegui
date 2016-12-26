@@ -37,12 +37,6 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// amount of bits in a uint
-#define BITS_PER_UINT   (sizeof (unsigned int) * 8)
-// must be a power of two
-#define GLYPHS_PER_PAGE 256
-
-//----------------------------------------------------------------------------//
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 
@@ -62,9 +56,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
     d_descender(0),
     d_height(0),
     d_autoScaled(auto_scaled),
-    d_nativeResolution(native_res),
-    d_maxCodepoint(0),
-    d_loadedGlyphPages(0)
+    d_nativeResolution(native_res)
 {
     addFontProperties();
 
@@ -111,7 +103,6 @@ void Font::addFontProperties()
 {
     const String propertyOrigin("Font");
 
-    /*
     CEGUI_DEFINE_PROPERTY(Font, Sizef,
         "NativeRes", "Native screen resolution for this font."
         "Value uses the 'w:# h:#' format.",
@@ -128,57 +119,18 @@ void Font::addFontProperties()
         "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
         &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::Disabled
     );
-    */
-}
-
-//----------------------------------------------------------------------------//
-void Font::setMaxCodepoint(char32_t codepoint)
-{
-    d_maxCodepoint = codepoint;
-
-    const unsigned int npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-    const unsigned int size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
-
-    d_loadedGlyphPages.resize(size);
-    std::fill(d_loadedGlyphPages.begin(), d_loadedGlyphPages.end(), 0);
 }
 
 //----------------------------------------------------------------------------//
 const FontGlyph* Font::getGlyphData(char32_t codepoint) const
 {
-    if (codepoint > d_maxCodepoint)
-        return nullptr;
+    const FontGlyph* const glyph = getGlyph(codepoint);
 
-    const FontGlyph* const glyph = findFontGlyph(codepoint);
-
-    if (!d_loadedGlyphPages.empty())
-    {
-        // Check if glyph page has been rasterised
-        unsigned int page = codepoint / GLYPHS_PER_PAGE;
-        unsigned int mask = 1 << (page & (BITS_PER_UINT - 1));
-        if (!(d_loadedGlyphPages[page / BITS_PER_UINT] & mask))
-        {
-            d_loadedGlyphPages[page / BITS_PER_UINT] |= mask;
-            rasterise(codepoint & ~(GLYPHS_PER_PAGE - 1),
-                      codepoint | (GLYPHS_PER_PAGE - 1));
-        }
-    }
+    // Check if glyph page has been rasterised
+    rasterise(codepoint, codepoint);
 
     return glyph;
 }
-
-//----------------------------------------------------------------------------//
-const FontGlyph* Font::findFontGlyph(const char32_t codepoint) const
-{
-    CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
-    if (pos != d_cp_map.end())
-    {
-        return pos->second;
-    }
-
-    return nullptr;
-}
-
 
 
 float Font::getTextExtent(const String& text, float x_scale) const
