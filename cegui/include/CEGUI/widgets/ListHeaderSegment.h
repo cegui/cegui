@@ -532,7 +532,7 @@ public:
     {
         if (val == ListHeaderSegment::SortDirection::NoSorting)
         {
-            return "None";
+            return "NoSorting";
         }
         else if (val == ListHeaderSegment::SortDirection::Ascending)
         {

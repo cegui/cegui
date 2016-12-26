@@ -294,7 +294,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
 		}
 	}
 
-    // default: None.
+    // default: Invalid.
 	return SizingLocation::Invalid;
 }
 
