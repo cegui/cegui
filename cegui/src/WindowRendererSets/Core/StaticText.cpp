@@ -303,10 +303,10 @@ bool FalagardStaticText::isSizeAdjustedToContentKeepingAspectRatio() const
     if (getNumOfTextLinesToShow().isAuto())
         return (getWindow()->isWidthAdjustedToContent() &&
                   getWindow()->isHeightAdjustedToContent())  ||
-               (getWindow()->getAspectMode() != AspectMode::None);
+               (getWindow()->getAspectMode() != AspectMode::Ignore);
     return getWindow()->isWidthAdjustedToContent()  &&
            !getWindow()->isHeightAdjustedToContent()  &&
-           (getWindow()->getAspectMode() != AspectMode::None);
+           (getWindow()->getAspectMode() != AspectMode::Ignore);
 }
 
 //----------------------------------------------------------------------------//

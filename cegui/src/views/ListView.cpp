@@ -176,7 +176,7 @@ void ListView::resortListView()
         d_sortedItems.push_back(&(*itor));
     }
 
-    if (d_sortMode == ViewSortMode::None)
+    if (d_sortMode == ViewSortMode::NoSorting)
         return;
 
     sort(d_sortedItems.begin(), d_sortedItems.end(),

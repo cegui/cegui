@@ -93,7 +93,7 @@ PropertyHelper<ViewSortMode>::fromString(const String& str)
     if (str == "Descending") return ViewSortMode::Descending;
 
     // default
-    return ViewSortMode::None;
+    return ViewSortMode::NoSorting;
 }
 
 //----------------------------------------------------------------------------//
@@ -104,7 +104,7 @@ PropertyHelper<ViewSortMode>::toString(pass_type val)
     {
     case ViewSortMode::Ascending: return "Ascending";
     case ViewSortMode::Descending: return "Descending";
-    default: return "None";
+    default: return "NoSorting";
     }
 }
 
@@ -134,7 +134,7 @@ ItemView::ItemView(const String& type, const String& name) :
     d_horzScrollbarDisplayMode(ScrollbarDisplayMode::WhenNeeded),
     d_isItemTooltipsEnabled(false),
     d_isMultiSelectEnabled(false),
-    d_sortMode(ViewSortMode::None),
+    d_sortMode(ViewSortMode::NoSorting),
     d_isAutoResizeHeightEnabled(false),
     d_isAutoResizeWidthEnabled(false),
     d_renderedMaxWidth(0),
@@ -196,8 +196,8 @@ void ItemView::addItemViewProperties()
     CEGUI_DEFINE_PROPERTY(ItemView, ViewSortMode,
         "SortMode",
         "Property to get/set how the item view is sorting its items. "
-        "Value is either \"None\", \"Ascending\" or \"Descending\".",
-        &ItemView::setSortMode, &ItemView::getSortMode, ViewSortMode::None
+        "Value is either \"NoSorting\", \"Ascending\" or \"Descending\".",
+        &ItemView::setSortMode, &ItemView::getSortMode, ViewSortMode::NoSorting
         )
 
 

@@ -196,7 +196,7 @@ void Direct3D11GeometryBuffer::cleanupVertexBuffer() const
 void Direct3D11GeometryBuffer::drawDependingOnFillRule() const
 {
     //TODO IDENT
-/*    if(d_polygonFillRule == PolygonFillRule::None)
+/*    if(d_polygonFillRule == PolygonFillRule::NoFilling)
     {
     */
 

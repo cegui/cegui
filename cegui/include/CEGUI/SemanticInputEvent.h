@@ -46,10 +46,10 @@ namespace CEGUI
 */
 enum class CursorInputSource : int
 {
-    None,        //!< No specific cursor source
-    Left,        //!< Left cursor source
-    Right,       //!< Right cursor source
-    Middle,      //!< Middle cursor source
+    NotSpecified,   //!< No specific cursor source
+    Left,           //!< Left cursor source
+    Right,          //!< Right cursor source
+    Middle,         //!< Middle cursor source
 };
 
 /*!

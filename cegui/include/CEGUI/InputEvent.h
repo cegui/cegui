@@ -220,7 +220,7 @@ enum class MouseButton : int
     //! Value that equals the number of mouse buttons supported by CEGUI.
     Count,
     //! Value set for no mouse button.  NB: This is not 0, do not assume!
-    None
+    Invalid
 };
 
 /*!

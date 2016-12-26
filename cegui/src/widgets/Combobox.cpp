@@ -361,7 +361,7 @@ size_t Combobox::getItemIndex(const StandardItem* item) const
 *************************************************************************/
 bool Combobox::isSortEnabled(void) const
 {
-    return getDropList()->getSortMode() != ViewSortMode::None;
+    return getDropList()->getSortMode() != ViewSortMode::NoSorting;
 }
 
 
@@ -440,7 +440,7 @@ void Combobox::clearAllSelections(void)
 void Combobox::setSortingEnabled(bool setting)
 {
     //TODO: migrate the sorting.
-    getDropList()->setSortMode(setting ? ViewSortMode::Ascending : ViewSortMode::None);
+    getDropList()->setSortMode(setting ? ViewSortMode::Ascending : ViewSortMode::NoSorting);
 }
 
 
