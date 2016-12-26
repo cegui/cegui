@@ -28,10 +28,14 @@
 #define _CEGUIFreeTypeFontGlyph_h_
 
 #include "CEGUI/FontGlyph.h"
-#include "FreeTypeFont.h"
+
+
 
 namespace CEGUI
 {
+
+class FreeTypeFont;
+
 /*!
 \brief
     Internal class representing a single FreeType font glyph.
@@ -42,11 +46,11 @@ namespace CEGUI
 class CEGUIEXPORT FreeTypeFontGlyph : public FontGlyph
 {
 public:
-    FreeTypeFontGlyph(FreeTypeFont* freeTypeFont, unsigned int glyphIndex,
+    FreeTypeFontGlyph(FreeTypeFont* freeTypeFont,
         float advance = 0.0f, Image* image = nullptr, bool valid = false)
-        : FontGlyph(advance, image, valid)
+        : FontGlyph(advance, image)
         , d_freeTypeFont(freeTypeFont)
-        , d_glyphIndex(glyphIndex)
+        , d_valid(valid)
     {}
 
     ~FreeTypeFontGlyph()
@@ -56,21 +60,16 @@ public:
         const FontGlyph* nextGlyph,
         float x_scale) const override;
 
-    /*!
-    \brief 
-        Returns the FreeType glyph index for this glyph.
-    */
-    unsigned int getGlyphIndex() const;
+    //! mark the FontGlyph as valid
+    void setValid(bool valid);
 
-    /*!
-    \brief 
-        Sets the FreeType glyph index for this glyph.
-    */
-    void setGlyphIndex(const unsigned int value);
+    //! return whether the glyph is valid
+    bool isValid() const;
+
 private:
     FreeTypeFont* d_freeTypeFont;
-
-    unsigned int d_glyphIndex;
+    //! says whether this glyph info is actually valid
+    bool d_valid;
 };
 
 }
