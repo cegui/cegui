@@ -260,7 +260,7 @@ void OpenGL3GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 {
-    if(d_polygonFillRule == PolygonFillRule::None)
+    if(d_polygonFillRule == PolygonFillRule::NoFilling)
     {
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);

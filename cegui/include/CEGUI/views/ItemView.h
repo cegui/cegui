@@ -98,7 +98,7 @@ enum class ScrollbarDisplayMode : int
 enum class ViewSortMode : int
 {
     //! Items are not sorted, but shown in the same order as they are provided by the model.
-    None,
+    NoSorting,
     Ascending,
     Descending
 };

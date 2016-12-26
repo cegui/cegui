@@ -359,7 +359,7 @@ bool GUIContext::updateWindowContainingCursor_impl() const
         return false;
 
     ciea.scroll = 0;
-    ciea.source = CursorInputSource::None;
+    ciea.source = CursorInputSource::NotSpecified;
 
     Window* oldWindow = d_windowContainingCursor;
     d_windowContainingCursor = window_with_cursor;
@@ -787,7 +787,7 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
     CursorInputEventArgs ciea(nullptr);
     ciea.position = d_cursor.getPosition();
     ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = CursorInputSource::None;
+    ciea.source = CursorInputSource::NotSpecified;
     ciea.scroll = event.d_payload.single;
     ciea.window = getTargetWindow(ciea.position, false);
     // make cursor position sane for this target window
@@ -838,7 +838,7 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
         return false;
 
     ciea.scroll = 0;
-    ciea.source = CursorInputSource::None;
+    ciea.source = CursorInputSource::NotSpecified;
     ciea.state = d_cursorsState;
 
     // move cursor to new position
@@ -859,7 +859,7 @@ bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(
         d_cursor.getPosition());
     ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = CursorInputSource::None;
+    ciea.source = CursorInputSource::NotSpecified;
     ciea.scroll = 0;
     ciea.window = getWindowContainingCursor();
 

@@ -643,7 +643,7 @@ void MultiColumnList::initialiseComponents(void)
 
 
 	// final initialisation now widget is complete
-	setSortDirection(ListHeaderSegment::SortDirection::None);
+	setSortDirection(ListHeaderSegment::SortDirection::NoSorting);
 
 	// Perform initial layout
 	configureScrollbars();
@@ -875,7 +875,7 @@ unsigned int MultiColumnList::addRow(ListboxItem* item, unsigned int col_id, uns
 
 	// if sorting is enabled, insert at an appropriate position
     const ListHeaderSegment::SortDirection dir = getSortDirection();
-	if (dir != ListHeaderSegment::SortDirection::None)
+	if (dir != ListHeaderSegment::SortDirection::NoSorting)
 	{
         // calculate where the row should be inserted
         ListItemGrid::iterator ins_pos = dir == ListHeaderSegment::SortDirection::Descending ?
@@ -916,7 +916,7 @@ unsigned int MultiColumnList::insertRow(unsigned int row_idx, unsigned int row_i
 unsigned int MultiColumnList::insertRow(ListboxItem* item, unsigned int col_id, unsigned int row_idx, unsigned int row_id)
 {
 	// if sorting is enabled, use add instead of insert
-	if (getSortDirection() != ListHeaderSegment::SortDirection::None)
+	if (getSortDirection() != ListHeaderSegment::SortDirection::NoSorting)
 	{
 		return addRow(item, col_id, row_id);
 	}
@@ -2250,7 +2250,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
     CEGUI_DEFINE_PROPERTY(MultiColumnList, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the list."
         "  Value is the text of one of the SortDirection enumerated value names.",
-        &MultiColumnList::setSortDirection, &MultiColumnList::getSortDirection, ListHeaderSegment::SortDirection::None
+        &MultiColumnList::setSortDirection, &MultiColumnList::getSortDirection, ListHeaderSegment::SortDirection::NoSorting
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,

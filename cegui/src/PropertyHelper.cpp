@@ -88,7 +88,7 @@ const String& PropertyHelper<AspectMode>::getDataTypeName()
 PropertyHelper<AspectMode>::string_return_type PropertyHelper<AspectMode>::toString(
     PropertyHelper<AspectMode>::pass_type val)
 {
-    if (val == AspectMode::None)
+    if (val == AspectMode::Ignore)
     {
         return Ignore;
     }
@@ -135,7 +135,7 @@ PropertyHelper<AspectMode>::return_type PropertyHelper<AspectMode>::fromString(c
     }
     else
     {
-        return AspectMode::None;
+        return AspectMode::Ignore;
     }
 }
 

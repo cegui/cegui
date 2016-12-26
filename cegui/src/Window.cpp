@@ -276,7 +276,7 @@ Window::Window(const String& type, const String& name):
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
     d_repeatRate(0.06f),
-    d_repeatPointerSource(CursorInputSource::None),
+    d_repeatPointerSource(CursorInputSource::NotSpecified),
     d_repeating(false),
     d_repeatElapsed(0.0f),
 
@@ -1584,7 +1584,7 @@ void Window::setCursorAutoRepeatEnabled(bool setting)
         return;
 
     d_autoRepeat = setting;
-    d_repeatPointerSource = CursorInputSource::None;
+    d_repeatPointerSource = CursorInputSource::NotSpecified;
 
     // FIXME: There is a potential issue here if this setting is
     // FIXME: changed _while_ the cursor is auto-repeating, and
@@ -1639,7 +1639,7 @@ void Window::update(float elapsed)
 void Window::updateSelf(float elapsed)
 {
     // cursor autorepeat processing.
-    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::None)
+    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
     {
         d_repeatElapsed += elapsed;
 
@@ -2445,7 +2445,7 @@ void Window::onCaptureGained(WindowEventArgs& e)
 void Window::onCaptureLost(WindowEventArgs& e)
 {
     // reset auto-repeat state
-    d_repeatPointerSource = CursorInputSource::None;
+    d_repeatPointerSource = CursorInputSource::NotSpecified;
 
     // handle restore of previous capture window as required.
     if (d_restoreOldCapture && (d_oldCapture != nullptr)) {
@@ -2663,7 +2663,7 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     // it could be us that generated this event via auto-repeat).
     if (d_autoRepeat)
     {
-        if (d_repeatPointerSource == CursorInputSource::None)
+        if (d_repeatPointerSource == CursorInputSource::NotSpecified)
             captureInput();
 
         if ((d_repeatPointerSource != e.source) && isCapturedByThis())
@@ -2695,10 +2695,10 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
 void Window::onCursorActivate(CursorInputEventArgs& e)
 {
     // reset auto-repeat state
-    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::None)
+    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
     {
         releaseInput();
-        d_repeatPointerSource = CursorInputSource::None;
+        d_repeatPointerSource = CursorInputSource::NotSpecified;
     }
 
     fireEvent(EventCursorActivate, e, EventNamespace);

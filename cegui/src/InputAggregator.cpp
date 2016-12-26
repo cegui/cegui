@@ -54,7 +54,7 @@ static CursorInputSource convertToCursorInputSource(MouseButton button)
     if (button == MouseButton::Middle)
         return CursorInputSource::Middle;
 
-    return CursorInputSource::None;
+    return CursorInputSource::NotSpecified;
 }
 
 /*!
