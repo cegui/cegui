@@ -121,18 +121,6 @@ void Font::addFontProperties()
     );
 }
 
-//----------------------------------------------------------------------------//
-const FontGlyph* Font::getGlyphData(char32_t codepoint) const
-{
-    const FontGlyph* const glyph = getGlyph(codepoint);
-
-    // Check if glyph page has been rasterised
-    rasterise(codepoint, codepoint);
-
-    return glyph;
-}
-
-
 float Font::getTextExtent(const String& text, float x_scale) const
 {
     float cur_extent = 0.0f;
@@ -168,13 +156,11 @@ void Font::getGlyphExtents(
     float& adv_extent,
     float x_scale) const
 {
-    const FontGlyph* currentGlyph = getGlyphData(currentCodePoint);
+    const FontGlyph* currentGlyph = getPreparedGlyph(currentCodePoint);
 
     if (currentGlyph != nullptr)
     {
-        const FontGlyph* nextGlyph = nullptr;
-        
-        float width = currentGlyph->getRenderedAdvance(nextGlyph, x_scale);
+        float width = currentGlyph->getRenderedAdvance( x_scale);
 
         if (adv_extent + width > cur_extent)
         {
@@ -193,7 +179,7 @@ float Font::getTextAdvance(const String& text, float x_scale) const
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        if (const FontGlyph* glyph = getGlyphData(text[c]))
+        if (const FontGlyph* glyph = getGlyphForCodepoint(text[c]))
         {
             advance += glyph->getAdvance(x_scale);
         }
@@ -203,7 +189,7 @@ String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text
 while (!currentCodePointIter.isAtEnd())
 {
     char32_t currentCodePoint = *currentCodePointIter;
-    if (const FontGlyph* glyph = getGlyphData(currentCodePoint))
+    if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint))
     {
         advance += glyph->getAdvance(x_scale);
     }
@@ -230,7 +216,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = start_char; c < char_count; ++c)
     {
-        glyph = getGlyphData(text[c]);
+        glyph = getGlyphForCodepoint(text[c]);
 
         if (glyph)
         {
@@ -247,7 +233,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
     while (!currentCodePointIter.isAtEnd())
     {
         char32_t currentCodePoint = *currentCodePointIter;
-        glyph = getGlyphData(currentCodePoint);
+        glyph = getGlyphForCodepoint(currentCodePoint);
 
         if (glyph)
         {
@@ -277,6 +263,11 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
         colours, space_extra, x_scale, y_scale);
 }
 
+const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
+{
+   return getGlyphForCodepoint(currentCodePoint);
+}
+
 void Font::renderGlyphsUsingDefaultFallback(
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const ColourRect& colours,
@@ -298,7 +289,8 @@ void Font::renderGlyphsUsingDefaultFallback(
     {
         char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        const FontGlyph* glyph = getGlyphData(currentCodePoint);
+        const FontGlyph* glyph = getPreparedGlyph(currentCodePoint);
+
         if (glyph != nullptr)
         {  
             const Image* const img = glyph->getImage();
@@ -426,12 +418,6 @@ void Font::notifyDisplaySizeChanged(const Sizef& size)
         FontEventArgs args(this);
         onRenderSizeChanged(args);
     }
-}
-
-//----------------------------------------------------------------------------//
-void Font::rasterise(char32_t, char32_t) const
-{
-    // do nothing by default
 }
 
 //----------------------------------------------------------------------------//
