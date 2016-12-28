@@ -85,7 +85,7 @@ public:
 
     void updateFont () override;
     bool isCodepointAvailable(char32_t codePoint) const override;
-    const FontGlyph* getGlyph(const char32_t codePoint) const override;
+    FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const override;
 
     void defineMapping(const char32_t codePoint, const String& imageName, 
                        const float horzAdvance);

@@ -70,6 +70,9 @@ public:
      */
     static const String EventRenderSizeChanged;
 
+    //! Stand
+    static const char32_t UnicodeReplacementCharacter = 0xFFFD;
+
     //! Destructor.
     virtual ~Font();
 
@@ -227,14 +230,14 @@ public:
         const bool clipping_enabled, const ColourRect& colours,
         const float space_extra = 0.0f, const float x_scale = 1.0f,
         const float y_scale = 1.0f) const;
-
-  /*!
-    \brief
-        Set the native resolution for this Font
-
-    \param size
-        Size object describing the new native screen resolution for this Font.
-    */
+  
+    /*!
+      \brief
+          Set the native resolution for this Font
+  
+      \param size
+          Size object describing the new native screen resolution for this Font.
+      */
     void setNativeResolution(const Sizef& size);
 
     /*!
@@ -490,21 +493,6 @@ public:
 
     /*!
     \brief
-        Return a pointer to the glyphDat struct for the given codepoint,
-        or 0 if the codepoint does not have a glyph defined.
-
-    \param codepoint
-        char32_t codepoint to return the glyphDat structure for.
-
-    \return
-        Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
-        is defined for \a codepoint.
-    */
-    const FontGlyph* getGlyphData(char32_t codepoint) const;
-
-
-    /*!
-    \brief
         Update the font as needed, according to the current parameters.
         This should only be called if really necessary and will only 
         internally update the Font, without firing events or updating
@@ -518,24 +506,6 @@ protected:
          const String& resource_group, const AutoScaledMode auto_scaled,
          const Sizef& native_res);
 
-    /*!
-    \brief
-        This function prepares a certain range of glyphs to be ready for
-        displaying. This means that after returning from this function
-        glyphs from d_codePointToGlyphMap[start_codepoint] to d_codePointToGlyphMap[end_codepoint]
-        should have their d_image member set. If there is an error
-        during rasterisation of some glyph, it's okay to leave the
-        d_image field set to NULL, in which case such glyphs will
-        be skipped from display.
-    \param start_codepoint
-        The lowest codepoint that should be rasterised
-    \param end_codepoint
-        The highest codepoint that should be rasterised
-    */
-    virtual void rasterise(char32_t start_codepoint, char32_t end_codepoint) const;
-
-
-
     //! implementation version of writeXMLToStream.
     virtual void writeXMLToStream_impl(XMLSerializer& xml_stream) const = 0;
 
@@ -546,12 +516,12 @@ protected:
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
     //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
-    virtual const FontGlyph* getGlyph(const char32_t codePoint) const = 0;
+    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
 
     //! The old way of rendering glyphs, without kerning and extended layouting
     void renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, const float x_scale, 
+        const float space_extra, const float x_scale,   
         const float y_scale, ImageRenderSettings imgRenderSettings, 
         glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const;
 
@@ -566,6 +536,9 @@ protected:
             colours, space_extra, x_scale, y_scale, imgRenderSettings,
             glyph_pos, textGeometryBuffer);
     }
+
+    //! Returns the Font glyph, which is made ready for being drawn
+    virtual const FontGlyph* getPreparedGlyph(char32_t currentCodePoint) const;
 
     //! Name of this font.
     String d_name;

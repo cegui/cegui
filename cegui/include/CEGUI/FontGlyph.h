@@ -43,9 +43,10 @@ class CEGUIEXPORT FontGlyph
 {
 public:
     //! Constructor.
-    FontGlyph(float advance = 0.0f, Image* image = nullptr) :
+    FontGlyph(char32_t codePoint, float advance = 0.0f, Image* image = nullptr) :
         d_image(image),
-        d_advance(advance)
+        d_advance(advance),
+        d_codePoint(codePoint)
     {}
 
     virtual ~FontGlyph()
@@ -75,7 +76,6 @@ public:
         current pen position that will be occupied by this glyph when rendered.
     */
     virtual float getRenderedAdvance(
-        const FontGlyph* /*nextGlyph*/,
         float x_scale) const
     { return (d_image->getRenderedSize().d_width +
               d_image->getRenderedOffset().x) * x_scale; }
@@ -100,11 +100,18 @@ public:
     void setImage(Image* image)
     { d_image = image; }
 
+    char32_t getCodePoint() const
+    {
+        return d_codePoint;
+    }
+
 private:
     //! The image which will be rendered for this glyph.
     Image* d_image;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
+    //! Code point
+    const char32_t d_codePoint;
 };
 
 } // End of  CEGUI namespace section

@@ -46,9 +46,9 @@ class FreeTypeFont;
 class CEGUIEXPORT FreeTypeFontGlyph : public FontGlyph
 {
 public:
-    FreeTypeFontGlyph(FreeTypeFont* freeTypeFont,
+    FreeTypeFontGlyph(FreeTypeFont* freeTypeFont, char32_t codePoint,
         float advance = 0.0f, Image* image = nullptr, bool valid = false)
-        : FontGlyph(advance, image)
+        : FontGlyph(codePoint, advance, image)
         , d_freeTypeFont(freeTypeFont)
         , d_valid(valid)
     {}
@@ -57,14 +57,13 @@ public:
     {}
 
     float getRenderedAdvance(
-        const FontGlyph* nextGlyph,
         float x_scale) const override;
 
-    //! mark the FontGlyph as valid
-    void setValid(bool valid);
+    //! mark the FontGlyph as initialised
+    void markAsInitialised();
 
     //! return whether the glyph is valid
-    bool isValid() const;
+    bool isInitialised() const;
 
 private:
     FreeTypeFont* d_freeTypeFont;

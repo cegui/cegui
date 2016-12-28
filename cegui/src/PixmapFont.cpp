@@ -169,7 +169,7 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
         adv *= d_origHorzScaling;
 
     // create a new FontGlyph with given character code
-    FontGlyph* const glyph = new FontGlyph(adv, &image);
+    FontGlyph* const glyph = new FontGlyph(codePoint, adv, &image);
 
     if (image.getRenderedOffset().y < -d_ascender)
         d_ascender = -image.getRenderedOffset().y;
@@ -242,9 +242,9 @@ bool PixmapFont::isCodepointAvailable(char32_t codePoint) const
     return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
 }
 
-const FontGlyph* PixmapFont::getGlyph(const char32_t codepoint) const
+FontGlyph* PixmapFont::getGlyphForCodepoint(const char32_t codepoint) const
 {
-    CodePointToGlyphMap::const_iterator pos = d_codePointToGlyphMap.find(codepoint);
+    CodePointToGlyphMap::iterator pos = d_codePointToGlyphMap.find(codepoint);
     if (pos != d_codePointToGlyphMap.end())
     {
         return pos->second;
