@@ -254,17 +254,24 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 
     const auto& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
 
-    // Copy rendered glyph to memory buffer in ARGB format
-    FT_Bitmap* glyphBitmap = &d_fontFace->glyph->bitmap;
+    // Create the data containing the pixels of the glyph
+    FT_Bitmap& glyphBitmap = d_fontFace->glyph->bitmap;
     std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
 
+    // Update the cached texture data in memory
     size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
     updateTextureBufferSubTexture(d_lastTextureBuffer.data() + bufferDataGlyphPos,
-        glyphBitmap, subTextureData);
+                                  glyphBitmap, subTextureData);
 
     // Copy our memory buffer into the texture and free it
-    Sizef textureSize(static_cast<float>(d_lastTextureSize), static_cast<float>(d_lastTextureSize));
-    texture->loadFromMemory(d_lastTextureBuffer.data(), textureSize, Texture::PixelFormat::Rgba);
+    //Sizef textureSize(static_cast<float>(d_lastTextureSize), static_cast<float>(d_lastTextureSize));
+    //texture->loadFromMemory(d_lastTextureBuffer.data(), textureSize, Texture::PixelFormat::Rgba);
+
+    // Update the sub-image in the texture on the GPU
+    glm::vec2 subImagePos(glyphTexLine.d_lastXPos, glyphTexLine.d_lastYPos);
+    Sizef subImageSize(static_cast<float>(glyphWidth), static_cast<float>(glyphHeight));
+    Rectf subImageArea(subImagePos, subImageSize);
+    texture->blitFromMemory(subTextureData.data(), subImageArea);
 
 
     // Create a new image in the imageset
@@ -320,10 +327,10 @@ void FreeTypeFont::createNewTexture() const
 }
 
 //----------------------------------------------------------------------------//
-std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap* glyphBitmap)
+std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 {
-    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap->rows);
-    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap->width);
+    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap.rows);
+    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap.width);
 
     std::vector<argb_t> glyphTextureData;
     glyphTextureData.resize(bitmapHeight * bitmapWidth);
@@ -334,9 +341,9 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap* glyphBitmap)
 
         for (unsigned int j = 0; j < bitmapWidth; ++j)
         {
-            std::uint8_t* src = glyphBitmap->buffer + (i * glyphBitmap->pitch + j);
+            std::uint8_t* src = glyphBitmap.buffer + (i * glyphBitmap.pitch + j);
 
-            switch (glyphBitmap->pixel_mode)
+            switch (glyphBitmap.pixel_mode)
             {
             case FT_PIXEL_MODE_GRAY:
             {
@@ -360,11 +367,11 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap* glyphBitmap)
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap* glyphBitmap,
-    const std::vector<argb_t>& subTextureData) const
+void FreeTypeFont::updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap& glyphBitmap,
+                                                 const std::vector<argb_t>& subTextureData) const
 {
-    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap->rows);
-    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap->width);
+    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap.rows);
+    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap.width);
 
     argb_t* currentPixelLine = buffer;
 
