@@ -250,7 +250,7 @@ protected:
     \return
         Nothing.
     */
-    void updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap* glyphBitmap, const std::vector<argb_t>& subTextureData) const;
+    void updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap& glyphBitmap, const std::vector<argb_t>& subTextureData) const;
 
     /*!
     \brief
@@ -289,7 +289,7 @@ protected:
     bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
 
     void createNewTexture() const;
-    static std::vector<argb_t> createGlyphTextureData(FT_Bitmap* glyph_bitmap);
+    static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
 #ifdef CEGUI_USE_RAQM

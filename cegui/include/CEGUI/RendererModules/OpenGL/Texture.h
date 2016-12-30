@@ -119,7 +119,7 @@ public:
     const glm::vec2& getTexelScaling() const override;
     void loadFromFile(const String& filename, const String& resourceGroup) override;
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
-                        PixelFormat pixel_format) override;
+        PixelFormat pixel_format) override;
     void blitFromMemory(const void* sourceData, const Rectf& area) override;
     void blitToMemory(void* targetData) override = 0;
     bool isPixelFormatSupported(const PixelFormat fmt) const override;
