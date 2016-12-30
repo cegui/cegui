@@ -231,7 +231,6 @@ void Colour::setHSL(float hue, float saturation, float luminance, float alpha)
 	d_argbValid = false;
 }
 
-
 argb_t Colour::calculateARGB(void) const
 {
     return (
