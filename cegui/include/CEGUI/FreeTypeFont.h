@@ -250,7 +250,7 @@ protected:
     \return
         Nothing.
     */
-    void drawGlyphToBuffer(argb_t* buffer, unsigned int buf_width) const;
+    void updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap* glyphBitmap, const std::vector<argb_t>& subTextureData) const;
 
     /*!
     \brief
@@ -284,13 +284,12 @@ protected:
     void handleFontSizeOrFontUnitChange();
 
     // overrides of functions in Font base class.
-    void rasterise(char32_t startCodePoint, char32_t endCodePoint) const;
     void rasterise(FreeTypeFontGlyph* glyph) const;
 
     bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
 
     void createNewTexture() const;
-
+    static std::vector<argb_t> createGlyphTextureData(FT_Bitmap* glyph_bitmap);
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
 #ifdef CEGUI_USE_RAQM

@@ -254,9 +254,18 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 
     const auto& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
 
-    // Copy rendered glyph to memory buffer in RGBA format
+    // Copy rendered glyph to memory buffer in ARGB format
+    FT_Bitmap* glyphBitmap = &d_fontFace->glyph->bitmap;
+    std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
+
     size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
-    drawGlyphToBuffer(d_lastTextureBuffer.data() + bufferDataGlyphPos, d_lastTextureSize);
+    updateTextureBufferSubTexture(d_lastTextureBuffer.data() + bufferDataGlyphPos,
+        glyphBitmap, subTextureData);
+
+    // Copy our memory buffer into the texture and free it
+    Sizef textureSize(static_cast<float>(d_lastTextureSize), static_cast<float>(d_lastTextureSize));
+    texture->loadFromMemory(d_lastTextureBuffer.data(), textureSize, Texture::PixelFormat::Rgba);
+
 
     // Create a new image in the imageset
     const Rectf area(static_cast<float>(glyphTexLine.d_lastXPos),
@@ -264,163 +273,17 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
         static_cast<float>(glyphTexLine.d_lastXPos + glyphWidth),
         static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
 
-     //TODO: Is this needed ?
     const glm::vec2 offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(s_conversionMultCoeff),
         -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(s_conversionMultCoeff));
 
     const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
-    BitmapImage* img =
-        new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
+    BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
             d_nativeResolution);
     d_glyphImages.push_back(img);
     glyph->setImage(img);
 
     // Advance to next position, add padding
     glyphTexLine.d_lastXPos += glyphWidth + s_glyphPadding;
-
-    // Copy our memory buffer into the texture and free it
-    Sizef textureSize(static_cast<float>(d_lastTextureSize), static_cast<float>(d_lastTextureSize));
-    texture->loadFromMemory(d_lastTextureBuffer.data(), textureSize, Texture::PixelFormat::Rgba);
-}
-
-//----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(char32_t startCodePoint, char32_t endCodePoint) const
-{
-    CodePointToGlyphMap::iterator s = d_codePointToGlyphMap.lower_bound(startCodePoint);
-    if (s == d_codePointToGlyphMap.end())
-        return;
-
-    CodePointToGlyphMap::iterator orig_s = s;
-    CodePointToGlyphMap::iterator e = d_codePointToGlyphMap.upper_bound(endCodePoint);
-    while (true)
-    {
-        // Create a new Imageset for glyphs
-        unsigned int texsize = getTextureSize(s, e);
-        // If all glyphs were already rendered, do nothing
-        if (!texsize)
-            break;
-
-        const String texture_name(d_name + "_auto_glyph_images_" +
-                                   PropertyHelper<std::uint32_t>::toString(s->first));
-        Texture& texture = System::getSingleton().getRenderer()->createTexture(
-            texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
-        d_glyphTextures.push_back(&texture);
-
-        // Create a memory buffer where we will render our glyphs
-        std::vector<argb_t> mem_buffer(texsize * texsize, 0);
-
-        // Go ahead, line by line, top-left to bottom-right
-        unsigned int x = s_glyphPadding, y = s_glyphPadding;
-        unsigned int yb = s_glyphPadding;
-
-        // Set to true when we finish rendering all glyphs we were asked to
-        bool finished = false;
-        // Set to false when we reach d_codePointToGlyphMap.end() and we start going backward
-        bool forward = true;
-
-        /* To conserve texture space we will render more glyphs than asked,
-         * but never less than asked. First we render all glyphs from s to e
-         * and after that we render glyphs until we reach d_codePointToGlyphMap.end(),
-         * and if there's still free texture space we will go backward
-         * from s until we hit d_codePointToGlyphMap.begin().
-         */
-        while (s != d_codePointToGlyphMap.end())
-        {
-            // Check if we finished rendering all the required glyphs
-            finished |= (s == e);
-
-            // Check if glyph already rendered
-            if (!s->second->getImage())
-            {
-                // Render the glyph
-                if (FT_Load_Char(d_fontFace, s->first, FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT |
-                                 (d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO)))
-                {
-                    std::stringstream err;
-                    err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
-                    err << static_cast<unsigned int>(s->first);
-                    err << ".  Will use an empty image for this glyph!";
-                    Logger::getSingleton().logEvent(err.str().c_str(), LoggingLevel::Error);
-
-                    // Create a 'null' image for this glyph so we do not seg later
-                    const Rectf area(0, 0, 0, 0);
-                    const glm::vec2 offset(0, 0);
-                    const String name(PropertyHelper<std::uint32_t>::toString(s->first));
-                    BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
-                                       d_nativeResolution);
-                    d_glyphImages.push_back(img);
-                    s->second->setImage(img);
-                }
-                else
-                {
-                    unsigned int glyph_w = d_fontFace->glyph->bitmap.width + s_glyphPadding;
-                    unsigned int glyph_h = d_fontFace->glyph->bitmap.rows + s_glyphPadding;
-
-                    // Check if glyph right margin does not exceed texture size
-                    unsigned int x_next = x + glyph_w;
-                    if (x_next > texsize)
-                    {
-                        x = s_glyphPadding;
-                        x_next = x + glyph_w;
-                        y = yb;
-                    }
-
-                    // Check if glyph bottom margin does not exceed texture size
-                    unsigned int y_bot = y + glyph_h;
-                    if (y_bot > texsize)
-                        break;
-
-                    // Copy rendered glyph to memory buffer in RGBA format
-                    drawGlyphToBuffer(&mem_buffer[0] + (y * texsize) + x, texsize);
-
-                    // Create a new image in the imageset
-                    const Rectf area(static_cast<float>(x),
-                                     static_cast<float>(y),
-                                     static_cast<float>(x + glyph_w - s_glyphPadding),
-                                     static_cast<float>(y + glyph_h - s_glyphPadding));
-
-                    const glm::vec2 offset(
-                        d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(s_conversionMultCoeff),
-                        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(s_conversionMultCoeff));
-
-                    const String name(PropertyHelper<std::uint32_t>::toString(s->first));
-                    BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
-                                       d_nativeResolution);
-                    d_glyphImages.push_back(img);
-                    s->second->setImage(img);
-
-                    // Advance to next position
-                    x = x_next;
-                    if (y_bot > yb)
-                    {
-                        yb = y_bot;
-                    }
-                }
-            }
-
-            // Go to next glyph, if we are going forward
-            if (forward)
-                if (++s == d_codePointToGlyphMap.end())
-                {
-                    finished = true;
-                    forward = false;
-                    s = orig_s;
-                }
-            // Go to previous glyph, if we are going backward
-            if (!forward)
-                if ((s == d_codePointToGlyphMap.begin()) || (--s == d_codePointToGlyphMap.begin()))
-                    break;
-        }
-
-        // Copy our memory buffer into the texture and free it
-        Sizef textureSize(static_cast<float>(texsize), static_cast<float>(texsize));
-        texture.loadFromMemory(&mem_buffer[0], textureSize, Texture::PixelFormat::Rgba);
-
-        if (finished)
-            break;
-    }
 }
 
 bool FreeTypeFont::addNewLineIfFitting(unsigned int glyphHeight, size_t& fittingLineIndex) const
@@ -457,46 +320,65 @@ void FreeTypeFont::createNewTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, unsigned int buf_width) const
+std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap* glyphBitmap)
 {
-    FT_Bitmap *glyph_bitmap = &d_fontFace->glyph->bitmap;
+    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap->rows);
+    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap->width);
 
-    unsigned int glyph_bitmap_height =
-      static_cast<unsigned int>(glyph_bitmap->rows);
-    unsigned int glyph_bitmap_width =
-      static_cast<unsigned int>(glyph_bitmap->width);
-    for (unsigned int i = 0;  i < glyph_bitmap_height;  ++i)
+    std::vector<argb_t> glyphTextureData;
+    glyphTextureData.resize(bitmapHeight * bitmapWidth);
+
+    for (unsigned int i = 0; i < bitmapHeight; ++i)
     {
-        std::uint8_t *src = glyph_bitmap->buffer + (i * glyph_bitmap->pitch);
-        switch (glyph_bitmap->pixel_mode)
+        argb_t* currentRow =  glyphTextureData.data() + i * bitmapWidth;
+
+        for (unsigned int j = 0; j < bitmapWidth; ++j)
         {
-        case FT_PIXEL_MODE_GRAY:
-        {
-            std::uint8_t *dst = reinterpret_cast<std::uint8_t*>(buffer);
-            for (unsigned int j = 0;  j < glyph_bitmap_width;  ++j)
+            std::uint8_t* src = glyphBitmap->buffer + (i * glyphBitmap->pitch + j);
+
+            switch (glyphBitmap->pixel_mode)
             {
-                // RGBA
-                *dst++ = 0xFF;
-                *dst++ = 0xFF;
-                *dst++ = 0xFF;
-                *dst++ = *src++;
+            case FT_PIXEL_MODE_GRAY:
+            {
+                currentRow[j] = Colour::calculateArgb(*src, 0xFF, 0xFF, 0xFF);
+                break;
+            }
+            case FT_PIXEL_MODE_MONO:
+            {
+                currentRow[j] = (src[j / 8] & (0x80 >> (j & 7))) ? 0xFFFFFFFF : 0x00000000;
+                break;
+            }
+            default:
+                throw InvalidRequestException(
+                    "The glyph could not be drawn because the pixel mode is "
+                    "unsupported.");
             }
         }
-        break;
+    }
 
-        case FT_PIXEL_MODE_MONO:
-            for (unsigned int j = 0;  j < glyph_bitmap_width;  ++j)
-                buffer [j] = (src [j / 8] & (0x80 >> (j & 7))) ? 0xFFFFFFFF : 0x00000000;
-            break;
+    return glyphTextureData;
+}
 
-        default:
-            throw InvalidRequestException(
-                "The glyph could not be drawn because the pixel mode is "
-                "unsupported.");
-            break;
+//----------------------------------------------------------------------------//
+void FreeTypeFont::updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap* glyphBitmap,
+    const std::vector<argb_t>& subTextureData) const
+{
+    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap->rows);
+    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap->width);
+
+    argb_t* currentPixelLine = buffer;
+
+    for (unsigned int i = 0;  i < bitmapHeight;  ++i)
+    {
+        argb_t* currentPixel = currentPixelLine;
+
+        for (unsigned int j = 0; j < bitmapWidth; ++j)
+        {
+            *currentPixel = subTextureData[bitmapWidth * i + j];
+            ++currentPixel;
         }
 
-        buffer += buf_width;
+        currentPixelLine += d_lastTextureSize;
     }
 }
 
