@@ -448,8 +448,24 @@ glm::mat4 GeometryBuffer::getModelMatrix() const
     return modelMatrix;
 }
 
-void GeometryBuffer::scaleTexCoordinates(const float scaleFactor)
+void GeometryBuffer::updateTextureCoordinates(const Texture* texture, const float scaleFactor)
 {
+    auto renderMaterial = getRenderMaterial();
+    ShaderParameterBindings* shaderParamBindings = (*renderMaterial).getShaderParamBindings();
+    ShaderParameter* shaderParam = shaderParamBindings->getParameter("texture0");
+    ShaderParameterTexture* texture0ShaderParam = static_cast<ShaderParameterTexture*>(shaderParam);
+    if (texture0ShaderParam == nullptr)
+    {
+        return;
+    }
+
+    const Texture* geomBuffTex0 = texture0ShaderParam->d_parameterValue;
+    if (geomBuffTex0 != texture)
+    {
+        return;
+    }
+
+
     size_t vertexCount = d_vertexData.size() / 9;
     for(size_t i = 0; i < vertexCount; ++i)
     {

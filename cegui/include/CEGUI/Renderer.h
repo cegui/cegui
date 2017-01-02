@@ -179,7 +179,8 @@ public:
 
     /*!
     \brief
-        TODO
+        Goes through all geometry buffers and updates their texture
+        coordinates if the texture matches the supplied texture.
     */
     void updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor);
 
