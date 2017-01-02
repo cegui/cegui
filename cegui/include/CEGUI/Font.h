@@ -70,7 +70,11 @@ public:
      */
     static const String EventRenderSizeChanged;
 
-    //! Stand
+    /*! The code point of the replacement character defined by the Unicode standard.
+        This is typically rendered as rectangle or question-mark inside a box and
+        is used whenever a unicode code point can not be rendered because it is not
+        present in the Font or otherwise unsupported.
+    */
     static const char32_t UnicodeReplacementCharacter = 0xFFFD;
 
     //! Destructor.
@@ -537,7 +541,12 @@ protected:
             glyph_pos, textGeometryBuffer);
     }
 
-    //! Returns the Font glyph, which is made ready for being drawn
+    /*!
+    \brief
+        Tries to find the FontGlyph for the supplied codepoint. Before returning it,
+        extra steps might be taking, such as initialising and rasterising the glyph
+        if necessary.
+    */
     virtual const FontGlyph* getPreparedGlyph(char32_t currentCodePoint) const;
 
     //! Name of this font.

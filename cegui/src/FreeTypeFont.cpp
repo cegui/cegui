@@ -209,7 +209,7 @@ void FreeTypeFont::enlargeAndUpdateTexture(Texture* texture) const
     std::fill(d_lastTextureBuffer.begin(), d_lastTextureBuffer.end(), 0);
 
     // Copy our memory buffer into the texture and free it
-    updateTextureBufferSubTexture(d_lastTextureBuffer.data(),
+    updateTextureBufferSubImage(d_lastTextureBuffer.data(),
                                   oldTextureSize, oldTextureSize, oldTextureData);
 
     texture->loadFromMemory(d_lastTextureBuffer.data(), newTextureSize, Texture::PixelFormat::Rgba);
@@ -290,7 +290,7 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 
     // Update the cached texture data in memory
     size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
-    updateTextureBufferSubTexture(d_lastTextureBuffer.data() + bufferDataGlyphPos,
+    updateTextureBufferSubImage(d_lastTextureBuffer.data() + bufferDataGlyphPos,
         glyphWidth, glyphHeight, subTextureData);
 
     // Update the sub-image in the texture on the GPU
@@ -392,8 +392,8 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::updateTextureBufferSubTexture(argb_t* destTextureData, unsigned int bitmapWidth,
-    unsigned int bitmapHeight, const std::vector<argb_t>& subTextureData) const
+void FreeTypeFont::updateTextureBufferSubImage(argb_t* destTextureData, unsigned int bitmapWidth,
+    unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const
 {
     argb_t* curDestPixelLine = destTextureData;
 
@@ -403,7 +403,7 @@ void FreeTypeFont::updateTextureBufferSubTexture(argb_t* destTextureData, unsign
 
         for (unsigned int j = 0; j < bitmapWidth; ++j)
         {
-            *curDestPixel = subTextureData[bitmapWidth * i + j];
+            *curDestPixel = subImageData[bitmapWidth * i + j];
             ++curDestPixel;
         }
 
@@ -619,26 +619,6 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
 
     if (error != 0)
     {
-        /*
-        TODO: rectangle replacement
-
-        std::stringstream err;
-        err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
-        err << static_cast<unsigned int>(s->first);
-        err << ".  Will use an empty image for this glyph!";
-        Logger::getSingleton().logEvent(err.str().c_str(), LoggingLevel::Error);
-
-        // Create a 'null' image for this glyph so we do not seg later
-        const Rectf area(0, 0, 0, 0);
-        const glm::vec2 offset(0, 0);
-        const String name(PropertyHelper<std::uint32_t>::toString(s->first));
-        BitmapImage* img =
-            new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
-                d_nativeResolution);
-        d_glyphImages.push_back(img);
-        s->second->setImage(img);
-        */
-
         return;
     }
 
@@ -852,9 +832,13 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
         }
 
         const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+        if (glyph == nullptr && codePoint != UnicodeReplacementCharacter)
+        {
+            glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+        }
+
         if (glyph == nullptr)
         {
-            //TODO: Show rectangle glyph
             continue;
         }
 

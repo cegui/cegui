@@ -481,7 +481,12 @@ public:
     */
     glm::mat4 getModelMatrix() const;
 
-    void scaleTexCoordinates(const float scaleFactor);
+    /*!
+    \brief
+        Scales the texture coordinates of this geometry buffer by the supplied factor, if the
+        texture is matching the texture (if one exists) of this geometry buffer.
+    */
+    void updateTextureCoordinates(const Texture* texture, const float scaleFactor);
 
 protected:  
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);

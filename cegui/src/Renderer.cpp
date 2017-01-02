@@ -28,7 +28,6 @@
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/ShaderParameterBindings.h"
 
 namespace CEGUI
 {
@@ -129,22 +128,7 @@ void Renderer::updateGeometryBufferTexCoords(const Texture* texture, const float
 {
     for(auto& curGeomBuffer : d_geometryBuffers)
     {
-        auto renderMaterial = curGeomBuffer->getRenderMaterial();
-        ShaderParameterBindings* shaderParamBindings = (*renderMaterial).getShaderParamBindings();
-        ShaderParameter* shaderParam = shaderParamBindings->getParameter("texture0");
-        ShaderParameterTexture* texture0ShaderParam = static_cast<ShaderParameterTexture*>(shaderParam);
-        if(texture0ShaderParam == nullptr)
-        {
-            continue;
-        }
-        
-        const CEGUI::Texture* geomBuffTex0 = texture0ShaderParam->d_parameterValue;
-        if(geomBuffTex0 != texture)
-        {
-            continue;
-        }
-
-        curGeomBuffer->scaleTexCoordinates(scaleFactor);
+        curGeomBuffer->updateTextureCoordinates(texture, scaleFactor);
     }
 }
 

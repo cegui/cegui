@@ -202,10 +202,17 @@ public:
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const;
 
+    //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const;
 
+    //! Sets the initial size to be used for any new glyph atlas texture.
     void setInitialGlyphAtlasSize(int val);
+
 protected:
+    /*!
+        A data structure containing info about one horizontal line inside
+        a glyph atlas. The data is used when deciding where to place a new glyph.
+    */
     struct TextureGlyphLine
     {
         TextureGlyphLine()
@@ -233,25 +240,22 @@ protected:
     //! Type for mapping Freetype indices to the corresponding Freetype Font glyphs
     typedef std::unordered_map<FT_UInt, char32_t> IndexToCodePointMap;
 
-    const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
-
     /*!
     \brief
-        Copy the current glyph data into \a buffer, which has a width of
-        \a buf_width pixels (not bytes).
+        Updates a part of the buffer data, which equates to a sub-image inside the 
+        texture the buffer data represents, based on the supplied subimage data.
 
-    \param buffer
-        Memory buffer large enough to receive the imagery for the currently
-        loaded glyph.
+    \param bitmapWidth
+        Width of the source subimage
 
-    \param buf_width
-        Width of \a buffer in pixels (where each pixel is a argb_t).
+    \param bitmapHeight
+        Height of the source subimage
 
-    \return
-        Nothing.
+    \param subTextureData
+        The pixel data of the subimage 
     */
-    void updateTextureBufferSubTexture(argb_t* buffer, unsigned int bitmapWidth,
-        unsigned int bitmapHeight, const std::vector<argb_t>& subTextureData) const;
+    void updateTextureBufferSubImage(argb_t* buffer, unsigned int bitmapWidth,
+        unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const;
 
     /*!
     \brief
@@ -264,6 +268,11 @@ protected:
     */
     unsigned int getTextureSize(CodePointToGlyphMap::const_iterator s,
                         CodePointToGlyphMap::const_iterator e) const;
+    /*
+    \brief
+        Increases the size of the texture and updates the data in it based on the old
+        texture's data.
+     */
     void enlargeAndUpdateTexture(Texture* texture) const;
     //! Register all properties of this class.
     void addFreeTypeFontProperties();
@@ -284,13 +293,16 @@ protected:
 
     void handleFontSizeOrFontUnitChange();
 
-    // overrides of functions in Font base class.
+    //! Rasterises the glyph and adds it into a glyph atlas texture
     void rasterise(FreeTypeFontGlyph* glyph) const;
 
+    //! Adds a new glyph atlas line if the glyph would fit into there.
     bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
 
     void createGlyphAtlasTexture(int textureSize) const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
+
+    const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
 #ifdef CEGUI_USE_RAQM

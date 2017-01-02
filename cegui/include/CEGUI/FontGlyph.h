@@ -100,6 +100,7 @@ public:
     void setImage(Image* image)
     { d_image = image; }
 
+    //! Returns the code point that this glyph is based on
     char32_t getCodePoint() const
     {
         return d_codePoint;
