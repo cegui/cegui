@@ -151,9 +151,7 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
     }
 
     // Unbind array and element array buffers
-    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
-
-    
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);    
 }
 
 

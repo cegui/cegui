@@ -179,6 +179,12 @@ public:
 
     /*!
     \brief
+        TODO
+    */
+    void updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor);
+
+    /*!
+    \brief
         Create a TextureTarget that can be used to cache imagery; this is a
         RenderTarget that does not lose it's content from one frame to another.
 

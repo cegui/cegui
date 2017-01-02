@@ -176,13 +176,13 @@ public:
     \brief
         Gets the set clipping region for this buffer.
     */
-    const Rectf& getClippingRegion();
+    const Rectf& getClippingRegion() const;
 
     /*!
     \brief
         Gets the prepared clipping region to be used when rendering this buffer.
     */
-    const Rectf& getPreparedClippingRegion();
+    const Rectf& getPreparedClippingRegion() const;
 
     /*!
     \brief
@@ -481,6 +481,7 @@ public:
     */
     glm::mat4 getModelMatrix() const;
 
+    void scaleTexCoordinates(const float scaleFactor);
 
 protected:  
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);

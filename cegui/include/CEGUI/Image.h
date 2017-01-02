@@ -303,6 +303,15 @@ public:
 
     /*!
     \brief
+        Gets the rectangular image area of this Image.
+
+    \return
+        The rectangular image area of this Image.
+     */
+    Rectf getImageArea() const;
+
+    /*!
+    \brief
         Sets the pixel offset of this Image.
 
     \param pixel_offset
