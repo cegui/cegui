@@ -250,7 +250,8 @@ protected:
     \return
         Nothing.
     */
-    void updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap& glyphBitmap, const std::vector<argb_t>& subTextureData) const;
+    void updateTextureBufferSubTexture(argb_t* buffer, unsigned int bitmapWidth,
+        unsigned int bitmapHeight, const std::vector<argb_t>& subTextureData) const;
 
     /*!
     \brief
@@ -263,7 +264,7 @@ protected:
     */
     unsigned int getTextureSize(CodePointToGlyphMap::const_iterator s,
                         CodePointToGlyphMap::const_iterator e) const;
-
+    void enlargeAndUpdateTexture(Texture* texture) const;
     //! Register all properties of this class.
     void addFreeTypeFontProperties();
     //! Free all allocated font data.
@@ -288,7 +289,7 @@ protected:
 
     bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
 
-    void createNewTexture() const;
+    void createGlyphAtlasTexture(int textureSize) const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
@@ -330,7 +331,7 @@ protected:
     mutable IndexToCodePointMap d_indexToGlyphMap;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
-    int d_initialGlyphAtlasSize = 1028;
+    int d_initialGlyphAtlasSize = 32;
     //! The size of the last texture that has been created
     mutable int d_lastTextureSize = 0;
     //! Memory buffer for rendering the glyphs, this contains the data of the latest texture

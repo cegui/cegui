@@ -191,12 +191,40 @@ unsigned int FreeTypeFont::getTextureSize(CodePointToGlyphMap::const_iterator s,
     return glyph_count ? texsize : 0;
 }
 
+void FreeTypeFont::enlargeAndUpdateTexture(Texture* texture) const
+{
+    const int scaleFactor = 2;
+
+    int oldTextureSize = d_lastTextureSize;
+    std::vector<argb_t> oldTextureData(d_lastTextureBuffer);
+
+    //Double the size of the current texture if possible
+    // TODO: check if size is possible, else make new texture
+    int newSize = d_lastTextureSize * scaleFactor;
+    Sizef newTextureSize(static_cast<float>(newSize),
+                         static_cast<float>(newSize));
+    d_lastTextureSize = newSize;
+
+    d_lastTextureBuffer.resize(newSize * newSize);
+    std::fill(d_lastTextureBuffer.begin(), d_lastTextureBuffer.end(), 0);
+
+    // Copy our memory buffer into the texture and free it
+    updateTextureBufferSubTexture(d_lastTextureBuffer.data(),
+                                  oldTextureSize, oldTextureSize, oldTextureData);
+
+    texture->loadFromMemory(d_lastTextureBuffer.data(), newTextureSize, Texture::PixelFormat::Rgba);
+
+    System::getSingleton().getRenderer()->updateGeometryBufferTexCoords(texture,
+        1.0f / static_cast<float>(scaleFactor));
+}
+
 //----------------------------------------------------------------------------//
 void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 {
     if(d_glyphTextures.empty())
     {
-        createNewTexture();
+        createGlyphAtlasTexture(d_initialGlyphAtlasSize);
+        d_textureGlyphLines.push_back(TextureGlyphLine());
     }
 
     // Retrieve the last texture created
@@ -213,7 +241,7 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
     size_t lineCount =  d_textureGlyphLines.size();
     for(size_t i = 0; i < lineCount && !fittingLineWasFound; ++i)
     {
-        auto& currentGlyphLine = d_textureGlyphLines[i];
+        const auto& currentGlyphLine = d_textureGlyphLines[i];
         // Check if glyph right margin exceeds texture size
         int curGlyphXEnd = currentGlyphLine.d_lastXPos + glyphWidth;
         int curGlyphYEnd = currentGlyphLine.d_lastYPos + glyphHeight;
@@ -248,7 +276,9 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 
     if(!fittingLineWasFound)
     {
-        //Bigger sized texture needed
+        enlargeAndUpdateTexture(texture);
+
+        rasterise(glyph);
         return;
     }
 
@@ -261,11 +291,7 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
     // Update the cached texture data in memory
     size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
     updateTextureBufferSubTexture(d_lastTextureBuffer.data() + bufferDataGlyphPos,
-                                  glyphBitmap, subTextureData);
-
-    // Copy our memory buffer into the texture and free it
-    //Sizef textureSize(static_cast<float>(d_lastTextureSize), static_cast<float>(d_lastTextureSize));
-    //texture->loadFromMemory(d_lastTextureBuffer.data(), textureSize, Texture::PixelFormat::Rgba);
+        glyphWidth, glyphHeight, subTextureData);
 
     // Update the sub-image in the texture on the GPU
     glm::vec2 subImagePos(glyphTexLine.d_lastXPos, glyphTexLine.d_lastYPos);
@@ -310,20 +336,19 @@ bool FreeTypeFont::addNewLineIfFitting(unsigned int glyphHeight, size_t& fitting
     return false;
 }
 
-void FreeTypeFont::createNewTexture() const
+void FreeTypeFont::createGlyphAtlasTexture(int textureSize) const
 {
     const String texture_name(d_name + "_auto_glyph_images_texture_" +
         PropertyHelper<std::uint32_t>::toString(d_glyphTextures.size() - 1));
 
-    d_lastTextureSize = d_initialGlyphAtlasSize;
-    Sizef textureSize(static_cast<float>(d_lastTextureSize),
-        static_cast<float>(d_lastTextureSize));
+    d_lastTextureSize = textureSize;
+    Sizef newTextureSize(static_cast<float>(textureSize),
+        static_cast<float>(textureSize));
     Texture& texture = System::getSingleton().getRenderer()->createTexture(
-        texture_name, textureSize);
+        texture_name, newTextureSize);
     d_glyphTextures.push_back(&texture);
 
     d_lastTextureBuffer = std::vector<argb_t>(d_lastTextureSize * d_lastTextureSize, 0);
-    d_textureGlyphLines.push_back(TextureGlyphLine());
 }
 
 //----------------------------------------------------------------------------//
@@ -367,25 +392,22 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::updateTextureBufferSubTexture(argb_t* buffer, FT_Bitmap& glyphBitmap,
-                                                 const std::vector<argb_t>& subTextureData) const
+void FreeTypeFont::updateTextureBufferSubTexture(argb_t* destTextureData, unsigned int bitmapWidth,
+    unsigned int bitmapHeight, const std::vector<argb_t>& subTextureData) const
 {
-    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap.rows);
-    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap.width);
-
-    argb_t* currentPixelLine = buffer;
+    argb_t* curDestPixelLine = destTextureData;
 
     for (unsigned int i = 0;  i < bitmapHeight;  ++i)
     {
-        argb_t* currentPixel = currentPixelLine;
+        argb_t* curDestPixel = curDestPixelLine;
 
         for (unsigned int j = 0; j < bitmapWidth; ++j)
         {
-            *currentPixel = subTextureData[bitmapWidth * i + j];
-            ++currentPixel;
+            *curDestPixel = subTextureData[bitmapWidth * i + j];
+            ++curDestPixel;
         }
 
-        currentPixelLine += d_lastTextureSize;
+        curDestPixelLine += d_lastTextureSize;
     }
 }
 
