@@ -297,7 +297,7 @@ protected:
 
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
-    std::vector<GeometryBuffer*> layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+    std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
