@@ -167,7 +167,7 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
 
 void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int glyphWidth, int glyphHeight) const
 {
-    int maxTextureSize = 64;//System::getSingleton().getRenderer()->getMaxTextureSize();
+    int maxTextureSize = System::getSingleton().getRenderer()->getMaxTextureSize();
     const int scaleFactor = 2;
 
     if(glyphWidth > maxTextureSize || glyphHeight > maxTextureSize)
