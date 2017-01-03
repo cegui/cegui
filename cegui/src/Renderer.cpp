@@ -124,4 +124,12 @@ void Renderer::setFontScale(const float fontScale)
     FontManager::getSingleton().updateAllFonts();
 }
 
+void Renderer::updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor)
+{
+    for(auto& curGeomBuffer : d_geometryBuffers)
+    {
+        curGeomBuffer->updateTextureCoordinates(texture, scaleFactor);
+    }
+}
+
 }

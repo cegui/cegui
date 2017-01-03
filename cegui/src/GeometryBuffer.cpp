@@ -164,7 +164,7 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
 void GeometryBuffer::appendGeometry(const float* vertex_data,
                                     std::size_t array_size)
 {
-    d_vertexData.reserve( d_vertexData.size() + array_size);
+    d_vertexData.reserve(d_vertexData.size() + array_size);
     std::copy(vertex_data, vertex_data + array_size, std::back_inserter(d_vertexData));
 
     // Update size of geometry buffer
@@ -350,12 +350,12 @@ void GeometryBuffer::setClippingRegion(const Rectf& region)
     d_preparedClippingRegion.right(std::max(0.0f, region.right()));
 }
 
-const Rectf& GeometryBuffer::getClippingRegion()
+const Rectf& GeometryBuffer::getClippingRegion() const
 {
     return d_clippingRegion;
 }
 
-const Rectf& GeometryBuffer::getPreparedClippingRegion()
+const Rectf& GeometryBuffer::getPreparedClippingRegion() const
 {
     return d_preparedClippingRegion;
 }
@@ -448,6 +448,41 @@ glm::mat4 GeometryBuffer::getModelMatrix() const
     return modelMatrix;
 }
 
+const Texture* GeometryBuffer::getTexture(const std::string& parameterName) const
+{
+    auto renderMaterial = getRenderMaterial();
+    ShaderParameterBindings* shaderParamBindings = (*renderMaterial).getShaderParamBindings();
+    ShaderParameter* shaderParam = shaderParamBindings->getParameter(parameterName);
+    ShaderParameterTexture* texture0ShaderParam = static_cast<ShaderParameterTexture*>(shaderParam);
+    if (texture0ShaderParam == nullptr)
+    {
+        return nullptr;
+    }
+
+    return texture0ShaderParam->d_parameterValue;
+}
+
+void GeometryBuffer::updateTextureCoordinates(const Texture* texture, const float scaleFactor)
+{
+    const Texture* geomBuffTex0 = getTexture("texture0");
+ 
+    if (geomBuffTex0 == nullptr || geomBuffTex0 != texture)
+    {
+        return;
+    }
+
+
+    size_t vertexCount = d_vertexData.size() / 9;
+    for(size_t i = 0; i < vertexCount; ++i)
+    {
+        d_vertexData[i * 9 + 7] *= scaleFactor;
+        d_vertexData[i * 9 + 8] *= scaleFactor;
+    }
+
+    VertexData tempVertexData = d_vertexData;
+    d_vertexData.clear();
+    appendGeometry(tempVertexData.data(), tempVertexData.size());
+}
 
 }
 

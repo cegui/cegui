@@ -70,6 +70,13 @@ public:
      */
     static const String EventRenderSizeChanged;
 
+    /*! The code point of the replacement character defined by the Unicode standard.
+        This is typically rendered as rectangle or question-mark inside a box and
+        is used whenever a unicode code point can not be rendered because it is not
+        present in the Font or otherwise unsupported.
+    */
+    static const char32_t UnicodeReplacementCharacter = 0xFFFD;
+
     //! Destructor.
     virtual ~Font();
 
@@ -135,8 +142,7 @@ public:
         true if the font contains a mapping for code point \a cp,
         false if it does not contain a mapping for \a cp.
     */
-    bool isCodepointAvailable(char32_t cp) const
-    { return (d_cp_map.find(cp) != d_cp_map.end()); }
+    virtual bool isCodepointAvailable(char32_t codePoint) const = 0;
 
     /*!
     \brief
@@ -228,14 +234,14 @@ public:
         const bool clipping_enabled, const ColourRect& colours,
         const float space_extra = 0.0f, const float x_scale = 1.0f,
         const float y_scale = 1.0f) const;
-
-  /*!
-    \brief
-        Set the native resolution for this Font
-
-    \param size
-        Size object describing the new native screen resolution for this Font.
-    */
+  
+    /*!
+      \brief
+          Set the native resolution for this Font
+  
+      \param size
+          Size object describing the new native screen resolution for this Font.
+      */
     void setNativeResolution(const Sizef& size);
 
     /*!
@@ -491,21 +497,6 @@ public:
 
     /*!
     \brief
-        Return a pointer to the glyphDat struct for the given codepoint,
-        or 0 if the codepoint does not have a glyph defined.
-
-    \param codepoint
-        char32_t codepoint to return the glyphDat structure for.
-
-    \return
-        Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
-        is defined for \a codepoint.
-    */
-    const FontGlyph* getGlyphData(char32_t codepoint) const;
-
-
-    /*!
-    \brief
         Update the font as needed, according to the current parameters.
         This should only be called if really necessary and will only 
         internally update the Font, without firing events or updating
@@ -519,24 +510,6 @@ protected:
          const String& resource_group, const AutoScaledMode auto_scaled,
          const Sizef& native_res);
 
-    /*!
-    \brief
-        This function prepares a certain range of glyphs to be ready for
-        displaying. This means that after returning from this function
-        glyphs from d_cp_map[start_codepoint] to d_cp_map[end_codepoint]
-        should have their d_image member set. If there is an error
-        during rasterisation of some glyph, it's okay to leave the
-        d_image field set to NULL, in which case such glyphs will
-        be skipped from display.
-    \param start_codepoint
-        The lowest codepoint that should be rasterised
-    \param end_codepoint
-        The highest codepoint that should be rasterised
-    */
-    virtual void rasterise(char32_t start_codepoint, char32_t end_codepoint) const;
-
-
-
     //! implementation version of writeXMLToStream.
     virtual void writeXMLToStream_impl(XMLSerializer& xml_stream) const = 0;
 
@@ -546,34 +519,53 @@ protected:
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
-    /*!
-    \brief
-        Set the maximal glyph index. This reserves the respective
-        number of bits in the d_loadedGlyphPages array.
-    */
-    void setMaxCodepoint(char32_t codepoint);
-
-    //! finds FontGlyph in map and returns it, or 0 if none.
-    virtual const FontGlyph* findFontGlyph(const char32_t codepoint) const;
+    //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
+    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
 
     //! The old way of rendering glyphs, without kerning and extended layouting
-    void renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
+    virtual std::vector<GeometryBuffer*> renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, const float x_scale, 
+        const float space_extra, const float x_scale,   
         const float y_scale, ImageRenderSettings imgRenderSettings, 
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const;
+        glm::vec2& glyph_pos) const;
+
+    /*! 
+    \brief
+        Adds the render geometry data to the supplied vector. A new GeometryBuffer
+        might be added if necessary or data might be added to an existing one.
+    */
+    void addGlyphRenderGeometry(std::vector<GeometryBuffer*> &textGeometryBuffers,
+                                const Image* image, ImageRenderSettings &imgRenderSettings,
+                                const Rectf* clip_rect, const ColourRect& colours) const;
 
     //! The recommended way of rendering a glyph
-    virtual void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+    virtual std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const
+        glm::vec2& glyph_pos) const
     {
-        renderGlyphsUsingDefaultFallback(text, position, clip_rect,
+        return renderGlyphsUsingDefaultFallback(text, position, clip_rect,
             colours, space_extra, x_scale, y_scale, imgRenderSettings,
-            glyph_pos, textGeometryBuffer);
+            glyph_pos);
     }
+
+    /*!
+    \brief
+        Checks if the supplied GeometryBuffers contain a GeometryBuffer using the same Image.
+        If this is the case, the first found Geometrybuffer will be returned, otherwise 
+        a nullptr will be returned.
+    */
+    static GeometryBuffer* findCombinableBuffer(const std::vector<GeometryBuffer*>& geomBuffers,
+        const Image* image);
+
+    /*!
+    \brief
+        Tries to find the FontGlyph for the supplied codepoint. Before returning it,
+        extra steps might be taking, such as initialising and rasterising the glyph
+        if necessary.
+    */
+    virtual const FontGlyph* getPreparedGlyph(char32_t currentCodePoint) const;
 
     //! Name of this font.
     String d_name;
@@ -601,29 +593,6 @@ protected:
     float d_horzScaling;
     //! current vertical scaling factor.
     float d_vertScaling;
-
-    //! Maximal codepoint for font glyphs
-    char32_t d_maxCodepoint;
-
-    /*!
-    \brief
-        This bitmap holds information about loaded 'pages' of glyphs.
-        A glyph page is a set of 256 codepoints, starting at 256-multiples.
-        For example, the 1st glyph page is 0-255, fourth is 1024-1279 etc.
-        When a specific glyph is required for painting, the corresponding
-        bit is checked to see if the respective page has been rasterised.
-        If not, the rasterise() method is invoked, which prepares the
-        glyphs from the respective glyph page for being painted.
-
-        This array is big enough to hold at least max_codepoint bits.
-        If this member is NULL, all glyphs are considered pre-rasterised.
-    */
-    mutable std::vector<unsigned int> d_loadedGlyphPages;
-
-    //! Definition of CodepointMap type.
-    typedef std::map<char32_t, FontGlyph*, std::less<char32_t> > CodepointMap;
-    //! Contains mappings from code points to Image objects
-    mutable CodepointMap d_cp_map;
 };
 
 

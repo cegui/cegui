@@ -42,22 +42,19 @@
 #endif
 
 #include <cmath>
-#include <cstdio>
 
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 // Pixels to put between glyphs
-#define INTER_GLYPH_PAD_SPACE 2
+static const int s_glyphPadding = 1;
 // A multiplication coefficient to convert FT_Pos values into normal floats
-#define FT_POS_COEF  (1.0/64.0)
-
-//----------------------------------------------------------------------------//
+static const float s_conversionMultCoeff =  (1.0f/64.f);
 // Font objects usage count
-static int ft_usage_count = 0;
+static int s_fontUsageCount = 0;
 // A handle to the FreeType library
-static FT_Library ft_lib;
+static FT_Library s_freetypeLibHandle;
 
 //----------------------------------------------------------------------------//
 
@@ -97,15 +94,15 @@ FreeTypeFont::FreeTypeFont(
     d_antiAliased(anti_aliased),
     d_fontFace(nullptr)
 {
-    if (!ft_usage_count++)
-        FT_Init_FreeType(&ft_lib);
+    if (!s_fontUsageCount++)
+        FT_Init_FreeType(&s_freetypeLibHandle);
 
     addFreeTypeFontProperties();
 
     FreeTypeFont::updateFont();
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << "Successfully loaded " << d_cp_map.size() << " glyphs";
+    sstream << "Successfully loaded " << d_codePointToGlyphMap.size() << " glyphs";
     Logger::getSingleton().logEvent(sstream.str(), LoggingLevel::Informative);
 }
 
@@ -114,8 +111,8 @@ FreeTypeFont::~FreeTypeFont()
 {
     free();
 
-    if (!--ft_usage_count)
-        FT_Done_FreeType(ft_lib);
+    if (!--s_fontUsageCount)
+        FT_Done_FreeType(s_freetypeLibHandle);
 }
 
 //----------------------------------------------------------------------------//
@@ -140,240 +137,248 @@ void FreeTypeFont::addFreeTypeFontProperties ()
     );
 }
 
-//----------------------------------------------------------------------------//
-unsigned int FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
-                                  CodepointMap::const_iterator e) const
+void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
 {
-    unsigned int texsize = 32; // start with 32x32
-    unsigned int max_texsize = System::getSingleton().getRenderer()->getMaxTextureSize();
-    unsigned int glyph_count = 0;
-
-    // Compute approximatively the optimal texture size for font
-    while (texsize < max_texsize)
+    if(d_lastTextureSize >= newSize)
     {
-        unsigned int x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
-        unsigned int yb = INTER_GLYPH_PAD_SPACE;
-        for (CodepointMap::const_iterator c = s; c != e; ++c)
-        {
-            // skip glyphs that are already rendered
-            if (c->second->getImage())
-                continue;
-
-            // load glyph metrics (don't render)
-            if (FT_Load_Char(d_fontFace, c->first,
-                             FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
-                continue;
-
-            unsigned int glyph_w = int (ceil(d_fontFace->glyph->metrics.width * FT_POS_COEF)) +
-                           INTER_GLYPH_PAD_SPACE;
-            unsigned int glyph_h = int (ceil(d_fontFace->glyph->metrics.height * FT_POS_COEF)) +
-                           INTER_GLYPH_PAD_SPACE;
-
-            x += glyph_w;
-            if (x > texsize)
-            {
-                x = INTER_GLYPH_PAD_SPACE;
-                y = yb;
-            }
-            unsigned int yy = y + glyph_h;
-            if (yy > texsize)
-                goto too_small;
-
-            if (yy > yb)
-                yb = yy;
-
-            ++glyph_count;
-        }
-        // Okay, the texture size is enough for holding our glyphs
-        break;
-
-    too_small:
-        texsize *= 2;
+        InvalidRequestException("Must supply a larger than previous size when "
+            "resizing the glyph atlas");
     }
 
-    return glyph_count ? texsize : 0;
+    int oldTextureSize = d_lastTextureSize;
+    std::vector<argb_t> oldTextureData(d_lastTextureBuffer);
+
+    Sizef newTextureSize(static_cast<float>(newSize),
+                         static_cast<float>(newSize));
+    d_lastTextureSize = newSize;
+
+    d_lastTextureBuffer.resize(newSize * newSize);
+    std::fill(d_lastTextureBuffer.begin(), d_lastTextureBuffer.end(), 0);
+
+    // Copy our memory buffer into the texture and free it
+    updateTextureBufferSubImage(d_lastTextureBuffer.data(),
+        oldTextureSize, oldTextureSize, oldTextureData);
+
+    texture->loadFromMemory(d_lastTextureBuffer.data(), newTextureSize, Texture::PixelFormat::Rgba);
+
+    System::getSingleton().getRenderer()->updateGeometryBufferTexCoords(texture,
+        oldTextureSize / static_cast<float>(newSize));
+}
+
+void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int glyphWidth, int glyphHeight) const
+{
+    int maxTextureSize = System::getSingleton().getRenderer()->getMaxTextureSize();
+    const int scaleFactor = 2;
+
+    if(glyphWidth > maxTextureSize || glyphHeight > maxTextureSize)
+    {
+        InvalidRequestException("Can not rasterise a glyph that is larger "
+            "than the maximum supported texture size.");
+    }
+        
+    int newSize = d_lastTextureSize * scaleFactor;
+    if (newSize > maxTextureSize)
+    {
+        createGlyphAtlasTexture();
+    }
+    else
+    {
+        resizeAndUpdateTexture(texture, newSize);
+    }
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(char32_t start_codepoint, char32_t end_codepoint) const
+void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 {
-    CodepointMap::iterator s = d_cp_map.lower_bound(start_codepoint);
-    if (s == d_cp_map.end())
+    if(d_glyphTextures.empty())
+    {
+        createGlyphAtlasTexture();
+    }
+
+    // Retrieve the last texture created
+    Texture* texture = d_glyphTextures.back();
+
+    // Go ahead, line by line, top-left to bottom-right
+    int glyphWidth = d_fontFace->glyph->bitmap.width;
+    int glyphHeight = d_fontFace->glyph->bitmap.rows;
+
+    bool fittingLineWasFound = false;
+    size_t fittingLineIndex = -1;
+
+    // Go through the lines and find one that fits
+    size_t lineCount =  d_textureGlyphLines.size();
+    for(size_t i = 0; i < lineCount && !fittingLineWasFound; ++i)
+    {
+        const auto& currentGlyphLine = d_textureGlyphLines[i];
+        // Check if glyph right margin exceeds texture size
+        int curGlyphXEnd = currentGlyphLine.d_lastXPos + glyphWidth;
+        int curGlyphYEnd = currentGlyphLine.d_lastYPos + glyphHeight;
+        if (curGlyphXEnd < d_lastTextureSize && curGlyphYEnd < d_lastTextureSize)
+        {
+            //Only the last line can be extended into the y-dimension
+            if (i == (lineCount - 1))
+            {
+                if (curGlyphYEnd > currentGlyphLine.d_maximumExtentY)
+                {
+                    currentGlyphLine.d_maximumExtentY = curGlyphYEnd;
+                }
+
+                fittingLineIndex = i;
+                fittingLineWasFound = true;
+            }
+            else
+            {
+                if (curGlyphYEnd < currentGlyphLine.d_maximumExtentY)
+                {
+                    fittingLineIndex = i;
+                    fittingLineWasFound = true;
+                }
+            }
+        }
+    }
+
+    if(!fittingLineWasFound)
+    {
+        fittingLineWasFound = addNewLineIfFitting(glyphHeight, fittingLineIndex);
+    }
+
+    if(!fittingLineWasFound)
+    {
+        createTextureSpaceForGlyphRasterisation(texture, glyphWidth, glyphHeight);
+
+        rasterise(glyph);
         return;
-
-    CodepointMap::iterator orig_s = s;
-    CodepointMap::iterator e = d_cp_map.upper_bound(end_codepoint);
-    while (true)
-    {
-        // Create a new Imageset for glyphs
-        unsigned int texsize = getTextureSize(s, e);
-        // If all glyphs were already rendered, do nothing
-        if (!texsize)
-            break;
-
-        const String texture_name(d_name + "_auto_glyph_images_" +
-                                   PropertyHelper<std::uint32_t>::toString(s->first));
-        Texture& texture = System::getSingleton().getRenderer()->createTexture(
-            texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
-        d_glyphTextures.push_back(&texture);
-
-        // Create a memory buffer where we will render our glyphs
-        std::vector<argb_t> mem_buffer(texsize * texsize, 0);
-
-        // Go ahead, line by line, top-left to bottom-right
-        unsigned int x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
-        unsigned int yb = INTER_GLYPH_PAD_SPACE;
-
-        // Set to true when we finish rendering all glyphs we were asked to
-        bool finished = false;
-        // Set to false when we reach d_cp_map.end() and we start going backward
-        bool forward = true;
-
-        /* To conserve texture space we will render more glyphs than asked,
-         * but never less than asked. First we render all glyphs from s to e
-         * and after that we render glyphs until we reach d_cp_map.end(),
-         * and if there's still free texture space we will go backward
-         * from s until we hit d_cp_map.begin().
-         */
-        while (s != d_cp_map.end())
-        {
-            // Check if we finished rendering all the required glyphs
-            finished |= (s == e);
-
-            // Check if glyph already rendered
-            if (!s->second->getImage())
-            {
-                // Render the glyph
-                if (FT_Load_Char(d_fontFace, s->first, FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT |
-                                 (d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO)))
-                {
-                    std::stringstream err;
-                    err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
-                    err << static_cast<unsigned int>(s->first);
-                    err << ".  Will use an empty image for this glyph!";
-                    Logger::getSingleton().logEvent(err.str().c_str(), LoggingLevel::Error);
-
-                    // Create a 'null' image for this glyph so we do not seg later
-                    const Rectf area(0, 0, 0, 0);
-                    const glm::vec2 offset(0, 0);
-                    const String name(PropertyHelper<std::uint32_t>::toString(s->first));
-                    BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
-                                       d_nativeResolution);
-                    d_glyphImages.push_back(img);
-                    s->second->setImage(img);
-                }
-                else
-                {
-                    unsigned int glyph_w = d_fontFace->glyph->bitmap.width + INTER_GLYPH_PAD_SPACE;
-                    unsigned int glyph_h = d_fontFace->glyph->bitmap.rows + INTER_GLYPH_PAD_SPACE;
-
-                    // Check if glyph right margin does not exceed texture size
-                    unsigned int x_next = x + glyph_w;
-                    if (x_next > texsize)
-                    {
-                        x = INTER_GLYPH_PAD_SPACE;
-                        x_next = x + glyph_w;
-                        y = yb;
-                    }
-
-                    // Check if glyph bottom margine does not exceed texture size
-                    unsigned int y_bot = y + glyph_h;
-                    if (y_bot > texsize)
-                        break;
-
-                    // Copy rendered glyph to memory buffer in RGBA format
-                    drawGlyphToBuffer(&mem_buffer[0] + (y * texsize) + x, texsize);
-
-                    // Create a new image in the imageset
-                    const Rectf area(static_cast<float>(x),
-                                     static_cast<float>(y),
-                                     static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
-                                     static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
-
-                    const glm::vec2 offset(
-                        d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
-                        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
-
-                    const String name(PropertyHelper<std::uint32_t>::toString(s->first));
-                    BitmapImage* img =
-                        new BitmapImage(name, &texture, area, offset, AutoScaledMode::Disabled,
-                                       d_nativeResolution);
-                    d_glyphImages.push_back(img);
-                    s->second->setImage(img);
-
-                    // Advance to next position
-                    x = x_next;
-                    if (y_bot > yb)
-                    {
-                        yb = y_bot;
-                    }
-                }
-            }
-
-            // Go to next glyph, if we are going forward
-            if (forward)
-                if (++s == d_cp_map.end())
-                {
-                    finished = true;
-                    forward = false;
-                    s = orig_s;
-                }
-            // Go to previous glyph, if we are going backward
-            if (!forward)
-                if ((s == d_cp_map.begin()) || (--s == d_cp_map.begin()))
-                    break;
-        }
-
-        // Copy our memory buffer into the texture and free it
-        texture.loadFromMemory(&mem_buffer[0], Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PixelFormat::Rgba);
-
-        if (finished)
-            break;
     }
+
+    const auto& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
+
+    // Create the data containing the pixels of the glyph
+    FT_Bitmap& glyphBitmap = d_fontFace->glyph->bitmap;
+    std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
+
+    // Update the cached texture data in memory
+    size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
+    updateTextureBufferSubImage(d_lastTextureBuffer.data() + bufferDataGlyphPos,
+        glyphWidth, glyphHeight, subTextureData);
+
+    // Update the sub-image in the texture on the GPU
+    glm::vec2 subImagePos(glyphTexLine.d_lastXPos, glyphTexLine.d_lastYPos);
+    Sizef subImageSize(static_cast<float>(glyphWidth), static_cast<float>(glyphHeight));
+    Rectf subImageArea(subImagePos, subImageSize);
+    texture->blitFromMemory(subTextureData.data(), subImageArea);
+
+
+    // Create a new image in the imageset
+    const Rectf area(static_cast<float>(glyphTexLine.d_lastXPos),
+        static_cast<float>(glyphTexLine.d_lastYPos),
+        static_cast<float>(glyphTexLine.d_lastXPos + glyphWidth),
+        static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
+
+    const glm::vec2 offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(s_conversionMultCoeff),
+        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(s_conversionMultCoeff));
+
+    const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
+    BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
+            d_nativeResolution);
+    d_glyphImages.push_back(img);
+    glyph->setImage(img);
+
+    // Advance to next position, add padding
+    glyphTexLine.d_lastXPos += glyphWidth + s_glyphPadding;
+}
+
+bool FreeTypeFont::addNewLineIfFitting(unsigned int glyphHeight, size_t& fittingLineIndex) const
+{
+    const auto& lastLine = d_textureGlyphLines.back();
+
+    unsigned int newLinePosY = lastLine.d_maximumExtentY + s_glyphPadding;
+    int newMaxYExtent = newLinePosY + glyphHeight;
+    if (newMaxYExtent <= d_lastTextureSize)
+    {
+        // Add the glyph in a new line
+        d_textureGlyphLines.push_back(TextureGlyphLine(0, newLinePosY, newMaxYExtent));
+        fittingLineIndex = d_textureGlyphLines.size() - 1;
+        return true;
+    }
+
+    return false;
+}
+
+void FreeTypeFont::createGlyphAtlasTexture() const
+{
+    std::uint32_t newTextureIndex = d_glyphTextures.size();
+    const String texture_name(d_name + "_auto_glyph_images_texture_" +
+        PropertyHelper<std::uint32_t>::toString(newTextureIndex));
+
+    d_lastTextureSize = d_initialGlyphAtlasSize;
+    Sizef newTextureSize(static_cast<float>(d_initialGlyphAtlasSize),
+        static_cast<float>(d_initialGlyphAtlasSize));
+    Texture& texture = System::getSingleton().getRenderer()->createTexture(
+        texture_name, newTextureSize);
+    d_glyphTextures.push_back(&texture);
+
+    d_lastTextureBuffer = std::vector<argb_t>(d_lastTextureSize * d_lastTextureSize, 0);
+    d_textureGlyphLines.clear();
+    d_textureGlyphLines.push_back(TextureGlyphLine());
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, unsigned int buf_width) const
+std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 {
-    FT_Bitmap *glyph_bitmap = &d_fontFace->glyph->bitmap;
+    unsigned int bitmapHeight = static_cast<unsigned int>(glyphBitmap.rows);
+    unsigned int bitmapWidth = static_cast<unsigned int>(glyphBitmap.width);
 
-    unsigned int glyph_bitmap_height =
-      static_cast<unsigned int>(glyph_bitmap->rows);
-    unsigned int glyph_bitmap_width =
-      static_cast<unsigned int>(glyph_bitmap->width);
-    for (unsigned int i = 0;  i < glyph_bitmap_height;  ++i)
+    std::vector<argb_t> glyphTextureData;
+    glyphTextureData.resize(bitmapHeight * bitmapWidth);
+
+    for (unsigned int i = 0; i < bitmapHeight; ++i)
     {
-        std::uint8_t *src = glyph_bitmap->buffer + (i * glyph_bitmap->pitch);
-        switch (glyph_bitmap->pixel_mode)
+        argb_t* currentRow =  glyphTextureData.data() + i * bitmapWidth;
+
+        for (unsigned int j = 0; j < bitmapWidth; ++j)
         {
-        case FT_PIXEL_MODE_GRAY:
-        {
-            std::uint8_t *dst = reinterpret_cast<std::uint8_t*>(buffer);
-            for (unsigned int j = 0;  j < glyph_bitmap_width;  ++j)
+            std::uint8_t* src = glyphBitmap.buffer + (i * glyphBitmap.pitch + j);
+
+            switch (glyphBitmap.pixel_mode)
             {
-                // RGBA
-                *dst++ = 0xFF;
-                *dst++ = 0xFF;
-                *dst++ = 0xFF;
-                *dst++ = *src++;
+            case FT_PIXEL_MODE_GRAY:
+            {
+                currentRow[j] = Colour::calculateArgb(*src, 0xFF, 0xFF, 0xFF);
+                break;
+            }
+            case FT_PIXEL_MODE_MONO:
+            {
+                currentRow[j] = (src[j / 8] & (0x80 >> (j & 7))) ? 0xFFFFFFFF : 0x00000000;
+                break;
+            }
+            default:
+                throw InvalidRequestException(
+                    "The glyph could not be drawn because the pixel mode is "
+                    "unsupported.");
             }
         }
-        break;
+    }
 
-        case FT_PIXEL_MODE_MONO:
-            for (unsigned int j = 0;  j < glyph_bitmap_width;  ++j)
-                buffer [j] = (src [j / 8] & (0x80 >> (j & 7))) ? 0xFFFFFFFF : 0x00000000;
-            break;
+    return glyphTextureData;
+}
 
-        default:
-            throw InvalidRequestException(
-                "The glyph could not be drawn because the pixel mode is "
-                "unsupported.");
-            break;
+//----------------------------------------------------------------------------//
+void FreeTypeFont::updateTextureBufferSubImage(argb_t* destTextureData, unsigned int bitmapWidth,
+    unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const
+{
+    argb_t* curDestPixelLine = destTextureData;
+
+    for (unsigned int i = 0;  i < bitmapHeight;  ++i)
+    {
+        argb_t* curDestPixel = curDestPixelLine;
+
+        for (unsigned int j = 0; j < bitmapWidth; ++j)
+        {
+            *curDestPixel = subImageData[bitmapWidth * i + j];
+            ++curDestPixel;
         }
 
-        buffer += buf_width;
+        curDestPixelLine += d_lastTextureSize;
     }
 }
 
@@ -383,12 +388,13 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
-    for(auto codePointMapEntry : d_cp_map)
+    for(auto codePointMapEntry : d_codePointToGlyphMap)
     {
         delete codePointMapEntry.second;
     }
 
-    d_cp_map.clear();
+    d_codePointToGlyphMap.clear();
+    d_indexToGlyphMap.clear();
 
     for (size_t i = 0; i < d_glyphImages.size(); ++i)
         delete d_glyphImages[i];
@@ -406,7 +412,7 @@ void FreeTypeFont::free()
 void FreeTypeFont::createFreetypeMemoryFace()
 {
     // create face using input font
-    FT_Error error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
+    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, d_fontData.getDataPtr(),
         static_cast<FT_Long>(d_fontData.getSize()), 0,
         &d_fontFace);
 
@@ -524,16 +530,16 @@ void FreeTypeFont::updateFont()
 
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
     {
-        float y_scale = d_fontFace->size->metrics.y_scale * float(FT_POS_COEF) * (1.0f / 65536.0f);
+        float y_scale = d_fontFace->size->metrics.y_scale * float(s_conversionMultCoeff) * (1.0f / 65536.0f);
         d_ascender = d_fontFace->ascender * y_scale;
         d_descender = d_fontFace->descender * y_scale;
         d_height = d_fontFace->height * y_scale;
     }
     else
     {
-        d_ascender = d_fontFace->size->metrics.ascender * float(FT_POS_COEF);
-        d_descender = d_fontFace->size->metrics.descender * float(FT_POS_COEF);
-        d_height = d_fontFace->size->metrics.height * float(FT_POS_COEF);
+        d_ascender = d_fontFace->size->metrics.ascender * float(s_conversionMultCoeff);
+        d_descender = d_fontFace->size->metrics.descender * float(s_conversionMultCoeff);
+        d_height = d_fontFace->size->metrics.height * float(s_conversionMultCoeff);
     }
 
     if (d_specificLineSpacing > 0.0f)
@@ -549,54 +555,53 @@ void FreeTypeFont::initialiseGlyphMap()
 {
     FT_UInt gindex;
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
-    FT_ULong max_codepoint = codepoint;
 
     while (gindex != 0)
     {
-        if (max_codepoint < codepoint)
-            max_codepoint = codepoint;
 
-        if(d_cp_map.find(codepoint) != d_cp_map.end())
+        if(d_codePointToGlyphMap.find(codepoint) != d_codePointToGlyphMap.end())
         {
             throw InvalidRequestException("FreeTypeFont::initialiseGlyphMap - Requesting "
                 "adding an already added glyph to the codepoint glyph map.");        
         }
 
-        d_cp_map[codepoint] = new FreeTypeFontGlyph(this, gindex);
+        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(this, codepoint);
+        d_codePointToGlyphMap[codepoint] = newFontGlyph;
+        d_indexToGlyphMap[gindex] = static_cast<char32_t>(codepoint);
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
-
-    setMaxCodepoint(max_codepoint);
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* FreeTypeFont::findFontGlyph(const char32_t codepoint) const
+void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
 {
-    CodepointMap::iterator pos = d_cp_map.find(codepoint);
-
-    if (pos == d_cp_map.end())
-        return nullptr;
-
-    if (!pos->second->isValid())
-        initialiseFontGlyph(pos);
-
-    return pos->second;
-}
-
-//----------------------------------------------------------------------------//
-void FreeTypeFont::initialiseFontGlyph(CodepointMap::iterator cp) const
-{
-    // load-up required glyph metrics (don't render)
-    if (FT_Load_Char(d_fontFace, cp->first,
-                     FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
+    if (glyph->isInitialised())
+    {
         return;
+    }
+
+    // Load the code point, "rendering" the glyph
+    FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+    FT_Error error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT |
+        targetType);
+
+    glyph->markAsInitialised();
+
+    if (error != 0)
+    {
+        return;
+    }
+
+    bool isRendered = glyph->getImage() != nullptr;
+    if (!isRendered)
+    {
+        rasterise(glyph);
+    }
 
     const float adv =
-        d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(FT_POS_COEF);
-
-    cp->second->setAdvance(adv);
-    cp->second->setValid(true);
+        d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(s_conversionMultCoeff);
+    glyph->setAdvance(adv);
 }
 
 //----------------------------------------------------------------------------//
@@ -722,18 +727,17 @@ const FT_Face& FreeTypeFont::getFontFace() const
 }
 
 #ifdef CEGUI_USE_RAQM
-void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
+std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(const String& text,
     const glm::vec2& position, const Rectf* clip_rect,
     const ColourRect& colours, const float space_extra,
     const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos,
-    GeometryBuffer*& textGeometryBuffer) const
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const
 {
-    textGeometryBuffer = nullptr;
+    std::vector<GeometryBuffer*> textGeometryBuffers;
 
     if (text.empty())
     {
-        return;
+        return textGeometryBuffers;
     }
 
     const float base_y = position.y + getBaseline(y_scale);
@@ -774,64 +778,97 @@ void FreeTypeFont::layoutAndRenderGlyphs(const String& text,
 
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
-    if (glyphs == nullptr)
-    {
-        throw InvalidRequestException("Layouting raqm text was unsuccessful");
-    }
 
     for (size_t i = 0; i < count; i++)
     {
         raqm_glyph_t& currentGlyph = glyphs[i];
 
-        uint32_t& originalArrayIndex = currentGlyph.cluster;
-        const char32_t curCodePoint = originalTextArray[originalArrayIndex];
-        const FontGlyph* glyph = getGlyphData(curCodePoint);
+        char32_t codePoint;
+        auto foundCodePointIter = d_indexToGlyphMap.find(currentGlyph.index);
+        if (foundCodePointIter != d_indexToGlyphMap.end())
+        {
+            codePoint = foundCodePointIter->second;
+        }
+        else
+        {
+            // Ignore new line characters
+            if(originalTextArray[currentGlyph.cluster] == '\n')
+            {
+                continue;
+            }
+            codePoint = UnicodeReplacementCharacter;
+        }
+
+        const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+        if (glyph == nullptr && codePoint != UnicodeReplacementCharacter)
+        {
+            glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+        }
+
         if (glyph == nullptr)
         {
             continue;
         }
 
-        const Image* const img = glyph->getImage();
+        const Image* const image = glyph->getImage();
 
-        glyph_pos.y = base_y - (img->getRenderedOffset().y -
-            img->getRenderedOffset().y * y_scale);
+        glyph_pos.y = base_y - (image->getRenderedOffset().y -
+            image->getRenderedOffset().y * y_scale);
 
         imgRenderSettings.d_destArea =
             Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
 
-        // We only fully create the first GeometryBuffer
-        if (textGeometryBuffer == nullptr)
-        {
-            std::vector<GeometryBuffer*> currentGeombuffs =
-                img->createRenderGeometry(imgRenderSettings);
+        addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
+            clip_rect, colours);
 
-            assert(currentGeombuffs.size() <= 1 && "Glyphs are expected to "
-                "be built from a single GeometryBuffer (or none)");
-
-            if (currentGeombuffs.size() == 1)
-            {
-                textGeometryBuffer = currentGeombuffs.back();
-            }
-        }
-        else
-        {
-            // Else we add geometry to the rendering batch of the existing geometry
-            img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
-                clip_rect, colours);
-        }
-
-        glyph_pos.x += glyph->getAdvance(x_scale);//currentGlyph.x_advance * x_scale * FT_POS_COEF;
-        glyph_pos.x = std::roundf(glyph_pos.x);
-        // apply extra spacing to space chars
-        if (curCodePoint == ' ')
-        {
-            glyph_pos.x += space_extra;
-        }
+        glyph_pos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
     }
 
     raqm_destroy(raqmObject);
+
+    return textGeometryBuffers;
 }
 #endif
+
+bool FreeTypeFont::isCodepointAvailable(char32_t codePoint) const
+{
+    return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
+}
+
+
+FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint) const
+{
+    CodePointToGlyphMap::const_iterator pos = d_codePointToGlyphMap.find(codepoint);
+    if (pos != d_codePointToGlyphMap.end())
+    {
+        return pos->second;
+    }
+
+    return nullptr;
+}
+
+int FreeTypeFont::getInitialGlyphAtlasSize() const
+{
+    return d_initialGlyphAtlasSize;
+}
+
+void FreeTypeFont::setInitialGlyphAtlasSize(int val)
+{
+    d_initialGlyphAtlasSize = val;
+}
+
+
+const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoint) const
+{
+    FreeTypeFontGlyph* glyph = getGlyphForCodepoint(currentCodePoint);
+
+    if (glyph != nullptr)
+    {
+        prepareGlyph(glyph);
+    }
+
+    return glyph;
+}
 
 
 } // End of  CEGUI namespace section

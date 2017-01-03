@@ -84,6 +84,8 @@ public:
     ~PixmapFont();
 
     void updateFont () override;
+    bool isCodepointAvailable(char32_t codePoint) const override;
+    FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const override;
 
     void defineMapping(const char32_t codePoint, const String& imageName, 
                        const float horzAdvance);
@@ -106,6 +108,9 @@ public:
     void setImageNamePrefix(const String& name_prefix);
 
 protected:
+    //! Definition of CodePointToGlyphMap type.
+    typedef std::unordered_map<char32_t, FontGlyph*> CodePointToGlyphMap;
+
     //! Initialize the imageset.
     void reinit();
     //! Register all properties of this class.
@@ -120,6 +125,10 @@ protected:
     float d_origHorzScaling;
     //! true if we own the imageset
     bool d_imagesetOwner;
+
+private:
+    //! Contains mappings from code points to Image objects
+    mutable CodePointToGlyphMap d_codePointToGlyphMap;
 };
 
 } // End of  CEGUI namespace section

@@ -179,6 +179,13 @@ public:
 
     /*!
     \brief
+        Goes through all geometry buffers and updates their texture
+        coordinates if the texture matches the supplied texture.
+    */
+    void updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor);
+
+    /*!
+    \brief
         Create a TextureTarget that can be used to cache imagery; this is a
         RenderTarget that does not lose it's content from one frame to another.
 

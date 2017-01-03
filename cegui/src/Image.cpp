@@ -167,6 +167,12 @@ void Image::setImageArea(const Rectf& image_area)
 }
 
 //----------------------------------------------------------------------------//
+Rectf Image::getImageArea() const
+{
+    return d_imageArea;
+}
+
+//----------------------------------------------------------------------------//
 void Image::setOffset(const glm::vec2& pixel_offset)
 {
     d_pixelOffset = pixel_offset;

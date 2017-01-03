@@ -393,7 +393,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                 realPos >= w->getSelectionStart() &&
                 realPos < w->getSelectionStart() + w->getSelectionLength();
 
-            float charAdvance = font->getGlyphData(currChar[0])->getAdvance(1.0f);
+            float charAdvance = font->getGlyphForCodepoint(currChar[0])->getAdvance(1.0f);
 
             if (highlighted)
             {

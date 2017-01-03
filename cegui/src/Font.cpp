@@ -30,18 +30,13 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/BitmapImage.h"
+#include "CEGUI/GeometryBuffer.h"
 
 #include <iterator>
 
 
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-// amount of bits in a uint
-#define BITS_PER_UINT   (sizeof (unsigned int) * 8)
-// must be a power of two
-#define GLYPHS_PER_PAGE 256
-
 //----------------------------------------------------------------------------//
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
@@ -62,9 +57,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
     d_descender(0),
     d_height(0),
     d_autoScaled(auto_scaled),
-    d_nativeResolution(native_res),
-    d_maxCodepoint(0),
-    d_loadedGlyphPages(0)
+    d_nativeResolution(native_res)
 {
     addFontProperties();
 
@@ -111,7 +104,6 @@ void Font::addFontProperties()
 {
     const String propertyOrigin("Font");
 
-    /*
     CEGUI_DEFINE_PROPERTY(Font, Sizef,
         "NativeRes", "Native screen resolution for this font."
         "Value uses the 'w:# h:#' format.",
@@ -128,58 +120,7 @@ void Font::addFontProperties()
         "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
         &Font::setAutoScaled, &Font::getAutoScaled, AutoScaledMode::Disabled
     );
-    */
 }
-
-//----------------------------------------------------------------------------//
-void Font::setMaxCodepoint(char32_t codepoint)
-{
-    d_maxCodepoint = codepoint;
-
-    const unsigned int npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-    const unsigned int size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
-
-    d_loadedGlyphPages.resize(size);
-    std::fill(d_loadedGlyphPages.begin(), d_loadedGlyphPages.end(), 0);
-}
-
-//----------------------------------------------------------------------------//
-const FontGlyph* Font::getGlyphData(char32_t codepoint) const
-{
-    if (codepoint > d_maxCodepoint)
-        return nullptr;
-
-    const FontGlyph* const glyph = findFontGlyph(codepoint);
-
-    if (!d_loadedGlyphPages.empty())
-    {
-        // Check if glyph page has been rasterised
-        unsigned int page = codepoint / GLYPHS_PER_PAGE;
-        unsigned int mask = 1 << (page & (BITS_PER_UINT - 1));
-        if (!(d_loadedGlyphPages[page / BITS_PER_UINT] & mask))
-        {
-            d_loadedGlyphPages[page / BITS_PER_UINT] |= mask;
-            rasterise(codepoint & ~(GLYPHS_PER_PAGE - 1),
-                      codepoint | (GLYPHS_PER_PAGE - 1));
-        }
-    }
-
-    return glyph;
-}
-
-//----------------------------------------------------------------------------//
-const FontGlyph* Font::findFontGlyph(const char32_t codepoint) const
-{
-    CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
-    if (pos != d_cp_map.end())
-    {
-        return pos->second;
-    }
-
-    return nullptr;
-}
-
-
 
 float Font::getTextExtent(const String& text, float x_scale) const
 {
@@ -216,13 +157,11 @@ void Font::getGlyphExtents(
     float& adv_extent,
     float x_scale) const
 {
-    const FontGlyph* currentGlyph = getGlyphData(currentCodePoint);
+    const FontGlyph* currentGlyph = getPreparedGlyph(currentCodePoint);
 
     if (currentGlyph != nullptr)
     {
-        const FontGlyph* nextGlyph = nullptr;
-        
-        float width = currentGlyph->getRenderedAdvance(nextGlyph, x_scale);
+        float width = currentGlyph->getRenderedAdvance( x_scale);
 
         if (adv_extent + width > cur_extent)
         {
@@ -241,7 +180,7 @@ float Font::getTextAdvance(const String& text, float x_scale) const
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        if (const FontGlyph* glyph = getGlyphData(text[c]))
+        if (const FontGlyph* glyph = getGlyphForCodepoint(text[c]))
         {
             advance += glyph->getAdvance(x_scale);
         }
@@ -251,7 +190,7 @@ String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text
 while (!currentCodePointIter.isAtEnd())
 {
     char32_t currentCodePoint = *currentCodePointIter;
-    if (const FontGlyph* glyph = getGlyphData(currentCodePoint))
+    if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint))
     {
         advance += glyph->getAdvance(x_scale);
     }
@@ -278,7 +217,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = start_char; c < char_count; ++c)
     {
-        glyph = getGlyphData(text[c]);
+        glyph = getGlyphForCodepoint(text[c]);
 
         if (glyph)
         {
@@ -295,7 +234,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
     while (!currentCodePointIter.isAtEnd())
     {
         char32_t currentCodePoint = *currentCodePointIter;
-        glyph = getGlyphData(currentCodePoint);
+        glyph = getGlyphForCodepoint(currentCodePoint);
 
         if (glyph)
         {
@@ -325,16 +264,21 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
         colours, space_extra, x_scale, y_scale);
 }
 
-void Font::renderGlyphsUsingDefaultFallback(
+const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
+{
+   return getGlyphForCodepoint(currentCodePoint);
+}
+
+std::vector<GeometryBuffer*> Font::renderGlyphsUsingDefaultFallback(
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos,
-    GeometryBuffer*& textGeometryBuffer) const
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const
 {
     const float base_y = position.y + getBaseline(y_scale);
     glyph_pos = position;
-    textGeometryBuffer = nullptr;
+
+    std::vector<GeometryBuffer*> textGeometryBuffers;
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
@@ -346,37 +290,20 @@ void Font::renderGlyphsUsingDefaultFallback(
     {
         char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        const FontGlyph* glyph = getGlyphData(currentCodePoint);
+        const FontGlyph* glyph = getPreparedGlyph(currentCodePoint);
+
         if (glyph != nullptr)
         {  
-            const Image* const img = glyph->getImage();
+            const Image* const image = glyph->getImage();
 
-            glyph_pos.y = base_y - (img->getRenderedOffset().y - 
-                img->getRenderedOffset().y * y_scale);
+            glyph_pos.y = base_y - (image->getRenderedOffset().y - 
+                image->getRenderedOffset().y * y_scale);
 
             imgRenderSettings.d_destArea =
                 Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
 
-            // We only fully create the first GeometryBuffer
-            if(textGeometryBuffer == nullptr)
-            {
-                std::vector<GeometryBuffer*> currentGeombuffs =
-                    img->createRenderGeometry(imgRenderSettings);
-
-                assert(currentGeombuffs.size() <= 1 && "Glyphs are expected to "
-                    "be built from a single GeometryBuffer (or none)");
-
-                if(currentGeombuffs.size() == 1)
-                {
-                    textGeometryBuffer = currentGeombuffs.back();
-                }
-            }
-            else
-            {
-                // Else we add geometry to the rendering batch of the existing geometry
-                img->addToRenderGeometry(*textGeometryBuffer, imgRenderSettings.d_destArea,
-                                         clip_rect, colours);
-            }
+            addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
+                clip_rect, colours);
 
             glyph_pos.x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
@@ -389,6 +316,8 @@ void Font::renderGlyphsUsingDefaultFallback(
          ++currentCodePointIter;
 #endif
     }
+
+    return textGeometryBuffers;
 }
 
 std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
@@ -402,23 +331,16 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
         clipping_enabled, colours);
 
     glm::vec2 glyph_pos;
-    std::vector<GeometryBuffer*> geomBuffers;
-    GeometryBuffer* textGeometryBuffer;
 
 #if defined(CEGUI_USE_RAQM)
-    layoutAndRenderGlyphs(text, position, clip_rect, colours,
+    std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(text, position, clip_rect, colours,
         space_extra, x_scale, y_scale, imgRenderSettings,
-        glyph_pos, textGeometryBuffer);
+        glyph_pos);
 #else
-    renderGlyphsUsingDefaultFallback(text, position, clip_rect, colours,
+    std::vector<GeometryBuffer*> geomBuffers = renderGlyphsUsingDefaultFallback(text, position, clip_rect, colours,
         space_extra, x_scale, y_scale, imgRenderSettings,
-        glyph_pos, textGeometryBuffer);
+        glyph_pos);
 #endif
-
-    if (textGeometryBuffer != nullptr)
-    {
-        geomBuffers.push_back(textGeometryBuffer);
-    }
 
     nextGlyphPosX = glyph_pos.x;
 
@@ -477,12 +399,6 @@ void Font::notifyDisplaySizeChanged(const Sizef& size)
 }
 
 //----------------------------------------------------------------------------//
-void Font::rasterise(char32_t, char32_t) const
-{
-    // do nothing by default
-}
-
-//----------------------------------------------------------------------------//
 void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // output starting <Font ... > element
@@ -518,6 +434,56 @@ void Font::onRenderSizeChanged(FontEventArgs& e)
     fireEvent(EventRenderSizeChanged, e, EventNamespace);
 }
 
-//----------------------------------------------------------------------------//
+GeometryBuffer* Font::findCombinableBuffer(const std::vector<GeometryBuffer*>& geomBuffers,
+    const Image* image)
+{
+    const BitmapImage* bitmapImage = static_cast<const BitmapImage*>(image);
+    if(bitmapImage == nullptr)
+    {
+        return nullptr;
+    }
+
+    const Texture* requiredTexture = bitmapImage->getTexture();
+
+    for(auto& currentGeomBuffer : geomBuffers)
+    {
+        const Texture* currentTexture = currentGeomBuffer->getTexture("texture0");
+
+        if(requiredTexture == currentTexture)
+        {
+            return currentGeomBuffer;
+        }
+    }
+
+    return nullptr;
+}
+
+void Font::addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
+    const Image* image, ImageRenderSettings& imgRenderSettings,
+    const Rectf* clip_rect, const ColourRect& colours) const
+{
+    // We only fully create a GeometryBuffer if no existing one
+    // is found that we can combine this one with. Render order is irrelevant since
+    // glyphs should never overlap
+    GeometryBuffer* matchingGeomBuffer = findCombinableBuffer(textGeometryBuffers, image);
+
+    if (matchingGeomBuffer == nullptr)
+    {
+        std::vector<GeometryBuffer*> glyphGeomBuffer =
+            image->createRenderGeometry(imgRenderSettings);
+
+        assert(glyphGeomBuffer.size() <= 1 && "Glyphs are expected to "
+            "be built from a single GeometryBuffer (or none)");
+
+        textGeometryBuffers.insert(textGeometryBuffers.end(),
+            glyphGeomBuffer.begin(), glyphGeomBuffer.end());
+    }
+    else
+    {
+        // Else we add geometry to the rendering batch of the existing geometry
+        image->addToRenderGeometry(*matchingGeomBuffer, imgRenderSettings.d_destArea,
+            clip_rect, colours);
+    }
+}
 
 } // End of  CEGUI namespace section

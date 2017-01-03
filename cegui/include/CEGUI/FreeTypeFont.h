@@ -33,9 +33,11 @@
 #include "CEGUI/DataContainer.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/FreeTypeFontGlyph.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -108,6 +110,8 @@ public:
     virtual ~FreeTypeFont();
     
     void updateFont() override;
+    bool isCodepointAvailable(char32_t codePoint) const override;
+    FreeTypeFontGlyph* getGlyphForCodepoint(const char32_t codePoint) const override;
 
     /*!
     \brief
@@ -197,36 +201,69 @@ public:
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const;
+
+    //! Returns the initial size to be used for any new glyph atlas texture.
+    int getInitialGlyphAtlasSize() const;
+
+    //! Sets the initial size to be used for any new glyph atlas texture.
+    void setInitialGlyphAtlasSize(int val);
+
 protected:
     /*!
-    \brief
-        Copy the current glyph data into \a buffer, which has a width of
-        \a buf_width pixels (not bytes).
-
-    \param buffer
-        Memory buffer large enough to receive the imagery for the currently
-        loaded glyph.
-
-    \param buf_width
-        Width of \a buffer in pixels (where each pixel is a argb_t).
-
-    \return
-        Nothing.
+        A data structure containing info about one horizontal line inside
+        a glyph atlas. The data is used when deciding where to place a new glyph.
     */
-    void drawGlyphToBuffer(argb_t* buffer, unsigned int buf_width) const;
+    struct TextureGlyphLine
+    {
+        TextureGlyphLine()
+        {
+        }
+
+        TextureGlyphLine(int lastPosX, int lastPosY, int maximumExtentY)
+            : d_lastXPos(lastPosX)
+            , d_lastYPos(lastPosY)
+            , d_maximumExtentY(maximumExtentY)
+        {
+        }
+
+        //! The x position where we last ended drawing (including padding)
+        mutable int d_lastXPos = 0;
+        //! The y position where we last ended drawing (including padding)
+        mutable int d_lastYPos = 0;
+        //! The maximum extent that a glyph of this line can take in the y-dimension
+        //! If the line is the last line, this value may increase while rendering to the line
+        mutable int d_maximumExtentY = 0;
+    };
+
+    //! Type for mapping codepoints to the corresponding Freetype Font glyphs
+    typedef std::unordered_map<char32_t, FreeTypeFontGlyph*> CodePointToGlyphMap;
+    //! Type for mapping Freetype indices to the corresponding Freetype Font glyphs
+    typedef std::unordered_map<FT_UInt, char32_t> IndexToCodePointMap;
 
     /*!
     \brief
-        Return the required texture size required to store imagery for the
-        glyphs from s to e
-    \param s
-        The first glyph in set
-    \param e
-        The last glyph in set
-    */
-    unsigned int getTextureSize(CodepointMap::const_iterator s,
-                        CodepointMap::const_iterator e) const;
+        Updates a part of the buffer data, which equates to a sub-image inside the 
+        texture the buffer data represents, based on the supplied subimage data.
 
+    \param bitmapWidth
+        Width of the source subimage
+
+    \param bitmapHeight
+        Height of the source subimage
+
+    \param subTextureData
+        The pixel data of the subimage 
+    */
+    void updateTextureBufferSubImage(argb_t* buffer, unsigned int bitmapWidth,
+        unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const;
+
+    /*
+    \brief
+        Changes the size of the texture and updates the data in it based on the old
+        texture's data. The size must be larger than the original one.
+     */
+    void resizeAndUpdateTexture(Texture* texture, int newSize) const;
+    void createTextureSpaceForGlyphRasterisation(Texture* texture, int glyphWidth, int glyphHeight) const;
     //! Register all properties of this class.
     void addFreeTypeFontProperties();
     //! Free all allocated font data.
@@ -240,24 +277,31 @@ protected:
     void tryToCreateFontWithClosestFontHeight(
         FT_Error errorResult, int requestedFontPixelHeight) const;
     //! initialise FontGlyph for given codepoint.
-    void initialiseFontGlyph(CodepointMap::iterator cp) const;
+    void prepareGlyph(FreeTypeFontGlyph* glyph) const;
 
     void initialiseGlyphMap();
 
     void handleFontSizeOrFontUnitChange();
 
-    // overrides of functions in Font base class.
-    const FontGlyph* findFontGlyph(const char32_t codepoint) const override;
-    void rasterise(char32_t start_codepoint, char32_t end_codepoint) const override;
-    void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
+    //! Rasterises the glyph and adds it into a glyph atlas texture
+    void rasterise(FreeTypeFontGlyph* glyph) const;
+
+    //! Adds a new glyph atlas line if the glyph would fit into there.
+    bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
+
+    void createGlyphAtlasTexture() const;
+    static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
+
+    const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
+    void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
-    void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+    std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const override;
+        glm::vec2& glyph_pos) const override;
 #endif
 
     //! If non-zero, the overridden line spacing that we're to report.
@@ -274,11 +318,28 @@ protected:
     RawDataContainer d_fontData;
     //! Type definition for TextureVector.
     typedef std::vector<Texture*> TextureVector;
-    //! Textures that hold the glyph imagery for this font.
-    mutable TextureVector d_glyphTextures;
+
     typedef std::vector<BitmapImage*> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
+
+    //! Textures that hold the glyph imagery for this font.
+    mutable TextureVector d_glyphTextures;
+
+
+    //! Contains mappings from code points to Font glyphs
+    mutable CodePointToGlyphMap d_codePointToGlyphMap;
+    //! Contains mappings from freetype indices to Font glyphs
+    mutable IndexToCodePointMap d_indexToGlyphMap;
+
+    //! The size with which new texture atlases for glyphs are going to be initialised
+    int d_initialGlyphAtlasSize = 32;
+    //! The size of the last texture that has been created
+    mutable int d_lastTextureSize = 0;
+    //! Memory buffer for rendering the glyphs, this contains the data of the latest texture
+    mutable std::vector<argb_t> d_lastTextureBuffer;
+    //! Contains information about the extents of each line of glyphs of the latest texture
+    mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
 };
 
 } // End of  CEGUI namespace section
