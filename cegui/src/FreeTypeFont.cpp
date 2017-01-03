@@ -727,7 +727,7 @@ const FT_Face& FreeTypeFont::getFontFace() const
 }
 
 #ifdef CEGUI_USE_RAQM
-std::vector<GeometryBuffer*> FreeTypeFont::layoutAndRenderGlyphs(const String& text,
+std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(const String& text,
     const glm::vec2& position, const Rectf* clip_rect,
     const ColourRect& colours, const float space_extra,
     const float x_scale, const float y_scale,
@@ -785,13 +785,18 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndRenderGlyphs(const String& t
 
         char32_t codePoint;
         auto foundCodePointIter = d_indexToGlyphMap.find(currentGlyph.index);
-        if (foundCodePointIter == d_indexToGlyphMap.end())
+        if (foundCodePointIter != d_indexToGlyphMap.end())
         {
-            codePoint = UnicodeReplacementCharacter;
+            codePoint = foundCodePointIter->second;
         }
         else
         {
-            codePoint = foundCodePointIter->second;
+            // Ignore new line characters
+            if(originalTextArray[currentGlyph.cluster] == '\n')
+            {
+                continue;
+            }
+            codePoint = UnicodeReplacementCharacter;
         }
 
         const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
@@ -816,8 +821,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndRenderGlyphs(const String& t
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
 
-        glyph_pos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;//glyph->getAdvance(x_scale);
-        //glyph_pos.x = std::roundf(glyph_pos.x);
+        glyph_pos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
     }
 
     raqm_destroy(raqmObject);

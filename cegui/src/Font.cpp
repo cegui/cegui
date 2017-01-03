@@ -333,7 +333,7 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     glm::vec2 glyph_pos;
 
 #if defined(CEGUI_USE_RAQM)
-    std::vector<GeometryBuffer*> geomBuffers = layoutAndRenderGlyphs(text, position, clip_rect, colours,
+    std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(text, position, clip_rect, colours,
         space_extra, x_scale, y_scale, imgRenderSettings,
         glyph_pos);
 #else
