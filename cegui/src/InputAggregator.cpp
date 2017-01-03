@@ -212,7 +212,7 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
 SemanticValue InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift_down,
     bool alt_down, bool ctrl_down) const
 {
-    SemanticValue value = d_keyValuesMappings[static_cast<signed char>(scan_code)];
+    SemanticValue value = d_keyValuesMappings[static_cast<unsigned char>(scan_code)];
 
     // handle combined keys
     if (ctrl_down && shift_down)
