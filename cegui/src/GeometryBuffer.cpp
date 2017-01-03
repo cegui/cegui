@@ -448,19 +448,25 @@ glm::mat4 GeometryBuffer::getModelMatrix() const
     return modelMatrix;
 }
 
-void GeometryBuffer::updateTextureCoordinates(const Texture* texture, const float scaleFactor)
+const Texture* GeometryBuffer::getTexture(const std::string& parameterName) const
 {
     auto renderMaterial = getRenderMaterial();
     ShaderParameterBindings* shaderParamBindings = (*renderMaterial).getShaderParamBindings();
-    ShaderParameter* shaderParam = shaderParamBindings->getParameter("texture0");
+    ShaderParameter* shaderParam = shaderParamBindings->getParameter(parameterName);
     ShaderParameterTexture* texture0ShaderParam = static_cast<ShaderParameterTexture*>(shaderParam);
     if (texture0ShaderParam == nullptr)
     {
-        return;
+        return nullptr;
     }
 
-    const Texture* geomBuffTex0 = texture0ShaderParam->d_parameterValue;
-    if (geomBuffTex0 != texture)
+    return texture0ShaderParam->d_parameterValue;
+}
+
+void GeometryBuffer::updateTextureCoordinates(const Texture* texture, const float scaleFactor)
+{
+    const Texture* geomBuffTex0 = getTexture("texture0");
+ 
+    if (geomBuffTex0 == nullptr || geomBuffTex0 != texture)
     {
         return;
     }

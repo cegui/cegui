@@ -523,23 +523,41 @@ protected:
     virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
 
     //! The old way of rendering glyphs, without kerning and extended layouting
-    void renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
+    virtual std::vector<GeometryBuffer*> renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,   
         const float y_scale, ImageRenderSettings imgRenderSettings, 
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const;
+        glm::vec2& glyph_pos) const;
+
+    /*! 
+    \brief
+        Adds the render geometry data to the supplied vector. A new GeometryBuffer
+        might be added if necessary or data might be added to an existing one.
+    */
+    void addGlyphRenderGeometry(std::vector<GeometryBuffer*> &textGeometryBuffers,
+                                const Image* image, ImageRenderSettings &imgRenderSettings,
+                                const Rectf* clip_rect, const ColourRect& colours) const;
 
     //! The recommended way of rendering a glyph
-    virtual void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+    virtual std::vector<GeometryBuffer*> layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const
+        glm::vec2& glyph_pos) const
     {
-        renderGlyphsUsingDefaultFallback(text, position, clip_rect,
+        return renderGlyphsUsingDefaultFallback(text, position, clip_rect,
             colours, space_extra, x_scale, y_scale, imgRenderSettings,
-            glyph_pos, textGeometryBuffer);
+            glyph_pos);
     }
+
+    /*!
+    \brief
+        Checks if the supplied GeometryBuffers contain a GeometryBuffer using the same Image.
+        If this is the case, the first found Geometrybuffer will be returned, otherwise 
+        a nullptr will be returned.
+    */
+    static GeometryBuffer* findCombinableBuffer(const std::vector<GeometryBuffer*>& geomBuffers,
+        const Image* image);
 
     /*!
     \brief
