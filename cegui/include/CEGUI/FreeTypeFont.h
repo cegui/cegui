@@ -257,23 +257,13 @@ protected:
     void updateTextureBufferSubImage(argb_t* buffer, unsigned int bitmapWidth,
         unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const;
 
-    /*!
-    \brief
-        Return the required texture size required to store imagery for the
-        glyphs from s to e
-    \param s
-        The first glyph in set
-    \param e
-        The last glyph in set
-    */
-    unsigned int getTextureSize(CodePointToGlyphMap::const_iterator s,
-                        CodePointToGlyphMap::const_iterator e) const;
     /*
     \brief
-        Increases the size of the texture and updates the data in it based on the old
-        texture's data.
+        Changes the size of the texture and updates the data in it based on the old
+        texture's data. The size must be larger than the original one.
      */
-    void enlargeAndUpdateTexture(Texture* texture) const;
+    void resizeAndUpdateTexture(Texture* texture, int newSize) const;
+    void createTextureSpaceForGlyphRasterisation(Texture* texture, int glyphWidth, int glyphHeight) const;
     //! Register all properties of this class.
     void addFreeTypeFontProperties();
     //! Free all allocated font data.
@@ -299,7 +289,7 @@ protected:
     //! Adds a new glyph atlas line if the glyph would fit into there.
     bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
 
-    void createGlyphAtlasTexture(int textureSize) const;
+    void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
 
     const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
@@ -307,11 +297,11 @@ protected:
 
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
-    void layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
+    std::vector<GeometryBuffer*> layoutAndRenderGlyphs(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,
         const float y_scale, ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos, GeometryBuffer*& textGeometryBuffer) const override;
+        glm::vec2& glyph_pos) const override;
 #endif
 
     //! If non-zero, the overridden line spacing that we're to report.
