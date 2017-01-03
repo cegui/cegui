@@ -315,6 +315,18 @@ public:
 	//
 	operator argb_t() const		{return getARGB();}
 
+    static argb_t calculateArgb(std::uint8_t alpha, std::uint8_t red,
+        std::uint8_t green, std::uint8_t blue)
+    {
+        return (
+            static_cast<argb_t>(alpha) << 24 |
+            static_cast<argb_t>(red) << 16 |
+            static_cast<argb_t>(green) << 8 |
+            static_cast<argb_t>(blue)
+            );
+    }
+
+
 private:
 	/*************************************************************************
 		Implementation Methods

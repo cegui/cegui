@@ -43,10 +43,10 @@ class CEGUIEXPORT FontGlyph
 {
 public:
     //! Constructor.
-    FontGlyph(float advance = 0.0f, Image* image = nullptr, bool valid = false) :
+    FontGlyph(char32_t codePoint, float advance = 0.0f, Image* image = nullptr) :
         d_image(image),
         d_advance(advance),
-        d_valid(valid)
+        d_codePoint(codePoint)
     {}
 
     virtual ~FontGlyph()
@@ -76,7 +76,6 @@ public:
         current pen position that will be occupied by this glyph when rendered.
     */
     virtual float getRenderedAdvance(
-        const FontGlyph* /*nextGlyph*/,
         float x_scale) const
     { return (d_image->getRenderedSize().d_width +
               d_image->getRenderedOffset().x) * x_scale; }
@@ -101,21 +100,19 @@ public:
     void setImage(Image* image)
     { d_image = image; }
 
-    //! mark the FontGlyph as valid
-    void setValid(bool valid)
-    { d_valid = valid; }
-
-    //! return whether the FontGlyph is marked as valid
-    bool isValid() const
-    { return d_valid; }
+    //! Returns the code point that this glyph is based on
+    char32_t getCodePoint() const
+    {
+        return d_codePoint;
+    }
 
 private:
     //! The image which will be rendered for this glyph.
     Image* d_image;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
-    //! says whether this glyph info is actually valid
-    bool d_valid;
+    //! Code point
+    const char32_t d_codePoint;
 };
 
 } // End of  CEGUI namespace section

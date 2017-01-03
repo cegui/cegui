@@ -129,10 +129,9 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
     d_size = size;
 
     // make sure size is within boundaries
-    GLfloat maxSize;
-    glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
+    auto maxTextureSize = d_owner.getMaxTextureSize();
 
-    if((size.d_width > maxSize) || (size.d_height > maxSize))
+    if((size.d_width > maxTextureSize) || (size.d_height > maxTextureSize))
         throw RendererException("size too big");
 
     // save old texture binding

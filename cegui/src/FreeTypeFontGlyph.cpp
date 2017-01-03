@@ -31,7 +31,6 @@ namespace CEGUI
 {
 
 float FreeTypeFontGlyph::getRenderedAdvance(
-    const FontGlyph* /*nextGlyph*/,
     float x_scale
 ) const
 {
@@ -41,14 +40,14 @@ float FreeTypeFontGlyph::getRenderedAdvance(
     return sizeX;
 }
 
-unsigned int FreeTypeFontGlyph::getGlyphIndex() const
+void FreeTypeFontGlyph::markAsInitialised()
 {
-    return d_glyphIndex;
+    d_valid = true;
 }
 
-void FreeTypeFontGlyph::setGlyphIndex(unsigned int val)
+bool FreeTypeFontGlyph::isInitialised() const
 {
-    d_glyphIndex = val;
+    return d_valid;
 }
 
 }

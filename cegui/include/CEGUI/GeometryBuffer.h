@@ -176,13 +176,13 @@ public:
     \brief
         Gets the set clipping region for this buffer.
     */
-    const Rectf& getClippingRegion();
+    const Rectf& getClippingRegion() const;
 
     /*!
     \brief
         Gets the prepared clipping region to be used when rendering this buffer.
     */
-    const Rectf& getPreparedClippingRegion();
+    const Rectf& getPreparedClippingRegion() const;
 
     /*!
     \brief
@@ -289,11 +289,25 @@ public:
         texture-parameter that is used inside CEGUI's materials is called "texture0".
 
     \param texture
-        Pointer to a Texture object that shall be used for subsequently added
-        vertices.  This may be 0, in which case texturing will be disabled for
-        subsequently added vertices.
+        Pointer to the Texture object that shall be set for this parameter.
     */
     virtual void setTexture(const std::string& parameterName, const Texture* texture);
+
+    
+    /*!
+    \brief
+        A helper function that gets a texture parameter of the RenderMaterial of this
+        Geometrybuffer.
+
+    \param parameterName
+        Name of the parameter as used inside the shader program. The regular CEGUI
+        texture-parameter that is used inside CEGUI's materials is called "texture0".
+
+    \return
+        Pointer to the Texture object if it is found in the RenderMaterial, otherwise
+        returns a nullptr.
+    */
+    const Texture* getTexture(const std::string& parameterName) const;
 
     /*!
     \brief
@@ -480,6 +494,13 @@ public:
         The model matrix for this GeometryBuffer.
     */
     glm::mat4 getModelMatrix() const;
+
+    /*!
+    \brief
+        Scales the texture coordinates of this geometry buffer by the supplied factor, if the
+        texture is matching the texture (if one exists) of this geometry buffer.
+    */
+    void updateTextureCoordinates(const Texture* texture, const float scaleFactor);
 
 
 protected:  
