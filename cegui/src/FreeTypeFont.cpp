@@ -728,15 +728,15 @@ const FT_Face& FreeTypeFont::getFontFace() const
 
 #ifdef CEGUI_USE_RAQM
 std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
-    const String& text, const glm::vec2& position,
+    const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = position.y + getBaseline(y_scale);
-    glyph_pos = position;
+    const float base_y = glyphPos.y + getBaseline(y_scale);
+
 
     if (text.empty())
     {
@@ -812,20 +812,20 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
 
         const Image* const image = glyph->getImage();
 
-        glyph_pos.y = base_y - (image->getRenderedOffset().y -
+        glyphPos.y = base_y - (image->getRenderedOffset().y -
             image->getRenderedOffset().y * y_scale);
 
         imgRenderSettings.d_destArea =
-            Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
+            Rectf(glyphPos, glyph->getSize(x_scale, y_scale));
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
 
-        glyph_pos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
+        glyphPos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
         // TODO: This is probably wrong because the space was determined without kerning
         if (codePoint == ' ')
         {
-            glyph_pos.x += space_extra;
+            glyphPos.x += space_extra;
         }
     }
 

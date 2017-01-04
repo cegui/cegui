@@ -270,15 +270,14 @@ const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
 }
 
 std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
-    const String& text, const glm::vec2& position,
+    const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const
+    ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = position.y + getBaseline(y_scale);
-    glyph_pos = position;
+    const float base_y = glyphPos.y + getBaseline(y_scale);
 
     if (text.empty())
     {
@@ -301,20 +300,20 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
         {  
             const Image* const image = glyph->getImage();
 
-            glyph_pos.y = base_y - (image->getRenderedOffset().y - 
+            glyphPos.y = base_y - (image->getRenderedOffset().y - 
                 image->getRenderedOffset().y * y_scale);
 
             imgRenderSettings.d_destArea =
-                Rectf(glyph_pos, glyph->getSize(x_scale, y_scale));
+                Rectf(glyphPos, glyph->getSize(x_scale, y_scale));
 
             addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
                 clip_rect, colours);
 
-            glyph_pos.x += glyph->getAdvance(x_scale);
+            glyphPos.x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
             if (currentCodePoint == ' ')
             {
-                glyph_pos.x += space_extra;
+                glyphPos.x += space_extra;
             }
         }
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
@@ -335,13 +334,13 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
         Rectf(), clip_rect,
         clipping_enabled, colours);
 
-    glm::vec2 glyph_pos;
+    glm::vec2 glyphPos = position;
 
-    std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(text, position, clip_rect, colours,
-        space_extra, x_scale, y_scale, imgRenderSettings,
-        glyph_pos);
+    std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(
+        text, clip_rect, colours, space_extra,
+        x_scale, y_scale, imgRenderSettings, glyphPos);
 
-    nextGlyphPosX = glyph_pos.x;
+    nextGlyphPosX = glyphPos.x;
 
     // Adding a single geometry buffer containing the batched glyphs
     return geomBuffers;

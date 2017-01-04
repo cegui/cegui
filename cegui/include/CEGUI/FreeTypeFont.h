@@ -297,11 +297,11 @@ protected:
 
 #ifdef CEGUI_USE_RAQM
     //! The recommended way of rendering a glyph
-    std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(const String& text, const glm::vec2& position,
-        const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, const float x_scale,
-        const float y_scale, ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos) const override;
+    std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
+        const String& text, const Rectf* clip_rect,
+        const ColourRect& colours, const float space_extra,
+        const float x_scale, const float y_scale,
+        ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const override;
 #endif
 
     //! If non-zero, the overridden line spacing that we're to report.
