@@ -727,21 +727,21 @@ const FT_Face& FreeTypeFont::getFontFace() const
 }
 
 #ifdef CEGUI_USE_RAQM
-std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(const String& text,
-    const glm::vec2& position, const Rectf* clip_rect,
-    const ColourRect& colours, const float space_extra,
-    const float x_scale, const float y_scale,
+std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
+    const String& text, const glm::vec2& position,
+    const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra, const float x_scale, const float y_scale,
     ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
+
+    const float base_y = position.y + getBaseline(y_scale);
+    glyph_pos = position;
 
     if (text.empty())
     {
         return textGeometryBuffers;
     }
-
-    const float base_y = position.y + getBaseline(y_scale);
-    glyph_pos = position;
 
     raqm_t* raqmObject = raqm_create();
 
@@ -822,6 +822,11 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(co
             clip_rect, colours);
 
         glyph_pos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
+        // TODO: This is probably wrong because the space was determined without kerning
+        if (codePoint == ' ')
+        {
+            glyph_pos.x += space_extra;
+        }
     }
 
     raqm_destroy(raqmObject);
