@@ -523,7 +523,7 @@ protected:
     virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
 
     //! The old way of rendering glyphs, without kerning and extended layouting
-    virtual std::vector<GeometryBuffer*> renderGlyphsUsingDefaultFallback(const String& text, const glm::vec2& position,
+    virtual std::vector<GeometryBuffer*> layoutUsingFallbackAndCreateGlyphGeometry(const String& text, const glm::vec2& position,
         const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, const float x_scale,   
         const float y_scale, ImageRenderSettings imgRenderSettings, 
@@ -545,7 +545,7 @@ protected:
         const float y_scale, ImageRenderSettings imgRenderSettings,
         glm::vec2& glyph_pos) const
     {
-        return renderGlyphsUsingDefaultFallback(text, position, clip_rect,
+        return layoutUsingFallbackAndCreateGlyphGeometry(text, position, clip_rect,
             colours, space_extra, x_scale, y_scale, imgRenderSettings,
             glyph_pos);
     }

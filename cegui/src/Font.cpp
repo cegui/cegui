@@ -269,16 +269,21 @@ const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
    return getGlyphForCodepoint(currentCodePoint);
 }
 
-std::vector<GeometryBuffer*> Font::renderGlyphsUsingDefaultFallback(
+std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, const float x_scale, const float y_scale,
     ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const
 {
+    std::vector<GeometryBuffer*> textGeometryBuffers;
+
     const float base_y = position.y + getBaseline(y_scale);
     glyph_pos = position;
 
-    std::vector<GeometryBuffer*> textGeometryBuffers;
+    if (text.empty())
+    {
+        return textGeometryBuffers;
+    }
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
@@ -332,15 +337,9 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
 
     glm::vec2 glyph_pos;
 
-#if defined(CEGUI_USE_RAQM)
     std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(text, position, clip_rect, colours,
         space_extra, x_scale, y_scale, imgRenderSettings,
         glyph_pos);
-#else
-    std::vector<GeometryBuffer*> geomBuffers = renderGlyphsUsingDefaultFallback(text, position, clip_rect, colours,
-        space_extra, x_scale, y_scale, imgRenderSettings,
-        glyph_pos);
-#endif
 
     nextGlyphPosX = glyph_pos.x;
 
