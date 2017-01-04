@@ -147,10 +147,6 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
             float ypos = caretLine * fnt->getLineSpacing();
             float xpos = fnt->getTextAdvance(w->getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
 
-//             // get base offset to target layer for cursor.
-//             Renderer* renderer = System::getSingleton().getRenderer();
-//             float baseZ = renderer->getZLayer(7) - renderer->getCurrentZ();
-
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = getLookNFeel();
             // get caret imagery
@@ -295,6 +291,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 colours = normalTextCol;
                 auto geomBuffers = fnt->createTextRenderGeometry(sect,
                               lineRect.getPosition(), &dest_area, true, colours);
+                w->appendGeometryBuffers(geomBuffers);
 
                 // set position ready for next portion of text
                 lineRect.d_min.x += selStartOffset;
