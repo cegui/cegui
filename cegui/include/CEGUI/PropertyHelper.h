@@ -39,6 +39,8 @@
 #include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
 #include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/HorizontalAlignment.h"
+#include "CEGUI/VerticalAlignment.h"
 
 #include <glm/gtc/quaternion.hpp>
 
@@ -137,8 +139,6 @@ public:
         return PropertyHelper<T*>::toString(val);
     }
 };
-
-
 
 template<>
 class CEGUIEXPORT PropertyHelper<String>
@@ -525,6 +525,36 @@ public:
     static string_return_type toString(pass_type val);
 };
 
+
+template<>
+class CEGUIEXPORT PropertyHelper<HorizontalAlignment>
+{
+public:
+    typedef HorizontalAlignment return_type;
+    typedef return_type safe_method_return_type;
+    typedef HorizontalAlignment pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+
+template<>
+class CEGUIEXPORT PropertyHelper<VerticalAlignment>
+{
+public:
+    typedef VerticalAlignment return_type;
+    typedef return_type safe_method_return_type;
+    typedef VerticalAlignment pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
 // Explicit instantiation declarations
 extern template CEGUIEXPORT class PropertyHelper<String>;
 extern template CEGUIEXPORT class PropertyHelper<float>;
@@ -551,6 +581,8 @@ extern template CEGUIEXPORT class PropertyHelper<URect>;
 extern template CEGUIEXPORT class PropertyHelper<USize>;
 extern template CEGUIEXPORT class PropertyHelper<UBox>;
 extern template CEGUIEXPORT class PropertyHelper<Font*>;
+extern template CEGUIEXPORT class PropertyHelper<HorizontalAlignment>;
+extern template CEGUIEXPORT class PropertyHelper<VerticalAlignment>;
 
 
 }

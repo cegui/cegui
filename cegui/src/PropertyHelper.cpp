@@ -985,4 +985,95 @@ template class PropertyHelper<UBox>;
 template class PropertyHelper<FontSizeUnit>;
 template class PropertyHelper<Font*>;
 
+const String& PropertyHelper<HorizontalAlignment>::getDataTypeName()
+{
+    static String type("HorizontalAlignment");
+
+    return type;
+}
+
+PropertyHelper<HorizontalAlignment>::return_type PropertyHelper<HorizontalAlignment>::fromString(
+    const String& str)
+{
+    if (str == "Centre")
+    {
+        return HorizontalAlignment::Centre;
+    }
+    else if (str == "Right")
+    {
+        return HorizontalAlignment::Right;
+    }
+    else
+    {
+        return HorizontalAlignment::Left;
+    }
+}
+
+PropertyHelper<HorizontalAlignment>::string_return_type PropertyHelper<HorizontalAlignment>::toString(
+    pass_type val)
+{
+    if (val == HorizontalAlignment::Centre)
+    {
+        return "Centre";
+    }
+    else if (val == HorizontalAlignment::Right)
+    {
+        return "Right";
+    }
+    else if (val == HorizontalAlignment::Left)
+    {
+        return "Left";
+    }
+    else
+    {
+        assert(false && "Invalid horizontal alignment");
+        return "Centre";
+    }
+}
+
+const String& PropertyHelper<VerticalAlignment>::getDataTypeName()
+{
+    static String type("VerticalAlignment");
+
+    return type;
+}
+
+PropertyHelper<VerticalAlignment>::return_type PropertyHelper<VerticalAlignment>::fromString(const String& str)
+{
+    if (str == "Centre")
+    {
+        return VerticalAlignment::Centre;
+    }
+    else if (str == "Bottom")
+    {
+        return VerticalAlignment::Bottom;
+    }
+    else
+    {
+        return VerticalAlignment::Top;
+    }
+}
+
+PropertyHelper<VerticalAlignment>::string_return_type PropertyHelper<VerticalAlignment>::toString(
+    pass_type val)
+{
+    if (val == VerticalAlignment::Centre)
+    {
+        return "Centre";
+    }
+    else if (val == VerticalAlignment::Bottom)
+    {
+        return "Bottom";
+    }
+    else if (val == VerticalAlignment::Top)
+    {
+        return "Top";
+    }
+    else
+    {
+        assert(false && "Invalid vertical alignment");
+        return "Centre";
+    }
+}
+
 }
