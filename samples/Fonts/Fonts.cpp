@@ -242,7 +242,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs&)
     {
         unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
 
-        d_languageToFontMap[LangList[index].Language] = d_fontSelector->getFirstSelectedItem()->getText();
+        d_languageToFontMap[LangList[index].language] = d_fontSelector->getFirstSelectedItem()->getText();
     }
 
     //Change the font creatore fields according to the font
@@ -308,9 +308,10 @@ bool FontsSample::handleTextSelectionChanged(const EventArgs&)
     {
         unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
 
-        d_textDisplayMultiLineEditbox->setText(d_languageToTextMap[LangList[index].Language]);
+        d_textDisplayMultiLineEditbox->setText(d_languageToTextMap[LangList[index].language]);
+        d_textDisplayMultiLineEditbox->setDefaultParagraphDirection(LangList[index].direction);
 
-        changeFontSelectorFontSelection(d_languageToFontMap[LangList[index].Language]);
+        changeFontSelectorFontSelection(d_languageToFontMap[LangList[index].language]);
     }
 
     return true;
@@ -322,7 +323,7 @@ bool FontsSample::handleTextMultiLineEditboxTextChanged(const EventArgs&)
     {
         unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
 
-        d_languageToTextMap[LangList[index].Language] = d_textDisplayMultiLineEditbox->getText();
+        d_languageToTextMap[LangList[index].language] = d_textDisplayMultiLineEditbox->getText();
     }
 
     return true;
@@ -444,8 +445,8 @@ void FontsSample::initialiseTextSelector()
 
     for (unsigned int i = 0; i < LangListSize; ++i)
     {
-        d_textSelector->addItem(new StandardItem(LangList[i].Language, i));
-        d_languageToFontMap[LangList[i].Language] = LangList[i].Font;
+        d_textSelector->addItem(new StandardItem(LangList[i].language, i));
+        d_languageToFontMap[LangList[i].language] = LangList[i].font;
     }
 }
 
@@ -471,7 +472,7 @@ void FontsSample::initialiseLangToTextMap()
 {
     for (unsigned int i = 0; i < LangListSize; ++i)
     {
-        d_languageToTextMap[LangList[i].Language] = LangList[i].Text;
+        d_languageToTextMap[LangList[i].language] = LangList[i].text;
     }
 }
 

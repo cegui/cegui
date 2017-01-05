@@ -28,6 +28,8 @@ author:     Lukas Meindl
 #ifndef _LanguageStrings_h_
 #define _LanguageStrings_h_
 
+#include "CEGUI/DefaultParagraphDirection.h"
+
 namespace LanguageStrings
 {
 
@@ -35,9 +37,10 @@ static const unsigned int LangListSize = 12;
 
 static struct
 {
-    const char* Language;
-    const char* Font;
-    const char* Text;
+    const char* language;
+    const char* font;
+    const char* text;
+    CEGUI::DefaultParagraphDirection direction;
 } LangList[LangListSize] =
 {
     // A list of strings in different languages stored as hexadecimal UTF-8 code units
@@ -56,7 +59,8 @@ static struct
         "(however, this demo won't allow to change the fonts of the other Samples)\n"
         "Important: When you switch to a font the FIRST time, it takes some time to load it. "
         "Especially for fonts with a lot of non-ASCII characters this load time might be "
-        "noticeable.!"
+        "noticeable.!",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "European characters using DejaVuSans font",
@@ -74,7 +78,8 @@ static struct
         "\xC4\xBB\xC5\xBE\xC5\xBD\xC4\x8D\xC4\x8C\xC5\x86\xC5\x85\x5C\x6E\xC3"
         "\xB8\xC3\x98\xC3\xA6\xC3\x86\xC3\xA5\xC3\x85\xC3\xA8\xC3\xA2\xC3\xAF"
         "\xC3\x80\xC3\x81\xC3\x82\xC6\x92\xC3\xA9\xC3\xAD\xC3\xB3\xC3\xBA\xC3"
-        "\x89\xC3\x8D\xC3\x93\xC3\x9A\xC3\xB5\xC3\xA7\xC2\xBF\xC3\xB1\xC3\x91"
+        "\x89\xC3\x8D\xC3\x93\xC3\x9A\xC3\xB5\xC3\xA7\xC2\xBF\xC3\xB1\xC3\x91",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "European characters using Junicode font",
@@ -92,7 +97,8 @@ static struct
         "\xC4\xBB\xC5\xBE\xC5\xBD\xC4\x8D\xC4\x8C\xC5\x86\xC5\x85\x5C\x6E\xC3"
         "\xB8\xC3\x98\xC3\xA6\xC3\x86\xC3\xA5\xC3\x85\xC3\xA8\xC3\xA2\xC3\xAF"
         "\xC3\x80\xC3\x81\xC3\x82\xC6\x92\xC3\xA9\xC3\xAD\xC3\xB3\xC3\xBA\xC3"
-        "\x89\xC3\x8D\xC3\x93\xC3\x9A\xC3\xB5\xC3\xA7\xC2\xBF\xC3\xB1\xC3\x91"
+        "\x89\xC3\x8D\xC3\x93\xC3\x9A\xC3\xB5\xC3\xA7\xC2\xBF\xC3\xB1\xC3\x91",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Korean/Chinese/Japanese using Batang font",
@@ -118,14 +124,17 @@ static struct
         "\x2F\xEB\x84\x8B\xEC\x9D\xB4\xEB\x9D\xBC\xEB\x8F\x84\x2F\xEC\x9E\x88\xEA\xB3\xA0\xEC\x97\x86\xEA\xB3\xA0\x2F\n"
         "\xEC\x9E\x84\x20\xED\x96\xA5\xED\x95\x9C\x2F\xEC\x9D\xBC\xED\x8E\xB8\xEB\x8B\xA8\xEC\x8B\xAC\xEC"
         "\x9D\xB4\xEC\x95\xBC\x2F\xEA\xB0\x80\xEC\x8B\xA4\x20\xEC\xA4"
-        "\x84\xEC\x9D\xB4\x2F\xEC\x9E\x88\xEC\x9C\xBC\xEB\x9E\xB4/"
+        "\x84\xEC\x9D\xB4\x2F\xEC\x9E\x88\xEC\x9C\xBC\xEB\x9E\xB4/",
+
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Hebrew using TnuaLibre font",
         "TnuaLibre-12",
-        "\xD7\xAA\xD7\xA0\xD7\x95\xD7\xA2\xD7\x94\n"
-        "\xD7\x97\xD7\x95\xD7\xA4\xD7\xA9\xD7\x99 **\xD7\x90\xD7\x91\xD7\x92\xD7\x93  \n"
-        "1234"
+        "1234 \xD7\xAA\xD7\xA0\xD7\x95\xD7\xA2\xD7\x94 5678\n"
+        "1234 \xD7\x97\xD7\x95\xD7\xA4\xD7\xA9\xD7\x99 **\xD7\x90\xD7\x91\xD7\x92\xD7\x93 5678",
+
+        CEGUI::DefaultParagraphDirection::RightToLeft
     },
     {
         "Old German using Fette UNZ Fraktur font",
@@ -133,21 +142,24 @@ static struct
         "Heute back ich, morgen brau ich,\n"
         "\xC3\x9C  bermorgen hol ich mir der K\xC3\xB6 nigin ihr Kind;\n"
         "Ach, wie gut, dass niemand wei\xC3\x9F ,\n"
-        "dass ich Rumpelstilzchen hei\xC3\x9F"
+        "dass ich Rumpelstilzchen hei\xC3\x9F",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Latin using Old Fell Type font",
         "FellType-12.5",
         "\xE2\x98\x9E Non nobis, non nobis, Domine\n"
         "Sed nomini tuo da gloriam.\xE2\x98\x9C\n"
-        "\xEE\x80\x9C\x20\xEE\x81\x87\x20\xEE\x81\x80\x20\xEE\x81\x81\x20\xC3\x90"
+        "\xEE\x80\x9C\x20\xEE\x81\x87\x20\xEE\x81\x80\x20\xEE\x81\x81\x20\xC3\x90",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Handwriting font",
         "GreatVibes-22",
         "Dear Gooby,\n\n"
         "Handwriting is nice when you don't have to do it yourself.\n\n"
-        "Regards, Uncle Dolan."
+        "Regards, Uncle Dolan.",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "RichStyle Icons font",
@@ -163,7 +175,8 @@ static struct
         "\xEE\x80\x84\x20\xEE\x80\x85\x20\xEE\x80\x86\x20\xEE\x80\x87\x20\xEE\x80\x88\x20\xEE"
         "\x80\x89\x20\xEE\x80\x90\x20\xEE\x80\x91\x20\xEE\x80\x92\x20\xEE\x80\x93\x20\xEE\x80"
         "\x94\x20\xEE\x80\x95\x20\xEE\x80\x96\x20\xEE\x80\x97\x20\xEE\x80\x98\x20\xEE\x80\x99"
-        "\x20\xEE\x80\xA0\x20\xEE\x80\xA1\x20\xEE\x80\xA2"
+        "\x20\xEE\x80\xA0\x20\xEE\x80\xA1\x20\xEE\x80\xA2",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Old Runic writing using Futhark Adapted font",
@@ -172,7 +185,8 @@ static struct
         "lads pick on him. Scuffling and fighting almost has ceased since Kerensky came to work."
         "That's only one of the nicknames of Leo Kobreen, and was assigned to him because of a"
         "considerable facial resemblance to the perpetually fleeing Russian statesman, and, "
-        "too, because both wore quite formal standing collars."
+        "too, because both wore quite formal standing collars.",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Klingon using pIqaD HaSta font",
@@ -183,7 +197,8 @@ static struct
         "\xEF\xA3\xA5\x20\xEF\xA3\xA6\x20\xEF\xA3\xA7\x20\xEF\xA3\xA8\x20\xEF\xA3\xA9\n"
         "\xEF\xA3\xB0\x20\xEF\xA3\xB1\x20\xEF\xA3\xB2\x20\xEF\xA3\xB3\x20\xEF\xA3\xB4\x20"
         "\xEF\xA3\xB5\x20\xEF\xA3\xB6\x20\xEF\xA3\xB7\x20\xEF\xA3\xB8\x20\xEF\xA3\xB9\n"
-        "\xEF\xA3\xBD\x20\xEF\xA3\xBE\x20\xEF\xA3\xBF"
+        "\xEF\xA3\xBD\x20\xEF\xA3\xBE\x20\xEF\xA3\xBF",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
         "Pixel style font using Mizufalp font",
@@ -191,7 +206,8 @@ static struct
         "Mechanic: Somebody set up us the bomb.\n"
         "Operator: Main screen turn on.\n"
         "CATS: All your base are belong to us.\n"
-        "CATS: You have no chance to survive make your time."
+        "CATS: You have no chance to survive make your time.",
+        CEGUI::DefaultParagraphDirection::LeftToRight
     }
 };
 
