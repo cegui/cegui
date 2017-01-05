@@ -35,6 +35,7 @@
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
+#include "CEGUI/DefaultParagraphDirection.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -151,6 +152,12 @@ public:
         "AdjustHeightToContent" changes.
     */
     static const String EventIsSizeAdjustedToContentChanged;
+
+    /*!
+    \brief
+        Fired when the "DefaultParagraphDirection" changes.
+    */
+    static const String EventDefaultParagraphDirectionChanged;
 
     /*!
     \brief A tiny wrapper to hide some of the dirty work of rect caching
@@ -1451,6 +1458,12 @@ public:
     */
     virtual bool contentFits() const;
 
+    //! Gets the default paragraph direction for the displayed text of this Element.
+    DefaultParagraphDirection getDefaultParagraphDirection() const;
+
+    //! Sets the default paragraph direction for the displayed text of this Element.
+    void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
+
 protected:
     /*!
     \brief
@@ -1746,6 +1759,13 @@ protected:
     //! inner area rect in screen pixels
     CachedRectf d_unclippedInnerRect;
 
+    
+    /*!
+    \brief
+        Default direction of the paragraph, relevant for bidirectional text.
+    \see DefaultParagraphDirection
+    */
+    DefaultParagraphDirection d_defaultParagraphDirection;
 private:
     /*************************************************************************
         May not copy or assign Element objects

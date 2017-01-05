@@ -37,6 +37,7 @@
 #include "CEGUI/USize.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/URect.h"
+#include "CEGUI/DefaultParagraphDirection.h"
 
 #include <algorithm>
 
@@ -63,6 +64,7 @@ const String Element::EventChildRemoved("ChildRemoved");
 const String Element::EventZOrderChanged("ZOrderChanged");
 const String Element::EventNonClientChanged("NonClientChanged");
 const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
+const String Element::EventDefaultParagraphDirectionChanged("DefaultParagraphDirectionChanged");
 
 //----------------------------------------------------------------------------//
 Element::Element():
@@ -781,6 +783,23 @@ void Element::addElementProperties()
         "Value is either \"true\" or \"false\".",
         &Element::setAdjustHeightToContent, &Element::isHeightAdjustedToContent, false
     );
+
+    CEGUI_DEFINE_PROPERTY(Element, DefaultParagraphDirection,
+        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
+        "This is only in effect if raqm is linked and activate. It sets the default order of the "
+        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
+        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
+        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
+        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
+        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
+        "the sentence will start on the very right with the German word, as would be expected in a mainly "
+        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
+        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
+        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
+        &Element::setDefaultParagraphDirection, &Element::getDefaultParagraphDirection,
+        DefaultParagraphDirection::LeftToRight
+    );
+
 }
 
 //----------------------------------------------------------------------------//
@@ -1044,6 +1063,25 @@ void Element::onNonClientChanged(ElementEventArgs& e)
     setArea(getArea());
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
+}
+
+DefaultParagraphDirection Element::getDefaultParagraphDirection() const
+{
+    return d_defaultParagraphDirection;
+}
+
+void Element::setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection)
+{
+    if(defaultParagraphDirection != d_defaultParagraphDirection)
+    {
+        d_defaultParagraphDirection = defaultParagraphDirection;
+
+        notifyScreenAreaChanged();
+
+        ElementEventArgs eventArgs(this);
+        fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
+    }
+    
 }
 
 #if defined(_MSC_VER)
