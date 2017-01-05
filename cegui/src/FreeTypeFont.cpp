@@ -727,11 +727,31 @@ const FT_Face& FreeTypeFont::getFontFace() const
 }
 
 #ifdef CEGUI_USE_RAQM
+
+namespace
+{
+raqm_direction_t determineRaqmDirection(DefaultParagraphDirection defaultParagraphDir)
+{
+    switch (defaultParagraphDir)
+    {
+    case DefaultParagraphDirection::LeftToRight:
+        return RAQM_DIRECTION_LTR;
+    case DefaultParagraphDirection::RightToLeft:
+        return RAQM_DIRECTION_RTL;
+    case DefaultParagraphDirection::Automatic:
+        return RAQM_DIRECTION_DEFAULT;
+    }
+
+    return RAQM_DIRECTION_LTR;
+}
+}
+
 std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
+    ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
+    glm::vec2& glyphPos) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
@@ -764,7 +784,8 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
             "a raqm object");
     }
 
-    if (!raqm_set_par_direction(raqmObject, RAQM_DIRECTION_DEFAULT))
+    raqm_direction_t textDefaultParagraphDirection = determineRaqmDirection(defaultParagraphDir);
+    if (!raqm_set_par_direction(raqmObject, textDefaultParagraphDirection))
     {
         throw InvalidRequestException("Could not set the parse direction for "
             "a raqm object");

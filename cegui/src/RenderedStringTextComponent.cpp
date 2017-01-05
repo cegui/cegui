@@ -214,6 +214,12 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
         return std::vector<GeometryBuffer*>();
     }
 
+    DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight;
+    if(ref_wnd != nullptr)
+    {
+        defaultParagraphDir = ref_wnd->getDefaultParagraphDirection();
+    }
+
     glm::vec2 final_pos(position);
     float y_scale = 1.0f;
 
@@ -236,7 +242,7 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     return fnt->createTextRenderGeometry(
         d_text, final_pos,
         clip_rect, true, final_cols,
-        space_extra, 1.0f, y_scale);
+        defaultParagraphDir, space_extra, 1.0f, y_scale);
 }
 
 //----------------------------------------------------------------------------//

@@ -286,6 +286,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
+    DefaultParagraphDirection defaultParagraphDir = w->getDefaultParagraphDirection();
 
     if (w->getSelectionLength() != 0)
     {
@@ -309,10 +310,12 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     String sect = text.substr(0, w->getSelectionStart());
     colours = unselectedColours;
 
+    
+
     auto preHighlightTextGeomBuffers = font->createTextRenderGeometry(
         sect, text_part_rect.d_min.x,
         text_part_rect.getPosition(),
-        &text_area, true, colours);
+        &text_area, true, colours, defaultParagraphDir);
 
     w->appendGeometryBuffers(preHighlightTextGeomBuffers);
 
@@ -322,7 +325,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
 
     auto highlitTextGeomBuffers = font->createTextRenderGeometry(
         sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
-        &text_area, true, colours);
+        &text_area, true, colours, defaultParagraphDir);
 
     w->appendGeometryBuffers(highlitTextGeomBuffers);
 
@@ -331,8 +334,8 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     colours = unselectedColours;
 
      auto postHighlitTextGeomBuffers = font->createTextRenderGeometry(
-        sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
-        &text_area, true, colours);
+         sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
+         &text_area, true, colours, defaultParagraphDir);
 
     w->appendGeometryBuffers(postHighlitTextGeomBuffers);
 }
