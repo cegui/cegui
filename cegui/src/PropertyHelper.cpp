@@ -1076,4 +1076,49 @@ PropertyHelper<VerticalAlignment>::string_return_type PropertyHelper<VerticalAli
     }
 }
 
+
+const String& PropertyHelper<DefaultParagraphDirection>::getDataTypeName()
+{
+    static String type("DefaultParagraphDirection");
+
+    return type;
+}
+
+PropertyHelper<DefaultParagraphDirection>::return_type PropertyHelper<DefaultParagraphDirection>::fromString(const String& str)
+{
+    if (str == "RightToLeft")
+    {
+        return DefaultParagraphDirection::RightToLeft;
+    }
+
+    if (str == "Automatic")
+    {
+        return DefaultParagraphDirection::Automatic;
+    }
+
+    return DefaultParagraphDirection::LeftToRight;
+}
+
+PropertyHelper<DefaultParagraphDirection>::string_return_type PropertyHelper<DefaultParagraphDirection>::toString(
+    pass_type defaultParagraphDirection)
+{
+    if (defaultParagraphDirection == DefaultParagraphDirection::LeftToRight)
+    {
+        return "LeftToRight";
+    }
+    else if (defaultParagraphDirection == DefaultParagraphDirection::RightToLeft)
+    {
+        return "RightToLeft";
+    }
+    else if (defaultParagraphDirection == DefaultParagraphDirection::Automatic)
+    {
+        return "Automatic";
+    }
+    else
+    {
+        assert(false && "Invalid default paragraph direction");
+        return "LeftToRight";
+    }
+}
+
 }
