@@ -188,7 +188,7 @@ public:
     std::vector<GeometryBuffer*> createTextRenderGeometry(
         const String& text, float& nextGlyphPosX,
         const glm::vec2& position, const Rectf* clip_rect,
-        const bool clipping_enabled, const ColourRect& colours,
+        const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
         const float space_extra = 0.0f, const float x_scale = 1.0f,
         const float y_scale = 1.0f) const;
 
@@ -231,7 +231,7 @@ public:
     std::vector<GeometryBuffer*> createTextRenderGeometry(
         const String& text,
         const glm::vec2& position, const Rectf* clip_rect,
-        const bool clipping_enabled, const ColourRect& colours,
+        const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
         const float space_extra = 0.0f, const float x_scale = 1.0f,
         const float y_scale = 1.0f) const;
   
@@ -538,12 +538,13 @@ protected:
                                 const Image* image, ImageRenderSettings &imgRenderSettings,
                                 const Rectf* clip_rect, const ColourRect& colours) const;
 
-    //! The recommended way of rendering a glyph
+    //! Manages the glyph layout and and creates the RenderGeometry for the text.
     virtual std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
         const float x_scale, const float y_scale,
-        ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
+        ImageRenderSettings imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
+        glm::vec2& glyphPos) const
     {
         return layoutUsingFallbackAndCreateGlyphGeometry(text, clip_rect,
             colours, space_extra, x_scale, y_scale, imgRenderSettings,

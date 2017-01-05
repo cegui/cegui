@@ -254,14 +254,15 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
-    const ColourRect& colours, const float space_extra,
+    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
+    const float space_extra,
     const float x_scale, const float y_scale) const
 {
     float nextGlyphPos = 0.0f;
 
     return createTextRenderGeometry(
         text, nextGlyphPos, position, clip_rect, clipping_enabled,
-        colours, space_extra, x_scale, y_scale);
+        colours, defaultParagraphDir, space_extra, x_scale, y_scale);
 }
 
 const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
@@ -327,7 +328,7 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
 std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     const String& text, float& nextGlyphPosX, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
-    const ColourRect& colours, const float space_extra,
+    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, const float space_extra,
     const float x_scale, const float y_scale) const
 {
     ImageRenderSettings imgRenderSettings(
@@ -338,7 +339,7 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
 
     std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(
         text, clip_rect, colours, space_extra,
-        x_scale, y_scale, imgRenderSettings, glyphPos);
+        x_scale, y_scale, imgRenderSettings, defaultParagraphDir, glyphPos);
 
     nextGlyphPosX = glyphPos.x;
 

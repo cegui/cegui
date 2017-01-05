@@ -201,7 +201,6 @@ public:
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const;
-
     //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const;
 
@@ -301,7 +300,7 @@ protected:
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
         const float x_scale, const float y_scale,
-        ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const override;
+        ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir, glm::vec2& glyphPos) const override;
 #endif
 
     //! If non-zero, the overridden line spacing that we're to report.
