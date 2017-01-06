@@ -93,7 +93,7 @@ protected:
     \brief
         Helper function for calculating the tecture and render areas.
     */
-    bool calculateTextureAndRenderAreas(
+    bool calculateTextureAreaAndRenderArea(
         const Rectf& renderSettingDestArea,
         const Rectf* clippingArea,
         Rectf &finalRect, Rectf &texRect) const;
