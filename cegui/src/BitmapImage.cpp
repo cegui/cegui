@@ -97,7 +97,7 @@ std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRender
     Rectf texRect;
     Rectf finalRect;
 
-    bool isFullClipped = calculateTextureAndRenderAreas(
+    bool isFullClipped = calculateTextureAreaAndRenderArea(
         render_settings.d_destArea, render_settings.d_clipArea,
         finalRect, texRect);
 
@@ -136,7 +136,7 @@ void BitmapImage::addToRenderGeometry(
     Rectf texRect;
     Rectf finalRect;
 
-    bool isFullClipped = calculateTextureAndRenderAreas(
+    bool isFullClipped = calculateTextureAreaAndRenderArea(
         renderArea, clipArea,
         finalRect, texRect);
 
@@ -144,7 +144,7 @@ void BitmapImage::addToRenderGeometry(
     {
         return;
     }
-
+    
     TexturedColouredVertex vbuffer[6];
     createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
 
@@ -152,7 +152,7 @@ void BitmapImage::addToRenderGeometry(
 }
 
 
-bool BitmapImage::calculateTextureAndRenderAreas(
+bool BitmapImage::calculateTextureAreaAndRenderArea(
     const Rectf& renderSettingDestArea,
     const Rectf* clippingArea,
     Rectf& finalRect, Rectf& texRect) const
@@ -175,9 +175,7 @@ bool BitmapImage::calculateTextureAndRenderAreas(
     // calculate final, clipped, texture co-ordinates
     texRect = Rectf((d_imageArea + ((finalRect - dest) * tex_per_pix)) * texel_scale);
 
-    // TODO: This is clearly not optimal but the only way to go with the current
-    // Font rendering system. Distance field rendering would allow us to ignore the 
-    // pixel alignment.
+    // Positions have to be rounded because the glyphs images have to be grid-aligned
     finalRect.d_min.x = CoordConverter::alignToPixels(finalRect.d_min.x);
     finalRect.d_min.y = CoordConverter::alignToPixels(finalRect.d_min.y);
     finalRect.d_max.x = CoordConverter::alignToPixels(finalRect.d_max.x);

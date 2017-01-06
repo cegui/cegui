@@ -76,6 +76,10 @@ static const std::vector<FreeTypeErrorDescription> freeTypeErrorDescriptions
     (ftErrorDescs, ftErrorDescs + sizeof(ftErrorDescs) / sizeof(FreeTypeErrorDescription) );
 
 
+
+const String FreeTypeFont::EventMaximumRelativePositionErrorChanged("MaximumRelativePositionErrorChanged");
+
+
 //----------------------------------------------------------------------------//
 FreeTypeFont::FreeTypeFont(
     const String& font_name,
@@ -92,7 +96,8 @@ FreeTypeFont::FreeTypeFont(
     d_size(size),
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
-    d_fontFace(nullptr)
+    d_fontFace(nullptr),
+    d_maximumRelativePositionError(0.03125f)
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -116,7 +121,7 @@ FreeTypeFont::~FreeTypeFont()
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::addFreeTypeFontProperties ()
+void FreeTypeFont::addFreeTypeFontProperties()
 {
     const String propertyOrigin("FreeTypeFont");
 
@@ -133,7 +138,23 @@ void FreeTypeFont::addFreeTypeFontProperties ()
     CEGUI_DEFINE_PROPERTY(FreeTypeFont, bool,
         "Antialiased", "This is a flag indicating whenever to render antialiased font or not. "
         "Value is either true or false.",
-        &FreeTypeFont::setAntiAliased, &FreeTypeFont::isAntiAliased, 0
+        &FreeTypeFont::setAntiAliased, &FreeTypeFont::isAntiAliased, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(FreeTypeFont, float,
+        "MaximumPositionError", "Specifies the maximum error in positioning that a glyph is "
+        "allowed to have. The error value is relative to the pixel size of the Font. The maximum "
+        "absolute error in sub-pixels is calculated by multiplying the Font size with this value. "
+        "Note: If raqm is not linked and active, this has no effect, as all glyphs will be positioned without kerning, "
+        "based on the image width. If raqm is active, kerning and sub-pixel positions are relevant. "
+        "Example: A Font size of 16 pixels with an error of 0,03125 (1/32) will result in 0,5 pixels. This "
+        "means that, in order to render the glyphs correctly, each glyph needs two representations in the "
+        "texture atlas: One rendered at position 0 and one rendered with a translation of 0,5 pixels. "
+        "The representation closest to the requested position is then always picked when rendering the glyphs."
+        "Value is a float value.",
+        &FreeTypeFont::setMaximumRelativePositionError,
+        &FreeTypeFont::getMaximumRelativePositionError,
+        0.03125f
     );
 }
 
@@ -159,6 +180,7 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
     updateTextureBufferSubImage(d_lastTextureBuffer.data(),
         oldTextureSize, oldTextureSize, oldTextureData);
 
+    //TODO: why always RGBA if we, and Freetype, only support greyscale?
     texture->loadFromMemory(d_lastTextureBuffer.data(), newTextureSize, Texture::PixelFormat::Rgba);
 
     System::getSingleton().getRenderer()->updateGeometryBufferTexCoords(texture,
@@ -187,71 +209,10 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int
     }
 }
 
-//----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
+void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
+    FreeTypeFontGlyph* glyph, Texture* texture, int glyphWidth, int glyphHeight,
+    const std::_Simple_types<FreeTypeFont::TextureGlyphLine>::value_type& glyphTexLine) const
 {
-    if(d_glyphTextures.empty())
-    {
-        createGlyphAtlasTexture();
-    }
-
-    // Retrieve the last texture created
-    Texture* texture = d_glyphTextures.back();
-
-    // Go ahead, line by line, top-left to bottom-right
-    int glyphWidth = d_fontFace->glyph->bitmap.width;
-    int glyphHeight = d_fontFace->glyph->bitmap.rows;
-
-    bool fittingLineWasFound = false;
-    size_t fittingLineIndex = -1;
-
-    // Go through the lines and find one that fits
-    size_t lineCount =  d_textureGlyphLines.size();
-    for(size_t i = 0; i < lineCount && !fittingLineWasFound; ++i)
-    {
-        const auto& currentGlyphLine = d_textureGlyphLines[i];
-        // Check if glyph right margin exceeds texture size
-        int curGlyphXEnd = currentGlyphLine.d_lastXPos + glyphWidth;
-        int curGlyphYEnd = currentGlyphLine.d_lastYPos + glyphHeight;
-        if (curGlyphXEnd < d_lastTextureSize && curGlyphYEnd < d_lastTextureSize)
-        {
-            //Only the last line can be extended into the y-dimension
-            if (i == (lineCount - 1))
-            {
-                if (curGlyphYEnd > currentGlyphLine.d_maximumExtentY)
-                {
-                    currentGlyphLine.d_maximumExtentY = curGlyphYEnd;
-                }
-
-                fittingLineIndex = i;
-                fittingLineWasFound = true;
-            }
-            else
-            {
-                if (curGlyphYEnd < currentGlyphLine.d_maximumExtentY)
-                {
-                    fittingLineIndex = i;
-                    fittingLineWasFound = true;
-                }
-            }
-        }
-    }
-
-    if(!fittingLineWasFound)
-    {
-        fittingLineWasFound = addNewLineIfFitting(glyphHeight, fittingLineIndex);
-    }
-
-    if(!fittingLineWasFound)
-    {
-        createTextureSpaceForGlyphRasterisation(texture, glyphWidth, glyphHeight);
-
-        rasterise(glyph);
-        return;
-    }
-
-    const auto& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
-
     // Create the data containing the pixels of the glyph
     FT_Bitmap& glyphBitmap = d_fontFace->glyph->bitmap;
     std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
@@ -279,9 +240,89 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
 
     const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
     BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
-            d_nativeResolution);
+        d_nativeResolution);
     d_glyphImages.push_back(img);
     glyph->setImage(img);
+}
+
+void FreeTypeFont::findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
+    bool &fittingLineWasFound, size_t &fittingLineIndex) const 
+{
+    // Go through the lines and find one that fits
+    size_t lineCount =  d_textureGlyphLines.size();
+    for(size_t i = 0; i < lineCount && !fittingLineWasFound; ++i)
+    {
+        const auto& currentGlyphLine = d_textureGlyphLines[i];
+
+        bool isLastLine = (i == (lineCount - 1));
+
+        // Check if glyph right margin exceeds texture size
+        int curGlyphXEnd = currentGlyphLine.d_lastXPos + glyphWidth;
+        int curGlyphYEnd = currentGlyphLine.d_lastYPos + glyphHeight;
+        if (curGlyphXEnd < d_lastTextureSize && curGlyphYEnd < d_lastTextureSize)
+        {
+            //Only the last line can be extended into the y-dimension
+            if (isLastLine)
+            {
+                if (curGlyphYEnd > currentGlyphLine.d_maximumExtentY)
+                {
+                    currentGlyphLine.d_maximumExtentY = curGlyphYEnd;
+                }
+
+                fittingLineIndex = i;
+                fittingLineWasFound = true;
+            }
+            else
+            {
+                if (curGlyphYEnd < currentGlyphLine.d_maximumExtentY)
+                {
+                    fittingLineIndex = i;
+                    fittingLineWasFound = true;
+                }
+            }
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
+{
+    if(d_glyphTextures.empty())
+    {
+        createGlyphAtlasTexture();
+    }
+
+    // Go ahead, line by line, top-left to bottom-right
+    int glyphWidth = d_fontFace->glyph->bitmap.width;
+    int glyphHeight = d_fontFace->glyph->bitmap.rows;
+
+    bool fittingLineWasFound = false;
+    size_t fittingLineIndex = -1;
+
+    findFittingSpotInGlyphTextureLines(glyphWidth, glyphHeight,
+        fittingLineWasFound, fittingLineIndex);
+
+    if(!fittingLineWasFound)
+    {
+        fittingLineWasFound = addNewLineIfFitting(glyphHeight, fittingLineIndex);
+    }
+
+    if(!fittingLineWasFound)
+    {
+        Texture* texture = d_glyphTextures.back();
+        createTextureSpaceForGlyphRasterisation(texture, glyphWidth, glyphHeight);
+
+        rasterise(glyph);
+        return;
+    }
+
+    const auto& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
+
+    // Retrieve the last texture created
+    Texture* texture = d_glyphTextures.back();
+
+    addRasterisedGlyphToTextureAndSetupGlyphImage(glyph, texture,
+        glyphWidth, glyphHeight, glyphTexLine);
 
     // Advance to next position, add padding
     glyphTexLine.d_lastXPos += glyphWidth + s_glyphPadding;
@@ -512,11 +553,10 @@ void FreeTypeFont::updateFont()
     {
         fontScaleFactor *= d_vertScaling;
     }
+    
+    unsigned int requestedFontSizeInPixels = std::lroundf(getSizeInPixels() * fontScaleFactor);
 
-    int requestedFontPixelHeight = std::lround(getSizeInPixels() * fontScaleFactor);
-
-
-    FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, requestedFontPixelHeight);
+    FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, requestedFontSizeInPixels);
     if(errorResult != 0)
     {
         // Usually, an error occurs with a fixed-size font format (like FNT or PCF)
@@ -524,8 +564,21 @@ void FreeTypeFont::updateFont()
         // face->fixed_sizes array.For bitmap fonts we can render only at specific
         // point sizes.
         // Try to find Font with closest pixel height and use it instead
+        tryToCreateFontWithClosestFontHeight(errorResult, requestedFontSizeInPixels);
 
-        tryToCreateFontWithClosestFontHeight(errorResult, requestedFontPixelHeight);
+        d_possibleSubpixelPositions = 1;
+    }
+    else
+    {
+#ifdef CEGUI_USE_RAQM
+        d_possibleSubpixelPositions = static_cast<int>(1.0f /
+            (d_maximumRelativePositionError * requestedFontSizeInPixels));
+
+        d_possibleSubpixelPositions = std::min(d_maximumPossibleSubpixelPositions,
+            std::max(d_possibleSubpixelPositions, 1U));
+#else
+        d_possibleSubpixelPositions = 1;
+#endif
     }
 
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
@@ -565,7 +618,7 @@ void FreeTypeFont::initialiseGlyphMap()
                 "adding an already added glyph to the codepoint glyph map.");        
         }
 
-        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(this, codepoint);
+        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint);
         d_codePointToGlyphMap[codepoint] = newFontGlyph;
         d_indexToGlyphMap[gindex] = static_cast<char32_t>(codepoint);
 
@@ -709,12 +762,12 @@ void FreeTypeFont::handleFontSizeOrFontUnitChange()
 
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::setAntiAliased(const bool anti_alaised)
+void FreeTypeFont::setAntiAliased(const bool antiAliased)
 {
-    if (anti_alaised == d_antiAliased)
+    if (antiAliased == d_antiAliased)
         return;
 
-    d_antiAliased = anti_alaised;
+    d_antiAliased = antiAliased;
     updateFont();
 
     FontEventArgs args(this);
@@ -836,14 +889,27 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
         glyphPos.y = base_y - (image->getRenderedOffset().y -
             image->getRenderedOffset().y * y_scale);
 
+        if (glyphPos.x < 0.0f)
+        {
+            InvalidRequestException("Glyph pos negative");
+        }
+     
+        float xPosFractionalPart = glyphPos.x - static_cast<int>(glyphPos.x);
+
+       // xPosFractionalPart 
+        
+        
+        glm::vec2 snappedGlyphPosition = glyphPos;
+
         imgRenderSettings.d_destArea =
-            Rectf(glyphPos, glyph->getSize(x_scale, y_scale));
+            Rectf(snappedGlyphPosition, glyph->getSize(x_scale, y_scale));
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
 
         glyphPos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
-        // TODO: This is probably wrong because the space was determined without kerning
+        // TODO: This is for justified text and probably wrong because the space was determined
+        // without considering kerning
         if (codePoint == ' ')
         {
             glyphPos.x += space_extra;
@@ -883,6 +949,25 @@ void FreeTypeFont::setInitialGlyphAtlasSize(int val)
     d_initialGlyphAtlasSize = val;
 }
 
+void FreeTypeFont::setMaximumRelativePositionError(float maximumRelativePositionError)
+{
+    if(d_maximumRelativePositionError == maximumRelativePositionError)
+    {
+        return;
+    }
+
+    d_maximumRelativePositionError = maximumRelativePositionError;
+
+    updateFont();
+
+    FontEventArgs args(this);
+    onMaximumRelativePositionErrorChanged(args);
+}
+
+float FreeTypeFont::getMaximumRelativePositionError() const
+{
+    return d_maximumRelativePositionError;
+}
 
 const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoint) const
 {
@@ -894,6 +979,11 @@ const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoin
     }
 
     return glyph;
+}
+
+void FreeTypeFont::onMaximumRelativePositionErrorChanged(FontEventArgs& args)
+{
+    fireEvent(EventMaximumRelativePositionErrorChanged, args, EventNamespace);
 }
 
 

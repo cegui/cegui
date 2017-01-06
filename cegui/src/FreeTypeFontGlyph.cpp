@@ -42,12 +42,12 @@ float FreeTypeFontGlyph::getRenderedAdvance(
 
 void FreeTypeFontGlyph::markAsInitialised()
 {
-    d_valid = true;
+    d_initialised = true;
 }
 
 bool FreeTypeFontGlyph::isInitialised() const
 {
-    return d_valid;
+    return d_initialised;
 }
 
 }
