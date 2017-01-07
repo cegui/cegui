@@ -34,6 +34,8 @@
 #include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
 
+#include <cmath>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -63,7 +65,7 @@ public:
     */
     static float alignToPixels(float x)
     {
-        return std::roundf(x);
+        return std::round(x);
     }
     
     /*!
