@@ -211,7 +211,7 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int
 
 void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
     FreeTypeFontGlyph* glyph, Texture* texture, int glyphWidth, int glyphHeight,
-    const std::_Simple_types<TextureGlyphLine>::value_type& glyphTexLine) const
+    const TextureGlyphLine& glyphTexLine) const
 {
     // Create the data containing the pixels of the glyph
     FT_Bitmap& glyphBitmap = d_fontFace->glyph->bitmap;
@@ -327,7 +327,7 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph) const
         return;
     }
 
-    const auto& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
+    const TextureGlyphLine& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
 
     // Retrieve the last texture created
     Texture* texture = d_glyphTextures.back();

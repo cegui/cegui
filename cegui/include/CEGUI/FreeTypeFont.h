@@ -310,7 +310,7 @@ protected:
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
         FreeTypeFontGlyph* glyph, Texture* texture, int glyphWidth, int glyphHeight,
-        const std::_Simple_types<FreeTypeFont::TextureGlyphLine>::value_type& glyphTexLine) const;
+        const TextureGlyphLine& glyphTexLine) const;
 
     void findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
         bool &fittingLineWasFound, size_t &fittingLineIndex) const;
