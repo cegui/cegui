@@ -566,7 +566,7 @@ void FreeTypeFont::updateFont()
     }
     
     unsigned int requestedFontSizeInPixels = static_cast<unsigned int>(
-        std::round(getSizeInPixels() * fontScaleFactor));
+        std::lround(getSizeInPixels() * fontScaleFactor));
 
     FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, requestedFontSizeInPixels);
     if(errorResult != 0)
