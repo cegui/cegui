@@ -304,8 +304,12 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
             glyphPos.y = base_y - (image->getRenderedOffset().y - 
                 image->getRenderedOffset().y * y_scale);
 
+            Sizef renderedSize(
+                image->getRenderedSize().d_width * x_scale,
+                image->getRenderedSize().d_height * y_scale);
+
             imgRenderSettings.d_destArea =
-                Rectf(glyphPos, glyph->getSize(x_scale, y_scale));
+                Rectf(glyphPos, renderedSize);
 
             addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
                 clip_rect, colours);

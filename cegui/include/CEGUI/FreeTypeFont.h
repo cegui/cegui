@@ -272,7 +272,7 @@ protected:
     \param bitmapHeight
         Height of the source subimage
 
-    \param subTextureData
+    \param subImageData
         The pixel data of the subimage 
     */
     void updateTextureBufferSubImage(argb_t* buffer, unsigned int bitmapWidth,

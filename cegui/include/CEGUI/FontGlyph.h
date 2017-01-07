@@ -56,18 +56,6 @@ public:
     Image* getImage() const
     { return d_image; }
 
-    //! Return the scaled pixel size of the glyph.
-    Sizef getSize(float x_scale, float y_scale) const
-    { return Sizef(getWidth(x_scale), getHeight(y_scale)); }
-
-    //! Return the scaled width of the glyph.
-    float getWidth(float x_scale) const
-    { return d_image->getRenderedSize().d_width * x_scale; }
-
-    //! Return the scaled height of the glyph.
-    float getHeight(float y_scale) const
-    { return d_image->getRenderedSize().d_height * y_scale; }
-
     /*!
     \brief
         Return the rendered advance value for this glyph.

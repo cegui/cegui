@@ -59,7 +59,8 @@ static struct
         "(however, this demo won't allow to change the fonts of the other Samples)\n"
         "Important: When you switch to a font the FIRST time, it takes some time to load it. "
         "Especially for fonts with a lot of non-ASCII characters this load time might be "
-        "noticeable.!",
+        "noticeable.!\n"
+        "The quick brown fox jumps over the lazy dog. 1234567890",
         CEGUI::DefaultParagraphDirection::LeftToRight
     },
     {
