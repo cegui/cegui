@@ -61,16 +61,16 @@ public:
         
     \see Node::setPixelAligned
     */
-    inline static float alignToPixels(float x)
+    static float alignToPixels(float x)
     {
-        return static_cast<float>(static_cast<int>(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)));
+        return std::roundf(x);
     }
     
     /*!
     \brief
         converts given UDim to absolute value
     */
-    inline static float asAbsolute(const UDim& u, float base, bool pixelAlign = true)
+    static float asAbsolute(const UDim& u, float base, bool pixelAlign = true)
     {
         return pixelAlign ? alignToPixels(base * u.d_scale + u.d_offset) : base * u.d_scale + u.d_offset;
     }
@@ -79,7 +79,7 @@ public:
     \brief
         converts given UDim to relative value
     */
-    inline static float asRelative(const UDim& u, float base)
+    static float asRelative(const UDim& u, float base)
     {
         return (base != 0.0f) ? u.d_offset / base + u.d_scale : 0.0f;
     }
@@ -88,7 +88,7 @@ public:
     \brief
         converts given UVector2 to absolute glm::vec2
     */
-    inline static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
+    static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
     {
         return glm::vec2(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
@@ -97,7 +97,7 @@ public:
     \brief
         converts given UVector2 to relative glm::vec2
     */
-    inline static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
+    static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
     {
         return glm::vec2(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }
@@ -106,7 +106,7 @@ public:
     \brief
         converts given USize to absolute Sizef
     */
-    inline static Sizef asAbsolute(const USize& v, const Sizef& base, bool pixelAlign = true)
+    static Sizef asAbsolute(const USize& v, const Sizef& base, bool pixelAlign = true)
     {
         return Sizef(asAbsolute(v.d_width, base.d_width, pixelAlign), asAbsolute(v.d_height, base.d_height, pixelAlign));
     }
@@ -115,12 +115,12 @@ public:
     \brief
         converts given USize to relative Sizef
     */
-    inline static Sizef asRelative(const USize& v, const Sizef& base)
+    static Sizef asRelative(const USize& v, const Sizef& base)
     {
         return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
     }
 
-    inline static Rectf asAbsolute(const URect& r, const Sizef& base, bool pixelAlign = true)
+    static Rectf asAbsolute(const URect& r, const Sizef& base, bool pixelAlign = true)
     {
         return Rectf(
                    asAbsolute(r.d_min.d_x, base.d_width,  pixelAlign),
@@ -130,7 +130,7 @@ public:
                );
     }
 
-    inline static Rectf asRelative(const URect& r, const Sizef& base)
+    static Rectf asRelative(const URect& r, const Sizef& base)
     {
         return Rectf(
                    asRelative(r.d_min.d_x, base.d_width),
