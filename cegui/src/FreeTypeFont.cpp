@@ -5,7 +5,7 @@
     purpose:    Implements FreeTypeFont class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2016 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2017 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -211,7 +211,7 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int
 
 void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
     FreeTypeFontGlyph* glyph, Texture* texture, int glyphWidth, int glyphHeight,
-    const std::_Simple_types<FreeTypeFont::TextureGlyphLine>::value_type& glyphTexLine) const
+    const std::_Simple_types<TextureGlyphLine>::value_type& glyphTexLine) const
 {
     // Create the data containing the pixels of the glyph
     FT_Bitmap& glyphBitmap = d_fontFace->glyph->bitmap;
@@ -238,11 +238,22 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
     const glm::vec2 offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(s_conversionMultCoeff),
         -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(s_conversionMultCoeff));
 
+#ifdef CEGUI_USE_RAQM
+    const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()) + "_" +
+        PropertyHelper<std::uint32_t>::toString(glyph->getSubpixelPositionedImageCount()));
+#else
     const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
+#endif
+
     BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
         d_nativeResolution);
     d_glyphImages.push_back(img);
+
+#ifdef CEGUI_USE_RAQM
+    glyph->addSubPixelPositionedImage(img);
+#else
     glyph->setImage(img);
+#endif
 }
 
 void FreeTypeFont::findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
@@ -634,10 +645,15 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         return;
     }
 
+    FT_Vector position;
+    position.y = 0L;
+    position.x = 0L;
+    FT_Set_Transform(d_fontFace, nullptr, &position);
+
     // Load the code point, "rendering" the glyph
     FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-    FT_Error error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT |
-        targetType);
+    auto loadBitmask = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
+    FT_Error error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), loadBitmask);
 
     glyph->markAsInitialised();
 
@@ -649,7 +665,32 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     bool isRendered = glyph->getImage() != nullptr;
     if (!isRendered)
     {
+#ifdef CEGUI_USE_RAQM
+        // Rasterise the 0 position glyph
         rasterise(glyph);
+
+        // Rasterise all sub-pixel positioned glyphs
+        while (d_possibleSubpixelPositions > glyph->getSubpixelPositionedImageCount())
+        {
+            position.x = static_cast<long>(glyph->getSubpixelPositionedImageCount() /
+                static_cast<float>((d_possibleSubpixelPositions * s_conversionMultCoeff)));
+
+            FT_Set_Transform(d_fontFace, nullptr, &position);
+
+            error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), loadBitmask);
+            if (error != 0)
+            {
+                return;
+            }
+
+            rasterise(glyph);
+        }
+
+        position.x = 0L;
+        
+#else
+        rasterise(glyph);
+#endif
     }
 
     const float adv =
@@ -884,25 +925,30 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
             continue;
         }
 
-        const Image* const image = glyph->getImage();
+        float snappedGlyphPosX = std::floor(glyphPos.x);
+        float xPosFractionInSubPixelSpace = glyphPos.x - snappedGlyphPosX;
+        xPosFractionInSubPixelSpace *= d_possibleSubpixelPositions;
+        unsigned int closestSubPixelPositionIndex = std::lround(xPosFractionInSubPixelSpace);
+
+        if(closestSubPixelPositionIndex >= d_possibleSubpixelPositions)
+        {
+            snappedGlyphPosX += 1.0f;
+            closestSubPixelPositionIndex -= d_possibleSubpixelPositions;
+        }
+
+        const Image* const image = glyph->getSubpixelPositionedImage(closestSubPixelPositionIndex);
 
         glyphPos.y = base_y - (image->getRenderedOffset().y -
             image->getRenderedOffset().y * y_scale);
 
-        if (glyphPos.x < 0.0f)
-        {
-            InvalidRequestException("Glyph pos negative");
-        }
-     
-        float xPosFractionalPart = glyphPos.x - static_cast<int>(glyphPos.x);
+        Sizef renderedSize(
+            image->getRenderedSize().d_width * x_scale,
+            image->getRenderedSize().d_height * y_scale);
 
-       // xPosFractionalPart 
-        
-        
-        glm::vec2 snappedGlyphPosition = glyphPos;
+        glm::vec2 snappedGlyphPos(snappedGlyphPosX, glyphPos.y);
 
         imgRenderSettings.d_destArea =
-            Rectf(snappedGlyphPosition, glyph->getSize(x_scale, y_scale));
+            Rectf(snappedGlyphPos, renderedSize);
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);

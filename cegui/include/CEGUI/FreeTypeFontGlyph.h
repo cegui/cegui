@@ -30,6 +30,11 @@
 #include "CEGUI/FontGlyph.h"
 
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 
 namespace CEGUI
 {
@@ -64,11 +69,26 @@ public:
     //! return whether the glyph is valid
     bool isInitialised() const;
 
+#ifdef CEGUI_USE_RAQM
+    Image* getSubpixelPositionedImage(size_t index) const;
+    size_t getSubpixelPositionedImageCount() const;
+    void addSubPixelPositionedImage(Image* image);
+#endif
+
 private:
     //! Says whether this glyph is initialised or not
     bool d_initialised;
+
+#ifdef CEGUI_USE_RAQM
+    //! The rendered images for this glyph, each rendered at a different subpixel position
+    std::vector<Image*> d_subpixelPositionedImages;
+#endif
 };
 
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
