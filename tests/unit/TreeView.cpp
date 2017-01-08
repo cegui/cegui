@@ -88,7 +88,7 @@ CursorInputEventArgs createCursorEventArgs(float x, float y, TreeView* view)
 {
     CursorInputEventArgs args(view);
 
-    args.source = CIS_Left;
+    args.source = CursorInputSource::Left;
     args.position = glm::vec2(x, y);
 
     return args;
@@ -533,7 +533,7 @@ BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_TreeIsSorted)
     model.getRoot().getChildren().push_back(i3);
     view->prepareForRender();
 
-    view->setSortMode(VSM_Ascending);
+    view->setSortMode(ViewSortMode::Ascending);
     view->prepareForRender();
     view->expandAllSubtrees();
 

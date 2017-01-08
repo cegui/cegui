@@ -128,8 +128,8 @@ struct InputInjectionFixture
 static void doClick(InputAggregator* input_aggregator, float position_x, float position_y)
 {
     BOOST_REQUIRE_EQUAL(input_aggregator->injectMousePosition(position_x, position_y), true);
-    BOOST_REQUIRE_EQUAL(input_aggregator->injectMouseButtonDown(LeftButton), true);
-    BOOST_REQUIRE_EQUAL(input_aggregator->injectMouseButtonUp(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(input_aggregator->injectMouseButtonDown(MouseButton::Left), true);
+    BOOST_REQUIRE_EQUAL(input_aggregator->injectMouseButtonUp(MouseButton::Left), true);
 }
 
 static void pressKey(InputAggregator* input_aggregator, Key::Scan key)
@@ -144,7 +144,7 @@ BOOST_FIXTURE_TEST_SUITE(InputInjection, InputInjectionFixture)
 BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 {
     // we check for both: a) being handled, b) have the expected final result
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(MouseButton::Left), true);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 1);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 0);
@@ -152,8 +152,8 @@ BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 
 BOOST_AUTO_TEST_CASE(MultipleClicksOnWindow)
 {
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(LeftButton), true);
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(MouseButton::Left), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(MouseButton::Left), true);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 2);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 0);
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithBackspace)
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('o'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('k'), true);
-    pressKey(d_inputAggregator, Key::Backspace);
+    pressKey(d_inputAggregator, Key::Scan::Backspace);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
@@ -202,10 +202,10 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('o'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('k'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
-    pressKey(d_inputAggregator, Key::ArrowLeft);
-    pressKey(d_inputAggregator, Key::ArrowLeft);
-    pressKey(d_inputAggregator, Key::Delete);
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Delete), true);
+    pressKey(d_inputAggregator, Key::Scan::ArrowLeft);
+    pressKey(d_inputAggregator, Key::Scan::ArrowLeft);
+    pressKey(d_inputAggregator, Key::Scan::DeleteKey);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Scan::DeleteKey), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(MouseSelectAllTextCopyAndPaste)
     d_editbox->setText("WoW rocks");
 
     // select all text
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonTripleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonTripleClick(MouseButton::Left), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 9);
 
    
@@ -245,9 +245,9 @@ BOOST_AUTO_TEST_CASE(MouseSelectWordAndDelete)
     d_editbox->setText("WoW rocks");
 
     // select all text
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonDoubleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonDoubleClick(MouseButton::Left), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
-    pressKey(d_inputAggregator, Key::Delete);
+    pressKey(d_inputAggregator, Key::Scan::DeleteKey);
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
 }
 
@@ -259,14 +259,14 @@ BOOST_AUTO_TEST_CASE(KeyboardSelectCharactersAndDelete)
     d_editbox->setText("WoW rocks");
 
     // select 'WoW'
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::LeftShift), true);
-    pressKey(d_inputAggregator, Key::ArrowRight);
-    pressKey(d_inputAggregator, Key::ArrowRight);
-    pressKey(d_inputAggregator, Key::ArrowRight);
-    pressKey(d_inputAggregator, Key::ArrowRight);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Scan::LeftShift), true);
+    pressKey(d_inputAggregator, Key::Scan::ArrowRight);
+    pressKey(d_inputAggregator, Key::Scan::ArrowRight);
+    pressKey(d_inputAggregator, Key::Scan::ArrowRight);
+    pressKey(d_inputAggregator, Key::Scan::ArrowRight);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
-    pressKey(d_inputAggregator, Key::Delete);
+    pressKey(d_inputAggregator, Key::Scan::DeleteKey);
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
 }
 
@@ -278,12 +278,12 @@ BOOST_AUTO_TEST_CASE(KeyboardSelectWordAndDelete)
     d_editbox->setText("WoW rocks");
 
     // select 'WoW'
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::LeftShift), true);
-    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::LeftControl), true);
-    pressKey(d_inputAggregator, Key::ArrowRight);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Scan::LeftShift), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Scan::LeftControl), true);
+    pressKey(d_inputAggregator, Key::Scan::ArrowRight);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
-    pressKey(d_inputAggregator, Key::Delete);
+    pressKey(d_inputAggregator, Key::Scan::DeleteKey);
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
 }
 BOOST_AUTO_TEST_SUITE_END()

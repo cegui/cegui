@@ -32,6 +32,15 @@
 #include <map>
 
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/PropertyHelper.h"
+
+namespace std
+{
+ostream& operator<< (ostream& os, const CEGUI::SemanticValue& value)
+{
+    return os << static_cast<int>(value);
+}
+}
 
 using namespace CEGUI;
 
@@ -41,7 +50,7 @@ public:
     CEGUI::String d_text;
     float d_totalScroll;
     glm::vec2 d_cursorPosition;
-    std::vector<int> d_semanticValues;
+    std::vector<SemanticValue> d_semanticValues;
 
     MockInputEventReceiver() :
         d_text(""),
@@ -51,13 +60,13 @@ public:
 
     ~MockInputEventReceiver()
     {
-        for (HandlersMap::const_iterator itor = d_handlersMap.begin();
+        for (InputEventTypeHandlerMap::const_iterator itor = d_handlersMap.begin();
             itor != d_handlersMap.end(); ++ itor)
         {
             delete itor->second;
         }
 
-        for (HandlersMap::const_iterator itor = d_semanticEventsHandlersMap.begin();
+        for (SemanticEventHandlerMap::const_iterator itor = d_semanticEventsHandlersMap.begin();
             itor != d_semanticEventsHandlersMap.end(); ++itor)
         {
             delete itor->second;
@@ -66,14 +75,15 @@ public:
 
     bool injectInputEvent(const InputEvent& event) override
     {
-        HandlersMap::const_iterator itor = d_handlersMap.find(event.d_eventType);
+        InputEventTypeHandlerMap::const_iterator itor = d_handlersMap.find(event.d_eventType);
         if (itor != d_handlersMap.end())
         {
             return (*(*itor).second)(event);
         }
         else
         {
-            std::cout << "No event handler for event type: " << event.d_eventType << std::endl;
+            std::cout << "No event handler for event type: " <<
+               static_cast<int>(event.d_eventType) << std::endl;
             return false;
         }
     }
@@ -99,7 +109,7 @@ public:
 
     bool handleSemanticEvent(const SemanticInputEvent& event)
     {
-        HandlersMap::const_iterator itor =
+        SemanticEventHandlerMap::const_iterator itor =
             d_semanticEventsHandlersMap.find(event.d_value);
         if (itor != d_semanticEventsHandlersMap.end())
         {
@@ -115,30 +125,31 @@ public:
 
     void initializeEventHandlers()
     {
-        d_handlersMap.insert(std::make_pair(IET_TextInputEventType,
+        d_handlersMap.insert(std::make_pair(InputEventType::TextInputEventType,
             new InputEventHandlerSlot<MockInputEventReceiver, TextInputEvent>(
                 &MockInputEventReceiver::handleTextEvent, this)));
 
-        d_handlersMap.insert(std::make_pair(IET_SemanticInputEventType,
+        d_handlersMap.insert(std::make_pair(InputEventType::SemanticInputEventType,
             new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
                 &MockInputEventReceiver::handleSemanticEvent, this)));
     }
 
     void initializeSemanticEventHandlers()
     {
-        d_semanticEventsHandlersMap.insert(std::make_pair(SV_VerticalScroll,
+        d_semanticEventsHandlersMap.insert(std::make_pair(SemanticValue::VerticalScroll,
             new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
                 &MockInputEventReceiver::handleScrollEvent, this)));
 
-        d_semanticEventsHandlersMap.insert(std::make_pair(SV_CursorMove,
+        d_semanticEventsHandlersMap.insert(std::make_pair(SemanticValue::CursorMove,
             new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
                 &MockInputEventReceiver::handleMovementEvent, this)));
     }
 
 private:
-    typedef std::map<int, SlotFunctorBase<InputEvent>*> HandlersMap;
-    HandlersMap d_semanticEventsHandlersMap;
-    HandlersMap d_handlersMap;
+    typedef std::map<SemanticValue, SlotFunctorBase<InputEvent>*> SemanticEventHandlerMap;
+    SemanticEventHandlerMap d_semanticEventsHandlersMap;
+    typedef std::map<InputEventType, SlotFunctorBase<InputEvent>*> InputEventTypeHandlerMap;
+    InputEventTypeHandlerMap d_handlersMap;
 };
 
 struct InputAggregatorFixture
@@ -267,7 +278,7 @@ BOOST_AUTO_TEST_CASE(ScrollEventMultipleDelta)
 BOOST_AUTO_TEST_CASE(CutRequestToCut)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_Cut);
+    expected_values.push_back(SemanticValue::Cut);
 
     d_inputAggregator->injectCutRequest();
 
@@ -279,7 +290,7 @@ BOOST_AUTO_TEST_CASE(CutRequestToCut)
 BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_Copy);
+    expected_values.push_back(SemanticValue::Copy);
 
     d_inputAggregator->injectCopyRequest();
 
@@ -291,7 +302,7 @@ BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_Paste);
+    expected_values.push_back(SemanticValue::Paste);
 
     d_inputAggregator->injectPasteRequest();
 
@@ -303,9 +314,9 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 BOOST_AUTO_TEST_CASE(MouseButtonDownToCursorHold)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_CursorPressHold);
+    expected_values.push_back(SemanticValue::CursorPressHold);
 
-    d_inputAggregator->injectMouseButtonDown(LeftButton);
+    d_inputAggregator->injectMouseButtonDown(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -315,10 +326,10 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownToCursorHold)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndControlToSelectCumulative)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectCumulative);
+    expected_values.push_back(SemanticValue::SelectCumulative);
 
-    d_inputAggregator->injectKeyDown(Key::LeftControl);
-    d_inputAggregator->injectMouseButtonDown(LeftButton);
+    d_inputAggregator->injectKeyDown(Key::Scan::LeftControl);
+    d_inputAggregator->injectMouseButtonDown(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -328,10 +339,10 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndControlToSelectCumulative)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndShiftToSelectMultiple)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectRange);
+    expected_values.push_back(SemanticValue::SelectRange);
 
-    d_inputAggregator->injectKeyDown(Key::LeftShift);
-    d_inputAggregator->injectMouseButtonDown(LeftButton);
+    d_inputAggregator->injectKeyDown(Key::Scan::LeftShift);
+    d_inputAggregator->injectMouseButtonDown(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -341,9 +352,9 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndShiftToSelectMultiple)
 BOOST_AUTO_TEST_CASE(MouseButtonUpToCursorActivate)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_CursorActivate);
+    expected_values.push_back(SemanticValue::CursorActivate);
 
-    d_inputAggregator->injectMouseButtonUp(LeftButton);
+    d_inputAggregator->injectMouseButtonUp(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -353,11 +364,11 @@ BOOST_AUTO_TEST_CASE(MouseButtonUpToCursorActivate)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_CursorPressHold);
-    expected_values.push_back(SV_CursorActivate);
+    expected_values.push_back(SemanticValue::CursorPressHold);
+    expected_values.push_back(SemanticValue::CursorActivate);
 
-    d_inputAggregator->injectMouseButtonDown(LeftButton);
-    d_inputAggregator->injectMouseButtonUp(LeftButton);
+    d_inputAggregator->injectMouseButtonDown(MouseButton::Left);
+    d_inputAggregator->injectMouseButtonUp(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -367,9 +378,9 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 BOOST_AUTO_TEST_CASE(MouseClickToCursorActivate)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_CursorActivate);
+    expected_values.push_back(SemanticValue::CursorActivate);
 
-    d_inputAggregator->injectMouseButtonClick(LeftButton);
+    d_inputAggregator->injectMouseButtonClick(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -379,10 +390,10 @@ BOOST_AUTO_TEST_CASE(MouseClickToCursorActivate)
 BOOST_AUTO_TEST_CASE(MouseClickAndControlToSelectCumulative)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectCumulative);
+    expected_values.push_back(SemanticValue::SelectCumulative);
 
-    d_inputAggregator->injectKeyDown(Key::LeftControl);
-    d_inputAggregator->injectMouseButtonClick(LeftButton);
+    d_inputAggregator->injectKeyDown(Key::Scan::LeftControl);
+    d_inputAggregator->injectMouseButtonClick(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -392,10 +403,10 @@ BOOST_AUTO_TEST_CASE(MouseClickAndControlToSelectCumulative)
 BOOST_AUTO_TEST_CASE(MouseClickAndShiftToSelectMultipleItems)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_CursorActivate);
+    expected_values.push_back(SemanticValue::CursorActivate);
 
-    d_inputAggregator->injectKeyDown(Key::LeftShift);
-    d_inputAggregator->injectMouseButtonClick(LeftButton);
+    d_inputAggregator->injectKeyDown(Key::Scan::LeftShift);
+    d_inputAggregator->injectMouseButtonClick(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -405,9 +416,9 @@ BOOST_AUTO_TEST_CASE(MouseClickAndShiftToSelectMultipleItems)
 BOOST_AUTO_TEST_CASE(MouseDoubleClickToSelectWord)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectWord);
+    expected_values.push_back(SemanticValue::SelectWord);
 
-    d_inputAggregator->injectMouseButtonDoubleClick(LeftButton);
+    d_inputAggregator->injectMouseButtonDoubleClick(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -417,9 +428,9 @@ BOOST_AUTO_TEST_CASE(MouseDoubleClickToSelectWord)
 BOOST_AUTO_TEST_CASE(MouseTripleClickToSelectAll)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectAll);
+    expected_values.push_back(SemanticValue::SelectAll);
 
-    d_inputAggregator->injectMouseButtonTripleClick(LeftButton);
+    d_inputAggregator->injectMouseButtonTripleClick(MouseButton::Left);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -429,10 +440,10 @@ BOOST_AUTO_TEST_CASE(MouseTripleClickToSelectAll)
 BOOST_AUTO_TEST_CASE(KeyDownBackspaceToDeletePreviousCharacter)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_DeletePreviousCharacter);
+    expected_values.push_back(SemanticValue::DeletePreviousCharacter);
 
-    d_inputAggregator->injectKeyDown(Key::Backspace);
-    d_inputAggregator->injectKeyUp(Key::Backspace);
+    d_inputAggregator->injectKeyDown(Key::Scan::Backspace);
+    d_inputAggregator->injectKeyUp(Key::Scan::Backspace);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -442,10 +453,10 @@ BOOST_AUTO_TEST_CASE(KeyDownBackspaceToDeletePreviousCharacter)
 BOOST_AUTO_TEST_CASE(KeyDownDeleteToDeleteNextCharacter)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_DeleteNextCharacter);
+    expected_values.push_back(SemanticValue::DeleteNextCharacter);
 
-    d_inputAggregator->injectKeyDown(Key::Delete);
-    d_inputAggregator->injectKeyUp(Key::Delete);
+    d_inputAggregator->injectKeyDown(Key::Scan::DeleteKey);
+    d_inputAggregator->injectKeyUp(Key::Scan::DeleteKey);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -455,10 +466,10 @@ BOOST_AUTO_TEST_CASE(KeyDownDeleteToDeleteNextCharacter)
 BOOST_AUTO_TEST_CASE(KeyDownLeftArrowToGoToPreviousCharacter)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_GoToPreviousCharacter);
+    expected_values.push_back(SemanticValue::GoToPreviousCharacter);
 
-    d_inputAggregator->injectKeyDown(Key::ArrowLeft);
-    d_inputAggregator->injectKeyUp(Key::ArrowLeft);
+    d_inputAggregator->injectKeyDown(Key::Scan::ArrowLeft);
+    d_inputAggregator->injectKeyUp(Key::Scan::ArrowLeft);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -468,11 +479,11 @@ BOOST_AUTO_TEST_CASE(KeyDownLeftArrowToGoToPreviousCharacter)
 BOOST_AUTO_TEST_CASE(KeyDownLeftArrowAndShiftToSelectPreviousCharacter)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectPreviousCharacter);
+    expected_values.push_back(SemanticValue::SelectPreviousCharacter);
 
-    d_inputAggregator->injectKeyDown(Key::LeftShift);
-    d_inputAggregator->injectKeyDown(Key::ArrowLeft);
-    d_inputAggregator->injectKeyUp(Key::ArrowLeft);
+    d_inputAggregator->injectKeyDown(Key::Scan::LeftShift);
+    d_inputAggregator->injectKeyDown(Key::Scan::ArrowLeft);
+    d_inputAggregator->injectKeyUp(Key::Scan::ArrowLeft);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
@@ -482,11 +493,11 @@ BOOST_AUTO_TEST_CASE(KeyDownLeftArrowAndShiftToSelectPreviousCharacter)
 BOOST_AUTO_TEST_CASE(KeyDownLeftArrowAndControlToGoToPreviousWord)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_GoToPreviousWord);
+    expected_values.push_back(SemanticValue::GoToPreviousWord);
 
-    d_inputAggregator->injectKeyDown(Key::LeftControl);
-    d_inputAggregator->injectKeyDown(Key::ArrowLeft);
-    d_inputAggregator->injectKeyUp(Key::ArrowLeft);
+    d_inputAggregator->injectKeyDown(Key::Scan::LeftControl);
+    d_inputAggregator->injectKeyDown(Key::Scan::ArrowLeft);
+    d_inputAggregator->injectKeyUp(Key::Scan::ArrowLeft);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),

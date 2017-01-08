@@ -40,7 +40,7 @@ public:
     CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index) const override;
     int getChildId(const CEGUI::ModelIndex& model_index) const override;
     size_t getChildCount(const CEGUI::ModelIndex& model_index) const override;
-    CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text) override;
+    CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::ItemDataRole::Text) override;
     CEGUI::ModelIndex getRootIndex() const override;
 
     std::vector<CEGUI::String> d_items;
