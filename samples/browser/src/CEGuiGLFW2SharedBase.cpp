@@ -152,7 +152,7 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
     case GLFW_KEY_ENTER     : return CEGUI::Key::Scan::Return;
     case GLFW_KEY_BACKSPACE : return CEGUI::Key::Scan::Backspace;
     case GLFW_KEY_INSERT    : return CEGUI::Key::Scan::Insert;
-    case GLFW_KEY_DEL       : return CEGUI::Key::Scan::KeyDelete;
+    case GLFW_KEY_DEL       : return CEGUI::Key::Scan::DeleteKey;
     case GLFW_KEY_PAGEUP    : return CEGUI::Key::Scan::PageUp;
     case GLFW_KEY_PAGEDOWN  : return CEGUI::Key::Scan::PageDown;
     case GLFW_KEY_HOME      : return CEGUI::Key::Scan::Home;

@@ -181,7 +181,7 @@ struct CEGUIEXPORT Key
         ArrowDown       =0xD0,  /* DownArrow on arrow keypad */
         PageDown		=0xD1,  /* PgDn on arrow keypad */
         Insert          =0xD2,  /* Insert on arrow keypad */
-        KeyDelete       =0xD3,  /* Delete on arrow keypad */
+        DeleteKey       =0xD3,  /* Delete on arrow keypad */
         LeftWindows     =0xDB,  /* Left Windows key */
         RightWindows    =0xDC,  /* Right Windows key - Correct spelling :) */
         AppMenu         =0xDD,  /* AppMenu key */

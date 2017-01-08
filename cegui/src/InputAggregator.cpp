@@ -521,7 +521,7 @@ void InputAggregator::initialise(bool handle_on_keyup /*= true*/)
     d_handleInKeyUp = handle_on_keyup;
     
     d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::Backspace)] = SemanticValue::DeletePreviousCharacter;
-    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::KeyDelete)] = SemanticValue::DeleteNextCharacter;
+    d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::DeleteKey)] = SemanticValue::DeleteNextCharacter;
 
     d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::NumpadEnter)] = SemanticValue::Confirm;
     d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::Return)] = SemanticValue::Confirm;
