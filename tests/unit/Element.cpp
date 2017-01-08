@@ -31,6 +31,25 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/timer.hpp>
 
+
+namespace std
+{
+ostream& operator<< (ostream& os, const CEGUI::AspectMode& value)
+{
+    return os << static_cast<int>(value);
+}
+
+ostream& operator<< (ostream& os, const CEGUI::VerticalAlignment& value)
+{
+    return os << static_cast<int>(value);
+}
+
+ostream& operator<< (ostream& os, const CEGUI::HorizontalAlignment& value)
+{
+    return os << static_cast<int>(value);
+}
+}
+
 /*
  * Give the renderer / system an initial size.  Without this default min/max
  * sizes are always forced to zero.  Perhaps there is a better way to deal
@@ -120,8 +139,8 @@ BOOST_AUTO_TEST_CASE(HorizontalLeftAlignment)
     root->addChild(child);
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getHorizontalAlignment(), CEGUI::HA_LEFT);
-    BOOST_CHECK_EQUAL(child->getHorizontalAlignment(), CEGUI::HA_LEFT);
+    BOOST_CHECK_EQUAL(root->getHorizontalAlignment(), CEGUI::HorizontalAlignment::Left);
+    BOOST_CHECK_EQUAL(child->getHorizontalAlignment(), CEGUI::HorizontalAlignment::Left);
 
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 100, 0));
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 50, 0));
@@ -143,8 +162,8 @@ BOOST_AUTO_TEST_CASE(HorizontalCentreAlignment)
     root->addChild(child);
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getHorizontalAlignment(), CEGUI::HA_LEFT);
-    child->setHorizontalAlignment(CEGUI::HA_CENTRE);
+    BOOST_CHECK_EQUAL(root->getHorizontalAlignment(), CEGUI::HorizontalAlignment::Left);
+    child->setHorizontalAlignment(CEGUI::HorizontalAlignment::Centre);
 
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 100, 0));
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(25, 0, 75, 0));
@@ -166,8 +185,8 @@ BOOST_AUTO_TEST_CASE(HorizontalRightAlignment)
     root->addChild(child);
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getHorizontalAlignment(), CEGUI::HA_LEFT);
-    child->setHorizontalAlignment(CEGUI::HA_RIGHT);
+    BOOST_CHECK_EQUAL(root->getHorizontalAlignment(), CEGUI::HorizontalAlignment::Left);
+    child->setHorizontalAlignment(CEGUI::HorizontalAlignment::Right);
 
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 100, 0));
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(50, 0, 100, 0));
@@ -189,8 +208,8 @@ BOOST_AUTO_TEST_CASE(VerticalTopAlignment)
     root->addChild(child);
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VA_TOP);
-    BOOST_CHECK_EQUAL(child->getVerticalAlignment(), CEGUI::VA_TOP);
+    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VerticalAlignment::Top);
+    BOOST_CHECK_EQUAL(child->getVerticalAlignment(), CEGUI::VerticalAlignment::Top);
 
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 100));
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 50));
@@ -212,8 +231,8 @@ BOOST_AUTO_TEST_CASE(VerticalCentreAlignment)
     root->addChild(child);
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VA_TOP);
-    child->setVerticalAlignment(CEGUI::VA_CENTRE);
+    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VerticalAlignment::Top);
+    child->setVerticalAlignment(CEGUI::VerticalAlignment::Centre);
 
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 100));
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 25, 0, 75));
@@ -235,8 +254,8 @@ BOOST_AUTO_TEST_CASE(VerticalBottomAlignment)
     root->addChild(child);
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VA_TOP);
-    child->setVerticalAlignment(CEGUI::VA_BOTTOM);
+    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VerticalAlignment::Top);
+    child->setVerticalAlignment(CEGUI::VerticalAlignment::Bottom);
 
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 100));
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 50, 0, 100));
@@ -255,25 +274,25 @@ BOOST_AUTO_TEST_CASE(AspectLocking)
     root->setSize(CEGUI::USize(100.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
 
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
-    BOOST_CHECK_EQUAL(root->getAspectMode(), CEGUI::AM_IGNORE);
+    BOOST_CHECK_EQUAL(root->getAspectMode(), CEGUI::AspectMode::Ignore);
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 100));
 
-    root->setAspectMode(CEGUI::AM_SHRINK);
+    root->setAspectMode(CEGUI::AspectMode::Shrink);
     root->setAspectRatio(1.0f / 2.0f);
     // todo: should have tolerances or something, or does boost do that automatically?
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(50, 100));
 
-    root->setAspectMode(CEGUI::AM_EXPAND);
+    root->setAspectMode(CEGUI::AspectMode::Expand);
     root->setAspectRatio(1.0f / 2.0f);
     // todo: should have tolerances or something, or does boost do that automatically?
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 200));
 
-    root->setAspectMode(CEGUI::AM_SHRINK);
+    root->setAspectMode(CEGUI::AspectMode::Shrink);
     root->setAspectRatio(2.0f / 1.0f);
     // todo: should have tolerances or something, or does boost do that automatically?
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 50));
 
-    root->setAspectMode(CEGUI::AM_EXPAND);
+    root->setAspectMode(CEGUI::AspectMode::Expand);
     root->setAspectRatio(2.0f / 1.0f);
     // todo: should have tolerances or something, or does boost do that automatically?
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(200, 100));

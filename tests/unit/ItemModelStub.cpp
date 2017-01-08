@@ -62,7 +62,7 @@ ModelIndex ItemModelStub::getRootIndex() const
 }
 
 //----------------------------------------------------------------------------//
-String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole /*role = IDR_Text*/)
+String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole /*role = ItemDataRole::Text*/)
 {
     assert(model_index.d_modelData != nullptr);
     return *(static_cast<String*>(model_index.d_modelData));

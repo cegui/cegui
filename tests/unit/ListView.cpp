@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(ItemNameChanged_UpdatesRenderedString)
 void triggerSelectRangeEvent(glm::vec2 position, ItemView* view)
 {
     SemanticEventArgs args(view);
-    args.d_semanticValue = SV_SelectRange;
+    args.d_semanticValue = SemanticValue::SelectRange;
     view->getGUIContext().getCursor().setPosition(position);
     view->onSemanticInputEvent(args);
 }
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(SortEnabled_IsEnabled_ListIsSorted)
     model.d_items.push_back(ITEM1);
     view->prepareForRender();
 
-    view->setSortMode(VSM_Ascending);
+    view->setSortMode(ViewSortMode::Ascending);
     view->prepareForRender();
 
     ModelIndex index = view->indexAt(glm::vec2(1, font_height * 2.0f + font_height / 2.0f));
