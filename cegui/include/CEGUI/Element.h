@@ -1765,7 +1765,7 @@ protected:
         Default direction of the paragraph, relevant for bidirectional text.
     \see DefaultParagraphDirection
     */
-    DefaultParagraphDirection d_defaultParagraphDirection;
+    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 private:
     /*************************************************************************
         May not copy or assign Element objects
