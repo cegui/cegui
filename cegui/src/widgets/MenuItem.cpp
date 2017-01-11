@@ -60,8 +60,6 @@ MenuItem::MenuItem(const String& type, const String& name)
 {
     // add the new properties
     addMenuItemProperties();
-    d_popupOffset.d_x = cegui_absdim(0);
-    d_popupOffset.d_y = cegui_absdim(0);
 }
 
 
@@ -182,6 +180,123 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     invalidate();
 }
 
+namespace {
+
+/***
+ * Implementation details for popup clipping computations
+ */
+ 
+// translate_within takes two Rectf's. It tries to find the smallest translation
+// which will move the "test rectangle" so that it is witin the "clip rectangle".
+// This is used for popup menu placement.
+// If the test rectangle does not fit (too wide or too tall) then this implementation
+// will prioritize getting the top and left-most edges correct.
+glm::vec2 translate_within(const Rectf & test_rect, const Rectf & clip_rect)
+{
+    glm::vec2 result(0, 0);
+
+    if (test_rect.top() < clip_rect.top()) {
+        result.y = clip_rect.top() - test_rect.top(); 
+    } else if (test_rect.bottom() > clip_rect.bottom()) {
+        result.y = clip_rect.bottom() - test_rect.bottom();
+    }
+
+    if (test_rect.left() < clip_rect.left()) {
+        result.x = clip_rect.left() - test_rect.left();
+    } else if (test_rect.right() > clip_rect.right()) {
+        result.x = clip_rect.right() - test_rect.right();
+    }
+
+    return result;
+}
+
+// helper function for glm::vec2 -> UVector2 conversion
+UVector2 as_uvector(const glm::vec2 & v)
+{
+    return UVector2(cegui_absdim(v.x), cegui_absdim(v.y));
+}
+
+} // end anonymous namespace
+
+/*************************************************************************
+    Computes the offset at which a popup menu will appear.
+*************************************************************************/
+bool MenuItem::computePopupOffset(UVector2 & output) const
+{
+    Window* p = d_ownerList;
+    if (p) {
+
+        // Current size of popup window
+        Sizef popup_size = d_popup->getPixelSize();
+        // Absolute coords corresponding to upper left corner of menu item
+        glm::vec2 base_pos = this->getClipRect(false).d_min;
+      
+        // Computes the test rectangle for a given offset
+        auto test_rect = [&popup_size, &base_pos](glm::vec2 relative_offset) -> Rectf
+        {
+            return Rectf(base_pos + relative_offset, popup_size);
+        };
+
+        // The bounding box assumed to clip the popup menus
+        Rectf clip_rect = this->popupBoundingBox();
+
+        if (dynamic_cast<Menubar *>(p)) {
+            // Use a vertical orientation
+
+            // candidate 1: align the top left of popup to the bottom-left of the menuitem
+            glm::vec2 pos1(0, d_pixelSize.d_height);
+
+            // candidate 2: align the popup to the top-left of menuitem
+            glm::vec2 pos2(0, - popup_size.d_height);
+
+            // Compute correction vectors for each
+            glm::vec2 pos1_corr = translate_within(test_rect(pos1), clip_rect);
+            glm::vec2 pos2_corr = translate_within(test_rect(pos2), clip_rect);
+
+            // If pos2 does not require y correction and pos1 does, then use pos2
+            if (pos1_corr.y && !pos2_corr.y) {
+                output = as_uvector(pos2 + pos2_corr);
+                return true;
+            } else {
+                output = as_uvector(pos1 + pos1_corr);
+                return true;
+            }
+        } else if (dynamic_cast<PopupMenu *>(p)) {
+            // Use a horizontal orientation
+
+            // candidate 1: align the top left of popup to the top-right of the menuitem
+            glm::vec2 pos1(d_pixelSize.d_width, 0);
+
+            // candidate 2: align the top right of popup to the top-left of menuitem
+            glm::vec2 pos2(- popup_size.d_width, 0);
+
+            // Compute correction vectors for each
+            glm::vec2 pos1_corr = translate_within(test_rect(pos1), clip_rect);
+            glm::vec2 pos2_corr = translate_within(test_rect(pos2), clip_rect);
+
+            // If pos2 does not require x correction and pos1 does, then use pos2
+            if (pos1_corr.x && !pos2_corr.x) {
+                output = as_uvector(pos2 + pos2_corr);
+                return true;
+            } else {
+                output = as_uvector(pos1 + pos1_corr);
+                return true;
+            }
+        }
+    }
+    return false;  
+}
+
+
+/*************************************************************************
+    Compute bounding box (assumed clipping rectangle) of our popup menu
+*************************************************************************/
+Rectf MenuItem::popupBoundingBox() const
+{
+    return Rectf(glm::vec2(0, 0), getRootContainerSize());
+}
+
+
 /*************************************************************************
     Open the PopupMenu attached to this item.
 *************************************************************************/
@@ -194,35 +309,31 @@ void MenuItem::openPopupMenu(bool notify)
     d_popupOpening = false;
     d_popupClosing = false;
 
-    // should we notify ?
+    // should we notify parent ?
     // if so, and we are attached to a menu bar or popup menu, we let it handle the "activation"
     Window* p = d_ownerList;
 
     if (notify && p)
     {
-        if (dynamic_cast<Menubar*>(p))
+        if (Menubar * m = dynamic_cast<Menubar*>(p))
         {
-            // align the popup to the bottom-left of the menuitem
-            UVector2 pos(cegui_absdim(0), cegui_absdim(d_pixelSize.d_height));
-            d_popup->setPosition(pos + d_popupOffset);
-
-            static_cast<Menubar*>(p)->changePopupMenuItem(this);
-            return; // the rest is handled when the menu bar eventually calls us itself
+            m->changePopupMenuItem(this);
+            return; // the rest is handled when the menu bar eventually calls us itself with notify = false
         }
-        // or maybe a popup menu?
-        else if (dynamic_cast<PopupMenu*>(p))
+        else if (PopupMenu * pm = dynamic_cast<PopupMenu*>(p))
         {
-            // align the popup to the top-right of the menuitem
-            UVector2 pos(cegui_absdim(d_pixelSize.d_width), cegui_absdim(0));
-            d_popup->setPosition(pos + d_popupOffset);
-
-            static_cast<PopupMenu*>(p)->changePopupMenuItem(this);
-            return; // the rest is handled when the popup menu eventually calls us itself
+            pm->changePopupMenuItem(this);
+            return; // the rest is handled when the menu bar eventually calls us itself with notify = false
         }
     }
 
     // by now we must handle it ourselves
-    // match up with Menubar::changePopupMenu
+    // Update the position of the popup menu before opening it
+    UVector2 pos;
+    if (this->computePopupOffset(pos)) {
+        d_popup->setPosition(pos);
+    }
+
     d_popup->openPopupMenu(false);
 
     d_opened = true;
@@ -557,11 +668,6 @@ Add MenuItem specific properties
 void MenuItem::addMenuItemProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(MenuItem, UVector2,
-        "PopupOffset","Property to specify an offset for the popup menu position. Value is a UVector2 property value.",
-        &MenuItem::setPopupOffset, &MenuItem::getPopupOffset, UVector2::zero()
-    );
 
     CEGUI_DEFINE_PROPERTY(MenuItem, float,
         "AutoPopupTimeout","Property to specify the time, which has to elapse before the popup window is opened/closed if the hovering state changes. Value is a float property value.",
