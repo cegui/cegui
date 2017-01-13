@@ -330,7 +330,7 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
 }
 
 std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
-    const String& text, float& nextGlyphPosX, const glm::vec2& position,
+    const String& text, float& nextPenPosX, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
     const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, const float space_extra,
     const float x_scale, const float y_scale) const
@@ -339,13 +339,14 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
         Rectf(), clip_rect,
         clipping_enabled, colours);
 
-    glm::vec2 glyphPos = position;
+    glm::vec2 penPosition = position;
 
     std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(
         text, clip_rect, colours, space_extra,
-        x_scale, y_scale, imgRenderSettings, defaultParagraphDir, glyphPos);
+        x_scale, y_scale, imgRenderSettings,
+        defaultParagraphDir, penPosition);
 
-    nextGlyphPosX = glyphPos.x;
+    nextPenPosX = penPosition.x;
 
     // Adding a single geometry buffer containing the batched glyphs
     return geomBuffers;

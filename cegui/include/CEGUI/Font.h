@@ -152,10 +152,8 @@ public:
     \param text
         String object containing the text to be drawn.
 
-    \param nextGlyphPosX
-        The x-coordinate where subsequent text should be rendered to ensure correct
-        positioning (which is not possible to determine accurately by using the
-        extent measurement functions).
+    \param nextPenPosX
+        The x-coordinate where the pen is positioned after rendering
 
     \param position
         Reference to a Vector2 object describing the location at which the text
@@ -186,7 +184,7 @@ public:
         the text.
     */
     std::vector<GeometryBuffer*> createTextRenderGeometry(
-        const String& text, float& nextGlyphPosX,
+        const String& text, float& nextPenPosX,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
         const float space_extra = 0.0f, const float x_scale = 1.0f,

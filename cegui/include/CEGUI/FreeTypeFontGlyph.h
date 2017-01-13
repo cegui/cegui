@@ -75,9 +75,18 @@ public:
     void addSubPixelPositionedImage(Image* image);
 #endif
 
+    void setLsb(const long lsb);
+    long getLsb() const;
+    void setRsb(const long rsb);
+    long getRsb() const;
+
 private:
     //! Says whether this glyph is initialised or not
     bool d_initialised;
+
+    //! The difference between hinted and unhinted left side bearing while auto-hinting is active. Zero otherwise.
+    long d_lsb = 0;
+    long d_rsb = 0;
 
 #ifdef CEGUI_USE_RAQM
     //! The rendered images for this glyph, each rendered at a different subpixel position

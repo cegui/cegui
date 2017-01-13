@@ -97,7 +97,7 @@ FreeTypeFont::FreeTypeFont(
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
     d_fontFace(nullptr),
-    d_maximumRelativePositionError(0.03125f)
+    d_maximumRelativePositionError(1.f)
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -235,8 +235,9 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
         static_cast<float>(glyphTexLine.d_lastXPos + glyphWidth),
         static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
 
-    const glm::vec2 offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(s_conversionMultCoeff),
-        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(s_conversionMultCoeff));
+   // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
+   const glm::vec2 offset(d_fontFace->glyph->bitmap_left,
+        -d_fontFace->glyph->bitmap_top);
 
 #ifdef CEGUI_USE_RAQM
     const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()) + "_" +
@@ -653,7 +654,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
 
     // Load the code point, "rendering" the glyph
     FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-    auto loadBitmask = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
+    auto loadBitmask = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType | FT_LOAD_NO_BITMAP;
     FT_Error error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), loadBitmask);
 
     glyph->markAsInitialised();
@@ -670,11 +671,14 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         // Rasterise the 0 position glyph
         rasterise(glyph);
 
+        glyph->setLsb(d_fontFace->glyph->lsb_delta);
+        glyph->setRsb(d_fontFace->glyph->rsb_delta);
+
         // Rasterise all sub-pixel positioned glyphs
         while (d_possibleSubpixelPositions > glyph->getSubpixelPositionedImageCount())
         {
             position.x = static_cast<long>(glyph->getSubpixelPositionedImageCount() /
-                static_cast<float>((d_possibleSubpixelPositions * s_conversionMultCoeff)));
+                static_cast<float>(d_possibleSubpixelPositions * s_conversionMultCoeff));
 
             FT_Set_Transform(d_fontFace, nullptr, &position);
 
@@ -685,6 +689,9 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
             }
 
             rasterise(glyph);
+
+            glyph->setLsb(d_fontFace->glyph->lsb_delta);
+            glyph->setRsb(d_fontFace->glyph->rsb_delta);
         }
 
         position.x = 0L;
@@ -695,7 +702,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     }
 
     const float adv =
-        d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(s_conversionMultCoeff);
+        d_fontFace->glyph->advance.x * static_cast<float>(s_conversionMultCoeff);
     glyph->setAdvance(adv);
 }
 
@@ -846,11 +853,11 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, const float x_scale, const float y_scale,
     ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
-    glm::vec2& glyphPos) const
+    glm::vec2& penPosition) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = glyphPos.y + getBaseline(y_scale);
+    const float base_y = penPosition.y + getBaseline(y_scale);
 
 
     if (text.empty())
@@ -895,6 +902,8 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
 
+    FT_Pos previousRsbDelta = 0;
+
     for (size_t i = 0; i < count; i++)
     {
         raqm_glyph_t& currentGlyph = glyphs[i];
@@ -926,12 +935,27 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
             continue;
         }
 
-        float snappedGlyphPosX = std::floor(glyphPos.x);
-        float xPosFractionInSubPixelSpace = glyphPos.x - snappedGlyphPosX;
+        // Needed if using strong auto-hinting,
+        // Adjusting pen position before doing anything else
+        if (previousRsbDelta - glyph->getLsb() >= 32)
+        {
+            penPosition.x -= 1.0f;
+        }
+        else if (previousRsbDelta - glyph->getLsb() < -32)
+        {
+            penPosition.x += 1.0f;
+        }
+        previousRsbDelta = glyph->getRsb();
+
+        /*
+        // Adding x-offset, which will typically be 0 for latin letters
+        float snappedGlyphPosX = std::floor(penPosition.x  +
+            currentGlyph.x_offset * x_scale * s_conversionMultCoeff);
+        float xPosFractionInSubPixelSpace = penPosition.x - snappedGlyphPosX;
         xPosFractionInSubPixelSpace *= d_possibleSubpixelPositions;
         unsigned int closestSubPixelPositionIndex = std::lround(xPosFractionInSubPixelSpace);
 
-        if(closestSubPixelPositionIndex >= d_possibleSubpixelPositions)
+        while(closestSubPixelPositionIndex >= d_possibleSubpixelPositions)
         {
             snappedGlyphPosX += 1.0f;
             closestSubPixelPositionIndex -= d_possibleSubpixelPositions;
@@ -939,27 +963,56 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
 
         const Image* const image = glyph->getSubpixelPositionedImage(closestSubPixelPositionIndex);
 
-        glyphPos.y = base_y - (image->getRenderedOffset().y -
+        penPosition.y = base_y - (image->getRenderedOffset().y -
             image->getRenderedOffset().y * y_scale);
+
+        glm::vec2 renderGlyphPos(snappedGlyphPosX, penPosition.y + currentGlyph.y_offset *
+            y_scale * s_conversionMultCoeff);
+
+        */
+
+        ///////////////////
+        if(i >= 1)
+        {
+            FT_Vector  vec;
+            FT_UInt    kerning_mode = FT_KERNING_DEFAULT;
+
+            FT_Get_Kerning(face, glyphs[i - 1].index, currentGlyph.index, kerning_mode, &vec);
+
+            penPosition.x += vec.x / 64.f;
+            penPosition.y += vec.y / 64.f;
+        }
+        
+ 
+
+
+        const Image* const image = glyph->getSubpixelPositionedImage(0);
+
+        penPosition.y = base_y - (image->getRenderedOffset().y -
+            image->getRenderedOffset().y * y_scale);
+
+        glm::vec2 renderGlyphPos(penPosition.x, penPosition.y + currentGlyph.y_offset *
+            y_scale * s_conversionMultCoeff);
+        ////////////
 
         Sizef renderedSize(
             image->getRenderedSize().d_width * x_scale,
             image->getRenderedSize().d_height * y_scale);
 
-        glm::vec2 snappedGlyphPos(snappedGlyphPosX, glyphPos.y);
-
         imgRenderSettings.d_destArea =
-            Rectf(snappedGlyphPos, renderedSize);
+            Rectf(renderGlyphPos, renderedSize);
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
 
-        glyphPos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
+        //penPosition.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
+        penPosition.x += glyph->getAdvance(x_scale);
+
         // TODO: This is for justified text and probably wrong because the space was determined
         // without considering kerning
         if (codePoint == ' ')
         {
-            glyphPos.x += space_extra;
+            penPosition.x += space_extra;
         }
     }
 
