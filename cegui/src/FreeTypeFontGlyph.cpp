@@ -75,6 +75,27 @@ void FreeTypeFontGlyph::addSubPixelPositionedImage(Image* image)
 {
     d_subpixelPositionedImages.push_back(image);
 }
+
+void FreeTypeFontGlyph::setLsb(const long lsb)
+{
+    d_lsb = lsb;
+}
+
+long FreeTypeFontGlyph::getLsb() const
+{
+    return d_lsb;
+}
+
+void FreeTypeFontGlyph::setRsb(const long rsb)
+{
+    d_rsb = rsb;
+}
+
+long FreeTypeFontGlyph::getRsb() const
+{
+    return d_rsb;
+}
+
 #endif
 
 }
