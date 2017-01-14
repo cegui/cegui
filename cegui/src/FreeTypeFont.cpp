@@ -780,40 +780,19 @@ raqm_direction_t determineRaqmDirection(DefaultParagraphDirection defaultParagra
 
     return RAQM_DIRECTION_LTR;
 }
-}
 
-std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
-    const String& text,
-    const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
-    glm::vec2& penPosition) const
+raqm_t* createAndSetupRaqmTextObject(
+    const uint32_t* originalTextArray, const size_t textLength,
+    DefaultParagraphDirection defaultParagraphDir, FT_Face face)
 {
-    std::vector<GeometryBuffer*> textGeometryBuffers;
-
-    const float base_y = penPosition.y + getBaseline(y_scale);
-
-
-    if (text.empty())
-    {
-        return textGeometryBuffers;
-    }
-
     raqm_t* raqmObject = raqm_create();
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
-    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(utf32Text.c_str());
-#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
-    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
-#endif
-    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, text.length());
+    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, textLength);
     if (!wasSuccess)
     {
         throw InvalidRequestException("Setting raqm text was unsuccessful");
     }
 
-    FT_Face face = getFontFace();
     if (!raqm_set_freetype_face(raqmObject, face))
     {
         throw InvalidRequestException("Could not set the Freetype font Face for "
@@ -832,6 +811,40 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     {
         throw InvalidRequestException("Layouting raqm text was unsuccessful");
     }
+
+    return raqmObject;
+}
+
+}
+
+
+std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
+    const String& text,
+    const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra, const float x_scale, const float y_scale,
+    ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
+    glm::vec2& penPosition) const
+{
+    std::vector<GeometryBuffer*> textGeometryBuffers;
+
+    const float base_y = penPosition.y + getBaseline(y_scale);
+
+    if (text.empty())
+    {
+        return textGeometryBuffers;
+    }
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
+    size_t origTextLength = utf32Text.length();
+    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(utf32Text.c_str());
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
+    size_t origTextLength = text.length();
+    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
+#endif
+
+    raqm_t* raqmObject = createAndSetupRaqmTextObject(
+        originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
 
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
@@ -887,11 +900,9 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
         penPosition.y = base_y - (image->getRenderedOffset().y -
             image->getRenderedOffset().y * y_scale);
         
-        // Adding x-offset, which will typically be 0 for latin letters
-        float snappedGlyphPosX = std::round(penPosition.x +
-            currentGlyph.x_offset * x_scale * s_conversionMultCoeff);
-
-       glm::vec2 renderGlyphPos(snappedGlyphPosX,
+        //The glyph pos will be rounded to full pixels internally
+        glm::vec2 renderGlyphPos(
+            penPosition.x + currentGlyph.x_offset * x_scale * s_conversionMultCoeff,
             penPosition.y + currentGlyph.y_offset * y_scale * s_conversionMultCoeff);
 
         Sizef renderedSize(
