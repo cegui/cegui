@@ -76,24 +76,24 @@ void FreeTypeFontGlyph::addSubPixelPositionedImage(Image* image)
     d_subpixelPositionedImages.push_back(image);
 }
 
-void FreeTypeFontGlyph::setLsb(const long lsb)
+void FreeTypeFontGlyph::setLsbDelta(const long lsbDelta)
 {
-    d_lsb = lsb;
+    d_lsbDeltas.push_back(lsbDelta);
 }
 
-long FreeTypeFontGlyph::getLsb() const
+long FreeTypeFontGlyph::getLsbDelta(size_t index) const
 {
-    return d_lsb;
+    return d_lsbDeltas[index];
 }
 
-void FreeTypeFontGlyph::setRsb(const long rsb)
+void FreeTypeFontGlyph::setRsbDelta(const long rsbDelta)
 {
-    d_rsb = rsb;
+    d_rsbDeltas.push_back(rsbDelta);
 }
 
-long FreeTypeFontGlyph::getRsb() const
+long FreeTypeFontGlyph::getRsbDelta(size_t index) const
 {
-    return d_rsb;
+    return d_rsbDeltas[index];
 }
 
 #endif
