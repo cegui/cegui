@@ -69,29 +69,19 @@ public:
     //! return whether the glyph is valid
     bool isInitialised() const;
 
-#ifdef CEGUI_USE_RAQM
-    Image* getSubpixelPositionedImage(size_t index) const;
-    size_t getSubpixelPositionedImageCount() const;
-    void addSubPixelPositionedImage(Image* image);
-
     void setLsbDelta(const long lsbDelta);
-    long getLsbDelta(size_t index) const;
+    long getLsbDelta() const;
     void setRsbDelta(const long rsbDelta);
-    long getRsbDelta(size_t index) const;
-#endif
+    long getRsbDelta() const;
+
 
 private:
     //! Says whether this glyph is initialised or not
     bool d_initialised;
 
-#ifdef CEGUI_USE_RAQM
-    //! The rendered images for this glyph, each rendered at a different subpixel position
-    std::vector<Image*> d_subpixelPositionedImages;
-
     //! The difference between hinted and unhinted left side bearing while auto-hinting is active. Zero otherwise.
-    std::vector<long> d_lsbDeltas;
-    std::vector<long> d_rsbDeltas;
-#endif
+    long d_lsbDelta = 0;
+    long d_rsbDelta = 0;
 };
 
 }

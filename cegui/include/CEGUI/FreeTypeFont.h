@@ -56,8 +56,6 @@ namespace CEGUI
 class FreeTypeFont : public Font
 {
 public:
-    static const String EventMaximumRelativePositionErrorChanged;
-
     /*!
         \brief
             Constructor for FreeTypeFont based fonts.
@@ -209,26 +207,6 @@ public:
     //! Sets the initial size to be used for any new glyph atlas texture.
     void setInitialGlyphAtlasSize(int val);
 
-    /*!
-    \brief
-        Specifies the maximum error in positioning that a glyph is "
-        allowed to have. The error value is relative to the pixel size of the Font. The maximum "
-        absolute error in sub-pixels is calculated by multiplying the Font size with this value. "
-        Note: If raqm is not linked and active, this has no effect, as all glyphs will be positioned without kerning, "
-        based on the image width. If raqm is active, kerning and sub-pixel positions are relevant. "
-        Example: A Font size of 16 pixels with an error of 0,03125 (1/32) will result in 0,5 pixels. This "
-        means that, in order to render the glyphs correctly, each glyph needs two representations in the "
-        texture atlas: One rendered at position 0 and one rendered with a translation of 0,5 pixels. "
-        The representation closest to the requested position is then always picked when rendering the glyphs."
-
-    \param maximumRelativePositionError
-        The new value for the maximum relative position error.
-    */
-    void setMaximumRelativePositionError(float maximumRelativePositionError);
-
-    //! Gets the maximum relative position error that was set for this Font.
-    float getMaximumRelativePositionError() const;
-
 protected:
     /*!
         A data structure containing info about one horizontal line inside
@@ -321,8 +299,6 @@ protected:
     void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
 
-    virtual void onMaximumRelativePositionErrorChanged(FontEventArgs& args);
-
     const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
@@ -348,8 +324,6 @@ protected:
     FT_Face d_fontFace;
     //! Font file data
     RawDataContainer d_fontData;
-    //! The relative maximum position error, used if raqm and therefore kerning is active
-    float d_maximumRelativePositionError;
     //! Type definition for TextureVector.
     typedef std::vector<Texture*> TextureVector;
 
@@ -373,16 +347,6 @@ protected:
     mutable std::vector<argb_t> d_lastTextureBuffer;
     //! Contains information about the extents of each line of glyphs of the latest texture
     mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
-
-    /*!
-        The number of possible subpixel position per glyph, as calculated to be 
-        necessary based on the maximum relative positioning error. This will always
-        be 1 if raqm is not enabled.
-    */
-    mutable unsigned int d_possibleSubpixelPositions = 1;
-    //! Maximum amount of subpixel position options for glyphs, must be specified before
-    // initialisation. If the value is too high, the texture atlas might get too bloated.
-    mutable unsigned int d_maximumPossibleSubpixelPositions = 6;
 };
 
 } // End of  CEGUI namespace section
