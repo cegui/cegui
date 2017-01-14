@@ -75,11 +75,6 @@ static const FreeTypeErrorDescription ftErrorDescs[] =
 static const std::vector<FreeTypeErrorDescription> freeTypeErrorDescriptions
     (ftErrorDescs, ftErrorDescs + sizeof(ftErrorDescs) / sizeof(FreeTypeErrorDescription) );
 
-
-
-const String FreeTypeFont::EventMaximumRelativePositionErrorChanged("MaximumRelativePositionErrorChanged");
-
-
 //----------------------------------------------------------------------------//
 FreeTypeFont::FreeTypeFont(
     const String& font_name,
@@ -96,8 +91,7 @@ FreeTypeFont::FreeTypeFont(
     d_size(size),
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
-    d_fontFace(nullptr),
-    d_maximumRelativePositionError(0.03125f)
+    d_fontFace(nullptr)
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -139,22 +133,6 @@ void FreeTypeFont::addFreeTypeFontProperties()
         "Antialiased", "This is a flag indicating whenever to render antialiased font or not. "
         "Value is either true or false.",
         &FreeTypeFont::setAntiAliased, &FreeTypeFont::isAntiAliased, false
-    );
-
-    CEGUI_DEFINE_PROPERTY(FreeTypeFont, float,
-        "MaximumPositionError", "Specifies the maximum error in positioning that a glyph is "
-        "allowed to have. The error value is relative to the pixel size of the Font. The maximum "
-        "absolute error in sub-pixels is calculated by multiplying the Font size with this value. "
-        "Note: If raqm is not linked and active, this has no effect, as all glyphs will be positioned without kerning, "
-        "based on the image width. If raqm is active, kerning and sub-pixel positions are relevant. "
-        "Example: A Font size of 16 pixels with an error of 0,03125 (1/32) will result in 0,5 pixels. This "
-        "means that, in order to render the glyphs correctly, each glyph needs two representations in the "
-        "texture atlas: One rendered at position 0 and one rendered with a translation of 0,5 pixels. "
-        "The representation closest to the requested position is then always picked when rendering the glyphs."
-        "Value is a float value.",
-        &FreeTypeFont::setMaximumRelativePositionError,
-        &FreeTypeFont::getMaximumRelativePositionError,
-        0.03125f
     );
 }
 
@@ -228,7 +206,6 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
     Rectf subImageArea(subImagePos, subImageSize);
     texture->blitFromMemory(subTextureData.data(), subImageArea);
 
-
     // Create a new image in the imageset
     const Rectf area(static_cast<float>(glyphTexLine.d_lastXPos),
         static_cast<float>(glyphTexLine.d_lastYPos),
@@ -236,28 +213,22 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
         static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
 
    // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
-   const glm::vec2 offset(d_fontFace->glyph->bitmap_left,
+   const glm::vec2 offset(
+        d_fontFace->glyph->bitmap_left,
         -d_fontFace->glyph->bitmap_top);
 
-#ifdef CEGUI_USE_RAQM
-    const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()) + "_" +
-        PropertyHelper<std::uint32_t>::toString(glyph->getSubpixelPositionedImageCount()));
-#else
     const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
-#endif
 
-    BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
-        d_nativeResolution);
+    BitmapImage* img = new BitmapImage(
+        name, texture, area,
+        offset, AutoScaledMode::Disabled, d_nativeResolution);
     d_glyphImages.push_back(img);
 
-#ifdef CEGUI_USE_RAQM
-    glyph->addSubPixelPositionedImage(img);
-#else
     glyph->setImage(img);
-#endif
 }
 
-void FreeTypeFont::findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
+void FreeTypeFont::findFittingSpotInGlyphTextureLines(
+    int glyphWidth, int glyphHeight,
     bool &fittingLineWasFound, size_t &fittingLineIndex) const 
 {
     // Go through the lines and find one that fits
@@ -578,20 +549,6 @@ void FreeTypeFont::updateFont()
         // point sizes.
         // Try to find Font with closest pixel height and use it instead
         tryToCreateFontWithClosestFontHeight(errorResult, requestedFontSizeInPixels);
-
-        d_possibleSubpixelPositions = 1;
-    }
-    else
-    {
-#ifdef CEGUI_USE_RAQM
-        d_possibleSubpixelPositions = static_cast<int>(1.0f /
-            (d_maximumRelativePositionError * requestedFontSizeInPixels));
-
-        d_possibleSubpixelPositions = std::min(d_maximumPossibleSubpixelPositions,
-            std::max(d_possibleSubpixelPositions, 1U));
-#else
-        d_possibleSubpixelPositions = 1;
-#endif
     }
 
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
@@ -648,8 +605,8 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     }
 
     FT_Vector position;
-    position.y = 0L;
     position.x = 0L;
+    position.y = 0L;
     FT_Set_Transform(d_fontFace, nullptr, &position);
 
     // Load the code point, "rendering" the glyph
@@ -672,30 +629,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         rasterise(glyph);
 
         glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
-        glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);
-
-        // Rasterise all sub-pixel positioned glyphs
-        while (d_possibleSubpixelPositions > glyph->getSubpixelPositionedImageCount())
-        {
-            position.x = static_cast<long>(glyph->getSubpixelPositionedImageCount() /
-                static_cast<float>(d_possibleSubpixelPositions * s_conversionMultCoeff));
-
-            FT_Set_Transform(d_fontFace, nullptr, &position);
-
-            error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), loadBitmask);
-            if (error != 0)
-            {
-                return;
-            }
-
-            rasterise(glyph);
-
-            glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
-            glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);
-        }
-
-        position.x = 0L;
-        
+        glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);        
 #else
         rasterise(glyph);
 #endif
@@ -935,40 +869,30 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
             continue;
         }
         
-        // Adding x-offset, which will typically be 0 for latin letters
-        float snappedGlyphPosX = std::floor(penPosition.x +
-            currentGlyph.x_offset * x_scale * s_conversionMultCoeff);
-        float xPosFractionInSubPixelSpace = penPosition.x - snappedGlyphPosX;
-        xPosFractionInSubPixelSpace *= d_possibleSubpixelPositions;
-        unsigned int closestSubPixelPositionIndex = std::lround(xPosFractionInSubPixelSpace);
-
-        while(closestSubPixelPositionIndex >= d_possibleSubpixelPositions)
+        // Needed if using strong auto-hinting.
+        // Adjusting pen position according to the left side and right
+        // side bearing deltas
+        if (previousRsbDelta - glyph->getLsbDelta() >= 32)
         {
-            snappedGlyphPosX += 1.0f;
-            closestSubPixelPositionIndex -= d_possibleSubpixelPositions;
+            penPosition.x -= 1.0f;
         }
-
-
-        // Needed if using strong auto-hinting,
-        // Adjusting pen position before doing anything else
-        if (previousRsbDelta - glyph->getLsbDelta(closestSubPixelPositionIndex) >= 32)
+        else if (previousRsbDelta - glyph->getLsbDelta() < -32)
         {
-            //penPosition.x -= 1.0f;
+            penPosition.x += 1.0f;
         }
-        else if (previousRsbDelta - glyph->getLsbDelta(closestSubPixelPositionIndex) < -32)
-        {
-            //penPosition.x += 1.0f;
-        }
-        previousRsbDelta = glyph->getRsbDelta(closestSubPixelPositionIndex);
+        previousRsbDelta = glyph->getRsbDelta();
 
-        const Image* const image = glyph->getSubpixelPositionedImage(closestSubPixelPositionIndex);
+        const Image* const image = glyph->getImage();
 
         penPosition.y = base_y - (image->getRenderedOffset().y -
             image->getRenderedOffset().y * y_scale);
         
+        // Adding x-offset, which will typically be 0 for latin letters
+        float snappedGlyphPosX = std::round(penPosition.x +
+            currentGlyph.x_offset * x_scale * s_conversionMultCoeff);
+
        glm::vec2 renderGlyphPos(snappedGlyphPosX,
             penPosition.y + currentGlyph.y_offset * y_scale * s_conversionMultCoeff);
-
 
         Sizef renderedSize(
             image->getRenderedSize().d_width * x_scale,
@@ -982,10 +906,10 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
 
         penPosition.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
 
-        // TODO: This is for justified text and probably wrong because the space was determined
-        // without considering kerning
         if (codePoint == ' ')
         {
+            // TODO: This is for justified text and probably wrong because the space was determined
+            // without considering kerning
             penPosition.x += space_extra;
         }
     }
@@ -1023,26 +947,6 @@ void FreeTypeFont::setInitialGlyphAtlasSize(int val)
     d_initialGlyphAtlasSize = val;
 }
 
-void FreeTypeFont::setMaximumRelativePositionError(float maximumRelativePositionError)
-{
-    if(d_maximumRelativePositionError == maximumRelativePositionError)
-    {
-        return;
-    }
-
-    d_maximumRelativePositionError = maximumRelativePositionError;
-
-    updateFont();
-
-    FontEventArgs args(this);
-    onMaximumRelativePositionErrorChanged(args);
-}
-
-float FreeTypeFont::getMaximumRelativePositionError() const
-{
-    return d_maximumRelativePositionError;
-}
-
 const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoint) const
 {
     FreeTypeFontGlyph* glyph = getGlyphForCodepoint(currentCodePoint);
@@ -1053,11 +957,6 @@ const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoin
     }
 
     return glyph;
-}
-
-void FreeTypeFont::onMaximumRelativePositionErrorChanged(FontEventArgs& args)
-{
-    fireEvent(EventMaximumRelativePositionErrorChanged, args, EventNamespace);
 }
 
 
