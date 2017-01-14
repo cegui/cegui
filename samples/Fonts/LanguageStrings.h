@@ -41,7 +41,7 @@ static struct
     const char* font;
     const char* text;
     CEGUI::DefaultParagraphDirection direction;
-    CEGUI::HorizontalAlignment horizontalAlignment;
+    CEGUI::HorizontalTextFormatting horizontalAlignment;
 } LangList[LangListSize] =
 {
     // A list of strings in different languages stored as hexadecimal UTF-8 code units
@@ -63,7 +63,7 @@ static struct
         "noticeable.!\n"
         "The quick brown fox jumps over the lazy dog. 1234567890",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "European characters using DejaVuSans font",
@@ -83,7 +83,7 @@ static struct
         "\xC3\x80\xC3\x81\xC3\x82\xC6\x92\xC3\xA9\xC3\xAD\xC3\xB3\xC3\xBA\xC3"
         "\x89\xC3\x8D\xC3\x93\xC3\x9A\xC3\xB5\xC3\xA7\xC2\xBF\xC3\xB1\xC3\x91",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "European characters using Junicode font",
@@ -103,7 +103,7 @@ static struct
         "\xC3\x80\xC3\x81\xC3\x82\xC6\x92\xC3\xA9\xC3\xAD\xC3\xB3\xC3\xBA\xC3"
         "\x89\xC3\x8D\xC3\x93\xC3\x9A\xC3\xB5\xC3\xA7\xC2\xBF\xC3\xB1\xC3\x91",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "Korean/Chinese/Japanese using Batang font",
@@ -132,7 +132,7 @@ static struct
         "\x84\xEC\x9D\xB4\x2F\xEC\x9E\x88\xEC\x9C\xBC\xEB\x9E\xB4/",
 
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "Hebrew using TnuaLibre font",
@@ -141,7 +141,7 @@ static struct
         "1234 \xD7\x97\xD7\x95\xD7\xA4\xD7\xA9\xD7\x99 **\xD7\x90\xD7\x91\xD7\x92\xD7\x93 5678",
 
         CEGUI::DefaultParagraphDirection::RightToLeft,
-        CEGUI::HorizontalAlignment::Right
+        CEGUI::HorizontalTextFormatting::WordWrapRightAligned
     },
     {
         "Old German using Fette UNZ Fraktur font",
@@ -151,7 +151,7 @@ static struct
         "Ach, wie gut, dass niemand wei\xC3\x9F ,\n"
         "dass ich Rumpelstilzchen hei\xC3\x9F",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapCentreAligned
     },
     {
         "Latin using Old Fell Type font",
@@ -160,7 +160,7 @@ static struct
         "Sed nomini tuo da gloriam.\xE2\x98\x9C\n"
         "\xEE\x80\x9C\x20\xEE\x81\x87\x20\xEE\x81\x80\x20\xEE\x81\x81\x20\xC3\x90",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "Handwriting font",
@@ -169,7 +169,7 @@ static struct
         "Handwriting is nice when you don't have to do it yourself.\n\n"
         "Regards, Uncle Dolan.",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "RichStyle Icons font",
@@ -187,7 +187,7 @@ static struct
         "\x94\x20\xEE\x80\x95\x20\xEE\x80\x96\x20\xEE\x80\x97\x20\xEE\x80\x98\x20\xEE\x80\x99"
         "\x20\xEE\x80\xA0\x20\xEE\x80\xA1\x20\xEE\x80\xA2",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "Old Runic writing using Futhark Adapted font",
@@ -198,7 +198,7 @@ static struct
         "considerable facial resemblance to the perpetually fleeing Russian statesman, and, "
         "too, because both wore quite formal standing collars.",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "Klingon using pIqaD HaSta font",
@@ -211,7 +211,7 @@ static struct
         "\xEF\xA3\xB5\x20\xEF\xA3\xB6\x20\xEF\xA3\xB7\x20\xEF\xA3\xB8\x20\xEF\xA3\xB9\n"
         "\xEF\xA3\xBD\x20\xEF\xA3\xBE\x20\xEF\xA3\xBF",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     },
     {
         "Pixel style font using Mizufalp font",
@@ -221,7 +221,7 @@ static struct
         "CATS: All your base are belong to us.\n"
         "CATS: You have no chance to survive make your time.",
         CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalAlignment::Left
+        CEGUI::HorizontalTextFormatting::WordWrapLeftAligned
     }
 };
 
