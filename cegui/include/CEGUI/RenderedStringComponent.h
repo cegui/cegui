@@ -52,10 +52,10 @@ public:
     //! Destructor.
     virtual ~RenderedStringComponent();
 
-    //! Set the VerticalFormatting option for this component.
-    void setVerticalFormatting(VerticalImageFormatting fmt);
-    //! return the current VerticalFormatting option.
-    VerticalImageFormatting getVerticalFormatting() const;
+    //! Set the VerticalTextFormatting option for this component.
+    void setVerticalTextFormatting(VerticalTextFormatting fmt);
+    //! return the current VerticalTextFormatting option.
+    VerticalTextFormatting getVerticalTextFormatting() const;
     //! set the padding values.
     void setPadding(const Rectf& padding);
     //! set the left padding value.
@@ -140,7 +140,7 @@ protected:
     //! Rect object holding the padding values for this component.
     Rectf d_padding;
     //! Vertical formatting to be used for this component.
-    VerticalImageFormatting d_verticalFormatting;
+    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
     //! Image to draw for selection
     const Image* d_selectionImage;
 };

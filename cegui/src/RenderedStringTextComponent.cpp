@@ -156,7 +156,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
 
 void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos, float& y_scale) const
 {
-    switch (d_verticalFormatting)
+    switch (d_verticalTextFormatting)
     {
     case VerticalImageFormatting::BottomAligned:
         final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
@@ -224,7 +224,6 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     float y_scale = 1.0f;
 
     handleFormattingOptions(ref_wnd, vertical_space, final_pos, y_scale);
-    assert(y_scale == 1.f);
 
     // apply padding to position:
     final_pos += d_padding.getPosition();
@@ -289,7 +288,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // create 'left' side of split and clone our basic configuration
     RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
     lhs->d_padding = d_padding;
-    lhs->d_verticalFormatting = d_verticalFormatting;
+    lhs->d_verticalTextFormatting = d_verticalTextFormatting;
     lhs->d_font = d_font;
     lhs->d_colours = d_colours;
 

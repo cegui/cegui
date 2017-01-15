@@ -118,7 +118,7 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
 
     glm::vec2 final_pos(position);
     // handle formatting options
-    switch (d_verticalFormatting)
+    switch (d_verticalTextFormatting)
     {
     case VerticalImageFormatting::BottomAligned:
         final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;

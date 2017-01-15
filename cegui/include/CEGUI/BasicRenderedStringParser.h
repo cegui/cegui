@@ -69,7 +69,8 @@ public:
     static const String FontTagName;
     static const String ImageTagName;
     static const String WindowTagName;
-    static const String VertAlignmentTagName;
+    static const String VertImageFormattingTagName;
+    static const String VertTextFormattingTagName;
     static const String PaddingTagName;
     static const String TopPaddingTagName;
     static const String BottomPaddingTagName;
@@ -78,10 +79,6 @@ public:
     static const String ImageSizeTagName;
     static const String ImageWidthTagName;
     static const String ImageHeightTagName;
-    static const String TopAlignedValueName;
-    static const String BottomAlignedValueName;
-    static const String CentreAlignedValueName;
-    static const String StretchAlignedValueName;
 
     //! Constructor.
     BasicRenderedStringParser();
@@ -158,7 +155,8 @@ protected:
     void handleFont(RenderedString& rs, const String& value);
     void handleImage(RenderedString& rs, const String& value);
     void handleWindow(RenderedString& rs, const String& value);
-    void handleVertAlignment(RenderedString& rs, const String& value);
+    void handleVertImageFormatting(RenderedString& rs, const String& value);
+    void handleVertTextFormatting(RenderedString& rs, const String& value);
     void handlePadding(RenderedString& rs, const String& value);
     void handleTopPadding(RenderedString& rs, const String& value);
     void handleBottomPadding(RenderedString& rs, const String& value);
@@ -178,8 +176,10 @@ protected:
     ColourRect d_colours;
     //! active font.
     String d_fontName;
-    //! active vertical alignment
-    VerticalImageFormatting d_vertAlignment;
+    //! active vertical image formatting
+    VerticalImageFormatting d_vertImageFormatting = VerticalImageFormatting::BottomAligned;
+    //! active vertical image formatting
+    VerticalTextFormatting d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
 

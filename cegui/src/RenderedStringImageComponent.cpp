@@ -38,16 +38,14 @@ namespace CEGUI
 RenderedStringImageComponent::RenderedStringImageComponent() :
     d_image(nullptr),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0),
-    d_selected(false)
+    d_size(0, 0)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0),
-    d_selected(false)
+    d_size(0, 0)
 {
     setImage(name);
 }
@@ -56,8 +54,7 @@ RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
 RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
     d_image(image),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0),
-    d_selected(false)
+    d_size(0, 0)
 {
 }
 
@@ -129,7 +126,7 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
     float y_scale = 1.0f;
 
     // handle formatting options
-    switch (d_verticalFormatting)
+    switch (d_verticalImageFormatting)
     {
     case VerticalImageFormatting::BottomAligned:
         dest.d_min.y += vertical_space - getPixelSize(ref_wnd).d_height;
@@ -149,7 +146,7 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
 
     default:
         throw InvalidRequestException(
-            "unknown VerticalFormatting option specified.");
+            "unknown VerticalImageFormatting option specified.");
     }
 
     Sizef sz(d_image->getRenderedSize());
@@ -249,6 +246,17 @@ void RenderedStringImageComponent::setSize(const Sizef& sz)
 const Sizef& RenderedStringImageComponent::getSize() const
 {
     return d_size;
+}
+
+
+void RenderedStringImageComponent::setVerticalImageFormatting(VerticalImageFormatting verticalImageFormatting)
+{
+    d_verticalImageFormatting = verticalImageFormatting;
+}
+
+VerticalImageFormatting RenderedStringImageComponent::getVerticalImageFormatting() const
+{
+    return d_verticalImageFormatting;
 }
 
 //----------------------------------------------------------------------------//

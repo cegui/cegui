@@ -96,19 +96,19 @@ namespace CEGUI
 
         /*!
         \brief
-            Directly returns the vertical formatting which was set for the ImageryComponent.
+            Directly returns the vertical image formatting which was set for the ImageryComponent.
 
         \return
-            The VerticalFormatting enum.
+            The VerticalImageFormatting enum.
         */
         VerticalImageFormatting getVerticalFormattingFromComponent() const;
 
         /*!
         \brief
-            Set the vertical formatting setting for this ImageryComponent.
+            Set the vertical image formatting setting for this ImageryComponent.
 
         \param fmt
-            One of the VerticalFormatting enumerated values.
+            One of the VerticalImageFormatting enumerated values.
 
         \return
             Nothing.
