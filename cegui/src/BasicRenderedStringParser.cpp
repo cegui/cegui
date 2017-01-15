@@ -54,7 +54,6 @@ const String BasicRenderedStringParser::TopPaddingTagName("top-padding");
 const String BasicRenderedStringParser::BottomPaddingTagName("bottom-padding");
 const String BasicRenderedStringParser::LeftPaddingTagName("left-padding");
 const String BasicRenderedStringParser::RightPaddingTagName("right-padding");
-const String BasicRenderedStringParser::AspectLockTagName("aspect-lock");
 const String BasicRenderedStringParser::ImageSizeTagName("image-size");
 const String BasicRenderedStringParser::ImageWidthTagName("image-width");
 const String BasicRenderedStringParser::ImageHeightTagName("image-height");
@@ -68,7 +67,6 @@ BasicRenderedStringParser::BasicRenderedStringParser() :
     d_initialColours(0xFFFFFFFF),
     d_vertAlignment(VerticalImageFormatting::BottomAligned),
     d_imageSize(0, 0),
-    d_aspectLock(false),
     d_initialised(false)
 {
     BasicRenderedStringParser::initialiseDefaultState();
@@ -81,7 +79,6 @@ BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
     d_initialColours(initial_colours),
     d_vertAlignment(VerticalImageFormatting::BottomAligned),
     d_imageSize(0, 0),
-    d_aspectLock(false),
     d_initialised(false)
 {
     BasicRenderedStringParser::initialiseDefaultState();
@@ -190,7 +187,6 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
         rtc.setPadding(d_padding);
         rtc.setColours(d_colours);
         rtc.setVerticalFormatting(d_vertAlignment);
-        rtc.setAspectLock(d_aspectLock);
         rs.appendComponent(rtc);
 
         // break line if needed
@@ -266,7 +262,6 @@ void BasicRenderedStringParser::initialiseDefaultState()
     d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
     d_vertAlignment = VerticalImageFormatting::BottomAligned;
-    d_aspectLock = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -306,7 +301,6 @@ void BasicRenderedStringParser::initialiseTagHandlers()
     d_tagHandlers[BottomPaddingTagName] = &BasicRenderedStringParser::handleBottomPadding;
     d_tagHandlers[LeftPaddingTagName] = &BasicRenderedStringParser::handleLeftPadding;
     d_tagHandlers[RightPaddingTagName] = &BasicRenderedStringParser::handleRightPadding;
-    d_tagHandlers[AspectLockTagName] = &BasicRenderedStringParser::handleAspectLock;
     d_tagHandlers[ImageSizeTagName] = &BasicRenderedStringParser::handleImageSize;
     d_tagHandlers[ImageWidthTagName] = &BasicRenderedStringParser::handleImageWidth;
     d_tagHandlers[ImageHeightTagName] = &BasicRenderedStringParser::handleImageHeight;
@@ -335,7 +329,6 @@ void BasicRenderedStringParser::handleImage(RenderedString& rs, const String& va
     ric.setColours(d_colours);
     ric.setVerticalFormatting(d_vertAlignment);
     ric.setSize(d_imageSize);
-    ric.setAspectLock(d_aspectLock);
     rs.appendComponent(ric);
 }
 
@@ -345,7 +338,6 @@ void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& v
     RenderedStringWidgetComponent rwc(value);
     rwc.setPadding(d_padding);
     rwc.setVerticalFormatting(d_vertAlignment);
-    rwc.setAspectLock(d_aspectLock);
     rs.appendComponent(rwc);
 }
 
@@ -399,13 +391,6 @@ void BasicRenderedStringParser::handleRightPadding(RenderedString&,
                                                    const String& value)
 {
     d_padding.d_max.x = PropertyHelper<float>::fromString(value);
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleAspectLock(RenderedString&,
-                                                 const String& value)
-{
-    d_aspectLock = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

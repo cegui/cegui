@@ -44,7 +44,6 @@ RenderedStringComponent* RenderedStringComponent::split(
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
     d_verticalFormatting(VerticalImageFormatting::BottomAligned),
-    d_aspectLock(false),
     d_selectionImage(nullptr)
 {
 }
@@ -124,18 +123,6 @@ float RenderedStringComponent::getTopPadding() const
 float RenderedStringComponent::getBottomPadding() const
 {
     return d_padding.d_max.y;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setAspectLock(const bool setting)
-{
-    d_aspectLock = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool RenderedStringComponent::getAspectLock() const
-{
-    return d_aspectLock;
 }
 
 //----------------------------------------------------------------------------//
