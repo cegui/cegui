@@ -37,26 +37,26 @@ template<typename T>
 class FalagardXMLHelper;
 
 template<>
-class CEGUIEXPORT FalagardXMLHelper<VerticalFormatting>
+class CEGUIEXPORT FalagardXMLHelper<VerticalImageFormatting>
 {
 public:
-    typedef VerticalFormatting return_type;
-    typedef VerticalFormatting pass_type;
+    typedef VerticalImageFormatting return_type;
+    typedef VerticalImageFormatting pass_type;
 
     static String toString(pass_type val)
     {
         switch (val)
         {
-        case VerticalFormatting::BottomAligned:
+        case VerticalImageFormatting::BottomAligned:
             return BottomAligned;
 
-        case VerticalFormatting::CentreAligned:
+        case VerticalImageFormatting::CentreAligned:
             return CentreAligned;
 
-        case VerticalFormatting::Tiled:
+        case VerticalImageFormatting::Tiled:
             return Tiled;
 
-        case VerticalFormatting::Stretched:
+        case VerticalImageFormatting::Stretched:
             return Stretched;
 
         default:
@@ -67,19 +67,19 @@ public:
     static return_type fromString(const String& str)
     {
         if (str == CentreAligned)
-            return VerticalFormatting::CentreAligned;
+            return VerticalImageFormatting::CentreAligned;
 
         else if (str == BottomAligned)
-            return VerticalFormatting::BottomAligned;
+            return VerticalImageFormatting::BottomAligned;
 
         else if (str == Tiled)
-            return VerticalFormatting::Tiled;
+            return VerticalImageFormatting::Tiled;
 
         else if (str == Stretched)
-            return VerticalFormatting::Stretched;
+            return VerticalImageFormatting::Stretched;
 
         else
-            return VerticalFormatting::TopAligned;
+            return VerticalImageFormatting::TopAligned;
     }
 
     //! Definitions of the possible values represented as Strings
@@ -657,12 +657,12 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 
 template<>
-class PropertyHelper<VerticalFormatting>
+class PropertyHelper<VerticalImageFormatting>
 {
 public:
-    typedef VerticalFormatting return_type;
+    typedef VerticalImageFormatting return_type;
     typedef return_type safe_method_return_type;
-    typedef VerticalFormatting pass_type;
+    typedef VerticalImageFormatting pass_type;
     typedef String string_return_type;
 
     static const String& getDataTypeName()

@@ -181,7 +181,7 @@ protected:
     //! active font.
     String d_fontName;
     //! active vertical alignment
-    VerticalFormatting d_vertAlignment;
+    VerticalImageFormatting d_vertAlignment;
     //! active image size
     Sizef d_imageSize;
     //! active 'aspect lock' state

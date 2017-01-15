@@ -53,7 +53,7 @@ namespace CEGUI
     \brief
         Enumeration of possible values to indicate the vertical formatting to be used for an image component.
     */
-    enum class VerticalFormatting : int
+    enum class VerticalImageFormatting : int
     {
         TopAligned,         //!< Top of Image should be aligned with the top of the destination area.
         CentreAligned,      //!< Image should be vertically centred within the destination area.

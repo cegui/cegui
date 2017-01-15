@@ -696,8 +696,8 @@ namespace CEGUI
             const FrameImageComponent what =
                 FalagardXMLHelper<FrameImageComponent>::fromString(
                     attributes.getValueAsString(ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background));
-            const VerticalFormatting fmt =
-                FalagardXMLHelper<VerticalFormatting>::fromString(
+            const VerticalImageFormatting fmt =
+                FalagardXMLHelper<VerticalImageFormatting>::fromString(
                     attributes.getValueAsString(TypeAttribute));
 
             switch(what)
@@ -723,7 +723,7 @@ namespace CEGUI
         else if (d_imagerycomponent)
         {
             d_imagerycomponent->setVerticalFormatting(
-                FalagardXMLHelper<VerticalFormatting>::fromString(
+                FalagardXMLHelper<VerticalImageFormatting>::fromString(
                     attributes.getValueAsString(TypeAttribute)));
         }
         else if (d_textcomponent)
@@ -1085,8 +1085,8 @@ namespace CEGUI
             prop = new PropertyDefinition<ListHeaderSegment::SortDirection>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<MultiColumnList::SelectionMode>::getDataTypeName())
             prop = new PropertyDefinition<MultiColumnList::SelectionMode>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == PropertyHelper<VerticalFormatting>::getDataTypeName())
-            prop = new PropertyDefinition<VerticalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == PropertyHelper<VerticalImageFormatting>::getDataTypeName())
+            prop = new PropertyDefinition<VerticalImageFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == PropertyHelper<HorizontalFormatting>::getDataTypeName())
             prop = new PropertyDefinition<HorizontalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else
@@ -1239,8 +1239,8 @@ namespace CEGUI
             d_propertyLink = new PropertyLinkDefinition<
                     MultiColumnList::SelectionMode>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == PropertyHelper<VerticalFormatting>::getDataTypeName())
-            d_propertyLink = new PropertyLinkDefinition<VerticalFormatting>(
+        else if (type == PropertyHelper<VerticalImageFormatting>::getDataTypeName())
+            d_propertyLink = new PropertyLinkDefinition<VerticalImageFormatting>(
                     name, widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName()
             );
         else if (type == PropertyHelper<HorizontalFormatting>::getDataTypeName())
@@ -1289,8 +1289,8 @@ namespace CEGUI
             const FrameImageComponent what =
                 FalagardXMLHelper<FrameImageComponent>::fromString(
                     attributes.getValueAsString(ComponentAttribute, FalagardXMLHelper<FrameImageComponent>::Background));
-            const VerticalFormatting fmt =
-                FalagardXMLHelper<VerticalFormatting>::fromString(
+            const VerticalImageFormatting fmt =
+                FalagardXMLHelper<VerticalImageFormatting>::fromString(
                     attributes.getValueAsString(TypeAttribute));
 
             switch(what)
@@ -1770,8 +1770,8 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<ListHeaderSegment::SortDirection>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<MultiColumnList::SelectionMode>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<MultiColumnList::SelectionMode>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == PropertyHelper<VerticalFormatting>::getDataTypeName())
-                dynamic_cast<PropertyLinkDefinition<VerticalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == PropertyHelper<VerticalImageFormatting>::getDataTypeName())
+                dynamic_cast<PropertyLinkDefinition<VerticalImageFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == PropertyHelper<HorizontalFormatting>::getDataTypeName())
                 dynamic_cast<PropertyLinkDefinition<HorizontalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
             else
