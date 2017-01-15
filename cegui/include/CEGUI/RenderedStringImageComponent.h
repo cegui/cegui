@@ -83,6 +83,12 @@ public:
     size_t getSpaceCount() const override;
     void setSelection(const Window* ref_wnd,
                       const float start, const float end) override;
+
+    //! Sets the vertical image formatting of this image
+    void setVerticalImageFormatting(VerticalImageFormatting verticalImageFormatting);
+
+    //! Gets the vertical image formatting of this image
+    VerticalImageFormatting getVerticalImageFormatting() const;
 protected:
     //! pointer to the image drawn by the component.
     const Image* d_image;
@@ -91,7 +97,9 @@ protected:
     //! target size to render the image at (0s mean natural size)
     Sizef d_size;
     // whether the image is marked as selected.
-    bool d_selected;
+    bool d_selected = false;
+    //! The vertical image formatting for the image
+    VerticalImageFormatting d_verticalImageFormatting = VerticalImageFormatting::BottomAligned;
 };
 
 } // End of  CEGUI namespace section
