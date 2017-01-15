@@ -158,19 +158,19 @@ void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd,
 {
     switch (d_verticalFormatting)
     {
-    case VerticalFormatting::BottomAligned:
+    case VerticalImageFormatting::BottomAligned:
         final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
-    case VerticalFormatting::CentreAligned:
+    case VerticalImageFormatting::CentreAligned:
         final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
-    case VerticalFormatting::Stretched:
+    case VerticalImageFormatting::Stretched:
         y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
         break;
 
-    case VerticalFormatting::TopAligned:
+    case VerticalImageFormatting::TopAligned:
         // nothing additional to do for this formatting option.
         break;
 
@@ -224,6 +224,7 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     float y_scale = 1.0f;
 
     handleFormattingOptions(ref_wnd, vertical_space, final_pos, y_scale);
+    assert(y_scale == 1.f);
 
     // apply padding to position:
     final_pos += d_padding.getPosition();

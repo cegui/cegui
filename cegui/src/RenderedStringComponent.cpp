@@ -43,7 +43,7 @@ RenderedStringComponent* RenderedStringComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
-    d_verticalFormatting(VerticalFormatting::BottomAligned),
+    d_verticalFormatting(VerticalImageFormatting::BottomAligned),
     d_aspectLock(false),
     d_selectionImage(nullptr)
 {
@@ -55,13 +55,13 @@ RenderedStringComponent::~RenderedStringComponent()
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringComponent::setVerticalFormatting(VerticalFormatting fmt)
+void RenderedStringComponent::setVerticalFormatting(VerticalImageFormatting fmt)
 {
     d_verticalFormatting = fmt;
 }
 
 //----------------------------------------------------------------------------//
-VerticalFormatting RenderedStringComponent::getVerticalFormatting() const
+VerticalImageFormatting RenderedStringComponent::getVerticalFormatting() const
 {
     return d_verticalFormatting;
 }

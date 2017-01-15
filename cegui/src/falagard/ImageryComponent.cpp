@@ -42,7 +42,7 @@ namespace CEGUI
 {
     ImageryComponent::ImageryComponent() :
         d_image(nullptr),
-        d_vertFormatting(VerticalFormatting::TopAligned),
+        d_vertFormatting(VerticalImageFormatting::TopAligned),
         d_horzFormatting(HorizontalFormatting::LeftAligned)
     {}
 
@@ -68,17 +68,17 @@ namespace CEGUI
         }
     }
 
-    VerticalFormatting ImageryComponent::getVerticalFormatting(const Window& wnd) const
+    VerticalImageFormatting ImageryComponent::getVerticalFormatting(const Window& wnd) const
     {
         return d_vertFormatting.get(wnd);
     }
 
-    VerticalFormatting ImageryComponent::getVerticalFormattingFromComponent() const
+    VerticalImageFormatting ImageryComponent::getVerticalFormattingFromComponent() const
     {
         return d_vertFormatting.getValue();
     }
 
-    void ImageryComponent::setVerticalFormatting(VerticalFormatting fmt)
+    void ImageryComponent::setVerticalFormatting(VerticalImageFormatting fmt)
     {
         d_vertFormatting.set(fmt);
     }
@@ -135,7 +135,7 @@ namespace CEGUI
             return;
 
         const HorizontalFormatting horzFormatting = d_horzFormatting.get(srcWindow);
-        const VerticalFormatting vertFormatting = d_vertFormatting.get(srcWindow);
+        const VerticalImageFormatting vertFormatting = d_vertFormatting.get(srcWindow);
 
         unsigned int horzTiles, vertTiles;
         float xpos, ypos;
@@ -184,29 +184,29 @@ namespace CEGUI
         // calculate initial y co-ordinate and vertical tile count according to formatting options
         switch (vertFormatting)
         {
-            case VerticalFormatting::Stretched:
+            case VerticalImageFormatting::Stretched:
                 imgSz.d_height = destRect.getHeight();
                 ypos = destRect.top();
                 vertTiles = 1;
                 break;
 
-            case VerticalFormatting::Tiled:
+            case VerticalImageFormatting::Tiled:
                 ypos = destRect.top();
                 vertTiles = std::abs(static_cast<int>(
                     (destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height));
                 break;
 
-            case VerticalFormatting::TopAligned:
+            case VerticalImageFormatting::TopAligned:
                 ypos = destRect.top();
                 vertTiles = 1;
                 break;
 
-            case VerticalFormatting::CentreAligned:
+            case VerticalImageFormatting::CentreAligned:
                 ypos = destRect.top() + CoordConverter::alignToPixels((destRect.getHeight() - imgSz.d_height) * 0.5f);
                 vertTiles = 1;
                 break;
 
-            case VerticalFormatting::BottomAligned:
+            case VerticalImageFormatting::BottomAligned:
                 ypos = destRect.bottom() - imgSz.d_height;
                 vertTiles = 1;
                 break;
@@ -235,7 +235,7 @@ namespace CEGUI
                 Rectf clippedDestRect;
 
                 // use custom clipping for right and bottom edges when tiling the imagery
-                if (((vertFormatting == VerticalFormatting::Tiled) && row == vertTiles - 1) ||
+                if (((vertFormatting == VerticalImageFormatting::Tiled) && row == vertTiles - 1) ||
                     ((horzFormatting == HorizontalFormatting::Tiled) && col == horzTiles - 1))
                 {
                     if(clipper != nullptr)

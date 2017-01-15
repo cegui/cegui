@@ -53,9 +53,9 @@ public:
     virtual ~RenderedStringComponent();
 
     //! Set the VerticalFormatting option for this component.
-    void setVerticalFormatting(VerticalFormatting fmt);
+    void setVerticalFormatting(VerticalImageFormatting fmt);
     //! return the current VerticalFormatting option.
-    VerticalFormatting getVerticalFormatting() const;
+    VerticalImageFormatting getVerticalFormatting() const;
     //! set the padding values.
     void setPadding(const Rectf& padding);
     //! set the left padding value.
@@ -144,7 +144,7 @@ protected:
     //! Rect object holding the padding values for this component.
     Rectf d_padding;
     //! Vertical formatting to be used for this component.
-    VerticalFormatting d_verticalFormatting;
+    VerticalImageFormatting d_verticalFormatting;
     //! true if the aspect ratio should be maintained where possible.
     bool d_aspectLock;
     //! Image to draw for selection
