@@ -75,7 +75,6 @@ public:
     static const String BottomPaddingTagName;
     static const String LeftPaddingTagName;
     static const String RightPaddingTagName;
-    static const String AspectLockTagName;
     static const String ImageSizeTagName;
     static const String ImageWidthTagName;
     static const String ImageHeightTagName;
@@ -165,7 +164,6 @@ protected:
     void handleBottomPadding(RenderedString& rs, const String& value);
     void handleLeftPadding(RenderedString& rs, const String& value);
     void handleRightPadding(RenderedString& rs, const String& value);
-    void handleAspectLock(RenderedString& rs, const String& value);
     void handleImageSize(RenderedString& rs, const String& value);
     void handleImageWidth(RenderedString& rs, const String& value);
     void handleImageHeight(RenderedString& rs, const String& value);
@@ -184,8 +182,6 @@ protected:
     VerticalImageFormatting d_vertAlignment;
     //! active image size
     Sizef d_imageSize;
-    //! active 'aspect lock' state
-    bool d_aspectLock;
 
     //! true if handlers have been registered
     bool d_initialised;

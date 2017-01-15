@@ -76,10 +76,6 @@ public:
     float getTopPadding() const;
     //! return the bottom padding value.
     float getBottomPadding() const;
-    //! set the aspect-lock state
-    void setAspectLock(const bool setting);
-    //! return the aspect-lock state
-    bool getAspectLock() const;
 
     //! draw the component.
     virtual std::vector<GeometryBuffer*> createRenderGeometry(
@@ -145,8 +141,6 @@ protected:
     Rectf d_padding;
     //! Vertical formatting to be used for this component.
     VerticalImageFormatting d_verticalFormatting;
-    //! true if the aspect ratio should be maintained where possible.
-    bool d_aspectLock;
     //! Image to draw for selection
     const Image* d_selectionImage;
 };
