@@ -197,7 +197,7 @@
             </Window>
             <Window type="Vanilla/StaticText" name="StaticText" >
                 <Property name="Area" value="{{0.519531,0},{0.173611,0},{0.648438,0},{0.277778,0}}" />
-                <Property name="Text" value="Testing the Formatting Tags: It is [colour=&apos;FF00FF00&apos;]possible[colour=&apos;FFFFFFFF&apos;] to embed images [image=&apos;Vanilla-Images/MouseArrow&apos;] or change the [font=&apos;DejaVuSans-12&apos;]Font type and [font=&apos;&apos;]many more things (see the docu or CEGUI wiki) [colour=&apos;FF00FF00&apos;][image=&apos;Vanilla-Images/MouseArrow&apos;]" />
+                <Property name="Text" value="Testing the Formatting Tags: It is [colour=&apos;FF00FF00&apos;]possible[colour=&apos;FFFFFFFF&apos;] to embed images [image=&apos;Vanilla-Images/MouseArrow&apos;] or change the [font=&apos;DejaVuSans-12&apos;]Font type and [font=&apos;&apos;]many more things (see the docu or CEGUI wiki) [colour=&apos;FF00FF00&apos;][image=&apos;Vanilla-Images/MouseArrow&apos;] [vert-text-formatting=&apos;TopAligned&apos;]So[vert-text-formatting=&apos;CentreAligned&apos;]me[vert-text-formatting=&apos;BottomAligned&apos;]Text" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzScrollbar" value="true" />
                 <Property name="VertScrollbar" value="true" />
