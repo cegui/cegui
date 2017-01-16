@@ -82,55 +82,8 @@ public:
 
     //! Constructor.
     BasicRenderedStringParser();
-    /*!
-    \brief
-        Initialising constructor.
-
-    \param initial_font
-        Reference to a String holding the name of the initial font to be used.
-
-    \param initial_colours
-        Reference to a ColourRect describing the initial colours to be used.
-    */
-    //!  \deprecated This constructor is deprecated and will be removed in the next major version */
-    BasicRenderedStringParser(const String& initial_font,
-                              const ColourRect& initial_colours);
     //! Destructor.
     virtual ~BasicRenderedStringParser();
-
-    /*!
-    \brief
-        set the initial font name to be used on subsequent calls to parse.
-
-    \param font_name
-        String object holding the name of the font.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    void setInitialFontName(const String& font_name);
-
-    /*!
-    \brief
-        Set the initial colours to be used on subsequent calls to parse.
-
-    \param colours
-        ColourRect object holding the colours.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    void setInitialColours(const ColourRect& colours);
-
-    /*!
-    \brief
-        Return the name of the initial font used in each parse.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    const String& getInitialFontName() const;
-
-    /*!
-    \brief
-        Return a ColourRect describing the initial colours used in each parse.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    const ColourRect& getInitialColours() const;
 
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string,
@@ -166,10 +119,6 @@ protected:
     void handleImageWidth(RenderedString& rs, const String& value);
     void handleImageHeight(RenderedString& rs, const String& value);
 
-    //!  \deprecated This variable is deprecated and will removed in the next major version */
-    String d_initialFontName;
-    //!  \deprecated This variable is deprecated and will removed in the next major version */
-    ColourRect d_initialColours;
     //! active padding values.
     Rectf d_padding;
     //! active colour values.

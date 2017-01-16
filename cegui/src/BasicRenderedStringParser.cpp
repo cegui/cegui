@@ -62,18 +62,6 @@ const String BasicRenderedStringParser::ImageHeightTagName("image-height");
 
 //----------------------------------------------------------------------------//
 BasicRenderedStringParser::BasicRenderedStringParser() :
-    d_initialColours(0xFFFFFFFF),
-    d_imageSize(0, 0),
-    d_initialised(false)
-{
-    BasicRenderedStringParser::initialiseDefaultState();
-}
-
-//----------------------------------------------------------------------------//
-BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
-                                            const ColourRect& initial_colours) :
-    d_initialFontName(initial_font),
-    d_initialColours(initial_colours),
     d_imageSize(0, 0),
     d_initialised(false)
 {
@@ -252,36 +240,8 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 void BasicRenderedStringParser::initialiseDefaultState()
 {
     d_padding = Rectf(0, 0, 0, 0);
-    //!  \deprecated This assignment is deprecated and will be replaced by assignment to "" in the next major version */
-    d_colours = d_initialColours;
-    //!  \deprecated This assignment is deprecated and will be replaced by assignment Colour 0xFFFFFFFF in the next major version */
-    d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
     d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::setInitialFontName(const String& font_name)
-{
-    d_initialFontName = font_name;
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::setInitialColours(const ColourRect& colours)
-{
-    d_initialColours = colours;
-}
-
-//----------------------------------------------------------------------------//
-const String& BasicRenderedStringParser::getInitialFontName() const
-{
-    return d_initialFontName;
-}
-
-//----------------------------------------------------------------------------//
-const ColourRect& BasicRenderedStringParser::getInitialColours() const
-{
-    return d_initialColours;
 }
 
 //----------------------------------------------------------------------------//
