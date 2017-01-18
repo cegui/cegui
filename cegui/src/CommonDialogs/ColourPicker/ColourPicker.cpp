@@ -76,7 +76,7 @@ ColourPicker::~ColourPicker(void)
 
             if (iter != s_colourPickerWindows.end())
             {
-                if (iter->second <= 0)
+                if (iter->second > 0)
                     WindowManager::getSingleton().destroyWindow(iter->first);
             }
         }
