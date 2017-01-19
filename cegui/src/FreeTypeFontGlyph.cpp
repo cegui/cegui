@@ -31,7 +31,6 @@ namespace CEGUI
 {
 
 float FreeTypeFontGlyph::getRenderedAdvance(
-    float x_scale
 ) const
 {
 #ifdef CEGUI_USE_RAQM
@@ -39,8 +38,7 @@ float FreeTypeFontGlyph::getRenderedAdvance(
     float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
 #else
     float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
-#endif    
-    sizeX *= x_scale;
+#endif
 
     return sizeX;
 }

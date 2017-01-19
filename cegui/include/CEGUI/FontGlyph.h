@@ -64,9 +64,9 @@ public:
         current pen position that will be occupied by this glyph when rendered.
     */
     virtual float getRenderedAdvance(
-        float x_scale) const
-    { return (d_image->getRenderedSize().d_width +
-              d_image->getRenderedOffset().x) * x_scale; }
+    ) const
+    { return d_image->getRenderedSize().d_width +
+              d_image->getRenderedOffset().x; }
 
     /*!
     \brief
@@ -77,8 +77,8 @@ public:
         is not always the same as the glyph image width or rendered advance,
         since it allows for horizontal overhangs.
     */
-    float getAdvance(float x_scale = 1.0) const
-    { return d_advance * x_scale; }
+    float getAdvance() const
+    { return d_advance; }
 
     //! Set the horizontal advance value for the glyph.
     void setAdvance(float advance)

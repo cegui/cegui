@@ -122,7 +122,7 @@ void Font::addFontProperties()
     );
 }
 
-float Font::getTextExtent(const String& text, float x_scale) const
+float Font::getTextExtent(const String& text) const
 {
     float cur_extent = 0.0f;
     float adv_extent = 0.0f;
@@ -132,7 +132,7 @@ float Font::getTextExtent(const String& text, float x_scale) const
     {
         char32_t currentCodePoint = text[c];
 
-        getGlyphExtents(currentCodePoint, cur_extent, adv_extent, x_scale);
+        getGlyphExtents(currentCodePoint, cur_extent, adv_extent);
     }
 #else
     String::codepoint_iterator codePointIter(text.begin(), text.begin(), text.end());
@@ -154,26 +154,25 @@ float Font::getTextExtent(const String& text, float x_scale) const
 void Font::getGlyphExtents(
     char32_t currentCodePoint,
     float& cur_extent,
-    float& adv_extent,
-    float x_scale) const
+    float& adv_extent) const
 {
     const FontGlyph* currentGlyph = getPreparedGlyph(currentCodePoint);
 
     if (currentGlyph != nullptr)
     {
-        float width = currentGlyph->getRenderedAdvance( x_scale);
+        float width = currentGlyph->getRenderedAdvance();
 
         if (adv_extent + width > cur_extent)
         {
             cur_extent = adv_extent + width;
         }
 
-        adv_extent += currentGlyph->getAdvance(x_scale);
+        adv_extent += currentGlyph->getAdvance();
     }
 }
 
 //----------------------------------------------------------------------------//
-float Font::getTextAdvance(const String& text, float x_scale) const
+float Font::getTextAdvance(const String& text) const
 {
     float advance = 0.0f;
 
@@ -182,7 +181,7 @@ float Font::getTextAdvance(const String& text, float x_scale) const
     {
         if (const FontGlyph* glyph = getGlyphForCodepoint(text[c]))
         {
-            advance += glyph->getAdvance(x_scale);
+            advance += glyph->getAdvance();
         }
     }
 #else
@@ -192,7 +191,7 @@ while (!currentCodePointIter.isAtEnd())
     char32_t currentCodePoint = *currentCodePointIter;
     if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint))
     {
-        advance += glyph->getAdvance(x_scale);
+        advance += glyph->getAdvance();
     }
 
     ++currentCodePointIter;
@@ -203,8 +202,7 @@ while (!currentCodePointIter.isAtEnd())
 }
 
 //----------------------------------------------------------------------------//
-size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
-                            float x_scale) const
+size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) const
 {
     const FontGlyph* glyph;
     float cur_extent = 0;
@@ -221,7 +219,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 
         if (glyph)
         {
-            cur_extent += glyph->getAdvance(x_scale);
+            cur_extent += glyph->getAdvance();
 
             if (pixel < cur_extent)
                 return c;
@@ -238,7 +236,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 
         if (glyph)
         {
-            cur_extent += glyph->getAdvance(x_scale);
+            cur_extent += glyph->getAdvance();
 
             if (pixel < cur_extent)
                 return currentCodePointIter.getCodeUnitIndexFromStart();
@@ -255,14 +253,13 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
     const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-    const float space_extra,
-    const float x_scale, const float y_scale) const
+    const float space_extra) const
 {
     float nextGlyphPos = 0.0f;
 
     return createTextRenderGeometry(
         text, nextGlyphPos, position, clip_rect, clipping_enabled,
-        colours, defaultParagraphDir, space_extra, x_scale, y_scale);
+        colours, defaultParagraphDir, space_extra);
 }
 
 const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
@@ -273,12 +270,12 @@ const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
 std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
     const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, const float x_scale, const float y_scale,
+    const float space_extra,
     ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = glyphPos.y + getBaseline(y_scale);
+    const float base_y = glyphPos.y + getBaseline();
 
     if (text.empty())
     {
@@ -302,11 +299,11 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
             const Image* const image = glyph->getImage();
 
             glyphPos.y = base_y - (image->getRenderedOffset().y - 
-                image->getRenderedOffset().y * y_scale);
+                image->getRenderedOffset().y);
 
             Sizef renderedSize(
-                image->getRenderedSize().d_width * x_scale,
-                image->getRenderedSize().d_height * y_scale);
+                image->getRenderedSize().d_width,
+                image->getRenderedSize().d_height);
 
             imgRenderSettings.d_destArea =
                 Rectf(glyphPos, renderedSize);
@@ -314,7 +311,7 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
             addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
                 clip_rect, colours);
 
-            glyphPos.x += glyph->getAdvance(x_scale);
+            glyphPos.x += glyph->getAdvance();
             // apply extra spacing to space chars
             if (currentCodePoint == ' ')
             {
@@ -332,8 +329,7 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
 std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
     const String& text, float& nextPenPosX, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
-    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, const float space_extra,
-    const float x_scale, const float y_scale) const
+    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, const float space_extra) const
 {
     ImageRenderSettings imgRenderSettings(
         Rectf(), clip_rect,
@@ -343,8 +339,7 @@ std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
 
     std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(
         text, clip_rect, colours, space_extra,
-        x_scale, y_scale, imgRenderSettings,
-        defaultParagraphDir, penPosition);
+        imgRenderSettings, defaultParagraphDir, penPosition);
 
     nextPenPosX = penPosition.x;
 

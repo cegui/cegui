@@ -821,13 +821,13 @@ raqm_t* createAndSetupRaqmTextObject(
 std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, const float x_scale, const float y_scale,
+    const float space_extra,
     ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
     glm::vec2& penPosition) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = penPosition.y + getBaseline(y_scale);
+    const float base_y = penPosition.y + getBaseline();
 
     if (text.empty())
     {
@@ -898,16 +898,16 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
         const Image* const image = glyph->getImage();
 
         penPosition.y = base_y - (image->getRenderedOffset().y -
-            image->getRenderedOffset().y * y_scale);
+            image->getRenderedOffset().y);
         
         //The glyph pos will be rounded to full pixels internally
         glm::vec2 renderGlyphPos(
-            penPosition.x + currentGlyph.x_offset * x_scale * s_conversionMultCoeff,
-            penPosition.y + currentGlyph.y_offset * y_scale * s_conversionMultCoeff);
+            penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
+            penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
 
         Sizef renderedSize(
-            image->getRenderedSize().d_width * x_scale,
-            image->getRenderedSize().d_height * y_scale);
+            image->getRenderedSize().d_width,
+            image->getRenderedSize().d_height);
 
         imgRenderSettings.d_destArea =
             Rectf(renderGlyphPos, renderedSize);
@@ -915,7 +915,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
 
-        penPosition.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
+        penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;
 
         if (codePoint == ' ')
         {
