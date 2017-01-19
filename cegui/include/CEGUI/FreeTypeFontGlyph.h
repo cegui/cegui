@@ -61,7 +61,7 @@ public:
     {}
 
     float getRenderedAdvance(
-        float x_scale) const override;
+    ) const override;
 
     //! mark the FontGlyph as initialised
     void markAsInitialised();

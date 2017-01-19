@@ -307,7 +307,6 @@ protected:
     std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
-        const float x_scale, const float y_scale,
         ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
         glm::vec2& penPosition) const override;
 #endif

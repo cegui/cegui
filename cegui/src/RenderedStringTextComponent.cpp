@@ -238,7 +238,7 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     return fnt->createTextRenderGeometry(
         d_text, final_pos,
         clip_rect, true, final_cols,
-        defaultParagraphDir, space_extra, 1.0f, y_scale);
+        defaultParagraphDir, space_extra);
 }
 
 //----------------------------------------------------------------------------//
@@ -312,7 +312,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
                 left_len =
                     std::max(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
-                                d_text.substr(0, token_len), split_point));
+                                 d_text.substr(0, token_len), split_point));
             }
             
             // left_len is now the character index at which to split the line
