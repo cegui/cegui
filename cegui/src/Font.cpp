@@ -141,7 +141,7 @@ float Font::getTextExtent(const String& text) const
     {
         char32_t currentCodePoint = *codePointIter;
 
-        getGlyphExtents(currentCodePoint, cur_extent, adv_extent, x_scale);
+        getGlyphExtents(currentCodePoint, cur_extent, adv_extent);
 
         ++codePointIter;
     }

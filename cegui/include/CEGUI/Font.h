@@ -385,10 +385,6 @@ public:
         Specifies the (horizontal) pixel offset to return the character
         index for.
 
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis when measuring
-        the text extent, where 1.0f is considered to be 'normal'.
-
     \return
         Returns a character index into String \a text for the character that
         would be rendered closest to horizontal pixel offset \a pixel if the
@@ -415,10 +411,6 @@ public:
     \param pixel
         Specifies the (horizontal) pixel offset to return the character
         index for.
-
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis when measuring
-        the text extent, where 1.0f is considered to be 'normal'.
 
     \return
         Returns a character index into String \a text for the character that
