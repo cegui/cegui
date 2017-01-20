@@ -239,6 +239,8 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::initialiseDefaultState()
 {
+    d_colours = Colour(0xFFFFFFFF);
+    d_fontName = "";
     d_padding = Rectf(0, 0, 0, 0);
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
     d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
