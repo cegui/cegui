@@ -80,7 +80,7 @@ public:
 
 protected:
     const Font* getEffectiveFont(const Window* window) const;
-    void handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos, float& y_scale) const;
+    void handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const;
     void createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const;
     static size_t getNextTokenLength(const String& text, size_t start_idx);
 

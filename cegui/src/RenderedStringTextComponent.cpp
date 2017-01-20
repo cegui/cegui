@@ -154,7 +154,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     return nullptr;
 }
 
-void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos, float& y_scale) const
+void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const
 {
     switch (d_verticalTextFormatting)
     {
@@ -217,9 +217,8 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     }
 
     glm::vec2 final_pos(position);
-    float y_scale = 1.0f;
 
-    handleFormattingOptions(ref_wnd, vertical_space, final_pos, y_scale);
+    handleFormattingOptions(ref_wnd, vertical_space, final_pos);
 
     // apply padding to position:
     final_pos += d_padding.getPosition();
