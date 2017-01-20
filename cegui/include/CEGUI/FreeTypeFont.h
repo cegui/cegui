@@ -201,6 +201,7 @@ public:
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const;
+
     //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const;
 
@@ -302,14 +303,23 @@ protected:
     const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
-#ifdef CEGUI_USE_RAQM
-    //! The recommended way of rendering a glyph
     std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
         ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
         glm::vec2& penPosition) const override;
+
+#ifdef CEGUI_USE_RAQM
+    std::vector<GeometryBuffer*> layoutWithRaqmAndCreateRenderGeometry(
+        const String& text, const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, ImageRenderSettings imgRenderSettings,
+        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
+
+    std::vector<GeometryBuffer*> layoutWithFreetypeAndCreateRenderGeometry(
+        const String& text, const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, ImageRenderSettings imgRenderSettings,
+        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 
     //! If non-zero, the overridden line spacing that we're to report.
     float d_specificLineSpacing;
