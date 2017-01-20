@@ -51,9 +51,10 @@ class FreeTypeFont;
 class CEGUIEXPORT FreeTypeFontGlyph : public FontGlyph
 {
 public:
-    FreeTypeFontGlyph(char32_t codePoint,
+    FreeTypeFontGlyph(char32_t codePoint, unsigned int glyphIndex,
         float advance = 0.0f, Image* image = nullptr, bool valid = false)
         : FontGlyph(codePoint, advance, image)
+        , d_glyphIndex(glyphIndex)
         , d_initialised(valid)
     {}
 
@@ -74,14 +75,19 @@ public:
     void setRsbDelta(const long rsbDelta);
     long getRsbDelta() const;
 
+    unsigned int getGlyphIndex() const;
+
 
 private:
-    //! Says whether this glyph is initialised or not
-    bool d_initialised;
-
     //! The difference between hinted and unhinted left side bearing while auto-hinting is active. Zero otherwise.
     long d_lsbDelta = 0;
     long d_rsbDelta = 0;
+
+    //! The index of the glyph in FreeType
+    const unsigned int d_glyphIndex;
+
+    //! Says whether this glyph is initialised or not
+    bool d_initialised = false;
 };
 
 }
