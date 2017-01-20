@@ -607,7 +607,7 @@ void FreeTypeFont::initialiseGlyphMap()
                 "adding an already added glyph to the codepoint glyph map.");        
         }
 
-        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint);
+        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint, gindex);
         d_codePointToGlyphMap[codepoint] = newFontGlyph;
         d_indexToGlyphMap[gindex] = static_cast<char32_t>(codepoint);
 
@@ -819,6 +819,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutWithFreetypeAndCreateRenderGeom
 #endif
 
     FT_Pos previousRsbDelta = 0;
+    unsigned int previousGlyphIndex = 0;
 
     size_t charCount = text.size();
     for (size_t i = 0; i < charCount; ++i)
@@ -853,11 +854,14 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutWithFreetypeAndCreateRenderGeom
         {
             FT_Vector kerning;
 
-            FT_Get_Kerning(d_fontFace, utf32Text[i - 1], codePoint,
+            unsigned int rightGlyphIndex = glyph->getGlyphIndex();
+
+            FT_Get_Kerning(d_fontFace, previousGlyphIndex, rightGlyphIndex,
                 FT_KERNING_DEFAULT, &kerning);
 
             penPosition.x += kerning.x * s_conversionMultCoeff;
         }
+        previousGlyphIndex = glyph->getGlyphIndex();
 
         const Image* const image = glyph->getImage();
 

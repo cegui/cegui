@@ -73,4 +73,9 @@ long FreeTypeFontGlyph::getRsbDelta() const
     return d_rsbDelta;
 }
 
+unsigned FreeTypeFontGlyph::getGlyphIndex() const
+{
+    return d_glyphIndex;
+}
+
 }
