@@ -789,23 +789,23 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     glm::vec2& penPosition) const
 {
 #ifdef CEGUI_USE_RAQM
-    return layoutWithRaqmAndCreateRenderGeometry(text, clip_rect, colours,
+    return layoutUsingRaqmAndCreateRenderGeometry(text, clip_rect, colours,
         space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
 #else
-    return layoutWithFreetypeAndCreateRenderGeometry(text, clip_rect, colours,
-        space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
+    return layoutUsingFreetypeAndCreateRenderGeometry(text, clip_rect, colours,
+        space_extra, imgRenderSettings, penPosition);
 #endif
 }
 
 
-std::vector<GeometryBuffer*> FreeTypeFont::layoutWithFreetypeAndCreateRenderGeometry(
+std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(
     const String& text, const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, ImageRenderSettings imgRenderSettings,
-    DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
+    glm::vec2& penPosition) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = penPosition.y + getBaseline();
+    penPosition.y += getBaseline();
 
     if (text.empty())
     {
@@ -865,15 +865,8 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutWithFreetypeAndCreateRenderGeom
 
         const Image* const image = glyph->getImage();
 
-        penPosition.y = base_y - (image->getRenderedOffset().y -
-            image->getRenderedOffset().y);
-
-        Sizef renderedSize(
-            image->getRenderedSize().d_width,
-            image->getRenderedSize().d_height);
-
         imgRenderSettings.d_destArea =
-            Rectf(penPosition, renderedSize);
+            Rectf(penPosition, image->getRenderedSize());
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
@@ -945,14 +938,14 @@ raqm_t* createAndSetupRaqmTextObject(
 
 }
 
-std::vector<GeometryBuffer*> FreeTypeFont::layoutWithRaqmAndCreateRenderGeometry(
+std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(
     const String& text, const Rectf* clip_rect, const ColourRect& colours, 
     const float space_extra, ImageRenderSettings imgRenderSettings, 
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    const float base_y = penPosition.y + getBaseline();
+    penPosition.y += getBaseline();
 
     if (text.empty())
     {
@@ -973,8 +966,6 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutWithRaqmAndCreateRenderGeometry
 
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
-
-    FT_Pos previousRsbDelta = 0;
 
     for (size_t i = 0; i < count; i++)
     {
@@ -1010,26 +1001,16 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutWithRaqmAndCreateRenderGeometry
                 continue;
             }
         }
-        
-        adjustPenPositionForBearingDeltas(penPosition, previousRsbDelta, glyph);
-        previousRsbDelta = glyph->getRsbDelta();
 
         const Image* const image = glyph->getImage();
-
-        penPosition.y = base_y - (image->getRenderedOffset().y -
-            image->getRenderedOffset().y);
         
         //The glyph pos will be rounded to full pixels internally
         glm::vec2 renderGlyphPos(
             penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
             penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
 
-        Sizef renderedSize(
-            image->getRenderedSize().d_width,
-            image->getRenderedSize().d_height);
-
         imgRenderSettings.d_destArea =
-            Rectf(renderGlyphPos, renderedSize);
+            Rectf(renderGlyphPos, image->getRenderedSize());
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);

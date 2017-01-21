@@ -310,16 +310,16 @@ protected:
         glm::vec2& penPosition) const override;
 
 #ifdef CEGUI_USE_RAQM
-    std::vector<GeometryBuffer*> layoutWithRaqmAndCreateRenderGeometry(
+    std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, ImageRenderSettings imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
 
-    std::vector<GeometryBuffer*> layoutWithFreetypeAndCreateRenderGeometry(
+    std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
         const float space_extra, ImageRenderSettings imgRenderSettings,
-        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
+        glm::vec2& penPosition) const;
 
     //! If non-zero, the overridden line spacing that we're to report.
     float d_specificLineSpacing;
