@@ -180,7 +180,8 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     invalidate();
 }
 
-namespace {
+namespace
+{
 
 /***
  * Implementation details for popup clipping computations
@@ -195,15 +196,21 @@ glm::vec2 translate_within(const Rectf & test_rect, const Rectf & clip_rect)
 {
     glm::vec2 result(0, 0);
 
-    if (test_rect.top() < clip_rect.top()) {
+    if (test_rect.top() < clip_rect.top())
+    {
         result.y = clip_rect.top() - test_rect.top(); 
-    } else if (test_rect.bottom() > clip_rect.bottom()) {
+    }
+    else if (test_rect.bottom() > clip_rect.bottom())
+    {
         result.y = clip_rect.bottom() - test_rect.bottom();
     }
 
-    if (test_rect.left() < clip_rect.left()) {
+    if (test_rect.left() < clip_rect.left())
+    {
         result.x = clip_rect.left() - test_rect.left();
-    } else if (test_rect.right() > clip_rect.right()) {
+    }
+    else if (test_rect.right() > clip_rect.right())
+    {
         result.x = clip_rect.right() - test_rect.right();
     }
 
@@ -240,7 +247,8 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
         // The bounding box assumed to clip the popup menus
         Rectf clip_rect = this->popupBoundingBox();
 
-        if (dynamic_cast<Menubar *>(p)) {
+        if (dynamic_cast<Menubar *>(p))
+        {
             // Use a vertical orientation
 
             // candidate 1: align the top left of popup to the bottom-left of the menuitem
@@ -254,14 +262,19 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
             glm::vec2 pos2_corr = translate_within(test_rect(pos2), clip_rect);
 
             // If pos2 does not require y correction and pos1 does, then use pos2
-            if (pos1_corr.y && !pos2_corr.y) {
+            if (pos1_corr.y && !pos2_corr.y)
+            {
                 output = as_uvector(pos2 + pos2_corr);
                 return true;
-            } else {
+            }
+            else
+            {
                 output = as_uvector(pos1 + pos1_corr);
                 return true;
             }
-        } else if (dynamic_cast<PopupMenu *>(p)) {
+        }
+        else if (dynamic_cast<PopupMenu *>(p))
+        {
             // Use a horizontal orientation
 
             // candidate 1: align the top left of popup to the top-right of the menuitem
@@ -275,10 +288,13 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
             glm::vec2 pos2_corr = translate_within(test_rect(pos2), clip_rect);
 
             // If pos2 does not require x correction and pos1 does, then use pos2
-            if (pos1_corr.x && !pos2_corr.x) {
+            if (pos1_corr.x && !pos2_corr.x)
+            {
                 output = as_uvector(pos2 + pos2_corr);
                 return true;
-            } else {
+            }
+            else
+            {
                 output = as_uvector(pos1 + pos1_corr);
                 return true;
             }
