@@ -223,6 +223,13 @@ UVector2 as_uvector(const glm::vec2 & v)
     return UVector2(cegui_absdim(v.x), cegui_absdim(v.y));
 }
 
+// version of Rectf::offset, which yields a new rectangle
+Rectf offset_rect(Rectf result, const glm::vec2 & v)
+{
+    result.offset(v);
+    return result;
+}
+
 } // end anonymous namespace
 
 /*************************************************************************
@@ -237,12 +244,8 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
         Sizef popup_size = d_popup->getPixelSize();
         // Absolute coords corresponding to upper left corner of menu item
         glm::vec2 base_pos = this->getClipRect(false).d_min;
-      
-        // Computes the test rectangle for a given offset
-        auto test_rect = [&popup_size, &base_pos](glm::vec2 relative_offset) -> Rectf
-        {
-            return Rectf(base_pos + relative_offset, popup_size);
-        };
+
+        Rectf popup_rect{base_pos, popup_size};
 
         // The bounding box assumed to clip the popup menus
         Rectf clip_rect = this->popupBoundingBox();
@@ -258,8 +261,8 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
             glm::vec2 pos2(0, - popup_size.d_height);
 
             // Compute correction vectors for each
-            glm::vec2 pos1_corr = translate_within(test_rect(pos1), clip_rect);
-            glm::vec2 pos2_corr = translate_within(test_rect(pos2), clip_rect);
+            glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
+            glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
 
             // If pos2 does not require y correction and pos1 does, then use pos2
             if (pos1_corr.y && !pos2_corr.y)
@@ -284,8 +287,8 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
             glm::vec2 pos2(- popup_size.d_width, 0);
 
             // Compute correction vectors for each
-            glm::vec2 pos1_corr = translate_within(test_rect(pos1), clip_rect);
-            glm::vec2 pos2_corr = translate_within(test_rect(pos2), clip_rect);
+            glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
+            glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
 
             // If pos2 does not require x correction and pos1 does, then use pos2
             if (pos1_corr.x && !pos2_corr.x)
