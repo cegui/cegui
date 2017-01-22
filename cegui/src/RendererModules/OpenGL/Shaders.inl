@@ -25,6 +25,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
+#ifndef _CeguiOpenGlShaders_
+#define _CeguiOpenGlShaders_
+
 namespace CEGUI
 {
 
@@ -49,11 +52,11 @@ static const char StandardShaderSolidFragDesktopOpengl3[] =
 "#version 150 core\n"
 "in vec4 exColour;\n"
 "out vec4 out0;\n"
-"uniform float alphaPercentage;\n"
+"uniform float alphaFactor;\n"
 "void main(void)\n"
 "{\n"
     "out0 = exColour;\n"
-    "out0.a *= alphaPercentage;\n"
+    "out0.a *= alphaFactor;\n"
 "}"
 ;
 
@@ -88,11 +91,11 @@ static const char StandardShaderTexturedFragDesktopOpengl3[] =
 "in vec2 exTexCoord;\n"
 "in vec4 exColour;\n"
 "out vec4 out0;\n"
-"uniform float alphaPercentage;\n"
+"uniform float alphaFactor;\n"
 "void main(void)\n"
 "{\n"
     "out0 = texture(texture0, exTexCoord) * exColour;\n"
-    "out0.a *= alphaPercentage;\n"
+    "out0.a *= alphaFactor;\n"
 "}"
 ;
 
@@ -119,11 +122,11 @@ static const char StandardShaderSolidFragOpenglEs3[] =
 "precision highp float;\n"
 "in vec4 exColour;\n"
 "layout(location = 0) out vec4 out0;\n"
-"uniform float alphaPercentage;\n"
+"uniform float alphaFactor;\n"
 "void main(void)\n"
 "{\n"
     "out0 = exColour;\n"
-    "out0.a *= alphaPercentage;\n"
+    "out0.a *= alphaFactor;\n"
 "}"
 ;
 
@@ -159,11 +162,11 @@ static const char StandardShaderTexturedFragOpenglEs3[] =
 "in vec2 exTexCoord;\n"
 "in vec4 exColour;\n"
 "layout(location = 0) out vec4 out0;\n"
-"uniform float alphaPercentage;\n"
+"uniform float alphaFactor;\n"
 "void main(void)\n"
 "{\n"
     "out0 = texture(texture0, exTexCoord) * exColour;\n"
-    "out0.a *= alphaPercentage;\n"
+    "out0.a *= alphaFactor;\n"
 "}"
 ;
 
@@ -189,11 +192,11 @@ static const char StandardShaderSolidFragOpenglEs2[] =
 "precision mediump int;\n"
 "precision mediump float;\n"
 "varying vec4 exColour;\n"
-"uniform float alphaPercentage;\n"
+"uniform float alphaFactor;\n"
 "void main(void)\n"
 "{\n"
 "     gl_FragColor = exColour;\n"
-"     gl_FragColor.a *= alphaPercentage;\n"
+"     gl_FragColor.a *= alphaFactor;\n"
 "}"
 ;
 
@@ -226,12 +229,14 @@ static const char StandardShaderTexturedFragOpenglEs2[] =
 "uniform sampler2D texture0;\n"
 "varying vec2 exTexCoord;\n"
 "varying vec4 exColour;\n"
-"uniform float alphaPercentage;\n"
+"uniform float alphaFactor;\n"
 "void main(void)\n"
 "{\n"
 "     gl_FragColor = texture2D(texture0, exTexCoord) * exColour;\n"
-"     gl_FragColor.a *= alphaPercentage;\n"
+"     gl_FragColor.a *= alphaFactor;\n"
 "}"
 ;
 
 }
+
+#endif
