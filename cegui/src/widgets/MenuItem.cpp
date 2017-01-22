@@ -238,8 +238,8 @@ Rectf offset_rect(Rectf result, const glm::vec2 & v)
 bool MenuItem::computePopupOffset(UVector2 & output) const
 {
     Window* p = d_ownerList;
-    if (p) {
-
+    if (p)
+    {
         // Current size of popup window
         const Sizef popup_size = d_popup->getPixelSize();
         // Absolute coords corresponding to upper left corner of menu item
