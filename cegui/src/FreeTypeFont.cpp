@@ -1003,6 +1003,8 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
         }
 
         const Image* const image = glyph->getImage();
+
+        penPosition.x = std::round(penPosition.x);
         
         //The glyph pos will be rounded to full pixels internally
         glm::vec2 renderGlyphPos(
