@@ -241,28 +241,28 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
     if (p) {
 
         // Current size of popup window
-        Sizef popup_size = d_popup->getPixelSize();
+        const Sizef popup_size = d_popup->getPixelSize();
         // Absolute coords corresponding to upper left corner of menu item
-        glm::vec2 base_pos = this->getClipRect(false).d_min;
+        const glm::vec2 base_pos = this->getClipRect(false).d_min;
 
-        Rectf popup_rect{base_pos, popup_size};
+        const Rectf popup_rect{base_pos, popup_size};
 
         // The bounding box assumed to clip the popup menus
-        Rectf clip_rect = this->popupBoundingBox();
+        const Rectf clip_rect = this->popupBoundingBox();
 
         if (dynamic_cast<Menubar *>(p))
         {
             // Use a vertical orientation
 
             // candidate 1: align the top left of popup to the bottom-left of the menuitem
-            glm::vec2 pos1(0, d_pixelSize.d_height);
+            const glm::vec2 pos1(0, d_pixelSize.d_height);
 
             // candidate 2: align the popup to the top-left of menuitem
-            glm::vec2 pos2(0, - popup_size.d_height);
+            const glm::vec2 pos2(0, - popup_size.d_height);
 
             // Compute correction vectors for each
-            glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
-            glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
+            const glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
+            const glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
 
             // If pos2 does not require y correction and pos1 does, then use pos2
             if (pos1_corr.y && !pos2_corr.y)
@@ -281,14 +281,14 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
             // Use a horizontal orientation
 
             // candidate 1: align the top left of popup to the top-right of the menuitem
-            glm::vec2 pos1(d_pixelSize.d_width, 0);
+            const glm::vec2 pos1(d_pixelSize.d_width, 0);
 
             // candidate 2: align the top right of popup to the top-left of menuitem
-            glm::vec2 pos2(- popup_size.d_width, 0);
+            const glm::vec2 pos2(- popup_size.d_width, 0);
 
             // Compute correction vectors for each
-            glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
-            glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
+            const glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
+            const glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
 
             // If pos2 does not require x correction and pos1 does, then use pos2
             if (pos1_corr.x && !pos2_corr.x)
