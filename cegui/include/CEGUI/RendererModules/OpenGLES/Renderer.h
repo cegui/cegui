@@ -29,11 +29,10 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOPENGLESRENDERER_EXPORTS
@@ -67,16 +66,16 @@ class OPENGLES_GUIRENDERER_API OpenGLESRenderer : public Renderer
 {
 public:
     //! Enumeration of valid texture target types.
-    enum TextureTargetType
+    enum class TextureTargetType : int
     {
         //! Automatically choose the best type available.
-        TTT_AUTO,
+        AUTO,
         //! Use targets based on frame buffer objects if available, else none.
-        TTT_FBO,
+        FBO,
         //! Use targets based on pbuffer support if available, else none.
-        TTT_PBUFFER,
+        PBUFFER,
         //! Disable texture targets.
-        TTT_NONE
+        NONE
     };
 
     /*!
@@ -94,7 +93,7 @@ public:
 
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+        desired TextureTarget type to be used.  Defaults to TextureTargetType::AUTO.
 
     \param abi
         This must be set to CEGUI_VERSION_ABI
@@ -103,7 +102,7 @@ public:
         Reference to the CEGUI::OpenGLESRenderer object that was created.
     */
     static OpenGLESRenderer& bootstrapSystem(
-                                const TextureTargetType tt_type = TTT_AUTO,
+                                const TextureTargetType tt_type = TextureTargetType::AUTO,
                                 const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -124,7 +123,7 @@ public:
 
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+        desired TextureTarget type to be used.  Defaults to TextureTargetType::AUTO.
 
     \param abi
         This must be set to CEGUI_VERSION_ABI
@@ -134,7 +133,7 @@ public:
     */
     static OpenGLESRenderer& bootstrapSystem(
                                 const Sizef& display_size,
-                                const TextureTargetType tt_type = TTT_AUTO,
+                                const TextureTargetType tt_type = TextureTargetType::AUTO,
                                 const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -165,7 +164,7 @@ public:
     \param abi
         This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGLESRenderer& create(const TextureTargetType tt_type = TTT_AUTO,
+    static OpenGLESRenderer& create(const TextureTargetType tt_type = TextureTargetType::AUTO,
                                     const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -183,7 +182,7 @@ public:
         This must be set to CEGUI_VERSION_ABI
     */
     static OpenGLESRenderer& create(const Sizef& display_size,
-                                    const TextureTargetType tt_type = TTT_AUTO,
+                                    const TextureTargetType tt_type = TextureTargetType::AUTO,
                                     const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -206,30 +205,30 @@ public:
 	static bool isGLExtensionSupported( const char* extension );
 
     // implement Renderer interface
-    RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
-    TextureTarget* createTextureTarget();
-    void destroyTextureTarget(TextureTarget* target);
-    void destroyAllTextureTargets();
-    Texture& createTexture(const String& name);
-    Texture& createTexture(const String& name,
+    virtual RenderTarget& getDefaultRenderTarget();
+    virtual GeometryBuffer& createGeometryBuffer();
+    virtual void destroyGeometryBuffer(const GeometryBuffer& buffer);
+    virtual void destroyAllGeometryBuffers();
+    virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
+    virtual void destroyTextureTarget(TextureTarget* target);
+    virtual void destroyAllTextureTargets();
+    virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Sizef& size);
-    void destroyTexture(Texture& texture);
-    void destroyTexture(const String& name);
-    void destroyAllTextures();
-    Texture& getTexture(const String& name) const;
-    bool isTextureDefined(const String& name) const;
-    void beginRendering();
-    void endRendering();
-    void setDisplaySize(const Sizef& sz);
-    const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
-    uint getMaxTextureSize() const;
-    const String& getIdentifierString() const;
+    virtual Texture& createTexture(const String& name, const Sizef& size);
+    virtual void destroyTexture(Texture& texture);
+    virtual void destroyTexture(const String& name);
+    virtual void destroyAllTextures();
+    virtual Texture& getTexture(const String& name) const;
+    virtual bool isTextureDefined(const String& name) const;
+    virtual void beginRendering();
+    virtual void endRendering();
+    virtual void setDisplaySize(const Sizef& sz);
+    virtual const Sizef& getDisplaySize() const;
+    virtual unsigned int getMaxTextureSize() const;
+    virtual const String& getIdentifierString() const;
+    virtual bool isTexCoordSystemFlipped() const;
 
     /*!
     \brief
@@ -295,23 +294,6 @@ public:
         next power of two up from \a f if it's not.
     */
     static float getNextPOTSize(const float f);
-    
-    /*!
-    \brief
-        Returns if the texture coordinate system is vertically flipped or not. The original of a
-        texture coordinate system is typically located either at the the top-left or the bottom-left.
-        CEGUI, Direct3D and most rendering engines assume it to be on the top-left. OpenGL assumes it to
-        be at the bottom left.        
- 
-        This function is intended to be used when generating geometry for rendering the TextureTarget
-        onto another surface. It is also intended to be used when trying to use a custom texture (RTT)
-        inside CEGUI using the Image class, in order to determine the Image coordinates correctly.
-
-    \return
-        - true if flipping is required: the texture coordinate origin is at the bottom left
-        - false if flipping is not required: the texture coordinate origin is at the top left
-    */
-    bool isTexCoordSystemFlipped() const { return true; }
 
 private:
     /*!
@@ -370,8 +352,6 @@ private:
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
-    //! What the renderer considers to be the current display DPI resolution.
-    Vector2f d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
@@ -383,12 +363,11 @@ private:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::map<String, OpenGLESTexture*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, OpenGLESTexture*)> TextureMap;
+    typedef std::unordered_map<String, OpenGLESTexture*> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
+    unsigned int d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
     bool d_initExtraStates;
     //! pointer to a helper that creates TextureTargets supported by the system.

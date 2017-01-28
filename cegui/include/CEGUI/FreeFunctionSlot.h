@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
     Slot functor class that calls back via a free function pointer.
 */
-class FreeFunctionSlot : public SlotFunctorBase
+class FreeFunctionSlot : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Slot function type.
@@ -47,7 +47,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return d_function(args);
     }
@@ -65,7 +65,7 @@ private:
     This functor always returns true to CEGUI, which means the event was
     handled.
 */
-class FreeFunctionSlotVoid : public SlotFunctorBase
+class FreeFunctionSlotVoid : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Slot function type.
@@ -75,7 +75,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         d_function(args);
 
@@ -91,7 +91,7 @@ private:
     Slot functor class that calls back via a free function pointer.
     This variant ignores passed EventArgs.
 */
-class FreeFunctionSlotNoArgs : public SlotFunctorBase
+class FreeFunctionSlotNoArgs : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Slot function type.
@@ -101,7 +101,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs& /*args*/)
+    bool operator()(const EventArgs& /*args*/) override
     {
         return d_function();
     }
@@ -120,7 +120,7 @@ private:
     This functor always returns true to CEGUI, which means the event was
     handled.
 */
-class FreeFunctionSlotVoidNoArgs : public SlotFunctorBase
+class FreeFunctionSlotVoidNoArgs : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Slot function type.
@@ -130,7 +130,7 @@ public:
         d_function(func)
     {}
 
-    virtual bool operator()(const EventArgs&)
+    bool operator()(const EventArgs&) override
     {
         d_function();
 

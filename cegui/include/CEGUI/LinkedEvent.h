@@ -86,8 +86,7 @@ protected:
 
     LinkedEvent(const LinkedEvent& e) : Event(e) {}
 
-    typedef std::vector<Event::Connection
-        CEGUI_VECTOR_ALLOC(Event::Connection)> LinkedConnections;
+    typedef std::vector<Event::Connection> LinkedConnections;
     //! collection of connection to the linked Events.
     LinkedConnections d_connections;
     //! reference to the event set that we added ourself to

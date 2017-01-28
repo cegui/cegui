@@ -56,13 +56,18 @@ void OgreResourceProvider::loadRawDataContainer(const String& filename,
     else
         orpGroup = resourceGroup;
 
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().
         openResource(filename.c_str(), orpGroup.c_str());
+#else
+    Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().
+        openResource(String::convertUtf32ToUtf8(filename.getString()).c_str(), String::convertUtf32ToUtf8(orpGroup.getString()).c_str());
+#endif
 
     if (input.isNull())
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "Unable to open resource file '" + filename +
-            "' in resource group '" + orpGroup + "'."));
+            "' in resource group '" + orpGroup + "'.");
 
     Ogre::String buf = input->getAsString();
     const size_t memBuffSize = buf.length();
@@ -91,12 +96,21 @@ size_t OgreResourceProvider::getResourceGroupFileNames(
     const String& resource_group)
 {
     // get list of files in the group that match the pattern.
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     Ogre::StringVectorPtr vp =
         Ogre::ResourceGroupManager::getSingleton().findResourceNames(
             (resource_group.empty() ?
                 d_defaultResourceGroup.c_str() :
                 resource_group.c_str()),
             file_pattern.c_str());
+#else
+    Ogre::StringVectorPtr vp =
+        Ogre::ResourceGroupManager::getSingleton().findResourceNames(
+            (resource_group.empty() ?
+                String::convertUtf32ToUtf8(d_defaultResourceGroup.getString()).c_str() :
+                String::convertUtf32ToUtf8(resource_group.getString()).c_str()),
+            String::convertUtf32ToUtf8(file_pattern.getString()).c_str());
+#endif
 
     size_t entries = 0;
     Ogre::StringVector::iterator i = vp->begin();

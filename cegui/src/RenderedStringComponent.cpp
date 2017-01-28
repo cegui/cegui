@@ -43,9 +43,7 @@ RenderedStringComponent* RenderedStringComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
-    d_verticalFormatting(VF_BOTTOM_ALIGNED),
-    d_aspectLock(false),
-    d_selectionImage(0)
+    d_selectionImage(nullptr)
 {
 }
 
@@ -55,15 +53,15 @@ RenderedStringComponent::~RenderedStringComponent()
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringComponent::setVerticalFormatting(VerticalFormatting fmt)
+void RenderedStringComponent::setVerticalTextFormatting(VerticalTextFormatting fmt)
 {
-    d_verticalFormatting = fmt;
+    d_verticalTextFormatting = fmt;
 }
 
 //----------------------------------------------------------------------------//
-VerticalFormatting RenderedStringComponent::getVerticalFormatting() const
+VerticalTextFormatting RenderedStringComponent::getVerticalTextFormatting() const
 {
-    return d_verticalFormatting;
+    return d_verticalTextFormatting;
 }
 
 //----------------------------------------------------------------------------//
@@ -75,25 +73,25 @@ void RenderedStringComponent::setPadding(const Rectf& padding)
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setLeftPadding(const float padding)
 {
-    d_padding.d_min.d_x = padding;
+    d_padding.d_min.x = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setRightPadding(const float padding)
 {
-    d_padding.d_max.d_x = padding;
+    d_padding.d_max.x = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setTopPadding(const float padding)
 {
-    d_padding.d_min.d_y = padding;
+    d_padding.d_min.y = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setBottomPadding(const float padding)
 {
-    d_padding.d_max.d_x = padding;
+    d_padding.d_max.x = padding;
 }
 
 //----------------------------------------------------------------------------//
@@ -105,37 +103,25 @@ const Rectf& RenderedStringComponent::getPadding() const
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getLeftPadding() const
 {
-    return d_padding.d_min.d_x;
+    return d_padding.d_min.x;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getRightPadding() const
 {
-    return d_padding.d_max.d_x;
+    return d_padding.d_max.x;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getTopPadding() const
 {
-    return d_padding.d_min.d_y;
+    return d_padding.d_min.y;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getBottomPadding() const
 {
-    return d_padding.d_max.d_y;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setAspectLock(const bool setting)
-{
-    d_aspectLock = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool RenderedStringComponent::getAspectLock() const
-{
-    return d_aspectLock;
+    return d_padding.d_max.y;
 }
 
 //----------------------------------------------------------------------------//

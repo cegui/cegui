@@ -54,13 +54,13 @@ int pbAttrs[] =
 };
 
 //----------------------------------------------------------------------------//
-OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLTextureTarget(owner),
+OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer),
     d_pbuffer(0)
 {
     if (!GLXEW_VERSION_1_3)
-        CEGUI_THROW(InvalidRequestException("System does not support GLX >= 1.3 "
-            "required by CEGUI pbuffer usage under GLX"));
+        throw InvalidRequestException("System does not support GLX >= 1.3 "
+            "required by CEGUI pbuffer usage under GLX");
 
     d_dpy = glXGetCurrentDisplay();
 
@@ -105,7 +105,7 @@ void OpenGLGLXPBTextureTarget::activate()
 
     // we clear the blend mode here so the next setupRenderingBlendMode call
     // is forced to update states for our local context.
-    d_owner.setupRenderingBlendMode(BM_INVALID);
+    d_owner.setupRenderingBlendMode(BlendMode::Invalid);
 
     OpenGLTextureTarget::activate();
 }
@@ -124,7 +124,7 @@ void OpenGLGLXPBTextureTarget::deactivate()
 
     // Clear the blend mode again so the next setupRenderingBlendMode call
     // is forced to update states for the main / previous context.
-    d_owner.setupRenderingBlendMode(BM_INVALID);
+    d_owner.setupRenderingBlendMode(BlendMode::Invalid);
 
     OpenGLTextureTarget::deactivate();
 }
@@ -171,8 +171,8 @@ void OpenGLGLXPBTextureTarget::initialisePBuffer()
     d_pbuffer = glXCreatePbuffer(d_dpy, d_fbconfig, creation_attrs);
 
     if (!d_pbuffer)
-        CEGUI_THROW(RendererException(
-            "pbuffer creation error:  glXCreatePbuffer() failed"));
+        throw RendererException(
+            "pbuffer creation error:  glXCreatePbuffer() failed");
 
     // get the real size of the buffer that was created
     GLuint actual_width, actual_height;
@@ -229,8 +229,8 @@ void OpenGLGLXPBTextureTarget::selectFBConfig()
 
     glxcfgs = glXChooseFBConfig(d_dpy, DefaultScreen(d_dpy), pbAttrs, &cfgcnt);
     if (!glxcfgs)
-        CEGUI_THROW(RendererException(
-            "pbuffer creation failure, can't get suitable configuration."));
+        throw RendererException(
+            "pbuffer creation failure, can't get suitable configuration.");
 
     d_fbconfig = glxcfgs[0];
 }
@@ -242,8 +242,8 @@ void OpenGLGLXPBTextureTarget::createContext()
                                     glXGetCurrentContext(), true);
 
     if (!d_context)
-        CEGUI_THROW(RendererException(
-            "Failed to create GLX context for pbuffer."));
+        throw RendererException(
+            "Failed to create GLX context for pbuffer.");
 }
 
 //----------------------------------------------------------------------------//

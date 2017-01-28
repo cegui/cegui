@@ -73,22 +73,22 @@ public:
     */
     virtual ~DefaultWindow(void) {}
 
+    bool canFocus() override;
 
 protected:
-    //! helper to update mouse input handled state
-    void updateMouseEventHandled(MouseEventArgs& e) const;
+    //! helper to update cursor input handled state
+    void updatePointerEventHandled(CursorInputEventArgs& e) const;
 
     // overridden functions from Window base class
-    bool moveToFront_impl(bool wasClicked);
+    bool moveToFront_impl(bool wasClicked) override;
 
-    // override the mouse event handlers
-    void onMouseMove(MouseEventArgs& e);
-    void onMouseWheel(MouseEventArgs& e);
-    void onMouseButtonDown(MouseEventArgs& e);
-    void onMouseButtonUp(MouseEventArgs& e);
-    void onMouseClicked(MouseEventArgs& e);
-    void onMouseDoubleClicked(MouseEventArgs& e);
-    void onMouseTripleClicked(MouseEventArgs& e);
+    // override the cursor event handlers
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onScroll(CursorInputEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 };
 
 } // End of  CEGUI namespace section

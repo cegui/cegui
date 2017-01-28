@@ -34,6 +34,7 @@ namespace CEGUI
     // default handler does nothing.
 
     XMLHandler::XMLHandler(void)
+        : d_resourceExistsAction(XmlResourceExistsAction::Throw)
     {}
 
     XMLHandler::~XMLHandler(void)
@@ -47,22 +48,33 @@ namespace CEGUI
         return ret;
     }
 
-    void XMLHandler::handleContainer(const RawDataContainer& source)
+    void XMLHandler::handleContainer(const RawDataContainer& source,
+        XmlResourceExistsAction resourceExistsAction)
     {
+        d_resourceExistsAction = resourceExistsAction;
+
         System::getSingleton().getXMLParser()->parseXML(
-                    *this, source, getSchemaName());
+            *this, source, getSchemaName());
     }
 
-    void XMLHandler::handleFile(const String& fileName, const String& resourceGroup)
+    void XMLHandler::handleFile(const String& fileName, const String& resourceGroup,
+        XmlResourceExistsAction resourceExistsAction)
     {
+        d_resourceExistsAction = resourceExistsAction;
+
+        String resourceGroupAdjusted = resourceGroup.empty() ?
+            getDefaultResourceGroup() : resourceGroup;
+
         System::getSingleton().getXMLParser()->parseXMLFile(
                     *this, fileName, getSchemaName(),
-                    resourceGroup.empty() ? getDefaultResourceGroup() :
-                                             resourceGroup);
+                    resourceGroupAdjusted);
     }
 
-    void XMLHandler::handleString(const String& source)
+    void XMLHandler::handleString(const String& source,
+        XmlResourceExistsAction resourceExistsAction)
     {
+        d_resourceExistsAction = resourceExistsAction;
+
         System::getSingleton().getXMLParser()->parseXMLString(
                     *this, source, getSchemaName());
     }

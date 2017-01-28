@@ -30,7 +30,6 @@
 #include "CEGUI/widgets/Menubar.h"
 #include "CEGUI/widgets/PopupMenu.h"
 
-#include "CEGUI/Logger.h"
 #include "CEGUI/WindowManager.h"
 
 // Start of CEGUI namespace section
@@ -57,10 +56,8 @@ MenuItem::MenuItem(const String& type, const String& name)
       d_popupOpening(false),
       d_autoPopupTimeout(0.0f),
       d_autoPopupTimeElapsed(0.0f),
-      d_popup(0)
+      d_popup(nullptr)
 {
-    // menuitems dont want multi-click events
-    setWantsMultiClickEvents(false);
     // add the new properties
     addMenuItemProperties();
     d_popupOffset.d_x = cegui_absdim(0);
@@ -79,7 +76,7 @@ MenuItem::~MenuItem(void)
 /*************************************************************************
     Update the internal state of the Widget
 *************************************************************************/
-void MenuItem::updateInternalState(const Vector2f& mouse_pos)
+void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
 {
     bool oldstate = d_hovering;
 
@@ -89,10 +86,10 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     // if input is captured, but not by 'this', then we never hover highlight
     const Window* capture_wnd = getCaptureWindow();
 
-    if (capture_wnd == 0)
-        d_hovering = (getGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos));
+    if (capture_wnd == nullptr)
+        d_hovering = (getGUIContext().getWindowContainingCursor() == this && isHit(cursor_pos));
     else
-        d_hovering = (capture_wnd == this && isHit(mouse_pos));
+        d_hovering = (capture_wnd == this && isHit(cursor_pos));
 
     // if state has changed, trigger a re-draw
     // and possible make the parent menu open another popup
@@ -109,7 +106,7 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
 
                 if (!menu->isMultiplePopupsAllowed())
                 {
-                    if (curpopup != this && curpopup != 0)
+                    if (curpopup != this && curpopup != nullptr)
                     {
                         if (!hasAutoPopup())
                         {
@@ -177,7 +174,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     }
 
     // we are setting a new popup and not just clearing. and we are told to add the child
-    if (popup != 0 && add_as_child)
+    if (popup != nullptr && add_as_child)
     {
         addChild(popup);
     }
@@ -191,7 +188,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
 void MenuItem::openPopupMenu(bool notify)
 {
     // no popup? or already open...
-    if (d_popup == 0 || d_opened)
+    if (d_popup == nullptr || d_opened)
         return;
 
     d_popupOpening = false;
@@ -239,7 +236,7 @@ void MenuItem::openPopupMenu(bool notify)
 void MenuItem::closePopupMenu(bool notify)
 {
     // no popup? or not open...
-    if (d_popup == 0 || !d_opened)
+    if (d_popup == nullptr || !d_opened)
         return;
 
     d_popupOpening = false;
@@ -253,7 +250,7 @@ void MenuItem::closePopupMenu(bool notify)
         // only if the menu base does not allow multiple popups
         if (!menu->isMultiplePopupsAllowed())
         {
-            menu->changePopupMenuItem(0);
+            menu->changePopupMenuItem(nullptr);
             return; // the rest is handled when the menu base eventually call us again itself
         }
     }
@@ -325,7 +322,7 @@ void MenuItem::closeAllMenuItemPopups()
     // are we attached to a PopupMenu?
     if (!d_ownerList)
         return;
-    
+
     if (dynamic_cast<Menubar*>(d_ownerList))
     {
         closePopupMenu();
@@ -338,7 +335,7 @@ void MenuItem::closeAllMenuItemPopups()
         // is this parent popup attached to a menu item?
         Window* popParent = pop->getParent();
         MenuItem* mi = dynamic_cast<MenuItem*>(popParent);
-        
+
         if (mi)
         {
             // recurse
@@ -370,18 +367,18 @@ void MenuItem::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when the mouse moves
+    Handler for when the cursor moves
 *************************************************************************/
-void MenuItem::onMouseMove(MouseEventArgs& e)
+void MenuItem::onCursorMove(CursorInputEventArgs& e)
 {
-    // this is needed to discover whether mouse is in the widget area or not.
+    // this is needed to discover whether cursor is in the widget area or not.
     // The same thing used to be done each frame in the rendering method,
     // but in this version the rendering method may not be called every frame
     // so we must discover the internal widget state here - which is actually
     // more efficient anyway.
 
     // base class processing
-    ItemEntry::onMouseMove(e);
+    ItemEntry::onCursorMove(e);
 
     updateInternalState(e.position);
     ++e.handled;
@@ -389,14 +386,14 @@ void MenuItem::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-    Handler for mouse button pressed events
+    Handler for cursor pressed events
 *************************************************************************/
-void MenuItem::onMouseButtonDown(MouseEventArgs& e)
+void MenuItem::onCursorPressHold(CursorInputEventArgs& e)
 {
     // default processing
-    ItemEntry::onMouseButtonDown(e);
+    ItemEntry::onCursorPressHold(e);
 
-    if (e.button == LeftButton)
+    if (e.source == CursorInputSource::Left)
     {
         d_popupWasClosed = false;
 
@@ -411,27 +408,26 @@ void MenuItem::onMouseButtonDown(MouseEventArgs& e)
         // event was handled by us.
         ++e.handled;
     }
-
 }
 
 
 /*************************************************************************
-    Handler for mouse button release events
+    Handler for cursor activation events
 *************************************************************************/
-void MenuItem::onMouseButtonUp(MouseEventArgs& e)
+void MenuItem::onCursorActivate(CursorInputEventArgs& e)
 {
     // default processing
-    ItemEntry::onMouseButtonUp(e);
+    ItemEntry::onCursorActivate(e);
 
-    if (e.button == LeftButton)
+    if (e.source == CursorInputSource::Left)
     {
         releaseInput();
 
         // was the button released over this window?
-        // (use mouse position, as e.position in args has been unprojected)
+        // (use cursor position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
                 getGUIContext().getRootWindow()->getTargetChildAtPosition(
-                    getGUIContext().getMouseCursor().getPosition()) == this)
+                    getGUIContext().getCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
@@ -440,11 +436,10 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // event was handled by us.
         ++e.handled;
     }
-
 }
 
 /*************************************************************************
-    Handler for when mouse capture is lost
+    Handler for when cursor capture is lost
 *************************************************************************/
 void MenuItem::onCaptureLost(WindowEventArgs& e)
 {
@@ -453,7 +448,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
     d_pushed = false;
     updateInternalState(getUnprojectedPosition(
-        getGUIContext().getMouseCursor().getPosition()));
+        getGUIContext().getCursor().getPosition()));
     invalidate();
 
     // event was handled by us.
@@ -462,12 +457,12 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when mouse leaves the widget
+    Handler for when cursor leaves the widget
 *************************************************************************/
-void MenuItem::onMouseLeaves(MouseEventArgs& e)
+void MenuItem::onCursorLeaves(CursorInputEventArgs& e)
 {
-    // deafult processing
-    ItemEntry::onMouseLeaves(e);
+    // default processing
+    ItemEntry::onCursorLeaves(e);
 
     d_hovering = false;
     invalidate();
@@ -486,7 +481,7 @@ void MenuItem::onTextChanged(WindowEventArgs& e)
     // if we are attached to a ItemListBase, we make it update as necessary
     Window* parent = getParent();
     ItemListBase* ilb = dynamic_cast<ItemListBase*>(parent);
-    
+
     if (ilb)
     {
         ilb->handleUpdatedItemData();
@@ -502,7 +497,7 @@ void MenuItem::updateSelf(float elapsed)
 {
     ItemEntry::updateSelf(elapsed);
 
-    //handle delayed popup closing/opening when hovering with the mouse
+    //handle delayed popup closing/opening when hovering with the cursor
     if (d_autoPopupTimeout != 0.0f && (d_popupOpening || d_popupClosing))
     {
         // stop timer if the hovering state isn't set appropriately anymore
@@ -540,12 +535,12 @@ void MenuItem::updateSelf(float elapsed)
 void MenuItem::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "MenuItem can only have Elements of type Window added as children "
-            "(Window path: " + getNamePath() + ")."));
-    
+            "(Window path: " + getNamePath() + ").");
+
     ItemEntry::addChild_impl(wnd);
 
     PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd);
@@ -562,12 +557,12 @@ Add MenuItem specific properties
 void MenuItem::addMenuItemProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
+
     CEGUI_DEFINE_PROPERTY(MenuItem, UVector2,
         "PopupOffset","Property to specify an offset for the popup menu position. Value is a UVector2 property value.",
         &MenuItem::setPopupOffset, &MenuItem::getPopupOffset, UVector2::zero()
     );
-    
+
     CEGUI_DEFINE_PROPERTY(MenuItem, float,
         "AutoPopupTimeout","Property to specify the time, which has to elapse before the popup window is opened/closed if the hovering state changes. Value is a float property value.",
         &MenuItem::setAutoPopupTimeout, &MenuItem::getAutoPopupTimeout, 0.0f
