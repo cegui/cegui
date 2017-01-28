@@ -1,11 +1,11 @@
 /***********************************************************************
-	created:	21/11/2010
-	author:		Martin Preisler (reworked from code by Paul D Turner)
+	created:	17th August 2015
+	author:		Lukas Meindl (reworked from code by Martin Preisler who reworked his code from code by Paul D Turner)
 	
 	purpose:	Interface to the PropertyHelper class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,46 +30,24 @@
 #define _CEGUIPropertyHelper_h_
 
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/UVector.h"
 #include "CEGUI/Colour.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/UDim.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/URect.h"
+#include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/HorizontalAlignment.h"
+#include "CEGUI/VerticalAlignment.h"
+#include "CEGUI/DefaultParagraphDirection.h"
 
+#include <glm/gtc/quaternion.hpp>
 
-#include <cstdio>
-
-#include <sstream>
-
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4996)
-#endif
-
-#ifdef _MSC_VER
-    #define snprintf _snprintf
-#endif
-
-#ifdef __MINGW32__
-
-    #if __USE_MINGW_ANSI_STDIO != 1
-        #warning  __USE_MINGW_ANSI_STDIO must be set to 1 for sscanf and snprintf to work with 64bit integers
-    #endif
-
-    #pragma GCC diagnostic push
-
-    /* Due to a bug in MinGW-w64, a false warning is sometimes issued when using
-       "%llu" format with the "printf"/"scanf" family of functions. */
-    #pragma GCC diagnostic ignored "-Wformat"
-    #pragma GCC diagnostic ignored "-Wformat-extra-args"
-
-#endif
 
 namespace CEGUI
 {
-
 /*!
 \brief
 	Helper class used to convert various data types to and from the format expected in Property strings
@@ -78,7 +56,7 @@ namespace CEGUI
     Usage:
 
     float value = PropertyHelper<float>::fromString("0.1");
-    String value = PropertyHelper<float>::toString(0.1);
+    String value = PropertyHelper<float>::toString(0.1f);
 */
 template<typename T>
 class PropertyHelper;
@@ -93,21 +71,23 @@ public:
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
-    static inline const String& getDataTypeName()
+    static const String& getDataTypeName()
     {
         return PropertyHelper<T>::getDataTypeName();
     }
 
-    static inline return_type fromString(const String& str)
+    static return_type fromString(const String& str)
     {
         return PropertyHelper<T>::fromString(str);
     }
 
-    static inline String toString(pass_type val)
+    static String toString(pass_type val)
     {
         return PropertyHelper<T>::toString(val);
     }
+   
 };
+
 
 // this redirects PropertyHelper<const T&> to PropertyHelper<T>
 template<typename T>
@@ -119,17 +99,17 @@ public:
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
-    static inline const String& getDataTypeName()
+    static const String& getDataTypeName()
     {
         return PropertyHelper<T>::getDataTypeName();
     }
 
-    static inline return_type fromString(const String& str)
+    static return_type fromString(const String& str)
     {
         return PropertyHelper<T>::fromString(str);
     }
 
-    static inline String toString(pass_type val)
+    static String toString(pass_type val)
     {
         return PropertyHelper<T>::toString(val);
     }
@@ -145,24 +125,24 @@ public:
     typedef typename PropertyHelper<T*>::pass_type pass_type;
     typedef typename PropertyHelper<T*>::string_return_type string_return_type;
 
-    static inline const String& getDataTypeName()
+    static const String& getDataTypeName()
     {
         return PropertyHelper<T>::getDataTypeName();
     }
 
-    static inline return_type fromString(const String& str)
+    static return_type fromString(const String& str)
     {
         return PropertyHelper<T*>::fromString(str);
     }
 
-    static inline String toString(pass_type val)
+    static String toString(pass_type val)
     {
         return PropertyHelper<T*>::toString(val);
     }
 };
 
 template<>
-class PropertyHelper<String>
+class CEGUIEXPORT PropertyHelper<String>
 {
 public:
     typedef const String& return_type;
@@ -170,26 +150,13 @@ public:
     typedef const String& pass_type;
     typedef const String& string_return_type;
 
-    static const String& getDataTypeName()
-    {
-        static String type("String");
-
-        return type;
-    }
-
-    static inline return_type fromString(const String& str)
-    {
-        return str;
-    }
-
-    static inline string_return_type toString(pass_type val)
-    {
-        return val;
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<float>
+class CEGUIEXPORT PropertyHelper<float>
 {
 public:
     typedef float return_type;
@@ -197,31 +164,13 @@ public:
     typedef const float pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("float");
-
-        return type;
-    }
-
-    static inline return_type fromString(const String& str)
-    {
-        float val = 0;
-        sscanf(str.c_str(), " %g", &val);
-        
-        return val;
-    }
-
-    static inline string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        snprintf(buff, sizeof(buff), "%g", val);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
+
 template<>
-class PropertyHelper<double>
+class CEGUIEXPORT PropertyHelper<double>
 {
 public:
     typedef double return_type;
@@ -229,191 +178,79 @@ public:
     typedef const double pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("double");
-
-        return type;
-    }
-
-    static inline return_type fromString(const String& str)
-    {
-        double val = 0;
-        sscanf(str.c_str(), " %lg", &val);
-        
-        return val;
-    }
-
-    static inline string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        snprintf(buff, sizeof(buff), "%g", val);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<int>
+class CEGUIEXPORT PropertyHelper<std::int16_t>
 {
 public:
-    typedef int return_type;
+    typedef std::int16_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const int pass_type;
+    typedef const std::int16_t pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("int");
-
-        return type;
-    }
-
-    static inline return_type fromString(const String& str)
-    {
-        int val = 0;
-        sscanf(str.c_str(), " %d", &val);
-
-        return val;
-    }
-
-    static inline string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        snprintf(buff, sizeof(buff), "%d", val);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<uint>
+class CEGUIEXPORT PropertyHelper<std::int32_t>
 {
 public:
-    typedef uint return_type;
+    typedef std::int32_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const uint pass_type;
+    typedef const std::int32_t pass_type;
     typedef String string_return_type;
-    
-    static const String& getDataTypeName()
-    {
-        static String type("uint");
 
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        uint val = 0;
-        sscanf(str.c_str(), " %u", &val);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        snprintf(buff, sizeof(buff), "%u", val);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<uint64>
+class CEGUIEXPORT PropertyHelper<std::int64_t>
 {
 public:
-    typedef uint64 return_type;
+    typedef std::int64_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const uint64 pass_type;
+    typedef const std::int64_t pass_type;
     typedef String string_return_type;
-    
-    static const String& getDataTypeName()
-    {
-        static String type("uint64");
 
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        uint64 val = 0;
-        sscanf(str.c_str(), " %llu", &val);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        snprintf(buff, sizeof(buff), "%llu", val);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
-
 template<>
-class PropertyHelper<String::value_type>
+class CEGUIEXPORT PropertyHelper<std::uint32_t>
 {
 public:
-    typedef String::value_type return_type;
+    typedef std::uint32_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const String::value_type pass_type;
+    typedef const std::uint32_t pass_type;
     typedef String string_return_type;
-    
-    static const String& getDataTypeName()
-    {
-        static String type("char");
 
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        return str[0];
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        return String("") + val;
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
-#endif
-
 template<>
-class PropertyHelper<unsigned long>
+class CEGUIEXPORT PropertyHelper<std::uint64_t>
 {
 public:
-    typedef unsigned long return_type;
+    typedef std::uint64_t return_type;
     typedef return_type safe_method_return_type;
-    typedef const unsigned long pass_type;
+    typedef const std::uint64_t pass_type;
     typedef String string_return_type;
-    
-    static const String& getDataTypeName()
-    {
-        static String type("unsigned long");
 
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        unsigned long val = 0;
-        sscanf(str.c_str(), " %lu", &val);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        snprintf(buff, sizeof(buff), "%lu", val);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<> 
@@ -425,26 +262,16 @@ public:
     typedef const bool pass_type;
     typedef const String& string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("bool");
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        return (str == True || str == "True");
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        return val ? True : False;
-    }
-
-    //! Definitions of the possible values represented as Strings
-    static const CEGUI::String True;
-    static const CEGUI::String False;
+    /*! Definitions of the possible values represented as Strings
+        We must not use "True" and "False" here due to conflicts
+        with definitions in other libraries using these identifiers.
+    */
+    static const CEGUI::String ValueTrue;
+    static const CEGUI::String ValueFalse;
 };
 
 
@@ -458,247 +285,58 @@ public:
     typedef AspectMode pass_type;
     typedef String string_return_type;
 
-    static const String& getDataTypeName()
-    {
-        static String type("AspectMode");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        if (str == Shrink)
-        {
-            return AM_SHRINK;
-        }
-        else if (str == Expand)
-        {
-            return AM_EXPAND;
-        }
-        else if (str == AdjustHeight)
-        {
-            return AM_ADJUST_HEIGHT;
-        }
-        else if (str == AdjustWidth)
-        {
-            return AM_ADJUST_WIDTH;
-        }
-        else
-        {
-            return AM_IGNORE;
-        }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == AM_IGNORE)
-        {
-            return Ignore;
-        }
-        else if (val == AM_SHRINK)
-        {
-            return Shrink;
-        }
-        else if (val == AM_EXPAND)
-        {
-            return Expand;
-        }
-        else if (val == AM_ADJUST_HEIGHT)
-        {
-            return AdjustHeight;
-        }
-        else if (val == AM_ADJUST_WIDTH)
-        {
-            return AdjustWidth;
-        }
-        else
-        {
-            assert(false && "Invalid aspect mode");
-            return Ignore;
-        }
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 
     //! Definitions of the possible values represented as Strings
-    static const CEGUI::String Shrink;
-    static const CEGUI::String Expand;
-    static const CEGUI::String AdjustHeight;
-    static const CEGUI::String AdjustWidth;
-    static const CEGUI::String Ignore;
+    static const String Shrink;
+    static const String Expand;
+    static const String AdjustHeight;
+    static const String AdjustWidth;
+    static const String Ignore;
 };
 
 template<>
-class PropertyHelper<Sizef >
+class CEGUIEXPORT PropertyHelper<glm::vec2>
 {
 public:
-    typedef Sizef return_type;
+    typedef glm::vec2 return_type;
     typedef return_type safe_method_return_type;
-    typedef const Sizef& pass_type;
+    typedef const glm::vec2& pass_type;
     typedef String string_return_type;
 
-    static const String& getDataTypeName()
-    {
-        static String type("Sizef");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        Sizef val(0, 0);
-        sscanf(str.c_str(), " w:%g h:%g", &val.d_width, &val.d_height);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[128];
-        snprintf(buff, sizeof(buff), "w:%g h:%g", val.d_width, val.d_height);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<Vector2f >
+class CEGUIEXPORT PropertyHelper<glm::vec3>
 {
 public:
-    typedef Vector2f return_type;
+    typedef glm::vec3 return_type;
     typedef return_type safe_method_return_type;
-    typedef const Vector2f& pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("Vector2f");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        Vector2f val(0, 0) ;
-        sscanf(str.c_str(), " x:%g y:%g", &val.d_x, &val.d_y);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[128];
-        snprintf(buff, sizeof(buff), "x:%g y:%g", val.d_x, val.d_y);
-
-        return String(buff);
-    }
-};
-
-template<>
-class PropertyHelper<Vector3f >
-{
-public:
-    typedef Vector3f return_type;
-    typedef return_type safe_method_return_type;
-    typedef const Vector3f& pass_type;
+    typedef const glm::vec3& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("Vector3f");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        Vector3f val(0, 0, 0);
-        sscanf(str.c_str(), " x:%g y:%g z:%g", &val.d_x, &val.d_y, &val.d_z);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[128];
-        snprintf(buff, sizeof(buff), "x:%g y:%g z:%g", val.d_x, val.d_y, val.d_z);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<Quaternion>
+class CEGUIEXPORT PropertyHelper<glm::quat>
 {
 public:
-    typedef Quaternion return_type;
+    typedef glm::quat return_type;
     typedef return_type safe_method_return_type;
-    typedef const Quaternion& pass_type;
+    typedef const glm::quat& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("Quaternion");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        if (strchr(str.c_str(), 'w') || strchr(str.c_str(), 'W'))
-        {
-            Quaternion val(1, 0, 0, 0);
-            sscanf(str.c_str(), " w:%g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
-
-            return val;
-        }
-        else
-        {
-            float x, y, z;
-            sscanf(str.c_str(), " x:%g y:%g z:%g", &x, &y, &z);
-            return Quaternion::eulerAnglesDegrees(x, y, z);
-        }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[128];
-        snprintf(buff, sizeof(buff), "w:%g x:%g y:%g z:%g", val.d_w, val.d_x, val.d_y, val.d_z);
-
-        return String(buff);
-    }
-};
-
-template<>
-class PropertyHelper<Rectf >
-{
-public:
-    typedef Rectf return_type;
-    typedef return_type safe_method_return_type;
-    typedef const Rectf& pass_type;
-    typedef String string_return_type;
-    
-    static const String& getDataTypeName()
-    {
-        static String type("Rectf");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        Rectf val(0, 0, 0, 0);
-        sscanf(str.c_str(), " l:%g t:%g r:%g b:%g", &val.d_min.d_x, &val.d_min.d_y, &val.d_max.d_x, &val.d_max.d_y);
-
-        return val;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[256];
-        snprintf(buff, sizeof(buff), "l:%g t:%g r:%g b:%g",
-                 val.d_min.d_x, val.d_min.d_y, val.d_max.d_x, val.d_max.d_y);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
@@ -710,20 +348,13 @@ public:
     typedef const Image* const pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("Image");
-
-        return type;
-    }
-
+    static const String& getDataTypeName();
     static return_type fromString(const String& str);
-
     static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<Colour>
+class CEGUIEXPORT PropertyHelper<Colour>
 {
 public:
     typedef Colour return_type;
@@ -731,32 +362,13 @@ public:
     typedef const Colour& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("Colour");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        argb_t val = 0xFF000000;
-        sscanf(str.c_str(), " %8X", &val);
-
-        return Colour(val);
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[16];
-        sprintf(buff, "%.8X", val.getARGB());
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<ColourRect>
+class CEGUIEXPORT PropertyHelper<ColourRect>
 {
 public:
     typedef ColourRect return_type;
@@ -764,39 +376,13 @@ public:
     typedef const ColourRect& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("ColourRect");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        if (str.length() == 8)
-        {
-            argb_t all = 0xFF000000;
-            sscanf(str.c_str(), "%8X", &all);
-            return ColourRect(all);
-        }
-
-        argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
-        sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &topLeft, &topRight, &bottomLeft, &bottomRight);
-
-        return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[64];
-        sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<UDim>
+class CEGUIEXPORT PropertyHelper<UDim>
 {
 public:
     typedef UDim return_type;
@@ -804,32 +390,13 @@ public:
     typedef const UDim& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("UDim");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        UDim ud;
-        sscanf(str.c_str(), " { %g , %g }", &ud.d_scale, &ud.d_offset);
-
-        return ud;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[128];
-        snprintf(buff, sizeof(buff), "{%g,%g}", val.d_scale, val.d_offset);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<UVector2>
+class CEGUIEXPORT PropertyHelper<UVector2>
 {
 public:
     typedef UVector2 return_type;
@@ -837,35 +404,13 @@ public:
     typedef const UVector2& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("UVector2");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        UVector2 uv;
-        sscanf(str.c_str(), " { { %g , %g } , { %g , %g } }",
-               &uv.d_x.d_scale, &uv.d_x.d_offset,
-               &uv.d_y.d_scale, &uv.d_y.d_offset);
-
-        return uv;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[256];
-        snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
-                 val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<UVector3>
+class CEGUIEXPORT PropertyHelper<UVector3>
 {
 public:
     typedef UVector3 return_type;
@@ -873,37 +418,13 @@ public:
     typedef const UVector3& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("UVector3");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        UVector3 uv;
-        sscanf(str.c_str(), " { { %g , %g } , { %g , %g } , { %g , %g } }",
-               &uv.d_x.d_scale, &uv.d_x.d_offset,
-               &uv.d_y.d_scale, &uv.d_y.d_offset,
-               &uv.d_z.d_scale, &uv.d_z.d_offset);
-
-        return uv;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[256];
-        snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g},{%g,%g}}",
-                 val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset,
-                 val.d_z.d_scale, val.d_z.d_offset);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<USize>
+class CEGUIEXPORT PropertyHelper<USize>
 {
 public:
     typedef USize return_type;
@@ -911,35 +432,13 @@ public:
     typedef const USize& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("USize");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        USize uv;
-        sscanf(str.c_str(), " { { %g , %g } , { %g , %g } }",
-               &uv.d_width.d_scale, &uv.d_width.d_offset,
-               &uv.d_height.d_scale, &uv.d_height.d_offset);
-
-        return uv;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[256];
-        snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
-                 val.d_width.d_scale, val.d_width.d_offset, val.d_height.d_scale, val.d_height.d_offset);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<URect>
+class CEGUIEXPORT PropertyHelper<URect>
 {
 public:
     typedef URect return_type;
@@ -947,43 +446,42 @@ public:
     typedef const URect& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("URect");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        URect ur;
-        sscanf(
-            str.c_str(),
-            " { { %g , %g } , { %g , %g } , { %g , %g } , { %g , %g } }",
-            &ur.d_min.d_x.d_scale, &ur.d_min.d_x.d_offset,
-            &ur.d_min.d_y.d_scale, &ur.d_min.d_y.d_offset,
-            &ur.d_max.d_x.d_scale, &ur.d_max.d_x.d_offset,
-            &ur.d_max.d_y.d_scale, &ur.d_max.d_y.d_offset
-        );
-
-        return ur;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[512];
-        snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g},{%g,%g},{%g,%g}}",
-                 val.d_min.d_x.d_scale, val.d_min.d_x.d_offset,
-                 val.d_min.d_y.d_scale, val.d_min.d_y.d_offset,
-                 val.d_max.d_x.d_scale, val.d_max.d_x.d_offset,
-                 val.d_max.d_y.d_scale, val.d_max.d_y.d_offset);
-
-        return String(buff);
-    }
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
-class PropertyHelper<UBox>
+class CEGUIEXPORT PropertyHelper<Sizef>
+{
+public:
+    typedef Sizef return_type;
+    typedef return_type safe_method_return_type;
+    typedef const Sizef& pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<Rectf>
+{
+public:
+    typedef Rectf return_type;
+    typedef return_type safe_method_return_type;
+    typedef const Rectf& pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+
+template<>
+class CEGUIEXPORT PropertyHelper<UBox>
 {
 public:
     typedef UBox return_type;
@@ -991,39 +489,26 @@ public:
     typedef const UBox& pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("UBox");
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
 
-        return type;
-    }
+template<>
+class CEGUIEXPORT PropertyHelper<FontSizeUnit>
+{
+public:
+    typedef FontSizeUnit return_type;
+    typedef return_type safe_method_return_type;
+    typedef const FontSizeUnit pass_type;
+    typedef String string_return_type;
 
-    static return_type fromString(const String& str)
-    {
-        UBox ret;
-        sscanf(
-            str.c_str(),
-            " { top: { %g , %g } , left: { %g , %g } , bottom: { %g , %g } , right: { %g , %g } }",
-            &ret.d_top.d_scale, &ret.d_top.d_offset,
-            &ret.d_left.d_scale, &ret.d_left.d_offset,
-            &ret.d_bottom.d_scale, &ret.d_bottom.d_offset,
-            &ret.d_right.d_scale, &ret.d_right.d_offset
-        );
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 
-        return ret;
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        char buff[512];
-        snprintf(buff, sizeof(buff), "{top:{%g,%g},left:{%g,%g},bottom:{%g,%g},right:{%g,%g}}",
-                 val.d_top.d_scale, val.d_top.d_offset,
-                 val.d_left.d_scale, val.d_left.d_offset,
-                 val.d_bottom.d_scale, val.d_bottom.d_offset,
-                 val.d_right.d_scale, val.d_right.d_offset);
-
-        return String(buff);
-    }
+    static const String Points;
+    static const String Pixels;
 };
 
 
@@ -1036,25 +521,86 @@ public:
     typedef const Font* const pass_type;
     typedef String string_return_type;
     
-    static const String& getDataTypeName()
-    {
-        static String type("Font");
-
-        return type;
-    }
-
+    static const String& getDataTypeName();
     static return_type fromString(const String& str);
     static string_return_type toString(pass_type val);
 };
 
+
+template<>
+class CEGUIEXPORT PropertyHelper<HorizontalAlignment>
+{
+public:
+    typedef HorizontalAlignment return_type;
+    typedef return_type safe_method_return_type;
+    typedef HorizontalAlignment pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+
+template<>
+class CEGUIEXPORT PropertyHelper<VerticalAlignment>
+{
+public:
+    typedef VerticalAlignment return_type;
+    typedef return_type safe_method_return_type;
+    typedef VerticalAlignment pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<DefaultParagraphDirection>
+{
+public:
+    typedef DefaultParagraphDirection return_type;
+    typedef return_type safe_method_return_type;
+    typedef DefaultParagraphDirection pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName();
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
+// Explicit instantiation declarations
+extern template CEGUIEXPORT class PropertyHelper<String>;
+extern template CEGUIEXPORT class PropertyHelper<float>;
+extern template CEGUIEXPORT class PropertyHelper<double>;
+extern template CEGUIEXPORT class PropertyHelper<std::int16_t>;
+extern template CEGUIEXPORT class PropertyHelper<std::int32_t>;
+extern template CEGUIEXPORT class PropertyHelper<std::int64_t>;
+extern template CEGUIEXPORT class PropertyHelper<std::uint32_t>;
+extern template CEGUIEXPORT class PropertyHelper<std::uint64_t>;
+extern template CEGUIEXPORT class PropertyHelper<bool>;
+extern template CEGUIEXPORT class PropertyHelper<AspectMode>;
+extern template CEGUIEXPORT class PropertyHelper<glm::vec2>;
+extern template CEGUIEXPORT class PropertyHelper<glm::vec3>;
+extern template CEGUIEXPORT class PropertyHelper<glm::quat>;
+extern template CEGUIEXPORT class PropertyHelper<Image*>;
+extern template CEGUIEXPORT class PropertyHelper<Colour>;
+extern template CEGUIEXPORT class PropertyHelper<ColourRect>;
+extern template CEGUIEXPORT class PropertyHelper<UDim>;
+extern template CEGUIEXPORT class PropertyHelper<UVector2>;
+extern template CEGUIEXPORT class PropertyHelper<UVector3>;
+extern template CEGUIEXPORT class PropertyHelper<Rectf>;
+extern template CEGUIEXPORT class PropertyHelper<Sizef>;
+extern template CEGUIEXPORT class PropertyHelper<URect>;
+extern template CEGUIEXPORT class PropertyHelper<USize>;
+extern template CEGUIEXPORT class PropertyHelper<UBox>;
+extern template CEGUIEXPORT class PropertyHelper<Font*>;
+extern template CEGUIEXPORT class PropertyHelper<HorizontalAlignment>;
+extern template CEGUIEXPORT class PropertyHelper<VerticalAlignment>;
+extern template CEGUIEXPORT class PropertyHelper<DefaultParagraphDirection>;
+
+
 }
-
-#ifdef __MINGW32__
-    #pragma GCC diagnostic pop
-#endif
-
-#if defined(_MSC_VER)
-    #pragma warning(pop)
-#endif
 
 #endif

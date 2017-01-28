@@ -27,8 +27,6 @@
 #ifndef _CEGUIFalEnums_h_
 #define _CEGUIFalEnums_h_
 
-#include "CEGUI/PropertyHelper.h"
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -36,114 +34,114 @@ namespace CEGUI
     \brief
         Enumeration of possible values to indicate what a given dimension represents.
     */
-    enum DimensionType
+    enum class DimensionType : int
     {
-        DT_LEFT_EDGE,       //!< Dimension represents the left edge of some entity (same as DT_X_POSITION).
-        DT_X_POSITION,      //!< Dimension represents the x position of some entity (same as DT_LEFT_EDGE).
-        DT_TOP_EDGE,        //!< Dimension represents the top edge of some entity (same as DT_Y_POSITION).
-        DT_Y_POSITION,      //!< Dimension represents the y position of some entity (same as DT_TOP_EDGE).
-        DT_RIGHT_EDGE,      //!< Dimension represents the right edge of some entity.
-        DT_BOTTOM_EDGE,     //!< Dimension represents the bottom edge of some entity.
-        DT_WIDTH,           //!< Dimension represents the width of some entity.
-        DT_HEIGHT,          //!< Dimension represents the height of some entity.
-        DT_X_OFFSET,        //!< Dimension represents the x offset of some entity (usually only applies to an Image entity).
-        DT_Y_OFFSET,        //!< Dimension represents the y offset of some entity (usually only applies to an Image entity).
-        DT_INVALID          //!< Invalid / uninitialised DimensionType.
+        LeftEdge,       //!< Dimension represents the left edge of some entity (same as XPosition).
+        XPosition,      //!< Dimension represents the x position of some entity (same as LeftEdge).
+        TopEdge,        //!< Dimension represents the top edge of some entity (same as YPosition).
+        YPosition,      //!< Dimension represents the y position of some entity (same as TopEdge).
+        RightEdge,      //!< Dimension represents the right edge of some entity.
+        BottomEdge,     //!< Dimension represents the bottom edge of some entity.
+        Width,          //!< Dimension represents the width of some entity.
+        Height,         //!< Dimension represents the height of some entity.
+        XOffset,        //!< Dimension represents the x offset of some entity (usually only applies to an Image entity).
+        YOffset,        //!< Dimension represents the y offset of some entity (usually only applies to an Image entity).
+        Invalid         //!< Invalid / uninitialised DimensionType.
     };
 
     /*!
     \brief
         Enumeration of possible values to indicate the vertical formatting to be used for an image component.
     */
-    enum VerticalFormatting
+    enum class VerticalImageFormatting : int
     {
-        VF_TOP_ALIGNED,         //!< Top of Image should be aligned with the top of the destination area.
-        VF_CENTRE_ALIGNED,      //!< Image should be vertically centred within the destination area.
-        VF_BOTTOM_ALIGNED,      //!< Bottom of Image should be aligned with the bottom of the destination area.
-        VF_STRETCHED,           //!< Image should be stretched vertically to fill the destination area.
-        VF_TILED                //!< Image should be tiled vertically to fill the destination area (bottom-most tile may be clipped).
+        TopAligned,         //!< Top of Image should be aligned with the top of the destination area.
+        CentreAligned,      //!< Image should be vertically centred within the destination area.
+        BottomAligned,      //!< Bottom of Image should be aligned with the bottom of the destination area.
+        Stretched,          //!< Image should be stretched vertically to fill the destination area.
+        Tiled               //!< Image should be tiled vertically to fill the destination area (bottom-most tile may be clipped).
     };
 
     /*!
     \brief
         Enumeration of possible values to indicate the horizontal formatting to be used for an image component.
     */
-    enum HorizontalFormatting
+    enum class HorizontalFormatting : int
     {
-        HF_LEFT_ALIGNED,        //!< Left of Image should be aligned with the left of the destination area.
-        HF_CENTRE_ALIGNED,      //!< Image should be horizontally centred within the destination area.
-        HF_RIGHT_ALIGNED,       //!< Right of Image should be aligned with the right of the destination area.
-        HF_STRETCHED,           //!< Image should be stretched horizontally to fill the destination area.
-        HF_TILED                //!< Image should be tiled horizontally to fill the destination area (right-most tile may be clipped).
+        LeftAligned,        //!< Left of Image should be aligned with the left of the destination area.
+        CentreAligned,      //!< Image should be horizontally centred within the destination area.
+        RightAligned,       //!< Right of Image should be aligned with the right of the destination area.
+        Stretched,          //!< Image should be stretched horizontally to fill the destination area.
+        Tiled               //!< Image should be tiled horizontally to fill the destination area (right-most tile may be clipped).
     };
 
     /*!
     \brief
         Enumeration of possible values to indicate the vertical formatting to be used for a text component.
     */
-    enum VerticalTextFormatting
+    enum class VerticalTextFormatting : int
     {
-        VTF_TOP_ALIGNED,         //!< Top of text should be aligned with the top of the destination area.
-        VTF_CENTRE_ALIGNED,      //!< text should be vertically centred within the destination area.
-        VTF_BOTTOM_ALIGNED       //!< Bottom of text should be aligned with the bottom of the destination area.
+        TopAligned,         //!< Top of text should be aligned with the top of the destination area.
+        CentreAligned,      //!< text should be vertically centred within the destination area.
+        BottomAligned       //!< Bottom of text should be aligned with the bottom of the destination area.
     };
 
     /*!
     \brief
         Enumeration of possible values to indicate the horizontal formatting to be used for a text component.
     */
-    enum HorizontalTextFormatting
+    enum class HorizontalTextFormatting : int
     {
-        HTF_LEFT_ALIGNED,        //!< Left of text should be aligned with the left of the destination area (single line of text only).
-        HTF_RIGHT_ALIGNED,       //!< Right of text should be aligned with the right of the destination area  (single line of text only).
-        HTF_CENTRE_ALIGNED,      //!< text should be horizontally centred within the destination area  (single line of text only).
-        HTF_JUSTIFIED,           //!< text should be spaced so that it takes the full width of the destination area (single line of text only).
-        HTF_WORDWRAP_LEFT_ALIGNED,    //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
-        HTF_WORDWRAP_RIGHT_ALIGNED,   //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
-        HTF_WORDWRAP_CENTRE_ALIGNED,  //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
-        HTF_WORDWRAP_JUSTIFIED        //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
+        LeftAligned,                //!< Left of text should be aligned with the left of the destination area (single line of text only).
+        RightAligned,               //!< Right of text should be aligned with the right of the destination area  (single line of text only).
+        CentreAligned,              //!< text should be horizontally centred within the destination area  (single line of text only).
+        Justified,                  //!< text should be spaced so that it takes the full width of the destination area (single line of text only).
+        WordWrapLeftAligned,        //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
+        WordWrapRightAligned,       //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
+        WordWrapCentreAligned,      //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
+        WordWraperJustified         //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
     };
 
     /*!
     \brief
         Enumeration of possible values to indicate a particular font metric.
     */
-    enum FontMetricType
+    enum class FontMetricType : int
     {
-        FMT_LINE_SPACING,       //!< Vertical line spacing value for font.
-        FMT_BASELINE,           //!< Vertical baseline value for font.
-        FMT_HORZ_EXTENT         //!< Horizontal extent of a string.
+        LineSpacing,        //!< Vertical line spacing value for font.
+        Baseline,           //!< Vertical baseline value for font.
+        HorzExtent          //!< Horizontal extent of a string.
     };
 
     /*!
     \brief
         Enumeration of values representing mathematical operations on dimensions.
     */
-    enum DimensionOperator
+    enum class DimensionOperator : int
     {
-        DOP_NOOP,       //!< Do nothing operator.
-        DOP_ADD,        //!< Dims should be added.
-        DOP_SUBTRACT,   //!< Dims should be subtracted.
-        DOP_MULTIPLY,   //!< Dims should be multiplied.
-        DOP_DIVIDE      //!< Dims should be divided.
+        NoOp,       //!< Do nothing operator.
+        Add,        //!< Dims should be added.
+        Subtract,   //!< Dims should be subtracted.
+        Multiply,   //!< Dims should be multiplied.
+        Divide      //!< Dims should be divided.
     };
 
     /*!
     \brief
         Enumeration of values referencing available images forming a frame component.
     */
-    enum FrameImageComponent
+    enum class FrameImageComponent : int
     {
-        FIC_BACKGROUND,             //!< References image used for the background.
-        FIC_TOP_LEFT_CORNER,        //!< References image used for the top-left corner.
-        FIC_TOP_RIGHT_CORNER,       //!< References image used for the top-right corner.
-        FIC_BOTTOM_LEFT_CORNER,     //!< References image used for the bottom-left corner.
-        FIC_BOTTOM_RIGHT_CORNER,    //!< References image used for the bottom-right corner.
-        FIC_LEFT_EDGE,              //!< References image used for the left edge.
-        FIC_RIGHT_EDGE,             //!< References image used for the right edge.
-        FIC_TOP_EDGE,               //!< References image used for the top edge.
-        FIC_BOTTOM_EDGE,            //!< References image used for the bottom edge.
-        FIC_FRAME_IMAGE_COUNT       //!< Max number of images for a frame.
+        Background,         //!< References image used for the background.
+        TopLeftCorner,      //!< References image used for the top-left corner.
+        TopRightCorner,     //!< References image used for the top-right corner.
+        BottomLeftCorner,   //!< References image used for the bottom-left corner.
+        BottomRightCorner,  //!< References image used for the bottom-right corner.
+        LeftEdge,           //!< References image used for the left edge.
+        RightEdge,          //!< References image used for the right edge.
+        TopEdge,            //!< References image used for the top edge.
+        BottomEdge,         //!< References image used for the bottom edge.
+        FrameImageCount     //!< Max number of images for a frame.
     };
 
     /*!
@@ -151,12 +149,12 @@ namespace CEGUI
         Enumeration of actions a WidgetLook can take in response to some event
         firing on a child WidgetComponent.
     */
-    enum ChildEventAction
+    enum class ChildEventAction : int
     {
         //! The window with the WidgetComponent as child is redrawn.
-        CEA_REDRAW,
+        Redraw,
         //! The window with the WidgetComponent as child performs child layout.
-        CEA_LAYOUT
+        Layout
     };
 
 

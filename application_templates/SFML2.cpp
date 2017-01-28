@@ -47,7 +47,7 @@
 
 #include "sfml_keycodes_to_cegui_mappings.h"
 
-
+static CEGUI::InputAggregator* G_inputAggregator;
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
@@ -93,10 +93,12 @@ void initCEGUI()
 
     // create renderer and enable extra states
     OpenGL3Renderer& cegui_renderer = OpenGL3Renderer::create(Sizef(WIDTH, HEIGHT));
-    cegui_renderer.enableExtraStateSettings(true);
 
     // create CEGUI system object
     CEGUI::System::create(cegui_renderer);
+
+    G_inputAggregator = new InputAggregator(&System::getSingletonPtr()->getDefaultGUIContext());
+    G_inputAggregator->initialise();
 
     // setup resource directories
     DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(
@@ -128,7 +130,7 @@ void initCEGUI()
 
     // set default font and cursor image and tooltip type
     System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getCursor().setDefaultImage("TaharezLook/MouseArrow");
     System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
 }
 
@@ -156,29 +158,29 @@ bool guiHandleEvent(const sf::Event& event, const sf::Window& window)
     switch (event.type)
     {
     case sf::Event::TextEntered:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(event.text.unicode);
+        return G_inputAggregator->injectChar(event.text.unicode);
 
     case sf::Event::KeyPressed:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(toCEGUIKey(event.key.code));
+        return G_inputAggregator->injectKeyDown(toCEGUIKey(event.key.code));
 
     case sf::Event::KeyReleased:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(toCEGUIKey(event.key.code));
+        return G_inputAggregator->injectKeyUp(toCEGUIKey(event.key.code));
 
     case sf::Event::MouseMoved:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(
+        return G_inputAggregator->injectMousePosition(
                     static_cast<float>(sf::Mouse::getPosition(window).x),
                     static_cast<float>(sf::Mouse::getPosition(window).y));
 
     case sf::Event::MouseButtonPressed:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(
+        return G_inputAggregator->injectMouseButtonDown(
                     toCEGUIButton(event.mouseButton.button));
 
     case sf::Event::MouseButtonReleased:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(
+        return G_inputAggregator->injectMouseButtonUp(
                     toCEGUIButton(event.mouseButton.button));
 
     case sf::Event::MouseWheelMoved:
-        return CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(
+        return G_inputAggregator->injectMouseWheelChange(
                     static_cast<float>(event.mouseWheel.delta));
 
     default:
@@ -256,7 +258,8 @@ int main()
         window.display();
     }
 
-    // Destroy system and renderer
+    delete G_inputAggregator;
+    G_inputAggregator = 0;
     CEGUI::System::destroy();
     CEGUI::OpenGL3Renderer::destroy(*renderer);
     renderer = 0;

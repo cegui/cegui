@@ -49,6 +49,7 @@ author:     Luca Ebach <bitbucket@lucebac.net>
 
 static SDL_Window* window;
 static SDL_GLContext context;
+static CEGUI::InputAggregator* G_inputAggregator;
 
 CEGUI::Key::Scan toCEGUIKey(SDL_Scancode key)
 {
@@ -95,7 +96,7 @@ void injectUTF8Text(const char* utf8str)
         if (utf32buf[i] == 0)
             break; // end of string
 
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(utf32buf[i]);
+        G_inputAggregator->injectChar(utf32buf[i]);
     }
 
     // reset cd so it can be used again
@@ -135,10 +136,12 @@ void initCEGUI()
 
     // create renderer and enable extra states
     OpenGLRenderer& cegui_renderer = OpenGLRenderer::create(Sizef(800.f, 600.f));
-    cegui_renderer.enableExtraStateSettings(true);
 
     // create CEGUI system object
     System::create(cegui_renderer);
+
+    G_inputAggregator = new InputAggregator(&System::getSingletonPtr()->getDefaultGUIContext());
+    G_inputAggregator->initialise();
 
     // setup resource directories
     DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(System::getSingleton().getResourceProvider());
@@ -168,7 +171,7 @@ void initCEGUI()
 
     // set default font and cursor image and tooltip type
     System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getCursor().setDefaultImage("TaharezLook/MouseArrow");
     System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
 }
 
@@ -254,28 +257,28 @@ int main(int /*argc*/, char* /*argv*/[])
                 break;
             
             case SDL_MOUSEMOTION:
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(static_cast<float>(event.motion.x),
+                G_inputAggregator->injectMousePosition(static_cast<float>(event.motion.x),
                                                                                          static_cast<float>(event.motion.y));
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(SDLtoCEGUIMouseButton(event.button.button));
+                G_inputAggregator->injectMouseButtonDown(SDLtoCEGUIMouseButton(event.button.button));
                 break;
 
             case SDL_MOUSEBUTTONUP:
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(SDLtoCEGUIMouseButton(event.button.button));
+                G_inputAggregator->injectMouseButtonUp(SDLtoCEGUIMouseButton(event.button.button));
                 break;
 
             case SDL_MOUSEWHEEL:
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(static_cast<float>(event.wheel.y));
+                G_inputAggregator->injectMouseWheelChange(static_cast<float>(event.wheel.y));
                 break;
 
             case SDL_KEYDOWN:
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(toCEGUIKey(event.key.keysym.scancode));
+                G_inputAggregator->injectKeyDown(toCEGUIKey(event.key.keysym.scancode));
                 break;
 
             case SDL_KEYUP:
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(toCEGUIKey(event.key.keysym.scancode));
+                G_inputAggregator->injectKeyUp(toCEGUIKey(event.key.keysym.scancode));
                 break;
 
             case SDL_TEXTINPUT:
@@ -291,7 +294,7 @@ int main(int /*argc*/, char* /*argv*/[])
                 }
                 else if (event.window.event == SDL_WINDOWEVENT_LEAVE)
                 {
-                    CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseLeaves();
+                    G_inputAggregator->injectMouseLeaves();
                 }
                 break;
 
@@ -319,7 +322,8 @@ int main(int /*argc*/, char* /*argv*/[])
         SDL_GL_SwapWindow(window);
     }
 
-    // destroy system and renderer
+    delete G_inputAggregator;
+    G_inputAggregator = 0;
     System::destroy();
     OpenGLRenderer::destroy(*renderer);
     renderer = 0;

@@ -38,80 +38,73 @@ Win32StringTranscoder::Win32StringTranscoder()
 }
 
 //----------------------------------------------------------------------------//
-uint16* Win32StringTranscoder::stringToUTF16(const String& input) const
+char16_t* Win32StringTranscoder::stringToUTF16(const String& input) const
 {
-    const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
-                                        0, 0);
-    if (!len)
-        CEGUI_THROW(CEGUI::InvalidRequestException(
-            "MultiByteToWideChar failed"));
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), 
+                                        -1, 0, 0);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    const int len = MultiByteToWideChar(CP_UTF8, 0, String::convertUtf32ToUtf8(input.getString()).c_str(),
+                                        -1, nullptr, 0);
+#endif
 
-    uint16* buff = CEGUI_NEW_ARRAY_PT(uint16, len, CEGUI::BufferAllocator);
+    if (!len)
+        throw CEGUI::InvalidRequestException(
+            "MultiByteToWideChar failed");
+
+    wchar_t* buff = new wchar_t[len];
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
                         reinterpret_cast<LPWSTR>(buff), len);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    MultiByteToWideChar(CP_UTF8, 0, String::convertUtf32ToUtf8(input.getString()).c_str(), -1,
+                        buff, len);
+#endif
 
-    return buff;
+    return reinterpret_cast<char16_t*>(buff);
 }
 
 //----------------------------------------------------------------------------//
 std::wstring Win32StringTranscoder::stringToStdWString(const String& input) const
 {
-    uint16* tmp = stringToUTF16(input);
+    char16_t* tmp = stringToUTF16(input);
     std::wstring result(reinterpret_cast<wchar_t*>(tmp));
-    deleteUTF16Buffer(tmp);
+    delete[] tmp;
 
     return result;
 }
 
 //----------------------------------------------------------------------------//
-// Templatised helper so code within our string type conditional compile does
-// not need to be dupicated.
-template<typename T>
-static CEGUI::String stringFromUTF16(UINT codepage, const uint16* input)
+static CEGUI::String stringFromUTF16(UINT codepage, const char16_t* input)
 {
-    const int len =
-        WideCharToMultiByte(codepage, 0, reinterpret_cast<LPCWSTR>(input), -1,
-                            0, 0, 0, 0);
+    const int len = WideCharToMultiByte(codepage, 0, reinterpret_cast<const wchar_t*>(input), -1,
+                                        nullptr, 0, nullptr, nullptr);
     if (!len)
-        CEGUI_THROW(CEGUI::InvalidRequestException(
-            "WideCharToMultiByte failed"));
+        throw CEGUI::InvalidRequestException(
+            "WideCharToMultiByte failed");
 
-    T* buff =
-        CEGUI_NEW_ARRAY_PT(T, len, CEGUI::BufferAllocator);
+    char* buff = new char[len];
 
-    WideCharToMultiByte(codepage, 0, reinterpret_cast<LPCWSTR>(input), -1,
-                        reinterpret_cast<char*>(buff), len, 0, 0);
+    WideCharToMultiByte(codepage, 0, reinterpret_cast<const wchar_t*>(input), -1,
+                        buff, len, nullptr, nullptr);
 
     const CEGUI::String result(buff);
 
-    CEGUI_DELETE_ARRAY_PT(buff, T, len, CEGUI::BufferAllocator);
+    delete[] buff;
 
     return result;
 }
 
 //----------------------------------------------------------------------------//
-String Win32StringTranscoder::stringFromUTF16(const uint16* input) const
+String Win32StringTranscoder::stringFromUTF16(const char16_t* input) const
 {
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    return CEGUI::stringFromUTF16<utf8>(CP_UTF8, input);
-#else
-    return CEGUI::stringFromUTF16<String::value_type>(CP_ACP, input);
-#endif
+    return CEGUI::stringFromUTF16(CP_UTF8, input);
 }
 
 //----------------------------------------------------------------------------//
 String Win32StringTranscoder::stringFromStdWString(const std::wstring& input) const
 {
-    return stringFromUTF16(reinterpret_cast<const uint16*>(input.c_str()));
-}
-
-//----------------------------------------------------------------------------//
-void Win32StringTranscoder::deleteUTF16Buffer(uint16* input) const
-{
-    const uint16* b = input;
-    while (*b++);
-
-    CEGUI_DELETE_ARRAY_PT(input, uint16, b - input, CEGUI::BufferAllocator);
+    return stringFromUTF16(reinterpret_cast<const char16_t*>(input.c_str()));
 }
 
 //----------------------------------------------------------------------------//

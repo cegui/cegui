@@ -34,13 +34,13 @@ namespace CEGUI
 BoolArray2D::BoolArray2D() :
     d_width(0),
     d_height(0),
-    d_content(0)
+    d_content(nullptr)
 {
 }
 
 //------------------------------------------------------------------------------//
 BoolArray2D::BoolArray2D(int width, int height) :
-    d_content(0)
+    d_content(nullptr)
 {
     resetSize(width, height);
 }
