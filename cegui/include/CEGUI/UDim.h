@@ -132,7 +132,7 @@ public:
     {
         return UDim(d_scale * other.d_scale, d_offset * other.d_offset);
     }
-    
+
     inline UDim operator/(const UDim& other) const
     {
         // division by zero sets component to zero.  Not technically correct
@@ -179,6 +179,11 @@ public:
     inline bool operator!=(const UDim& other) const
     {
         return !operator==(other);
+    }
+
+    inline UDim operator/(float divisor) const
+    {
+        return UDim(d_scale / divisor, d_offset / divisor);
     }
     
     /*!

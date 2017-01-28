@@ -98,7 +98,7 @@ void RenderedString::clearComponentList(ComponentList& list)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::split(const Window* ref_wnd, const size_t line,
+bool RenderedString::split(const Window* ref_wnd, const size_t line,
                            float split_point, RenderedString& left)
 {
     // FIXME: This function is big and nasty; it breaks all the rules for a
@@ -109,120 +109,127 @@ void RenderedString::split(const Window* ref_wnd, const size_t line,
         CEGUI_THROW(InvalidRequestException(
             "line number specified is invalid."));
 
+    bool was_word_split(false);
+
     left.clearComponents();
 
-    if (d_components.empty())
-        return;
-
-    // move all components in lines prior to the line being split to the left
-    if (line > 0)
+    if (!d_components.empty())
     {
-        // calculate size of range
-        const size_t sz = d_lines[line - 1].first + d_lines[line - 1].second;
-        // range start
-        ComponentList::iterator cb = d_components.begin();
-        // range end (exclusive)
-        ComponentList::iterator ce = cb + sz;
-        // copy components to left side
-        left.d_components.assign(cb, ce);
-        // erase components from this side.
-        d_components.erase(cb, ce);
 
-        LineList::iterator lb = d_lines.begin();
-        LineList::iterator le = lb + line;
-        // copy lines to left side
-        left.d_lines.assign(lb, le);
-        // erase lines from this side
-        d_lines.erase(lb, le);
-    }
-
-    // find the component where the requested split point lies.
-    float partial_extent = 0;
-
-    size_t idx = 0;
-    const size_t last_component = d_lines[0].second;
-    for (; idx < last_component; ++idx)
-    {
-        partial_extent += d_components[idx]->getPixelSize(ref_wnd).d_width;
-
-        if (split_point <= partial_extent)
-            break;
-    }
-
-    // case where split point is past the end
-    if (idx >= last_component)
-    {
-        // transfer this line's components to the 'left' string.
-        //
-        // calculate size of range
-        const size_t sz = d_lines[0].second;
-        // range start
-        ComponentList::iterator cb = d_components.begin();
-        // range end (exclusive)
-        ComponentList::iterator ce = cb + sz;
-        // copy components to left side
-        left.d_components.insert(left.d_components.end(), cb, ce);
-        // erase components from this side.
-        d_components.erase(cb, ce);
-
-        // copy line info to left side
-        left.d_lines.push_back(d_lines[0]);
-        // erase line from this side
-        d_lines.erase(d_lines.begin());
-
-        // fix up lines in this object
-        for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
+        // move all components in lines prior to the line being split to the left
+        if (line > 0)
         {
-            d_lines[i].first = comp;
-            comp += d_lines[i].second;
+            // calculate size of range
+            const size_t sz = d_lines[line - 1].first + d_lines[line - 1].second;
+            // range start
+            ComponentList::iterator cb = d_components.begin();
+            // range end (exclusive)
+            ComponentList::iterator ce = cb + sz;
+            // copy components to left side
+            left.d_components.assign(cb, ce);
+            // erase components from this side.
+            d_components.erase(cb, ce);
+
+            LineList::iterator lb = d_lines.begin();
+            LineList::iterator le = lb + line;
+            // copy lines to left side
+            left.d_lines.assign(lb, le);
+            // erase lines from this side
+            d_lines.erase(lb, le);
         }
 
-        return;
-    }
+        // find the component where the requested split point lies.
+        float partial_extent = 0;
 
-    left.appendLineBreak();
-    const size_t left_line = left.getLineCount() - 1;
-    // Everything up to 'idx' is xfered to 'left'
-    for (size_t i = 0; i < idx; ++i)
-    {
-        left.d_components.push_back(d_components[0]);
-        d_components.erase(d_components.begin());
-        ++left.d_lines[left_line].second;
-        --d_lines[0].second;
-    }
-
-    // now to split item 'idx' putting half in left and leaving half in this.
-    RenderedStringComponent* c = d_components[0];
-    if (c->canSplit())
-    {
-        RenderedStringComponent* lc = 
-            c->split(ref_wnd,
-                     split_point - (partial_extent - c->getPixelSize(ref_wnd).d_width),
-                     idx == 0);
-
-        if (lc)
+        size_t idx = 0;
+        const size_t last_component = d_lines[0].second;
+        for (; idx < last_component; ++idx)
         {
-            left.d_components.push_back(lc);
-            ++left.d_lines[left_line].second;
+            partial_extent += d_components[idx]->getPixelSize(ref_wnd).d_width;
+
+            if (split_point <= partial_extent)
+                break;
+        }
+
+        // case where split point is past the end
+        if (idx >= last_component)
+        {
+            // transfer this line's components to the 'left' string.
+            //
+            // calculate size of range
+            const size_t sz = d_lines[0].second;
+            // range start
+            ComponentList::iterator cb = d_components.begin();
+            // range end (exclusive)
+            ComponentList::iterator ce = cb + sz;
+            // copy components to left side
+            left.d_components.insert(left.d_components.end(), cb, ce);
+            // erase components from this side.
+            d_components.erase(cb, ce);
+
+            // copy line info to left side
+            left.d_lines.push_back(d_lines[0]);
+            // erase line from this side
+            d_lines.erase(d_lines.begin());
+
+            // fix up lines in this object
+            for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
+            {
+                d_lines[i].first = comp;
+                comp += d_lines[i].second;
+            }
+        }
+        else
+        {
+
+            left.appendLineBreak();
+            const size_t left_line = left.getLineCount() - 1;
+            // Everything up to 'idx' is xfered to 'left'
+            for (size_t i = 0; i < idx; ++i)
+            {
+                left.d_components.push_back(d_components[0]);
+                d_components.erase(d_components.begin());
+                ++left.d_lines[left_line].second;
+                --d_lines[0].second;
+            }
+
+            // now to split item 'idx' putting half in left and leaving half in this.
+            RenderedStringComponent* c = d_components[0];
+            if (c->canSplit())
+            {
+                RenderedStringComponent* lc = 
+                    c->split(ref_wnd,
+                             split_point - (partial_extent - c->getPixelSize(ref_wnd).d_width),
+                             idx == 0,
+                             was_word_split);
+
+                if (lc)
+                {
+                    left.d_components.push_back(lc);
+                    ++left.d_lines[left_line].second;
+                }
+            }
+            // can't split, if component width is >= split_point xfer the whole
+            // component to it's own line in the left part (FIX #306)
+            else if (c->getPixelSize(ref_wnd).d_width >= split_point)
+            {
+                left.appendLineBreak();
+                left.d_components.push_back(d_components[0]);
+                d_components.erase(d_components.begin());
+                ++left.d_lines[left_line + 1].second;
+                --d_lines[0].second;
+            }
+
+            // fix up lines in this object
+            for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
+            {
+                d_lines[i].first = comp;
+                comp += d_lines[i].second;
+            }
         }
     }
-    // can't split, if component width is >= split_point xfer the whole
-    // component to it's own line in the left part (FIX #306)
-    else if (c->getPixelSize(ref_wnd).d_width >= split_point)
-    {
-        left.appendLineBreak();
-        left.d_components.push_back(d_components[0]);
-        d_components.erase(d_components.begin());
-        ++left.d_lines[left_line + 1].second;
-        --d_lines[0].second;
-    }
 
-    // fix up lines in this object
-    for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
-    {
-        d_lines[i].first = comp;
-        comp += d_lines[i].second;
-    }
+    return was_word_split;
 }
 
 //----------------------------------------------------------------------------//
