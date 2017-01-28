@@ -597,14 +597,14 @@ void ColourPickerControls::destroy( void )
 {
     deinitColourPickerControlsTexture();
 
-    if (d_colourPickerCursor)
+    if (d_colourPickerIndicator)
     {
-        WindowManager::getSingleton().destroyWindow(d_colourPickerCursor);
-        d_colourPickerCursor = NULL;
+        WindowManager::getSingleton().destroyWindow(d_colourPickerIndicator);
+        d_colourPickerIndicator = nullptr;
     }
 
     delete[] d_colourPickingTexture;
-    d_colourPickingTexture = NULL;
+    d_colourPickingTexture = nullptr;
 
     System::getSingleton().destroyRegexMatcher(&d_regexMatcher);
 
