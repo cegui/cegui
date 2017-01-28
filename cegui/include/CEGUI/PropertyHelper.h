@@ -475,6 +475,14 @@ public:
         {
             return AM_EXPAND;
         }
+        else if (str == AdjustHeight)
+        {
+            return AM_ADJUST_HEIGHT;
+        }
+        else if (str == AdjustWidth)
+        {
+            return AM_ADJUST_WIDTH;
+        }
         else
         {
             return AM_IGNORE;
@@ -495,6 +503,14 @@ public:
         {
             return Expand;
         }
+        else if (val == AM_ADJUST_HEIGHT)
+        {
+            return AdjustHeight;
+        }
+        else if (val == AM_ADJUST_WIDTH)
+        {
+            return AdjustWidth;
+        }
         else
         {
             assert(false && "Invalid aspect mode");
@@ -505,6 +521,8 @@ public:
     //! Definitions of the possible values represented as Strings
     static const CEGUI::String Shrink;
     static const CEGUI::String Expand;
+    static const CEGUI::String AdjustHeight;
+    static const CEGUI::String AdjustWidth;
     static const CEGUI::String Ignore;
 };
 
@@ -841,6 +859,44 @@ public:
         char buff[256];
         snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
                  val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
+
+        return String(buff);
+    }
+};
+
+template<>
+class PropertyHelper<UVector3>
+{
+public:
+    typedef UVector3 return_type;
+    typedef return_type safe_method_return_type;
+    typedef const UVector3& pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("UVector3");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        UVector3 uv;
+        sscanf(str.c_str(), " { { %g , %g } , { %g , %g } , { %g , %g } }",
+               &uv.d_x.d_scale, &uv.d_x.d_offset,
+               &uv.d_y.d_scale, &uv.d_y.d_offset,
+               &uv.d_z.d_scale, &uv.d_z.d_offset);
+
+        return uv;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        char buff[256];
+        snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g},{%g,%g}}",
+                 val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset,
+                 val.d_z.d_scale, val.d_z.d_offset);
 
         return String(buff);
     }
