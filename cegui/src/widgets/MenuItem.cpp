@@ -250,7 +250,7 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
         // The bounding box assumed to clip the popup menus
         const Rectf clip_rect = this->popupBoundingBox();
 
-        if (dynamic_cast<Menubar *>(p))
+        if (Menubar * menubar = dynamic_cast<Menubar *>(p))
         {
             // Use a vertical orientation
 
@@ -260,20 +260,36 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
             // candidate 2: align the popup to the top-left of menuitem
             const glm::vec2 pos2(0, - popup_size.d_height);
 
-            // Compute correction vectors for each
-            const glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
-            const glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
+            switch (menubar->getMenubarDirection())
+            {
+            case MenubarDirection::Down:
+                output = as_uvector(pos1);
+                return true;
+            case MenubarDirection::Up:
+                output = as_uvector(pos2);
+                return true;
+            case MenubarDirection::BestFit:
+            {
+                // Compute correction vectors for each
+                const glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1),
+                                                             clip_rect);
+                const glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2),
+                                                             clip_rect);
 
-            // If pos2 does not require y correction and pos1 does, then use pos2
-            if (pos1_corr.y && !pos2_corr.y)
-            {
-                output = as_uvector(pos2 + pos2_corr);
-                return true;
+                // If pos2 does not require y correction and pos1 does, then use pos2
+                if (pos1_corr.y && !pos2_corr.y)
+                {
+                    output = as_uvector(pos2 + pos2_corr);
+                    return true;
+                }
+                else
+                {
+                    output = as_uvector(pos1 + pos1_corr);
+                    return true;
+                }
             }
-            else
-            {
-                output = as_uvector(pos1 + pos1_corr);
-                return true;
+            default:
+               return false;
             }
         }
         else if (dynamic_cast<PopupMenu *>(p))

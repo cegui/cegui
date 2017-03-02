@@ -50,7 +50,8 @@ MenuBase::MenuBase(const String& type, const String& name)
       d_itemSpacing(0.0f),
       d_popupItem(nullptr),
       d_allowMultiplePopups(false),
-      d_autoCloseNestedPopups(false)
+      d_autoCloseNestedPopups(false),
+      d_menubarDirection(MenubarDirection::Down)
 {
     // add properties for MenuBase class
     addMenuBaseProperties();
@@ -130,6 +131,11 @@ void MenuBase::addMenuBaseProperties(void)
     CEGUI_DEFINE_PROPERTY(MenuBase, bool,
         "AutoCloseNestedPopups", "Property to set if the menu should close all its open child popups, when it gets hidden. Value is either \"true\" or \"false\".",
         &MenuBase::setAutoCloseNestedPopups, &MenuBase::getAutoCloseNestedPopups, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(MenuBase, MenubarDirection,
+        "MenubarDirection", "Property to get/set the direction in which child popups should open, or the manner in which this direction is determined. Value is either \"BestFit\", \"Down\", or \"Up\".",
+        &MenuBase::setMenubarDirection, &MenuBase::getMenubarDirection, MenubarDirection::Down
     );
 }
 
