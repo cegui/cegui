@@ -46,6 +46,73 @@ namespace CEGUI
 
 /*!
 \brief
+    Enum for "direction" in which menubars open.
+*/
+
+enum class MenubarDirection : int {
+  BestFit, Down, Up
+};
+
+template<>
+class PropertyHelper<MenubarDirection>
+{
+public:
+    typedef MenubarDirection return_type;
+    typedef return_type safe_method_return_type;
+    typedef MenubarDirection pass_type;
+    typedef String string_return_type;
+
+
+    static const String& getDataTypeName()
+    {
+        static String type("MenubarDirection");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+
+        if (str == "Up")
+        {
+            return MenubarDirection::Up;
+        }
+        else if (str == "Down")
+        {
+            return MenubarDirection::Down;
+        }
+        else
+        {
+            return MenubarDirection::BestFit;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == MenubarDirection::BestFit)
+        {
+            return "BestFit";
+        }
+        else if (val == MenubarDirection::Down)
+        {
+            return "Down";
+        }
+        else if (val == MenubarDirection::Up)
+        {
+            return "Up";
+        }
+        else
+        {
+            assert(false && "Invalid Menubar Direction Mode");
+            return "BestFit";
+        }
+    }
+
+};
+
+
+/*!
+\brief
     Abstract base class for menus.
 */
 class CEGUIEXPORT MenuBase : public ItemListBase
@@ -122,6 +189,18 @@ public:
         return d_popupItem;
     }
 
+    /*!
+    \brief
+        Get the direction in which menus from the menu should open.
+    
+    \return
+        Enum indicating the direction / rule.
+    */
+    MenubarDirection getMenubarDirection(void) const
+    {
+       return d_menubarDirection;
+    }
+
 
     /*************************************************************************
         Manipulators
@@ -166,6 +245,15 @@ public:
         tells the current popup that it should start its closing timer.
     */
     void    setPopupMenuItemClosing();
+
+    /*!
+    \brief
+        Set in what manner popups from this menu should be opened.
+    */
+    void    setMenubarDirection(MenubarDirection dir)
+    {
+        d_menubarDirection = dir;
+    }
 
 
     /*************************************************************************
@@ -215,6 +303,7 @@ protected:
     bool d_allowMultiplePopups; //!< true if multiple popup menus are allowed simultaneously.  false if not.
     bool d_autoCloseNestedPopups; //!< true if the menu should close all its open child popups, when it gets hidden
 
+    MenubarDirection d_menubarDirection; //!< The preferred way in which menus associated to this menubar should open.
 
 private:
     /*************************************************************************
