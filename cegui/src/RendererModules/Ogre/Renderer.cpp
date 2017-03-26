@@ -81,6 +81,8 @@ class OgreGUIRenderQueueListener : public Ogre::CompositorWorkspaceListener
 public:
     OgreGUIRenderQueueListener(OgreRenderer* owner);
 
+    virtual ~OgreGUIRenderQueueListener(){}
+
     void setCEGUIRenderEnabled(bool enabled);
     bool isCEGUIRenderEnabled() const;
 

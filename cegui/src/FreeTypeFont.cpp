@@ -813,7 +813,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
     }
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str());
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
     const std::u32string& utf32Text = text.getString();
 #endif

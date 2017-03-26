@@ -105,8 +105,11 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
     d_texelScaling(0, 0),
     d_name(name)
 {
-    createEmptyOgreTexture();
-
+    d_texture = Ogre::TextureManager::getSingleton().createManual(
+        getUniqueName(), "General", Ogre::TEX_TYPE_2D,
+        sz.d_width, sz.d_height, 0,
+        Ogre::PF_A8B8G8R8);
+    
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
         throw RendererException(

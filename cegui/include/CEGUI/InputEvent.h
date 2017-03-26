@@ -123,7 +123,7 @@ struct CEGUIEXPORT Key
         F10             =0x44,
         NumLock         =0x45,
         ScrollLock      =0x46,  /* Scroll Lock */
-        Numpad7         =0x47,
+        Numpad_7        =0x47,
         Numpad_8        =0x48,
         Numpad_9        =0x49,
         Subtract        =0x4A,  /* - on numeric keypad */
