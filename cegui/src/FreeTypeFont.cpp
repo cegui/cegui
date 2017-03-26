@@ -813,7 +813,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
     }
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str());
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str(), text.length());
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
     const std::u32string& utf32Text = text.getString();
 #endif
@@ -821,11 +821,11 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
     FT_Pos previousRsbDelta = 0;
     unsigned int previousGlyphIndex = 0;
 
-    size_t charCount = text.size();
+    size_t charCount = utf32Text.size();
     for (size_t i = 0; i < charCount; ++i)
     {
         const char32_t& codePoint = utf32Text[i];
-;
+
         // Ignore new line characters
         if (codePoint == '\n')
         {
