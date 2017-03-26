@@ -196,7 +196,7 @@ void Editbox::setValidator(RegexMatcher* validator)
     if (d_weOwnValidator && d_validator)
         System::getSingleton().destroyRegexMatcher(d_validator);
 
-	d_validator = validator;
+    d_validator = validator;
 
     if (d_validator)
         d_weOwnValidator = false;

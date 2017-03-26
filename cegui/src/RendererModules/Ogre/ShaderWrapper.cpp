@@ -73,9 +73,11 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
         return;
     }
 
-    d_paramTypeToIndex[ShaderParamType::Matrix4X4] = target->second.physicalIndex;
-    d_paramTypeToIndex[ShaderParamType::Float] = target2->second.physicalIndex;
-    d_paramTypeToIndex[ShaderParamType::Texture] = 0;
+    d_paramTypeToIndex[static_cast<int>(ShaderParamType::Matrix4X4)] =
+        target->second.physicalIndex;
+    d_paramTypeToIndex[static_cast<int>(ShaderParamType::Float)] =
+        target2->second.physicalIndex;
+    d_paramTypeToIndex[static_cast<int>(ShaderParamType::Texture)] = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -118,7 +120,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         const ShaderParamType parameterType = parameter->getType();
 
         std::map<int, size_t>::const_iterator find_iter = d_paramTypeToIndex.
-            find(parameterType);
+            find(static_cast<int>(parameterType));
 
         if (find_iter == d_paramTypeToIndex.end())
         {

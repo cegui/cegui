@@ -383,7 +383,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
     if (update_scrollbars)
         configureScrollbars();
 
-	invalidate();
+    invalidate();
 }
 
 
