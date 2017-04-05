@@ -50,7 +50,7 @@ namespace CEGUI
 */
 
 enum class MenubarDirection : int {
-  BestFit, Down, Up
+    Down, Up
 };
 
 template<>
@@ -66,7 +66,6 @@ public:
     static const String& getDataTypeName()
     {
         static String type("MenubarDirection");
-
         return type;
     }
 
@@ -76,24 +75,16 @@ public:
         if (str == "Up")
         {
             return MenubarDirection::Up;
-        }
-        else if (str == "Down")
-        {
-            return MenubarDirection::Down;
-        }
+        }        
         else
         {
-            return MenubarDirection::BestFit;
+            return MenubarDirection::Down;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == MenubarDirection::BestFit)
-        {
-            return "BestFit";
-        }
-        else if (val == MenubarDirection::Down)
+        if (val == MenubarDirection::Down)
         {
             return "Down";
         }
@@ -104,7 +95,7 @@ public:
         else
         {
             assert(false && "Invalid Menubar Direction Mode");
-            return "BestFit";
+            return "Down";
         }
     }
 
