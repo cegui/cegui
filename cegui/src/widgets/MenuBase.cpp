@@ -134,7 +134,7 @@ void MenuBase::addMenuBaseProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(MenuBase, MenubarDirection,
-        "MenubarDirection", "Property to get/set the direction in which child popups should open, or the manner in which this direction is determined. Value is either \"BestFit\", \"Down\", or \"Up\".",
+        "MenubarDirection", "Property to get/set the direction in which child popups should open, or the manner in which this direction is determined. Value is either \"Down\", or \"Up\".",
         &MenuBase::setMenubarDirection, &MenuBase::getMenubarDirection, MenubarDirection::Down
     );
 }
