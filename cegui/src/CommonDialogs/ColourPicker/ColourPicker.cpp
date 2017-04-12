@@ -67,23 +67,6 @@ ColourPicker::ColourPicker(const String& type, const String& name)
 //----------------------------------------------------------------------------//
 ColourPicker::~ColourPicker(void)
 {
-    if (d_colourPickerControlsWindow != 0)
-    {
-        if (d_shareColourPickerControlsWindow)
-        {
-            std::map<Window*, int>::iterator iter =
-                s_colourPickerWindows.find(d_colourPickerControlsWindow);
-
-            if (iter != s_colourPickerWindows.end())
-            {
-                if (iter->second <= 0)
-                    WindowManager::getSingleton().destroyWindow(iter->first);
-            }
-        }
-        else
-            WindowManager::getSingleton().
-            destroyWindow(d_colourPickerControlsWindow);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -105,6 +88,30 @@ void ColourPicker::initialiseComponents(void)
     initialiseColourPickerControlsWindow();
 }
 
+void ColourPicker::destroy(void)
+{
+    if (d_colourPickerControlsWindow != 0)
+    {
+        if (d_shareColourPickerControlsWindow)
+        {
+            std::map<Window*, int>::iterator iter = s_colourPickerWindows.find(d_colourPickerControlsWindow);
+
+            if (iter != s_colourPickerWindows.end())
+            {
+                if (iter->second > 0)
+                {
+                    Window *wnd = iter->first;
+                    WindowManager::getSingleton().destroyWindow(wnd);
+                    s_colourPickerWindows.erase(wnd);
+                }
+            }
+        }
+        else
+            WindowManager::getSingleton().destroyWindow(d_colourPickerControlsWindow);
+    }
+
+    Window::destroy();
+}
 //----------------------------------------------------------------------------//
 void ColourPicker::setColour(const Colour& newColour)
 {
