@@ -196,7 +196,7 @@ void Editbox::setValidator(RegexMatcher* validator)
     if (d_weOwnValidator && d_validator)
         System::getSingleton().destroyRegexMatcher(d_validator);
 
-	d_validator = validator;
+    d_validator = validator;
 
     if (d_validator)
         d_weOwnValidator = false;
@@ -316,7 +316,11 @@ void Editbox::onCharacter(TextEventArgs& e)
             undo.d_startIdx = getSelectionStart();
             undo.d_text = e.d_character;
 
+            const auto oldSize = tmp.size();
+            
             tmp.insert(getSelectionStart(), 1, e.d_character);
+
+            const auto insertedCount = tmp.size() - oldSize;
 
             if (handleValidityChangeForString(tmp))
             {
@@ -326,7 +330,9 @@ void Editbox::onCharacter(TextEventArgs& e)
 
                 // advance caret (done first so we can "do stuff" in event
                 // handlers!)
-                d_caretPos++;
+                // In case multiple code point elements are included we need
+                // to jump past all of them
+                d_caretPos += insertedCount;
 
                 // set text to the newly modified string
                 setText(tmp);

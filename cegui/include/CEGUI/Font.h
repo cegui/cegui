@@ -152,10 +152,8 @@ public:
     \param text
         String object containing the text to be drawn.
 
-    \param nextGlyphPosX
-        The x-coordinate where subsequent text should be rendered to ensure correct
-        positioning (which is not possible to determine accurately by using the
-        extent measurement functions).
+    \param nextPenPosX
+        The x-coordinate where the pen is positioned after rendering
 
     \param position
         Reference to a Vector2 object describing the location at which the text
@@ -173,24 +171,15 @@ public:
     \param space_extra
         Number of additional pixels of spacing to be added to space characters.
 
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is
-        considered to be 'normal'.
-
-    \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is
-        considered to be 'normal'.
-
     \return
         Returns a list of GeometryBuffers representing the render geometry of
         the text.
     */
     std::vector<GeometryBuffer*> createTextRenderGeometry(
-        const String& text, float& nextGlyphPosX,
+        const String& text, float& nextPenPosX,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-        const float space_extra = 0.0f, const float x_scale = 1.0f,
-        const float y_scale = 1.0f) const;
+        const float space_extra = 0.0f) const;
 
         /*!
     \brief
@@ -216,14 +205,6 @@ public:
     \param space_extra
         Number of additional pixels of spacing to be added to space characters.
 
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is
-        considered to be 'normal'.
-
-    \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is
-        considered to be 'normal'.
-
     \return
         Returns a list of GeometryBuffers representing the render geometry of
         the text.
@@ -232,8 +213,7 @@ public:
         const String& text,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-        const float space_extra = 0.0f, const float x_scale = 1.0f,
-        const float y_scale = 1.0f) const;
+        const float space_extra = 0.0f) const;
   
     /*!
       \brief
@@ -337,10 +317,6 @@ public:
         String object containing the text to return the rendered pixel
         width for.
 
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis when
-        measuring the extent, where 1.0f is considered to be 'normal'.
-
     \return
         Number of pixels that \a text will occupy when rendered with
         this Font.
@@ -359,7 +335,7 @@ public:
 
     \see getTextAdvance
     */
-    float getTextExtent(const String& text, float x_scale = 1.0f) const;
+    float getTextExtent(const String& text) const;
 
     /*!
     \brief
@@ -369,7 +345,7 @@ public:
     void getGlyphExtents(
         char32_t currentCodePoint,
         float& cur_extent,
-        float& adv_extent, float x_scale) const;
+        float& adv_extent) const;
 
     /*!
     \brief
@@ -377,10 +353,6 @@ public:
 
     \param text
         String object containing the text to return the pixel advance for.
-
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis when
-        measuring the advance, where 1.0f is considered to be 'normal'.
 
     \return
         pixel advance of \a text when rendered with this Font.
@@ -399,7 +371,7 @@ public:
 
     \see getTextExtent
     */
-    float getTextAdvance(const String& text, float x_scale = 1.0f) const;
+    float getTextAdvance(const String& text) const;
 
     /*!
     \brief
@@ -413,10 +385,6 @@ public:
         Specifies the (horizontal) pixel offset to return the character
         index for.
 
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis when measuring
-        the text extent, where 1.0f is considered to be 'normal'.
-
     \return
         Returns a character index into String \a text for the character that
         would be rendered closest to horizontal pixel offset \a pixel if the
@@ -424,9 +392,8 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, float pixel,
-                          float x_scale = 1.0f) const
-    { return getCharAtPixel(text, 0, pixel, x_scale); }
+    size_t getCharAtPixel(const String& text, float pixel) const
+    { return getCharAtPixel(text, 0, pixel); }
 
     /*!
     \brief
@@ -445,10 +412,6 @@ public:
         Specifies the (horizontal) pixel offset to return the character
         index for.
 
-    \param x_scale
-        Scaling factor to be applied to each glyph's x axis when measuring
-        the text extent, where 1.0f is considered to be 'normal'.
-
     \return
         Returns a character index into String \a text for the character that
         would be rendered closest to horizontal pixel offset \a pixel if the
@@ -456,8 +419,7 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, size_t start_char, float pixel,
-                          float x_scale = 1.0f) const;
+    size_t getCharAtPixel(const String& text, size_t start_char, float pixel) const;
 
     /*!
     \brief
@@ -525,8 +487,8 @@ protected:
     //! The old way of rendering glyphs, without kerning and extended layouting
     virtual std::vector<GeometryBuffer*> layoutUsingFallbackAndCreateGlyphGeometry(const String& text,
         const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, const float x_scale,
-        const float y_scale, ImageRenderSettings imgRenderSettings,
+        const float space_extra,
+        ImageRenderSettings imgRenderSettings,
         glm::vec2& glyph_pos) const;
 
     /*! 
@@ -542,13 +504,11 @@ protected:
     virtual std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
-        const float x_scale, const float y_scale,
         ImageRenderSettings imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
         glm::vec2& glyphPos) const
     {
         return layoutUsingFallbackAndCreateGlyphGeometry(text, clip_rect,
-            colours, space_extra, x_scale, y_scale, imgRenderSettings,
-            glyphPos);
+            colours, space_extra, imgRenderSettings, glyphPos);
     }
 
     /*!

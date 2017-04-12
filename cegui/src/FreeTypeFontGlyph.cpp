@@ -31,16 +31,14 @@ namespace CEGUI
 {
 
 float FreeTypeFontGlyph::getRenderedAdvance(
-    float x_scale
 ) const
 {
 #ifdef CEGUI_USE_RAQM
     //TODO: This is incorrect, the estimate based on the advance should not be used when raqm is on
-    float sizeX = d_subpixelPositionedImages.front()->getRenderedSize().d_width + d_subpixelPositionedImages.front()->getRenderedOffset().x;
+    float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
 #else
     float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
-#endif    
-    sizeX *= x_scale;
+#endif
 
     return sizeX;
 }
@@ -55,26 +53,29 @@ bool FreeTypeFontGlyph::isInitialised() const
     return d_initialised;
 }
 
-#ifdef CEGUI_USE_RAQM
-Image* FreeTypeFontGlyph::getSubpixelPositionedImage(size_t index) const
+void FreeTypeFontGlyph::setLsbDelta(const long lsbDelta)
 {
-    if (index >= d_subpixelPositionedImages.size())
-    {
-        InvalidRequestException("Requested a translated image that is "
-            " outside of the bounds.");
-    }
-    return d_subpixelPositionedImages[index];
+    d_lsbDelta = lsbDelta;
 }
 
-size_t FreeTypeFontGlyph::getSubpixelPositionedImageCount() const
+long FreeTypeFontGlyph::getLsbDelta() const
 {
-    return d_subpixelPositionedImages.size();
+    return d_lsbDelta;
 }
 
-void FreeTypeFontGlyph::addSubPixelPositionedImage(Image* image)
+void FreeTypeFontGlyph::setRsbDelta(const long rsbDelta)
 {
-    d_subpixelPositionedImages.push_back(image);
+    d_rsbDelta = rsbDelta;
 }
-#endif
+
+long FreeTypeFontGlyph::getRsbDelta() const
+{
+    return d_rsbDelta;
+}
+
+unsigned FreeTypeFontGlyph::getGlyphIndex() const
+{
+    return d_glyphIndex;
+}
 
 }

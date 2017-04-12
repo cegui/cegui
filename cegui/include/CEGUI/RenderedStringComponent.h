@@ -52,10 +52,10 @@ public:
     //! Destructor.
     virtual ~RenderedStringComponent();
 
-    //! Set the VerticalFormatting option for this component.
-    void setVerticalFormatting(VerticalFormatting fmt);
-    //! return the current VerticalFormatting option.
-    VerticalFormatting getVerticalFormatting() const;
+    //! Set the VerticalTextFormatting option for this component.
+    void setVerticalTextFormatting(VerticalTextFormatting fmt);
+    //! return the current VerticalTextFormatting option.
+    VerticalTextFormatting getVerticalTextFormatting() const;
     //! set the padding values.
     void setPadding(const Rectf& padding);
     //! set the left padding value.
@@ -76,10 +76,6 @@ public:
     float getTopPadding() const;
     //! return the bottom padding value.
     float getBottomPadding() const;
-    //! set the aspect-lock state
-    void setAspectLock(const bool setting);
-    //! return the aspect-lock state
-    bool getAspectLock() const;
 
     //! draw the component.
     virtual std::vector<GeometryBuffer*> createRenderGeometry(
@@ -144,9 +140,7 @@ protected:
     //! Rect object holding the padding values for this component.
     Rectf d_padding;
     //! Vertical formatting to be used for this component.
-    VerticalFormatting d_verticalFormatting;
-    //! true if the aspect ratio should be maintained where possible.
-    bool d_aspectLock;
+    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
     //! Image to draw for selection
     const Image* d_selectionImage;
 };

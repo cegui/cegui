@@ -43,8 +43,6 @@ RenderedStringComponent* RenderedStringComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
-    d_verticalFormatting(VerticalFormatting::BottomAligned),
-    d_aspectLock(false),
     d_selectionImage(nullptr)
 {
 }
@@ -55,15 +53,15 @@ RenderedStringComponent::~RenderedStringComponent()
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringComponent::setVerticalFormatting(VerticalFormatting fmt)
+void RenderedStringComponent::setVerticalTextFormatting(VerticalTextFormatting fmt)
 {
-    d_verticalFormatting = fmt;
+    d_verticalTextFormatting = fmt;
 }
 
 //----------------------------------------------------------------------------//
-VerticalFormatting RenderedStringComponent::getVerticalFormatting() const
+VerticalTextFormatting RenderedStringComponent::getVerticalTextFormatting() const
 {
-    return d_verticalFormatting;
+    return d_verticalTextFormatting;
 }
 
 //----------------------------------------------------------------------------//
@@ -124,18 +122,6 @@ float RenderedStringComponent::getTopPadding() const
 float RenderedStringComponent::getBottomPadding() const
 {
     return d_padding.d_max.y;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setAspectLock(const bool setting)
-{
-    d_aspectLock = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool RenderedStringComponent::getAspectLock() const
-{
-    return d_aspectLock;
 }
 
 //----------------------------------------------------------------------------//

@@ -135,7 +135,7 @@ protected:
     //! clean up the GL texture, or the grab buffer if it had been grabbed
     void cleanupOpenGLTexture();
 
-    GLint internalFormat() const;
+    GLint getTextureFormat() const;
 
     //! initialise the internal format flags for the given CEGUI::PixelFormat.
     virtual void initInternalPixelFormatFields(const PixelFormat fmt) = 0;
@@ -168,10 +168,10 @@ protected:
     OpenGLRendererBase& d_owner;
     //! The name given for this texture.
     const String d_name;
-    //! Texture format
-    GLenum d_format;
-    //! Texture subpixel format
-    GLenum d_subpixelFormat;
+    //! Pixel data format
+    GLenum d_pixelDataFormat;
+    //! Pixel data type
+    GLenum d_pixelDataType;
     //! Whether Texture format is a compressed format
     bool d_isCompressed;
 };

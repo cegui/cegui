@@ -68,15 +68,15 @@ void OpenGLTexture::initialise(const String& filename, const String& resourceGro
     loadFromFile(filename, resourceGroup);
 }
 //----------------------------------------------------------------------------//
-GLint OpenGLTexture::internalFormat() const
+GLint OpenGLTexture::getTextureFormat() const
 {
     if (OpenGLInfo::getSingleton().isSizedInternalFormatSupported())
     {
         const char* err = "Invalid or unsupported OpenGL pixel format.";
-        switch (d_format)
+        switch (d_pixelDataFormat)
         {
         case GL_RGBA:
-            switch (d_subpixelFormat)
+            switch (d_pixelDataType)
             {
             case GL_UNSIGNED_BYTE:
                 return GL_RGBA8;
@@ -86,7 +86,7 @@ GLint OpenGLTexture::internalFormat() const
                 throw RendererException(err);
             }
         case GL_RGB:
-            switch (d_subpixelFormat)
+            switch (d_pixelDataType)
             {
             case GL_UNSIGNED_BYTE:
                 return GL_RGB8;
@@ -99,8 +99,8 @@ GLint OpenGLTexture::internalFormat() const
             throw RendererException(err);
         }
     }
-    else
-        return d_format;
+
+    return d_pixelDataFormat;
 }
  
 //----------------------------------------------------------------------------//
@@ -207,7 +207,7 @@ void OpenGLTexture::loadUncompressedTextureBuffer(const Rectf& dest_area,
                     static_cast<GLint>(dest_area.top()),
                     static_cast<GLsizei>(dest_area.getWidth()),
                     static_cast<GLsizei>(dest_area.getHeight()),
-                    d_format, d_subpixelFormat, buffer);
+                    d_pixelDataFormat, d_pixelDataType, buffer);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
 }
@@ -223,7 +223,7 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
                               static_cast<GLint>(dest_area.top()),
                               static_cast<GLsizei>(dest_area.getWidth()),
                               static_cast<GLsizei>(dest_area.getHeight()),
-                              d_format, image_size, buffer);
+                              d_pixelDataFormat, image_size, buffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -265,8 +265,8 @@ void OpenGLTexture::grabTexture()
         buffer_size = static_cast<std::size_t>(d_dataSize.d_width)
           *static_cast<std::size_t>(d_dataSize.d_height) *4;
         d_isCompressed = false;
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        d_pixelDataFormat = GL_RGBA;
+        d_pixelDataType = GL_UNSIGNED_BYTE;
     }
     else // Desktop OpenGL
         buffer_size = static_cast<std::size_t>(d_size.d_width)

@@ -2278,7 +2278,7 @@ void Window::onSized_impl(ElementEventArgs& e)
     // screen area changes when we're resized.
     // NB: Called non-recursive since the performChildWindowLayout call should
     // have dealt more selectively with child Window cases.
-    notifyScreenAreaChanged(false);
+    notifyScreenAreaChanged(true);
     performChildWindowLayout(true, true);
 
     invalidate();

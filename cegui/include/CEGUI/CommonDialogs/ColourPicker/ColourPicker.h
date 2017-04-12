@@ -94,6 +94,7 @@ public:
 
     // overridden from Window base class
     void initialiseComponents(void) override;
+    void destroy(void);
 
 protected:
     //! Widget name for the open button (colour rect) component.

@@ -37,7 +37,7 @@ namespace CEGUI
 
 //! Default values
 const HorizontalFormatting FrameComponent::HorizontalFormattingDefault(HorizontalFormatting::Stretched);
-const VerticalFormatting FrameComponent::VerticalFormattingDefault(VerticalFormatting::Stretched);
+const VerticalImageFormatting FrameComponent::VerticalFormattingDefault(VerticalImageFormatting::Stretched);
 
 //----------------------------------------------------------------------------//
 FrameComponent::FrameComponent() :
@@ -51,13 +51,13 @@ FrameComponent::FrameComponent() :
 }
 
 //----------------------------------------------------------------------------//
-void FrameComponent::setLeftEdgeFormatting(VerticalFormatting fmt)
+void FrameComponent::setLeftEdgeFormatting(VerticalImageFormatting fmt)
 {
     d_leftEdgeFormatting.set(fmt);
 }
 
 //----------------------------------------------------------------------------//
-void FrameComponent::setRightEdgeFormatting(VerticalFormatting fmt)
+void FrameComponent::setRightEdgeFormatting(VerticalImageFormatting fmt)
 {
     d_rightEdgeFormatting.set(fmt);
 }
@@ -75,7 +75,7 @@ void FrameComponent::setBottomEdgeFormatting(HorizontalFormatting fmt)
 }
 
 //----------------------------------------------------------------------------//
-void FrameComponent::setBackgroundVerticalFormatting(VerticalFormatting fmt)
+void FrameComponent::setBackgroundVerticalFormatting(VerticalImageFormatting fmt)
 {
     d_backgroundVertFormatting.set(fmt);
 }
@@ -129,13 +129,13 @@ void FrameComponent::setBackgroundHorizontalFormattingPropertySource(
 }
 
 //----------------------------------------------------------------------------//
-VerticalFormatting FrameComponent::getLeftEdgeFormatting(const Window& wnd) const
+VerticalImageFormatting FrameComponent::getLeftEdgeFormatting(const Window& wnd) const
 {
     return d_leftEdgeFormatting.get(wnd);
 }
 
 //----------------------------------------------------------------------------//
-VerticalFormatting FrameComponent::getRightEdgeFormatting(const Window& wnd) const
+VerticalImageFormatting FrameComponent::getRightEdgeFormatting(const Window& wnd) const
 {
     return d_rightEdgeFormatting.get(wnd);
 }
@@ -153,7 +153,7 @@ HorizontalFormatting FrameComponent::getBottomEdgeFormatting(const Window& wnd) 
 }
 
 //----------------------------------------------------------------------------//
-VerticalFormatting FrameComponent::getBackgroundVerticalFormatting(
+VerticalImageFormatting FrameComponent::getBackgroundVerticalFormatting(
                                                     const Window& wnd) const
 {
     return d_backgroundVertFormatting.get(wnd);
@@ -465,7 +465,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         std::vector<GeometryBuffer*> imageGeomBuffers =
             createRenderGeometryForImage(componentImage,
-                VerticalFormatting::TopAligned, d_topEdgeFormatting.get(srcWindow),
+                VerticalImageFormatting::TopAligned, d_topEdgeFormatting.get(srcWindow),
                 renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
 
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
@@ -499,7 +499,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         std::vector<GeometryBuffer*> imageGeomBuffers =
             createRenderGeometryForImage(componentImage,
-                VerticalFormatting::BottomAligned, d_bottomEdgeFormatting.get(srcWindow),
+                VerticalImageFormatting::BottomAligned, d_bottomEdgeFormatting.get(srcWindow),
                 renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
 
         srcWindow.appendGeometryBuffers(imageGeomBuffers);
@@ -589,7 +589,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         const HorizontalFormatting horzFormatting =
             d_backgroundHorzFormatting.get(srcWindow);
 
-        const VerticalFormatting vertFormatting =
+        const VerticalImageFormatting vertFormatting =
             d_backgroundVertFormatting.get(srcWindow);
 
         // create render geometry for this image and append it to the Window's geometry
@@ -605,7 +605,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
     const Image* image,
-    VerticalFormatting vertFmt,
+    VerticalImageFormatting vertFmt,
     HorizontalFormatting horzFmt,
     Rectf& destRect, const ColourRect& colours,
     const Rectf* clipper, bool clip_to_display) const
@@ -653,29 +653,29 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
     // calculate initial y co-ordinate and vertical tile count according to formatting options
     switch (vertFmt)
     {
-        case VerticalFormatting::Stretched:
+        case VerticalImageFormatting::Stretched:
             imgSz.d_height = destRect.getHeight();
             ypos = destRect.top();
             vertTiles = 1;
             break;
 
-        case VerticalFormatting::Tiled:
+        case VerticalImageFormatting::Tiled:
             ypos = destRect.top();
             vertTiles = std::abs(static_cast<int>(
                 (destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height));
             break;
 
-        case VerticalFormatting::TopAligned:
+        case VerticalImageFormatting::TopAligned:
             ypos = destRect.top();
             vertTiles = 1;
             break;
 
-        case VerticalFormatting::CentreAligned:
+        case VerticalImageFormatting::CentreAligned:
             ypos = destRect.top() + CoordConverter::alignToPixels((destRect.getHeight() - imgSz.d_height) * 0.5f);
             vertTiles = 1;
             break;
 
-        case VerticalFormatting::BottomAligned:
+        case VerticalImageFormatting::BottomAligned:
             ypos = destRect.bottom() - imgSz.d_height;
             vertTiles = 1;
             break;
@@ -704,7 +704,7 @@ std::vector<GeometryBuffer*> FrameComponent::createRenderGeometryForImage(
             Rectf clipperRect;
 
             // use custom clipping for right and bottom edges when tiling the imagery
-            if (((vertFmt == VerticalFormatting::Tiled) && row == vertTiles - 1) ||
+            if (((vertFmt == VerticalImageFormatting::Tiled) && row == vertTiles - 1) ||
                 ((horzFmt == HorizontalFormatting::Tiled) && col == horzTiles - 1))
             {
                 if(clipper)
