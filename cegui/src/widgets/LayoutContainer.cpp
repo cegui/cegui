@@ -106,9 +106,9 @@ const Element::CachedRectf& LayoutContainer::getClientChildContentArea() const
 //----------------------------------------------------------------------------//
 void LayoutContainer::notifyScreenAreaChanged(bool recursive)
 {
-    Window::notifyScreenAreaChanged(recursive);
-    
     d_clientChildContentArea.invalidateCache();
+
+    Window::notifyScreenAreaChanged(recursive);
 }
 
 //----------------------------------------------------------------------------//

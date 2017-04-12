@@ -146,16 +146,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
 //----------------------------------------------------------------------------//
 ColourPickerControls::~ColourPickerControls()
 {
-    deinitColourPickerControlsTexture();
-
-    if (d_colourPickerCursor)
-        WindowManager::getSingleton().destroyWindow(d_colourPickerCursor);
-
-    delete[] d_colourPickingTexture;
-
-    System::getSingleton().destroyRegexMatcher(&d_regexMatcher);
 }
-
 
 //----------------------------------------------------------------------------//
 Lab_Colour ColourPickerControls::getColourPickingPositionColourLAB(float xAbs,
@@ -600,6 +591,24 @@ void ColourPickerControls::initialiseComponents()
     initColourPicker();
 
     performChildWindowLayout();
+}
+
+void ColourPickerControls::destroy( void )
+{
+    deinitColourPickerControlsTexture();
+
+    if (d_colourPickerCursor)
+    {
+        WindowManager::getSingleton().destroyWindow(d_colourPickerCursor);
+        d_colourPickerCursor = NULL;
+    }
+
+    delete[] d_colourPickingTexture;
+    d_colourPickingTexture = NULL;
+
+    System::getSingleton().destroyRegexMatcher(&d_regexMatcher);
+
+    Window::destroy();
 }
 
 //----------------------------------------------------------------------------//
