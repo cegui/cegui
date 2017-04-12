@@ -311,6 +311,8 @@ public:
 // the main reason for this is to keep C++ API in sync with other languages
 typedef Vector3<float> Vector3f;
 
+typedef Vector3<UDim> UVector3;
+
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIVector_h_
