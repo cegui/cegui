@@ -44,7 +44,7 @@ LookNFeelOverviewSample::LookNFeelOverviewSample()
     : d_fontForTaharez(nullptr)
 {
     Sample::d_name = "LookNFeelOverviewSample";
-    Sample::d_credits = "Lukas &quot;Ident&quot; Meindl";
+    Sample::d_credits = "Lukas \"Ident\" Meindl";
     Sample::d_description =
         "This sample gives a quick overview of the available stock LookNFeels (Skins) and their skinned widgets."
         "Most widgets and most skins are shown here and can be directly interacted with.";

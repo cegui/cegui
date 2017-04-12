@@ -51,9 +51,10 @@ class FreeTypeFont;
 class CEGUIEXPORT FreeTypeFontGlyph : public FontGlyph
 {
 public:
-    FreeTypeFontGlyph(char32_t codePoint,
+    FreeTypeFontGlyph(char32_t codePoint, unsigned int glyphIndex,
         float advance = 0.0f, Image* image = nullptr, bool valid = false)
         : FontGlyph(codePoint, advance, image)
+        , d_glyphIndex(glyphIndex)
         , d_initialised(valid)
     {}
 
@@ -61,7 +62,7 @@ public:
     {}
 
     float getRenderedAdvance(
-        float x_scale) const override;
+    ) const override;
 
     //! mark the FontGlyph as initialised
     void markAsInitialised();
@@ -69,20 +70,24 @@ public:
     //! return whether the glyph is valid
     bool isInitialised() const;
 
-#ifdef CEGUI_USE_RAQM
-    Image* getSubpixelPositionedImage(size_t index) const;
-    size_t getSubpixelPositionedImageCount() const;
-    void addSubPixelPositionedImage(Image* image);
-#endif
+    void setLsbDelta(const long lsbDelta);
+    long getLsbDelta() const;
+    void setRsbDelta(const long rsbDelta);
+    long getRsbDelta() const;
+
+    unsigned int getGlyphIndex() const;
+
 
 private:
-    //! Says whether this glyph is initialised or not
-    bool d_initialised;
+    //! The difference between hinted and unhinted left side bearing while auto-hinting is active. Zero otherwise.
+    long d_lsbDelta = 0;
+    long d_rsbDelta = 0;
 
-#ifdef CEGUI_USE_RAQM
-    //! The rendered images for this glyph, each rendered at a different subpixel position
-    std::vector<Image*> d_subpixelPositionedImages;
-#endif
+    //! The index of the glyph in FreeType
+    const unsigned int d_glyphIndex;
+
+    //! Says whether this glyph is initialised or not
+    bool d_initialised = false;
 };
 
 }

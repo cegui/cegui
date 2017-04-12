@@ -332,9 +332,6 @@ public:
     /*!
     \brief
         Sets the autoscale native resolution of this Image.
-
-    \param autoscaled
-        The  autoscale native resolution of this Image.
     */
     void setNativeResolution(const Sizef& native_res);
 

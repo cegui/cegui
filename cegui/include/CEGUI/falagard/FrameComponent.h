@@ -60,7 +60,7 @@ public:
     \param fmt
         One of the VerticalFormatting enumerated values.
     */
-    void setLeftEdgeFormatting(VerticalFormatting fmt);
+    void setLeftEdgeFormatting(VerticalImageFormatting fmt);
 
     /*!
     \brief
@@ -69,7 +69,7 @@ public:
     \param fmt
         One of the VerticalFormatting enumerated values.
     */
-    void setRightEdgeFormatting(VerticalFormatting fmt);
+    void setRightEdgeFormatting(VerticalImageFormatting fmt);
 
     /*!
     \brief
@@ -96,7 +96,7 @@ public:
     \param fmt
         One of the VerticalFormatting enumerated values.
     */
-    void setBackgroundVerticalFormatting(VerticalFormatting fmt);
+    void setBackgroundVerticalFormatting(VerticalImageFormatting fmt);
 
     /*!
     \brief
@@ -156,7 +156,7 @@ public:
     \return
         One of the VerticalFormatting enumerated values.
     */
-    VerticalFormatting getLeftEdgeFormatting(const Window& wnd) const;
+    VerticalImageFormatting getLeftEdgeFormatting(const Window& wnd) const;
 
     /*!
     \brief
@@ -165,7 +165,7 @@ public:
     \return
         One of the VerticalFormatting enumerated values.
     */
-    VerticalFormatting getRightEdgeFormatting(const Window& wnd) const;
+    VerticalImageFormatting getRightEdgeFormatting(const Window& wnd) const;
 
     /*!
     \brief
@@ -192,7 +192,7 @@ public:
     \return
         One of the VerticalFormatting enumerated values.
     */
-    VerticalFormatting getBackgroundVerticalFormatting(const Window& wnd) const;
+    VerticalImageFormatting getBackgroundVerticalFormatting(const Window& wnd) const;
 
     /*!
     \brief
@@ -353,7 +353,7 @@ public:
     //! Default value for the HorzFormat elements of the FrameComponent
     static const HorizontalFormatting HorizontalFormattingDefault;
     //! Default value for the VertFormat elements of the FrameComponent
-    static const VerticalFormatting VerticalFormattingDefault;
+    static const VerticalImageFormatting VerticalFormattingDefault;
 
 protected:
     struct FrameImageSource
@@ -387,16 +387,16 @@ protected:
 
     std::vector<GeometryBuffer*> createRenderGeometryForImage(
         const Image* image,
-        VerticalFormatting vertFmt,
+        VerticalImageFormatting vertFmt,
         HorizontalFormatting horzFmt,
         Rectf& destRect, const ColourRect& colours,
         const Rectf* clipper, bool clipToDisplay) const;
 
-    FormattingSetting<VerticalFormatting>   d_leftEdgeFormatting;
-    FormattingSetting<VerticalFormatting>   d_rightEdgeFormatting;
+    FormattingSetting<VerticalImageFormatting>   d_leftEdgeFormatting;
+    FormattingSetting<VerticalImageFormatting>   d_rightEdgeFormatting;
     FormattingSetting<HorizontalFormatting> d_topEdgeFormatting;
     FormattingSetting<HorizontalFormatting> d_bottomEdgeFormatting;
-    FormattingSetting<VerticalFormatting>   d_backgroundVertFormatting;
+    FormattingSetting<VerticalImageFormatting>   d_backgroundVertFormatting;
     FormattingSetting<HorizontalFormatting> d_backgroundHorzFormatting;
 
     //! FrameImageSource array describing images to be used.

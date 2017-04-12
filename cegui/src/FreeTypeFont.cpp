@@ -43,6 +43,25 @@
 
 #include <cmath>
 
+namespace
+{
+void adjustPenPositionForBearingDeltas(glm::vec2& penPosition,
+    FT_Pos previousRsbDelta, const CEGUI::FreeTypeFontGlyph* glyph)
+{
+    // Needed if using strong auto-hinting.
+    // Adjusting pen position according to the left side and right
+    // side bearing deltas
+    if (previousRsbDelta - glyph->getLsbDelta() >= 32)
+    {
+        penPosition.x -= 1.0f;
+    }
+    else if (previousRsbDelta - glyph->getLsbDelta() < -32)
+    {
+        penPosition.x += 1.0f;
+    }
+}
+}
+
 
 namespace CEGUI
 {
@@ -75,11 +94,6 @@ static const FreeTypeErrorDescription ftErrorDescs[] =
 static const std::vector<FreeTypeErrorDescription> freeTypeErrorDescriptions
     (ftErrorDescs, ftErrorDescs + sizeof(ftErrorDescs) / sizeof(FreeTypeErrorDescription) );
 
-
-
-const String FreeTypeFont::EventMaximumRelativePositionErrorChanged("MaximumRelativePositionErrorChanged");
-
-
 //----------------------------------------------------------------------------//
 FreeTypeFont::FreeTypeFont(
     const String& font_name,
@@ -96,8 +110,7 @@ FreeTypeFont::FreeTypeFont(
     d_size(size),
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
-    d_fontFace(nullptr),
-    d_maximumRelativePositionError(0.03125f)
+    d_fontFace(nullptr)
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -139,22 +152,6 @@ void FreeTypeFont::addFreeTypeFontProperties()
         "Antialiased", "This is a flag indicating whenever to render antialiased font or not. "
         "Value is either true or false.",
         &FreeTypeFont::setAntiAliased, &FreeTypeFont::isAntiAliased, false
-    );
-
-    CEGUI_DEFINE_PROPERTY(FreeTypeFont, float,
-        "MaximumPositionError", "Specifies the maximum error in positioning that a glyph is "
-        "allowed to have. The error value is relative to the pixel size of the Font. The maximum "
-        "absolute error in sub-pixels is calculated by multiplying the Font size with this value. "
-        "Note: If raqm is not linked and active, this has no effect, as all glyphs will be positioned without kerning, "
-        "based on the image width. If raqm is active, kerning and sub-pixel positions are relevant. "
-        "Example: A Font size of 16 pixels with an error of 0,03125 (1/32) will result in 0,5 pixels. This "
-        "means that, in order to render the glyphs correctly, each glyph needs two representations in the "
-        "texture atlas: One rendered at position 0 and one rendered with a translation of 0,5 pixels. "
-        "The representation closest to the requested position is then always picked when rendering the glyphs."
-        "Value is a float value.",
-        &FreeTypeFont::setMaximumRelativePositionError,
-        &FreeTypeFont::getMaximumRelativePositionError,
-        0.03125f
     );
 }
 
@@ -228,35 +225,29 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
     Rectf subImageArea(subImagePos, subImageSize);
     texture->blitFromMemory(subTextureData.data(), subImageArea);
 
-
     // Create a new image in the imageset
     const Rectf area(static_cast<float>(glyphTexLine.d_lastXPos),
         static_cast<float>(glyphTexLine.d_lastYPos),
         static_cast<float>(glyphTexLine.d_lastXPos + glyphWidth),
         static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
 
-    const glm::vec2 offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(s_conversionMultCoeff),
-        -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(s_conversionMultCoeff));
+   // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
+   const glm::vec2 offset(
+        d_fontFace->glyph->bitmap_left,
+        -d_fontFace->glyph->bitmap_top);
 
-#ifdef CEGUI_USE_RAQM
-    const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()) + "_" +
-        PropertyHelper<std::uint32_t>::toString(glyph->getSubpixelPositionedImageCount()));
-#else
     const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
-#endif
 
-    BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled,
-        d_nativeResolution);
+    BitmapImage* img = new BitmapImage(
+        name, texture, area,
+        offset, AutoScaledMode::Disabled, d_nativeResolution);
     d_glyphImages.push_back(img);
 
-#ifdef CEGUI_USE_RAQM
-    glyph->addSubPixelPositionedImage(img);
-#else
     glyph->setImage(img);
-#endif
 }
 
-void FreeTypeFont::findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
+void FreeTypeFont::findFittingSpotInGlyphTextureLines(
+    int glyphWidth, int glyphHeight,
     bool &fittingLineWasFound, size_t &fittingLineIndex) const 
 {
     // Go through the lines and find one that fits
@@ -577,20 +568,6 @@ void FreeTypeFont::updateFont()
         // point sizes.
         // Try to find Font with closest pixel height and use it instead
         tryToCreateFontWithClosestFontHeight(errorResult, requestedFontSizeInPixels);
-
-        d_possibleSubpixelPositions = 1;
-    }
-    else
-    {
-#ifdef CEGUI_USE_RAQM
-        d_possibleSubpixelPositions = static_cast<int>(1.0f /
-            (d_maximumRelativePositionError * requestedFontSizeInPixels));
-
-        d_possibleSubpixelPositions = std::min(d_maximumPossibleSubpixelPositions,
-            std::max(d_possibleSubpixelPositions, 1U));
-#else
-        d_possibleSubpixelPositions = 1;
-#endif
     }
 
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
@@ -630,7 +607,7 @@ void FreeTypeFont::initialiseGlyphMap()
                 "adding an already added glyph to the codepoint glyph map.");        
         }
 
-        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint);
+        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint, gindex);
         d_codePointToGlyphMap[codepoint] = newFontGlyph;
         d_indexToGlyphMap[gindex] = static_cast<char32_t>(codepoint);
 
@@ -647,8 +624,8 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     }
 
     FT_Vector position;
-    position.y = 0L;
     position.x = 0L;
+    position.y = 0L;
     FT_Set_Transform(d_fontFace, nullptr, &position);
 
     // Load the code point, "rendering" the glyph
@@ -670,32 +647,15 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         // Rasterise the 0 position glyph
         rasterise(glyph);
 
-        // Rasterise all sub-pixel positioned glyphs
-        while (d_possibleSubpixelPositions > glyph->getSubpixelPositionedImageCount())
-        {
-            position.x = static_cast<long>(glyph->getSubpixelPositionedImageCount() /
-                static_cast<float>((d_possibleSubpixelPositions * s_conversionMultCoeff)));
-
-            FT_Set_Transform(d_fontFace, nullptr, &position);
-
-            error = FT_Load_Char(d_fontFace, glyph->getCodePoint(), loadBitmask);
-            if (error != 0)
-            {
-                return;
-            }
-
-            rasterise(glyph);
-        }
-
-        position.x = 0L;
-        
+        glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
+        glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);        
 #else
         rasterise(glyph);
 #endif
     }
 
     const float adv =
-        d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(s_conversionMultCoeff);
+        d_fontFace->glyph->advance.x * static_cast<float>(s_conversionMultCoeff);
     glyph->setAdvance(adv);
 }
 
@@ -821,8 +781,110 @@ const FT_Face& FreeTypeFont::getFontFace() const
     return d_fontFace;
 }
 
+std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
+    const String& text,
+    const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra,
+    ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
+    glm::vec2& penPosition) const
+{
 #ifdef CEGUI_USE_RAQM
+    return layoutUsingRaqmAndCreateRenderGeometry(text, clip_rect, colours,
+        space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
+#else
+    return layoutUsingFreetypeAndCreateRenderGeometry(text, clip_rect, colours,
+        space_extra, imgRenderSettings, penPosition);
+#endif
+}
 
+
+std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(
+    const String& text, const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra, ImageRenderSettings imgRenderSettings,
+    glm::vec2& penPosition) const
+{
+    std::vector<GeometryBuffer*> textGeometryBuffers;
+
+    penPosition.y += getBaseline();
+
+    if (text.empty())
+    {
+        return textGeometryBuffers;
+    }
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str(), text.length());
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
+    const std::u32string& utf32Text = text.getString();
+#endif
+
+    FT_Pos previousRsbDelta = 0;
+    unsigned int previousGlyphIndex = 0;
+
+    size_t charCount = utf32Text.size();
+    for (size_t i = 0; i < charCount; ++i)
+    {
+        const char32_t& codePoint = utf32Text[i];
+
+        // Ignore new line characters
+        if (codePoint == '\n')
+        {
+            continue;
+        }
+
+        const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+        if (glyph == nullptr)
+        {
+            if(codePoint != UnicodeReplacementCharacter)
+            {
+                glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+            }
+
+            if (glyph == nullptr)
+            {
+                continue;
+            }
+        }
+
+     
+        adjustPenPositionForBearingDeltas(penPosition, previousRsbDelta, glyph);
+        previousRsbDelta = glyph->getRsbDelta();
+
+        if (i >= 1)
+        {
+            FT_Vector kerning;
+
+            unsigned int rightGlyphIndex = glyph->getGlyphIndex();
+
+            FT_Get_Kerning(d_fontFace, previousGlyphIndex, rightGlyphIndex,
+                FT_KERNING_DEFAULT, &kerning);
+
+            penPosition.x += kerning.x * s_conversionMultCoeff;
+        }
+        previousGlyphIndex = glyph->getGlyphIndex();
+
+        const Image* const image = glyph->getImage();
+
+        imgRenderSettings.d_destArea =
+            Rectf(penPosition, image->getRenderedSize());
+
+        addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
+            clip_rect, colours);
+
+        penPosition.x += glyph->getAdvance();
+
+        if (codePoint == ' ')
+        {
+            // TODO: This is for justified text and probably wrong because the space was determined
+            // without considering kerning
+            penPosition.x += space_extra;
+        }
+    }
+
+    return textGeometryBuffers;
+}
+
+#ifdef CEGUI_USE_RAQM
 namespace
 {
 raqm_direction_t determineRaqmDirection(DefaultParagraphDirection defaultParagraphDir)
@@ -839,40 +901,19 @@ raqm_direction_t determineRaqmDirection(DefaultParagraphDirection defaultParagra
 
     return RAQM_DIRECTION_LTR;
 }
-}
 
-std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
-    const String& text,
-    const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, const float x_scale, const float y_scale,
-    ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
-    glm::vec2& glyphPos) const
+raqm_t* createAndSetupRaqmTextObject(
+    const uint32_t* originalTextArray, const size_t textLength,
+    DefaultParagraphDirection defaultParagraphDir, FT_Face face)
 {
-    std::vector<GeometryBuffer*> textGeometryBuffers;
-
-    const float base_y = glyphPos.y + getBaseline(y_scale);
-
-
-    if (text.empty())
-    {
-        return textGeometryBuffers;
-    }
-
     raqm_t* raqmObject = raqm_create();
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
-    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(utf32Text.c_str());
-#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
-    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
-#endif
-    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, text.length());
+    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, textLength);
     if (!wasSuccess)
     {
         throw InvalidRequestException("Setting raqm text was unsuccessful");
     }
 
-    FT_Face face = getFontFace();
     if (!raqm_set_freetype_face(raqmObject, face))
     {
         throw InvalidRequestException("Could not set the Freetype font Face for "
@@ -892,6 +933,37 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
         throw InvalidRequestException("Layouting raqm text was unsuccessful");
     }
 
+    return raqmObject;
+}
+
+}
+
+std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(
+    const String& text, const Rectf* clip_rect, const ColourRect& colours, 
+    const float space_extra, ImageRenderSettings imgRenderSettings, 
+    DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
+{
+    std::vector<GeometryBuffer*> textGeometryBuffers;
+
+    penPosition.y += getBaseline();
+
+    if (text.empty())
+    {
+        return textGeometryBuffers;
+    }
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
+    size_t origTextLength = utf32Text.length();
+    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(utf32Text.c_str());
+#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
+    size_t origTextLength = text.length();
+    const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
+#endif
+
+    raqm_t* raqmObject = createAndSetupRaqmTextObject(
+        originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
+
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
 
@@ -907,59 +979,51 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
         }
         else
         {
-            // Ignore new line characters
-            if(originalTextArray[currentGlyph.cluster] == '\n')
-            {
-                continue;
-            }
             codePoint = UnicodeReplacementCharacter;
         }
 
-        const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
-        if (glyph == nullptr && codePoint != UnicodeReplacementCharacter)
-        {
-            glyph = getPreparedGlyph(UnicodeReplacementCharacter);
-        }
-
-        if (glyph == nullptr)
+        // Ignore new line characters
+        if (originalTextArray[currentGlyph.cluster] == '\n')
         {
             continue;
         }
 
-        float snappedGlyphPosX = std::floor(glyphPos.x);
-        float xPosFractionInSubPixelSpace = glyphPos.x - snappedGlyphPosX;
-        xPosFractionInSubPixelSpace *= d_possibleSubpixelPositions;
-        unsigned int closestSubPixelPositionIndex = std::lround(xPosFractionInSubPixelSpace);
-
-        if(closestSubPixelPositionIndex >= d_possibleSubpixelPositions)
+        const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+        if (glyph == nullptr)
         {
-            snappedGlyphPosX += 1.0f;
-            closestSubPixelPositionIndex -= d_possibleSubpixelPositions;
+            if (codePoint != UnicodeReplacementCharacter)
+            {
+                glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+            }
+
+            if (glyph == nullptr)
+            {
+                continue;
+            }
         }
 
-        const Image* const image = glyph->getSubpixelPositionedImage(closestSubPixelPositionIndex);
+        const Image* const image = glyph->getImage();
 
-        glyphPos.y = base_y - (image->getRenderedOffset().y -
-            image->getRenderedOffset().y * y_scale);
-
-        Sizef renderedSize(
-            image->getRenderedSize().d_width * x_scale,
-            image->getRenderedSize().d_height * y_scale);
-
-        glm::vec2 snappedGlyphPos(snappedGlyphPosX, glyphPos.y);
+        penPosition.x = std::round(penPosition.x);
+        
+        //The glyph pos will be rounded to full pixels internally
+        glm::vec2 renderGlyphPos(
+            penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
+            penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
 
         imgRenderSettings.d_destArea =
-            Rectf(snappedGlyphPos, renderedSize);
+            Rectf(renderGlyphPos, image->getRenderedSize());
 
         addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
             clip_rect, colours);
 
-        glyphPos.x += currentGlyph.x_advance * x_scale * s_conversionMultCoeff;
-        // TODO: This is for justified text and probably wrong because the space was determined
-        // without considering kerning
+        penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;
+
         if (codePoint == ' ')
         {
-            glyphPos.x += space_extra;
+            // TODO: This is for justified text and probably wrong because the space was determined
+            // without considering kerning
+            penPosition.x += space_extra;
         }
     }
 
@@ -996,26 +1060,6 @@ void FreeTypeFont::setInitialGlyphAtlasSize(int val)
     d_initialGlyphAtlasSize = val;
 }
 
-void FreeTypeFont::setMaximumRelativePositionError(float maximumRelativePositionError)
-{
-    if(d_maximumRelativePositionError == maximumRelativePositionError)
-    {
-        return;
-    }
-
-    d_maximumRelativePositionError = maximumRelativePositionError;
-
-    updateFont();
-
-    FontEventArgs args(this);
-    onMaximumRelativePositionErrorChanged(args);
-}
-
-float FreeTypeFont::getMaximumRelativePositionError() const
-{
-    return d_maximumRelativePositionError;
-}
-
 const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoint) const
 {
     FreeTypeFontGlyph* glyph = getGlyphForCodepoint(currentCodePoint);
@@ -1026,11 +1070,6 @@ const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoin
     }
 
     return glyph;
-}
-
-void FreeTypeFont::onMaximumRelativePositionErrorChanged(FontEventArgs& args)
-{
-    fireEvent(EventMaximumRelativePositionErrorChanged, args, EventNamespace);
 }
 
 

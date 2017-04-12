@@ -154,23 +154,19 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     return nullptr;
 }
 
-void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos, float& y_scale) const
+void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const
 {
-    switch (d_verticalFormatting)
+    switch (d_verticalTextFormatting)
     {
-    case VerticalFormatting::BottomAligned:
+    case VerticalTextFormatting::BottomAligned:
         final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
-    case VerticalFormatting::CentreAligned:
+    case VerticalTextFormatting::CentreAligned:
         final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
-    case VerticalFormatting::Stretched:
-        y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
-        break;
-
-    case VerticalFormatting::TopAligned:
+    case VerticalTextFormatting::TopAligned:
         // nothing additional to do for this formatting option.
         break;
 
@@ -221,9 +217,8 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     }
 
     glm::vec2 final_pos(position);
-    float y_scale = 1.0f;
 
-    handleFormattingOptions(ref_wnd, vertical_space, final_pos, y_scale);
+    handleFormattingOptions(ref_wnd, vertical_space, final_pos);
 
     // apply padding to position:
     final_pos += d_padding.getPosition();
@@ -242,7 +237,7 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     return fnt->createTextRenderGeometry(
         d_text, final_pos,
         clip_rect, true, final_cols,
-        defaultParagraphDir, space_extra, 1.0f, y_scale);
+        defaultParagraphDir, space_extra);
 }
 
 //----------------------------------------------------------------------------//
@@ -288,7 +283,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // create 'left' side of split and clone our basic configuration
     RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
     lhs->d_padding = d_padding;
-    lhs->d_verticalFormatting = d_verticalFormatting;
+    lhs->d_verticalTextFormatting = d_verticalTextFormatting;
     lhs->d_font = d_font;
     lhs->d_colours = d_colours;
 
@@ -316,7 +311,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
                 left_len =
                     std::max(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
-                                d_text.substr(0, token_len), split_point));
+                                 d_text.substr(0, token_len), split_point));
             }
             
             // left_len is now the character index at which to split the line

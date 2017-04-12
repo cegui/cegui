@@ -118,25 +118,17 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
 
     glm::vec2 final_pos(position);
     // handle formatting options
-    switch (d_verticalFormatting)
+    switch (d_verticalTextFormatting)
     {
-    case VerticalFormatting::BottomAligned:
+    case VerticalTextFormatting::BottomAligned:
         final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
-    case VerticalFormatting::Stretched:
-        Logger::getSingleton().logEvent("RenderedStringWidgetComponent::draw: "
-            "VerticalFormatting::STRETCHED specified but is unsupported for Widget types; "
-            "defaulting to VerticalFormatting::CENTRE_ALIGNED instead.");
-        
-        // intentional fall-through.
-        
-    case VerticalFormatting::CentreAligned:
+    case VerticalTextFormatting::CentreAligned:
         final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
-
-    case VerticalFormatting::TopAligned:
+    case VerticalTextFormatting::TopAligned:
         // nothing additional to do for this formatting option.
         break;
 

@@ -50,46 +50,46 @@ void OpenGL1Texture::initInternalPixelFormatFields(const PixelFormat fmt)
     switch(fmt)
     {
     case PixelFormat::Rgba:
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        d_pixelDataFormat = GL_RGBA;
+        d_pixelDataType = GL_UNSIGNED_BYTE;
         break;
 
     case PixelFormat::Rgb:
-        d_format = GL_RGB;
-        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        d_pixelDataFormat = GL_RGB;
+        d_pixelDataType = GL_UNSIGNED_BYTE;
         break;
 
     case PixelFormat::Rgb565:
-        d_format = GL_RGB;
-        d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
+        d_pixelDataFormat = GL_RGB;
+        d_pixelDataType = GL_UNSIGNED_SHORT_5_6_5;
         break;
 
     case PixelFormat::Rgba4444:
-        d_format = GL_RGBA;
-        d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
+        d_pixelDataFormat = GL_RGBA;
+        d_pixelDataType = GL_UNSIGNED_SHORT_4_4_4_4;
         break;
 
     case PixelFormat::RgbDxt1:
-        d_format = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_pixelDataFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        d_pixelDataType = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
     case PixelFormat::RgbaDxt1:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_pixelDataFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        d_pixelDataType = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
     case PixelFormat::RgbaDxt3:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_pixelDataFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        d_pixelDataType = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
     case PixelFormat::RgbaDxt5:
-        d_format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_pixelDataFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        d_pixelDataType = GL_UNSIGNED_BYTE; // not used.
         d_isCompressed = true;
         break;
 
@@ -109,8 +109,8 @@ GLsizei OpenGL1Texture::getCompressedTextureSize(const Sizef& pixel_size) const
 {
     GLsizei blocksize = 16;
 
-    if(d_format == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
-            d_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
+    if(d_pixelDataFormat == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
+            d_pixelDataFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
     {
         blocksize = 8;
     }
@@ -144,17 +144,17 @@ void OpenGL1Texture::setTextureSize_impl(const Sizef& sz)
     if(d_isCompressed)
     {
         const GLsizei image_size = getCompressedTextureSize(size);
-        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format,
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_pixelDataFormat,
                                static_cast<GLsizei>(size.d_width),
                                static_cast<GLsizei>(size.d_height),
                                0, image_size, nullptr);
     }
     else
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, d_format,
+        glTexImage2D(GL_TEXTURE_2D, 0, getTextureFormat(),
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
-                     0, d_format, d_subpixelFormat, nullptr);
+                     0, d_pixelDataFormat, d_pixelDataType, nullptr);
     }
 
     // restore previous texture binding.
@@ -230,7 +230,7 @@ void OpenGL1Texture::blitToMemory(void* targetData)
             glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
 
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
-            glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
+            glGetTexImage(GL_TEXTURE_2D, 0, d_pixelDataFormat, d_pixelDataType, targetData);
 
             glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
         }

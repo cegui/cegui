@@ -92,28 +92,28 @@ namespace CEGUI
         \return
             The VerticalFormatting enum.
         */
-        VerticalFormatting getVerticalFormatting(const Window& wnd) const;
+        VerticalImageFormatting getVerticalFormatting(const Window& wnd) const;
 
         /*!
         \brief
-            Directly returns the vertical formatting which was set for the ImageryComponent.
+            Directly returns the vertical image formatting which was set for the ImageryComponent.
 
         \return
-            The VerticalFormatting enum.
+            The VerticalImageFormatting enum.
         */
-        VerticalFormatting getVerticalFormattingFromComponent() const;
+        VerticalImageFormatting getVerticalFormattingFromComponent() const;
 
         /*!
         \brief
-            Set the vertical formatting setting for this ImageryComponent.
+            Set the vertical image formatting setting for this ImageryComponent.
 
         \param fmt
-            One of the VerticalFormatting enumerated values.
+            One of the VerticalImageFormatting enumerated values.
 
         \return
             Nothing.
         */
-        void setVerticalFormatting(VerticalFormatting fmt);
+        void setVerticalFormatting(VerticalImageFormatting fmt);
 
         /*!
         \brief
@@ -231,7 +231,7 @@ namespace CEGUI
 
         const Image*         d_image;           //!< CEGUI::Image to be drawn by this image component.
         //! Vertical formatting to be applied when rendering the image component.
-        FormattingSetting<VerticalFormatting> d_vertFormatting;
+        FormattingSetting<VerticalImageFormatting> d_vertFormatting;
         //! Horizontal formatting to be applied when rendering the image component.
         FormattingSetting<HorizontalFormatting> d_horzFormatting;
         String  d_imagePropertyName;            //!< Name of the property to access to obtain the image to be used.

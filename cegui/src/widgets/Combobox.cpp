@@ -1130,7 +1130,7 @@ bool Combobox::listwidget_ListContentsChangedHandler(const EventArgs&)
     if (isDropDownListVisible())
         updateAutoSizedDropList();
 
-	WindowEventArgs	args(this);
+    WindowEventArgs args(this);
 	onListContentsChanged(args);
 
 	return true;

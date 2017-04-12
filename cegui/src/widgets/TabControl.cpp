@@ -173,7 +173,7 @@ size_t TabControl::getSelectedTabIndex() const
         if (d_tabButtonVector [i]->isSelected ())
             return i;
 
-	throw UnknownObjectException("Current tab not in list?");
+    throw UnknownObjectException("Current tab not in list?");
 }
 
 /*************************************************************************
@@ -329,7 +329,7 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
         if (d_tabButtonVector [i]->getTargetWindow () == wnd)
             return d_tabButtonVector [i];
 
-	throw UnknownObjectException(
+    throw UnknownObjectException(
         "The Window object is not a tab contents.");
 }
 /*************************************************************************

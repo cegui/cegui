@@ -86,7 +86,7 @@ void OpenGL3GeometryBuffer::draw() const
 
     // Set the uniform variables for this GeometryBuffer in the Shader
     shaderParameterBindings->setParameter("modelViewProjMatrix", d_matrix);
-    shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
+    shaderParameterBindings->setParameter("alphaFactor", d_alpha);
 
     // activate desired blending mode
     d_owner.setupRenderingBlendMode(d_blendMode);
