@@ -295,7 +295,8 @@ protected:
         bool &fittingLineWasFound, size_t &fittingLineIndex) const;
 
     //! Adds a new glyph atlas line if the glyph would fit into there.
-    bool addNewLineIfFitting(unsigned int glyphHeight, size_t & fittingLineIndex) const;
+    bool addNewLineIfFitting(unsigned int glyphHeight, unsigned int glyphWidth,
+        size_t & fittingLineIndex) const;
 
     void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
