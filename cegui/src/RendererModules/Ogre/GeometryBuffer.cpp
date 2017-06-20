@@ -39,6 +39,12 @@
 #include <OgreRenderOperation.h>
 #include <OgreSceneManager.h>
 
+#ifdef CEGUI_USE_OGRE_HLMS
+#include <OgreHlmsSamplerblock.h>
+#include <OgreRenderTarget.h>
+#include <OgreViewport.h>
+#endif
+
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -81,10 +87,29 @@ void OgreGeometryBuffer::draw() const
     if (d_hwBuffer.isNull())
         return;
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    //Ogre::Viewport* previousViewport = d_renderSystem._getViewport();
+    //Ogre::Viewport* currentViewport = d_owner.getOgreRenderTarget()->getViewport(0);
+    
+    // If this viewport approach fails we'll probably need to mess with the
+    // set hlms macro block in the Renderer
+    Ogre::Viewport* currentViewport = d_renderSystem._getViewport();
+
+    Rectf previousClipRect;
+    previousClipRect.left(currentViewport->getScissorLeft());
+    previousClipRect.top(currentViewport->getScissorTop());
+    previousClipRect.right(currentViewport->getScissorWidth());
+    previousClipRect.bottom(currentViewport->getScissorHeight());
+#endif //CEGUI_USE_OGRE_HLMS
+    
     // setup clip region
     if (d_clippingActive)
     {
+    #ifdef CEGUI_USE_OGRE_HLMS
+        setScissorRects(currentViewport);
+    #else
         setScissorRects();
+    #endif //CEGUI_USE_OGRE_HLMS
     }
 
     // Update the matrix
@@ -116,8 +141,14 @@ void OgreGeometryBuffer::draw() const
             d_effect->performPreRenderFunctions(pass);
 
         //Prepare for the rendering process according to the used render material
-        d_renderMaterial->prepareForRendering();
 
+        // Starting with Ogre 2.1 this also activates the PSO
+        // which contains all the blend settings etc
+        // This is required because the material cannot set shader parameters before
+        // the PSO is bound
+        
+        d_renderMaterial->prepareForRendering(); 
+        
         // draw the geometry
         d_renderSystem._render(d_renderOp);
     }
@@ -129,7 +160,13 @@ void OgreGeometryBuffer::draw() const
     // Disable clipping after rendering
     if (d_clippingActive)
     {
+    #ifdef CEGUI_USE_OGRE_HLMS
+        currentViewport->setScissors(previousClipRect.left(), previousClipRect.top(),
+            previousClipRect.right(), previousClipRect.bottom());
+        // Restore viewport? d_renderSystem._setViewport(previousViewport);
+    #else
         d_renderSystem.setScissorTest(false);
+    #endif //CEGUI_USE_OGRE_HLMS
     }
 
     updateRenderTargetData(d_owner.getActiveRenderTarget());
@@ -171,9 +208,13 @@ void OgreGeometryBuffer::syncVertexData() const
 
             setVertexBuffer(d_vertexCount);
         }
-
+    #ifdef CEGUI_USE_OGRE_HLMS
         void* copy_target = d_hwBuffer->lock(
-            Ogre::HardwareVertexBuffer::HBL_DISCARD);
+            Ogre::v1::HardwareVertexBuffer::HBL_DISCARD); 
+    #else
+        void* copy_target = d_hwBuffer->lock(
+            Ogre::HardwareVertexBuffer::HBL_DISCARD); 
+    #endif //CEGUI_USE_OGRE_HLMS
 
         assert(copy_target && "Ogre vertex buffer is invalid");
 
@@ -212,7 +253,16 @@ void OgreGeometryBuffer::updateMatrix() const
 void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 {
     d_expectedData = type;
+    
+#ifdef CEGUI_USE_OGRE_HLMS
+    // basic initialisation of render op
+    d_renderOp.vertexData = OGRE_NEW Ogre::v1::VertexData();
+    d_renderOp.operationType = Ogre::OT_TRIANGLE_LIST;
+    d_renderOp.useIndexes = false;
 
+    // Setup our render operation to match the type
+    Ogre::v1::VertexDeclaration* vd = d_renderOp.vertexData->vertexDeclaration;
+#else
     // basic initialisation of render op
     d_renderOp.vertexData = OGRE_NEW Ogre::VertexData();
     d_renderOp.operationType = Ogre::RenderOperation::OT_TRIANGLE_LIST;
@@ -220,6 +270,7 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
 
     // Setup our render operation to match the type
     Ogre::VertexDeclaration* vd = d_renderOp.vertexData->vertexDeclaration;
+#endif //CEGUI_USE_OGRE_HLMS
 
     switch(d_expectedData)
     {
@@ -253,8 +304,8 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 {
     // We first check if some other buffer has already allocated a suited buffer
     // for us
-    Ogre::HardwareVertexBufferSharedPtr already_created = 
-        d_owner.getVertexBuffer(count);
+    // We use auto here because the return type depends on Ogre version
+    auto already_created = d_owner.getVertexBuffer(count);
 
     if (!already_created.isNull())
     {
@@ -263,11 +314,18 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
 
     } else {
 
-        // Create the a new vertex buffer
+        // Create a new vertex buffer
+    #ifdef CEGUI_USE_OGRE_HLMS
+        d_hwBuffer = Ogre::v1::HardwareBufferManager::getSingleton().
+            createVertexBuffer(getVertexAttributeElementCount()*sizeof(float), count,
+                Ogre::v1::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
+                false);
+    #else
         d_hwBuffer = Ogre::HardwareBufferManager::getSingleton().
             createVertexBuffer(getVertexAttributeElementCount()*sizeof(float), count,
-            Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
-            false);
+                Ogre::HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE,
+                false);
+    #endif //CEGUI_USE_OGRE_HLMS
     }
 
     if (d_hwBuffer.isNull())
@@ -294,6 +352,23 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
 }
 
 // ------------------------------------ //
+#ifdef CEGUI_USE_OGRE_HLMS
+void OgreGeometryBuffer::setScissorRects(Ogre::Viewport* current_viewport) const
+{
+    int actualWidth = current_viewport->getActualWidth();
+    int actualHeight = current_viewport->getActualHeight();
+    float scissorsLeft = d_preparedClippingRegion.left() / actualWidth;
+    float scissorsTop = d_preparedClippingRegion.top() / actualHeight;
+    float scissorsWidth = (d_preparedClippingRegion.right() -
+        d_preparedClippingRegion.left()) / actualWidth;
+    float scissorsHeight = (d_preparedClippingRegion.bottom() -
+        d_preparedClippingRegion.top()) / actualHeight;
+    
+    current_viewport->setScissors(scissorsLeft, scissorsTop, scissorsWidth,
+        scissorsHeight);
+}
+
+#else
 void OgreGeometryBuffer::setScissorRects() const
 {
     d_renderSystem.setScissorTest(true,
@@ -302,6 +377,7 @@ void OgreGeometryBuffer::setScissorRects() const
         static_cast<size_t>(d_preparedClippingRegion.right()),
         static_cast<size_t>(d_preparedClippingRegion.bottom()));
 }
+#endif //CEGUI_USE_OGRE_HLMS
 
 // ------------------------------------ //
 void OgreGeometryBuffer::reset()

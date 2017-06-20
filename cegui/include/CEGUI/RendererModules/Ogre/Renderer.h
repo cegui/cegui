@@ -48,6 +48,21 @@
 #   pragma warning(disable : 4251)
 #endif
 
+#if (CEGUI_OGRE_VERSION >= (2 << 16))
+// The new Ogre Compositor2 system has to be used since ViewPorts
+// no longer have the required functionality
+#define CEGUI_USE_OGRE_COMPOSITOR2
+#endif
+
+// These HLMS Ogre 2.1 fixes are based on Jeremy Richert's patch to CEGUI
+// 0.8
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))
+// The HLMS has to be used since fixed pipeline is disabled
+#define CEGUI_USE_OGRE_HLMS
+#include <OgreRenderOperation.h>
+#include <OgreHlmsSamplerblock.h>
+#endif
+
 namespace Ogre
 {
 class Root;
@@ -60,16 +75,21 @@ class TexturePtr;
 template<typename T> class SharedPtr;
 class Texture;
 typedef SharedPtr<Texture> TexturePtr;
+#ifdef CEGUI_USE_OGRE_HLMS
+class HighLevelGpuProgram;
+typedef SharedPtr<HighLevelGpuProgram> HighLevelGpuProgramPtr;
+namespace v1
+{
 class HardwareVertexBufferSharedPtr;
+}
+#else
+class HardwareVertexBufferSharedPtr;
+#endif //CEGUI_USE_OGRE_HLMS
 #endif
 class Matrix4;
 }
 
-#if (CEGUI_OGRE_VERSION >= (2 << 16))
-// The new Ogre Compositor2 system has to be used since ViewPorts
-// no longer have the required functionality
-#define CEGUI_USE_OGRE_COMPOSITOR2
-#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -242,7 +262,29 @@ public:
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
-                                 const bool force = false);
+                                 bool force = false);
+
+#ifdef CEGUI_USE_OGRE_HLMS
+    /*!
+    \brief
+         Binds all render options to the pipeline
+
+    This must be called before each geometry buffer is rendered
+
+    setupRenderingBlendMode must have been called before calling this
+
+    VAO fixes by Kohedlo on the Ogre forums
+     http://www.ogre3d.org/forums/viewtopic.php?f=25&t=82911&sid=d2694a87677c7d3b56794aa555b438ee&start=25#p536494
+    */
+    void bindPSO();
+
+    /*!
+    Called from shader wrapper. Sets the current GPU programs
+    */
+    void setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
+        const Ogre::HighLevelGpuProgramPtr &ps);
+    
+#endif //CEGUI_USE_OGRE_HLMS
 
     /*!
     \brief
@@ -313,6 +355,19 @@ public:
     */
     void initialiseTextureStates();
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    /*!
+    \brief 
+    Returns a vertex buffer larger than size if any exist
+
+    This function also cleans the pool and discards large buffers that 
+    aren't used
+    */
+    Ogre::v1::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
+
+    //! \brief Puts a vertex buffer back in to the pool
+    void returnVertexBuffer(Ogre::v1::HardwareVertexBufferSharedPtr buffer);
+#else
     /*!
     \brief 
         Returns a vertex buffer larger than size if any exist
@@ -324,7 +379,8 @@ public:
 
     //! \brief Puts a vertex buffer back in to the pool
     void returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr buffer);
-
+#endif //CEGUI_USE_OGRE_HLMS
+    
     //! \brief Clears vertex buffer pool
     void clearVertexBufferPool();
 
