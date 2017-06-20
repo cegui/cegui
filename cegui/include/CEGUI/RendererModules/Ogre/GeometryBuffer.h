@@ -37,6 +37,10 @@
 #include <OgreTexture.h>
 #include <OgreMatrix4.h>
 
+#ifdef CEGUI_USE_OGRE_HLMS
+#include <OgreHardwareBuffer.h>
+#endif //CEGUI_USE_OGRE_HLMS
+
 #include <utility>
 #include <vector>
 
@@ -44,6 +48,7 @@
 namespace Ogre
 {
 class RenderSystem;
+class Viewport;
 }
 
 // Start of CEGUI namespace section
@@ -68,10 +73,11 @@ public:
     //! Destructor
     virtual ~OgreGeometryBuffer();
 
-    virtual void draw() const;
-    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
-    virtual void reset();
-    virtual int getVertexAttributeElementCount() const;
+    virtual void draw() const override;
+    virtual void appendGeometry(const float* vertex_data,
+        std::size_t array_size) override;
+    virtual void reset() override;
+    virtual int getVertexAttributeElementCount() const override;
 
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
 
@@ -79,8 +85,15 @@ protected:
 
     //! Updates the cached matrix. This should only be called after the RenderTarget was set.
     void updateMatrix() const;
+
+#ifdef CEGUI_USE_OGRE_HLMS
     //! Sets the current scissor rect active
-    void setScissorRects() const;
+    void setScissorRects(Ogre::Viewport* current_viewport) const; 
+#else
+    //! Sets the current scissor rect active
+    void setScissorRects() const; 
+#endif //CEGUI_USE_OGRE_HLMS
+
 
     void syncVertexData() const;
 
@@ -99,11 +112,19 @@ protected:
     //! The type of vertex data we expect
     MANUALOBJECT_TYPE d_expectedData;
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    //! Render operation for this buffer.
+    mutable Ogre::v1::RenderOperation d_renderOp;
+
+    //! H/W buffer where the vertices are rendered from.
+    mutable Ogre::v1::HardwareVertexBufferSharedPtr d_hwBuffer;
+#else
     //! Render operation for this buffer.
     mutable Ogre::RenderOperation d_renderOp;
 
     //! H/W buffer where the vertices are rendered from.
-    mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;
+    mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;    
+#endif //CEGUI_USE_OGRE_HLMS
 
     //! Marks the d_hwBuffer as being out of date
     mutable bool d_dataAppended;

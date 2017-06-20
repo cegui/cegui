@@ -161,6 +161,15 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         Ogre::CompositorPassSceneDef* scenepass =
             static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
             addPass(Ogre::PASS_SCENE));
+        
+#ifdef CEGUI_USE_OGRE_HLMS
+
+        (void)scenepass;
+        
+        // Connect the main render target to the node
+        templatedworkspace->connectExternal(0, "SampleCleaner", 0);
+        
+#else
 
         // Just render the overlay group since it is the only one used
         scenepass->mFirstRQ = Ogre::RENDER_QUEUE_BACKGROUND;
@@ -168,6 +177,8 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Connect the main render target to the node
         templatedworkspace->connectOutput("SampleCleaner", 0);
+
+#endif //CEGUI_USE_OGRE_HLMS
 
         // Create the workspace for rendering
 
@@ -361,7 +372,7 @@ bool CEGuiOgreBaseApplication::isInitialised()
 void CEGuiOgreBaseApplication::run()
 {
     // start rendering via Ogre3D engine.
-    CEGUI_TRY
+    try
     {
         #ifdef __ANDROID__
                 AndroidAppHelper::go();
@@ -369,7 +380,7 @@ void CEGuiOgreBaseApplication::run()
                 d_ogreRoot->startRendering();
         #endif
     }
-    CEGUI_CATCH(...)
+    catch(...)
     {}
 }
 
@@ -454,19 +465,17 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
     // Prevent the window from capturing mouse making debugging impossible.
-    #ifndef NDEBUG
-        #if OGRE_PLATFORM == OGRE_PLATFORM_LINUX
-            paramList.insert(std::make_pair("x11_keyboard_grab", "false"));
-            paramList.insert(std::make_pair("x11_mouse_grab", "false"));
-            paramList.insert(std::make_pair("x11_mouse_hide", "false"));
-            paramList.insert(std::make_pair("XAutoRepeatOn", "true"));
-        #elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-            paramList.insert(std::make_pair("w32_mouse", "DISCL_FOREGROUND"));
-            paramList.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
-            paramList.insert(std::make_pair("w32_keyboard", "DISCL_FOREGROUND"));
-            paramList.insert(std::make_pair("w32_keyboard", "DISCL_NONEXCLUSIVE"));
-        #endif
-    #endif
+#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX
+    paramList.insert(std::make_pair("x11_keyboard_grab", "false"));
+    paramList.insert(std::make_pair("x11_mouse_grab", "false"));
+    paramList.insert(std::make_pair("x11_mouse_hide", "false"));
+    paramList.insert(std::make_pair("XAutoRepeatOn", "true"));
+#elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+    paramList.insert(std::make_pair("w32_mouse", "DISCL_FOREGROUND"));
+    paramList.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
+    paramList.insert(std::make_pair("w32_keyboard", "DISCL_FOREGROUND"));
+    paramList.insert(std::make_pair("w32_keyboard", "DISCL_NONEXCLUSIVE"));
+#endif
 
 #ifndef __ANDROID__
     // create input system
@@ -629,13 +638,13 @@ CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
    switch (buttonID)
     {
    case OIS::MB_Left:
-        return CEGUI::LeftButton;
+       return CEGUI::MouseButton::Left;
    case OIS::MB_Right:
-        return CEGUI::RightButton;
+       return CEGUI::MouseButton::Right;
    case OIS::MB_Middle:
-        return CEGUI::MiddleButton;
+       return CEGUI::MouseButton::Middle;
     default:
-        return CEGUI::LeftButton;
+        return CEGUI::MouseButton::Left;
    }
 }
 

@@ -99,11 +99,15 @@ Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() con
 void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* 
     shaderParameterBindings)
 {
+#ifdef CEGUI_USE_OGRE_HLMS
+    d_owner.setGPUPrograms(d_vertexShader, d_pixelShader);
+#else
     Ogre::GpuProgram* vs = d_vertexShader->_getBindingDelegate();
     d_renderSystem.bindGpuProgram(vs);
 
     Ogre::GpuProgram* ps = d_pixelShader->_getBindingDelegate();
-    d_renderSystem.bindGpuProgram(ps);
+    d_renderSystem.bindGpuProgram(ps);    
+#endif //CEGUI_USE_OGRE_HLMS
 
     const ShaderParameterBindings::ShaderParameterBindingsMap& 
         shader_parameter_bindings = shaderParameterBindings->
@@ -148,7 +152,12 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 throw RendererException("Ogre texture ptr is empty");
             }
 
+        #ifdef CEGUI_USE_OGRE_HLMS
+            d_renderSystem._setTexture(0, true, actual_texture.get());
+        #else
             d_renderSystem._setTexture(0, true, actual_texture);
+        #endif //CEGUI_USE_OGRE_HLMS
+
             d_owner.initialiseTextureStates();
 
             break;
@@ -188,12 +197,22 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             throw RendererException("Invalid parameter type");
         }
     }
+#ifdef CEGUI_USE_OGRE_HLMS
 
+    // The PSO needs to be bound before we can bind shader parameters
+    d_owner.bindPSO();
+    
+#endif //CEGUI_USE_OGRE_HLMS
+
+    
     // Pass the finalized parameters to Ogre
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM, 
         d_vertexParameters, Ogre::GPV_ALL);
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_FRAGMENT_PROGRAM, 
         d_pixelParameters, Ogre::GPV_ALL);
+
+
+
 }
 
 //----------------------------------------------------------------------------//

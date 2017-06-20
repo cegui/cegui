@@ -58,6 +58,12 @@
 #include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
 #include <Compositor/OgreCompositorWorkspaceListener.h>
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
+
+#ifdef CEGUI_USE_OGRE_HLMS
+#include <OgreHlmsManager.h>
+#include <OgreHlmsDatablock.h>
+#endif
+
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 
 #include "Shaders.inl"
@@ -121,6 +127,12 @@ typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
 //! container type used to hold Textures we create.
 typedef std::unordered_map<String, OgreTexture*> TextureMap;
 
+#ifdef CEGUI_USE_OGRE_HLMS
+typedef Ogre::v1::HardwareVertexBufferSharedPtr UsedOgreHWBuffer;
+#else
+typedef Ogre::HardwareVertexBufferSharedPtr UsedOgreHWBuffer;
+#endif //CEGUI_USE_OGRE_HLMS
+
 //----------------------------------------------------------------------------//
 // Implementation data for the OgreRenderer
 struct OgreRenderer_impl
@@ -136,6 +148,12 @@ struct OgreRenderer_impl
         d_dummyScene(0),
         d_dummyCamera(0),
         d_workspace(0),
+#endif
+#ifdef CEGUI_USE_OGRE_HLMS
+        //d_renderTarget(nullptr),
+        d_hlmsMacroblock(nullptr),
+        d_hlmsBlendblock(nullptr),
+        d_hlmsSamplerblock(nullptr),
 #endif
         d_activeBlendMode(BlendMode::Invalid),
         d_makeFrameControlCalls(true),
@@ -172,6 +190,7 @@ struct OgreRenderer_impl
     //! Previous projection matrix set on render system.
     Ogre::Matrix4 d_previousProjMatrix;
 #else
+
     //! This is used to get notifications when our scene is rendered
     //! no longer static because it requires a pointer to this
     OgreGUIRenderQueueListener* d_frameListener;
@@ -191,6 +210,21 @@ struct OgreRenderer_impl
     static bool s_compositorResourcesInitialized;
 
 #endif
+
+#ifdef CEGUI_USE_OGRE_HLMS
+    //! OGRE render target
+    //Ogre::RenderTarget* d_renderTarget;
+    //! HLMS block used to set macro parameters
+    const Ogre::HlmsMacroblock* d_hlmsMacroblock;
+    //! HLMS block used to set blending parameters
+    const Ogre::HlmsBlendblock* d_hlmsBlendblock;
+    //! HLMS block used to set sampling parameters
+    const Ogre::HlmsSamplerblock* d_hlmsSamplerblock;
+
+    //! HLMS cache used to store pso
+    Ogre::SharedPtr<Ogre::HlmsCache> d_hlmsCache;
+#endif
+    
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
     //! Whether _beginFrame and _endFrame will be called.
@@ -204,8 +238,13 @@ struct OgreRenderer_impl
     //! Whether we use the ARB glsl shaders or the OpenGL 3.2 Core shader profile (140 core)
     bool d_useGLSLCore;
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    //! Vector containing vertex buffers that can be reused
+    std::vector<Ogre::v1::HardwareVertexBufferSharedPtr> d_vbPool;
+#else
     //! Vector containing vertex buffers that can be reused
     std::vector<Ogre::HardwareVertexBufferSharedPtr> d_vbPool;
+#endif //CEGUI_USE_OGRE_HLMS
 
     OgreShaderWrapper* d_texturedShaderWrapper;
     OgreShaderWrapper* d_colouredShaderWrapper;
@@ -373,13 +412,20 @@ void OgreRenderer::createOgreCompositorResources()
     Ogre::CompositorPassSceneDef* scenepass =
         static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
             addPass(Ogre::PASS_SCENE));
-
+#ifdef CEGUI_USE_OGRE_HLMS
+    (void)scenepass;
+    
+    // Connect the main render target to the node
+    templatedworkspace->connectExternal(0, "CEGUIRenderNode", 0);
+    
+#else
     // Just render the overlay group since it is the only one used
     scenepass->mFirstRQ = Ogre::RENDER_QUEUE_OVERLAY;
     scenepass->mLastRQ = Ogre::RENDER_QUEUE_OVERLAY+1;
 
     // Connect the main render target to the node
     templatedworkspace->connectOutput("CEGUIRenderNode", 0);
+#endif //CEGUI_USE_OGRE_HLMS
     
     // Resources now created
     OgreRenderer_impl::s_compositorResourcesInitialized = true;
@@ -753,11 +799,13 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_defaultTarget =
         new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
+#ifndef CEGUI_USE_OGRE_HLMS
 #if OGRE_VERSION >= 0x10800
     #ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
         throw RendererException("RT Shader System not available. However CEGUI relies on shaders for rendering. ");
     #endif
 #endif
+#endif //CEGUI_USE_OGRE_HLMS
 
     // hook into the rendering process
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
@@ -805,6 +853,36 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 //----------------------------------------------------------------------------//
 void OgreRenderer::initialiseShaders()
 {
+#ifdef CEGUI_USE_OGRE_HLMS
+    Ogre::HlmsManager* hlmsManager = d_pimpl->d_ogreRoot->getHlmsManager();
+
+    // Macro block
+    Ogre::HlmsMacroblock macroblock;
+    macroblock.mDepthCheck = false;
+    macroblock.mDepthWrite = false;
+    macroblock.mDepthBiasConstant = 0;
+    macroblock.mDepthBiasSlopeScale = 0;
+    macroblock.mCullMode = Ogre::CULL_NONE;
+    macroblock.mPolygonMode = Ogre::PM_SOLID;
+    macroblock.mScissorTestEnabled = true;
+    d_pimpl->d_hlmsMacroblock = hlmsManager->getMacroblock(macroblock);
+
+    // Sampler block
+    Ogre::HlmsSamplerblock samplerblock;
+    samplerblock.mMinFilter = Ogre::FO_LINEAR;
+    samplerblock.mMagFilter = Ogre::FO_LINEAR;
+    samplerblock.mMipFilter = Ogre::FO_POINT;
+    samplerblock.mU = Ogre::TAM_CLAMP;
+    samplerblock.mV = Ogre::TAM_CLAMP;
+    samplerblock.mW = Ogre::TAM_CLAMP;
+    samplerblock.mCompareFunction = Ogre::NUM_COMPARE_FUNCTIONS;
+    d_pimpl->d_hlmsSamplerblock = hlmsManager->getSamplerblock(samplerblock);
+
+    // PSO
+    d_pimpl->d_hlmsCache = Ogre::SharedPtr<Ogre::HlmsCache>(new Ogre::HlmsCache);
+    
+#endif
+    
     Ogre::HighLevelGpuProgramPtr texture_vs;
     Ogre::HighLevelGpuProgramPtr texture_ps;
 
@@ -980,6 +1058,29 @@ void OgreRenderer::cleanupShaders()
 {
     delete d_pimpl->d_texturedShaderWrapper;
     delete d_pimpl->d_colouredShaderWrapper;
+
+#ifdef CEGUI_USE_OGRE_HLMS
+
+    Ogre::HlmsManager* hlmsManager = d_pimpl->d_ogreRoot->getHlmsManager();
+
+    if (d_pimpl->d_hlmsCache != nullptr)
+    {
+        d_pimpl->d_renderSystem->_hlmsPipelineStateObjectDestroyed(
+            &d_pimpl->d_hlmsCache->pso);
+        
+        d_pimpl->d_hlmsCache.setNull();
+    }
+
+    if (d_pimpl->d_hlmsBlendblock != nullptr)
+        hlmsManager->destroyBlendblock(d_pimpl->d_hlmsBlendblock);
+    if (d_pimpl->d_hlmsMacroblock != nullptr)
+        hlmsManager->destroyMacroblock(d_pimpl->d_hlmsMacroblock);
+    if (d_pimpl->d_hlmsSamplerblock != nullptr)
+        hlmsManager->destroySamplerblock(d_pimpl->d_hlmsSamplerblock);
+
+    
+    
+#endif //CEGUI_USE_OGRE_HLMS
 }
 
 //----------------------------------------------------------------------------//
@@ -999,26 +1100,87 @@ void OgreRenderer::setDisplaySize(const Sizef& sz)
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
-                                           const bool force)
+                                           bool force)
 {
-    using namespace Ogre;
-
+#ifdef CEGUI_USE_OGRE_HLMS
+    // Enable force if no blend block has been created
+    if (!d_pimpl->d_hlmsBlendblock)
+        force = true;
+    
+#endif //CEGUI_USE_OGRE_HLMS
+    
     // do nothing if mode appears current (and is not forced)
     if ((d_pimpl->d_activeBlendMode == mode) && !force)
         return;
 
     d_pimpl->d_activeBlendMode = mode;
+    
+#ifdef CEGUI_USE_OGRE_HLMS
+
+    Ogre::HlmsManager* hlmsManager = d_pimpl->d_ogreRoot->getHlmsManager();
+
+    // Blend block
+    Ogre::HlmsBlendblock blendblock;
+    blendblock.mAlphaToCoverageEnabled = false;
+    if (d_pimpl->d_activeBlendMode == BlendMode::RttPremultiplied)
+    {
+        blendblock.mSourceBlendFactor = Ogre::SBF_ONE;
+        blendblock.mDestBlendFactor = Ogre::SBF_ONE_MINUS_SOURCE_ALPHA;
+    }
+    else
+    {
+        blendblock.mSeparateBlend = true;
+        blendblock.mSourceBlendFactor = Ogre::SBF_SOURCE_ALPHA;
+        blendblock.mDestBlendFactor = Ogre::SBF_ONE_MINUS_SOURCE_ALPHA;
+        blendblock.mSourceBlendFactorAlpha = Ogre::SBF_ONE_MINUS_DEST_ALPHA;
+        blendblock.mDestBlendFactorAlpha = Ogre::SBF_ONE;
+    }
+    d_pimpl->d_hlmsBlendblock = hlmsManager->getBlendblock(blendblock);
+
+    
+#else
+    using namespace Ogre;
 
     if (d_pimpl->d_activeBlendMode == BlendMode::RttPremultiplied)
         d_pimpl->d_renderSystem->_setSceneBlending(SBF_ONE,
-                                                    SBF_ONE_MINUS_SOURCE_ALPHA);
+            SBF_ONE_MINUS_SOURCE_ALPHA);
     else
         d_pimpl->d_renderSystem->
             _setSeparateSceneBlending(SBF_SOURCE_ALPHA,
-                                      SBF_ONE_MINUS_SOURCE_ALPHA,
-                                      SBF_ONE_MINUS_DEST_ALPHA,
-                                      SBF_ONE);
+                SBF_ONE_MINUS_SOURCE_ALPHA,
+                SBF_ONE_MINUS_DEST_ALPHA,
+                SBF_ONE);
+    
+#endif //CEGUI_USE_OGRE_HLMS
 }
+
+#ifdef CEGUI_USE_OGRE_HLMS
+void OgreRenderer::bindPSO()
+{
+    // Blendmode must be set before
+    assert(d_pimpl->d_hlmsBlendblock);
+
+    d_pimpl->d_hlmsCache->pso.blendblock = const_cast<Ogre::HlmsBlendblock*>(
+        d_pimpl->d_hlmsBlendblock);
+    d_pimpl->d_hlmsCache->pso.macroblock = const_cast<Ogre::HlmsMacroblock*>(
+        d_pimpl->d_hlmsMacroblock);
+
+    // Bind it
+    // This should have all the rendering settings
+    d_pimpl->d_renderSystem->_hlmsPipelineStateObjectCreated(
+        &d_pimpl->d_hlmsCache->pso);
+    d_pimpl->d_renderSystem->_setPipelineStateObject(
+        &d_pimpl->d_hlmsCache->pso);
+}
+
+void OgreRenderer::setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
+    const Ogre::HighLevelGpuProgramPtr &ps)
+{
+    d_pimpl->d_hlmsCache->pso.vertexShader = vs;
+    d_pimpl->d_hlmsCache->pso.pixelShader = ps;
+}
+
+#endif //CEGUI_USE_OGRE_HLMS
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::setFrameControlExecutionEnabled(const bool enabled)
@@ -1062,18 +1224,24 @@ static const Ogre::LayerBlendModeEx S_alphaBlendMode =
 };
 
 //----------------------------------------------------------------------------//
+#ifndef CEGUI_USE_OGRE_HLMS
 static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
-{
-    Ogre::TextureUnitState::TAM_CLAMP,
-    Ogre::TextureUnitState::TAM_CLAMP,
-    Ogre::TextureUnitState::TAM_CLAMP
-};
+    {
+        Ogre::TextureUnitState::TAM_CLAMP,
+        Ogre::TextureUnitState::TAM_CLAMP,
+        Ogre::TextureUnitState::TAM_CLAMP
+    };
+#endif //CEGUI_USE_OGRE_HLMS
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::initialiseRenderStateSettings()
 {
     using namespace Ogre;
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    // The geometry buffer is responsible for binding all our hlms blocks
+    // when it is ready to render
+#else
     // initialise render settings
     d_pimpl->d_renderSystem->setLightingEnabled(false);
     d_pimpl->d_renderSystem->_setDepthBufferParams(false, false);
@@ -1087,6 +1255,8 @@ void OgreRenderer::initialiseRenderStateSettings()
 
     // set alpha blending to known state
     setupRenderingBlendMode(BlendMode::Normal, true);
+#endif //CEGUI_USE_OGRE_HLMS
+
 }
 
 //----------------------------------------------------------------------------//
@@ -1200,10 +1370,10 @@ Ogre::SceneManager& OgreRenderer::getDummyScene() const{
 #endif
 
 //----------------------------------------------------------------------------//
-Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t 
+UsedOgreHWBuffer OgreRenderer::getVertexBuffer(size_t 
     min_size)
 {
-    Ogre::HardwareVertexBufferSharedPtr result(0);
+    UsedOgreHWBuffer result(0);
 
     if (d_pimpl->d_vbPool.empty())
         return result;
@@ -1218,7 +1388,7 @@ Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t
     for (size_t i = d_pimpl->d_vbPool.size(); --i > 0;)
     {
         // It seems that there can be nullptrs in the pool
-        Ogre::HardwareVertexBufferSharedPtr current = d_pimpl->d_vbPool[i];
+        UsedOgreHWBuffer current = d_pimpl->d_vbPool[i];
 
         if (!current.get()){
 
@@ -1274,7 +1444,7 @@ Ogre::HardwareVertexBufferSharedPtr OgreRenderer::getVertexBuffer(size_t
     return result;
 }
 
-void OgreRenderer::returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr 
+void OgreRenderer::returnVertexBuffer(UsedOgreHWBuffer 
     buffer)
 {
     d_pimpl->d_vbPool.push_back(buffer);
@@ -1285,8 +1455,8 @@ void OgreRenderer::clearVertexBufferPool()
     d_pimpl->d_vbPool.clear();
 }
 
-bool hardwareBufferSizeLess(const Ogre::HardwareVertexBufferSharedPtr &first,
-    const Ogre::HardwareVertexBufferSharedPtr &second)
+bool hardwareBufferSizeLess(const UsedOgreHWBuffer &first,
+    const UsedOgreHWBuffer &second)
 {
     return first->getNumVertices() < second->getNumVertices();
 }
@@ -1316,6 +1486,7 @@ void OgreRenderer::cleanLargestVertexBufferPool(size_t count)
 //----------------------------------------------------------------------------//
 void OgreRenderer::initialiseTextureStates()
 {
+#ifndef CEGUI_USE_OGRE_HLMS
     d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, Ogre::TEXCALC_NONE);
     d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
     d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
@@ -1324,6 +1495,12 @@ void OgreRenderer::initialiseTextureStates()
     d_pimpl->d_renderSystem->_setAlphaRejectSettings(Ogre::CMPF_ALWAYS_PASS, 0, false);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);
+
+#else
+    d_pimpl->d_renderSystem->_setHlmsSamplerblock(0, d_pimpl->d_hlmsSamplerblock);
+#endif //CEGUI_USE_OGRE_HLMS
+
+    // This might be a good setting in Ogre 2.1, too
     d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
 }
 
