@@ -30,6 +30,8 @@ xcuserdata/
 .pydevproject
 .ropeproject
 
+.vscode
+
 cppcheck-output
 
 **exposed_decl.pypp.txt
