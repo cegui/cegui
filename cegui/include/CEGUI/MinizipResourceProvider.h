@@ -64,6 +64,7 @@ public:
         The filepath to the archive
     */
     void setArchive(const String& archive);
+    void setPassword(const String& password);
     void setLoadLocal(bool load = true);
 
     void loadRawDataContainer(const String& filename,
