@@ -190,7 +190,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
             "' error reading file header"));
     }
 
-    if (unzOpenCurrentFilePassword(d_pimpl->d_zfile, d_pimpl->d_password.c_str()) != Z_OK)
+    if (unzOpenCurrentFilePassword(d_pimpl->d_zfile, d_pimpl->d_password.c_str()) != UNZ_OK)
     {
         CEGUI_THROW(FileIOException("'" + final_filename +
             "' error opening file"));
