@@ -772,7 +772,7 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
 }
 
 /*************************************************************************
-    Processing for backspace key
+	Processing for backspace key
 *************************************************************************/
 void MultiLineEditbox::handleBackspace(void)
 {
@@ -800,7 +800,7 @@ void MultiLineEditbox::handleBackspace(void)
 
 
 /*************************************************************************
-    Processing for Delete key
+	Processing for Delete key
 *************************************************************************/
 void MultiLineEditbox::handleDelete(void)
 {
@@ -1085,7 +1085,7 @@ void MultiLineEditbox::handleLineDown(uint sysKeys)
 
 
 /*************************************************************************
-    Processing to insert a new line / paragraph.
+	Processing to insert a new line / paragraph.
 *************************************************************************/
 void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
 {
@@ -1303,7 +1303,7 @@ void MultiLineEditbox::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when character (printable keys) are typed
+	Handler for when character (printable keys) are typed
 *************************************************************************/
 void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 {
