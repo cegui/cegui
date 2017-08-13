@@ -822,9 +822,6 @@ void MultiLineEditbox::handleDelete(void)
             setText(newText);
 
             ensureCaretIsVisible();
-
-            WindowEventArgs args(this);
-            onTextChanged(args);
         }
 
     }
