@@ -63,6 +63,7 @@ struct MinizipResourceProvider::Impl
 
     unzFile d_zfile;
     String  d_archive;
+    String  d_password;
     bool    d_loadLocal;
 };
 
@@ -104,6 +105,12 @@ void MinizipResourceProvider::setArchive(const String& archive)
 
     d_pimpl->d_archive = archive;
     openArchive();
+}
+
+//----------------------------------------------------------------------------//
+void MinizipResourceProvider::setPassword(const String& password)
+{
+    d_pimpl->d_password = password;
 }
 
 //----------------------------------------------------------------------------//
@@ -183,7 +190,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
             "' error reading file header"));
     }
 
-    if (unzOpenCurrentFile(d_pimpl->d_zfile) != Z_OK)
+    if (unzOpenCurrentFilePassword(d_pimpl->d_zfile, d_pimpl->d_password.c_str()) != UNZ_OK)
     {
         CEGUI_THROW(FileIOException("'" + final_filename +
             "' error opening file"));

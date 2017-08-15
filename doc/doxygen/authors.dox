@@ -64,6 +64,10 @@ The following have made large, important, or on-going contributions to the syste
     - TinyXML2Parser module.
 - Georger Araujo:
     - SFML2 application template.
+- Chris Beck (iceiceice):
+    - Patches related to GL renderer, testing with WebGL / emscripten
+    - Nicer logic for popup menu behavior, to be aware of and avoid clipping
+    - Other miscellaneous patches
 
 <br>
 @section authors_sec_5 Other Contributors
