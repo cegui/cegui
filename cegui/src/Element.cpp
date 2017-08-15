@@ -34,6 +34,10 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/USize.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/URect.h"
+#include "CEGUI/DefaultParagraphDirection.h"
 
 #include <algorithm>
 
@@ -60,25 +64,26 @@ const String Element::EventChildRemoved("ChildRemoved");
 const String Element::EventZOrderChanged("ZOrderChanged");
 const String Element::EventNonClientChanged("NonClientChanged");
 const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
+const String Element::EventDefaultParagraphDirectionChanged("DefaultParagraphDirectionChanged");
 
 //----------------------------------------------------------------------------//
 Element::Element():
-    d_parent(0),
+    d_parent(nullptr),
 
     d_nonClient(false),
     d_isWidthAdjustedToContent(false),
     d_isHeightAdjustedToContent(false),
 
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
-    d_horizontalAlignment(HA_LEFT),
-    d_verticalAlignment(VA_TOP),
+    d_horizontalAlignment(HorizontalAlignment::Left),
+    d_verticalAlignment(VerticalAlignment::Top),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(0), cegui_reldim(0)),
-    d_aspectMode(AM_IGNORE),
+    d_aspectMode(AspectMode::Ignore),
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
-    d_rotation(Quaternion::IDENTITY),
+    d_rotation(1, 0, 0, 0), // <-- IDENTITY
     d_pivot(UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))),
 
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
@@ -264,7 +269,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     else if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
         ret.d_height = absMax.d_height;
 
-    if (d_aspectMode != AM_IGNORE)
+    if (d_aspectMode != AspectMode::Ignore)
     {
         // make sure we respect current aspect mode and ratio
         ret.scaleToAspect(d_aspectMode, d_aspectRatio);
@@ -334,25 +339,25 @@ void Element::adjustSizeToContent()
 //----------------------------------------------------------------------------//
 float Element::getContentWidth() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
 float Element::getContentHeight() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
 UDim Element::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
 UDim Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 /*----------------------------------------------------------------------------//
@@ -401,7 +406,7 @@ UDim Element::getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() c
 {
     UDim inverse(getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth());
     if (inverse.d_scale == 0.f)
-        CEGUI_THROW(InvalidRequestException("Content width doesn't depend on the element width."));
+        throw InvalidRequestException("Content width doesn't depend on the element width.");
     return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
 }
 
@@ -414,7 +419,7 @@ UDim Element::getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent()
 {
     UDim inverse(getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight());
     if (inverse.d_scale == 0.f)
-        CEGUI_THROW(InvalidRequestException("Content height doesn't depend on the element height."));
+        throw InvalidRequestException("Content height doesn't depend on the element height.");
     return UDim(1.f /inverse.d_scale, -inverse.d_offset /inverse.d_scale);
 }
 
@@ -438,25 +443,25 @@ void Element::adjustSizeToContent_direct()
         new_pixel_size.d_height = std::ceil((getContentHeight()+epsilon)*size_func.d_height.d_scale  +
                                              size_func.d_height.d_offset);
     }
-    if (getAspectMode() != AM_IGNORE)
+    if (getAspectMode() != AspectMode::Ignore)
     {
         if (isWidthAdjustedToContent())
         {
             if (isHeightAdjustedToContent())
-                new_pixel_size.scaleToAspect(AM_EXPAND, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::Expand, getAspectRatio());
             else
-                new_pixel_size.scaleToAspect(AM_ADJUST_HEIGHT, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::AdjustHeight, getAspectRatio());
         }
         else
         {
             if (isHeightAdjustedToContent())
-                new_pixel_size.scaleToAspect(AM_ADJUST_WIDTH, getAspectRatio());
+                new_pixel_size.scaleToAspect(AspectMode::AdjustWidth, getAspectRatio());
         }
     }
     USize new_size(getSize());
-    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AM_IGNORE))
+    if (isWidthAdjustedToContent()  ||  (getAspectMode() != AspectMode::Ignore))
         new_size.d_width = UDim(0.f, new_pixel_size.d_width);
-    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AM_IGNORE))
+    if (isHeightAdjustedToContent()  ||  (getAspectMode() != AspectMode::Ignore))
         new_size.d_height = UDim(0.f, new_pixel_size.d_height);
     setSize(new_size, false);
 }
@@ -492,7 +497,7 @@ Sizef Element::getSizeAdjustedToContent_bisection(const USize& size_func, float 
     int domain_min_int(static_cast<int>(std::floor(domain_min)));
     int domain_max_int(static_cast<int>(std::ceil(domain_max)));
     if (domain_min_int >= domain_max_int)
-        CEGUI_THROW(InvalidRequestException("Length of domain is 0."));
+        throw InvalidRequestException("Length of domain is 0.");
 
     /* First, enlarge the domain so that it's a power of 2 (with non-negative
        integer exponent). This makes the bisection use only integer
@@ -544,11 +549,11 @@ bool Element::contentFitsForSpecifiedElementSize_tryByResizing(const Sizef& elem
 //----------------------------------------------------------------------------//
 bool Element::contentFits() const
 {
-    CEGUI_THROW(InvalidRequestException("This function isn't implemented for this type of element."));
+    throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
 
 //----------------------------------------------------------------------------//
-void Element::setRotation(const Quaternion& rotation)
+void Element::setRotation(const glm::quat& rotation)
 {
     d_rotation = rotation;
 
@@ -575,13 +580,12 @@ void Element::setPivot(const UVector3& pivot)
 void Element::addChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
-                InvalidRequestException("Can't add NULL to Element as a child!"));
+        throw 
+                InvalidRequestException("Can't add NULL to Element as a child!");
 
     if (element == this)
-        CEGUI_THROW(
-                InvalidRequestException("Can't make element its own child - "
-                                        "this->addChild(this); is forbidden."));
+        throw InvalidRequestException("Can't make element its own child - "
+                                       "this->addChild(this); is forbidden.");
 
     addChild_impl(element);
     ElementEventArgs args(element);
@@ -592,10 +596,10 @@ void Element::addChild(Element* element)
 void Element::removeChild(Element* element)
 {
     if (!element)
-        CEGUI_THROW(
+        throw 
                 InvalidRequestException("NULL can't be a child of any Element, "
                                         "it makes little sense to ask for its "
-                                        "removal"));
+                                        "removal");
 
     removeChild_impl(element);
     ElementEventArgs args(element);
@@ -708,12 +712,12 @@ void Element::addElementProperties()
 
     CEGUI_DEFINE_PROPERTY(Element, VerticalAlignment,
         "VerticalAlignment", "Property to get/set the vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
-        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VA_TOP
+        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VerticalAlignment::Top
     );
 
     CEGUI_DEFINE_PROPERTY(Element, HorizontalAlignment,
         "HorizontalAlignment", "Property to get/set the horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
-        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HA_LEFT
+        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HorizontalAlignment::Left
     );
 
     CEGUI_DEFINE_PROPERTY_NO_XML(Element, USize,
@@ -735,7 +739,7 @@ void Element::addElementProperties()
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\", "
         "\"Expand\", \"AdjustHeight\" or \"AdjustWidth\".",
-        &Element::setAspectMode, &Element::getAspectMode, AM_IGNORE
+        &Element::setAspectMode, &Element::getAspectMode, AspectMode::Ignore
     );
 
     CEGUI_DEFINE_PROPERTY(Element, float,
@@ -749,11 +753,11 @@ void Element::addElementProperties()
         &Element::setPixelAligned, &Element::isPixelAligned, true
     );
 
-    CEGUI_DEFINE_PROPERTY(Element, Quaternion,
-        "Rotation", "Property to get/set the Element's rotation. Value is a quaternion: "
+    CEGUI_DEFINE_PROPERTY(Element, glm::quat,
+        "Rotation", "Property to get/set the Element's rotation. Value is a quaternion (glm::quat): "
         "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\""
         "or \"x:[x_float] y:[y_float] z:[z_float]\" to convert from Euler angles (in degrees).",
-        &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
+        &Element::setRotation, &Element::getRotation, glm::quat(1.0, 0.0, 0.0, 0.0)
     );
 
     CEGUI_DEFINE_PROPERTY(Element, UVector3,
@@ -779,6 +783,23 @@ void Element::addElementProperties()
         "Value is either \"true\" or \"false\".",
         &Element::setAdjustHeightToContent, &Element::isHeightAdjustedToContent, false
     );
+
+    CEGUI_DEFINE_PROPERTY(Element, DefaultParagraphDirection,
+        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
+        "This is only in effect if raqm is linked and activate. It sets the default order of the "
+        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
+        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
+        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
+        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
+        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
+        "the sentence will start on the very right with the German word, as would be expected in a mainly "
+        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
+        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
+        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
+        &Element::setDefaultParagraphDirection, &Element::getDefaultParagraphDirection,
+        DefaultParagraphDirection::LeftToRight
+    );
+
 }
 
 //----------------------------------------------------------------------------//
@@ -870,7 +891,7 @@ void Element::removeChild_impl(Element* element)
         // remove element from child list
         d_children.erase(it);
         // reset element's parent so it's no longer this element.
-        element->setParent(0);
+        element->setParent(nullptr);
     }
 }
 
@@ -879,7 +900,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
     const Sizef pixel_size = skipAllPixelAlignment ?
         calculatePixelSize(true) : getPixelSize();
-    Rectf ret(Vector2f(0, 0), pixel_size);
+    Rectf ret(glm::vec2(0, 0), pixel_size);
 
     const Element* parent = getParentElement();
 
@@ -891,20 +912,20 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     }
     else
     {
-        parent_rect = Rectf(Vector2f(0, 0), getRootContainerSize());
+        parent_rect = Rectf(glm::vec2(0, 0), getRootContainerSize());
     }
 
     const Sizef parent_size = parent_rect.getSize();
 
-    Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
+    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {
-        case HA_CENTRE:
-            offset.d_x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
+        case HorizontalAlignment::Centre:
+            offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
             break;
-        case HA_RIGHT:
-            offset.d_x += parent_size.d_width - pixel_size.d_width;
+        case HorizontalAlignment::Right:
+            offset.x += parent_size.d_width - pixel_size.d_width;
             break;
         default:
             break;
@@ -912,11 +933,11 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     switch (getVerticalAlignment())
     {
-        case VA_CENTRE:
-            offset.d_y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
+        case VerticalAlignment::Centre:
+            offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
             break;
-        case VA_BOTTOM:
-            offset.d_y += parent_size.d_height - pixel_size.d_height;
+        case VerticalAlignment::Bottom:
+            offset.y += parent_size.d_height - pixel_size.d_height;
             break;
         default:
             break;
@@ -924,8 +945,8 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     if (d_pixelAligned && !skipAllPixelAlignment)
     {
-        offset = Vector2f(CoordConverter::alignToPixels(offset.d_x),
-                          CoordConverter::alignToPixels(offset.d_y));
+        offset = glm::vec2(CoordConverter::alignToPixels(offset.x),
+                           CoordConverter::alignToPixels(offset.y));
     }
 
     ret.offset(offset);
@@ -986,7 +1007,7 @@ void Element::onParentSized(ElementEventArgs& e)
 
     const bool moved =
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
-         (d_horizontalAlignment != HA_LEFT) || (d_verticalAlignment != VA_TOP));
+         (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top));
 
     fireAreaChangeEvents(moved, sized);
 
@@ -1042,6 +1063,25 @@ void Element::onNonClientChanged(ElementEventArgs& e)
     setArea(getArea());
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
+}
+
+DefaultParagraphDirection Element::getDefaultParagraphDirection() const
+{
+    return d_defaultParagraphDirection;
+}
+
+void Element::setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection)
+{
+    if(defaultParagraphDirection != d_defaultParagraphDirection)
+    {
+        d_defaultParagraphDirection = defaultParagraphDirection;
+
+        notifyScreenAreaChanged();
+
+        ElementEventArgs eventArgs(this);
+        fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
+    }
+    
 }
 
 #if defined(_MSC_VER)

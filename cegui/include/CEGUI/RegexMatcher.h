@@ -36,21 +36,20 @@ namespace CEGUI
 {
 
 //! Interface for Regex matching support classes
-class CEGUIEXPORT RegexMatcher :
-    public AllocatedObject<RegexMatcher>
+class CEGUIEXPORT RegexMatcher
 {
 public:
     //! Enumeration of possible states when cosidering a regex match.
-    enum MatchState
+    enum class MatchState : int
     {
         //! String matches the regular expression completely.
-        MS_VALID,
+        Valid,
         //! String does not match the regular expression at all.
-        MS_INVALID,
+        Invalid,
         /** String partially matches. Changes to the string could result in
-         * either an MS_VALID or MS_INVALID MatchState.
+         * either an MatchState::VALID or MatchState::INVALID MatchState.
          */
-        MS_PARTIAL
+        Partial
     };
 
     //! Destructor.

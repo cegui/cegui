@@ -44,7 +44,7 @@ namespace CEGUI
         "");
     }
 
-    void FalagardListHeader::render()
+    void FalagardListHeader::createRenderGeometry()
     {
         const StateImagery* imagery;
         // get WidgetLookFeel for the assigned look.
@@ -69,8 +69,8 @@ namespace CEGUI
         // make sure this has been set
         if (d_segmentWidgetType.empty())
         {
-            CEGUI_THROW(InvalidRequestException(
-                "Segment widget type has not been set!"));
+            throw InvalidRequestException(
+                "Segment widget type has not been set!");
         }
 
         Window* segment = WindowManager::getSingleton().createWindow(d_segmentWidgetType, name);

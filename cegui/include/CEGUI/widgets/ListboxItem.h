@@ -33,8 +33,8 @@
 #include "../String.h"
 #include "../ColourRect.h"
 #include "../TextUtils.h"
-#include "../Size.h"
-#include "../Rect.h"
+#include "../Sizef.h"
+#include "../Rectf.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -48,8 +48,7 @@ namespace CEGUI
 \brief
     Base class for list box items
 */
-class CEGUIEXPORT ListboxItem :
-    public AllocatedObject<ListboxItem>
+class CEGUIEXPORT ListboxItem
 {
 public:
     /*************************************************************************
@@ -65,7 +64,7 @@ public:
     \brief
         base class constructor
     */
-    ListboxItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
+    ListboxItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
 
 
     /*!
@@ -92,7 +91,12 @@ public:
 
     const String& getText(void) const {return d_textLogical;}
 
-    //! return text string with \e visual ordering of glyphs.
+    /*!
+    \brief
+        Return text string with \e visual ordering of glyphs. This
+        only returns meaningful data if using only bidi. Will return
+        the regular text String if using raqm or no bidi.
+    */
     const String& getTextVisual() const;
 
     /*!
@@ -105,7 +109,7 @@ public:
     \return
         ID code currently assigned to this list box item
     */
-    uint    getID(void) const           {return d_itemID;}
+    unsigned int    getID(void) const           {return d_itemID;}
 
 
     /*!
@@ -219,7 +223,7 @@ public:
     \return
         Nothing.
     */
-    void    setID(uint item_id)     {d_itemID = item_id;}
+    void    setID(unsigned int item_id)     {d_itemID = item_id;}
 
 
     /*!
@@ -371,7 +375,7 @@ public:
         Perform any updates needed because the given font's render size has
         changed.
 
-    /note
+    \note
         The base implementation just returns false.
 
     \param font
@@ -398,10 +402,10 @@ public:
 
     /*!
     \brief
-        Draw the list box item in its current state
+        Create render geometry for the list box item in its current state
 
-    \param position
-        Vecor2 object describing the upper-left corner of area that should be rendered in to for the draw operation.
+    \param targetRect
+        The target rectangle for drawing.
 
     \param alpha
         Alpha value to be used when rendering the item (between 0.0f and 1.0f).
@@ -412,8 +416,9 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
-                      float alpha, const Rectf* clipper) const = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+        const Rectf& targetRect,
+        float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************
         Operators
@@ -438,14 +443,6 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Return a ColourRect object describing the colours in \a cols after having their alpha
-        component modulated by the value \a alpha.
-    */
-    ColourRect getModulateAlphaColourRect(const ColourRect& cols, float alpha) const;
-
-
-    /*!
-    \brief
         Return a colour value describing the colour specified by \a col after having its alpha
         component modulated by the value \a alpha.
     */
@@ -456,12 +453,25 @@ protected:
         Implementation Data
     *************************************************************************/
     String d_textLogical;
+    
+#ifdef CEGUI_BIDI_SUPPORT
     //! pointer to bidirection support object
     BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
+#endif
+
+#ifdef CEGUI_USE_RAQM
+    //! raqm text object
+    RaqmTextData* d_raqmTextData;
+    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
+     the last update
+    */
+    mutable bool d_raqmTextNeedsUpdate;
+#endif
+
     String  d_tooltipText;  //!< Text for the individual tooltip of this item
-    uint    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
+    unsigned int    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
     void*   d_itemData;     //!< Pointer to some client code data.  This has no meaning within the GUI system.
     bool    d_selected;     //!< true if this item is selected.  false if the item is not selected.
     bool    d_disabled;     //!< true if this item is disabled.  false if the item is not disabled.

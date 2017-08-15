@@ -70,8 +70,7 @@ public:
 \see
     Animation
 */
-class CEGUIEXPORT AnimationInstance :
-    public AllocatedObject<AnimationInstance>
+class CEGUIEXPORT AnimationInstance
 {
 public:
     //! Namespace for animation instance events
@@ -400,7 +399,7 @@ private:
 
     //! this is called when animation ends
     void onAnimationEnded();
-    //! this is called when animation loops (in RM_Loop or RM_Bounce mode)
+    //! this is called when animation loops (in ReplayMode::LOOP or ReplayMode::BOUNCE mode)
     void onAnimationLooped();
 
     //! parent Animation definition
@@ -422,7 +421,7 @@ private:
     float d_position;
     //! playback speed, 1.0 means normal playback
     float d_speed;
-    //! needed for RM_Bounce mode, if true, we bounce backwards
+    //! needed for ReplayMode::BOUNCE mode, if true, we bounce backwards
     bool d_bounceBackwards;
     //! true if this animation is unpaused
     bool d_running;
@@ -435,15 +434,13 @@ private:
     //! true if auto stepping is enabled
     bool d_autoSteppingEnabled;
 
-    typedef std::map<String, String, std::less<String>
-        CEGUI_MAP_ALLOC(String, String)> PropertyValueMap;
+    typedef std::map<String, String, std::less<String> > PropertyValueMap;
     /** cached saved values, used for relative application method
      *  and keyframe property source, see Affector and KeyFrame classes
      */
     PropertyValueMap d_savedPropertyValues;
 
-    typedef std::vector<Event::Connection
-        CEGUI_VECTOR_ALLOC(Event::Connection)> ConnectionTracker;
+    typedef std::vector<Event::Connection> ConnectionTracker;
     //! tracks auto event connections we make.
     ConnectionTracker d_autoConnections;
 };

@@ -81,23 +81,23 @@ namespace CEGUI
             delete[] buf;
 
             // throw exception
-            CEGUI_THROW(FileIOException("an error occurred while "
-                "parsing the XML document - check it for potential errors!."));
+            throw FileIOException("an error occurred while "
+                "parsing the XML document - check it for potential errors!.");
         }
 
         const TiXmlElement* currElement = doc.RootElement();
         if (currElement)
         {
-            CEGUI_TRY
+            try
             {
                 // function called recursively to parse xml data
                 processElement(currElement);
             }
-            CEGUI_CATCH(...)
+            catch (...)
             {
                 delete [] buf;
 
-                CEGUI_RETHROW;
+                throw;
             }
         } // if (currElement)
 
@@ -113,12 +113,12 @@ namespace CEGUI
         const TiXmlAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add(reinterpret_cast<const encoded_char*>(currAttr->Name()), reinterpret_cast<const encoded_char*>(currAttr->Value()));
+            attrs.add(currAttr->Name(), currAttr->Value());
             currAttr = currAttr->Next();
         }
 
         // start element
-        d_handler->elementStart(reinterpret_cast<const encoded_char*>(element->Value()), attrs);
+        d_handler->elementStart(element->Value(), attrs);
 
         // do children
         const TiXmlNode* childNode = element->FirstChild();
@@ -131,7 +131,7 @@ namespace CEGUI
                 break;
             case TiXmlNode::CEGUI_TINYXML_TEXT:
                 if (childNode->ToText()->Value() != nullptr)
-                    d_handler->text(reinterpret_cast<const encoded_char*>(childNode->ToText()->Value()));
+                    d_handler->text(childNode->ToText()->Value());
                 break;
 
                 // Silently ignore unhandled node type
@@ -140,7 +140,7 @@ namespace CEGUI
         }
 
         // end element
-        d_handler->elementEnd(reinterpret_cast<const encoded_char*>(element->Value()));
+        d_handler->elementEnd(element->Value());
     }
 
     TinyXMLParser::TinyXMLParser(void)
@@ -152,7 +152,7 @@ namespace CEGUI
     TinyXMLParser::~TinyXMLParser(void)
     {}
 
-    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName, bool /*allowXmlValidation*/)
     {
       TinyXMLDocument doc(handler, source, schemaName);
     }
