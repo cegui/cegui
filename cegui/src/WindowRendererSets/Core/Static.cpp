@@ -70,7 +70,7 @@ namespace CEGUI
         }
     }
 
-    void FalagardStatic::render()
+    void FalagardStatic::createRenderGeometry()
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();

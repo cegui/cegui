@@ -107,7 +107,7 @@ void DirectFBRenderer::destroyAllGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-TextureTarget* DirectFBRenderer::createTextureTarget()
+TextureTarget* DirectFBRenderer::createTextureTarget(bool addStencilBuffer)
 {
     // TODO:
     return 0;
@@ -138,8 +138,8 @@ void DirectFBRenderer::destroyAllTextureTargets()
 Texture& DirectFBRenderer::createTexture(const CEGUI::String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name);
     d_textures[name] = tex;
@@ -155,8 +155,8 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
                                          const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name,
                                                filename, resourceGroup);
@@ -172,8 +172,8 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
                                          const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name, size);
     d_textures[name] = tex;
@@ -188,8 +188,7 @@ void DirectFBRenderer::logTextureCreation(DirectFBTexture* texture)
 {
     if (Logger* logger = Logger::getSingletonPtr())
     {
-        char addr_buff[32];
-        sprintf(addr_buff, " (%p)", static_cast<void*>(texture));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(texture);
 
         logger->logEvent("[DirectFBRenderer] Created texture: " +
                          texture->getName() + addr_buff);
@@ -220,8 +219,7 @@ void DirectFBRenderer::logTextureDestruction(DirectFBTexture* texture)
 {
     if (Logger* logger = Logger::getSingletonPtr())
     {
-        char addr_buff[32];
-        sprintf(addr_buff, " (%p)", static_cast<void*>(texture));
+        String addressStr = SharedStringstream::GetPointerAddressAsString(texture);
 
         logger->logEvent("[DirectFBRenderer] Destroyed texture: " +
                          texture->getName() + addr_buff);
@@ -241,8 +239,8 @@ Texture& DirectFBRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No texture named '" + name + "' is available."));
+        throw UnknownObjectException(
+            "No texture named '" + name + "' is available.");
 
     return *i->second;
 }
@@ -286,13 +284,7 @@ const Sizef& DirectFBRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& DirectFBRenderer::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
-//----------------------------------------------------------------------------//
-uint DirectFBRenderer::getMaxTextureSize() const
+unsigned int DirectFBRenderer::getMaxTextureSize() const
 {
     return 2048;
 }
@@ -309,7 +301,6 @@ DirectFBRenderer::DirectFBRenderer(IDirectFB& directfb,
     d_directfb(directfb),
     d_rootSurface(surface),
     d_targetSurface(&d_rootSurface),
-    d_displayDPI(96, 96),
     d_defaultTarget(new DirectFBRenderTarget(*this, d_rootSurface))
 {
     int w, h;
@@ -326,6 +317,12 @@ DirectFBRenderer::~DirectFBRenderer()
     destroyAllGeometryBuffers();
 
     delete d_defaultTarget;
+}
+
+//----------------------------------------------------------------------------//
+bool DirectFBRenderer::isTexCoordSystemFlipped() const
+{
+    return false;
 }
 
 //----------------------------------------------------------------------------//

@@ -40,10 +40,10 @@ namespace CEGUI
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States (missing states will default to 'Normal'):
-            - Normal    - Rendering for when the button is neither pushed or has the mouse hovering over it.
-            - Hover     - Rendering for then the button has the mouse hovering over it.
-            - Pushed    - Rendering for when the button is pushed and mouse is over it.
-            - PushedOff - Rendering for when the button is pushed and mouse is not over it.
+            - Normal    - Rendering for when the button is neither pushed or has the cursor hovering over it.
+            - Hover     - Rendering for then the button has the cursor hovering over it.
+            - Pushed    - Rendering for when the button is pushed and cursor is over it.
+            - PushedOff - Rendering for when the button is pushed and cursor is not over it.
             - Disabled  - Rendering for when the button is disabled.
     */
     class COREWRSET_API FalagardButton : public WindowRenderer
@@ -57,7 +57,7 @@ namespace CEGUI
         */
         FalagardButton(const String& type);
 
-        void render();
+        void createRenderGeometry() override;
         virtual String actualStateName(const String& name) const   {return name;}
     };
 

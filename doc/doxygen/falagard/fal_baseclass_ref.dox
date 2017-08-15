@@ -33,6 +33,7 @@ The following is a reference to the required elements in a WidgetLook as dictate
 @ref fal_baseclass_ref_sec_28 <br>
 @ref fal_baseclass_ref_sec_29 <br>
 @ref fal_baseclass_ref_sec_30 <br>
+@ref fal_baseclass_ref_sec_31 <br>
 
 
 @section fal_baseclass_ref_sec_1 DefaultWindow
@@ -58,9 +59,9 @@ Assigned WidgetLook should provide the following:
 
 
 @section fal_baseclass_ref_sec_3 CEGUI/ComboDropList
-Base class providing logic for the combo box drop down list sub-widget.  This is a specialisation of the "CEGUI/Listbox" class.
+Base class providing logic for the combo box drop down list sub-widget. This is a specialisation of the "CEGUI/ListWidget" class.
 
-You should use a "Core/Listbox" window renderer for this widget.
+You should use a "Core/ListView" window renderer for this widget.
 
 Assigned WidgetLook should provide the following:
 <ul>
@@ -125,7 +126,7 @@ Assigned WidgetLook should provide the following:
 
 @section fal_baseclass_ref_sec_8 CEGUI/ItemEntry
 
-Base class providing logic for entries in supporting list widgets such as ItemListbox.
+Base class providing logic for entries in supporting list widgets such as ItemListBase.
 
 You should use a "Core/ItemEntry" window renderer for this widget.
 
@@ -134,23 +135,7 @@ Assigned WidgetLook should provide the following:
     <li>This class currently has no WidgetLook requirements.</li>
 </ul>
 
-
-@section fal_baseclass_ref_sec_9 CEGUI/ItemListbox
-Base class providing logic for a listbox widget that is able to use ItemEntry based windows as items in the list.
-
-You should use a "Core/ItemListbox" window renderer for this widget.
-
-Assigned WidgetLook should provide the following:
-<ul>
-    <li>Child widget definitions:</li>
-    <ul>
-        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
-        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
-    </ul>
-</ul>
-
-
-@section fal_baseclass_ref_sec_10 CEGUI/ListHeader
+@section fal_baseclass_ref_sec_9 CEGUI/ListHeader
 Base class providing logic for a multi columned header widget - intended for use on the multi column list.
 
 You should use a "Core/ListHeader" window renderer for this widget.
@@ -161,7 +146,7 @@ Assigned WidgetLook should provide the following:
 </ul>
 
 
-@section fal_baseclass_ref_sec_11 CEGUI/ListHeaderSegment
+@section fal_baseclass_ref_sec_10 CEGUI/ListHeaderSegment
 Base class providing logic for a widget representing single segment / column of the ListHeader widget.
 
 You should use a "Core/ListHeaderSegment" window renderer for this widget.
@@ -172,17 +157,32 @@ Assigned WidgetLook should provide the following:
 </ul>
 
 
-@section fal_baseclass_ref_sec_12 CEGUI/Listbox
-Base class providing logic for a simple single column list widget.
+@section fal_baseclass_ref_sec_11 CEGUI/ListView
+Base class providing logic for a simple single column list view.
 
-You should use a "Core/Listbox" window renderer for this widget.
+You should use a "Core/ListView" window renderer for this view.
 
 Assigned WidgetLook should provide the following:
 <ul>
     <li>Child widget definitions:</li>
     <ul>
-        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
-        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__". This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__". This widget will be used to control horizontal scroll position.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_12 CEGUI/ListWidget
+Base class providing logic for a simple single column list widget. This is a ListView, with additional convenience methods, making it closer in functionality to the old ListBox widget.
+
+You should use a "Core/ListWidget" window renderer for this widget.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child widget definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__". This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__". This widget will be used to control horizontal scroll position.</li>
     </ul>
 </ul>
 
@@ -408,23 +408,44 @@ Assigned WidgetLook should provide the following:
     <li>This class currently has no WidgetLook requirements.</li>
 </ul>
 
-@section fal_baseclass_ref_sec_30 CEGUI/Tree
-Base class providing logic for a basic Tree type widget.
+@section fal_baseclass_ref_sec_30 CEGUI/TreeView
+Base class providing logic for a basic Tree type view.
 
-You should use a "Core/Tree" window renderer for this widget.
+You should use a "Core/TreeView" window renderer for this view.
+
+Assigned WidgetLook should provide the following:
+<ul>
+    <li>Child view definitions:</li>
+    <ul>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__". This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__". This widget will be used to control horizontal scroll position.</li>
+    </ul>
+
+    <li>Imagery section definitions:</li>
+    <ul>
+        <li>ImagerySection named "SubtreeExpander". This imagery is diplayed for the root of a subtree that is closed / collapsed to indicate that the subtree may be opened / expanded.</li>
+        <li>ImagerySection named "SubtreeCollapser". This imagery is diplayed for the root of a subtree that is opened / expanded to indicate that the subtree may be closed / collapsed.</li>
+    </ul>
+</ul>
+
+
+@section fal_baseclass_ref_sec_31 CEGUI/TreeWidget
+Base class providing logic for a basic Tree type widget. This is a TreeView, with additional convenience methods, making it closer in functionality to the old Tree widget.
+
+You should use a "Core/TreeWidget" window renderer for this widget.
 
 Assigned WidgetLook should provide the following:
 <ul>
     <li>Child widget definitions:</li>
     <ul>
-        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__".  This widget will be used to control vertical scroll position.</li>
-        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__".  This widget will be used to control horizontal scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_vscrollbar__". This widget will be used to control vertical scroll position.</li>
+        <li>Scrollbar based widget with name suffix "__auto_hscrollbar__". This widget will be used to control horizontal scroll position.</li>
     </ul>
-    
+
     <li>Imagery section definitions:</li>
     <ul>
-        <li>ImagerySection named "OpenTreeButton".  This imagery is diplayed for the root of a subtree that is closed / collapsed to indicate that the subtree may be opened / expanded.</li>
-        <li>ImagerySection named "CloseTreeButton".  This imagery is diplayed for the root of a subtree that is opened / expanded to indicate that the subtree may be closed / collapsed.</li>
+        <li>ImagerySection named "SubtreeExpander". This imagery is diplayed for the root of a subtree that is closed / collapsed to indicate that the subtree may be opened / expanded.</li>
+        <li>ImagerySection named "SubtreeCollapser". This imagery is diplayed for the root of a subtree that is opened / expanded to indicate that the subtree may be closed / collapsed.</li>
     </ul>
 </ul>
 
