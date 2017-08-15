@@ -172,7 +172,6 @@ MacCEGuiRendererSelector_pimpl::MacCEGuiRendererSelector_pimpl() :
 MacCEGuiRendererSelector_pimpl::~MacCEGuiRendererSelector_pimpl()
 {
     [dialog release];
-    [pool release];
 }
 
 //----------------------------------------------------------------------------//
