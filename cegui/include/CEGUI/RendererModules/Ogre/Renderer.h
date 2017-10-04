@@ -264,7 +264,7 @@ public:
     void setupRenderingBlendMode(const BlendMode mode,
                                  bool force = false);
 
-#ifdef CEGUI_USE_OGRE_HLMS    
+#ifdef CEGUI_USE_OGRE_HLMS
     /*!
     \brief
          Binds all render options to the pipeline
@@ -329,14 +329,14 @@ public:
 
 #ifdef CEGUI_USE_OGRE_HLMS
     /*!
-        \brief
+    \brief
         Sets all the required render states needed for CEGUI rendering.
     
         This is a low-level function intended for certain advanced concepts; in
         general it will not be required to call this function directly, since it
         is called automatically by the system when rendering is done.
 
-        \param target Sets the target for rendering required by PSO Cache
+    \param target Sets the target for rendering required by PSO Cache
     */
     void initialiseRenderStateSettings(Ogre::RenderTarget* target);
 #else

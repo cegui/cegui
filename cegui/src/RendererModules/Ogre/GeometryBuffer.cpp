@@ -146,7 +146,8 @@ void OgreGeometryBuffer::draw() const
         // which contains all the blend settings etc
         // This is required because the material cannot set shader parameters before
         // the PSO is bound
-        d_renderMaterial->prepareForRendering();
+        
+        d_renderMaterial->prepareForRendering(); 
         
         // draw the geometry
         d_renderSystem._render(d_renderOp);
