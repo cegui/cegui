@@ -264,7 +264,7 @@ public:
     void setupRenderingBlendMode(const BlendMode mode,
                                  bool force = false);
 
-#ifdef CEGUI_USE_OGRE_HLMS
+#ifdef CEGUI_USE_OGRE_HLMS    
     /*!
     \brief
          Binds all render options to the pipeline
@@ -275,6 +275,8 @@ public:
 
     VAO fixes by Kohedlo on the Ogre forums
      http://www.ogre3d.org/forums/viewtopic.php?f=25&t=82911&sid=d2694a87677c7d3b56794aa555b438ee&start=25#p536494
+
+    changed to use PsoCacheHelper
     */
     void bindPSO();
 
@@ -324,15 +326,30 @@ public:
     */
     bool isFrameControlExecutionEnabled() const;
 
-    /*!
-    \brief
-        Sets all the required render states needed for CEGUI rendering.
 
+#ifdef CEGUI_USE_OGRE_HLMS
+    /*!
+        \brief
+        Sets all the required render states needed for CEGUI rendering.
+    
+        This is a low-level function intended for certain advanced concepts; in
+        general it will not be required to call this function directly, since it
+        is called automatically by the system when rendering is done.
+
+        \param target Sets the target for rendering required by PSO Cache
+    */
+    void initialiseRenderStateSettings(Ogre::RenderTarget* target);
+#else
+    /*!
+        \brief
+        Sets all the required render states needed for CEGUI rendering.
+        
         This is a low-level function intended for certain advanced concepts; in
         general it will not be required to call this function directly, since it
         is called automatically by the system when rendering is done.
     */
     void initialiseRenderStateSettings();
+#endif
 
     /*!
     \brief
