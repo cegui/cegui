@@ -62,6 +62,7 @@
 #ifdef CEGUI_USE_OGRE_HLMS
 #include <OgreHlmsManager.h>
 #include <OgreHlmsDatablock.h>
+#include <OgrePsoCacheHelper.h>
 #endif
 
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
@@ -222,7 +223,7 @@ struct OgreRenderer_impl
     const Ogre::HlmsSamplerblock* d_hlmsSamplerblock;
 
     //! HLMS cache used to store pso
-    Ogre::SharedPtr<Ogre::HlmsCache> d_hlmsCache;
+    Ogre::SharedPtr<Ogre::PsoCacheHelper> d_hlmsCache;
 #endif
     
     //! What we think is the current blend mode to use
@@ -879,7 +880,8 @@ void OgreRenderer::initialiseShaders()
     d_pimpl->d_hlmsSamplerblock = hlmsManager->getSamplerblock(samplerblock);
 
     // PSO
-    d_pimpl->d_hlmsCache = Ogre::SharedPtr<Ogre::HlmsCache>(new Ogre::HlmsCache);
+    d_pimpl->d_hlmsCache = Ogre::SharedPtr<Ogre::PsoCacheHelper>(
+        new Ogre::PsoCacheHelper(d_pimpl->d_renderSystem));
     
 #endif
     
@@ -1063,13 +1065,7 @@ void OgreRenderer::cleanupShaders()
 
     Ogre::HlmsManager* hlmsManager = d_pimpl->d_ogreRoot->getHlmsManager();
 
-    if (d_pimpl->d_hlmsCache != nullptr)
-    {
-        d_pimpl->d_renderSystem->_hlmsPipelineStateObjectDestroyed(
-            &d_pimpl->d_hlmsCache->pso);
-        
-        d_pimpl->d_hlmsCache.setNull();
-    }
+    d_pimpl->d_hlmsCache.setNull();
 
     if (d_pimpl->d_hlmsBlendblock != nullptr)
         hlmsManager->destroyBlendblock(d_pimpl->d_hlmsBlendblock);
@@ -1160,24 +1156,26 @@ void OgreRenderer::bindPSO()
     // Blendmode must be set before
     assert(d_pimpl->d_hlmsBlendblock);
 
-    d_pimpl->d_hlmsCache->pso.blendblock = const_cast<Ogre::HlmsBlendblock*>(
-        d_pimpl->d_hlmsBlendblock);
-    d_pimpl->d_hlmsCache->pso.macroblock = const_cast<Ogre::HlmsMacroblock*>(
-        d_pimpl->d_hlmsMacroblock);
+    d_pimpl->d_hlmsCache->setBlendblock(const_cast<Ogre::HlmsBlendblock*>(
+            d_pimpl->d_hlmsBlendblock));
+    d_pimpl->d_hlmsCache->setMacroblock(const_cast<Ogre::HlmsMacroblock*>(
+            d_pimpl->d_hlmsMacroblock));
+
+    // This should have all the rendering settings
+    Ogre::HlmsPso* pso = d_pimpl->d_hlmsCache->getPso();
 
     // Bind it
-    // This should have all the rendering settings
-    d_pimpl->d_renderSystem->_hlmsPipelineStateObjectCreated(
-        &d_pimpl->d_hlmsCache->pso);
-    d_pimpl->d_renderSystem->_setPipelineStateObject(
-        &d_pimpl->d_hlmsCache->pso);
+    d_pimpl->d_renderSystem->_setPipelineStateObject(pso);
 }
 
 void OgreRenderer::setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
     const Ogre::HighLevelGpuProgramPtr &ps)
 {
-    d_pimpl->d_hlmsCache->pso.vertexShader = vs;
-    d_pimpl->d_hlmsCache->pso.pixelShader = ps;
+    Ogre::GpuProgramPtr vsConverted = vs;
+    Ogre::GpuProgramPtr psConverted = ps;
+    
+    d_pimpl->d_hlmsCache->setVertexShader(vsConverted);
+    d_pimpl->d_hlmsCache->setPixelShader(psConverted);
 }
 
 #endif //CEGUI_USE_OGRE_HLMS
@@ -1234,13 +1232,24 @@ static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
 #endif //CEGUI_USE_OGRE_HLMS
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_HLMS
+void OgreRenderer::initialiseRenderStateSettings(Ogre::RenderTarget* target)
+#else
 void OgreRenderer::initialiseRenderStateSettings()
+#endif
 {
     using namespace Ogre;
 
 #ifdef CEGUI_USE_OGRE_HLMS
     // The geometry buffer is responsible for binding all our hlms blocks
     // when it is ready to render
+
+    // But we need to prepare the PSO cache to generate PSOs for this render target
+
+    // This is in the Ogre example usage but doesn't seem to be needed.
+    // d_pimpl->d_hlmsCache->clearState();
+    d_pimpl->d_hlmsCache->setRenderTarget(target);
+    
 #else
     // initialise render settings
     d_pimpl->d_renderSystem->setLightingEnabled(false);

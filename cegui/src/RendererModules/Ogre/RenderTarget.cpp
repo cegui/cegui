@@ -97,7 +97,11 @@ void OgreRenderTarget::activate()
     d_renderSystem._setViewport(d_viewport);
 
     d_owner.setViewProjectionMatrix(RenderTarget::d_matrix);
+#ifdef CEGUI_USE_OGRE_HLMS
+    d_owner.initialiseRenderStateSettings(d_renderTarget);
+#else
     d_owner.initialiseRenderStateSettings();
+#endif
 
     RenderTarget::activate();
 }
