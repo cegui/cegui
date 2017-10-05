@@ -2066,6 +2066,30 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
     }
     // write out properties.
     writePropertiesXML(xml_stream);
+    // user strings
+    const String UserStringXMLElementName("UserString");
+    for (auto iter = d_userStrings.begin(); iter != d_userStrings.end(); ++iter)
+    {
+        const String& name = iter->first;
+        // ignore auto props
+        if (name.rfind("_auto_prop__") != CEGUI::String::npos)
+        {
+            continue;
+        }
+        xml_stream.openTag(UserStringXMLElementName)
+            .attribute(Property::NameXMLAttributeName, name);
+        // Detect whether it is a long property or not
+        const String& value = iter->second;
+        if (value.find((String::value_type)'\n') != String::npos)
+        {
+            xml_stream.text(value);
+        }
+        else
+        {
+            xml_stream.attribute(Property::ValueXMLAttributeName, iter->second);
+        }
+        xml_stream.closeTag();
+    }
     // write out attached child windows.
     writeChildWindowsXML(xml_stream);
     // now ouput closing Window tag
