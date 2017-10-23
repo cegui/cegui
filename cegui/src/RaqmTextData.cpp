@@ -67,7 +67,7 @@ RaqmTextData::~RaqmTextData()
 void RaqmTextData::updateText(const String& newText)
 {
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    bool wasSuccess = raqm_set_text_utf8(d_raqmObject, newText.c_str(), newText.length())
+    bool wasSuccess = raqm_set_text_utf8(d_raqmObject, newText.c_str(), newText.length());
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
     const uint32_t* newTextPointer = reinterpret_cast<const std::uint32_t*>(newText.c_str());
     bool wasSuccess = raqm_set_text(d_raqmObject, newTextPointer, newText.length());
