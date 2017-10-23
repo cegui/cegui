@@ -958,7 +958,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
     }
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    std::u32string utf32Text = String::convertUtf8ToUtf32(text);
+    std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str());
     size_t origTextLength = utf32Text.length();
     const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(utf32Text.c_str());
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
