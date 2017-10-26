@@ -1120,7 +1120,7 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
     blendblock.mAlphaToCoverageEnabled = false;
     if (d_pimpl->d_activeBlendMode == BlendMode::RttPremultiplied)
     {
-        blendblock.mSourceBlendFactor = Ogre::SBF_ONE;
+        blendblock.mSourceBlendFactor = Ogre::SBF_SOURCE_ALPHA;
         blendblock.mDestBlendFactor = Ogre::SBF_ONE_MINUS_SOURCE_ALPHA;
     }
     else
