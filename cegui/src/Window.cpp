@@ -2068,7 +2068,7 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
     writePropertiesXML(xml_stream);
     // user strings
     const String UserStringXMLElementName("UserString");
-    for (auto iter = d_userStrings.begin(); iter != d_userStrings.end(); ++iter)
+    for (UserStringMap::const_iterator iter = d_userStrings.begin(); iter != d_userStrings.end(); ++iter)
     {
         const String& name = iter->first;
         // ignore auto props
