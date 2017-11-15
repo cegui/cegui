@@ -44,17 +44,25 @@ class CEGUIEXPORT FontGlyph
 public:
     //! Constructor.
     FontGlyph(char32_t codePoint, float advance = 0.0f, Image* image = nullptr) :
-        d_image(image),
         d_advance(advance),
         d_codePoint(codePoint)
-    {}
+    {
+      if (image != nullptr)
+        d_imageLayers.push_back(image);
+    }
 
     virtual ~FontGlyph()
     {}
 
     //! Return the CEGUI::Image object rendered for this glyph.
-    Image* getImage() const
-    { return d_image; }
+    Image* getImage(unsigned int layer = 0) const
+    {
+        if (d_imageLayers.size() > layer)
+        {
+            return d_imageLayers[layer];
+        }
+        return nullptr;
+    }
 
     /*!
     \brief
@@ -65,8 +73,14 @@ public:
     */
     virtual float getRenderedAdvance(
     ) const
-    { return d_image->getRenderedSize().d_width +
-              d_image->getRenderedOffset().x; }
+    {
+        float max = 0;
+        for (Image* d_image : d_imageLayers)
+        {
+            max = std::max (max, d_image->getRenderedSize().d_width + d_image->getRenderedOffset().x);
+        }
+        return max;
+    }
 
     /*!
     \brief
@@ -85,8 +99,14 @@ public:
     { d_advance = advance; }
 
     //! Set the CEGUI::Image object rendered for this glyph.
-    void setImage(Image* image)
-    { d_image = image; }
+    void setImage(Image* image, unsigned int layer = 0)
+    {
+        if (d_imageLayers.size() <= layer)
+        {
+            d_imageLayers.resize(layer+1);
+        }
+        d_imageLayers[layer] = image;
+    }
 
     //! Returns the code point that this glyph is based on
     char32_t getCodePoint() const
@@ -96,7 +116,7 @@ public:
 
 private:
     //! The image which will be rendered for this glyph.
-    Image* d_image;
+    std::vector<Image*> d_imageLayers;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
     //! Code point

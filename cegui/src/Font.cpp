@@ -468,6 +468,7 @@ void Font::addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuff
 
     if (matchingGeomBuffer == nullptr)
     {
+        imgRenderSettings.d_multiplyColours = colours;
         std::vector<GeometryBuffer*> glyphGeomBuffer =
             image->createRenderGeometry(imgRenderSettings);
 

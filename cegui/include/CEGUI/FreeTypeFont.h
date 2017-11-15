@@ -284,11 +284,15 @@ protected:
     void handleFontSizeOrFontUnitChange();
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
-    void rasterise(FreeTypeFontGlyph* glyph) const;
+    void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
+        int glyphLeft, int glyphTop, int glyphWidth, int glyphHeight,
+        unsigned int layer) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
-        FreeTypeFontGlyph* glyph, Texture* texture, int glyphWidth, int glyphHeight,
+        FreeTypeFontGlyph* glyph, Texture* texture,
+        FT_Bitmap& glyphBitmap, int glyphLeft, int glyphTop,
+        int glyphWidth, int glyphHeight, unsigned int layer,
         const TextureGlyphLine& glyphTexLine) const;
 
     void findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
