@@ -105,6 +105,7 @@ FreeTypeFont::FreeTypeFont(
     const float size,
     const FontSizeUnit sizeUnit,
     const bool anti_aliased, const String& font_filename,
+    const FreeTypeFontLayerVector& fontLayers,
     const String& resource_group,
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,
@@ -115,6 +116,7 @@ FreeTypeFont::FreeTypeFont(
     d_size(size),
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
+    d_fontLayers(fontLayers),
     d_fontFace(nullptr)
 {
     if (!s_fontUsageCount++)
@@ -642,20 +644,14 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     FT_Set_Transform(d_fontFace, nullptr, &position);
     FT_UInt glyph_index = FT_Get_Char_Index(d_fontFace, glyph->getCodePoint());
 
-    unsigned int layerCount = 3;  //retrieved from font somehow
+    unsigned int layerCount = d_fontLayers.size();  //retrieved from font somehow
     //layer 0 is the top rendered layer (rendered last over the other layers)
     for (unsigned int layer = 0; layer < layerCount; layer++) {
 
-    int outlineType = 0;   //Glyph outlineType (0 = None, 1 = line, 2 = inner, 3 = outer)
-    if (layer == 1 || layer == 2)
-      outlineType = 1;
-    int outlinePixels = 2; // 2 * 64 result in 2px outline
-    if (layer == 2)
-      outlinePixels =  3; // 3 * 64 result in 3px outline
-
+    FontLayerType fontLayerType = d_fontLayers[layer].d_fontLayerType;
     // Load the code point, "rendering" the glyph
     FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-    FT_Int32 loadType = (outlineType > 0 ) ? FT_LOAD_NO_BITMAP : FT_LOAD_RENDER;
+    FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
     auto loadBitmask = loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
     FT_Error error = FT_Load_Glyph(d_fontFace, glyph_index, loadBitmask);
 
@@ -666,13 +662,14 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         return;
     }
 
-    if (outlineType == 0) {
+    if (fontLayerType == FontLayerType::Standard) {
         ft_bitmap = d_fontFace->glyph->bitmap;
         glyphWidth = d_fontFace->glyph->bitmap.width;
         glyphHeight = d_fontFace->glyph->bitmap.rows;
         glyphTop = d_fontFace->glyph->bitmap_top;
         glyphLeft = d_fontFace->glyph->bitmap_left;
     } else {
+        unsigned int outlinePixels = d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
         bool errorFlag = false;
         FT_Stroker stroker;
         FT_BitmapGlyph bitmapGlyph;
@@ -681,11 +678,11 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph)) {
             errorFlag = true;
         }
-        if (outlineType == 1)
+        if (fontLayerType == FontLayerType::Outline)
           error = FT_Glyph_Stroke(&ft_glyph, stroker, true);
-        else if (outlineType == 2)
+        if (fontLayerType == FontLayerType::Inner)
           error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, false, true);
-        else if (outlineType == 3)
+        if (fontLayerType == FontLayerType::Outer)
           error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, true, true);
         if (error > 0) {
             errorFlag = true;
@@ -724,7 +721,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     }
 
     float adv;
-    if (outlineType == 0)
+    if (fontLayerType == FontLayerType::Standard)
     {
         //adv = d_fontFace->glyph->advance.x * static_cast<float>(s_conversionMultCoeff);
         adv = d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(s_conversionMultCoeff);
@@ -898,7 +895,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
 #endif
     glm::vec2 penPositionStart = penPosition;
 
-    unsigned int layerCount = 3;  //retrieved from font somehow
+    unsigned int layerCount = d_fontLayers.size();
     for (int layerTmp = layerCount -1; layerTmp >= 0; layerTmp--) {
     unsigned int layer = static_cast<unsigned int>(layerTmp);
 
@@ -954,23 +951,8 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
                 imgRenderSettings.d_destArea =
                     Rectf(penPosition, image->getRenderedSize());
 
-                Colour c;
-                if (layer == 0)
-                {
-                    c.setRGB (1, 1, 1);
-                }
-                else if (layer == 1)
-                {
-                    c.setRGB (1, 0, 0);
-                }
-                else if (layer == 2)
-                {
-                    c.setRGB (1,1,0);
-                }
-                ColourRect tmp;
-                tmp.setColours(c);
                 addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
-                    clip_rect, tmp);
+                    clip_rect, d_fontLayers[layer].d_colours);
             }
 
         penPosition.x += glyph->getAdvance();

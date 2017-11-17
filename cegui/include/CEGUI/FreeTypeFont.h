@@ -34,6 +34,7 @@
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/FontSizeUnit.h"
 #include "CEGUI/FreeTypeFontGlyph.h"
+#include "CEGUI/FreeTypeFontLayer.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -101,6 +102,7 @@ public:
     FreeTypeFont(const String& font_name, const float size,
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
+                 const FreeTypeFontLayerVector& fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()},
                  const String& resource_group = "",
                  const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
@@ -361,6 +363,9 @@ protected:
     mutable std::vector<argb_t> d_lastTextureBuffer;
     //! Contains information about the extents of each line of glyphs of the latest texture
     mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
+
+    //! collection of outline image layers defined for this font.
+    mutable FreeTypeFontLayerVector d_fontLayers;
 };
 
 } // End of  CEGUI namespace section
