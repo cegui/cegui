@@ -126,6 +126,7 @@ Font& FontManager::createFreeTypeFont(
     const FontSizeUnit sizeUnit,
     const bool anti_aliased,
     const String& font_filename,
+    const FreeTypeFontLayerVector& fontLayers,
     const String& resource_group,
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,
@@ -148,6 +149,7 @@ Font& FontManager::createFreeTypeFont(
     fontObject = new FreeTypeFont(
         font_name, size, sizeUnit,
         anti_aliased, font_filename,
+        fontLayers,
         resource_group, auto_scaled,
         native_res, specificLineSpacing);
 
