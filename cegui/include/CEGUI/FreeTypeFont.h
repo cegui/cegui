@@ -38,6 +38,7 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_STROKER_H
 
 
 // Start of CEGUI namespace section
@@ -306,6 +307,11 @@ protected:
 
     void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
+
+    //! Converts the FreeTypeLineCap to the assocated freetype library data type value
+    static FT_Stroker_LineCap getLineCap(FreeTypeLineCap line_cap);
+    //! Converts the FreeTypeLineLine to the assocated freetype library data type value
+    static FT_Stroker_LineJoin getLineJoin(FreeTypeLineJoin line_join);
 
     const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;

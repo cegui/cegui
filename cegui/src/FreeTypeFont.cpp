@@ -37,11 +37,6 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/FreeTypeFontGlyph.h"
 
-#include "freetype/ftoutln.h"
-#include "freetype/ftbbox.h"
-#include "freetype/ftbitmap.h"
-#include FT_STROKER_H
-
 #ifdef CEGUI_USE_RAQM
 #include <raqm.h>
 #endif
@@ -116,8 +111,8 @@ FreeTypeFont::FreeTypeFont(
     d_size(size),
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
-    d_fontLayers(fontLayers),
-    d_fontFace(nullptr)
+    d_fontFace(nullptr),
+    d_fontLayers(fontLayers)
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -415,6 +410,43 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 }
 
 //----------------------------------------------------------------------------//
+FT_Stroker_LineCap FreeTypeFont::getLineCap(FreeTypeLineCap line_cap) {
+    FT_Stroker_LineCap  ft_line_cap;
+    switch (line_cap) {
+        case FreeTypeLineCap::Round:
+            ft_line_cap = FT_STROKER_LINECAP_ROUND;
+            break;
+        case FreeTypeLineCap::Butt:
+            ft_line_cap = FT_STROKER_LINECAP_BUTT;
+            break;
+        case FreeTypeLineCap::Square:
+            ft_line_cap = FT_STROKER_LINECAP_SQUARE;
+            break;
+    }
+    return ft_line_cap;
+}
+
+//----------------------------------------------------------------------------//
+FT_Stroker_LineJoin FreeTypeFont::getLineJoin(FreeTypeLineJoin line_join) {
+    FT_Stroker_LineJoin ft_line_join;
+    switch (line_join) {
+        case FreeTypeLineJoin::Round:
+            ft_line_join = FT_STROKER_LINEJOIN_ROUND;
+            break;
+        case FreeTypeLineJoin::Bevel:
+            ft_line_join = FT_STROKER_LINEJOIN_BEVEL;
+            break;
+        case FreeTypeLineJoin::MiterFixed:
+            ft_line_join = FT_STROKER_LINEJOIN_MITER_FIXED;
+            break;
+        case FreeTypeLineJoin::MiterVariable:
+            ft_line_join = FT_STROKER_LINEJOIN_MITER_VARIABLE;
+            break;
+    }
+    return ft_line_join;
+}
+
+//----------------------------------------------------------------------------//
 void FreeTypeFont::updateTextureBufferSubImage(argb_t* destTextureData, unsigned int bitmapWidth,
     unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const
 {
@@ -674,15 +706,16 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         FT_Stroker stroker;
         FT_BitmapGlyph bitmapGlyph;
         FT_Stroker_New(s_freetypeLibHandle, &stroker);
-        FT_Stroker_Set(stroker, outlinePixels * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+        FT_Stroker_Set(stroker, outlinePixels * 64, getLineCap(d_fontLayers[layer].d_lineCap),
+            getLineJoin(d_fontLayers[layer].d_lineJoin), d_fontLayers[layer].d_miterLimit);
         if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph)) {
             errorFlag = true;
         }
         if (fontLayerType == FontLayerType::Outline)
           error = FT_Glyph_Stroke(&ft_glyph, stroker, true);
-        if (fontLayerType == FontLayerType::Inner)
-          error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, false, true);
         if (fontLayerType == FontLayerType::Outer)
+          error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, false, true);
+        if (fontLayerType == FontLayerType::Inner)
           error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, true, true);
         if (error > 0) {
             errorFlag = true;
