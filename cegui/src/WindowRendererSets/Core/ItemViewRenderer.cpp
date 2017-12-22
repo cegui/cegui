@@ -117,6 +117,34 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
     }
 }
 
+void ItemViewRenderer::createRenderGeometryAndAddToItemView(
+    ItemView* view, FormattedRenderedString* formated_rendered_string,
+    Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected)
+{
+    if (view->getSelectionBrushImage() != nullptr && is_selected)
+    {
+        ImageRenderSettings renderSettings(
+            draw_rect,
+            item_clipper,
+            true,
+            view->getSelectionColourRect());
+
+        auto brushGeomBuffers = view->getSelectionBrushImage()->createRenderGeometry(
+            renderSettings);
+
+        view->appendGeometryBuffers(brushGeomBuffers);
+    }
+
+    glm::vec2 draw_pos(draw_rect.getPosition());
+    draw_pos.y += CoordConverter::alignToPixels(
+        (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+
+    auto stringGeomBuffers = formated_rendered_string->createRenderGeometry(
+        view, draw_pos, nullptr, item_clipper);
+
+    view->appendGeometryBuffers(stringGeomBuffers);
+}
+
 //----------------------------------------------------------------------------//
 glm::vec2 ItemViewRenderer::getItemRenderStartPosition(ItemView* view,
     const Rectf& items_area) const

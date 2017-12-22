@@ -31,6 +31,7 @@
 
 #include "CEGUI/views/ItemView.h"
 #include <vector>
+#include <memory>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -39,6 +40,13 @@
 
 namespace CEGUI
 {
+
+struct ListViewItemRenderedString {
+    RenderedString d_string;
+    FormattedRenderedString* d_formatedString;
+    ListViewItemRenderedString(const RenderedString& string);
+    ~ListViewItemRenderedString();
+};
 
 /*!
 \brief
@@ -52,7 +60,7 @@ namespace CEGUI
 */
 struct CEGUIEXPORT ListViewItemRenderingState
 {
-    RenderedString d_string;
+    std::shared_ptr<ListViewItemRenderedString> d_string;
     //! The name of the image that represents the icon
     String d_icon;
     Sizef d_size;
@@ -93,9 +101,24 @@ public:
 
     ModelIndex indexAt(const glm::vec2& position) override;
 
+    /*!
+    \brief
+        Return the current horizontal formatting option set for this widget.
+    */
+    HorizontalTextFormatting getHorizontalFormatting(void) const   {return    d_horzFormatting;}
+
+    /*!
+    \brief
+        Set the horizontal formatting required for the text.
+    */
+    void    setHorizontalFormatting(HorizontalTextFormatting h_fmt);
+
 protected:
     bool onChildrenAdded(const EventArgs& args) override;
     bool onChildrenRemoved(const EventArgs& args) override;
+
+    //! Horizontal formatting to be applied to the text.
+    HorizontalTextFormatting d_horzFormatting;
 
 private:
     std::vector<ListViewItemRenderingState> d_items;
