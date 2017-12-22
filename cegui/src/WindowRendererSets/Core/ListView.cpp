@@ -74,7 +74,6 @@ void FalagardListView::createRenderGeometry(ListView* list_view)
     for (size_t i = 0; i < list_view->getItems().size(); ++i)
     {
         ListViewItemRenderingState* item = list_view->getItems().at(i);
-        RenderedString& rendered_string = item->d_string;
         Sizef size(item->d_size);
 
         size.d_width = std::max(items_area.getWidth(), size.d_width);
@@ -107,8 +106,8 @@ void FalagardListView::createRenderGeometry(ListView* list_view)
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
-        createRenderGeometryAndAddToItemView(list_view, rendered_string, item_rect,
-            list_view->getFont(), &item_clipper, item->d_isSelected);
+        createRenderGeometryAndAddToItemView(list_view, item->d_string->d_formatedString,
+            item_rect, list_view->getFont(), &item_clipper, item->d_isSelected);
 
         item_pos.y += size.d_height;
     }
