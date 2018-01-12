@@ -1063,8 +1063,6 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
 {
     std::vector<GeometryBuffer*> textGeometryBuffers;
 
-    penPosition.y += getBaseline();
-
     if (text.empty())
     {
         return textGeometryBuffers;
@@ -1078,12 +1076,19 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
     size_t origTextLength = text.length();
     const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
 #endif
+    glm::vec2 penPositionStart = penPosition;
 
     raqm_t* raqmObject = createAndSetupRaqmTextObject(
         originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
 
+    unsigned int layerCount = d_fontLayers.size();
+    for (int layerTmp = layerCount -1; layerTmp >= 0; layerTmp--) {
+    unsigned int layer = static_cast<unsigned int>(layerTmp);
+
     size_t count = 0;
     raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
+    penPosition = penPositionStart;
+    penPosition.y += getBaseline();
 
     for (size_t i = 0; i < count; i++)
     {
@@ -1120,20 +1125,24 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
             }
         }
 
-        const Image* const image = glyph->getImage();
+        const Image* const image = glyph->getImage(layer);
+        if (image) {
+            imgRenderSettings.d_destArea =
+            Rectf(penPosition, image->getRenderedSize());
 
-        penPosition.x = std::round(penPosition.x);
+            penPosition.x = std::round(penPosition.x);
         
-        //The glyph pos will be rounded to full pixels internally
-        glm::vec2 renderGlyphPos(
-            penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
-            penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
+            //The glyph pos will be rounded to full pixels internally
+            glm::vec2 renderGlyphPos(
+                penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
+                penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
 
-        imgRenderSettings.d_destArea =
-            Rectf(renderGlyphPos, image->getRenderedSize());
+            imgRenderSettings.d_destArea =
+                Rectf(renderGlyphPos, image->getRenderedSize());
 
-        addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
-            clip_rect, colours);
+            addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
+                clip_rect, d_fontLayers[layer].d_colours);
+        }
 
         penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;
 
