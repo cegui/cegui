@@ -1,5 +1,5 @@
 execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib(plat_specific=True, prefix=\"\")"
+    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print (distutils.sysconfig.get_python_lib(plat_specific=True, prefix=\"\"))"
     OUTPUT_VARIABLE CEGUI_PYTHON_INSTALL_DIR
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )

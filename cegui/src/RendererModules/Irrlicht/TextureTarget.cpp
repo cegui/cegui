@@ -164,4 +164,10 @@ String IrrlichtTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 // Implementation of template base class
 #include "./RenderTarget.inl"
+#ifdef __APPLE__
+
+template class CEGUI::IrrlichtRenderTarget<CEGUI::RenderTarget>;
+template class CEGUI::IrrlichtRenderTarget<CEGUI::TextureTarget>;
+
+#endif
 
