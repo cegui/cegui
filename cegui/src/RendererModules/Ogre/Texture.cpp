@@ -81,7 +81,7 @@ OgreTexture::OgreTexture(const String& name) :
     d_texelScaling(0, 0),
     d_name(name)
 {
-    createEmptyOgreTexture();
+    createEmptyOgreTexture(Texture::PixelFormat::Rgba);
 }
 
 //----------------------------------------------------------------------------//
@@ -93,7 +93,6 @@ OgreTexture::OgreTexture(const String& name, const String& filename,
     d_texelScaling(0, 0),
     d_name(name)
 {
-    createEmptyOgreTexture();
     loadFromFile(filename, resourceGroup);
 }
 
@@ -219,6 +218,7 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 
     const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<std::uint32_t>(buffer_size.d_width), static_cast<std::uint32_t>(buffer_size.d_height),
                                                         1, toOgrePixelFormat(pixel_format), bufferCopy);
+    createEmptyOgreTexture(pixel_format);
     d_texture->freeInternalResources();
     d_texture->setWidth(static_cast<std::uint32_t>(buffer_size.d_width));
     d_texture->setHeight(static_cast<std::uint32_t>(buffer_size.d_height));
@@ -265,7 +265,7 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
     Ogre::PixelBox pb(static_cast<Ogre::uint32>(area.getWidth()),
                       static_cast<Ogre::uint32>(area.getHeight()),
                       1,
-                      Ogre::PF_A8R8G8B8, const_cast<void*>(sourceData));
+                      d_texture->getFormat(), const_cast<void*>(sourceData));
 
     Ogre::Image::Box box(static_cast<Ogre::uint32>(area.left()),
                          static_cast<Ogre::uint32>(area.top()),
@@ -281,7 +281,7 @@ void OgreTexture::blitToMemory(void* targetData)
         return;
 
     Ogre::PixelBox pb(static_cast<std::uint32_t>(d_size.d_width), static_cast<std::uint32_t>(d_size.d_height),
-                      1, Ogre::PF_A8R8G8B8, targetData);
+                      1, d_texture->getFormat(), targetData);
     d_texture->getBuffer()->blitToMemory(pb);
 }
 
@@ -427,13 +427,13 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::createEmptyOgreTexture()
+void OgreTexture::createEmptyOgreTexture(PixelFormat pixel_format)
 {
     // try to create a Ogre::Texture with given dimensions
     d_texture = Ogre::TextureManager::getSingleton().createManual(
         getUniqueName(), "General", Ogre::TEX_TYPE_2D,
         1, 1, 0,
-        Ogre::PF_A8B8G8R8);
+        toOgrePixelFormat(pixel_format));
 }
 
 
