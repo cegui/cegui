@@ -1057,10 +1057,10 @@ void Tree::onBranchClosed(TreeEventArgs& e)
 /*************************************************************************
     Handler for when we are sized
 *************************************************************************/
-void Tree::onSized(ElementEventArgs& e)
+void Tree::onSized_impl(ElementEventArgs& e)
 {
     // base class handling
-    Window::onSized(e);
+    Window::onSized_impl(e);
     
     configureScrollbars();
     
