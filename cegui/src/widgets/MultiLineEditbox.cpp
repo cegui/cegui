@@ -1487,12 +1487,12 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when widget size is changed.
 *************************************************************************/
-void MultiLineEditbox::onSized(ElementEventArgs& e)
+void MultiLineEditbox::onSized_impl(ElementEventArgs& e)
 {
 	formatText(true);
 
 	// base class handling
-	Window::onSized(e);
+	Window::onSized_impl(e);
 
 	++e.handled;
 }

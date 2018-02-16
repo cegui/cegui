@@ -303,6 +303,12 @@ public:
      * changed.
      */
     static const String EventNonClientChanged;
+    /*!
+    \brief
+        Fired when any of the properties "AdjustWidthToContent" and
+        "AdjustHeightToContent" changes.
+    */
+    static const String EventIsSizeAdjustedToContentChanged;
 
     /*!
     \brief A tiny wrapper to hide some of the dirty work of rect caching
@@ -433,9 +439,15 @@ public:
     \param size
         UVector2 describing the new size of the element area.
 
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.
+
     \see UDim
     */
-    virtual void setArea(const UVector2& pos, const USize& size);
+    virtual void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content=true);
 
     //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
@@ -486,7 +498,7 @@ public:
     */
     inline void setPosition(const UVector2& pos)
     {
-        setArea_impl(pos, d_area.getSize());
+        setArea_impl(pos, getSize());
     }
 
     //! \overload
@@ -599,7 +611,29 @@ public:
     */
     inline void setSize(const USize& size)
     {
-        setArea(d_area.getPosition(), size);
+        setSize(size, true);
+    }
+
+    /*!
+    \brief
+        Set the element's size.
+
+        Sets the size of the area occupied by this element.
+
+    \param size
+        USize describing the new size of the element's area.
+
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.
+
+    \see UDim
+    */
+    inline void setSize(const USize& size, bool adjust_size_to_content)
+    {
+        setArea(getPosition(), size, adjust_size_to_content);
     }
 
     //! \overload
@@ -858,6 +892,8 @@ public:
         intuitive they cause Gimbal locks when animating and are overall the worse
         solution than using Quaternions. You can still use Euler angles, see
         the CEGUI::Quaternion class for more info about that.
+
+    \see Element::getRotation
     */
     void setRotation(const Quaternion& rotation);
 
@@ -870,6 +906,30 @@ public:
     {
         return d_rotation;
     }
+
+    /*!
+    \brief
+        Retrieves the pivot point (the point around which the widget is rotated).
+
+        The point is defined in 3D so you can also rotate around the Z axis.
+
+        The point is defined with "UDim"-s, so you can use relative dimensions. They're relative to the size of the widget. The depth of the widget is currently always 0.
+
+        The default is the widget's center.
+
+    \see Element::setPivot
+    \see Element::getRotation
+    */
+    UVector3 getPivot() const;
+
+    /*!
+    \brief
+        Sets the pivot point (the point around which the widget is rotated).
+
+    \see Element::getPivot
+    \see Element::setRotation
+    */
+    void setPivot(const UVector3& pivot);
 
     /*!
     \brief
@@ -975,6 +1035,103 @@ public:
     {
         return d_nonClient;
     }
+
+    /*!
+    \brief
+        If set to "true", keep the width of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a horizontal scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+        
+        See the documentation of "isWidthAdjustedToContent" for more details.
+
+    \see isWidthAdjustedToContent
+    \see setAdjustHeightToContent
+    */
+    void setAdjustWidthToContent(bool value);
+
+    /*!
+    \brief
+        If set to "true", keep the height of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a vertical scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+        
+        See the documentation of "isHeightAdjustedToContent" for more details.
+
+    \see isHeightAdjustedToContent
+    \see setAdjustWidthToContent
+    */
+    void setAdjustHeightToContent(bool value);
+
+    /*!
+    \brief
+        If set to "true", keep the width of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a horizontal scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So setting this property to "true" would keep the width of the
+        widget to the minimal value in which the whole text is visible without
+        the need for a horizontal scrollbar (if possible), and without the need
+        to split a word between 2 or more lines (if possible).
+
+        Whenever the size of the widget should be (re)adjusted to its content,
+        this is done by calling "adjustSizeToContent". This happens in the
+        default implementations of "onIsSizeAdjustedToContentChanged" and
+        "onSized".
+
+    \see adjustSizeToContent
+    \see isHeightAdjustedToContent
+    \see setAdjustWidthToContent
+    \see isSizeAdjustedToContent
+    \see onIsSizeAdjustedToContentChanged
+    \see onSized
+    */
+    bool isWidthAdjustedToContent() const;
+
+    /*!
+    \brief
+        If set to "true", keep the height of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a vertical scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So setting this property to "true" would keep the height of the
+        widget to the minimal value in which the whole text is visible without
+        the need for a vertical scrollbar (if possible), and without the need
+        to split a word between 2 or more lines (if possible).
+
+        Whenever the size of the widget should be (re)adjusted to its content,
+        this is done by calling "adjustSizeToContent". This happens in the
+        default implementations of "onIsSizeAdjustedToContentChanged" and
+        "onSized".
+
+    \see adjustSizeToContent
+    \see isWidthAdjustedToContent
+    \see setAdjustHeightToContent
+    \see isSizeAdjustedToContent
+    \see onContentSizeChanged
+    \see onIsSizeAdjustedToContentChanged
+    \see onSized
+    */
+    bool isHeightAdjustedToContent() const;
+
+    /*!
+    \brief
+        Return whether any of the properties "AdjustWidthToContent" and
+        "AdjustHeightToContent" is set to true.
+
+    \see isWidthAdjustedToContent
+    \see isHeightAdjustedToContent
+    */
+    bool isSizeAdjustedToContent() const;
 
     /*!
     \brief Return a Rect that describes the unclipped outer rect area of the Element
@@ -1102,6 +1259,356 @@ public:
     */
     virtual const Sizef& getRootContainerSize() const;
 
+    /*!
+    \brief
+        Set the size of the element to the minimal value in which the whole
+        element content is visible without the need for scrollbars
+        (if possible), and while the content remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So setting this property to "true" would keep the width of the
+        widget to the minimal value in which the whole text is visible without
+        the need for scrollbars (if possible), and without the need to split a
+        word between 2 or more lines (if possible).
+
+        If the "AdjustWidthToContent" property is set to "true", the width is
+        adjusted. If the "AdjustHeightToContent" property is set to "true", the
+        height is adjusted. The exact behaviour of this method depends on the
+        combination of "AdjustWidthToContent" and "AdjustHeightToContent", as
+        well as on the type of widget, and possibly other properties. You might
+        want to look at the documentation for
+        "FalagardStaticText::adjustSizeToContent" for a detailed description on
+        how this method behaves for a "FalagardStaticText" widget, which serves
+        as a great example.
+    
+        There are 2 helper methods that you may want to use when implementing
+        this method:
+        1. "adjustSizeToContent_direct"
+        2. "getSizeAdjustedToContent_bisection"
+
+        The default implementations of "onIsSizeAdjustedToContentChanged" and
+        "onSized" call this method. Make sure you call this method whenever the
+        size should be re-adjusted to the content in any other case.
+    
+        The default implementation calls "adjustSizeToContent_direct".
+
+    \see FalagardStaticText::adjustSizeToContent
+    \see adjustSizeToContent_direct
+    \see getSizeAdjustedToContent_bisection
+    \see isWidthAdjustedToContent
+    \see isHeightAdjustedToContent
+    \see isSizeAdjustedToContent
+    */
+    virtual void adjustSizeToContent();
+
+    /*!
+    \brief
+        Get the width of the content of the element.
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text.
+        This method is used by "adjustSizeToContent_direct".
+    */
+    virtual float getContentWidth() const;
+
+    /*!
+    \brief
+        Get the height of the content of the element.
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text.
+
+        This method is used by "adjustSizeToContent_direct".
+    */
+    virtual float getContentHeight() const;
+    
+    /*!
+    \brief
+        Get a lower bound for the width of the area of the element which is
+        reserved for content as an affine function of the element width.
+
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "t" be the width of the area of the element which is reserved for
+               content.
+            - "m" be the element width.
+        Then the following applies:
+            t >= ret.d_scale*m + ret.d_offset
+
+    \see adjustSizeToContent
+    \see getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
+    \see getContentWidth
+    */
+    virtual UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const;
+    
+    /*!
+    \brief
+        Get a lower bound for the height of the area of the element which is
+        reserved for content as an affine function of the element height.
+
+        An affine function means: "t" is an affine function of "m" if, for some
+        constants "a" and "b", it holds true that "t = a*m +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "t" be the height of the area of the element which is reserved for
+              content.
+            - "m" be the element height.
+        Then the following applies:
+            t >= ret.d_scale*m + ret.d_offset
+
+    \see adjustSizeToContent
+    \see getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
+    \see getContentHeight
+    */
+    virtual UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const;
+
+    /*!
+    \brief
+        Get a lower bound for the element width as an affine function of the
+        width of the area of the element which is reserved for content.
+
+        An affine function means: "m" is an affine function of "t" if, for some
+        constants "a" and "b", it holds true that "m = a*t +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+        The default implementaiton inverts the function returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth". If the
+        scale of the value returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth" is 0,
+        there's no solution, so an exception is thrown.
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "m" be the element width.
+            - "t" be the width of the area of the element which is reserved for
+              content.
+        Then the following applies: for every non-negative number "c", if
+        "m >= ret.d_scale*c + ret.d_offset" then "t >= c".
+
+    \see adjustSizeToContent
+    \see getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth
+    \see getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent
+    \see getContentWidth
+    */
+    virtual UDim getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() const;
+      
+    /*!
+    \brief
+        Get a lower bound for the element height as an affine function of the
+        height of the area of the element which is reserved for content.
+
+        An affine function means: "m" is an affine function of "t" if, for some
+        constants "a" and "b", it holds true that "m = a*t +b".
+
+        The meaning of "content" depends on the type of element. For instance,
+        the content of a "FalagardStaticText" widget is its text. The area
+        reserved for the content would then be the area reserved for the text,
+        which is defined by the Look'N'Feel, and usually equals the size of the
+        widget minus the size of the frame and scrollbars.
+
+        This method is used by "adjustSizeToContent".
+
+        The default implementaiton inverts the function returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth". If the
+        scale of the value returned by
+        "getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth" is 0,
+        there's no solution, so an exception is thrown.
+
+    \return
+        Let:
+            - "ret" be the value returned by this method.
+            - "m" be the element height.
+            - "t" be the height of the area of the element which is reserved for
+              content.
+        Then the following applies: for every non-negative number "c", if
+        "m >= ret.d_scale*c + ret.d_offset" then "t >= c".
+
+    \see adjustSizeToContent
+    \see getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight
+    \see getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent
+    \see getContentHeight
+    */
+    virtual UDim getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent() const;
+      
+    /*!
+    \brief
+        An implementation of "adjustSizeToContent" that works for simple cases.
+
+        Set the size of the element using the following logic:
+        1) If the "AdjustWidthToContent" property is set to "true", do:
+            A. Compute the content width by calling "getContentWidth".
+            B. Compute a lower bound for the element width as a function of
+               width of the area reserved for the element content by calling
+               "getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent"
+            C. Use the results from "A" and "B" to compute a suitable element
+               width - that is, such as that the width of the area reserved for
+               the content be at least the result from "A".
+        2) Repeat the same steps of "1", replacing "width" with "height".
+
+        Note that in this implementation the width and height are treated
+        independently of each other.
+
+        If "getAspectMode() != AM_IGNORE", this method respects the aspect ratio
+        using the following logic:
+            - If only "isWidthAdjustedToContent()" is true, compute the height
+              from the width and the aspect ratio.
+            - If only "isHeightAdjustedToContent()" is true, compute the width
+              from the height and the aspect ratio.
+            - If both "isWidthAdjustedToContent()" and
+              "isHeightAdjustedToContent()" are true, expand one of the width or
+              the height to comply with the aspect ratio.
+
+    \see adjustSizeToContent
+    \see getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent
+    \see getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent
+    \see getSizeAdjustedToContent_bisection
+    \see isWidthAdjustedToContent
+    \see isHeightAdjustedToContent
+    */
+    void adjustSizeToContent_direct();
+
+    /*!
+    \brief
+        Return a tiny number ("epsilon") serving as a "safety guard" for the
+        computations of "adjustSizeToContent".
+
+        The method "adjustSizeToContent" performs various computations to
+        determine the required size so that the whole element content is visible
+        without the need for scrollbars (if possible), and while the content
+        remains "intact" (if possible). However, due to computational errors,
+        it's possible that if we use the exact value obtained, we might not
+        achieve this goal fully. Therefore, we should, at some points of the
+        computation, add a tiny number ("epsilon") serving as a "safety guard".
+        This method returns the epsilon to use.
+
+        Normally there's no reason to override this method.
+
+    \see adjustSizeToContent
+    */
+    virtual float adjustSizeToContent_getEpsilon() const;
+
+    /*!
+    \brief
+        A helper method that can be used in the implementation of
+        "adjustSizeToContent" for non-simple cases.
+
+        This method tries to find a suitable size by try-and-error: It's given a
+        (mathematical) function "f(n)" whose domain is the integers between
+        "floor(domain_min)" and "ceil(domain_max)", and its codomain is R^2
+        (representing possible element sizes - i.e. of type "Sizef"). This
+        method finds the minimal "n" for which
+        "contentFitsForSpecifiedElementSize(f(n))" returns "true" - that is, for
+        which the whole element content is visible without the need for
+        scrollbars (if possible), and while the content remains "intact" (if
+        possible). The (mathematical) function "f(n)" is an affine function
+        defined by:
+            f(n) = (size_func.d_width.d_scale*n +size_func.d_width.d_offset,
+                    size_func.d_height.d_scale*n +size_func.d_height.d_offset)
+
+        Note: it's assumed that
+        "contentFitsForSpecifiedElementSize(f(domain_min))" returns "false" and
+        "contentFitsForSpecifiedElementSize(f(domain_max))" returns "true".
+
+        This method uses bisection to find the solution.
+
+        You might want to look at "FalagardStaticText::adjustSizeToContent" to
+        see an example of how this method is used.
+
+    \return
+        f(n)
+    
+    \see contentFitsForSpecifiedElementSize
+    \see adjustSizeToContent
+    \see FalagardStaticText::adjustSizeToContent
+    */
+    Sizef getSizeAdjustedToContent_bisection(const USize& size_func, float domain_min, float domain_max) const;
+
+    /*!
+    \brief
+        Return whether setting the element size to "element_size" would make the
+        whole element content visible without the need for scrollbars (if
+        possible), and while the content remains "intact" (if possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines. So calling this method returns whether if we set the element size
+        to "element_size" the whole text would be visible, without the need for
+        scrollbars, and without having to split a single word between 2 or more
+        lines.
+
+        The default implementation calls
+        "contentFitsForSpecifiedElementSize_tryByResizing".
+
+        This method is used by "getSizeAdjustedToContent_bisection".
+
+    \see contentFitsForSpecifiedElementSize_tryByResizing
+    \see getSizeAdjustedToContent_bisection
+    */
+    virtual bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const;
+      
+    /*!
+    \brief
+        A possible implementation of "contentFitsForSpecifiedElementSize".
+
+        This implementation actually sets (temporarily) the element size to
+        "element_size", and then calls "contentFits".
+
+    \see contentFits
+    \see contentFitsForSpecifiedElementSize
+    */
+    bool contentFitsForSpecifiedElementSize_tryByResizing(const Sizef& element_size) const;
+
+    /*!
+    \brief
+        Return whether the whole element content is visible without the need for
+        scrollbars (if possible), and while the content remains "intact" (if
+        possible).
+
+        The meaning of "element content" and "intact" depends on the type of
+        element. For example, for a "FalagardStaticText" widget, the content is
+        the text, and "intact" means no single word is split between 2 or more
+        lines.
+
+        This method is used by
+        "contentFitsForSpecifiedElementSize_tryByResizing"
+
+    \see contentFitsForSpecifiedElementSize_tryByResizing
+    */
+    virtual bool contentFits() const;
+
 protected:
     /*!
     \brief
@@ -1127,7 +1634,7 @@ protected:
         USize object describing the new area size.
 
     \param topLeftSizing
-        - true to indicate the the operation is a sizing operation on the top
+        - true to indicate the operation is a sizing operation on the top
           and/or left edges of the area, and so element movement should be
           inhibited if size is at max or min.
         - false to indicate the operation is not a strict sizing operation on
@@ -1138,9 +1645,15 @@ protected:
         - true if events should be fired as normal.
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
+
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.
      */
-    virtual void setArea_impl(const UVector2& pos, const USize& size,
-                              bool topLeftSizing = false, bool fireEvents = true);
+    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,
+                              bool adjust_size_to_content=true);
 
     //! helper to return whether the inner rect size has changed
     inline bool isInnerRectSizeChanged() const
@@ -1180,8 +1693,18 @@ protected:
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
 
-    //! helper to fire events based on changes to area rect
-    void fireAreaChangeEvents(const bool moved, const bool sized);
+    /*!
+    \brief
+        Helper to fire events based on changes to area rect.
+    
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.  
+    */
+    void fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content=true);
+
     void notifyChildrenOfSizeChange(const bool non_client,
                                     const bool client);
 
@@ -1195,8 +1718,24 @@ protected:
     \param e
         ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
+
+    \param adjust_size_to_content
+        If the size actually changes, should we call "AdjustSizeToContent"?
+        Normally, this should be true. However, if this function is called from
+        inside "AdjustSizeToContent", you must set this to false to prevent
+        infinite recursion.  
     */
-    virtual void onSized(ElementEventArgs& e);
+    virtual void onSized(ElementEventArgs& e, bool adjust_size_to_content=true);
+    
+    /*!
+    \brief
+        Handler called when the element's size changes.
+
+    \param e
+        ElementEventArgs object whose 'element' pointer field is set to the element
+        that triggered the event.
+    */
+    virtual void onSized_impl(ElementEventArgs& e);
 
     /*!
     \brief
@@ -1287,6 +1826,13 @@ protected:
     */
     virtual void onNonClientChanged(ElementEventArgs& e);
 
+    /*!
+    \brief
+        Called whenever any of the properties "AdjustWidthToContent" and
+        "AdjustHeightToContent" change.
+    */
+    virtual void onIsSizeAdjustedToContentChanged(ElementEventArgs&);
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
@@ -1302,7 +1848,36 @@ protected:
     //! true if element is in non-client (outside InnerRect) area of parent.
     bool d_nonClient;
 
-    //! This element objects area as defined by a URect.
+    /*!
+    \brief
+        If set to "true", keep the width of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a horizontal scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        See the documentation for "isWidthAdjustedToContent" for a more detailed
+        description.
+    
+    \see isWidthAdjustedToContent
+    \see d_isHeightAdjustedToContent
+    */
+    bool d_isWidthAdjustedToContent;
+
+    /*!
+    \brief
+        If set to "true", keep the height of the element at the minimal value in
+        which the whole element content is visible without the
+        need for a vertical scrollbar (if possible), and while the content
+        remains "intact" (if possible).
+
+        See the documentation for "isHeightAdjustedToContent" for a more
+        detailed description.
+    
+    \see isHeightAdjustedToContent
+    \see d_isWidthAdjustedToContent
+    */
+    bool d_isHeightAdjustedToContent;
+
     URect d_area;
     //! Specifies the base for horizontal alignment.
     HorizontalAlignment d_horizontalAlignment;
@@ -1322,6 +1897,8 @@ protected:
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
     Quaternion d_rotation;
+    //! Pivot point (the point around which the widget is rotated).
+    UVector3 d_pivot;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;
