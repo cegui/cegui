@@ -195,26 +195,38 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
             (CEGUI::System::getSingleton().getResourceProvider());
     CEGUI::String dataPathPrefix(getDataPathPrefix());
 
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     /* for each resource type, set a resource group directory. We cast strings
        to "const CEGUI::utf8*" in order to support general Unicode strings,
        rather than only ASCII strings (even though currently they're all ASCII).
-       */
+    */
     rp->setResourceGroupDirectory("schemes",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/schemes/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/schemes/"));
     rp->setResourceGroupDirectory("imagesets",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/imagesets/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/imagesets/"));
     rp->setResourceGroupDirectory("fonts",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/fonts/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/fonts/"));
     rp->setResourceGroupDirectory("layouts",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/layouts/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/layouts/"));
     rp->setResourceGroupDirectory("looknfeels",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/looknfeel/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/looknfeel/"));
     rp->setResourceGroupDirectory("lua_scripts",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/lua_scripts/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/lua_scripts/"));
     rp->setResourceGroupDirectory("schemas",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/xml_schemas/"));   
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/xml_schemas/"));   
     rp->setResourceGroupDirectory("animations",
-      dataPathPrefix +reinterpret_cast<const CEGUI::utf8*>("/animations/"));
+      dataPathPrefix + reinterpret_cast<const CEGUI::utf8*>("/animations/"));
+#else
+    rp->setResourceGroupDirectory("schemes", dataPathPrefix + "/schemes/");
+    rp->setResourceGroupDirectory("imagesets", dataPathPrefix + "/imagesets/");
+    rp->setResourceGroupDirectory("imagesets", dataPathPrefix + "/imagesets/");
+    rp->setResourceGroupDirectory("fonts", dataPathPrefix + "/fonts/");
+    rp->setResourceGroupDirectory("layouts", dataPathPrefix + "/layouts/");
+    rp->setResourceGroupDirectory("looknfeels", dataPathPrefix + "/looknfeel/");
+    rp->setResourceGroupDirectory("lua_scripts", dataPathPrefix + "/lua_scripts/");
+    rp->setResourceGroupDirectory("schemas", dataPathPrefix + "/xml_schemas/");
+    rp->setResourceGroupDirectory("animations", dataPathPrefix + "/animations/");
+#endif
 }
 
 //----------------------------------------------------------------------------//
