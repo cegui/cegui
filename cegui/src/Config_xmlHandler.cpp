@@ -51,7 +51,7 @@ const String Config_xmlHandler::ScriptingElement("Scripting");
 const String Config_xmlHandler::XMLParserElement("DefaultXMLParser");
 const String Config_xmlHandler::ImageCodecElement("DefaultImageCodec");
 const String Config_xmlHandler::DefaultFontElement("DefaultFont");
-const String Config_xmlHandler::DefaultMouseCursorElement("DefaultMouseCursor");
+const String Config_xmlHandler::DefaultCursorElement("DefaultCursor");
 const String Config_xmlHandler::DefaultTooltipElement("DefaultTooltip");
 const String Config_xmlHandler::FilenameAttribute("filename");
 const String Config_xmlHandler::LevelAttribute("level");
@@ -66,7 +66,7 @@ const String Config_xmlHandler::NameAttribute("name");
 
 //----------------------------------------------------------------------------//
 Config_xmlHandler::Config_xmlHandler() :
-    d_logLevel(Standard)
+    d_logLevel(LoggingLevel::Standard)
 {
 }
 
@@ -110,13 +110,13 @@ void Config_xmlHandler::elementStart(const String& element,
         handleImageCodecElement(attributes);
     else if (element == DefaultFontElement)
         handleDefaultFontElement(attributes);
-    else if (element == DefaultMouseCursorElement)
-        handleDefaultMouseCursorElement(attributes);
+    else if (element == DefaultCursorElement)
+        handleDefaultCursorElement(attributes);
     else if (element == DefaultTooltipElement)
         handleDefaultTooltipElement(attributes);
     else
         Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
-            "Unknown element encountered: <" + element + ">", Errors);
+            "Unknown element encountered: <" + element + ">", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -141,14 +141,14 @@ void Config_xmlHandler::handleLoggingElement(const XMLAttributes& attr)
 
     const String logLevel(attr.getValueAsString(LevelAttribute, ""));
 
-    if (logLevel == "Errors")
-        d_logLevel = Errors;
-    else if (logLevel == "Informative")
-        d_logLevel = Informative;
-    else if (logLevel == "Insane")
-        d_logLevel = Insane;
+    if (logLevel == "LoggingLevel::Error")
+        d_logLevel = LoggingLevel::Error;
+    else if (logLevel == "LoggingLevel::Informative")
+        d_logLevel = LoggingLevel::Informative;
+    else if (logLevel == "LoggingLevel::Insane")
+        d_logLevel = LoggingLevel::Insane;
     else
-        d_logLevel = Standard;
+        d_logLevel = LoggingLevel::Standard;
 }
 
 //----------------------------------------------------------------------------//
@@ -208,9 +208,9 @@ void Config_xmlHandler::handleDefaultFontElement(const XMLAttributes& attr)
 }
 
 //----------------------------------------------------------------------------//
-void Config_xmlHandler::handleDefaultMouseCursorElement(const XMLAttributes& attr)
+void Config_xmlHandler::handleDefaultCursorElement(const XMLAttributes& attr)
 {
-    d_defaultMouseImage = attr.getValueAsString(ImageAttribute, "");
+    d_defaultPointerImage = attr.getValueAsString(ImageAttribute, "");
 }
 
 //----------------------------------------------------------------------------//
@@ -262,31 +262,31 @@ void Config_xmlHandler::initialiseDefaultResourceGroups() const
     {
         switch ((*i).type)
         {
-        case RT_IMAGESET:
+        case ResourceType::Imageset:
             ImageManager::setImagesetDefaultResourceGroup((*i).group);
             break;
 
-        case RT_FONT:
+        case ResourceType::Font:
             Font::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_SCHEME:
+        case ResourceType::Scheme:
             Scheme::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_LOOKNFEEL:
+        case ResourceType::LookNFeel:
             WidgetLookManager::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_LAYOUT:
+        case ResourceType::Layout:
             WindowManager::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_SCRIPT:
+        case ResourceType::Script:
             ScriptModule::setDefaultResourceGroup((*i).group);
             break;
 
-        case RT_XMLSCHEMA:
+        case ResourceType::XmlSchema:
             if (System::getSingleton().getXMLParser()->
                 isPropertyPresent("SchemaDefaultResourceGroup"))
             {
@@ -311,27 +311,27 @@ void Config_xmlHandler::loadAutoResources() const
     {
         switch ((*i).type)
         {
-        case RT_IMAGESET:
+        case ResourceType::Imageset:
             autoLoadImagesets((*i).pattern, (*i).group);
             break;
 
-        case RT_FONT:
+        case ResourceType::Font:
             FontManager::getSingleton().createAll((*i).pattern, (*i).group);
             break;
 
-        case RT_SCHEME:
+        case ResourceType::Scheme:
             SchemeManager::getSingleton().createAll((*i).pattern, (*i).group);
             break;
 
-        case RT_LOOKNFEEL:
+        case ResourceType::LookNFeel:
             autoLoadLookNFeels((*i).pattern, (*i).group);
             break;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
+            throw InvalidRequestException(
                 "AutoLoad of resource type '" + (*i).type_string +
                 "' is not currently supported.Pattern was: " + (*i).pattern +
-                " group was: " + (*i).group));
+                " group was: " + (*i).group);
         }
     }
 }
@@ -345,11 +345,11 @@ void Config_xmlHandler::initialiseDefaultFont() const
 }
 
 //----------------------------------------------------------------------------//
-void Config_xmlHandler::initialiseDefaultMouseCursor() const
+void Config_xmlHandler::initialiseDefaultCursor() const
 {
-    if (!d_defaultMouseImage.empty())
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().
-            setDefaultImage(d_defaultMouseImage);
+    if (!d_defaultPointerImage.empty())
+        System::getSingleton().getDefaultGUIContext().getCursor().
+            setDefaultImage(d_defaultPointerImage);
 }
 
 //----------------------------------------------------------------------------//
@@ -378,21 +378,21 @@ Config_xmlHandler::ResourceType Config_xmlHandler::stringToResourceType(
     const String& type) const
 {
     if (type == "Imageset")
-        return RT_IMAGESET;
+        return ResourceType::Imageset;
     else if (type == "Font")
-        return RT_FONT;
+        return ResourceType::Font;
     else if (type == "Scheme")
-        return RT_SCHEME;
+        return ResourceType::Scheme;
     else if (type == "LookNFeel")
-        return RT_LOOKNFEEL;
+        return ResourceType::LookNFeel;
     else if (type == "Layout")
-        return RT_LAYOUT;
+        return ResourceType::Layout;
     else if (type == "Script")
-        return RT_SCRIPT;
+        return ResourceType::Script;
     else if (type == "XMLSchema")
-        return RT_XMLSCHEMA;
+        return ResourceType::XmlSchema;
     else
-        return RT_DEFAULT;
+        return ResourceType::Default;
 }
 
 //----------------------------------------------------------------------------//

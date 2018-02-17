@@ -24,17 +24,20 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _EditboxValidation_h_
-#define _EditboxValidation_h_
+#ifndef _EditboxValidationSample_h_
+#define _EditboxValidationSample_h_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "CEGUI/EventArgs.h"
 
-class EditboxValidation : public Sample
+class EditboxValidationSample : public Sample
 {
 public:
-    bool initialise(CEGUI::GUIContext* guiContext);
-    void deinitialise();
+    EditboxValidationSample();
+    virtual ~EditboxValidationSample() {}
+
+    bool initialise(CEGUI::GUIContext* guiContext) override;
+    void deinitialise() override;
 
 protected:
     bool validationChangeHandler(const CEGUI::EventArgs& args);

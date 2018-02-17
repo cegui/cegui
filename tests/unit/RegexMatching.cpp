@@ -34,6 +34,14 @@
 
 #include <boost/test/unit_test.hpp>
 
+namespace std
+{
+ostream& operator<< (ostream& os, const CEGUI::RegexMatcher::MatchState& value)
+{
+    return os << static_cast<int>(value);
+}
+}
+
 struct RegexMatchingFixture
 {
     RegexMatchingFixture()
@@ -63,67 +71,67 @@ BOOST_AUTO_TEST_CASE(RegexStringPersistence)
 BOOST_AUTO_TEST_CASE(Trivial)
 {
     d_regexMatcher->setRegexString(".*");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(""), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaa"), CEGUI::RegexMatcher::MS_VALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(""), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaa"), CEGUI::RegexMatcher::MatchState::Valid);
 }
 
 BOOST_AUTO_TEST_CASE(Partial)
 {
     d_regexMatcher->setRegexString(".*aaa");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(""), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaa"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaa"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaab"), CEGUI::RegexMatcher::MS_INVALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(""), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaa"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaa"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaab"), CEGUI::RegexMatcher::MatchState::Invalid);
 
     d_regexMatcher->setRegexString(".+aaa");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(""), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaa"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaa"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaa"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaab"), CEGUI::RegexMatcher::MS_INVALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(""), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaa"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaa"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaa"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("aaaaab"), CEGUI::RegexMatcher::MatchState::Invalid);
 }
 
 BOOST_AUTO_TEST_CASE(CharacterGroups)
 {
     d_regexMatcher->setRegexString("[a-z]");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("b"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("z"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("za"), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("A"), CEGUI::RegexMatcher::MS_INVALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("b"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("z"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("za"), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("A"), CEGUI::RegexMatcher::MatchState::Invalid);
 }
 
 BOOST_AUTO_TEST_CASE(RepeatedSeqs)
 {
     d_regexMatcher->setRegexString("(abc)+");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("ab"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("abc"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("bc"), CEGUI::RegexMatcher::MS_INVALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("ab"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("abc"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("bc"), CEGUI::RegexMatcher::MatchState::Invalid);
 
     d_regexMatcher->setRegexString("(abc){2}");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("abc"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("abcabc"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("bc"), CEGUI::RegexMatcher::MS_INVALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("abc"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("abcabc"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("bc"), CEGUI::RegexMatcher::MatchState::Invalid);
 }
 
 BOOST_AUTO_TEST_CASE(SmokeTests)
 {
     // IPv4 address
     d_regexMatcher->setRegexString("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192."), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1"), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1."), CEGUI::RegexMatcher::MS_PARTIAL);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1.1"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1.111"), CEGUI::RegexMatcher::MS_VALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("292.168.1.111"), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192:168.1.111"), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a.168.1.111"), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1.111:"), CEGUI::RegexMatcher::MS_INVALID);
-    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(":192.168.1.111"), CEGUI::RegexMatcher::MS_INVALID);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192."), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1"), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1."), CEGUI::RegexMatcher::MatchState::Partial);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1.1"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1.111"), CEGUI::RegexMatcher::MatchState::Valid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("292.168.1.111"), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192:168.1.111"), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("a.168.1.111"), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString("192.168.1.111:"), CEGUI::RegexMatcher::MatchState::Invalid);
+    BOOST_CHECK_EQUAL(d_regexMatcher->getMatchStateOfString(":192.168.1.111"), CEGUI::RegexMatcher::MatchState::Invalid);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

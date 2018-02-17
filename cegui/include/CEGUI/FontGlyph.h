@@ -36,35 +36,33 @@ namespace CEGUI
 \brief
     internal class representing a single font glyph.
 
-    For TrueType fonts initially all FontGlyph's are empty
-    (getImage() will return 0), but they are filled by demand.
+    For TrueType fonts initially all FontGlyphs are empty
+    (getImage() will return nullptr), but they are filled by demand.
 */
-class CEGUIEXPORT FontGlyph:
-    public AllocatedObject<FontGlyph>
+class CEGUIEXPORT FontGlyph
 {
 public:
     //! Constructor.
-    FontGlyph(float advance = 0.0f, Image* image = 0, bool valid = false) :
-        d_image(image),
+    FontGlyph(char32_t codePoint, float advance = 0.0f, Image* image = nullptr) :
         d_advance(advance),
-        d_valid(valid)
+        d_codePoint(codePoint)
+    {
+      if (image != nullptr)
+        d_imageLayers.push_back(image);
+    }
+
+    virtual ~FontGlyph()
     {}
 
     //! Return the CEGUI::Image object rendered for this glyph.
-    Image* getImage() const
-    { return d_image; }
-
-    //! Return the scaled pixel size of the glyph.
-    Sizef getSize(float x_scale, float y_scale) const
-    { return Sizef(getWidth(x_scale), getHeight(y_scale)); }
-
-    //! Return the scaled width of the glyph.
-    float getWidth(float x_scale) const
-    { return d_image->getRenderedSize().d_width * x_scale; }
-
-    //! Return the scaled height of the glyph.
-    float getHeight(float y_scale) const
-    { return d_image->getRenderedSize().d_height * y_scale; }
+    Image* getImage(unsigned int layer = 0) const
+    {
+        if (d_imageLayers.size() > layer)
+        {
+            return d_imageLayers[layer];
+        }
+        return nullptr;
+    }
 
     /*!
     \brief
@@ -73,9 +71,16 @@ public:
         The rendered advance value is the total number of pixels from the
         current pen position that will be occupied by this glyph when rendered.
     */
-    float getRenderedAdvance(float x_scale) const
-    { return (d_image->getRenderedSize().d_width +
-              d_image->getRenderedOffset().d_x) * x_scale; }
+    virtual float getRenderedAdvance(
+    ) const
+    {
+        float max = 0;
+        for (Image* d_image : d_imageLayers)
+        {
+            max = std::max (max, d_image->getRenderedSize().d_width + d_image->getRenderedOffset().x);
+        }
+        return max;
+    }
 
     /*!
     \brief
@@ -83,35 +88,39 @@ public:
 
         The returned value is the number of pixels the pen should move
         horizontally to position itself ready to render the next glyph.  This
-        is not always the same as the glyph image width or rendererd advance,
+        is not always the same as the glyph image width or rendered advance,
         since it allows for horizontal overhangs.
     */
-    float getAdvance(float x_scale = 1.0) const
-    { return d_advance * x_scale; }
+    float getAdvance() const
+    { return d_advance; }
 
     //! Set the horizontal advance value for the glyph.
     void setAdvance(float advance)
     { d_advance = advance; }
 
     //! Set the CEGUI::Image object rendered for this glyph.
-    void setImage(Image* image)
-    { d_image = image; }
+    void setImage(Image* image, unsigned int layer = 0)
+    {
+        if (d_imageLayers.size() <= layer)
+        {
+            d_imageLayers.resize(layer+1);
+        }
+        d_imageLayers[layer] = image;
+    }
 
-    //! mark the FontGlyph as valid
-    void setValid(bool valid)
-    { d_valid = valid; }
-
-    //! return whether the FontGlyph is marked as valid
-    bool isValid() const
-    { return d_valid; }
+    //! Returns the code point that this glyph is based on
+    char32_t getCodePoint() const
+    {
+        return d_codePoint;
+    }
 
 private:
     //! The image which will be rendered for this glyph.
-    Image* d_image;
+    std::vector<Image*> d_imageLayers;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
-    //! says whether this glyph info is actually valid
-    bool d_valid;
+    //! Code point
+    const char32_t d_codePoint;
 };
 
 } // End of  CEGUI namespace section

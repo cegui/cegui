@@ -42,8 +42,7 @@ namespace CEGUI
   
   This class define the loading of an abstract 
 */
-class CEGUIEXPORT ImageCodec :
-    public AllocatedObject<ImageCodec>
+class CEGUIEXPORT ImageCodec
 {
 public:
     /*!

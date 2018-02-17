@@ -30,7 +30,6 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/TextUtils.h"
-#include "CEGUI/GUIContext.h"
 #include "CEGUI/Window.h"
 
 // Start of CEGUI namespace section
@@ -38,7 +37,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent() :
-    d_font(0),
+    d_font(nullptr),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_selectionStart(0),
     d_selectionLength(0)
@@ -48,7 +47,7 @@ RenderedStringTextComponent::RenderedStringTextComponent() :
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent(const String& text) :
     d_text(text),
-    d_font(0),
+    d_font(nullptr),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_selectionStart(0),
     d_selectionLength(0)
@@ -152,49 +151,74 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     if (window)
         return window->getFont();
 
-    return 0;
+    return nullptr;
 }
 
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::draw(const Window* ref_wnd,
-                                       GeometryBuffer& buffer,
-                                       const Vector2f& position,
-                                       const ColourRect* mod_colours,
-                                       const Rectf* clip_rect,
-                                       const float vertical_space,
-                                       const float space_extra) const
+void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const
 {
-    const Font* fnt = getEffectiveFont(ref_wnd); 
-
-    if (!fnt)
-        return;
-
-    Vector2f final_pos(position);
-    float y_scale = 1.0f;
-
-    // handle formatting options
-    switch (d_verticalFormatting)
+    switch (d_verticalTextFormatting)
     {
-    case VF_BOTTOM_ALIGNED:
-        final_pos.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
+    case VerticalTextFormatting::BottomAligned:
+        final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
-    case VF_CENTRE_ALIGNED:
-        final_pos.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+    case VerticalTextFormatting::CentreAligned:
+        final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
-    case VF_STRETCHED:
-        y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
-        break;
-
-    case VF_TOP_ALIGNED:
+    case VerticalTextFormatting::TopAligned:
         // nothing additional to do for this formatting option.
         break;
 
     default:
-        CEGUI_THROW(InvalidRequestException(
-            "unknown VerticalFormatting option specified."));
+        throw InvalidRequestException(
+            "unknown VerticalFormatting option specified.");
     }
+}
+
+void RenderedStringTextComponent::createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const {
+    float sel_start_extent = 0;
+
+    if (d_selectionStart > 0)
+        sel_start_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart));
+
+    float sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
+
+    Rectf sel_rect(position.x + sel_start_extent,
+                   position.y,
+                   position.x + sel_end_extent,
+                   position.y + vertical_space);
+
+    ImageRenderSettings imgRenderSettings(
+        sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
+
+    d_selectionImage->createRenderGeometry(imgRenderSettings);
+}
+
+//----------------------------------------------------------------------------//
+std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const ColourRect* mod_colours,
+    const Rectf* clip_rect,
+    const float vertical_space,
+    const float space_extra) const
+{
+    const Font* fnt = getEffectiveFont(ref_wnd); 
+    if (fnt == nullptr)
+    {
+        return std::vector<GeometryBuffer*>();
+    }
+
+    DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight;
+    if(ref_wnd != nullptr)
+    {
+        defaultParagraphDir = ref_wnd->getDefaultParagraphDirection();
+    }
+
+    glm::vec2 final_pos(position);
+
+    handleFormattingOptions(ref_wnd, vertical_space, final_pos);
 
     // apply padding to position:
     final_pos += d_padding.getPosition();
@@ -205,26 +229,15 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
         final_cols *= *mod_colours;
 
     // render selection
-    if (d_selectionImage && d_selectionLength)
+    if (d_selectionImage && (d_selectionLength > 0))
     {
-        float sel_start_extent = 0, sel_end_extent = 0;
-
-        if (d_selectionStart > 0)
-            sel_start_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart));
-
-        sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
-
-        Rectf sel_rect(position.d_x + sel_start_extent,
-                       position.d_y,
-                       position.d_x + sel_end_extent,
-                       position.d_y + vertical_space);
-
-        d_selectionImage->render(buffer, sel_rect, clip_rect, ColourRect(0xFF002FFF));
+        createSelectionRenderGeometry(position, clip_rect, vertical_space, fnt);
     }
-
-    // draw the text string.
-    fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
-                  space_extra, 1.0f, y_scale);
+    // Create the geometry for rendering for the given text.
+    return fnt->createTextRenderGeometry(
+        d_text, final_pos,
+        clip_rect, true, final_cols,
+        defaultParagraphDir, space_extra);
 }
 
 //----------------------------------------------------------------------------//
@@ -232,8 +245,8 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
 {
     const Font* fnt = getEffectiveFont(ref_wnd);
 
-    Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
-               d_padding.d_min.d_y + d_padding.d_max.d_y);
+    Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
+               d_padding.d_min.y + d_padding.d_max.y);
 
     if (fnt)
     {
@@ -262,15 +275,15 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.
     if (!fnt)
-        CEGUI_THROW(InvalidRequestException(
-            "unable to split with no font set."));
+        throw InvalidRequestException(
+            "unable to split with no font set.");
 
     was_word_split = false;
 
     // create 'left' side of split and clone our basic configuration
-    RenderedStringTextComponent* lhs = CEGUI_NEW_AO RenderedStringTextComponent();
+    RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
     lhs->d_padding = d_padding;
-    lhs->d_verticalFormatting = d_verticalFormatting;
+    lhs->d_verticalTextFormatting = d_verticalTextFormatting;
     lhs->d_font = d_font;
     lhs->d_colours = d_colours;
 
@@ -296,9 +309,9 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             {
                 was_word_split = true;
                 left_len =
-                    ceguimax(static_cast<size_t>(1),
+                    std::max(static_cast<size_t>(1),
                              fnt->getCharAtPixel(
-                                d_text.substr(0, token_len), split_point));
+                                 d_text.substr(0, token_len), split_point));
             }
             
             // left_len is now the character index at which to split the line
@@ -362,7 +375,7 @@ size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent* RenderedStringTextComponent::clone() const
 {
-    RenderedStringTextComponent* c = CEGUI_NEW_AO RenderedStringTextComponent(*this);
+    RenderedStringTextComponent* c = new RenderedStringTextComponent(*this);
     return c;
 }
 

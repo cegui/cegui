@@ -31,7 +31,6 @@
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/DynamicModule.h"
@@ -48,52 +47,46 @@ String OpenGLRendererBase::d_rendererID("--- subclass did not set ID: Fix this!"
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase() :
-    d_viewProjectionMatrix(0),
-    d_activeRenderTarget(0)
+    d_defaultTarget(nullptr)
 {
     init();
     initialiseDisplaySizeWithViewportSize();
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displaySize(display_size),
-    d_viewProjectionMatrix(0),
-    d_activeRenderTarget(0)
+    d_defaultTarget(nullptr)
 {
     init();
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(bool set_glew_experimental) :
-    d_viewProjectionMatrix(0),
-    d_activeRenderTarget(0)
+    d_defaultTarget(nullptr)
 {
     init(true, set_glew_experimental);
     initialiseDisplaySizeWithViewportSize();
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size,
                                        bool set_glew_experimental) :
     d_displaySize(display_size),
-    d_viewProjectionMatrix(0),
-    d_activeRenderTarget(0)
+    d_defaultTarget(nullptr)
 {
     init(true, set_glew_experimental);
-    d_defaultTarget = CEGUI_NEW_AO OpenGLViewportTarget(*this);
+    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 {
-    d_displayDPI.d_x = d_displayDPI.d_y = 96;
-    d_initExtraStates = false;
-    d_activeBlendMode = BM_INVALID;
-    d_viewProjectionMatrix = new mat4Pimpl();
+    d_isStateResettingEnabled = true;
+    d_activeBlendMode = BlendMode::Invalid;
 #if defined CEGUI_USE_GLEW
     if (init_glew)
     {
@@ -107,7 +100,7 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
             err_string << "failed to initialise the GLEW library. "
                 << glewGetErrorString(err);
 
-            CEGUI_THROW(RendererException(err_string.str().c_str()));
+            throw RendererException(err_string.str().c_str());
         }
         //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
         glGetError();
@@ -124,11 +117,10 @@ void OpenGLRendererBase::init(bool init_glew, bool set_glew_experimental)
 OpenGLRendererBase::~OpenGLRendererBase()
 {
     destroyAllGeometryBuffers();
-    destroyAllTextureTargets();
-    destroyAllTextures();
+    OpenGLRendererBase::destroyAllTextureTargets();
+    OpenGLRendererBase::destroyAllTextures();
 
-    CEGUI_DELETE_AO d_defaultTarget;
-    delete d_viewProjectionMatrix;
+    delete d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -155,38 +147,37 @@ RenderTarget& OpenGLRendererBase::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& OpenGLRendererBase::createGeometryBuffer()
+GeometryBuffer& OpenGLRendererBase::createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl();
-    d_geometryBuffers.push_back(b);
-    return *b;
+    OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
+
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::TexCoord0);
+    geom_buffer->finaliseVertexAttributes();
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRendererBase::destroyGeometryBuffer(const GeometryBuffer& buffer)
+GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
+    OpenGLGeometryBufferBase* geom_buffer = createGeometryBuffer_impl(renderMaterial);
 
-    if (d_geometryBuffers.end() != i)
-    {
-        d_geometryBuffers.erase(i);
-        CEGUI_DELETE_AO &buffer;
-    }
+    geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
+    geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
+    geom_buffer->finaliseVertexAttributes();
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
 }
 
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::destroyAllGeometryBuffers()
-{
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
-}
 
 //----------------------------------------------------------------------------//
-TextureTarget* OpenGLRendererBase::createTextureTarget()
+TextureTarget* OpenGLRendererBase::createTextureTarget(bool addStencilBuffer)
 {
-    TextureTarget* t = createTextureTarget_impl();
+    TextureTarget* t = createTextureTarget_impl(addStencilBuffer);
 
     if (t)
         d_textureTargets.push_back(t);
@@ -204,7 +195,7 @@ void OpenGLRendererBase::destroyTextureTarget(TextureTarget* target)
     if (d_textureTargets.end() != i)
     {
         d_textureTargets.erase(i);
-        CEGUI_DELETE_AO target;
+        delete target;
     }
 }
 
@@ -219,10 +210,11 @@ void OpenGLRendererBase::destroyAllTextureTargets()
 Texture& OpenGLRendererBase::createTexture(const String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
-    OpenGLTexture* tex = CEGUI_NEW_AO OpenGLTexture(*this, name);
+    OpenGLTexture* tex = createTexture_impl(name);
+    tex->initialise();
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -236,10 +228,11 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
                                        const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
-    OpenGLTexture* tex = CEGUI_NEW_AO OpenGLTexture(*this, name, filename, resourceGroup);
+    OpenGLTexture* tex = createTexture_impl(name);
+    tex->initialise(filename, resourceGroup);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -251,10 +244,11 @@ Texture& OpenGLRendererBase::createTexture(const String& name,
 Texture& OpenGLRendererBase::createTexture(const String& name, const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
-    OpenGLTexture* tex = CEGUI_NEW_AO OpenGLTexture(*this, name, size);
+    OpenGLTexture* tex = createTexture_impl(name);
+    tex->initialise(size);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -284,7 +278,7 @@ void OpenGLRendererBase::destroyTexture(const String& name)
     if (d_textures.end() != i)
     {
         logTextureDestruction(name);
-        CEGUI_DELETE_AO i->second;
+        delete i->second;
         d_textures.erase(i);
     }
 }
@@ -310,8 +304,8 @@ Texture& OpenGLRendererBase::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No texture named '" + name + "' is available."));
+        throw UnknownObjectException(
+            "No texture named '" + name + "' is available.");
 
     return *i->second;
 }
@@ -327,15 +321,8 @@ const Sizef& OpenGLRendererBase::getDisplaySize() const
 {
     return d_displaySize;
 }
-
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLRendererBase::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
-//----------------------------------------------------------------------------//
-uint OpenGLRendererBase::getMaxTextureSize() const
+unsigned int OpenGLRendererBase::getMaxTextureSize() const
 {
     return d_maxTextureSize;
 }
@@ -351,10 +338,11 @@ Texture& OpenGLRendererBase::createTexture(const String& name, GLuint tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
+        throw AlreadyExistsException(
+            "A texture named '" + name + "' already exists.");
 
-    OpenGLTexture* t = CEGUI_NEW_AO OpenGLTexture(*this, name, tex, sz);
+    OpenGLTexture* t = createTexture_impl(name);
+    t->initialise(tex, sz);
     d_textures[name] = t;
 
     logTextureCreation(name);
@@ -376,10 +364,14 @@ void OpenGLRendererBase::setDisplaySize(const Sizef& sz)
     }
 }
 
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::enableExtraStateSettings(bool setting)
+void OpenGLRendererBase::setStateResettingEnabled(bool setting)
 {
-    d_initExtraStates = setting;
+    d_isStateResettingEnabled = setting;
+}
+
+bool OpenGLRendererBase::getStateResettingEnabled()
+{
+    return d_isStateResettingEnabled;
 }
 
 //----------------------------------------------------------------------------//
@@ -411,24 +403,10 @@ void OpenGLRendererBase::restoreTextures()
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGLRendererBase::getAdjustedTextureSize(const Sizef& sz) const
-{
-    Sizef out(sz);
-
-    // if we can't support non power of two sizes, get appropriate POT values.
-    if (!OpenGLInfo::getSingleton().isNpotTextureSupported())
-    {
-        out.d_width = getNextPOTSize(out.d_width);
-        out.d_height = getNextPOTSize(out.d_height);
-    }
-
-    return out;
-}
-
-//----------------------------------------------------------------------------//
+ 
 float OpenGLRendererBase::getNextPOTSize(const float f)
 {
-    uint size = static_cast<uint>(f);
+    unsigned int size = static_cast<unsigned int>(f);
 
     // if not power of 2
     if ((size & (size - 1)) || !size)
@@ -447,33 +425,55 @@ float OpenGLRendererBase::getNextPOTSize(const float f)
 }
 
 //----------------------------------------------------------------------------//
-const mat4Pimpl* OpenGLRendererBase::getViewProjectionMatrix()
-{
-    return d_viewProjectionMatrix;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRendererBase::setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix)
-{
-    *d_viewProjectionMatrix = *viewProjectionMatrix;
-}
-
-//----------------------------------------------------------------------------//
 const CEGUI::Rectf& OpenGLRendererBase::getActiveViewPort()
 {
     return d_activeRenderTarget->getArea();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRendererBase::setActiveRenderTarget(RenderTarget* renderTarget)
+bool OpenGLRendererBase::isTexCoordSystemFlipped() const
 {
-    d_activeRenderTarget = renderTarget;
+    return true;
 }
 
 //----------------------------------------------------------------------------//
-RenderTarget* OpenGLRendererBase::getActiveRenderTarget()
+void OpenGLRendererBase::checkGLErrors(const String& fileName, int line, const String& function)
 {
-    return d_activeRenderTarget;
+    GLenum error = glGetError();
+
+    if (error != GL_NO_ERROR)
+    {
+        std::stringstream stringStream;
+        stringStream << "OpenGLBaseRenderer - One or multiple OpenGL error have occured."
+           <<  "Detected in function '" << function << "' (" << fileName << ":" << 
+            line << ")" << std::endl;
+
+        switch (error)
+        {
+        case GL_INVALID_ENUM:
+            stringStream << "GL_INVALID_ENUM: enum argument out of range." << std::endl;
+            break;
+        case GL_INVALID_VALUE:
+            stringStream << "GL_INVALID_VALUE: Numeric argument out of range." << std::endl;
+            break;
+        case GL_INVALID_OPERATION:
+            stringStream << "GL_INVALID_OPERATION: Operation illegal in current state." << std::endl;
+            break;
+        case GL_INVALID_FRAMEBUFFER_OPERATION:
+            stringStream << "GL_INVALID_FRAMEBUFFER_OPERATION: Framebuffer object is not complete." << std::endl;
+            break;
+        case GL_OUT_OF_MEMORY:
+            stringStream << "GL_OUT_OF_MEMORY: Not enough memory left to execute command." << std::endl;
+            break;
+        default:
+            stringStream << "GL_ERROR: Unknown error." << std::endl;
+        }
+
+        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
+            logger->logEvent(stringStream.str().c_str());
+        else
+            std::cerr << stringStream.str() << std::endl;
+    }
 }
 
 //----------------------------------------------------------------------------//

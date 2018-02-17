@@ -1,5 +1,5 @@
 /***********************************************************************
-    created:    Sun Jul 19 2009
+    created:    Sun Jul 19 2015
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
@@ -28,10 +28,13 @@
 #define _CEGUIFontManager_h_
 
 #include "CEGUI/Singleton.h"
-#include "CEGUI/NamedXMLResourceManager.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/IteratorBase.h"
+#include "CEGUI/ResourceEventSet.h"
+#include "CEGUI/FreeTypeFontLayer.h"
+
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -45,6 +48,7 @@ namespace CEGUI
 class FreeTypeFont;
 class PixmapFont;
 
+
 /*!
 \brief
     Class providing a shared library of Font objects to the system.
@@ -56,8 +60,7 @@ class PixmapFont;
 */
 class CEGUIEXPORT FontManager :
         public Singleton<FontManager>,
-        public NamedXMLResourceManager<Font, Font_xmlHandler>,
-        public AllocatedObject<FontManager>
+        public ResourceEventSet
 {
 public:
     //! Constructor.
@@ -65,6 +68,117 @@ public:
 
     //! Destructor.
     ~FontManager();
+    //! Map container that maps Font names (String) to Font pointers
+    typedef std::unordered_map<String, Font*> FontRegistry;
+
+    //! List of fonts
+    typedef std::vector<Font*> FontList;
+
+    /*!
+    \brief
+        Creates new Font instances from a RawDataContainer and adds them to the collection.
+
+        Use an instance of the XML resource loading class \a U to process the
+        XML source thereby creating Font instances and adding them to the collection.
+
+    \param source
+        RawDataContainer holding the XML source to be used when creating the
+        new Font instances.
+
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
+        action should be taken when a Font with the specified name already 
+        exists within the collection.
+    */
+    static FontList createFromContainer(const RawDataContainer& source,
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
+
+    /*!
+    \brief
+        Creates new Font instances from an XML file and adds them to the collection.
+
+        Use an instance of the XML resource loading class \a U to process the
+        XML file \a xml_filename from resource group \a resource_group thereby
+        creating an instance of class \a T and add it to the collection under
+        the name specified in the XML file.
+
+    \param xml_filename
+        String holding the filename of the XML file to be used when creating the
+        new Font instances.
+
+    \param resource_group
+        String holding the name of the resource group identifier to be used
+        when loading the XML file described by \a xml_filename.
+
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
+        action should be taken when a Font with the specified name already
+        exists within the collection.
+    */
+    static FontList createFromFile(const String& xml_filename, const String& resource_group = "",
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
+
+    /*!
+    \brief
+        Creates Font instances from a string and adds them to the collection.
+
+        Use an instance of the XML resource loading class \a U to process the
+        XML source thereby creating an instance of class \a T and add it to the collection under
+        the name specified in the XML file.
+
+    \param source
+        String holding the XML source to be used when creating the
+        new Font instances.
+
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
+        action should be taken when an Scheme with the specified name
+        already exists within the collection.
+    */
+    static FontList createFromString(const String& source,
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
+
+       /*!
+    \brief
+        Destroy the Font named \a font_name, or do nothing if such a
+        Font does not exist in the collection.
+
+    \param font_name
+        String holding the name of the Font to be destroyed.
+    */
+    void destroy(const String& font_name);
+
+    /*!
+    \brief
+        Destroy the Font \a font, or do nothing if such an
+        Font does not exist in the collection.
+
+    \param font
+        The Font to be destroyed (beware of keeping references to this Font
+        once it's been destroyed!)
+    */
+    void destroy(const Font& font);
+
+    //! Destroy all Fonts.
+    void destroyAll();
+
+    /*!
+    \brief
+        Return a reference to the Font named \a font_name.
+
+    \param font_name
+        String holding the name of the Font to be returned.
+
+    \exception UnknownObjectException
+        thrown if no Font named \a font_name exists within the collection.
+    */
+    Font& get(const String& font_name) const;
+
+    //! Return whether an object named \a font_name exists.
+    bool isDefined(const String& font_name) const;
+
+    //! Create new Font instances from files with names matching \a pattern in \a resource_group
+    void createAll(const String& pattern, const String& resource_group);
 
     /*!
     \brief
@@ -73,8 +187,11 @@ public:
     \param font_name
         The name that the font will use within the CEGUI system.
 
-    \param point_size
-        Specifies the point size that the font is to be rendered at.
+    \param size
+        Specifies the size that the font is to be rendered at.
+
+    \param sizeUnit
+        Specifies the size unit of the Font size.
 
     \param anti_aliased
         Specifies whether the font should be rendered using anti aliasing.
@@ -101,20 +218,25 @@ public:
         auto scaling is enabled.
 
     \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Font with the specified name
         already exists.
 
     \return
         Reference to the newly create Font object.
     */
-    Font& createFreeTypeFont(const String& font_name, const float point_size,
-                             const bool anti_aliased,
-                             const String& font_filename,
-                             const String& resource_group = "",
-                             const AutoScaledMode auto_scaled = ASM_Disabled,
-                             const Sizef& native_res = Sizef(640.0f, 480.0f),
-                             XMLResourceExistsAction action = XREA_RETURN);
+    Font& createFreeTypeFont(
+        const String& font_name,
+        const float size,
+        const FontSizeUnit sizeUnit,
+        const bool anti_aliased,
+        const String& font_filename,
+        const FreeTypeFontLayerVector& fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()},
+        const String& resource_group = "",
+        const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
+        const Sizef& native_res = Sizef(640.0f, 480.0f),
+        const float specificLineSpacing = 0.0f,
+        XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!
     \brief
@@ -124,13 +246,13 @@ public:
         The name that the font will use within the CEGUI system.
 
     \param imageset_filename
-        The filename of an imageset to load that will be used as the source for
+        The filename of an Imageset to load that will be used as the source for
         glyph images for this font.  If \a resource_group is the special value
         of "*", this parameter may instead refer to the name of an already
-        loaded Imagset.
+        loaded Imageset.
 
     \param resource_group
-        The resource group identifier to use when loading the imageset file
+        The resource group identifier to use when loading the Imageset file
         specified by \a imageset_filename.  If this group is set to the special
         value of "*", then \a imageset_filename instead will refer to the name
         of an existing Imageset.
@@ -148,8 +270,8 @@ public:
         The vertical native resolution value.  This is only significant when
         auto scaling is enabled.
 
-    \param action
-        One of the XMLResourceExistsAction enumerated values indicating what
+    \param resourceExistsAction
+        One of the XmlResourceExistsAction enumerated values indicating what
         action should be taken when a Font with the specified name
         already exists.
 
@@ -159,9 +281,9 @@ public:
     Font& createPixmapFont(const String& font_name,
                            const String& imageset_filename,
                            const String& resource_group = "",
-                           const AutoScaledMode auto_scaled = ASM_Disabled,
+                           const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                            const Sizef& native_res = Sizef(640.0f, 480.0f),
-                           XMLResourceExistsAction action = XREA_RETURN);
+                           XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!
     \brief
@@ -185,20 +307,34 @@ public:
     */
     void writeFontToStream(const String& name, OutStream& out_stream) const;
 
-    //! ConstBaseIterator type definition.
-    typedef ConstMapIterator<ObjectRegistry> FontIterator;
+    /*!
+    \brief
+        Returns a reference to the map of registered Fonts
+    \return
+        A map containing the names of and the pointers to the registered Fonts 
+    */
+    const FontRegistry& getRegisteredFonts() const;
+
+    //! Updates all Fonts, this means that all Fonts will be regenerated.
+    void updateAllFonts();
+
+    //! The name of the resource type handled by this class
+    static const String ResourceTypeName;
+
+protected:
+    //! implementation of object destruction.
+    void destroyObject(FontRegistry::iterator fontRegistry);
 
     /*!
     \brief
-        Return a FontManager::FontIterator object to iterate over the available
-        Font objects.
+        Helper function to check if a resource exists and act accordingly, i.e.
+        return a Font, throw an error or return a nullptr
     */
-    FontIterator getIterator() const;
+    Font* handleResourceExistsAction(const String& font_name,
+        XmlResourceExistsAction resourceExistsAction, String& event_name);
 
-    // ensure we see overloads from template base class
-    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromContainer;
-    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromFile;
-    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromString;
+    //! Map of registered Fonts, containing name and pointer to the instance
+    FontRegistry d_registeredFonts;
 };
 
 } // End of  CEGUI namespace section

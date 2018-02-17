@@ -1,7 +1,7 @@
 /***********************************************************************
     created:    27/3/2005
     author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
-    
+
     purpose:    Interface to base class for PopupMenu widget
 *************************************************************************/
 /***************************************************************************
@@ -165,17 +165,17 @@ protected:
     \return
     Nothing.
     */
-    virtual void    updateSelf(float elapsed);
+    void    updateSelf(float elapsed) override;
 
 
     /*!
     \brief
-        Setup size and position for the item widgets attached to this Listbox
+        Setup size and position for the item widgets attached to this Window
 
     \return
         Nothing.
     */
-    virtual void    layoutItemWidgets(void);
+    void    layoutItemWidgets(void) override;
 
 
     /*!
@@ -185,17 +185,17 @@ protected:
     \return
         Nothing.
     */
-    virtual Sizef getContentSize(void) const;
+    Sizef getContentSize(void) const override;
 
     /*************************************************************************
         Overridden event handlers
     *************************************************************************/
-    virtual void onAlphaChanged(WindowEventArgs& e);
-	virtual void onDestructionStarted(WindowEventArgs& e);
-	virtual void onShown(WindowEventArgs& e);
-	virtual void onHidden(WindowEventArgs& e);
-	virtual void onMouseButtonDown(MouseEventArgs& e);
-	virtual void onMouseButtonUp(MouseEventArgs& e);
+    void onAlphaChanged(WindowEventArgs& e) override;
+    void onDestructionStarted(WindowEventArgs& e) override;
+    void onShown(WindowEventArgs& e) override;
+    void onHidden(WindowEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
 
 
     /*************************************************************************
