@@ -30,7 +30,6 @@
 #include "CEGUI/falagard/Dimensions.h"
 #include "CEGUI/falagard/PropertyInitialiser.h"
 #include "CEGUI/falagard/EventAction.h"
-#include "CEGUI/Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -42,21 +41,26 @@ namespace CEGUI
 {
     /*!
     \brief
-        Class that encapsulates information regarding a sub-widget required for a widget.
-
-    \todo
-        This is not finished in the slightest!  There will be many changes here...
+        Class that encapsulates information regarding a child-widget that is used in a WidgetLookFeel.
     */
-    class CEGUIEXPORT WidgetComponent :
-        public AllocatedObject<WidgetComponent>
+    class CEGUIEXPORT WidgetComponent
     {
     public:
         WidgetComponent() {}
-        WidgetComponent(const String& type,
-                        const String& look,
+        WidgetComponent(const String& targetType,
                         const String& suffix,
                         const String& renderer,
                         bool autoWindow);
+
+        //! Default value for the HorzAlignment elements of the WidgetComponent
+        static const HorizontalAlignment HorizontalAlignmentDefault;
+        //! Default value for the VertAlignment elements of the WidgetComponent
+        static const VerticalAlignment VerticalAlignmentDefault;
+
+        //! List of PropertyInitialisers of this WidgetComponent
+        typedef std::vector<PropertyInitialiser> PropertyInitialiserList;
+        //! List of EventActions of this WidgetComponent
+        typedef std::vector<EventAction> EventActionList;
 
         /*!
         \brief
@@ -75,11 +79,8 @@ namespace CEGUI
         const ComponentArea& getComponentArea() const;
         void setComponentArea(const ComponentArea& area);
 
-        const String& getBaseWidgetType() const;
-        void setBaseWidgetType(const String& type);
-
-        const String& getWidgetLookName() const;
-        void setWidgetLookName(const String& look);
+        const String& getTargetType() const;
+        void setTargetType(const String& type);
 
         const String& getWidgetName() const;
         void setWidgetName(const String& name);
@@ -132,48 +133,34 @@ namespace CEGUI
         //! perform any processing required due to the given font having changed.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
-        //! Default value for the HorzAlignment elements of the WidgetComponent
-        static const HorizontalAlignment HorizontalAlignmentDefault;
-        //! Default value for the VertAlignment elements of the WidgetComponent
-        static const VerticalAlignment VerticalAlignmentDefault;
+        /*!
+        \brief
+            Returns the collection of PropertyInitialisers of this WidgetComponent
 
-    private:
-        typedef std::vector<PropertyInitialiser
-            CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;
-        typedef std::vector<EventAction
-            CEGUI_VECTOR_ALLOC(EventAction)> EventActionList;
-
-    public:
-        /*************************************************************************
-            Iterator stuff
-        *************************************************************************/
-        typedef ConstVectorIterator<PropertiesList> PropertyIterator;
-        typedef ConstVectorIterator<EventActionList> EventActionIterator;
+        \param propertyName
+            A list of PropertyInitialiser instances owned by this WidgetComponent.
+        */
+        const PropertyInitialiserList& getPropertyInitialisers() const;
 
         /*!
-         * Return a WidgetComponent::PropertyIterator that iterates over the
-         * PropertyInitialiser inside this WidgetComponent.
-         */
-        PropertyIterator getPropertyIterator() const;
+        \brief
+            Returns the collection of EventActionList of this WidgetComponent
 
-        /*!
-         * Return a WidgetComponent::EventActionIterator that iterates over the
-         * EventAction definitions for this WidgetComponent.
-         */
-        EventActionIterator getEventActionIterator() const;
+        \return
+            A list of EventAction instances owned by this WidgetComponent.
+        */
+        const EventActionList& getEventActions() const;
 
     private:
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
-        String   d_baseType;                 //!< Type of widget to be created.
-        String   d_imageryName;              //!< Name of a WidgetLookFeel to be used for the widget.
-        String   d_name;                     //!< name to create this widget with.
+        String   d_targetType;               //!< The target type (e.g. falagard mapping or alias) mapping of the widget to be created.
+        String   d_name;                     //!< Name to create this widget with.
         String   d_rendererType;             //!< Name of the window renderer type to assign to the widget.
-        bool     d_autoWindow;               //!< specifies whether to mark component as an auto-window.
+        bool     d_autoWindow;               //!< Specifies whether to mark component as an auto-window.
         VerticalAlignment    d_vertAlign;    //!< Vertical alignment to be used for this widget.
         HorizontalAlignment  d_horzAlign;    //!< Horizontal alignment to be used for this widget.
-        PropertiesList  d_properties;        //!< Collection of PropertyInitialisers to be applied the the widget upon creation.
-        //! EventActions added to the WidgetComponent
-        EventActionList d_eventActions;
+        PropertyInitialiserList  d_propertyInitialisers;//!< Collection of PropertyInitialisers to be applied the the widget upon creation.
+        EventActionList d_eventActions;      //!< EventActions added to the WidgetComponent
     };
 
 } // End of  CEGUI namespace section

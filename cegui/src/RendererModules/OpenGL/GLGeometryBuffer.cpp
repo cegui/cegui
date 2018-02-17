@@ -29,40 +29,47 @@
 #include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RenderEffect.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
-#include "glm/gtc/type_ptr.hpp"
+
+#include <glm/gtc/type_ptr.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
-    OpenGLGeometryBufferBase(owner)
+OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
+    OpenGLGeometryBufferBase(owner, renderMaterial)
 {
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::draw() const
 {
-    CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
+    if(d_vertexData.empty())
+        return;
 
-    // setup clip region
-    glScissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
-              static_cast<GLint>(d_clipRect.getWidth()),
-              static_cast<GLint>(d_clipRect.getHeight()));
+    CEGUI::Rectf viewPort = d_owner.getActiveViewPort();
 
-    // apply the transformations we need to use.
-    if (!d_matrixValid)
-        updateMatrix();
+    if (d_clippingActive)
+    {
+        glScissor(static_cast<GLint>(d_preparedClippingRegion.left()),
+            static_cast<GLint>(viewPort.getHeight() - d_preparedClippingRegion.bottom()),
+            static_cast<GLint>(d_preparedClippingRegion.getWidth()),
+            static_cast<GLint>(d_preparedClippingRegion.getHeight()));
+
+        glEnable(GL_SCISSOR_TEST);
+    }
+    else
+        glDisable(GL_SCISSOR_TEST);
+
+    // Update the model view projection matrix
+    updateMatrix();
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(glm::value_ptr(d_matrix->d_matrix));
+    glLoadMatrixf(glm::value_ptr(d_matrix));
 
     // activate desired blending mode
-    d_owner->setupRenderingBlendMode(d_blendMode);
+    d_owner.setupRenderingBlendMode(d_blendMode);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
@@ -71,33 +78,57 @@ void OpenGLGeometryBuffer::draw() const
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
-        // draw the batches
-        size_t pos = 0;
-        BatchList::const_iterator i = d_batches.begin();
-        for ( ; i != d_batches.end(); ++i)
-        {
-            if (i->clip)
-                glEnable(GL_SCISSOR_TEST);
-            else
-                glDisable(GL_SCISSOR_TEST);
+        d_renderMaterial->prepareForRendering();
 
-            glBindTexture(GL_TEXTURE_2D, i->texture);
-            // set up pointers to the vertex element arrays
-            glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex),
-                              &d_vertices[pos]);
-            glColorPointer(4, GL_FLOAT, sizeof(GLVertex),
-                           &d_vertices[pos].colour[0]);
-            glVertexPointer(3, GL_FLOAT, sizeof(GLVertex),
-                            &d_vertices[pos].position[0]);
-            // draw the geometry
-            glDrawArrays(GL_TRIANGLES, 0, i->vertexCount);
-            pos += i->vertexCount;
-        }
+        setupVertexDataPointers();
+
+        // draw the geometry
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
 
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+
+    updateRenderTargetData(d_owner.getActiveRenderTarget());
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBuffer::setupVertexDataPointers() const
+{
+    int dataOffset = 0;
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
+
+    const size_t attribute_count = d_vertexAttributes.size();
+    for (size_t i = 0; i < attribute_count; ++i)
+    {
+        switch(d_vertexAttributes.at(i))
+        {
+        case VertexAttributeType::Position0:
+            {
+                glVertexPointer(3, GL_FLOAT, stride,
+                    &d_vertexData[dataOffset]);
+                dataOffset += 3;
+            }
+            break;
+        case VertexAttributeType::Colour0:
+            {
+                glColorPointer(4, GL_FLOAT, stride,
+                    &d_vertexData[dataOffset]);
+                dataOffset += 4;
+            }
+            break;
+        case VertexAttributeType::TexCoord0:
+            {
+                glTexCoordPointer(2, GL_FLOAT, stride,
+                    &d_vertexData[dataOffset]);
+                dataOffset += 2;
+            }
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//

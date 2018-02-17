@@ -44,9 +44,9 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 Affector::Affector(Animation* parent):
     d_parent(parent),
-    d_applicationMethod(AM_Absolute),
+    d_applicationMethod(ApplicationMethod::ApplyAbsolute),
     d_targetProperty(""),
-    d_interpolator(0)
+    d_interpolator(nullptr)
 {}
 
 //----------------------------------------------------------------------------//
@@ -75,8 +75,8 @@ size_t Affector::getIdxInParent() const
         ++i;
     }
 
-    CEGUI_THROW(UnknownObjectException(
-        "Affector wasn't found in parent, therefore its index is unknown!"));
+    throw UnknownObjectException(
+        "Affector wasn't found in parent, therefore its index is unknown!");
 }
 
 //----------------------------------------------------------------------------//
@@ -127,12 +127,12 @@ KeyFrame* Affector::createKeyFrame(float position)
 {
     if (d_keyFrames.find(position) != d_keyFrames.end())
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
                         "Unable to create KeyFrame at given position, there "
-                        "already is a KeyFrame on that position."));
+                        "already is a KeyFrame on that position.");
     }
 
-    KeyFrame* ret = CEGUI_NEW_AO KeyFrame(this, position);
+    KeyFrame* ret = new KeyFrame(this, position);
     d_keyFrames.insert(std::make_pair(position, ret));
 
     return ret;
@@ -157,13 +157,13 @@ void Affector::destroyKeyFrame(KeyFrame* keyframe)
 
     if (it == d_keyFrames.end())
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
                         "Unable to destroy given KeyFrame! "
-                        "No such KeyFrame was found."));
+                        "No such KeyFrame was found.");
     }
 
     d_keyFrames.erase(it);
-    CEGUI_DELETE_AO keyframe;
+    delete keyframe;
 }
 
 //----------------------------------------------------------------------------//
@@ -173,8 +173,8 @@ KeyFrame* Affector::getKeyFrameAtPosition(float position) const
 
     if (it == d_keyFrames.end())
     {
-        CEGUI_THROW(InvalidRequestException(
-                        "Can't find a KeyFrame with given position."));
+        throw InvalidRequestException(
+                        "Can't find a KeyFrame with given position.");
     }
 
     return it->second;
@@ -191,7 +191,7 @@ KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
 {
     if (index >= d_keyFrames.size())
     {
-        CEGUI_THROW(InvalidRequestException("Out of bounds!"));
+        throw InvalidRequestException("Out of bounds!");
     }
 
     KeyFrameMap::const_iterator it = d_keyFrames.begin();
@@ -214,9 +214,9 @@ void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
 
     if (d_keyFrames.find(newPosition) != d_keyFrames.end())
     {
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
                     "There is already a key frame at position: " +
-                    PropertyHelper<float>::toString(newPosition) + "."));
+                    PropertyHelper<float>::toString(newPosition) + ".");
 	}
 
     for (KeyFrameMap::iterator it = d_keyFrames.begin(); it != d_keyFrames.end(); ++it)
@@ -231,8 +231,8 @@ void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
         }
     }
 
-    CEGUI_THROW(UnknownObjectException(
-        "passed key frame wasn't found within this affector"));
+    throw UnknownObjectException(
+        "passed key frame wasn't found within this affector");
 }
 
 //----------------------------------------------------------------------------//
@@ -248,8 +248,8 @@ void Affector::savePropertyValues(AnimationInstance* instance)
 {
     switch (d_applicationMethod)
     {
-    case AM_Relative:
-    case AM_RelativeMultiply:
+    case ApplicationMethod::ApplyRelative:
+    case ApplicationMethod::ApplyRelativeMultiply:
         instance->savePropertyValue(d_targetProperty);
         break;
 
@@ -280,19 +280,19 @@ void Affector::apply(AnimationInstance* instance)
     if (d_targetProperty.empty())
     {
         Logger::getSingleton().logEvent(
-            "Affector can't be applied when target property is empty!", Warnings);
+            "Affector can't be applied when target property is empty!", LoggingLevel::Warning);
         return;
     }
 
     if (!d_interpolator)
     {
         Logger::getSingleton().logEvent(
-            "Affector can't be applied when no interpolator is set!", Warnings);
+            "Affector can't be applied when no interpolator is set!", LoggingLevel::Warning);
         return;
     }
 
-    KeyFrame* left = 0;
-    KeyFrame* right = 0;
+    KeyFrame* left = nullptr;
+    KeyFrame* right = nullptr;
 
     // find 2 neighbouring keyframes
     for (KeyFrameMap::const_iterator it = d_keyFrames.begin();
@@ -348,7 +348,7 @@ void Affector::apply(AnimationInstance* instance)
             leftDistance / (leftDistance + rightDistance));
 
     // absolute application method
-    if (d_applicationMethod == AM_Absolute)
+    if (d_applicationMethod == ApplicationMethod::ApplyAbsolute)
     {
         const String result = d_interpolator->interpolateAbsolute(
                                   left->getValueForAnimation(instance),
@@ -358,7 +358,7 @@ void Affector::apply(AnimationInstance* instance)
         target->setProperty(d_targetProperty, result);
     }
     // relative application method
-    else if (d_applicationMethod == AM_Relative)
+    else if (d_applicationMethod == ApplicationMethod::ApplyRelative)
     {
         const String& base = instance->getSavedPropertyValue(getTargetProperty());
 
@@ -371,7 +371,7 @@ void Affector::apply(AnimationInstance* instance)
         target->setProperty(d_targetProperty, result);
     }
     // relative multiply application method
-    else if (d_applicationMethod == AM_RelativeMultiply)
+    else if (d_applicationMethod == ApplicationMethod::ApplyRelativeMultiply)
     {
         const String& base = instance->getSavedPropertyValue(getTargetProperty());
 
@@ -397,13 +397,13 @@ void Affector::writeXMLToStream(XMLSerializer& xml_stream) const
     String applicationMethod;
     switch(getApplicationMethod())
     {
-    case AM_Absolute:
+    case ApplicationMethod::ApplyAbsolute:
         applicationMethod = AnimationAffectorHandler::ApplicationMethodAbsolute;
         break;
-    case AM_Relative:
+    case ApplicationMethod::ApplyRelative:
         applicationMethod = AnimationAffectorHandler::ApplicationMethodRelative;
         break;
-    case AM_RelativeMultiply:
+    case ApplicationMethod::ApplyRelativeMultiply:
         applicationMethod = AnimationAffectorHandler::ApplicationMethodRelativeMultiply;
         break;
 

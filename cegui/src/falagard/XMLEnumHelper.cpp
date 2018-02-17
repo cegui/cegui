@@ -33,11 +33,11 @@ namespace CEGUI
 {
 
     //! Definitions of static constants
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::TopAligned("TopAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::CentreAligned("CentreAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::BottomAligned("BottomAligned");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::Stretched("Stretched");
-    const CEGUI::String FalagardXMLHelper<VerticalFormatting>::Tiled("Tiled");
+    const CEGUI::String FalagardXMLHelper<VerticalImageFormatting>::TopAligned("TopAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalImageFormatting>::CentreAligned("CentreAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalImageFormatting>::BottomAligned("BottomAligned");
+    const CEGUI::String FalagardXMLHelper<VerticalImageFormatting>::Stretched("Stretched");
+    const CEGUI::String FalagardXMLHelper<VerticalImageFormatting>::Tiled("Tiled");
 
     const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::LeftAligned("LeftAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalFormatting>::CentreAligned("CentreAligned");

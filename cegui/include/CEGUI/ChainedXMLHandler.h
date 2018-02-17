@@ -40,10 +40,10 @@ public:
     virtual ~ChainedXMLHandler();
 
     // XMLHandler overrides
-    const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
-    void elementStart(const String& element, const XMLAttributes& attributes);
-    void elementEnd(const String& element);
+    const String& getSchemaName() const override;
+    const String& getDefaultResourceGroup() const override;
+    void elementStart(const String& element, const XMLAttributes& attributes) override;
+    void elementEnd(const String& element) override;
 
     //! returns whether this chained handler has completed.
     bool completed() const;
@@ -63,7 +63,7 @@ protected:
     //! is the chained handler completed.
     bool d_completed;
     //! should the chained handler be deleted by us?
-    bool d_deleteChaniedHandler;
+    bool d_deleteChainedHandler;
 };
 
 

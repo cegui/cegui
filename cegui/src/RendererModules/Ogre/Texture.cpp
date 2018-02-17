@@ -31,6 +31,8 @@
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
 
+#include <cstdint>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -40,28 +42,28 @@ static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-    case Texture::PF_RGBA:
-        return size.d_width * size.d_height * 4;
+    case Texture::PixelFormat::Rgba:
+        return static_cast<size_t>(size.d_width * size.d_height * 4);
 
-    case Texture::PF_RGB:
-        return size.d_width * size.d_height * 3;
+    case Texture::PixelFormat::Rgb:
+        return static_cast<size_t>(size.d_width * size.d_height * 3);
 
-    case Texture::PF_RGB_565:
-    case Texture::PF_RGBA_4444:
-        return size.d_width * size.d_height * 2;
+    case Texture::PixelFormat::Rgb565:
+    case Texture::PixelFormat::Rgba4444:
+        return static_cast<size_t>(size.d_width * size.d_height * 2);
 
-    case Texture::PF_PVRTC2:
+    case Texture::PixelFormat::Pvrtc2:
         return (static_cast<size_t>(size.d_width * size.d_height) * 2 + 7) / 8;
 
-    case Texture::PF_PVRTC4:
+    case Texture::PixelFormat::Pvrtc4:
         return (static_cast<size_t>(size.d_width * size.d_height) * 4 + 7) / 8;
 
-    case Texture::PF_RGBA_DXT1:
-        return std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 8;
+    case Texture::PixelFormat::RgbaDxt1:
+        return static_cast<size_t>( std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 8 );
 
-    case Texture::PF_RGBA_DXT3:
-    case Texture::PF_RGBA_DXT5:
-        return std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 16;
+    case Texture::PixelFormat::RgbaDxt3:
+    case Texture::PixelFormat::RgbaDxt5:
+        return static_cast<size_t>( std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 16 );
 
     default:
         return 0;
@@ -69,7 +71,7 @@ static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 }
 
 //----------------------------------------------------------------------------//
-uint32 OgreTexture::d_textureNumber = 0;
+std::uint32_t OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name) :
@@ -102,15 +104,18 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
     d_texelScaling(0, 0),
     d_name(name)
 {
-    createEmptyOgreTexture(Texture::PF_RGBA);
-
+    d_texture = Ogre::TextureManager::getSingleton().createManual(
+        getUniqueName(), "General", Ogre::TEX_TYPE_2D,
+        sz.d_width, sz.d_height, 0,
+        Ogre::PF_A8B8G8R8);
+    
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
-        CEGUI_THROW(RendererException(
-            "Failed to create Texture object with spcecified size."));
+        throw RendererException(
+            "Failed to create Texture object with spcecified size.");
     
-    d_size.d_width = d_texture->getWidth();
-    d_size.d_height = d_texture->getHeight();
+    d_size.d_width = static_cast<float>(d_texture->getWidth());
+    d_size.d_height = static_cast<float>(d_texture->getHeight());
     d_dataSize = sz;
     updateCachedScaleValues();
 }
@@ -152,7 +157,7 @@ const Sizef& OgreTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OgreTexture::getTexelScaling() const
+const glm::vec2& OgreTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -164,8 +169,8 @@ void OgreTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created!"));
+        throw RendererException(
+            "CEGUI::System object has not been created!");
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -191,9 +196,9 @@ void OgreTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -203,31 +208,31 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     using namespace Ogre;
 
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     const size_t byte_size = calculateDataSize(buffer_size, pixel_format);
 
     char* bufferCopy = new char[byte_size];
     memcpy(bufferCopy, buffer, byte_size);
 
-    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(buffer_size.d_width, buffer_size.d_height,
+    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<std::uint32_t>(buffer_size.d_width), static_cast<std::uint32_t>(buffer_size.d_height),
                                                         1, toOgrePixelFormat(pixel_format), bufferCopy);
     createEmptyOgreTexture(pixel_format);
     d_texture->freeInternalResources();
-    d_texture->setWidth(buffer_size.d_width);
-    d_texture->setHeight(buffer_size.d_height);
+    d_texture->setWidth(static_cast<std::uint32_t>(buffer_size.d_width));
+    d_texture->setHeight(static_cast<std::uint32_t>(buffer_size.d_height));
     d_texture->setDepth(1);
     d_texture->createInternalResources();
     d_texture->getBuffer(0,0).get()->blitFromMemory(*pixelBox);
 
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
-        CEGUI_THROW(RendererException(
-            "Failed to blit to Texture from memory."));
+        throw RendererException(
+            "Failed to blit to Texture from memory.");
 
-    d_size.d_width = d_texture->getWidth();
-    d_size.d_height = d_texture->getHeight();
+    d_size.d_width = static_cast<float>(d_texture->getWidth());
+    d_size.d_height = static_cast<float>(d_texture->getHeight());
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 }
@@ -238,12 +243,34 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
     if (d_texture.isNull()) // TODO: exception?
         return;
 
+    // Ogre doesn't like null data, so skip if the sourceData is null and
+    // area is zero size
+    if (sourceData == nullptr)
+    {
+        if (static_cast<int>(area.getWidth()) == 0 &&
+            static_cast<int>(area.getHeight()) == 0)
+        {
+            return;
+        }
+
+        // Here we are trying to write to a non-zero size area with null
+        // ptr for data
+        throw RendererException("blitFromMemory source is null");
+    }
+
+
     // NOTE: const_cast because Ogre takes pointer to non-const here. Rather
     // than allow that to dictate poor choices in our own APIs, we choose to
     // address the issue as close to the source of the problem as possible.
-    Ogre::PixelBox pb(area.getWidth(), area.getHeight(),
-                      1, d_texture->getFormat(), const_cast<void*>(sourceData));
-    Ogre::Image::Box box(area.left(), area.top(), area.right(), area.bottom());
+    Ogre::PixelBox pb(static_cast<Ogre::uint32>(area.getWidth()),
+                      static_cast<Ogre::uint32>(area.getHeight()),
+                      1,
+                      d_texture->getFormat(), const_cast<void*>(sourceData));
+
+    Ogre::Image::Box box(static_cast<Ogre::uint32>(area.left()),
+                         static_cast<Ogre::uint32>(area.top()),
+                         static_cast<Ogre::uint32>(area.right()),
+                         static_cast<Ogre::uint32>(area.bottom()) );
     d_texture->getBuffer()->blitFromMemory(pb, box);
 }
 
@@ -253,7 +280,7 @@ void OgreTexture::blitToMemory(void* targetData)
     if (d_texture.isNull()) // TODO: exception?
         return;
 
-    Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
+    Ogre::PixelBox pb(static_cast<std::uint32_t>(d_size.d_width), static_cast<std::uint32_t>(d_size.d_height),
                       1, d_texture->getFormat(), targetData);
     d_texture->getBuffer()->blitToMemory(pb);
 }
@@ -297,7 +324,7 @@ void OgreTexture::updateCachedScaleValues()
     // on the original size.
     // if texture is wider (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
+    d_texelScaling.x = 1.0f / ((orgW == texW) ? orgW : texW);
 
     //
     // calculate what to use for y scale
@@ -309,7 +336,7 @@ void OgreTexture::updateCachedScaleValues()
     // on the original size.
     // if texture is taller (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    d_texelScaling.y = 1.0f / ((orgH == texH) ? orgH : texH);
 }
 
 //----------------------------------------------------------------------------//
@@ -322,8 +349,8 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
 
     if (!d_texture.isNull())
     {
-        d_size.d_width = d_texture->getWidth();
-        d_size.d_height= d_texture->getHeight();
+        d_size.d_width = static_cast<float>(d_texture->getWidth());
+        d_size.d_height= static_cast<float>(d_texture->getHeight());
         d_dataSize = d_size;
     }
     else
@@ -341,14 +368,14 @@ Ogre::TexturePtr OgreTexture::getOgreTexture() const
 //----------------------------------------------------------------------------//
 bool OgreTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    CEGUI_TRY
+    try
     {
         return Ogre::TextureManager::getSingleton().
             isEquivalentFormatSupported(Ogre::TEX_TYPE_2D,
                                         toOgrePixelFormat(fmt),
                                         Ogre::TU_DEFAULT);
     }
-    CEGUI_CATCH(InvalidRequestException&)
+    catch (InvalidRequestException&)
     {
         return false;
     }
@@ -359,19 +386,19 @@ Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-        case Texture::PF_RGBA:       return Ogre::PF_A8B8G8R8;
-        case Texture::PF_RGB:        return Ogre::PF_B8G8R8;
-        case Texture::PF_RGB_565:    return Ogre::PF_R5G6B5;
-        case Texture::PF_RGBA_4444:  return Ogre::PF_A4R4G4B4;
-        case Texture::PF_PVRTC2:     return Ogre::PF_PVRTC_RGBA2;
-        case Texture::PF_PVRTC4:     return Ogre::PF_PVRTC_RGBA4;
-        case Texture::PF_RGBA_DXT1:  return Ogre::PF_DXT1;
-        case Texture::PF_RGBA_DXT3:  return Ogre::PF_DXT3;
-        case Texture::PF_RGBA_DXT5:  return Ogre::PF_DXT5;
+        case Texture::PixelFormat::Rgba:       return Ogre::PF_A8B8G8R8;
+        case Texture::PixelFormat::Rgb:        return Ogre::PF_B8G8R8;
+        case Texture::PixelFormat::Rgb565:    return Ogre::PF_R5G6B5;
+        case Texture::PixelFormat::Rgba4444:  return Ogre::PF_A4R4G4B4;
+        case Texture::PixelFormat::Pvrtc2:     return Ogre::PF_PVRTC_RGBA2;
+        case Texture::PixelFormat::Pvrtc4:     return Ogre::PF_PVRTC_RGBA4;
+        case Texture::PixelFormat::RgbaDxt1:  return Ogre::PF_DXT1;
+        case Texture::PixelFormat::RgbaDxt3:  return Ogre::PF_DXT3;
+        case Texture::PixelFormat::RgbaDxt5:  return Ogre::PF_DXT5;
         
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "Invalid pixel format translation."));
+            throw InvalidRequestException(
+                "Invalid pixel format translation.");
     }
 }
 
@@ -381,26 +408,26 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
 {
     switch (fmt)
     {
-        case Ogre::PF_A8R8G8B8:     return Texture::PF_RGBA;
-        case Ogre::PF_A8B8G8R8:     return Texture::PF_RGBA;
-        case Ogre::PF_R8G8B8:       return Texture::PF_RGB;
-        case Ogre::PF_B8G8R8:       return Texture::PF_RGB;
-        case Ogre::PF_R5G6B5:       return Texture::PF_RGB_565;
-        case Ogre::PF_A4R4G4B4:     return Texture::PF_RGBA_4444;
-        case Ogre::PF_PVRTC_RGBA2:  return Texture::PF_PVRTC2;
-        case Ogre::PF_PVRTC_RGBA4:  return Texture::PF_PVRTC4;
-        case Ogre::PF_DXT1:         return Texture::PF_RGBA_DXT1;
-        case Ogre::PF_DXT3:         return Texture::PF_RGBA_DXT3;
-        case Ogre::PF_DXT5:         return Texture::PF_RGBA_DXT5;
+        case Ogre::PF_A8R8G8B8:     return Texture::PixelFormat::Rgba;
+        case Ogre::PF_A8B8G8R8:     return Texture::PixelFormat::Rgba;
+        case Ogre::PF_R8G8B8:       return Texture::PixelFormat::Rgb;
+        case Ogre::PF_B8G8R8:       return Texture::PixelFormat::Rgb;
+        case Ogre::PF_R5G6B5:       return Texture::PixelFormat::Rgb565;
+        case Ogre::PF_A4R4G4B4:     return Texture::PixelFormat::Rgba4444;
+        case Ogre::PF_PVRTC_RGBA2:  return Texture::PixelFormat::Pvrtc2;
+        case Ogre::PF_PVRTC_RGBA4:  return Texture::PixelFormat::Pvrtc4;
+        case Ogre::PF_DXT1:         return Texture::PixelFormat::RgbaDxt1;
+        case Ogre::PF_DXT3:         return Texture::PixelFormat::RgbaDxt3;
+        case Ogre::PF_DXT5:         return Texture::PixelFormat::RgbaDxt5;
         
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "Invalid pixel format translation."));
+            throw InvalidRequestException(
+                "Invalid pixel format translation.");
     }
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::createEmptyOgreTexture(Ogre::PixelFormat pixel_format)
+void OgreTexture::createEmptyOgreTexture(PixelFormat pixel_format)
 {
     // try to create a Ogre::Texture with given dimensions
     d_texture = Ogre::TextureManager::getSingleton().createManual(

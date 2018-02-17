@@ -30,17 +30,19 @@
 #   include "config.h"
 #endif
 
+#include "CEGUI/Config.h"
 #include "CEGUI/widgets/ListboxItem.h"
+#if defined(CEGUI_USE_RAQM)
+#include "CEGUI/RaqmTextData.h"
+#endif
 #include "CEGUI/System.h"
 #include "CEGUI/ImageManager.h"
-
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUI/MinibidiVisualMapping.h"
-#else
-    #include "CEGUI/BidiVisualMapping.h"
 #endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,32 +55,43 @@ const Colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 /*************************************************************************
 	Base class constructor
 *************************************************************************/
-ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
-#ifndef CEGUI_BIDI_SUPPORT
-    d_bidiVisualMapping(0),
-#elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
+ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
+#if defined (CEGUI_USE_FRIBIDI)
+    d_bidiVisualMapping(new FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
-#else
+    d_bidiVisualMapping(new MinibidiVisualMapping),
+#elif defined(CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
+#ifdef CEGUI_USE_RAQM
+    d_raqmTextData(nullptr),
+#endif 
 	d_itemID(item_id),
 	d_itemData(item_data),
     d_selected(false),
 	d_disabled(disabled),
     d_autoDelete(auto_delete),
-	d_owner(0),
+	d_owner(nullptr),
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
-	d_selectBrush(0)
+	d_selectBrush(nullptr)
 {
-   setText(text);
+#ifdef CEGUI_USE_RAQM
+    d_raqmTextData = new RaqmTextData();
+#endif
+
+    ListboxItem::setText(text);
 }
 
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-    CEGUI_DELETE_AO d_bidiVisualMapping;
+#ifdef CEGUI_USE_RAQM
+    delete d_raqmTextData;
+#endif
+
+#ifdef CEGUI_BIDI_SUPPORT
+    delete d_bidiVisualMapping;
+#endif
 }
 
 /*************************************************************************
@@ -88,23 +101,6 @@ void ListboxItem::setSelectionBrushImage(const String& name)
 {
 	setSelectionBrushImage(&ImageManager::getSingleton().get(name));
 }
-
-
-/*************************************************************************
-	Return a ColourRect object describing the colours in 'cols' after
-	having their alpha component modulated by the value 'alpha'.
-*************************************************************************/
-ColourRect ListboxItem::getModulateAlphaColourRect(const ColourRect& cols, float alpha) const
-{
-	return ColourRect
-		(
-			calculateModulatedAlphaColour(cols.d_top_left, alpha),
-			calculateModulatedAlphaColour(cols.d_top_right, alpha),
-			calculateModulatedAlphaColour(cols.d_bottom_left, alpha),
-			calculateModulatedAlphaColour(cols.d_bottom_right, alpha)
-		);
-}
-
 
 /*************************************************************************
 	Return a colour value describing the colour specified by 'col' after
@@ -133,12 +129,20 @@ void ListboxItem::setSelectionColours(Colour top_left_colour, Colour top_right_c
 void ListboxItem::setText( const String& text )
 {
    d_textLogical = text;
+
+#ifdef CEGUI_BIDI_SUPPORT
    d_bidiDataValid = false;
+#endif
+
+#ifdef CEGUI_USE_RAQM
+   d_raqmTextNeedsUpdate = true;
+#endif
 }
 
 //----------------------------------------------------------------------------//
 const String& ListboxItem::getTextVisual() const
 {
+#if defined(CEGUI_BIDI_SUPPORT)
     // no bidi support
     if (!d_bidiVisualMapping)
         return d_textLogical;
@@ -150,6 +154,9 @@ const String& ListboxItem::getTextVisual() const
     }
 
     return d_bidiVisualMapping->getTextVisual();
+#else
+    return d_textLogical;
+#endif
 }
 
 //----------------------------------------------------------------------------//

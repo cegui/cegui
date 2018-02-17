@@ -27,12 +27,11 @@
 #ifndef _CEGUINullGeometryBuffer_h_
 #define _CEGUINullGeometryBuffer_h_
 
-#include "../../GeometryBuffer.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Null/Renderer.h"
-#include "../../Rect.h"
-#include "../../Colour.h"
-#include "../../Vertex.h"
-#include "../../Quaternion.h"
+#include "CEGUI/Rectf.h"
+#include "CEGUI/Colour.h"
+#include "CEGUI/Vertex.h"
 
 #include <utility>
 #include <vector>
@@ -50,47 +49,13 @@ class NULL_GUIRENDERER_API NullGeometryBuffer : public GeometryBuffer
 {
 public:
     //! Constructor
-    NullGeometryBuffer();
+    NullGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     //! Destructor
     virtual ~NullGeometryBuffer();
 
-    // implement CEGUI::GeometryBuffer interface.
-    void draw() const;
-    void setTranslation(const Vector3f& v);
-    void setRotation(const Quaternion& r);
-    void setPivot(const Vector3f& p);
-    void setClippingRegion(const Rectf& region);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-    void setActiveTexture(Texture* texture);
-    void reset();
-    Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
-    void setRenderEffect(RenderEffect* effect);
-    RenderEffect* getRenderEffect();
-    void setClippingActive(const bool active);
-    bool isClippingActive() const;
-
-protected:
-    //! Texture that is set as active
-    NullTexture* d_activeTexture;
-    //! rectangular clip region
-    Rectf d_clipRect;
-    //! whether clipping will be active for the current batch
-    bool d_clippingActive;
-    //! translation vector
-    Vector3f d_translation;
-    //! rotation quaternion
-    Quaternion d_rotation;
-    //! pivot point for rotation
-    Vector3f d_pivot;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect* d_effect;
-    //! type of container used to queue the geometry
-    typedef std::vector<Vertex> VertexList;
-    //! container where added geometry is stored.
-    VertexList d_vertices;
+    // Implementation/overrides of member functions inherited from GeometryBuffer
+    void draw() const override;
+    void appendGeometry(const std::vector<float>& vertex_data);
 };
 
 

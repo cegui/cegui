@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "../../RenderTarget.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -40,10 +40,9 @@ namespace CEGUI
 {
 /*!
 \brief
-    Intermediate OpenGL implementation of a RenderTarget.
+    OpenGL implementation of a RenderTarget.
 */
-template <typename T = RenderTarget>
-class OPENGL_GUIRENDERER_API OpenGLRenderTarget : public T
+class OPENGL_GUIRENDERER_API OpenGLRenderTarget : virtual public RenderTarget
 {
 public:
     //! Constructor
@@ -51,31 +50,18 @@ public:
     virtual ~OpenGLRenderTarget();
 
     // implement parts of RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
-    void activate();
-    void deactivate();
+    void activate() override;
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2f& p_in, Vector2f& p_out) const;
+                        const glm::vec2& p_in, glm::vec2& p_out) const override;
+    // implementing the virtual function with a covariant return type
+    OpenGLRendererBase& getOwner() override;
 
 protected:
-    //! helper that initialises the cached matrix
+    //! helper that initialises the matrix
     virtual void updateMatrix() const;
 
     //! OpenGLRendererBase that created this object
     OpenGLRendererBase& d_owner;
-    //! holds defined area for the RenderTarget
-    Rectf d_area;
-    //! tangent of the y FOV half-angle; used to calculate viewing distance.
-    static const double d_yfov_tan;
-    //! saved copy of projection matrix
-    mutable mat4Pimpl* d_matrix;
-    //! true if saved matrix is up to date
-    mutable bool d_matrixValid;
-    //! tracks viewing distance (this is set up at the same time as d_matrix)
-    mutable double d_viewDistance;
 };
 
 }

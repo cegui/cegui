@@ -32,6 +32,7 @@
 
 namespace CEGUI
 {
+    class OpenGLShaderWrapper;
 /*!
 \brief
     Renderer class to interface with desktop OpenGL
@@ -40,16 +41,16 @@ class OPENGL_GUIRENDERER_API OpenGLRenderer : public OpenGLRendererBase
 {
 public:
     //! Enumeration of valid texture target types.
-    enum TextureTargetType
+    enum class TextureTargetType : int
     {
         //! Automatically choose the best type available.
-        TTT_AUTO,
+        Auto,
         //! Use targets based on frame buffer objects if available, else none.
-        TTT_FBO,
+        Fbo,
         //! Use targets based on pbuffer support if available, else none.
-        TTT_PBUFFER,
+        Pbuffer,
         //! Disable texture targets.
-        TTT_NONE
+        Uninitialised
     };
 
     /*!
@@ -67,7 +68,7 @@ public:
 
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+        desired TextureTarget type to be used.  Defaults to TextureTargetType::AUTO.
 
     \param abi
         This must be set to CEGUI_VERSION_ABI
@@ -76,7 +77,7 @@ public:
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
     static OpenGLRenderer& bootstrapSystem(
-                                    const TextureTargetType tt_type = TTT_AUTO,
+                                    const TextureTargetType tt_type = TextureTargetType::Auto,
                                     const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -97,7 +98,7 @@ public:
 
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+        desired TextureTarget type to be used.  Defaults to TextureTargetType::AUTO.
 
     \param abi
         This must be set to CEGUI_VERSION_ABI
@@ -106,7 +107,7 @@ public:
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
     static OpenGLRenderer& bootstrapSystem(const Sizef& display_size,
-                                           const TextureTargetType tt_type = TTT_AUTO,
+                                           const TextureTargetType tt_type = TextureTargetType::Auto,
                                            const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -137,7 +138,7 @@ public:
     \param abi
         This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGLRenderer& create(const TextureTargetType tt_type = TTT_AUTO,
+    static OpenGLRenderer& create(const TextureTargetType tt_type = TextureTargetType::Auto,
                                   const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -155,7 +156,7 @@ public:
         This must be set to CEGUI_VERSION_ABI
     */
     static OpenGLRenderer& create(const Sizef& display_size,
-                                  const TextureTargetType tt_type = TTT_AUTO,
+                                  const TextureTargetType tt_type = TextureTargetType::Auto,
                                   const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -168,17 +169,19 @@ public:
     static void destroy(OpenGLRenderer& renderer);
 
     // base class overrides / abstract function implementations
-    void beginRendering();
-    void endRendering();
-    bool isS3TCSupported() const;
+    void beginRendering() override;
+    void endRendering() override;
+    Sizef getAdjustedTextureSize(const Sizef& sz) override;
     void setupRenderingBlendMode(const BlendMode mode,
-                                 const bool force = false);
-    void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
+                                 const bool force = false) override;
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const override;
 
 protected:
     //! Overrides
-    OpenGLGeometryBufferBase* createGeometryBuffer_impl();
-    TextureTarget* createTextureTarget_impl();
+    OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
+    TextureTarget* createTextureTarget_impl(bool addStencilBuffer) override;
+    //! creates a texture of GLTexture type
+    OpenGLTexture* createTexture_impl(const String& name) override;
 
     void initialiseRendererIDString();
 
@@ -205,17 +208,19 @@ protected:
     */
     OpenGLRenderer(const Sizef& display_size, const TextureTargetType tt_type);
 
+    void initialiseShaderWrappers();
+
     /*!
     \brief
         Destructor for OpenGLRenderer objects
     */
     virtual ~OpenGLRenderer();
 
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
+    //! initialise several additional OpenGL states to their defaults
+    void restoreOpenGLStatesToDefaults();
 
-    //! cleanup the extra GL states enabled via enableExtraStateSettings
-    void cleanupExtraStates();
+    //! clean up the texture matrix stack if state restoring is enabled
+    void cleanupMatrixStack();
 
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory(const TextureTargetType tt_type);
@@ -224,6 +229,12 @@ protected:
 
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
+
+    //! Shaderwrapper for textured & coloured vertices
+    OpenGLShaderWrapper* d_shaderWrapperTextured;
+
+    //! Shaderwrapper for coloured vertices
+    OpenGLShaderWrapper* d_shaderWrapperSolid;
 };
 
 }

@@ -65,16 +65,14 @@ namespace CEGUI
         */
         FalagardScrollablePane(const String& type);
 
-        void render();
-        Rectf getViewableArea(void) const;
-
-        // overridden from WindowRenderer base class.
-        Rectf getUnclippedInnerRect() const;
+        void createRenderGeometry() override;
+        Rectf getViewableArea(void) const override;
+        Rectf getUnclippedInnerRect() const override;
 
     protected:
         // overridden from WindowRenderer base class.
-        void onLookNFeelAssigned();
-        void onLookNFeelUnassigned();
+        void onLookNFeelAssigned() override;
+        void onLookNFeelUnassigned() override;
 
         //! flag whether target window has looknfeel assigned yet.
         bool d_widgetLookAssigned;

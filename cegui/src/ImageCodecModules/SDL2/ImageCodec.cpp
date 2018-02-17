@@ -72,22 +72,22 @@ Texture* SDL2ImageCodec::load(const RawDataContainer& data, Texture* result)
         
         if (!img)
         {
-            Logger::getSingletonPtr()->logEvent("Cannot load image! SDL2_image returned an error in IMG_Load_RW", Errors);
+            Logger::getSingletonPtr()->logEvent("Cannot load image! SDL2_image returned an error in IMG_Load_RW", LoggingLevel::Error);
             return 0;
         }
             
         switch (img->format->BitsPerPixel)
         {
             case 24:
-                pixel_fmt = Texture::PF_RGB;
+                pixel_fmt = Texture::PixelFormat::Rgb;
                 break;
                 
             case 32:
-                pixel_fmt = Texture::PF_RGBA;
+                pixel_fmt = Texture::PixelFormat::Rgba;
                 break;
                 
             default:
-                Logger::getSingletonPtr()->logEvent("Unsupported pixel format in SDL2 image codec", Errors);
+                Logger::getSingletonPtr()->logEvent("Unsupported pixel format in SDL2 image codec", LoggingLevel::Error);
                 return 0;
         }
         
@@ -104,7 +104,7 @@ Texture* SDL2ImageCodec::load(const RawDataContainer& data, Texture* result)
     }
     else
     {
-        CEGUI_THROW(FileIOException("Could not load image from memory."));
+        throw FileIOException("Could not load image from memory.");
     }
     
     return result;

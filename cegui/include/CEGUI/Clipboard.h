@@ -44,8 +44,7 @@ namespace CEGUI
 \brief
     Lightweight interface providing access to the system-wide native clipboard
 */
-class CEGUIEXPORT NativeClipboardProvider :
-    public AllocatedObject<NativeClipboardProvider>
+class CEGUIEXPORT NativeClipboardProvider
 {
 public:
     virtual ~NativeClipboardProvider();
@@ -79,8 +78,7 @@ public:
     in the future, however for X11 this is really hard and would introduce
     dependency -lX11 to CEGUIBase which is something we would really hate.
 */
-class CEGUIEXPORT Clipboard :
-    public AllocatedObject<NativeClipboardProvider>
+class CEGUIEXPORT Clipboard
 {
 public:
     /*!
@@ -141,10 +139,8 @@ public:
 private:
     /// mime type of the current content
     String d_mimeType;
-    // just implementation specific
-    typedef char BufferElement;
     /// raw data buffer containing current clipboard contents
-    BufferElement* d_buffer;
+    char* d_buffer;
     /// size (in bytes) of the raw buffer
     size_t d_bufferSize;
 

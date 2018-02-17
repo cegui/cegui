@@ -82,7 +82,7 @@ protected:
 	\return
 		Nothing.
 	*/
-	virtual void	layoutItemWidgets();
+    void layoutItemWidgets() override;
 
 
 	/*!
@@ -92,7 +92,7 @@ protected:
 	\return
 		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
-	virtual Sizef getContentSize() const;
+    Sizef getContentSize() const override;
 };
 
 
