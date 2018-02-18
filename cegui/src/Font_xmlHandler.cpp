@@ -288,11 +288,11 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
         fontSizeUnit,
         usingAliasing,
         filename,
-        fontLayers,
         resource_group,
         autoScaledmode,
         nativeResolution,
         fontLineSpacing,
+        fontLayers,
         d_resourceExistsAction);
 #else
     throw InvalidRequestException(

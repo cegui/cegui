@@ -42,6 +42,7 @@
 #endif
 
 #include <cmath>
+#include <utility>
 
 namespace
 {
@@ -100,7 +101,7 @@ FreeTypeFont::FreeTypeFont(
     const float size,
     const FontSizeUnit sizeUnit,
     const bool anti_aliased, const String& font_filename,
-    const FreeTypeFontLayerVector& fontLayers,
+    FreeTypeFontLayerVector fontLayers,
     const String& resource_group,
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,
@@ -112,7 +113,7 @@ FreeTypeFont::FreeTypeFont(
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
     d_fontFace(nullptr),
-    d_fontLayers(fontLayers)
+    d_fontLayers(std::move(fontLayers))
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -744,7 +745,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     {
 #ifdef CEGUI_USE_RAQM
         // Rasterise the 0 position glyph
-        rasterise(glyph);
+        rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight, layer);
 
         glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
         glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);        
@@ -1082,81 +1083,82 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
         originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
 
     unsigned int layerCount = d_fontLayers.size();
-    for (int layerTmp = layerCount -1; layerTmp >= 0; layerTmp--) {
-    unsigned int layer = static_cast<unsigned int>(layerTmp);
+    for (int layerTmp = layerCount - 1; layerTmp >= 0; layerTmp--) {
+        unsigned int layer = static_cast<unsigned int>(layerTmp);
 
-    size_t count = 0;
-    raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
-    penPosition = penPositionStart;
-    penPosition.y += getBaseline();
+        size_t count = 0;
+        raqm_glyph_t* glyphs = raqm_get_glyphs(raqmObject, &count);
+        penPosition = penPositionStart;
+        penPosition.y += getBaseline();
 
-    for (size_t i = 0; i < count; i++)
-    {
-        raqm_glyph_t& currentGlyph = glyphs[i];
-
-        char32_t codePoint;
-        auto foundCodePointIter = d_indexToGlyphMap.find(currentGlyph.index);
-        if (foundCodePointIter != d_indexToGlyphMap.end())
+        for (size_t i = 0; i < count; i++)
         {
-            codePoint = foundCodePointIter->second;
-        }
-        else
-        {
-            codePoint = UnicodeReplacementCharacter;
-        }
+            raqm_glyph_t& currentGlyph = glyphs[i];
 
-        // Ignore new line characters
-        if (originalTextArray[currentGlyph.cluster] == '\n')
-        {
-            continue;
-        }
-
-        const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
-        if (glyph == nullptr)
-        {
-            if (codePoint != UnicodeReplacementCharacter)
+            char32_t codePoint;
+            auto foundCodePointIter = d_indexToGlyphMap.find(currentGlyph.index);
+            if (foundCodePointIter != d_indexToGlyphMap.end())
             {
-                glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+                codePoint = foundCodePointIter->second;
+            }
+            else
+            {
+                codePoint = UnicodeReplacementCharacter;
             }
 
-            if (glyph == nullptr)
+            // Ignore new line characters
+            if (originalTextArray[currentGlyph.cluster] == '\n')
             {
                 continue;
             }
+
+            const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+            if (glyph == nullptr)
+            {
+                if (codePoint != UnicodeReplacementCharacter)
+                {
+                    glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+                }
+
+                if (glyph == nullptr)
+                {
+                    continue;
+                }
+            }
+
+            const Image* const image = glyph->getImage(layer);
+            if (image) {
+                imgRenderSettings.d_destArea =
+                    Rectf(penPosition, image->getRenderedSize());
+
+                penPosition.x = std::round(penPosition.x);
+
+                //The glyph pos will be rounded to full pixels internally
+                glm::vec2 renderGlyphPos(
+                    penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
+                    penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
+
+                imgRenderSettings.d_destArea =
+                    Rectf(renderGlyphPos, image->getRenderedSize());
+
+                addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
+                    clip_rect, d_fontLayers[layer].d_colours);
+            }
+
+            penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;
+
+            if (codePoint == ' ')
+            {
+                // TODO: This is for justified text and probably wrong because the space was determined
+                // without considering kerning
+                penPosition.x += space_extra;
+            }
         }
 
-        const Image* const image = glyph->getImage(layer);
-        if (image) {
-            imgRenderSettings.d_destArea =
-            Rectf(penPosition, image->getRenderedSize());
+        raqm_destroy(raqmObject);
 
-            penPosition.x = std::round(penPosition.x);
-        
-            //The glyph pos will be rounded to full pixels internally
-            glm::vec2 renderGlyphPos(
-                penPosition.x + currentGlyph.x_offset * s_conversionMultCoeff,
-                penPosition.y + currentGlyph.y_offset * s_conversionMultCoeff);
-
-            imgRenderSettings.d_destArea =
-                Rectf(renderGlyphPos, image->getRenderedSize());
-
-            addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
-                clip_rect, d_fontLayers[layer].d_colours);
-        }
-
-        penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;
-
-        if (codePoint == ' ')
-        {
-            // TODO: This is for justified text and probably wrong because the space was determined
-            // without considering kerning
-            penPosition.x += space_extra;
-        }
+        return textGeometryBuffers;
     }
-
-    raqm_destroy(raqmObject);
-
-    return textGeometryBuffers;
 }
 #endif
 
@@ -1164,7 +1166,6 @@ bool FreeTypeFont::isCodepointAvailable(char32_t codePoint) const
 {
     return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
 }
-
 
 FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint) const
 {

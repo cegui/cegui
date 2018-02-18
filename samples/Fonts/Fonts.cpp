@@ -115,8 +115,6 @@ bool FontsSample::initialise(CEGUI::GUIContext* guiContext)
     d_renewFontNameButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontsSampleWindow/FontCreator/RenewNameButton"));
     d_renewFontNameButton->setFont(&buttonFont);
 
-    d_root->getChild("FontsSampleWindow/FontCreator/FontSizeLabel");
-
     //Subscribe click event for renewing font name based on font file name and size
     d_renewFontNameButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontsSample::handleRenewFontNameButtonClicked, this));
 
@@ -190,7 +188,7 @@ bool FontsSample::handleFontCreationButtonClicked(const EventArgs&)
     {
        fontMgr.createFreeTypeFont(fontName, fontSize, FontSizeUnit::Pixels,
            antiAlias, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
-            CEGUI::Sizef(1280.0f, 720.0f), 0.0f, XmlResourceExistsAction::Throw);
+           CEGUI::Sizef(1280.0f, 720.0f), 0.0f, {}, XmlResourceExistsAction::Throw);
     }
 
     d_fontSelector->addItem(fontName);

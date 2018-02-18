@@ -103,7 +103,7 @@ public:
     FreeTypeFont(const String& font_name, const float size,
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
-                 const FreeTypeFontLayerVector& fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()},
+                 FreeTypeFontLayerVector  fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()},
                  const String& resource_group = "",
                  const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),

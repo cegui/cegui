@@ -126,11 +126,11 @@ Font& FontManager::createFreeTypeFont(
     const FontSizeUnit sizeUnit,
     const bool anti_aliased,
     const String& font_filename,
-    const FreeTypeFontLayerVector& fontLayers,
     const String& resource_group,
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,
     float specificLineSpacing,
+    const FreeTypeFontLayerVector& fontLayers,
     XmlResourceExistsAction resourceExistsAction)
 {
 #ifdef CEGUI_HAS_FREETYPE
