@@ -61,6 +61,59 @@ void adjustPenPositionForBearingDeltas(glm::vec2& penPosition,
         penPosition.x += 1.0f;
     }
 }
+
+#ifdef CEGUI_USE_RAQM
+raqm_direction_t determineRaqmDirection(CEGUI::DefaultParagraphDirection defaultParagraphDir)
+{
+    switch (defaultParagraphDir)
+    {
+    case CEGUI::DefaultParagraphDirection::LeftToRight:
+        return RAQM_DIRECTION_LTR;
+    case CEGUI::DefaultParagraphDirection::RightToLeft:
+        return RAQM_DIRECTION_RTL;
+    case CEGUI::DefaultParagraphDirection::Automatic:
+        return RAQM_DIRECTION_DEFAULT;
+    }
+
+    return RAQM_DIRECTION_LTR;
+}
+
+raqm_t* createAndSetupRaqmTextObject(
+    const uint32_t* originalTextArray, const size_t textLength,
+    CEGUI::DefaultParagraphDirection defaultParagraphDir, FT_Face face)
+{
+    raqm_t* raqmObject = raqm_create();
+
+    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, textLength);
+    if (!wasSuccess)
+    {
+        throw CEGUI::InvalidRequestException("Setting raqm text was unsuccessful");
+    }
+
+    if (!raqm_set_freetype_face(raqmObject, face))
+    {
+        throw CEGUI::InvalidRequestException("Could not set the Freetype font Face for "
+            "a raqm object");
+    }
+
+    raqm_direction_t textDefaultParagraphDirection = determineRaqmDirection(defaultParagraphDir);
+    if (!raqm_set_par_direction(raqmObject, textDefaultParagraphDirection))
+    {
+        throw CEGUI::InvalidRequestException("Could not set the parse direction for "
+            "a raqm object");
+    }
+
+    wasSuccess = raqm_layout(raqmObject);
+    if (!wasSuccess)
+    {
+        throw CEGUI::InvalidRequestException("Layouting raqm text was unsuccessful");
+    }
+
+    return raqmObject;
+}
+#endif
+
+
 }
 
 
@@ -914,8 +967,17 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
     const float space_extra, ImageRenderSettings imgRenderSettings,
     glm::vec2& penPosition) const
 {
-    std::vector<GeometryBuffer*> textGeometryBuffers;
+    const std::vector<ColourRect> layerColours = { colours };
+    return layoutUsingFreetypeAndCreateRenderGeometry(text, clip_rect, layerColours, space_extra,
+        imgRenderSettings, penPosition);
+}
 
+std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(
+    const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+    const float space_extra, ImageRenderSettings imgRenderSettings,
+    glm::vec2& penPosition) const
+{
+    std::vector<GeometryBuffer*> textGeometryBuffers;
 
     if (text.empty())
     {
@@ -981,12 +1043,17 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
         previousGlyphIndex = glyph->getGlyphIndex();
 
             const Image* const image = glyph->getImage(layer);
-            if (image) {
+            if (image)
+            {
                 imgRenderSettings.d_destArea =
                     Rectf(penPosition, image->getRenderedSize());
 
+                const CEGUI::ColourRect fallbackColour;
+                const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
+                    layerColours[layer] : fallbackColour;
+
                 addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
-                    clip_rect, d_fontLayers[layer].d_colours);
+                    clip_rect, currentlayerColour);
             }
 
         penPosition.x += glyph->getAdvance();
@@ -1004,61 +1071,19 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeo
 }
 
 #ifdef CEGUI_USE_RAQM
-namespace
+
+std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(
+    const String& text, const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra, ImageRenderSettings imgRenderSettings,
+    DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
-raqm_direction_t determineRaqmDirection(DefaultParagraphDirection defaultParagraphDir)
-{
-    switch (defaultParagraphDir)
-    {
-    case DefaultParagraphDirection::LeftToRight:
-        return RAQM_DIRECTION_LTR;
-    case DefaultParagraphDirection::RightToLeft:
-        return RAQM_DIRECTION_RTL;
-    case DefaultParagraphDirection::Automatic:
-        return RAQM_DIRECTION_DEFAULT;
-    }
-
-    return RAQM_DIRECTION_LTR;
-}
-
-raqm_t* createAndSetupRaqmTextObject(
-    const uint32_t* originalTextArray, const size_t textLength,
-    DefaultParagraphDirection defaultParagraphDir, FT_Face face)
-{
-    raqm_t* raqmObject = raqm_create();
-
-    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, textLength);
-    if (!wasSuccess)
-    {
-        throw InvalidRequestException("Setting raqm text was unsuccessful");
-    }
-
-    if (!raqm_set_freetype_face(raqmObject, face))
-    {
-        throw InvalidRequestException("Could not set the Freetype font Face for "
-            "a raqm object");
-    }
-
-    raqm_direction_t textDefaultParagraphDirection = determineRaqmDirection(defaultParagraphDir);
-    if (!raqm_set_par_direction(raqmObject, textDefaultParagraphDirection))
-    {
-        throw InvalidRequestException("Could not set the parse direction for "
-            "a raqm object");
-    }
-
-    wasSuccess = raqm_layout(raqmObject);
-    if (!wasSuccess)
-    {
-        throw InvalidRequestException("Layouting raqm text was unsuccessful");
-    }
-
-    return raqmObject;
-}
-
+    const std::vector<ColourRect> layerColours = {colours};
+    return layoutUsingRaqmAndCreateRenderGeometry(text, clip_rect, layerColours,
+        space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
 }
 
 std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(
-    const String& text, const Rectf* clip_rect, const ColourRect& colours, 
+    const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours, 
     const float space_extra, ImageRenderSettings imgRenderSettings, 
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
@@ -1082,7 +1107,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
     raqm_t* raqmObject = createAndSetupRaqmTextObject(
         originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
 
-    unsigned int layerCount = d_fontLayers.size();
+    const std::size_t layerCount = d_fontLayers.size();
     for (int layerTmp = layerCount - 1; layerTmp >= 0; layerTmp--) {
         unsigned int layer = static_cast<unsigned int>(layerTmp);
 
@@ -1141,8 +1166,12 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
                 imgRenderSettings.d_destArea =
                     Rectf(renderGlyphPos, image->getRenderedSize());
 
+                const CEGUI::ColourRect fallbackColour;
+                const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
+                    layerColours[layer] : fallbackColour;
+
                 addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
-                    clip_rect, d_fontLayers[layer].d_colours);
+                    clip_rect, currentlayerColour);
             }
 
             penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;
@@ -1156,9 +1185,9 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometr
         }
 
         raqm_destroy(raqmObject);
-
-        return textGeometryBuffers;
     }
+
+    return textGeometryBuffers;
 }
 #endif
 
