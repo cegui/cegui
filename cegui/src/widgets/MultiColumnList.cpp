@@ -1596,8 +1596,8 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
     float y = listArea.d_min.y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.x - getHorzScrollbar()->getScrollPosition();
     
-    if(y > pt.d_y)
-        return 0;
+    if(y > pt.y)
+        return nullptr;
 
     for (unsigned int i = 0; i < getRowCount(); ++i)
     {
