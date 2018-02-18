@@ -29,8 +29,6 @@
 #ifndef _CEGUIFreeTypeFontLayer_h_
 #define _CEGUIFreeTypeFontLayer_h_
 
-#include "CEGUI/ColourRect.h"
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -100,8 +98,6 @@ class FreeTypeFontLayer
 public:
     //! defines how to render the layer type via freetype
     FontLayerType d_fontLayerType;
-    //! defines colour of the layer
-    ColourRect d_colours;
     //! defines how many pixels to render the layer via freetype if it is an outline
     unsigned int d_outlinePixels;
     //! defines how the end of opened sub-paths are rendered in a stroke
@@ -117,9 +113,6 @@ public:
         \param fontLayerType
             The type of layer that will be rendered by freetype
     
-        \param coloursRect
-            Specifies the colour to render the font layer.
-
         \param outlinePixels
             Specifies the pixel size of the outline (only applies if fontLayerType is not Standard).
 
@@ -133,16 +126,15 @@ public:
             freetype miter limit for MiterVariable and MiterFixed line join styles
         */
     FreeTypeFontLayer(FontLayerType fontLayerType = FontLayerType::Standard,
-        ColourRect coloursRect = ColourRect(Colour(1,1,1)),
         unsigned int outlinePixels = 1,
         FreeTypeLineCap lineCap = FreeTypeLineCap::Round,
         FreeTypeLineJoin lineJoin= FreeTypeLineJoin::Round,
         unsigned int miterLimit = 0)
-    : d_fontLayerType(fontLayerType), d_colours (coloursRect), d_outlinePixels (outlinePixels),
+    : d_fontLayerType(fontLayerType), d_outlinePixels (outlinePixels),
     d_lineCap(lineCap), d_lineJoin (lineJoin), d_miterLimit(miterLimit)
     {
     }
-    virtual ~FreeTypeFontLayer() {}
+    virtual ~FreeTypeFontLayer() = default;
 };
 
 typedef std::vector<FreeTypeFontLayer> FreeTypeFontLayerVector;

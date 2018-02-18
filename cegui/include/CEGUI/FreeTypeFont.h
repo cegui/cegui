@@ -87,12 +87,8 @@ public:
             maintain the same physical size (which is calculated by using the
             native resolution setting).
     
-        \param native_horz_res
-            The horizontal native resolution value.  This is only significant when
-            auto scaling is enabled.
-    
-        \param native_vert_res
-            The vertical native resolution value.  This is only significant when
+        \param native_res
+            The native resolution value.  This is only significant when
             auto scaling is enabled.
     
         \param specific_line_spacing
@@ -135,7 +131,7 @@ public:
     /*!
     \brief
         Sets the Font size unit of this font.
-    \param size
+    \param sizeUnit
         The font size unit.
     */
     void setSizeUnit(FontSizeUnit sizeUnit);
@@ -325,13 +321,24 @@ protected:
 #ifdef CEGUI_USE_RAQM
     std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, ImageRenderSettings imgRenderSettings,
+        float space_extra, ImageRenderSettings imgRenderSettings,
+        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
+
+    std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
+        const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+        float space_extra, ImageRenderSettings imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
 
     std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, ImageRenderSettings imgRenderSettings,
+        float space_extra, ImageRenderSettings imgRenderSettings,
+        glm::vec2& penPosition) const;
+
+
+    std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
+        const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+        float space_extra, ImageRenderSettings imgRenderSettings,
         glm::vec2& penPosition) const;
 
     //! If non-zero, the overridden line spacing that we're to report.
