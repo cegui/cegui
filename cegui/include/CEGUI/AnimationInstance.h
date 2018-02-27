@@ -411,8 +411,8 @@ private:
     void onAnimationPaused();
     //! this is called when animation unpauses
     void onAnimationUnpaused();
-	//! this is called when animation finishes
-	void onAnimationFinished();
+    //! this is called when animation finishes
+    void onAnimationFinished();
 
     //! this is called when animation ends
     void onAnimationEnded();
