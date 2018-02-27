@@ -299,15 +299,15 @@ void AnimationInstance::togglePause(bool skipNextStep)
 //----------------------------------------------------------------------------//
 void AnimationInstance::finish()
 {
-	if (d_definition)
-	{
-		setPosition(d_definition->getDuration());
-		apply();
-	}
+    if (d_definition)
+    {
+        setPosition(d_definition->getDuration());
+        apply();
+    }
 
-	d_running = false;
-	setPosition(0.0);
-	onAnimationFinished();
+    d_running = false;
+    setPosition(0.0);
+    onAnimationFinished();
 }
 
 //----------------------------------------------------------------------------//
@@ -319,13 +319,13 @@ bool AnimationInstance::isRunning() const
 //----------------------------------------------------------------------------//
 void AnimationInstance::setAutoSteppingEnabled(bool enabled)
 {
-	d_autoSteppingEnabled = enabled;
+    d_autoSteppingEnabled = enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool AnimationInstance::isAutoSteppingEnabled() const
 {
-	return d_autoSteppingEnabled;
+    return d_autoSteppingEnabled;
 }
 
 //----------------------------------------------------------------------------//
@@ -488,9 +488,9 @@ bool AnimationInstance::handleTogglePause(const CEGUI::EventArgs&)
 //----------------------------------------------------------------------------//
 bool AnimationInstance::handleFinish(const CEGUI::EventArgs&)
 {
-	finish();
+    finish();
 
-	return true;
+    return true;
 }
 
 //----------------------------------------------------------------------------//
