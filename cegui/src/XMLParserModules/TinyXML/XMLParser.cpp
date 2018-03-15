@@ -130,7 +130,7 @@ namespace CEGUI
                 processElement(childNode->ToElement());
                 break;
             case TiXmlNode::CEGUI_TINYXML_TEXT:
-                if (childNode->ToText()->Value() != nullptr)
+                if (childNode->ToText()->Value() != 0)
                     d_handler->text(reinterpret_cast<const encoded_char*>(childNode->ToText()->Value()));
                 break;
 
