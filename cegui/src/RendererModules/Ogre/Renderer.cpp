@@ -919,7 +919,7 @@ void OgreRenderer::initialiseShaders()
         }
         else// If no shader was compatible
         {
-            d_pimpl->d_vertexShader.reset();
+            d_pimpl->d_vertexShader.setNull();
             CEGUI_THROW(RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
                 "unable to compile '__cegui_internal_vs__'"));
@@ -970,8 +970,8 @@ void OgreRenderer::initialiseShaders()
         }
         else
         {
-            d_pimpl->d_vertexShader.reset();
-            d_pimpl->d_pixelShader.reset();
+            d_pimpl->d_vertexShader.setNull();
+            d_pimpl->d_pixelShader.setNull();
 
             CEGUI_THROW(RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
@@ -1002,10 +1002,10 @@ void OgreRenderer::cleanupShaders()
     if (d_pimpl->d_hlmsSamplerblock != NULL)
         hlmsManager->destroySamplerblock(d_pimpl->d_hlmsSamplerblock);
 #endif
-    d_pimpl->d_pixelShaderParameters.reset();
-    d_pimpl->d_vertexShaderParameters.reset();
-    d_pimpl->d_pixelShader.reset();
-    d_pimpl->d_vertexShader.reset();
+    d_pimpl->d_pixelShaderParameters.setNull();
+    d_pimpl->d_vertexShaderParameters.setNull();
+    d_pimpl->d_pixelShader.setNull();
+    d_pimpl->d_vertexShader.setNull();
 }
 
 //----------------------------------------------------------------------------//

@@ -132,7 +132,7 @@ static void cleanupRenderOp(
 {
     OGRE_DELETE rop.vertexData;
     rop.vertexData = 0;
-    vb.reset();
+    vb.setNull();
 }
 
 //----------------------------------------------------------------------------//
