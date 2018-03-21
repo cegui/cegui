@@ -59,7 +59,7 @@ void OgreResourceProvider::loadRawDataContainer(const String& filename,
     Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().
         openResource(filename.c_str(), orpGroup.c_str());
 
-    if (!input)
+    if (input.isNull())
         CEGUI_THROW(InvalidRequestException(
             "Unable to open resource file '" + filename +
             "' in resource group '" + orpGroup + "'."));
