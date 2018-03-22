@@ -29,6 +29,7 @@
 #include "CEGUI/RendererModules/Ogre/TextureTarget.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/RendererModules/Ogre/WindowTarget.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
@@ -62,7 +63,7 @@
 #include <OgreHlmsDatablock.h>
 #endif
 
-#if OGRE_VERSION_MAJOR >= 1 && OGRE_VERSION_MINOR >= 11
+#if OGRE_VERSION > 0x11000
 #ifdef OGRE_BUILD_COMPONENT_RTSHADERSYSTEM
 #include <RTShaderSystem/OgreRTShaderConfig.h>
 #endif
@@ -919,7 +920,7 @@ void OgreRenderer::initialiseShaders()
         }
         else// If no shader was compatible
         {
-            d_pimpl->d_vertexShader.setNull();
+            OGRE_RESET(d_pimpl->d_vertexShader);
             CEGUI_THROW(RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
                 "unable to compile '__cegui_internal_vs__'"));
@@ -970,8 +971,8 @@ void OgreRenderer::initialiseShaders()
         }
         else
         {
-            d_pimpl->d_vertexShader.setNull();
-            d_pimpl->d_pixelShader.setNull();
+            OGRE_RESET(d_pimpl->d_vertexShader);
+            OGRE_RESET(d_pimpl->d_pixelShader);
 
             CEGUI_THROW(RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
@@ -1002,10 +1003,10 @@ void OgreRenderer::cleanupShaders()
     if (d_pimpl->d_hlmsSamplerblock != NULL)
         hlmsManager->destroySamplerblock(d_pimpl->d_hlmsSamplerblock);
 #endif
-    d_pimpl->d_pixelShaderParameters.setNull();
-    d_pimpl->d_vertexShaderParameters.setNull();
-    d_pimpl->d_pixelShader.setNull();
-    d_pimpl->d_vertexShader.setNull();
+    OGRE_RESET(d_pimpl->d_pixelShaderParameters);
+    OGRE_RESET(d_pimpl->d_vertexShaderParameters);
+    OGRE_RESET(d_pimpl->d_pixelShader);
+    OGRE_RESET(d_pimpl->d_vertexShader);
 }
 
 //----------------------------------------------------------------------------//

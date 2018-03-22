@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
@@ -105,7 +106,7 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
     createEmptyOgreTexture(Texture::PF_RGBA);
 
     // throw exception if no texture was able to be created
-    if (d_texture.isNull())
+    if (OGRE_ISNULL(d_texture))
         CEGUI_THROW(RendererException(
             "Failed to create Texture object with spcecified size."));
     
@@ -222,7 +223,7 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     d_texture->getBuffer(0,0).get()->blitFromMemory(*pixelBox);
 
     // throw exception if no texture was able to be created
-    if (d_texture.isNull())
+    if (OGRE_ISNULL(d_texture))
         CEGUI_THROW(RendererException(
             "Failed to blit to Texture from memory."));
 
@@ -235,7 +236,7 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 //----------------------------------------------------------------------------//
 void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
-    if (d_texture.isNull()) // TODO: exception?
+    if (OGRE_ISNULL(d_texture)) // TODO: exception?
         return;
 
     // NOTE: const_cast because Ogre takes pointer to non-const here. Rather
@@ -250,7 +251,7 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 //----------------------------------------------------------------------------//
 void OgreTexture::blitToMemory(void* targetData)
 {
-    if (d_texture.isNull()) // TODO: exception?
+    if (OGRE_ISNULL(d_texture)) // TODO: exception?
         return;
 
     Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
@@ -261,10 +262,10 @@ void OgreTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OgreTexture::freeOgreTexture()
 {
-    if (!d_texture.isNull() && !d_isLinked)
+    if (!OGRE_ISNULL(d_texture) && !d_isLinked)
         Ogre::TextureManager::getSingleton().remove(d_texture->getHandle());
 
-    d_texture.setNull();
+    OGRE_RESET(d_texture);
 }
 
 //----------------------------------------------------------------------------//
@@ -320,7 +321,7 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
     d_texture = texture;
     d_isLinked = !take_ownership;
 
-    if (!d_texture.isNull())
+    if (!OGRE_ISNULL(d_texture))
     {
         d_size.d_width = d_texture->getWidth();
         d_size.d_height= d_texture->getHeight();
