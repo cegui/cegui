@@ -81,7 +81,7 @@ OgreTexture::OgreTexture(const String& name) :
     d_texelScaling(0, 0),
     d_name(name)
 {
-    createEmptyOgreTexture(Texture::PF_RGBA);
+    createEmptyOgreTexture(Texture::PixelFormat::Rgba);
 }
 
 //----------------------------------------------------------------------------//
