@@ -60,7 +60,7 @@ static Ogre::String PixelShaderColoured_HLSL(""
 "	float4 colour : COLOR;\n"
 "};\n"
 "\n"
-"float4 main(VS_OUT input) : COLOR\n"
+"float4 main(VS_OUT input) : SV_Target\n"
 "{\n"
 "   float4 colour = input.colour;\n"
 "   colour.a *= alphaPercentage;\n"
@@ -103,6 +103,7 @@ based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 static Ogre::String PixelShaderTextured_HLSL(""
+"SamplerState textureSamplerState;\n"
 "uniform float alphaPercentage;\n"
 "struct VS_OUT\n"
 "{\n"
@@ -112,9 +113,9 @@ static Ogre::String PixelShaderTextured_HLSL(""
 "};\n"
 "\n"
 "float4 main(float4 colour : COLOR, float2 uv : TexCoord0, "
-"               uniform sampler2D texture0 : TEXUNIT0) : COLOR\n"
+"               uniform Texture2D texture0 : TEXUNIT0) : SV_Target\n"
 "{\n"
-"   colour = tex2D(texture0, uv) * colour;\n"
+"   colour = texture0.Sample(textureSamplerState, uv) * colour;\n"
 "   colour.a *= alphaPercentage;\n"
 "	return colour;\n"
 "}\n"
@@ -204,7 +205,7 @@ A string containing an OpenGL3 vertex shader for polygons that should be coloure
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String VertexShaderTextured_GLSL("" 
+static Ogre::String VertexShaderTextured_GLSL(""
     "#version 150 core\n"
 
     "uniform mat4 modelViewProjMatrix;\n"
@@ -230,7 +231,7 @@ A string containing an OpenGL3 fragment shader for polygons that should be colou
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String PixelShaderTextured_GLSL("" 
+static Ogre::String PixelShaderTextured_GLSL(""
     "#version 150 core\n"
 
     "uniform sampler2D texture0;\n"
@@ -284,7 +285,7 @@ A string containing an OpenGL ES 2.0 / GLES 1.0 vertex shader for polygons that 
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String VertexShaderTextured_GLSLES1("" 
+static Ogre::String VertexShaderTextured_GLSLES1(""
     "#version 100\n"
     "precision mediump int;\n"
     "precision mediump float;\n"
@@ -307,7 +308,7 @@ A string containing an OpenGL ES 2.0 / GLES 1.0 fragment shader for polygons tha
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String PixelShaderTextured_GLSLES1("" 
+static Ogre::String PixelShaderTextured_GLSLES1(""
     "#version 100\n"
     "precision mediump int;\n"
     "precision mediump float;\n"
