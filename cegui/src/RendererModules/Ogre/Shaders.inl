@@ -60,6 +60,28 @@ static Ogre::String PixelShaderColoured_HLSL(""
 "	float4 colour : COLOR;\n"
 "};\n"
 "\n"
+"float4 main(VS_OUT input) : COLOR\n"
+"{\n"
+"   float4 colour = input.colour;\n"
+"   colour.a *= alphaPercentage;\n"
+"	return colour;\n"
+"}\n"
+"\n"
+);
+
+/*!
+A string containing an HLSL fragment shader for solid colouring of a polygon
+This implementation is specific for shader model 5 (DX11) devices.
+*/
+static Ogre::String PixelShaderColoured_PS5_HLSL(""
+"uniform float alphaPercentage;\n"
+"\n"
+"struct VS_OUT\n"
+"{\n"
+"	float4 position : POSITION;\n"
+"	float4 colour : COLOR;\n"
+"};\n"
+"\n"
 "float4 main(VS_OUT input) : SV_Target\n"
 "{\n"
 "   float4 colour = input.colour;\n"
@@ -103,6 +125,32 @@ based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
 static Ogre::String PixelShaderTextured_HLSL(""
+"uniform float alphaPercentage;\n"
+"struct VS_OUT\n"
+"{\n"
+"	float4 position : POSITION;\n"
+"	float4 colour : COLOR;\n"
+"   float2 uv : TexCoord0;\n"
+"};\n"
+"\n"
+"float4 main(float4 colour : COLOR, float2 uv : TexCoord0, "
+"               uniform sampler2D texture0 : TEXUNIT0) : COLOR\n"
+"{\n"
+"   colour = tex2D(texture0, uv) * colour;\n"
+"   colour.a *= alphaPercentage;\n"
+"	return colour;\n"
+"}\n"
+"\n"
+);
+
+/*!
+A string containing an HLSL fragment shader for polygons that should be coloured
+based on a texture. The fetched texture colour will be multiplied by a colour
+supplied to the shader, resulting in the final colour.
+
+This implementation is specific for shader model 5 (DX11) devices.
+*/
+static Ogre::String PixelShaderTextured_PS5_HLSL(""
 "SamplerState textureSamplerState;\n"
 "uniform float alphaPercentage;\n"
 "struct VS_OUT\n"
