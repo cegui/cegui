@@ -1021,10 +1021,10 @@ void OgreRenderer::initialiseShaders()
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_5_0"))
         {
             texture_ps->setParameter("target", "ps_5_0");
-            texture_ps->setSource(PixelShaderTextured_HLSL);
+            texture_ps->setSource(PixelShaderTextured_PS5_HLSL);
 
             colour_ps->setParameter("target", "ps_5_0");
-            colour_ps->setSource(PixelShaderColoured_HLSL);
+            colour_ps->setSource(PixelShaderColoured_PS5_HLSL);
         }
         else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_2_0"))
         {
