@@ -57,6 +57,8 @@ public:
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
+    void setRenderOperation(const Ogre::v1::RenderOperation &operation);
+
     Ogre::GpuProgramParametersSharedPtr getVertexParameters() const;
 
 protected:
@@ -77,6 +79,8 @@ protected:
 
     //! Parameters for pixel shader
     Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
+
+    Ogre::v1::RenderOperation d_renderOp;
 
     //! The currently active matrix
     glm::mat4 d_lastMatrix;
