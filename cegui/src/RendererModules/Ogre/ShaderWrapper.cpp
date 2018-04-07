@@ -216,10 +216,12 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_HLMS
 void OgreShaderWrapper::setRenderOperation(const Ogre::v1::RenderOperation &operation)
 {
     d_renderOp = operation;
 }
+#endif
 
 //----------------------------------------------------------------------------//
 }

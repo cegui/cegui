@@ -57,7 +57,9 @@ public:
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
+    #ifdef CEGUI_USE_OGRE_HLMS
     void setRenderOperation(const Ogre::v1::RenderOperation &operation);
+	#endif
 
     Ogre::GpuProgramParametersSharedPtr getVertexParameters() const;
 
@@ -80,7 +82,9 @@ protected:
     //! Parameters for pixel shader
     Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
 
+    #ifdef CEGUI_USE_OGRE_HLMS
     Ogre::v1::RenderOperation d_renderOp;
+	#endif
 
     //! The currently active matrix
     glm::mat4 d_lastMatrix;
