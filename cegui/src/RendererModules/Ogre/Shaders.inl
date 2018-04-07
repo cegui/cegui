@@ -70,6 +70,29 @@ static Ogre::String PixelShaderColoured_HLSL(""
 );
 
 /*!
+A string containing an HLSL fragment shader for solid colouring of a polygon
+This implementation is specific for shader model 5 (DX11) devices.
+*/
+static Ogre::String PixelShaderColoured_PS5_HLSL(""
+"Texture2D texture0;\n"
+"uniform float alphaPercentage;\n"
+"\n"
+"struct VS_OUT\n"
+"{\n"
+"	float4 position : SV_Position;\n"
+"	float4 colour : COLOR;\n"
+"};\n"
+"\n"
+"float4 main(VS_OUT input) : SV_Target\n"
+"{\n"
+"   float4 colour = input.colour;\n"
+"   colour.a *= alphaPercentage;\n"
+"	return colour;\n"
+"}\n"
+"\n"
+);
+
+/*!
 A string containing an HLSL vertex shader for polygons that should be coloured
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
@@ -115,6 +138,38 @@ static Ogre::String PixelShaderTextured_HLSL(""
 "               uniform sampler2D texture0 : TEXUNIT0) : COLOR\n"
 "{\n"
 "   colour = tex2D(texture0, uv) * colour;\n"
+"   colour.a *= alphaPercentage;\n"
+"	return colour;\n"
+"}\n"
+"\n"
+);
+
+/*!
+A string containing an HLSL fragment shader for polygons that should be coloured
+based on a texture. The fetched texture colour will be multiplied by a colour
+supplied to the shader, resulting in the final colour.
+
+This implementation is specific for shader model 5 (DX11) devices.
+*/
+static Ogre::String PixelShaderTextured_PS5_HLSL(""
+"Texture2D texture0;\n"
+"uniform float alphaPercentage;\n"
+"SamplerState textureSamplerState\n"
+"{\n"
+"   Filter   = MIN_MAG_MIP_LINEAR;\n"
+"   AddressU = Wrap;\n"
+"   AddressV = Wrap;\n"
+"};\n"
+"struct VS_OUT\n"
+"{\n"
+"	float4 position : SV_Position;\n"
+"	float4 colour : COLOR;\n"
+"   float2 uv : TEXCOORD;\n"
+"};\n"
+"\n"
+"float4 main(VS_OUT input) : SV_Target\n"
+"{\n"
+"   float4 colour = texture0.Sample(textureSamplerState, input.uv) * input.colour;\n"
 "   colour.a *= alphaPercentage;\n"
 "	return colour;\n"
 "}\n"
@@ -204,7 +259,7 @@ A string containing an OpenGL3 vertex shader for polygons that should be coloure
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String VertexShaderTextured_GLSL("" 
+static Ogre::String VertexShaderTextured_GLSL(""
     "#version 150 core\n"
 
     "uniform mat4 modelViewProjMatrix;\n"
@@ -230,7 +285,7 @@ A string containing an OpenGL3 fragment shader for polygons that should be colou
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String PixelShaderTextured_GLSL("" 
+static Ogre::String PixelShaderTextured_GLSL(""
     "#version 150 core\n"
 
     "uniform sampler2D texture0;\n"
@@ -284,7 +339,7 @@ A string containing an OpenGL ES 2.0 / GLES 1.0 vertex shader for polygons that 
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String VertexShaderTextured_GLSLES1("" 
+static Ogre::String VertexShaderTextured_GLSLES1(""
     "#version 100\n"
     "precision mediump int;\n"
     "precision mediump float;\n"
@@ -307,7 +362,7 @@ A string containing an OpenGL ES 2.0 / GLES 1.0 fragment shader for polygons tha
 based on a texture. The fetched texture colour will be multiplied by a colour
 supplied to the shader, resulting in the final colour.
 */
-static Ogre::String PixelShaderTextured_GLSLES1("" 
+static Ogre::String PixelShaderTextured_GLSLES1(""
     "#version 100\n"
     "precision mediump int;\n"
     "precision mediump float;\n"
