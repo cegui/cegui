@@ -43,7 +43,7 @@ namespace CEGUI
 
 struct ListViewItemRenderedString {
     RenderedString d_string;
-    FormattedRenderedString* d_formatedString;
+    FormattedRenderedString* d_formattedString;
     ListViewItemRenderedString(const RenderedString& string);
     ~ListViewItemRenderedString();
 };
