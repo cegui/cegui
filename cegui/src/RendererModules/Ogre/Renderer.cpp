@@ -65,6 +65,10 @@
 #include <OgrePsoCacheHelper.h>
 #endif
 
+#if OGRE_VERSION >= 0x020100
+#include <CommandBuffer/OgreCbDrawCall.h>
+#endif
+
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 
 #include "Shaders.inl"
@@ -1003,6 +1007,14 @@ void OgreRenderer::initialiseShaders()
             colour_vs->setParameter("target", "vs_5_0");
             colour_vs->setSource(VertexShaderColoured_HLSL);
         }
+        else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
+        {
+            texture_vs->setParameter("target", "vs_4_0");
+            texture_vs->setSource(VertexShaderTextured_HLSL);
+
+            colour_vs->setParameter("target", "vs_4_0");
+            colour_vs->setSource(VertexShaderColoured_HLSL);
+        }
         else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_2_0"))
         {
             texture_vs->setParameter("target", "vs_2_0");
@@ -1015,7 +1027,7 @@ void OgreRenderer::initialiseShaders()
         {
             throw RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
-                "unable to compile for vs_5_0 or vs_2_0");
+                "unable to compile for vs_5_0, vs_4_0 or vs_2_0");
         }
 
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_5_0"))
@@ -1024,6 +1036,14 @@ void OgreRenderer::initialiseShaders()
             texture_ps->setSource(PixelShaderTextured_PS5_HLSL);
 
             colour_ps->setParameter("target", "ps_5_0");
+            colour_ps->setSource(PixelShaderColoured_PS5_HLSL);
+        }
+        else if (Ogre::GpuProgramManager::getSingletonPtr()->isSyntaxSupported("ps_4_0"))
+        {
+            texture_ps->setParameter("target", "ps_4_0");
+            texture_ps->setSource(PixelShaderTextured_PS5_HLSL);
+
+            colour_ps->setParameter("target", "ps_4_0");
             colour_ps->setSource(PixelShaderColoured_PS5_HLSL);
         }
         else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_2_0"))
@@ -1038,7 +1058,7 @@ void OgreRenderer::initialiseShaders()
         {
             throw RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
-                "unable to compile for ps_5_0 or ps_2_0");
+                "unable to compile for ps_5_0, ps_4_0 or ps_2_0");
         }
 
     }
@@ -1151,7 +1171,7 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
 }
 
 #ifdef CEGUI_USE_OGRE_HLMS
-void OgreRenderer::bindPSO()
+void OgreRenderer::bindPSO(const Ogre::v1::RenderOperation render_operation)
 {
     // Blendmode must be set before
     assert(d_pimpl->d_hlmsBlendblock);
@@ -1161,11 +1181,22 @@ void OgreRenderer::bindPSO()
     d_pimpl->d_hlmsCache->setMacroblock(const_cast<Ogre::HlmsMacroblock*>(
             d_pimpl->d_hlmsMacroblock));
 
+	#if OGRE_VERSION >= 0x020100
+    //! Needed for DX11 in order for InputLayout to be specified right when we get the PSO.
+    Ogre::VertexElement2VecVec elements = render_operation.vertexData->vertexDeclaration->convertToV2();
+    d_pimpl->d_hlmsCache->setVertexFormat( elements, render_operation.operationType, false );
+	#endif
+
     // This should have all the rendering settings
     Ogre::HlmsPso* pso = d_pimpl->d_hlmsCache->getPso();
 
     // Bind it
     d_pimpl->d_renderSystem->_setPipelineStateObject(pso);
+
+	#if OGRE_VERSION >= 0x020100
+    const Ogre::v1::CbRenderOp cmd( render_operation );
+    d_pimpl->d_renderSystem->_setRenderOperation( &cmd );
+	#endif
 }
 
 void OgreRenderer::setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
@@ -1325,7 +1356,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
     }
     else if (shaderType == DefaultShaderType::Solid)
     {
-        RefCounted<RenderMaterial> render_material(new 
+        RefCounted<RenderMaterial> render_material(new
             RenderMaterial(d_pimpl->d_colouredShaderWrapper));
 
         return render_material;

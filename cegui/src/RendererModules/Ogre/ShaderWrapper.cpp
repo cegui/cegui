@@ -106,18 +106,18 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
     d_renderSystem.bindGpuProgram(vs);
 
     Ogre::GpuProgram* ps = d_pixelShader->_getBindingDelegate();
-    d_renderSystem.bindGpuProgram(ps);    
+    d_renderSystem.bindGpuProgram(ps);
 #endif //CEGUI_USE_OGRE_HLMS
 
-    const ShaderParameterBindings::ShaderParameterBindingsMap& 
+    const ShaderParameterBindings::ShaderParameterBindingsMap&
         shader_parameter_bindings = shaderParameterBindings->
             getShaderParameterBindings();
 
-    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator iter = 
+    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator iter =
         shader_parameter_bindings.begin();
-    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end = 
+    ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end =
         shader_parameter_bindings.end();
-    
+
     for (; iter != end; ++iter)
     {
         const CEGUI::ShaderParameter* parameter = iter->second;
@@ -139,10 +139,10 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         {
         case ShaderParamType::Texture:
         {
-            const CEGUI::ShaderParameterTexture* parameterTexture = 
+            const CEGUI::ShaderParameterTexture* parameterTexture =
                 static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
 
-            const CEGUI::OgreTexture* texture = static_cast<const 
+            const CEGUI::OgreTexture* texture = static_cast<const
                 CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
 
             Ogre::TexturePtr actual_texture = texture->getOgreTexture();
@@ -165,32 +165,32 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         case ShaderParamType::Matrix4X4:
         {
             // This is the "modelViewProjMatrix"
-            const CEGUI::ShaderParameterMatrix* mat = static_cast<const 
+            const CEGUI::ShaderParameterMatrix* mat = static_cast<const
                 CEGUI::ShaderParameterMatrix*>(parameter);
 
             if (d_lastMatrix != mat->d_parameterValue)
             {
-                d_vertexParameters->_writeRawConstants(target_index, 
+                d_vertexParameters->_writeRawConstants(target_index,
                                                        glm::value_ptr(mat->d_parameterValue),
                                                        16);
                 d_lastMatrix = mat->d_parameterValue;
-            } 
+            }
             break;
         }
         case ShaderParamType::Float:
         {
             // This is the alpha value
-            const CEGUI::ShaderParameterFloat* new_alpha = static_cast<const 
+            const CEGUI::ShaderParameterFloat* new_alpha = static_cast<const
                 CEGUI::ShaderParameterFloat*>(parameter);
 
             if (d_previousAlpha != new_alpha->d_parameterValue)
             {
                 d_previousAlpha = new_alpha->d_parameterValue;
 
-                d_pixelParameters->_writeRawConstants(target_index, 
+                d_pixelParameters->_writeRawConstants(target_index,
                     &d_previousAlpha, 1);
             }
-            
+
             break;
         }
         default:
@@ -200,8 +200,8 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 #ifdef CEGUI_USE_OGRE_HLMS
 
     // The PSO needs to be bound before we can bind shader parameters
-    d_owner.bindPSO();
-    
+    d_owner.bindPSO( d_renderOp );
+
 #endif //CEGUI_USE_OGRE_HLMS
 
     
@@ -213,6 +213,12 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
 
 
+}
+
+//----------------------------------------------------------------------------//
+void OgreShaderWrapper::setRenderOperation(const Ogre::v1::RenderOperation &operation)
+{
+    d_renderOp = operation;
 }
 
 //----------------------------------------------------------------------------//
