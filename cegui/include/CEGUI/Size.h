@@ -195,7 +195,7 @@ public:
     //! \brief finger saving alias for Size(0, 1)
     inline static Size one_height()
     {
-        return Size(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+        return Size(TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
     }
 
     T d_width;
