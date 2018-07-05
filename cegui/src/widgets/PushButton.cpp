@@ -61,7 +61,7 @@ PushButton::~PushButton(void)
 /*************************************************************************
 	handler invoked internally when the button is clicked.
 *************************************************************************/
-void PushButton::onClicked(WindowEventArgs& e)
+void PushButton::onClicked(MouseEventArgs& e)
 {
 	fireEvent(EventClicked, e, EventNamespace);
 }
@@ -84,8 +84,7 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
                 getGUIContext().getMouseCursor().getPosition()))
 			{
 				// fire event
-				WindowEventArgs args(this);
-				onClicked(args);
+				onClicked(e);
 			}
 
 		}
