@@ -85,7 +85,7 @@ protected:
 	\brief
 		handler invoked internally when the button is clicked.
 	*/
-	virtual void	onClicked(MouseEventArgs& e);
+	virtual void	onClicked(WindowEventArgs& e);
 
 
 	/*************************************************************************
