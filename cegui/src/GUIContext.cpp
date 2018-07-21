@@ -774,6 +774,10 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
     if (ciea.window)
         ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
 
+    // if there is no target window, input can not be handled.
+    if (!ciea.window)
+        return false;
+
     if (d_windowNavigator != nullptr)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
