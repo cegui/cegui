@@ -103,11 +103,11 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
     }
     else if (element == AnimationDefinitionHandler::ElementName)
     {
-        d_chainedHandler = CEGUI_NEW_AO AnimationDefinitionHandler(attributes, "");
+        d_chainedHandler = new AnimationDefinitionHandler(attributes, "");
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", Errors);
+            "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -119,7 +119,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementEnd: "
-            "</" + element + "> is invalid at this location.", Errors);
+            "</" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -127,7 +127,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
 AnimationDefinitionHandler::AnimationDefinitionHandler(
                                 const XMLAttributes& attributes,
                                 const String& name_prefix) :
-    d_anim(0)
+    d_anim(nullptr)
 {
     const String anim_name(name_prefix +
                            attributes.getValueAsString(NameAttribute));
@@ -149,11 +149,11 @@ AnimationDefinitionHandler::AnimationDefinitionHandler(
     const String replayMode(attributes.getValueAsString(ReplayModeAttribute,
                                                         ReplayModeLoop));
     if (replayMode == ReplayModeOnce)
-        d_anim->setReplayMode(Animation::RM_Once);
+        d_anim->setReplayMode(Animation::ReplayMode::PlayOnce);
     else if (replayMode == ReplayModeBounce)
-        d_anim->setReplayMode(Animation::RM_Bounce);
+        d_anim->setReplayMode(Animation::ReplayMode::Bounce);
     else
-        d_anim->setReplayMode(Animation::RM_Loop);
+        d_anim->setReplayMode(Animation::ReplayMode::Loop);
 
     d_anim->setAutoStart(attributes.getValueAsBool(AutoStartAttribute));
 }
@@ -169,13 +169,13 @@ void AnimationDefinitionHandler::elementStartLocal(
                                             const XMLAttributes& attributes)
 {
     if (element == AnimationAffectorHandler::ElementName)
-        d_chainedHandler = CEGUI_NEW_AO AnimationAffectorHandler(attributes, *d_anim);
+        d_chainedHandler = new AnimationAffectorHandler(attributes, *d_anim);
     else if (element == AnimationSubscriptionHandler::ElementName)
-        d_chainedHandler = CEGUI_NEW_AO AnimationSubscriptionHandler(attributes, *d_anim);
+        d_chainedHandler = new AnimationSubscriptionHandler(attributes, *d_anim);
     else
         Logger::getSingleton().logEvent(
             "AnimationDefinitionHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", Errors);
+            "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -191,7 +191,7 @@ void AnimationDefinitionHandler::elementEndLocal(const String& element)
 AnimationAffectorHandler::AnimationAffectorHandler(
                                             const XMLAttributes& attributes,
                                             Animation& anim) :
-    d_affector(0)
+    d_affector(nullptr)
 {
     CEGUI_LOGINSANE(
         "\tAdding affector for property: " +
@@ -208,16 +208,16 @@ AnimationAffectorHandler::AnimationAffectorHandler(
     if (attributes.getValueAsString(ApplicationMethodAttribute) ==
         ApplicationMethodRelative)
     {
-        d_affector->setApplicationMethod(Affector::AM_Relative);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::ApplyRelative);
     }
 	else if (attributes.getValueAsString(ApplicationMethodAttribute) ==
         ApplicationMethodRelativeMultiply)
     {
-        d_affector->setApplicationMethod(Affector::AM_RelativeMultiply);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::ApplyRelativeMultiply);
     }
     else
     {
-        d_affector->setApplicationMethod(Affector::AM_Absolute);
+        d_affector->setApplicationMethod(Affector::ApplicationMethod::ApplyAbsolute);
     }
 }
 
@@ -232,11 +232,11 @@ void AnimationAffectorHandler::elementStartLocal(
                                         const XMLAttributes& attributes)
 {
     if (element == AnimationKeyFrameHandler::ElementName)
-        d_chainedHandler = CEGUI_NEW_AO AnimationKeyFrameHandler(attributes, *d_affector);
+        d_chainedHandler = new AnimationKeyFrameHandler(attributes, *d_affector);
     else
         Logger::getSingleton().logEvent(
             "AnimationAffectorHandler::elementStart: "
-            "<" + element + "> is invalid at this location.", Errors);
+            "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -270,13 +270,13 @@ AnimationKeyFrameHandler::AnimationKeyFrameHandler(
 
     KeyFrame::Progression progression;
     if (progressionStr == ProgressionDiscrete)
-        progression = KeyFrame::P_Discrete;
+        progression = KeyFrame::Progression::Discrete;
     else if (progressionStr == ProgressionQuadraticAccelerating)
-        progression = KeyFrame::P_QuadraticAccelerating;
+        progression = KeyFrame::Progression::QuadraticAccelerating;
     else if (progressionStr == ProgressionQuadraticDecelerating)
-        progression = KeyFrame::P_QuadraticDecelerating;
+        progression = KeyFrame::Progression::QuadraticDecelerating;
     else
-        progression = KeyFrame::P_Linear;
+        progression = KeyFrame::Progression::Linear;
 
     affector.createKeyFrame(
         attributes.getValueAsFloat(PositionAttribute),
@@ -304,7 +304,7 @@ void AnimationKeyFrameHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "<" + element + "> is invalid at this location.", Errors);
+        "<" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -346,7 +346,7 @@ void AnimationSubscriptionHandler::elementStartLocal(
 {
     Logger::getSingleton().logEvent(
         "AnimationAffectorHandler::elementStart: "
-        "</" + element + "> is invalid at this location.", Errors);
+        "</" + element + "> is invalid at this location.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//

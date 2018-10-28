@@ -32,7 +32,7 @@ namespace CEGUI
 {
 BoundSlot::BoundSlot(Group group, const SubscriberSlot& subscriber, Event& event) :
     d_group(group),
-    d_subscriber(CEGUI_NEW_AO SubscriberSlot(subscriber)),
+    d_subscriber(new SubscriberSlot(subscriber)),
     d_event(&event)
 {}
 
@@ -47,7 +47,7 @@ BoundSlot::BoundSlot(const BoundSlot& other) :
 BoundSlot::~BoundSlot()
 {
     disconnect();
-    CEGUI_DELETE_AO d_subscriber;
+    delete d_subscriber;
 }
 
 
@@ -75,7 +75,7 @@ bool BoundSlot::operator!=(const BoundSlot& other) const
 
 bool BoundSlot::connected() const
 {
-    return (d_subscriber != 0) && d_subscriber->connected();
+    return (d_subscriber != nullptr) && d_subscriber->connected();
 }
 
 
@@ -90,7 +90,7 @@ void BoundSlot::disconnect()
     {
         // get the event to erase the subscriber functor.
         d_event->unsubscribe(*this);
-        d_event = 0;
+        d_event = nullptr;
     }
 
 }

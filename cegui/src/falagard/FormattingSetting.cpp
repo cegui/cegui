@@ -31,7 +31,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template<>
-void FormattingSetting<VerticalFormatting>::writeXMLTagToStream(XMLSerializer& xml_stream) const
+void FormattingSetting<VerticalImageFormatting>::writeXMLTagToStream(XMLSerializer& xml_stream) const
 {
     if (d_propertySource.empty())
         xml_stream.openTag(Falagard_xmlHandler::VertFormatElement);
@@ -41,11 +41,11 @@ void FormattingSetting<VerticalFormatting>::writeXMLTagToStream(XMLSerializer& x
 
 //----------------------------------------------------------------------------//
 template<>
-void FormattingSetting<VerticalFormatting>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
+void FormattingSetting<VerticalImageFormatting>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
 {
     if (d_propertySource.empty())
         xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
-            FalagardXMLHelper<VerticalFormatting>::toString(d_value));
+            FalagardXMLHelper<VerticalImageFormatting>::toString(d_value));
     else
         xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
 }

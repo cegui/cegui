@@ -44,7 +44,8 @@ class InventoryItemRenderer : public WindowRenderer
 public:
     static const String TypeName;
     InventoryItemRenderer(const String& type);
-    void render();
+
+    void createRenderGeometry() override;
 };
 
 } // End of  CEGUI namespace section

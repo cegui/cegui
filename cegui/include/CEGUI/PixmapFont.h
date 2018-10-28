@@ -77,14 +77,18 @@ public:
     */
     PixmapFont(const String& font_name, const String& imageset_filename,
                const String& resource_group = "",
-               const AutoScaledMode auto_scaled = ASM_Disabled,
+               const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                const Sizef& native_res = Sizef(640.0f, 480.0f));
 
     //! Destructor.
     ~PixmapFont();
 
-    void defineMapping(const utf32 codepoint, const String& image_name, 
-                       const float horz_advance);
+    void updateFont () override;
+    bool isCodepointAvailable(char32_t codePoint) const override;
+    FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const override;
+
+    void defineMapping(const char32_t codePoint, const String& imageName, 
+                       const float horzAdvance);
     void defineMapping(const String& value);
     //! Return the image name prefix that the font is using for it's glyphs.
     const String& getImageNamePrefix() const;
@@ -104,14 +108,16 @@ public:
     void setImageNamePrefix(const String& name_prefix);
 
 protected:
+    //! Definition of CodePointToGlyphMap type.
+    typedef std::unordered_map<char32_t, FontGlyph*> CodePointToGlyphMap;
+
     //! Initialize the imageset.
     void reinit();
     //! Register all properties of this class.
     void addPixmapFontProperties();
 
     // override of functions in Font base class.
-    void updateFont ();
-    void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
+    void writeXMLToStream_impl (XMLSerializer& xml_stream) const override;
 
     //! The Image name prefix used for the glyphs
     String d_imageNamePrefix;
@@ -119,6 +125,10 @@ protected:
     float d_origHorzScaling;
     //! true if we own the imageset
     bool d_imagesetOwner;
+
+private:
+    //! Contains mappings from code points to Image objects
+    mutable CodePointToGlyphMap d_codePointToGlyphMap;
 };
 
 } // End of  CEGUI namespace section

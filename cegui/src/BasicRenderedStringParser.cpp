@@ -32,6 +32,7 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -48,43 +49,23 @@ const String BasicRenderedStringParser::ColourTagName("colour");
 const String BasicRenderedStringParser::FontTagName("font");
 const String BasicRenderedStringParser::ImageTagName("image");
 const String BasicRenderedStringParser::WindowTagName("window");
-const String BasicRenderedStringParser::VertAlignmentTagName("vert-alignment");
+const String BasicRenderedStringParser::VertImageFormattingTagName("vert-image-formatting");
+const String BasicRenderedStringParser::VertTextFormattingTagName("vert-text-formatting");
 const String BasicRenderedStringParser::PaddingTagName("padding");
 const String BasicRenderedStringParser::TopPaddingTagName("top-padding");
 const String BasicRenderedStringParser::BottomPaddingTagName("bottom-padding");
 const String BasicRenderedStringParser::LeftPaddingTagName("left-padding");
 const String BasicRenderedStringParser::RightPaddingTagName("right-padding");
-const String BasicRenderedStringParser::AspectLockTagName("aspect-lock");
 const String BasicRenderedStringParser::ImageSizeTagName("image-size");
 const String BasicRenderedStringParser::ImageWidthTagName("image-width");
 const String BasicRenderedStringParser::ImageHeightTagName("image-height");
-const String BasicRenderedStringParser::TopAlignedValueName("top");
-const String BasicRenderedStringParser::BottomAlignedValueName("bottom");
-const String BasicRenderedStringParser::CentreAlignedValueName("centre");
-const String BasicRenderedStringParser::StretchAlignedValueName("stretch");
 
 //----------------------------------------------------------------------------//
 BasicRenderedStringParser::BasicRenderedStringParser() :
-    d_initialColours(0xFFFFFFFF),
-    d_vertAlignment(VF_BOTTOM_ALIGNED),
     d_imageSize(0, 0),
-    d_aspectLock(false),
     d_initialised(false)
 {
-    initialiseDefaultState();
-}
-
-//----------------------------------------------------------------------------//
-BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
-                                            const ColourRect& initial_colours) :
-    d_initialFontName(initial_font),
-    d_initialColours(initial_colours),
-    d_vertAlignment(VF_BOTTOM_ALIGNED),
-    d_imageSize(0, 0),
-    d_aspectLock(false),
-    d_initialised(false)
-{
-    initialiseDefaultState();
+    BasicRenderedStringParser::initialiseDefaultState();
 }
 
 //----------------------------------------------------------------------------//
@@ -189,8 +170,7 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
         RenderedStringTextComponent rtc(text.substr(cpos, len), d_fontName);
         rtc.setPadding(d_padding);
         rtc.setColours(d_colours);
-        rtc.setVerticalFormatting(d_vertAlignment);
-        rtc.setAspectLock(d_aspectLock);
+        rtc.setVerticalTextFormatting(d_vertTextFormatting);
         rs.appendComponent(rtc);
 
         // break line if needed
@@ -206,80 +186,64 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
 void BasicRenderedStringParser::processControlString(RenderedString& rs,
                                                      const String& ctrl_str)
 {
-    // all our default strings are of the form <var> = <val>
-    // so do a quick check for the = char and abort if it's not there.
-    if (String::npos == ctrl_str.find('='))
+    // All our default strings are of the form <var> = '<val>'
+    // so let's get the variables using '=' as delimiter:
+    size_t findPos = ctrl_str.find_first_of('=');
+
+    
+    if(findPos == String::npos)
     {
         Logger::getSingleton().logEvent(
-            "BasicRenderedStringParser::processControlString: unable to make "
-            "sense of control string '" + ctrl_str + "'.  Ignoring!");
-        
+            "BasicRenderedStringParser::processControlString: invalid "
+            "control string declared (format must be <var> = '<val>'): "
+            "'" + ctrl_str + "'.  Ignoring!");
         return;
     }
 
-    char var_buf[128];
-    char val_buf[128];
-    int successfullyFilledItems = sscanf(ctrl_str.c_str(), " %127[^ =] = '%127[^']", var_buf, val_buf);
+    String variable = ctrl_str.substr(0, findPos);
+    String value = ctrl_str.substr(findPos + 1); 
 
-    const String var_str(var_buf);
-    // look up handler function
-    TagHandlerMap::iterator i = d_tagHandlers.find(var_str);
-    // dispatch handler, or log error
-    if (successfullyFilledItems >= 1 && i != d_tagHandlers.end())
+    // We were able to split the variable and value, let's see if we get a
+    // valid value:
+    bool correctValueFormat = true;
+    if ( (value.front() != '\'') || (value.back() != '\'' ) ||
+            ( value.length() < 3 ) )
+        correctValueFormat = false;
+    else
     {
-        // If both variables were read correctly, proceed as usual
-        if(successfullyFilledItems == 2)
+        value.pop_back();
+        value.erase(0, 1);
+    }
+
+    // look up handler function
+    TagHandlerMap::iterator i = d_tagHandlers.find(variable);
+    // dispatch handler, or log error
+    if (i != d_tagHandlers.end())
+    {
+        if(correctValueFormat)
         {
-            const String val_str(val_buf);
-            (this->*(*i).second)(rs, val_str);
+            (this->*(*i).second)(rs, value);
         }
-        // Otherwise, since the handler was found, we are sure that the
-        // second variable couldn't be read, meaning it was empty. We will supply
-        // and empty string
         else
+            // Otherwise, since the handler was found, we are sure that the
+            // second variable couldn't be read, meaning it was empty. We will supply
+            // and empty string
             (this->*(*i).second)(rs, "");
     }
     else
         Logger::getSingleton().logEvent(
-            "BasicRenderedStringParser::processControlString: unknown "
-            "control variable '" + var_str + "'.  Ignoring!");
+            "BasicRenderedStringParser::processControlString:  unknown "
+            "control variable in string: '" + value + "'.  Ignoring!");
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::initialiseDefaultState()
 {
+    d_colours = Colour(0xFFFFFFFF);
+    d_fontName = "";
     d_padding = Rectf(0, 0, 0, 0);
-    //!  \deprecated This assignment is deprecated and will be replaced by assignment to "" in the next major version */
-    d_colours = d_initialColours;
-    //!  \deprecated This assignment is deprecated and will be replaced by assignment Colour 0xFFFFFFFF in the next major version */
-    d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
-    d_vertAlignment = VF_BOTTOM_ALIGNED;
-    d_aspectLock = false;
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::setInitialFontName(const String& font_name)
-{
-    d_initialFontName = font_name;
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::setInitialColours(const ColourRect& colours)
-{
-    d_initialColours = colours;
-}
-
-//----------------------------------------------------------------------------//
-const String& BasicRenderedStringParser::getInitialFontName() const
-{
-    return d_initialFontName;
-}
-
-//----------------------------------------------------------------------------//
-const ColourRect& BasicRenderedStringParser::getInitialColours() const
-{
-    return d_initialColours;
+    d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
 }
 
 //----------------------------------------------------------------------------//
@@ -289,13 +253,13 @@ void BasicRenderedStringParser::initialiseTagHandlers()
     d_tagHandlers[FontTagName] = &BasicRenderedStringParser::handleFont;
     d_tagHandlers[ImageTagName] = &BasicRenderedStringParser::handleImage;
     d_tagHandlers[WindowTagName] = &BasicRenderedStringParser::handleWindow;
-    d_tagHandlers[VertAlignmentTagName] = &BasicRenderedStringParser::handleVertAlignment;
+    d_tagHandlers[VertImageFormattingTagName] = &BasicRenderedStringParser::handleVertImageFormatting;
+    d_tagHandlers[VertTextFormattingTagName] = &BasicRenderedStringParser::handleVertTextFormatting;
     d_tagHandlers[PaddingTagName] = &BasicRenderedStringParser::handlePadding;
     d_tagHandlers[TopPaddingTagName] = &BasicRenderedStringParser::handleTopPadding;
     d_tagHandlers[BottomPaddingTagName] = &BasicRenderedStringParser::handleBottomPadding;
     d_tagHandlers[LeftPaddingTagName] = &BasicRenderedStringParser::handleLeftPadding;
     d_tagHandlers[RightPaddingTagName] = &BasicRenderedStringParser::handleRightPadding;
-    d_tagHandlers[AspectLockTagName] = &BasicRenderedStringParser::handleAspectLock;
     d_tagHandlers[ImageSizeTagName] = &BasicRenderedStringParser::handleImageSize;
     d_tagHandlers[ImageWidthTagName] = &BasicRenderedStringParser::handleImageWidth;
     d_tagHandlers[ImageHeightTagName] = &BasicRenderedStringParser::handleImageHeight;
@@ -322,9 +286,8 @@ void BasicRenderedStringParser::handleImage(RenderedString& rs, const String& va
         PropertyHelper<Image*>::fromString(value));
     ric.setPadding(d_padding);
     ric.setColours(d_colours);
-    ric.setVerticalFormatting(d_vertAlignment);
+    ric.setVerticalImageFormatting(d_vertImageFormatting);
     ric.setSize(d_imageSize);
-    ric.setAspectLock(d_aspectLock);
     rs.appendComponent(ric);
 }
 
@@ -333,68 +296,59 @@ void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& v
 {
     RenderedStringWidgetComponent rwc(value);
     rwc.setPadding(d_padding);
-    rwc.setVerticalFormatting(d_vertAlignment);
-    rwc.setAspectLock(d_aspectLock);
+    rwc.setVerticalTextFormatting(d_vertTextFormatting);
     rs.appendComponent(rwc);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleVertAlignment(RenderedString&, const String& value)
+void BasicRenderedStringParser::handleVertImageFormatting(
+    RenderedString&,
+    const String& value)
 {
-    if (value == TopAlignedValueName)
-        d_vertAlignment = VF_TOP_ALIGNED;
-    else if (value == BottomAlignedValueName)
-        d_vertAlignment = VF_BOTTOM_ALIGNED;
-    else if (value == CentreAlignedValueName)
-        d_vertAlignment = VF_CENTRE_ALIGNED;
-    else if (value == StretchAlignedValueName)
-        d_vertAlignment = VF_STRETCHED;
-    else
-        Logger::getSingleton().logEvent(
-            "BasicRenderedStringParser::handleVertAlignment: unknown "
-            "vertical alignment '" + value + "'.  Ignoring!");
+    d_vertImageFormatting = FalagardXMLHelper<VerticalImageFormatting>::fromString(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleVertTextFormatting(
+    RenderedString&,
+    const String& value)
+{
+    d_vertTextFormatting = FalagardXMLHelper<VerticalTextFormatting>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handlePadding(RenderedString&,
                                               const String& value)
 {
-    d_padding = PropertyHelper<Rectf >::fromString(value);
+    d_padding = PropertyHelper<Rectf>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleTopPadding(RenderedString&,
                                                  const String& value)
 {
-    d_padding.d_min.d_y = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleBottomPadding(RenderedString&,
                                                     const String& value)
 {
-    d_padding.d_max.d_y = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleLeftPadding(RenderedString&,
                                                   const String& value)
 {
-    d_padding.d_min.d_x = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleRightPadding(RenderedString&,
                                                    const String& value)
 {
-    d_padding.d_max.d_x = PropertyHelper<float>::fromString(value);
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleAspectLock(RenderedString&,
-                                                 const String& value)
-{
-    d_aspectLock = PropertyHelper<bool>::fromString(value);
+    d_padding.d_max.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
