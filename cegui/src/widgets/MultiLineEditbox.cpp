@@ -284,7 +284,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 		float areaWidth = getTextRenderArea().getWidth();
         String::size_type   currPos = 0;
         String::size_type   paraLen;
-        LineInfo    line;
+        LineInfo line{};
 
         d_lines.clear();
 
@@ -520,17 +520,16 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
     if (clipboardText.empty())
         return false;
 
-    // backup current text
+    // backup and erase selected text
     String tmp(getText());
     tmp.erase(getSelectionStart(), getSelectionLength());
-
-    // erase selected text
-    eraseSelectedText();
+    eraseSelectedText(false);
 
     // if there is room
-    if (getText().length() + clipboardText.length() < d_maxTextLen)
+    if (tmp.length() + clipboardText.length() < d_maxTextLen)
     {
         String newText = getText();
+        tmp.insert(getCaretIndex(), clipboardText);
         UndoHandler::UndoAction undo;
         undo.d_type = UndoHandler::UndoActionType::Insert;
         undo.d_startIdx = getCaretIndex();
@@ -540,9 +539,6 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
         setText(newText);
 
         d_caretPos += clipboardText.length();
-
-        WindowEventArgs args(this);
-        onTextChanged(args);
 
         return true;
     }
@@ -557,17 +553,22 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
 }
 
 
-void MultiLineEditbox::handleBackspace(void)
+void MultiLineEditbox::handleBackspace()
 {
-	if (!isReadOnly())
-	{
-		if (getSelectionLength() != 0)
-		{
-			eraseSelectedText();
-		}
-		else if (d_caretPos > 0)
-		{
-            String newText = getText();
+    if (!isReadOnly())
+    {
+        String newText(getText());
+
+        if (getSelectionLength() != 0)
+        {
+            newText.erase(getSelectionStart(), getSelectionLength());
+            // erase selection using mode that does not modify getText()
+            // (we just want to update state)
+            eraseSelectedText(false);
+            setText(newText);
+        }
+        else if (d_caretPos > 0)
+        {
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UndoActionType::Delete;
 
@@ -589,26 +590,27 @@ void MultiLineEditbox::handleBackspace(void)
             newText.erase(deleteStartPos, deleteLength);
             setCaretIndex(deleteStartPos);
             setText(newText);
-
-			WindowEventArgs args(this);
-			onTextChanged(args);
-		}
-
-	}
+        }
+    }
 }
 
 
-void MultiLineEditbox::handleDelete(void)
+void MultiLineEditbox::handleDelete()
 {
-	if (!isReadOnly())
-	{
-		if (getSelectionLength() != 0)
-		{
-			eraseSelectedText();
-		}
+    if (!isReadOnly())
+    {
+        String newText(getText());
+
+        if (getSelectionLength() != 0)
+        {
+            newText.erase(getSelectionStart(), getSelectionLength());
+            // erase selection using mode that does not modify getText()
+            // (we just want to update state)
+            eraseSelectedText(false);
+            setText(newText);
+        }
         else if (getCaretIndex() < getText().length() - 1)
-		{
-            String newText = getText();
+        {
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UndoActionType::Delete;
             undo.d_startIdx = d_caretPos;
@@ -624,14 +626,9 @@ void MultiLineEditbox::handleDelete(void)
             newText.erase(d_caretPos, eraseLength);
             setText(newText);
 
-			ensureCaretIsVisible();
-
-			WindowEventArgs args(this);
-			onTextChanged(args);
-		}
-
-	}
-
+            ensureCaretIsVisible();
+        }
+    }
 }
 
 
@@ -739,29 +736,27 @@ void MultiLineEditbox::handleLineDown(bool select)
 
 void MultiLineEditbox::handleNewLine()
 {
-	if (!isReadOnly())
-	{
-		// erase selected text
-		eraseSelectedText();
+    if (!isReadOnly())
+    {
+        // erase selected text
+        String newText(getText());
+        newText.erase(getSelectionStart(), getSelectionLength());
+        eraseSelectedText(false);
 
-		// if there is room
-       if (getText().length() - 1 < d_maxTextLen)
-		{
-            String newText = getText();
+        // if there is room
+        if (newText.length() - 1 < d_maxTextLen)
+        {
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UndoActionType::Insert;
             undo.d_startIdx = getCaretIndex();
             undo.d_text = "\x0a";
             d_undoHandler->addUndoHistory(undo);
             newText.insert(getCaretIndex(), 1, static_cast<String::value_type>(0x0a));
-            setText(newText);
+            d_caretPos++;
+        }
 
-			d_caretPos++;
-
-			WindowEventArgs args(this);
-			onTextChanged(args);
-		}
-	}
+        setText(newText);
+    }
 }
 
 
@@ -822,41 +817,40 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
     // fire event.
     fireEvent(EventCharacterKey, e, Window::EventNamespace);
 
-	// only need to take notice if we have focus
-	if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
+    // only need to take notice if we have focus
+    if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
         getFont()->isCodepointAvailable(e.d_character))
-	{
-		// erase selected text
-		eraseSelectedText();
+    {
+        // erase selected text
+        String newText(getText());
+        newText.erase(getSelectionStart(), getSelectionLength());
+        eraseSelectedText(false);
 
-		// if there is room
-       if (getText().length() - 1 < d_maxTextLen)
+        // if there is room
+        if (newText.length() - 1 < d_maxTextLen)
         {
-            String newText = getText();
             UndoHandler::UndoAction undo;
             undo.d_type = UndoHandler::UndoActionType::Insert;
             undo.d_startIdx = getCaretIndex();
             undo.d_text = e.d_character;
             d_undoHandler->addUndoHistory(undo);
             newText.insert(getCaretIndex(), 1, e.d_character);
+
+            d_caretPos++;
             setText(newText);
-
-			d_caretPos++;
-
-			WindowEventArgs args(this);
-			onTextChanged(args);
-
             ++e.handled;
-		}
-		else
-		{
-			// Trigger text box full event
-			WindowEventArgs args(this);
-			onEditboxFullEvent(args);
-		}
-
-	}
-
+        }
+        else
+        {
+            setText(newText);
+        }
+    }
+    else
+    {
+        // Trigger text box full event
+        WindowEventArgs args(this);
+        onEditboxFullEvent(args);
+    }
 }
 
 

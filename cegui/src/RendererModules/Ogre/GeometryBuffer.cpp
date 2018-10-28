@@ -66,7 +66,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_dataAppended(false),
     d_previousAlphaValue(-1.f)
 {
-    
+
 }
 
 //----------------------------------------------------------------------------//
@@ -133,6 +133,9 @@ void OgreGeometryBuffer::draw() const
     // activate the desired blending mode
     d_owner.bindBlendMode(d_blendMode);
 
+    // get the impl specific shader wrapper so we can set the necessary render ops in the draw passes.
+    OgreShaderWrapper *shaderWrapper = static_cast<OgreShaderWrapper*>( const_cast<ShaderWrapper*>( d_renderMaterial->getShaderWrapper() ) );
+
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
     {
@@ -146,9 +149,10 @@ void OgreGeometryBuffer::draw() const
         // which contains all the blend settings etc
         // This is required because the material cannot set shader parameters before
         // the PSO is bound
-        
-        d_renderMaterial->prepareForRendering(); 
-        
+
+        shaderWrapper->setRenderOperation( d_renderOp );
+        d_renderMaterial->prepareForRendering();
+
         // draw the geometry
         d_renderSystem._render(d_renderOp);
     }
@@ -188,7 +192,7 @@ void OgreGeometryBuffer::syncVertexData() const
     // Make sure that our vertex buffer is large enough
     size_t current_size;
 
-    if (!d_hwBuffer.isNull() && 
+    if (!d_hwBuffer.isNull() &&
         (current_size = d_hwBuffer->getNumVertices()) < d_vertexCount)
     {
         size_t new_size = current_size;
@@ -210,7 +214,7 @@ void OgreGeometryBuffer::syncVertexData() const
         }
     #ifdef CEGUI_USE_OGRE_HLMS
         void* copy_target = d_hwBuffer->lock(
-            Ogre::v1::HardwareVertexBuffer::HBL_DISCARD); 
+            Ogre::v1::HardwareVertexBuffer::HBL_DISCARD);
     #else
         void* copy_target = d_hwBuffer->lock(
             Ogre::HardwareVertexBuffer::HBL_DISCARD); 

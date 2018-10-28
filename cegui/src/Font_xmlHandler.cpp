@@ -279,6 +279,8 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     auto fontLineSpacing = attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f);
     auto usingAliasing = attributes.getValueAsBool(FontAntiAliasedAttribute, true);
 
+    const FreeTypeFontLayerVector fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()};
+
     FontManager& fontManager = FontManager::getSingleton();
     d_font = &fontManager.createFreeTypeFont(
         fontName,
@@ -290,6 +292,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
         autoScaledmode,
         nativeResolution,
         fontLineSpacing,
+        fontLayers,
         d_resourceExistsAction);
 #else
     throw InvalidRequestException(

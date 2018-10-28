@@ -32,6 +32,7 @@
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/ResourceEventSet.h"
+#include "CEGUI/FreeTypeFontLayer.h"
 
 #include <unordered_map>
 
@@ -234,6 +235,7 @@ public:
         const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
         const Sizef& native_res = Sizef(640.0f, 480.0f),
         const float specificLineSpacing = 0.0f,
+        const FreeTypeFontLayerVector& fontLayers = FreeTypeFontLayerVector{ FreeTypeFontLayer() },
         XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!

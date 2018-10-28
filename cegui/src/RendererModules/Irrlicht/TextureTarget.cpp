@@ -157,4 +157,10 @@ String IrrlichtTextureTarget::generateTextureName()
 
 } // End of  CEGUI namespace section
 
+#ifdef __APPLE__
+
+template class CEGUI::IrrlichtRenderTarget<CEGUI::RenderTarget>;
+template class CEGUI::IrrlichtRenderTarget<CEGUI::TextureTarget>;
+
+#endif
 
