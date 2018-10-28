@@ -177,7 +177,7 @@ public:
           BasicRenderedStringParser.
         - false if the ListboxTextItem text will be used verbatim.
 
-    \note For enable parsding wityh custom parser use setCustomRenderedStringParser.
+    \note For enable parsing with custom parser use setCustomRenderedStringParser.
     */
     void setTextParsingEnabled(const bool enable);
 
